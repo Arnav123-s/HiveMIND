@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+runs/
+merged/
+training/runs/
+.pytest_cache/
+memory/*
+!memory/README.md
+inbox/
+outbox/
+adapters_candidates/
+adapters/.previous/
+training/data/self/
+training/data/_live_cache.json

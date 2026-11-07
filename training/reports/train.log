@@ -1,0 +1,57 @@
+coordinator: 38 examples from ['/home/user/agent-team/training/data/coordinator.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  67%|██████▋   | 208/311 [00:00<00:00, 2074.29it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 2699.69it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+tokens per example: mean 524 max 641
+step 5/29 loss 1.1655 82s
+step 10/29 loss 0.7950 164s
+step 15/29 loss 0.9667 241s
+step 20/29 loss 0.6055 318s
+step 25/29 loss 0.6444 393s
+step 29/29 loss 0.3030 449s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{
+ "specialist": "coordinator",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 38,
+ "files": [
+  "/home/user/agent-team/training/data/coordinator.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 16,
+ "alpha": 32,
+ "epochs": 3.0,
+ "lr": 0.0002,
+ "steps": 29,
+ "seconds": 450,
+ "loss_first": 2.6949,
+ "loss_last": 0.303,
+ "time": "2026-11-07 19:05:33"
+}
+browser: 87 examples from ['/home/user/agent-team/training/data/browser.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3149.09it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+tokens per example: mean 1426 max 1536
