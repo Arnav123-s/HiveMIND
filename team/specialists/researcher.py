@@ -18,7 +18,7 @@ def extract_messages(task, sources_text):
             {"role": "user", "content": f"Task: {task}\n\nSOURCES:\n{sources_text}"}]
 
 
-def gather(plan, board, step_id):
+def gather(plan, board, step_id, task=""):
     """Run the searches and URL reads. Returns (blocks, corpus{url: text}, notes)."""
     blocks, corpus, notes = [], {}, []
     for s in (plan.get("searches") or [])[:4]:
@@ -28,8 +28,11 @@ def gather(plan, board, step_id):
         if src == "url":
             plan.setdefault("urls", []).append(q)
             continue
+        kw = {}
+        if src == "huggingface" and re.search(r"text.generation|chat|instruct|llm|language model|assistant", task, re.I):
+            kw = {"pipeline_tag": "text-generation", "limit": 20}
         try:
-            res = web.search(src, q)
+            res = web.search(src, q, **kw)
         except Exception as e:  # noqa: BLE001 - report every failure to the board
             notes.append(f"{src} search '{q}' failed: {e}")
             board.log("researcher", "tool-fail", notes[-1])
@@ -63,7 +66,7 @@ def run(task, context, board, step_id):
     urls_in_task = re.findall(r"https?://[^\s)\"']+", task)
     plan["urls"] = list(dict.fromkeys((plan.get("urls") or []) + urls_in_task))
     board.log("researcher", "plan", json.dumps(plan)[:300])
-    blocks, corpus, notes = gather(plan, board, step_id)
+    blocks, corpus, notes = gather(plan, board, step_id, task)
     if not blocks:
         return {"summary": "No source could be read. " + "; ".join(notes), "items": [], "facts": [],
                 "corpus": {}, "notes": notes}

@@ -5,7 +5,7 @@
     python -m team web                    chat-style page at http://127.0.0.1:8765
     python -m team serve                  always on: inbox + schedule + dreaming when idle
     python -m team add "task"             drop a task into the inbox for `serve`
-    python -m team dream [--no-train]     replay past runs, learn lessons, retrain weights
+    python -m team dream [--no-train] [--rehearse N]   replay past runs, learn lessons, retrain weights
     python -m team remember "fact"        add to your profile (how you like things done)
 """
 import argparse
@@ -32,7 +32,8 @@ def main():
             return print("queued:", add(" ".join(rest)))
         if cmd == "dream":
             from .dream import dream
-            return dream(train="--no-train" not in rest)
+            n = int(rest[rest.index("--rehearse") + 1]) if "--rehearse" in rest else 2
+            return dream(train="--no-train" not in rest, rehearse_n=n)
         if cmd == "remember":
             from . import memory
             memory.remember(" ".join(rest))

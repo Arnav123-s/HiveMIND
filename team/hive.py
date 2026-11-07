@@ -161,8 +161,8 @@ class Hive:
         trace += ["", "## Facts", ""]
         for f in b.facts():
             trace.append(f"- **{f['status']}** - {f['claim'][:200]} - quote: \"{f['quote'][:160]}\" - {f['url']}")
-        trace += ["", "## Approvals asked", ""] + [f"- {a['agent']}: {a['kind']} - {a['detail']} -> {a['decision']}"
-                                                    for a in b.approvals()] or ["- none"]
+        trace += ["", "## Approvals asked", ""] + ([f"- {a['agent']}: {a['kind']} - {a['detail']} -> {a['decision']}"
+                                                     for a in b.approvals()] or ["- none"])
         trace += ["", "## Model usage", "", f"{llm.STATS['calls']} calls, {llm.STATS['tokens_out']} tokens out, "
                   f"{llm.STATS['seconds']:.0f}s generating on CPU"]
         (self.dir / "TRACE.md").write_text("\n".join(trace) + "\n")

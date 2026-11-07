@@ -3,3 +3,6 @@ browser: 107 examples from ['/home/user/agent-team/training/data/browser.jsonl']
 trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
 skipped 10 examples longer than 2048 tokens
 tokens per example: mean 1408 max 1951
+step 5/49 loss 1.0761 501s
+step 10/49 loss 0.1767 753s
+training/train_all.sh: line 7:  5938 Killed                  $PY training/train_lora.py browser --epochs 2 --layers 14-27 --rank 16 --max-len 2048

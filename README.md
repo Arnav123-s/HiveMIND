@@ -168,7 +168,23 @@ in `adapters/` were trained for Qwen3-1.7B, so this runs untrained specialists; 
 
 ## Limits (measured, not guessed)
 
-LIMITS_SECTION
+- **Speed.** On a 4-core CPU the 1.7B specialists generate ~8-10 tokens/s. A big multi-step task
+  takes tens of minutes, not seconds. Training a specialist takes 5-80 minutes.
+- **Reasoning ceiling.** These are 1.5-1.7B models. They plan, click, extract and judge well inside
+  the shapes they were trained on; they are far weaker than frontier models at open-ended reasoning
+  or long, novel programs. The verifier and retries catch many mistakes; they cannot create ability
+  the models lack. Everything the team could not confirm goes under "Not confirmed" in the report.
+- **Search.** General web search engines block scripted queries (DuckDuckGo and Mojeek returned bot
+  walls from the cloud machine this was built on). The team does not try to get around bot checks;
+  it uses sources that offer APIs (Hugging Face, Hacker News, arXiv, PyPI, Wikipedia pages, any
+  URL) and the real browser. On your own connection DuckDuckGo may work; the `web` source tries it.
+- **Sites.** No logins unless you allow a site per task; no sign-ups ever; CAPTCHAs are not solved.
+- **Code isolation.** Code runs as your user in the run's `work/` folder with a timeout. It is not a
+  container. The guard stops deleting/sending/spending code from running without your yes.
+- **Evals are small** (3-18 cases per specialist), so a single case moves a score a lot. Numbers are
+  real measurements, not benchmarks.
+- **Not done on purpose:** removing the base models' built-in safety training. The team's filters
+  are your rules above, nothing else.
 
 ## Layout
 
