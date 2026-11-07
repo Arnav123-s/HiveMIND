@@ -1,0 +1,94 @@
+{
+ "specialist": "writer",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 13,
+ "files": [
+  "/home/user/agent-team/training/data/writer.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 8,
+ "alpha": 32,
+ "epochs": 3.0,
+ "lr": 0.0002,
+ "steps": 10,
+ "seconds": 121,
+ "loss_first": 2.8587,
+ "loss_last": 0.4158,
+ "time": "2026-11-07 20:35:13",
+ "log": [
+  {
+   "step": 1,
+   "loss": 2.8587,
+   "sec": 12
+  },
+  {
+   "step": 2,
+   "loss": 1.8201,
+   "sec": 25
+  },
+  {
+   "step": 3,
+   "loss": 1.3855,
+   "sec": 39
+  },
+  {
+   "step": 4,
+   "loss": 1.1559,
+   "sec": 51
+  },
+  {
+   "step": 5,
+   "loss": 1.0807,
+   "sec": 62
+  },
+  {
+   "step": 6,
+   "loss": 0.6368,
+   "sec": 75
+  },
+  {
+   "step": 7,
+   "loss": 0.6493,
+   "sec": 87
+  },
+  {
+   "step": 8,
+   "loss": 0.6474,
+   "sec": 99
+  },
+  {
+   "step": 9,
+   "loss": 0.6512,
+   "sec": 110
+  },
+  {
+   "step": 10,
+   "loss": 0.4158,
+   "sec": 120
+  }
+ ]
+}

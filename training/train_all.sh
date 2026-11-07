@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
-# coordinator already trained
+# coordinator trained in round 1
 $PY training/train_lora.py browser     --epochs 2 --layers 14-27 --rank 16 --max-len 2048
 $PY training/train_lora.py researcher  --epochs 2 --layers 14-27 --rank 16 --max-len 2048
 $PY training/train_lora.py verifier    --epochs 1 --layers 14-27 --rank 8

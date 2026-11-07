@@ -15,6 +15,7 @@ import time
 from pathlib import Path
 
 import torch
+import torch.nn.functional  # noqa: F401
 from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -32,13 +33,18 @@ ap.add_argument("--alpha", type=int, default=32)
 ap.add_argument("--epochs", type=float, default=2)
 ap.add_argument("--lr", type=float, default=2e-4)
 ap.add_argument("--accum", type=int, default=4)
-ap.add_argument("--max-len", type=int, default=1536)
+ap.add_argument("--max-len", type=int, default=2048)
 ap.add_argument("--out", help="output dir (default adapters/<specialist>)")
 ap.add_argument("--threads", type=int, default=config.THREADS)
 ap.add_argument("--seed", type=int, default=0)
 args = ap.parse_args()
 
 torch.set_num_threads(args.threads)
+try:  # give freed memory back to the OS between steps (variable-length batches fragment the heap)
+    import ctypes
+    _trim = ctypes.CDLL("libc.so.6").malloc_trim
+except OSError:
+    _trim = None
 random.seed(args.seed)
 torch.manual_seed(args.seed)
 
@@ -73,9 +79,7 @@ def encode(row):
     t_ids = tok(target, add_special_tokens=False)["input_ids"]
     if len(p_ids) + len(t_ids) > args.max_len:
         return None  # never cut the system prompt off; skip instead
-    ids = p_ids + t_ids
-    labels = [-100] * len(p_ids) + t_ids
-    return torch.tensor([ids]), torch.tensor([labels])
+    return torch.tensor([p_ids + t_ids]), len(t_ids)
 
 
 data = [d for d in (encode(r) for r in rows) if d is not None]
@@ -99,9 +103,12 @@ while len(order) < len(data) * args.epochs:
 order = order[:int(len(data) * args.epochs)]
 running = 0.0
 for i, idx in enumerate(order):
-    ids, labels = data[idx]
+    ids, k = data[idx]
     with torch.autocast("cpu", dtype=torch.bfloat16):
-        loss = model(input_ids=ids, labels=labels).loss
+        # Only score the reply: vocab logits for k+1 positions instead of the whole sequence
+        # (the full 151k-vocab logits for 2k tokens is what ran out of RAM).
+        logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
+    loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
     (loss / args.accum).backward()
     running += loss.item()
     seen += 1
@@ -110,6 +117,8 @@ for i, idx in enumerate(order):
         opt.step()
         sched.step()
         opt.zero_grad()
+        if _trim:
+            _trim(0)
         step += 1
         avg = running / args.accum
         running = 0.0

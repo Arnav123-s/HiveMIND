@@ -73,7 +73,21 @@ def read_url(url, max_chars=12000):
 
 # ---------------- search sources ----------------
 
+HF_NOISE = set("""small tiny best top open permissive license licensed licence text generation text-generation
+under below less than over models model chat llm llms language languages free cpu laptop parameters params
+param popular good recent new latest instruction-tuned tuned ungated gated not with and for the a of on that run
+runs local locally""".split())
+
+
+def clean_hf_query(q):
+    """Hugging Face search matches model *names*; descriptive words make it return junk."""
+    words = [w for w in re.split(r"\s+", q.strip()) if w and w.lower() not in HF_NOISE
+             and not re.fullmatch(r"(<|>|<=|>=)?\d+(\.\d+)?b?", w.lower())]
+    return " ".join(words) or "Instruct"
+
+
 def search_huggingface(q, limit=12, **filters):
+    q = clean_hf_query(q)
     params = {"search": q, "sort": "downloads", "limit": limit,
               "expand[]": ["safetensors", "cardData", "gated", "pipeline_tag", "downloads", "likes", "tags"]}
     params.update(filters)
