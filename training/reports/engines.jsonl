@@ -1,0 +1,2 @@
+{"engine": "gguf", "specialist": "verifier", "load_s": 3.4, "gen_s": 22.7, "tokens": 173, "tok_per_s": 7.6, "rss_gb": 6.68, "rss_added_gb": 6.12, "anon_gb": 3.87, "file_backed_gb": 2.66}
+{"engine": "hf", "specialist": "verifier", "load_s": 4.9, "gen_s": 22.8, "tokens": 191, "tok_per_s": 8.4, "rss_gb": 4.36, "rss_added_gb": 3.79, "anon_gb": 0.58, "file_backed_gb": 3.67}

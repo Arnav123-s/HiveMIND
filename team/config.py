@@ -24,6 +24,26 @@ SPECIALISTS = {
     "coder": CODER_MODEL,       # writes, runs and repairs Python
 }
 
+# ---- Engine v2: llama.cpp with 4-bit weights (less RAM, faster on CPU, bigger brains) ----
+# auto: use llama.cpp when it is installed and the GGUF files are present; hf: PyTorch/transformers path above.
+ENGINE = os.environ.get("AGENT_TEAM_ENGINE", "auto")
+GGUF_MODELS = {
+    # name: (repo, file, tokenizer repo used to build the exact same chat prompt)
+    "brain4b": ("Qwen/Qwen3-4B-GGUF", "Qwen3-4B-Q4_K_M.gguf", "Qwen/Qwen3-1.7B"),
+    "brain8b": ("Qwen/Qwen3-8B-GGUF", "Qwen3-8B-Q4_K_M.gguf", "Qwen/Qwen3-1.7B"),
+    "fast": ("Qwen/Qwen3-1.7B-GGUF", "Qwen3-1.7B-Q8_0.gguf", "Qwen/Qwen3-1.7B"),
+    "coder7b": ("Qwen/Qwen2.5-Coder-7B-Instruct-GGUF", "qwen2.5-coder-7b-instruct-q4_k_m.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
+}
+BRAIN = os.environ.get("AGENT_TEAM_BRAIN", "brain4b")
+GGUF_ROSTER = {
+    "coordinator": BRAIN, "researcher": BRAIN, "verifier": BRAIN, "writer": BRAIN, "browser": BRAIN,
+    "coder": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),
+}
+if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
+    import json as _json
+    GGUF_ROSTER.update(_json.loads(os.environ["AGENT_TEAM_ROSTER"]))
+GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
+
 # Set AGENT_TEAM_NO_ADAPTERS=1 to run the untrained base models (for comparison).
 USE_ADAPTERS = os.environ.get("AGENT_TEAM_NO_ADAPTERS", "") != "1"
 
