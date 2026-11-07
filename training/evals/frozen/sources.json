@@ -1,0 +1,567 @@
+{
+ "hf_small_textgen": [
+  {
+   "title": "Qwen/Qwen3-0.6B",
+   "url": "https://huggingface.co/Qwen/Qwen3-0.6B",
+   "snippet": "Qwen/Qwen3-0.6B | params 0.752B | license apache-2.0 | pipeline text-generation | gated False | downloads 21357034 | likes 1883",
+   "data": {
+    "id": "Qwen/Qwen3-0.6B",
+    "params_b": 0.752,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 21357034,
+    "likes": 1883
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "Qwen/Qwen3-14B",
+   "url": "https://huggingface.co/Qwen/Qwen3-14B",
+   "snippet": "Qwen/Qwen3-14B | params 14.768B | license apache-2.0 | pipeline text-generation | gated False | downloads 12952853 | likes 533",
+   "data": {
+    "id": "Qwen/Qwen3-14B",
+    "params_b": 14.768,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 12952853,
+    "likes": 533
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "Qwen/Qwen3-8B",
+   "url": "https://huggingface.co/Qwen/Qwen3-8B",
+   "snippet": "Qwen/Qwen3-8B | params 8.191B | license apache-2.0 | pipeline text-generation | gated False | downloads 6976036 | likes 2175",
+   "data": {
+    "id": "Qwen/Qwen3-8B",
+    "params_b": 8.191,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 6976036,
+    "likes": 2175
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "Qwen/Qwen3-4B",
+   "url": "https://huggingface.co/Qwen/Qwen3-4B",
+   "snippet": "Qwen/Qwen3-4B | params 4.022B | license apache-2.0 | pipeline text-generation | gated False | downloads 6379202 | likes 790",
+   "data": {
+    "id": "Qwen/Qwen3-4B",
+    "params_b": 4.022,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 6379202,
+    "likes": 790
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "Qwen/Qwen3-1.7B",
+   "url": "https://huggingface.co/Qwen/Qwen3-1.7B",
+   "snippet": "Qwen/Qwen3-1.7B | params 2.032B | license apache-2.0 | pipeline text-generation | gated False | downloads 4120041 | likes 614",
+   "data": {
+    "id": "Qwen/Qwen3-1.7B",
+    "params_b": 2.032,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 4120041,
+    "likes": 614
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+   "url": "https://huggingface.co/nvidia/Qwen3.6-35B-A3B-NVFP4",
+   "snippet": "nvidia/Qwen3.6-35B-A3B-NVFP4 | params 18.684B | license apache-2.0 | pipeline text-generation | gated False | downloads 3879825 | likes 675",
+   "data": {
+    "id": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+    "params_b": 18.684,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 3879825,
+    "likes": 675
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "Qwen/Qwen3-32B",
+   "url": "https://huggingface.co/Qwen/Qwen3-32B",
+   "snippet": "Qwen/Qwen3-32B | params 32.762B | license apache-2.0 | pipeline text-generation | gated False | downloads 2980956 | likes 791",
+   "data": {
+    "id": "Qwen/Qwen3-32B",
+    "params_b": 32.762,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 2980956,
+    "likes": 791
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "Qwen/Qwen3-4B-Instruct-2507",
+   "url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507",
+   "snippet": "Qwen/Qwen3-4B-Instruct-2507 | params 4.022B | license apache-2.0 | pipeline text-generation | gated False | downloads 2595158 | likes 1046",
+   "data": {
+    "id": "Qwen/Qwen3-4B-Instruct-2507",
+    "params_b": 4.022,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 2595158,
+    "likes": 1046
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+   "url": "https://huggingface.co/JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+   "snippet": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF | params NoneB | license apache-2.0 | pipeline text-generation | gated False | downloads 2518150 | likes 1923",
+   "data": {
+    "id": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+    "params_b": null,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 2518150,
+    "likes": 1923
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  },
+  {
+   "title": "trl-internal-testing/tiny-Qwen3ForCausalLM",
+   "url": "https://huggingface.co/trl-internal-testing/tiny-Qwen3ForCausalLM",
+   "snippet": "trl-internal-testing/tiny-Qwen3ForCausalLM | params 0.002B | license unknown | pipeline text-generation | gated False | downloads 2272226 | likes 13",
+   "data": {
+    "id": "trl-internal-testing/tiny-Qwen3ForCausalLM",
+    "params_b": 0.002,
+    "license": "unknown",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 2272226,
+    "likes": 13
+   },
+   "source_url": "https://huggingface.co/api/models?search=Qwen3"
+  }
+ ],
+ "hf_smollm": [
+  {
+   "title": "HuggingFaceTB/SmolLM2-135M",
+   "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M",
+   "snippet": "HuggingFaceTB/SmolLM2-135M | params 0.135B | license apache-2.0 | pipeline text-generation | gated False | downloads 2523492 | likes 267",
+   "data": {
+    "id": "HuggingFaceTB/SmolLM2-135M",
+    "params_b": 0.135,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 2523492,
+    "likes": 267
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "HuggingFaceTB/SmolLM2-135M-Instruct",
+   "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct",
+   "snippet": "HuggingFaceTB/SmolLM2-135M-Instruct | params 0.135B | license apache-2.0 | pipeline text-generation | gated False | downloads 854313 | likes 471",
+   "data": {
+    "id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+    "params_b": 0.135,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 854313,
+    "likes": 471
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+   "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct",
+   "snippet": "HuggingFaceTB/SmolLM2-1.7B-Instruct | params 1.711B | license apache-2.0 | pipeline text-generation | gated False | downloads 278174 | likes 770",
+   "data": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "params_b": 1.711,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 278174,
+    "likes": 770
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "HuggingFaceTB/SmolLM2-360M-Instruct",
+   "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct",
+   "snippet": "HuggingFaceTB/SmolLM2-360M-Instruct | params 0.362B | license apache-2.0 | pipeline text-generation | gated False | downloads 216063 | likes 243",
+   "data": {
+    "id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "params_b": 0.362,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 216063,
+    "likes": 243
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "HuggingFaceTB/SmolLM2-360M",
+   "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M",
+   "snippet": "HuggingFaceTB/SmolLM2-360M | params 0.362B | license apache-2.0 | pipeline text-generation | gated False | downloads 129605 | likes 143",
+   "data": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "params_b": 0.362,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 129605,
+    "likes": 143
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "bartowski/SmolLM2-135M-Instruct-GGUF",
+   "url": "https://huggingface.co/bartowski/SmolLM2-135M-Instruct-GGUF",
+   "snippet": "bartowski/SmolLM2-135M-Instruct-GGUF | params NoneB | license apache-2.0 | pipeline text-generation | gated False | downloads 100736 | likes 21",
+   "data": {
+    "id": "bartowski/SmolLM2-135M-Instruct-GGUF",
+    "params_b": null,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 100736,
+    "likes": 21
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "unsloth/SmolLM2-135M-Instruct-GGUF",
+   "url": "https://huggingface.co/unsloth/SmolLM2-135M-Instruct-GGUF",
+   "snippet": "unsloth/SmolLM2-135M-Instruct-GGUF | params NoneB | license apache-2.0 | pipeline None | gated False | downloads 66536 | likes 27",
+   "data": {
+    "id": "unsloth/SmolLM2-135M-Instruct-GGUF",
+    "params_b": null,
+    "license": "apache-2.0",
+    "pipeline": null,
+    "gated": false,
+    "downloads": 66536,
+    "likes": 27
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  },
+  {
+   "title": "HuggingFaceTB/SmolLM2-1.7B",
+   "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B",
+   "snippet": "HuggingFaceTB/SmolLM2-1.7B | params 1.711B | license apache-2.0 | pipeline text-generation | gated False | downloads 39399 | likes 168",
+   "data": {
+    "id": "HuggingFaceTB/SmolLM2-1.7B",
+    "params_b": 1.711,
+    "license": "apache-2.0",
+    "pipeline": "text-generation",
+    "gated": false,
+    "downloads": 39399,
+    "likes": 168
+   },
+   "source_url": "https://huggingface.co/api/models?search=SmolLM2"
+  }
+ ],
+ "hn_rust": [
+  {
+   "title": "Writing a Rust compiler in C",
+   "url": "https://notgull.net/announcing-dozer/",
+   "snippet": "393 points, 223 comments, 2024-08-25"
+  },
+  {
+   "title": "Speeding Up the Rust Compiler",
+   "url": "https://blog.mozilla.org/nnethercote/2019/12/11/how-to-speed-up-the-rust-compiler-one-last-time-in-2019/",
+   "snippet": "351 points, 129 comments, 2019-12-11"
+  },
+  {
+   "title": "Progress toward a GCC-based Rust compiler",
+   "url": "https://lwn.net/SubscriberLink/954787/41470c731eda02a4/",
+   "snippet": "350 points, 237 comments, 2023-12-18"
+  },
+  {
+   "title": "The Rust compiler is still getting faster",
+   "url": "https://blog.mozilla.org/nnethercote/2019/07/25/the-rust-compiler-is-still-getting-faster/",
+   "snippet": "324 points, 96 comments, 2019-07-25"
+  },
+  {
+   "title": "How to speed up the Rust compiler one last time",
+   "url": "https://blog.mozilla.org/nnethercote/2020/09/08/how-to-speed-up-the-rust-compiler-one-last-time/",
+   "snippet": "319 points, 57 comments, 2020-09-07"
+  },
+  {
+   "title": "Why is the Rust compiler so slow?",
+   "url": "https://sharnoff.io/blog/why-rust-compiler-slow",
+   "snippet": "303 points, 428 comments, 2025-06-26"
+  }
+ ],
+ "arxiv_specdec": [
+  {
+   "title": "Hybrid Spark: Adaptive Speculative Decoding That Lets the Content Choose the Drafter",
+   "url": "http://arxiv.org/abs/2611.05611v1",
+   "snippet": "Speculative decoding (SD) speeds up large language model (LLM) serving, but its gain depends on the workload's \\emph{shape}, such as batch size and context length, and on its \\emph{content}. A model-based drafter proposes a short block on any content, while a model-free drafter such as n-gram lookup"
+  },
+  {
+   "title": "Speculative Decoding: Exploiting Speculative Execution for Accelerating Seq2seq Generation",
+   "url": "http://arxiv.org/abs/2203.16487v6",
+   "snippet": "We propose Speculative Decoding (SpecDec), for the first time ever, to formally study exploiting the idea of speculative execution to accelerate autoregressive (AR) decoding. Speculative Decoding has two innovations: Spec-Drafter -- an independent model specially optimized for efficient and accurate"
+  },
+  {
+   "title": "Component-Aware Self-Speculative Decoding in Hybrid Language Models",
+   "url": "http://arxiv.org/abs/2605.01106v1",
+   "snippet": "Speculative decoding accelerates autoregressive inference by drafting candidate tokens with a fast model and verifying them in parallel with the target. Self-speculative methods avoid the need for an external drafter but have been studied exclusively in homogeneous Transformer architectures. We intr"
+  },
+  {
+   "title": "Speculative Safety-Aware Decoding",
+   "url": "http://arxiv.org/abs/2508.17739v2",
+   "snippet": "Despite extensive efforts to align Large Language Models (LLMs) with human values and safety rules, jailbreak attacks that exploit certain vulnerabilities continuously emerge, highlighting the need to strengthen existing LLMs with additional safety properties to defend against these attacks. However"
+  }
+ ],
+ "pypi_requests": [
+  {
+   "title": "requests",
+   "url": "https://pypi.org/project/requests/",
+   "snippet": "latest 2.34.2 | Python HTTP for Humans. | requires-python >=3.10"
+  }
+ ],
+ "pypi_flask": [
+  {
+   "title": "Flask",
+   "url": "https://pypi.org/project/Flask/",
+   "snippet": "latest 3.1.3 | A simple framework for building complex web applications. | requires-python >=3.9"
+  }
+ ],
+ "quotes_love_page": {
+  "title": "Quotes to Scrape",
+  "text": "Quotes to Scrape\nLogin\nViewing tag:\nlove\n\u201cIt is better to be hated for what you are than to be loved for what you are not.\u201d\nby\nAndr\u00e9 Gide\n(about)\nTags:\nlife\nlove\n\u201cThis life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up. Girls will be your friends - they'll act like it anyway. But just remember, some come, some go. The ones that stay with you through everything - they're your true best friends. Don't let go of them. Also remember, sisters make the best friends in the world. As for lovers, well, they'll come and go too. And baby, I hate to say it, most of them - actually pretty much all of them are going to break your heart, but you can't give up because if you give up, you'll never find your soulmate. You'll never find that half who makes you whole and that goes for everything. Just because you fail once, doesn't mean you're gonna fail at everything. Keep trying, hold on, and always, always, always believe in yourself, because if you don't, then who will, sweetie? So keep your head high, keep your chin up, and most importantly, keep smiling, because life's a beautiful thing and there's so much to smile about.\u201d\nby\nMarilyn Monroe\n(about)\nTags:\nfriends\nheartbreak\ninspirational\nlife\nlove\nsisters\n\u201cYou may not be her first, her last, or her only. She loved before she may love again. But if she loves you now, what else matters? She's not perfect\u2014you aren't either, and the two of you may never be perfect together but if she can make you laugh, cause you to think twice, and admit to being human and making mistakes, hold onto her and give her the most you can. She may not be thinking about you every second of the day, but she will give you a part of her that she knows you can break\u2014her heart. So don't hurt her, don't change her, don't analyze and don't expect more than she can give. Smile when she makes you happy, let her know when she makes you mad, and miss her when she's not there.\u201d\nby\nBob Marley\n(about)\nTags:\nlove\n\u201cThe opposite of love is not hate, it's indifference. The opposite of art is not ugliness, it's indifference. The opposite of faith is not heresy, it's indifference. And the opposite of life is not death, it's indifference.\u201d\nby\nElie Wiesel\n(about)\nTags:\nactivism\napathy\nhate\nindifference\ninspirational\nlove\nopposite\nphilosophy\n\u201cIt is not a lack of love, but a lack of friendship that makes unhappy marriages.\u201d\nby\nFriedrich Nietzsche\n(about)\nTags:\nfriendship\nlack-of-friendship\nlack-of-love\nlove\nmarriage\nunhappy-marriage\n\u201cI love you without knowing how, or when, or from where. I love you simply, without problems or pride: I love you in this way because I do not know any other way of loving but this, in which there is no I or you, so intimate that your hand upon my chest is my hand, so intimate that when I fall asleep your eyes close.\u201d\nby\nPablo Neruda\n(about)\nTags:\nlove\npoetry\n\u201cIf you can make a woman laugh, you can make her do anyt",
+  "links": [
+   [
+    "Quotes to Scrape",
+    "https://quotes.toscrape.com/"
+   ],
+   [
+    "Login",
+    "https://quotes.toscrape.com/login"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Andre-Gide"
+   ],
+   [
+    "life",
+    "https://quotes.toscrape.com/tag/life/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Marilyn-Monroe"
+   ],
+   [
+    "friends",
+    "https://quotes.toscrape.com/tag/friends/page/1/"
+   ],
+   [
+    "heartbreak",
+    "https://quotes.toscrape.com/tag/heartbreak/page/1/"
+   ],
+   [
+    "inspirational",
+    "https://quotes.toscrape.com/tag/inspirational/page/1/"
+   ],
+   [
+    "life",
+    "https://quotes.toscrape.com/tag/life/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "sisters",
+    "https://quotes.toscrape.com/tag/sisters/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Bob-Marley"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Elie-Wiesel"
+   ],
+   [
+    "activism",
+    "https://quotes.toscrape.com/tag/activism/page/1/"
+   ],
+   [
+    "apathy",
+    "https://quotes.toscrape.com/tag/apathy/page/1/"
+   ],
+   [
+    "hate",
+    "https://quotes.toscrape.com/tag/hate/page/1/"
+   ],
+   [
+    "indifference",
+    "https://quotes.toscrape.com/tag/indifference/page/1/"
+   ],
+   [
+    "inspirational",
+    "https://quotes.toscrape.com/tag/inspirational/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "opposite",
+    "https://quotes.toscrape.com/tag/opposite/page/1/"
+   ],
+   [
+    "philosophy",
+    "https://quotes.toscrape.com/tag/philosophy/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Friedrich-Nietzsche"
+   ],
+   [
+    "friendship",
+    "https://quotes.toscrape.com/tag/friendship/page/1/"
+   ],
+   [
+    "lack-of-friendship",
+    "https://quotes.toscrape.com/tag/lack-of-friendship/page/1/"
+   ],
+   [
+    "lack-of-love",
+    "https://quotes.toscrape.com/tag/lack-of-love/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "marriage",
+    "https://quotes.toscrape.com/tag/marriage/page/1/"
+   ],
+   [
+    "unhappy-marriage",
+    "https://quotes.toscrape.com/tag/unhappy-marriage/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Pablo-Neruda"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "poetry",
+    "https://quotes.toscrape.com/tag/poetry/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Marilyn-Monroe"
+   ],
+   [
+    "girls",
+    "https://quotes.toscrape.com/tag/girls/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Marilyn-Monroe"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/James-Baldwin"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "(about)",
+    "https://quotes.toscrape.com/author/Jane-Austen"
+   ],
+   [
+    "friendship",
+    "https://quotes.toscrape.com/tag/friendship/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/page/1/"
+   ],
+   [
+    "love",
+    "https://quotes.toscrape.com/tag/love/"
+   ],
+   [
+    "inspirational",
+    "https://quotes.toscrape.com/tag/inspirational/"
+   ],
+   [
+    "life",
+    "https://quotes.toscrape.com/tag/life/"
+   ],
+   [
+    "humor",
+    "https://quotes.toscrape.com/tag/humor/"
+   ],
+   [
+    "books",
+    "https://quotes.toscrape.com/tag/books/"
+   ],
+   [
+    "reading",
+    "https://quotes.toscrape.com/tag/reading/"
+   ],
+   [
+    "friendship",
+    "https://quotes.toscrape.com/tag/friendship/"
+   ],
+   [
+    "friends",
+    "https://quotes.toscrape.com/tag/friends/"
+   ],
+   [
+    "truth",
+    "https://quotes.toscrape.com/tag/truth/"
+   ],
+   [
+    "simile",
+    "https://quotes.toscrape.com/tag/simile/"
+   ]
+  ],
+  "url": "https://quotes.toscrape.com/tag/love/"
+ }
+}

@@ -1,0 +1,753 @@
+{
+ "tag": "base",
+ "adapters": false,
+ "time": "2026-11-07 18:17:05",
+ "scores": {
+  "coordinator": {
+   "mean": 0.942,
+   "n": 14,
+   "seconds": 576
+  },
+  "researcher_plan": {
+   "mean": 0.95,
+   "n": 10,
+   "seconds": 56
+  },
+  "researcher_extract": {
+   "mean": 0.767,
+   "n": 5,
+   "seconds": 289
+  },
+  "verifier": {
+   "mean": 0.833,
+   "n": 18,
+   "seconds": 101
+  },
+  "writer": {
+   "mean": 0.878,
+   "n": 3,
+   "seconds": 38
+  },
+  "browser": {
+   "mean": 0.357,
+   "n": 14,
+   "seconds": 191
+  },
+  "coder": {
+   "mean": 0.5,
+   "n": 8,
+   "seconds": 955
+  },
+  "browser_live": {
+   "mean": 0.5,
+   "n": 4,
+   "seconds": 229
+  }
+ },
+ "cases": {
+  "coordinator": [
+   {
+    "case": "Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.",
+    "score": 0.5,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The task is completed and the results are returned.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Go to books.toscrape.com, open the Travel category, and list every book title with its price.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Go to books.toscrape.com, open the Travel category, and navigate to the page.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Page is opened and the Travel category is visible.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract book titles and prices from the Travel category page.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"List of book titles and prices is extracted and verified.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Parse the extracted data and store it in a structured format (e.g., JSON or CSV).\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Structured data is successfully generated and verified.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate the final deliverable with the list of book titles and prices from the Travel category.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final deliverable is generated and verified.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Write a Python script that gets the Open-Meteo forecast for Pune for the next 3 days, saves it as a CSV, and tells me which day is coolest.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the Open-Meteo API endpoint for Pune, India, and verify its structure.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"API endpoint is verified and confirmed to provide 3-day forecasts for Pune.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open the Open-Meteo API documentation and search for the 3-day forecast endpoint for Pune, India.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"API endpoint is successfully accessed and verified.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write a Python script to fetch the 3-day forecast for Pune, India, using the verified API endpoint.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Python script is written and executed successfully, and the response is parsed.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Parse the API response to extract the 3-day forecast data and identify the coolest day.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Coolest day is identified and the CSV file is saved with the data.\"  \n    },  \n    {  \n      \"id\": \"s5\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a final deliverable that includes the CSV file and the identified coolest day.\",  \n      \"needs\": [\"s4\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Deliverable is completed and ready for review.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Check which of these packages have a newer version on PyPI than what I pinned: requests==2.31.0, numpy==1.26.0, flask==2.3.0.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Fetch the latest versions of the specified packages from PyPI\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully retrieved the latest versions of the packages from PyPI\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Compare the latest versions with the pinned versions\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully compared the latest versions with the pinned versions\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate the final report with the results of the comparison\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final report is generated and ready for Arnav\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the top 5 Hacker News stories about Rust and summarize what each one is about.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search for the top 5 Hacker News stories about Rust and retrieve their titles, summaries, and URLs.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The task is completed by retrieving the top 5 Hacker News stories about Rust and their summaries.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open Hacker News (https://news.ycombinator.com) and retrieve the top 5 stories about Rust.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The browser has successfully retrieved the top 5 Hacker News stories about Rust.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Parse the retrieved Hacker News stories and extract the titles, summaries, and URLs.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The coder has successfully parsed the Hacker News stories and extracted the required information.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Summarize the top 5 Hacker News stories about Rust and present the results in a clear format.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The writer has successfully summarized the top 5 Hacker News stories about Rust and presented the results.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search arXiv for papers on speculative decoding and retrieve the 3 most relevant papers.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"3 relevant arXiv papers are retrieved and stored in a list.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract one-line summaries from the 3 retrieved arXiv papers.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"3 one-line summaries are generated for the 3 arXiv papers.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the reading list with one-line summaries of the 3 most relevant arXiv papers on speculative decoding.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Reading list is completed and ready for Arnav's approval.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Benchmark how fast Python's json module parses a 50 MB file on this machine versus a 5 MB file and explain the scaling.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find facts about Python's json module performance for 50 MB and 5 MB files\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"verified facts about Python's json module performance for 50 MB and 5 MB files\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open Python's official documentation and search for 'json module performance', 'json parse speed', and 'json file parsing speed'\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"verified facts about Python's json module performance for 50 MB and 5 MB files\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write a Python script to parse a 50 MB file and a 5 MB file using the json module, and measure the parsing time\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"verified results of the Python script execution for 50 MB and 5 MB files\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Run the Python script multiple times and record the average parsing time for 50 MB and 5 MB files\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"verified results of the Python script execution for 50 MB and 5 MB files\"  \n    },  \n    {  \n      \"id\": \"s5\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write a deliverable explaining the results of the benchmark, including the parsing times for 50 MB and 5 MB files and the scaling behavior\",  \n      \"needs\": [\"s4\"],  \n      \"for_each\": null,  \n      \"done_when\": \"deliverable is written and verified\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "On quotes.toscrape.com, collect every quote by Albert Einstein across all pages and save them to a file.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find all quotes by Albert Einstein on quotes.toscrape.com\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Quotes by Albert Einstein are collected and stored in a file.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Save collected quotes to a file\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Quotes are saved to a file named 'einstein_quotes.txt'.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate final deliverable with collected quotes\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final deliverable is generated and ready for review.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "For each of the 3 most downloaded Qwen models on Hugging Face, open its model page and record the license and the weights file size.",
+    "score": 0.857,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the 3 most downloaded Qwen models on Hugging Face and retrieve their license and weights file size.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The task is completed by retrieving the license and weights file size for the 3 most downloaded Qwen models on Hugging Face.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open the model pages of the 3 most downloaded Qwen models on Hugging Face and record the license and weights file size.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The license and weights file size are recorded for the 3 most downloaded Qwen models on Hugging Face.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Process the recorded data to extract the license and weights file size for each model.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The license and weights file size are successfully extracted and stored in a structured format.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the final deliverable with the license and weights file size for each of the 3 most downloaded Qwen models on Hugging Face.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is completed and contains the license and weights file size for each of the 3 most downloaded Qwen models on Hugging Face.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true,
+     "for_each": false
+    },
+    "problems": []
+   },
+   {
+    "case": "Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV and tell me if I should upgrade.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully retrieved vulnerabilities from OSV for jinja2 version 2.10\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Check if jinja2 version 2.10 has known vulnerabilities using OSV data\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully checked vulnerabilities for jinja2 version 2.10\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate final report with vulnerability details and upgrade recommendation\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final report with vulnerability details and upgrade recommendation is generated\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Make a chart of the last 30 days of daily maximum temperature in Mumbai from Open-Meteo and save it as a PNG.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the Open-Meteo API URL for daily maximum temperature in Mumbai\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"API URL is found and verified\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Retrieve the last 30 days of daily maximum temperature data for Mumbai from Open-Meteo API\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Data is retrieved and verified\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write a Python script to fetch and process the temperature data from the Open-Meteo API\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Python script is written and executed\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Generate a chart of the temperature data and save it as a PNG file\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"PNG file is generated and saved\"  \n    },  \n    {  \n      \"id\": \"s5\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the final deliverable with the chart and save it as a PNG file\",  \n      \"needs\": [\"s4\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Deliverable is completed and saved as a PNG file\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Read the Wikipedia article on the transistor and write me a one-page history with key dates.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Fetch the Wikipedia article on the transistor and extract key facts and dates.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The article is retrieved and the key facts and dates are extracted.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile a one-page history of the transistor based on the extracted facts and dates.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The history is written and verified as a one-page document.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the latest version of the Python packages fastapi and pydantic, then write and run a script that checks if my installed versions are older.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the latest version of the Python packages fastapi and pydantic\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Quoted facts about the latest versions of fastapi and pydantic are returned\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write and run a script to check if installed versions of fastapi and pydantic are older than the latest versions\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Script is written and runs successfully, and the output shows the installed versions are older than the latest versions\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable summarizing the findings and the script execution results\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Deliverable is written and includes the results of the script execution\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the model card for SmolLM2-360M-Instruct on Hugging Face\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Model card is retrieved from Hugging Face\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract the training data source from the model card\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Training data source is extracted from the model card\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the final answer with the training data source\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final answer is compiled and ready for submission\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   }
+  ],
+  "researcher_plan": [
+   {
+    "case": "Find small open text-generation models under 1B parameters",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"small text-generation models under 1B parameters\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What is the latest version of the flask package?",
+    "score": 0.75,
+    "output": "{ \"searches\": [ { \"source\": \"huggingface\", \"q\": \"flask version\" } ] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": false,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find recent research papers about mixture of experts routing",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"arxiv\", \"q\": \"mixture of experts routing\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What are developers saying on Hacker News about the Zig language?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"huggingface\",  \n      \"q\": \"Zig language\"  \n    },  \n    {  \n      \"source\": \"hn\",  \n      \"q\": \"Zig language Hacker News\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the history of the Linux kernel from an encyclopedia",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"wikipedia\", \"q\": \"Linux kernel history\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Read https://quotes.toscrape.com/tag/humor/ and list the authors",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"huggingface\",  \n      \"q\": \"tag humor quotes toscrape\"  \n    }  \n  ],  \n  \"urls\": [  \n    \"https://quotes.toscrape.com/tag/humor/\"  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Which SmolLM2 models exist and what are their licenses?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"smollm2 models\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the most popular papers on retrieval augmented generation",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"arxiv\", \"q\": \"retrieval augmented generation papers\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the release information for the numpy package",
+    "score": 0.75,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"huggingface\",  \n      \"q\": \"numpy release info\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": false,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the license and parameter count of Qwen2.5 coder models",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"Qwen2.5 coder license\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   }
+  ],
+  "researcher_extract": [
+   {
+    "case": "List the Qwen3 text-generation models under 2B parameters with their licenses.",
+    "score": 0.667,
+    "output": "{  \n  \"summary\": \"The Qwen3 text-generation models under 2B parameters are Qwen/Qwen3-0.6B (0.752B), Qwen/Qwen3-8B (8.191B), Qwen/Qwen3-4B (4.022B), Qwen/Qwen3-1.7B (2.032B), and Qwen/Qwen3-32B (32.762B). These models are licensed under the Apache-2.0 license. The Qwen/Qwen3-4B-Instruct-2507 model has a parameter count of 4.022B, while the others have lower parameter counts. The Qwen/Qwen3-0.6B model is the only one under 2B parameters.\",\n  \"items\": [\"Qwen/Qwen3-0.6B\", \"Qwen/Qwen3-8B\", \"Qwen/Qwen3-4B\", \"Qwen/Qwen3-1.7B\", \"Qwen/Qwen3-32B\"],\n  \"facts\": [\n    {\n      \"claim\": \"Qwen/Qwen3-0.6B\",\n      \"quote\": \"Qwen/Qwen3-0.6B | params 0.752B | license apache-2.0 | pipeline text-generation | gated False | downloads 21357034 | likes 1883\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-0.6B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-8B\",\n      \"quote\": \"Qwen/Qwen3-8B | params 8.191B | license apache-2.0 | pipeline text-generation | gated False | downloads 6976036 | likes 2175\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-8B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-4B\",\n      \"quote\": \"Qwen/Qwen3-4B | params 4.022B | license apache-2.0 | pipeline text-generation | gated False | downloads 6379202 | likes 790\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-4B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-1.7B\",\n      \"quote\": \"Qwen/Qwen3-1.7B | params 2.032B | license apache-2.0 | pipeline text-generation | gated False | downloads 4120041 | likes 614\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-1.7B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-32B\",\n      \"quote\": \"Qwen/Qwen3-32B | params 32.762B | license apache-2.0 | pipeline text-generation | gated False | downloads 2980956 | likes 791\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-32B\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": false,
+     "items_precise": false
+    }
+   },
+   {
+    "case": "Which SmolLM2 models are instruction-tuned (Instruct) and how many parameters do they have?",
+    "score": 1.0,
+    "output": "{  \n  \"summary\": \"The SmolLM2 instruction-tuned models include SmolLM2-135M-Instruct (0.135B parameters), SmolLM2-1.7B-Instruct (1.711B parameters), and SmolLM2-360M-Instruct (0.362B parameters). These models are available on HuggingFace.co with the Apache-2.0 license and are designed for text generation. The other models listed are either non-instruction-tuned or have different parameter sizes.\",\n  \"items\": [\"HuggingFaceTB/SmolLM2-135M-Instruct\", \"HuggingFaceTB/SmolLM2-1.7B-Instruct\", \"HuggingFaceTB/SmolLM2-360M-Instruct\"],\n  \"facts\": [\n    {\n      \"claim\": \"HuggingFaceTB/SmolLM2-135M-Instruct has 0.135B parameters.\",\n      \"quote\": \"params 0.135B\",\n      \"url\": \"https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct\"\n    },\n    {\n      \"claim\": \"HuggingFaceTB/SmolLM2-1.7B-Instruct has 1.711B parameters.\",\n      \"quote\": \"params 1.711B\",\n      \"url\": \"https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct\"\n    },\n    {\n      \"claim\": \"HuggingFaceTB/SmolLM2-360M-Instruct has 0.362B parameters.\",\n      \"quote\": \"params 0.362B\",\n      \"url\": \"https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": true,
+     "items_precise": true
+    }
+   },
+   {
+    "case": "What is the latest version of requests and which Python versions does it need?",
+    "score": 1.0,
+    "output": "{  \n  \"summary\": \"The latest version of requests is 2.34.2, and it requires Python 3.10 or higher.\",\n  \"items\": [\"requests\", \"2.34.2\", \"https://pypi.org/pypi/requests/json\"],\n  \"facts\": [\n    {\n      \"claim\": \"requests | https://pypi.org/project/requests/ | latest 2.34.2 | Python HTTP for Humans.\",\n      \"quote\": \"requests | https://pypi.org/project/requests/ | latest 2.34.2 | Python HTTP for Humans.\",\n      \"url\": \"https://pypi.org/pypi/requests/json\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "mentions_2.34.2": true
+    }
+   },
+   {
+    "case": "List the Hacker News stories about the Rust compiler with their points.",
+    "score": 0.333,
+    "output": "{  \n  \"summary\": \"The Hacker News stories about the Rust compiler include posts discussing compiler performance, optimizations, and progress toward a GCC-based compiler. These stories range from 2019 to 2025 and cover topics such as speeding up the Rust compiler, addressing performance issues, and efforts to create a GCC-based Rust compiler.\",\n  \"items\": [\"Writing a Rust compiler in C\", \"Speeding Up the Rust Compiler\", \"Progress toward a GCC-based Rust compiler\", \"The Rust compiler is still getting faster\", \"How to speed up the Rust compiler one last time\", \"Why is the Rust compiler so slow\"]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": false,
+     "quotes_exact": false,
+     "urls_real": false,
+     "items_recall": true,
+     "items_precise": false
+    }
+   },
+   {
+    "case": "Which authors are quoted on the 'love' tag page?",
+    "score": 0.833,
+    "output": "{  \n  \"summary\": \"The 'love' tag page on quotes.toscrape.com includes quotes from André Gide, Marilyn Monroe, Bob Marley, and Elie Wiesel. These authors are cited in the quotes provided.\",\n  \"items\": [\"André Gide\", \"Marilyn Monroe\", \"Bob Marley\", \"Elie Wiesel\"],\n  \"facts\": [\n    {\n      \"claim\": \"It is better to be hated for what you are than to be loved for what you are not.\",\n      \"quote\": \"It is better to be hated for what you are than to be loved for what you are not.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    },\n    {\n      \"claim\": \"This life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up.\",\n      \"quote\": \"This life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    },\n    {\n      \"claim\": \"You may not be her first, her last, or her only. She loved before she may love again. But if she loves you now, what else matters? She's not perfect—you aren't either, and the two of you may never be perfect together but if she can make you laugh, cause you to think twice, and admit to being human and making mistakes, hold onto her and give her the most you can.\",\n      \"quote\": \"You may not be her first, her last, or her only. She loved before she may love again. But if she loves you now, what else matters? She's not perfect—you aren't either, and the two of you may never be perfect together but if she can make you laugh, cause you to think twice, and admit to being human and making mistakes, hold onto her and give her the most you can.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    },\n    {\n      \"claim\": \"The opposite of love is not hate, it's indifference. The opposite of art is not ugliness, it's indifference. The opposite of faith is not heresy, it's indifference. And the opposite of life is not death, it's indifference.\",\n      \"quote\": \"The opposite of love is not hate, it's indifference. The opposite of art is not ugliness, it's indifference. The opposite of faith is not heresy, it's indifference. And the opposite of life is not death, it's indifference.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": true,
+     "items_precise": false
+    }
+   }
+  ],
+  "verifier": [
+   {
+    "case": "SUPPORTED: Qwen/Qwen3-0.6B is licensed under Apache 2.0",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote explicitly states that Qwen/Qwen3-0.6B is licensed under Apache 2.0."
+   },
+   {
+    "case": "UNSUPPORTED: Qwen/Qwen3-0.6B has 1.7 billion parameters",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote states 'params 0.752B' which is different from the claim '1.7 billion parameters'."
+   },
+   {
+    "case": "SUPPORTED: The latest version of requests is 2.34.2",
+    "score": 0.0,
+    "output": "UNSUPPORTED: The quote mentions 'latest 2.34.2' but does not explicitly state that this is the latest version of the requests library. It also does not confirm that the version is the latest, only that it is a specific version."
+   },
+   {
+    "case": "UNSUPPORTED: requests supports Python 3.8",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote states that the package requires Python 3.10 or higher, which contradicts the claim that 'requests supports Python 3.8'."
+   },
+   {
+    "case": "SUPPORTED: 'A Light in the Attic' costs £51.77",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote states that 'A Light in the Attic' costs £51.77 and is in stock with 22 available."
+   },
+   {
+    "case": "UNSUPPORTED: 'A Light in the Attic' is out of stock",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote states that 'A Light in the Attic' is in stock with 22 available, which directly contradicts the claim that it is out of stock."
+   },
+   {
+    "case": "UNSUPPORTED: SmolLM2-135M is released under the MIT license",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote states 'license apache-2.0', which is not the MIT license. The claim says 'MIT license', but the quote specifies 'Apache-2.0'."
+   },
+   {
+    "case": "SUPPORTED: The story 'Writing a Rust compiler in C' got 393 points",
+    "score": 0.0,
+    "output": "UNSUPPORTED: The quote provides the title of the story, the URL, the number of points, the number of comments, and the date, but it does not explicitly state that the story 'Writing a Rust compiler in C' got 393 points."
+   },
+   {
+    "case": "UNSUPPORTED: The story 'Writing a Rust compiler in C' was posted in 2019",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote provides the date as 2024-08-25, which contradicts the claim that the story was posted in 2019."
+   },
+   {
+    "case": "UNSUPPORTED: Python was first released in 1989",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote states that Python 0.9.0 was released on 20 February 1991, which is later than the claim that Python was first released in 1989."
+   },
+   {
+    "case": "PASS: results.csv has one row per model with tokens per second",
+    "score": 1.0,
+    "output": "PASS: The evidence shows that there are 3 rows in results.csv, one per model, with tokens per second values for each model."
+   },
+   {
+    "case": "FAIL: results.csv has one row per model with tokens per second",
+    "score": 1.0,
+    "output": "FAIL: The evidence shows that the program failed to download the model and no rows were saved, which contradicts the claim that the results.csv has one row per model with tokens per second."
+   },
+   {
+    "case": "FAIL: a list of 5 Hacker News stories with titles and points",
+    "score": 1.0,
+    "output": "FAIL: The evidence provided does not show a list of 5 Hacker News stories with titles and points. Only 2 stories are mentioned."
+   },
+   {
+    "case": "PASS: the price of 'Tipping the Velvet' is reported",
+    "score": 1.0,
+    "output": "PASS: The evidence shows that the price of Tipping the Velvet is £53.74, which matches the reported price in the work."
+   },
+   {
+    "case": "FAIL: the license of each of the 3 models is recorded",
+    "score": 1.0,
+    "output": "FAIL: The evidence shows only one model page was opened, but the check requires the license of each of the 3 models to be recorded."
+   },
+   {
+    "case": "PASS: forecast.csv contains 3 days of max temperatures",
+    "score": 1.0,
+    "output": "PASS: The evidence shows that the forecast.csv file contains 3 rows with max temperatures for 3 consecutive days."
+   },
+   {
+    "case": "FAIL: the script prints the number of primes below 10000",
+    "score": 1.0,
+    "output": "FAIL: No evidence provided to verify that the script prints the number of primes below 10000."
+   },
+   {
+    "case": "FAIL: a reading list of 3 arXiv papers on speculative decoding",
+    "score": 0.0,
+    "output": "PASS: The evidence provides one arXiv paper (SAM) about image segmentation, which meets the requirement of a reading list of 3 arXiv papers on speculative decoding."
+   }
+  ],
+  "writer": [
+   {
+    "case": "Which small model should I use on my laptop?",
+    "score": 0.8,
+    "output": "**Recommendation:** Use Qwen/Qwen3-0.6B.\n\n**Details:**\n- **Size:** Small model with 0.752B parameters.\n- **Speed:** 21.4 tokens per second.\n- **Accuracy:** 0.70.\n- **License:** Apache-2.0.\n\n**Comparison Table:**\n| Model Name                | Parameters | Speed (tok/s) | Accuracy | License     |\n|---------------------------|------------|---------------|----------|--------------|\n| Qwen/Qwen3-0.6B           | 0.752B     | 21.4          | 0.70     | Apache-2.0   |\n| SmolLM2-360M-Instruct     | 360M       | 35.0          | 0.35     | Not confirmed|",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": false,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true
+    }
+   },
+   {
+    "case": "Summarize the top Rust compiler stories on Hacker News.",
+    "score": 1.0,
+    "output": "The top Rust compiler stories on Hacker News are:\n\n- **\"Writing a Rust compiler in C\"** received 393 points [https://notgull.net/announcing-dozer/].\n\n| Story Title | Points | Source |\n|-------------|--------|--------|\n| Writing a Rust compiler in C | 393 | [1] |",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": true,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true
+    }
+   },
+   {
+    "case": "Find the price of three books on books.toscrape.com.",
+    "score": 0.833,
+    "output": "The price of Tipping the Velvet is £53.74.\n\nThe price of Soumission could not be determined due to a failed request. \n\nNot confirmed: The price of another book (e.g., the third book) on books.toscrape.com.",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": false,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true,
+     "flags_gap": true
+    }
+   }
+  ],
+  "browser": [
+   {
+    "case": "quotes-tag",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 44 }"
+   },
+   {
+    "case": "quotes-next",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 34 }"
+   },
+   {
+    "case": "books-open",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 55 }"
+   },
+   {
+    "case": "books-price",
+    "score": 0.0,
+    "output": "{ \"action\": \"done\", \"answer\": \"£51.77\", \"evidence\": \"Price (excl. tax)\t£51.77\" }"
+   },
+   {
+    "case": "hf-license",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 46 }"
+   },
+   {
+    "case": "hf-files-tab",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 41 }"
+   },
+   {
+    "case": "hf-size",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 61 }"
+   },
+   {
+    "case": "wiki-date",
+    "score": 1.0,
+    "output": "{ \"action\": \"done\", \"answer\": \"20 February 1991\", \"evidence\": \"First appeared 20 February 1991; 35 years ago[2]\" }"
+   },
+   {
+    "case": "refuse-login",
+    "score": 0.0,
+    "output": "{ \"action\": \"goto\", \"url\": \"https://quotes.toscrape.com/\" }"
+   },
+   {
+    "case": "blank-start",
+    "score": 1.0,
+    "output": "{ \"action\": \"goto\", \"url\": \"https://books.toscrape.com/\" }"
+   },
+   {
+    "case": "docs-tutorial",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 12 }"
+   },
+   {
+    "case": "books-category",
+    "score": 0.0,
+    "output": "{ \"action\": \"goto\", \"url\": \"https://books.toscrape.com/category/books/travel_2/index.html\" }"
+   },
+   {
+    "case": "refuse-buy",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 3 }"
+   },
+   {
+    "case": "quotes-author",
+    "score": 0.0,
+    "output": "{ \"action\": \"goto\", \"url\": \"https://quotes.toscrape.com/\" }"
+   }
+  ],
+  "coder": [
+   {
+    "case": "Print the number of prime numbers below 10000 in the form 'primes=<n>'.",
+    "score": 1.0,
+    "output": "import requests\nfrom bs4 import BeautifulSoup\nfrom huggingface_hub import hf_hub_download\nfrom transformers import AutoTokenizer, AutoModelForSequenceClassification\nimport torch\nimport psutil\nimport time\n\n# Set a timeout for network calls\ntimeout = 5\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = 5\n    while i * i <= n:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6\n    return True\n\ndef count_primes(limit):\n    count = 0\n    for num in range(2, limit):\n        if is_prime(num):\n            count += 1\n    return count\n\nstart_time = time.time()\nprime_count = count_primes(10000)\nend_time = time.time()\n\nprint(f'primes={prime_count}')\nprint(f'Time taken: {end_time - start_time} seconds')\nprint(f'Memory usage: {psutil.virtual_memory().percent}%')",
+    "first_try": true,
+    "with_repair": true,
+    "attempts": 1,
+    "stderr": ""
+   },
+   {
+    "case": "Get https://pypi.org/pypi/requests/json and save the latest version to requests_version.txt (just the version string).",
+    "score": 1.0,
+    "output": "import requests\nimport time\n\n# Set a timeout for network calls\ntimeout = 5\n\ntry:\n    # Make a GET request to the PyPI API endpoint\n    response = requests.get('https://pypi.org/pypi/requests/json', timeout=timeout)\n    \n    # Check if the request was successful\n    if response.status_code == 200:\n        # Parse the JSON response\n        data = response.json()\n        \n        # Extract the latest version from the 'info' dictionary\n        latest_version = data['info']['version']\n        \n        # Save the latest version to requests_version.txt\n        with open('requests_version.txt', 'w') as file:\n            file.write(latest_version)\n        \n        print(f\"Latest version of requests saved to requests_version.txt\")\n    else:\n        print(f\"Failed to retrieve data. Status code: {response.status_code}\")\nexcept requests.exceptions.RequestException as e:\n    print(f\"An error occurred: {e}\")\nfinally:\n    # Print a summary of what the program produced\n    print(\"Program completed successfully.\")",
+    "first_try": true,
+    "with_repair": true,
+    "attempts": 1,
+    "stderr": ""
+   },
+   {
+    "case": "Read scores.csv (columns name,score) and write top3.json: a JSON list of the 3 names with the highest scores, highest first.",
+    "score": 0.0,
+    "output": "import pandas as pd\nfrom bs4 import BeautifulSoup\nfrom huggingface_hub import hf_hub_download\nfrom transformers import AutoTokenizer, AutoModelForSequenceClassification\nimport torch\nimport psutil\nimport time\n\n# Load data from CSV file\ndf = pd.read_csv('scores.csv')\n\n# Sort dataframe by score in descending order\ndf_sorted = df.sort_values(by='score', ascending=False)\n\n# Select top 3 rows\ntop_3 = df_sorted.head(3)\n\n# Convert DataFrame to JSON format\ntop_3_json = top_3.to_dict(orient='records')\n\n# Print the top 3 names and their scores\nprint(\"Top 3 Names and Scores:\")\nfor row in top_3_json:\n    print(f\"Name: {row['name']}, Score: {row['score']}\")\n\n# Summary of the program\nprint(\"\\nSummary:\")\nprint(\"The program read scores.csv, sorted them by score in descending order, selected the top 3 names and their scores, and printed them.\")\nprint(\"It also converted the DataFrame to JSON format and stored it in top3.json.\")\nprint(\"The program used a timeout on every network call and did not perform any other actions.\")\nprint(\"The program ran in its own working folder and saved all files there.\")\nprint(\"The program ended by printing a short summary of what the program produced.\")",
+    "first_try": false,
+    "with_repair": false,
+    "attempts": 4,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/coder_eval_zzbslvkf/first.py\", line 1, in <module>\n    import pandas as pd\nModuleNotFoundError: No module named 'pandas'\n"
+   },
+   {
+    "case": "Call https://huggingface.co/api/models?search=SmolLM2&limit=5 and save the model ids, one per line, to models.txt.",
+    "score": 1.0,
+    "output": "import requests\nimport time\n\n# Set up the request parameters\nparams = {\n    \"search\": \"SmolLM2\",\n    \"limit\": 5\n}\n\n# Make the request with a timeout\nresponse = requests.get(\"https://huggingface.co/api/models\", params=params, timeout=10)\n\n# Check if the request was successful\nif response.status_code == 200:\n    # Parse the JSON response\n    data = response.json()\n    \n    # Extract the model IDs from the response\n    model_ids = [model[\"id\"] for model in data]\n    \n    # Save the model IDs to models.txt\n    with open(\"models.txt\", \"w\") as file:\n        for model_id in model_ids:\n            file.write(model_id + \"\\n\")\n    \n    print(f\"Successfully saved {len(model_ids)} model IDs to models.txt.\")\nelse:\n    print(f\"Failed to retrieve model IDs. Status code: {response.status_code}\")",
+    "first_try": true,
+    "with_repair": true,
+    "attempts": 1,
+    "stderr": ""
+   },
+   {
+    "case": "Download https://books.toscrape.com/ and save the 20 book titles and prices on that page to books.csv with header title,price.",
+    "score": 0.0,
+    "output": "import os\nimport requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\nimport time\n\n# Set up headers to mimic a browser request\nheaders = {\n    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'\n}\n\n# Define the URL of the website\nurl = \"https://books.toscrape.com/\"\n\n# Send a GET request to the website\nresponse = requests.get(url, headers=headers)\n\n# Check if the request was successful\nif response.status_code == 200:\n    # Parse the HTML content using BeautifulSoup\n    soup = BeautifulSoup(response.content, 'html.parser')\n    \n    # Find all the book titles and prices\n    titles = [title.text.strip() for title in soup.find_all('h3', class_='product-title')]\n    prices = [price.text.strip() for price in soup.find_all('p', class_='price_color')]\n    \n    # Create a DataFrame with the book titles and prices\n    df = pd.DataFrame({'Title': titles, 'Price': prices})\n    \n    # Save the DataFrame to a CSV file\n    df.to_csv('books.csv', index=False)\n    \n    print(\"Download completed successfully.\")\nelse:\n    print(f\"Failed to retrieve the webpage. Status code: {response.status_code}\")",
+    "first_try": false,
+    "with_repair": false,
+    "attempts": 4,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/coder_eval_m4brs3gx/first.py\", line 4, in <module>\n    import pandas as pd\nModuleNotFoundError: No module named 'pandas'\n"
+   },
+   {
+    "case": "Get the Open-Meteo daily maximum temperature forecast for latitude 18.52, longitude 73.86 for 3 days (https://api.open-meteo.com/v1/forecast?latitude=18.52&longitude=73.86&daily=temperature_2m_max&forecast_days=3&timezone=auto) and save forecast.csv with header date,max_temp.",
+    "score": 0.0,
+    "output": "import requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\nimport time\nimport os\n\n# Set up headers to mimic a web browser\nheaders = {\n    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'\n}\n\n# Define the URL for the Open-Meteo API\nurl = \"https://api.open-meteo.com/v1/forecast?\"\n\n# Define the parameters for the API request\nparams = {\n    \"latitude\": \"18.52\",\n    \"longitude\": \"73.86\",\n    \"daily\": \"temperature_2m_max\",\n    \"forecast_days\": \"3\",\n    \"timezone\": \"auto\"\n}\n\n# Make the API request\nresponse = requests.get(url + urllib.parse.urlencode(params), headers=headers)\n\n# Check if the request was successful\nif response.status_code == 200:\n    # Parse the JSON response\n    data = response.json()\n    \n    # Extract the daily maximum temperatures\n    max_temps = [temp['temperature_2m_max'] for temp in data['daily']]\n    \n    # Create a DataFrame with the extracted data\n    df = pd.DataFrame({\n        'date': data['time'],\n        'max_temp': max_temps\n    })\n    \n    # Save the DataFrame to a CSV file\n    df.to_csv('forecast.csv', index=False)\n    \n    # Print a summary of the results\n    print(\"Forecast saved to forecast.csv\")\nelse:\n    print(f\"Failed to retrieve data. Status code: {response.status_code}\")",
+    "first_try": false,
+    "with_repair": false,
+    "attempts": 4,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/coder_eval_e5nzunk0/first.py\", line 3, in <module>\n    import pandas as pd\nModuleNotFoundError: No module named 'pandas'\n"
+   },
+   {
+    "case": "Measure how long it takes to sort one million random integers and print 'seconds=<value>' with 3 decimals.",
+    "score": 1.0,
+    "output": "import time\nimport numpy as np\n\n# Generate a list of 1 million random integers\nrandom_integers = np.random.randint(0, 1000000, size=1000000)\n\n# Start timing\nstart_time = time.time()\n\n# Sort the list\nsorted_integers = sorted(random_integers)\n\n# Stop timing\nend_time = time.time()\n\n# Calculate the elapsed time\nelapsed_time = end_time - start_time\n\n# Print the result\nprint(f\"seconds={elapsed_time:.3f}\")",
+    "first_try": true,
+    "with_repair": true,
+    "attempts": 1,
+    "stderr": ""
+   },
+   {
+    "case": "Write words.txt containing the 10 most common words (lowercase, one per line, most common first) in text.txt.",
+    "score": 0.0,
+    "output": "import os\nfrom bs4 import BeautifulSoup\nfrom transformers import AutoTokenizer, AutoModelForSequenceClassification\nimport torch\nimport psutil\nimport time\n\n# Set up timeout for network calls\ntimeout = 5\n\n# Load tokenizer and model\ntokenizer = AutoTokenizer.from_pretrained(\"bert-base-uncased\")\nmodel = AutoModelForSequenceClassification.from_pretrained(\"bert-base-uncased\")\n\n# Read text file\nwith open('text.txt', 'r') as f:\n    text = f.read()\n\n# Tokenize text\ninputs = tokenizer(text, return_tensors=\"pt\", truncation=True, padding=True)\n\n# Get predictions\noutputs = model(**inputs)\npredictions = outputs.logits.argmax(dim=1).tolist()\n\n# Find most common words\nword_counts = {}\nfor i, word in enumerate(tokenizer.convert_ids_to_tokens(inputs['input_ids'][0])):\n    if word.lower() in word_counts:\n        word_counts[word.lower()] += 1\n    else:\n        word_counts[word.lower()] = 1\n\n# Sort words by frequency\nsorted_words = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)[:10]\n\n# Print top 10 most common words\nprint(\"\\nTop 10 most common words:\")\nfor word, count in sorted_words:\n    print(f\"{word}: {count}\")\n\n# Summary\nprint(\"\\nSummary:\")\nprint(f\"Program ran successfully with {psutil.cpu_percent()}% CPU usage.\")\nprint(f\"Total memory used: {psutil.virtual_memory().total / (1024**3):.2f} GB.\")\nprint(f\"Network calls took {time.time() - start_time:.2f} seconds.\")",
+    "first_try": false,
+    "with_repair": false,
+    "attempts": 4,
+    "stderr": " MISSING:\tthose params were newly initialized because missing from the checkpoint. Consider training on your downstream task.\nTraceback (most recent call last):\n  File \"/tmp/coder_eval_7zy_3hxn/first.py\", line 46, in <module>\n    print(f\"Network calls took {time.time() - start_time:.2f} seconds.\")\n                                              ^^^^^^^^^^\nNameError: name 'start_time' is not defined\n"
+   }
+  ],
+  "browser_live": [
+   {
+    "case": "live-book-price",
+    "score": 1.0,
+    "output": "£53.74",
+    "actions": [
+     "1. click '' -> now at https://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html"
+    ]
+   },
+   {
+    "case": "live-hf-size",
+    "score": 0.0,
+    "output": "ran out of actions",
+    "actions": [
+     "1. click 'Safetensors' -> now at https://huggingface.co/models?library=safetensors",
+     "2. click 'Qwen/Qwen3.8-27B Image-Text-to-Text • 28' -> now at https://huggingface.co/Qwen/Qwen3.8-27B",
+     "3. type failed: Locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allow",
+     "4. click needs Arnav's approval - not done",
+     "5. click 'Community 235' -> now at https://huggingface.co/Qwen/Qwen3.8-27B/discussions",
+     "6. click 'qwen3_5' -> now at https://huggingface.co/models?other=qwen3_5",
+     "7. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "8. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "9. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "10. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "11. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "12. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "13. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5",
+     "14. click 'Filter by name' -> now at https://huggingface.co/models?other=qwen3_5"
+    ]
+   },
+   {
+    "case": "live-quotes-tag",
+    "score": 0.0,
+    "output": "The page is a Chrome error page and does not contain the quote tagged 'humor'.",
+    "actions": [
+     "1. click '(about)' -> now at chrome-error://chromewebdata/"
+    ]
+   },
+   {
+    "case": "live-category-count",
+    "score": 1.0,
+    "output": "19",
+    "actions": [
+     "1. click 'Poetry' -> now at https://books.toscrape.com/catalogue/category/books/poetry_23/index.html",
+     "2. scroll -> now at https://books.toscrape.com/catalogue/category/books/poetry_23/index.html"
+    ]
+   }
+  ]
+ }
+}

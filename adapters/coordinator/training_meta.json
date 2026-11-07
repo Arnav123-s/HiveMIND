@@ -1,0 +1,189 @@
+{
+ "specialist": "coordinator",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 38,
+ "files": [
+  "/home/user/agent-team/training/data/coordinator.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 16,
+ "alpha": 32,
+ "epochs": 3.0,
+ "lr": 0.0002,
+ "steps": 29,
+ "seconds": 450,
+ "loss_first": 2.6949,
+ "loss_last": 0.303,
+ "time": "2026-11-07 19:05:33",
+ "log": [
+  {
+   "step": 1,
+   "loss": 2.6949,
+   "sec": 16
+  },
+  {
+   "step": 2,
+   "loss": 2.3183,
+   "sec": 33
+  },
+  {
+   "step": 3,
+   "loss": 1.8706,
+   "sec": 49
+  },
+  {
+   "step": 4,
+   "loss": 1.343,
+   "sec": 65
+  },
+  {
+   "step": 5,
+   "loss": 1.1655,
+   "sec": 82
+  },
+  {
+   "step": 6,
+   "loss": 0.9537,
+   "sec": 99
+  },
+  {
+   "step": 7,
+   "loss": 0.8447,
+   "sec": 116
+  },
+  {
+   "step": 8,
+   "loss": 1.0109,
+   "sec": 132
+  },
+  {
+   "step": 9,
+   "loss": 1.1113,
+   "sec": 147
+  },
+  {
+   "step": 10,
+   "loss": 0.795,
+   "sec": 164
+  },
+  {
+   "step": 11,
+   "loss": 0.8025,
+   "sec": 180
+  },
+  {
+   "step": 12,
+   "loss": 0.9321,
+   "sec": 194
+  },
+  {
+   "step": 13,
+   "loss": 0.6642,
+   "sec": 210
+  },
+  {
+   "step": 14,
+   "loss": 0.7057,
+   "sec": 227
+  },
+  {
+   "step": 15,
+   "loss": 0.9667,
+   "sec": 241
+  },
+  {
+   "step": 16,
+   "loss": 0.7935,
+   "sec": 258
+  },
+  {
+   "step": 17,
+   "loss": 0.8175,
+   "sec": 274
+  },
+  {
+   "step": 18,
+   "loss": 0.8715,
+   "sec": 289
+  },
+  {
+   "step": 19,
+   "loss": 0.8709,
+   "sec": 303
+  },
+  {
+   "step": 20,
+   "loss": 0.6055,
+   "sec": 318
+  },
+  {
+   "step": 21,
+   "loss": 0.7785,
+   "sec": 332
+  },
+  {
+   "step": 22,
+   "loss": 0.8039,
+   "sec": 348
+  },
+  {
+   "step": 23,
+   "loss": 0.7908,
+   "sec": 363
+  },
+  {
+   "step": 24,
+   "loss": 0.7085,
+   "sec": 379
+  },
+  {
+   "step": 25,
+   "loss": 0.6444,
+   "sec": 393
+  },
+  {
+   "step": 26,
+   "loss": 0.8005,
+   "sec": 409
+  },
+  {
+   "step": 27,
+   "loss": 0.664,
+   "sec": 426
+  },
+  {
+   "step": 28,
+   "loss": 0.675,
+   "sec": 441
+  },
+  {
+   "step": 29,
+   "loss": 0.303,
+   "sec": 449
+  }
+ ]
+}
