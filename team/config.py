@@ -23,6 +23,9 @@ SPECIALISTS = {
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
 }
+for _role in ("plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
+              "lesson_writer"):
+    SPECIALISTS[_role] = BASE_MODEL  # PyTorch fallback: same base, no edit
 
 # ---- Engine v2: llama.cpp with 4-bit weights (less RAM, faster on CPU, bigger brains) ----
 # auto: use llama.cpp when it is installed and the GGUF files are present; hf: PyTorch/transformers path above.
@@ -35,14 +38,30 @@ GGUF_MODELS = {
     "coder7b": ("Qwen/Qwen2.5-Coder-7B-Instruct-GGUF", "qwen2.5-coder-7b-instruct-q4_k_m.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
 }
 BRAIN = os.environ.get("AGENT_TEAM_BRAIN", "brain4b")
+# Chosen by measurement (training/reports/SUMMARY.md): each role gets the model that scored best on its
+# held-out evals; ties go to the smaller, faster model. "fast+X" = Qwen3-1.7B with specialist X's own weight edit.
 GGUF_ROSTER = {
-    "coordinator": BRAIN, "researcher": BRAIN, "verifier": BRAIN, "writer": BRAIN, "browser": BRAIN,
-    "coder": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),
+    "coordinator": BRAIN,           # 4B: 1.00 vs 0.94 (1.7B)
+    "researcher": BRAIN,            # 4B: 1.00 / 0.80 vs 0.95 / 0.77
+    "verifier": "fast+verifier",    # 1.7B + edit: 0.89 = 4B, 2.7x faster
+    "writer": "fast+writer",        # 1.7B + edit: 1.00 = 4B, 2.2x faster
+    "browser": "fast+browser",      # 1.7B + edit: 0.79 vs 0.43 (4B)
+    "coder": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),  # 7B: 0.88 vs 0.50 (1.5B)
+    # quality-control specialists
+    "plan_reviewer": BRAIN,         # second look at every plan before work starts
+    "condenser": "fast",            # picks the relevant lines of long sources (extractive: quotes stay exact)
+    "critic": BRAIN,                # checks the final report against verified results
+    "juror_brain": BRAIN,           # jury: step verdicts are a vote of three
+    "juror_fast": "fast",
+    # evolution-harness specialists
+    "examiner": BRAIN, "prompt_smith": BRAIN, "lesson_writer": "fast",
 }
+JURY = [s.strip() for s in os.environ.get("AGENT_TEAM_JURY", "verifier,juror_brain,juror_fast").split(",") if s.strip()]
 if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
     import json as _json
     GGUF_ROSTER.update(_json.loads(os.environ["AGENT_TEAM_ROSTER"]))
 GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
+GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 2))  # models resident at once (LRU unload)
 
 # Set AGENT_TEAM_NO_ADAPTERS=1 to run the untrained base models (for comparison).
 USE_ADAPTERS = os.environ.get("AGENT_TEAM_NO_ADAPTERS", "") != "1"

@@ -7,12 +7,13 @@
     python -m team add "task"             drop a task into the inbox for `serve`
     python -m team dream [--no-train] [--rehearse N]   replay past runs, learn lessons, retrain weights
     python -m team remember "fact"        add to your profile (how you like things done)
+    python -m team evolve ROLE [--variants 3] [--generations 1]   evolve a specialist's prompt (gated)
 """
 import argparse
 import json
 import sys
 
-COMMANDS = {"chat", "serve", "add", "dream", "remember", "web"}
+COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve"}
 
 
 def main():
@@ -21,6 +22,12 @@ def main():
         if cmd == "chat":
             from .chat import main as chat
             return chat()
+        if cmd == "evolve":
+            from .evolve import evolve
+            role = rest[0] if rest else "verifier"
+            opt = lambda k, d: type(d)(rest[rest.index(k) + 1]) if k in rest else d  # noqa: E731
+            return evolve(role, variants=opt("--variants", 3), generations=opt("--generations", 1),
+                          prompt_name=opt("--prompt", "") or None)
         if cmd == "web":
             from .web import main as web
             return web(int(rest[0]) if rest else 8765)

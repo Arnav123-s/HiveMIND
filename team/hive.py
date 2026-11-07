@@ -51,6 +51,17 @@ class Hive:
         if past:
             notes += "\n" + "\n".join(f"- Earlier run on a similar task ({r['ts']}): {r['report'][:200]}" for r in past)
         steps, problems, raw = coordinator.plan(self.goal, b, notes.strip())
+        if steps:
+            review = coordinator.review(self.goal, steps)
+            if review:
+                b.log("plan_reviewer", "problems", " | ".join(review))
+                notes2 = (notes + "\n" if notes else "") + "A reviewer found these problems in your first plan; fix them:\n" \
+                    + "\n".join(f"- {r}" for r in review)
+                steps2, problems2, raw2 = coordinator.plan(self.goal, b, notes2.strip())
+                if steps2:
+                    steps, problems, raw = steps2, problems2, raw2
+            else:
+                b.log("plan_reviewer", "ok", "plan covers the task")
         (self.dir / "plan_raw.txt").write_text(raw)
         if not steps:
             return self._finish("The coordinator could not produce a plan: " + "; ".join(problems))
@@ -78,6 +89,8 @@ class Hive:
 
     def _run_foreach(self, s):
         src = self.board.step(s["for_each"])
+        if src and src.get("verdict") == "REROUTED":
+            src = self.board.step(s["for_each"] + "r")
         items = ((src or {}).get("result") or {}).get("items", []) if src and src.get("verdict") == "PASS" else []
         items = items[:config.MAX_FOREACH]
         if not items:
@@ -100,7 +113,7 @@ class Hive:
                                feedback=f"{passed}/{len(subs)} items verified",
                                result={"summary": f"{passed}/{len(subs)} items verified"})
 
-    def _run_step(self, s):
+    def _run_step(self, s, allow_reroute=True):
         b = self.board
         feedback = ""
         for attempt in range(1, config.MAX_RETRIES + 2):
@@ -134,6 +147,14 @@ class Hive:
                 return
             feedback = why
         b.log("coordinator", "give-up", f"{s['id']} failed after {config.MAX_RETRIES + 1} attempts: {feedback}")
+        if allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
+            alt = coordinator.reroute(self.goal, s, feedback)
+            if alt:
+                b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
+                b.add_step(alt)
+                self._run_step(alt, allow_reroute=False)
+                if b.step(alt["id"]).get("verdict") == "PASS":
+                    b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
 
     def _dispatch(self, s, task, ctx):
         if s["agent"] == "researcher":

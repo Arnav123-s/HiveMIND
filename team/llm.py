@@ -106,25 +106,90 @@ def use_gguf():
     return _USE_GGUF
 
 
+_lru = []  # model names, most recent last
+_active_lora = {}  # model name -> lora name currently set on its context
+_lora_ptrs = {}  # (model name, lora name) -> adapter pointer
+
+
+_quiet = None
+
+
+def _silence_llama_cpp():
+    """llama.cpp logs every tensor it touches to stderr; keep the terminal readable."""
+    global _quiet
+    if _quiet is None:
+        import ctypes
+
+        import llama_cpp
+
+        @llama_cpp.llama_log_callback
+        def _noop(level, text, user_data):
+            pass
+
+        _quiet = _noop  # keep a reference so it is not garbage-collected
+        llama_cpp.llama_log_set(_quiet, ctypes.c_void_p(0))
+
+
+def _set_lora(name, llm_, lora):
+    """Hot-swap a specialist's weight edit on the shared base: one copy of the base weights in RAM."""
+    import ctypes
+
+    import llama_cpp
+    if _active_lora.get(name) == lora:
+        return
+    if lora is None:
+        llama_cpp.llama_set_adapters_lora(llm_._ctx.ctx, None, 0, None)
+    else:
+        key = (name, lora)
+        if key not in _lora_ptrs:
+            path = config.ROOT / "adapters_gguf" / f"{lora}.gguf"
+            ptr = llama_cpp.llama_adapter_lora_init(llm_._model.model, str(path).encode())
+            if not ptr:
+                raise RuntimeError(f"could not load weight edit {path}")
+            _lora_ptrs[key] = ptr
+        arr = (llama_cpp.llama_adapter_lora_p_ctypes * 1)(_lora_ptrs[key])
+        scales = (ctypes.c_float * 1)(1.0)
+        llama_cpp.llama_set_adapters_lora(llm_._ctx.ctx, arr, 1, scales)
+    llm_.reset()  # cached prompt states were computed with the other weights
+    _active_lora[name] = lora
+
+
 def _gguf_model(specialist, adapter):
     from huggingface_hub import hf_hub_download
     from llama_cpp import Llama
     spec = config.GGUF_ROSTER[specialist]
     name, _, lora = spec.partition("+")
     repo, fname, tok_repo = config.GGUF_MODELS[name]
-    lora_path = None
-    if lora and adapter and config.USE_ADAPTERS:
-        cand = config.ROOT / "adapters_gguf" / f"{lora}.gguf"
-        lora_path = str(cand) if cand.exists() else None
-    key = (name, lora_path)
-    if key not in _gguf:
-        kw = {}  # (prompt-lookup drafting needs logits for the whole context: ~3.7 GB at 6k ctx - not worth it)
-        # mmap: every specialist on the same file shares one copy of the weights in RAM
-        _gguf[key] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX, n_threads=config.THREADS,
-                           n_batch=512, use_mmap=True, lora_path=lora_path, verbose=False, **kw)
+    if not (lora and adapter and config.USE_ADAPTERS and (config.ROOT / "adapters_gguf" / f"{lora}.gguf").exists()):
+        lora = None
+    _silence_llama_cpp()
+    if name not in _gguf:
+        while len(_gguf) >= config.GGUF_MAX_LOADED:  # keep RAM low: unload the least recently used model
+            old = _lru.pop(0)
+            _gguf.pop(old).close()
+            _active_lora.pop(old, None)
+            for k in [k for k in _lora_ptrs if k[0] == old]:
+                _lora_ptrs.pop(k)
+        # mmap: the weights file is mapped, not copied, and pages are shared with the OS cache
+        _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX, n_threads=config.THREADS,
+                            n_batch=512, use_mmap=True, verbose=False)
+        _active_lora[name] = None
+    if name in _lru:
+        _lru.remove(name)
+    _lru.append(name)
+    _set_lora(name, _gguf[name], lora)
     if tok_repo not in _gguf_tok:
         _gguf_tok[tok_repo] = AutoTokenizer.from_pretrained(tok_repo)
-    return _gguf[key], _gguf_tok[tok_repo]
+    return _gguf[name], _gguf_tok[tok_repo]
+
+
+def unload_all():
+    """Free every loaded model (e.g. before handing the CPU and RAM to a subprocess)."""
+    for name in list(_gguf):
+        _gguf.pop(name).close()
+    _lru.clear()
+    _active_lora.clear()
+    _lora_ptrs.clear()
 
 
 def _json_grammar():
@@ -139,7 +204,7 @@ def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefi
     llm_, tok = _gguf_model(specialist, adapter)
     prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
     kw = dict(max_tokens=max_new_tokens, temperature=temperature, top_p=0.9 if temperature else 1.0,
-              repeat_penalty=1.05)
+              repeat_penalty=1.0)  # a penalty stops the model copying page text verbatim (evidence)
     head = ""
     if stop == "json":
         kw["grammar"] = _json_grammar()  # output is valid JSON by construction

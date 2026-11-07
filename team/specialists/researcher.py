@@ -47,15 +47,33 @@ def gather(plan, board, step_id, task=""):
         if not isinstance(u, str) or not u.startswith("http"):
             continue
         try:
-            page = web.read_url(u, max_chars=5000)
+            page = web.read_url(u, max_chars=30000)
         except Exception as e:  # noqa: BLE001
             notes.append(f"read {u} failed: {e}")
             board.log("researcher", "tool-fail", notes[-1])
             continue
         board.log("researcher", "read", f"{u} ({len(page['text'])} chars)")
         corpus[u] = page["text"]
-        blocks.append(f"### Source: {u}\nTitle: {page['title']}\n{page['text']}")
+        short = condense(task, page["title"] or u, page["text"], board)
+        blocks.append(f"### Source: {u}\nTitle: {page['title']}\n{short}")
     return blocks, corpus, notes
+
+
+def condense(task, title, text, board, limit=3000):
+    """Long source -> the lines that matter, chosen by the condenser. Extractive, so quotes stay exact."""
+    if len(text) <= limit:
+        return text
+    lines = [ln for ln in text.split("\n") if ln.strip()][:400]
+    numbered = "\n".join(f"{i}: {ln[:300]}" for i, ln in enumerate(lines))[:14000]
+    data, _ = llm.chat_json("condenser", [{"role": "system", "content": prompts.CONDENSER},
+                                          {"role": "user", "content": f"TASK: {task}\nSOURCE: {title}\n\n{numbered}"}],
+                            max_new_tokens=200)
+    keep = [int(i) for i in (data or {}).get("keep", []) if str(i).isdigit() and int(i) < len(lines)] \
+        if isinstance(data, dict) else []
+    if not keep:
+        return text[:limit]
+    board.log("condenser", "condense", f"{title[:60]}: kept {len(keep)} of {len(lines)} lines")
+    return "\n".join(lines[i] for i in sorted(set(keep)))
 
 
 def run(task, context, board, step_id):
