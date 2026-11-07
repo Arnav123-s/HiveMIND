@@ -1,0 +1,14 @@
+== coordinator
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  coordinator        1.00  Find the three most downloaded text-generation models under 1B paramet
+  coordinator        1.00  Go to books.toscrape.com, open the Travel category, and list every boo
+  coordinator        1.00  Write a Python script that gets the Open-Meteo forecast for Pune for t
+  coordinator        1.00  Check which of these packages have a newer version on PyPI than what I
+  coordinator        1.00  Find the top 5 Hacker News stories about Rust and summarize what each 
+  coordinator        1.00  Look up arXiv papers on speculative decoding, pick the 3 most relevant
+  coordinator        1.00  Benchmark how fast Python's json module parses a 50 MB file on this ma
+  coordinator        1.00  On quotes.toscrape.com, collect every quote by Albert Einstein across 
+  coordinator        1.00  For each of the 3 most downloaded Qwen models on Hugging Face, open it
+  coordinator        1.00  Find known vulnerabilities for the Python package jinja2 version 2.10 
+  coordinator        1.00  Make a chart of the last 30 days of daily maximum temperature in Mumba
+  coordinator        1.00  Read the Wikipedia article on the transistor and write me a one-page h

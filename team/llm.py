@@ -5,12 +5,11 @@ import re
 import threading
 import time
 
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, StoppingCriteria, StoppingCriteriaList
+from transformers import AutoTokenizer
 
 from . import config
 
-torch.set_num_threads(config.THREADS)
+# torch is imported only on the PyTorch path, so the llama.cpp engine does not pay for it in RAM.
 
 _lock = threading.Lock()
 _bases = {}  # model_id -> {"tok", "model", "adapters": set()}
@@ -19,6 +18,9 @@ RECORDER = None  # callable(specialist, messages, output) - the hive records eve
 
 
 def _load(model_id):
+    import torch
+    from transformers import AutoModelForCausalLM
+    torch.set_num_threads(config.THREADS)
     if model_id not in _bases:
         tok = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForCausalLM.from_pretrained(model_id, dtype=torch.bfloat16)
@@ -43,27 +45,135 @@ def _attach_adapter(entry, name):
     return name
 
 
-class StopWhenDone(StoppingCriteria):
+def _stop_criteria(tok, start, mode, prefix=""):
     """Stop as soon as the reply is complete: a JSON object closed, or a code block closed."""
+    from transformers import StoppingCriteria, StoppingCriteriaList
 
-    def __init__(self, tok, start, mode, prefix=""):
-        self.tok, self.start, self.mode, self.prefix = tok, start, mode, prefix
+    class StopWhenDone(StoppingCriteria):
+        def __call__(self, input_ids, scores, **kw):
+            return _done(tok, input_ids, start, mode, prefix)
 
-    def __call__(self, input_ids, scores, **kw):
-        n = input_ids.shape[1] - self.start
+    return StoppingCriteriaList([StopWhenDone()])
+
+
+def _done(tok, input_ids, start, mode, prefix):
+    if True:
+        n = input_ids.shape[1] - start
         if n < 2 or n % 4:
             return False
-        text = self.prefix + self.tok.decode(input_ids[0, self.start:], skip_special_tokens=True)
-        if self.mode == "json":
+        text = prefix + tok.decode(input_ids[0, start:], skip_special_tokens=True)
+        if mode == "json":
             return _closes_from_start(text)
-        if self.mode == "code":
+        if mode == "code":
             return text.count("```") >= 2
         return False
+
+
+# ---------------------------------------------------------------- engine v2: llama.cpp
+_gguf = {}      # (model, lora) -> Llama
+_gguf_tok = {}  # tokenizer repo -> HF tokenizer (only for building the exact chat prompt)
+_grammar = None
+
+
+def gguf_available():
+    if config.ENGINE == "hf":
+        return False
+    try:
+        import llama_cpp  # noqa: F401
+    except ImportError:
+        if config.ENGINE == "gguf":
+            raise
+        return False
+    from huggingface_hub import try_to_load_from_cache
+    for spec in config.GGUF_ROSTER.values():
+        repo, fname, _ = config.GGUF_MODELS[spec.split("+")[0]]
+        if not isinstance(try_to_load_from_cache(repo, fname), str):
+            if config.ENGINE == "gguf":
+                from huggingface_hub import hf_hub_download
+                hf_hub_download(repo, fname)
+                continue
+            return False
+    return True
+
+
+_USE_GGUF = None
+
+
+def use_gguf():
+    global _USE_GGUF
+    if _USE_GGUF is None:
+        _USE_GGUF = gguf_available()
+    return _USE_GGUF
+
+
+def _gguf_model(specialist, adapter):
+    from huggingface_hub import hf_hub_download
+    from llama_cpp import Llama
+    spec = config.GGUF_ROSTER[specialist]
+    name, _, lora = spec.partition("+")
+    repo, fname, tok_repo = config.GGUF_MODELS[name]
+    lora_path = None
+    if lora and adapter and config.USE_ADAPTERS:
+        cand = config.ROOT / "adapters_gguf" / f"{lora}.gguf"
+        lora_path = str(cand) if cand.exists() else None
+    key = (name, lora_path)
+    if key not in _gguf:
+        kw = {}  # (prompt-lookup drafting needs logits for the whole context: ~3.7 GB at 6k ctx - not worth it)
+        # mmap: every specialist on the same file shares one copy of the weights in RAM
+        _gguf[key] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX, n_threads=config.THREADS,
+                           n_batch=512, use_mmap=True, lora_path=lora_path, verbose=False, **kw)
+    if tok_repo not in _gguf_tok:
+        _gguf_tok[tok_repo] = AutoTokenizer.from_pretrained(tok_repo)
+    return _gguf[key], _gguf_tok[tok_repo]
+
+
+def _json_grammar():
+    global _grammar
+    if _grammar is None:
+        from llama_cpp.llama_grammar import JSON_GBNF, LlamaGrammar
+        _grammar = LlamaGrammar.from_string(JSON_GBNF, verbose=False)
+    return _grammar
+
+
+def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop):
+    llm_, tok = _gguf_model(specialist, adapter)
+    prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    kw = dict(max_tokens=max_new_tokens, temperature=temperature, top_p=0.9 if temperature else 1.0,
+              repeat_penalty=1.05)
+    head = ""
+    if stop == "json":
+        kw["grammar"] = _json_grammar()  # output is valid JSON by construction
+    elif stop == "code":
+        head = "```python\n"
+        prompt += head
+        kw["stop"] = ["```"]
+    else:
+        prompt += prefix
+        head = prefix
+    t0 = time.time()
+    out = llm_.create_completion(prompt, **kw)
+    text = out["choices"][0]["text"]
+    STATS["calls"] += 1
+    STATS["tokens_out"] += out.get("usage", {}).get("completion_tokens", 0)
+    STATS["seconds"] += time.time() - t0
+    if stop == "code":
+        return head + text.rstrip() + "\n```"
+    return head + text
 
 
 def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0, prefix="", stop=None):
     """Run one chat completion as `specialist`. Greedy by default.
     `prefix` is forced as the start of the reply (e.g. "{" to force a JSON object)."""
+    if use_gguf():
+        with _lock:
+            text = _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+        text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
+        if RECORDER is not None:
+            try:
+                RECORDER(specialist, messages, text)
+            except Exception:  # noqa: BLE001
+                pass
+        return text
     model_id = config.SPECIALISTS[specialist]
     with _lock:
         entry = _load(model_id)
@@ -74,13 +184,13 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
         ids = tok(prompt, return_tensors="pt")
         gen_kwargs = dict(max_new_tokens=max_new_tokens, pad_token_id=tok.eos_token_id)
         if stop:
-            gen_kwargs["stopping_criteria"] = StoppingCriteriaList(
-                [StopWhenDone(tok, ids["input_ids"].shape[1], stop, prefix)])
+            gen_kwargs["stopping_criteria"] = _stop_criteria(tok, ids["input_ids"].shape[1], stop, prefix)
         if temperature > 0:
             gen_kwargs.update(do_sample=True, temperature=temperature, top_p=0.9)
         else:
             gen_kwargs.update(do_sample=False, temperature=None, top_p=None, top_k=None)
         t0 = time.time()
+        import torch
         with torch.inference_mode():
             if entry["adapters"]:
                 if name:
