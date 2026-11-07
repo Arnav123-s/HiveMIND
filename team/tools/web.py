@@ -130,7 +130,18 @@ def search_arxiv(q, limit=6):
 
 
 def search_pypi(q, limit=1):
-    d = get(f"https://pypi.org/pypi/{q.strip()}/json", as_json=True)
+    """PyPI's API needs an exact package name: try the query, then each word in it."""
+    words = [w for w in re.split(r"[\s,]+", q.strip()) if w and w.lower() not in
+             {"latest", "version", "versions", "package", "python", "release", "pypi", "the", "of", "newest", "current"}]
+    d, last = None, None
+    for cand in dict.fromkeys([q.strip().replace(" ", "-")] + words):
+        try:
+            d = get(f"https://pypi.org/pypi/{cand}/json", as_json=True)
+            break
+        except FetchError as e:
+            last = e
+    if d is None:
+        raise last or FetchError(f"no PyPI package found for {q!r}")
     info = d["info"]
     return [{"title": info["name"], "url": f"https://pypi.org/project/{info['name']}/",
              "snippet": f"latest {info['version']} | {info.get('summary')} | requires-python {info.get('requires_python')}"}]

@@ -133,7 +133,7 @@ class Board:
     def context_for(self, needs, max_chars=3500):
         parts = []
         for sid in needs:
-            rows = [s for s in self.steps() if s["id"] == sid or s["id"].startswith(sid + "[")]
+            rows = [s for s in self.steps() if s["id"] in (sid, sid + "r") or s["id"].startswith(sid + "[")]
             for s in rows:
                 res = s.get("result") or {}
                 if not isinstance(res, dict):

@@ -18,7 +18,11 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     b = Browser()
     history, page_text, result = [], "", None
     try:
-        b.goto(start_url or "about:blank")
+        try:
+            b.goto(start_url or "about:blank")
+        except RuntimeError as e:
+            history.append(f"0. {e}")
+            b.page.goto("about:blank")
         for n in range(config.BROWSER_MAX_ACTIONS):
             obs = b.observe(task)
             page_text = b.text(20000)

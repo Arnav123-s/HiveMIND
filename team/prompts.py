@@ -74,3 +74,51 @@ WRITER = f"""You are the writer on Arnav's team. Write the finished deliverable 
 - Cite sources inline as [n] using the numbered SOURCES list; do not add sources that are not listed.
 - If something could not be confirmed, say so plainly in a section "Not confirmed".
 - No filler. Arnav prefers short and direct."""
+
+PLAN_REVIEWER = """You review a plan made for Arnav's task before the team starts. Report a problem ONLY if it is one of these
+three; never ask for more detail or different wording:
+- a part of the task that no step covers (every deliverable Arnav asked for needs a step)
+- the wrong specialist: website clicking/typing needs browser; computing, measuring, files or charts need coder;
+  finding facts in sources needs researcher
+- "for each" work that is not fanned out (for_each must name the step that produces the list)
+Reply with JSON only: {"ok": true} or {"ok": false, "problems": ["one short sentence each"]}"""
+
+CONDENSER = """You shorten a long source for a teammate. Keep only the lines that help with the TASK.
+The lines are numbered. Reply with JSON only: {"keep": [line numbers]} - at most 40 lines, in order.
+Keep lines with names, numbers, dates and definitions the task needs. Never rewrite text; you only choose lines."""
+
+CRITIC = """You check a report before it goes to Arnav. Compare every factual claim in the REPORT with the VERIFIED RESULTS.
+A claim is unsupported if its number, name, date or conclusion does not appear in the verified results.
+Sentences that say something could not be confirmed, headings, citations and advice are fine - never flag them.
+Reply with JSON only: {"unsupported": ["the exact sentence from the report", ...]} - [] if every claim is supported."""
+
+REROUTE = f"""You coordinate Arnav's team. A step failed every attempt. Give ONE replacement step that reaches the same result
+with a DIFFERENT specialist, using the failure reason. Specialists: researcher (live sources and APIs: huggingface, hn,
+arxiv, pypi, wikipedia, any URL), browser (operates websites), coder (writes and runs Python).
+{RULES}
+Reply with JSON only: {{"agent":"researcher","task":"...","done_when":"..."}} or {{"agent":"none"}} if nothing else can work."""
+
+EXAMINER = """You are the examiner in the team's evolution harness. From a real failure, write ONE new test case that
+checks the same skill in a slightly different situation, so the team can be trained and judged on it.
+Reply with JSON only, matching the FORMAT given."""
+
+PROMPT_SMITH = """You are the prompt-smith in the team's evolution harness. You improve the instructions (system prompt)
+of one specialist so it stops making the mistakes shown, without breaking what already works.
+Keep the reply format, rules and every output field exactly as they are. Change wording, add precise rules or
+one short example. Reply with the complete new system prompt only - no commentary."""
+
+
+# ---- evolved prompts: the evolution harness promotes winners to team/evolved/<NAME>.txt -------------
+def _load_evolved():
+    import os
+    from pathlib import Path
+    here = Path(__file__).resolve().parent / "evolved"
+    g = globals()
+    for name in [n for n in g if n.isupper() and isinstance(g[n], str)]:
+        override = os.environ.get(f"AGENT_TEAM_PROMPT_{name}")
+        path = Path(override) if override else here / f"{name}.txt"
+        if path.exists():
+            g[name] = path.read_text().strip()
+
+
+_load_evolved()

@@ -5,7 +5,7 @@ files really exist); the verifier model then judges what code cannot.
 """
 import re
 
-from .. import llm, prompts
+from .. import config, llm, prompts
 
 
 def norm(s):
@@ -33,12 +33,25 @@ def fact_messages(claim, quote):
             {"role": "user", "content": f"CLAIM: {claim}\nQUOTE: {quote}"}]
 
 
-def judge(check, work, evidence):
-    data, raw = llm.chat_json("verifier", judge_messages(check, work, evidence[:5000]), max_new_tokens=120)
+def _judge_one(member, check, work, evidence):
+    data, raw = llm.chat_json(member, judge_messages(check, work, evidence[:5000]), max_new_tokens=120)
     if not isinstance(data, dict):
-        return "FAIL", f"verifier gave no verdict: {raw[:100]}"
+        return "FAIL", f"{member} gave no verdict: {raw[:100]}"
     v = str(data.get("verdict", "")).upper()
     return ("PASS" if v == "PASS" else "FAIL"), str(data.get("reason", ""))[:300]
+
+
+def judge(check, work, evidence):
+    """Step verdicts are a vote: different models make different mistakes, so a majority beats any one of them.
+    With the PyTorch engine all jurors would be the same model, so only the verifier votes there."""
+    jury = config.JURY if llm.use_gguf() else ["verifier"]
+    votes = [(m, *_judge_one(m, check, work, evidence)) for m in jury]
+    passes = sum(v == "PASS" for _, v, _ in votes)
+    verdict = "PASS" if passes * 2 > len(votes) else "FAIL"
+    reason = next((r for _, v, r in votes if v == verdict), votes[0][2])
+    if len(votes) > 1:
+        reason = f"{reason} (jury {passes}/{len(votes)} pass)"
+    return verdict, reason
 
 
 def check_fact(claim, quote):

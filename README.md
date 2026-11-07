@@ -12,17 +12,49 @@ on held-out tasks, wrote training data aimed at what it got wrong, and edited it
 
 ## The team
 
-| specialist | model (Apache-2.0) | job | tools |
+| specialist | brain (all Apache-2.0, run on CPU) | job | tools |
 |---|---|---|---|
-| **coordinator** | Qwen3-1.7B + own weight edit | turns your prompt into a plan of assigned steps, fans steps out over lists, re-plans | the shared board |
-| **researcher** | Qwen3-1.7B + own weight edit | picks live sources and queries, reads them, returns facts with exact quotes | Hugging Face, Hacker News, arXiv, PyPI, Wikipedia, any URL |
-| **browser** | Qwen3-1.7B + own weight edit | drives a real Chromium: opens pages, types in search boxes, clicks links/tabs, reads what is shown | Playwright browser |
-| **coder** | Qwen2.5-Coder-1.5B-Instruct | writes Python, runs it, reads errors, fixes it; sees real samples of the data first | Python sandbox, data preview |
-| **verifier** | Qwen3-1.7B + own weight edit | checks every result before anyone relies on it | hard checks + judgment |
-| **writer** | Qwen3-1.7B + own weight edit | writes the finished deliverable from verified results only, with numbered sources | the shared board |
+| **coordinator** | Qwen3-4B, 4-bit | turns your prompt into a plan of assigned steps, fans steps out over lists | the shared board |
+| **researcher** | Qwen3-4B, 4-bit | picks live sources and queries, reads them, returns facts with exact quotes | Hugging Face, Hacker News, arXiv, PyPI, Wikipedia, any URL |
+| **browser** | Qwen3-1.7B + **its own weight edit** | drives a real Chromium: opens pages, types in search boxes, clicks links/tabs, reads what is shown | Playwright browser |
+| **coder** | Qwen2.5-Coder-7B, 4-bit | writes Python, runs it, reads errors, fixes it; sees real samples of the data first | Python sandbox, data preview |
+| **verifier** | Qwen3-1.7B + **its own weight edit** | checks every result before anyone relies on it | hard checks + judgment |
+| **writer** | Qwen3-1.7B + **its own weight edit** | writes the finished deliverable from verified results only, with numbered sources | the shared board |
 
-The five Qwen3 specialists share one copy of the base model in RAM (~4 GB) and swap in their own
-weight edits per call, so the whole team runs in about 8 GB plus the browser.
+Quality control, also specialists in the hive:
+
+| specialist | brain | job |
+|---|---|---|
+| **plan reviewer** | Qwen3-4B | second look at every plan: uncovered deliverables, wrong specialist, missing fan-out → coordinator re-plans |
+| **condenser** | Qwen3-1.7B | picks the lines of a long source that matter for the task; extractive, so quotes stay exact |
+| **jury** | verifier (1.7B + edit), Qwen3-4B, Qwen3-1.7B | every step verdict is a majority vote of three different models |
+| **critic** | Qwen3-4B | checks the final report claim by claim against the verified results; the writer fixes what it flags |
+
+Specialists that improve the specialists (evolution harness, `python -m team evolve <role>`):
+
+| specialist | brain | job |
+|---|---|---|
+| **examiner** | Qwen3-4B | turns failures (held-out cases and real run steps) into one-line diagnoses |
+| **prompt-smith** | Qwen3-4B | breeds variants of a specialist's instructions aimed at those diagnoses |
+| **trainer** | (CPU LoRA) | retrains a 1.7B specialist's weight edit from its own verified work (`dream`) |
+| **selector** | (code) | scores parent and variants on held-out evals; promotes only a strict improvement; logs lineage |
+| **lesson writer** | Qwen3-1.7B | turns each verified failure into a rule the team reads next time (`dream`) |
+
+Adding a specialist is one line in `team/config.py` (role → brain, optionally `+edit`) plus its prompt:
+on a shared base it costs a few MB, not GB.
+
+Which brain each role gets was decided by measurement, not by guess: every role was scored on held-out
+tasks with each candidate (1.7B base, 1.7B + its edit, 4B, 1.5B/7B coder), and it gets the best one;
+ties go to the faster model. Table under "How the specialists were improved".
+
+**Engine.** llama.cpp with 4-bit/8-bit weights (`team/llm.py`):
+- the three 1.7B specialists share **one** copy of the base weights; each one's edit (a few MB) is
+  hot-swapped in per call
+- at most 2 models are resident at once; the least recently used is unloaded (reload: ~4 s)
+- JSON replies are constrained by a grammar, so they are valid JSON by construction
+- measured on this 4-core CPU: Qwen3-4B 7.6 tok/s using 3.9 GB, the shared 1.7B with three edits 3.3 GB,
+  Qwen2.5-Coder-7B 4.8 tok/s; peak for the whole team about 10 GB with the browser
+- the PyTorch engine (`AGENT_TEAM_ENGINE=hf`) is kept: it is what trains and scores weight edits
 
 ## How it works as one
 
@@ -49,8 +81,9 @@ writer → REPORT.md (sources numbered, gaps listed under "Not confirmed")
   the team read. Browser answers are rejected unless the evidence is literally on the page. Code is
   rejected unless it exits 0 and creates the files the task asked for. Then the verifier model judges
   whether the evidence meets the step's check.
-- **Failures are fed back.** A rejected step is retried with the verifier's reason, up to twice. What
-  still fails is listed in the report, never papered over.
+- **Failures are fed back.** A rejected step is retried with the verifier's reason, up to twice. If it
+  still fails, the coordinator re-routes it to a different specialist (e.g. a website that will not load
+  → the researcher reads the site's API). What still fails is listed in the report, never papered over.
 - **Every run leaves a trace** in `runs/<timestamp>/`: `TASK.md`, `plan.json`, `board.db`,
   `events.jsonl`, `calls.jsonl` (every model call), `screens/` (browser screenshots), `work/` (code and
   files), `TRACE.md`, `REPORT.md`.
@@ -153,18 +186,24 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
 ```
 ```bash
+CMAKE_ARGS="-DGGML_NATIVE=ON" pip install llama-cpp-python==0.3.36
+```
+(compiles llama.cpp for your CPU; needs a C++ compiler and cmake, ~10 min)
+```bash
 playwright install chromium
 ```
 ```bash
 python -m pytest -q tests
 ```
 
-The first task downloads the base models from Hugging Face (Qwen3-1.7B 4.1 GB, Qwen2.5-Coder-1.5B
-3.1 GB). No account or token is needed. The specialists' own weight edits are in `adapters/` (small).
+The first task downloads the models from Hugging Face, no account or token needed: Qwen3-4B 4-bit
+(2.5 GB), Qwen3-1.7B 8-bit (1.8 GB), Qwen2.5-Coder-7B 4-bit (4.7 GB), plus tokenizer files. The
+specialists' own weight edits are in `adapters_gguf/` (9-17 MB each; PyTorch versions in `adapters/`).
+Training or retraining edits (`training/`, `dream`) also downloads Qwen3-1.7B in bf16 (4 GB).
+Without llama-cpp-python the team falls back to PyTorch (`AGENT_TEAM_ENGINE=hf`) with the 1.7B models.
 
-Lighter machine: `AGENT_TEAM_BASE=Qwen/Qwen3-0.6B` runs the team on a 0.6B base. The weight edits
-in `adapters/` were trained for Qwen3-1.7B, so this runs untrained specialists; run
-`training/train_all.sh` to retrain them for the smaller base.
+Lighter machine: `AGENT_TEAM_MAX_LOADED=1` keeps only one model in RAM at a time (slower: models
+reload when roles switch). Bigger machine: `AGENT_TEAM_BRAIN=brain8b` makes Qwen3-8B 4-bit (5 GB) the brain (supported, not measured here).
 
 ## Limits (measured, not guessed)
 

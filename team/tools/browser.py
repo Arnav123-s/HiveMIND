@@ -99,9 +99,15 @@ class Browser:
             pass
 
     def goto(self, url):
-        self.page.goto(url, wait_until="domcontentloaded")
+        try:
+            self.page.goto(url, wait_until="domcontentloaded")
+        except Exception as e:  # noqa: BLE001 - report a clean reason the model can act on
+            msg = str(e).split("\n")[0]
+            raise RuntimeError(f"could not open {url}: {msg[:140]}") from None
         self.typed = []
         self._settle()
+        if self.page.url.startswith("chrome-error://"):
+            raise RuntimeError(f"could not open {url}: the browser got an error page (blocked or certificate problem)")
 
     def text(self, max_chars=6000):
         try:
@@ -111,7 +117,15 @@ class Browser:
         return re.sub(r"\n\s*\n+", "\n", t)[:max_chars]
 
     def observe(self, goal="", max_elements=40, text_chars=1800):
-        els = self.page.evaluate(SNAPSHOT_JS, 400)
+        for attempt in range(3):  # the page may still be navigating
+            try:
+                els = self.page.evaluate(SNAPSHOT_JS, 400)
+                break
+            except Exception:  # noqa: BLE001
+                if attempt == 2:
+                    raise
+                self.page.wait_for_timeout(1500)
+                self._settle()
         self.elements = {e["id"]: e for e in els}
         words = goal_words(goal)
         hay = {e["id"]: (e["text"] + " " + e["href"]).lower() for e in els}

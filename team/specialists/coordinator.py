@@ -78,3 +78,26 @@ def plan(goal, board, notes=""):
              ". Reply with the JSON plan only."}], max_new_tokens=900)
         steps, problems = normalize(data, goal)
     return steps, problems, raw
+
+
+def review(goal, steps):
+    """The plan reviewer's problems with a plan ([] if none)."""
+    import json
+    plan = json.dumps({"steps": [{k: s[k] for k in ("id", "agent", "task", "needs", "for_each")} for s in steps]})
+    data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.PLAN_REVIEWER},
+                                              {"role": "user", "content": f"TASK: {goal}\n\nPLAN: {plan}"}],
+                            max_new_tokens=250)
+    if not isinstance(data, dict) or data.get("ok", True) is True:
+        return []
+    return [str(x)[:200] for x in data.get("problems", [])][:5]
+
+
+def reroute(goal, step, reason):
+    """A different specialist for a step that failed every attempt (the hive routes around failure)."""
+    data, _ = llm.chat_json("coordinator", [{"role": "system", "content": prompts.REROUTE},
+                                            {"role": "user", "content": f"Arnav's task: {goal}\nFailed step ({step['agent']}): "
+                                             f"{step['task']}\nWhy it failed: {reason}"}], max_new_tokens=250)
+    if not isinstance(data, dict) or data.get("agent") not in AGENTS - {"writer", step["agent"]} or not data.get("task"):
+        return None
+    return {"id": step["id"] + "r", "agent": data["agent"], "task": str(data["task"]), "needs": step["needs"],
+            "for_each": None, "done_when": str(data.get("done_when") or step.get("done_when", ""))}
