@@ -78,3 +78,48 @@ def plan(goal, board, notes=""):
              ". Reply with the JSON plan only."}], max_new_tokens=900)
         steps, problems = normalize(data, goal)
     return steps, problems, raw
+
+
+def instructions(goal):
+    """Arnav's task as a checklist of everything he ordered."""
+    data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.INSTRUCTIONS},
+                                              {"role": "user", "content": goal}], max_new_tokens=400)
+    items = (data or {}).get("instructions", []) if isinstance(data, dict) else []
+    return [str(i)[:200] for i in items if str(i).strip() and grounded(str(i), goal)][:15]
+
+
+_STOP = set("the a an and or of to in on for with from by is are was be it this that what which who how find get give "
+            "me my make write tell list show please about into at as do not any all each its it's your you i".split())
+
+
+def grounded(item, goal):
+    """An instruction must come from Arnav's own words: most of its content words appear in his task."""
+    words = [w for w in re.findall(r"[a-z0-9£$.\-]{3,}", item.lower()) if w not in _STOP]
+    if not words:
+        return False
+    g = goal.lower()
+    return sum(w.strip(".") in g for w in words) / len(words) >= 0.5
+
+
+def review(goal, steps, checklist=()):
+    """The plan reviewer's problems with a plan ([] if none)."""
+    import json
+    plan = json.dumps({"steps": [{k: s[k] for k in ("id", "agent", "task", "needs", "for_each")} for s in steps]})
+    todo = "\n".join(f"- {i}" for i in checklist)
+    data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.PLAN_REVIEWER},
+                                              {"role": "user", "content": f"TASK: {goal}\n\nINSTRUCTIONS:\n{todo}\n\nPLAN: {plan}"}],
+                            max_new_tokens=250)
+    if not isinstance(data, dict) or data.get("ok", True) is True:
+        return []
+    return [str(x)[:200] for x in data.get("problems", [])][:5]
+
+
+def reroute(goal, step, reason):
+    """A different specialist for a step that failed every attempt (the hive routes around failure)."""
+    data, _ = llm.chat_json("coordinator", [{"role": "system", "content": prompts.REROUTE},
+                                            {"role": "user", "content": f"Arnav's task: {goal}\nFailed step ({step['agent']}): "
+                                             f"{step['task']}\nWhy it failed: {reason}"}], max_new_tokens=250)
+    if not isinstance(data, dict) or data.get("agent") not in AGENTS - {"writer", step["agent"]} or not data.get("task"):
+        return None
+    return {"id": step["id"] + "r", "agent": data["agent"], "task": str(data["task"]), "needs": step["needs"],
+            "for_each": None, "done_when": str(data.get("done_when") or step.get("done_when", ""))}

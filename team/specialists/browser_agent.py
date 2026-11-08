@@ -1,7 +1,7 @@
 """Browser operator: observe the live page, pick one action, act, repeat."""
 import json
 
-from .. import config, llm, prompts, vault
+from .. import config, llm, prompts, stop, vault
 from ..guard import Blocked
 from ..tools.browser import Browser
 
@@ -17,9 +17,15 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     goal = task if not context else f"{task}\n(Team notes: {context[:600]})"
     b = Browser()
     history, page_text, result = [], "", None
+    stuck, last_sig = 0, None
     try:
-        b.goto(start_url or "about:blank")
+        try:
+            b.goto(start_url or "about:blank")
+        except RuntimeError as e:
+            history.append(f"0. {e}")
+            b.page.goto("about:blank")
         for n in range(config.BROWSER_MAX_ACTIONS):
+            stop.check()
             obs = b.observe(task)
             page_text = b.text(20000)
             action, raw = llm.chat_json("browser", turn_messages(goal, obs, history), max_new_tokens=160)
@@ -59,10 +65,25 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
             if not allowed:
                 history.append(f"{n + 1}. {kind} needs Arnav's approval - not done")
                 continue
+            stop.check()
             try:
+                before = (b.page.url, len(page_text))
                 url = b.act(action)
                 label = f" '{el['text'][:40]}'" if el else ""
-                history.append(f"{n + 1}. {kind}{label} -> now at {url}")
+                after = (b.page.url, len(b.text(20000)))
+                sig = (kind, action.get("id"), action.get("url"), b.page.url)
+                if after == before or sig == last_sig:
+                    stuck += 1
+                    history.append(f"{n + 1}. {kind}{label} -> the page did not change. Do not repeat it: read the page "
+                                   f"text, pick a different element, or reply done/fail.")
+                    if stuck >= 3:
+                        result = {"summary": "", "failed": "stuck: actions stopped changing the page", "url": b.page.url,
+                                  "page_text": b.text(20000), "actions": history}
+                        break
+                else:
+                    stuck = 0
+                    history.append(f"{n + 1}. {kind}{label} -> now at {url}")
+                last_sig = sig
                 if shots_dir:
                     b.screenshot(f"{shots_dir}/{step_id.replace('[', '_').replace(']', '')}_{n + 1:02d}.png")
             except Exception as e:  # noqa: BLE001 - feed errors back to the model

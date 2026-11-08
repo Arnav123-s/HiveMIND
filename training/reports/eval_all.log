@@ -1,0 +1,160 @@
+== coordinator
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  37%|███▋      | 114/311 [00:00<00:00, 1133.74it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 1619.34it/s]
+  coordinator        0.83  Find the three most downloaded text-generation models under 1B paramet
+  coordinator        0.83  Go to books.toscrape.com, open the Travel category, and list every boo
+  coordinator        0.67  Write a Python script that gets the Open-Meteo forecast for Pune for t
+  coordinator        0.83  Check which of these packages have a newer version on PyPI than what I
+  coordinator        0.67  Find the top 5 Hacker News stories about Rust and summarize what each 
+  coordinator        0.83  Look up arXiv papers on speculative decoding, pick the 3 most relevant
+  coordinator        0.83  Benchmark how fast Python's json module parses a 50 MB file on this ma
+  coordinator        0.67  On quotes.toscrape.com, collect every quote by Albert Einstein across 
+  coordinator        0.57  For each of the 3 most downloaded Qwen models on Hugging Face, open it
+  coordinator        0.83  Find known vulnerabilities for the Python package jinja2 version 2.10 
+  coordinator        0.83  Make a chart of the last 30 days of daily maximum temperature in Mumba
+  coordinator        0.83  Read the Wikipedia article on the transistor and write me a one-page h
+  coordinator        1.00  Find the latest version of the Python packages fastapi and pydantic, t
+  coordinator        0.83  Open the Hugging Face page of SmolLM2-360M-Instruct, read the model ca
+   -> coordinator: {'mean': 0.791, 'n': 14, 'seconds': 346}
+== researcher_plan
+  researcher_plan    1.00  Find small open text-generation models under 1B parameters
+  researcher_plan    1.00  What is the latest version of the flask package?
+  researcher_plan    1.00  Find recent research papers about mixture of experts routing
+  researcher_plan    1.00  What are developers saying on Hacker News about the Zig language?
+  researcher_plan    1.00  Get the history of the Linux kernel from an encyclopedia
+  researcher_plan    0.75  Read https://quotes.toscrape.com/tag/humor/ and list the authors
+  researcher_plan    1.00  Which SmolLM2 models exist and what are their licenses?
+  researcher_plan    1.00  Find the most popular papers on retrieval augmented generation
+  researcher_plan    1.00  Get the release information for the numpy package
+  researcher_plan    1.00  Find the license and parameter count of Qwen2.5 coder models
+   -> researcher_plan: {'mean': 0.975, 'n': 10, 'seconds': 42}
+== researcher_extract
+  researcher_extract 0.00  List the Qwen3 text-generation models under 2B parameters with their l
+  researcher_extract 1.00  Which SmolLM2 models are instruction-tuned (Instruct) and how many par
+  researcher_extract 1.00  What is the latest version of requests and which Python versions does 
+  researcher_extract 0.00  List the Hacker News stories about the Rust compiler with their points
+  researcher_extract 0.83  Which authors are quoted on the 'love' tag page?
+   -> researcher_extract: {'mean': 0.567, 'n': 5, 'seconds': 880}
+== verifier
+  verifier           1.00  SUPPORTED: Qwen/Qwen3-0.6B is licensed under Apache 2.0
+  verifier           1.00  UNSUPPORTED: Qwen/Qwen3-0.6B has 1.7 billion parameters
+  verifier           1.00  SUPPORTED: The latest version of requests is 2.34.2
+  verifier           1.00  UNSUPPORTED: requests supports Python 3.8
+  verifier           1.00  SUPPORTED: 'A Light in the Attic' costs £51.77
+  verifier           1.00  UNSUPPORTED: 'A Light in the Attic' is out of stock
+  verifier           1.00  UNSUPPORTED: SmolLM2-135M is released under the MIT license
+  verifier           1.00  SUPPORTED: The story 'Writing a Rust compiler in C' got 393 points
+  verifier           1.00  UNSUPPORTED: The story 'Writing a Rust compiler in C' was posted in 20
+  verifier           1.00  UNSUPPORTED: Python was first released in 1989
+  verifier           1.00  PASS: results.csv has one row per model with tokens per second
+  verifier           1.00  FAIL: results.csv has one row per model with tokens per second
+  verifier           1.00  FAIL: a list of 5 Hacker News stories with titles and points
+  verifier           1.00  PASS: the price of 'Tipping the Velvet' is reported
+  verifier           0.00  FAIL: the license of each of the 3 models is recorded
+  verifier           1.00  PASS: forecast.csv contains 3 days of max temperatures
+  verifier           1.00  FAIL: the script prints the number of primes below 10000
+  verifier           0.00  FAIL: a reading list of 3 arXiv papers on speculative decoding
+   -> verifier: {'mean': 0.889, 'n': 18, 'seconds': 87}
+== writer
+  writer             0.80  Which small model should I use on my laptop?
+  writer             1.00  Summarize the top Rust compiler stories on Hacker News.
+  writer             0.83  Find the price of three books on books.toscrape.com.
+   -> writer: {'mean': 0.878, 'n': 3, 'seconds': 102}
+== browser
+  browser            1.00  quotes-tag
+  browser            1.00  quotes-next
+  browser            1.00  books-open
+  browser            1.00  books-price
+  browser            1.00  hf-license
+  browser            0.00  hf-files-tab
+  browser            0.00  hf-size
+  browser            1.00  wiki-date
+  browser            1.00  refuse-login
+  browser            1.00  blank-start
+  browser            1.00  docs-tutorial
+  browser            1.00  books-category
+  browser            1.00  refuse-buy
+  browser            0.00  quotes-author
+   -> browser: {'mean': 0.786, 'n': 14, 'seconds': 914}
+== browser_live
+  browser_live       1.00  live-book-price
+  browser_live       0.00  live-hf-size
+  browser_live       1.00  live-quotes-tag
+  browser_live       1.00  live-category-count
+   -> browser_live: {'mean': 0.75, 'n': 4, 'seconds': 131}
+{
+ "coordinator": {
+  "mean": 0.791,
+  "n": 14,
+  "seconds": 346
+ },
+ "researcher_plan": {
+  "mean": 0.975,
+  "n": 10,
+  "seconds": 42
+ },
+ "researcher_extract": {
+  "mean": 0.567,
+  "n": 5,
+  "seconds": 880
+ },
+ "verifier": {
+  "mean": 0.889,
+  "n": 18,
+  "seconds": 87
+ },
+ "writer": {
+  "mean": 0.878,
+  "n": 3,
+  "seconds": 102
+ },
+ "browser": {
+  "mean": 0.786,
+  "n": 14,
+  "seconds": 914
+ },
+ "browser_live": {
+  "mean": 0.75,
+  "n": 4,
+  "seconds": 131
+ }
+}
+== browser
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Traceback (most recent call last):
+  File "/home/user/agent-team/training/observe.py", line 254, in <module>
+    fn()
+    ~~^^
+  File "/home/user/agent-team/training/observe.py", line 219, in eval_browser
+    action, raw = llm.chat_json("browser", browser_agent.turn_messages(c["goal"], obs, c.get("history", [])),
+                  ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                max_new_tokens=160)
+                                ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/agent-team/team/llm.py", line 291, in chat_json
+    out = chat(specialist, messages, max_new_tokens, adapter, prefix=prefix, stop="json")
+  File "/home/user/agent-team/team/llm.py", line 174, in chat
+    text = _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+  File "/home/user/agent-team/team/llm.py", line 159, in _chat_gguf
+    out = llm_.create_completion(prompt, **kw)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/llama_cpp/llama.py", line 1909, in create_completion
+    completion: Completion = next(completion_or_chunks)  # type: ignore
+                             ~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/llama_cpp/llama.py", line 1394, in _create_completion
+    for token in self.generate(
+                 ~~~~~~~~~~~~~^
+        prompt_tokens,
+        ^^^^^^^^^^^^^^
+    ...<14 lines>...
+        grammar=grammar,
+        ^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/llama_cpp/llama.py", line 977, in generate
+    self.eval(tokens)
+    ~~~~~~~~~^^^^^^^^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/llama_cpp/llama.py", line 690, in eval
+    self.scores[n_past : n_past + n_tokens, :].reshape(-1)[::] = logits
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^
+ValueError: could not broadcast input array from shape (77791232,) into shape (0,)
+== coder
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  coder              1.00  Print the number of prime numbers below 10000 in the form 'primes=<n>'

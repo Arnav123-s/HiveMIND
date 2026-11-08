@@ -1,0 +1,66 @@
+order_reader: 187 examples from ['/home/user/agent-team/training/data/order_reader.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 59/311 [00:00<00:00, 589.54it/s]Loading weights:  38%|███▊      | 118/311 [00:00<00:00, 401.84it/s]Loading weights:  52%|█████▏    | 162/311 [00:00<00:00, 345.27it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 648.32it/s]
+trainable params: 4,358,144 || all params: 1,724,933,120 || trainable%: 0.2527
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 229 max 248
+step 5/94 loss 1.4892 75s
+step 10/94 loss 0.1112 133s
+step 15/94 loss 0.4766 188s
+step 20/94 loss 0.1125 243s
+step 25/94 loss 0.0995 298s
+step 30/94 loss 0.0640 359s
+step 35/94 loss 0.1008 420s
+step 40/94 loss 0.1057 476s
+step 45/94 loss 0.0431 533s
+step 50/94 loss 0.0283 590s
+step 55/94 loss 0.0143 648s
+step 60/94 loss 0.0437 706s
+step 65/94 loss 0.0063 763s
+step 70/94 loss 0.1520 820s
+step 75/94 loss 0.0572 876s
+step 80/94 loss 0.0047 932s
+step 85/94 loss 0.2530 989s
+step 90/94 loss 0.0796 1045s
+step 94/94 loss 0.0018 1083s
+{
+ "specialist": "order_reader",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 187,
+ "files": [
+  "/home/user/agent-team/training/data/order_reader.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 8,
+ "alpha": 32,
+ "epochs": 2.0,
+ "lr": 0.0002,
+ "steps": 94,
+ "seconds": 1083,
+ "loss_first": 3.419,
+ "loss_last": 0.0018,
+ "time": "2026-11-08 01:28:00"
+}

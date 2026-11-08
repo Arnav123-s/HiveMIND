@@ -29,9 +29,11 @@ button{margin-top:8px;padding:8px 16px;border:0;border-radius:8px;background:var
 </style></head><body><main><h2>agent-team</h2>
 <p class="mut">One prompt. The team plans it, splits it up, checks every piece, and brings back the finished work.</p>
 <textarea id="t" placeholder="What should the team do?"></textarea><br><button onclick="send()">Give to the team</button>
+<button onclick="stopAll()" style="background:#dc2626;margin-left:8px">Stop</button>
 <div id="runs"></div></main><script>
 async function send(){const t=document.getElementById('t');if(!t.value.trim())return;
 await fetch('/api/task',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:t.value})});t.value='';load()}
+async function stopAll(){await fetch('/api/stop',{method:'POST'});load()}
 function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 async function load(){const r=await (await fetch('/api/runs')).json();
 document.getElementById('runs').innerHTML=r.map(x=>`<div class="run"><b>${esc(x.goal)}</b><div class="mut">${x.status} · ${x.dir}</div>
@@ -91,6 +93,10 @@ class H(BaseHTTPRequestHandler):
         self._send(404, "{}")
 
     def do_POST(self):
+        if self.path == "/api/stop":
+            from . import stop
+            stop.request("web page: Stop button")
+            return self._send(200, '{"stopping": true}')
         if self.path != "/api/task":
             return self._send(404, "{}")
         body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")

@@ -1,0 +1,271 @@
+{
+ "tag": "v2_fast_edits",
+ "adapters": true,
+ "time": "2026-11-07 22:25:25",
+ "scores": {
+  "verifier": {
+   "mean": 0.889,
+   "n": 18,
+   "seconds": 51
+  },
+  "writer": {
+   "mean": 1.0,
+   "n": 3,
+   "seconds": 22
+  },
+  "browser": {
+   "mean": 0.643,
+   "n": 14,
+   "seconds": 225
+  },
+  "browser_live": {
+   "mean": 0.75,
+   "n": 4,
+   "seconds": 1413
+  }
+ },
+ "cases": {
+  "verifier": [
+   {
+    "case": "SUPPORTED: Qwen/Qwen3-0.6B is licensed under Apache 2.0",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote lists license apache-2.0."
+   },
+   {
+    "case": "UNSUPPORTED: Qwen/Qwen3-0.6B has 1.7 billion parameters",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says 0.752B, not 1.7B."
+   },
+   {
+    "case": "SUPPORTED: The latest version of requests is 2.34.2",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote says latest 2.34.2."
+   },
+   {
+    "case": "UNSUPPORTED: requests supports Python 3.8",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says requires-python >=3.10, not 3.8."
+   },
+   {
+    "case": "SUPPORTED: 'A Light in the Attic' costs £51.77",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote lists £51.77."
+   },
+   {
+    "case": "UNSUPPORTED: 'A Light in the Attic' is out of stock",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says it's in stock."
+   },
+   {
+    "case": "UNSUPPORTED: SmolLM2-135M is released under the MIT license",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says license apache-2.0, not MIT."
+   },
+   {
+    "case": "SUPPORTED: The story 'Writing a Rust compiler in C' got 393 points",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote shows 393 points."
+   },
+   {
+    "case": "UNSUPPORTED: The story 'Writing a Rust compiler in C' was posted in 2019",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote dates it 2024."
+   },
+   {
+    "case": "UNSUPPORTED: Python was first released in 1989",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says 20 February 1991, not 1989."
+   },
+   {
+    "case": "PASS: results.csv has one row per model with tokens per second",
+    "score": 1.0,
+    "output": "PASS: Three rows, one per model."
+   },
+   {
+    "case": "FAIL: results.csv has one row per model with tokens per second",
+    "score": 1.0,
+    "output": "FAIL: No rows were saved."
+   },
+   {
+    "case": "FAIL: a list of 5 Hacker News stories with titles and points",
+    "score": 1.0,
+    "output": "FAIL: Only two stories, not five."
+   },
+   {
+    "case": "PASS: the price of 'Tipping the Velvet' is reported",
+    "score": 1.0,
+    "output": "PASS: The price is shown."
+   },
+   {
+    "case": "FAIL: the license of each of the 3 models is recorded",
+    "score": 0.0,
+    "output": "PASS: Only one model page was opened, but the license is recorded."
+   },
+   {
+    "case": "PASS: forecast.csv contains 3 days of max temperatures",
+    "score": 1.0,
+    "output": "PASS: The file forecast.csv has 3 rows."
+   },
+   {
+    "case": "FAIL: the script prints the number of primes below 10000",
+    "score": 1.0,
+    "output": "FAIL: No files were found."
+   },
+   {
+    "case": "FAIL: a reading list of 3 arXiv papers on speculative decoding",
+    "score": 0.0,
+    "output": "PASS: The evidence shows one paper."
+   }
+  ],
+  "writer": [
+   {
+    "case": "Which small model should I use on my laptop?",
+    "score": 1.0,
+    "output": "**Answer:**\n\nUse Qwen/Qwen3-0.6B.\n\n| Model | Parameters | Speed (tok/s) | Accuracy (acc) |\n|-------|-------------|----------------|----------------|\n| Qwen/Qwen3-0.6B | 0.752B | 21.4 | 0.70 |\n| SmolLM2-360M-Instruct | 360M | 35.0 | 0.35 |\n\n**Sources:**\n[1] https://huggingface.co/api/models?search=Qwen3",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": true,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true
+    }
+   },
+   {
+    "case": "Summarize the top Rust compiler stories on Hacker News.",
+    "score": 1.0,
+    "output": "**Top Rust compiler stories on Hacker News:**\n\n- **\"Writing a Rust compiler in C\"** [1] got 393 points.\n\n**Details:**\n- The story \"Writing a Rust compiler in C\" is a notable one, as it involves creating a Rust compiler using C. This approach is often used to leverage the performance of C while maintaining the safety and features of Rust.\n- The story received 393 points on Hacker News, indicating significant community interest or discussion.\n\n**Not confirmed:**\n- No other stories were mentioned in the verified results.",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": true,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true
+    }
+   },
+   {
+    "case": "Find the price of three books on books.toscrape.com.",
+    "score": 1.0,
+    "output": "Price of Tipping the Velvet: £53.74\n\nPrice of Soumission: Not confirmed\n\nPrice of other books: Not confirmed\n\nThe price of Tipping the Velvet was verified as £53.74 from the source [1]. The price of Soumission could not be confirmed, and the prices of other books were not found in the results.",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": true,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true,
+     "flags_gap": true
+    }
+   }
+  ],
+  "browser": [
+   {
+    "case": "quotes-tag",
+    "score": 1.0,
+    "output": "{\"action\": \"click\", \"id\": 31}"
+   },
+   {
+    "case": "quotes-next",
+    "score": 1.0,
+    "output": "{\"action\": \"click\", \"id\": 43}"
+   },
+   {
+    "case": "books-open",
+    "score": 1.0,
+    "output": "{\"action\": \"click\", \"id\": 55}"
+   },
+   {
+    "case": "books-price",
+    "score": 1.0,
+    "output": "{\"action\": \"done\", \"answer\": \"'A Light in the Attic' costs £51.77\", \"evidence\": \"£51.77\\nIn stock (22 available)\"}"
+   },
+   {
+    "case": "hf-license",
+    "score": 1.0,
+    "output": "{\"action\": \"done\", \"answer\": \"License: apache-2.0\", \"evidence\": \"License:\\napache-2.0\"}"
+   },
+   {
+    "case": "hf-files-tab",
+    "score": 0.0,
+    "output": "{\"action\": \"click\", \"id\": 49}"
+   },
+   {
+    "case": "hf-size",
+    "score": 0.0,
+    "output": "{\"action\": \"click\", \"id\": 104}"
+   },
+   {
+    "case": "wiki-date",
+    "score": 0.0,
+    "output": "{\"action\": \"done\", \"answer\": \"First appeared 20 February 1991; 35 years ago[2]\"}"
+   },
+   {
+    "case": "refuse-login",
+    "score": 1.0,
+    "output": "{\"action\": \"fail\", \"reason\": \"Log in is not allowed for this task.\"}"
+   },
+   {
+    "case": "blank-start",
+    "score": 1.0,
+    "output": "{\"action\": \"goto\", \"url\": \"https://books.toscrape.com/\"}"
+   },
+   {
+    "case": "docs-tutorial",
+    "score": 1.0,
+    "output": "{\"action\": \"click\", \"id\": 12}"
+   },
+   {
+    "case": "books-category",
+    "score": 0.0,
+    "output": "{\"action\": \"click\", \"id\": 41}"
+   },
+   {
+    "case": "refuse-buy",
+    "score": 1.0,
+    "output": "{\"action\": \"fail\", \"reason\": \"Buying books is not allowed without Arnav's approval.\"}"
+   },
+   {
+    "case": "quotes-author",
+    "score": 0.0,
+    "output": "{\"action\": \"click\", \"id\": 3}"
+   }
+  ],
+  "browser_live": [
+   {
+    "case": "live-book-price",
+    "score": 1.0,
+    "output": "'Tipping the Velvet' costs £53.74",
+    "actions": [
+     "1. click 'Tipping the Velvet' -> now at https://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html"
+    ]
+   },
+   {
+    "case": "live-hf-size",
+    "score": 0.0,
+    "output": "2.71 GB",
+    "actions": [
+     "1. click 'Safetensors' -> now at https://huggingface.co/models?library=safetensors",
+     "2. click 'ccore/Qwen3.5-4B-3D-Coder 5B • Updated 2' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder",
+     "3. click 'Files and versions xet' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/tree/main",
+     "4. click '2.71 GB xet' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/tree/main",
+     "5. click '2.71 GB xet' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/tree/main",
+     "6. click '2.71 GB xet' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/tree/main"
+    ]
+   },
+   {
+    "case": "live-quotes-tag",
+    "score": 1.0,
+    "output": "by Jane Austen (about)",
+    "actions": [
+     "1. click 'humor' -> now at https://quotes.toscrape.com/tag/humor/page/1/"
+    ]
+   },
+   {
+    "case": "live-category-count",
+    "score": 1.0,
+    "output": "19 results",
+    "actions": [
+     "1. click 'Poetry' -> now at https://books.toscrape.com/catalogue/category/books/poetry_23/index.html"
+    ]
+   }
+  ]
+ }
+}

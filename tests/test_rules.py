@@ -25,56 +25,55 @@ def clean_policy(tmp_path, monkeypatch):
     monkeypatch.setattr(memory, "POLICY", tmp_path / "policy.json")
 
 
-@pytest.mark.parametrize("text", ["Plan a dinner for my wife's birthday", "Text my mom that I'm late",
-                                  "Help me with my relationship problems", "Find a gift for my girlfriend",
-                                  "Organize the family trip itinerary"])
-def test_family_is_never_task_material(text):
-    assert check_task(text)
+def test_family_only_when_ordered():
+    assert check_task("Text my mom that I'm late", goal="Find the cheapest flight to Pune")
+    assert check_task("Text my mom that I'm late", goal="Text my mom that I'm late") is None
+    assert check_task("Benchmark list.sort on 1M ints", goal="Benchmark list.sort") is None
 
 
-@pytest.mark.parametrize("text", ["Find the price of a book on books.toscrape.com",
-                                  "Explain the relationship between two variables in this CSV? no wait, plot it",
-                                  "Benchmark list.sort on 1M ints"])
-def test_normal_tasks_pass(text):
-    assert check_task(text) is None
+def test_orders_are_parsed_and_negations_are_not_orders():
+    from team.guard import parse_orders
+    assert parse_orders("Run a model locally: no paying and no accounts. Don't delete anything.") == {}
+    o = parse_orders("Buy 'Soumission' on books.toscrape.com and email me the receipt.")
+    assert "spend" in o and "send" in o and "delete" not in o
 
 
-def test_login_and_signup_blocked():
-    g = Guard(FakeBoard(), "never")
-    with pytest.raises(Blocked):
-        g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Login", "href": "/login", "tag": "a"})
-    with pytest.raises(Blocked):
-        g.check_browser("browser", {"action": "goto", "url": "https://huggingface.co/join"})
-    with pytest.raises(Blocked):
-        g.check_browser("browser", {"action": "type", "id": 2}, {"type": "password", "text": ""})
-
-
-def test_login_allowed_only_on_named_site_and_never_signup():
-    g = Guard(FakeBoard(), "never", allow_login=["quotes.toscrape.com"])
-    assert g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Login", "href": "/login", "tag": "a"},
-                           page_url="https://quotes.toscrape.com/")
-    with pytest.raises(Blocked):
-        g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Login", "href": "/login", "tag": "a"},
-                        page_url="https://books.toscrape.com/")
-    with pytest.raises(Blocked):
-        g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Sign up", "href": "/signup", "tag": "a"},
-                        page_url="https://quotes.toscrape.com/")
-
-
-def test_spend_delete_send_need_approval():
+def test_unordered_risky_actions_wait_for_arnav():
     b = FakeBoard()
-    g = Guard(b, "never")
+    g = Guard(b, "never", goal="Find the price of a book on books.toscrape.com")
     assert not g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Add to basket", "tag": "button"})
     assert not g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Delete repository", "tag": "button"})
     assert not g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Send", "tag": "button"})
     assert len(g.pending) == 3
+    with pytest.raises(Blocked):
+        g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Login", "href": "/login", "tag": "a"},
+                        page_url="https://books.toscrape.com/")
+    with pytest.raises(Blocked):
+        g.check_browser("browser", {"action": "goto", "url": "https://huggingface.co/join"})
     # searching is not sending
     assert g.check_browser("browser", {"action": "press", "key": "Enter"}, {"text": "q", "tag": "input"},
                            typed_fields=[{"search": True}])
 
 
+def test_ordered_actions_go_ahead_exactly_where_ordered():
+    g = Guard(FakeBoard(), "never", goal="Buy 'Soumission' on books.toscrape.com. Log in to quotes.toscrape.com and list my quotes.")
+    assert g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Add to basket", "tag": "button"})
+    assert g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Login", "href": "/login", "tag": "a"},
+                           page_url="https://quotes.toscrape.com/")
+    with pytest.raises(Blocked):  # login was ordered for quotes.toscrape.com only
+        g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Login", "href": "/login", "tag": "a"},
+                        page_url="https://huggingface.co/")
+    with pytest.raises(Blocked):  # a sign-up was not ordered
+        g.check_browser("browser", {"action": "click", "id": 1}, {"text": "Sign up", "href": "/signup", "tag": "a"},
+                        page_url="https://quotes.toscrape.com/")
+    with pytest.raises(Blocked):  # models never type passwords, even when login is ordered
+        g.check_browser("browser", {"action": "type", "id": 2}, {"type": "password", "text": ""},
+                        page_url="https://quotes.toscrape.com/login")
+    assert not g.check_code("coder", "import os\nos.remove('x')")  # deleting was not ordered
+
+
 def test_code_rules():
-    g = Guard(FakeBoard(), "never")
+    g = Guard(FakeBoard(), "never", goal="Count primes below 10000")
     assert not g.check_code("coder", "import os\nos.remove('x')")
     assert not g.check_code("coder", "import smtplib")
     assert not g.check_code("coder", "requests.post('https://example.com/x', json={})")
@@ -84,7 +83,7 @@ def test_code_rules():
 
 def test_standing_policy(tmp_path):
     memory.POLICY.write_text(json.dumps({"delete": "allow"}))
-    g = Guard(FakeBoard(), "never")
+    g = Guard(FakeBoard(), "never", goal="Clean up old logs")
     assert g.check_code("coder", "import os\nos.remove('x')")
     assert not g.check_code("coder", "import smtplib")
 
@@ -115,3 +114,67 @@ def test_json_stop_waits_for_outer_object():
     assert not llm._closes_from_start('{"steps": [{"id": "s1"}')
     assert llm._closes_from_start('{"steps": [{"id": "s1"}]}')
     assert not llm._closes_from_start('{"a": "}"')
+
+
+def test_hard_item_checks():
+    from team.specialists.verifier import hard_item_check
+    task = "Find text-generation models under 2B parameters with permissive licenses that are not gated"
+    assert hard_item_check(task, "mistralai/Mistral-7B | params 7.242B | license apache-2.0 | gated False")
+    assert hard_item_check(task, "meta-llama/Llama-3.2-1B | params 1.236B | license llama3.2 | gated manual") == "gated"
+    assert hard_item_check(task, "Qwen/Qwen2.5-1.5B-Instruct | params 1.544B | license apache-2.0 | gated False") is None
+
+
+def test_kill_switch_kills_running_code_and_its_children(tmp_path, monkeypatch):
+    import threading
+    import time
+
+    from team import stop
+    from team.tools.sandbox import run_python
+    monkeypatch.setattr(stop, "FLAG", tmp_path / "STOP")
+    monkeypatch.setattr(stop, "INBOX_FLAG", tmp_path / "inbox_STOP")
+    code = ("import subprocess, time\n"
+            "subprocess.Popen(['sleep', '60'])\n"   # a child process must die too
+            "time.sleep(60)\n")
+    threading.Timer(1.0, lambda: stop.request("test")).start()
+    t0 = time.time()
+    with pytest.raises(stop.Stopped):
+        run_python(code, tmp_path / "work", timeout=120)
+    assert time.time() - t0 < 5
+
+
+def test_kill_switch_stops_model_calls(tmp_path, monkeypatch):
+    from team import llm, stop
+    monkeypatch.setattr(stop, "FLAG", tmp_path / "STOP")
+    stop.request("test")
+    with pytest.raises(stop.Stopped):
+        llm.chat("verifier", [{"role": "user", "content": "hi"}], max_new_tokens=5)
+
+
+def test_quote_credited_to_the_source_that_contains_it(tmp_path):
+    from team.board import Board
+    from team.specialists import verifier
+    b = Board(tmp_path, echo=False)
+    step = {"id": "s1", "agent": "researcher", "task": "license of X", "done_when": "license quoted"}
+    corpus = {"https://huggingface.co/X": "Model card text", "https://huggingface.co/api/models/X": "X | license apache-2.0"}
+    verifier.check_fact = lambda c, q: (True, "ok")
+    verifier.judge = lambda *a: ("PASS", "ok")
+    res = {"summary": "apache-2.0", "items": [], "corpus": corpus,
+           "facts": [{"claim": "X is apache-2.0", "quote": "license apache-2.0", "url": "https://huggingface.co/X"}]}
+    assert verifier.verify(step, res, b, tmp_path)[0] == "PASS"
+    f = b.facts("s1")[0]
+    assert f["status"] == "supported" and f["url"].endswith("/api/models/X")
+
+
+def test_writer_strikes_unverified_numbers():
+    from team.specialists.writer import ground_numbers
+    text = "- License: apache-2.0 [1]\n- Load time: 0.00 seconds\n- Correct: 10/10\n- Size: 988.10 MB [2]"
+    out, struck = ground_numbers(text, "weights total 988.10 MB, license apache-2.0")
+    assert "988.10 MB" in out and "apache-2.0" in out
+    assert len(struck) == 2 and "0.00" not in out and "10/10" not in out
+
+
+def test_quantized_size_read_from_name():
+    from team.specialists.verifier import hard_item_check
+    task = "models under 2B parameters"
+    assert hard_item_check(task, "line-corporation/japanese-large-lm-3.6b-instruction-sft-4bit | params 0.861B | gated False")
+    assert hard_item_check(task, "Qwen/Qwen2.5-1.5B-Instruct | params 1.544B | gated False") is None
