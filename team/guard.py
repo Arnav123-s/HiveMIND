@@ -109,11 +109,13 @@ def check_task(text, goal=""):
 class Guard:
     """`approve`: 'ask' (terminal prompt for anything unordered), 'never' (unordered = not done, listed for Arnav)."""
 
-    def __init__(self, board, approve="ask", allow_login=(), goal=""):
+    def __init__(self, board, approve="ask", allow_login=(), goal="", use_model=False):
         self.board = board
         self.mode = approve
         self.goal = goal
         self.orders = parse_orders(goal)
+        if use_model and goal:
+            self._second_opinion(board)
         self.allow_login = {d.lower().removeprefix("www.") for d in allow_login}
         if "login" in self.orders or "credentials" in self.orders:
             self.allow_login |= ordered_sites(goal, self.orders, "login" if "login" in self.orders else "credentials")
@@ -121,6 +123,21 @@ class Guard:
         self.pending = []  # actions waiting for Arnav
         if self.orders:
             board.log("guard", "orders", "; ".join(f"{k}: \"{v[:80]}\"" for k, v in self.orders.items()))
+
+    def _second_opinion(self, board):
+        """Two independent readers must agree before a risky kind counts as ordered: the rule-based parser and the
+        order-reader member (its own weight edit). If they disagree, the kind is NOT treated as ordered."""
+        from . import llm, prompts
+        data, _ = llm.chat_json("order_reader", [{"role": "system", "content": prompts.ORDER_READER},
+                                                 {"role": "user", "content": self.goal}], max_new_tokens=40)
+        model = {k for k in (data or {}).get("orders", [])} if isinstance(data, dict) else set()
+        risky = {"spend", "delete", "send", "login", "signup"}
+        rx = set(self.orders) & risky
+        for k in rx - model:
+            board.log("guard", "disagree", f"'{k}': the parser read an order, the order reader did not - not treated as ordered")
+            self.orders.pop(k)
+        for k in model - rx:
+            board.log("guard", "disagree", f"'{k}': the order reader read an order, the parser did not - not treated as ordered")
 
     @staticmethod
     def _host(url):

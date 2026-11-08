@@ -148,3 +148,18 @@ def test_kill_switch_stops_model_calls(tmp_path, monkeypatch):
     stop.request("test")
     with pytest.raises(stop.Stopped):
         llm.chat("verifier", [{"role": "user", "content": "hi"}], max_new_tokens=5)
+
+
+def test_quote_credited_to_the_source_that_contains_it(tmp_path):
+    from team.board import Board
+    from team.specialists import verifier
+    b = Board(tmp_path, echo=False)
+    step = {"id": "s1", "agent": "researcher", "task": "license of X", "done_when": "license quoted"}
+    corpus = {"https://huggingface.co/X": "Model card text", "https://huggingface.co/api/models/X": "X | license apache-2.0"}
+    verifier.check_fact = lambda c, q: (True, "ok")
+    verifier.judge = lambda *a: ("PASS", "ok")
+    res = {"summary": "apache-2.0", "items": [], "corpus": corpus,
+           "facts": [{"claim": "X is apache-2.0", "quote": "license apache-2.0", "url": "https://huggingface.co/X"}]}
+    assert verifier.verify(step, res, b, tmp_path)[0] == "PASS"
+    f = b.facts("s1")[0]
+    assert f["status"] == "supported" and f["url"].endswith("/api/models/X")

@@ -1,0 +1,19 @@
+{
+ "regex": {
+  "exact": 1.0,
+  "false_approvals": 0,
+  "missed_orders": 0
+ },
+ "model": {
+  "exact": 0.508,
+  "false_approvals": 19,
+  "missed_orders": 21
+ },
+ "both": {
+  "exact": 0.714,
+  "false_approvals": 0,
+  "missed_orders": 21
+ },
+ "cases": 63,
+ "model_edit": false
+}
