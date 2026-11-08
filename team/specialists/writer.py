@@ -59,7 +59,8 @@ def ordered_format(instructions):
     text = " ".join(order_words(i) for i in instructions).lower()
     out, lines = [], None
     # only a layout for the deliverable: "fix the two lines of code" is not one
-    kind = r" (?:summary|answer|report|reply|overview|description|explanation|version)\b"
+    kind = (r" (?:summary|answer|report|reply|overview|description|explanation|version|email|e-mail|message|letter|note|"
+            r"paragraph|response|introduction|intro|bio|post|update|reminder|announcement|story|poem)\b")
     m = re.search(_N + r"[- ]lines?" + kind, text) or re.search(r"\b(?:in|within|as) " + _N + r" lines?\b", text)
     if m:
         lines = _n(m)
@@ -80,6 +81,11 @@ def ordered_format(instructions):
         out.append(f"only the {what} itself: nothing before or after it, no heading, no label, no table, no notes")
         if m.group(2) in ("sentence", "word", "number", "name", "line", "translation") and lines is None:
             lines = 1
+    m = re.search(r"\b(?:write|draft|compose|send|prepare)\b[^.?!]*?\b(email|e-mail|message|letter|note|reply|poem|post|tweet|"
+                  r"announcement|invitation|reminder)\b", text)
+    if m and not re.search(r"\btable\b", text):
+        # a draft is the text he will send: the writer added a "Details" list and a table repeating the email
+        out.append(f"only the {m.group(1)} itself, written out as it would be sent: no table, no notes, no second copy")
     if re.search(r"\bno tables?\b|\bwithout (?:a )?tables?\b", text):
         out.append("no table")
     elif re.search(r"\btable\b", text) and lines is None:

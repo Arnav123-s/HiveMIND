@@ -590,3 +590,11 @@ def test_the_layout_comes_from_his_order_not_from_the_text_he_hands_over():
     assert "table" not in fmt.replace("no table", "") and fmt.startswith("only the corrected sentence") and lines == 1
     assert ordered_format(["Compare the two models in a table"]) == ("include a table", None)
     assert ordered_format(["Summarise this: 'The table was moved. The chairs stayed.'"]) == ("", None)
+
+
+def test_a_draft_is_only_the_draft_in_the_ordered_length():
+    """'a two-sentence email' was not read as a layout; the writer added a Details list and a table repeating it."""
+    from team.specialists.writer import ordered_format
+    fmt, _ = ordered_format(["Write a two-sentence email to Priya declining Friday's 3pm meeting"])
+    assert "exactly 2 sentences" in fmt and "only the email itself" in fmt
+    assert ordered_format(["Fix the two lines of code"]) == ("", None)
