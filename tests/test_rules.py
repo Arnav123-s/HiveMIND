@@ -201,7 +201,7 @@ def _writer_with_fakes(tmp_path, monkeypatch, fixed_report):
 
 def test_writer_fixes_an_instruction_the_critic_finds_missing(tmp_path, monkeypatch):
     out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, "License: apache-2.0.\nIt is open for any use.")
-    assert len(writes) == 2 and "give me a two-line summary (one line only)" in writes[1]
+    assert len(writes) == 2 and "- give me a two-line summary\n" in writes[1] and "one line only" not in writes[1]
     assert len(critiques) == 2  # the ticks are about the fixed report
     assert "✅ give me a two-line summary" in out and "❌" not in out
 
@@ -210,6 +210,12 @@ def test_writer_reports_a_miss_it_could_not_fix(tmp_path, monkeypatch):
     out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, "License: apache-2.0.")
     assert len(writes) == 2 and len(critiques) == 2
     assert "❌ give me a two-line summary - one line only" in out
+
+
+def test_saying_what_was_not_reached_is_never_flagged():
+    from team.specialists.writer import HONEST
+    assert HONEST.search("The model page is not accessible or the information is not available.")
+    assert not HONEST.search("The license is MIT.")
 
 
 def test_quantized_size_read_from_name():

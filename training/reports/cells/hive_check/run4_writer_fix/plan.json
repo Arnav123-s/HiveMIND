@@ -1,0 +1,38 @@
+[
+  {
+    "id": "s1",
+    "agent": "researcher",
+    "task": "Find the license and parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face",
+    "needs": [],
+    "for_each": null,
+    "done_when": "The license and parameter count are retrieved from Hugging Face."
+  },
+  {
+    "id": "s2",
+    "agent": "browser",
+    "task": "Open the Hugging Face website and navigate to the model page for HuggingFaceTB/SmolLM2-135M-Instruct",
+    "needs": [],
+    "for_each": null,
+    "done_when": "The model page is successfully opened and navigated to."
+  },
+  {
+    "id": "s3",
+    "agent": "coder",
+    "task": "Extract the license and parameter count information from the model page using web scraping techniques",
+    "needs": [
+      "s2"
+    ],
+    "for_each": null,
+    "done_when": "The license and parameter count are successfully extracted from the model page."
+  },
+  {
+    "id": "s4",
+    "agent": "writer",
+    "task": "Write a two-line summary containing the license and parameter count of HuggingFaceTB/SmolLM2-135M-Instruct",
+    "needs": [
+      "s3"
+    ],
+    "for_each": null,
+    "done_when": "The two-line summary is written and ready for delivery."
+  }
+]
