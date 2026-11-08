@@ -1,0 +1,8 @@
+[
+ "Run a small AI chat model on my own laptop with no GPU, 16 GB RAM, no paying and no accounts.",
+ "Find the best candidates on Hugging Face: text-generation models under 2B parameters with a permissive license that are not gated.",
+ "For each of the top 3, open its Hugging Face page in the browser and check the license and the real size of its weights files.",
+ "Write and run a benchmark on this machine that loads each of the 3 models on CPU and measures load time, memory used and tokens per second.",
+ "Check how many of 10 simple arithmetic questions each one answers correctly.",
+ "Verify everything and give me a ranked recommendation with sources."
+]

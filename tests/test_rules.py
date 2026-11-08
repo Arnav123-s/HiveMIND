@@ -163,3 +163,18 @@ def test_quote_credited_to_the_source_that_contains_it(tmp_path):
     assert verifier.verify(step, res, b, tmp_path)[0] == "PASS"
     f = b.facts("s1")[0]
     assert f["status"] == "supported" and f["url"].endswith("/api/models/X")
+
+
+def test_writer_strikes_unverified_numbers():
+    from team.specialists.writer import ground_numbers
+    text = "- License: apache-2.0 [1]\n- Load time: 0.00 seconds\n- Correct: 10/10\n- Size: 988.10 MB [2]"
+    out, struck = ground_numbers(text, "weights total 988.10 MB, license apache-2.0")
+    assert "988.10 MB" in out and "apache-2.0" in out
+    assert len(struck) == 2 and "0.00" not in out and "10/10" not in out
+
+
+def test_quantized_size_read_from_name():
+    from team.specialists.verifier import hard_item_check
+    task = "models under 2B parameters"
+    assert hard_item_check(task, "line-corporation/japanese-large-lm-3.6b-instruction-sft-4bit | params 0.861B | gated False")
+    assert hard_item_check(task, "Qwen/Qwen2.5-1.5B-Instruct | params 1.544B | gated False") is None

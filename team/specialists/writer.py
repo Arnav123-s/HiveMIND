@@ -14,6 +14,21 @@ def messages(goal, task, results_text, sources):
                                         f"\n\nSOURCES:\n{src}"}]
 
 
+NUM = re.compile(r"(?<![\w/.-])\d+(?:[.,]\d+)*(?:\s*/\s*\d+)?")
+
+
+def ground_numbers(text, verified):
+    """Every number in the report must appear in the verified results; lines with unverified numbers are struck."""
+    ok, struck = [], []
+    for line in text.split("\n"):
+        nums = [n for n in NUM.findall(line) if not re.fullmatch(r"\d", n)]  # [1]-style citations / single digits
+        if line.startswith("##") or line.lstrip().startswith("[") or all(n.replace(" ", "") in verified.replace(" ", "") for n in nums):
+            ok.append(line)
+        else:
+            struck.append(line.strip())
+    return "\n".join(ok), struck
+
+
 def run(goal, task, board, needs):
     facts = [f for f in board.facts(status="supported")]
     sources = list(dict.fromkeys(f["url"] for f in facts if f["url"].startswith("http")))
@@ -44,6 +59,10 @@ def run(goal, task, board, needs):
                                            + "\n- ".join(flagged[:10])}], max_new_tokens=1200)
     else:
         board.log("critic", "ok", "every claim matches the verified results")
+    text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
+    if struck:
+        board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")
+        text += "\n\n## Removed: numbers the team could not verify\n" + "\n".join(f"- {x[:160]}" for x in struck)
     if checklist:
         done = sum(bool(c.get("done")) for c in checklist)
         board.log("critic", "checklist", f"{done}/{len(checklist)} of your instructions done")
