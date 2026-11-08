@@ -29,7 +29,8 @@ def ground_numbers(text, verified):
     return "\n".join(ok), struck
 
 
-HONEST = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found)|unable|unknown|no data", re.I)
+HONEST = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found|accessible|available)"
+                    r"|inaccessible|unavailable|unable|unknown|no data", re.I)
 
 
 def critique(todo, results_text, text):
@@ -70,12 +71,15 @@ def run(goal, task, board, needs):
     if missed:
         board.log("critic", "missed", f"{len(missed)} of your instructions not met: "
                   + " | ".join(str(c.get("instruction", ""))[:80] for c in missed[:3]))
-        fixes.append("These of Arnav's instructions are not met by the report. Meet each one using only the verified "
-                     "results; if the verified results cannot meet one, say so in one line:\n- "
-                     + "\n- ".join(f"{c.get('instruction', '')} ({c.get('why', '')})" for c in missed[:10]))
+        # only his words: a small writer given the critic's reason copies the reason into the report
+        fixes.append("Arnav asked for these and your report does not do them yet:\n- "
+                     + "\n- ".join(str(c.get("instruction", "")) for c in missed[:10])
+                     + "\nRewrite the report so it does each of them, using only the verified results. If the verified "
+                       "results are not enough for one, write one line saying what is missing.")
     if fixes:
         text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
-                                          {"role": "user", "content": "\n\n".join(fixes) + "\n\nReturn the whole report."}],
+                                          {"role": "user", "content": "\n\n".join(fixes) + "\n\nReturn only the whole "
+                                                                      "corrected report."}],
                         max_new_tokens=1200)
         again, unordered2, flagged = critique(todo, results_text, text)
         if again:  # no answer from the critic: keep the first ticks (they can only under-claim what was done)
