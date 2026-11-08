@@ -60,8 +60,15 @@ JURY = [s.strip() for s in os.environ.get("AGENT_TEAM_JURY", "verifier,juror_bra
 if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
     import json as _json
     GGUF_ROSTER.update(_json.loads(os.environ["AGENT_TEAM_ROSTER"]))
+# ---- RAM budget: the whole swarm must fit (default 10 GB) -------------------------------------------
+# Members are cheap (a few-MB weight edit + prompt on a shared base); RAM goes to the base models and their
+# attention caches. Under the budget: 8-bit attention cache (half the size), per-model context sizes, and at
+# most N base models resident (least recently used is unloaded; reload ~4 s from the OS file cache).
+RAM_GB = float(os.environ.get("AGENT_TEAM_RAM_GB", 10))
+KV_8BIT = os.environ.get("AGENT_TEAM_KV", "q8" if RAM_GB <= 12 else "f16") == "q8"
 GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
-GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 2))  # models resident at once (LRU unload)
+GGUF_CTX_BY_MODEL = {"fast": 4096}  # the 1.7B roles (browser, verifier, writer, condenser) need less context
+GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 1 if RAM_GB < 7 else 2))
 
 # Set AGENT_TEAM_NO_ADAPTERS=1 to run the untrained base models (for comparison).
 USE_ADAPTERS = os.environ.get("AGENT_TEAM_NO_ADAPTERS", "") != "1"

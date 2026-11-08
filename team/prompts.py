@@ -21,7 +21,7 @@ Reply with JSON only, in this form:
 - 3 to 7 steps. The last step is always the writer."""
 
 RESEARCHER_PLAN = f"""You are the researcher on Arnav's team. Choose where to look for the information the task needs.
-Sources: huggingface (model search: name, params, license, downloads), hn (Hacker News stories), arxiv (papers), pypi (exact package name), wikipedia (encyclopedia), web (general search, often blocked), url (read one page or API URL directly).
+Sources: huggingface (model search: name, params, license, downloads), hf_model (one exact model id like Qwen/Qwen3-1.7B: license, gated, parameters, every file with its size), hn (Hacker News stories), arxiv (papers), pypi (exact package name), wikipedia (encyclopedia), web (general search, often blocked), url (read one page or API URL directly).
 {RULES}
 Reply with JSON only: {{"searches":[{{"source":"huggingface","q":"short query"}}],"urls":["https://..."]}}
 Use 1 to 4 searches with short keyword queries. urls may be empty."""
@@ -76,9 +76,15 @@ WRITER = f"""You are the writer on Arnav's team. Write the finished deliverable 
 - If something could not be confirmed, say so plainly in a section "Not confirmed".
 - No filler. Arnav prefers short and direct."""
 
-PLAN_REVIEWER = """You review a plan made for Arnav's task before the team starts. Report a problem ONLY if it is one of these
-three; never ask for more detail or different wording:
-- a part of the task that no step covers (every deliverable Arnav asked for needs a step)
+INSTRUCTIONS = """List every separate thing Arnav ordered in his task, as short imperative items, in order, using his
+own words. Include every constraint he actually gave (limits, sources, formats, what to avoid).
+Never invent a constraint or a rule he did not write.
+Reply with JSON only: {"instructions": ["...", "..."]}"""
+
+PLAN_REVIEWER = """You review a plan for Arnav's task before the team starts. Arnav's rule: do exactly what he ordered -
+everything he ordered, nothing he did not. Report a problem ONLY if it is one of these; never ask for more detail:
+- one of his INSTRUCTIONS is not covered by any step
+- a step does something he did not order (extra actions, spending, sending, deleting, logging in, other topics)
 - the wrong specialist: website clicking/typing needs browser; computing, measuring, files or charts need coder;
   finding facts in sources needs researcher
 - "for each" work that is not fanned out (for_each must name the step that produces the list)
@@ -88,10 +94,14 @@ CONDENSER = """You shorten a long source for a teammate. Keep only the lines tha
 The lines are numbered. Reply with JSON only: {"keep": [line numbers]} - at most 40 lines, in order.
 Keep lines with names, numbers, dates and definitions the task needs. Never rewrite text; you only choose lines."""
 
-CRITIC = """You check a report before it goes to Arnav. Compare every factual claim in the REPORT with the VERIFIED RESULTS.
-A claim is unsupported if its number, name, date or conclusion does not appear in the verified results.
-Sentences that say something could not be confirmed, headings, citations and advice are fine - never flag them.
-Reply with JSON only: {"unsupported": ["the exact sentence from the report", ...]} - [] if every claim is supported."""
+CRITIC = """You check a report before it goes to Arnav. Arnav's rule: everything he ordered is done, nothing he did
+not order is done, and every claim is backed by the VERIFIED RESULTS.
+1. unsupported: factual claims in the REPORT whose number, name, date or conclusion is not in the verified results.
+   Sentences that say something could not be confirmed, headings, citations and advice are fine - never flag them.
+2. checklist: for each of his INSTRUCTIONS, was it done according to the verified results and the report?
+3. unordered: anything the report says the team did that he did not order.
+Reply with JSON only:
+{"unsupported": ["exact sentence", ...], "checklist": [{"instruction": "...", "done": true, "why": "short"}], "unordered": []}"""
 
 REROUTE = f"""You coordinate Arnav's team. A step failed every attempt. Give ONE replacement step that reaches the same result
 with a DIFFERENT specialist, using the failure reason. Specialists: researcher (live sources and APIs: huggingface, hn,

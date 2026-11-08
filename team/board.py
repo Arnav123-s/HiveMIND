@@ -37,6 +37,7 @@ class Board:
         self.lock = threading.Lock()
         self.echo = echo
         self.goal = ""
+        self.checklist = []
 
     # ---- events -------------------------------------------------------
     def log(self, agent, kind, msg, data=None):

@@ -109,6 +109,41 @@ def search_huggingface(q, limit=12, **filters):
     return out
 
 
+def _human(n):
+    for unit, size in (("GB", 1e9), ("MB", 1e6), ("kB", 1e3)):
+        if n >= size:
+            return f"{n / size:.2f} {unit}"
+    return f"{n} B"
+
+
+def search_hf_model(q, limit=40):
+    """One model's facts from the Hugging Face API: license, gating, parameters, and every file with its size."""
+    m = re.search(r"[\w.\-]+/[\w.\-]+", q)
+    if not m:
+        raise FetchError(f"hf_model needs an exact model id like Qwen/Qwen3-1.7B, got {q!r}")
+    mid = m.group(0)
+    url = f"https://huggingface.co/api/models/{mid}"
+    d = get(url, {"blobs": "true", "expand[]": ["safetensors", "cardData", "gated", "pipeline_tag", "downloads",
+                                                   "siblings", "likes", "tags"]}, as_json=True)
+    lic = (d.get("cardData") or {}).get("license") or next(
+        (t.split(":", 1)[1] for t in d.get("tags", []) if t.startswith("license:")), "unknown")
+    st = d.get("safetensors") or {}
+    params = f"{st['total'] / 1e9:.3f}B" if st.get("total") else "unknown"
+    files = sorted(d.get("siblings") or [], key=lambda f: -(f.get("size") or 0))
+    weights = sum(f.get("size") or 0 for f in files if f["rfilename"].endswith(".safetensors"))
+    out = [{"title": mid, "url": f"https://huggingface.co/{mid}",
+            "snippet": f"{mid} | params {params} | license {lic} | gated {d.get('gated')} | pipeline {d.get('pipeline_tag')} | "
+                       f"downloads {d.get('downloads')}", "source_url": url}]
+    if weights:
+        out.append({"title": "weights total", "url": f"https://huggingface.co/{mid}/tree/main",
+                    "snippet": f"{mid} safetensors weights total {_human(weights)} ({weights} bytes)", "source_url": url})
+    for f in files[:limit]:
+        if f.get("size") is not None:
+            out.append({"title": f["rfilename"], "url": f"https://huggingface.co/{mid}/blob/main/{f['rfilename']}",
+                        "snippet": f"file {f['rfilename']} size {_human(f['size'])} ({f['size']} bytes)", "source_url": url})
+    return out
+
+
 def search_hn(q, limit=8):
     d = get("https://hn.algolia.com/api/v1/search", {"query": q, "hitsPerPage": limit, "tags": "story"}, as_json=True)
     return [{"title": h.get("title") or "", "url": h.get("url") or f"https://news.ycombinator.com/item?id={h['objectID']}",
@@ -168,7 +203,7 @@ def search_web(q, limit=8):
     return [{"title": a.get_text(strip=True), "url": a["href"], "snippet": ""} for a in res[:limit]]
 
 
-SOURCES = {"huggingface": search_huggingface, "hn": search_hn, "arxiv": search_arxiv,
+SOURCES = {"huggingface": search_huggingface, "hf_model": search_hf_model, "hn": search_hn, "arxiv": search_arxiv,
            "pypi": search_pypi, "wikipedia": search_wikipedia, "web": search_web}
 
 
