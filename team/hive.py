@@ -232,13 +232,23 @@ class Hive:
                 if b.step(alt["id"]).get("verdict") == "PASS":
                     b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
 
+    def _last_page(self, s):
+        """A browser step that follows another starts where that one ended (each step opens a fresh browser: the
+        second step of "open the tag page, then read three quotes" started from a blank page)."""
+        for sid in reversed(s.get("needs") or []):
+            prev = self.board.step(sid)
+            res = (prev or {}).get("result")
+            if prev and prev["agent"] == "browser" and prev.get("verdict") == "PASS" and isinstance(res, dict):
+                return res.get("url") or None
+        return None
+
     def _dispatch(self, s, task, ctx):
         if s["agent"] == "researcher":
             return researcher.run(task, ctx, self.board, s["id"])
         if s["agent"] == "browser":
             m = re.search(r"https?://[^\s)\"']+", task)  # start where the task says; otherwise the model navigates
-            return browser_agent.run(task, ctx, self.board, s["id"], self.guard,
-                                     start_url=m.group(0).rstrip(".,") if m else None, shots_dir=self.shots)
+            start = m.group(0).rstrip(".,") if m else self._last_page(s)
+            return browser_agent.run(task, ctx, self.board, s["id"], self.guard, start_url=start, shots_dir=self.shots)
         if s["agent"] == "coder":
             return coder.run(task, ctx, self.board, s["id"], self.guard, self.work)
         if s["agent"] == "calculator":

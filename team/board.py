@@ -140,6 +140,10 @@ class Board:
                 res = s.get("result") or {}
                 if not isinstance(res, dict):
                     res = {"summary": str(res)}
+                if s.get("verdict") not in ("PASS", "REROUTED", None):  # not confirmed: never passed on as a result
+                    parts.append(f"## {s['id']} ({s['agent']}): {s['task'][:200]}\nNot confirmed: "
+                                 f"{str(s.get('feedback') or s.get('verdict'))[:200]}\n")
+                    continue
                 line = f"## {s['id']} ({s['agent']}, verdict={s.get('verdict')}): {s['task'][:200]}\n"
                 if res.get("summary"):
                     line += f"Result: {res['summary'][:1500]}\n"
@@ -147,6 +151,8 @@ class Board:
                     line += "Items: " + json.dumps(res["items"])[:700] + "\n"
                 if res.get("files"):
                     line += "Files: " + ", ".join(res["files"]) + "\n"
+                if res.get("page"):  # the browser's final page, the lines the task needs (copied, never rewritten)
+                    line += f"Page {res.get('url', '')}:\n{res['page'][:2500]}\n"
                 facts = [f for f in self.facts(s["id"]) if f["status"] == "supported"]
                 for f in facts[:8]:
                     line += f"- {f['claim']} [{f['url']}]\n"

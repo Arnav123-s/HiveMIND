@@ -365,3 +365,26 @@ def test_triage_takes_a_shortcut_only_when_the_cell_is_sure(tmp_path, monkeypatc
     assert coordinator.triage("Compare two models and chart them", b) is None  # unsure: the coordinator plans
     monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"plan": 0.95})
     assert coordinator.triage("Compare two models and chart them", b) is None
+
+
+def test_a_failed_steps_result_is_never_passed_on_as_verified(tmp_path):
+    from team.board import Board
+    b = Board(tmp_path, echo=False)
+    for sid, verdict, summ in (("s1", "PASS", "Einstein: two ways to live"), ("s2", "FAIL", "made-up quotes")):
+        b.add_step({"id": sid, "agent": "browser", "task": f"task {sid}", "needs": []})
+        b.update_step(sid, verdict=verdict, feedback="evidence not on the page", result={"summary": summ, "url": "https://q/",
+                                                                                         "page": "line A\nline B"})
+    ctx = b.context_for(["s1", "s2"])
+    assert "Einstein" in ctx and "line A" in ctx
+    assert "made-up quotes" not in ctx and "Not confirmed: evidence not on the page" in ctx
+
+
+def test_a_browser_step_starts_where_the_last_one_ended(tmp_path, monkeypatch):
+    from team import hive
+    from team.board import Board
+    h = hive.Hive.__new__(hive.Hive)
+    h.board = Board(tmp_path, echo=False)
+    h.board.add_step({"id": "s1", "agent": "browser", "task": "open the tag page", "needs": []})
+    h.board.update_step("s1", verdict="PASS", result={"summary": "ok", "url": "https://quotes.toscrape.com/tag/x/"})
+    assert h._last_page({"id": "s2", "needs": ["s1"]}) == "https://quotes.toscrape.com/tag/x/"
+    assert h._last_page({"id": "s2", "needs": []}) is None
