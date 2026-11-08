@@ -157,6 +157,23 @@ def run(goal, task, board, needs):
             checklist, unordered = again, unordered2
         if flagged:
             board.log("critic", "flag", f"{len(flagged)} unsupported claim(s) after the fix: " + " | ".join(f[:80] for f in flagged[:3]))
+        missed = [c for c in checklist if not c.get("done")]
+        if flagged or missed:
+            # escalate: the small writer could not fix it (it translated "Friday" as "mercredi" twice); a bigger
+            # member rewrites once, the critic checks again, and the version with fewer problems is kept
+            board.log("editor", "escalate", f"{len(flagged)} unsupported, {len(missed)} not done after the writer's fix")
+            asks = (["These sentences are not supported by the verified results or are wrong:\n- " + "\n- ".join(flagged[:10])]
+                    if flagged else []) + (["Arnav asked for these and the report does not do them yet:\n- "
+                                            + "\n- ".join(str(c.get("instruction", "")) for c in missed[:10])] if missed else [])
+            text2 = llm.chat("editor", msgs + [{"role": "assistant", "content": text},
+                                               {"role": "user", "content": "\n\n".join(asks) + "\n\nReturn only the whole "
+                                                                           "corrected report."}], max_new_tokens=1200)
+            c2, u2, f2 = critique(todo, results_text, text2)
+            if c2 and len(f2) + sum(not c.get("done") for c in c2) < len(flagged) + len(missed):
+                board.log("editor", "kept", "the editor's version has fewer problems")
+                text, checklist, unordered, flagged = text2, c2, u2, f2
+            else:
+                board.log("editor", "dropped", "the editor's version was not better")
     else:
         board.log("critic", "ok", "every claim matches the verified results")
     text = drop_empty_sections(text)

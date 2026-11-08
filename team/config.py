@@ -23,7 +23,7 @@ SPECIALISTS = {
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
 }
-for _role in ("calculator", "code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
+for _role in ("calculator", "editor", "code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
               "lesson_writer"):
     SPECIALISTS[_role] = BASE_MODEL  # PyTorch fallback: same base, no edit
 
@@ -52,6 +52,7 @@ GGUF_ROSTER = {
     "plan_reviewer": BRAIN,         # second look at every plan before work starts
     "condenser": "fast",            # picks the relevant lines of long sources (extractive: quotes stay exact)
     "critic": BRAIN,                # checks the final report against verified results
+    "editor": BRAIN,                # rewrites a report only when the critic still rejects the writer's fix
     "juror_brain": BRAIN,           # jury: step verdicts are a vote of three
     "juror_fast": "fast",
     "order_reader": "fast+order_reader",
