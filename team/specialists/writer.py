@@ -1,5 +1,6 @@
 """Writer: assembles the finished deliverable from verified results only."""
 import re
+from pathlib import Path
 
 from .. import llm, memory, prompts
 
@@ -17,12 +18,18 @@ def messages(goal, task, results_text, sources):
 NUM = re.compile(r"(?<![\w/.-])\d+(?:[.,]\d+)*(?:\s*/\s*\d+)?")
 
 
+def _plain(x):
+    """Without spaces or thousands separators: 3,905,849 and 3 905 849 are 3905849."""
+    return re.sub(r"(?<=\d),(?=\d{3}(?!\d))", "", x).replace(" ", "")
+
+
 def ground_numbers(text, verified):
     """Every number in the report must appear in the verified results; lines with unverified numbers are struck."""
     ok, struck = [], []
+    plain = _plain(verified)  # "3,905,849" in the report is the "3905849" a source gave
     for line in text.split("\n"):
         nums = [n for n in NUM.findall(line) if not re.fullmatch(r"\d", n)]  # [1]-style citations / single digits
-        if line.startswith("##") or line.lstrip().startswith("[") or all(n.replace(" ", "") in verified.replace(" ", "") for n in nums):
+        if line.startswith("##") or line.lstrip().startswith("[") or all(_plain(n) in plain for n in nums):
             ok.append(line)
         else:
             struck.append(line.strip())
@@ -200,7 +207,8 @@ def nothing_verified(goal, board, facts):
 
 def finish(text, board, results_text, sources, checklist, unordered, flagged, fixes):
     """The report's checked tail: numbers grounded, flags, the checklist, what failed, the sources."""
-    text = drop_empty_sections(text)
+    saved = [Path(a["path"]) for a in board.artifacts() if a.get("kind") == "file"]
+    text = fix_images(drop_empty_sections(text), saved)
     text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
     if struck:
         board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")
@@ -220,6 +228,26 @@ def finish(text, board, results_text, sources, checklist, unordered, flagged, fi
     if failed:
         text += "\n\n## Not confirmed by the team\n" + "\n".join(
             f"- {s['id']} ({s['agent']}): {s['task'][:150]} - {s.get('feedback') or s.get('verdict')}" for s in failed)
+    if saved:
+        text += "\n\n## Files\n" + "\n".join(f"- work/{p.name}" for p in dict.fromkeys(saved))
     if sources:
         text += "\n\n## Sources\n" + "\n".join(f"[{i + 1}] {u}" for i, u in enumerate(sources))
     return {"summary": text, "sources": sources}
+
+
+IMG = re.compile(r"!\[([^\]]*)\]\(([^)\s]*)\)")
+IMAGE_EXT = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp")
+
+
+def fix_images(text, saved):
+    """An image in the report shows a file the team saved, or nothing: the writer linked a chart to a Hugging Face
+    API page. A link to a saved file is kept (as work/<name>); any other image link points to the saved image (if
+    there is exactly one) or is removed."""
+    images = [p for p in saved if p.suffix.lower() in IMAGE_EXT]
+
+    def one(m):
+        target = Path(m.group(2).split("?")[0]).name
+        if any(p.name == target for p in images):
+            return f"![{m.group(1)}](work/{target})"
+        return f"![{m.group(1)}](work/{images[0].name})" if len(images) == 1 else ""
+    return IMG.sub(one, text)
