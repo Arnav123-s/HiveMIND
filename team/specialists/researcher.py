@@ -61,6 +61,12 @@ def gather(plan, board, step_id, task=""):
                 board.log("researcher", "search", f"hf_model: {mid} -> {len(det)} facts")
             except Exception as e:  # noqa: BLE001
                 notes.append(f"hf_model {mid} failed: {e}")
+        if src == "wikipedia" and res and res[0].get("url", "").startswith("http"):
+            # a search lists 250-character snippets; what a thing is, is in the article (an explanation of a
+            # concept found only snippets from model and paper listings)
+            plan.setdefault("urls", [])
+            if res[0]["url"] not in plan["urls"]:
+                plan["urls"].insert(0, res[0]["url"])
         lines = [f"- {r['title']} | {r['url']} | {r['snippet']}" for r in res]
         url = res[0].get("source_url") if res and res[0].get("source_url") else f"search:{src}:{q}"
         text = "\n".join(lines)
