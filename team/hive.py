@@ -97,7 +97,12 @@ class Hive:
         b.checklist = self.checklist
         (self.dir / "checklist.json").write_text(json.dumps(self.checklist, indent=1))
         b.log("plan_reviewer", "checklist", f"{len(self.checklist)} instructions: " + " | ".join(self.checklist)[:400])
-        steps, problems, raw = coordinator.reviewed_plan(self.goal, b, notes.strip(), self.checklist)
+        steps = coordinator.triage(self.goal, b)
+        if steps:  # one kind of task: its template plan, no 4B planning
+            steps, problems, raw = coordinator.ensure_file_step(self.goal, steps)[0], [], "triage: task_kind cell"
+            b.log("coordinator", "triage", " -> ".join(s["agent"] for s in steps))
+        else:
+            steps, problems, raw = coordinator.reviewed_plan(self.goal, b, notes.strip(), self.checklist)
         (self.dir / "plan_raw.txt").write_text(raw)
         if not steps:
             return self._finish("The coordinator could not produce a plan: " + "; ".join(problems))

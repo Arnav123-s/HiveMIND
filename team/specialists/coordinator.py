@@ -176,6 +176,35 @@ def ensure_file_step(goal, steps):
     return steps[:-1] + [step, w], [f"added {sid} (coder): {probs[0]}"]
 
 
+# the triage cell's kinds: one specialist then the writer; "plan" (several kinds, or unsure) goes to the coordinator
+TEMPLATES = {
+    "write": [],
+    "calc": [("calculator", "Compute exactly what Arnav asked: {goal}", "the numbers he asked for are printed")],
+    "lookup": [("researcher", "Find, with quotes from sources, what Arnav asked: {goal}", "facts with quotes answer it")],
+    "site": [("browser", "{goal}", "the page shows what he asked for")],
+    "code": [("coder", "{goal}", "the program ran and did what he asked")],
+}
+TRIAGE_MIN = 0.9  # below this the cell is unsure, and the coordinator plans
+
+
+def triage(goal, board):
+    """The task_kind cell names the cheapest way through the hive; a template plan for one-kind tasks skips the 4B
+    coordinator and plan reviewer. Returns steps, or None (the coordinator plans)."""
+    from ..cells import runtime, use
+    if not use.on("task_kind"):
+        return None
+    p = runtime.label_probs("task_kind", goal[:600])
+    kind, conf = max(p.items(), key=lambda kv: kv[1])
+    board.log("cell:task_kind", "answer", f"{kind} ({conf:.2f})")
+    if kind not in TEMPLATES or conf < TRIAGE_MIN:
+        return None
+    steps = [{"id": f"s{i + 1}", "agent": a, "task": t.format(goal=goal), "needs": [], "for_each": None, "done_when": d}
+             for i, (a, t, d) in enumerate(TEMPLATES[kind])]
+    steps.append({"id": f"s{len(steps) + 1}", "agent": "writer", "task": f"Write the finished answer for Arnav: {goal}",
+                  "needs": [s["id"] for s in steps], "for_each": None, "done_when": "the answer does what he asked"})
+    return steps
+
+
 def reviewed_plan(goal, board, notes="", checklist=()):
     """Plan -> plan reviewer and code checks -> one re-plan if they found problems -> code checks enforced.
     Returns (steps, problems, raw)."""
