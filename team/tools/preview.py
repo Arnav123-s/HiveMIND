@@ -26,8 +26,28 @@ def _json_preview(obj, depth=0, max_items=2):
     return obj
 
 
-def _html_preview(html, limit=1800):
+STOP = {"find", "the", "and", "save", "them", "with", "from", "into", "that", "this", "list", "page", "pages", "site",
+        "first", "three", "file", "make", "give", "tell", "what", "which", "their", "your", "every", "write", "show"}
+
+
+def task_links(soup, task, base, limit=8):
+    """Links whose text has a word of the task ("Mystery" -> the Mystery category's URL), as absolute URLs: the coder
+    otherwise guesses where the data it needs lives."""
+    from urllib.parse import urljoin
+    words = {w for w in re.findall(r"[a-z]{4,}", (task or "").lower()) if w not in STOP}
+    out = []
+    for a in soup.find_all("a", href=True):
+        text = a.get_text(" ", strip=True)
+        if text and words & set(re.findall(r"[a-z]{4,}", text.lower())):
+            line = f"{text[:60]} -> {urljoin(base, a['href'])}"
+            if line not in out:
+                out.append(line)
+    return out[:limit]
+
+
+def _html_preview(html, limit=1800, task="", base=""):
     soup = BeautifulSoup(html, "lxml")
+    links = task_links(soup, task, base) if task else []
     for t in soup(["script", "style", "noscript", "svg", "head"]):
         t.decompose()
     counts = Counter()
@@ -52,12 +72,15 @@ def _html_preview(html, limit=1800):
             out.append(re.sub(r"\s+", " ", str(e))[:800])
     title = soup.title.get_text(strip=True) if soup.title else ""
     body = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))[:400]
-    return (f"Title: {title}\n" + "\n".join(out) + f"\nText start: {body}")[:limit]
+    found = ("\nLinks matching the task: " + "; ".join(links)) if links else ""
+    return (f"Title: {title}{found}\n" + "\n".join(out) + f"\nText start: {body}")[:limit]
 
 
 def preview(task, workdir=None, max_urls=2):
     parts = []
-    for url in list(dict.fromkeys(u.rstrip(".,;") for u in URL_RX.findall(task)))[:max_urls]:
+    # a site named without a scheme is previewed too ("on books.toscrape.com": the coder saw nothing and wrote
+    # http:// URLs and guessed the page's classes)
+    for url in web.urls_in(task)[:max_urls]:
         try:
             body = web.get(url)
         except Exception as e:  # noqa: BLE001
@@ -73,7 +96,7 @@ def preview(task, workdir=None, max_urls=2):
         if s.startswith("<?xml") or "<feed" in s[:300]:
             parts.append(f"--- {url} (XML)\n{s[:1500]}")
         else:
-            parts.append(f"--- {url} (HTML)\n{_html_preview(body)}")
+            parts.append(f"--- {url} (HTML)\n{_html_preview(body, task=task, base=url)}")
     if workdir:
         for name in dict.fromkeys(FILE_RX.findall(task)):
             p = Path(workdir) / name

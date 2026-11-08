@@ -533,3 +533,17 @@ def test_code_the_team_writes_never_sees_tokens_or_keys(tmp_path, monkeypatch):
     r = run_python("import os\nprint(sorted(os.environ))", tmp_path)
     assert "GH_TOKEN" not in r["stdout"] and "OPENAI_API_KEY" not in r["stdout"] and "AWS_SECRET" not in r["stdout"]
     assert "HTTPS_PROXY" in r["stdout"] and "PATH" in r["stdout"]  # it can still reach the web and run
+
+
+def test_the_coder_sees_a_site_named_without_a_scheme_and_the_links_its_task_names():
+    """'on books.toscrape.com' gave no preview: the coder wrote http:// URLs and guessed where the Mystery books are."""
+    from bs4 import BeautifulSoup
+    from team.tools.preview import task_links
+    from team.tools.web import urls_in
+    assert urls_in("Find the cheapest Mystery books on books.toscrape.com and save them to a CSV.") == \
+        ["https://books.toscrape.com/"]
+    assert urls_in("Mail it to arnav@example.com") == []
+    soup = BeautifulSoup('<a href="catalogue/category/books/mystery_3/index.html">Mystery</a>'
+                         '<a href="catalogue/category/books/poetry_23/index.html">Poetry</a>', "html.parser")
+    assert task_links(soup, "the three cheapest Mystery books", "https://books.toscrape.com/") == \
+        ["Mystery -> https://books.toscrape.com/catalogue/category/books/mystery_3/index.html"]
