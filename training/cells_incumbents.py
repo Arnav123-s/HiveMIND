@@ -81,7 +81,7 @@ def run(skill):
     acc = sum(S.score(skill, p, y) for p, (_, y) in zip(preds, te)) / len(te)
     member = inc if inc.startswith("code:") else f"{inc} = {__import__('team.config', fromlist=['x']).GGUF_ROSTER[inc]}"
     res = {"skill": skill, "incumbent": member, "test": round(acc, 4), "ms_per_call": round(sec * 1000, 1), "n": len(te),
-           "errors": [(x, y, p) for (x, y), p in zip(te, preds) if not S.score(skill, p, y)][:6]}
+           "errors": [(x, y, p) for (x, y), p in zip(te, preds) if not S.score(skill, p, y)]}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"incumbent_{skill}.json").write_text(json.dumps(res, indent=1))
     print(f"{skill}: {member} test {acc:.3f} ({sec * 1000:.0f} ms/call)", flush=True)

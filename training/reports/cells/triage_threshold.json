@@ -1,0 +1,51 @@
+{
+ "thresholds_chosen_on_dev": {
+  "write": 0.97,
+  "calc": 0.9,
+  "lookup": 0.9,
+  "site": 0.9,
+  "code": 0.9
+ },
+ "dev": {
+  "shortcut": 45,
+  "n": 55,
+  "right": 45,
+  "precision": 1.0,
+  "wrong": []
+ },
+ "test": {
+  "shortcut": 89,
+  "n": 127,
+  "right": 86,
+  "precision": 0.966,
+  "wrong": [
+   "lookup->write",
+   "lookup->write",
+   "lookup->write"
+  ]
+ },
+ "flat_0.9": {
+  "dev": {
+   "shortcut": 46,
+   "n": 55,
+   "right": 45,
+   "precision": 0.978,
+   "wrong": [
+    "calc->write"
+   ]
+  },
+  "test": {
+   "shortcut": 91,
+   "n": 127,
+   "right": 86,
+   "precision": 0.945,
+   "wrong": [
+    "lookup->write",
+    "lookup->write",
+    "lookup->write",
+    "plan->write",
+    "plan->write"
+   ]
+  }
+ }
+}
