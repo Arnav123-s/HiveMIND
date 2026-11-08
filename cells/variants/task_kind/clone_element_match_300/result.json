@@ -1,0 +1,86 @@
+{
+ "skill": "task_kind",
+ "base": "smol135",
+ "tag": "clone_element_match_300",
+ "modules": [
+  "8:o_proj",
+  "8:q_proj",
+  "8:v_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:down_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:down_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:down_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": 2,
+ "alpha": 16,
+ "steps": 300,
+ "lr": 0.001,
+ "trainable_params": 831744,
+ "parent": "/home/user/hivemind/cells/adapters/element_match",
+ "copied_tensors": 420,
+ "dev": 0.9454545454545454,
+ "test": 0.7795275590551181,
+ "train_seconds": 656.2,
+ "test_errors": [
+  [
+   "Navigate the shop's website to the Poetry section and report the top entry.",
+   "site",
+   "plan"
+  ],
+  [
+   "Download the quotes and authors from the library catalogue site into a spreadsheet.",
+   "code",
+   "plan"
+  ],
+  [
+   "Write a program that finds duplicate rows.",
+   "code",
+   "write"
+  ],
+  [
+   "Visit the shop's website, open the page for the tag 'science' and list the first entries.",
+   "site",
+   "plan"
+  ],
+  [
+   "Download the quotes and authors from the shop's website into a spreadsheet.",
+   "code",
+   "plan"
+  ],
+  [
+   "Split a bill of 39.99 between 9 people.",
+   "calc",
+   "code"
+  ],
+  [
+   "Visit the library catalogue site, open the page for the tag 'science' and list the first entries.",
+   "site",
+   "plan"
+  ],
+  [
+   "Find recent papers about quantisation.",
+   "lookup",
+   "plan"
+  ]
+ ]
+}
