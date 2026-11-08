@@ -120,7 +120,7 @@ class Hive:
         for p in problems:
             b.log("coordinator", "fix", p)
         for s in steps:
-            r = check_task(s["task"], self.goal)  # nothing beyond what Arnav ordered
+            r = check_task(s["task"], self.goal, cell=s["agent"] != "writer")  # nothing beyond what Arnav ordered
             if r:
                 b.log("guard", "dropped", f"{s['id']}: {r}")
                 continue

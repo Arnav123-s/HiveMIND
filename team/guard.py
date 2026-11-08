@@ -131,16 +131,18 @@ def _family_cell(text):
         return False
 
 
-def check_task(text, goal=""):
+def check_task(text, goal="", cell=True):
     """Family/relationship matters only when Arnav's own order is about them. Reason string, or None.
     Two readers: the rule and the family_topic cell (it also catches 'Mom', 'our son', 'the kids').
-    The cell only ever adds blocks: what the rule blocks, the cell can never unlock."""
+    The cell only ever adds blocks: what the rule blocks, the cell can never unlock. cell=False: the rule alone (the
+    writer's step: it acts on nothing and writes from what the team verified; the cell dropped "Write a three-sentence
+    explanation of what a mixture-of-experts model is" and the run had no report)."""
     m = FAMILY.search(text or "")
     if m:
         if FAMILY.search(goal or ""):
             return None
         return f"touches family/relationships ('{m.group(0)}'), which your order did not ask for"
-    if _family_cell(text) and not (FAMILY.search(goal or "") or _family_cell(goal)):
+    if cell and _family_cell(text) and not (FAMILY.search(goal or "") or _family_cell(goal)):
         return "touches family/relationships (family_topic cell), which your order did not ask for"
     return None
 
