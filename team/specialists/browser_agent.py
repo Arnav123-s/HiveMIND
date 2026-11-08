@@ -22,6 +22,23 @@ def bad_page(b):
     return ""
 
 
+def recover(b, history, n):
+    """After an error page, open the site's home page, as a person would, so the search box and links are in view
+    (told to do it, the 1.7B browser replied "fail" on the 404 page instead)."""
+    from urllib.parse import urlparse
+    u = urlparse(b.page.url)
+    home = f"{u.scheme}://{u.netloc}/"
+    if not bad_page(b) or not u.netloc or b.page.url == home:
+        return
+    bad = b.page.url
+    try:
+        b.goto(home)
+        history.append(f"{n}. {bad} does not exist (HTTP error): opened the home page {home} instead. Use its search box "
+                       f"or links to reach the goal.")
+    except RuntimeError as e:
+        history.append(f"{n}. {e}")
+
+
 def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     goal = task if not context else f"{task}\n(Team notes: {context[:600]})"
     b = Browser()
@@ -32,6 +49,7 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
             b.goto(start_url or "about:blank")
             if bad_page(b):
                 history.append(f"0. open {start_url} -> {bad_page(b)}")
+                recover(b, history, 0)
         except RuntimeError as e:
             history.append(f"0. {e}")
             b.page.goto("about:blank")
@@ -97,6 +115,7 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                 else:
                     stuck = 0
                     history.append(f"{n + 1}. {kind}{label} -> now at {url}" + (f" - {bad_page(b)}" if bad_page(b) else ""))
+                    recover(b, history, n + 1)
                 last_sig = sig
                 if shots_dir:
                     b.screenshot(f"{shots_dir}/{step_id.replace('[', '_').replace(']', '')}_{n + 1:02d}.png")
