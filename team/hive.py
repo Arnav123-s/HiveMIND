@@ -224,17 +224,29 @@ class Hive:
                     break
                 if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder", "calculator"):
                     b.log("cell:next_move", "reroute", f"{s['id']}: another specialist should try: {why[:120]}")
-                    break
+                    alt = coordinator.reroute(self.goal, s, feedback)
+                    if alt:
+                        self._rerouted(s, alt)
+                        return
+                    # no other specialist fits: the step dropped here after one attempt with retries left (a search
+                    # that returned the wrong papers); a retry with the verifier's reason can still fix it
+                    b.log("coordinator", "retry", f"{s['id']}: no other specialist fits; retrying with the feedback")
+                    allow_reroute = False
         n = attempt  # the loop always runs at least once
         b.log("coordinator", "give-up", f"{s['id']} failed after {n} attempt{'s' if n != 1 else ''}: {feedback}")
         if allow_reroute and s["agent"] in ("browser", "researcher", "coder", "calculator"):
             alt = coordinator.reroute(self.goal, s, feedback)
             if alt:
-                b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
-                b.add_step(alt)
-                self._run_step(alt, allow_reroute=False)
-                if b.step(alt["id"]).get("verdict") == "PASS":
-                    b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
+                self._rerouted(s, alt)
+
+    def _rerouted(self, s, alt):
+        """Another specialist does the failed step's job."""
+        b, feedback = self.board, self.board.step(s["id"]).get("feedback") or ""
+        b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
+        b.add_step(alt)
+        self._run_step(alt, allow_reroute=False)
+        if b.step(alt["id"]).get("verdict") == "PASS":
+            b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
 
     def _last_page(self, s):
         """A browser step that follows another starts where that one ended (each step opens a fresh browser: the

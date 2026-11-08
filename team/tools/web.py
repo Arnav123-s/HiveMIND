@@ -153,20 +153,33 @@ def search_hn(q, limit=8, newest=False):
             for h in d.get("hits", [])]
 
 
+def arxiv_queries(q):
+    """The search forms to try, strictest first. `all:mixture of experts` matches papers with ANY of the words, and
+    sorted newest-first that is mostly unrelated papers; the phrase, then every word, keep the topic."""
+    q = " ".join(re.sub(r'["()]', " ", q).split())
+    words = [w for w in re.findall(r"[\w.+-]+", q) if w.lower() not in {"of", "the", "a", "an", "and", "or", "in", "on",
+                                                                        "for", "to", "with", "about", "papers", "paper"}]
+    out = [f'all:"{q}"'] if len(q.split()) > 1 else []
+    if len(words) > 1:
+        out.append(" AND ".join(f"all:{w}" for w in words))
+    return out + [f"all:{q}"]
+
+
 def search_arxiv(q, limit=6, newest=False):
-    """newest: most recently submitted first (relevance order returned 2023-2024 papers for "the newest")."""
-    xml = get("https://export.arxiv.org/api/query", {"search_query": f"all:{q}", "max_results": limit,
-                                                     "sortBy": "submittedDate" if newest else "relevance",
-                                                     "sortOrder": "descending"})
+    """newest: most recently submitted first (relevance order returned 2023-2024 papers for "the newest").
+    The strictest query form that finds anything is used (arxiv_queries)."""
     ns = {"a": "http://www.w3.org/2005/Atom"}
-    root = ET.fromstring(xml)
-    out = []
-    for e in root.findall("a:entry", ns):
-        out.append({"title": " ".join(e.findtext("a:title", "", ns).split()),
-                    "url": e.findtext("a:id", "", ns),
-                    "snippet": f"published {e.findtext('a:published', '', ns)[:10]} | "
-                               + " ".join(e.findtext("a:summary", "", ns).split())[:300]})
-    return out
+    entries = []
+    for sq in arxiv_queries(q):
+        xml = get("https://export.arxiv.org/api/query", {"search_query": sq, "max_results": limit,
+                                                         "sortBy": "submittedDate" if newest else "relevance",
+                                                         "sortOrder": "descending"})
+        entries = ET.fromstring(xml).findall("a:entry", ns)
+        if entries:
+            break
+    return [{"title": " ".join(e.findtext("a:title", "", ns).split()), "url": e.findtext("a:id", "", ns),
+             "snippet": f"published {e.findtext('a:published', '', ns)[:10]} | "
+                        + " ".join(e.findtext("a:summary", "", ns).split())[:300]} for e in entries]
 
 
 def search_pypi(q, limit=1):

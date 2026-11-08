@@ -115,6 +115,13 @@ def run(goal, task, board, needs):
         ctx = getattr(board, "context", "")
         if ctx:  # "make it shorter": the text to work on is in the conversation
             results_text += f"\n\nEarlier in this conversation:\n{ctx[:4000]}"
+    if nothing_verified(goal, board, facts):
+        # every step that looked something up failed, and his own words hold nothing to work from: a writer here
+        # listed the papers the verifier had rejected and gave each one today's date
+        board.log("writer", "nothing-verified", "no step was verified: reporting that, with no answer")
+        checklist = [{"instruction": i, "done": False, "why": "not confirmed by the team"}
+                     for i in (getattr(board, "checklist", None) or [goal])]
+        return finish(NOTHING_VERIFIED, board, results_text, sources, checklist, [], [], [])
     dropped = re.findall(r"Dropped by the team's checks \(do not use\): ([^\n]+)", results_text)
     if dropped:
         task = f"{task}\nNever include these, they failed the checks: {'; '.join(dropped)}"
@@ -176,6 +183,23 @@ def run(goal, task, board, needs):
                 board.log("editor", "dropped", "the editor's version was not better")
     else:
         board.log("critic", "ok", "every claim matches the verified results")
+    return finish(text, board, results_text, sources, checklist, unordered, flagged, fixes)
+
+
+NOTHING_VERIFIED = ("The team could not confirm an answer to this, so none is given: every step that looked it up was "
+                    "rejected by the checks. What was tried and why it failed is listed below.")
+
+
+def nothing_verified(goal, board, facts):
+    """Every step that ran before the writer failed, no fact was verified, and the task hands over no text."""
+    from ..guard import split_material
+    ran = [s for s in board.steps() if s["agent"] != "writer" and s.get("verdict")]
+    return bool(ran) and not facts and not split_material(goal)[1] \
+        and all(s["verdict"] not in ("PASS", "REROUTED") for s in ran)
+
+
+def finish(text, board, results_text, sources, checklist, unordered, flagged, fixes):
+    """The report's checked tail: numbers grounded, flags, the checklist, what failed, the sources."""
     text = drop_empty_sections(text)
     text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
     if struck:

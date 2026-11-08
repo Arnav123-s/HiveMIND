@@ -58,6 +58,33 @@ def quotes_truth():
     return [q.select_one("span.text").text.strip("“”\"") for q in soup.select("div.quote")[:3]]
 
 
+def check_arxiv(run, report):
+    """Three papers, each really about mixture of experts (its arXiv title or abstract says so) and each with its real
+    date. The first check (3 list items and one arXiv link) passed a report that listed two unrelated papers and gave
+    every paper today's date."""
+    import xml.etree.ElementTree as ET
+    ids = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", report)))[:3]
+    if len(ids) < 3:
+        return False, f"{len(ids)} arXiv papers named"
+    ns = {"a": "http://www.w3.org/2005/Atom"}
+    root = ET.fromstring(_get(f"https://export.arxiv.org/api/query?id_list={','.join(ids)}"))
+    body, bad = _body(report), []
+    for e in root.findall("a:entry", ns):
+        pid = re.search(r"(\d{4}\.\d{4,5})", e.findtext("a:id", "", ns)).group(1)
+        text = (e.findtext("a:title", "", ns) + " " + e.findtext("a:summary", "", ns)).lower()
+        if not re.search(r"mixture[- ]of[- ]experts?|\bmoe\b", text):
+            bad.append(f"{pid} is not about mixture of experts")
+        d = e.findtext("a:published", "", ns)[:10]
+        y, m, day = d.split("-")
+        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+                  "November", "December"]
+        forms = [d, f"{int(day)} {months[int(m) - 1]} {y}", f"{months[int(m) - 1]} {int(day)}, {y}",
+                 f"{int(day)} {months[int(m) - 1][:3]} {y}", f"{months[int(m) - 1][:3]} {int(day)}, {y}"]
+        if not any(f.lower() in body.lower() for f in forms):
+            bad.append(f"{pid}: its date {d} is not given")
+    return not bad, "; ".join(bad) or "3 mixture-of-experts papers with their dates"
+
+
 def check_csv(run, report):
     cs = files(run, ".csv")
     if not cs:
@@ -105,8 +132,7 @@ TASKS = [  # (id, kind, task, check)
      "Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me a "
      "two-line summary. Do not log in or pay.", has("apache", "0.135", max_lines=2)),
     ("arxiv", "list from a source", "List the three newest arXiv papers about mixture of experts, with their titles and dates.",
-     lambda run, rep: (len(re.findall(r"arxiv\.org/(?:abs|pdf)/\d{4}\.\d{4,5}", rep)) >= 1 and
-                       len(re.findall(r"^\s*(?:\d+[.)]|[-*]|\|)", _body(rep), re.M)) >= 3, "3 items and an arXiv source")),
+     check_arxiv),
     ("chart", "numbers + chart", "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or "
      "HuggingFaceTB/SmolLM2-360M-Instruct? Make a bar chart of the two.", check_chart),
     ("quotes", "operate a website", "On quotes.toscrape.com, open the page for the tag 'inspirational' and list the "
