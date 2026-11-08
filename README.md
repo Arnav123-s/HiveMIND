@@ -421,6 +421,12 @@ CMAKE_ARGS="-DGGML_NATIVE=ON" pip install llama-cpp-python==0.3.36
 playwright install chromium
 ```
 ```bash
+python training/cells_build.py
+```
+(builds the 18 cells and their shared SmolLM2-135M base for llama.cpp from `cells/adapters/`: ~2 min,
+~185 MB in `cells/gguf/`, which git does not carry. Skip it and every cell stays off without a warning: the
+bigger members and the code rules do those jobs instead.)
+```bash
 python -m pytest -q tests
 ```
 
