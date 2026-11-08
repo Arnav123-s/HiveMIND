@@ -1,0 +1,39 @@
+{
+ "skill": "quote_pick",
+ "incumbent": "researcher = brain4b",
+ "test": 0.9333,
+ "ms_per_call": 7313.7,
+ "n": 150,
+ "errors": [
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The menu changes every season.\n2. The data is refreshed hourly.\n3. The archive goes back to 2009.\n4. Opening hours vary on holidays.\n5. The gated of Mistral-7B is yes.",
+   "none",
+   "5"
+  ],
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The data is refreshed hourly.\n2. The gated of Mistral-7B was discussed.\n3. The archive goes back to 2009.\n4. Comments are closed.\n5. Support replies within a day.",
+   "none",
+   "2"
+  ],
+  [
+   "CLAIM: The price of the 3pm train is \u20ac42.\nSENTENCES:\n1. Comments are closed.\n2. The data is refreshed hourly.\n3. The archive goes back to 2009.\n4. The price of the 3pm train is \u20ac24.\n5. The menu changes every season.",
+   "none",
+   "4"
+  ],
+  [
+   "CLAIM: The price of the 3pm train is \u20ac42.\nSENTENCES:\n1. Comments are closed.\n2. Opening hours vary on holidays.\n3. Support replies within a day.\n4. The price of the 3pm train is \u20ac24.\n5. The data is refreshed hourly.",
+   "none",
+   "4"
+  ],
+  [
+   "CLAIM: The license of Phi-3-mini is mit.\nSENTENCES:\n1. Opening hours vary on holidays.\n2. The data is refreshed hourly.\n3. The archive goes back to 2009.\n4. The license of Phi-3-mini is apache-2.0.",
+   "none",
+   "4"
+  ],
+  [
+   "CLAIM: The parameters of Gemma-2-2B is 2.6B.\nSENTENCES:\n1. The menu changes every season.\n2. The parameters of Gemma-2-2B is 2.0B.\n3. Comments are closed.\n4. The archive goes back to 2009.",
+   "none",
+   "2"
+  ]
+ ]
+}

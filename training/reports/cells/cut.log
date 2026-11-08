@@ -1,0 +1,14 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3715.52it/s]
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  7.15it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  7.14it/s]
+cut22: kept 22 of 30 layers, dropped [4, 5, 7, 9, 21, 22, 25, 26]; 106.2M params
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 16555.70it/s]
+  [cut22_all_r2] step 0 loss 6.9822 (3s)
+  [cut22_all_r2] step 50 loss 0.0008 (111s)
+  [cut22_all_r2] step 99 loss 0.0003 (214s)
+  [cut22_all_r2] route_step: dev 0.950 test 0.797 params 447,744 (242.2s)
+{'skill': 'route_step', 'full': 0.9915254237288136, 'cut': 0.7966101694915254, 'ms_full': 8583.842068910599, 'ms_cut': 4696.307736635208, 'params_full': 610560, 'params_cut': 447744}
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 10538.06it/s]
+  [cut22_all_r2] step 0 loss 6.5940 (2s)
+  [cut22_all_r2] step 50 loss 0.0003 (110s)
+  [cut22_all_r2] step 99 loss 0.0002 (211s)
+  [cut22_all_r2] next_move: dev 0.611 test 0.653 params 447,744 (245.0s)

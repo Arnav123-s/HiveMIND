@@ -1,0 +1,13 @@
+{"skill": "route_step", "tag": "E1_pick+out", "dev": 1.0, "test": 0.9661016949152542, "trainable_params": 262656}
+{"skill": "route_step", "tag": "E2_pick_r32", "dev": 0.9782608695652174, "test": 0.940677966101695, "trainable_params": 712704}
+{"skill": "route_step", "tag": "E3_all_r2", "dev": 1.0, "test": 0.9830508474576272, "trainable_params": 610560}
+{"skill": "route_step", "tag": "E4a_attn_all", "dev": 1.0, "test": 0.9576271186440678, "trainable_params": 921600}
+{"skill": "route_step", "tag": "E4b_mlp_all", "dev": 1.0, "test": 1.0, "trainable_params": 1520640}
+{"skill": "route_step", "tag": "v2_pick", "dev": 0.975, "test": 0.9915254237288136, "trainable_params": 262656, "data": "v2-heldout-words"}
+{"skill": "route_step", "tag": "v2_thin", "dev": 1.0, "test": 0.9576271186440678, "trainable_params": 807552, "data": "v2-heldout-words"}
+{"skill": "route_step", "tag": "v2_all_r2", "dev": 1.0, "test": 0.9915254237288136, "trainable_params": 610560, "data": "v2-heldout-words"}
+{"skill": "route_step", "tag": "v2_all_r8", "dev": 1.0, "test": 0.9491525423728814, "trainable_params": 2442240, "data": "v2-heldout-words"}
+{"skill": "orders_spend", "tag": "v2_pick", "dev": 0.8125, "test": 0.8852459016393442, "trainable_params": 304128, "data": "v2-heldout-words"}
+{"skill": "orders_spend", "tag": "v2_thin", "dev": 1.0, "test": 0.9836065573770492, "trainable_params": 838656, "data": "v2-heldout-words"}
+{"skill": "orders_spend", "tag": "v2_all_r2", "dev": 1.0, "test": 0.9672131147540983, "trainable_params": 610560, "data": "v2-heldout-words"}
+{"skill": "orders_spend", "tag": "v2_all_r8", "dev": 1.0, "test": 0.9836065573770492, "trainable_params": 2442240, "data": "v2-heldout-words"}

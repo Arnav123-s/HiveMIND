@@ -1,0 +1,51 @@
+{
+ "skill": "orders_login",
+ "base": "smol135",
+ "tag": "thin",
+ "modules": [
+  "3:o_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:down_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:o_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:o_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": 2,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 820224,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 1.0,
+ "test": 0.9836065573770492,
+ "train_seconds": 376.8,
+ "test_errors": [
+  [
+   "Check the order of the steps in the guide. Under no circumstances log in to books.toscrape.com.",
+   "no",
+   "yes"
+  ]
+ ]
+}

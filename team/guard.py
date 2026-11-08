@@ -98,11 +98,25 @@ def ordered_sites(goal, orders, kind):
     return sites or {d.lower().removeprefix("www.") for d in DOMAIN.findall(goal or "")}
 
 
+def _family_cell(text):
+    try:
+        from .cells import use
+        return use.on("family_topic") and bool(text) and use.ask("family_topic", text) == "yes"
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def check_task(text, goal=""):
-    """Family/relationship matters only when Arnav's own order is about them. Reason string, or None."""
+    """Family/relationship matters only when Arnav's own order is about them. Reason string, or None.
+    Two readers: the rule and the family_topic cell (it also catches 'Mom', 'our son', 'the kids').
+    The cell only ever adds blocks: what the rule blocks, the cell can never unlock."""
     m = FAMILY.search(text or "")
-    if m and not FAMILY.search(goal or ""):
+    if m:
+        if FAMILY.search(goal or ""):
+            return None
         return f"touches family/relationships ('{m.group(0)}'), which your order did not ask for"
+    if _family_cell(text) and not (FAMILY.search(goal or "") or _family_cell(goal)):
+        return "touches family/relationships (family_topic cell), which your order did not ask for"
     return None
 
 
@@ -128,9 +142,13 @@ class Guard:
         """Two independent readers must agree before a risky kind counts as ordered: the rule-based parser and the
         order-reader member (its own weight edit). If they disagree, the kind is NOT treated as ordered."""
         from . import llm, prompts
-        data, _ = llm.chat_json("order_reader", [{"role": "system", "content": prompts.ORDER_READER},
-                                                 {"role": "user", "content": self.goal}], max_new_tokens=40)
-        model = {k for k in (data or {}).get("orders", [])} if isinstance(data, dict) else set()
+        from .cells import use
+        if use.orders_on():  # five one-kind cells (spend, delete, send, login, signup) read the order
+            model = use.orders(self.goal, board)
+        else:
+            data, _ = llm.chat_json("order_reader", [{"role": "system", "content": prompts.ORDER_READER},
+                                                     {"role": "user", "content": self.goal}], max_new_tokens=40)
+            model = {k for k in (data or {}).get("orders", [])} if isinstance(data, dict) else set()
         risky = {"spend", "delete", "send", "login", "signup"}
         rx = set(self.orders) & risky
         for k in rx - model:

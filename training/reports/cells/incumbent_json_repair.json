@@ -1,0 +1,39 @@
+{
+ "skill": "json_repair",
+ "incumbent": "code:parse_json",
+ "test": 0.4933,
+ "ms_per_call": 0.0,
+ "n": 150,
+ "errors": [
+  [
+   "{'query': 'PASS', }",
+   "{\"query\": \"PASS\"}",
+   ""
+  ],
+  [
+   "{'status': true}",
+   "{\"status\": true}",
+   ""
+  ],
+  [
+   "{ok: false}",
+   "{\"ok\": false}",
+   ""
+  ],
+  [
+   "{'notes': 'researcher'}",
+   "{\"notes\": \"researcher\"}",
+   ""
+  ],
+  [
+   "{\"ids\": True}",
+   "{\"ids\": true}",
+   ""
+  ],
+  [
+   "{count: \"researcher\"}",
+   "{\"count\": \"researcher\"}",
+   ""
+  ]
+ ]
+}

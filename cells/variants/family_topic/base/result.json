@@ -1,0 +1,8 @@
+{
+ "skill": "family_topic",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.4166666666666667,
+ "test": 0.5,
+ "trainable_params": 0
+}

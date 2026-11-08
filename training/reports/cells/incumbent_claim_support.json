@@ -1,0 +1,39 @@
+{
+ "skill": "claim_support",
+ "incumbent": "verifier = fast+verifier",
+ "test": 0.88,
+ "ms_per_call": 10270.6,
+ "n": 150,
+ "errors": [
+  [
+   "CLAIM: The context length of Ulpel is \u20ac338.\nQUOTE: Listed top speed for Ulpel: \u20ac338",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The membership fee of Sorqui-3B is 5,620.\nQUOTE: weight (Sorqui-3B): 5,620",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The download count of Quimisor Hotel is 9,940.\nQUOTE: membership fee (Quimisor Hotel): 9,940",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: Zudan's capacity is 6.8.9.\nQUOTE: Listed capacity for Lovafen Hotel: 6.8.9",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The context length of Lokaka is \u00a3131.\nQUOTE: Listed membership fee for Lokaka: \u00a3131",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: Nairen Hotel's top speed is \u00a3266.\nQUOTE: top speed (Quiva-2B): \u00a3266",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ]
+ ]
+}

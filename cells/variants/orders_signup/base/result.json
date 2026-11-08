@@ -1,0 +1,8 @@
+{
+ "skill": "orders_signup",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.1875,
+ "test": 0.2459016393442623,
+ "trainable_params": 0
+}

@@ -13,3 +13,9 @@ adapters_candidates/
 adapters/.previous/
 training/data/self/
 training/data/_live_cache.json
+# cells: the winners' deltas (cells/adapters) and every result.json are kept; rebuilt by training/cells_build.py
+cells/gguf/
+cells/bases/
+cells/variants/**/adapter_model.safetensors
+cells/registry.lock
+cells/registry.json.tmp
