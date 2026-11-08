@@ -579,3 +579,14 @@ def test_the_report_keeps_his_instructions_and_the_calendar_s_weekdays():
     text, wrong = check_weekdays("45 days.\n| Date | Day |\n|---|---|\n| 15 January 2026 | Monday |\n"
                                  "4 July 1976 was a Sunday. 2026-03-01 is a Sunday.")
     assert wrong == ["| 15 January 2026 | Monday |"] and "| Date |" not in text and "4 July 1976 was a Sunday" in text
+
+
+def test_the_layout_comes_from_his_order_not_from_the_text_he_hands_over():
+    """'the apples that was on the table' made the writer add a table; 'give me only the corrected sentence' was not
+    read as a layout at all."""
+    from team.specialists.writer import ordered_format
+    fmt, lines = ordered_format(["Correct the grammar of this sentence: 'She don't like the apples that was on the table.'",
+                                 "give me only the corrected sentence"])
+    assert "table" not in fmt.replace("no table", "") and fmt.startswith("only the corrected sentence") and lines == 1
+    assert ordered_format(["Compare the two models in a table"]) == ("include a table", None)
+    assert ordered_format(["Summarise this: 'The table was moved. The chairs stayed.'"]) == ("", None)
