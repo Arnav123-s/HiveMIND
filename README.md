@@ -139,8 +139,9 @@ listed in the report as waiting for you.
 **Two readers must agree.** What you ordered is read twice, independently: a rule-based parser (verbs in
 command position; negations, nouns and terms like "text-generation" excluded) and the order-reader member
 (the 1.7B base with its own weight edit). A risky kind counts as ordered only if both say so; a disagreement
-is logged and the kind is treated as not ordered (it asks you). Measured on 63 held-out sentences, see
-`training/reports/orders_*.json`.
+is logged and the kind is treated as not ordered (it asks you). Measured on 63 held-out sentences:
+parser alone 1.00 exact, 0 false approvals; order reader 0.51 → 0.73 exact after its
+weight edit; both-must-agree 0.71 → 0.87 exact with **0 false approvals** (`training/reports/orders_*.json`).
 
 **Everything you ordered, nothing else.** Your task is turned into a checklist of your instructions, in your
 own words (items that are not grounded in your text are dropped). The plan reviewer checks that the plan
@@ -176,49 +177,46 @@ and its child processes die within a second; model calls refuse to start) and `t
 
 ## How the specialists were improved
 
-TRAINING_SECTION
+Every number here is a measurement on held-out cases (`training/evals/`, none of them in any training data), produced by `training/observe.py`; per-case outputs are in `training/reports/<tag>.json`. Evals are small (3-18 cases), so treat single-case differences as noise.
 
-## The smith swarm: members that improve the members (`team/smiths.py`, `team/evolve.py`, `training/`)
+**1. Observe.** Each specialist ran its held-out cases on the base model. What failed, and the design fix:
+- browser invented URLs and missed targets buried in page chrome → it now sees the page lines that match its goal and the 40 most relevant elements (rare goal words weigh more); navigation errors come back as a reason, not a crash
+- coder guessed HTML classes and JSON keys blind and imported unrelated packages → it gets a real preview of every URL/file in its task, and is told when a file it should have made is missing
+- small models kept talking after the answer → decoding stops when the JSON object or code block closes; on llama.cpp, JSON is grammar-constrained so it is always valid
+- Hugging Face search matched descriptive words against model names → the tool strips them; PyPI needs an exact name → the tool tries each word
+- "for each" without fan-out → the plan is repaired; a step that fails 3 times is re-routed to a different specialist
 
-No single member is in charge or has to be perfect. Improvement is itself a swarm: every kind of improvement has
-several smiths with different strategies; they compete on held-out tests; only measured winners are kept; a
-ledger (`memory/smiths.json`) tracks each smith's wins; and the smith-of-smiths replaces a losing smith with a
-mutated copy of a winning one, so the smiths get better too.
+**2. Edit the weights.** For each 1.7B specialist I wrote training data aimed at its failures (`training/build_*.py`: hand-written plans; expert browser runs recorded on live sites; live Hugging Face / PyPI / Hacker News / arXiv / quotes pages; true and perturbed claims) and trained a weight delta W' = W + (α/r)·B·A on the top 14 of 28 transformer layers, all 7 projection matrices per layer, on CPU, loss on the reply tokens only. Exact tensors changed: `training/reports/weights_<specialist>.md`.
 
-| job | smiths (strategies) | what it produces |
-|---|---|---|
-| spot gaps | gap-failures (what keeps failing), gap-demand (what you keep asking for) | ranked gaps per member |
-| build data | data-distil (verified calls become examples), data-paraphrase (reword the task, keep the verified answer) | training data for a niche |
-| write tests | tests-from-runs (verified browser steps from real runs become field tests) | `training/evals/field_*.json` |
-| find internals | internals-diff (`training/steer.py`: per-layer hidden-state direction between right and wrong replies, layer and strength chosen by sweep) | a control vector at one layer |
-| train weights | train-top-half (layers 14-27, rank 16), train-narrow (layers 20-27, rank 8) | a weight edit (LoRA) |
-| tune prompts | prompt-rules, prompt-example, prompt-rewrite | a better system prompt |
-| clone and specialise | clone-niche | a new member, e.g. `browser_hf`, copied from its parent's edits |
-| teach the router | router-wins | routes a step to a specialised member only where it beat its parent (`memory/routes.json`) |
-| retire | retire-behind | retires members that fall behind their parent |
-| improve smiths | smith-of-smiths | replaces the worst smith of a job with a mutated copy of the best |
+| edit | examples | layers | rank | epochs | train loss start → end | CPU time | kept? |
+|---|---|---|---|---|---|---|---|
+| coordinator | 38 | 14-27 | 16 | 3.0 | 2.69 → 0.30 | 7 min | no: 0.79 vs 0.94 without it (learned 2-step plans) |
+| researcher | 71 | 14-27 | 16 | 2.0 | 0.87 → 0.06 | 10 min | no: extraction 0.57 vs 0.77 (looped, broke JSON) |
+| browser | 107 | 14-27 | 16 | 2.0 | 1.44 → 0.03 | 39 min | yes: 0.79 vs 0.43 |
+| verifier | 225 | 14-27 | 8 | 1.0 | 5.06 → 0.01 | 5 min | yes: 0.89 vs 0.83 |
+| writer | 13 | 14-27 | 8 | 3.0 | 2.86 → 0.42 | 2 min | yes: tie 0.88, faster model |
 
-```bash
-python -m team smiths              # the ledger: who is winning
-```
-```bash
-python -m team smiths cycle verifier   # gaps -> every prompt smith competes -> measured -> winner kept
-```
-```bash
-python -m team evolve researcher --variants 3
-```
-```bash
-python training/steer.py browser   # find and edit the internals behind the browser's mistakes
-```
+**3. Bigger brains for the same RAM.** A second engine (llama.cpp, 4-bit) runs a 4B model in about the RAM and speed the 1.7B needed in PyTorch (measured, this 4-core CPU):
 
-### A huge swarm in under 10 GB
+| engine | model | tokens/s | RAM it allocates | + mapped weights (evictable) |
+|---|---|---|---|---|
+| llama.cpp | Qwen3-4B 4-bit | 7.6 | 3.87 GB | 2.66 GB |
+| PyTorch | Qwen3-1.7B bf16 | 8.4 | 0.58 GB | 3.67 GB |
 
-A member is a role prompt, a base model, and optionally its own weight edit (9-17 MB) and internal edit
-(8 KB), so members cost megabytes; RAM goes to the few shared base models. Under the default budget
-(`AGENT_TEAM_RAM_GB=10`): 8-bit attention cache, a smaller context for the 1.7B roles, at most 2 base
-models resident (the least recently used is unloaded and reloads in ~4 s from the OS file cache).
+**4. Pick each role's brain by score.** Same held-out cases, every candidate:
 
-SWARM_SECTION
+| eval (held out) | cases | 1.7B base, first design | 1.7B base, improved design | 1.7B + own edit (PyTorch) | 1.7B 8-bit + own edit (llama.cpp) | 4B 4-bit / coder 7B 4-bit | in the team now |
+|---|---|---|---|---|---|---|---|
+| coordinator | 14 | 0.94 | - | 0.79 | - | 1.00 | 4B |
+| researcher_plan | 10 | 0.95 | - | 0.97 | - | 1.00 | 4B |
+| researcher_extract | 5 | 0.77 | - | 0.57 | - | 0.80 | 4B |
+| verifier | 18 | 0.83 | - | 0.89 | 0.89 | 0.89 | 1.7B + edit |
+| writer | 3 | 0.88 | - | 0.88 | 1.00 | 1.00 | 1.7B + edit |
+| browser | 14 | 0.36 | 0.43 | 0.79 | 0.71 | 0.43 | 1.7B + edit |
+| browser_live | 4 | 0.50 | - | 0.75 | 0.75 | 0.50 | 1.7B + edit |
+| coder | 8 | 0.50 | - | - | - | 0.88 | coder 7B |
+
+Rule: a candidate replaces the current one only if it scores at least as well; ties go to the faster model. Rejected edits are kept in `adapters/.rejected/` for the record.
 
 ## Dreaming: getting better on its own (`team/dream.py`)
 
@@ -235,11 +233,15 @@ SWARM_SECTION
    and scored on the held-out evals. It replaces the current weights only if it does not score lower.
    Old versions are kept in `adapters/.previous/`.
 
-DREAM_SECTION
+Built and wired into `serve`; not run as a full cycle in this session (CPU time went to the demo and evals). `python -m team dream --no-train` runs the replay, lessons and distil parts in minutes.
 
 ## The demo
 
-DEMO_SECTION
+`demo/TASK.md` is the one prompt; `demo/README.md` is generated from the run's own records; `demo/run/` holds
+everything (board, every model call, screenshots, the code the coder wrote, the report). Honest result: see
+`demo/README.md` "Status" - the research and license/size checks were done and verified; the benchmark part was
+not (the coder's program failed on the 4-bit models the researcher picked), and the report says so.
+Earlier attempts and what each one exposed are kept in `runs/demo-attempt-*` (not in git).
 
 ## Install (your laptop)
 

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "s1",
+    "agent": "researcher",
+    "task": "Find the best candidates on Hugging Face: text-generation models under 2B parameters with a permissive license that are not gated.",
+    "needs": [],
+    "for_each": null,
+    "done_when": "A list of top 3 candidates with their Hugging Face URLs and license information."
+  },
+  {
+    "id": "s2",
+    "agent": "browser",
+    "task": "Open the Hugging Face page for each of the top 3 candidates and check the license and the real size of its weights files. Item: {item}",
+    "needs": [
+      "s1"
+    ],
+    "for_each": "s1",
+    "done_when": "The license and real size of weights files for each of the top 3 candidates are verified."
+  },
+  {
+    "id": "s3",
+    "agent": "coder",
+    "task": "Write and run a benchmark on this machine that loads each of the 3 models on CPU and measures load time, memory used and tokens per second, and checks how many of 10 simple arithmetic questions each one answers correctly.",
+    "needs": [
+      "s2"
+    ],
+    "for_each": null,
+    "done_when": "The benchmark results for each of the 3 models are collected and verified."
+  },
+  {
+    "id": "s4",
+    "agent": "writer",
+    "task": "Write a ranked recommendation with sources based on the benchmark results and verified information.",
+    "needs": [
+      "s3"
+    ],
+    "for_each": null,
+    "done_when": "A ranked recommendation with sources is written and verified."
+  }
+]

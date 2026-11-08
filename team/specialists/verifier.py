@@ -27,8 +27,12 @@ def hard_item_check(task, evidence):
     """Reason an item breaks a hard limit the task states (size, gating), or None."""
     limit = re.search(r"(under|below|less than|smaller than|at most|up to|<)\s*(\d+(?:\.\d+)?)\s*b\b", task, re.I)
     m = re.search(r"params (\d+(?:\.\d+)?)B", evidence)
-    if limit and m and float(m.group(1)) >= float(limit.group(2)):
-        return f"{m.group(1)}B is not under {limit.group(2)}B"
+    sizes = [float(m.group(1))] if m else []
+    # quantized repos report packed parameter counts; the size in the model's name is the real one
+    first = evidence.split("|")[0]
+    sizes += [float(x) for x in re.findall(r"[-_](\d+(?:\.\d+)?)[bB](?![a-zA-Z])", first)]
+    if limit and sizes and max(sizes) >= float(limit.group(2)):
+        return f"{max(sizes)}B is not under {limit.group(2)}B"
     if re.search(r"\b(not|un|non)[- ]?gated\b", task, re.I) and re.search(r"gated (True|manual|auto)", evidence):
         return "gated"
     return None

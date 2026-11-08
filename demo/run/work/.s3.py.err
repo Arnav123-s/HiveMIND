@@ -1,0 +1,84 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights:   1%|          | 1/197 [00:00<00:27,  7.21it/s]Loading weights: 100%|██████████| 197/197 [00:00<00:00, 1149.76it/s]
+[transformers] [1mGPT2LMHeadModel LOAD REPORT[0m from: line-corporation/japanese-large-lm-1.7b-instruction-sft-4bit-32g-actorder_False
+Key                                        | Status     | 
+-------------------------------------------+------------+-
+transformer.h.{0...23}.attn.c_proj.g_idx   | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_proj.qweight  | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_fc.qzeros     | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_proj.qzeros  | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_proj.scales   | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_attn.scales  | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_proj.g_idx    | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_proj.scales  | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_proj.qzeros   | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_proj.qweight | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_fc.g_idx      | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_attn.qzeros  | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_attn.g_idx   | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_fc.qweight    | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_attn.qweight | UNEXPECTED | 
+transformer.h.{0...23}.mlp.c_fc.scales     | UNEXPECTED | 
+transformer.h.{0...23}.attn.c_proj.weight  | MISSING    | 
+transformer.h.{0...23}.attn.c_attn.weight  | MISSING    | 
+transformer.h.{0...23}.mlp.c_fc.weight     | MISSING    | 
+transformer.h.{0...23}.mlp.c_proj.weight   | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Traceback (most recent call last):
+  File "/home/user/agent-team/demo/run/work/s3.py", line 73, in <module>
+    benchmark_model(model)
+    ~~~~~~~~~~~~~~~^^^^^^^
+  File "/home/user/agent-team/demo/run/work/s3.py", line 53, in benchmark_model
+    outputs = model.generate(**inputs, max_length=10)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 158, in no_grad
+    return func(*args, **kwargs)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/generation/utils.py", line 3000, in generate
+    result = decoding_method(
+        self,
+    ...<5 lines>...
+        **model_kwargs,
+    )
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/generation/utils.py", line 3200, in _sample
+    outputs = self._prefill(
+        input_ids,
+    ...<2 lines>...
+        is_first_iteration=not generation_config.is_assistant,
+    )
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/generation/utils.py", line 4312, in _prefill
+    return self(**model_inputs, return_dict=True)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1798, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/utils/generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/models/gpt2/modeling_gpt2.py", line 682, in forward
+    transformer_outputs: BaseModelOutputWithPastAndCrossAttentions = self.transformer(
+                                                                     ~~~~~~~~~~~~~~~~^
+        input_ids,
+        ^^^^^^^^^^
+    ...<8 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1798, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/utils/generic.py", line 1081, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/utils/output_capturing.py", line 287, in wrapper
+    outputs = func(self, *args, **kwargs)
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/models/gpt2/modeling_gpt2.py", line 547, in forward
+    self.warn_if_padding_and_no_attention_mask(input_ids, attention_mask)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/agent-team/.venv/lib/python3.13/site-packages/transformers/modeling_utils.py", line 4608, in warn_if_padding_and_no_attention_mask
+    if self.config.pad_token_id in input_ids[:, [-1, 0]]:
+                                   ~~~~~~~~~^^^^^^^^^^^^
+IndexError: index is out of bounds for dimension with size 0
