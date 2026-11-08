@@ -1,0 +1,90 @@
+{
+ "skill": "task_kind",
+ "parent": "element_match",
+ "parent_scores_dev": {
+  "base": {
+   "dev": 0.38636363636363635,
+   "dev_loss": 9.5344
+  },
+  "route_step": {
+   "dev": 0.38636363636363635,
+   "dev_loss": 4.0279
+  },
+  "next_move": {
+   "dev": 0.20454545454545456,
+   "dev_loss": 4.729
+  },
+  "orders_spend": {
+   "dev": 0.20454545454545456,
+   "dev_loss": 8.7394
+  },
+  "split_orders": {
+   "dev": 0.3181818181818182,
+   "dev_loss": 19.9527
+  },
+  "json_repair": {
+   "dev": 0.2727272727272727,
+   "dev_loss": 12.3173
+  },
+  "family_topic": {
+   "dev": 0.4772727272727273,
+   "dev_loss": 8.1906
+  },
+  "orders_send": {
+   "dev": 0.22727272727272727,
+   "dev_loss": 9.2527
+  },
+  "quote_pick": {
+   "dev": 0.3409090909090909,
+   "dev_loss": 4.4663
+  },
+  "orders_delete": {
+   "dev": 0.22727272727272727,
+   "dev_loss": 8.0544
+  },
+  "claim_support": {
+   "dev": 0.20454545454545456,
+   "dev_loss": 7.4348
+  },
+  "orders_login": {
+   "dev": 0.22727272727272727,
+   "dev_loss": 9.3536
+  },
+  "pick_source": {
+   "dev": 0.3181818181818182,
+   "dev_loss": 3.5804
+  },
+  "pick_element": {
+   "dev": 0.1590909090909091,
+   "dev_loss": 8.4216
+  },
+  "orders_signup": {
+   "dev": 0.2727272727272727,
+   "dev_loss": 6.9613
+  },
+  "licence_open": {
+   "dev": 0.36363636363636365,
+   "dev_loss": 7.8179
+  },
+  "orders_any": {
+   "dev": 0.45454545454545453,
+   "dev_loss": 3.7793
+  },
+  "element_match": {
+   "dev": 0.4772727272727273,
+   "dev_loss": 3.3791
+  }
+ },
+ "steps": 100,
+ "clone": {
+  "dev": 0.6818181818181818,
+  "test": 0.8188976377952756,
+  "trainable_params": 831744,
+  "copied_tensors": 420
+ },
+ "scratch": {
+  "dev": 0.7272727272727273,
+  "test": 0.7874015748031497,
+  "trainable_params": 831744
+ }
+}
