@@ -88,25 +88,36 @@ def plan(goal, board, notes=""):
 
 
 def instructions(goal, board=None):
-    """Arnav's task as a checklist of everything he ordered."""
+    """Arnav's task as a checklist of everything he ordered. Material he hands over (after "Summarise this:", a quoted
+    sentence, code) is what an instruction works on, not instructions of its own."""
     from ..cells import use
-    if use.on("split_orders"):  # one small cell, trained only to split an order into its instructions
-        lines = [ln.strip("-• ").strip() for ln in use.ask("split_orders", goal, board).split("\n")]
-        items = []
-        for ln in lines:  # the cell may respell names ("Smol LM2"): keep Arnav's own words for each line
-            got = _snap(ln, goal) if ln else None
-            if got and got not in items and grounded(got, goal):
-                items.append(got)
-        for sent in re.split(r"(?<=[.!?])\s+", goal.strip()):  # nothing skipped: an uncovered sentence goes in as written
-            sent = sent.strip().rstrip(".")
-            if sent and not _covered(sent, items):
-                items.append(sent)
-        if items:
-            return items[:15]
+    from ..guard import split_material
+    order, material = split_material(goal)
+    items = _split(order, board) if use.on("split_orders") else []
+    if items:
+        if material:
+            items[0] = f"{items[0]}: {material}" if len(material) <= 150 else f"{items[0]} (the text he gave)"
+        return items[:15]
+    goal = order if material else goal
     data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.INSTRUCTIONS},
                                               {"role": "user", "content": goal}], max_new_tokens=400)
     items = (data or {}).get("instructions", []) if isinstance(data, dict) else []
     return [str(i)[:200] for i in items if str(i).strip() and grounded(str(i), goal)][:15]
+
+
+def _split(goal, board=None):
+    from ..cells import use
+    lines = [ln.strip("-• ").strip() for ln in use.ask("split_orders", goal, board).split("\n")]
+    items = []
+    for ln in lines:  # the cell may respell names ("Smol LM2"): keep Arnav's own words for each line
+        got = _snap(ln, goal) if ln else None
+        if got and got not in items and grounded(got, goal):
+            items.append(got)
+    for sent in re.split(r"(?<=[.!?])\s+", goal.strip()):  # nothing skipped: an uncovered sentence goes in as written
+        sent = sent.strip().rstrip(".")
+        if sent and not _covered(sent, items):
+            items.append(sent)
+    return items
 
 
 def _snap(line, goal):
