@@ -83,7 +83,7 @@ def lessons(log):
                                                     "prevent it next time. Reply with the rule only."},
                       {"role": "user", "content": f"Specialist: {st['agent']}\nTask: {st['task'][:300]}\n"
                                                   f"Why it was rejected: {st['feedback'][:300]}"}]
-            rule = llm.chat("writer", prompt, max_new_tokens=60).strip().split("\n")[0][:220]
+            rule = llm.chat("lesson_writer", prompt, max_new_tokens=60).strip().split("\n")[0][:220]
             if rule:
                 memory.add_lesson(st["agent"], rule, st["task"], source=f"{run.name}/{sid}")
                 n += 1
