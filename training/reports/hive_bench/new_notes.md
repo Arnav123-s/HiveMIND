@@ -22,5 +22,5 @@ What each failure showed, and the general fix (the commit message has the detail
 | bugfix | the coder's fix was right (printed 30) but the jury saw only '30' and rejected it | the jury sees the program beside its output |
 | explain | the researcher looked for a concept on Hugging Face and arXiv | concepts from Wikipedia's article |
 
-Seen, not fixed: in `sales` the given data ('Jan 120, Feb 95, ...') became checklist lines, because 'Monthly sales:' has
+Fixed after the run (data after a label is material): in `sales` the given data ('Jan 120, Feb 95, ...') became checklist lines, because 'Monthly sales:' has
 no verb that marks handed-over material. They were ticked, so nothing failed, but they are noise in the report.
