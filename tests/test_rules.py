@@ -348,3 +348,20 @@ def test_a_writer_only_task_uses_arnavs_words_as_the_source(tmp_path, monkeypatc
     monkeypatch.setattr(writer.memory, "profile", lambda: "")
     writer.run("Translate into French: 'The meeting has been moved.'", "Translate it", b, [])
     assert "Arnav's own words are the source" in seen[0] and "The meeting has been moved." in seen[0]
+
+
+def test_triage_takes_a_shortcut_only_when_the_cell_is_sure(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.cells import runtime, use
+    from team.specialists import coordinator
+    b = Board(tmp_path, echo=False)
+    monkeypatch.setattr(use, "on", lambda s: s == "task_kind")
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"calc": 0.97, "plan": 0.03})
+    steps = coordinator.triage("What is 17.5% of 2,340?", b)
+    assert [s["agent"] for s in steps] == ["calculator", "writer"] and steps[1]["needs"] == ["s1"]
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"write": 0.99})
+    assert [s["agent"] for s in coordinator.triage("Translate: 'hi'", b)] == ["writer"]
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"calc": 0.6, "plan": 0.4})
+    assert coordinator.triage("Compare two models and chart them", b) is None  # unsure: the coordinator plans
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"plan": 0.95})
+    assert coordinator.triage("Compare two models and chart them", b) is None

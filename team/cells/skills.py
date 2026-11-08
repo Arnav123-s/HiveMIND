@@ -454,8 +454,88 @@ def gen_licence_open(split, r):
     return fmt.format(m=model, l=lic, d=r.choice([120, 4500, 98000])), ok
 
 
+# ---------------------------------------------------------------- task_kind: the cheapest way through the hive
+# write: only his words are needed (writer); calc: numbers (calculator); lookup: facts from sources (researcher);
+# site: operate a website (browser); code: a program or a file (coder); plan: several kinds (the coordinator plans)
+_TK_FILL = {
+    "lang": (["French", "Spanish", "German"], ["Italian", "Portuguese", "Dutch"]),
+    "sent": (["The parcel arrives on Tuesday.", "We need the report by noon.", "He don't know where the keys is."],
+             ["The train leaves at nine.", "Their going to the market tomorow.", "Please send the invoice soon."]),
+    "para": (["The museum reopens in May after a two-year renovation that added a new wing and a rooftop cafe.",
+              "Sales rose 8% this quarter, driven by the new app; costs stayed flat."],
+             ["The river flooded twice this spring, so the council is building a higher wall along the east bank.",
+              "Our team shipped the beta, fixed 40 bugs and plans the launch for June."]),
+    "name": (["Sam", "Priya", "the landlord"], ["Ola", "Mr Chen", "the team"]),
+    "msg": (["that I will be late", "thanks for the help"], ["that the meeting moved to Monday", "congratulations on the launch"]),
+    "topic": (["autumn", "the sea", "speculative decoding", "Rust web frameworks"], ["winter", "mountains", "quantisation", "vector databases"]),
+    "notes": (["met supplier; price up 5%; decide by Friday"], ["server down 2h; root cause disk; fix deployed"]),
+    "p": (["15", "7.5", "40"], ["12.5", "18", "3"]), "x": (["2,340", "86.40", "1200"], ["4,520", "39.99", "760"]),
+    "y": (["7", "12"], ["9", "16"]), "n": (["one", "two", "3"], ["two", "three", "4"]),
+    "d1": (["3 March 2026", "1 January 2027"], ["14 July 2026", "2026-11-30"]), "d2": (["30 April 2026", "15 June 2027"], ["2 September 2026", "2027-02-01"]),
+    "u1": (["miles", "pounds", "degrees Fahrenheit"], ["kilometres", "kilograms", "degrees Celsius"]),
+    "u2": (["kilometres", "kilograms", "degrees Celsius"], ["miles", "pounds", "degrees Fahrenheit"]),
+    "nums": (["12, 18, 25 and 31", "Jan 120, Feb 95, Mar 143"], ["40, 42, 39, 47", "Q1 300, Q2 280, Q3 350"]),
+    "model": (["Qwen/Qwen3-1.7B", "HuggingFaceTB/SmolLM2-360M"], ["google/gemma-2-2b", "microsoft/phi-2"]),
+    "model2": (["mistralai/Mistral-7B-v0.1", "TinyLlama/TinyLlama-1.1B"], ["meta-llama/Llama-3.2-1B", "Qwen/Qwen2.5-0.5B"]),
+    "pkg": (["requests", "numpy", "httpx"], ["pandas", "pydantic", "polars"]),
+    "thing": (["SQLite", "the Linux kernel", "Python"], ["PostgreSQL", "Git", "the Rust language"]),
+    "concept": (["a mixture-of-experts model", "a hash table"], ["quantisation", "a Bloom filter"]),
+    "city": (["Lisbon", "Nairobi"], ["Osaka", "Lima"]),
+    "site": (["books.toscrape.com", "quotes.toscrape.com", "news.ycombinator.com"], ["the library catalogue site", "example.org", "the shop's website"]),
+    "q": (["poetry", "travel"], ["humor", "science"]),
+    "cat": (["Mystery", "Travel"], ["Poetry", "History"]),
+    "job": (["returns the n-th prime", "counts words in a file", "sorts a list of prices"],
+            ["reverses each line of a file", "finds duplicate rows", "computes a moving average"]),
+    "code": (["for i in range(10): print(i/0)", "def add(a, b): return a - b"], ["x = [1, 2]; print(x[2])", "print('total: ' + 5)"]),
+    "what": (["the book prices", "the top 10 titles"], ["the quotes and authors", "every product name"]),
+    "fact": (["the licences", "the download counts"], ["the parameter counts", "the release dates"]),
+}
+_TK = {
+    "write": (["Translate into {lang}: '{sent}'", "Rewrite this more politely: '{sent}'", "Summarise this in {n} sentences: {para}",
+               "Fix the spelling in: '{sent}'", "Draft a short message to {name} saying {msg}.", "Write a short poem about {topic}.",
+               "Turn these notes into a paragraph: {notes}"],
+              ["Put this into {lang}: '{sent}'", "Correct the grammar of: '{sent}'", "Give me a one-paragraph summary of this: {para}",
+               "Write an email to {name} saying {msg}.", "Paraphrase: '{sent}'", "Write a {n}-sentence thank-you note to {name}."]),
+    "calc": (["What is {p}% of {x}?", "How many days are there between {d1} and {d2}?", "Convert {x} {u1} to {u2}.",
+              "What is the average of {nums}?", "If I pay {x} a month, how much is that in a year?",
+              "What is {x} divided by {y}, rounded to 2 decimals?"],
+             ["Calculate {p} percent of {x}.", "How many days from {d1} to {d2}?", "{x} {u1} in {u2}?",
+              "Numbers: {nums}. What is the mean and which is highest?", "What day of the week is {d1}?",
+              "Split a bill of {x} between {y} people."]),
+    "lookup": (["Find the licence of {model} on Hugging Face.", "What is the latest version of {pkg} on PyPI?",
+                "List the newest arXiv papers on {topic}.", "Who created {thing}?", "What are the top Hacker News stories about {topic}?",
+                "Explain what {concept} is.", "What is the population of {city}?"],
+               ["Look up the parameter count of {model}.", "Which release of {pkg} is current?", "Find recent papers about {topic}.",
+                "In {n} sentences, explain {concept}.", "When was {thing} first released?", "Give me facts about {city}."]),
+    "site": (["On {site}, search for {q} and list the results.", "Go to {site} and click the {cat} link; tell me what it shows.",
+              "Open {site} and use the search box to find {q}.", "On {site}, open the {cat} category and read the first item."],
+             ["Use the search on {site} to look for {q}.", "Visit {site}, open the page for the tag '{q}' and list the first entries.",
+              "Navigate {site} to the {cat} section and report the top entry."]),
+    "code": (["Write a Python function that {job} and run it.", "Fix this code and run it: {code}", "Write a script that {job}.",
+              "Scrape {site} and save {what} to a CSV.", "Benchmark two ways to sort a list in Python."],
+             ["Implement a program that {job} and show the output.", "This code is wrong, correct it: {code}",
+              "Download {what} from {site} into a spreadsheet.", "Write a program that {job}."]),
+    "plan": (["Find {what} on {site}, then compute their average and write a report.",
+              "Compare {model} and {model2} on downloads and licence, make a chart, and summarise.",
+              "Research {topic}, benchmark two {pkg} versions and recommend one.",
+              "Collect {fact} of {model} and {model2} from Hugging Face and put them in a CSV."],
+             ["Get {fact} for {model} and {model2}, tabulate them and chart them.",
+              "Find {what} on {site} and the newest {pkg} release, then write a short report with a chart.",
+              "Look up {concept}, then write and run a small Python demo of it."]),
+}
+
+
+def gen_task_kind(split, r):
+    kind = r.choice(list(_TK))
+    frame = r.choice(_pool(split, *_TK[kind]))
+    fill = {k: r.choice(_pool(split, *v)) for k, v in _TK_FILL.items()}
+    return frame.format(**fill), kind
+
+
 # ---------------------------------------------------------------- the catalogue
 SKILLS = {
+    "task_kind": dict(part="hive: the cheapest way through the hive for a whole task", labels=list(_TK), gen=gen_task_kind,
+                      new=True, instr="Which way does this task go: write, calc, lookup, site, code or plan?"),
     "route_step": dict(part="coordinator: which specialist takes a plan step", labels=list(_R), gen=gen_route_step,
                        instr="Which specialist does this step: researcher, browser, coder or writer?"),
     "pick_source": dict(part="researcher: which search source to query", labels=list(_S), gen=gen_pick_source,
@@ -524,7 +604,7 @@ def score(skill, pred, target):
 # ---------------------------------------------------------------- gate: the router over all cells (mixture of experts)
 GROUPS = {  # the gate routes by the kind of input; the group's organizer runs every cell that reads that kind
     "order": ["split_orders", "orders_spend", "orders_delete", "orders_send", "orders_login", "orders_signup",
-              "orders_any", "family_topic"],
+              "orders_any", "family_topic", "task_kind"],
     "step": ["route_step", "pick_source", "family_topic"],
     "failure": ["next_move"], "claim": ["claim_support"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
     "json": ["json_repair"], "licence": ["licence_open"],
