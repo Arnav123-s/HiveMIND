@@ -598,3 +598,29 @@ def test_a_draft_is_only_the_draft_in_the_ordered_length():
     fmt, _ = ordered_format(["Write a two-sentence email to Priya declining Friday's 3pm meeting"])
     assert "exactly 2 sentences" in fmt and "only the email itself" in fmt
     assert ordered_format(["Fix the two lines of code"]) == ("", None)
+
+
+def test_code_that_prints_nothing_is_sent_back_and_his_task_travels_with_the_step(tmp_path, monkeypatch):
+    """The coder defined fib() and never called it; the calculator's step had lost 'fib(1) = 1' and counted from 0."""
+    from team import hive
+    from team.board import Board
+    from team.specialists import coder
+    outs = iter(["", "832040\n"])
+    asked = []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"]) or "```python\npass\n```")
+    monkeypatch.setattr(coder, "run_python", lambda code, wd, name: {"returncode": 0, "stdout": next(outs), "stderr": "",
+                                                                     "seconds": 0.1, "path": str(wd / name)})
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    out = coder.run("Write fib and tell me fib(30)", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w")
+    assert out["summary"] == "832040" and "printed nothing" in asked[1]
+    seen = {}
+    h = hive.Hive.__new__(hive.Hive)
+    h.board, h.work, h.goal = Board(tmp_path / "b", echo=False), tmp_path, "Write fib (fib(1) = 1, fib(2) = 1) and tell me fib(30)."
+    monkeypatch.setattr(hive.calculator, "run", lambda task, ctx, *a: seen.update(ctx=ctx) or {"summary": "832040"})
+    h._dispatch({"id": "s2", "agent": "calculator", "needs": []}, "Calculate the 30th Fibonacci number", "")
+    assert "fib(1) = 1, fib(2) = 1" in seen["ctx"]
