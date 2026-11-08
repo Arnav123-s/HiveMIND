@@ -118,7 +118,7 @@ def run(goal, task, board, needs):
         task = f"{task}\nFORMAT Arnav ordered: {fmt}. This overrides the usual layout."
         board.log("writer", "format", fmt)
     msgs = messages(goal, task, results_text, sources)
-    text = llm.chat("writer", msgs, max_new_tokens=1200)
+    text = drop_empty_sections(llm.chat("writer", msgs, max_new_tokens=1200))
     if n_lines and len(body_lines(text)) != n_lines:  # checked in code: one more try, told what was wrong
         board.log("writer", "format", f"wrote {len(body_lines(text))} lines, {n_lines} ordered: asking again")
         text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
