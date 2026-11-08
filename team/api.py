@@ -287,9 +287,9 @@ def responses_messages(body):
             if isinstance(m, dict) and m.get("type", "message") == "message"]
 
 
-def main(port=8766, host="127.0.0.1", until_done=0, root=None):
+def main(port=8766, host="127.0.0.1", until_done=0, root=None, workers=1):
     global SWARM
-    SWARM = Swarm(root=root)
+    SWARM = Swarm(root=root, workers=workers)
     DEFAULTS["until_done"] = until_done
     if host not in ("127.0.0.1", "localhost", "::1") and not os.environ.get("AGENT_TEAM_API_KEY"):
         print("warning: listening beyond this machine with no AGENT_TEAM_API_KEY set", flush=True)

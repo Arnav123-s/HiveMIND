@@ -52,9 +52,10 @@ def main():
             ap.add_argument("--port", type=int, default=8766)
             ap.add_argument("--host", default="127.0.0.1")
             ap.add_argument("--until-done", type=int, default=0, help="follow-up rounds for anything left undone")
+            ap.add_argument("--workers", type=int, default=1, help="jobs at once (they share the loaded models)")
             o = ap.parse_args(rest)
             from .api import main as api
-            return api(o.port, o.host, o.until_done)
+            return api(o.port, o.host, o.until_done, workers=o.workers)
         if cmd == "web":
             from .web import main as web
             return web(int(rest[0]) if rest else 8765)

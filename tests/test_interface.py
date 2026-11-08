@@ -1,5 +1,6 @@
 """The SDK and the API, with a stand-in hive (no models): jobs, follow-up rounds, every endpoint over real HTTP."""
 import json
+from pathlib import Path
 import threading
 import time
 import urllib.request
@@ -131,3 +132,41 @@ def test_the_chat_page_uses_the_same_queue(swarm, monkeypatch):
         assert runs[0]["goal"] == "Find it." and runs[0]["report"].startswith("Answer: 42.") and runs[0]["events"]
     finally:
         srv.shutdown()
+
+
+def test_two_workers_run_two_jobs_at_once_each_with_its_own_records(tmp_path, monkeypatch):
+    from team import hive, llm, sdk
+    seen = {}
+
+    class SlowHive(FakeHive):
+        def run(self):
+            llm.set_recorder(lambda *a, **k: seen.setdefault(str(self.dir), []).append(a[0]))
+            time.sleep(0.4)  # waiting on a page: the other job runs meanwhile
+            llm._recorder()(f"member-of-{self.dir.parent.name}", [], "")
+            out = super().run()
+            llm.set_recorder(None)
+            return out
+    monkeypatch.setattr(hive, "Hive", SlowHive)
+    swarm = sdk.Swarm(root=tmp_path / "runs", workers=2)
+    t = time.time()
+    a, b = swarm.submit("Find A."), swarm.submit("Find B.")
+    a.wait(10), b.wait(10)
+    assert a.status == b.status == "done" and time.time() - t < 1.5  # at once, not one after the other (2 x 0.55 s+)
+    assert sorted(seen) == sorted([str(a.dir / "r1"), str(b.dir / "r1")])
+    assert all(v == [f"member-of-{Path(k).parent.name}"] for k, v in seen.items())  # nobody recorded the other's calls
+
+
+def test_the_kill_switch_stops_every_running_job(tmp_path, monkeypatch):
+    from team import stop
+    monkeypatch.setattr(stop, "FLAG", tmp_path / "STOP")
+    monkeypatch.setattr(stop, "INBOX_FLAG", tmp_path / "inbox" / "STOP")
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    stop.enter(tmp_path / "a"), stop.enter(tmp_path / "b")
+    stop.request("test")
+    stop.archive(tmp_path / "a")
+    stop.leave(tmp_path / "a")
+    assert stop.requested()  # b has not stopped yet: the flag stays
+    stop.archive(tmp_path / "b")
+    stop.leave(tmp_path / "b")
+    assert not stop.requested() and (tmp_path / "a" / "STOP.flag").exists() and (tmp_path / "b" / "STOP.flag").exists()
