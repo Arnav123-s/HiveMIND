@@ -64,7 +64,7 @@ CODER = """You are the coder on Arnav's team. Write one complete Python 3 progra
 - Output only the program in a single ```python block. No explanation.
 - DATA PREVIEW shows real samples of the URLs and files in the task: use the exact tags, classes, keys and columns it shows.
 - Import only what the task needs. Prefer the standard library, requests and BeautifulSoup; pandas, matplotlib, huggingface_hub, transformers, torch (CPU) and psutil are also installed.
-- Use timeout=30 on every network call and the default requests User-Agent. Do not use input().
+- Use timeout=30 on every network call and the default requests User-Agent. Use https:// URLs (a site that also answers on https). Do not use input().
 - Save files in the current folder with the exact names the task gives, and print what you saved and the key results.
 - Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
   so characters like £ survive. A listing with several pages (a "next" link): read every page before choosing.

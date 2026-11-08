@@ -521,3 +521,15 @@ def test_a_reply_cut_off_at_the_token_limit_is_asked_again_with_room(monkeypatch
     monkeypatch.setattr(llm, "parse_json", lambda t: __import__("json").loads(t) if t.endswith("}") else None)
     data, _ = llm.chat_json("browser", [{"role": "user", "content": "x"}], max_new_tokens=160)
     assert data["action"] == "done" and seen == [160, 320]
+
+
+def test_code_the_team_writes_never_sees_tokens_or_keys(tmp_path, monkeypatch):
+    """Model-written code ran with the whole environment: GitHub tokens and cloud keys included."""
+    from team.tools.sandbox import run_python
+    monkeypatch.setenv("GH_TOKEN", "ghp_secret")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-secret")
+    monkeypatch.setenv("AWS_SECRET_ACCESS_KEY", "aws-secret")
+    monkeypatch.setenv("HTTPS_PROXY", "http://proxy.local:3128")
+    r = run_python("import os\nprint(sorted(os.environ))", tmp_path)
+    assert "GH_TOKEN" not in r["stdout"] and "OPENAI_API_KEY" not in r["stdout"] and "AWS_SECRET" not in r["stdout"]
+    assert "HTTPS_PROXY" in r["stdout"] and "PATH" in r["stdout"]  # it can still reach the web and run
