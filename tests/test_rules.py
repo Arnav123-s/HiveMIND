@@ -647,3 +647,14 @@ def test_data_he_hands_over_is_material_and_orders_after_it_still_count():
     order, data = split_material("Bills: rent 500, gym 30 and phone 20. Pay the rent.")
     assert "spend" in parse_orders(order) and data == "rent 500, gym 30 and phone 20."
     assert "spend" in parse_orders(split_material("Pay: rent 500, gym 30, phone 20")[0])
+
+
+def test_a_trailing_clause_of_his_order_stays_on_the_checklist(monkeypatch):
+    """'..., with their titles and dates' was lost (the sentence was half covered); a cut-short line was listed twice."""
+    from team.cells import use
+    from team.specialists import coordinator
+    monkeypatch.setattr(use, "ask", lambda s, t, b=None: "List the three newest arXiv papers about mixture of experts\n"
+                                                         "List the three newes")
+    assert coordinator._split("List the three newest arXiv papers about mixture of experts, with their titles and "
+                              "dates.") == ["List the three newest arXiv papers about mixture of experts",
+                                            "with their titles and dates"]
