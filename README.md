@@ -119,6 +119,56 @@ Tell it how you like things done; every report follows it:
 python -m team remember "Prices in INR. Short answers, table first."
 ```
 
+## Use it like Claude, ChatGPT or Codex: hand over a task and leave it (`team/sdk.py`, `team/api.py`)
+
+Unattended: nobody is asked anything. Risky actions (spend, delete, send, log in, sign up) happen only where your task
+orders them; anything else is not done and listed in the report. `until_done` adds follow-up rounds: whatever the
+critic marked not done, and any step the team could not confirm, goes back to the swarm (your task stays the only
+order; the earlier answer is context). The job's report is the round with the least left undone.
+
+```bash
+python -m team "Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV" --approve never --until-done 2
+```
+
+Python:
+
+```python
+from team.sdk import Swarm
+job = Swarm().submit("What licence does Qwen/Qwen3-1.7B use?", until_done=2)
+for ev in job.events(follow=True):      # live progress
+    print(ev["agent"], ev["msg"])
+print(job.report, job.files, job.unmet)  # deliverable, files made, anything still undone
+```
+
+As an API that the OpenAI and Anthropic SDKs, and apps that let you set a base URL, can use (model `hivemind`):
+
+```bash
+python -m team api
+```
+(http://127.0.0.1:8766; set `AGENT_TEAM_API_KEY` to require a key; `--until-done 2` makes follow-up rounds the default)
+
+| endpoint | for |
+|---|---|
+| `POST /v1/chat/completions`, `GET /v1/models` | OpenAI SDK, chat apps with an "OpenAI-compatible" setting |
+| `POST /v1/responses` | newer OpenAI clients (Responses API) |
+| `POST /v1/messages` | Anthropic SDK |
+| `POST /v1/jobs`, `GET /v1/jobs/<id>`, `GET /v1/jobs/<id>/events`, `POST /v1/stop` | submit and leave; follow live; kill switch |
+
+```python
+from openai import OpenAI
+c = OpenAI(base_url="http://127.0.0.1:8766/v1", api_key="local", timeout=3600)
+for ch in c.chat.completions.create(model="hivemind", stream=True,
+                                     messages=[{"role": "user", "content": "Summarise this in one sentence: ..."}]):
+    print(ch.choices[0].delta.content or "", end="")
+```
+
+A task takes minutes on a CPU, so stream (progress arrives while the swarm works and keeps the connection open) or use
+the jobs API. The latest user message is the task; earlier messages are context for the planner and writer, never
+orders; a client's system prompt is not used. Checked with the official `openai` (chat, streaming, Responses) and
+`anthropic` (messages, streaming) Python SDKs against a stand-in hive: `python training/api_clients_check.py`.
+Not tested here: specific apps (Open WebUI, Codex CLI, Hermes Agent, Claude Code). They talk to the same endpoints, but
+an agent app that expects the model to call its own tools gets a finished report back, not tool calls.
+
 ## Your rules: everything risky happens only under your explicit order (`team/guard.py`)
 
 **Your order is the approval.** Risky kinds of action: spending money, deleting, sending a message as you,

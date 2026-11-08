@@ -1,0 +1,120 @@
+"""The SDK and the API, with a stand-in hive (no models): jobs, follow-up rounds, every endpoint over real HTTP."""
+import json
+import threading
+import time
+import urllib.request
+from http.server import ThreadingHTTPServer
+
+import pytest
+
+
+class FakeHive:
+    """Writes events and a report like the hive. The first round leaves one instruction undone."""
+    calls = []
+
+    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True):
+        self.goal, self.dir, self.context, self.triage = goal, run_dir, context, triage
+        FakeHive.calls.append(self)
+
+    def run(self):
+        self.dir.mkdir(parents=True, exist_ok=True)
+        with open(self.dir / "events.jsonl", "a") as f:
+            for i in range(3):
+                f.write(json.dumps({"ts": time.time(), "agent": "researcher", "kind": "step", "msg": f"working {i}"}) + "\n")
+                f.flush()
+                time.sleep(0.05)
+        first = len(FakeHive.calls) % 2 == 1
+        rep = "Answer: 42.\n\n## Your instructions\n- ✅ find it\n" + ("- ❌ give two lines - one line only\n" if first else "- ✅ give two lines\n")
+        (self.dir / "REPORT.md").write_text(rep)
+        (self.dir / "work").mkdir(exist_ok=True)
+        (self.dir / "work" / "out.csv").write_text("a,b\n1,2\n")
+        return {"dir": str(self.dir), "report": rep, "pending_approvals": []}
+
+
+@pytest.fixture
+def swarm(tmp_path, monkeypatch):
+    from team import hive, sdk
+    monkeypatch.setattr(hive, "Hive", FakeHive)
+    FakeHive.calls = []
+    return sdk.Swarm(root=tmp_path / "runs")
+
+
+def test_a_job_runs_unattended_and_rounds_until_nothing_is_left(swarm):
+    job = swarm.submit("Find it and give two lines. Buy nothing.", until_done=2).wait(10)
+    assert job.status == "done" and len(job.rounds) == 2 and job.unmet == []
+    assert job.rounds[0]["unmet"] == ["give two lines - one line only"]
+    first, second = FakeHive.calls
+    assert first.goal == second.goal == "Find it and give two lines. Buy nothing."  # the order never changes
+    assert "Still not done" in second.context and "Answer: 42." in second.context and second.triage is False
+    assert job.report.startswith("Answer: 42.") and job.files[0].endswith("out.csv")
+    assert [e["msg"] for e in job.events()][:3] == ["working 0", "working 1", "working 2"]
+    again = swarm.get(job.id)
+    assert again.status == "done" and again.rounds == job.rounds  # kept on disk
+
+
+def test_without_until_done_one_round_and_what_is_undone_is_reported(swarm):
+    job = swarm.run("Find it and give two lines.")
+    assert len(job.rounds) == 1 and job.unmet == ["give two lines - one line only"]
+
+
+def _server(swarm, monkeypatch):
+    from team import api
+    monkeypatch.setattr(api, "SWARM", swarm)
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), api.H)
+    srv.daemon_threads = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    return srv, f"http://127.0.0.1:{srv.server_address[1]}"
+
+
+def _post(url, body, headers=None):
+    req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", **(headers or {})})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        return r.status, r.read().decode()
+
+
+def test_openai_and_anthropic_shapes_and_jobs_over_http(swarm, monkeypatch):
+    srv, base = _server(swarm, monkeypatch)
+    try:
+        models = json.loads(urllib.request.urlopen(base + "/v1/models", timeout=10).read())
+        assert models["data"][0]["id"] == "hivemind"
+        msgs = [{"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Buy the cheapest one."}, {"role": "assistant", "content": "Done."},
+                {"role": "user", "content": [{"type": "text", "text": "Now find it and give two lines."}]}]
+        code, out = _post(base + "/v1/chat/completions", {"model": "hivemind", "messages": msgs})
+        r = json.loads(out)
+        assert code == 200 and r["choices"][0]["message"]["content"].startswith("Answer: 42.")
+        call = FakeHive.calls[-1]
+        assert call.goal == "Now find it and give two lines."  # an old message is context, never the order
+        assert "Arnav: Buy the cheapest one." in call.context and "helpful assistant" not in call.context
+        code, out = _post(base + "/v1/chat/completions", {"model": "hivemind", "stream": True, "messages": msgs})
+        chunks = [json.loads(ln[6:]) for ln in out.splitlines() if ln.startswith("data: {")]
+        assert any("reasoning_content" in c["choices"][0]["delta"] for c in chunks)  # progress while it works
+        assert "".join(c["choices"][0]["delta"].get("content", "") for c in chunks).startswith("Answer: 42.")
+        assert out.rstrip().endswith("data: [DONE]")
+        code, out = _post(base + "/v1/messages", {"model": "hivemind", "max_tokens": 100, "messages": msgs})
+        m = json.loads(out)
+        assert m["type"] == "message" and m["content"][0]["text"].startswith("Answer: 42.")
+        code, out = _post(base + "/v1/messages", {"model": "hivemind", "max_tokens": 100, "stream": True, "messages": msgs})
+        assert "event: message_start" in out and "event: message_stop" in out and "Answer: 42." in out
+        code, out = _post(base + "/v1/jobs", {"task": "Find it.", "until_done": 1})
+        jid = json.loads(out)["id"]
+        assert code == 202
+        events = urllib.request.urlopen(f"{base}/v1/jobs/{jid}/events", timeout=20).read().decode()
+        assert "working 0" in events and "event: done" in events
+        job = json.loads(urllib.request.urlopen(f"{base}/v1/jobs/{jid}", timeout=10).read())
+        assert job["status"] == "done" and job["unmet"] == [] and len(job["rounds"]) == 2
+    finally:
+        srv.shutdown()
+
+
+def test_an_api_key_is_required_when_set(swarm, monkeypatch):
+    monkeypatch.setenv("AGENT_TEAM_API_KEY", "s3cret")
+    srv, base = _server(swarm, monkeypatch)
+    try:
+        with pytest.raises(urllib.error.HTTPError) as e:
+            urllib.request.urlopen(base + "/v1/models", timeout=10)
+        assert e.value.code == 401
+        req = urllib.request.Request(base + "/v1/models", headers={"Authorization": "Bearer s3cret"})
+        assert urllib.request.urlopen(req, timeout=10).status == 200
+    finally:
+        srv.shutdown()
