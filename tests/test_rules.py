@@ -173,6 +173,45 @@ def test_writer_strikes_unverified_numbers():
     assert len(struck) == 2 and "0.00" not in out and "10/10" not in out
 
 
+def _writer_with_fakes(tmp_path, monkeypatch, fixed_report):
+    """A writer run with stand-in models: the critic marks 'two-line summary' done only if the report has two lines."""
+    from team.board import Board
+    from team.specialists import writer
+    b = Board(tmp_path, echo=False)
+    b.checklist = ["Find the licence", "give me a two-line summary"]
+    writes, critiques = [], []
+
+    def chat(role, msgs, **kw):
+        writes.append(msgs[-1]["content"])
+        return "License: apache-2.0." if len(writes) == 1 else fixed_report
+
+    def chat_json(role, msgs, **kw):
+        report = msgs[-1]["content"].split("REPORT:\n", 1)[1]
+        critiques.append(report)
+        two = len(report.strip().split("\n")) == 2
+        return {"unsupported": [], "unordered": [], "checklist": [
+            {"instruction": "Find the licence", "done": True, "why": "quoted"},
+            {"instruction": "give me a two-line summary", "done": two, "why": "two lines" if two else "one line only"}]}, ""
+
+    monkeypatch.setattr(writer.llm, "chat", chat)
+    monkeypatch.setattr(writer.llm, "chat_json", chat_json)
+    monkeypatch.setattr(writer.memory, "profile", lambda: "")
+    return writer.run("goal", "write it", b, [])["summary"], writes, critiques
+
+
+def test_writer_fixes_an_instruction_the_critic_finds_missing(tmp_path, monkeypatch):
+    out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, "License: apache-2.0.\nIt is open for any use.")
+    assert len(writes) == 2 and "give me a two-line summary (one line only)" in writes[1]
+    assert len(critiques) == 2  # the ticks are about the fixed report
+    assert "✅ give me a two-line summary" in out and "❌" not in out
+
+
+def test_writer_reports_a_miss_it_could_not_fix(tmp_path, monkeypatch):
+    out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, "License: apache-2.0.")
+    assert len(writes) == 2 and len(critiques) == 2
+    assert "❌ give me a two-line summary - one line only" in out
+
+
 def test_quantized_size_read_from_name():
     from team.specialists.verifier import hard_item_check
     task = "models under 2B parameters"
