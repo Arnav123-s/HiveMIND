@@ -24,6 +24,16 @@ class FetchError(Exception):
     pass
 
 
+# a site named without a scheme ("on books.toscrape.com"): read as https://<site>/
+SITE = re.compile(r"(?<![/\w.@-])((?:[a-z0-9-]+\.)+(?:com|org|net|io|ai|dev|edu|gov|co\.uk|app))(?![\w/-])", re.I)
+
+
+def urls_in(text):
+    """Every URL in the text, then every site it names without a scheme (as https://<site>/)."""
+    urls = list(dict.fromkeys(u.rstrip(".,;") for u in re.findall(r"https?://[^\s)\"'<>]+", text or "")))
+    return urls + [f"https://{d}/" for d in dict.fromkeys(SITE.findall(text or "")) if not any(d in u for u in urls)]
+
+
 def get(url, params=None, as_json=False):
     key = (url, json.dumps(params, sort_keys=True))
     if key in _cache:

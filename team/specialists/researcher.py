@@ -8,7 +8,7 @@ from ..cells import use
 from ..tools import web
 
 
-SITE = re.compile(r"(?<![/\w.@-])((?:[a-z0-9-]+\.)+(?:com|org|net|io|ai|dev|edu|gov|co\.uk|app))(?![\w/-])", re.I)
+SITE = web.SITE
 NEWEST = re.compile(r"\b(newest|latest|most recent|recent(ly)?|this (week|month|year)|today|yesterday|last (week|month))\b",
                     re.I)
 
