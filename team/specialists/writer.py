@@ -110,6 +110,8 @@ def run(goal, task, board, needs):
     # the deliverable is built from everything the team verified, not only the steps the plan wired in
     top = [s["id"] for s in board.steps() if s["agent"] != "writer" and "[" not in s["id"] and not s["id"].endswith("r")]
     results_text = board.context_for(list(dict.fromkeys(top + list(needs or []))), max_chars=7000)
+    if not top and not needs:  # nothing to look up: translate, rewrite, summarise or fix his text, draft a message
+        results_text = f"(No research was needed: Arnav's own words are the source for this task.)\n{goal}"
     dropped = re.findall(r"Dropped by the team's checks \(do not use\): ([^\n]+)", results_text)
     if dropped:
         task = f"{task}\nNever include these, they failed the checks: {'; '.join(dropped)}"

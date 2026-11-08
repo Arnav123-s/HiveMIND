@@ -3,7 +3,7 @@ import re
 
 from .. import config, llm, prompts
 
-AGENTS = {"researcher", "browser", "coder", "writer"}
+AGENTS = {"researcher", "browser", "coder", "calculator", "writer"}
 
 
 def plan_messages(goal, notes=""):

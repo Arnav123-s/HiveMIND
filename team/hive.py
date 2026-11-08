@@ -13,7 +13,7 @@ from pathlib import Path
 from . import config, llm, memory, stop
 from .board import Board
 from .guard import Guard, check_task
-from .specialists import browser_agent, coder, coordinator, researcher, verifier, writer
+from .specialists import browser_agent, calculator, coder, coordinator, researcher, verifier, writer
 
 
 def retract_failed(board, step, why):
@@ -206,12 +206,12 @@ class Hive:
                     b.log("cell:next_move", "give-up", f"{s['id']}: no retry can fix this: {why[:120]}")
                     allow_reroute = False
                     break
-                if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
+                if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder", "calculator"):
                     b.log("cell:next_move", "reroute", f"{s['id']}: another specialist should try: {why[:120]}")
                     break
         n = attempt  # the loop always runs at least once
         b.log("coordinator", "give-up", f"{s['id']} failed after {n} attempt{'s' if n != 1 else ''}: {feedback}")
-        if allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
+        if allow_reroute and s["agent"] in ("browser", "researcher", "coder", "calculator"):
             alt = coordinator.reroute(self.goal, s, feedback)
             if alt:
                 b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
@@ -229,6 +229,8 @@ class Hive:
                                      start_url=m.group(0).rstrip(".,") if m else None, shots_dir=self.shots)
         if s["agent"] == "coder":
             return coder.run(task, ctx, self.board, s["id"], self.guard, self.work)
+        if s["agent"] == "calculator":
+            return calculator.run(task, ctx, self.board, s["id"], self.work)
         if s["agent"] == "writer":
             return writer.run(self.goal, task, self.board, s["needs"])
         raise ValueError(s["agent"])
