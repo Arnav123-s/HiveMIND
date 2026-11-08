@@ -428,3 +428,12 @@ def test_text_he_hands_over_is_material_not_orders(monkeypatch):
     monkeypatch.setattr(use, "on", lambda s: s == "split_orders")
     monkeypatch.setattr(use, "ask", lambda skill, text, board=None: text)  # the cell returns the order as one line
     assert coordinator.instructions(para) == [para]  # one instruction with its material, not one per sentence
+
+
+def test_the_writer_step_is_checked_by_the_family_rule_only(monkeypatch):
+    from team import guard
+    monkeypatch.setattr(guard, "_family_cell", lambda text: "explanation" in (text or ""))  # a false "yes"
+    step = "Write a three-sentence explanation of what a mixture-of-experts model is"
+    assert guard.check_task(step, "Explain mixture-of-experts models")  # an acting step: the cell still blocks
+    assert guard.check_task(step, "Explain mixture-of-experts models", cell=False) is None
+    assert guard.check_task("Write a note to my wife", "Explain models", cell=False)  # the rule still blocks
