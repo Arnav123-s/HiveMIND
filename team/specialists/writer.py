@@ -111,6 +111,89 @@ def critique(todo, results_text, text):
     return checklist, unordered, [f for f in flagged if not HONEST.search(f)]  # saying what is unknown is never unsupported
 
 
+def _words(t):
+    return set(re.findall(r"[a-z0-9]+", str(t).lower())) - {"the", "a", "an", "of", "to", "and", "in", "on", "for", "me"}
+
+
+def align_checklist(checklist, instructions):
+    """His instructions, as written, each with the critic's verdict on it. The critic added "Provide a table with
+    dates, days of the week, and notes" to a one-question task and ticked it: an item matching none of his
+    instructions is dropped; an instruction the critic did not check stays not done."""
+    if not instructions or not checklist:
+        return checklist, []
+    out, used = [], set()
+    for ins in instructions:
+        w = _words(ins)
+        best, score = None, 0.0
+        for i, c in enumerate(checklist):
+            if i in used:
+                continue
+            cw = _words(c.get("instruction", ""))
+            sc = len(w & cw) / max(1, len(w | cw))
+            if sc > score:
+                best, score = i, sc
+        if best is not None and score >= 0.34:
+            used.add(best)
+            out.append({**checklist[best], "instruction": ins})
+        else:
+            out.append({"instruction": ins, "done": False, "why": "the critic did not check it"})
+    extra = [str(c.get("instruction", "")) for i, c in enumerate(checklist) if i not in used]
+    return out, extra
+
+
+MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november",
+          "december"]
+DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+_MON = r"(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?"
+DATE_RX = re.compile(rf"\b(\d{{1,2}})(?:st|nd|rd|th)?\s+{_MON},?\s+(\d{{4}})\b|\b{_MON}\s+(\d{{1,2}})(?:st|nd|rd|th)?,?\s+(\d{{4}})\b|"
+                     r"\b(\d{4})-(\d{2})-(\d{2})\b", re.I)
+DAY_RX = re.compile(r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b", re.I)
+
+
+def _date(m):
+    import datetime
+    g = m.groups()
+    try:
+        if g[0]:
+            return datetime.date(int(g[2]), [x[:3] for x in MONTHS].index(g[1][:3].lower()) + 1, int(g[0]))
+        if g[3]:
+            return datetime.date(int(g[5]), [x[:3] for x in MONTHS].index(g[3][:3].lower()) + 1, int(g[4]))
+        return datetime.date(int(g[6]), int(g[7]), int(g[8]))
+    except ValueError:
+        return None
+
+
+def check_weekdays(text):
+    """A line that puts a weekday with a date must have the calendar's weekday (a report called 15 January 2026 a
+    Monday; it was a Thursday). Pairs in the order they appear when a line has as many dates as weekdays. Returns
+    (text without the wrong lines, the wrong lines)."""
+    ok, wrong = [], []
+    for line in text.split("\n"):
+        dates = [d for d in (_date(m) for m in DATE_RX.finditer(line)) if d]
+        days = [m.group(1).lower() for m in DAY_RX.finditer(line)]
+        if line.startswith("##") or not dates or not days or len(dates) != len(days):
+            ok.append(line)
+            continue
+        if all(DAYS[d.weekday()] == w for d, w in zip(dates, days)):
+            ok.append(line)
+        else:
+            wrong.append(line.strip())
+    return drop_empty_tables("\n".join(ok)), wrong
+
+
+def drop_empty_tables(text):
+    """A table whose rows were all struck: its header and separator go too."""
+    lines, out, i = text.split("\n"), [], 0
+    while i < len(lines):
+        is_head = lines[i].lstrip().startswith("|") and i + 1 < len(lines) and re.fullmatch(r"\s*\|[\s:|-]+\|?\s*", lines[i + 1])
+        if is_head and not (i + 2 < len(lines) and lines[i + 2].lstrip().startswith("|")):
+            i += 2
+            continue
+        out.append(lines[i])
+        i += 1
+    return "\n".join(out)
+
+
 def run(goal, task, board, needs):
     facts = [f for f in board.facts(status="supported")]
     sources = list(dict.fromkeys(f["url"] for f in facts if f["url"].startswith("http")))
@@ -209,10 +292,18 @@ def finish(text, board, results_text, sources, checklist, unordered, flagged, fi
     """The report's checked tail: numbers grounded, flags, the checklist, what failed, the sources."""
     saved = [Path(a["path"]) for a in board.artifacts() if a.get("kind") == "file"]
     text = fix_images(drop_empty_sections(text), saved)
+    text, bad_days = check_weekdays(text)
+    if bad_days:
+        board.log("critic", "strike", f"{len(bad_days)} line(s) with a date on the wrong day of the week removed")
+    checklist, invented = align_checklist(checklist, list(getattr(board, "checklist", None) or []))
+    if invented:
+        board.log("critic", "invented", "checklist items that are not his instructions, dropped: " + " | ".join(invented)[:300])
     text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
     if struck:
         board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")
         text += "\n\n## Removed: numbers the team could not verify\n" + "\n".join(f"- {x[:160]}" for x in struck)
+    if bad_days:
+        text += "\n\n## Removed: a date on the wrong day of the week\n" + "\n".join(f"- {x[:160]}" for x in bad_days)
     if fixes and flagged:
         text += "\n\n## Not backed by the verified results (flagged by the critic)\n" + "\n".join(f"- {x[:160]}" for x in flagged)
     if checklist:

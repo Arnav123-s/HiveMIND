@@ -565,3 +565,17 @@ def test_the_coder_stops_when_its_fix_changes_nothing(tmp_path, monkeypatch):
             return True
     out = coder.run("Scrape the site", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "work")
     assert len(calls) == 2 and out["returncode"] == 1 and "ConnectionError" in out["stderr"]
+
+
+def test_the_report_keeps_his_instructions_and_the_calendar_s_weekdays():
+    """The critic added an instruction he never gave and ticked it; the report called 15 January 2026 a Monday."""
+    from team.specialists.writer import align_checklist, check_weekdays
+    mine = ["How many days are there from 15 January 2026 to 1 March 2026?", "Give the answer in one sentence"]
+    critic = [{"instruction": "How many days are there from 15 January 2026 to 1 March 2026", "done": True},
+              {"instruction": "Provide a table with dates, days of the week, and notes", "done": True}]
+    out, extra = align_checklist(critic, mine)
+    assert [c["instruction"] for c in out] == mine and out[0]["done"] and out[1]["done"] is False
+    assert extra == ["Provide a table with dates, days of the week, and notes"]
+    text, wrong = check_weekdays("45 days.\n| Date | Day |\n|---|---|\n| 15 January 2026 | Monday |\n"
+                                 "4 July 1976 was a Sunday. 2026-03-01 is a Sunday.")
+    assert wrong == ["| 15 January 2026 | Monday |"] and "| Date |" not in text and "4 July 1976 was a Sunday" in text
