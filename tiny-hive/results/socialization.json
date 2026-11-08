@@ -1,0 +1,11 @@
+{
+ "fresh_hive_divider": "900/900",
+ "fresh_hive_composed_with_divider": {
+  "passed": 38,
+  "total": 38,
+  "fails": []
+ },
+ "fresh_hive_adder_big_sample": "200/200",
+ "fresh_clones_multiplier": "100/100",
+ "lessons_read_by_fresh_hive": 3
+}

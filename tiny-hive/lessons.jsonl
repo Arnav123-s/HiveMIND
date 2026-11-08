@@ -1,0 +1,3 @@
+{"ts": "2026-11-08T08:48:49", "member": "divider", "lesson": "Division arrived with no member. Grew 'divider' by composition (threshold indicators over k*b <= a). Verified 900/900 exhaustive before joining the hive."}
+{"ts": "2026-11-08T08:49:43", "member": "adder", "lesson": "Tasks arrived beyond 0..99. The adder's architecture grew 3 bit stages (weights of stages 0-6 untouched) and now covers 0..999, verified exhaustively (1,000,000 pairs)."}
+{"ts": "2026-11-08T08:49:43", "member": "multiplier", "lesson": "Multiplier weights were damaged and the hive caught it on re-verification (score dropped). Diagnosis isolated the faulty AND/sum units by probing; only those units were rewritten. Back to 100/100, verified exhaustively."}

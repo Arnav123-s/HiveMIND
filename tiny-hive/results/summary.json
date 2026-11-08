@@ -1,0 +1,12 @@
+{
+ "baseline": "{'parity8': {'correct': 256, 'total': 256, 'params': 63, 'units': 21}, 'popcount8': {'correct': 256, 'total': 256, 'params': 9, 'units': 1}, 'majority5': {'correct': 32, 'total': 32, 'params': 6, 'units': 1}, 'compare2': {'correct': 256, 'total': 256, 'params': 16, 'units': 7}, 'max4': {'correct': 10000, 'total': 10000, 'params': 18, 'units': 6}, 'sort3': {'correct': 1000, 'total': 1000, 'params':",
+ "suites_v1": "{'composed': {'passed': 30, 'total': 30, 'fails': []}, 'fanout_wrong': 0, 'fanout_clone_jobs': {'adder#9': 10, 'adder#10': 10, 'adder#11': 10, 'adder#12': 10}, 'vote_clean': '100/100', 'gap_probes': {'divider': 'capability_gap', 'adder_500_400': 'out_of_domain'}}",
+ "episode_grow_divider": "(900, 900)",
+ "episode_extend_adder": "(1000000, 1000000)",
+ "episode_repair_multiplier": "(0, 100, 100, [6, 13], True)",
+ "socialization": "{'fresh_hive_divider': '900/900', 'fresh_hive_composed_with_divider': {'passed': 38, 'total': 38, 'fails': []}, 'fresh_hive_adder_big_sample': '200/200', 'fresh_clones_multiplier': '100/100', 'lessons_read_by_fresh_hive': 3}",
+ "faults": "{'one_corrupted_clone_majority_wrong': '0/100', 'two_corrupted_clones_majority_wrong': '16/100', 'note': \"with the reference verifier active every wrong majority is flagged, so silent wrong answers stay 0; two corrupted clones is the vote's breaking point and an evolution trigger\"}",
+ "final": "{'adder': {'correct': 1000000, 'total': 1000000, 'params': 273, 'units': 94}, 'compare2': {'correct': 256, 'total': 256, 'params': 16, 'units': 7}, 'divider': {'correct': 900, 'total': 900, 'params': 1981, 'units': 397}, 'majority5': {'correct': 32, 'total': 32, 'params': 6, 'units': 1}, 'max4': {'correct': 10000, 'total': 10000, 'params': 18, 'units': 6}, 'multiplier': {'correct': 100, 'total': 1",
+ "wall_seconds": "114.1",
+ "peak_ram_mb": "16.9"
+}

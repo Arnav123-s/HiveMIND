@@ -1,0 +1,179 @@
+{"op": "adder", "args": "(0, 0)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["adder#1"]}
+{"op": "seqnext", "args": "(0, 1)", "result": "1", "verdict": "vote:1|ref:pass", "clones": ["seqnext#1"]}
+{"op": "sort3", "args": "(1, 3, 3)", "result": "(1, 3, 3)", "verdict": "vote:(1, 3, 3)|ref:pass", "clones": ["sort3#1"]}
+{"op": "adder", "args": "(1, 0)", "result": "1", "verdict": "vote:1|ref:pass", "clones": ["adder#2"]}
+{"op": "seqnext", "args": "(1, 0)", "result": "1", "verdict": "vote:1|ref:pass", "clones": ["seqnext#2"]}
+{"op": "sort3", "args": "(1, 9, 6)", "result": "(1, 6, 9)", "verdict": "vote:(1, 6, 9)|ref:pass", "clones": ["sort3#2"]}
+{"op": "adder", "args": "(0, 0)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["adder#3"]}
+{"op": "seqnext", "args": "(0, 0)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["seqnext#3"]}
+{"op": "sort3", "args": "(0, 3, 3)", "result": "(0, 3, 3)", "verdict": "vote:(0, 3, 3)|ref:pass", "clones": ["sort3#3"]}
+{"op": "adder", "args": "(4, 4)", "result": "8", "verdict": "vote:8|ref:pass", "clones": ["adder#4"]}
+{"op": "seqnext", "args": "(8, 0)", "result": "8", "verdict": "vote:8|ref:pass", "clones": ["seqnext#4"]}
+{"op": "sort3", "args": "(8, 8, 3)", "result": "(3, 8, 8)", "verdict": "vote:(3, 8, 8)|ref:pass", "clones": ["sort3#4"]}
+{"op": "adder", "args": "(4, 3)", "result": "7", "verdict": "vote:7|ref:pass", "clones": ["adder#5"]}
+{"op": "seqnext", "args": "(7, 0)", "result": "7", "verdict": "vote:7|ref:pass", "clones": ["seqnext#5"]}
+{"op": "sort3", "args": "(7, 7, 9)", "result": "(7, 7, 9)", "verdict": "vote:(7, 7, 9)|ref:pass", "clones": ["sort3#5"]}
+{"op": "adder", "args": "(2, 0)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["adder#6"]}
+{"op": "seqnext", "args": "(2, 0)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["seqnext#6"]}
+{"op": "sort3", "args": "(2, 6, 5)", "result": "(2, 5, 6)", "verdict": "vote:(2, 5, 6)|ref:pass", "clones": ["sort3#6"]}
+{"op": "adder", "args": "(2, 1)", "result": "3", "verdict": "vote:3|ref:pass", "clones": ["adder#7"]}
+{"op": "seqnext", "args": "(3, 0)", "result": "3", "verdict": "vote:3|ref:pass", "clones": ["seqnext#7"]}
+{"op": "sort3", "args": "(3, 5, 1)", "result": "(1, 3, 5)", "verdict": "vote:(1, 3, 5)|ref:pass", "clones": ["sort3#7"]}
+{"op": "adder", "args": "(0, 3)", "result": "3", "verdict": "vote:3|ref:pass", "clones": ["adder#8"]}
+{"op": "seqnext", "args": "(3, 0)", "result": "3", "verdict": "vote:3|ref:pass", "clones": ["seqnext#8"]}
+{"op": "sort3", "args": "(3, 5, 5)", "result": "(3, 5, 5)", "verdict": "vote:(3, 5, 5)|ref:pass", "clones": ["sort3#8"]}
+{"op": "multiplier", "args": "(9, 4)", "result": "36", "verdict": "vote:36|ref:pass", "clones": ["multiplier#1"]}
+{"op": "popcount8", "args": "(36,)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["popcount8#1"]}
+{"op": "majority5", "args": "(2,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#1"]}
+{"op": "multiplier", "args": "(0, 7)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["multiplier#2"]}
+{"op": "popcount8", "args": "(0,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["popcount8#2"]}
+{"op": "majority5", "args": "(0,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#2"]}
+{"op": "multiplier", "args": "(8, 1)", "result": "8", "verdict": "vote:8|ref:pass", "clones": ["multiplier#3"]}
+{"op": "popcount8", "args": "(8,)", "result": "1", "verdict": "vote:1|ref:pass", "clones": ["popcount8#3"]}
+{"op": "majority5", "args": "(1,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#3"]}
+{"op": "multiplier", "args": "(6, 1)", "result": "6", "verdict": "vote:6|ref:pass", "clones": ["multiplier#4"]}
+{"op": "popcount8", "args": "(6,)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["popcount8#4"]}
+{"op": "majority5", "args": "(2,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#4"]}
+{"op": "multiplier", "args": "(8, 4)", "result": "32", "verdict": "vote:32|ref:pass", "clones": ["multiplier#5"]}
+{"op": "popcount8", "args": "(32,)", "result": "1", "verdict": "vote:1|ref:pass", "clones": ["popcount8#5"]}
+{"op": "majority5", "args": "(1,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#5"]}
+{"op": "multiplier", "args": "(9, 5)", "result": "45", "verdict": "vote:45|ref:pass", "clones": ["multiplier#6"]}
+{"op": "popcount8", "args": "(45,)", "result": "4", "verdict": "vote:4|ref:pass", "clones": ["popcount8#6"]}
+{"op": "majority5", "args": "(4,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#6"]}
+{"op": "multiplier", "args": "(9, 3)", "result": "27", "verdict": "vote:27|ref:pass", "clones": ["multiplier#7"]}
+{"op": "popcount8", "args": "(27,)", "result": "4", "verdict": "vote:4|ref:pass", "clones": ["popcount8#7"]}
+{"op": "majority5", "args": "(4,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#7"]}
+{"op": "multiplier", "args": "(1, 0)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["multiplier#8"]}
+{"op": "popcount8", "args": "(0,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["popcount8#8"]}
+{"op": "majority5", "args": "(0,)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["majority5#8"]}
+{"op": "subtractor", "args": "(15, 7)", "result": "8", "verdict": "vote:8|ref:pass", "clones": ["subtractor#1"]}
+{"op": "compare2", "args": "(8, 9)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#1"]}
+{"op": "subtractor", "args": "(6, 6)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["subtractor#2"]}
+{"op": "compare2", "args": "(0, 7)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#2"]}
+{"op": "subtractor", "args": "(6, 3)", "result": "3", "verdict": "vote:3|ref:pass", "clones": ["subtractor#3"]}
+{"op": "compare2", "args": "(3, 8)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#3"]}
+{"op": "subtractor", "args": "(12, 10)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["subtractor#4"]}
+{"op": "compare2", "args": "(2, 11)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#4"]}
+{"op": "subtractor", "args": "(7, 5)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["subtractor#5"]}
+{"op": "compare2", "args": "(2, 11)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#5"]}
+{"op": "subtractor", "args": "(8, 4)", "result": "4", "verdict": "vote:4|ref:pass", "clones": ["subtractor#6"]}
+{"op": "compare2", "args": "(4, 2)", "result": "1", "verdict": "vote:1|ref:pass", "clones": ["compare2#6"]}
+{"op": "subtractor", "args": "(14, 10)", "result": "4", "verdict": "vote:4|ref:pass", "clones": ["subtractor#7"]}
+{"op": "compare2", "args": "(4, 5)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#7"]}
+{"op": "subtractor", "args": "(13, 11)", "result": "2", "verdict": "vote:2|ref:pass", "clones": ["subtractor#8"]}
+{"op": "compare2", "args": "(2, 7)", "result": "0", "verdict": "vote:0|ref:pass", "clones": ["compare2#8"]}
+{"op": "multiplier", "args": "fanout x4", "result": "4 results", "verdict": "clones:['multiplier#9', 'multiplier#10', 'multiplier#11', 'multiplier#12'] jobs:[1, 1, 1, 1] wrong:0", "clones": []}
+{"op": "max4", "args": "(3, 6, 2, 0)", "result": "6", "verdict": "vote:6|ref:pass", "clones": ["max4#1"]}
+{"op": "multiplier", "args": "fanout x4", "result": "4 results", "verdict": "clones:['multiplier#13', 'multiplier#14', 'multiplier#15', 'multiplier#16'] jobs:[1, 1, 1, 1] wrong:0", "clones": []}
+{"op": "max4", "args": "(0, 6, 0, 2)", "result": "6", "verdict": "vote:6|ref:pass", "clones": ["max4#2"]}
+{"op": "multiplier", "args": "fanout x4", "result": "4 results", "verdict": "clones:['multiplier#17', 'multiplier#18', 'multiplier#19', 'multiplier#20'] jobs:[1, 1, 1, 1] wrong:0", "clones": []}
+{"op": "max4", "args": "(9, 3, 2, 2)", "result": "9", "verdict": "vote:9|ref:pass", "clones": ["max4#3"]}
+{"op": "multiplier", "args": "fanout x4", "result": "4 results", "verdict": "clones:['multiplier#21', 'multiplier#22', 'multiplier#23', 'multiplier#24'] jobs:[1, 1, 1, 1] wrong:0", "clones": []}
+{"op": "max4", "args": "(9, 2, 3, 0)", "result": "9", "verdict": "vote:9|ref:pass", "clones": ["max4#4"]}
+{"op": "multiplier", "args": "fanout x4", "result": "4 results", "verdict": "clones:['multiplier#25', 'multiplier#26', 'multiplier#27', 'multiplier#28'] jobs:[1, 1, 1, 1] wrong:0", "clones": []}
+{"op": "max4", "args": "(0, 3, 0, 9)", "result": "9", "verdict": "vote:9|ref:pass", "clones": ["max4#5"]}
+{"op": "multiplier", "args": "fanout x4", "result": "4 results", "verdict": "clones:['multiplier#29', 'multiplier#30', 'multiplier#31', 'multiplier#32'] jobs:[1, 1, 1, 1] wrong:0", "clones": []}
+{"op": "max4", "args": "(0, 0, 0, 6)", "result": "6", "verdict": "vote:6|ref:pass", "clones": ["max4#6"]}
+{"op": "adder", "args": "fanout x40", "result": "40 results", "verdict": "clones:['adder#9', 'adder#10', 'adder#11', 'adder#12'] jobs:[10, 10, 10, 10] wrong:0", "clones": []}
+{"op": "multiplier", "args": "(0, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#33", "multiplier#34", "multiplier#35"]}
+{"op": "multiplier", "args": "(0, 1)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#36", "multiplier#37", "multiplier#38"]}
+{"op": "multiplier", "args": "(0, 2)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#39", "multiplier#40", "multiplier#41"]}
+{"op": "multiplier", "args": "(0, 3)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#42", "multiplier#43", "multiplier#44"]}
+{"op": "multiplier", "args": "(0, 4)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#45", "multiplier#46", "multiplier#47"]}
+{"op": "multiplier", "args": "(0, 5)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#48", "multiplier#49", "multiplier#50"]}
+{"op": "multiplier", "args": "(0, 6)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#51", "multiplier#52", "multiplier#53"]}
+{"op": "multiplier", "args": "(0, 7)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#54", "multiplier#55", "multiplier#56"]}
+{"op": "multiplier", "args": "(0, 8)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#57", "multiplier#58", "multiplier#59"]}
+{"op": "multiplier", "args": "(0, 9)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#60", "multiplier#61", "multiplier#62"]}
+{"op": "multiplier", "args": "(1, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#63", "multiplier#64", "multiplier#65"]}
+{"op": "multiplier", "args": "(1, 1)", "result": "1", "verdict": "vote:1/1/1|ref:pass", "clones": ["multiplier#66", "multiplier#67", "multiplier#68"]}
+{"op": "multiplier", "args": "(1, 2)", "result": "2", "verdict": "vote:2/2/2|ref:pass", "clones": ["multiplier#69", "multiplier#70", "multiplier#71"]}
+{"op": "multiplier", "args": "(1, 3)", "result": "3", "verdict": "vote:3/3/3|ref:pass", "clones": ["multiplier#72", "multiplier#73", "multiplier#74"]}
+{"op": "multiplier", "args": "(1, 4)", "result": "4", "verdict": "vote:4/4/4|ref:pass", "clones": ["multiplier#75", "multiplier#76", "multiplier#77"]}
+{"op": "multiplier", "args": "(1, 5)", "result": "5", "verdict": "vote:5/5/5|ref:pass", "clones": ["multiplier#78", "multiplier#79", "multiplier#80"]}
+{"op": "multiplier", "args": "(1, 6)", "result": "6", "verdict": "vote:6/6/6|ref:pass", "clones": ["multiplier#81", "multiplier#82", "multiplier#83"]}
+{"op": "multiplier", "args": "(1, 7)", "result": "7", "verdict": "vote:7/7/7|ref:pass", "clones": ["multiplier#84", "multiplier#85", "multiplier#86"]}
+{"op": "multiplier", "args": "(1, 8)", "result": "8", "verdict": "vote:8/8/8|ref:pass", "clones": ["multiplier#87", "multiplier#88", "multiplier#89"]}
+{"op": "multiplier", "args": "(1, 9)", "result": "9", "verdict": "vote:9/9/9|ref:pass", "clones": ["multiplier#90", "multiplier#91", "multiplier#92"]}
+{"op": "multiplier", "args": "(2, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#93", "multiplier#94", "multiplier#95"]}
+{"op": "multiplier", "args": "(2, 1)", "result": "2", "verdict": "vote:2/2/2|ref:pass", "clones": ["multiplier#96", "multiplier#97", "multiplier#98"]}
+{"op": "multiplier", "args": "(2, 2)", "result": "4", "verdict": "vote:4/4/4|ref:pass", "clones": ["multiplier#99", "multiplier#100", "multiplier#101"]}
+{"op": "multiplier", "args": "(2, 3)", "result": "6", "verdict": "vote:6/6/6|ref:pass", "clones": ["multiplier#102", "multiplier#103", "multiplier#104"]}
+{"op": "multiplier", "args": "(2, 4)", "result": "8", "verdict": "vote:8/8/8|ref:pass", "clones": ["multiplier#105", "multiplier#106", "multiplier#107"]}
+{"op": "multiplier", "args": "(2, 5)", "result": "10", "verdict": "vote:10/10/10|ref:pass", "clones": ["multiplier#108", "multiplier#109", "multiplier#110"]}
+{"op": "multiplier", "args": "(2, 6)", "result": "12", "verdict": "vote:12/12/12|ref:pass", "clones": ["multiplier#111", "multiplier#112", "multiplier#113"]}
+{"op": "multiplier", "args": "(2, 7)", "result": "14", "verdict": "vote:14/14/14|ref:pass", "clones": ["multiplier#114", "multiplier#115", "multiplier#116"]}
+{"op": "multiplier", "args": "(2, 8)", "result": "16", "verdict": "vote:16/16/16|ref:pass", "clones": ["multiplier#117", "multiplier#118", "multiplier#119"]}
+{"op": "multiplier", "args": "(2, 9)", "result": "18", "verdict": "vote:18/18/18|ref:pass", "clones": ["multiplier#120", "multiplier#121", "multiplier#122"]}
+{"op": "multiplier", "args": "(3, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#123", "multiplier#124", "multiplier#125"]}
+{"op": "multiplier", "args": "(3, 1)", "result": "3", "verdict": "vote:3/3/3|ref:pass", "clones": ["multiplier#126", "multiplier#127", "multiplier#128"]}
+{"op": "multiplier", "args": "(3, 2)", "result": "6", "verdict": "vote:6/6/6|ref:pass", "clones": ["multiplier#129", "multiplier#130", "multiplier#131"]}
+{"op": "multiplier", "args": "(3, 3)", "result": "9", "verdict": "vote:9/9/9|ref:pass", "clones": ["multiplier#132", "multiplier#133", "multiplier#134"]}
+{"op": "multiplier", "args": "(3, 4)", "result": "12", "verdict": "vote:12/12/12|ref:pass", "clones": ["multiplier#135", "multiplier#136", "multiplier#137"]}
+{"op": "multiplier", "args": "(3, 5)", "result": "15", "verdict": "vote:15/15/15|ref:pass", "clones": ["multiplier#138", "multiplier#139", "multiplier#140"]}
+{"op": "multiplier", "args": "(3, 6)", "result": "18", "verdict": "vote:18/18/18|ref:pass", "clones": ["multiplier#141", "multiplier#142", "multiplier#143"]}
+{"op": "multiplier", "args": "(3, 7)", "result": "21", "verdict": "vote:21/21/21|ref:pass", "clones": ["multiplier#144", "multiplier#145", "multiplier#146"]}
+{"op": "multiplier", "args": "(3, 8)", "result": "24", "verdict": "vote:24/24/24|ref:pass", "clones": ["multiplier#147", "multiplier#148", "multiplier#149"]}
+{"op": "multiplier", "args": "(3, 9)", "result": "27", "verdict": "vote:27/27/27|ref:pass", "clones": ["multiplier#150", "multiplier#151", "multiplier#152"]}
+{"op": "multiplier", "args": "(4, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#153", "multiplier#154", "multiplier#155"]}
+{"op": "multiplier", "args": "(4, 1)", "result": "4", "verdict": "vote:4/4/4|ref:pass", "clones": ["multiplier#156", "multiplier#157", "multiplier#158"]}
+{"op": "multiplier", "args": "(4, 2)", "result": "8", "verdict": "vote:8/8/8|ref:pass", "clones": ["multiplier#159", "multiplier#160", "multiplier#161"]}
+{"op": "multiplier", "args": "(4, 3)", "result": "12", "verdict": "vote:12/12/12|ref:pass", "clones": ["multiplier#162", "multiplier#163", "multiplier#164"]}
+{"op": "multiplier", "args": "(4, 4)", "result": "16", "verdict": "vote:16/16/16|ref:pass", "clones": ["multiplier#165", "multiplier#166", "multiplier#167"]}
+{"op": "multiplier", "args": "(4, 5)", "result": "20", "verdict": "vote:20/20/20|ref:pass", "clones": ["multiplier#168", "multiplier#169", "multiplier#170"]}
+{"op": "multiplier", "args": "(4, 6)", "result": "24", "verdict": "vote:24/24/24|ref:pass", "clones": ["multiplier#171", "multiplier#172", "multiplier#173"]}
+{"op": "multiplier", "args": "(4, 7)", "result": "28", "verdict": "vote:28/28/28|ref:pass", "clones": ["multiplier#174", "multiplier#175", "multiplier#176"]}
+{"op": "multiplier", "args": "(4, 8)", "result": "32", "verdict": "vote:32/32/32|ref:pass", "clones": ["multiplier#177", "multiplier#178", "multiplier#179"]}
+{"op": "multiplier", "args": "(4, 9)", "result": "36", "verdict": "vote:36/36/36|ref:pass", "clones": ["multiplier#180", "multiplier#181", "multiplier#182"]}
+{"op": "multiplier", "args": "(5, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#183", "multiplier#184", "multiplier#185"]}
+{"op": "multiplier", "args": "(5, 1)", "result": "5", "verdict": "vote:5/5/5|ref:pass", "clones": ["multiplier#186", "multiplier#187", "multiplier#188"]}
+{"op": "multiplier", "args": "(5, 2)", "result": "10", "verdict": "vote:10/10/10|ref:pass", "clones": ["multiplier#189", "multiplier#190", "multiplier#191"]}
+{"op": "multiplier", "args": "(5, 3)", "result": "15", "verdict": "vote:15/15/15|ref:pass", "clones": ["multiplier#192", "multiplier#193", "multiplier#194"]}
+{"op": "multiplier", "args": "(5, 4)", "result": "20", "verdict": "vote:20/20/20|ref:pass", "clones": ["multiplier#195", "multiplier#196", "multiplier#197"]}
+{"op": "multiplier", "args": "(5, 5)", "result": "25", "verdict": "vote:25/25/25|ref:pass", "clones": ["multiplier#198", "multiplier#199", "multiplier#200"]}
+{"op": "multiplier", "args": "(5, 6)", "result": "30", "verdict": "vote:30/30/30|ref:pass", "clones": ["multiplier#201", "multiplier#202", "multiplier#203"]}
+{"op": "multiplier", "args": "(5, 7)", "result": "35", "verdict": "vote:35/35/35|ref:pass", "clones": ["multiplier#204", "multiplier#205", "multiplier#206"]}
+{"op": "multiplier", "args": "(5, 8)", "result": "40", "verdict": "vote:40/40/40|ref:pass", "clones": ["multiplier#207", "multiplier#208", "multiplier#209"]}
+{"op": "multiplier", "args": "(5, 9)", "result": "45", "verdict": "vote:45/45/45|ref:pass", "clones": ["multiplier#210", "multiplier#211", "multiplier#212"]}
+{"op": "multiplier", "args": "(6, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#213", "multiplier#214", "multiplier#215"]}
+{"op": "multiplier", "args": "(6, 1)", "result": "6", "verdict": "vote:6/6/6|ref:pass", "clones": ["multiplier#216", "multiplier#217", "multiplier#218"]}
+{"op": "multiplier", "args": "(6, 2)", "result": "12", "verdict": "vote:12/12/12|ref:pass", "clones": ["multiplier#219", "multiplier#220", "multiplier#221"]}
+{"op": "multiplier", "args": "(6, 3)", "result": "18", "verdict": "vote:18/18/18|ref:pass", "clones": ["multiplier#222", "multiplier#223", "multiplier#224"]}
+{"op": "multiplier", "args": "(6, 4)", "result": "24", "verdict": "vote:24/24/24|ref:pass", "clones": ["multiplier#225", "multiplier#226", "multiplier#227"]}
+{"op": "multiplier", "args": "(6, 5)", "result": "30", "verdict": "vote:30/30/30|ref:pass", "clones": ["multiplier#228", "multiplier#229", "multiplier#230"]}
+{"op": "multiplier", "args": "(6, 6)", "result": "36", "verdict": "vote:36/36/36|ref:pass", "clones": ["multiplier#231", "multiplier#232", "multiplier#233"]}
+{"op": "multiplier", "args": "(6, 7)", "result": "42", "verdict": "vote:42/42/42|ref:pass", "clones": ["multiplier#234", "multiplier#235", "multiplier#236"]}
+{"op": "multiplier", "args": "(6, 8)", "result": "48", "verdict": "vote:48/48/48|ref:pass", "clones": ["multiplier#237", "multiplier#238", "multiplier#239"]}
+{"op": "multiplier", "args": "(6, 9)", "result": "54", "verdict": "vote:54/54/54|ref:pass", "clones": ["multiplier#240", "multiplier#241", "multiplier#242"]}
+{"op": "multiplier", "args": "(7, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#243", "multiplier#244", "multiplier#245"]}
+{"op": "multiplier", "args": "(7, 1)", "result": "7", "verdict": "vote:7/7/7|ref:pass", "clones": ["multiplier#246", "multiplier#247", "multiplier#248"]}
+{"op": "multiplier", "args": "(7, 2)", "result": "14", "verdict": "vote:14/14/14|ref:pass", "clones": ["multiplier#249", "multiplier#250", "multiplier#251"]}
+{"op": "multiplier", "args": "(7, 3)", "result": "21", "verdict": "vote:21/21/21|ref:pass", "clones": ["multiplier#252", "multiplier#253", "multiplier#254"]}
+{"op": "multiplier", "args": "(7, 4)", "result": "28", "verdict": "vote:28/28/28|ref:pass", "clones": ["multiplier#255", "multiplier#256", "multiplier#257"]}
+{"op": "multiplier", "args": "(7, 5)", "result": "35", "verdict": "vote:35/35/35|ref:pass", "clones": ["multiplier#258", "multiplier#259", "multiplier#260"]}
+{"op": "multiplier", "args": "(7, 6)", "result": "42", "verdict": "vote:42/42/42|ref:pass", "clones": ["multiplier#261", "multiplier#262", "multiplier#263"]}
+{"op": "multiplier", "args": "(7, 7)", "result": "49", "verdict": "vote:49/49/49|ref:pass", "clones": ["multiplier#264", "multiplier#265", "multiplier#266"]}
+{"op": "multiplier", "args": "(7, 8)", "result": "56", "verdict": "vote:56/56/56|ref:pass", "clones": ["multiplier#267", "multiplier#268", "multiplier#269"]}
+{"op": "multiplier", "args": "(7, 9)", "result": "63", "verdict": "vote:63/63/63|ref:pass", "clones": ["multiplier#270", "multiplier#271", "multiplier#272"]}
+{"op": "multiplier", "args": "(8, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#273", "multiplier#274", "multiplier#275"]}
+{"op": "multiplier", "args": "(8, 1)", "result": "8", "verdict": "vote:8/8/8|ref:pass", "clones": ["multiplier#276", "multiplier#277", "multiplier#278"]}
+{"op": "multiplier", "args": "(8, 2)", "result": "16", "verdict": "vote:16/16/16|ref:pass", "clones": ["multiplier#279", "multiplier#280", "multiplier#281"]}
+{"op": "multiplier", "args": "(8, 3)", "result": "24", "verdict": "vote:24/24/24|ref:pass", "clones": ["multiplier#282", "multiplier#283", "multiplier#284"]}
+{"op": "multiplier", "args": "(8, 4)", "result": "32", "verdict": "vote:32/32/32|ref:pass", "clones": ["multiplier#285", "multiplier#286", "multiplier#287"]}
+{"op": "multiplier", "args": "(8, 5)", "result": "40", "verdict": "vote:40/40/40|ref:pass", "clones": ["multiplier#288", "multiplier#289", "multiplier#290"]}
+{"op": "multiplier", "args": "(8, 6)", "result": "48", "verdict": "vote:48/48/48|ref:pass", "clones": ["multiplier#291", "multiplier#292", "multiplier#293"]}
+{"op": "multiplier", "args": "(8, 7)", "result": "56", "verdict": "vote:56/56/56|ref:pass", "clones": ["multiplier#294", "multiplier#295", "multiplier#296"]}
+{"op": "multiplier", "args": "(8, 8)", "result": "64", "verdict": "vote:64/64/64|ref:pass", "clones": ["multiplier#297", "multiplier#298", "multiplier#299"]}
+{"op": "multiplier", "args": "(8, 9)", "result": "72", "verdict": "vote:72/72/72|ref:pass", "clones": ["multiplier#300", "multiplier#301", "multiplier#302"]}
+{"op": "multiplier", "args": "(9, 0)", "result": "0", "verdict": "vote:0/0/0|ref:pass", "clones": ["multiplier#303", "multiplier#304", "multiplier#305"]}
+{"op": "multiplier", "args": "(9, 1)", "result": "9", "verdict": "vote:9/9/9|ref:pass", "clones": ["multiplier#306", "multiplier#307", "multiplier#308"]}
+{"op": "multiplier", "args": "(9, 2)", "result": "18", "verdict": "vote:18/18/18|ref:pass", "clones": ["multiplier#309", "multiplier#310", "multiplier#311"]}
+{"op": "multiplier", "args": "(9, 3)", "result": "27", "verdict": "vote:27/27/27|ref:pass", "clones": ["multiplier#312", "multiplier#313", "multiplier#314"]}
+{"op": "multiplier", "args": "(9, 4)", "result": "36", "verdict": "vote:36/36/36|ref:pass", "clones": ["multiplier#315", "multiplier#316", "multiplier#317"]}
+{"op": "multiplier", "args": "(9, 5)", "result": "45", "verdict": "vote:45/45/45|ref:pass", "clones": ["multiplier#318", "multiplier#319", "multiplier#320"]}
+{"op": "multiplier", "args": "(9, 6)", "result": "54", "verdict": "vote:54/54/54|ref:pass", "clones": ["multiplier#321", "multiplier#322", "multiplier#323"]}
+{"op": "multiplier", "args": "(9, 7)", "result": "63", "verdict": "vote:63/63/63|ref:pass", "clones": ["multiplier#324", "multiplier#325", "multiplier#326"]}
+{"op": "multiplier", "args": "(9, 8)", "result": "72", "verdict": "vote:72/72/72|ref:pass", "clones": ["multiplier#327", "multiplier#328", "multiplier#329"]}
+{"op": "multiplier", "args": "(9, 9)", "result": "81", "verdict": "vote:81/81/81|ref:pass", "clones": ["multiplier#330", "multiplier#331", "multiplier#332"]}
+{"op": "divider", "args": "(50, 5)", "result": "None", "verdict": "capability_gap", "clones": []}
+{"op": "adder", "args": "(500, 400)", "result": "None", "verdict": "out_of_domain", "clones": []}
