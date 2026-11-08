@@ -86,6 +86,15 @@ class Browser:
         self._ctx.on("page", lambda pg: self._new_pages.append(pg))  # links that open a new tab
         self.elements = {}
         self.typed = []  # fields typed into on the current page
+        self.http_status = None  # HTTP status of the last page load (a 404 page still renders, so the model can't tell)
+        self._ctx.on("response", self._on_response)
+
+    def _on_response(self, r):
+        try:
+            if r.request.is_navigation_request() and r.frame.parent_frame is None:
+                self.http_status = r.status
+        except Exception:  # noqa: BLE001 - a closed page must not break the browser
+            pass
 
     def close(self):
         try:

@@ -89,6 +89,15 @@ def condense(task, title, text, board, limit=3000):
     return "\n".join(lines[i] for i in sorted(set(keep)))
 
 
+def with_value(fact):
+    """A bare label ("parameter count") states nothing the checker can match to its quote ("params 0.135B"), so it was
+    rejected while the number still reached the report through the summary. Such a claim takes its quote's words."""
+    claim, quote = str(fact.get("claim", "")).strip(), str(fact.get("quote", "")).strip()
+    if quote and not re.search(r"\d", claim) and len(claim.split()) <= 4 and quote.lower() not in claim.lower():
+        fact["claim"] = f"{claim}: {quote[:200]}"
+    return fact
+
+
 def run(task, context, board, step_id):
     plan, raw = llm.chat_json("researcher", plan_messages(task, context), max_new_tokens=300)
     if not isinstance(plan, dict):  # no usable plan: the pick_source cell chooses where to search (else the web)
@@ -106,7 +115,7 @@ def run(task, context, board, step_id):
     data, raw = llm.chat_json("researcher", extract_messages(task, text), max_new_tokens=900)
     if not isinstance(data, dict):
         data = {"summary": raw[:500], "items": [], "facts": []}
-    facts = [f for f in data.get("facts") or [] if isinstance(f, dict) and f.get("claim")]
+    facts = [with_value(f) for f in data.get("facts") or [] if isinstance(f, dict) and f.get("claim")]
     items = [str(i) for i in (data.get("items") or []) if str(i).strip()]
     return {"summary": str(data.get("summary", "")), "items": items, "facts": facts,
             "corpus": corpus, "notes": notes}

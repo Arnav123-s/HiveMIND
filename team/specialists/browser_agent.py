@@ -13,6 +13,15 @@ def turn_messages(goal, obs, history):
     return [{"role": "system", "content": prompts.BROWSER}, {"role": "user", "content": user}]
 
 
+def bad_page(b):
+    """What to tell the model when the page it is on is an HTTP error (a 404 page still has text and links)."""
+    st = getattr(b, "http_status", None)
+    if st and st >= 400:
+        return (f"HTTP {st}: this page does not exist or cannot be read. Do not guess addresses: open the site's home "
+                f"page and use its search box or links.")
+    return ""
+
+
 def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     goal = task if not context else f"{task}\n(Team notes: {context[:600]})"
     b = Browser()
@@ -21,6 +30,8 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     try:
         try:
             b.goto(start_url or "about:blank")
+            if bad_page(b):
+                history.append(f"0. open {start_url} -> {bad_page(b)}")
         except RuntimeError as e:
             history.append(f"0. {e}")
             b.page.goto("about:blank")
@@ -34,6 +45,9 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                 continue
             board.log("browser", "action", json.dumps(action)[:200])
             kind = action["action"]
+            if kind == "done" and bad_page(b):  # an error page is never the answer
+                history.append(f"{n + 1}. done refused: {bad_page(b)}")
+                continue
             if kind == "done":
                 result = {"summary": str(action.get("answer", "")), "evidence": str(action.get("evidence", "")),
                           "url": b.page.url, "page_text": page_text, "actions": history}
@@ -82,7 +96,7 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                         break
                 else:
                     stuck = 0
-                    history.append(f"{n + 1}. {kind}{label} -> now at {url}")
+                    history.append(f"{n + 1}. {kind}{label} -> now at {url}" + (f" - {bad_page(b)}" if bad_page(b) else ""))
                 last_sig = sig
                 if shots_dir:
                     b.screenshot(f"{shots_dir}/{step_id.replace('[', '_').replace(']', '')}_{n + 1:02d}.png")

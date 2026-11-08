@@ -16,6 +16,15 @@ from .guard import Guard, check_task
 from .specialists import browser_agent, coder, coordinator, researcher, verifier, writer
 
 
+def retract_failed(board, step, why):
+    """A browser's evidence is stored as seen on the page before the jury votes; when the step fails, it is nobody's
+    source (a 404 page's "Hugging Face" was cited as [2]). A researcher's facts stay: each was checked against its quote."""
+    if step["agent"] == "researcher":
+        return
+    for f in board.facts(step["id"], "supported"):
+        board.set_fact(f["id"], "rejected", f"its step failed: {why[:120]}")
+
+
 class Hive:
     def __init__(self, goal, run_dir=None, approve="ask", allow_login=()):
         self.goal = goal.strip()
@@ -76,6 +85,10 @@ class Hive:
         b = self.board
         (self.dir / "TASK.md").write_text(self.goal + "\n")
         b.log("hive", "task", self.goal)
+        from .cells import runtime as cells
+        left = cells.ensure_built(lambda m: b.log("cells", "build", m))
+        if left:
+            b.log("cells", "off", f"{len(left)} cells not built: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''}")
         notes = "\n".join(f"- {x}" for x in memory.lessons_for("coordinator", self.goal))
         past = memory.recall(self.goal, k=2)
         if past:
@@ -186,6 +199,8 @@ class Hive:
             stored = {k: v for k, v in result.items() if k not in ("corpus", "page_text")}
             b.update_step(s["id"], result=stored, verdict=verdict, feedback=why,
                           status="done" if verdict == "PASS" else "failed", finished=time.time())
+            if verdict != "PASS":
+                retract_failed(b, s, why)
             if verdict == "PASS":
                 if s["agent"] == "writer":
                     (self.dir / "REPORT.md").write_text(result["summary"])
