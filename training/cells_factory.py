@@ -26,6 +26,7 @@ def find_parent(skill, base="smol135"):
     tok, model = C.load(base)
     _, dv, _ = C.data(skill)
     scores = {"base": C.accuracy(model, tok, skill, dv)[0]}
+    losses = {"base": C.loss_on(model, tok, skill, dv)}
     names = [k for k, v in reg.items() if v["base"] == base and k != skill and k != "gate"]
     if names:
         pm = PeftModel.from_pretrained(model, str(C.CELLS / "adapters" / names[0]), adapter_name=names[0])
@@ -35,9 +36,13 @@ def find_parent(skill, base="smol135"):
         for n in names:
             pm.set_adapter(n)
             scores[n] = C.accuracy(pm, tok, skill, dv)[0]
-    best = max(scores, key=lambda k: (scores[k], k == "base"))
-    print(f"{skill}: nearest cells on dev: " + ", ".join(f"{k} {v:.2f}" for k, v in sorted(scores.items(), key=lambda kv: -kv[1])[:6]))
-    return best, scores
+            losses[n] = C.loss_on(pm, tok, skill, dv)
+    # nearest = answers the new skill best already; accuracy ties (e.g. every yes/no cell saying "no") go to the
+    # cell whose answers are most likely under the new skill's labels (lowest dev loss)
+    best = max(scores, key=lambda k: (scores[k], -losses[k]))
+    print(f"{skill}: nearest cells on dev: " + ", ".join(f"{k} {scores[k]:.2f} (loss {losses[k]:.2f})" for k in
+                                                      sorted(scores, key=lambda k: (-scores[k], losses[k]))[:6]))
+    return best, {k: {"dev": scores[k], "dev_loss": round(losses[k], 4)} for k in scores}
 
 
 if __name__ == "__main__":
@@ -50,7 +55,7 @@ if __name__ == "__main__":
     C.eval_base(a.skill, a.base)
     reg = runtime.registry()
     if parent == "base":  # no cell is closer than the bare base: clone the strongest cell overall instead
-        parent = max((k for k in reg if k != "gate"), key=lambda k: scores.get(k, 0))
+        parent = max((k for k in reg if k != "gate" and k in scores), key=lambda k: (scores[k]["dev"], -scores[k]["dev_loss"]))
     keys = reg[parent]["modules"]
     thin = reg[parent].get("thin")
     clone = C.train(a.skill, a.base, keys, rank=reg[parent]["rank"], steps=a.steps, tag=f"clone_{parent}",

@@ -1,0 +1,2 @@
+after: done
+ls_after.sh: line 17: 11501 Illegal instruction     .venv/bin/python training/cells_cut_eval.py route_step next_move quote_pick orders_spend >> $R/cut.log 2>&1

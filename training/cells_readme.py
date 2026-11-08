@@ -8,6 +8,10 @@ R = ROOT / "training" / "reports" / "cells"
 sys.path.insert(0, str(ROOT))
 
 
+def ms(x):
+    return "-" if x is None else f"{x:.0f}"
+
+
 def j(name):
     p = R / name
     return json.loads(p.read_text()) if p.exists() else None
@@ -20,6 +24,29 @@ def variants():
         if v:
             out[d.name] = v
     return out
+
+
+def breadth_line():
+    """Where the locator's concentrated pick stands against the broad edits, from the measured variants."""
+    won, tied, lost, rnd = [], [], [], []
+    for skill, v in variants().items():
+        if "pick" not in v or skill == "gate":
+            continue
+        others = [r["test"] for k, r in v.items() if k not in ("base", "pick") and not k.startswith("random")]
+        if not others:
+            continue
+        top = max(others)
+        p = v["pick"]["test"]
+        (won if p > top + 1e-9 else tied if abs(p - top) < 1e-9 else lost).append(skill)
+        r = next((r for k, r in v.items() if k.startswith("random")), None)
+        if r and r["test"] > p:
+            rnd.append(f"{skill} {r['test']:.3f} vs {p:.3f}")
+    return (f"- **Breadth beats concentration.** Across {len(won) + len(tied) + len(lost)} skills, the locator's "
+            f"concentrated pick (~0.2-0.4M edited parameters) was the best edit on {len(won)} "
+            f"({', '.join(won) or 'none'}), tied on {len(tied)} ({', '.join(tied) or 'none'}) and lost on {len(lost)} to "
+            f"rank 2 on every module or the pick plus rank 2 everywhere else (`thin`). A random pick of the same size "
+            f"beat it where that control ran ({'; '.join(rnd) or 'none'}). A skill is not stored in one small set of "
+            "modules: a small change in every module edits it best.")
 
 
 def edit_table():
@@ -80,8 +107,53 @@ def hooks():
     return out
 
 
+def not_on(reg):
+    p = ROOT / "cells" / "wins.json"
+    w = json.loads(p.read_text()) if p.exists() else {}
+    if not w:
+        return []
+    out = ["Measured, but not switched on (or with a cost):", "",
+           "- checklist (`split_orders`): on a real order the cell respelled a model id ('Smol LM2') and left out "
+           "'Do not log in or pay': its training orders had no ids and no negations. The coordinator now keeps the span "
+           "of your own words closest to each line and adds any sentence of the order that no line covers, as written "
+           "(`team/specialists/coordinator.py`); on the test split that scores 0.927 vs 0.913 for the raw cell.",
+           "- JSON repair (`json_repair`): the cell turns ANY text into JSON ('no json here' -> {\"no\": null}); it never "
+           "saw text without JSON. The hook now runs only on text that holds a broken object, rejects a repair whose "
+           "keys are not in the text, and is asked before the code rules settle for a list inside a broken object (they "
+           "returned [1, 2] for a whole object). As used: 1.000 on the test split; the code rules alone 0.493."]
+    f = w.get("family_topic", {})
+    if "rule_or_cell" in f:
+        out.append(f"- family check: the rule OR the cell scores {f['rule_or_cell']} vs the rule alone {f['incumbent']} on "
+                   "test. The cell catches family steps the rule misses ('Plan a trip with the kids', 'Choose a school "
+                   "for our son') and wrongly flags as many ('Family Guy' trivia, 'brother-in-arms' quotes); a wrongly "
+                   "flagged step is dropped and listed in the report. Kept on because your family rule is strict.")
+    for k, who in (("claim_support", "verifier"), ("licence_open", "juror")):
+        c = w.get(k, {})
+        if c and not c.get("use") and c.get("incumbent") is not None:
+            out.append(f"- `{k}`: cell {c['cell']:.3f} vs the {who} member {c['incumbent']:.3f}: the bigger member keeps "
+                       "the job. The 135M cell lacks the world knowledge the test needs (e.g. that ISC is a permissive "
+                       "licence)." if k == "licence_open" else
+                       f"- `{k}`: cell {c['cell']:.3f} vs the {who} member {c['incumbent']:.3f}: the bigger member keeps "
+                       "the job.")
+    pe = w.get("pick_element", {})
+    if pe:
+        out.append(f"- page organizer (`element_match` per element): {pe.get('organizer')} on the test pages vs the browser "
+                   f"member's {pe.get('incumbent')}, asked exactly as the hive asks it. Not wired: the browser member "
+                   "decides whole actions toward a multi-step goal, and the hive has no single-click goal to hand the "
+                   "organizer yet.")
+    if "gate" in reg:
+        out.append(f"- `gate`: routes {reg['gate'].get('test_runtime', 0):.3f} of test inputs to the right group. The hive "
+                   "calls each cell at a fixed hook, so nothing needs routing yet; the gate is ready for inputs that "
+                   "arrive without one.")
+    if "orders_any" in reg:
+        out.append("- `orders_any`: made by the factory to test cloning; not wired, the five one-kind order cells "
+                   "already read every order.")
+    return out + [""]
+
+
 def main():
     summary = (R / "SUMMARY.md").read_text().split("\n", 2)[2] if (R / "SUMMARY.md").exists() else "(not measured yet)"
+    summary = summary.replace("\n## ", "\n#### ")
     fac = j("factory_licence_open.json")
     cut = j("cut22.json")
     reg = json.loads((ROOT / "cells" / "registry.json").read_text()) if (ROOT / "cells" / "registry.json").exists() else {}
@@ -119,11 +191,9 @@ def main():
            "- More rank on the same modules did nothing (rank 32: 0.941). On route_step, editing only the MLPs of every "
            "layer scored 1.000 and attention only 0.958: routing by meaning lives in the MLPs (word -> category "
            "memories); attention mostly moves information.",
-           "- **Breadth beats concentration.** On the skills the rules were not tuned on, the locator's concentrated "
-           "pick won only pick_source; a random pick of the same size beat it on claim_support and quote_pick; "
-           "rank 2 on every module, or the pick plus rank 2 everywhere else (`thin`), won the rest. A skill is not "
-           "stored in one small set of modules: a small change in every module edits it best.",
-           "- Rank 8 everywhere (2.4M edited parameters) never beat rank 2 everywhere (0.6M): 4x the size for nothing.",
+           breadth_line(),
+           "- Rank 8 everywhere (2.4M edited parameters) beat rank 2 everywhere (0.6M) once in four skills "
+           "(orders_spend 0.984 vs 0.967, one test sentence) and lost on the other three: 4x the size, no gain.",
            "- So each skill trains the candidates below from its maps and **dev** picks (dev = held-out training words; "
            "test is never used to choose). Where dev and test disagree it is reported, not fixed by peeking at test "
            "(next_move: dev picked MLP-only rank 2, 0.880 on test, while `thin` scored 0.973).", "",
@@ -137,16 +207,21 @@ def main():
                 f"the {len(cut['dropped'])} least important ({cut['dropped']}) -> a {cut['layers']}-layer base "
                 f"({cut['params_m']:.0f}M params, {cut['gguf_mb']:.0f} MB). Cells retrained on it:", "",
                 "| skill | 30 layers | 22 layers | ms/call 30 | ms/call 22 |", "|---|---|---|---|---|",
-                *[f"| {r['skill']} | {r['full']:.3f} | {r['cut']:.3f} | {r['ms_full']:.0f} | {r['ms_cut']:.0f} |" for r in cut["rows"]], "",
-                cut["verdict"], ""]
-    if fac:
+                *[f"| {r['skill']} | {r['full']:.3f} | {r['cut']:.3f} | {ms(r['ms_full'])} | {ms(r['ms_cut'])} |" for r in cut["rows"]], "",
+                cut["verdict"] + (" " + cut["source"] if cut.get("source") else ""), ""]
+    facs = [f for f in (j("factory_orders_any.json"), fac) if f]
+    if facs:
+        what = {"orders_any": "does the sentence order ANY risky action?",
+                "licence_open": "is a licence free for any use, including commercial?"}
         out += ["### Cloning: a new skill gets a cell by copying the nearest one and editing the copy", "",
                 "`training/cells_factory.py <skill>`: the parent finder runs every registered cell on the new skill's dev "
-                "inputs; the one already closest is cloned (its weight deltas copied into the new cell), then the clone is "
-                "trained on the new skill only. The control trains the same modules from zero for the same steps.", "",
-                f"New skill `{fac['skill']}` (is a licence free for any use?): nearest cell **{fac['parent']}**. "
-                f"After {fac['steps']} steps: clone dev {fac['clone']['dev']:.3f} / test {fac['clone']['test']:.3f}, "
-                f"from zero dev {fac['scratch']['dev']:.3f} / test {fac['scratch']['test']:.3f}.", ""]
+                "inputs; the one that already answers it best (ties: the lowest dev loss) is cloned, its weight deltas "
+                "copied into the new cell, and the clone is trained on the new skill only. The control trains the same "
+                "modules from zero for the same steps. Dev picks which one becomes the cell.", "",
+                "| new skill | nearest cell | clone dev / test | from zero dev / test | steps |", "|---|---|---|---|---|",
+                *[f"| {f['skill']} ({what.get(f['skill'], '')}) | {f['parent']} | {f['clone']['dev']:.3f} / "
+                  f"{f['clone']['test']:.3f} | {f['scratch']['dev']:.3f} / {f['scratch']['test']:.3f} | {f['steps']} |"
+                  for f in facs], ""]
     gate = reg.get("gate")
     page = j("organizer_pick_element.json")
     one = reg.get("pick_element", {})
@@ -163,7 +238,7 @@ def main():
             "cell; the page organizer asks it about every element and acts on the most likely yes"
             + (f": **{page['test']:.3f}** on the same test pages ({page['ms_per_input']:.0f} ms per page)." if page else "."), "",
             "### Where cells work in the hive (switched on only where they won)", "",
-            *hooks(),             "", "Turn every cell off with `AGENT_TEAM_CELLS=0`.", "",
+            *hooks(), "", *not_on(reg),             "", "Turn every cell off with `AGENT_TEAM_CELLS=0`.", "",
             "Commands: `python training/cells_pipeline.py <skill>` (probe, locator pick, candidates, promote); "
             "`python training/cells_factory.py <new_skill>`; `python training/cells_incumbents.py <skill>`; "
             "`python training/cells_compare.py`.", "<!-- cells:end -->"]

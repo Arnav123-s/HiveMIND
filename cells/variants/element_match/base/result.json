@@ -1,0 +1,8 @@
+{
+ "skill": "element_match",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.3375,
+ "test": 0.5,
+ "trainable_params": 0
+}

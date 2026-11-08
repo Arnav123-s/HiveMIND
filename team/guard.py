@@ -108,14 +108,14 @@ def _family_cell(text):
 
 def check_task(text, goal=""):
     """Family/relationship matters only when Arnav's own order is about them. Reason string, or None.
-    Two readers: the rule and the family_topic cell (it also catches 'Mom', 'our son', 'the kids')."""
+    Two readers: the rule and the family_topic cell (it also catches 'Mom', 'our son', 'the kids').
+    The cell only ever adds blocks: what the rule blocks, the cell can never unlock."""
     m = FAMILY.search(text or "")
-    goal_family = bool(FAMILY.search(goal or "")) or _family_cell(goal)
-    if goal_family:
-        return None
     if m:
+        if FAMILY.search(goal or ""):
+            return None
         return f"touches family/relationships ('{m.group(0)}'), which your order did not ask for"
-    if _family_cell(text):
+    if _family_cell(text) and not (FAMILY.search(goal or "") or _family_cell(goal)):
         return "touches family/relationships (family_topic cell), which your order did not ask for"
     return None
 

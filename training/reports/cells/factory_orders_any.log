@@ -1,0 +1,101 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11124.06it/s]
+orders_any: nearest cells on dev: route_step 0.95 (loss 1.38), base 0.94 (loss 4.12), json_repair 0.94 (loss 6.23), next_move 0.72 (loss 3.53), pick_source 0.70 (loss 1.68), pick_element 0.54 (loss 2.83)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5508.24it/s]
+  [base] orders_any: dev 0.938 test 0.672
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5239.32it/s]
+  [clone_route_step] step 0 loss 2.2166 (4s)
+  [clone_route_step] step 50 loss 0.0016 (205s)
+  [clone_route_step] step 59 loss 0.0023 (242s)
+  [clone_route_step] orders_any: dev 1.000 test 0.967 params 610,560 (276.7s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10395.56it/s]
+  [scratch] step 0 loss 4.0648 (4s)
+  [scratch] step 50 loss 0.0550 (212s)
+  [scratch] step 59 loss 0.0279 (248s)
+  [scratch] orders_any: dev 1.000 test 0.918 params 610,560 (279.4s)
+{
+ "skill": "orders_any",
+ "parent": "route_step",
+ "parent_scores_dev": {
+  "base": {
+   "dev": 0.9375,
+   "dev_loss": 4.1228
+  },
+  "route_step": {
+   "dev": 0.95,
+   "dev_loss": 1.3783
+  },
+  "next_move": {
+   "dev": 0.725,
+   "dev_loss": 3.5342
+  },
+  "orders_spend": {
+   "dev": 0.425,
+   "dev_loss": 1.927
+  },
+  "split_orders": {
+   "dev": 0.1,
+   "dev_loss": 19.386
+  },
+  "json_repair": {
+   "dev": 0.9375,
+   "dev_loss": 6.2309
+  },
+  "family_topic": {
+   "dev": 0.0125,
+   "dev_loss": 3.1625
+  },
+  "orders_send": {
+   "dev": 0.2375,
+   "dev_loss": 3.5266
+  },
+  "quote_pick": {
+   "dev": 0.4125,
+   "dev_loss": 0.8617
+  },
+  "orders_delete": {
+   "dev": 0.2625,
+   "dev_loss": 2.7232
+  },
+  "claim_support": {
+   "dev": 0.25,
+   "dev_loss": 5.9724
+  },
+  "orders_login": {
+   "dev": 0.2875,
+   "dev_loss": 4.5323
+  },
+  "pick_source": {
+   "dev": 0.7,
+   "dev_loss": 1.6791
+  },
+  "pick_element": {
+   "dev": 0.5375,
+   "dev_loss": 2.8266
+  },
+  "orders_signup": {
+   "dev": 0.3,
+   "dev_loss": 3.1755
+  },
+  "licence_open": {
+   "dev": 0.125,
+   "dev_loss": 3.3908
+  }
+ },
+ "steps": 60,
+ "clone": {
+  "dev": 1.0,
+  "test": 0.9672131147540983,
+  "trainable_params": 610560,
+  "copied_tensors": 420
+ },
+ "scratch": {
+  "dev": 1.0,
+  "test": 0.9180327868852459,
+  "trainable_params": 610560
+ }
+}
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5034.45it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 21980.86it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2309.85it/s]
+orders_any: clone_route_step dev 1.000 test(torch) 0.967, 610,560 params changed (tied on dev, dev loss: {'clone_route_step': 0.0032, 'scratch': 0.0176})

@@ -5,6 +5,7 @@ Writes training/reports/cells/incumbent_<skill>.json: score and seconds per call
 """
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -12,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 os.environ.setdefault("AGENT_TEAM_ENGINE", "gguf")
+os.environ["AGENT_TEAM_CELLS"] = "0"  # the incumbents alone: no cell may answer for them (e.g. inside parse_json)
 from team import guard, llm, prompts  # noqa: E402
 from team.cells import skills as S  # noqa: E402
 from training.cells import data  # noqa: E402
@@ -32,6 +34,15 @@ _ORDERS = {}
 
 def ask_member(member, skill, x):
     spec = S.SKILLS[skill]
+    if skill == "pick_element":  # exactly how the browser is asked today: its own prompt, the id of the action it takes
+        from team.specialists.browser_agent import turn_messages
+        goal, els = x.split("\nELEMENTS:\n", 1)
+        obs = {"url": "https://shop.example/", "title": "Shop", "text": "", "elements": els}
+        data_, raw = llm.chat_json(member, turn_messages(goal.removeprefix("GOAL: "), obs, []), max_new_tokens=60)
+        if isinstance(data_, dict) and str(data_.get("id", "")).isdigit():
+            return str(data_["id"])
+        m = re.search(r"\d+", raw or "")
+        return m.group(0) if m else ""
     if skill == "claim_support":  # exactly how the verifier is asked today
         claim, quote = x.split("\nQUOTE: ")
         data_, _ = llm.chat_json(member, [{"role": "system", "content": prompts.VERIFIER_FACT},

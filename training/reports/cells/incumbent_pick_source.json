@@ -1,0 +1,39 @@
+{
+ "skill": "pick_source",
+ "incumbent": "researcher = brain4b",
+ "test": 0.7027,
+ "ms_per_call": 6362.5,
+ "n": 74,
+ "errors": [
+  [
+   "Find background on the telescope.",
+   "wikipedia",
+   "web"
+  ],
+  [
+   "Find facts about Nairobi.",
+   "wikipedia",
+   "web"
+  ],
+  [
+   "Find a Python library to draw terminal tables.",
+   "pypi",
+   "web"
+  ],
+  [
+   "Find the latest studies of model merging.",
+   "arxiv",
+   "web"
+  ],
+  [
+   "Find a Python library to serve an API.",
+   "pypi",
+   "web"
+  ],
+  [
+   "Find launch posts about a new code editor.",
+   "hn",
+   "web"
+  ]
+ ]
+}

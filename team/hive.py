@@ -202,7 +202,7 @@ class Hive:
                     b.log("cell:next_move", "give-up", f"{s['id']}: no retry can fix this: {why[:120]}")
                     allow_reroute = False
                     break
-                if move == "reroute":
+                if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
                     b.log("cell:next_move", "reroute", f"{s['id']}: another specialist should try: {why[:120]}")
                     break
         b.log("coordinator", "give-up", f"{s['id']} failed after {config.MAX_RETRIES + 1} attempts: {feedback}")

@@ -218,6 +218,156 @@ Every number here is a measurement on held-out cases (`training/evals/`, none of
 
 Rule: a candidate replaces the current one only if it scores at least as well; ties go to the faster model. Rejected edits are kept in `adapters/.rejected/` for the record.
 
+<!-- cells:start -->
+## Cells: one tiny model per smallest skill (`team/cells/`, `training/cells*.py`)
+
+Every smallest job in the hive is its own specialist, a **cell**. A cell is trained for one micro-skill only (is a purchase ordered? which specialist takes this step? does this quote state this claim? retry, reroute or give up?) and is allowed to be bad at everything else: other cells cover that. All cells share **one** frozen SmolLM2-135M (144 MB at 8-bit) in RAM; each cell owns only a small weight delta, hot-swapped per call in llama.cpp. A label cell answers through a grammar that only allows its labels.
+
+**18 cells**, 11.8M edited parameters in total, 48 MB of deltas on one 144 MB base.
+
+### Measured: each cell against what does that job today
+
+Test inputs use other words, frames and sites than training. The winner per skill is chosen on a dev split built from **held-out training words** (a dev split with the training words scored 1.0 for every variant and could not pick a winner). `takes the job` = the cell scored at least as well as the incumbent, so the hive now hands it that job (`cells/wins.json`, `team/cells/use.py`).
+
+Each cell = SmolLM2-135M (shared, frozen) + its own weight delta. Scores are on the TEST split (other words, frames, sites than training). Variant columns are the PyTorch test scores of each candidate edit; the winner is chosen on dev. `cell` = the winner served by llama.cpp. The five orders_* cells take the job only together, judged as the guard uses them (the organizer table below), so one of them can lose alone and still say yes here.
+
+| skill | hive part | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere | winner | params changed | cell (llama.cpp) | ms/call | incumbent | incumbent score | ms/call | takes the job |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| route_step | coordinator: which specialist takes a plan step | 0.19 | 0.99 (263K) | 0.97 (808K) | 0.99 (611K) | - | - | all_r2 | 610,560 | 0.99 | 87 | coordinator = brain4b | 0.9746 | 7094.6 | yes |
+| next_move | hive loop: what to do after a failed step | 0.25 | 0.95 (387K) | 0.97 (901K) | 0.88 (611K) | - | - | mlp_r2 | 380,160 | 0.90 | 75 | coordinator = brain4b | 0.5667 | 6449.4 | yes |
+| orders_spend | guard: is a 'spend' action ORDERED | 0.31 | 0.89 (304K) | 0.97 (839K) | 0.97 (611K) | - | - | all_r2 | 610,560 | 0.97 | 76 | order_reader = fast+order_reader | 0.918 | 1162.3 | yes |
+| split_orders | coordinator: the instruction checklist | 0.01 | 0.81 (209K) | 0.90 (767K) | 0.83 (611K) | - | - | thin | 767,232 | 0.91 | 148 | coordinator = brain4b | 0.28 | 11057.9 | yes |
+| json_repair | engine: repair a member's broken JSON | 0.36 | 1.00 (226K) | 1.00 (780K) | 1.00 (611K) | - | - | all_r2 | 610,560 | 1.00 | 155 | code:parse_json | 0.4933 | 0.0 | yes |
+| family_topic | guard: does a step touch family/relationships | 0.50 | 0.85 (313K) | 0.75 (846K) | 0.79 (611K) | - | - | all_r2 | 610,560 | 0.80 | 63 | code:guard.FAMILY | 0.875 | 0.0 | yes |
+| orders_send | guard: is a 'send' action ORDERED | 0.21 | 0.89 (306K) | 0.89 (840K) | 0.93 (611K) | - | - | thin | 839,808 | 0.89 | 71 | order_reader = fast+order_reader | 0.918 | 0.0 | yes |
+| quote_pick | researcher: which sentence is the evidence | 0.17 | 0.62 (319K) | 0.98 (850K) | 0.99 (611K) | 0.67 (290K) | 0.99 (2442K) | thin | 850,176 | 0.97 | 115 | researcher = brain4b | 0.9333 | 7313.7 | yes |
+| orders_delete | guard: is a 'delete' action ORDERED | 0.33 | 0.87 (253K) | 0.90 (801K) | 0.95 (611K) | - | - | all_r2 | 610,560 | 0.95 | 77 | order_reader = fast+order_reader | 0.8852 | 0.0 | yes |
+| claim_support | verifier: does a quote support a claim | 0.49 | 0.59 (252K) | 0.80 (799K) | 0.83 (611K) | 0.67 (249K) | 0.81 (2442K) | thin | 799,488 | 0.83 | 128 | verifier = fast+verifier | 0.88 | 10270.6 | no |
+| orders_login | guard: is a 'login' action ORDERED | 0.15 | 0.93 (280K) | 0.98 (820K) | 0.98 (611K) | - | - | all_r2 | 610,560 | 0.98 | 74 | order_reader = fast+order_reader | 1.0 | 0.0 | yes |
+| pick_source | researcher: which search source to query | 0.12 | 0.93 (412K) | 0.88 (919K) | 0.88 (611K) | - | - | pick | 411,648 | 0.93 | 54 | researcher = brain4b | 0.7027 | 6362.5 | yes |
+| pick_element | browser: which element to act on | 0.00 | 0.47 (313K) | 0.89 (846K) | 0.93 (611K) | - | - | all_r2 | 610,560 | 0.93 | 116 | browser = fast+browser | 0.88 | 2314.3 | yes |
+| orders_signup | guard: is a 'signup' action ORDERED | 0.25 | 0.84 (315K) | 0.93 (847K) | 1.00 (611K) | - | - | thin | 846,720 | 0.92 | 82 | order_reader = fast+order_reader | 0.9836 | 0.0 | yes |
+| licence_open | verifier: is a licence open for any use | 0.44 | - | - | - | - | - | clone_orders_spend | 610,560 | 0.74 | 62 | juror_brain = brain4b | 0.9333 | 5087.4 | no |
+| gate | the router: which cell (or group of cells) handles an input | 0.11 | 0.91 (281K) | 0.89 (821K) | 0.93 (611K) | - | - | all_r2 | 610,560 | 0.94 | 87 | - | - | - | no |
+| orders_any | guard: is ANY risky action ordered (new skill made by the factory) | 0.67 | - | - | - | - | - | clone_route_step | 610,560 | 0.97 | 81 | - | - | - | no |
+| element_match | browser: does this one element reach the goal (pick_element's organizer asks it per element) | 0.50 | 0.87 (295K) | 0.99 (832K) | 0.98 (611K) | - | - | thin | 831,744 | 0.99 | 61 | - | - | - | yes |
+
+family_topic as the guard uses it (the rule OR the cell; the cell only adds blocks): 0.875 vs the rule alone 0.875 -> on.
+
+#### pick_element split into a smaller cell plus an organizer
+
+`element_match` answers one question per element (does this element reach the goal?); the organizer asks it about every element on the page and acts on the most likely yes (`runtime.pick_element`).
+
+| reader | test (exact id) | ms per page |
+|---|---|---|
+| one cell reads the whole list (pick_element) | 0.9267 | 116.5 |
+| organizer over element_match | 1.0 | 182.2 |
+| incumbent (browser = fast+browser) | 0.88 | - |
+
+#### The five order cells as one organizer (as the guard uses them, 63 held-out tasks)
+
+| reader | exact | false approvals | missed orders |
+|---|---|---|---|
+| order cells alone | 0.73 | 12 | 6 |
+| parser AND order cells | 0.905 | 0 | 6 |
+| order reader member (Qwen3-1.7B + edit) alone | 0.73 | 12 | 8 |
+| parser AND order reader member | 0.873 | 0 | 8 |
+
+
+### Finding which part of the model does what (the locator)
+
+Until a trained locator cell exists, I acted as the locator. For each skill, `training/cells.py probe` maps where the skill lives in the base: (1) |W x dL/dW| per module, the first-order loss change if that module moved; (2) a knockout per layer, the loss when one layer's attention or MLP output is removed. I read the maps and wrote my rules down so they are explicit and testable (`training/cells_view.py`, every pick logged with its reason in `training/reports/cells/locator_log.jsonl`, the future locator cell's training data):
+
+- **R1 read**: q and v in the band of layers most sensitive per parameter (layers ~9-17 for every skill: the value projections there are where the input is read)
+- **R2 unblock**: o of layers whose attention knockout LOWERS the loss, down of layers whose MLP knockout lowers it: these push toward the base's default answer
+- **R3 bottleneck**: down of middle layers whose MLP knockout raises the loss by >= 1.0
+- **R5**: R2 only from layer 3 up; **R6**: the last two layers' MLPs always (they write the answer out)
+
+What the measurements taught the locator (route_step and orders_spend were the tuning skills; the rules were then frozen and applied to the other skills):
+
+- My first rules (without R6) lost to a **random** choice of the same number of modules (route_step 0.941 vs 0.915 random, next_move 0.847 vs 0.893). Adding the output MLPs (R6) moved route_step to 0.966-0.992.
+- More rank on the same modules did nothing (rank 32: 0.941). On route_step, editing only the MLPs of every layer scored 1.000 and attention only 0.958: routing by meaning lives in the MLPs (word -> category memories); attention mostly moves information.
+- **Breadth beats concentration.** Across 15 skills, the locator's concentrated pick (~0.2-0.4M edited parameters) was the best edit on 2 (family_topic, pick_source), tied on 2 (json_repair, route_step) and lost on 11 to rank 2 on every module or the pick plus rank 2 everywhere else (`thin`). A random pick of the same size beat it where that control ran (claim_support 0.667 vs 0.587; quote_pick 0.667 vs 0.620). A skill is not stored in one small set of modules: a small change in every module edits it best.
+- Rank 8 everywhere (2.4M edited parameters) beat rank 2 everywhere (0.6M) once in four skills (orders_spend 0.984 vs 0.967, one test sentence) and lost on the other three: 4x the size, no gain.
+- So each skill trains the candidates below from its maps and **dev** picks (dev = held-out training words; test is never used to choose). Where dev and test disagree it is reported, not fixed by peeking at test (next_move: dev picked MLP-only rank 2, 0.880 on test, while `thin` scored 0.973).
+
+Every skill, every candidate edit (test score, edited parameters; * = the edit dev chose and the hive runs):
+
+| skill | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere |
+|---|---|---|---|---|---|---|
+| claim_support | 0.493 | 0.587 (252K) | 0.800* (799K) | 0.833 (611K) | 0.667 (249K) | 0.807 (2442K) |
+| element_match | 0.500 | 0.867 (295K) | 0.993* (832K) | 0.980 (611K) | - | - |
+| family_topic | 0.500 | 0.850 (313K) | 0.750 (846K) | 0.787* (611K) | - | - |
+| json_repair | 0.360 | 1.000 (226K) | 1.000 (780K) | 1.000* (611K) | - | - |
+| licence_open | 0.444 | - | - | - | - | - |
+| next_move | 0.253 | 0.947 (387K) | 0.973 (901K) | 0.880 (611K) | - | - |
+| orders_any | 0.672 | - | - | - | - | - |
+| orders_delete | 0.328 | 0.869 (253K) | 0.902 (801K) | 0.951* (611K) | - | - |
+| orders_login | 0.148 | 0.934 (280K) | 0.984 (820K) | 0.984* (611K) | - | - |
+| orders_send | 0.213 | 0.885 (306K) | 0.885* (840K) | 0.934 (611K) | - | - |
+| orders_signup | 0.246 | 0.836 (315K) | 0.934* (847K) | 1.000 (611K) | - | - |
+| orders_spend | 0.311 | 0.885 (304K) | 0.967 (839K) | 0.967* (611K) | - | - |
+| pick_element | 0.000 | 0.473 (313K) | 0.887 (846K) | 0.927* (611K) | - | - |
+| pick_source | 0.122 | 0.932* (412K) | 0.878 (919K) | 0.878 (611K) | - | - |
+| quote_pick | 0.167 | 0.620 (319K) | 0.980* (850K) | 0.993 (611K) | 0.667 (290K) | 0.987 (2442K) |
+| route_step | 0.186 | 0.992 (263K) | 0.975 (808K) | 0.992* (611K) | - | - |
+| split_orders | 0.007 | 0.813 (209K) | 0.900* (767K) | 0.833 (611K) | - | - |
+
+### Architecture edit: a smaller base by removing layers
+
+The knockout maps show some layers barely matter to any probed skill. `training/cells_cut.py` removed the 8 least important ([4, 5, 7, 9, 21, 22, 25, 26]) -> a 22-layer base (106M params, 115 MB). Cells retrained on it:
+
+| skill | 30 layers | 22 layers | ms/call 30 | ms/call 22 |
+|---|---|---|---|---|
+| route_step | 0.992 | 0.771 | 58 | 34 |
+| next_move | 0.880 | 0.807 | - | - |
+
+Average test 0.936 (30 layers) vs 0.789 (22 layers); the cut base is 1.70x faster per call. The cut base loses accuracy: cells stay on the full base. training/reports/cells/cut2.log (quiet CPU, 4 threads, same edit type, data and steps on both bases). A first run on a busy CPU gave 0.797 and 0.653 on the cut base. Both runs of training/cells_cut_eval.py were killed by SIGILL (illegal instruction) while timing the second skill, so quote_pick and orders_spend were not measured and next_move has no timing; the cause was not found.
+
+### Cloning: a new skill gets a cell by copying the nearest one and editing the copy
+
+`training/cells_factory.py <skill>`: the parent finder runs every registered cell on the new skill's dev inputs; the one that already answers it best (ties: the lowest dev loss) is cloned, its weight deltas copied into the new cell, and the clone is trained on the new skill only. The control trains the same modules from zero for the same steps. Dev picks which one becomes the cell.
+
+| new skill | nearest cell | clone dev / test | from zero dev / test | steps |
+|---|---|---|---|---|
+| orders_any (does the sentence order ANY risky action?) | route_step | 1.000 / 0.967 | 1.000 / 0.918 | 60 |
+| licence_open (is a licence free for any use, including commercial?) | orders_spend | 1.000 / 0.756 | 1.000 / 0.807 | 60 |
+
+### Organizers and the gate
+
+- **gate**: a cell that routes any input to the group of cells that reads it (order, step, failure, claim, sentences, page, json, licence), like the gate of a mixture of experts (`team/cells/skills.py` GROUPS): 0.940 on test inputs from every cell's test split.
+- **organizers** run a group: the order organizer asks the five one-kind order cells (spend, delete, send, login, signup) and returns the set that said yes (`team/cells/use.py`).
+- **a skill too big for one cell is split again**: one cell reading a whole list of page elements and copying the right id (pick_element) scored 0.927. The smaller skill inside it, `element_match` (does THIS one element reach the goal? yes/no), is its own cell; the page organizer asks it about every element and acts on the most likely yes: **1.000** on the same test pages (182 ms per page).
+
+### Where cells work in the hive (switched on only where they won)
+
+- engine: broken JSON from any member, after the code rules fail (`team/llm.py`) -> `json_repair`: **on**
+- coordinator: the instruction checklist from your order (`team/specialists/coordinator.py`) -> `split_orders`: **on**
+- coordinator: a plan step names an unknown specialist -> `route_step`: **on**
+- researcher: no usable search plan, or a search names an unknown source (`team/specialists/researcher.py`) -> `pick_source`: **on**
+- verifier: does the quote state the claim (`team/specialists/verifier.py`) -> `claim_support`: off: cell 0.827 vs verifier = fast+verifier 0.880
+- verifier: a cited quote is in no source the team read: which source sentence states the claim -> `quote_pick`: **on**
+- guard: the second reading of your order: five one-kind order cells (`team/guard.py`) -> `orders_*`: **on**
+- guard: family check: the rule OR the cell -> `family_topic`: **on**
+- hive loop: after a failed attempt: retry, reroute now, or stop (`team/hive.py`) -> `next_move`: **on**
+
+Measured, but not switched on (or with a cost):
+
+- checklist (`split_orders`): on a real order the cell respelled a model id ('Smol LM2') and left out 'Do not log in or pay': its training orders had no ids and no negations. The coordinator now keeps the span of your own words closest to each line and adds any sentence of the order that no line covers, as written (`team/specialists/coordinator.py`); on the test split that scores 0.927 vs 0.913 for the raw cell.
+- JSON repair (`json_repair`): the cell turns ANY text into JSON ('no json here' -> {"no": null}); it never saw text without JSON. The hook now runs only on text that holds a broken object, rejects a repair whose keys are not in the text, and is asked before the code rules settle for a list inside a broken object (they returned [1, 2] for a whole object). As used: 1.000 on the test split; the code rules alone 0.493.
+- family check: the rule OR the cell scores 0.875 vs the rule alone 0.875 on test. The cell catches family steps the rule misses ('Plan a trip with the kids', 'Choose a school for our son') and wrongly flags as many ('Family Guy' trivia, 'brother-in-arms' quotes); a wrongly flagged step is dropped and listed in the report. Kept on because your family rule is strict.
+- `claim_support`: cell 0.827 vs the verifier member 0.880: the bigger member keeps the job.
+- `licence_open`: cell 0.741 vs the juror member 0.933: the bigger member keeps the job. The 135M cell lacks the world knowledge the test needs (e.g. that ISC is a permissive licence).
+- page organizer (`element_match` per element): 1.0 on the test pages vs the browser member's 0.88, asked exactly as the hive asks it. Not wired: the browser member decides whole actions toward a multi-step goal, and the hive has no single-click goal to hand the organizer yet.
+- `gate`: routes 0.940 of test inputs to the right group. The hive calls each cell at a fixed hook, so nothing needs routing yet; the gate is ready for inputs that arrive without one.
+- `orders_any`: made by the factory to test cloning; not wired, the five one-kind order cells already read every order.
+
+
+Turn every cell off with `AGENT_TEAM_CELLS=0`.
+
+Commands: `python training/cells_pipeline.py <skill>` (probe, locator pick, candidates, promote); `python training/cells_factory.py <new_skill>`; `python training/cells_incumbents.py <skill>`; `python training/cells_compare.py`.
+<!-- cells:end -->
+
 ## Dreaming: getting better on its own (`team/dream.py`)
 
 `python -m team dream`, or automatically when `serve` has been idle 30 minutes (at most once a day):

@@ -90,14 +90,50 @@ def instructions(goal, board=None):
     """Arnav's task as a checklist of everything he ordered."""
     from ..cells import use
     if use.on("split_orders"):  # one small cell, trained only to split an order into its instructions
-        items = [ln.strip("-• ").strip() for ln in use.ask("split_orders", goal, board).split("\n")]
-        items = [i for i in items if i and grounded(i, goal)][:15]
+        lines = [ln.strip("-• ").strip() for ln in use.ask("split_orders", goal, board).split("\n")]
+        items = []
+        for ln in lines:  # the cell may respell names ("Smol LM2"): keep Arnav's own words for each line
+            got = _snap(ln, goal) if ln else None
+            if got and got not in items and grounded(got, goal):
+                items.append(got)
+        for sent in re.split(r"(?<=[.!?])\s+", goal.strip()):  # nothing skipped: an uncovered sentence goes in as written
+            sent = sent.strip().rstrip(".")
+            if sent and not _covered(sent, items):
+                items.append(sent)
         if items:
-            return items
+            return items[:15]
     data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.INSTRUCTIONS},
                                               {"role": "user", "content": goal}], max_new_tokens=400)
     items = (data or {}).get("instructions", []) if isinstance(data, dict) else []
     return [str(i)[:200] for i in items if str(i).strip() and grounded(str(i), goal)][:15]
+
+
+def _snap(line, goal):
+    """The span of Arnav's own words closest to a line (compared without spaces or case); None if nothing is close."""
+    import difflib
+    key = lambda t: re.sub(r"[^a-z0-9]", "", t.lower())  # noqa: E731
+    target = key(line)
+    if not target:
+        return None
+    toks = list(re.finditer(r"\S+", goal))
+    best, best_r = None, 0.0
+    for i in range(len(toks)):
+        for j in range(i + 1, min(len(toks), i + len(line.split()) + 4) + 1):
+            span = goal[toks[i].start():toks[j - 1].end()]
+            r = difflib.SequenceMatcher(None, target, key(span)).ratio()
+            if r > best_r:
+                best, best_r = span, r
+    return best.strip(" ,;.") if best is not None and best_r >= 0.75 else None
+
+
+_KEEP = set("the and for with from that this then also".split())
+
+
+def _covered(sent, items):
+    """Half of a sentence's words (negations included) already appear in the checklist."""
+    words = set(re.findall(r"[a-z0-9]{3,}", sent.lower())) - _KEEP
+    have = set(re.findall(r"[a-z0-9]{3,}", " ".join(items).lower()))
+    return not words or len(words & have) / len(words) >= 0.5
 
 
 _STOP = set("the a an and or of to in on for with from by is are was be it this that what which who how find get give "

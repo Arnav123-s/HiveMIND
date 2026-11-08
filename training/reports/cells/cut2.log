@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 2774.80it/s]
+  [cut22_all_r2] step 0 loss 6.9418 (2s)
+  [cut22_all_r2] step 50 loss 0.0008 (61s)
+  [cut22_all_r2] step 99 loss 0.0003 (117s)
+  [cut22_all_r2] route_step: dev 0.950 test 0.771 params 447,744 (139.0s)
+{'skill': 'route_step', 'full': 0.9915254237288136, 'cut': 0.7711864406779662, 'ms_full': 58.048564195632935, 'ms_cut': 34.063053131103516, 'params_full': 610560, 'params_cut': 447744}
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 2737.93it/s]
+  [cut22_all_r2] step 0 loss 6.5684 (1s)
+  [cut22_all_r2] step 50 loss 0.0004 (63s)
+  [cut22_all_r2] step 99 loss 0.0001 (125s)
+  [cut22_all_r2] next_move: dev 0.889 test 0.807 params 447,744 (153.8s)

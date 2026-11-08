@@ -1,0 +1,142 @@
+{
+ "route_step": {
+  "use": true,
+  "cell": 0.9915,
+  "incumbent": 0.9746,
+  "incumbent_name": "coordinator = brain4b"
+ },
+ "next_move": {
+  "use": true,
+  "cell": 0.9,
+  "incumbent": 0.5667,
+  "incumbent_name": "coordinator = brain4b"
+ },
+ "orders_spend": {
+  "use": true,
+  "cell": 0.9672,
+  "incumbent": 0.918,
+  "incumbent_name": "order_reader = fast+order_reader"
+ },
+ "split_orders": {
+  "use": true,
+  "cell": 0.9133,
+  "incumbent": 0.28,
+  "incumbent_name": "coordinator = brain4b"
+ },
+ "json_repair": {
+  "use": true,
+  "cell": 1.0,
+  "incumbent": 0.4933,
+  "incumbent_name": "code:parse_json"
+ },
+ "family_topic": {
+  "use": true,
+  "cell": 0.8,
+  "incumbent": 0.875,
+  "incumbent_name": "code:guard.FAMILY",
+  "rule_or_cell": 0.875
+ },
+ "orders_send": {
+  "use": true,
+  "cell": 0.8852,
+  "incumbent": 0.918,
+  "incumbent_name": "order_reader = fast+order_reader"
+ },
+ "quote_pick": {
+  "use": true,
+  "cell": 0.9733,
+  "incumbent": 0.9333,
+  "incumbent_name": "researcher = brain4b"
+ },
+ "orders_delete": {
+  "use": true,
+  "cell": 0.9508,
+  "incumbent": 0.8852,
+  "incumbent_name": "order_reader = fast+order_reader"
+ },
+ "claim_support": {
+  "use": false,
+  "cell": 0.8267,
+  "incumbent": 0.88,
+  "incumbent_name": "verifier = fast+verifier"
+ },
+ "orders_login": {
+  "use": true,
+  "cell": 0.9836,
+  "incumbent": 1.0,
+  "incumbent_name": "order_reader = fast+order_reader"
+ },
+ "pick_source": {
+  "use": true,
+  "cell": 0.9324,
+  "incumbent": 0.7027,
+  "incumbent_name": "researcher = brain4b"
+ },
+ "pick_element": {
+  "use": true,
+  "cell": 1.0,
+  "via": "organizer",
+  "one_shot_cell": 0.9267,
+  "organizer": 1.0,
+  "incumbent": 0.88,
+  "incumbent_name": "browser = fast+browser"
+ },
+ "orders_signup": {
+  "use": true,
+  "cell": 0.918,
+  "incumbent": 0.9836,
+  "incumbent_name": "order_reader = fast+order_reader"
+ },
+ "licence_open": {
+  "use": false,
+  "cell": 0.7407,
+  "incumbent": 0.9333,
+  "incumbent_name": "juror_brain = brain4b"
+ },
+ "gate": {
+  "use": false,
+  "cell": 0.94,
+  "incumbent": null,
+  "incumbent_name": null
+ },
+ "orders_any": {
+  "use": false,
+  "cell": 0.9672,
+  "incumbent": null,
+  "incumbent_name": null
+ },
+ "element_match": {
+  "use": true,
+  "cell": 0.9867,
+  "incumbent": null,
+  "incumbent_name": "member of the pick_element organizer"
+ },
+ "_orders_organizer": {
+  "cells": {
+   "cells": {
+    "exact": 0.73,
+    "false_approvals": 12,
+    "missed_orders": 6
+   },
+   "both": {
+    "exact": 0.905,
+    "false_approvals": 0,
+    "missed_orders": 6
+   },
+   "n": 63
+  },
+  "order_reader_member": {
+   "model": {
+    "exact": 0.73,
+    "false_approvals": 12,
+    "missed_orders": 8
+   },
+   "both": {
+    "exact": 0.873,
+    "false_approvals": 0,
+    "missed_orders": 8
+   }
+  },
+  "use": true
+ }
+}

@@ -387,7 +387,12 @@ def _closes_from_start(text):
 def parse_json(text):
     """Extract the first JSON object (or array) from model output."""
     text = re.sub(r"```(?:json)?", "", text)
+    obj_first = "{" in text and ("[" not in text or text.index("{") < text.index("["))
     for o, c in (("{", "}"), ("[", "]")):
+        if o == "[" and obj_first:  # the reply is a broken object: repair it before settling for a list inside it
+            fixed = _repair_cell(text)
+            if fixed is not None:
+                return fixed
         blob = _balanced(text, o, c)
         if blob is None:
             continue
@@ -396,19 +401,24 @@ def parse_json(text):
                 return json.loads(attempt)
             except json.JSONDecodeError:
                 pass
-    return _repair_cell(text)
+    return None if obj_first else _repair_cell(text)
 
 
 def _repair_cell(text):
-    """Last resort: the json_repair cell rewrites the broken JSON (only if it measured better than the code rules)."""
-    if not text.strip() or len(text) > 600:
+    """Last resort: the json_repair cell rewrites the broken JSON (only if it measured better than the code rules).
+    Only for text that holds a broken object ('{' and a key) - the cell turns ANY text into JSON - and every key of
+    the repair must be in the original text: a repair may fix syntax, never invent content."""
+    if not text.strip() or len(text) > 600 or "{" not in text or ":" not in text:
         return None
     try:
         from .cells import use
         if not use.on("json_repair"):
             return None
-        fixed = use.ask("json_repair", text.strip())
-        return json.loads(fixed)
+        fixed = json.loads(use.ask("json_repair", text.strip()))
+        keys = list(fixed) if isinstance(fixed, dict) else []
+        if not keys or any(str(k) not in text for k in keys):
+            return None
+        return fixed
     except Exception:  # noqa: BLE001 - a failed repair is just "no JSON"
         return None
 

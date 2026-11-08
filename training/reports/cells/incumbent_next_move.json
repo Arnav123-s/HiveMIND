@@ -1,0 +1,39 @@
+{
+ "skill": "next_move",
+ "incumbent": "coordinator = brain4b",
+ "test": 0.5667,
+ "ms_per_call": 6449.4,
+ "n": 150,
+ "errors": [
+  [
+   "Step by researcher failed (attempt 1 of 3): the task needs Arnav's password, which is not in the vault",
+   "give_up",
+   "retry"
+  ],
+  [
+   "Step by coder failed (attempt 2 of 3): the order says not to sign up, and shop.example requires an account",
+   "give_up",
+   "reroute"
+  ],
+  [
+   "Step by browser failed (attempt 2 of 3): the task needs Arnav's password, which is not in the vault",
+   "give_up",
+   "retry"
+  ],
+  [
+   "Step by coder failed (attempt 2 of 3): the order says not to sign up, and news.site requires an account",
+   "give_up",
+   "reroute"
+  ],
+  [
+   "Step by coder failed (attempt 1 of 3): the task needs Arnav's password, which is not in the vault",
+   "give_up",
+   "reroute"
+  ],
+  [
+   "Step by researcher failed (attempt 1 of 3): sending as Arnav was not ordered",
+   "give_up",
+   "reroute"
+  ]
+ ]
+}

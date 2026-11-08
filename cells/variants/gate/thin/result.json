@@ -1,0 +1,87 @@
+{
+ "skill": "gate",
+ "base": "smol135",
+ "tag": "thin",
+ "modules": [
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:o_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:o_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:o_proj",
+  "16:q_proj",
+  "16:v_proj",
+  "17:o_proj",
+  "19:o_proj",
+  "27:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": 2,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 821376,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.9625,
+ "test": 0.8933333333333333,
+ "train_seconds": 649.6,
+ "test_errors": [
+  [
+   "z/sum-small released under bsd-2-clause",
+   "licence",
+   "step"
+  ],
+  [
+   "Go ahead and register on the forum. What is the share of each category?",
+   "order",
+   "step"
+  ],
+  [
+   "llama2 \u2014 x/voice-0.3b",
+   "licence",
+   "step"
+  ],
+  [
+   "y/chat-2b released under unknown",
+   "licence",
+   "step"
+  ],
+  [
+   "Plot revenue by month; then count its comments.",
+   "order",
+   "step"
+  ],
+  [
+   "Read the Family Guy wiki trivia and send me the link.",
+   "step",
+   "order"
+  ],
+  [
+   "Remove the duplicate rows, then plot revenue by month.",
+   "order",
+   "step"
+  ],
+  [
+   "Apache 2.0 \u2014 v/ocr-base",
+   "licence",
+   "step"
+  ]
+ ]
+}

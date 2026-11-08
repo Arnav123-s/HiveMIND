@@ -242,6 +242,14 @@ def _orders_gen(kind):
     return gen
 
 
+def gen_orders_any(split, r, _cache={}):  # noqa: B006
+    """New skill made by the factory: does the sentence ORDER any risky action at all? (a sibling of the order cells)"""
+    if split not in _cache:
+        _cache[split] = _orders_rows(split, 0)
+    text, kinds = r.choice(_cache[split])
+    return text, "yes" if kinds else "no"
+
+
 # ---------------------------------------------------------------- family_topic: does a step touch family matters
 _FAM_TR = ["Plan a birthday dinner for Mom", "Find a gift for my sister", "Write a note to my wife", "Book a table for our anniversary",
            "Help me reply to my ex", "Find a nursery for the baby", "Check flights to visit Grandma", "Draft a message to Dad",
@@ -453,6 +461,12 @@ for _k, _v in {"spend": "buy, pay, book, order, rent, subscribe, donate", "delet
                                   instr=f"Does the user ORDER the team to {_v}? Nouns, questions and negations are not orders. yes or no")
 
 
+SKILLS["orders_any"] = dict(part="guard: is ANY risky action ordered (new skill made by the factory)", labels=["yes", "no"],
+                           gen=gen_orders_any, new=True,
+                           instr="Does the user ORDER the team to buy, pay, delete, send, post, log in or sign up? "
+                                 "Nouns, questions and negations are not orders. yes or no")
+
+
 def examples(skill, split, n, seed=0):
     """n labelled (input, target) pairs; distinct inputs where the pool allows."""
     s = SKILLS[skill]
@@ -484,7 +498,7 @@ def score(skill, pred, target):
 # ---------------------------------------------------------------- gate: the router over all cells (mixture of experts)
 GROUPS = {  # the gate routes by the kind of input; the group's organizer runs every cell that reads that kind
     "order": ["split_orders", "orders_spend", "orders_delete", "orders_send", "orders_login", "orders_signup",
-              "family_topic"],
+              "orders_any", "family_topic"],
     "step": ["route_step", "pick_source", "family_topic"],
     "failure": ["next_move"], "claim": ["claim_support"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
     "json": ["json_repair"], "licence": ["licence_open"],

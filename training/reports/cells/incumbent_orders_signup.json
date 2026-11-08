@@ -1,0 +1,14 @@
+{
+ "skill": "orders_signup",
+ "incumbent": "order_reader = fast+order_reader",
+ "test": 0.9836,
+ "ms_per_call": 0.0,
+ "n": 61,
+ "errors": [
+  [
+   "Tell me how the remove-duplicates option works. Look it up and rent the course. Now unsubscribe from my old tweets.",
+   "no",
+   "yes"
+  ]
+ ]
+}

@@ -184,3 +184,34 @@ claim_support: thin dev 0.812 test(torch) 0.800, 799,488 params changed (tied on
   [thin] pick_element: dev 0.812 test 0.887 params 845,568 (1153.8s)
 Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11607.81it/s]
   [all_r2] step 0 loss 5.5663 (5s)
+  [all_r2] step 50 loss 0.5729 (290s)
+  [all_r2] step 100 loss 0.6951 (575s)
+  [all_r2] step 150 loss 0.0533 (855s)
+  [all_r2] step 199 loss 0.0009 (1135s)
+  [all_r2] pick_element: dev 0.938 test 0.927 params 610,560 (1158.2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12976.01it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2540.46it/s]
+pick_element: all_r2 dev 0.938 test(torch) 0.927, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0871})
+=== pick_element finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 16992.88it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6919.74it/s]
+  [base] orders_signup: dev 0.188 test 0.246
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14124.33it/s]
+  [pick] step 0 loss 4.1880 (2s)
+  [pick] step 50 loss 0.1961 (111s)
+  [pick] step 99 loss 0.1456 (220s)
+  [pick] orders_signup: dev 0.875 test 0.836 params 314,880 (240.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10372.69it/s]
+  [thin] step 0 loss 4.1880 (4s)
+  [thin] step 50 loss 0.1352 (186s)
+  [thin] step 99 loss 0.0008 (365s)
+  [thin] orders_signup: dev 0.938 test 0.934 params 846,720 (394.2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6219.81it/s]
+  [all_r2] step 0 loss 4.1880 (4s)
+  [all_r2] step 50 loss 0.0719 (187s)
+  [all_r2] step 99 loss 0.0006 (362s)
+  [all_r2] orders_signup: dev 0.875 test 1.000 params 610,560 (391.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10167.38it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1959.88it/s]
+orders_signup: thin dev 0.938 test(torch) 0.934, 846,720 params changed (tied on dev, dev loss: {'thin': 0.0625})
+=== orders_signup finished
