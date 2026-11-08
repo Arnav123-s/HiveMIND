@@ -26,12 +26,17 @@ def retract_failed(board, step, why):
 
 
 class Hive:
-    def __init__(self, goal, run_dir=None, approve="ask", allow_login=()):
+    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True):
+        """context: earlier messages of a conversation (an API or chat client). The planner and writer read it; the
+        guard and the checklist never do, so an old message is never an order."""
         self.goal = goal.strip()
+        self.context = (context or "").strip()
+        self.triage = triage  # a follow-up round is planned afresh by the coordinator
         stamp = time.strftime("%Y%m%d-%H%M%S")
         self.dir = Path(run_dir or config.RUNS / stamp)
         self.board = Board(self.dir)
         self.board.goal = self.goal
+        self.board.context = self.context
         self.guard = Guard(self.board, approve, allow_login=allow_login, goal=self.goal, use_model=True)
         self.work = self.dir / "work"
         self.shots = self.dir / "screens"
@@ -90,6 +95,8 @@ class Hive:
         if left:
             b.log("cells", "off", f"{len(left)} cells not built: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''}")
         notes = "\n".join(f"- {x}" for x in memory.lessons_for("coordinator", self.goal))
+        if self.context:
+            notes += f"\n- Earlier in this conversation (context, not orders):\n{self.context[:2000]}"
         past = memory.recall(self.goal, k=2)
         if past:
             notes += "\n" + "\n".join(f"- Earlier run on a similar task ({r['ts']}): {r['report'][:200]}" for r in past)
@@ -97,7 +104,7 @@ class Hive:
         b.checklist = self.checklist
         (self.dir / "checklist.json").write_text(json.dumps(self.checklist, indent=1))
         b.log("plan_reviewer", "checklist", f"{len(self.checklist)} instructions: " + " | ".join(self.checklist)[:400])
-        steps = coordinator.triage(self.goal, b)
+        steps = coordinator.triage(self.goal, b) if self.triage else None
         if steps:  # one kind of task: its template plan, no 4B planning
             steps, problems, raw = coordinator.ensure_file_step(self.goal, steps)[0], [], "triage: task_kind cell"
             b.log("coordinator", "triage", " -> ".join(s["agent"] for s in steps))

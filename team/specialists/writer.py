@@ -112,6 +112,9 @@ def run(goal, task, board, needs):
     results_text = board.context_for(list(dict.fromkeys(top + list(needs or []))), max_chars=7000)
     if not top and not needs:  # nothing to look up: translate, rewrite, summarise or fix his text, draft a message
         results_text = f"(No research was needed: Arnav's own words are the source for this task.)\n{goal}"
+        ctx = getattr(board, "context", "")
+        if ctx:  # "make it shorter": the text to work on is in the conversation
+            results_text += f"\n\nEarlier in this conversation:\n{ctx[:4000]}"
     dropped = re.findall(r"Dropped by the team's checks \(do not use\): ([^\n]+)", results_text)
     if dropped:
         task = f"{task}\nNever include these, they failed the checks: {'; '.join(dropped)}"

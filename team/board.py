@@ -38,6 +38,7 @@ class Board:
         self.echo = echo
         self.goal = ""
         self.checklist = []
+        self.context = ""  # earlier messages of a conversation: for the planner and writer, never orders
 
     # ---- events -------------------------------------------------------
     def log(self, agent, kind, msg, data=None):

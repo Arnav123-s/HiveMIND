@@ -1,6 +1,8 @@
 """agent-team command line.
 
     python -m team "your task"            give the team one task (default)
+    python -m team "task" --approve never --until-done 2   unattended: follow-up rounds until nothing is left undone
+    python -m team api [--port 8766]      OpenAI/Anthropic-compatible API + jobs (any SDK or chat app can use the swarm)
     python -m team chat                   talk to it like an assistant
     python -m team web                    chat-style page at http://127.0.0.1:8765
     python -m team serve                  always on: inbox + schedule + dreaming when idle
@@ -15,7 +17,7 @@ import argparse
 import json
 import sys
 
-COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths"}
+COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api"}
 
 
 def main():
@@ -45,6 +47,14 @@ def main():
             opt = lambda k, d: type(d)(rest[rest.index(k) + 1]) if k in rest else d  # noqa: E731
             return evolve(role, variants=opt("--variants", 3), generations=opt("--generations", 1),
                           prompt_name=opt("--prompt", "") or None)
+        if cmd == "api":
+            ap = argparse.ArgumentParser(prog="python -m team api")
+            ap.add_argument("--port", type=int, default=8766)
+            ap.add_argument("--host", default="127.0.0.1")
+            ap.add_argument("--until-done", type=int, default=0, help="follow-up rounds for anything left undone")
+            o = ap.parse_args(rest)
+            from .api import main as api
+            return api(o.port, o.host, o.until_done)
         if cmd == "web":
             from .web import main as web
             return web(int(rest[0]) if rest else 8765)
@@ -71,6 +81,8 @@ def main():
     ap.add_argument("--allow-login", action="append", default=[], metavar="SITE",
                     help="let the browser log in to SITE with your vault credentials for this task only")
     ap.add_argument("--run-dir", help="where to keep this run's board, files and report")
+    ap.add_argument("--until-done", type=int, default=0, metavar="N",
+                    help="up to N follow-up rounds for instructions or steps left undone (runs as a job in runs/)")
     a = ap.parse_args()
     task = open(a.file).read() if a.file else a.task
     if not task:
@@ -87,6 +99,15 @@ def main():
         print("\n*** stopping every specialist now (Ctrl+C again to exit immediately)", flush=True)
 
     signal.signal(signal.SIGINT, on_ctrl_c)
+    if a.until_done:
+        from .sdk import Swarm
+        job = Swarm(approve=a.approve).submit(task, until_done=a.until_done, allow_login=a.allow_login)
+        job.wait()  # the board prints each event as it happens
+        print("\n" + "=" * 70 + "\n" + job.report[:6000])
+        print(f"\nJob folder: {job.dir} ({len(job.rounds)} round(s)); still undone: {job.unmet or 'nothing'}")
+        if job.pending_approvals:
+            print("Waiting on you:", json.dumps(job.pending_approvals, indent=1))
+        return None
     out = Hive(task, a.run_dir, a.approve, a.allow_login).run()
     print("\n" + "=" * 70 + "\n" + (out["report"] or "")[:6000])
     print("\nRun folder:", out["dir"])
