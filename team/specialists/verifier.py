@@ -4,6 +4,7 @@ Hard checks run first (quote really is in the source, code really exited 0,
 files really exist); the verifier model then judges what code cannot.
 """
 import re
+from pathlib import Path
 
 from .. import config, llm, prompts
 
@@ -226,8 +227,14 @@ def verify(step, result, board, workdir):
             return "FAIL", "; ".join(empty)[:300]
         # the jury sees the files, not only what the program printed: a saved chart was rejected because "the
         # evidence shows the number of downloads, not the file"
+        # the jury sees the program as well as what it printed: shown only "30", it could not tell that the fixed loop
+        # sums the even numbers to 10 and rejected a right fix as "insufficient evidence"
+        code = ""
+        if result.get("code_path") and Path(result["code_path"]).exists():
+            code = Path(result["code_path"]).read_text(errors="replace")[:2500]
         return judge(check, "Program ran (exit 0)." + (f" Files saved: {', '.join(result['files'])}" if result.get("files") else ""),
-                     result.get("summary", "") + ("\n\nFILES SAVED (checked in code):\n" + "\n".join(shown) if shown else ""))
+                     (f"PROGRAM:\n{code}\n\n" if code else "") + "OUTPUT:\n" + (result.get("summary", "") or "(nothing)")
+                     + ("\n\nFILES SAVED (checked in code):\n" + "\n".join(shown) if shown else ""))
 
     if agent == "calculator":
         if result.get("failed"):
