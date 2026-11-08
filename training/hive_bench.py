@@ -1,6 +1,8 @@
 """Every kind of task, through the whole hive: does it work, how long, and which members did the work.
 
-    python training/hive_bench.py <tag> [task ids...]
+    python training/hive_bench.py <tag> [task ids...] [--heldout]
+The development tasks (TASKS) are the ones fixes are tried on. HELDOUT tasks were written before the fixes and are run
+once at the end, so a pass there is not tuning to them.
 Each task runs as `python -m team` (risky actions: never) with its own empty memory, so runs cannot steer each other.
 A check reads the report and the files made; where the answer lives on a website, the check reads it live.
 Cost: every model call is logged with its member, model and seconds (calls.jsonl); cell calls are counted from the
@@ -134,6 +136,90 @@ TASKS = [  # (id, kind, task, check)
 ]
 
 
+# ---------------------------------------------------------------- held out: written before the fixes, run once at the end
+# Same kinds, other wording and content; never run while fixing (so passing them is not tuning to them).
+def hf_params(model):
+    import requests
+    st = requests.get(f"https://huggingface.co/api/models/{model}", params={"expand[]": "safetensors"}, timeout=30).json()
+    return f"{(st.get('safetensors') or {}).get('total', 0) / 1e9:.3f}"
+
+
+def check_ho_lookup(run, report):
+    p = hf_params("Qwen/Qwen2.5-0.5B-Instruct")
+    ok = "apache" in report.lower() and p in report
+    return ok, f"licence apache and {p}B parameters in the report: {ok}"
+
+
+def check_ho_pypi(run, report):
+    import requests
+    v = requests.get("https://pypi.org/pypi/requests/json", timeout=30).json()["info"]["version"]
+    return v in _body(report), f"latest requests {v} in the answer"
+
+
+def check_ho_chart(run, report):
+    import requests
+    d = {m: requests.get(f"https://huggingface.co/api/models/{m}", timeout=30).json().get("downloads", 0)
+         for m in ("distilbert/distilbert-base-uncased", "google-bert/bert-base-uncased")}
+    top = max(d, key=d.get).split("/")[1]
+    png = files(run, ".png")
+    return bool(png) and top in _body(report).lower(), f"chart: {bool(png)}, names {top}"
+
+
+def check_ho_poetry(run, report):
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(_get("https://books.toscrape.com/catalogue/category/books/poetry_23/index.html"), "html.parser")
+    first = soup.select_one("article.product_pod")
+    title, price = first.h3.a["title"], first.select_one("p.price_color").text.strip().lstrip("Â£")
+    ok = title[:25].lower() in report.lower() and price in report
+    return ok, f"first Poetry book '{title[:40]}' at {price}: {ok}"
+
+
+def check_ho_quotes_csv(run, report):
+    from bs4 import BeautifulSoup
+    cs = files(run, ".csv")
+    if not cs:
+        return False, "no CSV made"
+    soup = BeautifulSoup(_get("https://quotes.toscrape.com/"), "html.parser")
+    authors = {a.text for a in soup.select("small.author")}
+    text = cs[0].read_text(errors="ignore")
+    got = [a for a in authors if a in text]
+    return len(got) >= len(authors) - 1, f"CSV has {len(got)}/{len(authors)} authors of page 1"
+
+
+OFFICE = ("Starting 1 June, the design team moves from the third floor to the new building on Harbour Road. Desks will be "
+          "packed on 30 May, and IT will reconnect every computer over the weekend. Parking at the new site is free.")
+HELDOUT = [
+    ("ho_lookup", "facts from a source", "What licence does Qwen/Qwen2.5-0.5B-Instruct use on Hugging Face, and how many "
+     "parameters does it have?", check_ho_lookup),
+    ("ho_pypi", "facts from a source", "What is the latest version of the requests package on PyPI?", check_ho_pypi),
+    ("ho_chart", "numbers + chart", "Plot the Hugging Face download counts of distilbert/distilbert-base-uncased and "
+     "google-bert/bert-base-uncased as a bar chart and tell me which is higher.", check_ho_chart),
+    ("ho_poetry", "operate a website", "On books.toscrape.com, open the Poetry category and tell me the title and price "
+     "of the first book listed.", check_ho_poetry),
+    ("ho_quotes_csv", "scrape to a file", "Save the text and author of every quote on the first page of "
+     "quotes.toscrape.com to a CSV file.", check_ho_quotes_csv),
+    ("ho_discount", "arithmetic", "A jacket costs 80 euros and is reduced by 35%. What is the new price?", has("52")),
+    ("ho_weekday", "dates", "What day of the week was 4 July 1976?", has("Sunday")),
+    ("ho_miles", "unit conversion", "How many kilometres is 26.2 miles? One decimal place.", has("42.2")),
+    ("ho_spanish", "translate given text", "Translate into Spanish: 'The library closes at eight tonight.'",
+     has("biblioteca", "ocho")),
+    ("ho_office", "summarise given text", f"Summarise in one sentence: {OFFICE}",
+     has("Harbour Road", any_of=("1 June", "June 1"), max_sentences=1)),
+    ("ho_polite", "fix given text", "Rewrite this to sound polite and give me only the new sentence: 'Send me the file now.'",
+     has("please", "file", max_sentences=2)),
+    ("ho_notice", "draft", "Write a three-sentence message to the team saying the office is closed on Monday for "
+     "maintenance.", has("Monday", "maintenance", max_sentences=4)),
+    ("ho_palindrome", "write and run code", "Write a Python function that checks whether a string is a palindrome and "
+     "tell me its result for 'racecar' and for 'python'.", has("racecar", "true", "false")),
+    ("ho_bugmax", "fix code", "This Python code should print the largest number in the list but prints the smallest. Fix "
+     "it and tell me the right output:\nnums = [4, 17, 9, 2]\nprint(min(nums))", has("17")),
+    ("ho_explain", "explain from knowledge", "In two sentences, explain what a hash table is.",
+     has("key", "hash", max_sentences=3)),
+    ("ho_scores", "reason over given data", "Test scores: Ana 78, Ben 92, Caro 85, Dev 61. Who scored highest, and what "
+     "is the average score?", has("Ben", "79")),
+]
+
+
 def cost(run):
     calls = [json.loads(ln) for ln in (run / "calls.jsonl").read_text().splitlines()] if (run / "calls.jsonl").exists() else []
     by = {}
@@ -174,10 +260,11 @@ def run_one(tag, tid, task, check, timeout=2400):
 
 if __name__ == "__main__":
     tag = sys.argv[1]
-    only = set(sys.argv[2:])
+    held = "--heldout" in sys.argv
+    only = {a for a in sys.argv[2:] if not a.startswith("--")}
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []
-    for tid, kind, task, check in TASKS:
+    for tid, kind, task, check in (HELDOUT if held else TASKS):
         if only and tid not in only:
             continue
         r = run_one(tag, tid, task, check) | {"kind": kind}
