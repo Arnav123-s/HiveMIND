@@ -29,6 +29,24 @@ def ground_numbers(text, verified):
     return "\n".join(ok), struck
 
 
+HONEST = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found|accessible|available)"
+                    r"|inaccessible|unavailable|unable|unknown|no data", re.I)
+
+
+def critique(todo, results_text, text):
+    """The critic's reading of a report: (checklist, unordered, unsupported sentences)."""
+    data, _ = llm.chat_json("critic", [{"role": "system", "content": prompts.CRITIC},
+                                       {"role": "user", "content": f"INSTRUCTIONS:\n{todo}\n\nVERIFIED RESULTS:\n{results_text}"
+                                                                   f"\n\nREPORT:\n{text}"}],
+                            max_new_tokens=700)
+    if not isinstance(data, dict):
+        return [], [], []
+    checklist = [c for c in data.get("checklist", []) if isinstance(c, dict)]
+    unordered = [str(x) for x in data.get("unordered", [])]
+    flagged = [str(x) for x in data.get("unsupported", [])]
+    return checklist, unordered, [f for f in flagged if not HONEST.search(f)]  # saying what is unknown is never unsupported
+
+
 def run(goal, task, board, needs):
     facts = [f for f in board.facts(status="supported")]
     sources = list(dict.fromkeys(f["url"] for f in facts if f["url"].startswith("http")))
@@ -40,29 +58,42 @@ def run(goal, task, board, needs):
         task = f"{task}\nNever include these, they failed the checks: {'; '.join(dropped)}"
     msgs = messages(goal, task, results_text, sources)
     text = llm.chat("writer", msgs, max_new_tokens=1200)
-    # the critic checks every claim against the verified results; the writer fixes what it flags (one round)
+    # the critic checks every claim against the verified results and every instruction of Arnav's; the writer fixes
+    # what it flags or finds missing (one round), and the critic checks the fixed report, so the ticks are about it
     todo = "\n".join(f"- {i}" for i in getattr(board, "checklist", []))
-    data, _ = llm.chat_json("critic", [{"role": "system", "content": prompts.CRITIC},
-                                       {"role": "user", "content": f"INSTRUCTIONS:\n{todo}\n\nVERIFIED RESULTS:\n{results_text}"
-                                                                   f"\n\nREPORT:\n{text}"}],
-                            max_new_tokens=700)
-    checklist = [c for c in (data or {}).get("checklist", []) if isinstance(c, dict)] if isinstance(data, dict) else []
-    unordered = [str(x) for x in (data or {}).get("unordered", [])] if isinstance(data, dict) else []
-    flagged = [str(x) for x in (data or {}).get("unsupported", [])] if isinstance(data, dict) else []
-    honest = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found)|unable|unknown|no data", re.I)
-    flagged = [f for f in flagged if not honest.search(f)]  # saying what is unknown is never an unsupported claim
+    checklist, unordered, flagged = critique(todo, results_text, text)
+    missed = [c for c in checklist if not c.get("done")]
+    fixes = []
     if flagged:
         board.log("critic", "flag", f"{len(flagged)} unsupported claim(s): " + " | ".join(f[:80] for f in flagged[:3]))
+        fixes.append("These sentences are not supported by the verified results. Remove or correct them:\n- "
+                     + "\n- ".join(flagged[:10]))
+    if missed:
+        board.log("critic", "missed", f"{len(missed)} of your instructions not met: "
+                  + " | ".join(str(c.get("instruction", ""))[:80] for c in missed[:3]))
+        # only his words: a small writer given the critic's reason copies the reason into the report
+        fixes.append("Arnav asked for these and your report does not do them yet:\n- "
+                     + "\n- ".join(str(c.get("instruction", "")) for c in missed[:10])
+                     + "\nRewrite the report so it does each of them, using only the verified results. If the verified "
+                       "results are not enough for one, write one line saying what is missing.")
+    if fixes:
         text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
-                                          {"role": "user", "content": "These sentences are not supported by the verified "
-                                           "results. Remove or correct them and return the whole report:\n- "
-                                           + "\n- ".join(flagged[:10])}], max_new_tokens=1200)
+                                          {"role": "user", "content": "\n\n".join(fixes) + "\n\nReturn only the whole "
+                                                                      "corrected report."}],
+                        max_new_tokens=1200)
+        again, unordered2, flagged = critique(todo, results_text, text)
+        if again:  # no answer from the critic: keep the first ticks (they can only under-claim what was done)
+            checklist, unordered = again, unordered2
+        if flagged:
+            board.log("critic", "flag", f"{len(flagged)} unsupported claim(s) after the fix: " + " | ".join(f[:80] for f in flagged[:3]))
     else:
         board.log("critic", "ok", "every claim matches the verified results")
     text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
     if struck:
         board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")
         text += "\n\n## Removed: numbers the team could not verify\n" + "\n".join(f"- {x[:160]}" for x in struck)
+    if fixes and flagged:
+        text += "\n\n## Not backed by the verified results (flagged by the critic)\n" + "\n".join(f"- {x[:160]}" for x in flagged)
     if checklist:
         done = sum(bool(c.get("done")) for c in checklist)
         board.log("critic", "checklist", f"{done}/{len(checklist)} of your instructions done")
