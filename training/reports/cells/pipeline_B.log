@@ -1,0 +1,217 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 4069.55it/s]
+  [base] next_move: dev 0.278 test 0.253
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3657.65it/s]
+  [pick] step 0 loss 7.2385 (2s)
+  [pick] step 50 loss 0.0196 (89s)
+  [pick] step 99 loss 0.0016 (176s)
+  [pick] next_move: dev 0.685 test 0.947 params 387,072 (207.8s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 15792.51it/s]
+  [thin] step 0 loss 7.2385 (4s)
+  [thin] step 50 loss 0.0002 (143s)
+  [thin] step 99 loss 0.0001 (278s)
+  [thin] next_move: dev 0.889 test 0.973 params 900,864 (322.5s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7290.11it/s]
+  [mlp_r2] step 0 loss 7.2385 (2s)
+  [mlp_r2] step 50 loss 0.0006 (115s)
+  [mlp_r2] step 99 loss 0.0002 (224s)
+  [mlp_r2] next_move: dev 1.000 test 0.880 params 380,160 (262.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5867.40it/s]
+  [all_r2] step 0 loss 7.2385 (3s)
+  [all_r2] step 50 loss 0.0002 (142s)
+  [all_r2] step 99 loss 0.0001 (356s)
+  [all_r2] next_move: dev 0.889 test 0.880 params 610,560 (445.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9115.50it/s]
+  [random36] step 0 loss 7.2385 (4s)
+  [random36] step 50 loss 0.0184 (195s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5482.38it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 22226.67it/s]
+  [base] split_orders: dev 0.000 test 0.007
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 16506.32it/s]
+  [pick] step 0 loss 1.1420 (2s)
+  [pick] step 50 loss 0.0060 (112s)
+  [pick] step 100 loss 0.0010 (215s)
+  [pick] step 150 loss 0.0009 (318s)
+  [pick] step 199 loss 0.0007 (419s)
+  [pick] split_orders: dev 0.887 test 0.813 params 208,896 (457.5s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6965.07it/s]
+  [thin] step 0 loss 1.1420 (5s)
+  [thin] step 50 loss 0.0004 (217s)
+  [thin] step 100 loss 0.0003 (422s)
+  [thin] step 150 loss 0.0002 (623s)
+  [thin] step 199 loss 0.0002 (821s)
+  [thin] split_orders: dev 0.925 test 0.900 params 767,232 (872.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10465.94it/s]
+  [all_r2] step 0 loss 1.1420 (4s)
+  [all_r2] step 50 loss 0.0003 (207s)
+  [all_r2] step 100 loss 0.0004 (407s)
+  [all_r2] step 150 loss 0.0002 (609s)
+  [all_r2] step 199 loss 0.0002 (805s)
+  [all_r2] split_orders: dev 0.900 test 0.833 params 610,560 (854.9s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9175.32it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2444.83it/s]
+split_orders: thin dev 0.925 test(torch) 0.900, 767,232 params changed (tied on dev, dev loss: {'thin': 0.013})
+=== split_orders finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 17203.51it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10143.42it/s]
+  [base] claim_support: dev 0.300 test 0.493
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 20264.86it/s]
+  [pick] step 0 loss 3.7502 (2s)
+  [pick] step 50 loss 0.0545 (119s)
+  [pick] step 99 loss 0.0933 (235s)
+  [pick] claim_support: dev 0.850 test 0.500 params 251,904 (266.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10409.60it/s]
+  [thin] step 0 loss 3.7502 (4s)
+  [thin] step 50 loss 0.0407 (201s)
+  [thin] step 99 loss 0.0571 (388s)
+  [thin] claim_support: dev 0.850 test 0.513 params 799,488 (435.6s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7318.73it/s]
+  [all_r2] step 0 loss 3.7502 (4s)
+  [all_r2] step 50 loss 0.0360 (191s)
+  [all_r2] step 99 loss 0.0744 (376s)
+  [all_r2] claim_support: dev 0.850 test 0.500 params 610,560 (422.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 22392.89it/s]
+  [random23] step 0 loss 3.7502 (2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 4376.79it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11500.40it/s]
+  [base] family_topic: dev 0.417 test 0.500
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14471.56it/s]
+  [pick] step 0 loss 5.7874 (2s)
+  [pick] step 50 loss 0.0137 (76s)
+  [pick] step 99 loss 0.0003 (144s)
+  [pick] family_topic: dev 0.958 test 0.850 params 313,344 (154.3s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 22932.59it/s]
+  [thin] step 0 loss 5.7874 (2s)
+  [thin] step 50 loss 0.0004 (110s)
+  [thin] step 99 loss 0.0001 (214s)
+  [thin] family_topic: dev 1.000 test 0.750 params 845,568 (229.0s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6530.53it/s]
+  [all_r2] step 0 loss 5.7874 (2s)
+  [all_r2] step 50 loss 0.0003 (113s)
+  [all_r2] step 99 loss 0.0001 (227s)
+  [all_r2] family_topic: dev 1.000 test 0.787 params 610,560 (243.9s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12039.12it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5785.45it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2011.98it/s]
+family_topic: all_r2 dev 1.000 test(torch) 0.787, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0001, 'thin': 0.0001})
+=== family_topic finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6422.26it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 13921.64it/s]
+  [base] pick_element: dev 0.000 test 0.000
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7931.06it/s]
+  [pick] step 0 loss 5.4758 (3s)
+  [pick] step 50 loss 0.6701 (140s)
+  [pick] step 100 loss 0.5348 (281s)
+  [pick] step 150 loss 0.5611 (423s)
+  [pick] step 199 loss 0.4326 (554s)
+  [pick] pick_element: dev 0.212 test 0.200 params 262,656 (565.5s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6267.52it/s]
+  [thin] step 0 loss 5.4758 (5s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6709.43it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 22383.67it/s]
+  [base] orders_send: dev 0.425 test 0.213
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10431.59it/s]
+  [pick] step 0 loss 4.5611 (2s)
+  [pick] step 50 loss 0.2300 (125s)
+  [pick] step 99 loss 0.1568 (247s)
+  [pick] orders_send: dev 0.762 test 0.885 params 305,664 (266.5s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 17350.55it/s]
+  [thin] step 0 loss 4.5611 (4s)
+  [thin] step 50 loss 0.1869 (197s)
+  [thin] step 99 loss 0.0007 (389s)
+  [thin] orders_send: dev 1.000 test 0.885 params 839,808 (418.9s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9462.30it/s]
+  [all_r2] step 0 loss 4.5611 (4s)
+  [all_r2] step 50 loss 0.1955 (201s)
+  [all_r2] step 99 loss 0.0005 (393s)
+  [all_r2] orders_send: dev 0.988 test 0.934 params 610,560 (422.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 24572.47it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5532.20it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1975.49it/s]
+orders_send: thin dev 1.000 test(torch) 0.885, 839,808 params changed (tied on dev, dev loss: {'all_r2': 0.0171, 'thin': 0.0013})
+=== orders_send finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9845.27it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7865.66it/s]
+  [base] claim_support: dev 0.425 test 0.493
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 15536.15it/s]
+  [pick] step 0 loss 4.0145 (2s)
+  [pick] step 50 loss 0.1544 (123s)
+  [pick] step 99 loss 0.1162 (242s)
+  [pick] claim_support: dev 0.700 test 0.587 params 251,904 (275.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3676.08it/s]
+  [thin] step 0 loss 4.0145 (4s)
+  [thin] step 50 loss 0.1610 (188s)
+  [thin] step 99 loss 0.0743 (368s)
+  [thin] claim_support: dev 0.812 test 0.800 params 799,488 (417.6s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 15302.75it/s]
+  [all_r2] step 0 loss 4.0145 (3s)
+  [all_r2] step 50 loss 0.1421 (197s)
+  [all_r2] step 99 loss 0.0592 (384s)
+  [all_r2] claim_support: dev 0.775 test 0.833 params 610,560 (434.0s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5338.99it/s]
+  [random23] step 0 loss 4.0145 (3s)
+  [random23] step 50 loss 0.1135 (125s)
+  [random23] step 99 loss 0.1033 (242s)
+  [random23] claim_support: dev 0.762 test 0.667 params 248,832 (274.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8479.07it/s]
+  [all_r8] step 0 loss 4.0145 (3s)
+  [all_r8] step 50 loss 0.1212 (182s)
+  [all_r8] step 99 loss 0.0450 (352s)
+  [all_r8] claim_support: dev 0.775 test 0.807 params 2,442,240 (399.1s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8201.48it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2575.56it/s]
+claim_support: thin dev 0.812 test(torch) 0.800, 799,488 params changed (tied on dev, dev loss: {'thin': 0.0893})
+=== claim_support finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5469.27it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7732.38it/s]
+  [base] pick_element: dev 0.000 test 0.000
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 19134.09it/s]
+  [pick] step 0 loss 5.5663 (3s)
+  [pick] step 50 loss 0.5733 (158s)
+  [pick] step 100 loss 0.6538 (312s)
+  [pick] step 150 loss 0.2851 (464s)
+  [pick] step 199 loss 0.2591 (614s)
+  [pick] pick_element: dev 0.463 test 0.473 params 313,344 (627.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 25999.92it/s]
+  [thin] step 0 loss 5.5663 (6s)
+  [thin] step 50 loss 0.5714 (275s)
+  [thin] step 100 loss 0.7019 (531s)
+  [thin] step 150 loss 0.0626 (801s)
+  [thin] step 199 loss 0.0025 (1128s)
+  [thin] pick_element: dev 0.812 test 0.887 params 845,568 (1153.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11607.81it/s]
+  [all_r2] step 0 loss 5.5663 (5s)
+  [all_r2] step 50 loss 0.5729 (290s)
+  [all_r2] step 100 loss 0.6951 (575s)
+  [all_r2] step 150 loss 0.0533 (855s)
+  [all_r2] step 199 loss 0.0009 (1135s)
+  [all_r2] pick_element: dev 0.938 test 0.927 params 610,560 (1158.2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12976.01it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2540.46it/s]
+pick_element: all_r2 dev 0.938 test(torch) 0.927, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0871})
+=== pick_element finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 16992.88it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6919.74it/s]
+  [base] orders_signup: dev 0.188 test 0.246
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14124.33it/s]
+  [pick] step 0 loss 4.1880 (2s)
+  [pick] step 50 loss 0.1961 (111s)
+  [pick] step 99 loss 0.1456 (220s)
+  [pick] orders_signup: dev 0.875 test 0.836 params 314,880 (240.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10372.69it/s]
+  [thin] step 0 loss 4.1880 (4s)
+  [thin] step 50 loss 0.1352 (186s)
+  [thin] step 99 loss 0.0008 (365s)
+  [thin] orders_signup: dev 0.938 test 0.934 params 846,720 (394.2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6219.81it/s]
+  [all_r2] step 0 loss 4.1880 (4s)
+  [all_r2] step 50 loss 0.0719 (187s)
+  [all_r2] step 99 loss 0.0006 (362s)
+  [all_r2] orders_signup: dev 0.875 test 1.000 params 610,560 (391.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 10167.38it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1959.88it/s]
+orders_signup: thin dev 0.938 test(torch) 0.934, 846,720 params changed (tied on dev, dev loss: {'thin': 0.0625})
+=== orders_signup finished

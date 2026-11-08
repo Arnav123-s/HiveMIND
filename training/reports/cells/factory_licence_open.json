@@ -1,0 +1,82 @@
+{
+ "skill": "licence_open",
+ "parent": "orders_spend",
+ "parent_scores_dev": {
+  "base": {
+   "dev": 0.3875,
+   "dev_loss": 2.9987
+  },
+  "route_step": {
+   "dev": 0.425,
+   "dev_loss": 4.3551
+  },
+  "next_move": {
+   "dev": 0.3875,
+   "dev_loss": 2.5571
+  },
+  "orders_spend": {
+   "dev": 0.6125,
+   "dev_loss": 1.1264
+  },
+  "split_orders": {
+   "dev": 0.5375,
+   "dev_loss": 9.2894
+  },
+  "json_repair": {
+   "dev": 0.5375,
+   "dev_loss": 5.9686
+  },
+  "family_topic": {
+   "dev": 0.6125,
+   "dev_loss": 1.6889
+  },
+  "orders_send": {
+   "dev": 0.6125,
+   "dev_loss": 1.6518
+  },
+  "quote_pick": {
+   "dev": 0.5625,
+   "dev_loss": 0.4724
+  },
+  "orders_delete": {
+   "dev": 0.6125,
+   "dev_loss": 1.4416
+  },
+  "claim_support": {
+   "dev": 0.6125,
+   "dev_loss": 5.3041
+  },
+  "orders_login": {
+   "dev": 0.6125,
+   "dev_loss": 1.4038
+  },
+  "pick_source": {
+   "dev": 0.425,
+   "dev_loss": 1.7966
+  },
+  "pick_element": {
+   "dev": 0.45,
+   "dev_loss": 4.48
+  },
+  "orders_signup": {
+   "dev": 0.6125,
+   "dev_loss": 1.1804
+  },
+  "orders_any": {
+   "dev": 0.475,
+   "dev_loss": 1.0534
+  }
+ },
+ "steps": 60,
+ "clone": {
+  "dev": 1.0,
+  "test": 0.7555555555555555,
+  "trainable_params": 610560,
+  "copied_tensors": 420
+ },
+ "scratch": {
+  "dev": 1.0,
+  "test": 0.8074074074074075,
+  "trainable_params": 610560
+ }
+}

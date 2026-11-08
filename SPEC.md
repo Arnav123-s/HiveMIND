@@ -57,8 +57,23 @@ requirement in a way stated here. **Not done** = with the reason.
 | Always available, any time | Done | `python -m team serve` (inbox + schedule), `python -m team web` (local page), `python -m team chat` |
 | Complete tasks fully, no half work | Partial | checklist + critic + re-routing push for completeness; the demo shows where it still falls short |
 
+## Cells: one tiny specialist per smallest skill
+
+| requirement | status | what / evidence |
+|---|---|---|
+| Every smallest thing done by a different specialist, allowed to be bad at everything else | Done for 18 micro-skills | one cell per micro-skill: a weight delta on one shared frozen SmolLM2-135M, hot-swapped per call in llama.cpp; label cells answer through a grammar of their labels (`team/cells/`, README "Cells") |
+| The smallest specialist model possible | Done | 135M base, the smallest base tried; a 22-layer cut of it (106M) was faster (1.7x) but lost accuracy (0.936 -> 0.789 test), so cells stay on the full base (`training/reports/cells/cut22.json`) |
+| Surgical weight edits that make it better | Done | each cell's delta changes 0.38-0.85M of 135M parameters; every cell beats the untouched base on test (e.g. route_step 0.19 -> 0.99, split_orders 0.01 -> 0.91) |
+| Find what to edit (I act as the locator until real locators exist) | Done, with a finding | gradient x weight and per-layer knockout maps per skill; my rules picked modules (`training/cells_view.py`, every pick logged in `locator_log.jsonl`). Measured: my concentrated pick was best on 2 of 15 skills; small edits on every module won most. No trained locator cell yet: the log is its future training data |
+| Cells beat what does each job today | Done: 14 cells take a job, 2 lose to the member | cell vs incumbent on the same test inputs (`cells/wins.json`, `training/reports/cells/SUMMARY.md`): e.g. split_orders 0.91 vs 0.28 (4B coordinator), next_move 0.90 vs 0.57, pick_source 0.93 vs 0.70, at 50-160 ms vs 1-11 s per call. The verifier (0.88 vs 0.83) and the juror on licences (0.93 vs 0.74) keep their jobs |
+| Organizers / specialists of specialists | Done | order organizer (five one-kind cells; with the parser: 0.905 exact, 0 false approvals vs the member's 0.873); page organizer (element_match per element: 1.000 vs one cell 0.927 vs browser member 0.880) |
+| Mixture of experts: a gate over the cells | Partial | the gate cell routes 0.940 of test inputs to the right group; the hive calls cells at fixed hooks, so the gate is not in the loop yet |
+| Every part of engine, harness, loop | Partial | cells in the engine (JSON repair), coordinator (checklist, routing), researcher (source), verifier (evidence sentence), guard (order reading, family), hive loop (retry/reroute/stop). The big members still do open-ended reasoning, writing and code |
+| New task -> clone the nearest specialist and edit the clone | Done | `training/cells_factory.py`: parent finder + clone + from-zero control. orders_any: clone 0.967 vs from zero 0.918 test; licence_open: clone 0.756 vs 0.807 (cloning did not help there) |
+| More specialists, more coverage | Partial | 18 cells now; adding one is one command (`cells_pipeline.py` or `cells_factory.py`); growth is not automatic yet |
+
 ## GitHub
 
 | requirement | status | what / evidence |
 |---|---|---|
-| Use HiveMIND, keep it updated | Done | pushed after every milestone; draft PR #1 |
+| Use HiveMIND, keep it updated | Done | pushed after every milestone; PR #1 merged; cells in PR #2 |

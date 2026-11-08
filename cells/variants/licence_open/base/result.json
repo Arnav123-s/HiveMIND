@@ -1,0 +1,8 @@
+{
+ "skill": "licence_open",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.3875,
+ "test": 0.4444444444444444,
+ "trainable_params": 0
+}

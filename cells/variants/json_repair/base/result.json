@@ -1,0 +1,8 @@
+{
+ "skill": "json_repair",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.4125,
+ "test": 0.36,
+ "trainable_params": 0
+}

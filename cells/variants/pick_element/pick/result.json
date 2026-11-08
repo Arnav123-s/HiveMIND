@@ -1,0 +1,88 @@
+{
+ "skill": "pick_element",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "8:down_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:down_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:down_proj",
+  "14:o_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:o_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:q_proj",
+  "16:v_proj",
+  "17:q_proj",
+  "17:v_proj",
+  "24:o_proj",
+  "27:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 200,
+ "lr": 0.001,
+ "trainable_params": 313344,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.4625,
+ "test": 0.47333333333333333,
+ "train_seconds": 627.7,
+ "test_errors": [
+  [
+   "GOAL: tap Buy now\nELEMENTS:\n[59] link \"Start\"\n[20] a \"Romance\"\n[65] link \"Our team\"\n[38] a \"Find\"\n[18] span \"Buy now\"\n[33] link \"Ratings\"\n[46] a \"Refine\"",
+   "18",
+   "38"
+  ],
+  [
+   "GOAL: view every item\nELEMENTS:\n[55] button \"Preferences\"\n[75] link \"See all\"\n[48] link \"Sign in\"\n[43] a \"Confirm\"\n[4] span \"Basket\"\n[45] a \"Jobs\"\n[5] link \"Our team\"\n[64] button \"Refine\"\n[38] span \"Find\"",
+   "75",
+   "4"
+  ],
+  [
+   "GOAL: view every item\nELEMENTS:\n[34] link \"Support\"\n[32] link \"Newer posts\"\n[76] link \"See all\"\n[93] input[text] \"\"\n[10] link \"Plans\"\n[37] span \"Pay\"",
+   "76",
+   "10"
+  ],
+  [
+   "GOAL: purchase it\nELEMENTS:\n[19] button \"Romance\"\n[27] span \"Buy now\"\n[62] button \"Plans\"\n[68] button \"Newer posts\"\n[3] span \"Basket\"\n[69] link \"Preferences\"\n[57] link \"Guide\"\n[60] button \"Export\"\n[6] button \"Find\"",
+   "27",
+   "6"
+  ],
+  [
+   "GOAL: see older articles\nELEMENTS:\n[87] input[text] \"\"\n[72] a \"Find\"\n[31] button \"News\"\n[74] span \"Older posts\"\n[52] link \"See all\"\n[34] button \"Pay\"\n[17] a \"Preferences\"\n[42] link \"Jobs\"",
+   "74",
+   "31"
+  ],
+  [
+   "GOAL: tap support\nELEMENTS:\n[49] button \"Sign in\"\n[47] button \"Older posts\"\n[60] link \"Ratings\"\n[97] input[text] \"\"\n[27] span \"Support\"\n[12] span \"Refine\"",
+   "27",
+   "97"
+  ],
+  [
+   "GOAL: navigate to Export\nELEMENTS:\n[10] span \"Our team\"\n[15] link \"Export\"\n[11] link \"Romance\"\n[71] link \"Preferences\"\n[48] span \"Find\"\n[40] button \"News\"\n[58] link \"Pay\"\n[5] span \"Basket\"\n[17] span \"Newer posts\"",
+   "15",
+   "10"
+  ],
+  [
+   "GOAL: choose the Fiction option\nELEMENTS:\n[58] a \"Find\"\n[42] link \"Buy now\"\n[55] button \"Pay\"\n[65] link \"Ratings\"\n[52] button \"Basket\"\n[97] input[text] \"\"\n[78] link \"Jobs\"\n[14] a \"Fiction\"\n[74] button \"Follow\"\n[7] span \"Romance\"",
+   "14",
+   "7"
+  ]
+ ]
+}

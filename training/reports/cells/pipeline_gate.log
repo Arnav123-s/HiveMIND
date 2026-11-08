@@ -1,0 +1,24 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 16059.95it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12624.50it/s]
+  [base] gate: dev 0.300 test 0.113
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6993.63it/s]
+  [pick] step 0 loss 12.2993 (3s)
+  [pick] step 50 loss 0.1816 (141s)
+  [pick] step 99 loss 0.1729 (279s)
+  [pick] gate: dev 0.925 test 0.913 params 281,088 (364.4s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 15315.69it/s]
+  [thin] step 0 loss 12.2993 (5s)
+  [thin] step 50 loss 0.0244 (270s)
+  [thin] step 99 loss 0.0018 (528s)
+  [thin] gate: dev 0.963 test 0.893 params 821,376 (649.6s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12295.24it/s]
+  [all_r2] step 0 loss 12.2993 (5s)
+  [all_r2] step 50 loss 0.0208 (264s)
+  [all_r2] step 99 loss 0.0010 (522s)
+  [all_r2] gate: dev 0.963 test 0.933 params 610,560 (648.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 19672.55it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 18364.09it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 569.94it/s]
+gate: all_r2 dev 0.963 test(torch) 0.933, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0527, 'thin': 0.0626})
+=== gate finished

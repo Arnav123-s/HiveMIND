@@ -1,0 +1,82 @@
+{
+ "skill": "pick_source",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "5:down_proj",
+  "6:down_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:o_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:o_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:o_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:down_proj",
+  "15:o_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:o_proj",
+  "16:q_proj",
+  "16:v_proj",
+  "17:o_proj",
+  "18:down_proj",
+  "19:o_proj",
+  "21:o_proj",
+  "22:o_proj",
+  "24:o_proj",
+  "27:down_proj",
+  "27:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 411648,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 1.0,
+ "test": 0.9324324324324325,
+ "train_seconds": 171.5,
+ "test_errors": [
+  [
+   "Find a Python library to draw terminal tables.",
+   "pypi",
+   "huggingface"
+  ],
+  [
+   "Find a survey paper on knowledge distillation.",
+   "arxiv",
+   "wikipedia"
+  ],
+  [
+   "Find a Python library to serve an API.",
+   "pypi",
+   "huggingface"
+  ],
+  [
+   "Find the top HN thread on a new code editor.",
+   "hn",
+   "pypi"
+  ],
+  [
+   "Find a survey paper on model merging.",
+   "arxiv",
+   "wikipedia"
+  ]
+ ]
+}

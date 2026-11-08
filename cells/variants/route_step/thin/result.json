@@ -1,0 +1,60 @@
+{
+ "skill": "route_step",
+ "base": "smol135",
+ "tag": "thin",
+ "modules": [
+  "9:o_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:o_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:o_proj",
+  "16:q_proj",
+  "16:v_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": 2,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 807552,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 1.0,
+ "test": 0.9745762711864406,
+ "train_seconds": 290.6,
+ "test_errors": [
+  [
+   "Measure the time it takes to deduplicates the rows.",
+   "coder",
+   "researcher"
+  ],
+  [
+   "Compose the deliverable from the measured timings.",
+   "writer",
+   "coder"
+  ],
+  [
+   "Measure the time it takes to simulate 10,000 dice rolls.",
+   "coder",
+   "researcher"
+  ]
+ ]
+}

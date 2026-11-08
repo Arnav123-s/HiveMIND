@@ -1,0 +1,52 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8671.38it/s]
+licence_open: nearest cells on dev: orders_spend 0.61, family_topic 0.61, orders_send 0.61, orders_delete 0.61, claim_support 0.61, orders_login 0.61
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6124.22it/s]
+  [base] licence_open: dev 0.388 test 0.444
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6810.68it/s]
+  [clone_orders_spend] step 0 loss 1.3284 (3s)
+  [clone_orders_spend] step 50 loss 0.0003 (142s)
+  [clone_orders_spend] step 59 loss 0.0003 (166s)
+  [clone_orders_spend] licence_open: dev 1.000 test 0.756 params 610,560 (203.2s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9531.79it/s]
+  [scratch] step 0 loss 2.9727 (3s)
+  [scratch] step 50 loss 0.0049 (141s)
+  [scratch] step 59 loss 0.0110 (166s)
+  [scratch] licence_open: dev 1.000 test 0.807 params 610,560 (200.3s)
+{
+ "skill": "licence_open",
+ "parent": "orders_spend",
+ "parent_scores_dev": {
+  "base": 0.3875,
+  "route_step": 0.425,
+  "next_move": 0.3875,
+  "orders_spend": 0.6125,
+  "split_orders": 0.5375,
+  "json_repair": 0.5375,
+  "family_topic": 0.6125,
+  "orders_send": 0.6125,
+  "quote_pick": 0.5625,
+  "orders_delete": 0.6125,
+  "claim_support": 0.6125,
+  "orders_login": 0.6125,
+  "pick_source": 0.425,
+  "pick_element": 0.45,
+  "orders_signup": 0.6125
+ },
+ "steps": 60,
+ "clone": {
+  "dev": 1.0,
+  "test": 0.7555555555555555,
+  "trainable_params": 610560,
+  "copied_tensors": 420
+ },
+ "scratch": {
+  "dev": 1.0,
+  "test": 0.8074074074074075,
+  "trainable_params": 610560
+ }
+}
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11235.37it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 17001.49it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2632.68it/s]
+licence_open: clone_orders_spend dev 1.000 test(torch) 0.756, 610,560 params changed (tied on dev, dev loss: {'clone_orders_spend': 0.0003, 'scratch': 0.016})

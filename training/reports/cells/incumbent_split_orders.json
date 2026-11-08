@@ -1,0 +1,39 @@
+{
+ "skill": "split_orders",
+ "incumbent": "coordinator = brain4b",
+ "test": 0.28,
+ "ms_per_call": 11057.9,
+ "n": 150,
+ "errors": [
+  [
+   "Remind me what to wear, pick the warmest hour and find two papers on model merging.",
+   "Remind me what to wear\nPick the warmest hour\nFind two papers on model merging",
+   "Remind me what to wear. Pick the warmest hour. Find two papers on model merging."
+  ],
+  [
+   "Plot revenue by month; pick the warmest hour; then look up tomorrow's weather in Oslo.",
+   "Plot revenue by month\nPick the warmest hour\nLook up tomorrow's weather in Oslo",
+   "Plot revenue by month; pick the warmest hour; look up tomorrow's weather in Oslo."
+  ],
+  [
+   "Find two papers on model merging. Then rank them by citations. Finally, plot revenue by month.",
+   "Find two papers on model merging\nRank them by citations\nPlot revenue by month",
+   "Find two papers on model merging. Rank them by citations. Plot revenue by month."
+  ],
+  [
+   "Plot revenue by month, remind me what to wear, then remove the duplicate rows.",
+   "Plot revenue by month\nRemind me what to wear\nRemove the duplicate rows",
+   "Plot revenue by month, remind me what to wear, then remove the duplicate rows."
+  ],
+  [
+   "Quote each abstract's first sentence; plot revenue by month; then count its comments.",
+   "Quote each abstract's first sentence\nPlot revenue by month\nCount its comments",
+   "Quote each abstract's first sentence; plot revenue by month; then count its comments."
+  ],
+  [
+   "Explain the main argument. Then rank them by citations. Finally, get the top story on Hacker News.",
+   "Explain the main argument\nRank them by citations\nGet the top story on Hacker News",
+   "Explain the main argument.\nThen rank them by citations.\nFinally, get the top story on Hacker News."
+  ]
+ ]
+}

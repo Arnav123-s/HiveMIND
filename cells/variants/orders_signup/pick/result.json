@@ -1,0 +1,89 @@
+{
+ "skill": "orders_signup",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "3:o_proj",
+  "4:down_proj",
+  "6:o_proj",
+  "9:o_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:down_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:o_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:o_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 314880,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.875,
+ "test": 0.8360655737704918,
+ "train_seconds": 240.8,
+ "test_errors": [
+  [
+   "Now sign in to my email account. What does a book cost on average there? You should sign up for the forum today.",
+   "yes",
+   "no"
+  ],
+  [
+   "You should create an account on the forum today. Summarise the purchase history.",
+   "yes",
+   "no"
+  ],
+  [
+   "Go ahead and register on the forum. What is the share of each category?",
+   "yes",
+   "no"
+  ],
+  [
+   "You should create an account on the free trial today. Look it up and reply to the invoice to the client. Summarise the purchase history.",
+   "yes",
+   "no"
+  ],
+  [
+   "Read the Wikipedia article on transistors. Go ahead and remove last week's backups. Now register on the free trial.",
+   "yes",
+   "no"
+  ],
+  [
+   "Explain the text of the licence. Look it up and clear out the cache. You should register on the waiting list today.",
+   "yes",
+   "no"
+  ],
+  [
+   "Go ahead and create an account on the forum. Find text-to-speech models that run on CPU.",
+   "yes",
+   "no"
+  ],
+  [
+   "Now register on the free trial. Explain the text of the licence. Look it up and donate to the hiking boots.",
+   "yes",
+   "no"
+  ]
+ ]
+}

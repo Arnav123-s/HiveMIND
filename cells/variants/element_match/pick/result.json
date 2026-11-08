@@ -1,0 +1,86 @@
+{
+ "skill": "element_match",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "8:o_proj",
+  "8:q_proj",
+  "8:v_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:down_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:down_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:down_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 294912,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.825,
+ "test": 0.8666666666666667,
+ "train_seconds": 169.6,
+ "test_errors": [
+  [
+   "GOAL: navigate to Find\nELEMENT: link \"Our team\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: choose the refine option\nELEMENT: link \"Our team\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: choose the Sign in option\nELEMENT: a \"Confirm\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: choose the sign in option\nELEMENT: button \"Jobs\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: see older articles\nELEMENT: button \"See all\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: navigate to Pay\nELEMENT: link \"Buy now\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: choose the Jobs option\nELEMENT: span \"Confirm\"",
+   "no",
+   "yes"
+  ],
+  [
+   "GOAL: choose the Cheapest first option\nELEMENT: link \"See all\"",
+   "no",
+   "yes"
+  ]
+ ]
+}

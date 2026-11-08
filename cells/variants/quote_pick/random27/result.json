@@ -1,0 +1,87 @@
+{
+ "skill": "quote_pick",
+ "base": "smol135",
+ "tag": "random27",
+ "modules": [
+  "11:up_proj",
+  "5:o_proj",
+  "14:o_proj",
+  "23:up_proj",
+  "1:up_proj",
+  "2:gate_proj",
+  "19:gate_proj",
+  "3:o_proj",
+  "13:v_proj",
+  "21:v_proj",
+  "2:q_proj",
+  "18:o_proj",
+  "7:up_proj",
+  "1:v_proj",
+  "3:k_proj",
+  "15:down_proj",
+  "15:v_proj",
+  "2:o_proj",
+  "8:up_proj",
+  "3:v_proj",
+  "20:k_proj",
+  "15:o_proj",
+  "2:k_proj",
+  "20:gate_proj",
+  "4:o_proj",
+  "8:k_proj",
+  "23:q_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 290304,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.3125,
+ "test": 0.6666666666666666,
+ "train_seconds": 506.1,
+ "test_errors": [
+  [
+   "CLAIM: The latest version of numpy is 2.1.0.\nSENTENCES:\n1. numpy lists its latest version as 2.1.0.\n2. The data is refreshed hourly.\n3. Comments are closed.\n4. The archive goes back to 2009.\n5. Support replies within a day.",
+   "1",
+   "4"
+  ],
+  [
+   "CLAIM: The population of Nairobi is 4.4 million.\nSENTENCES:\n1. Nairobi lists its population as 4.4 million.\n2. Opening hours vary on holidays.\n3. The population of Nairobi is 3.4 million.\n4. The menu changes every season.\n5. The archive goes back to 2009.\n6. Comments are closed.",
+   "1",
+   "5"
+  ],
+  [
+   "CLAIM: The population of Nairobi is 4.4 million.\nSENTENCES:\n1. The population of Nairobi is 3.4 million.\n2. Support replies within a day.\n3. The menu changes every season.",
+   "none",
+   "1"
+  ],
+  [
+   "CLAIM: The population of Nairobi is 4.4 million.\nSENTENCES:\n1. The archive goes back to 2009.\n2. The population of Nairobi is 3.4 million.\n3. Opening hours vary on holidays.\n4. The data is refreshed hourly.\n5. Comments are closed.",
+   "none",
+   "2"
+  ],
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The menu changes every season.\n2. The data is refreshed hourly.\n3. The archive goes back to 2009.\n4. Opening hours vary on holidays.\n5. The gated of Mistral-7B is yes.",
+   "none",
+   "5"
+  ],
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The menu changes every season.\n2. Support replies within a day.\n3. Mistral-7B lists its gated as no.\n4. Comments are closed.\n5. The data is refreshed hourly.",
+   "3",
+   "2"
+  ],
+  [
+   "CLAIM: The parameters of Gemma-2-2B is 2.6B.\nSENTENCES:\n1. The parameters of Gemma-2-2B is 2.0B.\n2. The data is refreshed hourly.\n3. Gemma-2-2B lists its parameters as 2.6B.\n4. Comments are closed.\n5. The archive goes back to 2009.\n6. Support replies within a day.",
+   "3",
+   "5"
+  ],
+  [
+   "CLAIM: The parameters of Gemma-2-2B is 2.6B.\nSENTENCES:\n1. Gemma-2-2B lists its parameters as 2.6B.\n2. Comments are closed.\n3. The data is refreshed hourly.\n4. Support replies within a day.\n5. The parameters of Gemma-2-2B was discussed.",
+   "1",
+   "5"
+  ]
+ ]
+}
