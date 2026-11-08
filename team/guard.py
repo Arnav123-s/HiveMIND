@@ -92,7 +92,17 @@ def split_material(goal):
     long_ = "\n" in rest or len(re.findall(r"[.!?](?:\s|$)", rest)) >= 2
     if MATERIAL_VERB.search(head) and (quoted or long_):
         return head, rest
+    d = DATA_RUN.match(rest)
+    if d and len(re.findall(r"\d", d.group(1))) >= 3:
+        # "Monthly sales: Jan 120, Feb 95, Mar 143, Apr 110. Which month ...?": the data is material, the questions
+        # after it are the order (each "Jan 120" had become an instruction of its own)
+        return (d.group(2).strip() or head), d.group(1).strip()
     return goal, ""
+
+
+# three or more "<name> <number>" pairs in a row, then what he asks about them
+_PAIR = r"[A-Za-z][\w'’-]*(?:\s[A-Za-z][\w'’-]*){0,2}:?\s+[-+]?[$€£]?\d[\d.,]*%?"
+DATA_RUN = re.compile(rf"(?s)^((?:{_PAIR}\s*(?:,|;|\band\b)\s*){{2,}}(?:and\s+)?{_PAIR})\s*[.;]?\s*(.*)$")
 
 
 def parse_orders(goal):
