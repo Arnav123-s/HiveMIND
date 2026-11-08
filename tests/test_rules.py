@@ -637,3 +637,13 @@ def test_the_jury_sees_the_program_beside_its_output(tmp_path, monkeypatch):
     res = {"summary": "30", "returncode": 0, "stderr": "", "files": [], "code_path": str(tmp_path / "s1.py")}
     assert verifier.verify(step, res, Board(tmp_path, echo=False), tmp_path)[0] == "PASS"
     assert "range(1, 11)" in seen["ev"] and "OUTPUT:\n30" in seen["ev"] and "Files" not in seen["work"]
+
+
+def test_data_he_hands_over_is_material_and_orders_after_it_still_count():
+    """'Monthly sales: Jan 120, Feb 95, ...' became four 'instructions'; a risky order next to data is still read."""
+    from team.guard import parse_orders, split_material
+    order, data = split_material("Monthly sales: Jan 120, Feb 95, Mar 143, Apr 110. Which month had the highest sales?")
+    assert order == "Which month had the highest sales?" and data.startswith("Jan 120")
+    order, data = split_material("Bills: rent 500, gym 30 and phone 20. Pay the rent.")
+    assert "spend" in parse_orders(order) and data == "rent 500, gym 30 and phone 20."
+    assert "spend" in parse_orders(split_material("Pay: rent 500, gym 30, phone 20")[0])
