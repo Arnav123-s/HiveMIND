@@ -56,6 +56,32 @@ def _judge_one(member, check, work, evidence):
     return ("PASS" if v == "PASS" else "FAIL"), str(data.get("reason", ""))[:300]
 
 
+def describe_file(path):
+    """What a saved file holds, checked in code: an image's format and size in pixels, a text file's first lines."""
+    name = path.name
+    if not path.exists() or path.stat().st_size == 0:
+        return f"EMPTY: {name} has no content"
+    kb = path.stat().st_size / 1024
+    if path.suffix.lower() in (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".pdf"):
+        if path.suffix.lower() in (".svg", ".pdf"):
+            return f"{name}: a {path.suffix[1:].upper()} file of {kb:.0f} KB"
+        try:
+            from PIL import Image
+            with Image.open(path) as im:
+                w, h = im.size
+                colours = len(set(im.convert("RGB").resize((64, 64)).getdata()))
+            if colours < 3:
+                return f"BROKEN: {name} is a blank image ({w}x{h} pixels, one colour)"
+            return f"{name}: a valid {im.format} image, {w}x{h} pixels, {kb:.0f} KB (a drawn picture, not blank)"
+        except Exception as e:  # noqa: BLE001
+            return f"BROKEN: {name} is not a readable image ({type(e).__name__})"
+    try:
+        head = path.read_text(errors="replace")[:600]
+    except Exception:  # noqa: BLE001
+        return f"{name}: {kb:.0f} KB"
+    return f"{name} ({kb:.1f} KB), first lines:\n{head}"
+
+
 def judge(check, work, evidence):
     """Step verdicts are a vote: different models make different mistakes, so a majority beats any one of them.
     With the PyTorch engine all jurors would be the same model, so only the verifier votes there."""
@@ -194,7 +220,14 @@ def verify(step, result, board, workdir):
         missing = [f for f in result.get("files", []) if not (workdir / f).exists()]
         if missing:
             return "FAIL", f"files missing: {missing}"
-        return judge(check, f"Program ran (exit 0). Files: {result.get('files')}", result.get("summary", ""))
+        shown = [describe_file(workdir / f) for f in result.get("files", [])]
+        empty = [d for d in shown if d.startswith("EMPTY") or d.startswith("BROKEN")]
+        if empty:
+            return "FAIL", "; ".join(empty)[:300]
+        # the jury sees the files, not only what the program printed: a saved chart was rejected because "the
+        # evidence shows the number of downloads, not the file"
+        return judge(check, f"Program ran (exit 0). Files: {result.get('files')}",
+                     result.get("summary", "") + ("\n\nFILES SAVED (checked in code):\n" + "\n".join(shown) if shown else ""))
 
     if agent == "calculator":
         if result.get("failed"):

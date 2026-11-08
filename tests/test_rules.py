@@ -485,3 +485,23 @@ def test_the_writer_step_is_checked_by_the_family_rule_only(monkeypatch):
     assert guard.check_task(step, "Explain mixture-of-experts models")  # an acting step: the cell still blocks
     assert guard.check_task(step, "Explain mixture-of-experts models", cell=False) is None
     assert guard.check_task("Write a note to my wife", "Explain models", cell=False)  # the rule still blocks
+
+
+def test_a_saved_chart_is_shown_to_the_jury_and_linked_in_the_report(tmp_path):
+    """The jury rejected a saved chart ("the evidence shows the downloads, not the file"); the writer linked the
+    chart to a Hugging Face API page; 3,905,849 was struck although the source said 3905849."""
+    from PIL import Image, ImageDraw
+    from team.specialists.verifier import describe_file
+    from team.specialists.writer import fix_images, ground_numbers
+    im = Image.new("RGB", (200, 100), "white")
+    ImageDraw.Draw(im).rectangle([20, 20, 60, 90], fill="blue")
+    im.save(tmp_path / "chart.png")
+    Image.new("RGB", (200, 100), "white").save(tmp_path / "blank.png")
+    assert "valid PNG image, 200x100" in describe_file(tmp_path / "chart.png")
+    assert describe_file(tmp_path / "blank.png").startswith("BROKEN")
+    (tmp_path / "empty.csv").write_text("")
+    assert describe_file(tmp_path / "empty.csv").startswith("EMPTY")
+    assert fix_images("![Bar](https://huggingface.co/api/models/x)", [tmp_path / "chart.png"]) == "![Bar](work/chart.png)"
+    assert fix_images("![Bar](https://example.com/c.png)", []) == ""
+    kept, struck = ground_numbers("It has 3,905,849 downloads.\nIt has 1,999 stars.", "downloads 3905849")
+    assert kept == "It has 3,905,849 downloads." and struck == ["It has 1,999 stars."]
