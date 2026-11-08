@@ -37,6 +37,7 @@ class Board:
         self.lock = threading.Lock()
         self.echo = echo
         self.goal = ""
+        self.checklist = []
 
     # ---- events -------------------------------------------------------
     def log(self, agent, kind, msg, data=None):
@@ -133,14 +134,14 @@ class Board:
     def context_for(self, needs, max_chars=3500):
         parts = []
         for sid in needs:
-            rows = [s for s in self.steps() if s["id"] == sid or s["id"].startswith(sid + "[")]
+            rows = [s for s in self.steps() if s["id"] in (sid, sid + "r") or s["id"].startswith(sid + "[")]
             for s in rows:
                 res = s.get("result") or {}
                 if not isinstance(res, dict):
                     res = {"summary": str(res)}
                 line = f"## {s['id']} ({s['agent']}, verdict={s.get('verdict')}): {s['task'][:200]}\n"
                 if res.get("summary"):
-                    line += f"Result: {res['summary'][:900]}\n"
+                    line += f"Result: {res['summary'][:1500]}\n"
                 if res.get("items"):
                     line += "Items: " + json.dumps(res["items"])[:700] + "\n"
                 if res.get("files"):

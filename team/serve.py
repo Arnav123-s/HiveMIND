@@ -2,6 +2,8 @@
 
     python -m team serve
 Drop a task as a .md or .txt file into agent-team/inbox/ (or use `python -m team add "task"`).
+KILL SWITCH: drop a file named STOP into agent-team/inbox/ - the running task halts at once (everything it
+finished is recorded in its run folder) and serve stays up for the next task.
 The report lands in agent-team/outbox/<name>.REPORT.md; the task file moves to inbox/done/.
 Recurring tasks live in memory/schedule.json:
     [{"task": "Check the latest versions of my pinned packages", "every_hours": 24}]

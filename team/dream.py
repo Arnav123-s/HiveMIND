@@ -83,7 +83,7 @@ def lessons(log):
                                                     "prevent it next time. Reply with the rule only."},
                       {"role": "user", "content": f"Specialist: {st['agent']}\nTask: {st['task'][:300]}\n"
                                                   f"Why it was rejected: {st['feedback'][:300]}"}]
-            rule = llm.chat("writer", prompt, max_new_tokens=60).strip().split("\n")[0][:220]
+            rule = llm.chat("lesson_writer", prompt, max_new_tokens=60).strip().split("\n")[0][:220]
             if rule:
                 memory.add_lesson(st["agent"], rule, st["task"], source=f"{run.name}/{sid}")
                 n += 1
@@ -108,7 +108,7 @@ def rehearse(log, limit=3):
 
 
 def _score(tag, spec, adapters_dir=None):
-    env = dict(**__import__("os").environ)
+    env = dict(**__import__("os").environ, AGENT_TEAM_ENGINE="hf")  # edits are trained and scored on PyTorch
     if adapters_dir:
         env["AGENT_TEAM_ADAPTERS"] = str(adapters_dir)
     cmd = [sys.executable, str(config.ROOT / "training" / "observe.py"), "--tag", tag, "--only", *SUITES[spec]]
@@ -143,6 +143,8 @@ def retrain(log, force=False):
             m = json.loads((config.ADAPTERS / spec / "training_meta.json").read_text())
             m["self_examples"] = n_self
             (config.ADAPTERS / spec / "training_meta.json").write_text(json.dumps(m, indent=1))
+            # the llama.cpp engine loads edits as GGUF LoRAs
+            subprocess.run(["bash", str(config.ROOT / "training" / "to_gguf.sh"), spec], capture_output=True)
         results[spec] = {"before": round(before, 3), "after": round(after, 3), "promoted": promoted, "self_examples": n_self}
     log["retrain"] = results
 

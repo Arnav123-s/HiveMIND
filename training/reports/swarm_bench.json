@@ -1,0 +1,10 @@
+{
+ "members": 22,
+ "distinct_base_models": 3,
+ "ram_budget_gb": 10.0,
+ "kv_8bit": true,
+ "max_resident_models": 2,
+ "peak_process_alloc_gb": 8.15,
+ "peak_system_used_gb": 7.71,
+ "seconds": 28
+}

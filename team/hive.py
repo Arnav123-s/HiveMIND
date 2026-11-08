@@ -10,7 +10,7 @@ import re
 import time
 from pathlib import Path
 
-from . import config, llm, memory
+from . import config, llm, memory, stop
 from .board import Board
 from .guard import Guard, check_task
 from .specialists import browser_agent, coder, coordinator, researcher, verifier, writer
@@ -23,7 +23,7 @@ class Hive:
         self.dir = Path(run_dir or config.RUNS / stamp)
         self.board = Board(self.dir)
         self.board.goal = self.goal
-        self.guard = Guard(self.board, approve, allow_login=allow_login)
+        self.guard = Guard(self.board, approve, allow_login=allow_login, goal=self.goal, use_model=True)
         self.work = self.dir / "work"
         self.shots = self.dir / "screens"
         self.work.mkdir(parents=True, exist_ok=True)
@@ -38,26 +38,71 @@ class Hive:
 
     # ------------------------------------------------------------------
     def run(self):
+        if stop.requested():  # a flag left over from before this task started applies to nothing
+            for f in (stop.FLAG, stop.INBOX_FLAG):
+                if f.exists():
+                    f.rename(self.dir / "STOP.before-start")
+            self.board.log("hive", "note", "a STOP flag from before this task was set aside (kept in the run folder)")
+        try:
+            return self._run()
+        except stop.Stopped as e:
+            return self._stopped(str(e))
+
+    def _stopped(self, by):
+        """Kill switch: nothing else runs. Record exactly what was finished and where it stopped."""
+        b = self.board
+        info = stop.info()
+        stop.archive(self.dir)
+        steps = b.steps()
+        running = [s for s in steps if s["status"] == "running"]
+        for s in running:
+            b.update_step(s["id"], status="stopped", verdict="STOPPED", feedback=f"stopped by {by}")
+        done = [s for s in steps if s.get("verdict") in ("PASS", "REROUTED")]
+        todo = [s for s in steps if s["status"] == "todo"]
+        b.log("hive", "stopped", f"stopped by {by} at {info.get('at', time.strftime('%F %T'))}; "
+                                 f"{len(done)} steps finished, {len(running)} cut off, {len(todo)} not started")
+        lines = [f"# Stopped by you ({by}, {info.get('at', '')})", "", "## Finished before the stop"]
+        for s in done:
+            res = s.get("result") if isinstance(s.get("result"), dict) else {}
+            lines.append(f"- {s['id']} ({s['agent']}): {s['task'][:150]}\n  result: {str(res.get('summary', ''))[:300]}")
+        lines += ["", "## Cut off while running"] + [f"- {s['id']} ({s['agent']}): {s['task'][:150]}" for s in running]
+        lines += ["", "## Not started"] + [f"- {s['id']} ({s['agent']}): {s['task'][:150]}" for s in todo]
+        text = "\n".join(lines) + "\n"
+        (self.dir / "STOPPED.md").write_text(text)
+        (self.dir / "REPORT.md").write_text(text)
+        return self._finish(text)
+
+    def _run(self):
         b = self.board
         (self.dir / "TASK.md").write_text(self.goal + "\n")
         b.log("hive", "task", self.goal)
-        reason = check_task(self.goal)
-        if reason:
-            b.log("guard", "refused", reason)
-            return self._finish(f"Refused: {reason}.")
-
         notes = "\n".join(f"- {x}" for x in memory.lessons_for("coordinator", self.goal))
         past = memory.recall(self.goal, k=2)
         if past:
             notes += "\n" + "\n".join(f"- Earlier run on a similar task ({r['ts']}): {r['report'][:200]}" for r in past)
+        self.checklist = coordinator.instructions(self.goal)
+        b.checklist = self.checklist
+        (self.dir / "checklist.json").write_text(json.dumps(self.checklist, indent=1))
+        b.log("plan_reviewer", "checklist", f"{len(self.checklist)} instructions: " + " | ".join(self.checklist)[:400])
         steps, problems, raw = coordinator.plan(self.goal, b, notes.strip())
+        if steps:
+            review = coordinator.review(self.goal, steps, self.checklist)
+            if review:
+                b.log("plan_reviewer", "problems", " | ".join(review))
+                notes2 = (notes + "\n" if notes else "") + "A reviewer found these problems in your first plan; fix them:\n" \
+                    + "\n".join(f"- {r}" for r in review)
+                steps2, problems2, raw2 = coordinator.plan(self.goal, b, notes2.strip())
+                if steps2:
+                    steps, problems, raw = steps2, problems2, raw2
+            else:
+                b.log("plan_reviewer", "ok", "plan covers the task")
         (self.dir / "plan_raw.txt").write_text(raw)
         if not steps:
             return self._finish("The coordinator could not produce a plan: " + "; ".join(problems))
         for p in problems:
             b.log("coordinator", "fix", p)
         for s in steps:
-            r = check_task(s["task"])
+            r = check_task(s["task"], self.goal)  # nothing beyond what Arnav ordered
             if r:
                 b.log("guard", "dropped", f"{s['id']}: {r}")
                 continue
@@ -78,6 +123,8 @@ class Hive:
 
     def _run_foreach(self, s):
         src = self.board.step(s["for_each"])
+        if src and src.get("verdict") == "REROUTED":
+            src = self.board.step(s["for_each"] + "r")
         items = ((src or {}).get("result") or {}).get("items", []) if src and src.get("verdict") == "PASS" else []
         items = items[:config.MAX_FOREACH]
         if not items:
@@ -88,6 +135,11 @@ class Hive:
         self.board.update_step(s["id"], status="fanned-out", verdict="PASS")
         for i, item in enumerate(items, 1):
             task = s["task"].replace("{item}", str(item))
+            # one sub-step handles ONE item: drop "for each of the top 3 ..." wording that makes it try all of them
+            task = re.sub(r"\b(each|every) (one )?of the (top |first )?(\d+|two|three|four|five|six) (\w+?)s\b", r"this \5",
+                          task, flags=re.I)
+            task = re.sub(r"\bfor each (\w+)\b", r"for this \1", task, flags=re.I)
+            task = f"Only for {item}: {task}"
             if (s["agent"] == "browser" and "http" not in task and re.fullmatch(r"[\w.\-]+/[\w.\-]+", str(item))
                     and re.search(r"hugging ?face", task + self.goal, re.I)):
                 task += f" (page: https://huggingface.co/{item})"
@@ -100,7 +152,7 @@ class Hive:
                                feedback=f"{passed}/{len(subs)} items verified",
                                result={"summary": f"{passed}/{len(subs)} items verified"})
 
-    def _run_step(self, s):
+    def _run_step(self, s, allow_reroute=True):
         b = self.board
         feedback = ""
         for attempt in range(1, config.MAX_RETRIES + 2):
@@ -112,11 +164,20 @@ class Hive:
             lessons = memory.lessons_for(s["agent"], s["task"])
             if lessons:
                 ctx += "\nLessons from earlier runs:\n" + "\n".join(f"- {x}" for x in lessons)
+            from . import smiths
+            member = smiths.route(s["agent"], task)  # a specialised clone, only where it measurably wins
+            if member != s["agent"]:
+                llm.ROUTE[s["agent"]] = member
+                b.log("router", "route", f"{s['id']}: {s['agent']} -> {member}")
             try:
                 result = self._dispatch(s, task, ctx)
+            except stop.Stopped:
+                raise
             except Exception as e:  # noqa: BLE001 - a crash is a failed attempt, not a dead team
                 result = {"summary": "", "failed": f"{type(e).__name__}: {e}"}
                 b.log(s["agent"], "error", str(e)[:300])
+            finally:
+                llm.ROUTE.pop(s["agent"], None)
             if result.get("failed") and s["agent"] != "browser":
                 verdict, why = "FAIL", result["failed"]
             else:
@@ -134,6 +195,14 @@ class Hive:
                 return
             feedback = why
         b.log("coordinator", "give-up", f"{s['id']} failed after {config.MAX_RETRIES + 1} attempts: {feedback}")
+        if allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
+            alt = coordinator.reroute(self.goal, s, feedback)
+            if alt:
+                b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
+                b.add_step(alt)
+                self._run_step(alt, allow_reroute=False)
+                if b.step(alt["id"]).get("verdict") == "PASS":
+                    b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
 
     def _dispatch(self, s, task, ctx):
         if s["agent"] == "researcher":
