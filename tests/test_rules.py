@@ -173,25 +173,28 @@ def test_writer_strikes_unverified_numbers():
     assert len(struck) == 2 and "0.00" not in out and "10/10" not in out
 
 
-def _writer_with_fakes(tmp_path, monkeypatch, fixed_report):
-    """A writer run with stand-in models: the critic marks 'two-line summary' done only if the report has two lines."""
+def _writer_with_fakes(tmp_path, monkeypatch, replies, checklist=("Find the licence", "say who made it")):
+    """A writer run with stand-in models. The writer gives `replies` in turn; the critic ticks "say who made it" only
+    if the report says "made by", and "two-line" only if the report has two lines."""
     from team.board import Board
     from team.specialists import writer
     b = Board(tmp_path, echo=False)
-    b.checklist = ["Find the licence", "give me a two-line summary"]
+    b.checklist = list(checklist)
     writes, critiques = [], []
 
     def chat(role, msgs, **kw):
         writes.append(msgs[-1]["content"])
-        return "License: apache-2.0." if len(writes) == 1 else fixed_report
+        return replies[min(len(writes), len(replies)) - 1]
 
     def chat_json(role, msgs, **kw):
         report = msgs[-1]["content"].split("REPORT:\n", 1)[1]
         critiques.append(report)
-        two = len(report.strip().split("\n")) == 2
+        made = "made by" in report
+        two = len([ln for ln in report.split("\n") if ln.strip()]) == 2
+        ticks = {"Find the licence": (True, "quoted"), "say who made it": (made, "made by" if made else "no maker"),
+                 "give me a two-line summary": (two, "two lines" if two else "not two lines")}
         return {"unsupported": [], "unordered": [], "checklist": [
-            {"instruction": "Find the licence", "done": True, "why": "quoted"},
-            {"instruction": "give me a two-line summary", "done": two, "why": "two lines" if two else "one line only"}]}, ""
+            {"instruction": i, "done": ticks[i][0], "why": ticks[i][1]} for i in checklist]}, ""
 
     monkeypatch.setattr(writer.llm, "chat", chat)
     monkeypatch.setattr(writer.llm, "chat_json", chat_json)
@@ -200,16 +203,83 @@ def _writer_with_fakes(tmp_path, monkeypatch, fixed_report):
 
 
 def test_writer_fixes_an_instruction_the_critic_finds_missing(tmp_path, monkeypatch):
-    out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, "License: apache-2.0.\nIt is open for any use.")
-    assert len(writes) == 2 and "- give me a two-line summary\n" in writes[1] and "one line only" not in writes[1]
+    out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, ["License: apache-2.0.",
+                                                                        "License: apache-2.0. It is made by HF."])
+    assert len(writes) == 2 and "- say who made it\n" in writes[1] and "no maker" not in writes[1]
     assert len(critiques) == 2  # the ticks are about the fixed report
-    assert "✅ give me a two-line summary" in out and "❌" not in out
+    assert "✅ say who made it" in out and "❌" not in out
 
 
 def test_writer_reports_a_miss_it_could_not_fix(tmp_path, monkeypatch):
-    out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, "License: apache-2.0.")
+    out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, ["License: apache-2.0."])
     assert len(writes) == 2 and len(critiques) == 2
-    assert "❌ give me a two-line summary - one line only" in out
+    assert "❌ say who made it - no maker" in out
+
+
+def test_writer_is_told_the_layout_arnav_ordered_and_it_is_checked(tmp_path, monkeypatch):
+    table = "License: apache-2.0.\n\n| License |\n|---|\n| apache-2.0 |\n\nNot confirmed."
+    out, writes, critiques = _writer_with_fakes(
+        tmp_path, monkeypatch, [table, "License: apache-2.0.\nParameters: 0.135B."],
+        checklist=("Find the licence", "give me a two-line summary"))
+    assert "FORMAT Arnav ordered: exactly 2 lines of plain text" in writes[0]
+    assert len(writes) == 2 and "exactly 2 lines" in writes[1]  # 7 lines came back: asked once more, in code
+    assert len(critiques) == 1 and "✅ give me a two-line summary" in out
+
+
+def test_ordered_layout_is_read_only_from_the_deliverable():
+    from team.specialists.writer import ordered_format
+    assert ordered_format(["give me a two-line summary"]) == (
+        "exactly 2 lines of plain text, no table, no headings, no other sections", 2)
+    assert ordered_format(["Summarise it in 3 sentences"])[0].startswith("exactly 3 sentences")
+    assert ordered_format(["no table, in under 50 words"])[0] == "at most 50 words; no table"
+    for not_a_layout in (["fix the two lines of code in main.py"], ["print the first 3 lines of the file"],
+                         ["Find the licence", "Do not log in or pay"]):
+        assert ordered_format(not_a_layout) == ("", None)
+
+
+def test_an_empty_not_confirmed_heading_is_dropped():
+    from team.specialists.writer import drop_empty_sections
+    assert drop_empty_sections("Answer.\n\nNot confirmed.") == "Answer."
+    assert drop_empty_sections("A.\n**Not confirmed:**\n## Sources\n[1] x") == "A.\n## Sources\n[1] x"
+    kept = "A.\n\n## Not confirmed\n- the size"
+    assert drop_empty_sections(kept) == kept
+
+
+def test_a_bare_label_claim_takes_its_quote():
+    from team.specialists.researcher import with_value
+    assert with_value({"claim": "parameter count", "quote": "params 0.135B"})["claim"] == "parameter count: params 0.135B"
+    full = {"claim": "SmolLM2-135M has 0.135B parameters", "quote": "params 0.135B"}
+    assert with_value(dict(full)) == full
+
+
+def test_a_failed_steps_evidence_is_nobodys_source(tmp_path):
+    from team.board import Board
+    from team.hive import retract_failed
+    b = Board(tmp_path, echo=False)
+    b.add_fact("s2", "Hugging Face", "https://huggingface.co/models/x/y", "Hugging Face", "supported", "evidence seen on page")
+    b.add_fact("s1", "license apache-2.0", "https://huggingface.co/api/models/x/y", "license apache-2.0", "supported")
+    retract_failed(b, {"id": "s2", "agent": "browser"}, "The page is not accessible.")
+    retract_failed(b, {"id": "s1", "agent": "researcher"}, "jury 1/3")
+    assert [f["step"] for f in b.facts(status="supported")] == ["s1"]
+
+
+def test_the_browser_is_told_about_an_error_page():
+    from types import SimpleNamespace
+    from team.specialists.browser_agent import bad_page
+    assert "HTTP 404" in bad_page(SimpleNamespace(http_status=404))
+    assert bad_page(SimpleNamespace(http_status=200)) == "" and bad_page(SimpleNamespace(http_status=None)) == ""
+
+
+def test_missing_cells_are_built_on_first_use(monkeypatch):
+    from team.cells import runtime
+    runs, left = [], [["route_step"]]
+    monkeypatch.setattr(runtime, "missing", lambda: left[0])
+    monkeypatch.setattr(runtime.subprocess, "run", lambda *a, **k: (runs.append(a), left.__setitem__(0, [])))
+    monkeypatch.setenv("AGENT_TEAM_CELLS", "0")
+    assert runtime.ensure_built(log=lambda m: None) == ["route_step"] and runs == []  # cells off: nothing built
+    monkeypatch.setenv("AGENT_TEAM_CELLS", "1")
+    assert runtime.ensure_built(log=lambda m: None) == [] and len(runs) == 1
+    assert runtime.ensure_built(log=lambda m: None) == [] and len(runs) == 1  # built once
 
 
 def test_saying_what_was_not_reached_is_never_flagged():

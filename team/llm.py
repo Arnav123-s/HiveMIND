@@ -1,5 +1,6 @@
 """Model pool: loads each base model once (CPU, bf16) and switches the
 specialist's own trained weights (LoRA delta) in and out per call."""
+import atexit
 import json
 import os
 import re
@@ -233,6 +234,9 @@ def unload_all():
     _lru.clear()
     _active_lora.clear()
     _lora_ptrs.clear()
+
+
+atexit.register(unload_all)  # close before Python tears down (llama-cpp-python's __del__ fails after)
 
 
 def _json_grammar():

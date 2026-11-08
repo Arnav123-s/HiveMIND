@@ -29,6 +29,63 @@ def ground_numbers(text, verified):
     return "\n".join(ok), struck
 
 
+WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+_N = r"(\d+|one|two|three|four|five|six|seven|eight|nine|ten)"
+
+
+def _n(m):
+    g = m.group(1)
+    return int(g) if g.isdigit() else WORDS[g]
+
+
+def ordered_format(instructions):
+    """The layout Arnav ordered in his own words ("a two-line summary", "in 3 sentences", "no table"): (one line for the
+    writer, number of lines or None). The writer's edit learned reports that lead with an answer and a table; told
+    "give me a two-line summary" it still wrote a table, told "exactly 2 lines of plain text" it wrote 2 lines."""
+    text = " ".join(instructions).lower()
+    out, lines = [], None
+    # only a layout for the deliverable: "fix the two lines of code" is not one
+    kind = r" (?:summary|answer|report|reply|overview|description|explanation|version)\b"
+    m = re.search(_N + r"[- ]lines?" + kind, text) or re.search(r"\b(?:in|within|as) " + _N + r" lines?\b", text)
+    if m:
+        lines = _n(m)
+        out.append(f"exactly {lines} line{'s' if lines != 1 else ''} of plain text, no table, no headings, no other sections")
+    m = re.search(_N + r"[- ]sentences?" + kind, text) or re.search(r"\b(?:in|within|as) " + _N + r" sentences?\b", text)
+    if m:
+        out.append(f"exactly {_n(m)} sentence{'s' if _n(m) != 1 else ''}, no table, no headings")
+    m = re.search(_N + r" bullet(?: point)?s?\b", text)
+    if m:
+        out.append(f"exactly {_n(m)} bullet points")
+    m = re.search(r"\b(?:in|under|at most|max(?:imum)?|no more than) " + _N + r" words\b", text)
+    if m:
+        out.append(f"at most {_n(m)} words")
+    if re.search(r"\bno tables?\b|\bwithout (?:a )?tables?\b", text):
+        out.append("no table")
+    elif re.search(r"\btable\b", text) and lines is None:
+        out.append("include a table")
+    return "; ".join(out), lines
+
+
+def body_lines(text):
+    return [ln for ln in text.split("\n") if ln.strip()]
+
+
+EMPTY_NOT_CONFIRMED = re.compile(r"^\s*(?:#+\s*)?\**not confirmed\**[.:]?\**\s*$", re.I)
+
+
+def drop_empty_sections(text):
+    """A "Not confirmed" heading with nothing under it (the writer adds one even when everything was confirmed)."""
+    lines = text.split("\n")
+    out = []
+    for i, ln in enumerate(lines):
+        if EMPTY_NOT_CONFIRMED.match(ln):
+            rest = [x for x in lines[i + 1:] if x.strip()]
+            if not rest or rest[0].lstrip().startswith("#"):
+                continue
+        out.append(ln)
+    return "\n".join(out).strip()
+
+
 HONEST = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found|accessible|available)"
                     r"|inaccessible|unavailable|unable|unknown|no data", re.I)
 
@@ -56,8 +113,17 @@ def run(goal, task, board, needs):
     dropped = re.findall(r"Dropped by the team's checks \(do not use\): ([^\n]+)", results_text)
     if dropped:
         task = f"{task}\nNever include these, they failed the checks: {'; '.join(dropped)}"
+    fmt, n_lines = ordered_format(getattr(board, "checklist", None) or [goal])
+    if fmt:
+        task = f"{task}\nFORMAT Arnav ordered: {fmt}. This overrides the usual layout."
+        board.log("writer", "format", fmt)
     msgs = messages(goal, task, results_text, sources)
     text = llm.chat("writer", msgs, max_new_tokens=1200)
+    if n_lines and len(body_lines(text)) != n_lines:  # checked in code: one more try, told what was wrong
+        board.log("writer", "format", f"wrote {len(body_lines(text))} lines, {n_lines} ordered: asking again")
+        text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
+                                          {"role": "user", "content": f"That is {len(body_lines(text))} lines. Write it as "
+                                           f"exactly {n_lines} lines of plain text, nothing else."}], max_new_tokens=400)
     # the critic checks every claim against the verified results and every instruction of Arnav's; the writer fixes
     # what it flags or finds missing (one round), and the critic checks the fixed report, so the ticks are about it
     todo = "\n".join(f"- {i}" for i in getattr(board, "checklist", []))
@@ -88,6 +154,7 @@ def run(goal, task, board, needs):
             board.log("critic", "flag", f"{len(flagged)} unsupported claim(s) after the fix: " + " | ".join(f[:80] for f in flagged[:3]))
     else:
         board.log("critic", "ok", "every claim matches the verified results")
+    text = drop_empty_sections(text)
     text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
     if struck:
         board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")

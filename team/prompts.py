@@ -29,6 +29,7 @@ Use 1 to 4 searches with short keyword queries. urls may be empty."""
 RESEARCHER_EXTRACT = """You are the researcher on Arnav's team. Read the SOURCES and pull out the facts the task needs.
 Reply with JSON only:
 {"summary":"2-4 sentences answering the task","items":["..."],"facts":[{"claim":"...","quote":"...","url":"..."}]}
+- claim: one sentence stating the fact with its value ("X has 0.135B parameters"), never a bare label.
 - quote: text copied exactly, character for character, from one source. Never invent or reword a quote.
 - url: the url of the source the quote came from.
 - items: the list the task asks for (names, ids, urls), best first; [] if the task asks for no list.

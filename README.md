@@ -424,8 +424,8 @@ playwright install chromium
 python training/cells_build.py
 ```
 (builds the 18 cells and their shared SmolLM2-135M base for llama.cpp from `cells/adapters/`: ~2 min,
-~185 MB in `cells/gguf/`, which git does not carry. Skip it and every cell stays off without a warning: the
-bigger members and the code rules do those jobs instead.)
+~185 MB in `cells/gguf/`, which git does not carry. Skip it and the first task builds them, saying so in its log;
+if that fails, the log says the cells are off and the bigger members and the code rules do those jobs.)
 ```bash
 python -m pytest -q tests
 ```

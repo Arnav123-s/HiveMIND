@@ -2,8 +2,12 @@
 
 A label cell answers through a grammar that only allows its labels, so it cannot say anything else.
 """
+import atexit
 import ctypes
 import json
+import os
+import subprocess
+import sys
 import threading
 import time
 from pathlib import Path
@@ -169,3 +173,28 @@ def unload():
         for llm_ in _state["llm"].values():
             llm_.close()
         _state.update({"llm": {}, "tok": {}, "lora": {}, "active": {}})
+
+
+atexit.register(unload)  # close before Python tears down: llama-cpp-python's own cleanup then finds nothing left to free
+
+
+def missing():
+    """Registered cells whose llama.cpp files are not built (git carries only their weight deltas)."""
+    return [k for k, c in registry().items() if not (GGUF / f"{k}.gguf").exists() or not (GGUF / f"{c['base']}.gguf").exists()]
+
+
+def ensure_built(log=print):
+    """Build missing cells once (training/cells_build.py, ~2 min), like the members' models download on first use.
+    Without them every cell stays off and the bigger members do those jobs. Returns the cells still missing."""
+    miss = missing()
+    if not miss or os.environ.get("AGENT_TEAM_CELLS", "1") == "0":
+        return miss
+    log(f"{len(miss)} cells not built yet: building them once (~2 min)")
+    try:
+        subprocess.run([sys.executable, str(ROOT / "training" / "cells_build.py")], check=True, capture_output=True,
+                       text=True, timeout=3600, cwd=ROOT)
+    except Exception as e:  # noqa: BLE001 - the team still works without cells
+        err = (getattr(e, "stderr", "") or str(e)).strip().splitlines()
+        log(f"could not build the cells ({err[-1][:160] if err else type(e).__name__}); their jobs go to the bigger "
+            f"members. To build them: python training/cells_build.py")
+    return missing()
