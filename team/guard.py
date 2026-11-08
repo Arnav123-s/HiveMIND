@@ -124,9 +124,16 @@ def ordered_sites(goal, orders, kind):
 
 
 def _family_cell(text):
+    """The family_topic cell says yes. With a threshold in cells/wins.json (chosen on dev by
+    training/cells_family_threshold.py), only when its probability for yes is at least that."""
     try:
-        from .cells import use
-        return use.on("family_topic") and bool(text) and use.ask("family_topic", text) == "yes"
+        from .cells import runtime, use
+        if not (use.on("family_topic") and text):
+            return False
+        t = use.wins().get("family_topic", {}).get("threshold")
+        if t is None:
+            return use.ask("family_topic", text) == "yes"
+        return runtime.label_probs("family_topic", text).get("yes", 0.0) >= t
     except Exception:  # noqa: BLE001
         return False
 
