@@ -105,7 +105,8 @@ python -m team chat
 ```bash
 python -m team web
 ```
-(then open http://127.0.0.1:8765, a chat-style page that shows the team working live)
+(then open http://127.0.0.1:8765, a chat-style page that shows the team working live; it is the API server below,
+so the page and API clients share one queue)
 
 ```bash
 python -m team serve

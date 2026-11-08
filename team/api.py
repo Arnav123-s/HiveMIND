@@ -140,8 +140,18 @@ class H(BaseHTTPRequestHandler):
                     self._sse(ev)
             job.wait()
             return self._sse(job.to_dict(), event="done")
-        if path in ("", "/health"):
+        if path == "/health":
             return self._json(200, {"ok": True, "model": MODEL})
+        if path == "":  # the chat page (team/web.py), on the same queue as every API client
+            from .web import PAGE
+            data = PAGE.encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            return self.wfile.write(data)
+        if path == "/api/runs":
+            return self._json(200, [page_view(j) for j in SWARM.list(8)])
         self._error(404, "not found", "not_found_error")
 
     def do_POST(self):
@@ -152,7 +162,10 @@ class H(BaseHTTPRequestHandler):
         if body is None:
             return self._error(400, "the body is not JSON")
         try:
-            if path == "/v1/stop":
+            if path == "/api/task":  # the chat page
+                job = SWARM.submit(str(body.get("task", "")), until_done=DEFAULTS["until_done"])
+                return self._json(200, {"queued": job.id})
+            if path in ("/v1/stop", "/api/stop"):
                 SWARM.stop("api: POST /v1/stop")
                 return self._json(200, {"stopping": True})
             if path == "/v1/jobs":
@@ -256,6 +269,13 @@ class H(BaseHTTPRequestHandler):
         self._sse({"type": "message_delta", "delta": {"stop_reason": "end_turn", "stop_sequence": None},
                    "usage": {"output_tokens": 0}}, "message_delta")
         self._sse({"type": "message_stop"}, "message_stop")
+
+
+def page_view(job):
+    ev = [progress_line(e).rstrip() for e in job.events()][-40:]
+    status = job.status if job.status != "done" else ("done" if not job.unmet else f"done, {len(job.unmet)} left undone")
+    return {"goal": job.task[:300], "dir": str(job.dir), "status": status, "events": ev,
+            "report": job.report if job.status in FINISHED else ""}
 
 
 def responses_messages(body):
