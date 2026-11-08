@@ -212,7 +212,7 @@ def test_writer_fixes_an_instruction_the_critic_finds_missing(tmp_path, monkeypa
 
 def test_writer_reports_a_miss_it_could_not_fix(tmp_path, monkeypatch):
     out, writes, critiques = _writer_with_fakes(tmp_path, monkeypatch, ["License: apache-2.0."])
-    assert len(writes) == 2 and len(critiques) == 2
+    assert len(writes) == 3 and len(critiques) == 3  # writer, its fix, then the bigger editor once
     assert "❌ say who made it - no maker" in out
 
 
@@ -388,3 +388,29 @@ def test_a_browser_step_starts_where_the_last_one_ended(tmp_path, monkeypatch):
     h.board.update_step("s1", verdict="PASS", result={"summary": "ok", "url": "https://quotes.toscrape.com/tag/x/"})
     assert h._last_page({"id": "s2", "needs": ["s1"]}) == "https://quotes.toscrape.com/tag/x/"
     assert h._last_page({"id": "s2", "needs": []}) is None
+
+
+def test_a_bigger_editor_rewrites_only_when_the_writer_cannot_fix_it(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.specialists import writer
+    b = Board(tmp_path, echo=False)
+    b.checklist = ["Translate into French: 'Friday'"]
+    roles = []
+
+    def chat(role, msgs, **kw):
+        roles.append(role)
+        return "vendredi" if role == "editor" else "mercredi"
+
+    def chat_json(role, msgs, **kw):
+        ok = "vendredi" in msgs[-1]["content"].split("REPORT:\n", 1)[1]
+        return {"unsupported": [] if ok else ["mercredi"], "unordered": [],
+                "checklist": [{"instruction": "Translate into French: 'Friday'", "done": ok, "why": "" if ok else "wrong day"}]}, ""
+    monkeypatch.setattr(writer.llm, "chat", chat)
+    monkeypatch.setattr(writer.llm, "chat_json", chat_json)
+    monkeypatch.setattr(writer.memory, "profile", lambda: "")
+    out = writer.run("Translate into French: 'Friday'", "Translate it", b, [])["summary"]
+    assert roles == ["writer", "writer", "editor"] and out.startswith("vendredi") and "✅" in out
+    roles.clear()
+    monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **kw: roles.append(role) or "vendredi")
+    writer.run("Translate into French: 'Friday'", "Translate it", b, [])
+    assert roles == ["writer"]  # right first time: no fix round, no editor
