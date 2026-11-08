@@ -144,23 +144,28 @@ def search_hf_model(q, limit=40):
     return out
 
 
-def search_hn(q, limit=8):
-    d = get("https://hn.algolia.com/api/v1/search", {"query": q, "hitsPerPage": limit, "tags": "story"}, as_json=True)
+def search_hn(q, limit=8, newest=False):
+    """newest: by date (search_by_date), for "latest", "this week" ...; otherwise by relevance."""
+    d = get(f"https://hn.algolia.com/api/v1/{'search_by_date' if newest else 'search'}",
+            {"query": q, "hitsPerPage": limit, "tags": "story"}, as_json=True)
     return [{"title": h.get("title") or "", "url": h.get("url") or f"https://news.ycombinator.com/item?id={h['objectID']}",
              "snippet": f"{h.get('points')} points, {h.get('num_comments')} comments, {h.get('created_at', '')[:10]}"}
             for h in d.get("hits", [])]
 
 
-def search_arxiv(q, limit=6):
+def search_arxiv(q, limit=6, newest=False):
+    """newest: most recently submitted first (relevance order returned 2023-2024 papers for "the newest")."""
     xml = get("https://export.arxiv.org/api/query", {"search_query": f"all:{q}", "max_results": limit,
-                                                     "sortBy": "relevance"})
+                                                     "sortBy": "submittedDate" if newest else "relevance",
+                                                     "sortOrder": "descending"})
     ns = {"a": "http://www.w3.org/2005/Atom"}
     root = ET.fromstring(xml)
     out = []
     for e in root.findall("a:entry", ns):
         out.append({"title": " ".join(e.findtext("a:title", "", ns).split()),
                     "url": e.findtext("a:id", "", ns),
-                    "snippet": " ".join(e.findtext("a:summary", "", ns).split())[:300]})
+                    "snippet": f"published {e.findtext('a:published', '', ns)[:10]} | "
+                               + " ".join(e.findtext("a:summary", "", ns).split())[:300]})
     return out
 
 

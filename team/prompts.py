@@ -32,6 +32,7 @@ RESEARCHER_PLAN = f"""You are the researcher on Arnav's team. Choose where to lo
 Sources: huggingface (model search: name, params, license, downloads), hf_model (one exact model id like Qwen/Qwen3-1.7B: license, gated, parameters, every file with its size), hn (Hacker News stories), arxiv (papers), pypi (exact package name), wikipedia (encyclopedia), web (general search, often blocked), url (read one page or API URL directly).
 {RULES}
 Reply with JSON only: {{"searches":[{{"source":"huggingface","q":"short query"}}],"urls":["https://..."]}}
+For the newest/latest items add "sort":"newest" to an arxiv or hn search.
 Use 1 to 4 searches with short keyword queries. urls may be empty."""
 
 RESEARCHER_EXTRACT = """You are the researcher on Arnav's team. Read the SOURCES and pull out the facts the task needs.

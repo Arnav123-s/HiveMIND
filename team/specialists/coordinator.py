@@ -1,5 +1,6 @@
 """Coordinator: turns Arnav's one prompt into a plan of assigned steps."""
 import re
+import time
 
 from .. import config, llm, prompts
 
@@ -7,7 +8,7 @@ AGENTS = {"researcher", "browser", "coder", "calculator", "writer"}
 
 
 def plan_messages(goal, notes=""):
-    user = f"Task from Arnav:\n{goal}"
+    user = f"Today is {time.strftime('%Y-%m-%d (%A)')}.\nTask from Arnav:\n{goal}"
     if notes:
         user += f"\n\nLessons from earlier runs:\n{notes}"
     return [{"role": "system", "content": prompts.COORDINATOR}, {"role": "user", "content": user}]
