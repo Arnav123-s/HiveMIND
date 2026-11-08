@@ -82,6 +82,8 @@ class Browser:
         self._ctx = self._b.new_context(user_agent=None, viewport={"width": 1280, "height": 900})
         self.page = self._ctx.new_page()
         self.page.set_default_timeout(20000)
+        self._new_pages = []
+        self._ctx.on("page", lambda pg: self._new_pages.append(pg))  # links that open a new tab
         self.elements = {}
         self.typed = []  # fields typed into on the current page
 
@@ -160,6 +162,11 @@ class Browser:
             if a == "click":
                 loc.click(timeout=10000)
                 self.typed = []
+                self.page.wait_for_timeout(300)
+                if self._new_pages:  # the click opened a new tab: follow it, like a person would
+                    self.page = self._new_pages.pop()
+                    self._new_pages.clear()
+                    self.page.set_default_timeout(20000)
             else:
                 loc.fill(str(action.get("text", "")), timeout=10000)
                 self.typed.append(self.elements.get(eid, {}))

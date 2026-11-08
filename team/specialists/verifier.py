@@ -23,6 +23,17 @@ def quote_in(quote, text):
     return bool(parts) and all(p in t for p in parts)
 
 
+def hard_item_check(task, evidence):
+    """Reason an item breaks a hard limit the task states (size, gating), or None."""
+    limit = re.search(r"(under|below|less than|smaller than|at most|up to|<)\s*(\d+(?:\.\d+)?)\s*b\b", task, re.I)
+    m = re.search(r"params (\d+(?:\.\d+)?)B", evidence)
+    if limit and m and float(m.group(1)) >= float(limit.group(2)):
+        return f"{m.group(1)}B is not under {limit.group(2)}B"
+    if re.search(r"\b(not|un|non)[- ]?gated\b", task, re.I) and re.search(r"gated (True|manual|auto)", evidence):
+        return "gated"
+    return None
+
+
 def judge_messages(check, work, evidence):
     return [{"role": "system", "content": prompts.VERIFIER},
             {"role": "user", "content": f"CHECK: {check}\n\nWORK: {work}\n\nEVIDENCE:\n{evidence}"}]
@@ -90,6 +101,10 @@ def verify(step, result, board, workdir):
         lines = all_text.split("\n")
         for it in items_ok[:8]:
             ev = "\n".join(ln for ln in lines if norm(it) in norm(ln))[:800]
+            why = hard_item_check(step["task"], ev)  # hard limits are checked in code, not by a model
+            if why:
+                dropped.append(f"{it} ({why})")
+                continue
             data, _ = llm.chat_json("juror_brain", [
                 {"role": "system", "content": "Decide if ONE item meets every requirement of the task, using only its "
                  "source line. Numbers must satisfy limits (e.g. 7.2B is not under 2B; gated True/manual is gated). "

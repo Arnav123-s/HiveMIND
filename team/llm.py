@@ -58,6 +58,9 @@ def _stop_criteria(tok, start, mode, prefix=""):
 
 
 def _done(tok, input_ids, start, mode, prefix):
+    from . import stop as _stop
+    if _stop.requested():  # kill switch, per token
+        return True
     if True:
         n = input_ids.shape[1] - start
         if n < 2 or n % 4:
@@ -209,8 +212,9 @@ def _gguf_model(specialist, adapter):
             for k in [k for k in _lora_ptrs if k[0] == old]:
                 _lora_ptrs.pop(k)
         # mmap: the weights file is mapped, not copied, and pages are shared with the OS cache
-        _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX, n_threads=config.THREADS,
-                            n_batch=512, use_mmap=True, verbose=False)
+        kv = dict(flash_attn=True, type_k=8, type_v=8) if config.KV_8BIT else {}  # 8 = GGML_TYPE_Q8_0
+        _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX_BY_MODEL.get(name, config.GGUF_CTX),
+                            n_threads=config.THREADS, n_batch=512, use_mmap=True, verbose=False, **kv)
         _active_lora[name] = None
     if name in _lru:
         _lru.remove(name)
@@ -253,6 +257,10 @@ def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefi
     else:
         prompt += prefix
         head = prefix
+    from llama_cpp import StoppingCriteriaList
+
+    from . import stop as _stop
+    kw["stopping_criteria"] = StoppingCriteriaList([lambda ids, logits: _stop.requested()])  # kill switch, per token
     t0 = time.time()
     out = llm_.create_completion(prompt, **kw)
     text = out["choices"][0]["text"]
@@ -267,9 +275,12 @@ def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefi
 def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0, prefix="", stop=None):
     """Run one chat completion as `specialist`. Greedy by default.
     `prefix` is forced as the start of the reply (e.g. "{" to force a JSON object)."""
+    from . import stop as _stop
+    _stop.check()
     if use_gguf():
         with _lock:
             text = _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+        _stop.check()  # a reply cut off by the kill switch is never used
         text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
         if RECORDER is not None:
             try:
@@ -309,6 +320,7 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
         STATS["tokens_out"] += int(new.shape[0])
         STATS["seconds"] += time.time() - t0
         text = prefix + tok.decode(new, skip_special_tokens=True)
+    _stop.check()
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
     if RECORDER is not None:
         try:

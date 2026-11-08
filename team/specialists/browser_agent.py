@@ -1,7 +1,7 @@
 """Browser operator: observe the live page, pick one action, act, repeat."""
 import json
 
-from .. import config, llm, prompts, vault
+from .. import config, llm, prompts, stop, vault
 from ..guard import Blocked
 from ..tools.browser import Browser
 
@@ -25,6 +25,7 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
             history.append(f"0. {e}")
             b.page.goto("about:blank")
         for n in range(config.BROWSER_MAX_ACTIONS):
+            stop.check()
             obs = b.observe(task)
             page_text = b.text(20000)
             action, raw = llm.chat_json("browser", turn_messages(goal, obs, history), max_new_tokens=160)
@@ -64,6 +65,7 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
             if not allowed:
                 history.append(f"{n + 1}. {kind} needs Arnav's approval - not done")
                 continue
+            stop.check()
             try:
                 before = (b.page.url, len(page_text))
                 url = b.act(action)

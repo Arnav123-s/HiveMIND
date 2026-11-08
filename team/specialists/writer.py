@@ -23,9 +23,13 @@ def run(goal, task, board, needs):
     msgs = messages(goal, task, results_text, sources)
     text = llm.chat("writer", msgs, max_new_tokens=1200)
     # the critic checks every claim against the verified results; the writer fixes what it flags (one round)
+    todo = "\n".join(f"- {i}" for i in getattr(board, "checklist", []))
     data, _ = llm.chat_json("critic", [{"role": "system", "content": prompts.CRITIC},
-                                       {"role": "user", "content": f"VERIFIED RESULTS:\n{results_text}\n\nREPORT:\n{text}"}],
-                            max_new_tokens=400)
+                                       {"role": "user", "content": f"INSTRUCTIONS:\n{todo}\n\nVERIFIED RESULTS:\n{results_text}"
+                                                                   f"\n\nREPORT:\n{text}"}],
+                            max_new_tokens=700)
+    checklist = [c for c in (data or {}).get("checklist", []) if isinstance(c, dict)] if isinstance(data, dict) else []
+    unordered = [str(x) for x in (data or {}).get("unordered", [])] if isinstance(data, dict) else []
     flagged = [str(x) for x in (data or {}).get("unsupported", [])] if isinstance(data, dict) else []
     honest = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found)|unable|unknown|no data", re.I)
     flagged = [f for f in flagged if not honest.search(f)]  # saying what is unknown is never an unsupported claim
@@ -37,6 +41,15 @@ def run(goal, task, board, needs):
                                            + "\n- ".join(flagged[:10])}], max_new_tokens=1200)
     else:
         board.log("critic", "ok", "every claim matches the verified results")
+    if checklist:
+        done = sum(bool(c.get("done")) for c in checklist)
+        board.log("critic", "checklist", f"{done}/{len(checklist)} of your instructions done")
+        text += "\n\n## Your instructions\n" + "\n".join(
+            f"- {'✅' if c.get('done') else '❌'} {c.get('instruction', '')}" + ("" if c.get("done") else f" - {c.get('why', '')}")
+            for c in checklist)
+    if unordered:
+        board.log("critic", "unordered", " | ".join(unordered)[:300])
+        text += "\n\n## Done without your order (flagged)\n" + "\n".join(f"- {u}" for u in unordered)
     failed = [s for s in board.steps() if s["agent"] != "writer" and s.get("verdict") not in ("PASS", "REROUTED", None)]
     if failed:
         text += "\n\n## Not confirmed by the team\n" + "\n".join(
