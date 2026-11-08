@@ -97,18 +97,7 @@ class Hive:
         b.checklist = self.checklist
         (self.dir / "checklist.json").write_text(json.dumps(self.checklist, indent=1))
         b.log("plan_reviewer", "checklist", f"{len(self.checklist)} instructions: " + " | ".join(self.checklist)[:400])
-        steps, problems, raw = coordinator.plan(self.goal, b, notes.strip())
-        if steps:
-            review = coordinator.review(self.goal, steps, self.checklist)
-            if review:
-                b.log("plan_reviewer", "problems", " | ".join(review))
-                notes2 = (notes + "\n" if notes else "") + "A reviewer found these problems in your first plan; fix them:\n" \
-                    + "\n".join(f"- {r}" for r in review)
-                steps2, problems2, raw2 = coordinator.plan(self.goal, b, notes2.strip())
-                if steps2:
-                    steps, problems, raw = steps2, problems2, raw2
-            else:
-                b.log("plan_reviewer", "ok", "plan covers the task")
+        steps, problems, raw = coordinator.reviewed_plan(self.goal, b, notes.strip(), self.checklist)
         (self.dir / "plan_raw.txt").write_text(raw)
         if not steps:
             return self._finish("The coordinator could not produce a plan: " + "; ".join(problems))

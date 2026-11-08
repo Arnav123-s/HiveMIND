@@ -293,3 +293,13 @@ def test_quantized_size_read_from_name():
     task = "models under 2B parameters"
     assert hard_item_check(task, "line-corporation/japanese-large-lm-3.6b-instruction-sft-4bit | params 0.861B | gated False")
     assert hard_item_check(task, "Qwen/Qwen2.5-1.5B-Instruct | params 1.544B | gated False") is None
+
+
+def test_an_ordered_file_always_gets_a_coder_step():
+    from team.specialists.coordinator import ensure_file_step
+    plan = [{"id": "s1", "agent": "researcher", "task": "find the books", "needs": [], "for_each": None, "done_when": ""},
+            {"id": "s2", "agent": "writer", "task": "write", "needs": ["s1"], "for_each": None, "done_when": ""}]
+    steps, added = ensure_file_step("Find the three cheapest books and save them to a CSV", plan)
+    assert [s["agent"] for s in steps] == ["researcher", "coder", "writer"] and added
+    assert steps[1]["needs"] == ["s1"] and steps[2]["needs"] == ["s1", steps[1]["id"]]
+    assert ensure_file_step("Find the licence of X", plan) == (plan, [])

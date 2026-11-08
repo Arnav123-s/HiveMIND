@@ -161,6 +161,41 @@ def file_problems(goal, steps):
     return []
 
 
+def ensure_file_step(goal, steps):
+    """The file check, enforced: if Arnav ordered a file and the final plan has no coder, one makes it before the
+    writer (a re-plan can drop the coder the first plan had: seen on "save them to a CSV")."""
+    probs = file_problems(goal, steps)
+    if not probs:
+        return steps, []
+    ids = {s["id"] for s in steps}
+    sid = next(f"s{i}" for i in range(len(steps) + 1, 99) if f"s{i}" not in ids)
+    w = steps[-1]
+    step = {"id": sid, "agent": "coder", "task": f"Make the file Arnav asked for, from the results so far: {goal[:300]}",
+            "needs": [s["id"] for s in steps[:-1]], "for_each": None, "done_when": "the file he asked for is saved"}
+    w = dict(w, needs=list(dict.fromkeys(w["needs"] + [sid])))
+    return steps[:-1] + [step, w], [f"added {sid} (coder): {probs[0]}"]
+
+
+def reviewed_plan(goal, board, notes="", checklist=()):
+    """Plan -> plan reviewer and code checks -> one re-plan if they found problems -> code checks enforced.
+    Returns (steps, problems, raw)."""
+    steps, problems, raw = plan(goal, board, notes)
+    if steps:
+        found = review(goal, steps, checklist)
+        if found:
+            board.log("plan_reviewer", "problems", " | ".join(found))
+            notes2 = (notes + "\n" if notes else "") + "A reviewer found these problems in your first plan; fix them:\n" \
+                + "\n".join(f"- {r}" for r in found)
+            steps2, problems2, raw2 = plan(goal, board, notes2.strip())
+            if steps2:
+                steps, problems, raw = steps2, problems2, raw2
+        else:
+            board.log("plan_reviewer", "ok", "plan covers the task")
+        steps, added = ensure_file_step(goal, steps)
+        problems = problems + added
+    return steps, problems, raw
+
+
 def review(goal, steps, checklist=()):
     """The plan reviewer's problems with a plan ([] if none), plus the checks done in code."""
     import json
