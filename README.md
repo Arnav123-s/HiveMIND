@@ -362,10 +362,17 @@ Measured, but not switched on (or with a cost):
 - `gate`: routes 0.940 of test inputs to the right group. The hive calls each cell at a fixed hook, so nothing needs routing yet; the gate is ready for inputs that arrive without one.
 - `orders_any`: made by the factory to test cloning; not wired, the five one-kind order cells already read every order.
 
+### End-to-end: one real task with cells on (`training/reports/cells/hive_check/`)
+
+> Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me a two-line summary. Do not log in or pay.
+
+- run 1: correct answer (Apache-2.0, 0.135B; jury 3/3). The order cells read 'Do not log in or pay' as no order (right). The checklist cell respelled the model id and left out 'Do not log in or pay' -> fixed (lines keep your words; uncovered sentences are added).
+- run 2, the final code: same correct answer; the checklist has all 4 instructions in your words, 4/4 done. This time the coordinator also planned a browser and a coder step; when they failed, the `next_move` cell stopped the browser step after 1 attempt (page not reachable), retried the coder after a crash, and stopped it after a second failure, instead of always using all 3 attempts.
+- the other hooks (JSON repair, routing rescue, source pick, quote rescue) only fire when something breaks; nothing they cover broke in these two runs, so they are exercised by their tests and test splits only.
 
 Turn every cell off with `AGENT_TEAM_CELLS=0`.
 
-Commands: `python training/cells_pipeline.py <skill>` (probe, locator pick, candidates, promote); `python training/cells_factory.py <new_skill>`; `python training/cells_incumbents.py <skill>`; `python training/cells_compare.py`.
+Commands: `python training/cells_build.py` (after a clone: rebuild the base and the cells for llama.cpp); `python training/cells_pipeline.py <skill>` (probe, locator pick, candidates, promote); `python training/cells_factory.py <new_skill>`; `python training/cells_incumbents.py <skill>`; `python training/cells_compare.py`.
 <!-- cells:end -->
 
 ## Dreaming: getting better on its own (`team/dream.py`)

@@ -205,7 +205,8 @@ class Hive:
                 if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
                     b.log("cell:next_move", "reroute", f"{s['id']}: another specialist should try: {why[:120]}")
                     break
-        b.log("coordinator", "give-up", f"{s['id']} failed after {config.MAX_RETRIES + 1} attempts: {feedback}")
+        n = attempt  # the loop always runs at least once
+        b.log("coordinator", "give-up", f"{s['id']} failed after {n} attempt{'s' if n != 1 else ''}: {feedback}")
         if allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
             alt = coordinator.reroute(self.goal, s, feedback)
             if alt:
