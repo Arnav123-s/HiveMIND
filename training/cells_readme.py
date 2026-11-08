@@ -68,7 +68,9 @@ def edit_table():
             mark = "*" if reg.get(skill, {}).get("variant") == k else ""
             best[c] += r["test"] >= top - 1e-9
             cells.append(f"{r['test']:.3f}{mark} ({r['trainable_params'] / 1e3:.0f}K)")
-        rows.append(f"| {skill} | {v.get('base', {}).get('test', 0):.3f} | " + " | ".join(cells) + " |")
+        pick = reg.get(skill, {}).get("variant")
+        pk = f"{pick} {v[pick]['test']:.3f}" if pick in v else (pick or "-")  # what dev picked, also outside the columns
+        rows.append(f"| {skill} | {v.get('base', {}).get('test', 0):.3f} | " + " | ".join(cells) + f" | {pk} |")
     return rows, best
 
 
@@ -84,6 +86,8 @@ HOOKS = [
      [f"orders_{k}" for k in ("spend", "delete", "send", "login", "signup")]),
     ("guard", "family check: the rule OR the cell", ["family_topic"]),
     ("hive loop", "after a failed attempt: retry, reroute now, or stop (`team/hive.py`)", ["next_move"]),
+    ("hive", "triage: the cheapest way through the hive for the whole task; when sure, a template plan replaces the 4B "
+     "coordinator and plan reviewer (`team/specialists/coordinator.py`)", ["task_kind"]),
 ]
 
 
@@ -126,7 +130,20 @@ def not_on(reg):
         out.append(f"- family check: the rule OR the cell scores {f['rule_or_cell']} vs the rule alone {f['incumbent']} on "
                    "test. The cell catches family steps the rule misses ('Plan a trip with the kids', 'Choose a school "
                    "for our son') and wrongly flags as many ('Family Guy' trivia, 'brother-in-arms' quotes); a wrongly "
-                   "flagged step is dropped and listed in the report. Kept on because your family rule is strict.")
+                   "flagged step is dropped and listed in the report. Kept on because your family rule is strict. "
+                   "No confidence threshold helps: dev is perfect at every threshold and test has 9-10 false blocks at "
+                   "every one (`training/reports/cells/thresholds_and_cascade.md`). The writer's step is judged by the "
+                   "rule alone.")
+    tk = w.get("task_kind", {})
+    if tk.get("thresholds"):
+        out.append(f"- triage (`task_kind`): served test 0.913. A shortcut needs the cell's confidence to reach its "
+                   f"kind's threshold, chosen on dev ({', '.join(f'{k} {v}' for k, v in tk['thresholds'].items())}): "
+                   f"it is taken for {tk['shortcut_share_test']:.0%} of test tasks and is right on {tk['cell']}. What "
+                   "it still gets wrong: a lookup it confidently calls a writing task (the writer then answers from its "
+                   "own knowledge and the critic marks it; an until-done round re-plans with the coordinator).")
+    out.append("- cell -> member cascade (the cell answers when sure, unsure cases go up): on every cell measured, the "
+               "threshold chosen on dev sent nothing up, so the cascade equals the cell; none is wired "
+               "(`training/reports/cells/thresholds_and_cascade.md`).")
     for k, who in (("claim_support", "verifier"), ("licence_open", "juror")):
         c = w.get(k, {})
         if c and not c.get("use") and c.get("incumbent") is not None:
@@ -137,10 +154,12 @@ def not_on(reg):
                        "the job.")
     pe = w.get("pick_element", {})
     if pe:
+        live = j("../browser/organizer.json")
+        live_s = (f" On the browser's held-out click cases on live pages it picked the right element in "
+                  f"{sum(v['ok'] for v in live.values())}/{len(live)}; the browser member got 7/8 of the same cases "
+                  "(`training/reports/browser/`), so the browser keeps choosing its own clicks." if live else "")
         out.append(f"- page organizer (`element_match` per element): {pe.get('organizer')} on the test pages vs the browser "
-                   f"member's {pe.get('incumbent')}, asked exactly as the hive asks it. Not wired: the browser member "
-                   "decides whole actions toward a multi-step goal, and the hive has no single-click goal to hand the "
-                   "organizer yet.")
+                   f"member's {pe.get('incumbent')}, asked exactly as the hive asks it.{live_s}")
     if "gate" in reg:
         out.append(f"- `gate`: routes {reg['gate'].get('test_runtime', 0):.3f} of test inputs to the right group. The hive "
                    "calls each cell at a fixed hook, so nothing needs routing yet; the gate is ready for inputs that "
@@ -198,8 +217,8 @@ def main():
            "test is never used to choose). Where dev and test disagree it is reported, not fixed by peeking at test "
            "(next_move: dev picked MLP-only rank 2, 0.880 on test, while `thin` scored 0.973).", "",
            "Every skill, every candidate edit (test score, edited parameters; * = the edit dev chose and the hive runs):", "",
-           "| skill | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere |",
-           "|---|---|---|---|---|---|---|",
+           "| skill | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere | served (dev pick) |",
+           "|---|---|---|---|---|---|---|---|",
            *edit_table()[0], ""]
     if cut:
         out += ["### Architecture edit: a smaller base by removing layers", "",
