@@ -75,6 +75,26 @@ COMMAND_POS = r"(?:^|[,;:]\s*|\b(?:and|then|please|also|to|must|should|can|could
 POLITE_ASK = r"^\s*(?:please\s+)?(?:can|could|would|will)\s+you\s+(?:please\s+)?(?:go ahead and\s+)?"
 
 
+MATERIAL_VERB = re.compile(r"\b(summari[sz]e|summary|translate|rewrite|paraphrase|correct|fix|proofread|shorten|edit|"
+                           r"improve|explain|analy[sz]e|review|reply to|respond to|format|convert|count|debug)\b", re.I)
+
+
+def split_material(goal):
+    """(Arnav's order, the material he hands over). "Summarise this in one sentence: <paragraph>", "Translate into
+    French: '<sentence>'", "Fix it:\n<code>": what follows the colon is what the order works on, not more orders.
+    Material is never split into instructions (a pasted paragraph became 7 "instructions") and never read for risky
+    orders ("Translate: 'Send the report to Sam.'" orders no sending)."""
+    m = re.match(r"(?s)\s*(.{3,300}?):\s*(.+)$", goal or "")
+    if not m:
+        return goal, ""
+    head, rest = m.group(1).strip(), m.group(2).strip()
+    quoted = bool(re.fullmatch(r"(?s)['\"“‘].+['\"”’][.!?]?", rest))
+    long_ = "\n" in rest or len(re.findall(r"[.!?](?:\s|$)", rest)) >= 2
+    if MATERIAL_VERB.search(head) and (quoted or long_):
+        return head, rest
+    return goal, ""
+
+
 def parse_orders(goal):
     """{kind: the sentence of Arnav's task that orders it}. Nouns ("a book", "text-generation") and negated
     sentences ("no paying", "don't delete") are not orders."""
@@ -132,7 +152,7 @@ class Guard:
         self.board = board
         self.mode = approve
         self.goal = goal
-        self.orders = parse_orders(goal)
+        self.orders = parse_orders(split_material(goal)[0])  # text he hands over is material, not orders
         if use_model and goal:
             self._second_opinion(board)
         self.allow_login = {d.lower().removeprefix("www.") for d in allow_login}
@@ -149,7 +169,7 @@ class Guard:
         from . import llm, prompts
         from .cells import use
         if use.orders_on():  # five one-kind cells (spend, delete, send, login, signup) read the order
-            model = use.orders(self.goal, board)
+            model = use.orders(split_material(self.goal)[0], board)
         else:
             data, _ = llm.chat_json("order_reader", [{"role": "system", "content": prompts.ORDER_READER},
                                                      {"role": "user", "content": self.goal}], max_new_tokens=40)

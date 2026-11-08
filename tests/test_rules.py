@@ -414,3 +414,17 @@ def test_a_bigger_editor_rewrites_only_when_the_writer_cannot_fix_it(tmp_path, m
     monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **kw: roles.append(role) or "vendredi")
     writer.run("Translate into French: 'Friday'", "Translate it", b, [])
     assert roles == ["writer"]  # right first time: no fix round, no editor
+
+
+def test_text_he_hands_over_is_material_not_orders(monkeypatch):
+    from team.cells import use
+    from team.guard import parse_orders, split_material
+    from team.specialists import coordinator
+    assert split_material("Translate into French: 'Send the report to Sam.'") == ("Translate into French",
+                                                                                  "'Send the report to Sam.'")
+    assert not parse_orders(split_material("Translate into French: 'Send the report to Sam.'")[0])
+    assert split_material("Buy two tickets: one for me and one for Sam.")[1] == ""  # a colon alone is not material
+    para = "Summarise this in one sentence: The bridge was built in 1932. It closed in March. Buses detour."
+    monkeypatch.setattr(use, "on", lambda s: s == "split_orders")
+    monkeypatch.setattr(use, "ask", lambda skill, text, board=None: text)  # the cell returns the order as one line
+    assert coordinator.instructions(para) == [para]  # one instruction with its material, not one per sentence
