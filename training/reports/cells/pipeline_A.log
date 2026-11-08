@@ -1,0 +1,189 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7146.17it/s]
+  [base] route_step: dev 0.250 test 0.186
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 16283.21it/s]
+  [pick] step 0 loss 6.4410 (2s)
+  [pick] step 50 loss 0.0059 (74s)
+  [pick] step 99 loss 0.0012 (145s)
+  [pick] route_step: dev 0.975 test 0.992 params 262,656 (170.5s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3317.76it/s]
+  [thin] step 0 loss 6.4410 (3s)
+  [thin] step 50 loss 0.0003 (132s)
+  [thin] step 99 loss 0.0001 (255s)
+  [thin] route_step: dev 1.000 test 0.975 params 807,552 (290.6s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6284.22it/s]
+  [mlp_r2] step 0 loss 6.4410 (2s)
+  [mlp_r2] step 50 loss 0.0008 (107s)
+  [mlp_r2] step 99 loss 0.0002 (209s)
+  [mlp_r2] route_step: dev 0.975 test 0.958 params 380,160 (238.4s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8848.12it/s]
+  [all_r2] step 0 loss 6.4410 (2s)
+  [all_r2] step 50 loss 0.0003 (131s)
+  [all_r2] step 99 loss 0.0001 (256s)
+  [all_r2] route_step: dev 1.000 test 0.992 params 610,560 (291.4s)
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2048.75it/s]
+route_step: all_r2 dev 1.000 test(torch) 0.992 test(llama.cpp) 0.992 4112 ms/call, 610,560 params changed
+=== route_step finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 13912.47it/s]
+  [base] orders_spend: dev 0.312 test 0.311
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12193.92it/s]
+  [pick] step 0 loss 4.3534 (3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 4137.17it/s]
+  [pick] step 0 loss 4.3534 (3s)
+  [pick] step 50 loss 0.2591 (127s)
+  [pick] step 99 loss 0.1661 (247s)
+  [pick] orders_spend: dev 0.825 test 0.885 params 304,128 (266.3s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7848.29it/s]
+  [thin] step 0 loss 4.3534 (5s)
+  [thin] step 50 loss 0.1507 (212s)
+  [thin] step 99 loss 0.0014 (401s)
+  [thin] orders_spend: dev 1.000 test 0.967 params 838,656 (432.1s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 19758.41it/s]
+  [all_r2] step 0 loss 4.3534 (4s)
+  [all_r2] step 50 loss 0.0485 (202s)
+  [all_r2] step 99 loss 0.0007 (395s)
+  [all_r2] orders_spend: dev 1.000 test 0.967 params 610,560 (425.4s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14612.99it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8952.55it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2195.59it/s]
+orders_spend: all_r2 dev 1.000 test(torch) 0.967, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0012, 'thin': 0.0032})
+=== orders_spend finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8216.31it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 20106.99it/s]
+  [base] json_repair: dev 0.412 test 0.360
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7834.60it/s]
+  [pick] step 0 loss 0.3252 (2s)
+  [pick] step 50 loss 0.0074 (99s)
+  [pick] step 100 loss 0.0006 (196s)
+  [pick] step 150 loss 0.0003 (293s)
+  [pick] step 199 loss 0.0003 (386s)
+  [pick] json_repair: dev 1.000 test 1.000 params 225,792 (425.4s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5836.69it/s]
+  [thin] step 0 loss 0.3252 (4s)
+  [thin] step 50 loss 0.0003 (193s)
+  [thin] step 100 loss 0.0002 (383s)
+  [thin] step 150 loss 0.0001 (570s)
+  [thin] step 199 loss 0.0001 (753s)
+  [thin] json_repair: dev 1.000 test 1.000 params 779,904 (804.2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 18103.28it/s]
+  [all_r2] step 0 loss 0.3252 (4s)
+  [all_r2] step 50 loss 0.0003 (190s)
+  [all_r2] step 100 loss 0.0002 (387s)
+  [all_r2] step 150 loss 0.0001 (583s)
+  [all_r2] step 199 loss 0.0001 (771s)
+  [all_r2] json_repair: dev 1.000 test 1.000 params 610,560 (824.4s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 13807.41it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6241.25it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6184.01it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2296.36it/s]
+json_repair: all_r2 dev 1.000 test(torch) 1.000, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0001, 'pick': 0.0005, 'thin': 0.0002})
+=== json_repair finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9179.75it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 19486.73it/s]
+  [base] quote_pick: dev 0.125 test 0.167
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 2813.62it/s]
+  [pick] step 0 loss 4.9004 (4s)
+  [pick] step 50 loss 0.8266 (199s)
+  [pick] step 99 loss 0.2429 (381s)
+  [pick] quote_pick: dev 0.287 test 0.620 params 319,488 (495.1s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 23249.45it/s]
+  [thin] step 0 loss 4.9004 (6s)
+  [thin] step 50 loss 0.2331 (325s)
+  [thin] step 99 loss 0.0005 (633s)
+  [thin] quote_pick: dev 0.600 test 0.980 params 850,176 (817.9s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 22923.84it/s]
+  [all_r2] step 0 loss 4.9004 (6s)
+  [all_r2] step 50 loss 0.1921 (322s)
+  [all_r2] step 99 loss 0.0004 (616s)
+  [all_r2] quote_pick: dev 0.600 test 0.993 params 610,560 (779.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14313.23it/s]
+  [random27] step 0 loss 4.9004 (4s)
+  [random27] step 50 loss 0.6721 (199s)
+  [random27] step 99 loss 0.2713 (395s)
+  [random27] quote_pick: dev 0.312 test 0.667 params 290,304 (506.1s)
+/home/user/agent-team/.venv/lib/python3.13/site-packages/peft/utils/other.py:1508: UserWarning: Unable to fetch remote file due to the following error (Request ID: Root=1-6af04991-4c8dc70f4878772a093e086c;37b00fd3-6f0a-4990-99c5-8a22001dbe2c)
+
+429 Too Many Requests: you have reached your 'resolvers' rate limit.
+Retry after 19 seconds (0/3000 requests remaining in current 300s window).
+Url: https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/resolve/main/config.json.
+We had to rate limit your IP (160.79.106.144). To continue using our service, create a HF account or login to your existing account, and make sure you pass a HF_TOKEN if you're using the API. - silently ignoring the lookup for the file config.json in HuggingFaceTB/SmolLM2-135M-Instruct.
+  warnings.warn(
+/home/user/agent-team/.venv/lib/python3.13/site-packages/peft/utils/save_and_load.py:313: UserWarning: Could not find a config file in HuggingFaceTB/SmolLM2-135M-Instruct - will assume that the vocabulary was not modified.
+  warnings.warn(
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6921.34it/s]
+  [all_r8] step 0 loss 4.9004 (7s)
+  [all_r8] step 50 loss 0.2164 (311s)
+  [all_r8] step 99 loss 0.0006 (599s)
+  [all_r8] quote_pick: dev 0.575 test 0.987 params 2,442,240 (757.1s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 5156.60it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 13328.78it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2100.57it/s]
+quote_pick: thin dev 0.600 test(torch) 0.980, 850,176 params changed (tied on dev, dev loss: {'all_r2': 1.7611, 'thin': 1.6513})
+=== quote_pick finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 16942.91it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 9076.34it/s]
+  [base] orders_delete: dev 0.250 test 0.328
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 17578.32it/s]
+  [pick] step 0 loss 4.9037 (2s)
+  [pick] step 50 loss 0.2615 (105s)
+  [pick] step 99 loss 0.0620 (205s)
+  [pick] orders_delete: dev 0.925 test 0.869 params 253,440 (226.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14390.14it/s]
+  [thin] step 0 loss 4.9037 (4s)
+  [thin] step 50 loss 0.2654 (196s)
+  [thin] step 99 loss 0.0174 (392s)
+  [thin] orders_delete: dev 0.975 test 0.902 params 800,640 (422.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 4260.32it/s]
+  [all_r2] step 0 loss 4.9037 (4s)
+  [all_r2] step 50 loss 0.2856 (191s)
+  [all_r2] step 99 loss 0.0024 (371s)
+  [all_r2] orders_delete: dev 1.000 test 0.951 params 610,560 (399.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 18178.86it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1570.61it/s]
+orders_delete: all_r2 dev 1.000 test(torch) 0.951, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0023})
+=== orders_delete finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8135.05it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11184.59it/s]
+  [base] orders_login: dev 0.537 test 0.148
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 20442.06it/s]
+  [pick] step 0 loss 4.9344 (2s)
+  [pick] step 50 loss 0.3411 (111s)
+  [pick] step 99 loss 0.0146 (221s)
+  [pick] orders_login: dev 0.938 test 0.934 params 279,552 (240.1s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 7739.99it/s]
+  [thin] step 0 loss 4.9344 (4s)
+  [thin] step 50 loss 0.0032 (179s)
+  [thin] step 99 loss 0.0001 (349s)
+  [thin] orders_login: dev 1.000 test 0.984 params 820,224 (376.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 8789.77it/s]
+  [all_r2] step 0 loss 4.9344 (4s)
+  [all_r2] step 50 loss 0.0004 (179s)
+  [all_r2] step 99 loss 0.0002 (346s)
+  [all_r2] orders_login: dev 1.000 test 0.984 params 610,560 (375.2s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 14515.75it/s]
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 11636.82it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2305.83it/s]
+orders_login: all_r2 dev 1.000 test(torch) 0.984, 610,560 params changed (tied on dev, dev loss: {'all_r2': 0.0003, 'thin': 0.003})
+=== orders_login finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 6102.83it/s]
+  [base] pick_source: dev 0.000 test 0.122
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 15993.53it/s]
+  [pick] step 0 loss 9.4358 (2s)
+  [pick] step 50 loss 0.0104 (74s)
+  [pick] step 99 loss 0.0012 (147s)
+  [pick] pick_source: dev 1.000 test 0.932 params 411,648 (171.5s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 15429.20it/s]
+  [thin] step 0 loss 9.4358 (3s)
+  [thin] step 50 loss 0.0006 (121s)
+  [thin] step 99 loss 0.0002 (230s)
+  [thin] pick_source: dev 0.875 test 0.878 params 919,296 (264.1s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 17563.44it/s]
+  [all_r2] step 0 loss 9.4358 (2s)
+  [all_r2] step 50 loss 0.0003 (114s)
+  [all_r2] step 99 loss 0.0002 (221s)
+  [all_r2] pick_source: dev 0.875 test 0.878 params 610,560 (256.4s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 12656.99it/s]
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 2273.44it/s]
+pick_source: pick dev 1.000 test(torch) 0.932, 411,648 params changed (tied on dev, dev loss: {'pick': 0.0135})
+=== pick_source finished

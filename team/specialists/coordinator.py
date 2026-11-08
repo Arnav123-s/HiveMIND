@@ -29,8 +29,14 @@ def normalize(plan, goal):
             problems.append("dropped planned verifier step (verification is automatic)")
             continue
         if agent not in AGENTS:
-            problems.append(f"unknown agent {agent!r}")
-            continue
+            from ..cells import use
+            if use.on("route_step") and str(s.get("task", "")).strip():  # the routing cell rescues the step
+                new = use.ask("route_step", str(s["task"])[:300])
+                problems.append(f"unknown agent {agent!r}: route_step cell gave it to {new}")
+                agent = new
+            else:
+                problems.append(f"unknown agent {agent!r}")
+                continue
         sid = str(s.get("id") or f"s{i + 1}")
         if sid in seen or not re.fullmatch(r"[A-Za-z0-9_]+", sid):
             sid = f"s{i + 1}"
@@ -80,8 +86,14 @@ def plan(goal, board, notes=""):
     return steps, problems, raw
 
 
-def instructions(goal):
+def instructions(goal, board=None):
     """Arnav's task as a checklist of everything he ordered."""
+    from ..cells import use
+    if use.on("split_orders"):  # one small cell, trained only to split an order into its instructions
+        items = [ln.strip("-• ").strip() for ln in use.ask("split_orders", goal, board).split("\n")]
+        items = [i for i in items if i and grounded(i, goal)][:15]
+        if items:
+            return items
     data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.INSTRUCTIONS},
                                               {"role": "user", "content": goal}], max_new_tokens=400)
     items = (data or {}).get("instructions", []) if isinstance(data, dict) else []

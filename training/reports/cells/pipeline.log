@@ -1,0 +1,77 @@
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3584.37it/s]
+  [base] orders_spend: dev 0.388 test 0.344
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3526.67it/s]
+  [pick] step 0 loss 5.1517 (2s)
+  [pick] step 50 loss 0.2356 (73s)
+  [pick] step 99 loss 0.1155 (149s)
+  [pick] orders_spend: dev 0.875 test 0.820 params 202,752 (166.7s)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3190.57it/s]
+  [auto21] step 0 loss 5.1517 (2s)
+  [auto21] step 50 loss 0.2462 (80s)
+  [auto21] step 99 loss 0.0596 (153s)
+  [auto21] orders_spend: dev 0.850 test 0.902 params 354,816 (169.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 2781.08it/s]
+  [random21] step 0 loss 5.1517 (2s)
+  [random21] step 50 loss 0.2681 (77s)
+  [random21] step 99 loss 0.1952 (149s)
+  [random21] orders_spend: dev 0.812 test 0.852 params 233,472 (166.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3053.28it/s]
+  [all] step 0 loss 5.1517 (3s)
+  [all] step 50 loss 0.1474 (122s)
+  [all] step 99 loss 0.0007 (229s)
+  [all] orders_spend: dev 1.000 test 0.967 params 2,442,240 (256.0s)
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1438.38it/s]
+orders_spend: all dev 1.000 test(torch) 0.967 test(llama.cpp) 0.967 108 ms/call, 2,442,240 params changed
+=== orders_spend finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3348.49it/s]
+  [base] route_step: dev 0.174 test 0.186
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 2948.06it/s]
+  [pick] step 0 loss 6.4233 (1s)
+  [pick] step 50 loss 0.0774 (36s)
+  [pick] step 99 loss 0.0093 (72s)
+  [pick] route_step: dev 1.000 test 0.941 params 178,176 (91.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 2984.25it/s]
+  [auto20] step 0 loss 6.4233 (1s)
+  [auto20] step 50 loss 0.0178 (48s)
+  [auto20] step 99 loss 0.0030 (93s)
+  [auto20] route_step: dev 1.000 test 0.949 params 337,920 (112.8s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 2903.19it/s]
+  [random20] step 0 loss 6.4233 (1s)
+  [random20] step 50 loss 0.0802 (46s)
+  [random20] step 99 loss 0.0091 (89s)
+  [random20] route_step: dev 1.000 test 0.915 params 227,328 (109.4s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3617.26it/s]
+  [all] step 0 loss 6.4233 (1s)
+  [all] step 50 loss 0.0007 (67s)
+  [all] step 99 loss 0.0004 (136s)
+  [all] route_step: dev 1.000 test 0.983 params 2,442,240 (165.3s)
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1781.59it/s]
+route_step: pick dev 1.000 test(torch) 0.941 test(llama.cpp) 0.958 69 ms/call, 178,176 params changed
+=== route_step finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3141.77it/s]
+  [base] next_move: dev 0.250 test 0.300
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3470.41it/s]
+  [pick] step 0 loss 7.6038 (1s)
+  [pick] step 50 loss 0.1582 (45s)
+  [pick] step 99 loss 0.0189 (87s)
+  [pick] next_move: dev 1.000 test 0.847 params 302,592 (112.5s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3050.35it/s]
+  [auto31] step 0 loss 7.6038 (1s)
+  [auto31] step 50 loss 0.1434 (53s)
+  [auto31] step 99 loss 0.0073 (105s)
+  [auto31] next_move: dev 1.000 test 0.847 params 523,776 (132.3s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3382.77it/s]
+  [random31] step 0 loss 7.6038 (1s)
+  [random31] step 50 loss 0.0831 (51s)
+  [random31] step 99 loss 0.0081 (99s)
+  [random31] next_move: dev 1.000 test 0.893 params 350,208 (125.7s)
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3065.25it/s]
+  [all] step 0 loss 7.6038 (2s)
+  [all] step 50 loss 0.0005 (78s)
+  [all] step 99 loss 0.0003 (151s)
+  [all] next_move: dev 1.000 test 0.900 params 2,442,240 (186.3s)
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files: 100%|██████████| 12/12 [00:00<00:00, 1851.24it/s]
+next_move: pick dev 1.000 test(torch) 0.847 test(llama.cpp) 0.847 81 ms/call, 302,592 params changed
+=== next_move finished
+Loading weights:   0%|          | 0/272 [00:00<?, ?it/s]Loading weights: 100%|██████████| 272/272 [00:00<00:00, 3186.27it/s]

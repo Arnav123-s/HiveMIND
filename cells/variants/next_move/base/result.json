@@ -1,0 +1,8 @@
+{
+ "skill": "next_move",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.2777777777777778,
+ "test": 0.25333333333333335,
+ "trainable_params": 0
+}

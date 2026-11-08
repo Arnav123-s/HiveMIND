@@ -1,0 +1,83 @@
+{
+ "skill": "claim_support",
+ "base": "smol135",
+ "tag": "random23",
+ "modules": [
+  "11:up_proj",
+  "5:o_proj",
+  "14:o_proj",
+  "23:up_proj",
+  "1:up_proj",
+  "2:gate_proj",
+  "19:gate_proj",
+  "3:o_proj",
+  "13:v_proj",
+  "21:v_proj",
+  "2:q_proj",
+  "18:o_proj",
+  "7:up_proj",
+  "1:v_proj",
+  "3:k_proj",
+  "15:down_proj",
+  "15:v_proj",
+  "2:o_proj",
+  "8:up_proj",
+  "3:v_proj",
+  "20:k_proj",
+  "15:o_proj",
+  "2:k_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 248832,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.7625,
+ "test": 0.6666666666666666,
+ "train_seconds": 274.3,
+ "test_errors": [
+  [
+   "CLAIM: Ulpeltor-4B's top speed is 4.5 stars.\nQUOTE: Ulpeltor-4B's top speed stands at 4.5 stars.",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: Fendanzu-4B has capacity cc-by-4.0.\nQUOTE: capacity (Fendanzu-4B): cc-by-4.0",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: Loren has download count cc-by-4.0.\nQUOTE: Loren's download count stands at cc-by-4.2.",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The opening year of Pelvaren is 155.\nQUOTE: Listed opening year for Pelvaren: 155",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: The top speed of Renquilo is $83.\nQUOTE: top speed (Renquilo): $83",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: Mitorpel's opening year is 5.17.3.\nQUOTE: Mitorpel's opening year stands at 5.10.3.",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: Kazumi has weight 4.18.8.\nQUOTE: Kazumi's top speed stands at 4.18.8.",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The membership fee of Sorqui-3B is 5,620.\nQUOTE: weight (Sorqui-3B): 5,620",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ]
+ ]
+}

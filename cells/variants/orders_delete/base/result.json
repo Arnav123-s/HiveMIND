@@ -1,0 +1,8 @@
+{
+ "skill": "orders_delete",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.25,
+ "test": 0.32786885245901637,
+ "trainable_params": 0
+}

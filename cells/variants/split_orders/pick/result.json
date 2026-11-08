@@ -1,0 +1,80 @@
+{
+ "skill": "split_orders",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:q_proj",
+  "16:v_proj",
+  "17:q_proj",
+  "17:v_proj",
+  "18:q_proj",
+  "18:v_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 200,
+ "lr": 0.001,
+ "trainable_params": 208896,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.8875,
+ "test": 0.8133333333333334,
+ "train_seconds": 457.5,
+ "test_errors": [
+  [
+   "Remove the duplicate rows, remind me what to wear, find two papers on model merging, then look up tomorrow's weather in Oslo.",
+   "Remove the duplicate rows\nRemind me what to wear\nFind two papers on model merging\nLook up tomorrow's weather in Oslo",
+   "Remove the duplicate rows\nRemember what to wear\nFind two papers on model merging\nLook up tomorrow's weather in Oslo"
+  ],
+  [
+   "Pick the warmest hour. Then get the top story on Hacker News. Finally, rank them by citations.",
+   "Pick the warmest hour\nGet the top story on Hacker News\nRank them by citations",
+   "Pick the warmest hour\nGet the top story on Hacker News\nFinally, rank them by citations"
+  ],
+  [
+   "Get the top story on Hacker News. Then download the CSV of sales. Then quote each abstract's first sentence. Finally, remind me what to wear.",
+   "Get the top story on Hacker News\nDownload the CSV of sales\nQuote each abstract's first sentence\nRemind me what to wear",
+   "Get the top story on Hacker News. Then download the CSV of sales.\nQuote each abstract's first sentence\nRemind me what to wear"
+  ],
+  [
+   "Look up tomorrow's weather in Oslo. Then remove the duplicate rows. Finally, download the CSV of sales.",
+   "Look up tomorrow's weather in Oslo\nRemove the duplicate rows\nDownload the CSV of sales",
+   "Look up tomorrow's weather in Oslo\nRemove the duplicate rows\nFinally, download the CSV of sales"
+  ],
+  [
+   "Look up tomorrow's weather in Oslo. Finally, get the top story on Hacker News.",
+   "Look up tomorrow's weather in Oslo\nGet the top story on Hacker News",
+   "Look up tomorrow's weather in Oslo\nFinally, get the top story on Hacker News"
+  ],
+  [
+   "Find two papers on model merging. Finally, quote each abstract's first sentence.",
+   "Find two papers on model merging\nQuote each abstract's first sentence",
+   "Find two papers on model merging\nFinally, quote each abstract's first sentence"
+  ],
+  [
+   "Look up tomorrow's weather in Oslo. Finally, download the CSV of sales.",
+   "Look up tomorrow's weather in Oslo\nDownload the CSV of sales",
+   "Look up tomorrow's weather in Oslo\nFinally, download the CSV of sales"
+  ],
+  [
+   "Plot revenue by month. Finally, remind me what to wear.",
+   "Plot revenue by month\nRemind me what to wear",
+   "Plot revenue by month\nFinally, remind me what to wear"
+  ]
+ ]
+}

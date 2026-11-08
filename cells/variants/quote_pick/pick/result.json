@@ -1,0 +1,87 @@
+{
+ "skill": "quote_pick",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "4:o_proj",
+  "8:down_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:down_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:down_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:q_proj",
+  "15:v_proj",
+  "16:down_proj",
+  "17:down_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 319488,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.2875,
+ "test": 0.62,
+ "train_seconds": 495.1,
+ "test_errors": [
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. Mistral-7B lists its gated as no.\n2. Opening hours vary on holidays.\n3. The data is refreshed hourly.",
+   "1",
+   "none"
+  ],
+  [
+   "CLAIM: The population of Nairobi is 4.4 million.\nSENTENCES:\n1. The population of Nairobi is 3.4 million.\n2. Support replies within a day.\n3. The menu changes every season.",
+   "none",
+   "1"
+  ],
+  [
+   "CLAIM: The population of Nairobi is 4.4 million.\nSENTENCES:\n1. The archive goes back to 2009.\n2. The population of Nairobi is 3.4 million.\n3. Opening hours vary on holidays.\n4. The data is refreshed hourly.\n5. Comments are closed.",
+   "none",
+   "1"
+  ],
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The menu changes every season.\n2. The data is refreshed hourly.\n3. The archive goes back to 2009.\n4. Opening hours vary on holidays.\n5. The gated of Mistral-7B is yes.",
+   "none",
+   "4"
+  ],
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The data is refreshed hourly.\n2. The gated of Mistral-7B was discussed.\n3. The archive goes back to 2009.\n4. Comments are closed.\n5. Support replies within a day.",
+   "none",
+   "2"
+  ],
+  [
+   "CLAIM: The members of the forum is 12,400.\nSENTENCES:\n1. the forum lists its members as 12,400.\n2. The data is refreshed hourly.\n3. Comments are closed.\n4. The menu changes every season.",
+   "1",
+   "none"
+  ],
+  [
+   "CLAIM: The gated of Mistral-7B is no.\nSENTENCES:\n1. The menu changes every season.\n2. Support replies within a day.\n3. Mistral-7B lists its gated as no.\n4. Comments are closed.\n5. The data is refreshed hourly.",
+   "3",
+   "2"
+  ],
+  [
+   "CLAIM: The population of Nairobi is 4.4 million.\nSENTENCES:\n1. Nairobi lists its population as 4.4 million.\n2. Opening hours vary on holidays.\n3. Support replies within a day.",
+   "1",
+   "none"
+  ]
+ ]
+}
