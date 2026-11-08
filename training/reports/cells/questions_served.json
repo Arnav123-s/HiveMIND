@@ -1,0 +1,74 @@
+{
+ "cells": {
+  "orders_delete": {
+   "old": {
+    "test": 0.9508,
+    "questions": 0.9
+   },
+   "new": {
+    "test": 0.9344,
+    "questions": 1.0
+   }
+  },
+  "orders_spend": {
+   "old": {
+    "test": 0.9672,
+    "questions": 0.8333
+   },
+   "new": {
+    "test": 0.9836,
+    "questions": 0.95
+   }
+  },
+  "orders_signup": {
+   "old": {
+    "test": 0.918,
+    "questions": 0.9333
+   },
+   "new": {
+    "test": 1.0,
+    "questions": 1.0
+   }
+  },
+  "orders_login": {
+   "old": {
+    "test": 0.9836,
+    "questions": 1.0
+   },
+   "new": {
+    "test": 0.9836,
+    "questions": 1.0
+   }
+  }
+ },
+ "group": {
+  "old": {
+   "held_out_orders": {
+    "exact": 0.905,
+    "false_approvals": 0,
+    "missed_orders": 6,
+    "n": 63
+   },
+   "held_out_questions": {
+    "exact": 0.75,
+    "false_approvals": 5,
+    "missed_orders": 10,
+    "n": 60
+   }
+  },
+  "new": {
+   "held_out_orders": {
+    "exact": 0.952,
+    "false_approvals": 0,
+    "missed_orders": 3,
+    "n": 63
+   },
+   "held_out_questions": {
+    "exact": 0.983,
+    "false_approvals": 0,
+    "missed_orders": 1,
+    "n": 60
+   }
+  }
+ }
+}
