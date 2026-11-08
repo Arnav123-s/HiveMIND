@@ -226,7 +226,7 @@ def verify(step, result, board, workdir):
             return "FAIL", "; ".join(empty)[:300]
         # the jury sees the files, not only what the program printed: a saved chart was rejected because "the
         # evidence shows the number of downloads, not the file"
-        return judge(check, f"Program ran (exit 0). Files: {result.get('files')}",
+        return judge(check, "Program ran (exit 0)." + (f" Files saved: {', '.join(result['files'])}" if result.get("files") else ""),
                      result.get("summary", "") + ("\n\nFILES SAVED (checked in code):\n" + "\n".join(shown) if shown else ""))
 
     if agent == "calculator":

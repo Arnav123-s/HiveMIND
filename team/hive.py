@@ -265,6 +265,11 @@ class Hive:
             m = re.search(r"https?://[^\s)\"']+", task)  # start where the task says; otherwise the model navigates
             start = m.group(0).rstrip(".,") if m else self._last_page(s)
             return browser_agent.run(task, ctx, self.board, s["id"], self.guard, start_url=start, shots_dir=self.shots)
+        if s["agent"] in ("coder", "calculator"):
+            # his own words travel with the step: the plan's "Calculate the 30th Fibonacci number" lost his
+            # "fib(1) = 1, fib(2) = 1" and the calculator counted from 0
+            ctx = f"ARNAV'S WHOLE TASK (your step is one part; keep his definitions, numbers and names): {self.goal}" \
+                  + (f"\n\n{ctx}" if ctx else "")
         if s["agent"] == "coder":
             return coder.run(task, ctx, self.board, s["id"], self.guard, self.work)
         if s["agent"] == "calculator":

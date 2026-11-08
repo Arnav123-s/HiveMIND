@@ -72,7 +72,9 @@ def run(task, context, board, step_id, guard, workdir):
         board.log("coder", "run", f"attempt {attempt}: exit {res['returncode']} in {res['seconds']}s")
         last = {**res, "code": code, "attempts": attempt}
         missing = [f for f in want if not (workdir / f).exists()]
-        if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing:
+        new = [p for p in workdir.iterdir() if p.name not in before and p.name != name and not p.name.startswith(".")]
+        silent = not res["stdout"].strip() and not new
+        if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing and not silent:
             problems = sanity(res["stdout"]) or review(task, code, res["stdout"])
             if not problems or attempt == config.CODER_MAX_ATTEMPTS:
                 break
@@ -82,7 +84,10 @@ def run(task, context, board, step_id, guard, workdir):
                                        error="It ran, but the code does not do the task correctly:\n- " + "\n- ".join(problems)
                                        + f"\nOutput was:\n{res['stdout'][-800:]}")}]
             continue
-        if res["returncode"] == 0 and missing:
+        if res["returncode"] == 0 and not missing and silent:
+            # it defined a function and never called it: the jury then rejected "the program ran, but no files"
+            err = "It ran but printed nothing and saved nothing. Call the code and print the result the task asks for."
+        elif res["returncode"] == 0 and missing:
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"
         else:
             err = (res["stderr"] or res["stdout"])[-1800:]
