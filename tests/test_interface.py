@@ -118,3 +118,16 @@ def test_an_api_key_is_required_when_set(swarm, monkeypatch):
         assert urllib.request.urlopen(req, timeout=10).status == 200
     finally:
         srv.shutdown()
+
+
+def test_the_chat_page_uses_the_same_queue(swarm, monkeypatch):
+    srv, base = _server(swarm, monkeypatch)
+    try:
+        assert b"<textarea" in urllib.request.urlopen(base + "/", timeout=10).read()
+        code, out = _post(base + "/api/task", {"task": "Find it."})
+        jid = json.loads(out)["queued"]
+        swarm.get(jid).wait(10)
+        runs = json.loads(urllib.request.urlopen(base + "/api/runs", timeout=10).read())
+        assert runs[0]["goal"] == "Find it." and runs[0]["report"].startswith("Answer: 42.") and runs[0]["events"]
+    finally:
+        srv.shutdown()
