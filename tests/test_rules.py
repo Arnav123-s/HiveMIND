@@ -303,3 +303,13 @@ def test_an_ordered_file_always_gets_a_coder_step():
     assert [s["agent"] for s in steps] == ["researcher", "coder", "writer"] and added
     assert steps[1]["needs"] == ["s1"] and steps[2]["needs"] == ["s1", steps[1]["id"]]
     assert ensure_file_step("Find the licence of X", plan) == (plan, [])
+
+
+def test_a_question_is_not_an_order_unless_it_asks_the_team():
+    from team.guard import parse_orders
+    for q in ("Is it safe to buy from this shop?", "How much does it cost to book a room?",
+              "Who can remove posts on that forum?", "Can I pay with PayPal on that site?", "What does the delete key do?"):
+        assert not parse_orders(q), q
+    assert set(parse_orders("Can you delete the old logs?")) == {"delete"}
+    assert set(parse_orders("Could you pay the invoice for me?")) == {"spend"}
+    assert set(parse_orders("Buy the book. Is it safe?")) == {"spend"}
