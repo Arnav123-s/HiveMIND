@@ -1,9 +1,10 @@
 """Every kind of task, through the whole hive: does it work, how long, and which members did the work.
 
-    python training/hive_bench.py <tag> [task ids...] [--heldout]
+    python training/hive_bench.py <tag> [task ids...] [--heldout] [--recheck]
 The development tasks (TASKS) are the ones fixes are tried on. HELDOUT tasks were written before the fixes and are run
 once at the end, so a pass there is not tuning to them.
 Each task runs as `python -m team` (risky actions: never) with its own empty memory, so runs cannot steer each other.
+--recheck scores runs already on disk again with the current checks (after a check was made stricter).
 A check reads the report and the files made; where the answer lives on a website, the check reads it live.
 Cost: every model call is logged with its member, model and seconds (calls.jsonl); cell calls are counted from the
 board. Writes training/reports/hive_bench/<tag>.json and .md.
@@ -63,12 +64,16 @@ def check_arxiv(run, report):
     date. The first check (3 list items and one arXiv link) passed a report that listed two unrelated papers and gave
     every paper today's date."""
     import xml.etree.ElementTree as ET
-    ids = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", report)))[:3]
+    # only papers the answer itself lists: by id in its body, or by a [n] citation in its body to a listed source
+    body = _body(report)
+    srcs = dict(re.findall(r"^\[(\d+)\]\s*(\S+)", report, re.M))
+    cited = [srcs[n] for n in re.findall(r"\[(\d+)\]", body) if n in srcs]
+    ids = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", body + "\n" + "\n".join(cited))))[:3]
     if len(ids) < 3:
-        return False, f"{len(ids)} arXiv papers named"
+        return False, f"{len(ids)} arXiv papers listed in the answer"
     ns = {"a": "http://www.w3.org/2005/Atom"}
     root = ET.fromstring(_get(f"https://export.arxiv.org/api/query?id_list={','.join(ids)}"))
-    body, bad = _body(report), []
+    bad = []
     for e in root.findall("a:entry", ns):
         pid = re.search(r"(\d{4}\.\d{4,5})", e.findtext("a:id", "", ns)).group(1)
         text = (e.findtext("a:title", "", ns) + " " + e.findtext("a:summary", "", ns)).lower()
@@ -260,10 +265,23 @@ def cost(run):
             "cell_calls": cells, "plan": [s["agent"] for s in plan] if isinstance(plan, list) else plan}
 
 
+RECHECK = False  # --recheck: runs already on disk are scored again with the current checks
+
+
 def run_one(tag, tid, task, check, timeout=2400):
     run = RUNS / tag / tid
     if run.exists() and (run / "bench.json").exists():
-        return json.loads((run / "bench.json").read_text())
+        res = json.loads((run / "bench.json").read_text())
+        if RECHECK:  # a check made stricter after the run: score the same report again
+            report = (run / "REPORT.md").read_text() if (run / "REPORT.md").exists() else ""
+            try:
+                ok, why = check(run, report)
+            except Exception as e:  # noqa: BLE001
+                ok, why = False, f"check failed: {type(e).__name__}: {e}"
+            if (bool(ok), why) != (res["ok"], res["why"]):
+                res.update(ok=bool(ok), why=why, rechecked=True)
+                (run / "bench.json").write_text(json.dumps(res, indent=1))
+        return res
     run.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ, AGENT_TEAM_HOME=tempfile.mkdtemp(prefix="bench-memory-"))
     t0 = time.time()
@@ -287,6 +305,7 @@ def run_one(tag, tid, task, check, timeout=2400):
 if __name__ == "__main__":
     tag = sys.argv[1]
     held = "--heldout" in sys.argv
+    RECHECK = "--recheck" in sys.argv
     only = {a for a in sys.argv[2:] if not a.startswith("--")}
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []

@@ -111,12 +111,21 @@ def _split(goal, board=None):
     items = []
     for ln in lines:  # the cell may respell names ("Smol LM2"): keep Arnav's own words for each line
         got = _snap(ln, goal) if ln else None
-        if got and got not in items and grounded(got, goal):
-            items.append(got)
+        if got and grounded(got, goal) and not any(got.lower() in i.lower() for i in items):
+            # a part of a line already listed is no instruction of its own ("List the three newest", from a
+            # line the cell cut short)
+            items = [i for i in items if i.lower() not in got.lower()] + [got]
     for sent in re.split(r"(?<=[.!?])\s+", goal.strip()):  # nothing skipped: an uncovered sentence goes in as written
         sent = sent.strip().rstrip(".")
         if sent and not _covered(sent, items):
             items.append(sent)
+            continue
+        # and an uncovered clause: half of "List the three newest papers ..., with their titles and dates" was
+        # covered, so "with their titles and dates" was lost
+        for clause in re.split(r",\s*|;\s*", sent)[1:]:
+            clause = clause.strip()
+            if len(re.findall(r"[a-z0-9]{3,}", clause.lower())) >= 2 and not _covered(clause, items):
+                items.append(clause)
     return items
 
 

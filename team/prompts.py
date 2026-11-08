@@ -43,7 +43,8 @@ Reply with JSON only:
 - claim: one sentence stating the fact with its value ("X has 0.135B parameters"), never a bare label.
 - quote: text copied exactly, character for character, from one source. Never invent or reword a quote.
 - url: the url of the source the quote came from.
-- items: the list the task asks for (names, ids, urls), best first; [] if the task asks for no list.
+- items: the list the task asks for (names, ids, urls), best first, plus up to 2 extra candidates after them (the
+  team's checks may reject some); [] if the task asks for no list.
 - Only use what the sources say. If they do not answer, say so in summary."""
 
 BROWSER = f"""You are the browser operator on Arnav's team. You control a real web browser to reach a goal.
