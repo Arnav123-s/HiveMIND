@@ -505,3 +505,19 @@ def test_a_saved_chart_is_shown_to_the_jury_and_linked_in_the_report(tmp_path):
     assert fix_images("![Bar](https://example.com/c.png)", []) == ""
     kept, struck = ground_numbers("It has 3,905,849 downloads.\nIt has 1,999 stars.", "downloads 3905849")
     assert kept == "It has 3,905,849 downloads." and struck == ["It has 1,999 stars."]
+
+
+def test_a_reply_cut_off_at_the_token_limit_is_asked_again_with_room(monkeypatch):
+    """The browser's answer with three quotes passed its token limit; asked again with the same limit, it was cut off
+    every time until it ran out of actions."""
+    from team import llm
+    full = '{"action": "done", "answer": "“A.”\\n“B.”\\n“C.”", "evidence": "“A.”\\n“B.”\\n“C.”"}'
+    seen = []
+
+    def chat(specialist, messages, max_new_tokens=512, adapter=True, prefix="", stop=None, **kw):
+        seen.append(max_new_tokens)
+        return full if max_new_tokens >= 300 else full[:40].replace("“A.”", "“A")
+    monkeypatch.setattr(llm, "chat", chat)
+    monkeypatch.setattr(llm, "parse_json", lambda t: __import__("json").loads(t) if t.endswith("}") else None)
+    data, _ = llm.chat_json("browser", [{"role": "user", "content": "x"}], max_new_tokens=160)
+    assert data["action"] == "done" and seen == [160, 320]

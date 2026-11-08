@@ -63,7 +63,7 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
             stop.check()
             obs = b.observe(task)
             page_text = b.text(20000)
-            action, raw = llm.chat_json("browser", turn_messages(goal, obs, history), max_new_tokens=160)
+            action, raw = llm.chat_json("browser", turn_messages(goal, obs, history), max_new_tokens=600)
             if not isinstance(action, dict) or "action" not in action:
                 history.append(f"{n + 1}. invalid reply: {raw[:80]}")
                 continue
