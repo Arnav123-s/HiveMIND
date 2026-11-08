@@ -396,6 +396,48 @@ def test_a_browser_step_starts_where_the_last_one_ended(tmp_path, monkeypatch):
     assert h._last_page({"id": "s2", "needs": []}) is None
 
 
+def test_a_reroute_with_no_other_specialist_retries_the_step(tmp_path, monkeypatch):
+    """A search returned the wrong papers; next_move said reroute, no other specialist fits: retry, never drop."""
+    from team import hive, memory, smiths
+    from team.board import Board
+    from team.cells import use
+    h = hive.Hive.__new__(hive.Hive)
+    h.board, h.dir, h.work, h.goal = Board(tmp_path, echo=False), tmp_path, tmp_path, "List the newest papers"
+    s = {"id": "s1", "agent": "researcher", "task": "find the newest papers", "needs": []}
+    h.board.add_step(s)
+    tasks = []
+    monkeypatch.setattr(h, "_dispatch", lambda st, task, ctx: tasks.append(task) or {"summary": f"try {len(tasks)}"},
+                        raising=False)
+    monkeypatch.setattr(hive.verifier, "verify",
+                        lambda st, r, b, w: ("PASS", "ok") if r["summary"] == "try 2" else ("FAIL", "not about the topic"))
+    monkeypatch.setattr(use, "on", lambda k: k == "next_move")
+    monkeypatch.setattr(use, "ask", lambda k, text, board=None: "reroute")
+    monkeypatch.setattr(hive.coordinator, "reroute", lambda goal, st, fb: None)
+    monkeypatch.setattr(memory, "lessons_for", lambda *a: [])
+    monkeypatch.setattr(smiths, "route", lambda agent, task: agent)
+    h._run_step(s)
+    assert len(tasks) == 2 and "not about the topic" in tasks[1] and h.board.step("s1")["verdict"] == "PASS"
+
+
+def test_when_nothing_was_verified_no_answer_is_made_up(tmp_path, monkeypatch):
+    """Every look-up failed: no model writes (it listed the rejected papers with today's date); his instructions are
+    marked not done, so an until-done round plans again."""
+    from team import sdk
+    from team.board import Board
+    from team.specialists import writer
+    b = Board(tmp_path, echo=False)
+    b.checklist = ["List the three newest arXiv papers about mixture of experts", "with their titles and dates"]
+    b.add_step({"id": "s1", "agent": "researcher", "task": "find the newest papers", "needs": []})
+    b.update_step("s1", verdict="FAIL", feedback="no listed item meets the task", status="failed")
+    monkeypatch.setattr(writer.llm, "chat", lambda *a, **k: pytest.fail("no model may write an unverified answer"))
+    out = writer.run("List the three newest arXiv papers about mixture of experts, with their titles and dates.",
+                     "Write the answer", b, ["s1"])["summary"]
+    assert out.startswith(writer.NOTHING_VERIFIED) and "no listed item meets the task" in out
+    assert len(sdk.unmet(out)) == 3  # two instructions and the failed step
+    # text he handed over is still worked on: a failed look-up next to it does not stop the writer
+    assert not writer.nothing_verified("Summarise this: The bridge opened in 1932. It took eight months to build.", b, [])
+
+
 def test_a_bigger_editor_rewrites_only_when_the_writer_cannot_fix_it(tmp_path, monkeypatch):
     from team.board import Board
     from team.specialists import writer
