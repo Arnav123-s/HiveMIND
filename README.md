@@ -277,7 +277,7 @@ Rule: a candidate replaces the current one only if it scores at least as well; t
 
 Every smallest job in the hive is its own specialist, a **cell**. A cell is trained for one micro-skill only (is a purchase ordered? which specialist takes this step? does this quote state this claim? retry, reroute or give up?) and is allowed to be bad at everything else: other cells cover that. All cells share **one** frozen SmolLM2-135M (144 MB at 8-bit) in RAM; each cell owns only a small weight delta, hot-swapped per call in llama.cpp. A label cell answers through a grammar that only allows its labels.
 
-**18 cells**, 11.8M edited parameters in total, 48 MB of deltas on one 144 MB base.
+**19 cells**, 12.4M edited parameters in total, 50 MB of deltas on one 144 MB base.
 
 ### Measured: each cell against what does that job today
 
@@ -347,25 +347,26 @@ What the measurements taught the locator (route_step and orders_spend were the t
 
 Every skill, every candidate edit (test score, edited parameters; * = the edit dev chose and the hive runs):
 
-| skill | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere |
-|---|---|---|---|---|---|---|
-| claim_support | 0.493 | 0.587 (252K) | 0.800* (799K) | 0.833 (611K) | 0.667 (249K) | 0.807 (2442K) |
-| element_match | 0.500 | 0.867 (295K) | 0.993* (832K) | 0.980 (611K) | - | - |
-| family_topic | 0.500 | 0.850 (313K) | 0.750 (846K) | 0.787* (611K) | - | - |
-| json_repair | 0.360 | 1.000 (226K) | 1.000 (780K) | 1.000* (611K) | - | - |
-| licence_open | 0.444 | - | - | - | - | - |
-| next_move | 0.253 | 0.947 (387K) | 0.973 (901K) | 0.880 (611K) | - | - |
-| orders_any | 0.672 | - | - | - | - | - |
-| orders_delete | 0.328 | 0.869 (253K) | 0.902 (801K) | 0.951* (611K) | - | - |
-| orders_login | 0.148 | 0.934 (280K) | 0.984 (820K) | 0.984* (611K) | - | - |
-| orders_send | 0.213 | 0.885 (306K) | 0.885* (840K) | 0.934 (611K) | - | - |
-| orders_signup | 0.246 | 0.836 (315K) | 0.934* (847K) | 1.000 (611K) | - | - |
-| orders_spend | 0.311 | 0.885 (304K) | 0.967 (839K) | 0.967* (611K) | - | - |
-| pick_element | 0.000 | 0.473 (313K) | 0.887 (846K) | 0.927* (611K) | - | - |
-| pick_source | 0.122 | 0.932* (412K) | 0.878 (919K) | 0.878 (611K) | - | - |
-| quote_pick | 0.167 | 0.620 (319K) | 0.980* (850K) | 0.993 (611K) | 0.667 (290K) | 0.987 (2442K) |
-| route_step | 0.186 | 0.992 (263K) | 0.975 (808K) | 0.992* (611K) | - | - |
-| split_orders | 0.007 | 0.813 (209K) | 0.900* (767K) | 0.833 (611K) | - | - |
+| skill | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere | served (dev pick) |
+|---|---|---|---|---|---|---|---|
+| claim_support | 0.493 | 0.587 (252K) | 0.800* (799K) | 0.833 (611K) | 0.667 (249K) | 0.807 (2442K) | thin 0.800 |
+| element_match | 0.500 | 0.867 (295K) | 0.993* (832K) | 0.980 (611K) | - | - | thin 0.993 |
+| family_topic | 0.500 | 0.850 (313K) | 0.750 (846K) | 0.787* (611K) | - | - | all_r2 0.787 |
+| json_repair | 0.360 | 1.000 (226K) | 1.000 (780K) | 1.000* (611K) | - | - | all_r2 1.000 |
+| licence_open | 0.444 | - | - | - | - | - | clone_orders_spend 0.756 |
+| next_move | 0.253 | 0.947 (387K) | 0.973 (901K) | 0.880 (611K) | - | - | mlp_r2 0.880 |
+| orders_any | 0.672 | - | - | - | - | - | clone_route_step 0.967 |
+| orders_delete | 0.328 | 0.869 (253K) | 0.902 (801K) | 0.951 (611K) | - | - | all_r2_questions 0.951 |
+| orders_login | 0.148 | 0.934 (280K) | 0.984 (820K) | 0.984* (611K) | - | - | all_r2 0.984 |
+| orders_send | 0.213 | 0.885 (306K) | 0.885* (840K) | 0.934 (611K) | - | - | thin 0.885 |
+| orders_signup | 0.246 | 0.836 (315K) | 0.934 (847K) | 1.000 (611K) | - | - | thin_questions 1.000 |
+| orders_spend | 0.311 | 0.885 (304K) | 0.967 (839K) | 0.967 (611K) | - | - | all_r2_questions 0.967 |
+| pick_element | 0.000 | 0.473 (313K) | 0.887 (846K) | 0.927* (611K) | - | - | all_r2 0.927 |
+| pick_source | 0.122 | 0.932* (412K) | 0.878 (919K) | 0.878 (611K) | - | - | pick 0.932 |
+| quote_pick | 0.167 | 0.620 (319K) | 0.980* (850K) | 0.993 (611K) | 0.667 (290K) | 0.987 (2442K) | thin 0.980 |
+| route_step | 0.186 | 0.992 (263K) | 0.975 (808K) | 0.992* (611K) | - | - | all_r2 0.992 |
+| split_orders | 0.007 | 0.813 (209K) | 0.900* (767K) | 0.833 (611K) | - | - | thin 0.900 |
+| task_kind | 0.441 | - | - | 0.906* (611K) | - | - | all_r2_300 0.906 |
 
 ### Architecture edit: a smaller base by removing layers
 
@@ -404,15 +405,18 @@ Average test 0.936 (30 layers) vs 0.789 (22 layers); the cut base is 1.70x faste
 - guard: the second reading of your order: five one-kind order cells (`team/guard.py`) -> `orders_*`: **on**
 - guard: family check: the rule OR the cell -> `family_topic`: **on**
 - hive loop: after a failed attempt: retry, reroute now, or stop (`team/hive.py`) -> `next_move`: **on**
+- hive: triage: the cheapest way through the hive for the whole task; when sure, a template plan replaces the 4B coordinator and plan reviewer (`team/specialists/coordinator.py`) -> `task_kind`: **on**
 
 Measured, but not switched on (or with a cost):
 
 - checklist (`split_orders`): on a real order the cell respelled a model id ('Smol LM2') and left out 'Do not log in or pay': its training orders had no ids and no negations. The coordinator now keeps the span of your own words closest to each line and adds any sentence of the order that no line covers, as written (`team/specialists/coordinator.py`); on the test split that scores 0.927 vs 0.913 for the raw cell.
 - JSON repair (`json_repair`): the cell turns ANY text into JSON ('no json here' -> {"no": null}); it never saw text without JSON. The hook now runs only on text that holds a broken object, rejects a repair whose keys are not in the text, and is asked before the code rules settle for a list inside a broken object (they returned [1, 2] for a whole object). As used: 1.000 on the test split; the code rules alone 0.493.
-- family check: the rule OR the cell scores 0.875 vs the rule alone 0.875 on test. The cell catches family steps the rule misses ('Plan a trip with the kids', 'Choose a school for our son') and wrongly flags as many ('Family Guy' trivia, 'brother-in-arms' quotes); a wrongly flagged step is dropped and listed in the report. Kept on because your family rule is strict.
+- family check: the rule OR the cell scores 0.875 vs the rule alone 0.875 on test. The cell catches family steps the rule misses ('Plan a trip with the kids', 'Choose a school for our son') and wrongly flags as many ('Family Guy' trivia, 'brother-in-arms' quotes); a wrongly flagged step is dropped and listed in the report. Kept on because your family rule is strict. No confidence threshold helps: dev is perfect at every threshold and test has 9-10 false blocks at every one (`training/reports/cells/thresholds_and_cascade.md`). The writer's step is judged by the rule alone.
+- triage (`task_kind`): served test 0.913. A shortcut needs the cell's confidence to reach its kind's threshold, chosen on dev (write 0.97, calc 0.9, lookup 0.9, site 0.9, code 0.9): it is taken for 70% of test tasks and is right on 0.966. What it still gets wrong: a lookup it confidently calls a writing task (the writer then answers from its own knowledge and the critic marks it; an until-done round re-plans with the coordinator).
+- cell -> member cascade (the cell answers when sure, unsure cases go up): on every cell measured, the threshold chosen on dev sent nothing up, so the cascade equals the cell; none is wired (`training/reports/cells/thresholds_and_cascade.md`).
 - `claim_support`: cell 0.827 vs the verifier member 0.880: the bigger member keeps the job.
 - `licence_open`: cell 0.741 vs the juror member 0.933: the bigger member keeps the job. The 135M cell lacks the world knowledge the test needs (e.g. that ISC is a permissive licence).
-- page organizer (`element_match` per element): 1.0 on the test pages vs the browser member's 0.88, asked exactly as the hive asks it. Not wired: the browser member decides whole actions toward a multi-step goal, and the hive has no single-click goal to hand the organizer yet.
+- page organizer (`element_match` per element): 1.0 on the test pages vs the browser member's 0.88, asked exactly as the hive asks it. On the browser's held-out click cases on live pages it picked the right element in 4/8; the browser member got 7/8 of the same cases (`training/reports/browser/`), so the browser keeps choosing its own clicks.
 - `gate`: routes 0.940 of test inputs to the right group. The hive calls each cell at a fixed hook, so nothing needs routing yet; the gate is ready for inputs that arrive without one.
 - `orders_any`: made by the factory to test cloning; not wired, the five one-kind order cells already read every order.
 
