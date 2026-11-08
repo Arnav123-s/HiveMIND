@@ -1,5 +1,6 @@
 """Browser operator: observe the live page, pick one action, act, repeat."""
 import json
+import re
 
 from .. import config, llm, prompts, stop, vault
 from ..guard import Blocked
@@ -11,6 +12,9 @@ def turn_messages(goal, obs, history):
     user = (f"GOAL: {goal}\n\nPREVIOUS ACTIONS:\n{hist}\n\nCURRENT PAGE\nurl: {obs['url']}\ntitle: {obs['title']}\n"
             f"text:\n{obs['text']}\n\nELEMENTS:\n{obs['elements']}")
     return [{"role": "system", "content": prompts.BROWSER}, {"role": "user", "content": user}]
+
+
+IMAGINED = re.compile(r"approv|permission|not allowed|cannot click|can't click|forbidden", re.I)
 
 
 def bad_page(b):
@@ -72,6 +76,12 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                           "url": b.page.url, "page_text": page_text, "actions": history,
                           "page": condense(task, b.page.title() or b.page.url, page_text, board, limit=2500)}
                 break
+            if kind == "fail" and IMAGINED.search(str(action.get("reason", ""))) and not any("BLOCKED" in h for h in history) \
+                    and not any("fail refused" in h for h in history):
+                # the 1.7B said "Arnav cannot click on links or buttons without his approval" with nothing blocked
+                history.append(f"{n + 1}. fail refused: nothing was blocked. Clicking links, tabs and buttons and typing in "
+                               f"search boxes are allowed; only log in, sign up, buy, pay, send and delete need approval.")
+                continue
             if kind == "fail":
                 result = {"summary": "", "failed": str(action.get("reason", "")), "url": b.page.url,
                           "page_text": page_text, "actions": history}

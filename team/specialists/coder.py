@@ -32,6 +32,9 @@ def sanity(stdout):
         probs.append("a time or memory measurement printed as 0.00 - it is measured around the wrong operation")
     if re.search(r"\b0\s*/\s*\d+\b", stdout) and re.search(r"correct|accura", stdout, re.I):
         probs.append("0 answers correct - check how replies are compared (parse the number out of the reply)")
+    if re.search(r"Â[£€©®°±·»«]|â€[™œ\x9d”“˜]|Ã[©¨¢¶¼]", stdout):
+        probs.append("text was decoded with the wrong character set ('Â£' for '£'): parse response.content, or set "
+                     "response.encoding = response.apparent_encoding before response.text")
     return probs
 
 

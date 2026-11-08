@@ -8,6 +8,7 @@ from ..cells import use
 from ..tools import web
 
 
+SITE = re.compile(r"(?<![/\w.@-])((?:[a-z0-9-]+\.)+(?:com|org|net|io|ai|dev|edu|gov|co\.uk|app))(?![\w/-])", re.I)
 NEWEST = re.compile(r"\b(newest|latest|most recent|recent(ly)?|this (week|month|year)|today|yesterday|last (week|month))\b",
                     re.I)
 
@@ -119,6 +120,9 @@ def run(task, context, board, step_id):
         plan = {"searches": [{"source": src, "q": task[:80]}]}
     plan.setdefault("searches", [])
     urls_in_task = re.findall(r"https?://[^\s)\"']+", task)
+    # a site named without a link ("on books.toscrape.com"): read it, do not search the web for it (the web search was
+    # blocked by a bot check, and the site itself was never read)
+    urls_in_task += [f"https://{d}/" for d in SITE.findall(task) if not any(d in u for u in urls_in_task)]
     plan["urls"] = list(dict.fromkeys((plan.get("urls") or []) + urls_in_task))
     board.log("researcher", "plan", json.dumps(plan)[:300])
     blocks, corpus, notes = gather(plan, board, step_id, task)
