@@ -45,11 +45,18 @@ def _n(m):
     return int(g) if g.isdigit() else WORDS[g]
 
 
+def order_words(instruction):
+    """His order without the text he handed over: "the apples that was on the table" asked for no table."""
+    from ..guard import split_material
+    order = split_material(instruction)[0]
+    return re.sub(r"'[^']{2,}'|\"[^\"]{2,}\"|“[^”]{2,}”|‘[^’]{2,}’|\(the text he gave\)", " ", order)
+
+
 def ordered_format(instructions):
     """The layout Arnav ordered in his own words ("a two-line summary", "in 3 sentences", "no table"): (one line for the
     writer, number of lines or None). The writer's edit learned reports that lead with an answer and a table; told
     "give me a two-line summary" it still wrote a table, told "exactly 2 lines of plain text" it wrote 2 lines."""
-    text = " ".join(instructions).lower()
+    text = " ".join(order_words(i) for i in instructions).lower()
     out, lines = [], None
     # only a layout for the deliverable: "fix the two lines of code" is not one
     kind = r" (?:summary|answer|report|reply|overview|description|explanation|version)\b"
@@ -66,6 +73,13 @@ def ordered_format(instructions):
     m = re.search(r"\b(?:in|under|at most|max(?:imum)?|no more than) " + _N + r" words\b", text)
     if m:
         out.append(f"at most {_n(m)} words")
+    m = re.search(r"\bonly (?:the |a |an |one )?((?:corrected|fixed|new|final|translated|rewritten|polite|short|shorter)\s+)?"
+                  r"(sentence|word|number|answer|text|name|line|email|message|code|list|translation|version)\b", text)
+    if m:
+        what = (m.group(1) or "") + m.group(2)
+        out.append(f"only the {what} itself: nothing before or after it, no heading, no label, no table, no notes")
+        if m.group(2) in ("sentence", "word", "number", "name", "line", "translation") and lines is None:
+            lines = 1
     if re.search(r"\bno tables?\b|\bwithout (?:a )?tables?\b", text):
         out.append("no table")
     elif re.search(r"\btable\b", text) and lines is None:
