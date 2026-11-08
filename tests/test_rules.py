@@ -624,3 +624,16 @@ def test_code_that_prints_nothing_is_sent_back_and_his_task_travels_with_the_ste
     monkeypatch.setattr(hive.calculator, "run", lambda task, ctx, *a: seen.update(ctx=ctx) or {"summary": "832040"})
     h._dispatch({"id": "s2", "agent": "calculator", "needs": []}, "Calculate the 30th Fibonacci number", "")
     assert "fib(1) = 1, fib(2) = 1" in seen["ctx"]
+
+
+def test_the_jury_sees_the_program_beside_its_output(tmp_path, monkeypatch):
+    """Shown only '30', the jury rejected a right fix of the loop as 'insufficient evidence'."""
+    from team.board import Board
+    from team.specialists import verifier
+    (tmp_path / "s1.py").write_text("total = 0\nfor i in range(1, 11):\n    if i % 2 == 0:\n        total += i\nprint(total)\n")
+    seen = {}
+    monkeypatch.setattr(verifier, "judge", lambda check, work, ev: seen.update(work=work, ev=ev) or ("PASS", "ok"))
+    step = {"id": "s1", "agent": "coder", "task": "Fix it and tell me the right answer", "done_when": "prints the right sum"}
+    res = {"summary": "30", "returncode": 0, "stderr": "", "files": [], "code_path": str(tmp_path / "s1.py")}
+    assert verifier.verify(step, res, Board(tmp_path, echo=False), tmp_path)[0] == "PASS"
+    assert "range(1, 11)" in seen["ev"] and "OUTPUT:\n30" in seen["ev"] and "Files" not in seen["work"]
