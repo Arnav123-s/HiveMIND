@@ -1,14 +1,23 @@
 """Researcher: picks live sources, reads them, returns facts with exact quotes."""
 import json
 import re
+import time
 
 from .. import llm, prompts
 from ..cells import use
 from ..tools import web
 
 
+NEWEST = re.compile(r"\b(newest|latest|most recent|recent(ly)?|this (week|month|year)|today|yesterday|last (week|month))\b",
+                    re.I)
+
+
+def today():
+    return time.strftime("%Y-%m-%d (%A)")
+
+
 def plan_messages(task, context):
-    user = f"Task: {task}"
+    user = f"Today is {today()}.\nTask: {task}"
     if context:
         user += f"\n\nWhat the team already found:\n{context}"
     return [{"role": "system", "content": prompts.RESEARCHER_PLAN}, {"role": "user", "content": user}]
@@ -16,7 +25,7 @@ def plan_messages(task, context):
 
 def extract_messages(task, sources_text):
     return [{"role": "system", "content": prompts.RESEARCHER_EXTRACT},
-            {"role": "user", "content": f"Task: {task}\n\nSOURCES:\n{sources_text}"}]
+            {"role": "user", "content": f"Today is {today()}.\nTask: {task}\n\nSOURCES:\n{sources_text}"}]
 
 
 def gather(plan, board, step_id, task=""):
@@ -34,6 +43,8 @@ def gather(plan, board, step_id, task=""):
         kw = {}
         if src == "huggingface" and re.search(r"text.generation|chat|instruct|llm|language model|assistant", task, re.I):
             kw = {"pipeline_tag": "text-generation", "limit": 20}
+        if src in ("arxiv", "hn") and (NEWEST.search(f"{task} {q}") or s.get("sort") == "newest"):
+            kw["newest"] = True  # "the newest papers" sorted by relevance gave papers from two years earlier
         try:
             res = web.search(src, q, **kw)
         except Exception as e:  # noqa: BLE001 - report every failure to the board
@@ -52,6 +63,9 @@ def gather(plan, board, step_id, task=""):
         lines = [f"- {r['title']} | {r['url']} | {r['snippet']}" for r in res]
         url = res[0].get("source_url") if res and res[0].get("source_url") else f"search:{src}:{q}"
         text = "\n".join(lines)
+        for r, line in zip(res, lines):  # each result is also its own source, so a quote is credited to its page
+            if str(r.get("url", "")).startswith("http"):
+                corpus.setdefault(r["url"], line[2:])
         corpus[url] = text
         blocks.append(f"### Source: {url}\n{text}")
     for u in (plan.get("urls") or [])[:3]:

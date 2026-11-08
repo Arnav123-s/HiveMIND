@@ -116,9 +116,10 @@ def verify(step, result, board, workdir):
         good = 0
         for f in result.get("facts", []):
             claim, quote, url = str(f.get("claim", "")), str(f.get("quote", "")), str(f.get("url", ""))
-            if not quote_in(quote, corpus.get(url, "")):
-                # cited the wrong source: credit the source that really contains the quote, if any
-                url = next((u for u, t in corpus.items() if quote_in(quote, t)), None) or url
+            if not quote_in(quote, corpus.get(url, "")) or not url.startswith("http"):
+                # cited the wrong source, or a search listing: credit the page that really contains the quote
+                url = (next((u for u, t in corpus.items() if u.startswith("http") and quote_in(quote, t)), None)
+                       or next((u for u, t in corpus.items() if quote_in(quote, t)), None) or url)
             if not quote_in(quote, corpus.get(url, "") or all_text):
                 found = _rescue_quote(claim, corpus, board)
                 if not found:
