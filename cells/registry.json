@@ -2250,7 +2250,7 @@
   "skill": "orders_signup",
   "part": "guard: is a 'signup' action ORDERED",
   "base": "smol135",
-  "variant": "thin",
+  "variant": "thin_questions",
   "modules": [
    "3:o_proj",
    "4:down_proj",
@@ -2286,8 +2286,8 @@
   "thin": 2,
   "trainable_params": 846720,
   "parent": null,
-  "dev": 0.9375,
-  "test_torch": 0.9344262295081968,
+  "dev": 1.0,
+  "test_torch": 1.0,
   "variants": {
    "all_r2": {
     "dev": 0.875,
@@ -2310,10 +2310,11 @@
     "params": 846720
    }
   },
-  "promoted": "2026-11-08 12:02",
-  "test_runtime": 0.918,
-  "ms_per_call": 81.8,
-  "gguf_bytes": 3416128
+  "promoted": "2026-11-08 17:35",
+  "test_runtime": 1.0,
+  "ms_per_call": 81.1,
+  "gguf_bytes": 3416128,
+  "questions_torch": 1.0
  },
  "licence_open": {
   "skill": "licence_open",
