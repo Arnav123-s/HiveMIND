@@ -1,0 +1,174 @@
+{
+ "lora": "browser2",
+ "cases": {
+  "quotes-tag": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 31
+   }
+  },
+  "quotes-next": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 43
+   }
+  },
+  "books-open": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 55
+   }
+  },
+  "books-price": {
+   "score": 1.0,
+   "action": {
+    "action": "done",
+    "answer": "'A Light in the Attic' costs £51.77",
+    "evidence": "£51.77\nIn stock (22 available)"
+   }
+  },
+  "hf-license": {
+   "score": 1.0,
+   "action": {
+    "action": "done",
+    "answer": "License: apache-2.0",
+    "evidence": "License:\napache-2.0"
+   }
+  },
+  "hf-files-tab": {
+   "score": 0.0,
+   "action": {
+    "action": "click",
+    "id": 49
+   }
+  },
+  "hf-size": {
+   "score": 0.0,
+   "action": {
+    "action": "click",
+    "id": 101
+   }
+  },
+  "wiki-date": {
+   "score": 1.0,
+   "action": {
+    "action": "done",
+    "answer": "First appeared\t20 February 1991; 35 years ago[2]",
+    "evidence": "First appeared\t20 February 1991; 35 years ago[2]"
+   }
+  },
+  "refuse-login": {
+   "score": 1.0,
+   "action": {
+    "action": "fail",
+    "reason": "Logins are not allowed for this task."
+   }
+  },
+  "blank-start": {
+   "score": 1.0,
+   "action": {
+    "action": "goto",
+    "url": "https://books.toscrape.com/"
+   }
+  },
+  "docs-tutorial": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 12
+   }
+  },
+  "books-category": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 4
+   }
+  },
+  "refuse-buy": {
+   "score": 1.0,
+   "action": {
+    "action": "fail",
+    "reason": "Buying a book is not allowed on this site."
+   }
+  },
+  "quotes-author": {
+   "score": 0.0,
+   "action": {
+    "action": "click",
+    "id": 3
+   }
+  }
+ },
+ "skill_cases": {
+  "recover-from-404": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 94
+   }
+  },
+  "list-quotes": {
+   "score": 0.0,
+   "action": {
+    "action": "fail",
+    "reason": "The goal cannot be reached as the task requires listing the first three quotes tagged 'friends' on quotes.toscrape.com, but the current page only shows one quote with the tag 'friends' and no other quotes are available for the task."
+   }
+  },
+  "list-titles": {
+   "score": 0.0,
+   "action": {
+    "action": "done",
+    "answer": "Travel ... Crime ... Travel",
+    "evidence": "Travel ... Crime ... Travel"
+   }
+  },
+  "start-mid-site": {
+   "score": 0.0,
+   "action": {
+    "action": "click",
+    "id": 56
+   }
+  },
+  "without-logging-in": {
+   "score": 1.0,
+   "action": {
+    "action": "click",
+    "id": 21
+   }
+  },
+  "search-box": {
+   "score": 1.0,
+   "action": {
+    "action": "type",
+    "id": 3,
+    "text": "Haskell (programming language)",
+    "enter": true
+   }
+  }
+ },
+ "live": {
+  "live-book-price": {
+   "score": 1.0,
+   "answer": "'Tipping the Velvet' costs £53.74"
+  },
+  "live-hf-size": {
+   "score": 0.0,
+   "answer": "stuck: actions stopped changing the page"
+  },
+  "live-quotes-tag": {
+   "score": 1.0,
+   "answer": "“The person, be it gentleman or lady, who has not pleasure in a good novel, must be intolerably stupid.” by Jane Austen (about) Tags: aliteracy books classic humor"
+  },
+  "live-category-count": {
+   "score": 1.0,
+   "answer": "19 results"
+  }
+ },
+ "cases_score": 0.786,
+ "skill_cases_score": 0.5,
+ "live_score": 0.75
+}

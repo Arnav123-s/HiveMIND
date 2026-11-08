@@ -14,6 +14,8 @@ def turn_messages(goal, obs, history):
     return [{"role": "system", "content": prompts.BROWSER}, {"role": "user", "content": user}]
 
 
+REFUSAL = re.compile(r"log ?in|sign ?(in|up)|regist|account|buy|purchas|pay|checkout|basket|cart|order|send|post|email|"
+                     r"delete|remove|approv|permission|not allowed|rules?\b|password|credential", re.I)
 IMAGINED = re.compile(r"approv|permission|not allowed|cannot click|can't click|forbidden", re.I)
 
 
@@ -82,6 +84,16 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                 history.append(f"{n + 1}. fail refused: nothing was blocked. Clicking links, tabs and buttons and typing in "
                                f"search boxes are allowed; only log in, sign up, buy, pay, send and delete need approval.")
                 continue
+            if kind == "fail" and not REFUSAL.search(str(action.get("reason", "")) + " " + task) and not bad_page(b) \
+                    and b.page.url.startswith("http"):
+                # the browser navigates; reading a page is the condenser's job (extractive) and the jury judges it.
+                # It gave up on the right page ("List the first three quotes tagged 'friends'": "cannot be reached")
+                from .researcher import condense
+                lines = condense(task, b.page.title() or b.page.url, page_text, board, limit=2500)
+                board.log("browser", "page", f"gave up ({str(action.get('reason', ''))[:80]}): the page's lines go to the jury")
+                result = {"summary": f"From {b.page.url}:\n{lines[:1500]}", "evidence": lines.split("\n")[0][:300],
+                          "url": b.page.url, "page_text": page_text, "actions": history, "page": lines}
+                break
             if kind == "fail":
                 result = {"summary": "", "failed": str(action.get("reason", "")), "url": b.page.url,
                           "page_text": page_text, "actions": history}
