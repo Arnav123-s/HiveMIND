@@ -209,7 +209,9 @@ def triage(goal, board):
     p = runtime.label_probs("task_kind", goal[:600])
     kind, conf = max(p.items(), key=lambda kv: kv[1])
     board.log("cell:task_kind", "answer", f"{kind} ({conf:.2f})")
-    if kind not in TEMPLATES or conf < TRIAGE_MIN:
+    # per kind, chosen on dev by training/cells_triage_threshold.py (a wrong 'write' skips research and calculation)
+    need = use.wins().get("task_kind", {}).get("thresholds", {}).get(kind, TRIAGE_MIN)
+    if kind not in TEMPLATES or conf < max(TRIAGE_MIN, need):
         return None
     steps = [{"id": f"s{i + 1}", "agent": a, "task": t.format(goal=goal), "needs": [], "for_each": None, "done_when": d}
              for i, (a, t, d) in enumerate(TEMPLATES[kind])]

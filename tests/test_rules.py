@@ -365,6 +365,12 @@ def test_triage_takes_a_shortcut_only_when_the_cell_is_sure(tmp_path, monkeypatc
     assert coordinator.triage("Compare two models and chart them", b) is None  # unsure: the coordinator plans
     monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"plan": 0.95})
     assert coordinator.triage("Compare two models and chart them", b) is None
+    # a kind with its own threshold (chosen on dev): a 'write' shortcut skips research, so it must be surer
+    monkeypatch.setattr(use, "wins", lambda: {"task_kind": {"use": True, "thresholds": {"write": 0.995}}})
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"write": 0.99})
+    assert coordinator.triage("If I pay 64.20 a month, how much is that in a year?", b) is None
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"calc": 0.97, "plan": 0.03})
+    assert [s["agent"] for s in coordinator.triage("What is 17.5% of 2,340?", b)] == ["calculator", "writer"]
 
 
 def test_a_failed_steps_result_is_never_passed_on_as_verified(tmp_path):
