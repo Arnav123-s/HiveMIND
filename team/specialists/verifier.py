@@ -85,7 +85,25 @@ def verify(step, result, board, workdir):
         items_ok = [i for i in result.get("items", []) if norm(i) and norm(i) in norm(all_text)]
         if result.get("items") and not items_ok:
             return "FAIL", "listed items do not appear in any source"
-        result["items"] = items_ok or result.get("items", [])
+        # every item is checked on its own source line against what the task asked for; failures are dropped
+        kept, dropped = [], []
+        lines = all_text.split("\n")
+        for it in items_ok[:8]:
+            ev = "\n".join(ln for ln in lines if norm(it) in norm(ln))[:800]
+            data, _ = llm.chat_json("juror_brain", [
+                {"role": "system", "content": "Decide if ONE item meets every requirement of the task, using only its "
+                 "source line. Numbers must satisfy limits (e.g. 7.2B is not under 2B; gated True/manual is gated). "
+                 'Reply with JSON only: {"meets": true} or {"meets": false, "why": "..."}'},
+                {"role": "user", "content": f"TASK: {step['task']}\nITEM: {it}\nSOURCE LINE: {ev}"}], max_new_tokens=80)
+            if isinstance(data, dict) and data.get("meets") is False:
+                dropped.append(f"{it} ({str(data.get('why', ''))[:80]})")
+            else:
+                kept.append(it)
+        if dropped:
+            board.log("juror_brain", "drop", "items that do not meet the task: " + "; ".join(dropped))
+        if result.get("items") and not kept:
+            return "FAIL", "no listed item meets the task: " + "; ".join(dropped)[:200]
+        result["items"] = kept or result.get("items", [])
         return judge(check, result.get("summary", "") + "\nItems: " + ", ".join(result["items"]),
                      "\n".join(f"- {f['claim']} (quote: {f['quote']})" for f in board.facts(sid, "supported"))
                      or all_text[:3000])

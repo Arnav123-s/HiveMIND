@@ -1,0 +1,50 @@
+[
+  {
+    "id": "s1",
+    "agent": "researcher",
+    "task": "Find text-generation models on Hugging Face under 2B parameters with permissive licenses and not gated.",
+    "needs": [],
+    "for_each": null,
+    "done_when": "A list of top 3 models with their URLs and license information."
+  },
+  {
+    "id": "s2",
+    "agent": "browser",
+    "task": "Open the Hugging Face page for each of the top 3 models and check the license and real size of its weights files. Item: {item}",
+    "needs": [
+      "s1"
+    ],
+    "for_each": "s1",
+    "done_when": "The license and real size of the weights files for each of the top 3 models are verified."
+  },
+  {
+    "id": "s3",
+    "agent": "coder",
+    "task": "Write and run a Python script that loads each of the 3 models on CPU and measures load time, memory used, and tokens per second.",
+    "needs": [
+      "s2"
+    ],
+    "for_each": null,
+    "done_when": "The benchmark results for each of the 3 models are generated and verified."
+  },
+  {
+    "id": "s4",
+    "agent": "coder",
+    "task": "Write and run a Python script that checks how many of 10 simple arithmetic questions each model answers correctly.",
+    "needs": [
+      "s3"
+    ],
+    "for_each": null,
+    "done_when": "The accuracy of each of the 3 models in answering arithmetic questions is verified."
+  },
+  {
+    "id": "s5",
+    "agent": "writer",
+    "task": "Write a ranked recommendation for Arnav based on the verified results from the benchmark and accuracy checks.",
+    "needs": [
+      "s4"
+    ],
+    "for_each": null,
+    "done_when": "A ranked recommendation with sources is written and verified."
+  }
+]

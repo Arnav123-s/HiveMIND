@@ -101,6 +101,11 @@ class Hive:
         self.board.update_step(s["id"], status="fanned-out", verdict="PASS")
         for i, item in enumerate(items, 1):
             task = s["task"].replace("{item}", str(item))
+            # one sub-step handles ONE item: drop "for each of the top 3 ..." wording that makes it try all of them
+            task = re.sub(r"\b(each|every) (one )?of the (top |first )?(\d+|two|three|four|five|six) (\w+?)s\b", r"this \5",
+                          task, flags=re.I)
+            task = re.sub(r"\bfor each (\w+)\b", r"for this \1", task, flags=re.I)
+            task = f"Only for {item}: {task}"
             if (s["agent"] == "browser" and "http" not in task and re.fullmatch(r"[\w.\-]+/[\w.\-]+", str(item))
                     and re.search(r"hugging ?face", task + self.goal, re.I)):
                 task += f" (page: https://huggingface.co/{item})"

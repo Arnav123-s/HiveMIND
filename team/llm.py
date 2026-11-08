@@ -1,6 +1,7 @@
 """Model pool: loads each base model once (CPU, bf16) and switches the
 specialist's own trained weights (LoRA delta) in and out per call."""
 import json
+import os
 import re
 import threading
 import time
@@ -130,12 +131,48 @@ def _silence_llama_cpp():
         llama_cpp.llama_log_set(_quiet, ctypes.c_void_p(0))
 
 
-def _set_lora(name, llm_, lora):
-    """Hot-swap a specialist's weight edit on the shared base: one copy of the base weights in RAM."""
+def _cvec_for(specialist):
+    """A specialist's internal edit: a direction added to one layer's residual stream (training/steer.py)."""
+    raw = os.environ.get(f"AGENT_TEAM_CVEC_{specialist.upper()}")
+    if raw:
+        return json.loads(raw)
+    path = config.ROOT / "adapters_gguf" / f"{specialist}.cvec.json"
+    if config.USE_ADAPTERS and path.exists():
+        return json.loads(path.read_text())
+    return None
+
+
+def reset_edits():
+    """Forget which edits are active (forces re-applying them on the next call)."""
+    for k in list(_active_lora):
+        _active_lora[k] = "__unknown__"
+
+
+def _set_cvec(llm_, cvec):
     import ctypes
 
     import llama_cpp
-    if _active_lora.get(name) == lora:
+    model = llm_._model.model
+    n_embd, n_layer = llama_cpp.llama_model_n_embd(model), llama_cpp.llama_model_n_layer(model)
+    if not cvec:
+        llama_cpp.llama_set_adapter_cvec(llm_._ctx.ctx, None, 0, n_embd, -1, -1)
+        return
+    il = int(cvec["layer"])  # llama.cpp counts layers from 1; the vector is added to that layer's output
+    buf = (ctypes.c_float * (n_embd * n_layer))()
+    vec = cvec["vector"]
+    for i in range(n_embd):  # the stored vector already includes its strength (alpha)
+        buf[(il - 1) * n_embd + i] = float(vec[i])
+    llama_cpp.llama_set_adapter_cvec(llm_._ctx.ctx, buf, n_embd * n_layer, n_embd, il, il)
+
+
+def _set_lora(name, llm_, lora, cvec=None):
+    """Hot-swap a specialist's edits on the shared base: one copy of the base weights in RAM.
+    lora = its weight edit (adapters_gguf/<x>.gguf); cvec = its internal edit (direction at one layer)."""
+    import ctypes
+
+    import llama_cpp
+    state = (lora, json.dumps(cvec)[:64] + str(len(json.dumps(cvec))) if cvec else None)
+    if _active_lora.get(name) == state:
         return
     if lora is None:
         llama_cpp.llama_set_adapters_lora(llm_._ctx.ctx, None, 0, None)
@@ -150,8 +187,9 @@ def _set_lora(name, llm_, lora):
         arr = (llama_cpp.llama_adapter_lora_p_ctypes * 1)(_lora_ptrs[key])
         scales = (ctypes.c_float * 1)(1.0)
         llama_cpp.llama_set_adapters_lora(llm_._ctx.ctx, arr, 1, scales)
+    _set_cvec(llm_, cvec)
     llm_.reset()  # cached prompt states were computed with the other weights
-    _active_lora[name] = lora
+    _active_lora[name] = state
 
 
 def _gguf_model(specialist, adapter):
@@ -177,7 +215,7 @@ def _gguf_model(specialist, adapter):
     if name in _lru:
         _lru.remove(name)
     _lru.append(name)
-    _set_lora(name, _gguf[name], lora)
+    _set_lora(name, _gguf[name], lora, _cvec_for(specialist) if adapter else None)
     if tok_repo not in _gguf_tok:
         _gguf_tok[tok_repo] = AutoTokenizer.from_pretrained(tok_repo)
     return _gguf[name], _gguf_tok[tok_repo]

@@ -47,7 +47,8 @@ Reply with JSON only, one action per turn:
 {{"action":"fail","reason":"why the goal cannot be reached"}}
 Use only element ids shown. Prefer clicking links and typing in search boxes over guessing URLs.
 {RULES} Never click log in, sign up, buy, pay, send or delete.
-When the page text shows the answer, reply done with evidence copied exactly from the page text."""
+When the page text shows the answer, reply done with evidence copied exactly from the page text.
+If the answer is in two places on the page, copy both and join them with " ... "."""
 
 CODER = """You are the coder on Arnav's team. Write one complete Python 3 program that does the task.
 - Output only the program in a single ```python block. No explanation.
