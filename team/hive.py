@@ -80,7 +80,7 @@ class Hive:
         past = memory.recall(self.goal, k=2)
         if past:
             notes += "\n" + "\n".join(f"- Earlier run on a similar task ({r['ts']}): {r['report'][:200]}" for r in past)
-        self.checklist = coordinator.instructions(self.goal)
+        self.checklist = coordinator.instructions(self.goal, b)
         b.checklist = self.checklist
         (self.dir / "checklist.json").write_text(json.dumps(self.checklist, indent=1))
         b.log("plan_reviewer", "checklist", f"{len(self.checklist)} instructions: " + " | ".join(self.checklist)[:400])
@@ -194,6 +194,17 @@ class Hive:
                     b.add_artifact(s["id"], self.work / f, "file")
                 return
             feedback = why
+            from .cells import use
+            if attempt <= config.MAX_RETRIES and use.on("next_move"):  # retry, try another specialist, or stop
+                move = use.ask("next_move", f"Step by {s['agent']} failed (attempt {attempt} of "
+                               f"{config.MAX_RETRIES + 1}): {why[:200]}", b)
+                if move == "give_up":
+                    b.log("cell:next_move", "give-up", f"{s['id']}: no retry can fix this: {why[:120]}")
+                    allow_reroute = False
+                    break
+                if move == "reroute":
+                    b.log("cell:next_move", "reroute", f"{s['id']}: another specialist should try: {why[:120]}")
+                    break
         b.log("coordinator", "give-up", f"{s['id']} failed after {config.MAX_RETRIES + 1} attempts: {feedback}")
         if allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
             alt = coordinator.reroute(self.goal, s, feedback)

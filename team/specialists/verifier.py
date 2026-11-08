@@ -70,9 +70,39 @@ def judge(check, work, evidence):
 
 
 def check_fact(claim, quote):
+    from ..cells import use
+    if use.on("claim_support"):  # one small cell trained only on "does this quote state this claim"
+        v = use.ask("claim_support", f"CLAIM: {claim}\nQUOTE: {quote}")
+        return v == "SUPPORTED", f"claim_support cell: {v}"
     data, raw = llm.chat_json("verifier", fact_messages(claim, quote), max_new_tokens=100)
     v = str((data or {}).get("verdict", "")).upper() if isinstance(data, dict) else ""
     return v == "SUPPORTED", str((data or {}).get("reason", raw[:100]) if isinstance(data, dict) else raw[:100])
+
+
+def _rescue_quote(claim, corpus, board):
+    """The cited quote is in no source: the quote_pick cell chooses which source sentence states the claim, from the
+    six that share the most words with it. Returns (exact sentence, its url) or None."""
+    from ..cells import use
+    if not use.on("quote_pick") or not corpus:
+        return None
+    words = set(re.findall(r"[a-z0-9.\-]{3,}", claim.lower()))
+    cands, seen = [], set()
+    for u, t in corpus.items():
+        for s in re.split(r"(?<=[.!?])\s+|\n", t):
+            s = s.strip(" -\t")
+            if 15 <= len(s) <= 300 and s not in seen:
+                seen.add(s)
+                ov = len(words & set(re.findall(r"[a-z0-9.\-]{3,}", s.lower())))
+                if ov >= 2:
+                    cands.append((ov, s, u))
+    cands = sorted(cands, key=lambda c: -c[0])[:6]
+    if not cands:
+        return None
+    x = f"CLAIM: {claim}\nSENTENCES:\n" + "\n".join(f"{i + 1}. {s}" for i, (_, s, _) in enumerate(cands))
+    a = use.ask("quote_pick", x, board)
+    if a.isdigit() and 1 <= int(a) <= len(cands):
+        return cands[int(a) - 1][1], cands[int(a) - 1][2]
+    return None
 
 
 def verify(step, result, board, workdir):
@@ -90,8 +120,11 @@ def verify(step, result, board, workdir):
                 # cited the wrong source: credit the source that really contains the quote, if any
                 url = next((u for u, t in corpus.items() if quote_in(quote, t)), None) or url
             if not quote_in(quote, corpus.get(url, "") or all_text):
-                board.add_fact(sid, claim, url, quote, "rejected", "quote not found in any source the team read")
-                continue
+                found = _rescue_quote(claim, corpus, board)
+                if not found:
+                    board.add_fact(sid, claim, url, quote, "rejected", "quote not found in any source the team read")
+                    continue
+                quote, url = found  # the exact sentence of a source the team read; the claim is still checked below
             ok, why = check_fact(claim, quote)
             board.add_fact(sid, claim, url, quote, "supported" if ok else "rejected", why)
             good += ok

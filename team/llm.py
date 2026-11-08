@@ -396,7 +396,21 @@ def parse_json(text):
                 return json.loads(attempt)
             except json.JSONDecodeError:
                 pass
-    return None
+    return _repair_cell(text)
+
+
+def _repair_cell(text):
+    """Last resort: the json_repair cell rewrites the broken JSON (only if it measured better than the code rules)."""
+    if not text.strip() or len(text) > 600:
+        return None
+    try:
+        from .cells import use
+        if not use.on("json_repair"):
+            return None
+        fixed = use.ask("json_repair", text.strip())
+        return json.loads(fixed)
+    except Exception:  # noqa: BLE001 - a failed repair is just "no JSON"
+        return None
 
 
 def chat_json(specialist, messages, max_new_tokens=512, adapter=True, retries=1, prefix="{"):

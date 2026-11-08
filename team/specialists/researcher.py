@@ -3,6 +3,7 @@ import json
 import re
 
 from .. import llm, prompts
+from ..cells import use
 from ..tools import web
 
 
@@ -28,6 +29,8 @@ def gather(plan, board, step_id, task=""):
         if src == "url":
             plan.setdefault("urls", []).append(q)
             continue
+        if src not in web.SOURCES and use.on("pick_source"):  # unknown source: the pick_source cell chooses one
+            src = use.ask("pick_source", q or task[:200], board)
         kw = {}
         if src == "huggingface" and re.search(r"text.generation|chat|instruct|llm|language model|assistant", task, re.I):
             kw = {"pipeline_tag": "text-generation", "limit": 20}
@@ -88,8 +91,9 @@ def condense(task, title, text, board, limit=3000):
 
 def run(task, context, board, step_id):
     plan, raw = llm.chat_json("researcher", plan_messages(task, context), max_new_tokens=300)
-    if not isinstance(plan, dict):
-        plan = {"searches": [{"source": "web", "q": task[:80]}]}
+    if not isinstance(plan, dict):  # no usable plan: the pick_source cell chooses where to search (else the web)
+        src = use.ask("pick_source", task[:300], board) if use.on("pick_source") else "web"
+        plan = {"searches": [{"source": src, "q": task[:80]}]}
     plan.setdefault("searches", [])
     urls_in_task = re.findall(r"https?://[^\s)\"']+", task)
     plan["urls"] = list(dict.fromkeys((plan.get("urls") or []) + urls_in_task))

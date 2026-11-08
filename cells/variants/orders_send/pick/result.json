@@ -1,0 +1,83 @@
+{
+ "skill": "orders_send",
+ "base": "smol135",
+ "tag": "pick",
+ "modules": [
+  "3:o_proj",
+  "4:down_proj",
+  "8:q_proj",
+  "8:v_proj",
+  "9:o_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:down_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "15:o_proj",
+  "16:o_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": null,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 305664,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.7625,
+ "test": 0.8852459016393442,
+ "train_seconds": 266.5,
+ "test_errors": [
+  [
+   "Which post got the most likes? Look it up and message the meeting notes.",
+   "yes",
+   "no"
+  ],
+  [
+   "You should rent the course today. Find the three most downloaded models on Hugging Face. Now share the screenshot.",
+   "yes",
+   "no"
+  ],
+  [
+   "You should upload the invoice to the client today. What does a book cost on average there?",
+   "yes",
+   "no"
+  ],
+  [
+   "Now pay for a yearly licence. Find the three most downloaded models on Hugging Face. You should email a reminder today.",
+   "yes",
+   "no"
+  ],
+  [
+   "What is the share of each category? Go ahead and donate to a hotel room.",
+   "no",
+   "yes"
+  ],
+  [
+   "Now email my reply. What does a book cost on average there?",
+   "yes",
+   "no"
+  ],
+  [
+   "You should create an account on the free trial today. Look it up and reply to the invoice to the client. Summarise the purchase history.",
+   "yes",
+   "no"
+  ]
+ ]
+}

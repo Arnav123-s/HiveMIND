@@ -1,0 +1,8 @@
+{
+ "skill": "orders_spend",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.3125,
+ "test": 0.3114754098360656,
+ "trainable_params": 0
+}

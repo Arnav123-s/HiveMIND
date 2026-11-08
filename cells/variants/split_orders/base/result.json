@@ -1,0 +1,8 @@
+{
+ "skill": "split_orders",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.0,
+ "test": 0.006666666666666667,
+ "trainable_params": 0
+}

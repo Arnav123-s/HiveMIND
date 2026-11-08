@@ -1,0 +1,83 @@
+{
+ "skill": "claim_support",
+ "base": "smol135",
+ "tag": "thin",
+ "modules": [
+  "1:q_proj",
+  "1:v_proj",
+  "2:q_proj",
+  "2:v_proj",
+  "3:q_proj",
+  "3:v_proj",
+  "4:q_proj",
+  "4:v_proj",
+  "5:q_proj",
+  "5:v_proj",
+  "6:q_proj",
+  "6:v_proj",
+  "7:q_proj",
+  "7:v_proj",
+  "11:down_proj",
+  "12:down_proj",
+  "16:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": 2,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 799488,
+ "parent": null,
+ "copied_tensors": 0,
+ "dev": 0.8125,
+ "test": 0.8,
+ "train_seconds": 417.6,
+ "test_errors": [
+  [
+   "CLAIM: Vami-4B has capacity 361.\nQUOTE: Listed capacity for Vami-4B: 361",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: Fendanzu-4B has capacity cc-by-4.0.\nQUOTE: capacity (Fendanzu-4B): cc-by-4.0",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: The context length of Ulpel is \u20ac338.\nQUOTE: Listed top speed for Ulpel: \u20ac338",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: Nailobex Pro's opening year is 7,970.\nQUOTE: opening year (Nailobex Pro): 7,970",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  [
+   "CLAIM: Kazumi has weight 4.18.8.\nQUOTE: Kazumi's top speed stands at 4.18.8.",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The membership fee of Sorqui-3B is 5,620.\nQUOTE: weight (Sorqui-3B): 5,620",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: The weight of Lopel-1B is 5.13.6.\nQUOTE: Listed weight for Lopel-1B: 8.13.6",
+   "UNSUPPORTED",
+   "SUPPORTED"
+  ],
+  [
+   "CLAIM: Quifen 6 has capacity 7.11.2.\nQUOTE: Quifen 6's capacity stands at 7.11.2.",
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ]
+ ]
+}
