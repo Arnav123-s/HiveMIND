@@ -1,0 +1,50 @@
+{
+ "quotes-tag": {
+  "ok": true,
+  "picked": "love",
+  "elements": 40,
+  "seconds": 5.21
+ },
+ "quotes-next": {
+  "ok": false,
+  "picked": "adulthood",
+  "elements": 40,
+  "seconds": 1.26
+ },
+ "books-open": {
+  "ok": false,
+  "picked": "Historical Fiction",
+  "elements": 40,
+  "seconds": 1.64
+ },
+ "hf-files-tab": {
+  "ok": false,
+  "picked": "Qwen3-0.6B",
+  "elements": 40,
+  "seconds": 330.8
+ },
+ "docs-tutorial": {
+  "ok": false,
+  "picked": "Python",
+  "elements": 40,
+  "seconds": 1.26
+ },
+ "books-category": {
+  "ok": true,
+  "picked": "Travel",
+  "elements": 40,
+  "seconds": 1.6
+ },
+ "recover-from-404": {
+  "ok": true,
+  "picked": "Scott Pilgrim's Precious Little ...",
+  "elements": 40,
+  "seconds": 1.6
+ },
+ "without-logging-in": {
+  "ok": true,
+  "picked": "humor",
+  "elements": 40,
+  "seconds": 1.28
+ }
+}
