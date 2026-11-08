@@ -547,3 +547,21 @@ def test_the_coder_sees_a_site_named_without_a_scheme_and_the_links_its_task_nam
                          '<a href="catalogue/category/books/poetry_23/index.html">Poetry</a>', "html.parser")
     assert task_links(soup, "the three cheapest Mystery books", "https://books.toscrape.com/") == \
         ["Mystery -> https://books.toscrape.com/catalogue/category/books/mystery_3/index.html"]
+
+
+def test_the_coder_stops_when_its_fix_changes_nothing(tmp_path, monkeypatch):
+    """The same unreachable-host error 12 times cost 28 minutes of the 7B coder."""
+    from team.board import Board
+    from team.specialists import coder
+    calls = []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: calls.append(1) or "```python\nimport requests\n```")
+    monkeypatch.setattr(coder, "run_python", lambda code, wd, name: {
+        "returncode": 1, "stdout": "", "stderr": "Traceback ...\nConnectionError: Max retries exceeded (host unreachable)",
+        "seconds": 0.2, "path": str(wd / name)})
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    out = coder.run("Scrape the site", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "work")
+    assert len(calls) == 2 and out["returncode"] == 1 and "ConnectionError" in out["stderr"]
