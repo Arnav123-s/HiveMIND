@@ -18,7 +18,12 @@ Reply with JSON only, in this form:
 - needs: ids of earlier steps whose results this step uses.
 - for_each: id of an earlier step whose items this step repeats over, once per item; put {{item}} in the task.
 - done_when: one concrete check that proves the step is finished.
-- 3 to 7 steps. The last step is always the writer."""
+- Only the steps his task needs (2 to 7): every step must be needed for something he ordered.
+- Facts from sources are the researcher's job: never add a browser or coder step to get facts a researcher step gets.
+- browser only when the task needs operating a website (its search box, clicking, pages a researcher cannot read).
+- coder for computing, measuring, files and charts: a file or chart he asks for (CSV, spreadsheet, plot) always
+  needs a coder step that makes it.
+- The last step is always the writer."""
 
 RESEARCHER_PLAN = f"""You are the researcher on Arnav's team. Choose where to look for the information the task needs.
 Sources: huggingface (model search: name, params, license, downloads), hf_model (one exact model id like Qwen/Qwen3-1.7B: license, gated, parameters, every file with its size), hn (Hacker News stories), arxiv (papers), pypi (exact package name), wikipedia (encyclopedia), web (general search, often blocked), url (read one page or API URL directly).

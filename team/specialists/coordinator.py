@@ -149,17 +149,30 @@ def grounded(item, goal):
     return sum(w.strip(".") in g for w in words) / len(words) >= 0.5
 
 
+FILE_ORDER = re.compile(r"\b(csv|spreadsheet|xlsx|excel file|json file|png|histogram|plot|(?:a|bar|line|pie) (?:chart|graph)|"
+                        r"(?:chart|graph) of|save (?:it|them|the \w+) (?:to|as|in)|make a file)\b", re.I)
+
+
+def file_problems(goal, steps):
+    """Checked in code: a file or chart Arnav ordered needs a step that can make one (only the coder writes files)."""
+    m = FILE_ORDER.search(goal)
+    if m and not any(s["agent"] == "coder" for s in steps):
+        return [f"Arnav asked for a file or chart ('{m.group(0)}'), and no coder step makes it"]
+    return []
+
+
 def review(goal, steps, checklist=()):
-    """The plan reviewer's problems with a plan ([] if none)."""
+    """The plan reviewer's problems with a plan ([] if none), plus the checks done in code."""
     import json
+    fixed = file_problems(goal, steps)
     plan = json.dumps({"steps": [{k: s[k] for k in ("id", "agent", "task", "needs", "for_each")} for s in steps]})
     todo = "\n".join(f"- {i}" for i in checklist)
     data, _ = llm.chat_json("plan_reviewer", [{"role": "system", "content": prompts.PLAN_REVIEWER},
                                               {"role": "user", "content": f"TASK: {goal}\n\nINSTRUCTIONS:\n{todo}\n\nPLAN: {plan}"}],
                             max_new_tokens=250)
     if not isinstance(data, dict) or data.get("ok", True) is True:
-        return []
-    return [str(x)[:200] for x in data.get("problems", [])][:5]
+        return fixed
+    return fixed + [str(x)[:200] for x in data.get("problems", [])][:5]
 
 
 def reroute(goal, step, reason):
