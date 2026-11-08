@@ -13,11 +13,47 @@ from . import config
 
 # torch is imported only on the PyTorch path, so the llama.cpp engine does not pay for it in RAM.
 
-_lock = threading.Lock()
+from .cpu import LOCK as _lock  # noqa: E402 - one CPU lock for members and cells
 _bases = {}  # model_id -> {"tok", "model", "adapters": set()}
 STATS = {"calls": 0, "tokens_out": 0, "seconds": 0.0}
-RECORDER = None  # callable(specialist, messages, output, **info) - the hive records every call (self-training, cost)
-ROUTE = {}  # role -> specialised member the router teacher picked for the current step (e.g. browser -> browser_hf)
+RECORDER = None  # callable(specialist, messages, output, **info) for every thread (set_recorder: this thread only)
+_local = threading.local()
+
+
+def set_recorder(fn):
+    """Record this thread's model calls (each swarm job runs in its own thread and keeps its own calls.jsonl)."""
+    _local.recorder = fn
+
+
+def _recorder():
+    return getattr(_local, "recorder", None) or RECORDER
+
+
+class _PerThread:
+    """A dict per thread: concurrent swarm jobs route their own steps."""
+
+    def _d(self):
+        if not hasattr(_local, "route"):
+            _local.route = {}
+        return _local.route
+
+    def get(self, k, default=None):
+        return self._d().get(k, default)
+
+    def __setitem__(self, k, v):
+        self._d()[k] = v
+
+    def __getitem__(self, k):
+        return self._d()[k]
+
+    def __contains__(self, k):
+        return k in self._d()
+
+    def pop(self, k, default=None):
+        return self._d().pop(k, default)
+
+
+ROUTE = _PerThread()  # role -> specialised member the router picked for the current step (e.g. browser -> browser_hf)
 
 
 def _load(model_id):
@@ -290,9 +326,10 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
             secs = time.time() - t0
         _stop.check()  # a reply cut off by the kill switch is never used
         text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
-        if RECORDER is not None:
+        rec = _recorder()
+        if rec is not None:
             try:  # time and model per call: what each task costs, by member
-                RECORDER(specialist, messages, text, seconds=round(secs, 2), model=config.GGUF_ROSTER.get(specialist))
+                rec(specialist, messages, text, seconds=round(secs, 2), model=config.GGUF_ROSTER.get(specialist))
             except Exception:  # noqa: BLE001
                 pass
         return text
@@ -330,9 +367,10 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
         text = prefix + tok.decode(new, skip_special_tokens=True)
     _stop.check()
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
-    if RECORDER is not None:
+    rec = _recorder()
+    if rec is not None:
         try:
-            RECORDER(specialist, messages, text)
+            rec(specialist, messages, text)
         except Exception:  # noqa: BLE001 - recording must never break a run
             pass
     return text

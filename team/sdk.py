@@ -130,13 +130,15 @@ class Job:
 
 
 class Swarm:
-    """One swarm per process: jobs queue and run one at a time in a background thread."""
+    """Jobs queue and run in background threads. workers=N runs up to N jobs at once in this process: they share
+    every loaded model (RAM barely grows) and take turns on the CPU for model calls (team/cpu.py), so one job's
+    waiting (web pages, the browser, programs running) is another job's compute."""
 
-    def __init__(self, root=None, approve="never"):
+    def __init__(self, root=None, approve="never", workers=1):
         self.root = Path(root or config.RUNS)
         self.root.mkdir(parents=True, exist_ok=True)
-        self.approve = approve
-        self.jobs, self._q, self._lock, self._worker = {}, queue.Queue(), threading.Lock(), None
+        self.approve, self.workers = approve, max(1, int(workers))
+        self.jobs, self._q, self._lock, self._threads = {}, queue.Queue(), threading.Lock(), []
 
     def submit(self, task, until_done=0, allow_login=(), context=""):
         task = (task or "").strip()
@@ -148,9 +150,11 @@ class Swarm:
         (job.dir / "TASK.md").write_text(task + "\n")
         with self._lock:
             self.jobs[jid] = job
-            if self._worker is None or not self._worker.is_alive():
-                self._worker = threading.Thread(target=self._work, daemon=True, name="swarm-worker")
-                self._worker.start()
+            self._threads = [t for t in self._threads if t.is_alive()]
+            while len(self._threads) < self.workers:
+                t = threading.Thread(target=self._work, daemon=True, name=f"swarm-worker-{len(self._threads) + 1}")
+                t.start()
+                self._threads.append(t)
         self._q.put(job)
         return job
 
@@ -177,6 +181,8 @@ class Swarm:
     def _work(self):
         while True:
             job = self._q.get()
+            while stop.requested() and stop.active():  # a stop is still halting other jobs: start after it
+                time.sleep(0.5)
             try:
                 self._run(job)
             except Exception as e:  # noqa: BLE001 - a crash ends this job, never the swarm

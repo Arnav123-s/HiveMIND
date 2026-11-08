@@ -17,7 +17,7 @@ from . import skills as S
 ROOT = Path(__file__).resolve().parent.parent.parent
 CELLS = ROOT / "cells"
 GGUF = CELLS / "gguf"
-_lock = threading.RLock()
+from ..cpu import LOCK as _lock  # noqa: E402 - cells and members take turns on the CPU
 _state = {"llm": {}, "tok": {}, "lora": {}, "active": {}}
 STATS = {"calls": 0, "seconds": 0.0}
 

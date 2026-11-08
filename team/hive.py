@@ -43,7 +43,7 @@ class Hive:
         self.work.mkdir(parents=True, exist_ok=True)
         self.shots.mkdir(parents=True, exist_ok=True)
         self.current = "plan"
-        llm.RECORDER = self._record
+        llm.set_recorder(self._record)
 
     def _record(self, specialist, messages, output, **info):
         with open(self.dir / "calls.jsonl", "a") as f:
@@ -52,15 +52,19 @@ class Hive:
 
     # ------------------------------------------------------------------
     def run(self):
-        if stop.requested():  # a flag left over from before this task started applies to nothing
-            for f in (stop.FLAG, stop.INBOX_FLAG):
-                if f.exists():
-                    f.rename(self.dir / "STOP.before-start")
-            self.board.log("hive", "note", "a STOP flag from before this task was set aside (kept in the run folder)")
+        alone = stop.enter(self.dir)
         try:
-            return self._run()
-        except stop.Stopped as e:
-            return self._stopped(str(e))
+            if alone and stop.requested():  # a flag left over from before this task started applies to nothing
+                for f in (stop.FLAG, stop.INBOX_FLAG):
+                    if f.exists():
+                        f.rename(self.dir / "STOP.before-start")
+                self.board.log("hive", "note", "a STOP flag from before this task was set aside (kept in the run folder)")
+            try:
+                return self._run()
+            except stop.Stopped as e:
+                return self._stopped(str(e))
+        finally:
+            stop.leave(self.dir)
 
     def _stopped(self, by):
         """Kill switch: nothing else runs. Record exactly what was finished and where it stopped."""
@@ -272,11 +276,13 @@ class Hive:
             trace.append(f"- **{f['status']}** - {f['claim'][:200]} - quote: \"{f['quote'][:160]}\" - {f['url']}")
         trace += ["", "## Approvals asked", ""] + ([f"- {a['agent']}: {a['kind']} - {a['detail']} -> {a['decision']}"
                                                      for a in b.approvals()] or ["- none"])
-        trace += ["", "## Model usage", "", f"{llm.STATS['calls']} calls, {llm.STATS['tokens_out']} tokens out, "
-                  f"{llm.STATS['seconds']:.0f}s generating on CPU"]
+        calls = [json.loads(x) for x in (self.dir / "calls.jsonl").read_text().splitlines()] \
+            if (self.dir / "calls.jsonl").exists() else []  # this run's own calls (other jobs may run at once)
+        trace += ["", "## Model usage", "", f"{len(calls)} calls, {sum(c.get('seconds') or 0 for c in calls):.0f}s "
+                  f"generating on CPU"]
         (self.dir / "TRACE.md").write_text("\n".join(trace) + "\n")
         b.log("hive", "finished", f"report: {self.dir / 'REPORT.md'}")
         memory.add_run(self.goal, self.dir, {x["id"]: x.get("verdict") for x in b.steps()},
                        (self.dir / "REPORT.md").read_text()[:600])
-        llm.RECORDER = None
+        llm.set_recorder(None)
         return {"dir": str(self.dir), "report": report, "pending_approvals": self.guard.pending}
