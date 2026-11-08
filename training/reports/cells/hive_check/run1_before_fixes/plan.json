@@ -1,0 +1,20 @@
+[
+  {
+    "id": "s1",
+    "agent": "researcher",
+    "task": "Find the license and parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face",
+    "needs": [],
+    "for_each": null,
+    "done_when": "License and parameter count of HuggingFaceTB/SmolLM2-135M-Instruct are retrieved from Hugging Face."
+  },
+  {
+    "id": "s2",
+    "agent": "writer",
+    "task": "Provide a two-line summary containing the license and parameter count of HuggingFaceTB/SmolLM2-135M-Instruct",
+    "needs": [
+      "s1"
+    ],
+    "for_each": null,
+    "done_when": "A two-line summary with the license and parameter count of HuggingFaceTB/SmolLM2-135M-Instruct is provided."
+  }
+]
