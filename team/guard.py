@@ -71,6 +71,8 @@ def sentences(text):
 
 # an order is a verb in command position: start of a sentence/clause, or after and/then/please/to/...
 COMMAND_POS = r"(?:^|[,;:]\s*|\b(?:and|then|please|also|to|must|should|can|could|will|go ahead and|you may|now)\s+)"
+# in a question, only a request to the team: "Can you delete ...?", "Would you please buy ...?"
+POLITE_ASK = r"^\s*(?:please\s+)?(?:can|could|would|will)\s+you\s+(?:please\s+)?(?:go ahead and\s+)?"
 
 
 def parse_orders(goal):
@@ -78,9 +80,12 @@ def parse_orders(goal):
     sentences ("no paying", "don't delete") are not orders."""
     orders = {}
     for sent in sentences(goal):
+        question = sent.rstrip().endswith("?")
         for kind, pat in ORDER_VERBS.items():
             if kind == "family":
                 m = re.search(pat, sent, re.I)  # a family matter mentioned in his own order is ordered
+            elif question:  # "Is it safe to buy ...?" asks; only "Can you buy ...?" asks the team to do it
+                m = re.search(POLITE_ASK + pat + r"(?![-'\w])", sent, re.I)
             else:
                 m = re.search(COMMAND_POS + pat + r"(?![-'\w])", sent, re.I)
             if not m:
