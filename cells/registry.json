@@ -393,7 +393,7 @@
   "skill": "orders_spend",
   "part": "guard: is a 'spend' action ORDERED",
   "base": "smol135",
-  "variant": "all_r2",
+  "variant": "all_r2_questions",
   "modules": [
    "0:q_proj",
    "0:k_proj",
@@ -610,7 +610,7 @@
   "thin": null,
   "trainable_params": 610560,
   "parent": null,
-  "dev": 1.0,
+  "dev": 0.9,
   "test_torch": 0.9672131147540983,
   "variants": {
    "all_r2": {
@@ -634,10 +634,11 @@
     "params": 838656
    }
   },
-  "promoted": "2026-11-08 08:36",
-  "test_runtime": 0.9672,
-  "ms_per_call": 75.9,
-  "gguf_bytes": 2471488
+  "promoted": "2026-11-08 17:27",
+  "test_runtime": 0.9836,
+  "ms_per_call": 119.9,
+  "gguf_bytes": 2471488,
+  "questions_torch": 0.95
  },
  "split_orders": {
   "skill": "split_orders",

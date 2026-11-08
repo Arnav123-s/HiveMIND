@@ -16,7 +16,7 @@ from . import config
 _lock = threading.Lock()
 _bases = {}  # model_id -> {"tok", "model", "adapters": set()}
 STATS = {"calls": 0, "tokens_out": 0, "seconds": 0.0}
-RECORDER = None  # callable(specialist, messages, output) - the hive records every call for self-training
+RECORDER = None  # callable(specialist, messages, output, **info) - the hive records every call (self-training, cost)
 ROUTE = {}  # role -> specialised member the router teacher picked for the current step (e.g. browser -> browser_hf)
 
 
@@ -285,12 +285,14 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
     specialist = ROUTE.get(specialist, specialist)
     if use_gguf():
         with _lock:
+            t0 = time.time()
             text = _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+            secs = time.time() - t0
         _stop.check()  # a reply cut off by the kill switch is never used
         text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
         if RECORDER is not None:
-            try:
-                RECORDER(specialist, messages, text)
+            try:  # time and model per call: what each task costs, by member
+                RECORDER(specialist, messages, text, seconds=round(secs, 2), model=config.GGUF_ROSTER.get(specialist))
             except Exception:  # noqa: BLE001
                 pass
         return text

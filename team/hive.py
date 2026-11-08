@@ -40,10 +40,10 @@ class Hive:
         self.current = "plan"
         llm.RECORDER = self._record
 
-    def _record(self, specialist, messages, output):
+    def _record(self, specialist, messages, output, **info):
         with open(self.dir / "calls.jsonl", "a") as f:
             f.write(json.dumps({"step": self.current, "specialist": specialist, "messages": messages,
-                                "output": output}, ensure_ascii=False) + "\n")
+                                "output": output, **info}, ensure_ascii=False) + "\n")
 
     # ------------------------------------------------------------------
     def run(self):
