@@ -233,6 +233,32 @@ def _orders_rows(split, seed):
     return rows[:150] + [r for r in more if r[0] not in dev]
 
 
+def _orders_q_rows(split):
+    """Questions for the order cells (training words for train/dev, held-out words for test); kept apart from the
+    rows above so the first cells' test scores stay comparable."""
+    from training import build_orders as bo
+    if split == "test":
+        return bo.questions(bo.QNEG_TEST, bo.QPOS_TEST, bo.OBJ_TEST, 60, 3)
+    rows = bo.questions(bo.QNEG_TRAIN, bo.QPOS_TRAIN, bo.OBJ_TRAIN, 200, 4)
+    return rows[180:] if split == "dev" else rows[:180]
+
+
+def _orders_gen_q(kind):
+    """The order cells' data with questions: a quarter of training examples are questions."""
+    base = _orders_gen(kind)
+
+    def gen(split, r, _cache={}):  # noqa: B006
+        if split == "test":
+            return base(split, r)
+        if split not in _cache:
+            _cache[split] = _orders_q_rows(split)
+        if r.random() < 0.25:
+            text, kinds = r.choice(_cache[split])
+            return text, "yes" if kind in kinds else "no"
+        return base(split, r)
+    return gen
+
+
 def _orders_gen(kind):
     def gen(split, r, _cache={}):  # noqa: B006 - per-process cache of the fixed builder output
         if split not in _cache:

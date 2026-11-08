@@ -54,6 +54,25 @@ NEG_TEST = ["Avoid having to {v} {O}.", "Under no circumstances {v} {O}.", "Just
 NEUTRAL = ["Find the three most downloaded models on Hugging Face.", "Benchmark list.sort on a million integers.",
            "Make a chart of last month's temperatures.", "Read the Wikipedia article on transistors."]
 
+# questions: asking about an action is not ordering it; asking the team to do it ("Can you ...?") is.
+# The first cells saw one question in training and said yes to "What does the delete key do?".
+QNEG_TRAIN = ["How do I {v} {O}?", "What happens if I {v} {O}?", "Is it safe to {v} {O}?", "Why can't I {v} {O}?",
+              "How much does it cost to {v} {O}?"]
+QNEG_TEST = ["How would someone {v} {O}?", "What does it mean to {v} {O}?", "Should I {v} {O}?", "Where do I {v} {O}?"]
+QPOS_TRAIN = ["Can you {v} {O}?", "Could you {v} {O} for me?"]
+QPOS_TEST = ["Would you {v} {O}?", "Can you please {v} {O}?"]
+
+
+def questions(qneg, qpos, objs, n, seed):
+    """Question rows: (text, ordered kinds). Half ask about an action (no order), half ask the team to do it."""
+    rnd = random.Random(seed)
+    rows = []
+    for i in range(n):
+        k = rnd.choice(list(VERBS))
+        frames = qpos if i % 2 else qneg
+        rows.append((rnd.choice(frames).format(v=rnd.choice(VERBS[k]), O=rnd.choice(objs[k])), [k] if i % 2 else []))
+    return rows
+
 
 def build(frames, objs, distract, negs, n_pos, seed):
     rnd = random.Random(seed)
