@@ -47,13 +47,19 @@ def review(task, code, stdout):
     return [str(x)[:200] for x in data.get("problems", [])][:5]
 
 
+def last_line(err):
+    """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
+    lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
+    return re.sub(r"0x[0-9a-f]+|line \d+", "", lines[-1])[:300] if lines else ""
+
+
 def run(task, context, board, step_id, guard, workdir):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     before = {p.name for p in workdir.iterdir()}
     messages = task_messages(task, context, preview(task, workdir))
     want = expected_outputs(task, before)
-    last = None
+    last, last_error = None, None
     name = f"{re.sub(r'[^A-Za-z0-9_]', '_', step_id)}.py"
     for attempt in range(1, config.CODER_MAX_ATTEMPTS + 1):
         stop.check()
@@ -80,6 +86,13 @@ def run(task, context, board, step_id, guard, workdir):
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"
         else:
             err = (res["stderr"] or res["stdout"])[-1800:]
+        key = last_line(err)
+        if key and key == last_error:
+            # its fix changed nothing: the same error 12 times (a host it could not reach) cost 28 minutes of the 7B
+            # coder. The hive loop gets the error and decides: retry with the reason, another specialist, or stop.
+            board.log("coder", "same-error", f"attempt {attempt} failed exactly like the one before: {key[:150]}")
+            break
+        last_error = key
         messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
                                {"role": "user", "content": prompts.CODER_FIX.format(error=err)}]
     files = sorted(p.name for p in workdir.iterdir() if p.name not in before and p.name != name
