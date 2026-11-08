@@ -67,8 +67,10 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                 history.append(f"{n + 1}. done refused: {bad_page(b)}")
                 continue
             if kind == "done":
+                from .researcher import condense  # extractive: the lines of the page the task needs, exactly
                 result = {"summary": str(action.get("answer", "")), "evidence": str(action.get("evidence", "")),
-                          "url": b.page.url, "page_text": page_text, "actions": history}
+                          "url": b.page.url, "page_text": page_text, "actions": history,
+                          "page": condense(task, b.page.title() or b.page.url, page_text, board, limit=2500)}
                 break
             if kind == "fail":
                 result = {"summary": "", "failed": str(action.get("reason", "")), "url": b.page.url,
