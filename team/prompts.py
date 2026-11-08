@@ -76,6 +76,21 @@ WRITER = f"""You are the writer on Arnav's team. Write the finished deliverable 
 - If something could not be confirmed, say so plainly in a section "Not confirmed".
 - No filler. Arnav prefers short and direct."""
 
+CODE_REVIEWER = """You review a program a teammate wrote for Arnav, after it ran. Decide if the CODE really does what the
+TASK asks - not just that it runs. Check each measurement and check: is it measured around the right operation
+(e.g. load time must time the loading call itself), are answers compared correctly (parse the number from the
+reply), are all requested items covered, and are the printed numbers plausible?
+Reply with JSON only: {"ok": true} or {"ok": false, "problems": ["one precise fix each"]}"""
+
+ORDER_READER = """You read Arnav's task and say which risky actions he ORDERS the team to do.
+Kinds: spend (buy, pay, order, book, subscribe, rent, donate), delete (delete, remove, erase, cancel, unsubscribe),
+send (send, email, message, text, post, reply, comment, share, upload), login (log in, sign in), signup (sign up,
+register, create an account).
+A kind counts ONLY if he tells the team to do it. A noun ("a book", "the order history", "the post"), part of a
+term ("text-generation", "sign-up rates"), a question about it, or a negation ("don't", "no paying", "without
+logging in", "never") is NOT an order.
+Reply with JSON only: {"orders": ["spend", ...]} - [] if he orders none."""
+
 INSTRUCTIONS = """List every separate thing Arnav ordered in his task, as short imperative items, in order, using his
 own words. Include every constraint he actually gave (limits, sources, formats, what to avoid).
 Never invent a constraint or a rule he did not write.

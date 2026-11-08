@@ -119,37 +119,106 @@ Tell it how you like things done; every report follows it:
 python -m team remember "Prices in INR. Short answers, table first."
 ```
 
-## Your rules, enforced in code (`team/guard.py`)
+## Your rules: everything risky happens only under your explicit order (`team/guard.py`)
 
-These are the team's only filters.
+**Your order is the approval.** Risky kinds of action: spending money, deleting, sending a message as you,
+logging in, signing up, using your credentials, and family/relationship matters. The team does one only when
+your task orders it, and only as ordered. Every approval in the log quotes the sentence of yours it relied on.
+Anything you did not order stops: in the terminal it asks you (`y/N`); in `serve`/`web` it is not done and is
+listed in the report as waiting for you.
 
-| rule | what happens |
+| your task says | what the team may do |
 |---|---|
-| Family and relationships are never task material | the task (or any planned step) is refused before any work |
-| Spending money | stops and asks you (`y/N` in the terminal). In `serve`/`web`, it is not done and is listed in the report as waiting for you |
-| Deleting | same: stops and asks. Code containing `os.remove`, `shutil.rmtree`, `rm -rf`, ... is not run until you say yes |
-| Sending a message as you | same: send/post/reply/submit buttons, form submits, `smtplib`, HTTP POST to anything but read-only query APIs |
-| No accounts, no sign-ups | hard block: sign-up links, register pages and password fields are refused |
-| No logins | hard block, unless you name the site for one task (below) |
+| "Buy 'Soumission' on books.toscrape.com" | add it to the basket and check out on that site |
+| "Find the price of a book" | read prices; any buy/checkout button stops and asks (a noun is not an order) |
+| "No paying, no accounts" | nothing risky; negations are never orders |
+| "Log in to quotes.toscrape.com and list my quotes" | log in there with your vault credentials; anywhere else, refused |
+| "Plan my wife's birthday dinner and book a table" | family matters for this task, and booking (spend) |
+| a step that drifts into something you did not mention | dropped before it runs |
 
-**Standing approvals.** If you want any of spend/delete/send to stop asking, set it in
-`memory/policy.json`: `{"spend": "ask", "delete": "allow", "send": "ask"}` (`ask`, `allow` or `deny`).
-Default is `ask` for all three.
+**Two readers must agree.** What you ordered is read twice, independently: a rule-based parser (verbs in
+command position; negations, nouns and terms like "text-generation" excluded) and the order-reader member
+(the 1.7B base with its own weight edit). A risky kind counts as ordered only if both say so; a disagreement
+is logged and the kind is treated as not ordered (it asks you). Measured on 63 held-out sentences, see
+`training/reports/orders_*.json`.
 
-**Using your credentials.** Put them in `~/.agent-team/credentials.json` (outside the repo, `chmod 600`):
+**Everything you ordered, nothing else.** Your task is turned into a checklist of your instructions, in your
+own words (items that are not grounded in your text are dropped). The plan reviewer checks that the plan
+covers every instruction and adds nothing you did not order; the critic checks the finished report, and the
+report ends with "Your instructions" ✅/❌ and a "Done without your order" section if anything was.
+
+**Standing orders.** `memory/policy.json`: `{"spend": "ask", "delete": "allow", "send": "ask"}` (`ask`,
+`allow` or `deny`) for kinds you want permanently allowed or banned.
+
+**Your credentials.** Kept in `~/.agent-team/credentials.json` on your machine (`chmod 600`), never in the repo:
 ```json
 {"quotes.toscrape.com": {"username": "you", "password": "..."}}
 ```
-and allow that one site for that one task:
-```bash
-python -m team --allow-login quotes.toscrape.com "Log in and list my ..."
-```
-The browser fills the form itself. The values never go into a model prompt, the board, the logs or the
-trace. Sign-ups stay blocked even then.
+When your task orders a login on that site, the browser's `login` action fills the form from the vault itself.
+Models never type passwords or card numbers; the values never enter a prompt, the board, a log or a trace.
+`--allow-login SITE` grants a login for one run from the command line.
+
+## Kill switch: stop everything, now (`team/stop.py`)
+
+| from | how |
+|---|---|
+| the terminal running the task | **Ctrl+C** (a second Ctrl+C exits at once) |
+| any other terminal | `python -m team stop` |
+| the web page | the red **Stop** button |
+| serve mode | drop a file named `STOP` into `inbox/` |
+
+All of them set one flag that every specialist checks: the models between every generated token, the browser
+before every action, the coder's program is killed with its whole process group, and the hive between steps.
+Nothing runs after it. The run folder gets `STOPPED.md` (what finished, what was cut off, what never started)
+and `TRACE.md`; the flag is moved into the run folder as a record. Tested: `tests/test_rules.py` (running code
+and its child processes die within a second; model calls refuse to start) and `training/test_kill_switch.sh`
+(a real task stopped mid-run).
 
 ## How the specialists were improved
 
 TRAINING_SECTION
+
+## The smith swarm: members that improve the members (`team/smiths.py`, `team/evolve.py`, `training/`)
+
+No single member is in charge or has to be perfect. Improvement is itself a swarm: every kind of improvement has
+several smiths with different strategies; they compete on held-out tests; only measured winners are kept; a
+ledger (`memory/smiths.json`) tracks each smith's wins; and the smith-of-smiths replaces a losing smith with a
+mutated copy of a winning one, so the smiths get better too.
+
+| job | smiths (strategies) | what it produces |
+|---|---|---|
+| spot gaps | gap-failures (what keeps failing), gap-demand (what you keep asking for) | ranked gaps per member |
+| build data | data-distil (verified calls become examples), data-paraphrase (reword the task, keep the verified answer) | training data for a niche |
+| write tests | tests-from-runs (verified browser steps from real runs become field tests) | `training/evals/field_*.json` |
+| find internals | internals-diff (`training/steer.py`: per-layer hidden-state direction between right and wrong replies, layer and strength chosen by sweep) | a control vector at one layer |
+| train weights | train-top-half (layers 14-27, rank 16), train-narrow (layers 20-27, rank 8) | a weight edit (LoRA) |
+| tune prompts | prompt-rules, prompt-example, prompt-rewrite | a better system prompt |
+| clone and specialise | clone-niche | a new member, e.g. `browser_hf`, copied from its parent's edits |
+| teach the router | router-wins | routes a step to a specialised member only where it beat its parent (`memory/routes.json`) |
+| retire | retire-behind | retires members that fall behind their parent |
+| improve smiths | smith-of-smiths | replaces the worst smith of a job with a mutated copy of the best |
+
+```bash
+python -m team smiths              # the ledger: who is winning
+```
+```bash
+python -m team smiths cycle verifier   # gaps -> every prompt smith competes -> measured -> winner kept
+```
+```bash
+python -m team evolve researcher --variants 3
+```
+```bash
+python training/steer.py browser   # find and edit the internals behind the browser's mistakes
+```
+
+### A huge swarm in under 10 GB
+
+A member is a role prompt, a base model, and optionally its own weight edit (9-17 MB) and internal edit
+(8 KB), so members cost megabytes; RAM goes to the few shared base models. Under the default budget
+(`AGENT_TEAM_RAM_GB=10`): 8-bit attention cache, a smaller context for the 1.7B roles, at most 2 base
+models resident (the least recently used is unloaded and reloads in ~4 s from the OS file cache).
+
+SWARM_SECTION
 
 ## Dreaming: getting better on its own (`team/dream.py`)
 

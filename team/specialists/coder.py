@@ -25,6 +25,25 @@ def extract_code(text):
     return text.strip()
 
 
+def sanity(stdout):
+    """Hard checks: a measurement that reads exactly zero means the measuring code is wrong."""
+    probs = []
+    if re.search(r"\b0\.0+\s*(s|sec|seconds|ms|mb|gb|kb)\b", stdout, re.I):
+        probs.append("a time or memory measurement printed as 0.00 - it is measured around the wrong operation")
+    if re.search(r"\b0\s*/\s*\d+\b", stdout) and re.search(r"correct|accura", stdout, re.I):
+        probs.append("0 answers correct - check how replies are compared (parse the number out of the reply)")
+    return probs
+
+
+def review(task, code, stdout):
+    data, _ = llm.chat_json("code_reviewer", [{"role": "system", "content": prompts.CODE_REVIEWER},
+                                              {"role": "user", "content": f"TASK: {task}\n\nCODE:\n{code[:6000]}\n\nOUTPUT:\n{stdout[-1500:]}"}],
+                            max_new_tokens=250)
+    if not isinstance(data, dict) or data.get("ok", True) is True:
+        return []
+    return [str(x)[:200] for x in data.get("problems", [])][:5]
+
+
 def run(task, context, board, step_id, guard, workdir):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
@@ -45,7 +64,15 @@ def run(task, context, board, step_id, guard, workdir):
         last = {**res, "code": code, "attempts": attempt}
         missing = [f for f in want if not (workdir / f).exists()]
         if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing:
-            break
+            problems = sanity(res["stdout"]) or review(task, code, res["stdout"])
+            if not problems or attempt == config.CODER_MAX_ATTEMPTS:
+                break
+            board.log("code_reviewer", "fix", " | ".join(problems)[:300])
+            messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                                   {"role": "user", "content": prompts.CODER_FIX.format(
+                                       error="It ran, but the code does not do the task correctly:\n- " + "\n- ".join(problems)
+                                       + f"\nOutput was:\n{res['stdout'][-800:]}")}]
+            continue
         if res["returncode"] == 0 and missing:
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"
         else:

@@ -38,6 +38,14 @@ def gather(plan, board, step_id, task=""):
             board.log("researcher", "tool-fail", notes[-1])
             continue
         board.log("researcher", "search", f"{src}: '{q}' -> {len(res)} results")
+        ids = re.findall(r"\b[\w.\-]+/[\w.\-]+\b", q) if src == "huggingface" else []
+        for mid in ids[:2]:  # an exact model id: also get that model's own facts (license, files, sizes)
+            try:
+                det = web.search("hf_model", mid)
+                res = res + det
+                board.log("researcher", "search", f"hf_model: {mid} -> {len(det)} facts")
+            except Exception as e:  # noqa: BLE001
+                notes.append(f"hf_model {mid} failed: {e}")
         lines = [f"- {r['title']} | {r['url']} | {r['snippet']}" for r in res]
         url = res[0].get("source_url") if res and res[0].get("source_url") else f"search:{src}:{q}"
         text = "\n".join(lines)
@@ -70,8 +78,10 @@ def condense(task, title, text, board, limit=3000):
                             max_new_tokens=200)
     keep = [int(i) for i in (data or {}).get("keep", []) if str(i).isdigit() and int(i) < len(lines)] \
         if isinstance(data, dict) else []
-    if not keep:
-        return text[:limit]
+    if not keep or len(keep) > 60:  # the condenser failed to choose: fall back to goal-matching lines
+        from ..tools.browser import focus_text
+        board.log("condenser", "fallback", f"{title[:60]}: kept goal-matching lines")
+        return focus_text(text, task, head=600, budget=limit)
     board.log("condenser", "condense", f"{title[:60]}: kept {len(keep)} of {len(lines)} lines")
     return "\n".join(lines[i] for i in sorted(set(keep)))
 

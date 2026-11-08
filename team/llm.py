@@ -16,6 +16,7 @@ _lock = threading.Lock()
 _bases = {}  # model_id -> {"tok", "model", "adapters": set()}
 STATS = {"calls": 0, "tokens_out": 0, "seconds": 0.0}
 RECORDER = None  # callable(specialist, messages, output) - the hive records every call for self-training
+ROUTE = {}  # role -> specialised member the router teacher picked for the current step (e.g. browser -> browser_hf)
 
 
 def _load(model_id):
@@ -277,6 +278,7 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
     `prefix` is forced as the start of the reply (e.g. "{" to force a JSON object)."""
     from . import stop as _stop
     _stop.check()
+    specialist = ROUTE.get(specialist, specialist)
     if use_gguf():
         with _lock:
             text = _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)

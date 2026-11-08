@@ -23,7 +23,7 @@ SPECIALISTS = {
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
 }
-for _role in ("plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
+for _role in ("code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
               "lesson_writer"):
     SPECIALISTS[_role] = BASE_MODEL  # PyTorch fallback: same base, no edit
 
@@ -53,6 +53,8 @@ GGUF_ROSTER = {
     "critic": BRAIN,                # checks the final report against verified results
     "juror_brain": BRAIN,           # jury: step verdicts are a vote of three
     "juror_fast": "fast",
+    "order_reader": "fast+order_reader",
+    "code_reviewer": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),  # reads the program against the task  # second, independent reading of what Arnav ordered (with the regex)
     # evolution-harness specialists
     "examiner": BRAIN, "prompt_smith": BRAIN, "lesson_writer": "fast",
 }

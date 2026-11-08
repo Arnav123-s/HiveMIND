@@ -141,7 +141,7 @@ class Board:
                     res = {"summary": str(res)}
                 line = f"## {s['id']} ({s['agent']}, verdict={s.get('verdict')}): {s['task'][:200]}\n"
                 if res.get("summary"):
-                    line += f"Result: {res['summary'][:900]}\n"
+                    line += f"Result: {res['summary'][:1500]}\n"
                 if res.get("items"):
                     line += "Items: " + json.dumps(res["items"])[:700] + "\n"
                 if res.get("files"):

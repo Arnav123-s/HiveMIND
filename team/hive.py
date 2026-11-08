@@ -23,7 +23,7 @@ class Hive:
         self.dir = Path(run_dir or config.RUNS / stamp)
         self.board = Board(self.dir)
         self.board.goal = self.goal
-        self.guard = Guard(self.board, approve, allow_login=allow_login, goal=self.goal)
+        self.guard = Guard(self.board, approve, allow_login=allow_login, goal=self.goal, use_model=True)
         self.work = self.dir / "work"
         self.shots = self.dir / "screens"
         self.work.mkdir(parents=True, exist_ok=True)
@@ -164,11 +164,20 @@ class Hive:
             lessons = memory.lessons_for(s["agent"], s["task"])
             if lessons:
                 ctx += "\nLessons from earlier runs:\n" + "\n".join(f"- {x}" for x in lessons)
+            from . import smiths
+            member = smiths.route(s["agent"], task)  # a specialised clone, only where it measurably wins
+            if member != s["agent"]:
+                llm.ROUTE[s["agent"]] = member
+                b.log("router", "route", f"{s['id']}: {s['agent']} -> {member}")
             try:
                 result = self._dispatch(s, task, ctx)
+            except stop.Stopped:
+                raise
             except Exception as e:  # noqa: BLE001 - a crash is a failed attempt, not a dead team
                 result = {"summary": "", "failed": f"{type(e).__name__}: {e}"}
                 b.log(s["agent"], "error", str(e)[:300])
+            finally:
+                llm.ROUTE.pop(s["agent"], None)
             if result.get("failed") and s["agent"] != "browser":
                 verdict, why = "FAIL", result["failed"]
             else:
