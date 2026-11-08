@@ -1,0 +1,8 @@
+{
+ "skill": "orders_any",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.9375,
+ "test": 0.6721311475409836,
+ "trainable_params": 0
+}

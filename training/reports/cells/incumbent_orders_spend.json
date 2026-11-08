@@ -1,0 +1,34 @@
+{
+ "skill": "orders_spend",
+ "incumbent": "order_reader = fast+order_reader",
+ "test": 0.918,
+ "ms_per_call": 1162.3,
+ "n": 61,
+ "errors": [
+  [
+   "Benchmark list.sort on a million integers. Now book the 3pm train.",
+   "yes",
+   "no"
+  ],
+  [
+   "What is the share of each category? Go ahead and donate to a hotel room.",
+   "yes",
+   "no"
+  ],
+  [
+   "Tell me how the remove-duplicates option works. Look it up and rent the course. Now unsubscribe from my old tweets.",
+   "yes",
+   "no"
+  ],
+  [
+   "Look it up and delete the cache. Find the three most downloaded models on Hugging Face.",
+   "no",
+   "yes"
+  ],
+  [
+   "You should rent the course today. Find the three most downloaded models on Hugging Face. Now share the screenshot.",
+   "yes",
+   "no"
+  ]
+ ]
+}

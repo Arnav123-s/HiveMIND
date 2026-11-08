@@ -1,0 +1,39 @@
+{
+ "skill": "pick_element",
+ "incumbent": "browser = fast+browser",
+ "test": 0.88,
+ "ms_per_call": 2314.3,
+ "n": 150,
+ "errors": [
+  [
+   "GOAL: navigate to Older posts\nELEMENTS:\n[92] input[text] \"\"\n[34] a \"See all\"\n[43] a \"Pay\"\n[47] link \"Guide\"\n[67] button \"Fiction\"\n[18] link \"Jobs\"\n[54] span \"Cheapest first\"\n[46] button \"Buy now\"\n[15] link \"Romance\"\n[26] a \"Older posts\"",
+   "26",
+   "34"
+  ],
+  [
+   "GOAL: choose the Fiction option\nELEMENTS:\n[58] a \"Find\"\n[42] link \"Buy now\"\n[55] button \"Pay\"\n[65] link \"Ratings\"\n[52] button \"Basket\"\n[97] input[text] \"\"\n[78] link \"Jobs\"\n[14] a \"Fiction\"\n[74] button \"Follow\"\n[7] span \"Romance\"",
+   "14",
+   "42"
+  ],
+  [
+   "GOAL: hit Support\nELEMENTS:\n[62] span \"Plans\"\n[1] span \"Pay\"\n[20] span \"Confirm\"\n[95] input[text] \"\"\n[24] span \"Romance\"\n[79] button \"Support\"",
+   "79",
+   "24"
+  ],
+  [
+   "GOAL: choose the export option\nELEMENTS:\n[24] a \"Fiction\"\n[8] span \"Start\"\n[79] button \"Refine\"\n[27] span \"News\"\n[78] button \"Cheapest first\"\n[54] a \"Newer posts\"\n[56] span \"Export\"\n[48] span \"See all\"\n[34] span \"Ratings\"",
+   "56",
+   "54"
+  ],
+  [
+   "GOAL: log in\nELEMENTS:\n[37] a \"Sign in\"\n[18] button \"Preferences\"\n[79] span \"Romance\"\n[57] span \"Follow\"\n[24] button \"Refine\"",
+   "37",
+   ""
+  ],
+  [
+   "GOAL: navigate to ratings\nELEMENTS:\n[12] button \"Plans\"\n[39] a \"Refine\"\n[67] button \"Cheapest first\"\n[54] a \"Newer posts\"\n[27] span \"Confirm\"\n[6] button \"Jobs\"\n[11] a \"Expand replies\"\n[46] span \"Ratings\"\n[43] a \"Pay\"",
+   "46",
+   "43"
+  ]
+ ]
+}

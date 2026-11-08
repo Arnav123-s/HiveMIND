@@ -1,0 +1,39 @@
+{
+ "skill": "orders_delete",
+ "incumbent": "order_reader = fast+order_reader",
+ "test": 0.8852,
+ "ms_per_call": 0.0,
+ "n": 61,
+ "errors": [
+  [
+   "What is the share of each category? Go ahead and donate to a hotel room.",
+   "no",
+   "yes"
+  ],
+  [
+   "Check the order of the steps in the guide. Without logging in, read the public page.",
+   "no",
+   "yes"
+  ],
+  [
+   "Explain the text of the licence. Under no circumstances register on the waiting list.",
+   "no",
+   "yes"
+  ],
+  [
+   "Benchmark list.sort on a million integers. Now book the 3pm train.",
+   "no",
+   "yes"
+  ],
+  [
+   "Explain the text of the licence. Without logging in, read the public page.",
+   "no",
+   "yes"
+  ],
+  [
+   "Make a chart of last month's temperatures. Under no circumstances register on the waiting list.",
+   "no",
+   "yes"
+  ]
+ ]
+}

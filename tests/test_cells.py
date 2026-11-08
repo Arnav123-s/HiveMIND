@@ -86,3 +86,23 @@ def test_quote_rescue_returns_an_exact_source_sentence(monkeypatch):
     assert asked and asked[0].startswith("CLAIM: Foo-1B")
     monkeypatch.setattr(use, "on", lambda skill: False)
     assert verifier._rescue_quote("Foo-1B is released under Apache 2.0", corpus, None) is None
+
+
+def test_family_cell_only_adds_blocks(monkeypatch):
+    from team import guard
+    monkeypatch.setattr(guard, "_family_cell", lambda text: "Mom" in (text or "") or "offsite" in (text or ""))
+    assert guard.check_task("Book a table for Mom", "Find restaurants") is not None   # the cell catches what the rule misses
+    assert guard.check_task("Book a table for Mom", "Plan a dinner with Mom") is None  # ordered: allowed
+    assert guard.check_task("Text my wife the plan", "Plan the team offsite") is not None  # the cell cannot unlock the rule
+
+
+def test_checklist_keeps_arnavs_words_and_skips_nothing(monkeypatch):
+    from team.specialists import coordinator
+    goal = ("Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me "
+            "a two-line summary. Do not log in or pay.")
+    monkeypatch.setattr(use, "on", lambda skill: skill == "split_orders")
+    monkeypatch.setattr(use, "ask", lambda skill, x, board=None: "Find the licence\nThe parameter count of Hugging Face "
+                        "TB/Smol LM2-135M-Instruct on Hugging Face\nGive me a two-line summary")
+    items = coordinator.instructions(goal)
+    assert "the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face" in items
+    assert items[-1] == "Do not log in or pay"

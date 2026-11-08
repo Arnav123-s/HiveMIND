@@ -1,0 +1,39 @@
+{
+ "skill": "family_topic",
+ "incumbent": "code:guard.FAMILY",
+ "test": 0.875,
+ "ms_per_call": 0.0,
+ "n": 80,
+ "errors": [
+  [
+   "Plan a trip with the kids and summarise it.",
+   "yes",
+   "no"
+  ],
+  [
+   "Choose a school for our son.",
+   "yes",
+   "no"
+  ],
+  [
+   "Plan a trip with the kids before Friday.",
+   "yes",
+   "no"
+  ],
+  [
+   "Plan a trip with the kids and send me the link.",
+   "yes",
+   "no"
+  ],
+  [
+   "Plan a trip with the kids, then make a short list.",
+   "yes",
+   "no"
+  ],
+  [
+   "Choose a school for our son, then make a short list.",
+   "yes",
+   "no"
+  ]
+ ]
+}

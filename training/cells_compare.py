@@ -34,6 +34,15 @@ def orders_organizer():
     return {k: {"exact": round(v[0] / n, 3), "false_approvals": v[1], "missed_orders": v[2]} for k, v in res.items()} | {"n": n}
 
 
+def family_as_used():
+    """The guard asks the rule OR the family cell (the cell only adds blocks): that pair against the rule alone."""
+    from team import guard
+    from training.cells import data
+    _, _, te = data("family_topic")
+    pred = ["yes" if guard.FAMILY.search(x) or runtime.run("family_topic", x) == "yes" else "no" for x, _ in te]
+    return round(sum(S.score("family_topic", p, y) for p, (_, y) in zip(pred, te)) / len(te), 4)
+
+
 def page_organizer():
     """pick_element done by the smaller element_match cell, asked once per element (runtime.pick_element)."""
     from training.cells import data
@@ -55,6 +64,9 @@ if __name__ == "__main__":
                        "incumbent_name": inc and inc["incumbent"]}
         v = c["variants"]
         rows.append((skill, c, inc, use, v))
+    if "family_topic" in wins and wins["family_topic"]["incumbent"] is not None:
+        both = family_as_used()
+        wins["family_topic"].update(rule_or_cell=both, use=both >= wins["family_topic"]["incumbent"])
     page = None
     if "element_match" in reg:  # the page organizer competes for pick_element's job against the one-shot cell
         page = page_organizer()
@@ -79,9 +91,11 @@ if __name__ == "__main__":
         wins["_orders_organizer"] = {"cells": org, "order_reader_member": {"model": old["model"], "both": old["both"]}, "use": ok}
     (runtime.CELLS / "wins.json").write_text(json.dumps(wins, indent=1))
     lines = ["# Cells: measured", "",
-             "Each cell = SmolLM2-135M (shared, frozen) + its own weight delta on the modules the locator picked. "
-             "Scores are on the TEST split (other words, frames, sites than training). Variant columns are the "
-             "PyTorch test scores; the winner is chosen on dev. `cell` = the winner served by llama.cpp.", "",
+             "Each cell = SmolLM2-135M (shared, frozen) + its own weight delta. Scores are on the TEST split (other "
+             "words, frames, sites than training). Variant columns are the PyTorch test scores of each candidate edit; "
+             "the winner is chosen on dev. `cell` = the winner served by llama.cpp. The five orders_* cells take the "
+             "job only together, judged as the guard uses them (the organizer table below), so one of them can lose "
+             "alone and still say yes here.", "",
              "| skill | hive part | base | locator pick (r8) | pick r8 + r2 elsewhere | r2 everywhere | random K (r8) | r8 everywhere | winner | params changed | cell (llama.cpp) | ms/call | incumbent | incumbent score | ms/call | takes the job |",
              "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for skill, c, inc, use, v in rows:
@@ -92,6 +106,10 @@ if __name__ == "__main__":
                      f"{g('all_r2')} | {g('random')} | {g('all_r8')} | {c['variant']} | {c['trainable_params']:,} | {c['test_runtime']:.2f} | "
                      f"{c['ms_per_call']:.0f} | {inc['incumbent'] if inc else '-'} | {inc['test'] if inc else '-'} | "
                      f"{inc['ms_per_call'] if inc else '-'} | {'yes' if wins[skill]['use'] else 'no'} |")
+    if "rule_or_cell" in wins.get("family_topic", {}):
+        w = wins["family_topic"]
+        lines += ["", f"family_topic as the guard uses it (the rule OR the cell; the cell only adds blocks): "
+                      f"{w['rule_or_cell']} vs the rule alone {w['incumbent']} -> {'on' if w['use'] else 'off'}."]
     if page:
         w = wins["pick_element"]
         lines += ["", "## pick_element split into a smaller cell plus an organizer", "",

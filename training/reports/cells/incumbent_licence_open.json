@@ -1,0 +1,39 @@
+{
+ "skill": "licence_open",
+ "incumbent": "juror_brain = brain4b",
+ "test": 0.9333,
+ "ms_per_call": 5087.4,
+ "n": 135,
+ "errors": [
+  [
+   "x/voice-0.3b | licence cc-by-nc-sa-4.0 | params 1.1B",
+   "no",
+   "yes"
+  ],
+  [
+   "isc \u2014 v/ocr-base",
+   "yes",
+   "no"
+  ],
+  [
+   "z/sum-small | licence cc-by-nc-sa-4.0 | params 1.1B",
+   "no",
+   "yes"
+  ],
+  [
+   "isc \u2014 y/chat-2b",
+   "yes",
+   "no"
+  ],
+  [
+   "v/ocr-base | licence cc-by-nc-sa-4.0 | params 1.1B",
+   "no",
+   "yes"
+  ],
+  [
+   "z/sum-small released under creativeml-openrail-m",
+   "no",
+   "yes"
+  ]
+ ]
+}

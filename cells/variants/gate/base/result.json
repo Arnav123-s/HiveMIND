@@ -1,0 +1,8 @@
+{
+ "skill": "gate",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.3,
+ "test": 0.11333333333333333,
+ "trainable_params": 0
+}

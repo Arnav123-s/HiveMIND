@@ -1,0 +1,24 @@
+{
+ "skill": "route_step",
+ "incumbent": "coordinator = brain4b",
+ "test": 0.9746,
+ "ms_per_call": 7094.6,
+ "n": 118,
+ "errors": [
+  [
+   "Measure the time it takes to the median latency.",
+   "coder",
+   "writer"
+  ],
+  [
+   "Present the research notes as the final answer.",
+   "writer",
+   "researcher"
+  ],
+  [
+   "Identify the author of NumPy.",
+   "researcher",
+   "writer"
+  ]
+ ]
+}
