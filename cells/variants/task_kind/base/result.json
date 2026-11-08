@@ -1,0 +1,8 @@
+{
+ "skill": "task_kind",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.38636363636363635,
+ "test": 0.4409448818897638,
+ "trainable_params": 0
+}

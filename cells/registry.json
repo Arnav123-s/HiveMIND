@@ -3121,5 +3121,66 @@
   "test_runtime": 0.9867,
   "ms_per_call": 60.9,
   "gguf_bytes": 3356224
+ },
+ "task_kind": {
+  "skill": "task_kind",
+  "part": "hive: the cheapest way through the hive for a whole task",
+  "base": "smol135",
+  "variant": "scratch",
+  "modules": [
+   "8:o_proj",
+   "8:q_proj",
+   "8:v_proj",
+   "9:q_proj",
+   "9:v_proj",
+   "10:q_proj",
+   "10:v_proj",
+   "11:down_proj",
+   "11:q_proj",
+   "11:v_proj",
+   "12:down_proj",
+   "12:q_proj",
+   "12:v_proj",
+   "13:down_proj",
+   "13:q_proj",
+   "13:v_proj",
+   "14:down_proj",
+   "14:q_proj",
+   "14:v_proj",
+   "19:o_proj",
+   "28:down_proj",
+   "28:gate_proj",
+   "28:up_proj",
+   "29:down_proj",
+   "29:gate_proj",
+   "29:up_proj"
+  ],
+  "rank": 8,
+  "thin": 2,
+  "trainable_params": 831744,
+  "parent": null,
+  "dev": 0.7272727272727273,
+  "test_torch": 0.7874015748031497,
+  "variants": {
+   "base": {
+    "dev": 0.38636363636363635,
+    "test": 0.4409448818897638,
+    "params": 0
+   },
+   "clone_element_match": {
+    "dev": 0.6818181818181818,
+    "test": 0.8188976377952756,
+    "params": 831744
+   },
+   "scratch": {
+    "dev": 0.7272727272727273,
+    "test": 0.7874015748031497,
+    "params": 831744
+   }
+  },
+  "promoted": "2026-11-08 17:57",
+  "test_runtime": 0.7559,
+  "ms_per_call": 61.0,
+  "gguf_bytes": 3356224
  }
 }
