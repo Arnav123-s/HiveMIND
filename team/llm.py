@@ -467,9 +467,21 @@ def _repair_cell(text):
         return None
 
 
+def cut_off(out):
+    """The reply stopped at the token limit inside the JSON (it never closed), not a format mistake."""
+    t = (out or "").rstrip()
+    return bool(t) and t[0] in "{[" and t[-1] not in "}]"
+
+
 def chat_json(specialist, messages, max_new_tokens=512, adapter=True, retries=1, prefix="{"):
     out = chat(specialist, messages, max_new_tokens, adapter, prefix=prefix, stop="json")
     data = parse_json(out)
+    if data is None and cut_off(out) and max_new_tokens < 2048:
+        # the browser's answer with three quotes and their evidence passed its 160-token limit; told "not valid
+        # JSON" with the same limit it was cut off again, 20 times, until it ran out of actions
+        max_new_tokens = min(2048, max_new_tokens * 2)
+        out = chat(specialist, messages, max_new_tokens, adapter, prefix=prefix, stop="json")
+        data = parse_json(out)
     tries = 0
     while data is None and tries < retries:
         tries += 1
