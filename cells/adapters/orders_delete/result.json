@@ -1,7 +1,7 @@
 {
  "skill": "orders_delete",
  "base": "smol135",
- "tag": "all_r2",
+ "tag": "all_r2_questions",
  "modules": [
   "0:q_proj",
   "0:k_proj",
@@ -222,9 +222,9 @@
  "trainable_params": 610560,
  "parent": null,
  "copied_tensors": 0,
- "dev": 1.0,
+ "dev": 0.9875,
  "test": 0.9508196721311475,
- "train_seconds": 399.7,
+ "train_seconds": 267.2,
  "test_errors": [
   [
    "Tell me how the remove-duplicates option works. Avoid having to text the screenshot.",
@@ -241,5 +241,6 @@
    "no",
    "yes"
   ]
- ]
+ ],
+ "questions": 0.9833333333333333
 }

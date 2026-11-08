@@ -1348,7 +1348,7 @@
   "skill": "orders_delete",
   "part": "guard: is a 'delete' action ORDERED",
   "base": "smol135",
-  "variant": "all_r2",
+  "variant": "all_r2_questions",
   "modules": [
    "0:q_proj",
    "0:k_proj",
@@ -1565,7 +1565,7 @@
   "thin": null,
   "trainable_params": 610560,
   "parent": null,
-  "dev": 1.0,
+  "dev": 0.9875,
   "test_torch": 0.9508196721311475,
   "variants": {
    "all_r2": {
@@ -1589,10 +1589,11 @@
     "params": 800640
    }
   },
-  "promoted": "2026-11-08 10:41",
-  "test_runtime": 0.9508,
-  "ms_per_call": 76.7,
-  "gguf_bytes": 2471488
+  "promoted": "2026-11-08 17:22",
+  "test_runtime": 0.9344,
+  "ms_per_call": 72.8,
+  "gguf_bytes": 2471488,
+  "questions_torch": 0.9833333333333333
  },
  "claim_support": {
   "skill": "claim_support",

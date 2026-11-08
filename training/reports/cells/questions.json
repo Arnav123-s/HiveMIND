@@ -1,0 +1,15 @@
+{
+ "orders_delete": {
+  "old": {
+   "test": 0.9508196721311475,
+   "questions": 0.9
+  },
+  "new": {
+   "test": 0.9508196721311475,
+   "questions": 0.9833333333333333
+  },
+  "promoted": true,
+  "recipe": "all_r2_questions",
+  "rule": "new test >= old test and new questions > old questions"
+ }
+}
