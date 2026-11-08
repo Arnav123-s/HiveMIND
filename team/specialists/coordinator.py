@@ -172,7 +172,8 @@ def ensure_file_step(goal, steps):
     sid = next(f"s{i}" for i in range(len(steps) + 1, 99) if f"s{i}" not in ids)
     w = steps[-1]
     step = {"id": sid, "agent": "coder", "task": f"Make the file Arnav asked for, from the results so far: {goal[:300]}",
-            "needs": [s["id"] for s in steps[:-1]], "for_each": None, "done_when": "the file he asked for is saved"}
+            "needs": [s["id"] for s in steps[:-1]], "for_each": None,
+            "done_when": f"the file is saved and holds exactly what he asked for: {goal[:200]}"}
     w = dict(w, needs=list(dict.fromkeys(w["needs"] + [sid])))
     return steps[:-1] + [step, w], [f"added {sid} (coder): {probs[0]}"]
 

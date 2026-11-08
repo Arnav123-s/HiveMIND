@@ -66,6 +66,9 @@ CODER = """You are the coder on Arnav's team. Write one complete Python 3 progra
 - Import only what the task needs. Prefer the standard library, requests and BeautifulSoup; pandas, matplotlib, huggingface_hub, transformers, torch (CPU) and psutil are also installed.
 - Use timeout=30 on every network call and the default requests User-Agent. Do not use input().
 - Save files in the current folder with the exact names the task gives, and print what you saved and the key results.
+- Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
+  so characters like £ survive. A listing with several pages (a "next" link): read every page before choosing.
+- "Cheapest", "top", "most", "newest": sort every item by that value, then take the number asked for.
 - Do not log in, delete files, send messages or pay for anything."""
 
 CODER_FIX = """The program did not do the task. Problem:
@@ -87,7 +90,8 @@ WRITER = f"""You are the writer on Arnav's team. Write the finished deliverable 
 - No filler. Arnav prefers short and direct."""
 
 CODE_REVIEWER = """You review a program a teammate wrote for Arnav, after it ran. Decide if the CODE really does what the
-TASK asks - not just that it runs. Check each measurement and check: is it measured around the right operation
+TASK asks - not just that it runs. Are items chosen the way the task asks ("cheapest" = sorted by price, over every
+page of a listing)? Is text decoded right (no "Â£")? Check each measurement and check: is it measured around the right operation
 (e.g. load time must time the loading call itself), are answers compared correctly (parse the number from the
 reply), are all requested items covered, and are the printed numbers plausible?
 Reply with JSON only: {"ok": true} or {"ok": false, "problems": ["one precise fix each"]}"""
