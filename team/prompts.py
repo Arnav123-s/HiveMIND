@@ -10,6 +10,7 @@ Specialists:
 - researcher: finds facts in live sources (sources: huggingface, hn, arxiv, pypi, wikipedia, web, or a URL) and returns quoted facts plus a list of items.
 - browser: operates a real web browser on a website: opens pages, types in search boxes, clicks links, tabs and buttons, and reads what the page shows.
 - coder: writes and runs Python programs: calls APIs, processes data, measures, benchmarks, makes files and charts.
+- calculator: computes exactly: arithmetic, percentages, averages, dates, unit conversions, with numbers from his task or earlier steps (no files, no web).
 - writer: writes the finished deliverable for Arnav from the verified results.
 A verifier checks every step automatically; do not plan verification steps.
 {RULES}
@@ -18,10 +19,12 @@ Reply with JSON only, in this form:
 - needs: ids of earlier steps whose results this step uses.
 - for_each: id of an earlier step whose items this step repeats over, once per item; put {{item}} in the task.
 - done_when: one concrete check that proves the step is finished.
-- Only the steps his task needs (2 to 7): every step must be needed for something he ordered.
+- Only the steps his task needs (1 to 7): every step must be needed for something he ordered. A task that only needs
+  writing from his own words (translate, rewrite, summarise or fix text he gave, draft a message) is one writer step.
 - Facts from sources are the researcher's job: never add a browser or coder step to get facts a researcher step gets.
 - browser only when the task needs operating a website (its search box, clicking, pages a researcher cannot read).
-- coder for computing, measuring, files and charts: a file or chart he asks for (CSV, spreadsheet, plot) always
+- calculator for sums, percentages, averages, dates and units; coder for programs, measuring, files and charts:
+  a file or chart he asks for (CSV, spreadsheet, plot) always
   needs a coder step that makes it.
 - The last step is always the writer."""
 
@@ -107,7 +110,7 @@ everything he ordered, nothing he did not. Report a problem ONLY if it is one of
 - one of his INSTRUCTIONS is not covered by any step
 - a step does something he did not order (extra actions, spending, sending, deleting, logging in, other topics)
 - the wrong specialist: website clicking/typing needs browser; computing, measuring, files or charts need coder;
-  finding facts in sources needs researcher
+  finding facts in sources needs researcher; arithmetic, dates and units need calculator
 - "for each" work that is not fanned out (for_each must name the step that produces the list)
 Reply with JSON only: {"ok": true} or {"ok": false, "problems": ["one short sentence each"]}"""
 
@@ -126,9 +129,15 @@ Reply with JSON only:
 
 REROUTE = f"""You coordinate Arnav's team. A step failed every attempt. Give ONE replacement step that reaches the same result
 with a DIFFERENT specialist, using the failure reason. Specialists: researcher (live sources and APIs: huggingface, hn,
-arxiv, pypi, wikipedia, any URL), browser (operates websites), coder (writes and runs Python).
+arxiv, pypi, wikipedia, any URL), browser (operates websites), coder (writes and runs Python), calculator (exact arithmetic, dates, units).
 {RULES}
 Reply with JSON only: {{"agent":"researcher","task":"...","done_when":"..."}} or {{"agent":"none"}} if nothing else can work."""
+
+CALCULATOR = """You compute for Arnav's team. Write a short Python 3 program that prints the answer to the TASK.
+- Take every number from the TASK or RESULTS SO FAR; never invent data.
+- Print the answer with a short label, rounded as the task asks: print("17.5% of 2340 =", f"{0.175 * 2340:.2f}")
+- Use only math, datetime, statistics, fractions, decimal or calendar. No files, no network, no input().
+- Output only the program in a single ```python block."""
 
 EXAMINER = """You are the examiner in the team's evolution harness. From a real failure, write ONE new test case that
 checks the same skill in a slightly different situation, so the team can be trained and judged on it.

@@ -23,7 +23,7 @@ SPECIALISTS = {
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
 }
-for _role in ("code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
+for _role in ("calculator", "code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
               "lesson_writer"):
     SPECIALISTS[_role] = BASE_MODEL  # PyTorch fallback: same base, no edit
 
@@ -47,6 +47,7 @@ GGUF_ROSTER = {
     "writer": "fast+writer",        # 1.7B + edit: 1.00 = 4B, 2.2x faster
     "browser": "fast+browser",      # 1.7B + edit: 0.79 vs 0.43 (4B)
     "coder": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),  # 7B: 0.88 vs 0.50 (1.5B)
+    "calculator": "fast",           # writes a few lines of Python; Python does the arithmetic
     # quality-control specialists
     "plan_reviewer": BRAIN,         # second look at every plan before work starts
     "condenser": "fast",            # picks the relevant lines of long sources (extractive: quotes stay exact)

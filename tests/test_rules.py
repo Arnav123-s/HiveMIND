@@ -313,3 +313,38 @@ def test_a_question_is_not_an_order_unless_it_asks_the_team():
     assert set(parse_orders("Can you delete the old logs?")) == {"delete"}
     assert set(parse_orders("Could you pay the invoice for me?")) == {"spend"}
     assert set(parse_orders("Buy the book. Is it safe?")) == {"spend"}
+
+
+def test_calculator_runs_only_arithmetic(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.specialists import calculator, verifier
+    b = Board(tmp_path, echo=False)
+    monkeypatch.setattr(calculator.llm, "chat", lambda *a, **k: '```python\nprint("17.5% of 2340 =", f"{0.175 * 2340:.2f}")\n```')
+    r = calculator.run("What is 17.5% of 2,340?", "", b, "s1", tmp_path)
+    assert r["returncode"] == 0 and r["summary"] == "17.5% of 2340 = 409.50"
+    monkeypatch.setattr(verifier, "_judge_one", lambda *a: ("PASS", "computes it"))
+    assert verifier.verify({"id": "s1", "agent": "calculator", "task": "t", "done_when": "d"}, r, b, tmp_path)[0] == "PASS"
+    monkeypatch.setattr(calculator.llm, "chat", lambda *a, **k: "import shutil\nshutil.rmtree('/tmp/x')")
+    r = calculator.run("t", "", b, "s2", tmp_path)
+    assert "failed" in r and not (tmp_path / "calc" / "s2.py").exists()
+
+
+def test_a_short_report_is_not_a_failure_but_an_empty_one_is(tmp_path):
+    from team.board import Board
+    from team.specialists import verifier
+    b = Board(tmp_path, echo=False)
+    w = {"id": "s1", "agent": "writer", "task": "t", "done_when": "d"}
+    assert verifier.verify(w, {"summary": "La réunion est déplacée à vendredi.\n\n## Sources"}, b, tmp_path)[0] == "PASS"
+    assert verifier.verify(w, {"summary": "\n## Your instructions\n- ❌ x"}, b, tmp_path)[0] == "FAIL"
+
+
+def test_a_writer_only_task_uses_arnavs_words_as_the_source(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.specialists import writer
+    b = Board(tmp_path, echo=False)
+    seen = []
+    monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **k: seen.append(msgs[-1]["content"]) or "La réunion est déplacée.")
+    monkeypatch.setattr(writer.llm, "chat_json", lambda *a, **k: ({"unsupported": [], "unordered": [], "checklist": []}, ""))
+    monkeypatch.setattr(writer.memory, "profile", lambda: "")
+    writer.run("Translate into French: 'The meeting has been moved.'", "Translate it", b, [])
+    assert "Arnav's own words are the source" in seen[0] and "The meeting has been moved." in seen[0]

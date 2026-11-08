@@ -195,10 +195,21 @@ def verify(step, result, board, workdir):
             return "FAIL", f"files missing: {missing}"
         return judge(check, f"Program ran (exit 0). Files: {result.get('files')}", result.get("summary", ""))
 
+    if agent == "calculator":
+        if result.get("failed"):
+            return "FAIL", result["failed"]
+        if result.get("returncode") != 0:
+            return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
+        if not re.search(r"\d", result.get("summary", "")):
+            return "FAIL", "the program printed no number"
+        # one check, not a jury: the arithmetic is Python's; only "does it compute what was asked" needs a model
+        return _judge_one("verifier", check + " (Does the PROGRAM compute exactly what the task asks, with its numbers?)",
+                          f"Program ran (exit 0). Output: {result.get('summary', '')[:500]}", result.get("code", ""))
+
     if agent == "writer":
-        text = result.get("summary", "")
-        if len(text) < 200:
-            return "FAIL", "report is too short"
+        body = result.get("summary", "").split("\n## ")[0].strip()
+        if not body:  # a two-line summary or a translated sentence is short and right: only empty is wrong
+            return "FAIL", "report is empty"
         return "PASS", "report written from verified results"
 
     return "FAIL", f"unknown agent {agent}"
