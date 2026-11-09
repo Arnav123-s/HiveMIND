@@ -303,12 +303,20 @@ def review(goal, steps, checklist=()):
     return fixed + [str(x)[:200] for x in data.get("problems", [])][:5]
 
 
+PROSE = re.compile(r"\b(explain\w*|describ\w*|summari[sz]\w*|defin\w*|tell\w*|what (?:is|are)|write about)\b", re.I)
+COMPUTE = re.compile(r"\b(program|code|script|function|python|compute|calculat\w*|measur\w*|benchmark\w*|simulat\w*|"
+                     r"experiment\w*|plot|chart|graph|csv|json|file|api|download|scrape|average|sum|percent\w*|\d)\b", re.I)
+
+
 def reroute(goal, step, reason):
     """A different specialist for a step that failed every attempt (the hive routes around failure)."""
     data, _ = llm.chat_json("coordinator", [{"role": "system", "content": prompts.REROUTE},
                                             {"role": "user", "content": f"Arnav's task: {goal}\nFailed step ({step['agent']}): "
                                              f"{step['task']}\nWhy it failed: {reason}"}], max_new_tokens=250)
     if not isinstance(data, dict) or data.get("agent") not in AGENTS - {"writer", step["agent"]} or not data.get("task"):
+        return None
+    if data["agent"] in ("coder", "calculator") and PROSE.search(str(data["task"])) and not COMPUTE.search(goal):
+        # a program cannot explain: "Write a Python program that explains what a hash table is" made invalid Python
         return None
     return {"id": step["id"] + "r", "agent": data["agent"], "task": str(data["task"]), "needs": step["needs"],
             "for_each": None, "done_when": str(data.get("done_when") or step.get("done_when", ""))}
