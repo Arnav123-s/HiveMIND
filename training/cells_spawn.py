@@ -81,7 +81,7 @@ def passes(j):
     return j["agree_when_sure"] >= PASS and j["covers"] >= COVERS and j["answered"] >= MIN_ANSWERED
 
 
-def grow(skill, steps=300, ladder=LADDER):
+def grow(skill, steps=300, ladder=LADDER, ranks=(("r2", 2), ("r8", 8))):
     sp = spawn.spawned()[skill]
     tr, dv, te = learn.split(skill)
     n = len(learn.rows(skill))
@@ -98,7 +98,7 @@ def grow(skill, steps=300, ladder=LADDER):
     for base in ladder:  # the smallest base first; a bigger one is tried only if the smaller cannot hold the job
         C.eval_base(skill, base)
         every = [f"{i}:{m}" for i in range(AutoConfig.from_pretrained(C.BASES[base]).num_hidden_layers) for m in C.MODS]
-        for tag, rank in (("r2", 2), ("r8", 8)):  # two candidates compete; dev picks
+        for tag, rank in ranks:  # the candidates compete; dev picks
             C.train(skill, base, every, rank=rank, steps=steps, tag=f"{gen}_{base}_{tag}")
         entry = promote(skill, measure=False, prefix=f"{gen}_{base}")
         if not entry:
@@ -122,6 +122,13 @@ def grow(skill, steps=300, ladder=LADDER):
               f"{'ON: it takes those calls' if ok else 'not enough'}", flush=True)
         if ok:
             break
+        if len(te) < 2 * MIN_ANSWERED:
+            # the cell did not fail: there are too few newest real decisions to judge any cell, so a bigger base
+            # could not pass either. It waits for more of the member's work.
+            rungs["evidence"] = (f"only {len(te)} newest real decisions to judge on; a verdict needs about "
+                                 f"{2 * MIN_ANSWERED} (about {int(2 * MIN_ANSWERED / 0.15)} logged decisions)")
+            print(f"{skill}: {rungs['evidence']}", flush=True)
+            break
     w = json.loads(use.WINS.read_text()) if use.WINS.exists() else {}
     if j is None:
         spawn.set_status(skill, "failed", rows_at_fail=n, failed_why="no edit beat the untouched base on dev",
@@ -141,7 +148,7 @@ def grow(skill, steps=300, ladder=LADDER):
         spawn.set_status(skill, "on", on_since=time.time(), rungs=rungs, base=entry["base"], **stamp)
     else:
         spawn.set_status(skill, "failed", rows_at_fail=n, rungs=rungs, **stamp,
-                         failed_why=f"on the newest {len(te)} decisions it would answer {j['answered']} "
+                         failed_why=rungs.get("evidence") or f"on the newest {len(te)} decisions it would answer {j['answered']} "
                                     f"({j['covers']:.0%}) and agree on {j['agree_when_sure']:.0%} of them "
                                     f"(needs {COVERS:.0%} answered, at least {MIN_ANSWERED}, {PASS:.0%} agreement, "
                                     f"and each answered label vouched for)")
@@ -154,7 +161,11 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("skills", nargs="+")
     ap.add_argument("--steps", type=int, default=300)
+    ap.add_argument("--quick", action="store_true", help="one candidate (rank 2), 200 steps: a third of the CPU time")
     a = ap.parse_args()
     for sk in a.skills:
-        grow(sk, a.steps)
+        if a.quick:
+            grow(sk, 200, ranks=(("r2", 2),))
+        else:
+            grow(sk, a.steps)
     runtime.unload()

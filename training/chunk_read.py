@@ -8,7 +8,8 @@ with the same instruction, and the facts are put together. Both sides then pass 
 be in the source word for word, and the verifier must find that it supports the claim.
 
 Measured per input: checked facts from each side, how many of the 4B's checked facts the small reading also found
-(same quoted passage), and model seconds. Nothing is trained here and nothing is logged for training.
+(same quoted passage), and model seconds. Nothing is trained here. The verifier's checks of these real extracted facts
+are logged (runs/chunk_read/calls.jsonl) like any other work of its: they are decisions of its fact-check job.
 Writes training/reports/chunk_read.json and .md.
 """
 import argparse
@@ -123,6 +124,15 @@ def main():
     import os
     os.environ["AGENT_TEAM_SPAWN"] = "0"  # the verifier itself checks both sides: no cell answers for it here
     rows = []
+    log = ROOT / "runs" / "chunk_read"
+    log.mkdir(parents=True, exist_ok=True)
+
+    def record(specialist, messages, output, **info):
+        if specialist == "verifier":  # its checks of real extracted facts are real decisions of that job
+            with open(log / "calls.jsonl", "a") as f:
+                f.write(json.dumps({"step": "check", "specialist": specialist, "messages": messages, "output": output,
+                                    **info}, ensure_ascii=False) + "\n")
+    llm.set_recorder(record)
     for i, c in enumerate(extract_calls(a.runs, a.max)):
         task_head, sources = c["user"].split("\n\nSOURCES:\n", 1)
         big = facts_of(llm.parse_json(c["output"]))
