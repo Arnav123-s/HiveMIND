@@ -71,12 +71,13 @@ if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 
 RAM_GB = float(os.environ.get("AGENT_TEAM_RAM_GB", 10))
 KV_8BIT = os.environ.get("AGENT_TEAM_KV", "q8" if RAM_GB <= 12 else "f16") == "q8"
 # prompt-lookup decoding: next tokens guessed from the prompt itself (quotes, claims, code being fixed), checked in one
-# pass; greedy outputs stay the same. Off until training/arch_bench.py measures it on the hive's real prompts.
+# pass. Off: in llama-cpp-python 0.3.36 it crashed on the hive's real prompts (training/reports/arch_bench.json).
 LOOKUP = os.environ.get("AGENT_TEAM_LOOKUP", "0") == "1"
-# llama.cpp's extra CPU weight buffers keep a second, repacked copy of the weights for faster matrix maths: measured
-# +2.5 GB private RAM for the 4B (6.1 GB resident with them, 3.6 GB without). Off: less RAM, maybe slower
-# (training/arch_bench.py measures speed and whether answers change).
-REPACK = os.environ.get("AGENT_TEAM_REPACK", "1") == "1"
+# llama.cpp's extra CPU weight buffers keep a second, repacked copy of the weights for faster matrix maths. Off by
+# measurement (training/reports/arch_bench.json, five real hive prompts): with it the process peaked at 12.9 GB (the
+# 7B coder and a second model each with two copies: over the 10 GB budget and the service's memory cap); without it
+# 7.8 GB, in 293 s against 288 s, with the same verdicts, values and conclusions.
+REPACK = os.environ.get("AGENT_TEAM_REPACK", "0") == "1"
 GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
 GGUF_CTX_BY_MODEL = {"fast": 4096}  # the 1.7B roles (browser, verifier, writer, condenser) need less context
 GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 1 if RAM_GB < 7 else 2))
