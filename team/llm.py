@@ -303,11 +303,39 @@ def _json_grammar():
     return _grammar
 
 
+CUT = "\n[... cut here to fit the model's window ...]\n"
+
+
+def fit(messages, count, n_ctx, max_new, margin=48):
+    """The messages, trimmed so the prompt and the reply fit the model's window: the middle of the longest message
+    (a page's text, as a rule) is cut, its head and tail kept (they hold the instructions and the question). Returns
+    (messages, the reply budget), the budget lowered only when cutting alone cannot make room. (A researcher read a
+    long article and crashed: 'Requested tokens (4119) exceed context window of 4096'.)"""
+    budget = n_ctx - max_new - margin
+    for _ in range(6):
+        n = count(messages)
+        if n <= budget:
+            return messages, max_new
+        i = max(range(len(messages)), key=lambda k: len(str(messages[k].get("content", ""))))
+        c = str(messages[i].get("content", ""))
+        cpt = len(c) / max(1, count([messages[i]]))  # characters per token in this message
+        keep = len(c) - int((n - budget) * cpt * 1.15) - len(CUT) - 20
+        if keep < 400:
+            break
+        head = keep * 2 // 3
+        messages = messages[:i] + [dict(messages[i], content=c[:head] + CUT + c[len(c) - (keep - head):])] + messages[i + 1:]
+    n = count(messages)
+    return messages, max(64, min(max_new, n_ctx - n - margin))
+
+
 def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop):
     from . import health
     health.cool_down()  # a CPU above 90 C waits until it is under 80 C before the next model call
     llm_, tok = _gguf_model(specialist, adapter)
-    prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    render = lambda ms: tok.apply_chat_template(ms, tokenize=False, add_generation_prompt=True,  # noqa: E731
+                                                enable_thinking=False)
+    messages, max_new_tokens = fit(messages, lambda ms: len(tok.encode(render(ms))), llm_.n_ctx(), max_new_tokens)
+    prompt = render(messages)
     kw = dict(max_tokens=max_new_tokens, temperature=temperature, top_p=0.9 if temperature else 1.0,
               repeat_penalty=1.0)  # a penalty stops the model copying page text verbatim (evidence)
     head = ""

@@ -956,3 +956,50 @@ def test_a_report_that_repeats_his_text_has_not_done_what_he_ordered_to_it():
     m = messages(goal, "Write the finished answer", f"{OWN_TEXT}\n{goal}", [])
     assert m[0]["content"] == prompts.WRITER_TEXT and "VERIFIED RESULTS" not in m[1]["content"]
     assert messages("What is X?", "s", "## s1 ...", [])[0]["content"] == prompts.WRITER
+
+
+def test_a_page_reads_as_sentences_and_a_quote_is_found_across_its_links():
+    """Every text node on its own line made Wikipedia read 'In\\ncomputer science\\n, a\\nhash table ...'; a quote
+    written as the page shows it was never found, and every fact of a held-out explanation was rejected."""
+    from team.tools.web import readable
+    from team.specialists.verifier import quote_in
+    html = ('<html><body><main><p>In <a href="/cs">computer science</a>, a <b>hash table</b> is a '
+            '<a href="/ds">data structure</a> that maps <a href="/k">keys</a> to values.<sup>[3]</sup> A hash table uses '
+            'a <a href="/hf">hash function</a>.</p><ul><li>one</li><li>two</li></ul>'
+            '<table><tr><th>UPC</th><td>6be3beb0793a53e7</td></tr></table></main></body></html>')
+    page = readable(html, "https://en.wikipedia.org/wiki/Hash_table")
+    assert ("In computer science, a hash table is a data structure that maps keys to values.[3] A hash table uses a "
+            "hash function.") in page["text"]
+    assert "one\ntwo" in page["text"] and "UPC | 6be3beb0793a53e7" in page["text"]
+    assert ("computer science", "https://en.wikipedia.org/cs") in page["links"]
+    assert quote_in("a hash table is a data structure that maps keys to values. A hash table uses a hash function",
+                    "In\ncomputer science\n, a\nhash table\nis a\ndata structure\nthat maps keys to values.\n[\n3\n]\n"
+                    "A hash table uses a\nhash function\n.")
+    assert not quote_in("a hash table maps names to addresses", page["text"])  # its words, in order, or nothing
+
+
+def test_a_prompt_too_long_for_the_window_is_cut_in_the_middle_not_crashed():
+    """A researcher read a long article and crashed: 'Requested tokens (4119) exceed context window of 4096'."""
+    from team.llm import CUT, fit
+    count = lambda ms: sum(len(m["content"]) // 4 + 4 for m in ms)  # noqa: E731
+    ms = [{"role": "system", "content": "Extract facts."},
+          {"role": "user", "content": "TASK: what slows it?\n" + "page text " * 3000 + "\nReply with JSON."}]
+    out, budget = fit(ms, count, 4096, 900)
+    assert count(out) + budget <= 4096 and CUT.strip() in out[1]["content"]
+    assert out[1]["content"].startswith("TASK: what slows it?") and out[1]["content"].endswith("Reply with JSON.")
+    assert fit(ms[:1], count, 4096, 900) == (ms[:1], 900)
+
+
+def test_a_research_question_never_takes_a_shortcut_to_another_specialist(tmp_path, monkeypatch):
+    """The triage cell said 'code' (0.92) for 'Research how lithium-ion batteries degrade ...': the research hive
+    never ran and the coder fetched a blocked site."""
+    from team.board import Board
+    from team.cells import runtime, use
+    from team.specialists import coordinator
+    b = Board(tmp_path, echo=False)
+    monkeypatch.setattr(use, "on", lambda s: s == "task_kind")
+    monkeypatch.setattr(use, "wins", lambda: {})
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"code": 0.95, "plan": 0.05})
+    assert coordinator.triage("Research how lithium-ion batteries degrade over time and what slows it.", b) is None
+    assert [s["agent"] for s in coordinator.triage("Write a Python function that reverses a string.", b)] == \
+        ["coder", "writer"]

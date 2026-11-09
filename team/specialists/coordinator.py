@@ -254,6 +254,13 @@ def triage(goal, board):
     need = use.wins().get("task_kind", {}).get("thresholds", {}).get(kind, TRIAGE_MIN)
     if kind not in TEMPLATES or conf < max(TRIAGE_MIN, need):
         return None
+    from .research_hive import broad
+    if kind != "lookup" and broad(goal):
+        # a research question is never a one-kind shortcut to another specialist: the cell said "code" (0.92) for
+        # "Research how lithium-ion batteries degrade over time ...", and the research hive never ran. The
+        # coordinator plans it (its researcher steps run the research hive, which runs experiments with the coder).
+        board.log("coordinator", "triage", f"cell said {kind}, but this is a research question: the coordinator plans")
+        return None
     steps = [{"id": f"s{i + 1}", "agent": a, "task": t.format(goal=goal), "needs": [], "for_each": None, "done_when": d}
              for i, (a, t, d) in enumerate(TEMPLATES[kind])]
     steps.append({"id": f"s{len(steps) + 1}", "agent": "writer", "task": f"Write the finished answer for Arnav: {goal}",
