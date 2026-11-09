@@ -109,6 +109,20 @@ def condense(task, title, text, board, limit=3000):
     if len(text) <= limit:
         return text
     lines = [ln for ln in text.split("\n") if ln.strip()][:400]
+    from ..cells import learn
+    said = learn.decide_all("learned_line", [f"TASK: {task[:300]}\nLINE: {ln[:300]}" for ln in lines])
+    if lines and sum(x is not None for x in said) >= 0.9 * len(lines):
+        # a cell grown from the condenser's own choices, asked about every line at once on the cell pool
+        keep = [i for i, x in enumerate(said) if x == "keep"]
+        board.log("cell:learned_line", "condense", f"{title[:60]}: kept {len(keep)} of {len(lines)} lines")
+        if keep:
+            out, size = [], 0
+            for i in keep:  # whole lines, up to twice the budget
+                if size + len(lines[i]) > limit * 2 and out:
+                    break
+                out.append(lines[i])
+                size += len(lines[i]) + 1
+            return "\n".join(out)
     numbered = "\n".join(f"{i}: {ln[:300]}" for i, ln in enumerate(lines))[:14000]
     data, _ = llm.chat_json("condenser", [{"role": "system", "content": prompts.CONDENSER},
                                           {"role": "user", "content": f"TASK: {task}\nSOURCE: {title}\n\n{numbered}"}],
@@ -120,6 +134,12 @@ def condense(task, title, text, board, limit=3000):
         board.log("condenser", "fallback", f"{title[:60]}: kept goal-matching lines")
         return focus_text(text, task, head=600, budget=limit)
     board.log("condenser", "condense", f"{title[:60]}: kept {len(keep)} of {len(lines)} lines")
+    shown = len(numbered.split("\n"))  # the lines the condenser saw: its choices are logged to grow learned_line
+    kept = set(keep)
+    import random
+    dropped = [i for i in range(shown) if i not in kept]
+    for i in sorted(kept) + random.Random(len(lines)).sample(dropped, min(len(dropped), 3 * max(1, len(kept)))):
+        learn.record("learned_line", f"TASK: {task[:300]}\nLINE: {lines[i][:300]}", "keep" if i in kept else "drop")
     return "\n".join(lines[i] for i in sorted(set(keep)))
 
 

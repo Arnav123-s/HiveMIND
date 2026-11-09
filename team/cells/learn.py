@@ -63,3 +63,18 @@ def decide(skill, text):
     p = runtime.label_probs(skill, text)
     lab, conf = max(p.items(), key=lambda kv: kv[1])
     return lab if conf >= w.get("threshold", 1.01) else None
+
+
+def decide_all(skill, texts):
+    """The learned cell's answers for many inputs at once on the cell pool: a label where it is sure, None where the
+    member must decide. None for every input when the cell is not switched on."""
+    from . import pool, runtime, use
+    w = use.wins().get(skill, {})
+    if not (w.get("use") and runtime.available(skill)) or not texts:
+        return [None] * len(texts)
+    t = w.get("threshold", 1.01)
+    out = []
+    for p in pool.map(skill, texts, probs=True):
+        lab, conf = max(p.items(), key=lambda kv: kv[1])
+        out.append(lab if conf >= t else None)
+    return out

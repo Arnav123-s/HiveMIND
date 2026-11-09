@@ -1,5 +1,7 @@
 """Cells: data splits never overlap, scoring is exact, and the hive falls back cleanly when a cell is off."""
 import json
+
+import pytest
 import os
 import sys
 from pathlib import Path
@@ -127,3 +129,21 @@ def test_the_hive_logs_its_members_decisions_and_a_learned_cell_answers_only_whe
     assert learn.decide("learned_claim", "CLAIM: x\nQUOTE: x") == "SUPPORTED"
     monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"SUPPORTED": 0.6, "UNSUPPORTED": 0.4})
     assert learn.decide("learned_claim", "CLAIM: x\nQUOTE: y") is None  # unsure: the member decides
+
+
+def test_the_condenser_s_choices_are_logged_and_a_grown_line_cell_condenses_every_line_at_once(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.cells import learn
+    from team.specialists import researcher
+    monkeypatch.setattr(learn, "DIR", tmp_path / "decisions")
+    page = "\n".join(f"line {i} about {'tides' if i % 10 == 0 else 'menus'}" + " filler" * 20 for i in range(60))
+    monkeypatch.setattr(researcher.llm, "chat_json", lambda *a, **k: ({"keep": [0, 10, 20]}, ""))
+    out = researcher.condense("tides", "Page", page, Board(tmp_path, echo=False), limit=500)
+    assert out.splitlines()[0].startswith("line 0 about tides")
+    rows = learn.rows("learned_line")
+    assert sum(y == "keep" for _, y in rows) == 3 and sum(y == "drop" for _, y in rows) == 9
+    monkeypatch.setattr(learn, "decide_all", lambda s, texts: ["keep" if "tides" in t.split("LINE:")[1] else "drop"
+                                                               for t in texts])
+    monkeypatch.setattr(researcher.llm, "chat_json", lambda *a, **k: pytest.fail("the member is not asked"))
+    out = researcher.condense("tides", "Page", page, Board(tmp_path, echo=False), limit=500)
+    assert len(out.splitlines()) == 6 and all("tides" in ln for ln in out.splitlines())
