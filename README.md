@@ -240,9 +240,11 @@ As an API that the OpenAI and Anthropic SDKs, and apps that let you set a base U
 python -m team api
 ```
 (http://127.0.0.1:8766; set `AGENT_TEAM_API_KEY` to require a key; `--until-done 2` makes follow-up rounds the default)
-`--workers 2` runs two jobs at once in one process: they share every loaded model (RAM barely grows) and take turns on
-the CPU for model calls, so one job's waiting (web pages, the browser, a program running) is the other's compute. The
-kill switch still stops every running job. (Measured gain: see training/reports/hive_bench.)
+`--workers 2` runs two jobs at once in one process: they share the loaded models and take turns on the CPU for model
+calls, so one job's waiting (web pages, the browser, a program running) is the other's compute. The kill switch still
+stops every running job. Measured (`training/workers_bench.py`, training/reports/workers.json; a lookup, a calculation
+and a short draft): 196 s against 205 s one at a time (4% faster), peak memory 11.1 GB against 8.9 GB. On a CPU the
+models already use every core, so jobs mostly take turns: the default stays one job at a time.
 
 | endpoint | for |
 |---|---|
