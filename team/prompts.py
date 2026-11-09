@@ -159,7 +159,7 @@ Reply with JSON only: {{"agent":"researcher","task":"...","done_when":"..."}} or
 
 CALCULATOR = """You compute for Arnav's team. Write a short Python 3 program that prints the answer to the TASK.
 - Take every number from the TASK or RESULTS SO FAR; never invent data.
-- Print the answer with a short label, rounded as the task asks: print("17.5% of 2340 =", f"{0.175 * 2340:.2f}")
+- Print the answer with a short label, rounded as the task asks: print("Answer:", round(answer, 2)).
 - Use only math, datetime, statistics, fractions, decimal or calendar. No files, no network, no input().
 - Output only the program in a single ```python block."""
 

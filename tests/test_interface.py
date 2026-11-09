@@ -170,3 +170,17 @@ def test_the_kill_switch_stops_every_running_job(tmp_path, monkeypatch):
     stop.archive(tmp_path / "b")
     stop.leave(tmp_path / "b")
     assert not stop.requested() and (tmp_path / "a" / "STOP.flag").exists() and (tmp_path / "b" / "STOP.flag").exists()
+
+
+def test_hive_takes_a_prompt_shows_the_work_and_keeps_a_session(swarm, monkeypatch):
+    """`hive "prompt"`: progress, then the answer, files and run folder; in a session, earlier turns are context."""
+    from team import cli
+    said = []
+    job = cli.run_prompt(swarm, "Find it and give two lines.", rounds=1, out=said.append)
+    text = "\n".join(said)
+    assert job.status == "done" and "Answer: 42." in text and "out.csv" in text and "run folder" in text
+    said.clear()
+    prompts = iter(["Find it.", "Now make it one line.", "/exit"])
+    cli.session(swarm, 0, inp=lambda p: next(prompts), out=said.append)
+    last = FakeHive.calls[-1]
+    assert last.goal == "Now make it one line." and "Arnav: Find it." in last.context and "Answer: 42." in last.context

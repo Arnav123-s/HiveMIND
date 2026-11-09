@@ -176,7 +176,7 @@ def hf_params(model):
 
 
 def check_ho_lookup(run, report):
-    p = hf_params("Qwen/Qwen2.5-0.5B-Instruct")
+    p = hf_params("allenai/OLMo-2-0425-1B-Instruct")
     ok = "apache" in report.lower() and p in report
     return ok, f"licence apache and {p}B parameters in the report: {ok}"
 
@@ -196,13 +196,15 @@ def check_ho_chart(run, report):
     return bool(png) and top in _body(report).lower(), f"chart: {bool(png)}, names {top}"
 
 
-def check_ho_poetry(run, report):
+def check_ho_book(run, report):
+    from urllib.parse import urljoin
+
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(_get("https://books.toscrape.com/catalogue/category/books/poetry_23/index.html"), "html.parser")
-    first = soup.select_one("article.product_pod")
-    title, price = first.h3.a["title"], first.select_one("p.price_color").text.strip().lstrip("Â£")
-    ok = title[:25].lower() in report.lower() and price in report
-    return ok, f"first Poetry book '{title[:40]}' at {price}: {ok}"
+    cat = "https://books.toscrape.com/catalogue/category/books/philosophy_7/index.html"
+    first = BeautifulSoup(_get(cat), "html.parser").select_one("article.product_pod h3 a")["href"]
+    page = BeautifulSoup(_get(urljoin(cat, first)), "html.parser")
+    upc = next(tr.td.text for tr in page.select("table.table tr") if tr.th.text == "UPC")
+    return upc in report, f"UPC {upc} of the first Philosophy book in the report: {upc in report}"
 
 
 def check_ho_quotes_csv(run, report):
@@ -220,13 +222,16 @@ def check_ho_quotes_csv(run, report):
 OFFICE = ("Starting 1 June, the design team moves from the third floor to the new building on Harbour Road. Desks will be "
           "packed on 30 May, and IT will reconnect every computer over the weekend. Parking at the new site is free.")
 HELDOUT = [
-    ("ho_lookup", "facts from a source", "What licence does Qwen/Qwen2.5-0.5B-Instruct use on Hugging Face, and how many "
-     "parameters does it have?", check_ho_lookup),
+    # replaced on 2026-11-09, before the held-out set was ever run: the verifier's training data held claims about
+    # Qwen/Qwen2.5-0.5B-Instruct (its licence and parameters), and the browser skills recorded this session used the
+    # old site task's wording ('tell me the title and price of the first book listed'; training/contamination_check.py)
+    ("ho_lookup", "facts from a source", "What licence does allenai/OLMo-2-0425-1B-Instruct use on Hugging Face, and how "
+     "many parameters does it have?", check_ho_lookup),
     ("ho_pypi", "facts from a source", "What is the latest version of the requests package on PyPI?", check_ho_pypi),
     ("ho_chart", "numbers + chart", "Plot the Hugging Face download counts of distilbert/distilbert-base-uncased and "
      "google-bert/bert-base-uncased as a bar chart and tell me which is higher.", check_ho_chart),
-    ("ho_poetry", "operate a website", "On books.toscrape.com, open the Poetry category and tell me the title and price "
-     "of the first book listed.", check_ho_poetry),
+    ("ho_book", "operate a website", "On books.toscrape.com, go to the Philosophy category, open the first book there and "
+     "tell me its UPC.", check_ho_book),
     ("ho_quotes_csv", "scrape to a file", "Save the text and author of every quote on the first page of "
      "quotes.toscrape.com to a CSV file.", check_ho_quotes_csv),
     ("ho_discount", "arithmetic", "A jacket costs 80 euros and is reduced by 35%. What is the new price?", has("52")),
