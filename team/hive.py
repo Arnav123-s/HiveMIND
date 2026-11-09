@@ -264,7 +264,7 @@ class Hive:
             if research_hive.broad(task) and "[" not in s["id"] and os.environ.get("AGENT_TEAM_RESEARCH_HIVE", "1") != "0":
                 # a research question, not one look-up (nor a fan-out item); AGENT_TEAM_RESEARCH_HIVE=0 turns it off
                 self.board.log("research_hive", "start", f"{s['id']}: sub-questions, relevance, gaps and cross-checks")
-                return research_hive.run(task, ctx, self.board, s["id"])
+                return research_hive.run(task, ctx, self.board, s["id"], guard=self.guard, work=self.work)
             return researcher.run(task, ctx, self.board, s["id"])
         if s["agent"] == "browser":
             m = re.search(r"https?://[^\s)\"']+", task)  # start where the task says; otherwise the model navigates

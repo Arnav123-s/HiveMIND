@@ -6,6 +6,9 @@
       relevance cells          one call per search result: is it about the sub-question? (result_relevant)
       reader + condenser       the pages of the kept results, cut to the lines that matter
       extractor (4B member)    claims with exact quotes (the researcher's extractor)
+    or, for a sub-question answered by an experiment or by math:
+      coder (7B member)        a program that tests, measures, simulates or derives it; its RESULT lines are claims
+                               whose evidence is the program's own output
     gap finder cells           does any claim answer the sub-question? (answers_q) -> one more search for each gap
     cross-check cells          two sources on the same point: agree, conflict or unrelated? (claims_agree)
 The verifier then checks every claim against its quote, as for any research step. A cell takes its job only where
@@ -14,6 +17,7 @@ Returns the researcher's result shape, so the verifier and writer need nothing n
 """
 import json
 import re
+from pathlib import Path
 
 from .. import llm
 from ..cells import use
@@ -21,10 +25,20 @@ from . import researcher
 
 BROAD = re.compile(r"\b(research|investigate|overview|survey|state of the art|landscape|in depth|in-depth|deep dive|"
                    r"pros and cons|advantages and disadvantages|compare|comparison|explain (how|why)|how does|why does|"
-                   r"what is known|everything about|end[- ]to[- ]end)\b", re.I)
-DECOMPOSE = """You lead research for Arnav's team. Split the QUESTION into 2 to 4 sub-questions that together answer it.
-Each sub-question must be answerable by one search (a fact, a definition, a comparison point, a date, a number).
-Keep his names and terms exactly. Reply with JSON only: {"questions": ["...", "..."]}"""
+                   r"what is known|everything about|end[- ]to[- ]end|experiment\w*|test whether|measure whether|simulat\w+|"
+                   r"prove|derive|hypothes\w+|scientific\w*)\b", re.I)
+DECOMPOSE = """You lead research for Arnav's team. Split the QUESTION into 2 to 4 sub-questions that together answer it,
+and say how each is answered:
+- "read": from sources (papers, articles, docs): a fact, a definition, what is known, a comparison point
+- "experiment": by running a program: a test, a measurement, a simulation, a benchmark, data analysis
+- "math": by computing or deriving: an exact calculation, a formula, a proof check, solving equations
+Keep his names and terms exactly. Reply with JSON only:
+{"questions": [{"q": "...", "how": "read"}, {"q": "...", "how": "experiment"}]}"""
+EXPERIMENT = """Answer this research sub-question by running a program, not from memory:
+{q}
+Write one complete Python program that does the experiment or the computation (numpy, sympy, pandas, networkx and
+matplotlib are available; use a fixed random seed). Print the method in one line starting 'METHOD: ', then every
+result it measured or derived on its own line starting 'RESULT: ' (what was measured = the value, with units)."""
 STOP = set("the a an of to in on for and or is are was what which who how why does do with about from by its it this "
            "that be as at me my".split())
 
@@ -70,12 +84,39 @@ def conflicts(facts, board=None, limit=24):
 
 
 def decompose(task, board):
+    """[(sub-question, how)], how = read | experiment | math."""
     data, _ = llm.chat_json("researcher", [{"role": "system", "content": DECOMPOSE},
-                                           {"role": "user", "content": f"QUESTION: {task}"}], max_new_tokens=250)
-    qs = [str(q).strip() for q in (data or {}).get("questions", []) if str(q).strip()] if isinstance(data, dict) else []
-    qs = list(dict.fromkeys(qs))[:4]
-    board.log("research_hive", "decompose", " | ".join(qs) or "no sub-questions: the question as one")
-    return qs or [task]
+                                           {"role": "user", "content": f"QUESTION: {task}"}], max_new_tokens=350)
+    raw = (data or {}).get("questions", []) if isinstance(data, dict) else []
+    qs, seen = [], set()
+    for x in raw:
+        q, how = (x.get("q"), x.get("how")) if isinstance(x, dict) else (x, "read")
+        q = str(q or "").strip()
+        if q and q not in seen:
+            seen.add(q)
+            qs.append((q, how if how in ("read", "experiment", "math") else "read"))
+    qs = qs[:4]
+    board.log("research_hive", "decompose", " | ".join(f"[{h}] {q}" for q, h in qs) or "no sub-questions: the question as one")
+    return qs or [(task, "read")]
+
+
+def experiment(q, board, step_id, guard, work):
+    """A sub-question answered by a program the coder writes and runs. Its RESULT lines become claims whose quote is
+    the program's own output (the verifier checks each against that output; the jury sees the program)."""
+    from . import coder
+    res = coder.run(EXPERIMENT.format(q=q), "", board, f"{step_id}_exp{abs(hash(q)) % 1000}", guard, work)
+    out = res.get("summary", "") if res.get("returncode") == 0 else ""
+    src = f"experiment:{Path(res.get('code_path', 'program.py')).name}"
+    code = Path(res["code_path"]).read_text(errors="replace")[:4000] if res.get("code_path") and \
+        Path(res["code_path"]).exists() else ""
+    facts = [{"claim": ln.split("RESULT:", 1)[1].strip(), "quote": ln.strip(), "url": src, "question": q}
+             for ln in out.splitlines() if ln.strip().startswith("RESULT:") and ln.split("RESULT:", 1)[1].strip()]
+    method = next((ln.split("METHOD:", 1)[1].strip() for ln in out.splitlines() if ln.strip().startswith("METHOD:")), "")
+    board.log("research_hive", "experiment", f"{q[:80]}: {len(facts)} result(s)"
+              + (f"; method: {method[:120]}" if method else "") + ("" if res.get("returncode") == 0 else " (program failed)"))
+    corpus = {src: out + (f"\n\nPROGRAM:\n{code}" if code else "")} if out else {}
+    notes = [] if out else [f"experiment for '{q[:80]}' failed: {str(res.get('stderr', ''))[-200:]}"]
+    return facts, ([f"Method ({q[:60]}): {method}"] if method else []), corpus, notes
 
 
 def one(q, board, step_id, context="", note=""):
@@ -99,10 +140,16 @@ def one(q, board, step_id, context="", note=""):
     return facts, items, corpus, notes
 
 
-def run(task, context, board, step_id):
-    qs = decompose(task, board)
+def run(task, context, board, step_id, guard=None, work=None):
+    plan = decompose(task, board)
+    qs = [q for q, _ in plan]
     facts, items, corpus, notes = [], [], {}, []
-    for q in qs:
+    for q, how in plan:
+        if how in ("experiment", "math") and guard is not None and work is not None:
+            f, it, c, n = experiment(q, board, step_id, guard, work)
+            facts, items, notes = facts + f, items + it, notes + n
+            corpus.update(c)
+            continue
         f, it, c, n = one(q, board, step_id, context)
         if not any(answered(f, board)):  # a gap: one more search, told the first found nothing
             board.log("research_hive", "gap", f"not answered yet: {q}")
