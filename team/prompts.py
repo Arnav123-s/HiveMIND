@@ -89,6 +89,9 @@ FIX_HINTS = {
     "syntax": "The program is not valid Python. Return the whole program, complete and valid.",
     "import": "A module is not installed. Use only the standard library, requests, bs4 (BeautifulSoup), lxml, pandas, "
               "matplotlib, numpy, sympy, networkx, huggingface_hub or psutil.",
+    "not_found": "A page the program asked for does not exist (404): its address was built wrong. Build each link "
+                 "with urljoin(the URL of the page the link was found on, href), never with the site's home page, and "
+                 "start from the exact URLs the DATA PREVIEW shows.",
     "network": "A web request failed. Use https:// and the exact URLs the DATA PREVIEW shows; do not retry a host that "
                "cannot be reached, use another URL the task or preview gives.",
     "file": "A file was missing or not writable. Read only files that exist in the current folder; save new files in "
@@ -126,8 +129,9 @@ rewrite it, make it polite or shorter, correct it, summarise it, or draft a mess
   asks for them. Arnav prefers short and direct."""
 
 CODE_REVIEWER = """You review a program a teammate wrote for Arnav, after it ran. Decide if the CODE really does what the
-TASK asks - not just that it runs. Are items chosen the way the task asks ("cheapest" = sorted by price, over every
-page of a listing, with each next page's link built by urljoin from the page it is on, not by joining strings)? Is text decoded right (no "Â£")? Check each measurement and check: is it measured around the right operation
+TASK asks - not just that it runs. Are items taken from where the task says (a category, section or page it names is
+that listing, not items whose text contains the name)? Are items chosen the way the task asks ("cheapest" = sorted by
+price, over every page of a listing, with each next page's link built by urljoin from the page it is on, not by joining strings)? Is text decoded right (no "Â£")? Check each measurement and check: is it measured around the right operation
 (e.g. load time must time the loading call itself), are answers compared correctly (parse the number from the
 reply), are all requested items covered, and are the printed numbers plausible?
 Reply with JSON only: {"ok": true} or {"ok": false, "problems": ["one precise fix each"]}"""
