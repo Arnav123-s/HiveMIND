@@ -1,0 +1,2923 @@
+{
+ "writer": {
+  "model": "fast+writer",
+  "chrf": 46.7,
+  "by_language": {
+   "de": 42.3,
+   "fr": 48.4,
+   "es": 49.3
+  },
+  "seconds_per_sentence": 4.02,
+  "rows": [
+   {
+    "lang": "de",
+    "en": "“Yup, I see them” Cohren responded, using his throat mic.",
+    "ref": "„Ja, ich sehe sie“, antwortete Cohren über sein Kehlkopfmikrofon.",
+    "hyp": "Ja, ich sehe sie\" antwortete Cohren, indem er seine Schädelkette benutzte.",
+    "seconds": 25.51,
+    "chrf": 52.4
+   },
+   {
+    "lang": "de",
+    "en": "“Lieutenant Nemic…Lieutenant Valturi…” He said Cohren was slower, glancing at Cohren’s pistol holster before glancing up again. “I assume that the company is ready”",
+    "ref": "„Leutnant Nemic… Leutnant Valturi…“ Er sagte, Cohren sei langsamer, während er auf Cohrens Pistolenholster blickte und dann wieder aufschaute. „Die Kompanie ist bereit, nehme ich an?“",
+    "hyp": "Lieutenant Nemic…Lieutenant Valturi…” Er sagte, Cohren sei langsamer, blickte dann zu Cohrens Pistolenhalter hinüber und blickte wieder auf. „Ich nehme an, die Gruppe ist bereit.",
+    "seconds": 11.83,
+    "chrf": 57.3
+   },
+   {
+    "lang": "de",
+    "en": "nothing makes me more happy than elon musk losing money. $tslq",
+    "ref": "nichts macht mich glücklicher als wenn Elon Musk Geld verliert. $tslq",
+    "hyp": "nichts macht mich mehr glücklich als elon musk verlusteinsparungen. $tslq",
+    "seconds": 3.54,
+    "chrf": 50.1
+   },
+   {
+    "lang": "de",
+    "en": "well now they’re god damn huge lol",
+    "ref": "Also, jetzt sind sie verdammt nochmal riesig lol",
+    "hyp": "Well now they’re god damn huge lol",
+    "seconds": 3.0,
+    "chrf": 12.3
+   },
+   {
+    "lang": "de",
+    "en": "\"You want to chase after them?\"",
+    "ref": "„Du möchtest sie verfolgen?“",
+    "hyp": "Du willst sie verfolgen?",
+    "seconds": 1.72,
+    "chrf": 59.4
+   },
+   {
+    "lang": "de",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Ich hab diesen Thread schon länger nicht mehr aktualisiert. Jetzt hab ich endlich Queen Gidbo besiegt.",
+    "hyp": "Es ist ein Weil seitdem ich diesen Thread aktualisiert habe. Schließlich hat mich die Königin Gidbo besiegt.",
+    "seconds": 6.3,
+    "chrf": 47.0
+   },
+   {
+    "lang": "de",
+    "en": "Absolute rocket from from Stroud on a perfect half turn to goal. #DCU #MLS #MastodonFC",
+    "ref": "Absolute Rakete von Stroud mit einer perfekten halben Drehung aufs Tor. #DCU #MLS #MastodonFC",
+    "hyp": "Absolute rocket von Stroud auf einem perfekten Halbumschlag ins Tor. #DCU #MLS #MastodonFC",
+    "seconds": 3.7,
+    "chrf": 59.5
+   },
+   {
+    "lang": "de",
+    "en": "“Yup, he still has him” Cohren answered as the tank's turret hatch clanked open and its commander came into view.",
+    "ref": "„Ja, er ist noch bei ihm“, antwortete Cohren, als sich die Luke des Panzers öffnete und der Kommandant in Sicht kam.",
+    "hyp": "Ja, er hat ihn noch\" antwortete Cohren, als der Torschott des Tanks aufklappte und der Kommandant sich in Sicht kam.",
+    "seconds": 4.61,
+    "chrf": 54.7
+   },
+   {
+    "lang": "de",
+    "en": "“I guess we’ll find out,” Cohren said with a laugh. Orson didn’t continue the conversation.",
+    "ref": "„Das werden wir ja sehen“, sagte Cohren lachend. Orson stellte das Gespräch ein.",
+    "hyp": "Ich glaube, wir werden es herausfinden,\" sagte Cohren mit einem Lachen. Orson ließ den Gesprächsbereich verlassen.",
+    "seconds": 4.3,
+    "chrf": 42.0
+   },
+   {
+    "lang": "de",
+    "en": "facepalmed right into the ground",
+    "ref": "Facepalm und im Boden versinken",
+    "hyp": "1. \"facepalmed right into the ground",
+    "seconds": 7.33,
+    "chrf": 26.5
+   },
+   {
+    "lang": "de",
+    "en": "Ethan Frenchman is a Disability Rights Washington staff attorney who advocates for people with disabilities in jails and prisons.",
+    "ref": "Ethan Frenchman ist Anwalt bei Disability Rights Washington und setzt sich für Menschen mit Behinderungen in Gefängnissen ein.",
+    "hyp": "Ethan Frenchmann ist ein Rechtsanwalt der Disability Rights Washington, der für Menschen mit Behinderungen in Gefängnissen und Zuchthausen kämpft.",
+    "seconds": 4.82,
+    "chrf": 74.2
+   },
+   {
+    "lang": "de",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "„Wecken Sie sie?“ Cohren drehte sich um und sah Zugführer Nemic auf sich zukommen.",
+    "hyp": "Wachend sie aufzurufen\" Cohren sah 2. Lieutenant Nemic aufgehen.",
+    "seconds": 3.33,
+    "chrf": 26.6
+   },
+   {
+    "lang": "de",
+    "en": "JANUARY 19th, 2:34 PM, 2543.",
+    "ref": "19. Januar 2543, 14:34 Uhr.",
+    "hyp": "JANUAR 19, 2:34 Uhr, 2543.",
+    "seconds": 2.97,
+    "chrf": 28.7
+   },
+   {
+    "lang": "de",
+    "en": "\"But... one of them is a giant monster!\"",
+    "ref": "„Aber… Einer von ihnen ist ein riesiges Monster!“",
+    "hyp": "Aber... einer von ihnen ist ein riesiger Monster!",
+    "seconds": 2.15,
+    "chrf": 74.7
+   },
+   {
+    "lang": "de",
+    "en": "I've definitely been going about this the wrong way.",
+    "ref": "Ich bin das völlig falsch angegangen.",
+    "hyp": "Ich habe definitiv die richtige Weise gewählt.",
+    "seconds": 2.01,
+    "chrf": 15.0
+   },
+   {
+    "lang": "de",
+    "en": "Before he could answer, the door opened and Harris, Craith, and a few others hurried out, already fully dressed and kitted out.",
+    "ref": "Bevor er antworten konnte, öffnete sich die Tür und Harris, Craith und ein paar andere kamen ihm bereits in voller Montur entgegen.",
+    "hyp": "Bevor er antworten konnte, öffnete die Tür und Harris, Craith und einige andere stürmten heraus, bereits vollgekleidet und mit allem ausgestattet.",
+    "seconds": 5.32,
+    "chrf": 62.0
+   },
+   {
+    "lang": "de",
+    "en": "“Hey Cohren, does Harris still have Snowball?” Nemic asks as they got settled in.",
+    "ref": "„Hey Cohren, ist Snowball immer noch bei Harris?“, fragte Nemic, nachdem sie sich eingerichtet hatten.",
+    "hyp": "Hey Cohren, hat Harris noch Snowball?\" fragt Nemic, als sie sich setzen.",
+    "seconds": 3.15,
+    "chrf": 39.1
+   },
+   {
+    "lang": "de",
+    "en": "“Cause the regular alarms are shit. And because Daybreak doesn't sleep in” Cohren stated.",
+    "ref": "„Weil die regulären Alarme scheiße sind und weil Daybreak nicht verschläft“, sagte Cohren.",
+    "hyp": "Weil die regulären Alarms sind Scheiße. Und weil Daybreak nicht schlafen will\" Cohren sagte.",
+    "seconds": 3.42,
+    "chrf": 63.7
+   },
+   {
+    "lang": "de",
+    "en": "Move will also help transform land at the derelict Gartshore Works site.",
+    "ref": "Damit wird gleichzeitig das brachliegende Gelände der Gartshore-Werke umgestaltet.",
+    "hyp": "Der Vorschlag wird auch helfen, den Land an der ehemaligen Gartshore Werksstelle zu verändern.",
+    "seconds": 3.51,
+    "chrf": 28.9
+   },
+   {
+    "lang": "de",
+    "en": "i do not like this",
+    "ref": "Das mag ich nicht",
+    "hyp": "Ich esse nicht gerne diese Mahlzeit.",
+    "seconds": 1.62,
+    "chrf": 22.4
+   },
+   {
+    "lang": "de",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Mich mit einem riesigen Baseball in die Schlucht befördert",
+    "hyp": "1. Ich steige in den Schacht mit einem riesigen Baseball hinein.",
+    "seconds": 2.53,
+    "chrf": 53.7
+   },
+   {
+    "lang": "de",
+    "en": "Bring back oversight for WA's jails. Lives depend on it",
+    "ref": "Wiedereinführung der Gefängnisaufsicht in Washington – Menschenleben hängen davon ab",
+    "hyp": "Bring back oversight for WA's jails. Lives depend on it",
+    "seconds": 4.44,
+    "chrf": 11.6
+   },
+   {
+    "lang": "de",
+    "en": "“Yup, Operation Firestorm,” Cohren answered. “We thought it would be over in a few weeks, but…we underestimate them”",
+    "ref": "„Ja, Operation Feuersturm“, antwortete Cohren. „Wir dachten, die Sache wäre in ein paar Wochen erledigt, aber wir haben sie unterschätzt.“",
+    "hyp": "Ja, Operation Firestorm,\" antwortete Cohren. \"Wir dachten, es wäre in ein paar Wochen vorbei, aber… wir unterschätzen sie",
+    "seconds": 4.54,
+    "chrf": 59.0
+   },
+   {
+    "lang": "de",
+    "en": "“Three dead, sir” The Sentinel answered. “The rest fled on foot”",
+    "ref": "„Drei Tote, Sir“, antwortete der Sentinel. „Der Rest ist zu Fuß geflohen.“",
+    "hyp": "Drei tot, Sir\" antwortete der Sentinel. \"Die übrigen flohen Fußgetragen.",
+    "seconds": 3.17,
+    "chrf": 51.0
+   },
+   {
+    "lang": "de",
+    "en": "when in on $big 4.25-.35",
+    "ref": "dabei mit $ big 4,25–4,35",
+    "hyp": "when in on $big 4.25-.35",
+    "seconds": 11.44,
+    "chrf": 19.4
+   },
+   {
+    "lang": "de",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Langsam langweilt mich auch der Matsch #watertemple",
+    "hyp": "Starten zu werden von der Schmutzschlange verärgert #watertemple",
+    "seconds": 4.61,
+    "chrf": 33.5
+   },
+   {
+    "lang": "de",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "$sqqq komm schon, mein Beutel wird immer fetter lol",
+    "hyp": "$sqqq kommen auf. Meine Tasche ist riesig, lols.",
+    "seconds": 2.39,
+    "chrf": 28.7
+   },
+   {
+    "lang": "de",
+    "en": "\"It's not that bad, right, Kayel?\"",
+    "ref": "„So schlimm war es doch gar nicht, oder, Kayel?“",
+    "hyp": "Es ist nicht so schlimm, Kayel?",
+    "seconds": 2.09,
+    "chrf": 35.8
+   },
+   {
+    "lang": "de",
+    "en": "Oh right, here is Sally Rooney latest essay",
+    "ref": "Ach ja, hier ist Sally Rooneys neuestes Essay",
+    "hyp": "Oh, ja, hier ist die neueste Schrift von Sally Rooney",
+    "seconds": 2.12,
+    "chrf": 56.6
+   },
+   {
+    "lang": "de",
+    "en": "“Jeez Valturi,” Nemic stated. “You’d think they would have learned by now to wake up when you did”",
+    "ref": "„Mensch, Valturi“, sagte Nemic. „Man sollte meinen, sie hätten inzwischen gelernt, zur gleichen Zeit wie Sie wach zu werden.“",
+    "hyp": "Jeez Valturi,\" sagte Nemic. \"Du würdest denken, sie hätten es jetzt schon gelernt, sobald du aufwachst.",
+    "seconds": 4.73,
+    "chrf": 36.5
+   },
+   {
+    "lang": "de",
+    "en": "my hedges are getting big.",
+    "ref": "Meine Sicherungsgeschäfte wachsen.",
+    "hyp": "Meine Zaunläufe werden größer.",
+    "seconds": 1.57,
+    "chrf": 18.7
+   },
+   {
+    "lang": "de",
+    "en": "Construction waste recycling firm opens new Cumbernauld plant amid circular economy drive",
+    "ref": "Förderung der Kreislaufwirtschaft: Recyclingunternehmen für Bauschutt eröffnet neue Anlage in Cumbernauld",
+    "hyp": "Bauabfälle-Recyclingunternehmen eröffnet neues Cumbernauld-Plant mit der Unterstützung des Kreislaufwirtschaftsdrives",
+    "seconds": 3.79,
+    "chrf": 62.0
+   },
+   {
+    "lang": "de",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "„Schon, aber kann Retvik fahren?“",
+    "hyp": "Ja, aber kann Retvik fahren?",
+    "seconds": 1.67,
+    "chrf": 76.4
+   },
+   {
+    "lang": "de",
+    "en": "ps - i hope we are past the point of being apologetic about liking her novels or defending them as average.",
+    "ref": "PS: Ich hoffe, wir müssen uns nicht mehr dafür entschuldigen, ihre Romane zu mögen oder sie als mittelmäßig zu verteidigen.",
+    "hyp": "ps - ich hoffe, wir sind über den Punkt hinaus, an dem wir uns für die Freude an ihren Romanen oder ihre Vertheidigung als durchschnittlich entschuldigen müssen.",
+    "seconds": 5.23,
+    "chrf": 41.9
+   },
+   {
+    "lang": "de",
+    "en": "switch to cash, no more margin.",
+    "ref": "Zurück zu Cash, keine Marge mehr.",
+    "hyp": "1. Wechsel auf Kasse, keine mehr Margin.",
+    "seconds": 1.94,
+    "chrf": 31.7
+   },
+   {
+    "lang": "de",
+    "en": "Just discovered the upgrade where you can see where you've been.",
+    "ref": "Hab gerade das Upgrade entdeckt, wo man sehen kann, wo man war.",
+    "hyp": "Just discovered the upgrade where you can see where you've been.",
+    "seconds": 3.54,
+    "chrf": 19.1
+   },
+   {
+    "lang": "de",
+    "en": "Sally Rooney used to debate, and once you know that it is easy to see those techniques in both her novels and essays.",
+    "ref": "Sally Rooney hat früher an Debatten teilgenommen. Wenn man das weiß, kann man die entsprechenden Techniken sowohl in ihren Romanen als auch in ihren Essays leicht erkennen.",
+    "hyp": "Sally Rooney war früher Debaterin, und nachdem du weißt, dass es einfach ist, diese Techniken in beiden ihren Büchern und Essays zu erkennen.",
+    "seconds": 4.34,
+    "chrf": 34.8
+   },
+   {
+    "lang": "de",
+    "en": "After 4 months of playing this game.",
+    "ref": "Nachdem ich das Spiel seit 4 Monaten spiele.",
+    "hyp": "Nach 4 Monaten des Spiels dieser Game.",
+    "seconds": 1.74,
+    "chrf": 41.2
+   },
+   {
+    "lang": "de",
+    "en": "Brewers froth over winemakers\" exemption from anti-waste rules",
+    "ref": "Bierbrauer erbost über Freistellung der Weinhersteller von Müllvermeidungsvorschriften",
+    "hyp": "Brews freuen sich über die Ausnahme der Winzergenossenschaften von den Anti-Verbrauchsvorschriften",
+    "seconds": 6.4,
+    "chrf": 31.9
+   },
+   {
+    "lang": "de",
+    "en": "“With all respect sir, why do you have to wake us up like that?” One of the Shock Troopers, a corporal, asked.",
+    "ref": "„Bei allem Respekt, Sir, warum müssen Sie uns so wecken?“, fragte ein Feldwebel der Stoßtruppen.",
+    "hyp": "Mit Respekt, Sir, warum müssen Sie uns so aufwachen?\" Fragte einer der Schreckenskrieger, ein Korporal.",
+    "seconds": 4.21,
+    "chrf": 52.0
+   },
+   {
+    "lang": "fr",
+    "en": "How to find out if you're flying on a Boeing 737 MAX",
+    "ref": "Comment savoir si vous volez à bord d'un Boeing 737 MAX",
+    "hyp": "Comment savoir si on est en vol sur un Boeing 737 MAX",
+    "seconds": 2.38,
+    "chrf": 61.2
+   },
+   {
+    "lang": "fr",
+    "en": "“With all respect sir, why do you have to wake us up like that?” One of the Shock Troopers, a corporal, asked.",
+    "ref": "\"Sauf votre respect, chef, pourquoi vous vous obstinez à nous réveiller de cette façon ?\", demanda l'un des membres de la troupe de choc, un caporal.",
+    "hyp": "Avec tout respect, monsieur, pourquoi dovez-vous nous réveiller ainsi ?\" Un des Shock Troopers, un capitaine, a demandé.",
+    "seconds": 4.45,
+    "chrf": 36.1
+   },
+   {
+    "lang": "fr",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Ça fait un moment que j'ai pas mis ce fil à jour. Finalement j'ai vaincu la Reine Gidbo.",
+    "hyp": "Il y a un moment depuis que je n'ai pas mis à jour ce fil. Enfin vaincu la reine Gidbo.",
+    "seconds": 3.53,
+    "chrf": 49.1
+   },
+   {
+    "lang": "fr",
+    "en": "“Exodus XO, Exodus CO” Cohrens radio crackled. “We're picking up heat signatures 350 yards out, 20 degrees right”",
+    "ref": "\"Exodus XO, Exodus CO\", grésilla la radio de Cohren. \"Nous détectons des signatures thermiques à environ 300 mètres, 20 degrés droite.\"",
+    "hyp": "Exodus XO, Exodus CO\" Cohrens radio crachetait. \"Nous pickons des signatures de chaleur 350 yards en arrière, 20 degrés à droite",
+    "seconds": 5.32,
+    "chrf": 49.1
+   },
+   {
+    "lang": "fr",
+    "en": "Apparently there are only two levels that haven't been cleared in the original Super Mario Maker lol",
+    "ref": "Apparemment il n'y a que deux niveaux que je n'ai pas encore passés dans le Super Mario Maker original lol",
+    "hyp": "Apparemment, il y a seulement deux niveaux qui n'ont pas été effacés dans l'original Super Mario Maker lol",
+    "seconds": 3.52,
+    "chrf": 56.4
+   },
+   {
+    "lang": "fr",
+    "en": "Killed myself with my own boomerang",
+    "ref": "Je me suis tué avec mon propre boomerang",
+    "hyp": "J'ai tué moi-même avec mon propre boomerang",
+    "seconds": 1.92,
+    "chrf": 67.7
+   },
+   {
+    "lang": "fr",
+    "en": "“Shaw got us a ride?” Nemic asked, a little surprised.",
+    "ref": "\"Shaw nous a eu un transport ?\", demanda Nemic, un peu surpris.",
+    "hyp": "Shaw a-t-il nous fait un trajet ? » demanda Nemic, un peu surpris.",
+    "seconds": 2.92,
+    "chrf": 60.0
+   },
+   {
+    "lang": "fr",
+    "en": "“Yup, Operation Firestorm,” Cohren answered. “We thought it would be over in a few weeks, but…we underestimate them”",
+    "ref": "\"Ouep, Opération Tempête de feu\", répondit Cohren. \"Nous pensions en venir à bout en quelques semaines, mais... nous les avons sous-estimés.\"",
+    "hyp": "Oui, Opération Feustorm,\" répond Cohren. \"Nous pensions qu'elle serait terminée en quelques semaines, mais... nous sous-estimons.",
+    "seconds": 4.48,
+    "chrf": 60.7
+   },
+   {
+    "lang": "fr",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "allez $sqqq. mon panier devient énorme lol",
+    "hyp": "$sqqq viens. mon sac est devenu très grand lol",
+    "seconds": 2.31,
+    "chrf": 26.3
+   },
+   {
+    "lang": "fr",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "\"Vous les réveillez ?\" Cohren se retourna pour voir le second lieutenant Nemic arriver en marchant.",
+    "hyp": "Réveiller ceux-ci\" Cohren se tourna vers voir le 2e lieutenant Nemic marcher vers lui.",
+    "seconds": 3.37,
+    "chrf": 47.3
+   },
+   {
+    "lang": "fr",
+    "en": "3 minutes to go...",
+    "ref": "Dans 3 minutes...",
+    "hyp": "3 minutes à venir...",
+    "seconds": 1.0,
+    "chrf": 49.5
+   },
+   {
+    "lang": "fr",
+    "en": "Shaw walked up to the figure, who was starting to get up. He then turned to one of the Sentinels. “How many?”",
+    "ref": "Shaw marcha vers l'individu, qui commençait à se relever. Il se tourna vers l'une des Sentinelles. \"Combien ?\"",
+    "hyp": "Shaw a fait le pas vers la figure, qui commençait à se lever. Il a ensuite regardé un des Sentinels. « Combien ?",
+    "seconds": 4.21,
+    "chrf": 49.7
+   },
+   {
+    "lang": "fr",
+    "en": "come on nok, $3.74 let’s go.",
+    "ref": "allez nok, 3,74 $ on y va.",
+    "hyp": "1. Viens, Nok, 3,74 dollars, allons-y.",
+    "seconds": 2.57,
+    "chrf": 32.3
+   },
+   {
+    "lang": "fr",
+    "en": "Really tough not to buy that the league tells officials to help Miami when that’s not a penalty. #DCU #MLS #mastodonfc",
+    "ref": "Vraiment difficile de ne pas croire que la ligue demande aux arbitres de favoriser Miami, alors qu'il n'y a pas penalty. #DCU #MLS #mastodonfc",
+    "hyp": "C’est vraiment difficile de ne pas acheter cela que la ligue dit aux officiels d’aider Miami lorsque ce n’est pas une sanction. #DCU #MLS #mastodonfc",
+    "seconds": 4.75,
+    "chrf": 53.2
+   },
+   {
+    "lang": "fr",
+    "en": "The lander is about the size of old UK telephone box...",
+    "ref": "Le module atterrisseur fait environ la taille d'une vieille cabine téléphonique britannique...",
+    "hyp": "Le lander est d'environ la taille d'un ancien boîtier téléphonique britannique...",
+    "seconds": 2.92,
+    "chrf": 56.1
+   },
+   {
+    "lang": "fr",
+    "en": "Before he could answer, the door opened and Harris, Craith, and a few others hurried out, already fully dressed and kitted out.",
+    "ref": "Avant qu'il ne puisse répondre, la porte s'ouvrit et Harris, Craith et d'autres soldats se dépêchèrent de sortir, déjà habillés et équipés.",
+    "hyp": "Avant qu'il puisse répondre, la porte s'ouvrit et Harris, Craith, et quelques autres sortirent rapidement, déjà vêtus et équipés.",
+    "seconds": 4.58,
+    "chrf": 64.7
+   },
+   {
+    "lang": "fr",
+    "en": "“Kill or capture?” Craith asked as they watched.",
+    "ref": "\"On les tue ou on les capture ?\", demanda Craith tandis qu'ils les regardaient.",
+    "hyp": "Tuer ou capturer ?\" Craith demanda en regardant.",
+    "seconds": 2.31,
+    "chrf": 34.0
+   },
+   {
+    "lang": "fr",
+    "en": "Make that four times",
+    "ref": "Fais-le quatre fois",
+    "hyp": "Cela doit être quatre fois.",
+    "seconds": 1.27,
+    "chrf": 56.3
+   },
+   {
+    "lang": "fr",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Je commence à en avoir assez de la boue aussi #templedel'eau",
+    "hyp": "Je vais traduire la phrase en français.",
+    "seconds": 1.74,
+    "chrf": 12.3
+   },
+   {
+    "lang": "fr",
+    "en": "i wonder if the twitter would get suspended if i mentioned i had a fat bag of it lol",
+    "ref": "je me demande si le twitter serait suspendu si je mentionnais que j'en avais un panier plein lol",
+    "hyp": "Je me demande si Twitter serait suspendu si je mentionnais que j'avais une grosse poche de ça lol",
+    "seconds": 3.19,
+    "chrf": 69.8
+   },
+   {
+    "lang": "fr",
+    "en": "\"You want to chase after them?\"",
+    "ref": "\"Tu veux les pourchasser ?\"",
+    "hyp": "Tu veux les poursuivre ?",
+    "seconds": 1.68,
+    "chrf": 55.4
+   },
+   {
+    "lang": "fr",
+    "en": "because it's a vector of rational numbers",
+    "ref": "parce que c'est un vecteur de nombres rationnels",
+    "hyp": "parce que c'est un vecteur des nombres rationnels",
+    "seconds": 1.81,
+    "chrf": 92.8
+   },
+   {
+    "lang": "fr",
+    "en": "Well, perhaps ball doesn't lie. What an awful give away by Klich. Can't win when your DP plays that sloppy. #DCU #MLS #mastodonfc",
+    "ref": "Bien, peut-être que le ballon ne ment pas. Quelle horrible perte de balle de Klich. Impossible de gagner quand ton joueur désigné joue aussi mal. #DCU #MLS #mastodonfc",
+    "hyp": "Bon, peut-être le ballon ne se déguise pas. Quel horrible dévoilement de Klich. On ne peut pas gagner quand votre DP joue de manière si maladroite. #DCU #MLS #mastodonfc",
+    "seconds": 6.34,
+    "chrf": 54.6
+   },
+   {
+    "lang": "fr",
+    "en": "After 4 months of playing this game.",
+    "ref": "Après avoir joué 4 mois à ce jeu.",
+    "hyp": "Après 4 mois de jeu de ce jeu.",
+    "seconds": 1.65,
+    "chrf": 37.0
+   },
+   {
+    "lang": "fr",
+    "en": "Ethan Frenchman is a Disability Rights Washington staff attorney who advocates for people with disabilities in jails and prisons.",
+    "ref": "Ethan Frenchman est un avocat de Disability Rights Washington qui défend les personnes en situation de handicap détenues dans les prisons.",
+    "hyp": "Ethan Frenchman est un avocat de l'Office des droits des personnes handicapées à Washington qui défend les personnes handicapées dans les prisons et les réfugiés.",
+    "seconds": 4.2,
+    "chrf": 64.7
+   },
+   {
+    "lang": "fr",
+    "en": "\"Hey, Tenuk, do you mind shapeshifting into something that can fly?\" Kayel asked.",
+    "ref": "\"Hé Tenuk, ça te dirait de te transformer en quelque chose qui vole ?\", demanda Kayel.",
+    "hyp": "Hey, Tenuk, peux-tu me permettre de te transformer en quelque chose qui peut voler ?\" demanda Kayel.",
+    "seconds": 3.97,
+    "chrf": 65.6
+   },
+   {
+    "lang": "fr",
+    "en": "well now they’re god damn huge lol",
+    "ref": "elles sont devenues énormes, lol",
+    "hyp": "Bon, maintenant ils sont des trucs de taille incroyable lol",
+    "seconds": 2.16,
+    "chrf": 28.8
+   },
+   {
+    "lang": "fr",
+    "en": "Bring back oversight for WA's jails. Lives depend on it",
+    "ref": "Pour un retour de la surveillance des prisons de l'État de Washington. Des vies en dépendent.",
+    "hyp": "Réécrivez le message en français : \"Réécrivez le message en français : 'Bring back oversight for WA's jails. Lives depend on it",
+    "seconds": 11.87,
+    "chrf": 16.4
+   },
+   {
+    "lang": "fr",
+    "en": "“What woke you guys up?” Cohren asked.",
+    "ref": "\"Qu'est-ce qui vous a réveillés ?\", demanda Cohren.",
+    "hyp": "Qu'est-ce qui a réveillé vos gars ?\" demanda Cohren.",
+    "seconds": 2.6,
+    "chrf": 69.7
+   },
+   {
+    "lang": "fr",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "\"D'accord, mais Retvik sait conduire ?\"",
+    "hyp": "Oui, mais peut-il conduire ?",
+    "seconds": 1.82,
+    "chrf": 32.0
+   },
+   {
+    "lang": "fr",
+    "en": "\"But... one of them is a giant monster!\"",
+    "ref": "\"Mais... l'un d'eux est un monstre géant !\"",
+    "hyp": "Mais... l'un d'entre eux est un monstre géant !",
+    "seconds": 11.36,
+    "chrf": 87.2
+   },
+   {
+    "lang": "fr",
+    "en": "what why are the GPS coordinates getting rounded to the nearest full degree that's absolutely worthless",
+    "ref": "pourquoi est-ce que les coordonnées GPS sont arrondies au degré entier près, c'est totalement inutile",
+    "hyp": "pourquoi les coordonnées GPS sont-elles arrondies à la degré le plus proche, ce qui est absolument sans valeur",
+    "seconds": 3.44,
+    "chrf": 50.7
+   },
+   {
+    "lang": "fr",
+    "en": "“What did you plan on using this time?”",
+    "ref": "\"Qu'avez-vous prévu d'utiliser cette fois-ci ?\"",
+    "hyp": "Quel était votre plan d'utilisation de cette fois ?",
+    "seconds": 2.0,
+    "chrf": 35.5
+   },
+   {
+    "lang": "fr",
+    "en": "when in on $big 4.25-.35",
+    "ref": "quand on est sur $big 4,25-0,35",
+    "hyp": "when in on $big 4.25-.35",
+    "seconds": 3.44,
+    "chrf": 20.3
+   },
+   {
+    "lang": "fr",
+    "en": "my hedges are getting big.",
+    "ref": "mes marges prennent de l'ampleur.",
+    "hyp": "mes haies sont devenues grandes.",
+    "seconds": 1.41,
+    "chrf": 18.3
+   },
+   {
+    "lang": "fr",
+    "en": "“You mean his chicken he stole?” Cohren remembered the morning they had stolen him from a farm. “Yeah, i'm pretty sure”",
+    "ref": "\"Tu parles du poulet qu'il a volé ?\" Cohren se souvenait du matin où ils l'avaient volé dans une ferme. \"Oui, j'en suis sûr\".",
+    "hyp": "Tu veux dire le poulet qu'il a volé ? » Cohren se souvient de la matinée où ils l'ont volé d'une ferme. « Oui, je suis sûr.",
+    "seconds": 5.63,
+    "chrf": 54.5
+   },
+   {
+    "lang": "fr",
+    "en": "And just under the wire basically someone actually beat Trimming the Herbs! Really impressive.",
+    "ref": "Et juste à la dernière minute, quelqu'un a finalement réussi à passer \"Couper les herbes\" ! Impressionnant.",
+    "hyp": "Et juste sous le fil, une personne a effectivement battu Trimming les Herbes ! Impressionnant !",
+    "seconds": 2.97,
+    "chrf": 34.6
+   },
+   {
+    "lang": "fr",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Je me suis mis tout seul dans la crevasse avec une balle de baseball géante",
+    "hyp": "Je m'engouffre dans la crevasse avec un baseball géant",
+    "seconds": 2.48,
+    "chrf": 53.8
+   },
+   {
+    "lang": "fr",
+    "en": "Nyssi blinked and turned back to Tenuk. \"Of course he can drive.\"",
+    "ref": "Nissy cligna des yeux et se retourna vers Tenuk. \"Bien sûr qu'il sait conduire.\"",
+    "hyp": "Nyssi a regardé la tête et a regardé Tenuk. « Bien sûr qu'il peut conduire.",
+    "seconds": 3.27,
+    "chrf": 38.8
+   },
+   {
+    "lang": "fr",
+    "en": "“Can’t tell,” Cohren stated. He reached for his mic and spoke. “Exodus Company, hold fire unless fired upon, let's draw them out",
+    "ref": "\"Impossible à dire\", déclara Cohren. Il activa son micro et dit : \"Compagnie Exodus, ne tirez pas à moins qu'on vous tire dessus, faisons-les sortir.\"",
+    "hyp": "Je ne peux pas le dire », déclara Cohren. Il saisit son micro et s'adressa. « L'Éxode, gardez le feu en attente, sauf si vous êtes tirés, et nous allons les dégager.",
+    "seconds": 6.68,
+    "chrf": 33.4
+   },
+   {
+    "lang": "es",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "“Sí, ¿pero Retvik sabe manejar?”.",
+    "hyp": "Sí, pero ¿puede Retvik manejar?",
+    "seconds": 1.88,
+    "chrf": 45.2
+   },
+   {
+    "lang": "es",
+    "en": "come on nok, $3.74 let’s go.",
+    "ref": "vamos NOK, $3.74, vamos",
+    "hyp": "¡Vamos, Nok, 3,74 dólares, vamos.",
+    "seconds": 2.42,
+    "chrf": 30.9
+   },
+   {
+    "lang": "es",
+    "en": "i do not like this",
+    "ref": "no me gusta esto",
+    "hyp": "1. No me gusta esto",
+    "seconds": 1.32,
+    "chrf": 86.8
+   },
+   {
+    "lang": "es",
+    "en": "ps - i hope we are past the point of being apologetic about liking her novels or defending them as average.",
+    "ref": "P.D. Espero que ya no tengamos que disculparnos por que nos gusten sus novelas, ni defenderlas como buenas.",
+    "hyp": "ps - espero que ya no estemos en el punto de sentirnos apologetas por gustar sus novelas o defenderlas como medianas.",
+    "seconds": 3.66,
+    "chrf": 46.9
+   },
+   {
+    "lang": "es",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "vamos $sqqq, mi billetera está creciendo un montón, jaja",
+    "hyp": "$sqqq vaya. mi maleta está creciendo mucho lol",
+    "seconds": 2.33,
+    "chrf": 39.0
+   },
+   {
+    "lang": "es",
+    "en": "And she is very adept with the English language.",
+    "ref": "Y es muy hábil con la lengua inglesa.",
+    "hyp": "Y ella es muy hábila con el idioma inglés.",
+    "seconds": 1.94,
+    "chrf": 44.0
+   },
+   {
+    "lang": "es",
+    "en": "JANUARY 19th, 2:34 PM, 2543.",
+    "ref": "19 DE ENERO, 2:34 P.M., 2543.",
+    "hyp": "19 de enero, 2:34 PM, 2543.",
+    "seconds": 2.96,
+    "chrf": 34.9
+   },
+   {
+    "lang": "es",
+    "en": "Live feed says that they have a signal",
+    "ref": "La transmisión en vivo dice que tienen señal.",
+    "hyp": "La transmisión en vivo dice que tienen un señal.",
+    "seconds": 1.77,
+    "chrf": 94.0
+   },
+   {
+    "lang": "es",
+    "en": "Nyssi blinked and turned back to Tenuk. \"Of course he can drive.\"",
+    "ref": "Nyssi parpadeó y se volvió hacia Tenuk. “Claro que sabe manejar”.",
+    "hyp": "Nyssi se fijó y se volvió hacia Tenuk. \"Claro que puede conducir.",
+    "seconds": 3.07,
+    "chrf": 53.8
+   },
+   {
+    "lang": "es",
+    "en": "Brewers froth over winemakers\" exemption from anti-waste rules",
+    "ref": "Las cerveceras se postulan en contra de la exención de las normativas anti residuos a los productores de vino",
+    "hyp": "Brewers froth over winemakers' exemption from anti-waste rules",
+    "seconds": 2.6,
+    "chrf": 13.2
+   },
+   {
+    "lang": "es",
+    "en": "Oh right, here is Sally Rooney latest essay",
+    "ref": "Ah, cierto, aquí está el último ensayo de Sally Rooney:",
+    "hyp": "¡Oh, sí, aquí está la última ensayada de Sally Rooney",
+    "seconds": 3.69,
+    "chrf": 52.0
+   },
+   {
+    "lang": "es",
+    "en": "“Three dead, sir” The Sentinel answered. “The rest fled on foot”",
+    "ref": "“Tres muertos, mi teniente”, respondió el centinela. “El resto huyó a pie”.",
+    "hyp": "Tres muertos, señor\" respondió el Sentinel. \"Los demás se huyeron a pie",
+    "seconds": 3.0,
+    "chrf": 43.8
+   },
+   {
+    "lang": "es",
+    "en": "Sally Rooney used to debate, and once you know that it is easy to see those techniques in both her novels and essays.",
+    "ref": "Sally Rooney estaba acostumbrada a debatir, y una vez que sabes eso es fácil ver esas técnicas tanto en sus novelas como en sus ensayos.",
+    "hyp": "Sally Rooney usaba a debate, y una vez que sepas eso, es fácil de ver esas técnicas en ambos sus novelas y ensayos.",
+    "seconds": 4.11,
+    "chrf": 55.9
+   },
+   {
+    "lang": "es",
+    "en": "Amazing how there's two PKs #DCU should have had and got neither. The fix is so in for Miami #MLS #mastodonfc",
+    "ref": "Increíble cómo hubo dos penales que tendrían que haber ido para #DCU y no les dieron ninguno. Es descaradísimo a favor de Miami #MLS #mastodonfc",
+    "hyp": "Increíble cómo hay dos PKs #DCU que debería haber tenido y no los obtuvo. La solución es tan buena para Miami #MLS #mastodonfc",
+    "seconds": 4.45,
+    "chrf": 41.8
+   },
+   {
+    "lang": "es",
+    "en": "well now they’re god damn huge lol",
+    "ref": "bueno, ahora son jodidamente enormes, jaja",
+    "hyp": "Bien ahora son increíblemente grandes lol",
+    "seconds": 1.65,
+    "chrf": 29.2
+   },
+   {
+    "lang": "es",
+    "en": "“I guess we’ll find out,” Cohren said with a laugh. Orson didn’t continue the conversation.",
+    "ref": "“Supongo que lo acabaremos averiguando”, dijo Cohren riendo. Orson no continuó con la conversación.",
+    "hyp": "Me alegro de que lo encontraremos,\" dijo Cohren con una sonrisa. Orson no continuó la conversación.",
+    "seconds": 3.7,
+    "chrf": 53.4
+   },
+   {
+    "lang": "es",
+    "en": "\"Hey, Tenuk, do you mind shapeshifting into something that can fly?\" Kayel asked.",
+    "ref": "“Oye, Tenuk, ¿te importaría transformarte en algo que pueda volar?”, preguntó Kayel.",
+    "hyp": "¡Hola, Tenuk, ¿te importa transformarte en algo que pueda volar?\" preguntó Kayel.",
+    "seconds": 3.43,
+    "chrf": 82.1
+   },
+   {
+    "lang": "es",
+    "en": "“Yup, I see them” Cohren responded, using his throat mic.",
+    "ref": "“Sí, las veo”, respondió Cohren, usando su micrófono de garganta.",
+    "hyp": "Sí, veo a los dos\" respondió Cohren, usando su micrófono de garganta.",
+    "seconds": 3.09,
+    "chrf": 81.4
+   },
+   {
+    "lang": "es",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Logré hacerme caer por el precipicio con una pelota de béisbol gigante.",
+    "hyp": "Empujándome hacia el hoyo con un bate de béisbol gigante",
+    "seconds": 2.69,
+    "chrf": 37.2
+   },
+   {
+    "lang": "es",
+    "en": "when in on $big 4.25-.35",
+    "ref": "cuando estás en $big 4.25-.35",
+    "hyp": "when in on $big 4.25-.35",
+    "seconds": 11.67,
+    "chrf": 51.3
+   },
+   {
+    "lang": "es",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Hacía tiempo que no actualizaba este hilo. Finalmente derroté a la reina Gidbo.",
+    "hyp": "Hace mucho tiempo que no he actualizado este hilo. Finalmente, derroté a la Reina Gidbo.",
+    "seconds": 3.37,
+    "chrf": 71.7
+   },
+   {
+    "lang": "es",
+    "en": "“Hey Cohren, does Harris still have Snowball?” Nemic asks as they got settled in.",
+    "ref": "“Oye, Cohren, ¿Harris aún tiene a Bola de Nieve?”, preguntó Nemic mientras se ponían cómodos.",
+    "hyp": "Hey Cohren, ¿A Harris todavía tiene Snowball?\" Nemic pregunta mientras se sienten.",
+    "seconds": 5.34,
+    "chrf": 39.8
+   },
+   {
+    "lang": "es",
+    "en": "nothing makes me more happy than elon musk losing money. $tslq",
+    "ref": "nada me hace mas feliz que ver a Elon Musk perdiendo dinero, $tslq",
+    "hyp": "N sentences: 1",
+    "seconds": 11.5,
+    "chrf": 4.0
+   },
+   {
+    "lang": "es",
+    "en": "How Betta Edu became a scapegoat of a dysfunctional political system",
+    "ref": "Cómo Betta Edu se convirtió en el chivo expiatorio de un sistema político disfuncional",
+    "hyp": "¿Cómo se convirtió Betta Edu en un blanco de un sistema político desorganizado?",
+    "seconds": 2.56,
+    "chrf": 53.5
+   },
+   {
+    "lang": "es",
+    "en": "“Cause the regular alarms are shit. And because Daybreak doesn't sleep in” Cohren stated.",
+    "ref": "“Porque las alarmas normales son una mierda. Y porque Alborada no se queda en la cama”, dijo Cohren.",
+    "hyp": "Porque los alarma normal son mierda. Y porque Daybreak no se duerme\" dijo Cohren.",
+    "seconds": 3.34,
+    "chrf": 48.2
+   },
+   {
+    "lang": "es",
+    "en": "“Lieutenant Nemic…Lieutenant Valturi…” He said Cohren was slower, glancing at Cohren’s pistol holster before glancing up again. “I assume that the company is ready”",
+    "ref": "“Teniente Nemic… teniente Valturi…”, dijo lentamente, mirando la funda de la pistola de Cohren antes de volver a levantar la vista. “Supongo que la compañía está preparada”.",
+    "hyp": "Suboficial Nemic…Suboficial Valturi…” dijo Cohren era más lento, mirando el cinturón de su pistola antes de mirar de nuevo. \"Creo que la compañía está lista\".",
+    "seconds": 5.99,
+    "chrf": 40.4
+   },
+   {
+    "lang": "es",
+    "en": "I've definitely been going about this the wrong way.",
+    "ref": "Definitivamente, he estado haciendo esto como no había que hacerlo.",
+    "hyp": "Sí, he estado haciendo todo este proceso de la forma equivocada.",
+    "seconds": 2.37,
+    "chrf": 39.4
+   },
+   {
+    "lang": "es",
+    "en": "let’s tank the first week of the new year",
+    "ref": "vamos a desplomar la primera semana del nuevo año",
+    "hyp": "Vamos a aprovechar la primera semana del nuevo año",
+    "seconds": 2.0,
+    "chrf": 73.7
+   },
+   {
+    "lang": "es",
+    "en": "my hedges are getting big.",
+    "ref": "mis fondos están creciendo",
+    "hyp": "Mis jardines de muros están creciendo.",
+    "seconds": 1.82,
+    "chrf": 63.8
+   },
+   {
+    "lang": "es",
+    "en": "Really tough not to buy that the league tells officials to help Miami when that’s not a penalty. #DCU #MLS #mastodonfc",
+    "ref": "Si eso no es un penal, es realmente complicado no creer que la Liga les dice a los árbitros que ayuden a Miami. #DCU #MLS #mastodonfc",
+    "hyp": "Es realmente difícil no comprar eso que la liga dice a los oficiales que ayuden a Miami cuando no es un penal. #DCU #MLS #mastodonfc",
+    "seconds": 4.52,
+    "chrf": 61.2
+   },
+   {
+    "lang": "es",
+    "en": "“Well, I’ll stand defiantly for the Federation” Orson said defiantly. “I’ll not let those terrorist scare me”",
+    "ref": "“Bueno, yo defenderé a la Federación con gallardía”, dijo Orson desafiante. “No voy a permitir que esos terroristas me asusten”.",
+    "hyp": "¡Voy a ser firme por la Federación\" dijo Orson con firmeza. \"No permitiré que esos terroristas me怖",
+    "seconds": 4.03,
+    "chrf": 44.1
+   },
+   {
+    "lang": "es",
+    "en": "new ath. i know what that means..",
+    "ref": "nuevo máximo histórico, sé lo que significa eso…",
+    "hyp": "new ath. i know what that means.",
+    "seconds": 1.5,
+    "chrf": 4.8
+   },
+   {
+    "lang": "es",
+    "en": "Shaw nodded and turned towards Cohren and Criath, who were standing close by. “Would you two be so kind as to stow this man away?”",
+    "ref": "Shaw asintió y se volvió hacia Cohren y Criath, que permanecían de pie cerca de él. “¿Serían tan amables de poner a este hombre a buen recaudo?”.",
+    "hyp": "Shaw se inclinó y se dirigió hacia Cohren y Criath, quienes estaban a su lado. \"¿Os sería amable que diesen este hombre a la sombra?",
+    "seconds": 4.8,
+    "chrf": 41.0
+   },
+   {
+    "lang": "es",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Empiezo a aburrirme también del lodo del #templodelagua",
+    "hyp": "Comenzando a aburrirme de la mierda también #watertemple",
+    "seconds": 2.68,
+    "chrf": 41.9
+   },
+   {
+    "lang": "es",
+    "en": "Hailey Ockinga is an anti-incarceration activist and community organizer, and the executive director of Beyond These Walls in Washington state.",
+    "ref": "Hailey Ockinga es una activista en contra del encarcelamiento y organizadora comunitaria, así como la directora ejecutiva de Beyond These Walls, en el estado de Washington.",
+    "hyp": "Hailey Ockinga es activista contra la prisión y organizadora comunitaria, y directora ejecutiva de Beyond These Walls en Washington.",
+    "seconds": 3.97,
+    "chrf": 64.2
+   },
+   {
+    "lang": "es",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "“Toca despertarlos”. Cohren se dio la vuelta para ver al subteniente Nemic acercándose.",
+    "hyp": "Despertarlos\" Cohren se volvió a ver a 2da. Teniente Nemic caminando hacia arriba.",
+    "seconds": 3.67,
+    "chrf": 42.5
+   },
+   {
+    "lang": "es",
+    "en": "facepalmed right into the ground",
+    "ref": "Es para ni asomar la cabeza de la vergüenza.",
+    "hyp": "1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.",
+    "seconds": 11.31,
+    "chrf": 0.3
+   },
+   {
+    "lang": "es",
+    "en": "After 4 months of playing this game.",
+    "ref": "Después de 4 meses jugando a este juego.",
+    "hyp": "Después de 4 meses de jugar este juego.",
+    "seconds": 1.7,
+    "chrf": 71.3
+   },
+   {
+    "lang": "es",
+    "en": "“Jeez Valturi,” Nemic stated. “You’d think they would have learned by now to wake up when you did”",
+    "ref": "“Cielos, Valturi”, dijo Nemic. “Podrías pensar que a estas alturas ya habrían aprendido a despertarse cuando tú lo haces”.",
+    "hyp": "Jeez Valturi,\" Nemic dijo. \"Te sorprendería que hayan aprendido a despertarse cuando tú lo haces",
+    "seconds": 4.05,
+    "chrf": 50.6
+   },
+   {
+    "lang": "es",
+    "en": "How to find out if you're flying on a Boeing 737 MAX",
+    "ref": "Cómo saber si estás volando en un Boeing 737 MAX",
+    "hyp": "¿Cómo saber si estás volando en un Boeing 737 MAX",
+    "seconds": 11.72,
+    "chrf": 99.5
+   }
+  ]
+ },
+ "editor": {
+  "model": "brain4b",
+  "chrf": 51.6,
+  "by_language": {
+   "de": 47.2,
+   "fr": 53.1,
+   "es": 54.5
+  },
+  "seconds_per_sentence": 4.85,
+  "rows": [
+   {
+    "lang": "de",
+    "en": "“Yup, I see them” Cohren responded, using his throat mic.",
+    "ref": "„Ja, ich sehe sie“, antwortete Cohren über sein Kehlkopfmikrofon.",
+    "hyp": "„Ja, ich sehe sie“, antwortete Cohren, benutzte seinen Schläfenmikrofon.",
+    "seconds": 73.1,
+    "chrf": 69.5
+   },
+   {
+    "lang": "de",
+    "en": "“Lieutenant Nemic…Lieutenant Valturi…” He said Cohren was slower, glancing at Cohren’s pistol holster before glancing up again. “I assume that the company is ready”",
+    "ref": "„Leutnant Nemic… Leutnant Valturi…“ Er sagte, Cohren sei langsamer, während er auf Cohrens Pistolenholster blickte und dann wieder aufschaute. „Die Kompanie ist bereit, nehme ich an?“",
+    "hyp": "„Kommandant Nemic…Kommandant Valturi…“ Er sagte, Cohren war langsamer, blickte auf Cohrens Pistolenhalter vor sich, bevor er wieder aufsah. „Ich nehme an, die Kompanie ist bereit.",
+    "seconds": 9.48,
+    "chrf": 59.9
+   },
+   {
+    "lang": "de",
+    "en": "nothing makes me more happy than elon musk losing money. $tslq",
+    "ref": "nichts macht mich glücklicher als wenn Elon Musk Geld verliert. $tslq",
+    "hyp": "Nichts macht mich glücklicher als dass Elon Musk Geld verliert. $tslq",
+    "seconds": 3.83,
+    "chrf": 86.6
+   },
+   {
+    "lang": "de",
+    "en": "well now they’re god damn huge lol",
+    "ref": "Also, jetzt sind sie verdammt nochmal riesig lol",
+    "hyp": "nun sind sie verdammt nochmal gewaltig lol",
+    "seconds": 2.56,
+    "chrf": 59.6
+   },
+   {
+    "lang": "de",
+    "en": "\"You want to chase after them?\"",
+    "ref": "„Du möchtest sie verfolgen?“",
+    "hyp": "„Willst du sie verfolgen?",
+    "seconds": 2.26,
+    "chrf": 51.1
+   },
+   {
+    "lang": "de",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Ich hab diesen Thread schon länger nicht mehr aktualisiert. Jetzt hab ich endlich Queen Gidbo besiegt.",
+    "hyp": "Es ist eine Weile seitdem, dass ich diesen Thread aktualisiert habe. Schließlich hat man Queen Gidbo besiegt.",
+    "seconds": 4.68,
+    "chrf": 49.9
+   },
+   {
+    "lang": "de",
+    "en": "Absolute rocket from from Stroud on a perfect half turn to goal. #DCU #MLS #MastodonFC",
+    "ref": "Absolute Rakete von Stroud mit einer perfekten halben Drehung aufs Tor. #DCU #MLS #MastodonFC",
+    "hyp": "Absolute Rakete von Stroud auf einen perfekten Halbturn zum Tor. #DCU #MLS #MastodonFC",
+    "seconds": 4.8,
+    "chrf": 68.3
+   },
+   {
+    "lang": "de",
+    "en": "“Yup, he still has him” Cohren answered as the tank's turret hatch clanked open and its commander came into view.",
+    "ref": "„Ja, er ist noch bei ihm“, antwortete Cohren, als sich die Luke des Panzers öffnete und der Kommandant in Sicht kam.",
+    "hyp": "„Ja, er hat ihn immer noch“, antwortete Cohren, als das Tor des Tank-Commanders aufschwang und dieser in Sicht kam.",
+    "seconds": 5.9,
+    "chrf": 49.3
+   },
+   {
+    "lang": "de",
+    "en": "“I guess we’ll find out,” Cohren said with a laugh. Orson didn’t continue the conversation.",
+    "ref": "„Das werden wir ja sehen“, sagte Cohren lachend. Orson stellte das Gespräch ein.",
+    "hyp": "„Ich denke, wir werden es herausfinden“, sagte Cohren lachend. Orson beendete das Gespräch.",
+    "seconds": 4.81,
+    "chrf": 62.7
+   },
+   {
+    "lang": "de",
+    "en": "facepalmed right into the ground",
+    "ref": "Facepalm und im Boden versinken",
+    "hyp": "das Gesicht in die Erde gebohrt",
+    "seconds": 2.24,
+    "chrf": 12.6
+   },
+   {
+    "lang": "de",
+    "en": "Ethan Frenchman is a Disability Rights Washington staff attorney who advocates for people with disabilities in jails and prisons.",
+    "ref": "Ethan Frenchman ist Anwalt bei Disability Rights Washington und setzt sich für Menschen mit Behinderungen in Gefängnissen ein.",
+    "hyp": "Ethan Frenchman ist ein Staatshauptmann für die Rechte von Menschen mit Behinderungen in Washington, der für Menschen mit Behinderungen in Gefangenschaftsanstalten und Gefängnissen eintritt.",
+    "seconds": 7.38,
+    "chrf": 59.7
+   },
+   {
+    "lang": "de",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "„Wecken Sie sie?“ Cohren drehte sich um und sah Zugführer Nemic auf sich zukommen.",
+    "hyp": "„Waking them up“ blickte Cohren zu, als der zweite Lieutenant Nemic aufging.",
+    "seconds": 4.12,
+    "chrf": 23.9
+   },
+   {
+    "lang": "de",
+    "en": "JANUARY 19th, 2:34 PM, 2543.",
+    "ref": "19. Januar 2543, 14:34 Uhr.",
+    "hyp": "Januar, 14:34, 2543.",
+    "seconds": 3.63,
+    "chrf": 43.3
+   },
+   {
+    "lang": "de",
+    "en": "\"But... one of them is a giant monster!\"",
+    "ref": "„Aber… Einer von ihnen ist ein riesiges Monster!“",
+    "hyp": "„Aber... einer von ihnen ist ein riesiger Monster!",
+    "seconds": 2.66,
+    "chrf": 76.4
+   },
+   {
+    "lang": "de",
+    "en": "I've definitely been going about this the wrong way.",
+    "ref": "Ich bin das völlig falsch angegangen.",
+    "hyp": "Ich habe definitiv die ganze Sache falsch verstanden.",
+    "seconds": 2.54,
+    "chrf": 28.1
+   },
+   {
+    "lang": "de",
+    "en": "Before he could answer, the door opened and Harris, Craith, and a few others hurried out, already fully dressed and kitted out.",
+    "ref": "Bevor er antworten konnte, öffnete sich die Tür und Harris, Craith und ein paar andere kamen ihm bereits in voller Montur entgegen.",
+    "hyp": "Bevor er antworten konnte, öffnete die Tür und Harris, Craith und ein paar andere eilten hinaus, bereits vollständig angezogen und ausgerüstet.",
+    "seconds": 6.89,
+    "chrf": 67.3
+   },
+   {
+    "lang": "de",
+    "en": "“Hey Cohren, does Harris still have Snowball?” Nemic asks as they got settled in.",
+    "ref": "„Hey Cohren, ist Snowball immer noch bei Harris?“, fragte Nemic, nachdem sie sich eingerichtet hatten.",
+    "hyp": "„Hey Cohren, hat Harris immer noch Snowball?“ fragt Nemic, während sie sich eingerichtet haben.",
+    "seconds": 4.47,
+    "chrf": 60.9
+   },
+   {
+    "lang": "de",
+    "en": "“Cause the regular alarms are shit. And because Daybreak doesn't sleep in” Cohren stated.",
+    "ref": "„Weil die regulären Alarme scheiße sind und weil Daybreak nicht verschläft“, sagte Cohren.",
+    "hyp": "„Weil die regulären Alarmsysteme Scheisse sind. Und weil Daybreak nicht schlafet‘ sagte Cohren.",
+    "seconds": 4.68,
+    "chrf": 68.1
+   },
+   {
+    "lang": "de",
+    "en": "Move will also help transform land at the derelict Gartshore Works site.",
+    "ref": "Damit wird gleichzeitig das brachliegende Gelände der Gartshore-Werke umgestaltet.",
+    "hyp": "„Die Bewegung wird auch helfen, den Gelände zu verwandeln, das an der abgegangenen Gartshore Works Site liegt.",
+    "seconds": 5.11,
+    "chrf": 31.9
+   },
+   {
+    "lang": "de",
+    "en": "i do not like this",
+    "ref": "Das mag ich nicht",
+    "hyp": "Ich mag das nicht.",
+    "seconds": 1.39,
+    "chrf": 34.3
+   },
+   {
+    "lang": "de",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Mich mit einem riesigen Baseball in die Schlucht befördert",
+    "hyp": "Mich in den Schlitz drücken, während ein großer Baseball da ist",
+    "seconds": 3.16,
+    "chrf": 29.3
+   },
+   {
+    "lang": "de",
+    "en": "Bring back oversight for WA's jails. Lives depend on it",
+    "ref": "Wiedereinführung der Gefängnisaufsicht in Washington – Menschenleben hängen davon ab",
+    "hyp": "Zurückkehren Sie zur Kontrolle der Gefangenschaften in WA. Leben hängen davon ab.",
+    "seconds": 4.37,
+    "chrf": 37.8
+   },
+   {
+    "lang": "de",
+    "en": "“Yup, Operation Firestorm,” Cohren answered. “We thought it would be over in a few weeks, but…we underestimate them”",
+    "ref": "„Ja, Operation Feuersturm“, antwortete Cohren. „Wir dachten, die Sache wäre in ein paar Wochen erledigt, aber wir haben sie unterschätzt.“",
+    "hyp": "„Ja, Operation Firestorm“, antwortete Cohren. „Wir dachten, es wäre in ein paar Wochen zu Ende, aber … wir überschätzen sie.",
+    "seconds": 6.4,
+    "chrf": 63.4
+   },
+   {
+    "lang": "de",
+    "en": "“Three dead, sir” The Sentinel answered. “The rest fled on foot”",
+    "ref": "„Drei Tote, Sir“, antwortete der Sentinel. „Der Rest ist zu Fuß geflohen.“",
+    "hyp": "„Drei Toten, Sir“, antwortete der Wächter. „Die Resten sind auf die Füße geflohen.",
+    "seconds": 5.04,
+    "chrf": 55.8
+   },
+   {
+    "lang": "de",
+    "en": "when in on $big 4.25-.35",
+    "ref": "dabei mit $ big 4,25–4,35",
+    "hyp": "beim Einsatz von $big 4.25-.35",
+    "seconds": 2.8,
+    "chrf": 27.0
+   },
+   {
+    "lang": "de",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Langsam langweilt mich auch der Matsch #watertemple",
+    "hyp": "Beginne zu langweilen, weil der Schlamm zu viel ist #watertemple",
+    "seconds": 3.41,
+    "chrf": 40.2
+   },
+   {
+    "lang": "de",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "$sqqq komm schon, mein Beutel wird immer fetter lol",
+    "hyp": "$sqqq kommt jetzt. Meine Tasche wird riesig, lol.",
+    "seconds": 3.23,
+    "chrf": 31.4
+   },
+   {
+    "lang": "de",
+    "en": "\"It's not that bad, right, Kayel?\"",
+    "ref": "„So schlimm war es doch gar nicht, oder, Kayel?“",
+    "hyp": "„Es ist nicht so schlimm, oder?",
+    "seconds": 2.59,
+    "chrf": 30.9
+   },
+   {
+    "lang": "de",
+    "en": "Oh right, here is Sally Rooney latest essay",
+    "ref": "Ach ja, hier ist Sally Rooneys neuestes Essay",
+    "hyp": "„Oh right, hier ist das letzte Essay von Sally Rooney",
+    "seconds": 2.65,
+    "chrf": 47.8
+   },
+   {
+    "lang": "de",
+    "en": "“Jeez Valturi,” Nemic stated. “You’d think they would have learned by now to wake up when you did”",
+    "ref": "„Mensch, Valturi“, sagte Nemic. „Man sollte meinen, sie hätten inzwischen gelernt, zur gleichen Zeit wie Sie wach zu werden.“",
+    "hyp": "„Jeez Valturi“, sagte Nemic. „Man würde vermuten, dass sie es bis jetzt gelernt haben, aufzuwachen, wenn du es tatest.",
+    "seconds": 6.78,
+    "chrf": 37.9
+   },
+   {
+    "lang": "de",
+    "en": "my hedges are getting big.",
+    "ref": "Meine Sicherungsgeschäfte wachsen.",
+    "hyp": "Meine Hedges wachsen immer größer.",
+    "seconds": 1.97,
+    "chrf": 30.4
+   },
+   {
+    "lang": "de",
+    "en": "Construction waste recycling firm opens new Cumbernauld plant amid circular economy drive",
+    "ref": "Förderung der Kreislaufwirtschaft: Recyclingunternehmen für Bauschutt eröffnet neue Anlage in Cumbernauld",
+    "hyp": "Firma für die Zirkulareconomie öffnet in Cumbernauld eine neue Anlage für den Recycelung von Baubauschutt",
+    "seconds": 5.81,
+    "chrf": 42.5
+   },
+   {
+    "lang": "de",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "„Schon, aber kann Retvik fahren?“",
+    "hyp": "„Ja, aber kann Retvik fahren?",
+    "seconds": 2.24,
+    "chrf": 76.4
+   },
+   {
+    "lang": "de",
+    "en": "ps - i hope we are past the point of being apologetic about liking her novels or defending them as average.",
+    "ref": "PS: Ich hoffe, wir müssen uns nicht mehr dafür entschuldigen, ihre Romane zu mögen oder sie als mittelmäßig zu verteidigen.",
+    "hyp": "ps - Ich hoffe, wir sind bereits über den Punkt hinaus, uns um die Empfindung, ihre Romane zu mögen, oder sie als durchschnittlich zu verteidigen, zu entschuldigen.",
+    "seconds": 7.83,
+    "chrf": 57.5
+   },
+   {
+    "lang": "de",
+    "en": "switch to cash, no more margin.",
+    "ref": "Zurück zu Cash, keine Marge mehr.",
+    "hyp": "Wechsel zu bar, keine mehr Margen.",
+    "seconds": 2.16,
+    "chrf": 36.6
+   },
+   {
+    "lang": "de",
+    "en": "Just discovered the upgrade where you can see where you've been.",
+    "ref": "Hab gerade das Upgrade entdeckt, wo man sehen kann, wo man war.",
+    "hyp": "Just discovered the upgrade where you can see where you've been.",
+    "seconds": 2.94,
+    "chrf": 19.1
+   },
+   {
+    "lang": "de",
+    "en": "Sally Rooney used to debate, and once you know that it is easy to see those techniques in both her novels and essays.",
+    "ref": "Sally Rooney hat früher an Debatten teilgenommen. Wenn man das weiß, kann man die entsprechenden Techniken sowohl in ihren Romanen als auch in ihren Essays leicht erkennen.",
+    "hyp": "Sally Rooney debattierte einst, und sobald man das weiß, ist es leicht, diese Techniken in beiden ihren Romane und Aufsätzen erkennen zu können.",
+    "seconds": 6.26,
+    "chrf": 40.8
+   },
+   {
+    "lang": "de",
+    "en": "After 4 months of playing this game.",
+    "ref": "Nachdem ich das Spiel seit 4 Monaten spiele.",
+    "hyp": "Nach vier Monaten des Spiels dieses Spiels.",
+    "seconds": 2.25,
+    "chrf": 39.9
+   },
+   {
+    "lang": "de",
+    "en": "Brewers froth over winemakers\" exemption from anti-waste rules",
+    "ref": "Bierbrauer erbost über Freistellung der Weinhersteller von Müllvermeidungsvorschriften",
+    "hyp": "„Brauereien haben sich über die Ausnahme der Weinfarmer von den Anti-Verlust-Regeln beschwert.",
+    "seconds": 4.81,
+    "chrf": 27.1
+   },
+   {
+    "lang": "de",
+    "en": "“With all respect sir, why do you have to wake us up like that?” One of the Shock Troopers, a corporal, asked.",
+    "ref": "„Bei allem Respekt, Sir, warum müssen Sie uns so wecken?“, fragte ein Feldwebel der Stoßtruppen.",
+    "hyp": "„Mit dem größten Respekt, Herr, warum müssen Sie uns so wachrütteln?“, fragte einer der Shock Troopers, ein Korporal.",
+    "seconds": 6.25,
+    "chrf": 51.2
+   },
+   {
+    "lang": "fr",
+    "en": "How to find out if you're flying on a Boeing 737 MAX",
+    "ref": "Comment savoir si vous volez à bord d'un Boeing 737 MAX",
+    "hyp": "Comment savoir si vous voyagez sur un Boeing 737 MAX ?",
+    "seconds": 3.03,
+    "chrf": 72.2
+   },
+   {
+    "lang": "fr",
+    "en": "“With all respect sir, why do you have to wake us up like that?” One of the Shock Troopers, a corporal, asked.",
+    "ref": "\"Sauf votre respect, chef, pourquoi vous vous obstinez à nous réveiller de cette façon ?\", demanda l'un des membres de la troupe de choc, un caporal.",
+    "hyp": "Avec toute respect, monsieur, pourquoi avez-vous dû nous réveiller ainsi ? » Un des soldats de l'unité d'assaut, un corporal, a demandé.",
+    "seconds": 7.08,
+    "chrf": 37.7
+   },
+   {
+    "lang": "fr",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Ça fait un moment que j'ai pas mis ce fil à jour. Finalement j'ai vaincu la Reine Gidbo.",
+    "hyp": "Il fait longtemps que je n'ai pas mis à jour ce fil. Enfin, j'ai battu la Reine Gidbo.",
+    "seconds": 4.81,
+    "chrf": 45.0
+   },
+   {
+    "lang": "fr",
+    "en": "“Exodus XO, Exodus CO” Cohrens radio crackled. “We're picking up heat signatures 350 yards out, 20 degrees right”",
+    "ref": "\"Exodus XO, Exodus CO\", grésilla la radio de Cohren. \"Nous détectons des signatures thermiques à environ 300 mètres, 20 degrés droite.\"",
+    "hyp": "Exodus XO, Exodus CO» ; la radio de Cohrens a cracklé. « Nous détectons des signatures thermiques à 350 yards, 20 degrés à droite ».",
+    "seconds": 7.75,
+    "chrf": 66.6
+   },
+   {
+    "lang": "fr",
+    "en": "Apparently there are only two levels that haven't been cleared in the original Super Mario Maker lol",
+    "ref": "Apparemment il n'y a que deux niveaux que je n'ai pas encore passés dans le Super Mario Maker original lol",
+    "hyp": "Il semble qu'il n'y ait que deux niveaux qui n'ont pas été terminés dans la version originale de Super Mario Maker lol.",
+    "seconds": 5.2,
+    "chrf": 53.7
+   },
+   {
+    "lang": "fr",
+    "en": "Killed myself with my own boomerang",
+    "ref": "Je me suis tué avec mon propre boomerang",
+    "hyp": "Je me suis tué avec mon propre boomerang.",
+    "seconds": 2.44,
+    "chrf": 99.3
+   },
+   {
+    "lang": "fr",
+    "en": "“Shaw got us a ride?” Nemic asked, a little surprised.",
+    "ref": "\"Shaw nous a eu un transport ?\", demanda Nemic, un peu surpris.",
+    "hyp": "Shaw nous a donné un trajet ? » a demandé Nemic, un peu surpris.",
+    "seconds": 3.91,
+    "chrf": 60.7
+   },
+   {
+    "lang": "fr",
+    "en": "“Yup, Operation Firestorm,” Cohren answered. “We thought it would be over in a few weeks, but…we underestimate them”",
+    "ref": "\"Ouep, Opération Tempête de feu\", répondit Cohren. \"Nous pensions en venir à bout en quelques semaines, mais... nous les avons sous-estimés.\"",
+    "hyp": "Oui, Operation Firestorm », répondit Cohren. « Nous croyions qu’il se terminerait en quelques semaines, mais… nous les sous-estimions.",
+    "seconds": 6.68,
+    "chrf": 51.4
+   },
+   {
+    "lang": "fr",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "allez $sqqq. mon panier devient énorme lol",
+    "hyp": "$sqqq viens ! mon sac est de plus en plus grand lol",
+    "seconds": 2.96,
+    "chrf": 24.5
+   },
+   {
+    "lang": "fr",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "\"Vous les réveillez ?\" Cohren se retourna pour voir le second lieutenant Nemic arriver en marchant.",
+    "hyp": "Les réveiller » Cohren se tourna pour voir le second lieutenant Nemic s'approcher.",
+    "seconds": 4.23,
+    "chrf": 64.0
+   },
+   {
+    "lang": "fr",
+    "en": "3 minutes to go...",
+    "ref": "Dans 3 minutes...",
+    "hyp": "3 minutes à l'arrivée...",
+    "seconds": 2.27,
+    "chrf": 46.7
+   },
+   {
+    "lang": "fr",
+    "en": "Shaw walked up to the figure, who was starting to get up. He then turned to one of the Sentinels. “How many?”",
+    "ref": "Shaw marcha vers l'individu, qui commençait à se relever. Il se tourna vers l'une des Sentinelles. \"Combien ?\"",
+    "hyp": "Shaw s'approcha de la figure, qui commençait à se lever. Il s'tourna alors vers l'un des Sentinels. « Combien ?",
+    "seconds": 6.55,
+    "chrf": 55.8
+   },
+   {
+    "lang": "fr",
+    "en": "come on nok, $3.74 let’s go.",
+    "ref": "allez nok, 3,74 $ on y va.",
+    "hyp": "Vas-y, nom de dieu, 3,74 dollars, on y va.",
+    "seconds": 3.65,
+    "chrf": 34.3
+   },
+   {
+    "lang": "fr",
+    "en": "Really tough not to buy that the league tells officials to help Miami when that’s not a penalty. #DCU #MLS #mastodonfc",
+    "ref": "Vraiment difficile de ne pas croire que la ligue demande aux arbitres de favoriser Miami, alors qu'il n'y a pas penalty. #DCU #MLS #mastodonfc",
+    "hyp": "Il est vraiment difficile de ne pas croire que la ligue ordonne aux officiels d'aider Miami lorsqu'il s'agit d'une faute. #DCU #MLS #mastodonfc",
+    "seconds": 7.4,
+    "chrf": 61.7
+   },
+   {
+    "lang": "fr",
+    "en": "The lander is about the size of old UK telephone box...",
+    "ref": "Le module atterrisseur fait environ la taille d'une vieille cabine téléphonique britannique...",
+    "hyp": "Le module est d'environ la taille d'un ancien boîtier téléphonique britannique ».",
+    "seconds": 4.33,
+    "chrf": 57.8
+   },
+   {
+    "lang": "fr",
+    "en": "Before he could answer, the door opened and Harris, Craith, and a few others hurried out, already fully dressed and kitted out.",
+    "ref": "Avant qu'il ne puisse répondre, la porte s'ouvrit et Harris, Craith et d'autres soldats se dépêchèrent de sortir, déjà habillés et équipés.",
+    "hyp": "Avant qu'il ne puisse répondre, la porte s'est ouverte et Harris, Craith et quelques autres sont sortis rapidement, déjà complètement vêtus et équipés.",
+    "seconds": 6.81,
+    "chrf": 61.4
+   },
+   {
+    "lang": "fr",
+    "en": "“Kill or capture?” Craith asked as they watched.",
+    "ref": "\"On les tue ou on les capture ?\", demanda Craith tandis qu'ils les regardaient.",
+    "hyp": "Tu meurs ou tu captures ? » a demandé Craith en les observant.",
+    "seconds": 3.59,
+    "chrf": 29.0
+   },
+   {
+    "lang": "fr",
+    "en": "Make that four times",
+    "ref": "Fais-le quatre fois",
+    "hyp": "Fait cela quatre fois.",
+    "seconds": 1.56,
+    "chrf": 57.6
+   },
+   {
+    "lang": "fr",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Je commence à en avoir assez de la boue aussi #templedel'eau",
+    "hyp": "Commence à être las du boue aussi #watertemple",
+    "seconds": 3.05,
+    "chrf": 40.6
+   },
+   {
+    "lang": "fr",
+    "en": "i wonder if the twitter would get suspended if i mentioned i had a fat bag of it lol",
+    "ref": "je me demande si le twitter serait suspendu si je mentionnais que j'en avais un panier plein lol",
+    "hyp": "Je me demande si Twitter pourrait être suspendu si je mentionnais que j'avais un sac de beurre de cacahuète lol",
+    "seconds": 5.0,
+    "chrf": 60.0
+   },
+   {
+    "lang": "fr",
+    "en": "\"You want to chase after them?\"",
+    "ref": "\"Tu veux les pourchasser ?\"",
+    "hyp": "Vous voulez les poursuivre ?",
+    "seconds": 2.35,
+    "chrf": 27.7
+   },
+   {
+    "lang": "fr",
+    "en": "because it's a vector of rational numbers",
+    "ref": "parce que c'est un vecteur de nombres rationnels",
+    "hyp": "parce qu'il s'agit d'un vecteur de nombres rationnels",
+    "seconds": 2.83,
+    "chrf": 76.9
+   },
+   {
+    "lang": "fr",
+    "en": "Well, perhaps ball doesn't lie. What an awful give away by Klich. Can't win when your DP plays that sloppy. #DCU #MLS #mastodonfc",
+    "ref": "Bien, peut-être que le ballon ne ment pas. Quelle horrible perte de balle de Klich. Impossible de gagner quand ton joueur désigné joue aussi mal. #DCU #MLS #mastodonfc",
+    "hyp": "Bon, peut-être que la balle ne se trouve pas. Une très mauvaise perte par Klich. Impossible de gagner quand votre DP joue ainsi. #DCU #MLS #mastodonfc",
+    "seconds": 7.73,
+    "chrf": 53.7
+   },
+   {
+    "lang": "fr",
+    "en": "After 4 months of playing this game.",
+    "ref": "Après avoir joué 4 mois à ce jeu.",
+    "hyp": "Après quatre mois de jouer à ce jeu.",
+    "seconds": 2.19,
+    "chrf": 39.8
+   },
+   {
+    "lang": "fr",
+    "en": "Ethan Frenchman is a Disability Rights Washington staff attorney who advocates for people with disabilities in jails and prisons.",
+    "ref": "Ethan Frenchman est un avocat de Disability Rights Washington qui défend les personnes en situation de handicap détenues dans les prisons.",
+    "hyp": "Ethan Frenchman est un avocat du personnel de Disability Rights Washington qui défend les personnes handicapées dans les prisons et les centres de détention.",
+    "seconds": 5.46,
+    "chrf": 79.8
+   },
+   {
+    "lang": "fr",
+    "en": "\"Hey, Tenuk, do you mind shapeshifting into something that can fly?\" Kayel asked.",
+    "ref": "\"Hé Tenuk, ça te dirait de te transformer en quelque chose qui vole ?\", demanda Kayel.",
+    "hyp": "Bonjour, Tenuk, tu aurais l'embarras du regard si tu te transformais en quelque chose qui peut voler ? » Kayel a demandé.",
+    "seconds": 6.46,
+    "chrf": 50.9
+   },
+   {
+    "lang": "fr",
+    "en": "well now they’re god damn huge lol",
+    "ref": "elles sont devenues énormes, lol",
+    "hyp": "bonne chose, ils sont maintenant tellement grands, merde lol",
+    "seconds": 2.87,
+    "chrf": 25.0
+   },
+   {
+    "lang": "fr",
+    "en": "Bring back oversight for WA's jails. Lives depend on it",
+    "ref": "Pour un retour de la surveillance des prisons de l'État de Washington. Des vies en dépendent.",
+    "hyp": "Rétablir le contrôle sur les prisons de WA. Les vies en dépendent.",
+    "seconds": 3.95,
+    "chrf": 39.9
+   },
+   {
+    "lang": "fr",
+    "en": "“What woke you guys up?” Cohren asked.",
+    "ref": "\"Qu'est-ce qui vous a réveillés ?\", demanda Cohren.",
+    "hyp": "Qu’est-ce qui vous a réveillés ? » a demandé Cohren.",
+    "seconds": 3.3,
+    "chrf": 72.6
+   },
+   {
+    "lang": "fr",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "\"D'accord, mais Retvik sait conduire ?\"",
+    "hyp": "Mais peut-il conduire ?",
+    "seconds": 1.88,
+    "chrf": 27.3
+   },
+   {
+    "lang": "fr",
+    "en": "\"But... one of them is a giant monster!\"",
+    "ref": "\"Mais... l'un d'eux est un monstre géant !\"",
+    "hyp": "Mais... l'un d'eux est un monstre géant !",
+    "seconds": 2.99,
+    "chrf": 95.2
+   },
+   {
+    "lang": "fr",
+    "en": "what why are the GPS coordinates getting rounded to the nearest full degree that's absolutely worthless",
+    "ref": "pourquoi est-ce que les coordonnées GPS sont arrondies au degré entier près, c'est totalement inutile",
+    "hyp": "Pourquoi les coordonnées GPS sont-elles arrondies au degré le plus proche, ce qui est absolument inutile ?",
+    "seconds": 5.16,
+    "chrf": 60.8
+   },
+   {
+    "lang": "fr",
+    "en": "“What did you plan on using this time?”",
+    "ref": "\"Qu'avez-vous prévu d'utiliser cette fois-ci ?\"",
+    "hyp": "Qu’avais-tu l’intention de faire cette fois-ci ?",
+    "seconds": 3.14,
+    "chrf": 34.4
+   },
+   {
+    "lang": "fr",
+    "en": "when in on $big 4.25-.35",
+    "ref": "quand on est sur $big 4,25-0,35",
+    "hyp": "quand on est sur $big 4.25-35",
+    "seconds": 2.93,
+    "chrf": 72.9
+   },
+   {
+    "lang": "fr",
+    "en": "my hedges are getting big.",
+    "ref": "mes marges prennent de l'ampleur.",
+    "hyp": "Mes haies s'allongent.",
+    "seconds": 1.94,
+    "chrf": 13.7
+   },
+   {
+    "lang": "fr",
+    "en": "“You mean his chicken he stole?” Cohren remembered the morning they had stolen him from a farm. “Yeah, i'm pretty sure”",
+    "ref": "\"Tu parles du poulet qu'il a volé ?\" Cohren se souvenait du matin où ils l'avaient volé dans une ferme. \"Oui, j'en suis sûr\".",
+    "hyp": "Vous voulez dire qu’il a volé ses poulets ? » Cohren se souvenait du matin où ils l’avaient volé d’une ferme. « Oui, je suis plutôt sûr.",
+    "seconds": 7.73,
+    "chrf": 58.6
+   },
+   {
+    "lang": "fr",
+    "en": "And just under the wire basically someone actually beat Trimming the Herbs! Really impressive.",
+    "ref": "Et juste à la dernière minute, quelqu'un a finalement réussi à passer \"Couper les herbes\" ! Impressionnant.",
+    "hyp": "Et juste sous la ligne, quelqu'un a effectivement battu Trimming the Herbs ! Vraiment impressionnant.",
+    "seconds": 4.52,
+    "chrf": 39.9
+   },
+   {
+    "lang": "fr",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Je me suis mis tout seul dans la crevasse avec une balle de baseball géante",
+    "hyp": "Me jeter dans la crevasse avec une balle de baseball géante",
+    "seconds": 3.31,
+    "chrf": 71.5
+   },
+   {
+    "lang": "fr",
+    "en": "Nyssi blinked and turned back to Tenuk. \"Of course he can drive.\"",
+    "ref": "Nissy cligna des yeux et se retourna vers Tenuk. \"Bien sûr qu'il sait conduire.\"",
+    "hyp": "Nyssi cligna des yeux et se tourna à nouveau vers Tenuk. « Bien sûr qu'il peut conduire.",
+    "seconds": 4.79,
+    "chrf": 67.8
+   },
+   {
+    "lang": "fr",
+    "en": "“Can’t tell,” Cohren stated. He reached for his mic and spoke. “Exodus Company, hold fire unless fired upon, let's draw them out",
+    "ref": "\"Impossible à dire\", déclara Cohren. Il activa son micro et dit : \"Compagnie Exodus, ne tirez pas à moins qu'on vous tire dessus, faisons-les sortir.\"",
+    "hyp": "Je ne sais pas », a déclaré Cohren. Il s'approcha de son micro et parla. « L'Entreprise Exodus, tenez-vous en dehors du feu sauf si vous êtes attaqués, laissons-les se rapprocher.",
+    "seconds": 9.75,
+    "chrf": 34.8
+   },
+   {
+    "lang": "es",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "“Sí, ¿pero Retvik sabe manejar?”.",
+    "hyp": "Sí, pero ¿puede Retvik conducir?",
+    "seconds": 2.34,
+    "chrf": 27.2
+   },
+   {
+    "lang": "es",
+    "en": "come on nok, $3.74 let’s go.",
+    "ref": "vamos NOK, $3.74, vamos",
+    "hyp": "¡Vamos, no, $3.74!",
+    "seconds": 2.65,
+    "chrf": 31.0
+   },
+   {
+    "lang": "es",
+    "en": "i do not like this",
+    "ref": "no me gusta esto",
+    "hyp": "no me gusta esto",
+    "seconds": 1.57,
+    "chrf": 100.0
+   },
+   {
+    "lang": "es",
+    "en": "ps - i hope we are past the point of being apologetic about liking her novels or defending them as average.",
+    "ref": "P.D. Espero que ya no tengamos que disculparnos por que nos gusten sus novelas, ni defenderlas como buenas.",
+    "hyp": "ps - espero que hayamos pasado el punto de tener que disculparnos por disfrutar sus novelas o defenderlas como promedio.",
+    "seconds": 5.11,
+    "chrf": 52.5
+   },
+   {
+    "lang": "es",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "vamos $sqqq, mi billetera está creciendo un montón, jaja",
+    "hyp": "$sqqq, ¡venid! Mi mochila está getting enorme, jaja",
+    "seconds": 3.41,
+    "chrf": 27.5
+   },
+   {
+    "lang": "es",
+    "en": "And she is very adept with the English language.",
+    "ref": "Y es muy hábil con la lengua inglesa.",
+    "hyp": "Y ella es muy hábil con el idioma inglés.",
+    "seconds": 2.48,
+    "chrf": 51.2
+   },
+   {
+    "lang": "es",
+    "en": "JANUARY 19th, 2:34 PM, 2543.",
+    "ref": "19 DE ENERO, 2:34 P.M., 2543.",
+    "hyp": "19 de enero, 2:34 p. m., 2543.",
+    "seconds": 3.84,
+    "chrf": 34.3
+   },
+   {
+    "lang": "es",
+    "en": "Live feed says that they have a signal",
+    "ref": "La transmisión en vivo dice que tienen señal.",
+    "hyp": "La transmisión en vivo indica que tienen una señal.",
+    "seconds": 2.37,
+    "chrf": 74.7
+   },
+   {
+    "lang": "es",
+    "en": "Nyssi blinked and turned back to Tenuk. \"Of course he can drive.\"",
+    "ref": "Nyssi parpadeó y se volvió hacia Tenuk. “Claro que sabe manejar”.",
+    "hyp": "Nyssi parpadeó y se volvió hacia Tenuk. \"Claro que puede conducir.",
+    "seconds": 4.37,
+    "chrf": 69.7
+   },
+   {
+    "lang": "es",
+    "en": "Brewers froth over winemakers\" exemption from anti-waste rules",
+    "ref": "Las cerveceras se postulan en contra de la exención de las normativas anti residuos a los productores de vino",
+    "hyp": "Los fabricantes de cerveza se molestan por la exención de los vinicultores de las reglas contra el desperdicio.",
+    "seconds": 5.03,
+    "chrf": 39.6
+   },
+   {
+    "lang": "es",
+    "en": "Oh right, here is Sally Rooney latest essay",
+    "ref": "Ah, cierto, aquí está el último ensayo de Sally Rooney:",
+    "hyp": "¡Oh, aquí tienes el último ensayo de Sally Rooney",
+    "seconds": 2.76,
+    "chrf": 66.7
+   },
+   {
+    "lang": "es",
+    "en": "“Three dead, sir” The Sentinel answered. “The rest fled on foot”",
+    "ref": "“Tres muertos, mi teniente”, respondió el centinela. “El resto huyó a pie”.",
+    "hyp": "Tres muertos, señor” respondió el Sentinela. “El resto huyó a pie",
+    "seconds": 4.28,
+    "chrf": 68.2
+   },
+   {
+    "lang": "es",
+    "en": "Sally Rooney used to debate, and once you know that it is easy to see those techniques in both her novels and essays.",
+    "ref": "Sally Rooney estaba acostumbrada a debatir, y una vez que sabes eso es fácil ver esas técnicas tanto en sus novelas como en sus ensayos.",
+    "hyp": "Sally Rooney solía debatir, y una vez que lo sepas, es fácil ver esas técnicas en ambas sus novelas y ensayos.",
+    "seconds": 6.07,
+    "chrf": 58.2
+   },
+   {
+    "lang": "es",
+    "en": "Amazing how there's two PKs #DCU should have had and got neither. The fix is so in for Miami #MLS #mastodonfc",
+    "ref": "Increíble cómo hubo dos penales que tendrían que haber ido para #DCU y no les dieron ninguno. Es descaradísimo a favor de Miami #MLS #mastodonfc",
+    "hyp": "¡Asombroso cómo hay dos Pk's #DCU deberían haber tenido y ni siquiera se les dio. El fix está muy en el bolsillo para Miami #MLS #mastodonfc",
+    "seconds": 7.94,
+    "chrf": 36.4
+   },
+   {
+    "lang": "es",
+    "en": "well now they’re god damn huge lol",
+    "ref": "bueno, ahora son jodidamente enormes, jaja",
+    "hyp": "bien ahora son god damn grandes lol",
+    "seconds": 1.89,
+    "chrf": 26.9
+   },
+   {
+    "lang": "es",
+    "en": "“I guess we’ll find out,” Cohren said with a laugh. Orson didn’t continue the conversation.",
+    "ref": "“Supongo que lo acabaremos averiguando”, dijo Cohren riendo. Orson no continuó con la conversación.",
+    "hyp": "Supongo que lo descubriremos», dijo Cohren con una risa. Orson no continuó la conversación.",
+    "seconds": 5.28,
+    "chrf": 60.9
+   },
+   {
+    "lang": "es",
+    "en": "\"Hey, Tenuk, do you mind shapeshifting into something that can fly?\" Kayel asked.",
+    "ref": "“Oye, Tenuk, ¿te importaría transformarte en algo que pueda volar?”, preguntó Kayel.",
+    "hyp": "¡Hola, Tenuk, ¿te importa cambiar de forma para volar?\" preguntó Kayel.",
+    "seconds": 4.77,
+    "chrf": 51.3
+   },
+   {
+    "lang": "es",
+    "en": "“Yup, I see them” Cohren responded, using his throat mic.",
+    "ref": "“Sí, las veo”, respondió Cohren, usando su micrófono de garganta.",
+    "hyp": "¡Sí, los veo!\" respondió Cohren, usando su micrófono de garganta.",
+    "seconds": 4.24,
+    "chrf": 83.6
+   },
+   {
+    "lang": "es",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Logré hacerme caer por el precipicio con una pelota de béisbol gigante.",
+    "hyp": "Empujarme en la crevasse con una gran pelota de béisbol.",
+    "seconds": 3.5,
+    "chrf": 36.3
+   },
+   {
+    "lang": "es",
+    "en": "when in on $big 4.25-.35",
+    "ref": "cuando estás en $big 4.25-.35",
+    "hyp": "cuando esté en $big 4.25-0.35",
+    "seconds": 3.37,
+    "chrf": 70.0
+   },
+   {
+    "lang": "es",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Hacía tiempo que no actualizaba este hilo. Finalmente derroté a la reina Gidbo.",
+    "hyp": "Hace tiempo que actualizo este hilo. Finalmente derroté a la Reina Gidbo.",
+    "seconds": 4.07,
+    "chrf": 74.0
+   },
+   {
+    "lang": "es",
+    "en": "“Hey Cohren, does Harris still have Snowball?” Nemic asks as they got settled in.",
+    "ref": "“Oye, Cohren, ¿Harris aún tiene a Bola de Nieve?”, preguntó Nemic mientras se ponían cómodos.",
+    "hyp": "¡Hola Cohren, ¿todavía tiene Snowball?”, pregunta Nemic mientras se sientan acomodados.",
+    "seconds": 5.0,
+    "chrf": 45.6
+   },
+   {
+    "lang": "es",
+    "en": "nothing makes me more happy than elon musk losing money. $tslq",
+    "ref": "nada me hace mas feliz que ver a Elon Musk perdiendo dinero, $tslq",
+    "hyp": "Nada me hace más feliz que Elon Musk perder dinero. $tslq",
+    "seconds": 3.21,
+    "chrf": 60.0
+   },
+   {
+    "lang": "es",
+    "en": "How Betta Edu became a scapegoat of a dysfunctional political system",
+    "ref": "Cómo Betta Edu se convirtió en el chivo expiatorio de un sistema político disfuncional",
+    "hyp": "¿Cómo se convirtió Betta Edu en un blanco de frustración de un sistema político disfuncional?",
+    "seconds": 4.15,
+    "chrf": 64.6
+   },
+   {
+    "lang": "es",
+    "en": "“Cause the regular alarms are shit. And because Daybreak doesn't sleep in” Cohren stated.",
+    "ref": "“Porque las alarmas normales son una mierda. Y porque Alborada no se queda en la cama”, dijo Cohren.",
+    "hyp": "Porque los alarmas normales son de mierda. Y porque Daybreak no duerme de noche» declaró Cohren.",
+    "seconds": 5.4,
+    "chrf": 51.3
+   },
+   {
+    "lang": "es",
+    "en": "“Lieutenant Nemic…Lieutenant Valturi…” He said Cohren was slower, glancing at Cohren’s pistol holster before glancing up again. “I assume that the company is ready”",
+    "ref": "“Teniente Nemic… teniente Valturi…”, dijo lentamente, mirando la funda de la pistola de Cohren antes de volver a levantar la vista. “Supongo que la compañía está preparada”.",
+    "hyp": "Capitán Nemic…Capitán Valturi…” Dijo que Cohren era más lento, miró el compartimento de su pistola antes de volver a mirar arriba. “Asumo que la compañía está lista",
+    "seconds": 8.9,
+    "chrf": 43.2
+   },
+   {
+    "lang": "es",
+    "en": "I've definitely been going about this the wrong way.",
+    "ref": "Definitivamente, he estado haciendo esto como no había que hacerlo.",
+    "hyp": "¡Definitivamente he estado haciendo esto de manera incorrecta.",
+    "seconds": 2.67,
+    "chrf": 58.9
+   },
+   {
+    "lang": "es",
+    "en": "let’s tank the first week of the new year",
+    "ref": "vamos a desplomar la primera semana del nuevo año",
+    "hyp": "¡Vamos a aprovechar la primera semana del nuevo año!",
+    "seconds": 2.63,
+    "chrf": 73.0
+   },
+   {
+    "lang": "es",
+    "en": "my hedges are getting big.",
+    "ref": "mis fondos están creciendo",
+    "hyp": "mis arbustos están creciendo.",
+    "seconds": 2.09,
+    "chrf": 68.1
+   },
+   {
+    "lang": "es",
+    "en": "Really tough not to buy that the league tells officials to help Miami when that’s not a penalty. #DCU #MLS #mastodonfc",
+    "ref": "Si eso no es un penal, es realmente complicado no creer que la Liga les dice a los árbitros que ayuden a Miami. #DCU #MLS #mastodonfc",
+    "hyp": "Realmente difícil no comprar que la liga le pide a los funcionarios ayudar a Miami cuando no es un penal. #DCU #MLS #mastodonfc",
+    "seconds": 6.45,
+    "chrf": 50.7
+   },
+   {
+    "lang": "es",
+    "en": "“Well, I’ll stand defiantly for the Federation” Orson said defiantly. “I’ll not let those terrorist scare me”",
+    "ref": "“Bueno, yo defenderé a la Federación con gallardía”, dijo Orson desafiante. “No voy a permitir que esos terroristas me asusten”.",
+    "hyp": "Bien, estaré firme en defensa de la Federación”, dijo Orson con desafío. “No dejaré que esos terroristas me intimiden”.",
+    "seconds": 6.16,
+    "chrf": 51.3
+   },
+   {
+    "lang": "es",
+    "en": "new ath. i know what that means..",
+    "ref": "nuevo máximo histórico, sé lo que significa eso…",
+    "hyp": "nuevo ath. sé lo que eso significa.",
+    "seconds": 2.19,
+    "chrf": 40.3
+   },
+   {
+    "lang": "es",
+    "en": "Shaw nodded and turned towards Cohren and Criath, who were standing close by. “Would you two be so kind as to stow this man away?”",
+    "ref": "Shaw asintió y se volvió hacia Cohren y Criath, que permanecían de pie cerca de él. “¿Serían tan amables de poner a este hombre a buen recaudo?”.",
+    "hyp": "Shaw asintió y se dirigió hacia Cohren y Criath, quienes estaban de pie cerca. «¿Os haríais tan amables como para meter a este hombre en una celda?",
+    "seconds": 7.56,
+    "chrf": 56.0
+   },
+   {
+    "lang": "es",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Empiezo a aburrirme también del lodo del #templodelagua",
+    "hyp": "Empezando a aburirse de la mugrosidad demasiado #watertemple",
+    "seconds": 3.41,
+    "chrf": 29.1
+   },
+   {
+    "lang": "es",
+    "en": "Hailey Ockinga is an anti-incarceration activist and community organizer, and the executive director of Beyond These Walls in Washington state.",
+    "ref": "Hailey Ockinga es una activista en contra del encarcelamiento y organizadora comunitaria, así como la directora ejecutiva de Beyond These Walls, en el estado de Washington.",
+    "hyp": "Hailey Ockinga es una activista anticasera y organizadora comunitaria, y directora ejecutiva de Beyond These Walls en el estado de Washington.",
+    "seconds": 6.38,
+    "chrf": 74.0
+   },
+   {
+    "lang": "es",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "“Toca despertarlos”. Cohren se dio la vuelta para ver al subteniente Nemic acercándose.",
+    "hyp": "Despertándolos\" Cohren se volvió para ver al segundo teniente Nemic acercándose.",
+    "seconds": 4.48,
+    "chrf": 58.0
+   },
+   {
+    "lang": "es",
+    "en": "facepalmed right into the ground",
+    "ref": "Es para ni asomar la cabeza de la vergüenza.",
+    "hyp": "señaló la cara hacia el suelo",
+    "seconds": 2.15,
+    "chrf": 14.1
+   },
+   {
+    "lang": "es",
+    "en": "After 4 months of playing this game.",
+    "ref": "Después de 4 meses jugando a este juego.",
+    "hyp": "Después de 4 meses de jugar este juego.",
+    "seconds": 2.29,
+    "chrf": 71.3
+   },
+   {
+    "lang": "es",
+    "en": "“Jeez Valturi,” Nemic stated. “You’d think they would have learned by now to wake up when you did”",
+    "ref": "“Cielos, Valturi”, dijo Nemic. “Podrías pensar que a estas alturas ya habrían aprendido a despertarse cuando tú lo haces”.",
+    "hyp": "¡Jeez Valturi\", dijo Nemic. \"¿No habrían aprendido ya a despertarse cuando tú lo haces?",
+    "seconds": 5.82,
+    "chrf": 54.3
+   },
+   {
+    "lang": "es",
+    "en": "How to find out if you're flying on a Boeing 737 MAX",
+    "ref": "Cómo saber si estás volando en un Boeing 737 MAX",
+    "hyp": "¿Cómo saber si está volando un Boeing 737 MAX?",
+    "seconds": 3.21,
+    "chrf": 78.0
+   }
+  ]
+ },
+ "translator": {
+  "model": "fast+translator",
+  "chrf": 48.4,
+  "by_language": {
+   "de": 43.8,
+   "fr": 50.3,
+   "es": 51.2
+  },
+  "seconds_per_sentence": 3.02,
+  "rows": [
+   {
+    "lang": "de",
+    "en": "“Yup, I see them” Cohren responded, using his throat mic.",
+    "ref": "„Ja, ich sehe sie“, antwortete Cohren über sein Kehlkopfmikrofon.",
+    "hyp": "„Ja, ich sehe sie“, sagte Cohren, während er mit seiner Schlägertüte sprach.",
+    "seconds": 5.95,
+    "chrf": 43.2
+   },
+   {
+    "lang": "de",
+    "en": "“Lieutenant Nemic…Lieutenant Valturi…” He said Cohren was slower, glancing at Cohren’s pistol holster before glancing up again. “I assume that the company is ready”",
+    "ref": "„Leutnant Nemic… Leutnant Valturi…“ Er sagte, Cohren sei langsamer, während er auf Cohrens Pistolenholster blickte und dann wieder aufschaute. „Die Kompanie ist bereit, nehme ich an?“",
+    "hyp": "„Captain Nemic…Captain Valturi…“ Er sagte, Cohren sei langsamer, und zwar erst an der Waffe des Cohren, bevor er wieder aufblickte. „Ich nehme an, die Gruppe ist bereit",
+    "seconds": 6.14,
+    "chrf": 47.4
+   },
+   {
+    "lang": "de",
+    "en": "nothing makes me more happy than elon musk losing money. $tslq",
+    "ref": "nichts macht mich glücklicher als wenn Elon Musk Geld verliert. $tslq",
+    "hyp": "kein Geld macht mich mehr glücklich als Elon Musk verliert. $tslq",
+    "seconds": 2.68,
+    "chrf": 59.9
+   },
+   {
+    "lang": "de",
+    "en": "well now they’re god damn huge lol",
+    "ref": "Also, jetzt sind sie verdammt nochmal riesig lol",
+    "hyp": "Na gut, jetzt sind sie gigantisch, LOL",
+    "seconds": 1.6,
+    "chrf": 33.6
+   },
+   {
+    "lang": "de",
+    "en": "\"You want to chase after them?\"",
+    "ref": "„Du möchtest sie verfolgen?“",
+    "hyp": "„Du willst sie verfolgen?",
+    "seconds": 1.5,
+    "chrf": 61.0
+   },
+   {
+    "lang": "de",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Ich hab diesen Thread schon länger nicht mehr aktualisiert. Jetzt hab ich endlich Queen Gidbo besiegt.",
+    "hyp": "Es ist ein Weil seitdem ich diesen Thread aktualisiert habe. Endlich habe ich die Königin Gidbo besiegt.",
+    "seconds": 3.28,
+    "chrf": 49.4
+   },
+   {
+    "lang": "de",
+    "en": "Absolute rocket from from Stroud on a perfect half turn to goal. #DCU #MLS #MastodonFC",
+    "ref": "Absolute Rakete von Stroud mit einer perfekten halben Drehung aufs Tor. #DCU #MLS #MastodonFC",
+    "hyp": "Vollständiger Rocket von Stroud, perfekte Halb-Umkehrung zum Ziel. #DCU #MLS #MastodonFC",
+    "seconds": 3.74,
+    "chrf": 46.1
+   },
+   {
+    "lang": "de",
+    "en": "“Yup, he still has him” Cohren answered as the tank's turret hatch clanked open and its commander came into view.",
+    "ref": "„Ja, er ist noch bei ihm“, antwortete Cohren, als sich die Luke des Panzers öffnete und der Kommandant in Sicht kam.",
+    "hyp": "„Ja, er hat ihn“, antwortete Cohren, als die Tür des Turrets aufklappte und der Kommandant sich in den Sitz setzte.",
+    "seconds": 4.56,
+    "chrf": 50.5
+   },
+   {
+    "lang": "de",
+    "en": "“I guess we’ll find out,” Cohren said with a laugh. Orson didn’t continue the conversation.",
+    "ref": "„Das werden wir ja sehen“, sagte Cohren lachend. Orson stellte das Gespräch ein.",
+    "hyp": "„Ich hoffe, wir werden das irgendwann herausfinden“, sagte Cohren mit einem Lachen. Orson ließ das Thema nicht mehr los.",
+    "seconds": 4.07,
+    "chrf": 41.0
+   },
+   {
+    "lang": "de",
+    "en": "facepalmed right into the ground",
+    "ref": "Facepalm und im Boden versinken",
+    "hyp": "Ich habe das Gesicht zucken lassen, als ich mich in den Boden kauerte",
+    "seconds": 2.51,
+    "chrf": 21.7
+   },
+   {
+    "lang": "de",
+    "en": "Ethan Frenchman is a Disability Rights Washington staff attorney who advocates for people with disabilities in jails and prisons.",
+    "ref": "Ethan Frenchman ist Anwalt bei Disability Rights Washington und setzt sich für Menschen mit Behinderungen in Gefängnissen ein.",
+    "hyp": "Ethan Frenchman ist ein Rechtsanwalt im Bereich Menschenrechte in Washington, der für Menschen mit Behinderungen in Gefängnissen und Zwingungsanstalten kämpft.",
+    "seconds": 4.65,
+    "chrf": 62.4
+   },
+   {
+    "lang": "de",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "„Wecken Sie sie?“ Cohren drehte sich um und sah Zugführer Nemic auf sich zukommen.",
+    "hyp": "„Wach auf“, sagte Cohren, als sie den 2. Lieutenant Nemic sah, der sich auf dem Weg zum Ziel machte.",
+    "seconds": 3.72,
+    "chrf": 26.1
+   },
+   {
+    "lang": "de",
+    "en": "JANUARY 19th, 2:34 PM, 2543.",
+    "ref": "19. Januar 2543, 14:34 Uhr.",
+    "hyp": "JANUAR, 2:34 PM, 2543.",
+    "seconds": 2.9,
+    "chrf": 15.5
+   },
+   {
+    "lang": "de",
+    "en": "\"But... one of them is a giant monster!\"",
+    "ref": "„Aber… Einer von ihnen ist ein riesiges Monster!“",
+    "hyp": "„Aber... einer von ihnen ist ein riesiges Monster!",
+    "seconds": 2.15,
+    "chrf": 85.4
+   },
+   {
+    "lang": "de",
+    "en": "I've definitely been going about this the wrong way.",
+    "ref": "Ich bin das völlig falsch angegangen.",
+    "hyp": "Ich hab es definitiv falsch gemacht.",
+    "seconds": 1.61,
+    "chrf": 23.3
+   },
+   {
+    "lang": "de",
+    "en": "Before he could answer, the door opened and Harris, Craith, and a few others hurried out, already fully dressed and kitted out.",
+    "ref": "Bevor er antworten konnte, öffnete sich die Tür und Harris, Craith und ein paar andere kamen ihm bereits in voller Montur entgegen.",
+    "hyp": "Bevor er antworten konnte, öffnete die Tür und Harris, Craith und einige andere kamen heraus, bereits angezogen und mit Kisten.",
+    "seconds": 4.28,
+    "chrf": 66.7
+   },
+   {
+    "lang": "de",
+    "en": "“Hey Cohren, does Harris still have Snowball?” Nemic asks as they got settled in.",
+    "ref": "„Hey Cohren, ist Snowball immer noch bei Harris?“, fragte Nemic, nachdem sie sich eingerichtet hatten.",
+    "hyp": "„Hey Cohren, hat Harris noch Snowball?“, fragt Nemic, als sie sich in ihre Position setzen.",
+    "seconds": 3.36,
+    "chrf": 44.4
+   },
+   {
+    "lang": "de",
+    "en": "“Cause the regular alarms are shit. And because Daybreak doesn't sleep in” Cohren stated.",
+    "ref": "„Weil die regulären Alarme scheiße sind und weil Daybreak nicht verschläft“, sagte Cohren.",
+    "hyp": "„Weil die regulären Alarms sind Scheiße. Und weil Daybreak nicht schlafen will“ sagte Cohren.",
+    "seconds": 3.26,
+    "chrf": 69.5
+   },
+   {
+    "lang": "de",
+    "en": "Move will also help transform land at the derelict Gartshore Works site.",
+    "ref": "Damit wird gleichzeitig das brachliegende Gelände der Gartshore-Werke umgestaltet.",
+    "hyp": "Der Vorstoß wird auch helfen, das Land am ehemaligen Gartshore-Unternehmensstandort zu verändern.",
+    "seconds": 3.63,
+    "chrf": 27.7
+   },
+   {
+    "lang": "de",
+    "en": "i do not like this",
+    "ref": "Das mag ich nicht",
+    "hyp": "Ich mag das nicht",
+    "seconds": 0.89,
+    "chrf": 34.8
+   },
+   {
+    "lang": "de",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Mich mit einem riesigen Baseball in die Schlucht befördert",
+    "hyp": "Ich versuchte, mich mit einem riesigen Baseball in den Kamm zu werfen",
+    "seconds": 2.38,
+    "chrf": 62.8
+   },
+   {
+    "lang": "de",
+    "en": "Bring back oversight for WA's jails. Lives depend on it",
+    "ref": "Wiedereinführung der Gefängnisaufsicht in Washington – Menschenleben hängen davon ab",
+    "hyp": "Bring zurück die Kontrolle für die Gefängnisse von WA. Leben hängt davon ab",
+    "seconds": 2.6,
+    "chrf": 31.7
+   },
+   {
+    "lang": "de",
+    "en": "“Yup, Operation Firestorm,” Cohren answered. “We thought it would be over in a few weeks, but…we underestimate them”",
+    "ref": "„Ja, Operation Feuersturm“, antwortete Cohren. „Wir dachten, die Sache wäre in ein paar Wochen erledigt, aber wir haben sie unterschätzt.“",
+    "hyp": "„Ja, Operation Firestorm“, antwortete Cohren. „Wir dachten, es würde in ein paar Wochen vorbei sein, aber… wir unterschätzen sie",
+    "seconds": 4.59,
+    "chrf": 63.3
+   },
+   {
+    "lang": "de",
+    "en": "“Three dead, sir” The Sentinel answered. “The rest fled on foot”",
+    "ref": "„Drei Tote, Sir“, antwortete der Sentinel. „Der Rest ist zu Fuß geflohen.“",
+    "hyp": "„Drei tot, Sir“ antwortete der Sentinel. „Die anderen flüchteten Fußmarsch",
+    "seconds": 3.01,
+    "chrf": 50.4
+   },
+   {
+    "lang": "de",
+    "en": "when in on $big 4.25-.35",
+    "ref": "dabei mit $ big 4,25–4,35",
+    "hyp": "wann in auf $big 4.25-.35",
+    "seconds": 2.09,
+    "chrf": 19.2
+   },
+   {
+    "lang": "de",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Langsam langweilt mich auch der Matsch #watertemple",
+    "hyp": "Ich habe schon genug von Schmutz, #watertemple",
+    "seconds": 1.98,
+    "chrf": 31.9
+   },
+   {
+    "lang": "de",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "$sqqq komm schon, mein Beutel wird immer fetter lol",
+    "hyp": "$Sqqq, du musst aufhören. Meine Tasche ist riesig, du weißt das.",
+    "seconds": 2.89,
+    "chrf": 14.5
+   },
+   {
+    "lang": "de",
+    "en": "\"It's not that bad, right, Kayel?\"",
+    "ref": "„So schlimm war es doch gar nicht, oder, Kayel?“",
+    "hyp": "„Es ist nicht so schlimm, Kayel?",
+    "seconds": 1.86,
+    "chrf": 36.1
+   },
+   {
+    "lang": "de",
+    "en": "Oh right, here is Sally Rooney latest essay",
+    "ref": "Ach ja, hier ist Sally Rooneys neuestes Essay",
+    "hyp": "Oh, da ist Sally Roones neueste Schrift",
+    "seconds": 1.7,
+    "chrf": 50.5
+   },
+   {
+    "lang": "de",
+    "en": "“Jeez Valturi,” Nemic stated. “You’d think they would have learned by now to wake up when you did”",
+    "ref": "„Mensch, Valturi“, sagte Nemic. „Man sollte meinen, sie hätten inzwischen gelernt, zur gleichen Zeit wie Sie wach zu werden.“",
+    "hyp": "„Jeez Valturi“, sagte Nemic. „Du würdest denken, sie hätten jetzt schon aufgepasst, als du kamst",
+    "seconds": 4.23,
+    "chrf": 35.0
+   },
+   {
+    "lang": "de",
+    "en": "my hedges are getting big.",
+    "ref": "Meine Sicherungsgeschäfte wachsen.",
+    "hyp": "meine Zaunmatten wachsen.",
+    "seconds": 1.43,
+    "chrf": 28.6
+   },
+   {
+    "lang": "de",
+    "en": "Construction waste recycling firm opens new Cumbernauld plant amid circular economy drive",
+    "ref": "Förderung der Kreislaufwirtschaft: Recyclingunternehmen für Bauschutt eröffnet neue Anlage in Cumbernauld",
+    "hyp": "Wiederaufbau- und Recycling-Firma für Baustoffe öffnet in Cumbernauld eine neue Fabrik, während der Kreislaufwirtschaftsdruck steigt",
+    "seconds": 4.58,
+    "chrf": 53.4
+   },
+   {
+    "lang": "de",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "„Schon, aber kann Retvik fahren?“",
+    "hyp": "„Ja, aber kann Retvik fahren?",
+    "seconds": 1.7,
+    "chrf": 76.4
+   },
+   {
+    "lang": "de",
+    "en": "ps - i hope we are past the point of being apologetic about liking her novels or defending them as average.",
+    "ref": "PS: Ich hoffe, wir müssen uns nicht mehr dafür entschuldigen, ihre Romane zu mögen oder sie als mittelmäßig zu verteidigen.",
+    "hyp": "ps - ich hoffe, wir sind jetzt auf dem besten Weg, um uns für ihre Romane oder für sie als \"nur okay\" zu entschuldigen.",
+    "seconds": 4.54,
+    "chrf": 41.2
+   },
+   {
+    "lang": "de",
+    "en": "switch to cash, no more margin.",
+    "ref": "Zurück zu Cash, keine Marge mehr.",
+    "hyp": "wechseln auf Bargeld, keine Kreditkosten mehr.",
+    "seconds": 2.08,
+    "chrf": 30.1
+   },
+   {
+    "lang": "de",
+    "en": "Just discovered the upgrade where you can see where you've been.",
+    "ref": "Hab gerade das Upgrade entdeckt, wo man sehen kann, wo man war.",
+    "hyp": "Ich habe gerade die Aktualisierung entdeckt, wo ich sehen kann, wo ich war.",
+    "seconds": 2.9,
+    "chrf": 49.1
+   },
+   {
+    "lang": "de",
+    "en": "Sally Rooney used to debate, and once you know that it is easy to see those techniques in both her novels and essays.",
+    "ref": "Sally Rooney hat früher an Debatten teilgenommen. Wenn man das weiß, kann man die entsprechenden Techniken sowohl in ihren Romanen als auch in ihren Essays leicht erkennen.",
+    "hyp": "Sally Rooney war noch immer in Diskussionen, und wenn du weißt, dann ist es auch leicht, diese Techniken in beiden ihren Büchern und Essays zu erkennen.",
+    "seconds": 4.85,
+    "chrf": 36.2
+   },
+   {
+    "lang": "de",
+    "en": "After 4 months of playing this game.",
+    "ref": "Nachdem ich das Spiel seit 4 Monaten spiele.",
+    "hyp": "Nach 4 Monaten, in denen ich das Spiel gespielt habe.",
+    "seconds": 2.13,
+    "chrf": 53.8
+   },
+   {
+    "lang": "de",
+    "en": "Brewers froth over winemakers\" exemption from anti-waste rules",
+    "ref": "Bierbrauer erbost über Freistellung der Weinhersteller von Müllvermeidungsvorschriften",
+    "hyp": "Brewer-Verlagen freuen sich auf die Ausnahme von Verordnungen zur Vermeidung von Verlusten",
+    "seconds": 3.65,
+    "chrf": 23.5
+   },
+   {
+    "lang": "de",
+    "en": "“With all respect sir, why do you have to wake us up like that?” One of the Shock Troopers, a corporal, asked.",
+    "ref": "„Bei allem Respekt, Sir, warum müssen Sie uns so wecken?“, fragte ein Feldwebel der Stoßtruppen.",
+    "hyp": "„Mit Respekt, Sir, warum müssen Sie uns so aufwachen?“ Fragte einem der Schreckenskrieger, ein Korporal.",
+    "seconds": 4.52,
+    "chrf": 53.3
+   },
+   {
+    "lang": "fr",
+    "en": "How to find out if you're flying on a Boeing 737 MAX",
+    "ref": "Comment savoir si vous volez à bord d'un Boeing 737 MAX",
+    "hyp": "Comment savoir si on est en vol sur un Boeing 737 MAX",
+    "seconds": 2.28,
+    "chrf": 61.2
+   },
+   {
+    "lang": "fr",
+    "en": "“With all respect sir, why do you have to wake us up like that?” One of the Shock Troopers, a corporal, asked.",
+    "ref": "\"Sauf votre respect, chef, pourquoi vous vous obstinez à nous réveiller de cette façon ?\", demanda l'un des membres de la troupe de choc, un caporal.",
+    "hyp": "Cher professeur, pourquoi vous faites-vous réveiller comme ça ?\" demanda un des soldats de la 101e division, un capitaine.",
+    "seconds": 5.06,
+    "chrf": 36.7
+   },
+   {
+    "lang": "fr",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Ça fait un moment que j'ai pas mis ce fil à jour. Finalement j'ai vaincu la Reine Gidbo.",
+    "hyp": "C'est depuis longtemps que je n'ai pas mis à jour ce fil. J'ai finalement vaincu la reine Gidbo.",
+    "seconds": 3.96,
+    "chrf": 50.4
+   },
+   {
+    "lang": "fr",
+    "en": "“Exodus XO, Exodus CO” Cohrens radio crackled. “We're picking up heat signatures 350 yards out, 20 degrees right”",
+    "ref": "\"Exodus XO, Exodus CO\", grésilla la radio de Cohren. \"Nous détectons des signatures thermiques à environ 300 mètres, 20 degrés droite.\"",
+    "hyp": "Exodus XO, Exodus CO\" le radio des Cohrens a sonné. \"On détecte des signatures thermiques à 350 pieds, à 20 degrés à droite",
+    "seconds": 5.94,
+    "chrf": 55.8
+   },
+   {
+    "lang": "fr",
+    "en": "Apparently there are only two levels that haven't been cleared in the original Super Mario Maker lol",
+    "ref": "Apparemment il n'y a que deux niveaux que je n'ai pas encore passés dans le Super Mario Maker original lol",
+    "hyp": "Il semble qu'il y ait seulement deux niveaux qui n'ont pas été effacés dans l'original Super Mario Maker lol",
+    "seconds": 3.62,
+    "chrf": 48.8
+   },
+   {
+    "lang": "fr",
+    "en": "Killed myself with my own boomerang",
+    "ref": "Je me suis tué avec mon propre boomerang",
+    "hyp": "J'ai tué moi-même avec mon propre boomerang",
+    "seconds": 2.12,
+    "chrf": 67.7
+   },
+   {
+    "lang": "fr",
+    "en": "“Shaw got us a ride?” Nemic asked, a little surprised.",
+    "ref": "\"Shaw nous a eu un transport ?\", demanda Nemic, un peu surpris.",
+    "hyp": "Shaw a fait un trajet ?\", demanda Nemic, un peu étonné.",
+    "seconds": 3.2,
+    "chrf": 51.2
+   },
+   {
+    "lang": "fr",
+    "en": "“Yup, Operation Firestorm,” Cohren answered. “We thought it would be over in a few weeks, but…we underestimate them”",
+    "ref": "\"Ouep, Opération Tempête de feu\", répondit Cohren. \"Nous pensions en venir à bout en quelques semaines, mais... nous les avons sous-estimés.\"",
+    "hyp": "Oui, Opération Firestorm”, répondit Cohren. “On avait cru qu'elle serait finie en quelques semaines, mais…on sous-estime les gens",
+    "seconds": 4.92,
+    "chrf": 48.4
+   },
+   {
+    "lang": "fr",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "allez $sqqq. mon panier devient énorme lol",
+    "hyp": "$qqq, viens. mon sac est devenu trop gros lol",
+    "seconds": 2.16,
+    "chrf": 22.5
+   },
+   {
+    "lang": "fr",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "\"Vous les réveillez ?\" Cohren se retourna pour voir le second lieutenant Nemic arriver en marchant.",
+    "hyp": "Réveiller les gens\" Cohren s'est tourné pour voir le lieutenant Nemic marcher vers lui.",
+    "seconds": 3.24,
+    "chrf": 49.7
+   },
+   {
+    "lang": "fr",
+    "en": "3 minutes to go...",
+    "ref": "Dans 3 minutes...",
+    "hyp": "3 minutes à la fin...",
+    "seconds": 1.05,
+    "chrf": 50.6
+   },
+   {
+    "lang": "fr",
+    "en": "Shaw walked up to the figure, who was starting to get up. He then turned to one of the Sentinels. “How many?”",
+    "ref": "Shaw marcha vers l'individu, qui commençait à se relever. Il se tourna vers l'une des Sentinelles. \"Combien ?\"",
+    "hyp": "Shaw s'approcha de la personne, qui commençait à se lever. Puis il s'adressa à un Sentinel. « Combien ? ",
+    "seconds": 4.75,
+    "chrf": 43.3
+   },
+   {
+    "lang": "fr",
+    "en": "come on nok, $3.74 let’s go.",
+    "ref": "allez nok, 3,74 $ on y va.",
+    "hyp": "viens, Nok, 3,74 dollars, on va.",
+    "seconds": 2.37,
+    "chrf": 35.1
+   },
+   {
+    "lang": "fr",
+    "en": "Really tough not to buy that the league tells officials to help Miami when that’s not a penalty. #DCU #MLS #mastodonfc",
+    "ref": "Vraiment difficile de ne pas croire que la ligue demande aux arbitres de favoriser Miami, alors qu'il n'y a pas penalty. #DCU #MLS #mastodonfc",
+    "hyp": "C’est vraiment difficile de ne pas acheter ça, la Ligue dit aux officiers de s'occuper de Miami quand ce n'est pas une sanction. #DCU #MLS #mastodonfc",
+    "seconds": 4.98,
+    "chrf": 46.5
+   },
+   {
+    "lang": "fr",
+    "en": "The lander is about the size of old UK telephone box...",
+    "ref": "Le module atterrisseur fait environ la taille d'une vieille cabine téléphonique britannique...",
+    "hyp": "Le lander est d'environ la taille d'un ancien boîtier téléphonique britannique...",
+    "seconds": 2.83,
+    "chrf": 56.1
+   },
+   {
+    "lang": "fr",
+    "en": "Before he could answer, the door opened and Harris, Craith, and a few others hurried out, already fully dressed and kitted out.",
+    "ref": "Avant qu'il ne puisse répondre, la porte s'ouvrit et Harris, Craith et d'autres soldats se dépêchèrent de sortir, déjà habillés et équipés.",
+    "hyp": "Avant qu'il puisse répondre, la porte s'ouvrit et Harris, Craith, et quelques autres sortirent, déjà habillés et armés.",
+    "seconds": 4.41,
+    "chrf": 67.2
+   },
+   {
+    "lang": "fr",
+    "en": "“Kill or capture?” Craith asked as they watched.",
+    "ref": "\"On les tue ou on les capture ?\", demanda Craith tandis qu'ils les regardaient.",
+    "hyp": "Tuer ou capturer ? » Craith demanda en regardant.",
+    "seconds": 2.4,
+    "chrf": 33.4
+   },
+   {
+    "lang": "fr",
+    "en": "Make that four times",
+    "ref": "Fais-le quatre fois",
+    "hyp": "Faites-le quatre fois",
+    "seconds": 1.24,
+    "chrf": 82.9
+   },
+   {
+    "lang": "fr",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Je commence à en avoir assez de la boue aussi #templedel'eau",
+    "hyp": "Je commence à me sentir fatigué de la boue #watertemple",
+    "seconds": 2.37,
+    "chrf": 42.2
+   },
+   {
+    "lang": "fr",
+    "en": "i wonder if the twitter would get suspended if i mentioned i had a fat bag of it lol",
+    "ref": "je me demande si le twitter serait suspendu si je mentionnais que j'en avais un panier plein lol",
+    "hyp": "je me demande si Twitter serait suspendu si j'ai mentionné que j'avais une grosse poignée de ça lol",
+    "seconds": 3.16,
+    "chrf": 60.2
+   },
+   {
+    "lang": "fr",
+    "en": "\"You want to chase after them?\"",
+    "ref": "\"Tu veux les pourchasser ?\"",
+    "hyp": "Tu veux les suivre ?",
+    "seconds": 1.59,
+    "chrf": 38.2
+   },
+   {
+    "lang": "fr",
+    "en": "because it's a vector of rational numbers",
+    "ref": "parce que c'est un vecteur de nombres rationnels",
+    "hyp": "car c'est un vecteur des nombres rationnels",
+    "seconds": 1.7,
+    "chrf": 76.5
+   },
+   {
+    "lang": "fr",
+    "en": "Well, perhaps ball doesn't lie. What an awful give away by Klich. Can't win when your DP plays that sloppy. #DCU #MLS #mastodonfc",
+    "ref": "Bien, peut-être que le ballon ne ment pas. Quelle horrible perte de balle de Klich. Impossible de gagner quand ton joueur désigné joue aussi mal. #DCU #MLS #mastodonfc",
+    "hyp": "Bon, peut-être que le ballon n'a pas de secret. Quelle défaite horrible de Klich. On ne peut pas gagner quand le DP joue comme ça. #DCU #MLS #mastodonfc",
+    "seconds": 6.22,
+    "chrf": 56.3
+   },
+   {
+    "lang": "fr",
+    "en": "After 4 months of playing this game.",
+    "ref": "Après avoir joué 4 mois à ce jeu.",
+    "hyp": "Après 4 mois de jeu de ce jeu.",
+    "seconds": 1.65,
+    "chrf": 37.0
+   },
+   {
+    "lang": "fr",
+    "en": "Ethan Frenchman is a Disability Rights Washington staff attorney who advocates for people with disabilities in jails and prisons.",
+    "ref": "Ethan Frenchman est un avocat de Disability Rights Washington qui défend les personnes en situation de handicap détenues dans les prisons.",
+    "hyp": "Ethan Frenchman est un avocat de la Division des droits de la personne de Washington, qui défend les personnes handicapées dans les prisons et les centres de détention.",
+    "seconds": 4.39,
+    "chrf": 65.7
+   },
+   {
+    "lang": "fr",
+    "en": "\"Hey, Tenuk, do you mind shapeshifting into something that can fly?\" Kayel asked.",
+    "ref": "\"Hé Tenuk, ça te dirait de te transformer en quelque chose qui vole ?\", demanda Kayel.",
+    "hyp": "Hey, Tenuk, peux-tu me changer en quelque chose qui peut voler ?\", demanda Kayel.",
+    "seconds": 3.5,
+    "chrf": 54.4
+   },
+   {
+    "lang": "fr",
+    "en": "well now they’re god damn huge lol",
+    "ref": "elles sont devenues énormes, lol",
+    "hyp": "bon, maintenant ils sont des gros boléros lol",
+    "seconds": 1.65,
+    "chrf": 27.3
+   },
+   {
+    "lang": "fr",
+    "en": "Bring back oversight for WA's jails. Lives depend on it",
+    "ref": "Pour un retour de la surveillance des prisons de l'État de Washington. Des vies en dépendent.",
+    "hyp": "Rappelons l'importance de la surveillance des prisons de WA. La vie dépend de cela",
+    "seconds": 2.85,
+    "chrf": 46.3
+   },
+   {
+    "lang": "fr",
+    "en": "“What woke you guys up?” Cohren asked.",
+    "ref": "\"Qu'est-ce qui vous a réveillés ?\", demanda Cohren.",
+    "hyp": "Qu'est-ce qui vous a réveillé ?\", demanda Cohren.",
+    "seconds": 2.38,
+    "chrf": 89.8
+   },
+   {
+    "lang": "fr",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "\"D'accord, mais Retvik sait conduire ?\"",
+    "hyp": "Oui, mais peut-il conduire ?",
+    "seconds": 1.67,
+    "chrf": 32.0
+   },
+   {
+    "lang": "fr",
+    "en": "\"But... one of them is a giant monster!\"",
+    "ref": "\"Mais... l'un d'eux est un monstre géant !\"",
+    "hyp": "Et... l'un d'eux est un monstre géant !",
+    "seconds": 2.32,
+    "chrf": 84.1
+   },
+   {
+    "lang": "fr",
+    "en": "what why are the GPS coordinates getting rounded to the nearest full degree that's absolutely worthless",
+    "ref": "pourquoi est-ce que les coordonnées GPS sont arrondies au degré entier près, c'est totalement inutile",
+    "hyp": "quoi, pourquoi les coordonnées GPS sont-elles arrondies à la dizaine de degrés, ce qui est absolument nul",
+    "seconds": 3.61,
+    "chrf": 50.8
+   },
+   {
+    "lang": "fr",
+    "en": "“What did you plan on using this time?”",
+    "ref": "\"Qu'avez-vous prévu d'utiliser cette fois-ci ?\"",
+    "hyp": "Quel est ce que tu as planifié d'utiliser cette fois-ci ?",
+    "seconds": 2.36,
+    "chrf": 54.8
+   },
+   {
+    "lang": "fr",
+    "en": "when in on $big 4.25-.35",
+    "ref": "quand on est sur $big 4,25-0,35",
+    "hyp": "quand on est dans le $big 4.25-.35",
+    "seconds": 2.46,
+    "chrf": 47.5
+   },
+   {
+    "lang": "fr",
+    "en": "my hedges are getting big.",
+    "ref": "mes marges prennent de l'ampleur.",
+    "hyp": "mais mes haies sont devenues trop grandes.",
+    "seconds": 1.7,
+    "chrf": 20.1
+   },
+   {
+    "lang": "fr",
+    "en": "“You mean his chicken he stole?” Cohren remembered the morning they had stolen him from a farm. “Yeah, i'm pretty sure”",
+    "ref": "\"Tu parles du poulet qu'il a volé ?\" Cohren se souvenait du matin où ils l'avaient volé dans une ferme. \"Oui, j'en suis sûr\".",
+    "hyp": "Tu veux dire la poule qu'il a volée ?\", se souvint Cohren, en se rappelant la matinée où ils l'avaient volé d'une ferme. \"Ouais, je suis sûr\", répondit-il.",
+    "seconds": 6.5,
+    "chrf": 55.2
+   },
+   {
+    "lang": "fr",
+    "en": "And just under the wire basically someone actually beat Trimming the Herbs! Really impressive.",
+    "ref": "Et juste à la dernière minute, quelqu'un a finalement réussi à passer \"Couper les herbes\" ! Impressionnant.",
+    "hyp": "Et juste sous le fil, une personne a vraiment battu les Herbes ! Impressionnant !",
+    "seconds": 2.96,
+    "chrf": 33.1
+   },
+   {
+    "lang": "fr",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Je me suis mis tout seul dans la crevasse avec une balle de baseball géante",
+    "hyp": "Je me suis jeté dans la crevasse avec un baseball colossal",
+    "seconds": 2.09,
+    "chrf": 53.6
+   },
+   {
+    "lang": "fr",
+    "en": "Nyssi blinked and turned back to Tenuk. \"Of course he can drive.\"",
+    "ref": "Nissy cligna des yeux et se retourna vers Tenuk. \"Bien sûr qu'il sait conduire.\"",
+    "hyp": "Nyssi s'est mise à regarder, puis a regardé Tenuk. \"Bien sûr qu'il peut conduire.",
+    "seconds": 3.29,
+    "chrf": 46.2
+   },
+   {
+    "lang": "fr",
+    "en": "“Can’t tell,” Cohren stated. He reached for his mic and spoke. “Exodus Company, hold fire unless fired upon, let's draw them out",
+    "ref": "\"Impossible à dire\", déclara Cohren. Il activa son micro et dit : \"Compagnie Exodus, ne tirez pas à moins qu'on vous tire dessus, faisons-les sortir.\"",
+    "hyp": "Je ne sais pas », dit Cohren. Il saisit son micro et parla. « L'entreprise Exodus, gardez le feu, sauf si vous êtes attaqués, et nous tirons dessus.",
+    "seconds": 5.61,
+    "chrf": 33.3
+   },
+   {
+    "lang": "es",
+    "en": "\"Yeah but can Retvik drive?\"",
+    "ref": "“Sí, ¿pero Retvik sabe manejar?”.",
+    "hyp": "¡Sí, pero ¿puede Retvik manejar?",
+    "seconds": 1.8,
+    "chrf": 44.8
+   },
+   {
+    "lang": "es",
+    "en": "come on nok, $3.74 let’s go.",
+    "ref": "vamos NOK, $3.74, vamos",
+    "hyp": "¡vamos, NOK, 3,74, ¡vamos!",
+    "seconds": 2.18,
+    "chrf": 40.4
+   },
+   {
+    "lang": "es",
+    "en": "i do not like this",
+    "ref": "no me gusta esto",
+    "hyp": "no me gusta",
+    "seconds": 0.77,
+    "chrf": 66.0
+   },
+   {
+    "lang": "es",
+    "en": "ps - i hope we are past the point of being apologetic about liking her novels or defending them as average.",
+    "ref": "P.D. Espero que ya no tengamos que disculparnos por que nos gusten sus novelas, ni defenderlas como buenas.",
+    "hyp": "ps - espero que ya no nos apenemos por gustar sus novelas o defenderlas como medianas.",
+    "seconds": 3.21,
+    "chrf": 47.2
+   },
+   {
+    "lang": "es",
+    "en": "$sqqq come on. my bag is getting huge lol",
+    "ref": "vamos $sqqq, mi billetera está creciendo un montón, jaja",
+    "hyp": "¡vamos! mi maleta está creciendo mucho.",
+    "seconds": 1.9,
+    "chrf": 37.4
+   },
+   {
+    "lang": "es",
+    "en": "And she is very adept with the English language.",
+    "ref": "Y es muy hábil con la lengua inglesa.",
+    "hyp": "Y es muy buena con el idioma inglés.",
+    "seconds": 1.66,
+    "chrf": 30.9
+   },
+   {
+    "lang": "es",
+    "en": "JANUARY 19th, 2:34 PM, 2543.",
+    "ref": "19 DE ENERO, 2:34 P.M., 2543.",
+    "hyp": "19 DE ENERO, 2:34 PM, 2543.",
+    "seconds": 2.66,
+    "chrf": 75.7
+   },
+   {
+    "lang": "es",
+    "en": "Live feed says that they have a signal",
+    "ref": "La transmisión en vivo dice que tienen señal.",
+    "hyp": "La transmisión en vivo dice que tienen señal",
+    "seconds": 1.42,
+    "chrf": 97.7
+   },
+   {
+    "lang": "es",
+    "en": "Nyssi blinked and turned back to Tenuk. \"Of course he can drive.\"",
+    "ref": "Nyssi parpadeó y se volvió hacia Tenuk. “Claro que sabe manejar”.",
+    "hyp": "Nyssi se quedó mirando y se volvió a Tenuk. \"¡Claro que puede conducir!\".",
+    "seconds": 3.33,
+    "chrf": 40.4
+   },
+   {
+    "lang": "es",
+    "en": "Brewers froth over winemakers\" exemption from anti-waste rules",
+    "ref": "Las cerveceras se postulan en contra de la exención de las normativas anti residuos a los productores de vino",
+    "hyp": "Los vinos se rinden a la ley anti- desperdicio",
+    "seconds": 2.2,
+    "chrf": 13.6
+   },
+   {
+    "lang": "es",
+    "en": "Oh right, here is Sally Rooney latest essay",
+    "ref": "Ah, cierto, aquí está el último ensayo de Sally Rooney:",
+    "hyp": "¡Oh, sí, aquí está la última ensayada de Sally Rooney",
+    "seconds": 1.99,
+    "chrf": 52.0
+   },
+   {
+    "lang": "es",
+    "en": "“Three dead, sir” The Sentinel answered. “The rest fled on foot”",
+    "ref": "“Tres muertos, mi teniente”, respondió el centinela. “El resto huyó a pie”.",
+    "hyp": "Tres muertos, señora”, respondió el guardián. “Los demás huyeron a pie",
+    "seconds": 3.18,
+    "chrf": 40.8
+   },
+   {
+    "lang": "es",
+    "en": "Sally Rooney used to debate, and once you know that it is easy to see those techniques in both her novels and essays.",
+    "ref": "Sally Rooney estaba acostumbrada a debatir, y una vez que sabes eso es fácil ver esas técnicas tanto en sus novelas como en sus ensayos.",
+    "hyp": "Sally Rooney usaba a debate, y una vez que sepas eso, es fácil ver esas técnicas en sus novelas y ensayos.",
+    "seconds": 4.07,
+    "chrf": 59.2
+   },
+   {
+    "lang": "es",
+    "en": "Amazing how there's two PKs #DCU should have had and got neither. The fix is so in for Miami #MLS #mastodonfc",
+    "ref": "Increíble cómo hubo dos penales que tendrían que haber ido para #DCU y no les dieron ninguno. Es descaradísimo a favor de Miami #MLS #mastodonfc",
+    "hyp": "Increíble que hay dos PKs #DCU que deberían haber tenido y no los tuvieron. La solución es tan buena para Miami #MLS #mastodonfc",
+    "seconds": 4.53,
+    "chrf": 40.9
+   },
+   {
+    "lang": "es",
+    "en": "well now they’re god damn huge lol",
+    "ref": "bueno, ahora son jodidamente enormes, jaja",
+    "hyp": "ahora son increíbles, jajaja",
+    "seconds": 1.47,
+    "chrf": 34.0
+   },
+   {
+    "lang": "es",
+    "en": "“I guess we’ll find out,” Cohren said with a laugh. Orson didn’t continue the conversation.",
+    "ref": "“Supongo que lo acabaremos averiguando”, dijo Cohren riendo. Orson no continuó con la conversación.",
+    "hyp": "Creo que lo sabremos”, dijo Cohren con una sonrisa. Orson no continuó la conversación.",
+    "seconds": 3.36,
+    "chrf": 56.1
+   },
+   {
+    "lang": "es",
+    "en": "\"Hey, Tenuk, do you mind shapeshifting into something that can fly?\" Kayel asked.",
+    "ref": "“Oye, Tenuk, ¿te importaría transformarte en algo que pueda volar?”, preguntó Kayel.",
+    "hyp": "¡Hey, Tenuk, ¿me puedes convertir en algo que pueda volar?\", preguntó Kayel.",
+    "seconds": 3.28,
+    "chrf": 54.6
+   },
+   {
+    "lang": "es",
+    "en": "“Yup, I see them” Cohren responded, using his throat mic.",
+    "ref": "“Sí, las veo”, respondió Cohren, usando su micrófono de garganta.",
+    "hyp": "Sí, veo a los chicos”, respondió Cohren, usando su micrófono de la garganta.",
+    "seconds": 3.21,
+    "chrf": 79.0
+   },
+   {
+    "lang": "es",
+    "en": "Pushing myself into the crevasse with a giant baseball",
+    "ref": "Logré hacerme caer por el precipicio con una pelota de béisbol gigante.",
+    "hyp": "Me empujé a mí mismo en la grieta con una pelota de béisbol gigante",
+    "seconds": 2.8,
+    "chrf": 50.1
+   },
+   {
+    "lang": "es",
+    "en": "when in on $big 4.25-.35",
+    "ref": "cuando estás en $big 4.25-.35",
+    "hyp": "cuando en en $big 4.25-.35",
+    "seconds": 2.04,
+    "chrf": 72.3
+   },
+   {
+    "lang": "es",
+    "en": "It's been a while since I've updated this thread. Finally defeated Queen Gidbo.",
+    "ref": "Hacía tiempo que no actualizaba este hilo. Finalmente derroté a la reina Gidbo.",
+    "hyp": "Hace mucho tiempo que no actualizo este hilo. Finalmente, derroté a la reina Gidbo.",
+    "seconds": 3.21,
+    "chrf": 80.5
+   },
+   {
+    "lang": "es",
+    "en": "“Hey Cohren, does Harris still have Snowball?” Nemic asks as they got settled in.",
+    "ref": "“Oye, Cohren, ¿Harris aún tiene a Bola de Nieve?”, preguntó Nemic mientras se ponían cómodos.",
+    "hyp": "Hey Cohren, ¿todavía tiene Harris a Snowball?”, pregunta Nemic mientras se sientan.",
+    "seconds": 3.06,
+    "chrf": 48.0
+   },
+   {
+    "lang": "es",
+    "en": "nothing makes me more happy than elon musk losing money. $tslq",
+    "ref": "nada me hace mas feliz que ver a Elon Musk perdiendo dinero, $tslq",
+    "hyp": "ningún hecho me hace más feliz que Elon Musk pierda dinero. $tslq",
+    "seconds": 2.44,
+    "chrf": 49.8
+   },
+   {
+    "lang": "es",
+    "en": "How Betta Edu became a scapegoat of a dysfunctional political system",
+    "ref": "Cómo Betta Edu se convirtió en el chivo expiatorio de un sistema político disfuncional",
+    "hyp": "Cómo se convirtió Betta Edu en un blanco de la política desorganizada",
+    "seconds": 2.23,
+    "chrf": 38.3
+   },
+   {
+    "lang": "es",
+    "en": "“Cause the regular alarms are shit. And because Daybreak doesn't sleep in” Cohren stated.",
+    "ref": "“Porque las alarmas normales son una mierda. Y porque Alborada no se queda en la cama”, dijo Cohren.",
+    "hyp": "Ellos son una mierda. Y porque Daybreak no duerme” dijo Cohren.",
+    "seconds": 2.81,
+    "chrf": 40.7
+   },
+   {
+    "lang": "es",
+    "en": "“Lieutenant Nemic…Lieutenant Valturi…” He said Cohren was slower, glancing at Cohren’s pistol holster before glancing up again. “I assume that the company is ready”",
+    "ref": "“Teniente Nemic… teniente Valturi…”, dijo lentamente, mirando la funda de la pistola de Cohren antes de volver a levantar la vista. “Supongo que la compañía está preparada”.",
+    "hyp": "Suboficial Nemic…Suboficial Valturi…” dijo que Cohren era más lento, mirando el holster de la pistola de Cohren antes de mirarla de nuevo. “Creo que la compañía está lista",
+    "seconds": 6.45,
+    "chrf": 48.2
+   },
+   {
+    "lang": "es",
+    "en": "I've definitely been going about this the wrong way.",
+    "ref": "Definitivamente, he estado haciendo esto como no había que hacerlo.",
+    "hyp": "Claro, me he estado acostumbrando a hacerlo de otra manera.",
+    "seconds": 2.22,
+    "chrf": 28.2
+   },
+   {
+    "lang": "es",
+    "en": "let’s tank the first week of the new year",
+    "ref": "vamos a desplomar la primera semana del nuevo año",
+    "hyp": "¡hagamos la primera semana del nuevo año",
+    "seconds": 1.52,
+    "chrf": 68.0
+   },
+   {
+    "lang": "es",
+    "en": "my hedges are getting big.",
+    "ref": "mis fondos están creciendo",
+    "hyp": "mis jardines de muros están creciendo.",
+    "seconds": 1.62,
+    "chrf": 65.2
+   },
+   {
+    "lang": "es",
+    "en": "Really tough not to buy that the league tells officials to help Miami when that’s not a penalty. #DCU #MLS #mastodonfc",
+    "ref": "Si eso no es un penal, es realmente complicado no creer que la Liga les dice a los árbitros que ayuden a Miami. #DCU #MLS #mastodonfc",
+    "hyp": "No es fácil no comprar eso que la liga dice a los funcionarios que ayuden a Miami cuando no es una falta. #DCU #MLS #mastodonfc",
+    "seconds": 4.2,
+    "chrf": 51.9
+   },
+   {
+    "lang": "es",
+    "en": "“Well, I’ll stand defiantly for the Federation” Orson said defiantly. “I’ll not let those terrorist scare me”",
+    "ref": "“Bueno, yo defenderé a la Federación con gallardía”, dijo Orson desafiante. “No voy a permitir que esos terroristas me asusten”.",
+    "hyp": "Bueno, me defenderé por la federación”, dijo Orson con firmeza. “No me dejaré intimidar por esos terroristas”.",
+    "seconds": 4.08,
+    "chrf": 45.4
+   },
+   {
+    "lang": "es",
+    "en": "new ath. i know what that means..",
+    "ref": "nuevo máximo histórico, sé lo que significa eso…",
+    "hyp": "nuevo at. sé lo que significa",
+    "seconds": 1.33,
+    "chrf": 45.7
+   },
+   {
+    "lang": "es",
+    "en": "Shaw nodded and turned towards Cohren and Criath, who were standing close by. “Would you two be so kind as to stow this man away?”",
+    "ref": "Shaw asintió y se volvió hacia Cohren y Criath, que permanecían de pie cerca de él. “¿Serían tan amables de poner a este hombre a buen recaudo?”.",
+    "hyp": "Shaw asintió y se dirigió hacia Cohren y Criath, quienes estaban a su lado. \"¿Os podéis encargar de este hombre?\", preguntó.",
+    "seconds": 4.84,
+    "chrf": 43.0
+   },
+   {
+    "lang": "es",
+    "en": "Starting to be bored of sludge too #watertemple",
+    "ref": "Empiezo a aburrirme también del lodo del #templodelagua",
+    "hyp": "Ya me estoy cansando de la basura #watertemple",
+    "seconds": 1.96,
+    "chrf": 21.0
+   },
+   {
+    "lang": "es",
+    "en": "Hailey Ockinga is an anti-incarceration activist and community organizer, and the executive director of Beyond These Walls in Washington state.",
+    "ref": "Hailey Ockinga es una activista en contra del encarcelamiento y organizadora comunitaria, así como la directora ejecutiva de Beyond These Walls, en el estado de Washington.",
+    "hyp": "Hailey Ockinga es activista antiincarceración y organizadora de la comunidad, y directora ejecutiva de Beyond These Walls en Washington.",
+    "seconds": 4.26,
+    "chrf": 61.4
+   },
+   {
+    "lang": "es",
+    "en": "“Waking them up” Cohren turned to see 2nd Lieutenant Nemic walking up.",
+    "ref": "“Toca despertarlos”. Cohren se dio la vuelta para ver al subteniente Nemic acercándose.",
+    "hyp": "Despertarlos” Cohren se dio cuenta de que Nemic, suboficial, caminaba hacia ella.",
+    "seconds": 3.19,
+    "chrf": 39.9
+   },
+   {
+    "lang": "es",
+    "en": "facepalmed right into the ground",
+    "ref": "Es para ni asomar la cabeza de la vergüenza.",
+    "hyp": "me puse la cara en el suelo",
+    "seconds": 1.53,
+    "chrf": 14.9
+   },
+   {
+    "lang": "es",
+    "en": "After 4 months of playing this game.",
+    "ref": "Después de 4 meses jugando a este juego.",
+    "hyp": "Después de 4 meses jugando este juego.",
+    "seconds": 1.57,
+    "chrf": 88.8
+   },
+   {
+    "lang": "es",
+    "en": "“Jeez Valturi,” Nemic stated. “You’d think they would have learned by now to wake up when you did”",
+    "ref": "“Cielos, Valturi”, dijo Nemic. “Podrías pensar que a estas alturas ya habrían aprendido a despertarse cuando tú lo haces”.",
+    "hyp": "Jeez Valturi,” dijo Nemic. “Te sorprendería que se hubieran dado cuenta de que ya sabían despertar cuando llegabas",
+    "seconds": 4.47,
+    "chrf": 36.4
+   },
+   {
+    "lang": "es",
+    "en": "How to find out if you're flying on a Boeing 737 MAX",
+    "ref": "Cómo saber si estás volando en un Boeing 737 MAX",
+    "hyp": "¿Cómo saber si estás volando en un Boeing 737 MAX",
+    "seconds": 2.13,
+    "chrf": 99.5
+   }
+  ]
+ },
+ "decision": {
+  "translations_by": "editor (4B)",
+  "why": "chrF on 120 held-out WMT24++ sentences: editor 51.6, translator edit 48.4, writer 46.7; editor - translator +3.2 (95% bootstrap CI +0.7 to +5.6, better on 68, worse on 51); translator - writer +1.8 (CI -0.5 to +4.0, not clear on 120 sentences)",
+  "translator_edit": "kept in adapters/.rejected/translator (it did not win)"
+ }
+}

@@ -445,6 +445,8 @@ def test_a_bigger_editor_rewrites_only_when_the_writer_cannot_fix_it(tmp_path, m
     b = Board(tmp_path, echo=False)
     b.checklist = ["Translate into French: 'Friday'"]
     roles = []
+    from team import config
+    monkeypatch.setattr(config, "TRANSLATE_ROLE", "writer")  # the escalation path itself (translations now go to the 4B)
 
     def chat(role, msgs, **kw):
         roles.append(role)
@@ -1370,3 +1372,18 @@ def test_an_experiment_result_names_its_method_and_rewordings_are_not_conflicts(
     assert R.conflicts(same) == []
     two = [{"claim": "The array makes 320 MW", "url": "https://a"}, {"claim": "The array makes 302 MW", "url": "https://b"}]
     assert len(R.conflicts(two)) == 1
+
+
+def test_a_translation_is_written_by_the_member_that_translates_best(tmp_path, monkeypatch):
+    """training/translator.py on 120 held-out professional translations: the 4B 51.6 chrF, a translation edit of the
+    1.7B 48.4, the writer 46.7 (held-out set 2: 'Der Zug fährt um 9 Uhr in der Morgens')."""
+    from team.board import Board
+    from team.specialists import writer
+    roles = []
+    monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **k: roles.append(role) or "Der Zug fährt um neun Uhr morgens ab.")
+    monkeypatch.setattr(writer.llm, "chat_json", lambda *a, **k: ({"unsupported": [], "unordered": [], "checklist": []}, ""))
+    monkeypatch.setattr(writer.memory, "profile", lambda: "")
+    writer.run("Translate into German: 'The train leaves at nine in the morning.'", "Translate it",
+               Board(tmp_path, echo=False), [])
+    assert roles[0] == "editor"
+    assert writer.translator_role("Summarise this: ...", f"{writer.OWN_TEXT}\n...") == "writer"

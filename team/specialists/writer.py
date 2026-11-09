@@ -257,10 +257,13 @@ def run(goal, task, board, needs):
         task = f"{task}\nFORMAT Arnav ordered: {fmt}. This overrides the usual layout."
         board.log("writer", "format", fmt)
     msgs = messages(goal, task, results_text, sources)
-    text = drop_empty_sections(llm.chat("writer", msgs, max_new_tokens=1200))
+    role = translator_role(goal, results_text)
+    if role != "writer":
+        board.log("writer", "translate", f"a translation: written by the {role} (training/reports/translator.json)")
+    text = drop_empty_sections(llm.chat(role, msgs, max_new_tokens=1200))
     if n_lines and len(body_lines(text)) != n_lines:  # checked in code: one more try, told what was wrong
         board.log("writer", "format", f"wrote {len(body_lines(text))} lines, {n_lines} ordered: asking again")
-        text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
+        text = llm.chat(role, msgs + [{"role": "assistant", "content": text},
                                           {"role": "user", "content": f"That is {len(body_lines(text))} lines. Write it as "
                                            f"exactly {n_lines} lines of plain text, nothing else."}], max_new_tokens=400)
     # the critic checks every claim against the verified results and every instruction of Arnav's; the writer fixes
@@ -291,7 +294,7 @@ def run(goal, task, board, needs):
                      + "\nRewrite the report so it does each of them, using only the verified results. If the verified "
                        "results are not enough for one, write one line saying what is missing.")
     if fixes:
-        text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
+        text = llm.chat(role, msgs + [{"role": "assistant", "content": text},
                                           {"role": "user", "content": "\n\n".join(fixes) + "\n\nReturn only the whole "
                                                                       "corrected report."}],
                         max_new_tokens=1200)
@@ -323,7 +326,7 @@ def run(goal, task, board, needs):
         board.log("critic", "ok", "every claim matches the verified results")
     if fixes and n_lines and len(body_lines(text)) != n_lines:  # a fix can break the layout he ordered: checked again
         board.log("writer", "format", f"after the fix: {len(body_lines(text))} lines, {n_lines} ordered: asking again")
-        text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
+        text = llm.chat(role, msgs + [{"role": "assistant", "content": text},
                                           {"role": "user", "content": f"That is {len(body_lines(text))} lines. Write it as "
                                            f"exactly {n_lines} lines of plain text, nothing else."}], max_new_tokens=400)
     if open_qs[1] and "not answered by any source" not in text.lower():
@@ -390,6 +393,16 @@ def ungrounded(text, verified, min_stems=6, share=0.3):
             if len(mine) >= min_stems and len(mine & have) / len(mine) < share:
                 out.append(sent.strip())
     return out
+
+
+def translator_role(goal, results_text):
+    """Who writes a translation of his text, by measurement (training/translator.py, 120 held-out professional
+    translations, chrF): the 4B editor 51.6, a translation edit of the 1.7B 48.4, the writer (1.7B + its edit) 46.7;
+    the 4B is better than the edit by 3.2 (95% CI +0.7 to +5.6) at 4.9 s against 3.0 s a sentence."""
+    from .. import config
+    if results_text.startswith(OWN_TEXT) and re.search(r"\btranslat\w*\b", goal or "", re.I):
+        return config.TRANSLATE_ROLE
+    return "writer"
 
 
 def open_questions(board):

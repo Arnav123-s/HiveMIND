@@ -60,6 +60,9 @@ GGUF_ROSTER = {
     # evolution-harness specialists
     "examiner": BRAIN, "prompt_smith": BRAIN, "lesson_writer": "fast",
 }
+# who writes a translation of his text (training/reports/translator.json): the 4B editor, chrF 51.6 on 120 held-out
+# professional translations, against 48.4 for a translation edit of the 1.7B and 46.7 for the writer
+TRANSLATE_ROLE = os.environ.get("AGENT_TEAM_TRANSLATE_ROLE", "editor")
 JURY = [s.strip() for s in os.environ.get("AGENT_TEAM_JURY", "verifier,juror_brain,juror_fast").split(",") if s.strip()]
 if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
     import json as _json
