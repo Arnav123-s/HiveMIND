@@ -50,6 +50,7 @@ def review(task, code, stdout):
 ERROR_KINDS = [  # the error reader: a code rule, exact on exception names (a cell would add nothing)
     ("syntax", r"SyntaxError|IndentationError|TabError"),
     ("import", r"ModuleNotFoundError|ImportError"),
+    ("not_found", r"\b404 Client Error|HTTP Error 404|404 Not Found|status(?:_code)? (?:was |is |== ?)?404\b"),
     ("network", r"ConnectionError|NameResolution|Max retries exceeded|HTTPError|Timeout(Error)?:|SSLError|"
                 r"getaddrinfo|Connection refused|HTTP Error \d{3}"),
     ("file", r"FileNotFoundError|PermissionError|IsADirectoryError|NotADirectoryError"),
@@ -109,7 +110,9 @@ def run(task, context, board, step_id, guard, workdir):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     before = {p.name for p in workdir.iterdir()}
-    messages = task_messages(task, context, preview(task, workdir))
+    # the pages his task names, never the URLs in a previous attempt's error: a retry carrying "404 ... for url:
+    # .../page-2.html" previewed only that missing page and lost the Mystery listing the first preview had found
+    messages = task_messages(task, context, preview(task.split("\n(Previous attempt was rejected:")[0], workdir))
     want = expected_outputs(task, before)
     last, last_error = None, None
     name = f"{re.sub(r'[^A-Za-z0-9_]', '_', step_id)}.py"

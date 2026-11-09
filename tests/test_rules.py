@@ -1067,3 +1067,26 @@ def test_an_explanation_is_never_rerouted_to_a_program(monkeypatch):
     monkeypatch.setattr(coordinator.llm, "chat_json", lambda *a, **k: (
         {"agent": "coder", "task": "Fetch the downloads from the Hugging Face API and print them."}, ""))
     assert coordinator.reroute("Plot the download counts of a and b", step, "x")["agent"] == "coder"
+
+
+def test_a_retry_previews_his_pages_not_the_missing_page_in_its_error(tmp_path, monkeypatch):
+    """Dev re-run: a retry carrying '404 ... for url: https://books.toscrape.com/page-2.html' previewed only that
+    missing page, losing the Mystery listing; the 404 got the generic network hint."""
+    from team.board import Board
+    from team.specialists import coder
+    previewed = []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: previewed.append(task) or "")
+    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: "```python\nprint('saved 3 books to books.csv')\n```")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    task = ("Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV.\n(Previous attempt was "
+            "rejected: program exited 1: 404 Client Error: Not Found for url: https://books.toscrape.com/page-2.html)")
+    coder.run(task, "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w")
+    assert previewed == ["Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV."]
+    assert coder.error_kind("requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://x/p.html") \
+        == "not_found"
+    assert coder.error_kind("requests.exceptions.HTTPError: 503 Server Error") == "network"
+    assert "urljoin(the URL of the page the link was found on" in coder.prompts.FIX_HINTS["not_found"]
