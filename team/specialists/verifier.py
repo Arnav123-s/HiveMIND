@@ -13,6 +13,15 @@ def norm(s):
     return re.sub(r"\s+", " ", str(s or "")).strip().lower()
 
 
+FOOTNOTE = re.compile(r"\[\s*(?:\d{1,3}|[a-z]|note \d+|citation needed)\s*\]", re.I)
+
+
+def words_key(s):
+    """The words in order, without punctuation, spacing or footnote marks: 'science , a' (a link's line break) and
+    'values.[3] A' are 'science a' and 'values a', as written in a quote."""
+    return " " + re.sub(r"[^\w]+", " ", FOOTNOTE.sub(" ", str(s or "")).lower()).strip() + " "
+
+
 def quote_in(quote, text):
     q, t = norm(quote), norm(text)
     if len(q) < 4:
@@ -20,10 +29,11 @@ def quote_in(quote, text):
     if q in t:
         return True
     # tolerate ellipses / small gaps, and several items quoted one per line (three quotes from one page are
-    # separated there by their authors and tags): every piece must be on the page
+    # separated there by their authors and tags): every piece must be on the page, its words in order
     pieces = [p.strip() for p in re.split(r"\.\.\.|…|\n", quote or "")]
-    parts = [norm(p) for p in pieces if len(norm(p)) >= 4]
-    return bool(parts) and all(p in t for p in parts)
+    parts = [words_key(p).strip() for p in pieces if len(words_key(p).strip()) >= 4]
+    kt = words_key(text)
+    return bool(parts) and all(p in kt for p in parts)
 
 
 def hard_item_check(task, evidence):
@@ -100,7 +110,7 @@ def describe_file(path):
             from PIL import Image
             with Image.open(path) as im:
                 w, h = im.size
-                colours = len(set(im.convert("RGB").resize((64, 64)).getdata()))
+                colours = len(im.convert("RGB").resize((64, 64)).getcolors(64 * 64))
             if colours < 3:
                 return f"BROKEN: {name} is a blank image ({w}x{h} pixels, one colour)"
             return f"{name}: a valid {im.format} image, {w}x{h} pixels, {kb:.0f} KB (a drawn picture, not blank)"

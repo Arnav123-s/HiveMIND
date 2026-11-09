@@ -53,18 +53,35 @@ def get(url, params=None, as_json=False):
     return out
 
 
+BLOCK = ["p", "div", "li", "ul", "ol", "dl", "dt", "dd", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "table", "thead",
+         "tbody", "section", "article", "blockquote", "pre", "figure", "figcaption", "caption", "main", "hr"]
+
+
+def block_text(node):
+    """The text with a line break only where the page has a block (a paragraph, an item, a heading, a table row):
+    links and emphasis stay inside their sentence. (Every text node on its own line had made Wikipedia read
+    'In\ncomputer science\n, a\nhash table\nis a ...': models read it badly, and a quote written as the page shows
+    it, 'computer science, a hash table', was never found in it.) Table cells are joined with ' | '."""
+    for br in node.find_all("br"):
+        br.replace_with("\n")
+    for cell in node.find_all(["td", "th"]):
+        cell.append(" | ")
+    for el in node.find_all(BLOCK):
+        el.insert_before("\n")
+        el.insert_after("\n")
+    lines = [re.sub(r"[ \t\u00a0]+", " ", ln).strip(" |").strip() for ln in node.get_text("").split("\n")]
+    return re.sub(r"\n\s*\n+", "\n", "\n".join(lines)).strip()  # one line per block
+
+
 def readable(html, base_url="", max_chars=12000):
     soup = BeautifulSoup(html, "lxml")
     for t in soup(["script", "style", "noscript", "svg", "nav", "footer", "header", "form", "aside"]):
         t.decompose()
     title = soup.title.get_text(strip=True) if soup.title else ""
     main = soup.find("main") or soup.find("article") or soup.body or soup
-    text = re.sub(r"\n\s*\n+", "\n\n", main.get_text("\n", strip=True))
-    links = []
-    for a in main.find_all("a", href=True)[:200]:
-        label = a.get_text(" ", strip=True)
-        if label and not a["href"].startswith("#"):
-            links.append((label[:80], urljoin(base_url, a["href"])))
+    links = [(a.get_text(" ", strip=True), a["href"]) for a in main.find_all("a", href=True)[:200]]
+    text = block_text(main)
+    links = [(label[:80], urljoin(base_url, href)) for label, href in links if label and not href.startswith("#")]
     return {"title": title, "text": text[:max_chars], "links": links}
 
 
