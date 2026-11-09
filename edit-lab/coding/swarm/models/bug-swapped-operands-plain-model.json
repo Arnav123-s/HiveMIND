@@ -1,0 +1,633 @@
+{
+ "name": "bug-swapped-operands-plain-model",
+ "niche": "debugging",
+ "job": "decide whether a plain-shaped snippet's defect is swapped-operands (vs anything else)",
+ "classes": [
+  "swapped-operands",
+  "other"
+ ],
+ "features": [
+  "g:__c",
+  "g:__n",
+  "g:__o",
+  "g:_c_",
+  "g:_n_",
+  "g:_o_",
+  "g:_va",
+  "g:ar_",
+  "g:c__",
+  "g:def",
+  "g:ef_",
+  "g:f_v",
+  "g:n_v",
+  "g:o_v",
+  "g:r__",
+  "g:var",
+  "w:def",
+  "w:var",
+  "g:_re",
+  "g:etu",
+  "g:ret",
+  "g:rn_",
+  "g:tur",
+  "g:urn",
+  "w:return",
+  "g:__a",
+  "g:_a_",
+  "g:a_v",
+  "g:__e",
+  "g:_e_",
+  "g:e_v",
+  "g:_nu",
+  "g:num",
+  "g:um_",
+  "w:num",
+  "g:n_r",
+  "g:r_v",
+  "g:_fo",
+  "g:_in",
+  "g:for",
+  "g:in_",
+  "g:or_",
+  "g:r_i",
+  "w:for",
+  "w:in",
+  "g:__b",
+  "g:__k",
+  "g:_b_",
+  "g:_k_",
+  "g:e_n",
+  "g:__p",
+  "g:_p_",
+  "g:m_f",
+  "g:m__",
+  "g:p_e",
+  "g:_if",
+  "g:if_",
+  "w:if",
+  "g:__d",
+  "g:_d_",
+  "g:d_v",
+  "g:r_r",
+  "g:__s",
+  "g:_s_",
+  "g:b__",
+  "g:b_v",
+  "g:e__",
+  "g:n_i",
+  "g:__m",
+  "g:__t",
+  "g:_m_",
+  "g:_t_",
+  "g:c_r",
+  "g:p_n",
+  "g:t_v",
+  "g:k__",
+  "g:k_r",
+  "g:o_n",
+  "g:b_n",
+  "g:k_f",
+  "g:m_v",
+  "g:p_v",
+  "g:s_n",
+  "g:__g",
+  "g:_el",
+  "g:_g_",
+  "g:_no",
+  "g:c_i",
+  "g:c_v",
+  "g:d_d",
+  "g:e_e",
+  "g:els",
+  "g:g_v",
+  "g:lse",
+  "g:m_e",
+  "g:m_r",
+  "g:ne_",
+  "g:non",
+  "g:one",
+  "g:r_e",
+  "g:s_e",
+  "g:s_v",
+  "g:se_",
+  "w:else",
+  "w:none",
+  "g:__l",
+  "g:__r",
+  "g:__x",
+  "g:_l_",
+  "g:_r_",
+  "g:_x_",
+  "g:k_v",
+  "g:l_v",
+  "g:m_n",
+  "g:o__",
+  "g:x_e"
+ ],
+ "hidden": 0,
+ "fmode": "code",
+ "weights": {
+  "w": {
+   "g:__c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__n": {
+    "swapped-operands": -0.20135306832379982,
+    "other": 0.20135306832380276
+   },
+   "g:__o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_c_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_n_": {
+    "swapped-operands": -0.20135306832379982,
+    "other": 0.20135306832380276
+   },
+   "g:_o_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_va": {
+    "swapped-operands": -0.14437325591884917,
+    "other": 0.1443732559188509
+   },
+   "g:ar_": {
+    "swapped-operands": -0.14437325591884917,
+    "other": 0.1443732559188509
+   },
+   "g:c__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:def": {
+    "swapped-operands": -0.1345048780000389,
+    "other": 0.13450487800004113
+   },
+   "g:ef_": {
+    "swapped-operands": -0.1345048780000389,
+    "other": 0.13450487800004113
+   },
+   "g:f_v": {
+    "swapped-operands": -0.16587220523709653,
+    "other": 0.16587220523709909
+   },
+   "g:n_v": {
+    "swapped-operands": -0.23270731807642764,
+    "other": 0.2327073180764313
+   },
+   "g:o_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:r__": {
+    "swapped-operands": -0.14437325591884917,
+    "other": 0.1443732559188509
+   },
+   "g:var": {
+    "swapped-operands": -0.14437325591884917,
+    "other": 0.1443732559188509
+   },
+   "w:def": {
+    "swapped-operands": -0.1345048780000389,
+    "other": 0.13450487800004113
+   },
+   "w:var": {
+    "swapped-operands": -0.14437325591884917,
+    "other": 0.1443732559188509
+   },
+   "g:_re": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "g:etu": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "g:ret": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "g:rn_": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "g:tur": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "g:urn": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "w:return": {
+    "swapped-operands": 0.15931140535445662,
+    "other": -0.15931140535445426
+   },
+   "g:__a": {
+    "swapped-operands": 0.17636292403679985,
+    "other": -0.17636292403679898
+   },
+   "g:_a_": {
+    "swapped-operands": 0.17636292403679985,
+    "other": -0.17636292403679898
+   },
+   "g:a_v": {
+    "swapped-operands": 0.17636292403679985,
+    "other": -0.17636292403679898
+   },
+   "g:__e": {
+    "swapped-operands": -0.6039682845304974,
+    "other": 0.6039682845305004
+   },
+   "g:_e_": {
+    "swapped-operands": -0.5266665349418909,
+    "other": 0.5266665349418946
+   },
+   "g:e_v": {
+    "swapped-operands": -0.6848667665303262,
+    "other": 0.68486676653033
+   },
+   "g:_nu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:num": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:um_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:num": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_r": {
+    "swapped-operands": 0.3820812263463814,
+    "other": -0.38208122634638075
+   },
+   "g:r_v": {
+    "swapped-operands": -0.4453061195947751,
+    "other": 0.44530611959478
+   },
+   "g:_fo": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "g:_in": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "g:for": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "g:in_": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "g:or_": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "g:r_i": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "w:for": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "w:in": {
+    "swapped-operands": -0.19145253708498067,
+    "other": 0.1914525370849854
+   },
+   "g:__b": {
+    "swapped-operands": -0.3785913130934582,
+    "other": 0.37859131309345895
+   },
+   "g:__k": {
+    "swapped-operands": -0.3785913130934582,
+    "other": 0.37859131309345895
+   },
+   "g:_b_": {
+    "swapped-operands": -0.3785913130934582,
+    "other": 0.37859131309345895
+   },
+   "g:_k_": {
+    "swapped-operands": -0.3785913130934582,
+    "other": 0.37859131309345895
+   },
+   "g:e_n": {
+    "swapped-operands": -0.20133384888587788,
+    "other": 0.2013338488858828
+   },
+   "g:__p": {
+    "swapped-operands": -0.512014351795201,
+    "other": 0.5120143517952048
+   },
+   "g:_p_": {
+    "swapped-operands": -0.512014351795201,
+    "other": 0.5120143517952048
+   },
+   "g:m_f": {
+    "swapped-operands": -0.17238009625607167,
+    "other": 0.17238009625607717
+   },
+   "g:m__": {
+    "swapped-operands": -0.25090744664861425,
+    "other": 0.2509074466486175
+   },
+   "g:p_e": {
+    "swapped-operands": -0.13415814063575718,
+    "other": 0.1341581406357616
+   },
+   "g:_if": {
+    "swapped-operands": -0.12113620093019842,
+    "other": 0.12113620093019947
+   },
+   "g:if_": {
+    "swapped-operands": -0.12113620093019842,
+    "other": 0.12113620093019947
+   },
+   "w:if": {
+    "swapped-operands": -0.12113620093019842,
+    "other": 0.12113620093019947
+   },
+   "g:__d": {
+    "swapped-operands": 0.6481030675113529,
+    "other": -0.6481030675113515
+   },
+   "g:_d_": {
+    "swapped-operands": 0.28964211774221854,
+    "other": -0.2896421177422177
+   },
+   "g:d_v": {
+    "swapped-operands": 0.6481030675113529,
+    "other": -0.6481030675113515
+   },
+   "g:r_r": {
+    "swapped-operands": -0.10626523767722133,
+    "other": 0.10626523767722845
+   },
+   "g:__s": {
+    "swapped-operands": -0.2839420359992855,
+    "other": 0.2839420359992881
+   },
+   "g:_s_": {
+    "swapped-operands": -0.2839420359992855,
+    "other": 0.2839420359992881
+   },
+   "g:b__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b_v": {
+    "swapped-operands": -0.40875488490992684,
+    "other": 0.40875488490992784
+   },
+   "g:e__": {
+    "swapped-operands": -0.14124653016527577,
+    "other": 0.1412465301652762
+   },
+   "g:n_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__m": {
+    "swapped-operands": 0.393616083538998,
+    "other": -0.3936160835389961
+   },
+   "g:__t": {
+    "swapped-operands": -0.13282018867427464,
+    "other": 0.13282018867427467
+   },
+   "g:_m_": {
+    "swapped-operands": 0.393616083538998,
+    "other": -0.3936160835389961
+   },
+   "g:_t_": {
+    "swapped-operands": -0.13282018867427464,
+    "other": 0.13282018867427467
+   },
+   "g:c_r": {
+    "swapped-operands": -0.13282018867427464,
+    "other": 0.13282018867427467
+   },
+   "g:p_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t_v": {
+    "swapped-operands": -0.13282018867427464,
+    "other": 0.13282018867427467
+   },
+   "g:k__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:o_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_v": {
+    "swapped-operands": 0.5731329305927778,
+    "other": -0.5731329305927787
+   },
+   "g:p_v": {
+    "swapped-operands": -0.6596584168185927,
+    "other": 0.6596584168185928
+   },
+   "g:s_n": {
+    "swapped-operands": 0.5499007702073732,
+    "other": -0.5499007702073714
+   },
+   "g:__g": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_el": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_g_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_no": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:d_d": {
+    "swapped-operands": -0.5100336652609249,
+    "other": 0.510033665260925
+   },
+   "g:e_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:els": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:g_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lse": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ne_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:non": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:one": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:r_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_v": {
+    "swapped-operands": -1.0181431598593886,
+    "other": 1.0181431598593897
+   },
+   "g:se_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:else": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:none": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__r": {
+    "swapped-operands": -0.6048949050596439,
+    "other": 0.6048949050596459
+   },
+   "g:__x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_l_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_r_": {
+    "swapped-operands": -0.6048949050596439,
+    "other": 0.6048949050596459
+   },
+   "g:_x_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:l_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_n": {
+    "swapped-operands": -0.18863005989872852,
+    "other": 0.18863005989873066
+   },
+   "g:o__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:x_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   }
+  },
+  "b": {
+   "swapped-operands": -0.14960252203526686,
+   "other": 0.14960252203526983
+  }
+ },
+ "params": 234,
+ "footprint_bytes": 8293,
+ "path": "trained",
+ "heldout_acc": 0.913,
+ "train_n": 42,
+ "heldout_n": 23,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.913
+  },
+  {
+   "name": "majority-class (other)",
+   "acc": 0.913
+  }
+ ],
+ "bar": 0.913,
+ "attempts": [
+  {
+   "fmode": "code",
+   "hidden": 0,
+   "numpy_acc": 0.913,
+   "dict_acc": 0.913,
+   "params": 234
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "bug-swapped-operands-plain-model#c0",
+  "bug-swapped-operands-plain-model#c1"
+ ],
+ "socialized_to": 3
+}

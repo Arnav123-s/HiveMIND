@@ -1,0 +1,62 @@
+{
+ "parity8": {
+  "correct": 256,
+  "total": 256,
+  "params": 63,
+  "units": 21
+ },
+ "popcount8": {
+  "correct": 256,
+  "total": 256,
+  "params": 9,
+  "units": 1
+ },
+ "majority5": {
+  "correct": 32,
+  "total": 32,
+  "params": 6,
+  "units": 1
+ },
+ "compare2": {
+  "correct": 256,
+  "total": 256,
+  "params": 16,
+  "units": 7
+ },
+ "max4": {
+  "correct": 10000,
+  "total": 10000,
+  "params": 18,
+  "units": 6
+ },
+ "sort3": {
+  "correct": 1000,
+  "total": 1000,
+  "params": 27,
+  "units": 9
+ },
+ "adder": {
+  "correct": 10000,
+  "total": 10000,
+  "params": 186,
+  "units": 64
+ },
+ "subtractor": {
+  "correct": 10000,
+  "total": 10000,
+  "params": 217,
+  "units": 75
+ },
+ "multiplier": {
+  "correct": 100,
+  "total": 100,
+  "params": 65,
+  "units": 17
+ },
+ "seqnext": {
+  "correct": 510,
+  "total": 510,
+  "params": 186,
+  "units": 64
+ }
+}

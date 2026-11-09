@@ -1,0 +1,114 @@
+{
+ "specialist": "coordinator",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 56,
+ "files": [
+  "/home/hatch/workspace/edit-lab/data/coordinator_specialized.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 16,
+ "alpha": 32,
+ "epochs": 1.0,
+ "lr": 0.0002,
+ "steps": 14,
+ "seconds": 3276,
+ "loss_first": 2.3466,
+ "loss_last": 0.9493,
+ "time": "2026-11-08 22:41:57",
+ "log": [
+  {
+   "step": 1,
+   "loss": 2.3466,
+   "sec": 284
+  },
+  {
+   "step": 2,
+   "loss": 2.0174,
+   "sec": 467
+  },
+  {
+   "step": 3,
+   "loss": 1.4781,
+   "sec": 641
+  },
+  {
+   "step": 4,
+   "loss": 1.102,
+   "sec": 852
+  },
+  {
+   "step": 5,
+   "loss": 1.1067,
+   "sec": 1031
+  },
+  {
+   "step": 6,
+   "loss": 0.9135,
+   "sec": 1236
+  },
+  {
+   "step": 7,
+   "loss": 0.8841,
+   "sec": 1468
+  },
+  {
+   "step": 8,
+   "loss": 0.8818,
+   "sec": 1666
+  },
+  {
+   "step": 9,
+   "loss": 0.9309,
+   "sec": 1930
+  },
+  {
+   "step": 10,
+   "loss": 0.7519,
+   "sec": 2176
+  },
+  {
+   "step": 11,
+   "loss": 1.0204,
+   "sec": 2424
+  },
+  {
+   "step": 12,
+   "loss": 0.9879,
+   "sec": 2749
+  },
+  {
+   "step": 13,
+   "loss": 0.8486,
+   "sec": 2988
+  },
+  {
+   "step": 14,
+   "loss": 0.9493,
+   "sec": 3276
+  }
+ ]
+}

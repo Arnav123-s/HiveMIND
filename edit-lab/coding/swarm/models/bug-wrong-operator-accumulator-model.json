@@ -1,0 +1,378 @@
+{
+ "name": "bug-wrong-operator-accumulator-model",
+ "niche": "debugging",
+ "job": "decide whether a accumulator-shaped snippet's defect is wrong-operator (vs anything else)",
+ "classes": [
+  "wrong-operator",
+  "other"
+ ],
+ "features": [
+  "g:__c",
+  "g:__e",
+  "g:__n",
+  "g:__o",
+  "g:_c_",
+  "g:_e_",
+  "g:_fo",
+  "g:_in",
+  "g:_n_",
+  "g:_nu",
+  "g:_o_",
+  "g:_va",
+  "g:ar_",
+  "g:c__",
+  "g:def",
+  "g:e_n",
+  "g:e_v",
+  "g:ef_",
+  "g:f_v",
+  "g:for",
+  "g:in_",
+  "g:m_f",
+  "g:n_v",
+  "g:num",
+  "g:o_v",
+  "g:or_",
+  "g:r__",
+  "g:r_i",
+  "g:r_v",
+  "g:um_",
+  "g:var",
+  "w:def",
+  "w:for",
+  "w:in",
+  "w:num",
+  "w:var",
+  "g:_re",
+  "g:etu",
+  "g:ret",
+  "g:rn_",
+  "g:tur",
+  "g:urn",
+  "w:return",
+  "g:__a",
+  "g:__p",
+  "g:_a_",
+  "g:_p_",
+  "g:a_v",
+  "g:p_e",
+  "g:m__",
+  "g:r_r",
+  "g:o_n",
+  "g:p_n",
+  "g:__b",
+  "g:__k",
+  "g:_b_",
+  "g:_k_",
+  "g:b_v",
+  "g:k_r",
+  "g:__m",
+  "g:__s",
+  "g:_m_",
+  "g:_s_",
+  "g:m_e",
+  "g:s_e"
+ ],
+ "hidden": 0,
+ "fmode": "code",
+ "weights": {
+  "w": {
+   "g:__c": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:__e": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:__n": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:__o": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_c_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_e_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_fo": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_in": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_n_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_nu": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_o_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_va": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:ar_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:c__": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:def": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:e_n": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:e_v": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:ef_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:f_v": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:for": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:in_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:m_f": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:n_v": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:num": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:o_v": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:or_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:r__": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:r_i": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:r_v": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:um_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:var": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "w:def": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "w:for": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "w:in": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "w:num": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "w:var": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_re": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:etu": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:ret": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:rn_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:tur": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:urn": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "w:return": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:__a": {
+    "wrong-operator": -0.7504333459735898,
+    "other": 0.750433345973591
+   },
+   "g:__p": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_a_": {
+    "wrong-operator": -0.7504333459735898,
+    "other": 0.750433345973591
+   },
+   "g:_p_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:a_v": {
+    "wrong-operator": -0.7504333459735898,
+    "other": 0.750433345973591
+   },
+   "g:p_e": {
+    "wrong-operator": -0.40878904346684874,
+    "other": 0.4087890434668489
+   },
+   "g:m__": {
+    "wrong-operator": -0.36348753424438,
+    "other": 0.3634875342443801
+   },
+   "g:r_r": {
+    "wrong-operator": 0.5051153136651613,
+    "other": -0.5051153136651614
+   },
+   "g:o_n": {
+    "wrong-operator": -1.0165148979944136,
+    "other": 1.0165148979944145
+   },
+   "g:p_n": {
+    "wrong-operator": 0.3796853843567154,
+    "other": -0.37968538435671606
+   },
+   "g:__b": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:__k": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_b_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:_k_": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:b_v": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:k_r": {
+    "wrong-operator": 0.0,
+    "other": 0.0
+   },
+   "g:__m": {
+    "wrong-operator": 2.061865058652184,
+    "other": -2.061865058652183
+   },
+   "g:__s": {
+    "wrong-operator": -2.1265408626880324,
+    "other": 2.1265408626880324
+   },
+   "g:_m_": {
+    "wrong-operator": 2.061865058652184,
+    "other": -2.061865058652183
+   },
+   "g:_s_": {
+    "wrong-operator": -2.1265408626880324,
+    "other": 2.1265408626880324
+   },
+   "g:m_e": {
+    "wrong-operator": 2.061865058652184,
+    "other": -2.061865058652183
+   },
+   "g:s_e": {
+    "wrong-operator": -2.1265408626880324,
+    "other": 2.1265408626880324
+   }
+  },
+  "b": {
+   "wrong-operator": 0.0,
+   "other": 0.0
+  }
+ },
+ "params": 132,
+ "footprint_bytes": 3766,
+ "path": "trained",
+ "heldout_acc": 0.7778,
+ "train_n": 10,
+ "heldout_n": 9,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.6667
+  },
+  {
+   "name": "majority-class (other)",
+   "acc": 0.6667
+  }
+ ],
+ "bar": 0.7,
+ "attempts": [
+  {
+   "fmode": "code",
+   "hidden": 0,
+   "numpy_acc": 0.7778,
+   "dict_acc": 0.7778,
+   "params": 132
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "bug-wrong-operator-accumulator-model#c0",
+  "bug-wrong-operator-accumulator-model#c1"
+ ],
+ "socialized_to": 3
+}

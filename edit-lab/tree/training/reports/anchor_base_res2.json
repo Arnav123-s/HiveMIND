@@ -1,0 +1,197 @@
+{
+ "tag": "anchor_base_res2",
+ "adapters": false,
+ "time": "2026-11-08 18:15:35",
+ "scores": {
+  "researcher_plan": {
+   "mean": 1.0,
+   "n": 10,
+   "seconds": 441
+  },
+  "researcher_extract": {
+   "mean": 0.733,
+   "n": 5,
+   "seconds": 2794
+  }
+ },
+ "cases": {
+  "researcher_plan": [
+   {
+    "case": "Find small open text-generation models under 1B parameters",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"text-generation under 1B parameters\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What is the latest version of the flask package?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"pypi\",  \n      \"q\": \"latest flask version\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find recent research papers about mixture of experts routing",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"arxiv\", \"q\": \"mixture of experts routing\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What are developers saying on Hacker News about the Zig language?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"hn\",  \n      \"q\": \"Zig language Hacker News\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the history of the Linux kernel from an encyclopedia",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"wikipedia\",  \n      \"q\": \"Linux kernel history\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Read https://quotes.toscrape.com/tag/humor/ and list the authors",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"web\",  \n      \"q\": \"list of authors from https://quotes.toscrape.com/tag/humor/\"  \n    }  \n  ],  \n  \"urls\": [  \n    \"https://quotes.toscrape.com/tag/humor/\"  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Which SmolLM2 models exist and what are their licenses?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"smollm2 model\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the most popular papers on retrieval augmented generation",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"arxiv\", \"q\": \"retrieval augmented generation\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the release information for the numpy package",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"pypi\",  \n      \"q\": \"numpy version\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the license and parameter count of Qwen2.5 coder models",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"Qwen2.5 coder license\"}  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   }
+  ],
+  "researcher_extract": [
+   {
+    "case": "List the Qwen3 text-generation models under 2B parameters with their licenses.",
+    "score": 0.667,
+    "output": "{  \n  \"summary\": \"The Qwen3 text-generation models under 2B parameters are Qwen/Qwen3-0.6B (0.752B), Qwen/Qwen3-8B (8.191B), Qwen/Qwen3-4B (4.022B), Qwen/Qwen3-1.7B (2.032B), and Qwen/Qwen3-32B (32.762B). These models are licensed under the Apache-2.0 license. The Qwen/Qwen3-4B-Instruct-2507 model has a parameter count of 4.022B, while the others have smaller parameter counts. The Qwen/Qwen3-0.6B model is the only one under 2B parameters.\",\n  \"items\": [\"Qwen/Qwen3-0.6B\", \"Qwen/Qwen3-8B\", \"Qwen/Qwen3-4B\", \"Qwen/Qwen3-1.7B\", \"Qwen/Qwen3-32B\"],\n  \"facts\": [\n    {\n      \"claim\": \"Qwen/Qwen3-0.6B\",\n      \"quote\": \"Qwen/Qwen3-0.6B | params 0.752B | license apache-2.0 | pipeline text-generation | gated False | downloads 21357034 | likes 1883\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-0.6B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-8B\",\n      \"quote\": \"Qwen/Qwen3-8B | params 8.191B | license apache-2.0 | pipeline text-generation | gated False | downloads 6976036 | likes 2175\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-8B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-4B\",\n      \"quote\": \"Qwen/Qwen3-4B | params 4.022B | license apache-2.0 | pipeline text-generation | gated False | downloads 6379202 | likes 790\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-4B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-1.7B\",\n      \"quote\": \"Qwen/Qwen3-1.7B | params 2.032B | license apache-2.0 | pipeline text-generation | gated False | downloads 4120041 | likes 614\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-1.7B\"\n    },\n    {\n      \"claim\": \"Qwen/Qwen3-32B\",\n      \"quote\": \"Qwen/Qwen3-32B | params 32.762B | license apache-2.0 | pipeline text-generation | gated False | downloads 2980956 | likes 791\",\n      \"url\": \"https://huggingface.co/Qwen/Qwen3-32B\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": false,
+     "items_precise": false
+    }
+   },
+   {
+    "case": "Which SmolLM2 models are instruction-tuned (Instruct) and how many parameters do they have?",
+    "score": 1.0,
+    "output": "{  \n  \"summary\": \"The SmolLM2 instruction-tuned models include SmolLM2-135M-Instruct (0.135B parameters), SmolLM2-1.7B-Instruct (1.711B parameters), and SmolLM2-360M-Instruct (0.362B parameters). These models are available on HuggingFace.co with the Apache-2.0 license and are designed for text generation. The other models listed are either non-instruction-tuned or have different parameter sizes.\",\n  \"items\": [\"HuggingFaceTB/SmolLM2-135M-Instruct\", \"HuggingFaceTB/SmolLM2-1.7B-Instruct\", \"HuggingFaceTB/SmolLM2-360M-Instruct\"],\n  \"facts\": [\n    {\n      \"claim\": \"HuggingFaceTB/SmolLM2-135M-Instruct has 0.135B parameters.\",\n      \"quote\": \"params 0.135B\",\n      \"url\": \"https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct\"\n    },\n    {\n      \"claim\": \"HuggingFaceTB/SmolLM2-1.7B-Instruct has 1.711B parameters.\",\n      \"quote\": \"params 1.711B\",\n      \"url\": \"https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct\"\n    },\n    {\n      \"claim\": \"HuggingFaceTB/SmolLM2-360M-Instruct has 0.362B parameters.\",\n      \"quote\": \"params 0.362B\",\n      \"url\": \"https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": true,
+     "items_precise": true
+    }
+   },
+   {
+    "case": "What is the latest version of requests and which Python versions does it need?",
+    "score": 1.0,
+    "output": "{  \n  \"summary\": \"The latest version of requests is 2.34.2, and it requires Python 3.10 or higher.\",\n  \"items\": [\"requests\", \"2.34.2\", \"https://pypi.org/pypi/requests/json\"],\n  \"facts\": [\n    {\n      \"claim\": \"requests | https://pypi.org/project/requests/ | latest 2.34.2 | Python HTTP for Humans.\",\n      \"quote\": \"latest 2.34.2\",\n      \"url\": \"https://pypi.org/pypi/requests/json\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "mentions_2.34.2": true
+    }
+   },
+   {
+    "case": "List the Hacker News stories about the Rust compiler with their points.",
+    "score": 0.167,
+    "output": "{  \n  \"summary\": \"The SOURCES provide information about Hacker News stories related to the Rust compiler. The stories include: 1) 'Writing a Rust compiler in C' with 393 points, 2) 'Speeding Up the Rust Compiler' with 351 points, 3) 'Progress toward a GCC-based Rust compiler' with 350 points, 4) 'The Rust compiler is still getting faster' with 324 points, 5) 'How to speed up the Rust compiler one last time' with 319 points, and 6) 'Why is the Rust compiler so slow?' with 303 points. These stories discuss various aspects of improving the performance of the Rust compiler, including its development, optimization techniques, and challenges.\",\n  \"items\": [\"Writing a Rust compiler in C\", \"Speeding Up the Rust Compiler\", \"Progress toward a GCC-based Rust compiler\", \"The Rust compiler is still getting faster\", \"How to speed up the Rust compiler one last time\", \"Why is the Rust compiler so slow?\"],\n  \"facts\": [\n    {\n      \"claim\": \"Writing a Rust compiler in C\",\n      \"quote\": \"Writing a Rust compiler in C | https://notgull.net/announcing-dozer/ | 393 points, 223 comments, 2024-08-25\",\n      \"url\": \"https://notgull.net/announcing-dozer/\"\n    },\n    {\n      \"claim\": \"Speeding Up the Rust Compiler\",\n      \"quote\": \"Speeding Up the Rust Compiler | https://blog.mozilla.org/nnethercote/2019/12/11/how-to-speed-up-the-rust-compiler-one-last-time-in-2019/ | 351 points, 129 comments, 2019-12-11\",\n      \"url\": \"https://blog.mozilla.org/nnethercote/2019/12/11/how-to-speed-up-the-rust-compiler-one-last-time-in-2019/\"\n    },\n    {\n      \"claim\": \"Progress toward a GCC-based Rust compiler\",\n      \"quote\": \"Progress toward a GCC-based Rust compiler | https://lwn.net/SubscriberLink/954787/41470c731eda02a4/ | 350 points, 237 comments, 2023-12-18\",\n      \"url\": \"https://lwn.net/SubscriberLink/954787/41470c731eda02a4/\"\n    },\n    {\n      \"claim\": \"The Rust compiler is still getting faster\",\n      \"quote\": \"The Rust compiler is still getting faster | https://blog.mozilla.org/nnethercote/2019/07/25/the-rust-compiler-is-still-getting-faster/ | 324 points, 96 comments, 2019-07-25\",\n      \"url\": \"https://blog.mozilla.org/nnethercote/2019/07/25/the-rust-compiler-is-still-getting-faster/\"\n    },\n    {\n      \"claim\": \"How to speed up the Rust compiler one last time\",\n      \"quote\": \"How to speed up the Rust compiler one last time | https://blog.mozilla.org/nnethercote/2020/09/08/how-to-speed-up-the-rust-compiler-one-last-time/ | 319 points, 57 comments, 2020-09-07\",\n      \"url\": \"https://blog.mozilla.org/nnethercote/2020/09/08/how-to-speed-up-the-rust-compiler-one-last-time/\"\n    },\n    {\n      \"claim\": \"Why is the Rust compiler so slow?\",\n      \"quote\": \"Why is the Rust compiler so slow? | https://sharnoff.io/blog/why-rust-compiler-slow | 303 points, 428 comments, 2025-06-26",
+    "checks": {
+     "valid": true,
+     "has_facts": false,
+     "quotes_exact": false,
+     "urls_real": false,
+     "items_recall": false,
+     "items_precise": false
+    }
+   },
+   {
+    "case": "Which authors are quoted on the 'love' tag page?",
+    "score": 0.833,
+    "output": "{  \n  \"summary\": \"The 'love' tag page on quotes.toscrape.com includes quotes from André Gide, Marilyn Monroe, Bob Marley, and Elie Wiesel. These authors are cited in the quotes provided.\",\n  \"items\": [\"André Gide\", \"Marilyn Monroe\", \"Bob Marley\", \"Elie Wiesel\"],\n  \"facts\": [\n    {\n      \"claim\": \"It is better to be hated for what you are than to be loved for what you are not.\",\n      \"quote\": \"It is better to be hated for what you are than to be loved for what you are not.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    },\n    {\n      \"claim\": \"This life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up.\",\n      \"quote\": \"This life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    },\n    {\n      \"claim\": \"You may not be her first, her last, or her only. She loved before she may love again. But if she loves you now, what else matters? She's not perfect—you aren't either, and the two of you may never be perfect together but if she can make you laugh, cause you to think twice, and admit to being human and making mistakes, hold onto her and give her the most you can.\",\n      \"quote\": \"You may not be her first, her last, or her only. She loved before she may love again. But if she loves you now, what else matters? She's not perfect—you aren't either, and the two of you may never be perfect together but if she can make you laugh, cause you to think twice, and admit to being human and making mistakes, hold onto her and give her the most you can.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    },\n    {\n      \"claim\": \"The opposite of love is not hate, it's indifference. The opposite of art is not ugliness, it's indifference. The opposite of faith is not heresy, it's indifference. And the opposite of life is not death, it's indifference.\",\n      \"quote\": \"The opposite of love is not hate, it's indifference. The opposite of art is not ugliness, it's indifference. The opposite of faith is not heresy, it's indifference. And the opposite of life is not death, it's indifference.\",\n      \"url\": \"https://quotes.toscrape.com/tag/love/\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": true,
+     "items_precise": false
+    }
+   }
+  ]
+ }
+}

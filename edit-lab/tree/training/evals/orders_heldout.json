@@ -1,0 +1,348 @@
+[
+ {
+  "text": "Go ahead and unsubscribe from my old tweets. Read the error message.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "What does a book cost on average there? Go ahead and purchase the hiking boots.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "You should rent the course today. Find the three most downloaded models on Hugging Face. Now share the screenshot.",
+  "orders": [
+   "send",
+   "spend"
+  ]
+ },
+ {
+  "text": "Explain the text of the licence. Without logging in, read the public page.",
+  "orders": []
+ },
+ {
+  "text": "What does a book cost on average there? Make a chart of last month's temperatures.",
+  "orders": []
+ },
+ {
+  "text": "Go ahead and clear out last week's backups. Benchmark list.sort on a million integers.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "You should create an account on the free trial today. Look it up and reply to the invoice to the client. Summarise the purchase history.",
+  "orders": [
+   "send",
+   "signup"
+  ]
+ },
+ {
+  "text": "You should log in to books.toscrape.com today. Find the newsletter archive.",
+  "orders": [
+   "login"
+  ]
+ },
+ {
+  "text": "You should upload the invoice to the client today. What does a book cost on average there?",
+  "orders": [
+   "send"
+  ]
+ },
+ {
+  "text": "Find text-to-speech models that run on CPU. Look it up and donate to a hotel room.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "Which post got the most likes? Look it up and message the meeting notes.",
+  "orders": [
+   "send"
+  ]
+ },
+ {
+  "text": "You should create an account on the forum today. Summarise the purchase history.",
+  "orders": [
+   "signup"
+  ]
+ },
+ {
+  "text": "Now sign in to my email account. What does a book cost on average there? You should sign up for the forum today.",
+  "orders": [
+   "login",
+   "signup"
+  ]
+ },
+ {
+  "text": "Summarise the purchase history. Benchmark list.sort on a million integers.",
+  "orders": []
+ },
+ {
+  "text": "Go ahead and unsubscribe from the test branch. Read the Wikipedia article on transistors.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "Explain the text of the licence. Look it up and share my reply.",
+  "orders": [
+   "send"
+  ]
+ },
+ {
+  "text": "Now wipe the cache. What does a book cost on average there? Now rent the 3pm train.",
+  "orders": [
+   "delete",
+   "spend"
+  ]
+ },
+ {
+  "text": "Explain the text of the licence. Go ahead and clear out the test branch.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "Go ahead and tweet a reminder. You should unsubscribe from the empty folders today. What does a book cost on average there?",
+  "orders": [
+   "delete",
+   "send"
+  ]
+ },
+ {
+  "text": "Find text-to-speech models that run on CPU. Benchmark list.sort on a million integers.",
+  "orders": []
+ },
+ {
+  "text": "Find the newsletter archive. Read the Wikipedia article on transistors.",
+  "orders": []
+ },
+ {
+  "text": "Explain the text of the licence. Look it up and sign in to the admin panel. Now sign up for the forum.",
+  "orders": [
+   "login",
+   "signup"
+  ]
+ },
+ {
+  "text": "Check the order of the steps in the guide. Avoid having to register on the forum.",
+  "orders": []
+ },
+ {
+  "text": "Read the error message. Benchmark list.sort on a million integers.",
+  "orders": []
+ },
+ {
+  "text": "Now register on the free trial. Explain the text of the licence. Look it up and donate to the hiking boots.",
+  "orders": [
+   "signup",
+   "spend"
+  ]
+ },
+ {
+  "text": "Check the order of the steps in the guide. Under no circumstances log in to books.toscrape.com.",
+  "orders": []
+ },
+ {
+  "text": "Check the order of the steps in the guide. Without logging in, read the public page.",
+  "orders": []
+ },
+ {
+  "text": "You should create an account on the forum today. Read the error message.",
+  "orders": [
+   "signup"
+  ]
+ },
+ {
+  "text": "Is the login form secure? Make a chart of last month's temperatures.",
+  "orders": []
+ },
+ {
+  "text": "Look it up and buy the 3pm train. Find the three most downloaded models on Hugging Face.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "You should delete the test branch today. Now subscribe to a yearly licence. Find the newsletter archive.",
+  "orders": [
+   "delete",
+   "spend"
+  ]
+ },
+ {
+  "text": "Explain the text of the licence. Find the three most downloaded models on Hugging Face.",
+  "orders": []
+ },
+ {
+  "text": "Go ahead and create an account on the forum. Find text-to-speech models that run on CPU.",
+  "orders": [
+   "signup"
+  ]
+ },
+ {
+  "text": "Read the Wikipedia article on transistors. Go ahead and remove last week's backups. Now register on the free trial.",
+  "orders": [
+   "delete",
+   "signup"
+  ]
+ },
+ {
+  "text": "Explain the text of the licence. Look it up and clear out my old tweets.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "Look it up and delete the cache. Find the three most downloaded models on Hugging Face.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "Go ahead and order a yearly licence. Make a chart of last month's temperatures.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "Look it up and buy the course. Find the three most downloaded models on Hugging Face.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "Check the order of the steps in the guide. Without logging in, read the public page.",
+  "orders": []
+ },
+ {
+  "text": "Go ahead and register on the forum. What is the share of each category?",
+  "orders": [
+   "signup"
+  ]
+ },
+ {
+  "text": "You should wipe the cache today. What is the share of each category?",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "Tell me how the remove-duplicates option works. Look it up and rent the course. Now unsubscribe from my old tweets.",
+  "orders": [
+   "delete",
+   "spend"
+  ]
+ },
+ {
+  "text": "Tell me how the remove-duplicates option works. Read the Wikipedia article on transistors.",
+  "orders": []
+ },
+ {
+  "text": "Find text-to-speech models that run on CPU. You should register on the free trial today.",
+  "orders": [
+   "signup"
+  ]
+ },
+ {
+  "text": "Look it up and send my reply. Which post got the most likes?",
+  "orders": [
+   "send"
+  ]
+ },
+ {
+  "text": "What is the share of each category? Go ahead and donate to a hotel room.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "Now pay for a yearly licence. Find the three most downloaded models on Hugging Face. You should email a reminder today.",
+  "orders": [
+   "send",
+   "spend"
+  ]
+ },
+ {
+  "text": "Which post got the most likes? Read the Wikipedia article on transistors.",
+  "orders": []
+ },
+ {
+  "text": "Summarise the purchase history. Just look - do not donate to the course.",
+  "orders": []
+ },
+ {
+  "text": "Go ahead and log in to the admin panel. Now pay for a hotel room. Tell me how the remove-duplicates option works.",
+  "orders": [
+   "login",
+   "spend"
+  ]
+ },
+ {
+  "text": "Make a chart of last month's temperatures. Under no circumstances register on the waiting list.",
+  "orders": []
+ },
+ {
+  "text": "Explain the text of the licence. Under no circumstances register on the waiting list.",
+  "orders": []
+ },
+ {
+  "text": "Tell me how the remove-duplicates option works. Avoid having to text the screenshot.",
+  "orders": []
+ },
+ {
+  "text": "Check the order of the steps in the guide. Benchmark list.sort on a million integers.",
+  "orders": []
+ },
+ {
+  "text": "Read the error message. Without logging in, read the public page.",
+  "orders": []
+ },
+ {
+  "text": "Summarise the purchase history. Go ahead and log in to my email account. You should unsubscribe from the test branch today.",
+  "orders": [
+   "delete",
+   "login"
+  ]
+ },
+ {
+  "text": "Now email my reply. What does a book cost on average there?",
+  "orders": [
+   "send"
+  ]
+ },
+ {
+  "text": "Benchmark list.sort on a million integers. Now book the 3pm train.",
+  "orders": [
+   "spend"
+  ]
+ },
+ {
+  "text": "Go ahead and wipe the empty folders. Summarise the purchase history.",
+  "orders": [
+   "delete"
+  ]
+ },
+ {
+  "text": "Explain the text of the licence. Look it up and clear out the cache. You should register on the waiting list today.",
+  "orders": [
+   "delete",
+   "signup"
+  ]
+ },
+ {
+  "text": "What is the share of each category? Read the Wikipedia article on transistors.",
+  "orders": []
+ },
+ {
+  "text": "Read the error message. Without logging in, read the public page.",
+  "orders": []
+ },
+ {
+  "text": "Read the Wikipedia article on transistors. Under no circumstances register on the waiting list.",
+  "orders": []
+ }
+]

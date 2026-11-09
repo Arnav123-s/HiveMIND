@@ -1,0 +1,32 @@
+== researcher_plan
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   9%|▉         | 28/311 [00:00<00:01, 279.84it/s]Loading weights:  39%|███▊      | 120/311 [00:00<00:00, 579.94it/s]Loading weights:  57%|█████▋    | 176/311 [00:00<00:00, 206.83it/s]Loading weights:  68%|██████▊   | 212/311 [00:00<00:00, 189.75it/s]Loading weights:  77%|███████▋  | 240/311 [00:01<00:00, 196.72it/s]Loading weights:  86%|████████▌ | 266/311 [00:01<00:00, 156.43it/s]Loading weights:  92%|█████████▏| 287/311 [00:01<00:00, 125.18it/s]Loading weights: 100%|██████████| 311/311 [00:01<00:00, 177.46it/s]
+  researcher_plan    1.00  Find small open text-generation models under 1B parameters
+  researcher_plan    1.00  What is the latest version of the flask package?
+  researcher_plan    1.00  Find recent research papers about mixture of experts routing
+  researcher_plan    1.00  What are developers saying on Hacker News about the Zig language?
+  researcher_plan    1.00  Get the history of the Linux kernel from an encyclopedia
+  researcher_plan    1.00  Read https://quotes.toscrape.com/tag/humor/ and list the authors
+  researcher_plan    1.00  Which SmolLM2 models exist and what are their licenses?
+  researcher_plan    1.00  Find the most popular papers on retrieval augmented generation
+  researcher_plan    1.00  Get the release information for the numpy package
+  researcher_plan    1.00  Find the license and parameter count of Qwen2.5 coder models
+   -> researcher_plan: {'mean': 1.0, 'n': 10, 'seconds': 441}
+== researcher_extract
+  researcher_extract 0.67  List the Qwen3 text-generation models under 2B parameters with their l
+  researcher_extract 1.00  Which SmolLM2 models are instruction-tuned (Instruct) and how many par
+  researcher_extract 1.00  What is the latest version of requests and which Python versions does 
+  researcher_extract 0.17  List the Hacker News stories about the Rust compiler with their points
+  researcher_extract 0.83  Which authors are quoted on the 'love' tag page?
+   -> researcher_extract: {'mean': 0.733, 'n': 5, 'seconds': 2794}
+{
+ "researcher_plan": {
+  "mean": 1.0,
+  "n": 10,
+  "seconds": 441
+ },
+ "researcher_extract": {
+  "mean": 0.733,
+  "n": 5,
+  "seconds": 2794
+ }
+}

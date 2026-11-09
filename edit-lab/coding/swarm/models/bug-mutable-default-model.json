@@ -1,0 +1,643 @@
+{
+ "name": "bug-mutable-default-model",
+ "niche": "debugging",
+ "job": "decide whether a snippet's defect is mutable-default (vs anything else, including clean)",
+ "classes": [
+  "mutable-default",
+  "other"
+ ],
+ "features": [
+  "g:__c",
+  "g:__n",
+  "g:__o",
+  "g:_c_",
+  "g:_n_",
+  "g:_o_",
+  "g:_va",
+  "g:ar_",
+  "g:c__",
+  "g:def",
+  "g:ef_",
+  "g:f_v",
+  "g:n_v",
+  "g:o_v",
+  "g:r__",
+  "g:var",
+  "w:def",
+  "w:var",
+  "g:_re",
+  "g:etu",
+  "g:ret",
+  "g:rn_",
+  "g:tur",
+  "g:urn",
+  "w:return",
+  "g:__a",
+  "g:_a_",
+  "g:a_v",
+  "g:__e",
+  "g:_e_",
+  "g:r_v",
+  "g:_fo",
+  "g:_in",
+  "g:e_v",
+  "g:for",
+  "g:in_",
+  "g:n_r",
+  "g:or_",
+  "g:r_i",
+  "w:for",
+  "w:in",
+  "g:__b",
+  "g:__k",
+  "g:_b_",
+  "g:_k_",
+  "g:_nu",
+  "g:num",
+  "g:um_",
+  "w:num",
+  "g:__p",
+  "g:_p_",
+  "g:e_n",
+  "g:m_f",
+  "g:b_v",
+  "g:m__",
+  "g:p_e",
+  "g:__s",
+  "g:_if",
+  "g:_s_",
+  "g:if_",
+  "w:if",
+  "g:__d",
+  "g:__m",
+  "g:_d_",
+  "g:_m_",
+  "g:d_v",
+  "g:e__",
+  "g:r_r",
+  "g:b__",
+  "g:n_i",
+  "g:r_f",
+  "g:__t",
+  "g:_t_",
+  "g:c_r",
+  "g:m_v",
+  "g:n__",
+  "g:p_n",
+  "g:p_v",
+  "g:t_v",
+  "g:k__",
+  "g:k_r",
+  "g:o_n",
+  "g:s_v",
+  "g:b_n",
+  "g:k_f",
+  "g:s_n",
+  "g:__g",
+  "g:_el",
+  "g:_g_",
+  "g:_no",
+  "g:c_i",
+  "g:c_v",
+  "g:d_d",
+  "g:e_e",
+  "g:els",
+  "g:g_v",
+  "g:lse",
+  "g:m_e",
+  "g:m_r",
+  "g:ne_",
+  "g:non",
+  "g:one",
+  "g:r_e",
+  "g:s_e",
+  "g:se_",
+  "w:else",
+  "w:none",
+  "g:__l",
+  "g:__r",
+  "g:__x",
+  "g:_l_",
+  "g:_r_",
+  "g:_x_",
+  "g:k_v",
+  "g:l_v",
+  "g:m_n",
+  "g:o__",
+  "g:x_e"
+ ],
+ "hidden": 0,
+ "fmode": "code",
+ "weights": {
+  "w": {
+   "g:__c": {
+    "mutable-default": -0.22599959160508898,
+    "other": 0.22599959160509023
+   },
+   "g:__n": {
+    "mutable-default": -0.12784886301922177,
+    "other": 0.12784886301922446
+   },
+   "g:__o": {
+    "mutable-default": -0.22599959160508898,
+    "other": 0.22599959160509023
+   },
+   "g:_c_": {
+    "mutable-default": -0.22599959160508898,
+    "other": 0.22599959160509023
+   },
+   "g:_n_": {
+    "mutable-default": -0.12784886301922177,
+    "other": 0.12784886301922446
+   },
+   "g:_o_": {
+    "mutable-default": -0.22599959160508898,
+    "other": 0.22599959160509023
+   },
+   "g:_va": {
+    "mutable-default": -0.06340584422339397,
+    "other": 0.06340584422339575
+   },
+   "g:ar_": {
+    "mutable-default": -0.06340584422339397,
+    "other": 0.06340584422339575
+   },
+   "g:c__": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:def": {
+    "mutable-default": -0.05649374839908014,
+    "other": 0.05649374839908183
+   },
+   "g:ef_": {
+    "mutable-default": -0.05649374839908014,
+    "other": 0.05649374839908183
+   },
+   "g:f_v": {
+    "mutable-default": -0.09371390940958081,
+    "other": 0.09371390940958281
+   },
+   "g:n_v": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:o_v": {
+    "mutable-default": -0.3425526141145368,
+    "other": 0.3425526141145382
+   },
+   "g:r__": {
+    "mutable-default": -0.06340584422339397,
+    "other": 0.06340584422339575
+   },
+   "g:var": {
+    "mutable-default": -0.06340584422339397,
+    "other": 0.06340584422339575
+   },
+   "w:def": {
+    "mutable-default": -0.05649374839908014,
+    "other": 0.05649374839908183
+   },
+   "w:var": {
+    "mutable-default": -0.06340584422339397,
+    "other": 0.06340584422339575
+   },
+   "g:_re": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:etu": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:ret": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:rn_": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:tur": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:urn": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "w:return": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:__a": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:_a_": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:a_v": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:__e": {
+    "mutable-default": -0.26373104743375486,
+    "other": 0.26373104743375697
+   },
+   "g:_e_": {
+    "mutable-default": -0.2921433306611116,
+    "other": 0.2921433306611147
+   },
+   "g:r_v": {
+    "mutable-default": -0.2643622244062627,
+    "other": 0.26436222440626445
+   },
+   "g:_fo": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "g:_in": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "g:e_v": {
+    "mutable-default": -1.2167424741062707,
+    "other": 1.216742474106274
+   },
+   "g:for": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "g:in_": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "g:n_r": {
+    "mutable-default": -0.4711020608665798,
+    "other": 0.4711020608665802
+   },
+   "g:or_": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "g:r_i": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "w:for": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "w:in": {
+    "mutable-default": -0.22332148212132175,
+    "other": 0.223321482121324
+   },
+   "g:__b": {
+    "mutable-default": 0.35670385433326257,
+    "other": -0.3567038543332605
+   },
+   "g:__k": {
+    "mutable-default": 0.35670385433326257,
+    "other": -0.3567038543332605
+   },
+   "g:_b_": {
+    "mutable-default": 0.35670385433326257,
+    "other": -0.3567038543332605
+   },
+   "g:_k_": {
+    "mutable-default": 0.35670385433326257,
+    "other": -0.3567038543332605
+   },
+   "g:_nu": {
+    "mutable-default": -0.23933895691127235,
+    "other": 0.23933895691127638
+   },
+   "g:num": {
+    "mutable-default": -0.23933895691127235,
+    "other": 0.23933895691127638
+   },
+   "g:um_": {
+    "mutable-default": -0.23933895691127235,
+    "other": 0.23933895691127638
+   },
+   "w:num": {
+    "mutable-default": -0.23933895691127235,
+    "other": 0.23933895691127638
+   },
+   "g:__p": {
+    "mutable-default": -0.24285088603163535,
+    "other": 0.24285088603163618
+   },
+   "g:_p_": {
+    "mutable-default": -0.24285088603163535,
+    "other": 0.24285088603163618
+   },
+   "g:e_n": {
+    "mutable-default": -0.20558587169283132,
+    "other": 0.20558587169283288
+   },
+   "g:m_f": {
+    "mutable-default": -0.15906183817110897,
+    "other": 0.15906183817111155
+   },
+   "g:b_v": {
+    "mutable-default": -0.34432966457328357,
+    "other": 0.3443296645732859
+   },
+   "g:m__": {
+    "mutable-default": -0.1662621647226338,
+    "other": 0.1662621647226362
+   },
+   "g:p_e": {
+    "mutable-default": -0.11937017222696715,
+    "other": 0.11937017222696975
+   },
+   "g:__s": {
+    "mutable-default": -0.1665711572493368,
+    "other": 0.1665711572493374
+   },
+   "g:_if": {
+    "mutable-default": -0.13595348107131364,
+    "other": 0.1359534810713165
+   },
+   "g:_s_": {
+    "mutable-default": -0.1665711572493368,
+    "other": 0.1665711572493374
+   },
+   "g:if_": {
+    "mutable-default": -0.13595348107131364,
+    "other": 0.1359534810713165
+   },
+   "w:if": {
+    "mutable-default": -0.13595348107131364,
+    "other": 0.1359534810713165
+   },
+   "g:__d": {
+    "mutable-default": -0.16635798427790552,
+    "other": 0.16635798427790693
+   },
+   "g:__m": {
+    "mutable-default": -0.2191285638267731,
+    "other": 0.21912856382677498
+   },
+   "g:_d_": {
+    "mutable-default": -0.2384828758286027,
+    "other": 0.2384828758286049
+   },
+   "g:_m_": {
+    "mutable-default": -0.2191285638267731,
+    "other": 0.21912856382677498
+   },
+   "g:d_v": {
+    "mutable-default": -0.16635798427790552,
+    "other": 0.16635798427790693
+   },
+   "g:e__": {
+    "mutable-default": 0.9307406882635024,
+    "other": -0.9307406882635018
+   },
+   "g:r_r": {
+    "mutable-default": -0.09133843123521554,
+    "other": 0.09133843123521895
+   },
+   "g:b__": {
+    "mutable-default": 0.8080497238062444,
+    "other": -0.8080497238062446
+   },
+   "g:n_i": {
+    "mutable-default": -0.07454873803111042,
+    "other": 0.07454873803111385
+   },
+   "g:r_f": {
+    "mutable-default": -0.12197194954738727,
+    "other": 0.12197194954738651
+   },
+   "g:__t": {
+    "mutable-default": 0.793768348672045,
+    "other": -0.7937683486720445
+   },
+   "g:_t_": {
+    "mutable-default": 0.793768348672045,
+    "other": -0.7937683486720445
+   },
+   "g:c_r": {
+    "mutable-default": 0.793768348672045,
+    "other": -0.7937683486720445
+   },
+   "g:m_v": {
+    "mutable-default": -0.19957540126493917,
+    "other": 0.1995754012649389
+   },
+   "g:n__": {
+    "mutable-default": -0.06747839748679046,
+    "other": 0.06747839748678894
+   },
+   "g:p_n": {
+    "mutable-default": -0.06156591421290651,
+    "other": 0.06156591421290682
+   },
+   "g:p_v": {
+    "mutable-default": -0.17061396242049565,
+    "other": 0.1706139624204942
+   },
+   "g:t_v": {
+    "mutable-default": 0.793768348672045,
+    "other": -0.7937683486720445
+   },
+   "g:k__": {
+    "mutable-default": 0.8767059439224906,
+    "other": -0.87670594392249
+   },
+   "g:k_r": {
+    "mutable-default": -0.057760891090221395,
+    "other": 0.05776089109022541
+   },
+   "g:o_n": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:s_v": {
+    "mutable-default": -0.09947933388196559,
+    "other": 0.09947933388196457
+   },
+   "g:b_n": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:k_f": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:s_n": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:__g": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:_el": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:_g_": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:_no": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:c_i": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:c_v": {
+    "mutable-default": -2.0576272069170343,
+    "other": 2.0576272069170347
+   },
+   "g:d_d": {
+    "mutable-default": -0.10254324015825816,
+    "other": 0.10254324015826093
+   },
+   "g:e_e": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:els": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:g_v": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:lse": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:m_e": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:m_r": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:ne_": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:non": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:one": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:r_e": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:s_e": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:se_": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "w:else": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "w:none": {
+    "mutable-default": -0.062470146466616354,
+    "other": 0.06247014646661619
+   },
+   "g:__l": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:__r": {
+    "mutable-default": -0.11904096309923387,
+    "other": 0.11904096309923075
+   },
+   "g:__x": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:_l_": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:_r_": {
+    "mutable-default": -0.11904096309923387,
+    "other": 0.11904096309923075
+   },
+   "g:_x_": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:k_v": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:l_v": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:m_n": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   },
+   "g:o__": {
+    "mutable-default": 0.7398047834390711,
+    "other": -0.7398047834390702
+   },
+   "g:x_e": {
+    "mutable-default": 0.0,
+    "other": 0.0
+   }
+  },
+  "b": {
+   "mutable-default": -0.06717756654976914,
+   "other": 0.06717756654977086
+  }
+ },
+ "params": 238,
+ "footprint_bytes": 8852,
+ "path": "trained",
+ "heldout_acc": 1.0,
+ "train_n": 48,
+ "heldout_n": 29,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.931
+  },
+  {
+   "name": "majority-class (other)",
+   "acc": 0.931
+  }
+ ],
+ "bar": 0.931,
+ "attempts": [
+  {
+   "fmode": "code",
+   "hidden": 0,
+   "numpy_acc": 1.0,
+   "dict_acc": 1.0,
+   "params": 238
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "bug-mutable-default-model#c0",
+  "bug-mutable-default-model#c1"
+ ],
+ "socialized_to": 3
+}

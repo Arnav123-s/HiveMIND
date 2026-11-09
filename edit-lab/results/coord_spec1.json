@@ -1,0 +1,210 @@
+{
+ "tag": "coord_spec1",
+ "adapters": true,
+ "time": "2026-11-08 22:42:18",
+ "scores": {
+  "coordinator": {
+   "mean": 0.849,
+   "n": 14,
+   "seconds": 3581
+  }
+ },
+ "cases": {
+  "coordinator": [
+   {
+    "case": "Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"researcher\",\n      \"task\": \"Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"the three most downloaded text-generation models under 1B parameters on Hugging Face and their licenses are returned\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"writer\",\n      \"task\": \"Write the final deliverable with the three most downloaded text-generation models under 1B parameters on Hugging Face and their licenses.\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"the final deliverable with the three most downloaded text-generation models under 1B parameters on Hugging Face and their licenses is written\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Go to books.toscrape.com, open the Travel category, and list every book title with its price.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open books.toscrape.com and navigate to the Travel category\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"page opened and Travel category is visible\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"List every book title with its price\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"list of books with titles and prices is generated\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"writer\",\n      \"task\": \"List every book title with its price\",\n      \"needs\": [\"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"list of books with titles and prices is generated\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Write a Python script that gets the Open-Meteo forecast for Pune for the next 3 days, saves it as a CSV, and tells me which day is coolest.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open https://open-meteo.com/forecast?city=Pune&country=India&days=3\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"page opened\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"Read the JSON data from the page and extract the temperature data for each day\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"data extracted\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"coder\",\n      \"task\": \"Save the data as a CSV file with the following columns: date, temperature (min), temperature (max), temperature (avg)\",\n      \"needs\": [\"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"CSV file saved\"\n    },\n    {\n      \"id\": \"s4\",\n      \"agent\": \"writer\",\n      \"task\": \"Write a Python script that reads the CSV file and prints the day with the lowest average temperature\",\n      \"needs\": [\"s3\"],\n      \"for_each\": null,\n      \"done_when\": \"script written\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Check which of these packages have a newer version on PyPI than what I pinned: requests==2.31.0, numpy==1.26.0, flask==2.3.0.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"researcher\",\n      \"task\": \"Check the PyPI version of requests==2.31.0, numpy==1.26.0, flask==2.3.0\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"PyPI version of requests==2.31.0, numpy==1.26.0, flask==2.3.0\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"Check the PyPI version of requests==2.31.0, numpy==1.26.0, flask==2.3.0\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"PyPI version of requests==2.31.0, numpy==1.26.0, flask==2.3.0\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"writer\",\n      \"task\": \"Check the PyPI version of requests==2.31.0, numpy==1.26.0, flask==2.3.0\",\n      \"needs\": [\"s1\", \"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"PyPI version of requests==2.31.0, numpy==1.26.0, flask==2.3.0\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the top 5 Hacker News stories about Rust and summarize what each one is about.",
+    "score": 0.667,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open Hacker News and search for the top 5 stories about Rust\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"The top 5 stories are listed and the first one is the one with the highest score.\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"writer\",\n      \"task\": \"Summarize the top 5 Hacker News stories about Rust\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"The top 5 stories are summarized and the first one is the one with the highest score.\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"researcher\",\n      \"task\": \"Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"arxiv papers are retrieved and summarized\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"writer\",\n      \"task\": \"Build a reading list with one-line summaries.\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"arxiv papers are retrieved and summarized\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Benchmark how fast Python's json module parses a 50 MB file on this machine versus a 5 MB file and explain the scaling.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"coder\",\n      \"task\": \"Run a benchmark with 50 MB and 5 MB files and measure the time taken to parse them with the json module\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"time taken to parse 50 MB file is recorded and time taken to parse 5 MB file is recorded\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"Run a benchmark with 50 MB and 5 MB files and measure the time taken to parse them with the json module\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"time taken to parse 50 MB file is recorded and time taken to parse 5 MB file is recorded\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"writer\",\n      \"task\": \"Write a summary of the benchmark results and explain the scaling\",\n      \"needs\": [\"s1\", \"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"summary of the benchmark results and explanation of the scaling is written\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "On quotes.toscrape.com, collect every quote by Albert Einstein across all pages and save them to a file.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open https://quotes.toscrape.com/ and search for Albert Einstein quotes\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"The page shows Albert Einstein quotes and the search results are displayed.\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"Collect all quotes from the search results and save them to a file\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"The file has all quotes from Albert Einstein and the file is saved.\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"writer\",\n      \"task\": \"Write a summary of the collected quotes and the source\",\n      \"needs\": [\"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"The summary is written and the source is cited.\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "For each of the 3 most downloaded Qwen models on Hugging Face, open its model page and record the license and the weights file size.",
+    "score": 0.714,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open the Hugging Face page for the first model and record the license and weights file size\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"The page is opened and the license and weights file size are recorded\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"browser\",\n      \"task\": \"Open the Hugging Face page for the second model and record the license and weights file size\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"The page is opened and the license and weights file size are recorded\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"browser\",\n      \"task\": \"Open the Hugging Face page for the third model and record the license and weights file size\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"The page is opened and the license and weights file size are recorded\"\n    },\n    {\n      \"id\": \"s4\",\n      \"agent\": \"writer\",\n      \"task\": \"Write the final deliverable with the license and weights file size of the three models\",\n      \"needs\": [\"s1\", \"s2\", \"s3\"],\n      \"for_each\": null,\n      \"done_when\": \"The deliverable is written with the license and weights file size of the three models\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": false,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true,
+     "for_each": false
+    },
+    "problems": []
+   },
+   {
+    "case": "Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV and tell me if I should upgrade.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"researcher\",\n      \"task\": \"Search OSV for jinja2 2.10\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"OSV search results\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"Check jinja2 2.10 for known vulnerabilities\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"vulnerability list\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"writer\",\n      \"task\": \"List of known vulnerabilities for jinja2 2.10\",\n      \"needs\": [\"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"vulnerability list\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Make a chart of the last 30 days of daily maximum temperature in Mumbai from Open-Meteo and save it as a PNG.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open the Open-Meteo website and search for the daily maximum temperature in Mumbai\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"The page shows the daily maximum temperature in Mumbai\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"coder\",\n      \"task\": \"Call the Open-Meteo API to get the daily maximum temperature in Mumbai for the last 30 days\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"The API returns the daily maximum temperature in Mumbai for the last 30 days\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"writer\",\n      \"task\": \"Create a chart of the daily maximum temperature in Mumbai for the last 30 days and save it as a PNG\",\n      \"needs\": [\"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"The chart is created and saved as a PNG\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Read the Wikipedia article on the transistor and write me a one-page history with key dates.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open Wikipedia and search for the article on the transistor\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"page is opened and the article is visible\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"writer\",\n      \"task\": \"Read the article and write a one-page history with key dates\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"page is read and the article is written\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the latest version of the Python packages fastapi and pydantic, then write and run a script that checks if my installed versions are older.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"researcher\",\n      \"task\": \"Find the latest version of the Python packages fastapi and pydantic\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"latest versions of fastapi and pydantic are found\"\n    },\n    {\n      \"id\": \"s2\",\n      \"agent\": \"browser\",\n      \"task\": \"Open the Python package site for fastapi and pydantic and check the latest versions\",\n      \"needs\": [\"s1\"],\n      \"for_each\": null,\n      \"done_when\": \"latest versions of fastapi and pydantic are found\"\n    },\n    {\n      \"id\": \"s3\",\n      \"agent\": \"coder\",\n      \"task\": \"Write and run a script that checks if my installed versions are older\",\n      \"needs\": [\"s1\", \"s2\"],\n      \"for_each\": null,\n      \"done_when\": \"script is written and run\"\n    },\n    {\n      \"id\": \"s4\",\n      \"agent\": \"writer\",\n      \"task\": \"Write and run a script that checks if my installed versions are older\",\n      \"needs\": [\"s1\", \"s2\", \"s3\"],\n      \"for_each\": null,\n      \"done_when\": \"script is written and run\"\n    }\n  ]\n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.",
+    "score": 0.0,
+    "output": "{  \n  \"steps\": [\n    {\n      \"id\": \"s1\",\n      \"agent\": \"browser\",\n      \"task\": \"Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.\",\n      \"needs\": [],\n      \"for_each\": null,\n      \"done_when\": \"model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and the model card is read and",
+    "checks": {
+     "valid": false
+    },
+    "problems": [
+     "no steps"
+    ]
+   }
+  ]
+ }
+}

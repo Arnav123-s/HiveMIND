@@ -1,0 +1,634 @@
+{
+ "name": "bug-off-by-one-range-model",
+ "niche": "debugging",
+ "job": "decide whether a range-shaped snippet's defect is off-by-one (vs anything else)",
+ "classes": [
+  "off-by-one",
+  "other"
+ ],
+ "features": [
+  "g:0_f",
+  "g:_0_",
+  "g:__e",
+  "g:_a_",
+  "g:_c_",
+  "g:_e_",
+  "g:_fo",
+  "g:_i_",
+  "g:_in",
+  "g:_n_",
+  "g:_ra",
+  "g:_s_",
+  "g:ang",
+  "g:c_n",
+  "g:def",
+  "g:e_0",
+  "g:e_o",
+  "g:ef_",
+  "g:for",
+  "g:ge_",
+  "g:i_i",
+  "g:in_",
+  "g:n_r",
+  "g:n_s",
+  "g:nge",
+  "g:or_",
+  "g:r_i",
+  "g:ran",
+  "g:s__",
+  "w:def",
+  "w:for",
+  "w:in",
+  "w:range",
+  "g:__p",
+  "g:_p_",
+  "g:_re",
+  "g:etu",
+  "g:ret",
+  "g:rn_",
+  "g:tur",
+  "g:urn",
+  "w:return",
+  "g:p_e",
+  "g:1_a",
+  "g:1_c",
+  "g:_1_",
+  "g:_o1",
+  "g:_on",
+  "g:_to",
+  "g:_up",
+  "g:a_n",
+  "g:al_",
+  "g:e_i",
+  "g:f_t",
+  "g:l_u",
+  "g:n_c",
+  "g:o1_",
+  "g:o_o",
+  "g:on_",
+  "g:ota",
+  "g:p_1",
+  "g:pto",
+  "g:t_o",
+  "g:tal",
+  "g:to_",
+  "g:tot",
+  "g:upt",
+  "w:total_upto",
+  "g:_bi",
+  "g:_fi",
+  "g:_k_",
+  "g:_ok",
+  "g:_ox",
+  "g:_su",
+  "g:_xs",
+  "g:a_k",
+  "g:bi_",
+  "g:e_x",
+  "g:f_s",
+  "g:fir",
+  "g:i_k",
+  "g:i_r",
+  "g:irs",
+  "g:k_c",
+  "g:k_r",
+  "g:m_f",
+  "g:n__",
+  "g:ok_",
+  "g:oxs",
+  "g:rst",
+  "g:s_a",
+  "g:s_b",
+  "g:st_",
+  "g:sum",
+  "g:um_",
+  "g:xs_",
+  "w:sum_first",
+  "w:xs",
+  "g:__m",
+  "g:_m_",
+  "g:m_e",
+  "g:_os",
+  "g:_pr",
+  "g:i_p",
+  "g:int",
+  "g:k__",
+  "g:nt_",
+  "g:os_",
+  "g:pri",
+  "g:rin",
+  "g:s_c",
+  "w:print"
+ ],
+ "hidden": 0,
+ "fmode": "text",
+ "weights": {
+  "w": {
+   "g:0_f": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_0_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:__e": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_a_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_c_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_e_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_fo": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_i_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_in": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_n_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_ra": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_s_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:ang": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:c_n": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:def": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:e_0": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:e_o": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:ef_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:for": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:ge_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:i_i": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:in_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:n_r": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:n_s": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:nge": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:or_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:r_i": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:ran": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:s__": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:def": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:for": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:in": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:range": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:__p": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_p_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_re": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:etu": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:ret": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:rn_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:tur": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:urn": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:return": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:p_e": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:1_a": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:1_c": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_1_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_o1": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_on": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_to": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_up": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:a_n": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:al_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:e_i": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:f_t": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:l_u": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:n_c": {
+    "off-by-one": 2.0178485120888436,
+    "other": -2.0178485120888463
+   },
+   "g:o1_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:o_o": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:on_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:ota": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:p_1": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:pto": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:t_o": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:tal": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:to_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:tot": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:upt": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:total_upto": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_bi": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_fi": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_k_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_ok": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_ox": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_su": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_xs": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:a_k": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:bi_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:e_x": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:f_s": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:fir": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:i_k": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:i_r": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:irs": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:k_c": {
+    "off-by-one": -1.7781043961525487,
+    "other": 1.778104396152549
+   },
+   "g:k_r": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:m_f": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:n__": {
+    "off-by-one": -3.3696398908550385,
+    "other": 3.3696398908550402
+   },
+   "g:ok_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:oxs": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:rst": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:s_a": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:s_b": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:st_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:sum": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:um_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:xs_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:sum_first": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:xs": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:__m": {
+    "off-by-one": -0.6094761923376426,
+    "other": 0.6094761923376419
+   },
+   "g:_m_": {
+    "off-by-one": -0.6094761923376426,
+    "other": 0.6094761923376419
+   },
+   "g:m_e": {
+    "off-by-one": -0.6094761923376426,
+    "other": 0.6094761923376419
+   },
+   "g:_os": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:_pr": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:i_p": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:int": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:k__": {
+    "off-by-one": 3.9942564100758378,
+    "other": -3.994256410075838
+   },
+   "g:nt_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:os_": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:pri": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:rin": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "g:s_c": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   },
+   "w:print": {
+    "off-by-one": 0.0,
+    "other": 0.0
+   }
+  },
+  "b": {
+   "off-by-one": 0.0,
+   "other": 0.0
+  }
+ },
+ "params": 226,
+ "footprint_bytes": 5376,
+ "path": "trained",
+ "heldout_acc": 0.7778,
+ "train_n": 7,
+ "heldout_n": 9,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.6667
+  },
+  {
+   "name": "majority-class (other)",
+   "acc": 0.6667
+  }
+ ],
+ "bar": 0.7,
+ "attempts": [
+  {
+   "fmode": "code",
+   "hidden": 0,
+   "numpy_acc": 0.6667,
+   "dict_acc": 0.6667,
+   "params": 126
+  },
+  {
+   "fmode": "code",
+   "hidden": 4,
+   "numpy_acc": 0.6667,
+   "dict_acc": 0.6667,
+   "params": 262
+  },
+  {
+   "fmode": "code",
+   "hidden": 8,
+   "numpy_acc": 0.6667,
+   "dict_acc": 0.6667,
+   "params": 522
+  },
+  {
+   "fmode": "text",
+   "hidden": 0,
+   "numpy_acc": 0.7778,
+   "dict_acc": 0.7778,
+   "params": 226
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "bug-off-by-one-range-model#c0",
+  "bug-off-by-one-range-model#c1"
+ ],
+ "socialized_to": 3
+}

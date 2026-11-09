@@ -1,0 +1,5 @@
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Error while downloading from https://huggingface.co/Qwen/Qwen3-1.7B/resolve/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e/model-00002-of-00002.safetensors: peer closed connection without sending complete message body (received 616916423 bytes, expected 622329984)
+Trying to resume download...
+Fetching 12 files:  58%|█████▊    | 7/12 [05:04<03:37, 43.48s/it]Fetching 12 files:  75%|███████▌  | 9/12 [05:14<01:37, 32.36s/it]Fetching 12 files: 100%|██████████| 12/12 [23:23<00:00, 159.01s/it]Fetching 12 files: 100%|██████████| 12/12 [23:23<00:00, 116.94s/it]
+model at /home/hatch/workspace/edit-lab/hf/hub/models--Qwen--Qwen3-1.7B/snapshots/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e

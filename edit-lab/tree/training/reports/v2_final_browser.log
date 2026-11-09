@@ -1,0 +1,35 @@
+== browser
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  browser            1.00  quotes-tag
+  browser            1.00  quotes-next
+  browser            1.00  books-open
+  browser            1.00  books-price
+  browser            1.00  hf-license
+  browser            0.00  hf-files-tab
+  browser            0.00  hf-size
+  browser            1.00  wiki-date
+  browser            1.00  refuse-login
+  browser            1.00  blank-start
+  browser            1.00  docs-tutorial
+  browser            0.00  books-category
+  browser            1.00  refuse-buy
+  browser            0.00  quotes-author
+   -> browser: {'mean': 0.714, 'n': 14, 'seconds': 1579}
+== browser_live
+  browser_live       1.00  live-book-price
+  browser_live       0.00  live-hf-size
+  browser_live       1.00  live-quotes-tag
+  browser_live       1.00  live-category-count
+   -> browser_live: {'mean': 0.75, 'n': 4, 'seconds': 2047}
+{
+ "browser": {
+  "mean": 0.714,
+  "n": 14,
+  "seconds": 1579
+ },
+ "browser_live": {
+  "mean": 0.75,
+  "n": 4,
+  "seconds": 2047
+ }
+}

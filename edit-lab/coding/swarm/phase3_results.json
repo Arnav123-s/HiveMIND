@@ -1,0 +1,642 @@
+{
+ "table": [
+  {
+   "job": "error-class-model",
+   "niche": "debugging",
+   "path": "trained+edited",
+   "params": 9228,
+   "footprint_bytes": 210881,
+   "heldout_acc": 0.9583,
+   "incumbents": [
+    {
+     "name": "rule traceback-classifier",
+     "acc": 0.6667
+    },
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.5167
+    },
+    {
+     "name": "majority-class (AssertionError)",
+     "acc": 0.0833
+    }
+   ],
+   "adopted": true
+  },
+  {
+   "job": "bug-pattern-model",
+   "niche": "debugging",
+   "path": "trained",
+   "params": null,
+   "footprint_bytes": null,
+   "heldout_acc": null,
+   "incumbents": [
+    {
+     "name": "rule bug-pattern-matcher (as classifier)",
+     "acc": 0.3448
+    },
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.3448
+    },
+    {
+     "name": "majority-class (clean)",
+     "acc": 0.3448
+    }
+   ],
+   "adopted": false
+  },
+  {
+   "job": "contract-judgment-model",
+   "niche": "review",
+   "path": "trained",
+   "params": 468,
+   "footprint_bytes": 17185,
+   "heldout_acc": 0.9375,
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.75
+    },
+    {
+     "name": "majority-class (no-none-guard)",
+     "acc": 0.25
+    }
+   ],
+   "adopted": true
+  },
+  {
+   "job": "gap-move-model",
+   "niche": "meta",
+   "path": "trained",
+   "params": 3825,
+   "footprint_bytes": 132664,
+   "heldout_acc": 0.8778,
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.5667
+    },
+    {
+     "name": "majority-class (wait-for-backend)",
+     "acc": 0.2
+    }
+   ],
+   "adopted": true
+  },
+  {
+   "job": "commit-type-model",
+   "niche": "vcs",
+   "path": "trained",
+   "params": 2376,
+   "footprint_bytes": 56220,
+   "heldout_acc": 0.9375,
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.55
+    },
+    {
+     "name": "majority-class (feat)",
+     "acc": 0.2
+    }
+   ],
+   "adopted": true
+  },
+  {
+   "job": "secret-line-model",
+   "niche": "security",
+   "path": "trained",
+   "params": 512,
+   "footprint_bytes": 17714,
+   "heldout_acc": 0.9923,
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.7692
+    },
+    {
+     "name": "majority-class (secret)",
+     "acc": 0.4154
+    }
+   ],
+   "adopted": true
+  }
+ ],
+ "details": {
+  "error-class-model": {
+   "finishing": {
+    "clones": [
+     "error-class-model#c0",
+     "error-class-model#c1"
+    ],
+    "socialized_to": 3
+   },
+   "attempts": [
+    {
+     "fmode": "text0",
+     "hidden": 0,
+     "numpy_acc": 0.8333,
+     "dict_acc": 0.8333,
+     "params": 9228
+    }
+   ],
+   "surgery": {
+    "kept": true,
+    "diffs": {
+     "w.g:me_.NameError": [
+      0.37002891843028635,
+      0
+     ],
+     "w.g:dul.ModuleNotFoundError": [
+      0.4153103213181637,
+      0
+     ],
+     "w.g:mod.ModuleNotFoundError": [
+      0.4153103213181637,
+      0
+     ],
+     "w.g:odu.ModuleNotFoundError": [
+      0.4153103213181637,
+      0
+     ],
+     "w.g:ule.ModuleNotFoundError": [
+      0.41509829916095414,
+      0
+     ],
+     "w.w:module.ModuleNotFoundError": [
+      0.3526957426795002,
+      0
+     ],
+     "w.g:__n.ModuleNotFoundError": [
+      0.37672021362383223,
+      0
+     ],
+     "w.g:__n.NameError": [
+      0.41615605862119415,
+      0
+     ],
+     "w.g:_na.ModuleNotFoundError": [
+      0.3883101714831051,
+      0
+     ],
+     "w.g:_na.NameError": [
+      0.46775259001894626,
+      0
+     ],
+     "w.g:ame.ModuleNotFoundError": [
+      0.3866889035311626,
+      0
+     ],
+     "w.g:ame.NameError": [
+      0.4641693760763116,
+      0
+     ],
+     "w.g:nam.ModuleNotFoundError": [
+      0.3866889035311626,
+      0
+     ],
+     "w.g:nam.NameError": [
+      0.4641693760763116,
+      0
+     ],
+     "w.w:name.NameError": [
+      0.40756374154492925,
+      0
+     ]
+    },
+    "probes_before": 0.0,
+    "probes_after": 0.6666666666666666,
+    "heldout_before": 0.9166666666666666,
+    "heldout_after": 0.9583333333333334,
+    "untangle_complete": true,
+    "n_weights": 9228,
+    "indicted": [
+     "w.g:__n.ModuleNotFoundError",
+     "w.g:__n.NameError",
+     "w.g:_na.ModuleNotFoundError",
+     "w.g:_na.NameError",
+     "w.g:ame.ModuleNotFoundError",
+     "w.g:ame.NameError",
+     "w.g:dul.ModuleNotFoundError",
+     "w.g:me_.NameError",
+     "w.g:mod.ModuleNotFoundError",
+     "w.g:nam.ModuleNotFoundError",
+     "w.g:nam.NameError",
+     "w.g:odu.ModuleNotFoundError",
+     "w.g:ule.ModuleNotFoundError",
+     "w.w:module.ModuleNotFoundError",
+     "w.w:name.NameError"
+    ]
+   }
+  },
+  "bug-pattern-model": {
+   "rejection": "no architecture beat the bar 0.800 (best 0.517); nothing adopted",
+   "attempts": [
+    {
+     "fmode": "code",
+     "hidden": 0,
+     "numpy_acc": 0.4828,
+     "dict_acc": 0.4828,
+     "params": 714
+    },
+    {
+     "fmode": "code",
+     "hidden": 4,
+     "numpy_acc": 0.3448,
+     "dict_acc": 0.3448,
+     "params": 505
+    },
+    {
+     "fmode": "code",
+     "hidden": 8,
+     "numpy_acc": 0.4828,
+     "dict_acc": 0.4828,
+     "params": 1006
+    },
+    {
+     "fmode": "text",
+     "hidden": 0,
+     "numpy_acc": 0.5172,
+     "dict_acc": 0.5172,
+     "params": 2868
+    },
+    {
+     "fmode": "text",
+     "hidden": 4,
+     "numpy_acc": 0.3793,
+     "dict_acc": 0.3793,
+     "params": 1912
+    },
+    {
+     "fmode": "text",
+     "hidden": 8,
+     "numpy_acc": 0.4828,
+     "dict_acc": 0.4828,
+     "params": 3878
+    }
+   ],
+   "loop": {
+    "job": "bug-pattern-model",
+    "bar": 0.8,
+    "candidate": {
+     "fmode": "text",
+     "hidden": 0,
+     "params": 2868,
+     "heldout_acc": 0.5172
+    },
+    "stages": [
+     {
+      "stage": "surgery-on-plain-candidate",
+      "map": {
+       "n_weights": 2868,
+       "untangle_complete": true
+      },
+      "probes": 14,
+      "guards": 15,
+      "indicted": [
+       "w.g:1_k.off-by-one",
+       "w.g:1_k.wrong-operator",
+       "w.g:_1_.clean",
+       "w.g:__p.clean",
+       "w.g:__p.wrong-operator",
+       "w.g:_p_.clean",
+       "w.g:_p_.wrong-operator",
+       "w.g:etu.wrong-operator",
+       "w.g:m_1.clean",
+       "w.g:n__.off-by-one",
+       "w.g:n_c.clean",
+       "w.g:ret.wrong-operator"
+      ],
+      "n_indicted": 16,
+      "edit": "zeroed the indicted weights on a copy of the model",
+      "heldout_before": 0.5172,
+      "heldout_after": 0.6897,
+      "probes_after": 0.4286,
+      "kept": true
+     },
+     {
+      "stage": "train-complement-balanced",
+      "train_n": 96,
+      "heldout_acc": 0.5172
+     },
+     {
+      "stage": "surgery-on-balanced-candidate",
+      "map": {
+       "n_weights": 2868,
+       "untangle_complete": true
+      },
+      "probes": 9,
+      "guards": 20,
+      "indicted": [
+       "w.g:_1_.off-by-one",
+       "w.g:__m.off-by-one",
+       "w.g:_m_.off-by-one",
+       "w.g:_s_.clean",
+       "w.g:k_c.clean",
+       "w.g:k_c.off-by-one",
+       "w.g:n_s.clean",
+       "w.g:p_e.clean"
+      ],
+      "n_indicted": 8,
+      "edit": "zeroed the indicted weights on a copy of the model",
+      "heldout_before": 0.6897,
+      "heldout_after": 0.6897,
+      "probes_after": 0.3333,
+      "kept": true
+     }
+    ],
+    "final_acc": 0.6897,
+    "adopted": false
+   }
+  },
+  "contract-judgment-model": {
+   "finishing": {
+    "clones": [
+     "contract-judgment-model#c0",
+     "contract-judgment-model#c1"
+    ],
+    "socialized_to": 3
+   },
+   "attempts": [
+    {
+     "fmode": "code",
+     "hidden": 0,
+     "numpy_acc": 0.9375,
+     "dict_acc": 0.9375,
+     "params": 468
+    }
+   ]
+  },
+  "gap-move-model": {
+   "finishing": {
+    "clones": [
+     "gap-move-model#c0",
+     "gap-move-model#c1"
+    ],
+    "socialized_to": 3
+   },
+   "attempts": [
+    {
+     "fmode": "words",
+     "hidden": 0,
+     "numpy_acc": 0.8778,
+     "dict_acc": 0.8778,
+     "params": 3825
+    }
+   ]
+  },
+  "commit-type-model": {
+   "finishing": {
+    "clones": [
+     "commit-type-model#c0",
+     "commit-type-model#c1"
+    ],
+    "socialized_to": 3
+   },
+   "attempts": [
+    {
+     "fmode": "words",
+     "hidden": 0,
+     "numpy_acc": 0.9125,
+     "dict_acc": 0.9125,
+     "params": 2376
+    }
+   ]
+  },
+  "secret-line-model": {
+   "finishing": {
+    "clones": [
+     "secret-line-model#c0",
+     "secret-line-model#c1"
+    ],
+    "socialized_to": 3
+   },
+   "attempts": [
+    {
+     "fmode": "secret",
+     "hidden": 0,
+     "numpy_acc": 0.9923,
+     "dict_acc": 0.9923,
+     "params": 512
+    }
+   ],
+   "surgery": null
+  }
+ },
+ "triage": {
+  "kind": "intake-pipeline",
+  "joint_acc": 1.0,
+  "cases": [
+   {
+    "want": [
+     "KeyError",
+     2,
+     "benign",
+     "ok"
+    ],
+    "got": [
+     "KeyError",
+     2,
+     "benign",
+     "ok"
+    ],
+    "ok": true
+   },
+   {
+    "want": [
+     "ZeroDivisionError",
+     3,
+     "secret",
+     "no-empty-guard"
+    ],
+    "got": [
+     "ZeroDivisionError",
+     3,
+     "secret",
+     "no-empty-guard"
+    ],
+    "ok": true
+   },
+   {
+    "want": [
+     "IndexError",
+     4,
+     "benign",
+     "mutates-input"
+    ],
+    "got": [
+     "IndexError",
+     4,
+     "benign",
+     "mutates-input"
+    ],
+    "ok": true
+   },
+   {
+    "want": [
+     "TypeError",
+     2,
+     "benign",
+     "no-none-guard"
+    ],
+    "got": [
+     "TypeError",
+     2,
+     "benign",
+     "no-none-guard"
+    ],
+    "ok": true
+   },
+   {
+    "want": [
+     "ValueError",
+     1,
+     "benign",
+     "ok"
+    ],
+    "got": [
+     "ValueError",
+     1,
+     "benign",
+     "ok"
+    ],
+    "ok": true
+   },
+   {
+    "want": [
+     "AttributeError",
+     5,
+     "secret",
+     "ok"
+    ],
+    "got": [
+     "AttributeError",
+     5,
+     "secret",
+     "ok"
+    ],
+    "ok": true
+   }
+  ],
+  "per_component": {
+   "error_class": 6,
+   "line": 6,
+   "secret": 6,
+   "patch": 6
+  }
+ },
+ "loops": [
+  {
+   "job": "bug-pattern-model",
+   "bar": 0.8,
+   "candidate": {
+    "fmode": "text",
+    "hidden": 0,
+    "params": 2868,
+    "heldout_acc": 0.5172
+   },
+   "stages": [
+    {
+     "stage": "surgery-on-plain-candidate",
+     "map": {
+      "n_weights": 2868,
+      "untangle_complete": true
+     },
+     "probes": 14,
+     "guards": 15,
+     "indicted": [
+      "w.g:1_k.off-by-one",
+      "w.g:1_k.wrong-operator",
+      "w.g:_1_.clean",
+      "w.g:__p.clean",
+      "w.g:__p.wrong-operator",
+      "w.g:_p_.clean",
+      "w.g:_p_.wrong-operator",
+      "w.g:etu.wrong-operator",
+      "w.g:m_1.clean",
+      "w.g:n__.off-by-one",
+      "w.g:n_c.clean",
+      "w.g:ret.wrong-operator"
+     ],
+     "n_indicted": 16,
+     "edit": "zeroed the indicted weights on a copy of the model",
+     "heldout_before": 0.5172,
+     "heldout_after": 0.6897,
+     "probes_after": 0.4286,
+     "kept": true
+    },
+    {
+     "stage": "train-complement-balanced",
+     "train_n": 96,
+     "heldout_acc": 0.5172
+    },
+    {
+     "stage": "surgery-on-balanced-candidate",
+     "map": {
+      "n_weights": 2868,
+      "untangle_complete": true
+     },
+     "probes": 9,
+     "guards": 20,
+     "indicted": [
+      "w.g:_1_.off-by-one",
+      "w.g:__m.off-by-one",
+      "w.g:_m_.off-by-one",
+      "w.g:_s_.clean",
+      "w.g:k_c.clean",
+      "w.g:k_c.off-by-one",
+      "w.g:n_s.clean",
+      "w.g:p_e.clean"
+     ],
+     "n_indicted": 8,
+     "edit": "zeroed the indicted weights on a copy of the model",
+     "heldout_before": 0.6897,
+     "heldout_after": 0.6897,
+     "probes_after": 0.3333,
+     "kept": true
+    }
+   ],
+   "final_acc": 0.6897,
+   "adopted": false
+  }
+ ],
+ "board_scores": [
+  {
+   "kind": "model",
+   "name": "error-class-model",
+   "value": 0.9167,
+   "detail": "trained linear: held-out 0.917 beats bar 0.750; 9228 params, 211262 B"
+  },
+  {
+   "kind": "model",
+   "name": "contract-judgment-model",
+   "value": 0.9375,
+   "detail": "trained linear: held-out 0.938 beats bar 0.800; 468 params, 17185 B"
+  },
+  {
+   "kind": "model",
+   "name": "gap-move-model",
+   "value": 0.8778,
+   "detail": "trained linear: held-out 0.878 beats bar 0.800; 3825 params, 132664 B"
+  },
+  {
+   "kind": "model",
+   "name": "commit-type-model",
+   "value": 0.9375,
+   "detail": "trained linear: held-out 0.938 beats bar 0.700; 2376 params, 56220 B"
+  },
+  {
+   "kind": "model",
+   "name": "secret-line-model",
+   "value": 0.9923,
+   "detail": "trained linear: held-out 0.992 beats bar 0.769; 512 params, 17714 B"
+  },
+  {
+   "kind": "composition",
+   "name": "intake-pipeline",
+   "value": 1.0,
+   "detail": "6/6 joint verdicts fully correct; per-component {'error_class': 6, 'line': 6, 'secret': 6, 'patch': 6}"
+  }
+ ]
+}

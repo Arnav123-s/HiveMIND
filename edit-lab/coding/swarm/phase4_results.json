@@ -1,0 +1,669 @@
+{
+ "bar": 0.8,
+ "heldout_n": 29,
+ "single_model_reference": {
+  "name": "bug-pattern-model (phase 3, single)",
+  "heldout_acc": 0.69,
+  "adopted": false
+ },
+ "rounds": [
+  {
+   "round": 1,
+   "composed_acc": 0.6207,
+   "per_class_recall": {
+    "off-by-one": 0.5,
+    "missing-return": 0.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "per-class binary models, max-margin composition"
+  },
+  {
+   "round": 2,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "dream cycle: offline practice + trigger traces"
+  },
+  {
+   "round": 3,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "slice variants, routed by measured train strengths"
+  },
+  {
+   "round": 4,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "per-class thresholds calibrated on train margins"
+  },
+  {
+   "round": 5,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "signal-slice variants (name-cue / literal-aware), routed by dream-corpus strengths"
+  },
+  {
+   "round": 6,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "clean-guard specialist, two-stage composition"
+  },
+  {
+   "round": 7,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.8,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "harvest-extended variants (train + dream families, union featurizer), routed by held-out binary acc"
+  },
+  {
+   "round": 8,
+   "composed_acc": 0.7931,
+   "per_class_recall": {
+    "off-by-one": 0.75,
+    "missing-return": 1.0,
+    "clean": 0.7,
+    "swapped-operands": 0.6667,
+    "wrong-operator": 0.6667,
+    "mutable-default": 1.0
+   },
+   "what": "jury composition (uniform mean margin over each class's adopted representations); reverted"
+  }
+ ],
+ "classes": {
+  "off-by-one": {
+   "name": "bug-off-by-one-model",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8621
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8621
+    }
+   ],
+   "n_pos_train": 3,
+   "n_pos_held": 4,
+   "adopted": true,
+   "path": "trained+dreamt",
+   "params": 956,
+   "footprint_bytes": 21945,
+   "heldout_acc": 0.931,
+   "recall": 0.5,
+   "precision": 1.0
+  },
+  "wrong-operator": {
+   "name": "bug-wrong-operator-model",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.7931
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.7931
+    }
+   ],
+   "n_pos_train": 12,
+   "n_pos_held": 6,
+   "adopted": true,
+   "path": "trained",
+   "params": 956,
+   "footprint_bytes": 36826,
+   "heldout_acc": 0.8621,
+   "recall": 0.6667,
+   "precision": 0.6667
+  },
+  "swapped-operands": {
+   "name": "bug-swapped-operands-model",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8966
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8966
+    }
+   ],
+   "n_pos_train": 6,
+   "n_pos_held": 3,
+   "adopted": true,
+   "path": "trained",
+   "params": 956,
+   "footprint_bytes": 27308,
+   "heldout_acc": 0.9655,
+   "recall": 0.6667,
+   "precision": 1.0
+  },
+  "mutable-default": {
+   "name": "bug-mutable-default-model",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.931
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.931
+    }
+   ],
+   "n_pos_train": 3,
+   "n_pos_held": 2,
+   "adopted": true,
+   "path": "trained",
+   "params": 238,
+   "footprint_bytes": 8852,
+   "heldout_acc": 1.0,
+   "recall": 1.0,
+   "precision": 1.0
+  },
+  "missing-return": {
+   "name": "bug-missing-return-model",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8621
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8621
+    }
+   ],
+   "n_pos_train": 8,
+   "n_pos_held": 4,
+   "adopted": true,
+   "path": "trained+dreamt",
+   "params": 238,
+   "footprint_bytes": 6195,
+   "heldout_acc": 1.0,
+   "recall": 1.0,
+   "precision": 1.0
+  }
+ },
+ "slices": {
+  "bug-off-by-one-range-model": {
+   "name": "bug-off-by-one-range-model",
+   "cls": "off-by-one",
+   "slice": "range",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.6667
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.6667
+    }
+   ],
+   "adopted": true,
+   "params": 226,
+   "heldout_acc": 0.7778,
+   "recall": 0.3333,
+   "precision": 1.0
+  },
+  "bug-wrong-operator-accumulator-model": {
+   "name": "bug-wrong-operator-accumulator-model",
+   "cls": "wrong-operator",
+   "slice": "accumulator",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.6667
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.6667
+    }
+   ],
+   "adopted": true,
+   "params": 132,
+   "heldout_acc": 0.7778,
+   "recall": 1.0,
+   "precision": 0.6
+  },
+  "bug-wrong-operator-comparison-model": {
+   "name": "bug-wrong-operator-comparison-model",
+   "cls": "wrong-operator",
+   "slice": "comparison",
+   "adopted": false,
+   "skipped": "no held-out examples in this slice \u2014 cannot verify, not built"
+  },
+  "bug-wrong-operator-expression-model": {
+   "name": "bug-wrong-operator-expression-model",
+   "cls": "wrong-operator",
+   "slice": "expression",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.85
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.85
+    }
+   ],
+   "adopted": false
+  },
+  "bug-swapped-operands-plain-model": {
+   "name": "bug-swapped-operands-plain-model",
+   "cls": "swapped-operands",
+   "slice": "plain",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.913
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.913
+    }
+   ],
+   "adopted": true,
+   "params": 234,
+   "heldout_acc": 0.913,
+   "recall": 0.0,
+   "precision": null
+  },
+  "bug-missing-return-assigns-model": {
+   "name": "bug-missing-return-assigns-model",
+   "cls": "missing-return",
+   "slice": "assigns",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8929
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8929
+    }
+   ],
+   "adopted": true,
+   "params": 238,
+   "heldout_acc": 1.0,
+   "recall": 1.0,
+   "precision": 1.0
+  },
+  "bug-missing-return-prints-model": {
+   "name": "bug-missing-return-prints-model",
+   "cls": "missing-return",
+   "slice": "prints",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 1.0
+    },
+    {
+     "name": "majority-class (missing-return)",
+     "acc": 1.0
+    }
+   ],
+   "adopted": false
+  },
+  "bug-wrong-operator-named-model": {
+   "name": "bug-wrong-operator-named-model",
+   "cls": "wrong-operator",
+   "variant": "named",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.6667
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.6667
+    }
+   ],
+   "adopted": true,
+   "params": 744,
+   "heldout_acc": 0.8333,
+   "recall": 0.6667,
+   "precision": 0.8
+  },
+  "bug-swapped-operands-named-model": {
+   "name": "bug-swapped-operands-named-model",
+   "cls": "swapped-operands",
+   "variant": "named",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8333
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8333
+    }
+   ],
+   "adopted": true,
+   "params": 744,
+   "heldout_acc": 0.9444,
+   "recall": 0.6667,
+   "precision": 1.0
+  },
+  "bug-off-by-one-indexlit-model": {
+   "name": "bug-off-by-one-indexlit-model",
+   "cls": "off-by-one",
+   "variant": "indexlit",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.95
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.95
+    }
+   ],
+   "adopted": false
+  },
+  "bug-wrong-operator-harvest-model": {
+   "name": "bug-wrong-operator-harvest-model",
+   "cls": "wrong-operator",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.7931
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.7931
+    }
+   ],
+   "adopted": true,
+   "params": 1584,
+   "heldout_acc": 0.8276,
+   "recall": 0.8333,
+   "precision": 0.5556
+  },
+  "bug-swapped-operands-harvest-model": {
+   "name": "bug-swapped-operands-harvest-model",
+   "cls": "swapped-operands",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8966
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8966
+    }
+   ],
+   "adopted": true,
+   "params": 1584,
+   "heldout_acc": 0.9655,
+   "recall": 0.6667,
+   "precision": 1.0
+  },
+  "bug-off-by-one-harvest-model": {
+   "name": "bug-off-by-one-harvest-model",
+   "cls": "off-by-one",
+   "incumbents": [
+    {
+     "name": "keyword-classifier (phase-1 trainer)",
+     "acc": 0.8621
+    },
+    {
+     "name": "majority-class (other)",
+     "acc": 0.8621
+    }
+   ],
+   "adopted": true,
+   "params": 1584,
+   "heldout_acc": 0.931,
+   "recall": 0.5,
+   "precision": 1.0
+  }
+ },
+ "decomposition": {
+  "by": "defect-class-splitter (meta specialist)",
+  "evidence": "split into 5 per-class binary jobs (positives per class, train: [3, 12, 6, 3, 8])",
+  "jobs": [
+   "bug-off-by-one-model",
+   "bug-wrong-operator-model",
+   "bug-swapped-operands-model",
+   "bug-mutable-default-model",
+   "bug-missing-return-model"
+  ]
+ },
+ "dream": {
+  "off-by-one": {
+   "heldout_before": 0.931,
+   "heldout_after": 0.931,
+   "kept": true,
+   "practice_acc": 1.0,
+   "practice_n": 85,
+   "map_precision_before": 1.0,
+   "map_precision_after": 1.0,
+   "map_topk": 8
+  },
+  "wrong-operator": {
+   "heldout_before": 0.8621,
+   "heldout_after": 0.8276,
+   "kept": false,
+   "practice_acc": 0.9647,
+   "practice_n": 85,
+   "map_precision_before": 0.75,
+   "map_precision_after": 0.625,
+   "map_topk": 8
+  },
+  "swapped-operands": {
+   "heldout_before": 0.9655,
+   "heldout_after": 0.8966,
+   "kept": false,
+   "practice_acc": 0.9882,
+   "practice_n": 85,
+   "map_precision_before": 0.625,
+   "map_precision_after": 0.625,
+   "map_topk": 8
+  },
+  "mutable-default": {
+   "heldout_before": 1.0,
+   "heldout_after": 0.8621,
+   "kept": false,
+   "practice_acc": 1.0,
+   "practice_n": 85,
+   "map_precision_before": 1.0,
+   "map_precision_after": 1.0,
+   "map_topk": 8
+  },
+  "missing-return": {
+   "heldout_before": 1.0,
+   "heldout_after": 1.0,
+   "kept": true,
+   "practice_acc": 1.0,
+   "practice_n": 85,
+   "map_precision_before": null,
+   "map_precision_after": null,
+   "map_topk": 8
+  }
+ },
+ "strengths": {
+  "off-by-one": {
+   "index": "whole",
+   "range": "whole"
+  },
+  "wrong-operator": {
+   "accumulator": "whole",
+   "comparison": "whole",
+   "expression": "whole"
+  },
+  "swapped-operands": {
+   "comprehension": "whole",
+   "plain": "whole"
+  },
+  "mutable-default": {
+   "whole": "whole"
+  },
+  "missing-return": {
+   "assigns": "whole",
+   "prints": "whole"
+  }
+ },
+ "strength_scores_train": {
+  "off-by-one": {
+   "index": {
+    "whole": 1.0,
+    "slice": null,
+    "n_train": 41
+   },
+   "range": {
+    "whole": 1.0,
+    "slice": 1.0,
+    "n_train": 7
+   }
+  },
+  "wrong-operator": {
+   "accumulator": {
+    "whole": 1.0,
+    "slice": 1.0,
+    "n_train": 10
+   },
+   "comparison": {
+    "whole": 1.0,
+    "slice": null,
+    "n_train": 6
+   },
+   "expression": {
+    "whole": 1.0,
+    "slice": null,
+    "n_train": 32
+   }
+  },
+  "swapped-operands": {
+   "comprehension": {
+    "whole": 1.0,
+    "slice": null,
+    "n_train": 6
+   },
+   "plain": {
+    "whole": 0.9762,
+    "slice": 0.881,
+    "n_train": 42
+   }
+  },
+  "mutable-default": {
+   "whole": {
+    "whole": 1.0,
+    "slice": null,
+    "n_train": 48
+   }
+  },
+  "missing-return": {
+   "assigns": {
+    "whole": 1.0,
+    "slice": 1.0,
+    "n_train": 45
+   },
+   "prints": {
+    "whole": 1.0,
+    "slice": null,
+    "n_train": 3
+   }
+  }
+ },
+ "thresholds": {
+  "off-by-one": 0.0,
+  "wrong-operator": 0.0,
+  "swapped-operands": 0.0,
+  "mutable-default": 0.0,
+  "missing-return": 0.0
+ },
+ "threshold_train_acc": 0.9792,
+ "variant_routes": [
+  {
+   "cls": "wrong-operator",
+   "when": "named",
+   "model": "bug-wrong-operator-named-model"
+  }
+ ],
+ "variant_route_scores": {
+  "bug-wrong-operator-named-model": {
+   "whole_on_dream_corpus": 0.6875,
+   "variant_on_dream_corpus": 0.6875,
+   "n_corpus": 32
+  },
+  "bug-swapped-operands-named-model": {
+   "whole_on_dream_corpus": 0.875,
+   "variant_on_dream_corpus": 0.8438,
+   "n_corpus": 32
+  }
+ },
+ "clean_guard": {
+  "name": "bug-clean-guard-model",
+  "incumbents": [
+   {
+    "name": "keyword-classifier (phase-1 trainer)",
+    "acc": 0.6552
+   },
+   {
+    "name": "majority-class (buggy)",
+    "acc": 0.6552
+   }
+  ],
+  "adopted": false
+ },
+ "harvest_route_scores": {
+  "bug-wrong-operator-harvest-model": {
+   "whole_heldout_acc": 0.8621,
+   "harvest_heldout_acc": 0.8276
+  },
+  "bug-swapped-operands-harvest-model": {
+   "whole_heldout_acc": 0.9655,
+   "harvest_heldout_acc": 0.9655
+  },
+  "bug-off-by-one-harvest-model": {
+   "whole_heldout_acc": 0.931,
+   "harvest_heldout_acc": 0.931
+  }
+ },
+ "final": {
+  "composed_acc": 0.7931,
+  "bar": 0.8,
+  "cleared": false,
+  "rounds_run": 8
+ }
+}

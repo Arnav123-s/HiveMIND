@@ -1,0 +1,7 @@
+coordinator: 56 examples from ['/home/hatch/workspace/edit-lab/data/coordinator_specialized.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  11%|█▏        | 35/311 [00:00<00:00, 288.11it/s]Loading weights:  29%|██▊       | 89/311 [00:00<00:00, 406.78it/s]Loading weights:  42%|████▏     | 131/311 [00:00<00:00, 377.81it/s]Loading weights:  55%|█████▍    | 170/311 [00:00<00:00, 354.14it/s]Loading weights:  66%|██████▌   | 206/311 [00:00<00:00, 293.15it/s]Loading weights:  76%|███████▌  | 237/311 [00:00<00:00, 267.29it/s]Loading weights:  95%|█████████▍| 294/311 [00:00<00:00, 328.07it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 344.00it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 567 max 686
+step 5/28 loss 1.1388 737s
+step 10/28 loss 0.7399 2010s

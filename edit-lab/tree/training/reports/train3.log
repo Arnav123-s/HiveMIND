@@ -1,0 +1,285 @@
+browser: 107 examples from ['/home/user/agent-team/training/data/browser.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  46%|████▌     | 142/311 [00:00<00:00, 1402.72it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 2055.60it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+skipped 10 examples longer than 2048 tokens
+tokens per example: mean 1408 max 1951
+step 5/49 loss 1.0821 157s
+step 10/49 loss 0.1783 310s
+step 15/49 loss 0.6338 523s
+step 20/49 loss 0.0540 874s
+step 25/49 loss 0.3008 1309s
+step 30/49 loss 0.0093 1552s
+step 35/49 loss 0.0291 1822s
+step 40/49 loss 0.0451 2024s
+step 45/49 loss 0.0035 2229s
+step 49/49 loss 0.0307 2375s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{
+ "specialist": "browser",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 107,
+ "files": [
+  "/home/user/agent-team/training/data/browser.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 16,
+ "alpha": 32,
+ "epochs": 2.0,
+ "lr": 0.0002,
+ "steps": 49,
+ "seconds": 2376,
+ "loss_first": 1.4429,
+ "loss_last": 0.0307,
+ "time": "2026-11-07 20:16:28"
+}
+researcher: 71 examples from ['/home/user/agent-team/training/data/researcher_extract.jsonl', '/home/user/agent-team/training/data/researcher_plan.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  35%|███▍      | 108/311 [00:00<00:00, 1049.71it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 1858.34it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 645 max 1581
+step 5/36 loss 0.8179 92s
+step 10/36 loss 0.3959 185s
+step 15/36 loss 0.1703 292s
+step 20/36 loss 0.1989 371s
+step 25/36 loss 0.0929 457s
+step 30/36 loss 0.0841 566s
+step 35/36 loss 0.1476 647s
+step 36/36 loss 0.0645 651s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{
+ "specialist": "researcher",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 71,
+ "files": [
+  "/home/user/agent-team/training/data/researcher_extract.jsonl",
+  "/home/user/agent-team/training/data/researcher_plan.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 16,
+ "alpha": 32,
+ "epochs": 2.0,
+ "lr": 0.0002,
+ "steps": 36,
+ "seconds": 652,
+ "loss_first": 0.8713,
+ "loss_last": 0.0645,
+ "time": "2026-11-07 20:27:31"
+}
+verifier: 225 examples from ['/home/user/agent-team/training/data/verifier.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3639.48it/s]
+trainable params: 4,358,144 || all params: 1,724,933,120 || trainable%: 0.2527
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 175 max 220
+step 5/57 loss 1.7428 28s
+step 10/57 loss 0.4545 57s
+step 15/57 loss 0.4551 85s
+step 20/57 loss 0.0301 113s
+step 25/57 loss 0.3539 142s
+step 30/57 loss 0.0546 171s
+step 35/57 loss 0.0506 201s
+step 40/57 loss 0.0577 230s
+step 45/57 loss 0.1360 259s
+step 50/57 loss 0.0414 289s
+step 55/57 loss 0.0329 318s
+step 57/57 loss 0.0097 326s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{
+ "specialist": "verifier",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 225,
+ "files": [
+  "/home/user/agent-team/training/data/verifier.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 8,
+ "alpha": 32,
+ "epochs": 1.0,
+ "lr": 0.0002,
+ "steps": 57,
+ "seconds": 327,
+ "loss_first": 5.0555,
+ "loss_last": 0.0097,
+ "time": "2026-11-07 20:33:05"
+}
+writer: 13 examples from ['/home/user/agent-team/training/data/writer.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 3637.76it/s]
+trainable params: 4,358,144 || all params: 1,724,933,120 || trainable%: 0.2527
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 473 max 578
+step 5/10 loss 1.0807 62s
+step 10/10 loss 0.4158 120s
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{
+ "specialist": "writer",
+ "base": "Qwen/Qwen3-1.7B",
+ "examples": 13,
+ "files": [
+  "/home/user/agent-team/training/data/writer.jsonl"
+ ],
+ "layers": [
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27
+ ],
+ "modules": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "rank": 8,
+ "alpha": 32,
+ "epochs": 3.0,
+ "lr": 0.0002,
+ "steps": 10,
+ "seconds": 121,
+ "loss_first": 2.8587,
+ "loss_last": 0.4158,
+ "time": "2026-11-07 20:35:13"
+}
+# Weight edit report: coordinator
+
+Base model: `Qwen/Qwen3-1.7B`  
+Edited: 98 matrices in layers 14-27 (down_proj, gate_proj, k_proj, o_proj, q_proj, up_proj, v_proj); rank 16, alpha 32; 8,716,288 trained numbers.
+
+## Mean relative change ||dW||/||W|| by layer
+
+| layer | mean | max |
+|---|---|---|
+| 14 | 0.4043% | 0.4922% |
+| 15 | 0.4075% | 0.4775% |
+| 16 | 0.3931% | 0.4852% |
+# Weight edit report: browser
+
+Base model: `Qwen/Qwen3-1.7B`  
+Edited: 98 matrices in layers 14-27 (down_proj, gate_proj, k_proj, o_proj, q_proj, up_proj, v_proj); rank 16, alpha 32; 8,716,288 trained numbers.
+
+## Mean relative change ||dW||/||W|| by layer
+
+| layer | mean | max |
+|---|---|---|
+| 14 | 0.3617% | 0.4338% |
+| 15 | 0.3529% | 0.4144% |
+| 16 | 0.3514% | 0.4134% |
+# Weight edit report: researcher
+
+Base model: `Qwen/Qwen3-1.7B`  
+Edited: 98 matrices in layers 14-27 (down_proj, gate_proj, k_proj, o_proj, q_proj, up_proj, v_proj); rank 16, alpha 32; 8,716,288 trained numbers.
+
+## Mean relative change ||dW||/||W|| by layer
+
+| layer | mean | max |
+|---|---|---|
+| 14 | 0.3585% | 0.4476% |
+| 15 | 0.3590% | 0.4325% |
+| 16 | 0.3460% | 0.4280% |
+# Weight edit report: verifier
+
+Base model: `Qwen/Qwen3-1.7B`  
+Edited: 98 matrices in layers 14-27 (down_proj, gate_proj, k_proj, o_proj, q_proj, up_proj, v_proj); rank 8, alpha 32; 4,358,144 trained numbers.
+
+## Mean relative change ||dW||/||W|| by layer
+
+| layer | mean | max |
+|---|---|---|
+| 14 | 0.6018% | 0.7028% |
+| 15 | 0.6119% | 0.7285% |
+| 16 | 0.6100% | 0.7366% |
+# Weight edit report: writer
+
+Base model: `Qwen/Qwen3-1.7B`  
+Edited: 98 matrices in layers 14-27 (down_proj, gate_proj, k_proj, o_proj, q_proj, up_proj, v_proj); rank 8, alpha 32; 4,358,144 trained numbers.
+
+## Mean relative change ||dW||/||W|| by layer
+
+| layer | mean | max |
+|---|---|---|
+| 14 | 0.3379% | 0.3951% |
+| 15 | 0.3387% | 0.3963% |
+| 16 | 0.3300% | 0.3937% |

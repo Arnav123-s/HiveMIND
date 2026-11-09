@@ -1,0 +1,19 @@
+--- researcher train attempt 1 23:42:03 ---
+researcher: 71 examples from ['/home/hatch/workspace/edit-lab/data/researcher_gentle.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 7759.61it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 645 max 1581
+--- researcher attempt 1 exit=143 ---
+--- researcher train attempt 2 23:47:13 ---
+researcher: 71 examples from ['/home/hatch/workspace/edit-lab/data/researcher_gentle.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 4154.52it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 645 max 1581
+--- researcher train attempt 1 23:59:02 ---
+researcher: 71 examples from ['/home/hatch/workspace/edit-lab/data/researcher_gentle.jsonl']
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   4%|▍         | 12/311 [00:00<00:03, 75.27it/s]Loading weights:  10%|▉         | 31/311 [00:00<00:02, 127.77it/s]Loading weights:  14%|█▍        | 45/311 [00:00<00:03, 80.23it/s] Loading weights:  23%|██▎       | 73/311 [00:00<00:01, 124.44it/s]Loading weights:  29%|██▊       | 89/311 [00:00<00:01, 118.64it/s]Loading weights:  33%|███▎      | 103/311 [00:01<00:02, 95.46it/s]Loading weights:  37%|███▋      | 115/311 [00:01<00:02, 90.13it/s]Loading weights:  40%|████      | 125/311 [00:01<00:02, 75.54it/s]Loading weights:  43%|████▎     | 134/311 [00:01<00:02, 75.19it/s]Loading weights:  46%|████▌     | 143/311 [00:01<00:02, 70.82it/s]Loading weights:  49%|████▊     | 151/311 [00:01<00:02, 72.09it/s]Loading weights:  52%|█████▏    | 162/311 [00:01<00:01, 78.71it/s]Loading weights:  55%|█████▍    | 171/311 [00:02<00:02, 55.98it/s]Loading weights:  58%|█████▊    | 180/311 [00:02<00:02, 61.24it/s]Loading weights:  60%|██████    | 188/311 [00:02<00:02, 45.75it/s]Loading weights:  62%|██████▏   | 194/311 [00:02<00:02, 44.34it/s]Loading weights:  64%|██████▍   | 200/311 [00:02<00:02, 42.90it/s]Loading weights:  72%|███████▏  | 225/311 [00:02<00:01, 83.07it/s]Loading weights:  76%|███████▌  | 236/311 [00:03<00:00, 83.00it/s]Loading weights:  79%|███████▉  | 246/311 [00:03<00:00, 71.08it/s]Loading weights:  82%|████████▏ | 255/311 [00:03<00:00, 70.49it/s]Loading weights:  86%|████████▌ | 267/311 [00:03<00:00, 67.40it/s]Loading weights:  88%|████████▊ | 275/311 [00:03<00:00, 52.81it/s]Loading weights: 100%|██████████| 311/311 [00:03<00:00, 79.64it/s]
+trainable params: 8,716,288 || all params: 1,729,291,264 || trainable%: 0.5040
+skipped 0 examples longer than 2048 tokens
+tokens per example: mean 645 max 1581
