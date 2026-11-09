@@ -185,8 +185,8 @@ def _shape(rows):
 
 def _instr(system, labels):
     """The cell's instruction: the head of the member's own, and the labels it must choose from."""
-    head = re.split(r"\n\s*Reply with|\nReply ", system.strip())[0]
-    head = " ".join(head.split())[:400]
+    lines = [ln for ln in system.strip().split("\n") if not re.match(r"\s*Reply (with|again)|\s*\{", ln)]
+    head = " ".join(" ".join(lines).split())[:500]  # the member's rules, without its reply format
     return f"{head}\nAnswer with one of: {', '.join(labels)}"
 
 
