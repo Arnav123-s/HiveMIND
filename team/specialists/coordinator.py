@@ -219,13 +219,14 @@ def ensure_data_steps(goal, steps):
     for 'average sales per month calculation method'; the writer then guessed 115.5 for an average of 117.)"""
     from ..guard import DATA_RUN, split_material
     order, material = split_material(goal)
-    if not (material and DATA_RUN.match(material)) or any(s["agent"] in ("browser", "coder") for s in steps):
+    if not (material and DATA_RUN.match(material)) or any(s["agent"] == "browser" for s in steps):
         return steps, []
+    makes = bool(FILE_ORDER.search(goal) or MAKE_ORDER.search(goal))  # a file or program he ordered keeps its coder
     fixed, notes = [], []
     for st in steps:
-        if st["agent"] == "researcher":
+        if st["agent"] == "researcher" or (st["agent"] == "coder" and not makes):
+            notes.append(f"{st['id']}: {st['agent']} -> calculator (the data is in his task)")
             st = dict(st, agent="calculator", task=f"Compute from the data Arnav gave ({material[:300]}): {st['task']}")
-            notes.append(f"{st['id']}: researcher -> calculator (the data is in his task)")
         fixed.append(st)
     return fixed, notes
 
@@ -245,7 +246,14 @@ def triage(goal, board):
     """The task_kind cell names the cheapest way through the hive; a template plan for one-kind tasks skips the 4B
     coordinator and plan reviewer. Returns steps, or None (the coordinator plans)."""
     from ..cells import runtime, use
+    from ..guard import DATA_RUN, split_material
     from .research_hive import broad
+    _, material = split_material(goal)
+    if material and DATA_RUN.match(material) and not (FILE_ORDER.search(goal) or MAKE_ORDER.search(goal)):
+        # data he hands over is computed on: the cell was unsure ("plan" 0.62) for "Monthly rainfall in mm: Jan 80,
+        # ...", and the coordinator sent researchers to search the web for it and a coder to an invented URL
+        board.log("coordinator", "triage", "his own data with a question: the calculator computes it")
+        return _template("calc", goal)
     if broad(goal):
         # a research question goes to the research hive, which splits it into sub-questions and runs experiments
         # with the coder when one needs it; planned by the coordinator, the battery question got a browser, a coder

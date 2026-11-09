@@ -1205,3 +1205,24 @@ def test_a_number_counts_by_its_value_not_its_spelling():
     assert struck == [] and "161.00" in text
     text, struck = ground_numbers("The discount is 162.", "Answer: 161.0")
     assert struck == ["The discount is 162."]
+
+
+def test_data_he_hands_over_goes_to_the_calculator_whatever_the_cell_says(tmp_path, monkeypatch):
+    """Held-out set 2: the cell was unsure ('plan' 0.62) for 'Monthly rainfall in mm: Jan 80, ...'; the coordinator sent
+    researchers to search the web for it and a coder to an invented URL, and the data check skipped a plan with a
+    coder in it."""
+    from team.board import Board
+    from team.cells import runtime, use
+    from team.specialists import coordinator
+    b = Board(tmp_path, echo=False)
+    monkeypatch.setattr(use, "on", lambda s: s == "task_kind")
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"plan": 0.62, "calc": 0.38})
+    rain = "Monthly rainfall in mm: Jan 80, Feb 65, Mar 72, Apr 40. Which month was the driest, and what was the average?"
+    assert [s["agent"] for s in coordinator.triage(rain, b)] == ["calculator", "writer"]
+    assert coordinator.triage("Monthly sales: Jan 120, Feb 95, Mar 143. Plot them as a bar chart.", b) is None
+    plan = [{"id": "s1", "agent": "researcher", "task": "Find the rainfall data", "needs": []},
+            {"id": "s2", "agent": "coder", "task": "Calculate the average", "needs": ["s1"]},
+            {"id": "s3", "agent": "writer", "task": "Write it", "needs": ["s2"]}]
+    fixed, notes = coordinator.ensure_data_steps(rain, plan)
+    assert [s["agent"] for s in fixed] == ["calculator", "calculator", "writer"]
+    assert notes[1].startswith("s2: coder -> calculator")
