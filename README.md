@@ -96,16 +96,36 @@ own small weight delta, `team/cells/`), a code rule where a rule is exact, or a 
 it measured at least as well as what did the job before (`cells/wins.json`).
 
 **Research hive** (`team/specialists/research_hive.py`): a research question ("research ...", "compare ...", "how does
-...", several questions at once) is not one look-up:
+...", "run an experiment ...", "prove ...", several questions at once) is not one look-up. Research is reading, and
+also testing, measuring, simulating and doing the math:
 
 ```
-question ─ decomposer (4B): 2-4 sub-questions
-             └ per sub-question: planner (sources, queries) ─ search ─ relevance cell on EVERY result, all at once
-                                 ─ reader + condenser on the kept pages ─ extractor (claims with exact quotes)
-           gap-finder cell: does any claim answer each sub-question? a gap gets one more search, other words
-           cross-check cell: two sources on the same point - agree, conflict or unrelated? conflicts are listed
-           verifier: every claim against its quote ─ writer: findings, disagreements, what no source answered
+question ─ decomposer (4B): 2-4 sub-questions, each with how it is answered: read, experiment or math
+   read:        planner (sources, queries) ─ search ─ relevance check on every result ─ reader (whole arXiv papers
+                when arXiv has the HTML version) + condenser ─ extractor (claims with exact quotes)
+   experiment / math: the coder writes and runs one program (fixed seed; numpy, sympy, pandas, networkx, matplotlib)
+                that prints its METHOD and each RESULT; every RESULT line is a claim whose evidence is the program's
+                own output, and the jury sees the program
+   gap-finder cell: does any claim answer each sub-question? a gap gets one more search, other words
+   cross-check: two sources on the same point - agree, conflict or unrelated? conflicts are listed
+   verifier: every claim against its quote or output ─ writer: findings, method, disagreements, open questions
 ```
+
+The research cells, measured on the same test inputs (`training/reports/cells/`):
+
+| job | cell (135M, as served) | without the cell | the 4B member | used |
+|---|---|---|---|---|
+| does a claim answer its sub-question (gap finder) | **0.933**, 81 ms | 0.500 (any claim counts) | 0.840, 1.8 s | cell |
+| is a search result about the question | 1.000, 70 ms | 1.000 (word overlap), 1 ms | 0.753, 1.8 s | word rule (a tie; the test data has no paraphrases) |
+| do two sources agree or conflict | (training) | none | 0.853, 2.1 s | |
+
+**Long projects** (`team/project.py`): a goal too big for one job ("build me an app ...", "a research study on ...",
+anything over days) becomes 3-12 milestones, each a deliverable with how to check it, run one after another as jobs in
+the project's own workspace: files accumulate across milestones and days, and every job sees the work so far. A
+milestone still undone after its attempts blocks the project with the reason. Progress is saved after every milestone,
+so a restart or the device turning off resumes it; the always-on agent works on open projects whenever it is idle.
+In a conversation, "build me ..." starts one and "how is it going?" is answered from its progress.
+`python -m team project "goal"`, `python -m team projects`, `POST/GET /v1/projects`.
 
 **Coding hive** (`team/specialists/coder.py`): the coder sees a preview of the real data first (the site its task
 names, the page the task points at, whether a listing has more pages); an error reader names the kind of each
@@ -115,7 +135,10 @@ reviewer reads it; the jury sees the program, its output and every file it saved
 
 **Many cells at once** (`team/cells/pool.py`): worker processes, one CPU thread each, sharing the memory-mapped base:
 a batch of cell questions (every search result, every fact, every pair of claims, every line of a page) is answered in
-parallel. `AGENT_TEAM_CELL_WORKERS` sets the number (default: up to 4).
+parallel. Its first measurement was a failure: 160 questions took 9.8 s with no pool and 728 s with 2 workers, because
+llama-cpp-python reads prompts on every core unless told otherwise, so the workers fought over the cores (fixed), and
+workers of a killed run kept computing (they now exit with their parent). It stays off (`AGENT_TEAM_CELL_WORKERS=1`)
+until it measures faster (`training/cells_pool_bench.py`).
 
 **The hive grows new cells from its own work** (`team/cells/learn.py`, `python -m team grow`): the verifier's claim
 checks, the juror's item checks and the condenser's line choices are logged with their inputs
