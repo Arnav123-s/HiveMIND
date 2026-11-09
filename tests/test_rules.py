@@ -746,3 +746,29 @@ def test_a_listing_s_next_page_is_pointed_out_and_the_site_name_is_not_a_task_wo
         ["Mystery -> https://books.toscrape.com/catalogue/category/books/mystery_3/index.html"]
     assert next_page(soup, "https://books.toscrape.com/catalogue/category/books/mystery_3/index.html") == \
         "https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html"
+
+
+def test_research_can_run_experiments_and_do_math_not_only_read(tmp_path, monkeypatch):
+    """A sub-question answered by an experiment: the coder's program runs it; each RESULT line is a claim whose
+    evidence is the program's own output, which the verifier checks like a quote."""
+    from team.board import Board
+    from team.specialists import coder, research_hive as R, verifier
+    b = Board(tmp_path, echo=False)
+    monkeypatch.setattr(R.llm, "chat_json", lambda role, msgs, **k: ({"questions": [
+        {"q": "Is insertion sort faster than merge sort on lists of 20 numbers?", "how": "experiment"}]}, ""))
+    (tmp_path / "exp.py").write_text("import random\nrandom.seed(0)\n# times both sorts\n")
+
+    def fake_coder(task, ctx, board, sid, guard, work):
+        assert "RESULT: " in task and "fixed random seed" in task
+        return {"summary": "METHOD: timed both sorts 1000 times on random lists of 20\n"
+                           "RESULT: insertion sort mean time = 3.1 us\nRESULT: merge sort mean time = 7.9 us",
+                "returncode": 0, "code_path": str(tmp_path / "exp.py"), "stderr": "", "files": []}
+    monkeypatch.setattr(coder, "run", fake_coder)
+    assert R.broad("Run an experiment: is insertion sort faster than merge sort on small lists?")
+    out = R.run("Run an experiment: is insertion sort faster than merge sort on small lists?", "", b, "s1",
+                guard=object(), work=tmp_path)
+    assert [f["claim"] for f in out["facts"]] == ["insertion sort mean time = 3.1 us", "merge sort mean time = 7.9 us"]
+    assert out["items"] == [] or "Method" in out["items"][0]
+    src = out["facts"][0]["url"]
+    assert src.startswith("experiment:") and "RESULT: insertion sort mean time = 3.1 us" in out["corpus"][src]
+    assert verifier.quote_in(out["facts"][0]["quote"], out["corpus"][src])

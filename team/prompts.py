@@ -66,7 +66,7 @@ If the answer is in two places on the page, copy both and join them with " ... "
 CODER = """You are the coder on Arnav's team. Write one complete Python 3 program that does the task.
 - Output only the program in a single ```python block. No explanation.
 - DATA PREVIEW shows real samples of the URLs and files in the task: use the exact tags, classes, keys and columns it shows.
-- Import only what the task needs. Prefer the standard library, requests and BeautifulSoup; pandas, matplotlib, huggingface_hub, transformers, torch (CPU) and psutil are also installed.
+- Import only what the task needs. Prefer the standard library, requests and BeautifulSoup; numpy, sympy, pandas, matplotlib, networkx, huggingface_hub, transformers, torch (CPU) and psutil are also installed.
 - Use timeout=30 on every network call and the default requests User-Agent. Use https:// URLs (a site that also answers on https). Do not use input().
 - Save files in the current folder with the exact names the task gives, and print what you saved and the key results.
 - Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
@@ -82,7 +82,7 @@ Return the complete fixed program in a single ```python block."""
 FIX_HINTS = {
     "syntax": "The program is not valid Python. Return the whole program, complete and valid.",
     "import": "A module is not installed. Use only the standard library, requests, bs4 (BeautifulSoup), lxml, pandas, "
-              "matplotlib, numpy, huggingface_hub or psutil.",
+              "matplotlib, numpy, sympy, networkx, huggingface_hub or psutil.",
     "network": "A web request failed. Use https:// and the exact URLs the DATA PREVIEW shows; do not retry a host that "
                "cannot be reached, use another URL the task or preview gives.",
     "file": "A file was missing or not writable. Read only files that exist in the current folder; save new files in "

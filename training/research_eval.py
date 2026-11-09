@@ -24,6 +24,8 @@ QUESTIONS = [
     "Research how lithium-ion batteries degrade over time and what slows the degradation.",
     "Compare SQLite and DuckDB for analytics on a laptop: speed, features and limits.",
     "Investigate what the James Webb Space Telescope's main mirror is made of and why.",
+    "Run an experiment to test whether Python's built-in sort is faster than a hand-written merge sort on lists of "
+    "10,000 random numbers, and explain why.",
 ]
 
 
