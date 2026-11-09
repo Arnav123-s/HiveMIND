@@ -118,8 +118,14 @@ def conflicts(facts, board=None, limit=24):
     pairs at once); nothing without the cell."""
     if not use.on("claims_agree"):
         return []
+    # a conflict is two values for the same thing: claims without differing numbers cannot conflict (the cell called
+    # "Timsort is used in Python's standard library" and "Python's built-in sort is called timsort" a conflict, 4 times)
+    nums = lambda c: set(re.findall(r"\d+(?:[.,]\d+)?", c))  # noqa: E731
     pairs = [(a, b) for i, a in enumerate(facts) for b in facts[i + 1:]
-             if a.get("url") != b.get("url") and words(a["claim"]) & words(b["claim"])][:limit]
+             if a.get("url") != b.get("url") and words(a["claim"]) & words(b["claim"])
+             and nums(a["claim"]) and nums(b["claim"]) and nums(a["claim"]) != nums(b["claim"])][:limit]
+    if not pairs:
+        return []
     said = use.ask_all("claims_agree", [f"A: {a['claim']}\nB: {b['claim']}" for a, b in pairs], board)
     return [p for p, v in zip(pairs, said) if v == "conflict"]
 
@@ -156,6 +162,11 @@ RUNNABLE = re.compile(r"\b(experiment\w*|test whether|measur\w*|benchmark\w*|sim
                       r"derive|calculat\w*|comput\w*|equation\w*|formula\w*|probabilit\w*|\d+\s*(?:%|x|times))\b", re.I)
 
 
+MEASURE_WORDS = set("time taken took seconds second secs sec ms milliseconds us microseconds ns minutes result results "
+                    "value values mean average total median min max elapsed runtime run runs speed rate count number "
+                    "per iteration iterations trial trials".split())
+
+
 def experiment(q, board, step_id, guard, work):
     """A sub-question answered by a program the coder writes and runs. Its RESULT lines become claims whose quote is
     the program's own output (the verifier checks each against that output; the jury sees the program)."""
@@ -165,8 +176,19 @@ def experiment(q, board, step_id, guard, work):
     src = f"experiment:{Path(res.get('code_path', 'program.py')).name}"
     code = Path(res["code_path"]).read_text(errors="replace")[:4000] if res.get("code_path") and \
         Path(res["code_path"]).exists() else ""
-    facts = [{"claim": ln.split("RESULT:", 1)[1].strip(), "quote": ln.strip(), "url": src, "question": q}
-             for ln in out.splitlines() if ln.strip().startswith("RESULT:") and ln.split("RESULT:", 1)[1].strip()]
+    # each result carries the method printed before it: "RESULT: Time taken: 0.001302 seconds" after "METHOD: Python's
+    # built-in sort" said nothing of which sort, and the critic flagged the right measurements as unsupported
+    facts, current = [], ""
+    for ln in out.splitlines():
+        s_ = ln.strip()
+        if s_.startswith("METHOD:"):
+            current = s_.split("METHOD:", 1)[1].strip()
+        elif s_.startswith("RESULT:") and s_.split("RESULT:", 1)[1].strip():
+            value = s_.split("RESULT:", 1)[1].strip()
+            # only a result with no subject of its own ("Time taken: 0.001302 seconds") takes the method's name
+            subject = {w for w in words(value) - MEASURE_WORDS if not w.isdigit()}
+            claim = f"{current}: {value}" if current and not subject else value
+            facts.append({"claim": claim, "quote": s_, "url": src, "question": q})
     method = next((ln.split("METHOD:", 1)[1].strip() for ln in out.splitlines() if ln.strip().startswith("METHOD:")), "")
     board.log("research_hive", "experiment", f"{q[:80]}: {len(facts)} result(s)"
               + (f"; method: {method[:120]}" if method else "") + ("" if res.get("returncode") == 0 else " (program failed)"))

@@ -1344,3 +1344,29 @@ def test_a_search_result_naming_the_question_s_subject_is_relevant():
     res = [{"title": "SQLite", "snippet": "SQLite is a database engine written in C"},
            {"title": "Laptop", "snippet": "A laptop is a small portable computer"}]
     assert R.relevant(q, res) == [True, False]
+
+
+def test_an_experiment_result_names_its_method_and_rewordings_are_not_conflicts(tmp_path, monkeypatch):
+    """Research eval (sorting experiment): 'RESULT: Time taken: 0.001302 seconds' after 'METHOD: Python's built-in
+    sort' said nothing of which sort, and the critic flagged the right measurements; the claims_agree cell called
+    four rewordings of 'Python uses timsort' conflicts."""
+    from team.board import Board
+    from team.cells import use
+    from team.specialists import coder, research_hive as R
+    work = tmp_path / "w"
+    work.mkdir()
+    (work / "s1_exp1.py").write_text("print('x')")
+    out = ("METHOD: Python's built-in sort\nRESULT: Time taken: 0.001302 seconds\n"
+           "METHOD: Hand-written merge sort\nRESULT: Time taken: 0.014714 seconds\n")
+    monkeypatch.setattr(coder, "run", lambda *a, **k: {"summary": out, "returncode": 0,
+                                                       "code_path": str(work / "s1_exp1.py")})
+    facts, _, _, _ = R.experiment("Is the built-in sort faster?", Board(tmp_path, echo=False), "s1", None, work)
+    assert [f["claim"] for f in facts] == ["Python's built-in sort: Time taken: 0.001302 seconds",
+                                           "Hand-written merge sort: Time taken: 0.014714 seconds"]
+    monkeypatch.setattr(use, "on", lambda s: s == "claims_agree")
+    monkeypatch.setattr(use, "ask_all", lambda skill, texts, board=None: ["conflict"] * len(texts))
+    same = [{"claim": "Timsort is used in Python's standard library", "url": "https://a"},
+            {"claim": "Python's built-in sort is called timsort", "url": "https://b"}]
+    assert R.conflicts(same) == []
+    two = [{"claim": "The array makes 320 MW", "url": "https://a"}, {"claim": "The array makes 302 MW", "url": "https://b"}]
+    assert len(R.conflicts(two)) == 1
