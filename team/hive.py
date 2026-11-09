@@ -6,6 +6,7 @@ Everything goes through one shared board, so each specialist builds on what
 the others found.
 """
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -260,7 +261,8 @@ class Hive:
 
     def _dispatch(self, s, task, ctx):
         if s["agent"] == "researcher":
-            if research_hive.broad(task) and "[" not in s["id"]:  # a research question, not one look-up (nor a fan-out item)
+            if research_hive.broad(task) and "[" not in s["id"] and os.environ.get("AGENT_TEAM_RESEARCH_HIVE", "1") != "0":
+                # a research question, not one look-up (nor a fan-out item); AGENT_TEAM_RESEARCH_HIVE=0 turns it off
                 self.board.log("research_hive", "start", f"{s['id']}: sub-questions, relevance, gaps and cross-checks")
                 return research_hive.run(task, ctx, self.board, s["id"])
             return researcher.run(task, ctx, self.board, s["id"])
