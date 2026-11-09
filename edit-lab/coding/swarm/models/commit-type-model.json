@@ -1,0 +1,3616 @@
+{
+ "name": "commit-type-model",
+ "niche": "vcs",
+ "job": "classify a commit message into its conventional type",
+ "classes": [
+  "feat",
+  "fix",
+  "docs",
+  "refactor",
+  "test",
+  "chore"
+ ],
+ "features": [
+  "w:the",
+  "w:in",
+  "w2:settings_page",
+  "w2:the_settings",
+  "w:page",
+  "w:settings",
+  "w2:in_the",
+  "w2:webhook_retries",
+  "w:retries",
+  "w:webhook",
+  "w2:csv_exporter",
+  "w2:the_csv",
+  "w:csv",
+  "w:exporter",
+  "w:for",
+  "w2:report_builder",
+  "w2:the_report",
+  "w:add",
+  "w:builder",
+  "w:report",
+  "w2:cache_layer",
+  "w2:the_cache",
+  "w:cache",
+  "w:layer",
+  "w2:dark_mode",
+  "w:dark",
+  "w:mode",
+  "w:test",
+  "w2:batch_import",
+  "w2:login_form",
+  "w2:search_index",
+  "w2:session_timeouts",
+  "w2:the_login",
+  "w2:the_search",
+  "w:batch",
+  "w:form",
+  "w:import",
+  "w:index",
+  "w:login",
+  "w:search",
+  "w:session",
+  "w:timeouts",
+  "w2:user_avatars",
+  "w:avatars",
+  "w:user",
+  "w:docs",
+  "w:up",
+  "w:write",
+  "w2:retry_logic",
+  "w:logic",
+  "w:retry",
+  "w:fix",
+  "w:tests",
+  "w2:for_the",
+  "w2:the_docs",
+  "w:into",
+  "w:out",
+  "w:tidy",
+  "w:update",
+  "w2:up_the",
+  "w2:test_for",
+  "w:about",
+  "w:api",
+  "w:branches",
+  "w:build",
+  "w:bump",
+  "w:ci",
+  "w:correct",
+  "w:cover",
+  "w:document",
+  "w:feat",
+  "w:from",
+  "w:get",
+  "w:implement",
+  "w:new",
+  "w:on",
+  "w:patch",
+  "w:put",
+  "w:readme",
+  "w:regression",
+  "w:stop",
+  "w:support",
+  "w:verify",
+  "w2:fix_the",
+  "w2:on_the",
+  "w2:add_the",
+  "w2:correct_the",
+  "w2:cover_the",
+  "w2:put_the",
+  "w2:about_the",
+  "w2:avatars_in",
+  "w2:implement_the",
+  "w2:layer_in",
+  "w2:out_the",
+  "w2:stop_the",
+  "w2:tidy_the",
+  "w2:add_guide",
+  "w2:add_regression",
+  "w2:add_smoke",
+  "w2:add_tests",
+  "w2:address_the",
+  "w2:an_api",
+  "w2:api_keys",
+  "w2:archive_old",
+  "w2:as_an",
+  "w2:bug_in",
+  "w2:build_out",
+  "w2:builder_in",
+  "w2:bump_dependencies",
+  "w2:bump_the",
+  "w2:by_tests",
+  "w2:case_for",
+  "w2:cases_of",
+  "w2:chore_tidy",
+  "w2:ci_configuration",
+  "w2:clean_up",
+  "w2:coverage_on",
+  "w2:covered_by",
+  "w2:crash_in",
+  "w2:create_new",
+  "w2:docs_explain",
+  "w2:docs_for",
+  "w2:docs_on",
+  "w2:edge_cases",
+  "w2:expand_the",
+  "w2:exporter_in",
+  "w2:extend_the",
+  "w2:fault_in",
+  "w2:feat_add",
+  "w2:feat_parser",
+  "w2:fix_correct",
+  "w2:fix_crash",
+  "w2:for_dark",
+  "w2:for_session",
+  "w2:for_webhook",
+  "w2:formatter_config",
+  "w2:from_crashing",
+  "w2:from_nothing",
+  "w2:get_the",
+  "w2:guide_for",
+  "w2:hole_in",
+  "w2:hotfix_for",
+  "w2:in_ci",
+  "w2:in_tests",
+  "w2:into_helper",
+  "w2:into_its",
+  "w2:into_the",
+  "w2:is_covered",
+  "w2:its_own",
+  "w2:leak_in",
+  "w2:license_headers",
+  "w2:new_the",
+  "w2:old_branches",
+  "w2:own_module",
+  "w2:parser_implement",
+  "w2:patch_the",
+  "w2:patch_up",
+  "w2:pin_tool",
+  "w2:prune_stale",
+  "w2:raise_coverage",
+  "w2:readme_about",
+  "w2:refactor_tidy",
+  "w2:refresh_lockfile",
+  "w2:regression_in",
+  "w2:regression_test",
+  "w2:renew_certificates",
+  "w2:repo_layout",
+  "w2:restructure_the",
+  "w2:roll_out",
+  "w2:rotate_the",
+  "w2:set_up",
+  "w2:smoke_test",
+  "w2:spell_out",
+  "w2:squash_the",
+  "w2:stale_branches",
+  "w2:suite_for",
+  "w2:sync_the",
+  "w2:test_case",
+  "w2:test_suite",
+  "w2:test_verify",
+  "w2:tests_for",
+  "w2:the_api",
+  "w2:the_bug",
+  "w2:the_cli",
+  "w2:the_edge",
+  "w2:the_faq",
+  "w2:the_fault",
+  "w2:the_formatter",
+  "w2:the_handbook",
+  "w2:the_hole",
+  "w2:the_leak",
+  "w2:the_license",
+  "w2:the_linter",
+  "w2:the_manual",
+  "w2:the_product",
+  "w2:the_readme",
+  "w2:the_regression",
+  "w2:the_repo",
+  "w2:the_test",
+  "w2:the_version",
+  "w2:the_wiki",
+  "w2:tidy_gitignore",
+  "w2:to_the",
+  "w2:tool_versions",
+  "w2:under_test",
+  "w2:unit_tests",
+  "w2:up_webhook",
+  "w2:update_ci",
+  "w2:update_readme",
+  "w2:update_the",
+  "w2:upgrade_the",
+  "w2:verify_the",
+  "w2:wire_up",
+  "w2:with_unit",
+  "w2:write_about",
+  "w2:write_docs",
+  "w2:write_test",
+  "w2:write_up",
+  "w:address",
+  "w:an",
+  "w:annotate",
+  "w:archive",
+  "w:as",
+  "w:assert",
+  "w:behaves",
+  "w:bring",
+  "w:bug",
+  "w:bugfix",
+  "w:by",
+  "w:case",
+  "w:cases",
+  "w:certificates",
+  "w:check",
+  "w:chore",
+  "w:clarify",
+  "w:clean",
+  "w:cli",
+  "w:config",
+  "w:configuration",
+  "w:consolidate",
+  "w:coverage",
+  "w:covered",
+  "w:crash",
+  "w:crashing",
+  "w:create",
+  "w:decouple",
+  "w:deliver",
+  "w:dependencies",
+  "w:documentation",
+  "w:edge",
+  "w:enable",
+  "w:ensure",
+  "w:exercise",
+  "w:expand",
+  "w:explain",
+  "w:expose",
+  "w:extend",
+  "w:extract",
+  "w:faq",
+  "w:fault",
+  "w:formatter",
+  "w:gitignore",
+  "w:guide",
+  "w:handbook",
+  "w:headers",
+  "w:helper",
+  "w:hole",
+  "w:hotfix",
+  "w:inline",
+  "w:introduce",
+  "w:is",
+  "w:its",
+  "w:keys",
+  "w:launch",
+  "w:layout",
+  "w:leak",
+  "w:license",
+  "w:linter",
+  "w:lockfile",
+  "w:manual",
+  "w:mend",
+  "w:module",
+  "w:move",
+  "w:note",
+  "w:nothing",
+  "w:of",
+  "w:old",
+  "w:own",
+  "w:parser",
+  "w:pin",
+  "w:polish",
+  "w:product",
+  "w:prune",
+  "w:raise",
+  "w:refactor",
+  "w:refresh",
+  "w:rename",
+  "w:renew",
+  "w:reorganize",
+  "w:repair",
+  "w:repo",
+  "w:restructure",
+  "w:roll",
+  "w:rotate",
+  "w:set",
+  "w:shipped",
+  "w:simplify",
+  "w:smoke",
+  "w:snapshot",
+  "w:spell",
+  "w:squash",
+  "w:stale",
+  "w:streamline",
+  "w:suite",
+  "w:sync",
+  "w:tested",
+  "w:to",
+  "w:tool",
+  "w:under",
+  "w:unit",
+  "w:untangle",
+  "w:upgrade",
+  "w:version",
+  "w:versions",
+  "w:wiki",
+  "w:wire",
+  "w:with",
+  "w:works",
+  "w2:add_user",
+  "w2:assert_the",
+  "w2:bring_the",
+  "w2:build_the",
+  "w2:check_the",
+  "w2:consolidate_the",
+  "w2:deliver_the",
+  "w2:explain_the",
+  "w2:for_user",
+  "w2:import_in",
+  "w2:in_webhook",
+  "w2:mode_in",
+  "w2:move_the",
+  "w2:page_in",
+  "w2:page_into",
+  "w2:repair_the",
+  "w2:retries_in",
+  "w2:simplify_the",
+  "w2:snapshot_the",
+  "w2:streamline_webhook",
+  "w2:support_the",
+  "w2:write_the",
+  "w2:about_webhook",
+  "w2:annotate_the",
+  "w2:bugfix_webhook",
+  "w2:clarify_the",
+  "w2:clarify_user",
+  "w2:document_batch",
+  "w2:document_session",
+  "w2:document_the",
+  "w2:enable_the",
+  "w2:exercise_dark",
+  "w2:exercise_the",
+  "w2:exporter_into",
+  "w2:expose_the",
+  "w2:extract_the",
+  "w2:form_under",
+  "w2:get_webhook",
+  "w2:implement_retry",
+  "w2:import_from",
+  "w2:in_batch",
+  "w2:in_dark",
+  "w2:index_behaves",
+  "w2:inline_webhook",
+  "w2:introduce_the",
+  "w2:layer_into",
+  "w2:logic_in",
+  "w2:logic_into",
+  "w2:mend_the",
+  "w2:note_the",
+  "w2:of_the",
+  "w2:out_batch",
+  "w2:out_user",
+  "w2:out_webhook",
+  "w2:page_documentation",
+  "w2:page_from",
+  "w2:polish_dark",
+  "w2:polish_the",
+  "w2:reorganize_batch",
+  "w2:reorganize_the",
+  "w2:retries_from",
+  "w2:retries_shipped",
+  "w2:timeouts_in",
+  "w2:untangle_the",
+  "w2:up_batch",
+  "w2:up_session",
+  "w2:verify_retry"
+ ],
+ "hidden": 0,
+ "fmode": "words",
+ "weights": {
+  "w": {
+   "w:the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.9830844227584802,
+    "refactor": -0.5924214472624375,
+    "test": 0.0,
+    "chore": -0.33761930858647987
+   },
+   "w:in": {
+    "feat": -0.6773196447300917,
+    "fix": 0.8820481524077836,
+    "docs": 0.4937846381443513,
+    "refactor": -1.0873029051414917,
+    "test": 0.8657864381289094,
+    "chore": -0.49821882674763296
+   },
+   "w2:settings_page": {
+    "feat": 0.22768188688183888,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.31834828523315434,
+    "test": 0.0,
+    "chore": -0.7913531666749049
+   },
+   "w2:the_settings": {
+    "feat": 0.22768188688183888,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.31834828523315434,
+    "test": 0.0,
+    "chore": -0.7913531666749049
+   },
+   "w:page": {
+    "feat": 0.22768188688183888,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.31834828523315434,
+    "test": 0.0,
+    "chore": -0.7913531666749049
+   },
+   "w:settings": {
+    "feat": 0.22768188688183888,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.31834828523315434,
+    "test": 0.0,
+    "chore": -0.7913531666749049
+   },
+   "w2:in_the": {
+    "feat": 0.0,
+    "fix": 0.626588095712715,
+    "docs": 1.0174482481062979,
+    "refactor": -0.4948969908268088,
+    "test": -0.9739647120822726,
+    "chore": -0.25030177847903123
+   },
+   "w2:webhook_retries": {
+    "feat": 0.3568748720274023,
+    "fix": 0.3012530162485334,
+    "docs": 0.2875252373655067,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": -1.076102756721143
+   },
+   "w:retries": {
+    "feat": 0.3568748720274023,
+    "fix": 0.3012530162485334,
+    "docs": 0.2875252373655067,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": -1.076102756721143
+   },
+   "w:webhook": {
+    "feat": 0.3568748720274023,
+    "fix": 0.3012530162485334,
+    "docs": 0.2875252373655067,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": -1.076102756721143
+   },
+   "w2:csv_exporter": {
+    "feat": 0.21505544746866098,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30451173220139555,
+    "test": 0.23240671629355789,
+    "chore": -0.764504876067639
+   },
+   "w2:the_csv": {
+    "feat": 0.21505544746866098,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30451173220139555,
+    "test": 0.23240671629355789,
+    "chore": -0.764504876067639
+   },
+   "w:csv": {
+    "feat": 0.21505544746866098,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30451173220139555,
+    "test": 0.23240671629355789,
+    "chore": -0.764504876067639
+   },
+   "w:exporter": {
+    "feat": 0.21505544746866098,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30451173220139555,
+    "test": 0.23240671629355789,
+    "chore": -0.764504876067639
+   },
+   "w:for": {
+    "feat": -1.4528567518167241,
+    "fix": 0.7670555075954018,
+    "docs": 0.3281842532950444,
+    "refactor": -0.7425842824045299,
+    "test": 1.3546006650231033,
+    "chore": -0.33677259053058295
+   },
+   "w2:report_builder": {
+    "feat": 0.22510713215810058,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30281089878834616,
+    "test": 0.0,
+    "chore": -0.7018332242321805
+   },
+   "w2:the_report": {
+    "feat": 0.22510713215810058,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30281089878834616,
+    "test": 0.0,
+    "chore": -0.7018332242321805
+   },
+   "w:add": {
+    "feat": 2.3188322258694862,
+    "fix": -1.2568446680875256,
+    "docs": 0.7544504169432852,
+    "refactor": -1.4993998900611303,
+    "test": 0.0,
+    "chore": -0.49469710608678547
+   },
+   "w:builder": {
+    "feat": 0.22510713215810058,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30281089878834616,
+    "test": 0.0,
+    "chore": -0.7018332242321805
+   },
+   "w:report": {
+    "feat": 0.22510713215810058,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.30281089878834616,
+    "test": 0.0,
+    "chore": -0.7018332242321805
+   },
+   "w2:cache_layer": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.2538153431261402,
+    "test": 0.0,
+    "chore": -0.6256722062252034
+   },
+   "w2:the_cache": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.2538153431261402,
+    "test": 0.0,
+    "chore": -0.6256722062252034
+   },
+   "w:cache": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.2538153431261402,
+    "test": 0.0,
+    "chore": -0.6256722062252034
+   },
+   "w:layer": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.2538153431261402,
+    "test": 0.0,
+    "chore": -0.6256722062252034
+   },
+   "w2:dark_mode": {
+    "feat": 0.2341551649061502,
+    "fix": 0.0,
+    "docs": 0.28536900439304136,
+    "refactor": 0.2610000785813279,
+    "test": 0.0,
+    "chore": -1.1000785949354996
+   },
+   "w:dark": {
+    "feat": 0.2341551649061502,
+    "fix": 0.0,
+    "docs": 0.28536900439304136,
+    "refactor": 0.2610000785813279,
+    "test": 0.0,
+    "chore": -1.1000785949354996
+   },
+   "w:mode": {
+    "feat": 0.2341551649061502,
+    "fix": 0.0,
+    "docs": 0.28536900439304136,
+    "refactor": 0.2610000785813279,
+    "test": 0.0,
+    "chore": -1.1000785949354996
+   },
+   "w:test": {
+    "feat": -0.826621736951671,
+    "fix": -0.7106517192455406,
+    "docs": -0.9133600683770091,
+    "refactor": -0.7022999807513143,
+    "test": 2.604622428640596,
+    "chore": -0.24355158202737065
+   },
+   "w2:batch_import": {
+    "feat": 0.0,
+    "fix": 0.22171733265512608,
+    "docs": 0.47426119887716084,
+    "refactor": 0.3825398601561147,
+    "test": 0.0,
+    "chore": -0.9679389176030022
+   },
+   "w2:login_form": {
+    "feat": 0.22289535291786963,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.39371951122515486,
+    "test": 0.0,
+    "chore": -0.6358459506874228
+   },
+   "w2:search_index": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.23327669045269678,
+    "test": 0.0,
+    "chore": -0.6924089849277023
+   },
+   "w2:session_timeouts": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.2795243476221139,
+    "refactor": 0.0,
+    "test": 0.3346065325059303,
+    "chore": -1.0958388663366827
+   },
+   "w2:the_login": {
+    "feat": 0.22289535291786963,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.39371951122515486,
+    "test": 0.0,
+    "chore": -0.6358459506874228
+   },
+   "w2:the_search": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.23327669045269678,
+    "test": 0.0,
+    "chore": -0.6924089849277023
+   },
+   "w:batch": {
+    "feat": 0.0,
+    "fix": 0.22171733265512608,
+    "docs": 0.47426119887716084,
+    "refactor": 0.3825398601561147,
+    "test": 0.0,
+    "chore": -0.9679389176030022
+   },
+   "w:form": {
+    "feat": 0.22289535291786963,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.39371951122515486,
+    "test": 0.0,
+    "chore": -0.6358459506874228
+   },
+   "w:import": {
+    "feat": 0.0,
+    "fix": 0.22171733265512608,
+    "docs": 0.47426119887716084,
+    "refactor": 0.3825398601561147,
+    "test": 0.0,
+    "chore": -0.9679389176030022
+   },
+   "w:index": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.23327669045269678,
+    "test": 0.0,
+    "chore": -0.6924089849277023
+   },
+   "w:login": {
+    "feat": 0.22289535291786963,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.39371951122515486,
+    "test": 0.0,
+    "chore": -0.6358459506874228
+   },
+   "w:search": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.23327669045269678,
+    "test": 0.0,
+    "chore": -0.6924089849277023
+   },
+   "w:session": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.2795243476221139,
+    "refactor": 0.0,
+    "test": 0.3346065325059303,
+    "chore": -1.0958388663366827
+   },
+   "w:timeouts": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.2795243476221139,
+    "refactor": 0.0,
+    "test": 0.3346065325059303,
+    "chore": -1.0958388663366827
+   },
+   "w2:user_avatars": {
+    "feat": 0.26235257823034913,
+    "fix": 0.3759690426501395,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": -0.9523356570809594
+   },
+   "w:avatars": {
+    "feat": 0.26235257823034913,
+    "fix": 0.3759690426501395,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": -0.9523356570809594
+   },
+   "w:user": {
+    "feat": 0.26235257823034913,
+    "fix": 0.3759690426501395,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": -0.9523356570809594
+   },
+   "w:docs": {
+    "feat": -0.6450537883515957,
+    "fix": -0.8077045156269782,
+    "docs": 2.511272179728483,
+    "refactor": -0.6296836007226218,
+    "test": -0.7378711290033031,
+    "chore": -0.2216744742984236
+   },
+   "w:up": {
+    "feat": 0.4379006354064468,
+    "fix": 0.3493295227925319,
+    "docs": 0.29169334085107945,
+    "refactor": 0.0,
+    "test": -0.6556357423726257,
+    "chore": -0.4054761984641917
+   },
+   "w:write": {
+    "feat": -1.1252474946027784,
+    "fix": -0.983205785346803,
+    "docs": 2.983012624766101,
+    "refactor": -0.9816658649651112,
+    "test": 0.0,
+    "chore": -0.27045120226573777
+   },
+   "w2:retry_logic": {
+    "feat": 0.4004733862970795,
+    "fix": 0.25883284034934523,
+    "docs": 0.0,
+    "refactor": 0.32528211000468754,
+    "test": 0.0,
+    "chore": -0.9633942079888099
+   },
+   "w:logic": {
+    "feat": 0.4004733862970795,
+    "fix": 0.25883284034934523,
+    "docs": 0.0,
+    "refactor": 0.32528211000468754,
+    "test": 0.0,
+    "chore": -0.9633942079888099
+   },
+   "w:retry": {
+    "feat": 0.4004733862970795,
+    "fix": 0.25883284034934523,
+    "docs": 0.0,
+    "refactor": 0.32528211000468754,
+    "test": 0.0,
+    "chore": -0.9633942079888099
+   },
+   "w:fix": {
+    "feat": -1.083568759928472,
+    "fix": 3.375585831144088,
+    "docs": -0.6347616610409889,
+    "refactor": -1.2534104342567085,
+    "test": -0.5692280314925924,
+    "chore": -0.2804256036516787
+   },
+   "w:tests": {
+    "feat": -0.8971679242058056,
+    "fix": -0.6603571297937856,
+    "docs": -0.5149696164579269,
+    "refactor": -0.6049607336305809,
+    "test": 2.5334266538499444,
+    "chore": 0.0
+   },
+   "w2:for_the": {
+    "feat": -0.697717206783442,
+    "fix": 0.40765270672045967,
+    "docs": 0.6196049215089257,
+    "refactor": -0.3279129556052693,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_docs": {
+    "feat": -0.2522858447120853,
+    "fix": -0.49546515191390256,
+    "docs": 1.332004781072612,
+    "refactor": 0.0,
+    "test": -0.35610164592298194,
+    "chore": 0.0
+   },
+   "w:into": {
+    "feat": 0.3391003289328393,
+    "fix": -0.45786587743706886,
+    "docs": -0.3724940023823812,
+    "refactor": 0.9775873007501699,
+    "test": -0.3065931046651005,
+    "chore": 0.0
+   },
+   "w:out": {
+    "feat": 1.3508897828395852,
+    "fix": -0.5671192309649344,
+    "docs": 0.25067637248698726,
+    "refactor": -0.5680052377924845,
+    "test": -0.2834147374093401,
+    "chore": 0.0
+   },
+   "w:tidy": {
+    "feat": -0.627118632166569,
+    "fix": -0.47701535930425737,
+    "docs": -0.34528161149275394,
+    "refactor": 0.8147982635450614,
+    "test": -0.3617629363309917,
+    "chore": 1.0050066630493883
+   },
+   "w:update": {
+    "feat": -0.4905008680226835,
+    "fix": -0.35592362143901785,
+    "docs": 0.6648046680762985,
+    "refactor": -0.5369841826172728,
+    "test": -0.3638073210054186,
+    "chore": 1.0864387432033027
+   },
+   "w2:up_the": {
+    "feat": 0.22599962879444518,
+    "fix": 0.0,
+    "docs": 0.7542979532834041,
+    "refactor": -0.4205758967329594,
+    "test": -0.3908194664877495,
+    "chore": -0.2135371991708075
+   },
+   "w2:test_for": {
+    "feat": -0.33560042055133316,
+    "fix": 0.0,
+    "docs": -0.23807938193586667,
+    "refactor": 0.0,
+    "test": 0.8777690396516129,
+    "chore": 0.0
+   },
+   "w:about": {
+    "feat": -0.25547472813635297,
+    "fix": -0.2625204776532926,
+    "docs": 1.1261991896139985,
+    "refactor": -0.2710494099266825,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:api": {
+    "feat": 0.5731037686755961,
+    "fix": -0.2871315443695135,
+    "docs": -0.23537286392664425,
+    "refactor": -0.41981347757477644,
+    "test": 0.0,
+    "chore": 0.5585993978051296
+   },
+   "w:branches": {
+    "feat": -0.3328763637549569,
+    "fix": -0.23540190630467883,
+    "docs": 0.0,
+    "refactor": -0.3856768957919254,
+    "test": 0.0,
+    "chore": 1.2456925807150234
+   },
+   "w:build": {
+    "feat": 2.921633775208571,
+    "fix": -0.6353023208297809,
+    "docs": -0.4600737362951615,
+    "refactor": -1.130464772478939,
+    "test": -0.4886155373708627,
+    "chore": -0.2345160355521863
+   },
+   "w:bump": {
+    "feat": -0.421773218338756,
+    "fix": -0.3198752001197793,
+    "docs": -0.2215429220315359,
+    "refactor": -0.45517435664923145,
+    "test": -0.22286937711618782,
+    "chore": 1.6283180493676335
+   },
+   "w:ci": {
+    "feat": -0.4406300250832484,
+    "fix": -0.45064252783289693,
+    "docs": -0.28050806063750766,
+    "refactor": -0.42094482663765864,
+    "test": 1.05825670907014,
+    "chore": 0.538534370351889
+   },
+   "w:correct": {
+    "feat": -1.108006450371758,
+    "fix": 3.166724553204568,
+    "docs": -0.4192518933183089,
+    "refactor": -1.0714307996029753,
+    "test": -0.38320284029741053,
+    "chore": -0.24630985904947397
+   },
+   "w:cover": {
+    "feat": -0.33334369082433973,
+    "fix": -0.26594750916426463,
+    "docs": -0.22498233813260685,
+    "refactor": -0.3669211193493906,
+    "test": 1.302221598013014,
+    "chore": 0.0
+   },
+   "w:document": {
+    "feat": -0.9114760072131894,
+    "fix": -0.8323237398710921,
+    "docs": 3.548270672704683,
+    "refactor": -1.108817364905685,
+    "test": -0.5203019503201382,
+    "chore": -0.28003644526753063
+   },
+   "w:feat": {
+    "feat": 1.2036797665256653,
+    "fix": -0.20192794940552916,
+    "docs": -0.37826505806502075,
+    "refactor": -0.3054671239168548,
+    "test": -0.20828643868112154,
+    "chore": 0.0
+   },
+   "w:from": {
+    "feat": 0.39556134486486366,
+    "fix": 0.7730402754481981,
+    "docs": -0.2610592595037388,
+    "refactor": -0.5984285835817438,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:get": {
+    "feat": 1.1914246209631116,
+    "fix": -0.7106719978730185,
+    "docs": -0.44064949189499847,
+    "refactor": -0.9697609361166915,
+    "test": 1.2340477458235484,
+    "chore": -0.30379676691394514
+   },
+   "w:implement": {
+    "feat": 2.4658276989461556,
+    "fix": -0.6155131187281524,
+    "docs": -0.2911940823922811,
+    "refactor": -0.937984199114159,
+    "test": -0.4140757545846463,
+    "chore": -0.24503857103834029
+   },
+   "w:new": {
+    "feat": 3.037352175943174,
+    "fix": -0.7230301735184309,
+    "docs": -0.42476485679745324,
+    "refactor": -1.09067657187411,
+    "test": -0.5766099463268108,
+    "chore": -0.26906182324408007
+   },
+   "w:on": {
+    "feat": -0.3409492925277669,
+    "fix": -0.23199770729647928,
+    "docs": 0.2612493337621471,
+    "refactor": -0.3627102549864807,
+    "test": 0.7971661227985942,
+    "chore": 0.0
+   },
+   "w:patch": {
+    "feat": -0.78055900262314,
+    "fix": 2.3542854189341686,
+    "docs": -0.5574882306455783,
+    "refactor": -0.6612497513484755,
+    "test": -0.2977179485854659,
+    "chore": 0.0
+   },
+   "w:put": {
+    "feat": -0.3222228532750574,
+    "fix": -0.3502247188383077,
+    "docs": 0.3980113247684134,
+    "refactor": -0.3568226209110544,
+    "test": 0.7468154250360238,
+    "chore": 0.0
+   },
+   "w:readme": {
+    "feat": -0.5238781559028264,
+    "fix": -0.3962035771617998,
+    "docs": 1.560823888678519,
+    "refactor": -0.2915823556367875,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:regression": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": -0.2612365257623064,
+    "refactor": 0.0,
+    "test": 0.3500191019378206,
+    "chore": 0.0
+   },
+   "w:stop": {
+    "feat": -0.5834874783041925,
+    "fix": 1.721099955787666,
+    "docs": -0.43718864158357346,
+    "refactor": -0.4007713759226076,
+    "test": -0.20925879262190347,
+    "chore": 0.0
+   },
+   "w:support": {
+    "feat": 2.484288459226085,
+    "fix": -0.6780365541986278,
+    "docs": -0.6940740866953146,
+    "refactor": -0.6103211633427683,
+    "test": -0.39484694567153855,
+    "chore": 0.0
+   },
+   "w:verify": {
+    "feat": -0.7555602348694842,
+    "fix": -0.5895508534013905,
+    "docs": -0.2985799170070247,
+    "refactor": -0.7991787728960827,
+    "test": 2.662214914113419,
+    "chore": -0.2525130981343584
+   },
+   "w2:fix_the": {
+    "feat": -0.33817281896838947,
+    "fix": 1.3063273021041528,
+    "docs": -0.26933897606472684,
+    "refactor": -0.35123161798295155,
+    "test": -0.2035599331277433,
+    "chore": 0.0
+   },
+   "w2:on_the": {
+    "feat": -0.2917165536821524,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.33537995237538315,
+    "test": 0.8206882621697905,
+    "chore": 0.0
+   },
+   "w2:add_the": {
+    "feat": 1.3602966613457477,
+    "fix": -0.2475331416251348,
+    "docs": 0.0,
+    "refactor": -0.44834154762106765,
+    "test": -0.46836325536974577,
+    "chore": 0.0
+   },
+   "w2:correct_the": {
+    "feat": -0.3300720953928113,
+    "fix": 1.286617302875518,
+    "docs": 0.0,
+    "refactor": -0.4173043118694242,
+    "test": -0.22592475207070548,
+    "chore": 0.0
+   },
+   "w2:cover_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.21286680230546445,
+    "test": 0.8248063743057404,
+    "chore": 0.0
+   },
+   "w2:put_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.390467921925316,
+    "chore": 0.0
+   },
+   "w2:about_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.53084015322376,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:avatars_in": {
+    "feat": 0.0,
+    "fix": -0.4368823481007166,
+    "docs": 0.7826744141208454,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:implement_the": {
+    "feat": 1.3484016107594616,
+    "fix": -0.3312732987475549,
+    "docs": -0.2241006701657056,
+    "refactor": -0.42862611981912224,
+    "test": -0.22850147492594067,
+    "chore": 0.0
+   },
+   "w2:layer_in": {
+    "feat": 0.2564243881375099,
+    "fix": -0.25398012676870974,
+    "docs": 0.2315599026000723,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:out_the": {
+    "feat": 0.7315406221983696,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22381858676679875,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:stop_the": {
+    "feat": 0.0,
+    "fix": 0.7597625891548943,
+    "docs": -0.3508695175726192,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:tidy_the": {
+    "feat": -0.20197938279275152,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.514770213364126
+   },
+   "w2:add_guide": {
+    "feat": -0.4167060794616579,
+    "fix": -0.2524556990172719,
+    "docs": 1.307971818278141,
+    "refactor": 0.0,
+    "test": -0.4839714701473947,
+    "chore": 0.0
+   },
+   "w2:add_regression": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4115183398561874,
+    "chore": 0.0
+   },
+   "w2:add_smoke": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4515258440581839,
+    "chore": 0.0
+   },
+   "w2:add_tests": {
+    "feat": -0.41332039756700956,
+    "fix": 0.0,
+    "docs": -0.2219197459599095,
+    "refactor": 0.0,
+    "test": 0.8842786826753706,
+    "chore": 0.0
+   },
+   "w2:address_the": {
+    "feat": 0.0,
+    "fix": 0.7556438514042376,
+    "docs": -0.3488019511087561,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:an_api": {
+    "feat": 0.8048610872384216,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2894787466718664,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:api_keys": {
+    "feat": -0.23176070768034793,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6832359795228121
+   },
+   "w2:archive_old": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w2:as_an": {
+    "feat": 0.8048610872384216,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2894787466718664,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:bug_in": {
+    "feat": 0.0,
+    "fix": 0.792856265922172,
+    "docs": -0.3426837272138367,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:build_out": {
+    "feat": 0.38809577481775115,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:builder_in": {
+    "feat": 0.0,
+    "fix": -0.24054184619756808,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:bump_dependencies": {
+    "feat": -0.24333949394366997,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.29086107064160915,
+    "test": 0.0,
+    "chore": 0.9167035444537329
+   },
+   "w2:bump_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.7467130791726737
+   },
+   "w2:by_tests": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w2:case_for": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": -0.3740038713320071,
+    "refactor": 0.0,
+    "test": 0.593089659881876,
+    "chore": 0.0
+   },
+   "w2:cases_of": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.7230057560430562,
+    "chore": 0.0
+   },
+   "w2:chore_tidy": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.34078734904411484,
+    "test": 0.0,
+    "chore": 0.6971365980090479
+   },
+   "w2:ci_configuration": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6745767691011495
+   },
+   "w2:clean_up": {
+    "feat": -0.7703194869023857,
+    "fix": -0.44340364086807915,
+    "docs": -0.33455563120438137,
+    "refactor": 1.8153470641703313,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:coverage_on": {
+    "feat": -0.23905896176543476,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.28030920675878496,
+    "test": 0.9592110487460815,
+    "chore": 0.0
+   },
+   "w2:covered_by": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w2:crash_in": {
+    "feat": 0.0,
+    "fix": 0.4068937712244998,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:create_new": {
+    "feat": 0.6965374781630103,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.23726891839169612,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:docs_explain": {
+    "feat": -0.3599818162284672,
+    "fix": 0.0,
+    "docs": 1.320036309795687,
+    "refactor": -0.4271873100271285,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:docs_for": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.38753693937082406,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:docs_on": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.4605061964064104,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:edge_cases": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.7230057560430562,
+    "chore": 0.0
+   },
+   "w2:expand_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.4605061964064104,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:exporter_in": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5052967976370288,
+    "chore": 0.0
+   },
+   "w2:extend_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4238453513492537,
+    "chore": 0.0
+   },
+   "w2:fault_in": {
+    "feat": 0.0,
+    "fix": 0.7556438514042376,
+    "docs": -0.3488019511087561,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:feat_add": {
+    "feat": 0.868998678239831,
+    "fix": 0.0,
+    "docs": -0.3206272286000314,
+    "refactor": -0.20444524855541607,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:feat_parser": {
+    "feat": 0.34826034076107165,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:fix_correct": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:fix_crash": {
+    "feat": 0.0,
+    "fix": 0.4068937712244998,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:for_dark": {
+    "feat": -0.228603424549135,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4863165665151051,
+    "chore": 0.0
+   },
+   "w2:for_session": {
+    "feat": 0.0,
+    "fix": 0.441090773855583,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:for_webhook": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.38779469635934055,
+    "chore": 0.0
+   },
+   "w2:formatter_config": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.5978434150789715
+   },
+   "w2:from_crashing": {
+    "feat": -0.4825976671854104,
+    "fix": 1.1269578876479502,
+    "docs": 0.0,
+    "refactor": -0.3399943549646112,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:from_nothing": {
+    "feat": 0.8788498385523994,
+    "fix": -0.3522437582241173,
+    "docs": 0.0,
+    "refactor": -0.2585629076228729,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:get_the": {
+    "feat": -0.9419302250688327,
+    "fix": -0.26805836150159773,
+    "docs": -0.21395464807461967,
+    "refactor": -0.4190443532970444,
+    "test": 1.9730435523878935,
+    "chore": 0.0
+   },
+   "w2:guide_for": {
+    "feat": -0.4167060794616579,
+    "fix": -0.2524556990172719,
+    "docs": 1.307971818278141,
+    "refactor": 0.0,
+    "test": -0.4839714701473947,
+    "chore": 0.0
+   },
+   "w2:hole_in": {
+    "feat": 0.0,
+    "fix": 0.5492833074888973,
+    "docs": -0.2433290557289313,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:hotfix_for": {
+    "feat": 0.0,
+    "fix": 1.7229897334065616,
+    "docs": -0.4010140774642146,
+    "refactor": -0.3465406426727313,
+    "test": -0.6687915159533531,
+    "chore": 0.0
+   },
+   "w2:in_ci": {
+    "feat": -0.3078928585419631,
+    "fix": -0.36080945683021337,
+    "docs": 0.0,
+    "refactor": -0.2598616552069591,
+    "test": 1.2416752038117105,
+    "chore": 0.0
+   },
+   "w2:in_tests": {
+    "feat": 0.0,
+    "fix": -0.29572642010679917,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.881582734907826,
+    "chore": 0.0
+   },
+   "w2:into_helper": {
+    "feat": -0.4098427295852729,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.9081567349866844,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:into_its": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:into_the": {
+    "feat": 0.9407510175421603,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.3961025728969604,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:is_covered": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w2:its_own": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:leak_in": {
+    "feat": 0.0,
+    "fix": 0.6331082220756219,
+    "docs": -0.3418307512734632,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:license_headers": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6616240332165008
+   },
+   "w2:new_the": {
+    "feat": 1.097175971955738,
+    "fix": -0.2738692046316268,
+    "docs": 0.0,
+    "refactor": -0.39191375282263136,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:old_branches": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w2:own_module": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:parser_implement": {
+    "feat": 0.34826034076107165,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:patch_the": {
+    "feat": 0.0,
+    "fix": 0.5492833074888973,
+    "docs": -0.2433290557289313,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:patch_up": {
+    "feat": -0.6938038569456391,
+    "fix": 1.8690585527030894,
+    "docs": -0.3124598383596276,
+    "refactor": -0.613721975198948,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:pin_tool": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22494754204704068,
+    "test": 0.0,
+    "chore": 0.7263975430551132
+   },
+   "w2:prune_stale": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w2:raise_coverage": {
+    "feat": -0.23905896176543476,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.28030920675878496,
+    "test": 0.9592110487460815,
+    "chore": 0.0
+   },
+   "w2:readme_about": {
+    "feat": -0.23339310094293406,
+    "fix": 0.0,
+    "docs": 0.9457238202158222,
+    "refactor": -0.26190642412700055,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:refactor_tidy": {
+    "feat": -0.3854752416145502,
+    "fix": -0.28298100682135824,
+    "docs": -0.20241853797479858,
+    "refactor": 1.4334936285401374,
+    "test": -0.22290682408999968,
+    "chore": -0.339012958608955
+   },
+   "w2:refresh_lockfile": {
+    "feat": -0.29416633075896453,
+    "fix": -0.20364113523727395,
+    "docs": 0.0,
+    "refactor": -0.34416943119738047,
+    "test": 0.0,
+    "chore": 1.0984564666371113
+   },
+   "w2:regression_in": {
+    "feat": 0.0,
+    "fix": 0.26514763766673993,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:regression_test": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4115183398561874,
+    "chore": 0.0
+   },
+   "w2:renew_certificates": {
+    "feat": -0.29416633075896453,
+    "fix": -0.20364113523727395,
+    "docs": 0.0,
+    "refactor": -0.34416943119738047,
+    "test": 0.0,
+    "chore": 1.0984564666371113
+   },
+   "w2:repo_layout": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2779413907810963,
+    "test": 0.0,
+    "chore": 0.6423018461532544
+   },
+   "w2:restructure_the": {
+    "feat": -0.6169040740680902,
+    "fix": -0.3941812448930548,
+    "docs": -0.2421211883626782,
+    "refactor": 1.7407759014529605,
+    "test": -0.3068340547730555,
+    "chore": 0.0
+   },
+   "w2:roll_out": {
+    "feat": 1.265616056688425,
+    "fix": -0.25345493969103966,
+    "docs": -0.28080224063878806,
+    "refactor": -0.43762867735448036,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:rotate_the": {
+    "feat": -0.23176070768034793,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6832359795228121
+   },
+   "w2:set_up": {
+    "feat": 0.8788498385523994,
+    "fix": -0.3522437582241173,
+    "docs": 0.0,
+    "refactor": -0.2585629076228729,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:smoke_test": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4515258440581839,
+    "chore": 0.0
+   },
+   "w2:spell_out": {
+    "feat": -0.2904175093939141,
+    "fix": -0.24106965447680875,
+    "docs": 0.6404409839883161,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:squash_the": {
+    "feat": 0.0,
+    "fix": 0.792856265922172,
+    "docs": -0.3426837272138367,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:stale_branches": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w2:suite_for": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4238453513492537,
+    "chore": 0.0
+   },
+   "w2:sync_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6616240332165008
+   },
+   "w2:test_case": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": -0.3740038713320071,
+    "refactor": 0.0,
+    "test": 0.593089659881876,
+    "chore": 0.0
+   },
+   "w2:test_suite": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4238453513492537,
+    "chore": 0.0
+   },
+   "w2:test_verify": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5745149452194127,
+    "chore": 0.0
+   },
+   "w2:tests_for": {
+    "feat": -0.41332039756700956,
+    "fix": 0.0,
+    "docs": -0.2219197459599095,
+    "refactor": 0.0,
+    "test": 0.8842786826753706,
+    "chore": 0.0
+   },
+   "w2:the_api": {
+    "feat": -0.23176070768034793,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6832359795228121
+   },
+   "w2:the_bug": {
+    "feat": 0.0,
+    "fix": 0.792856265922172,
+    "docs": -0.3426837272138367,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_cli": {
+    "feat": 1.138950444667787,
+    "fix": -0.3809622493511087,
+    "docs": -0.5193102128612617,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_edge": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.7230057560430562,
+    "chore": 0.0
+   },
+   "w2:the_faq": {
+    "feat": -0.7799875108196692,
+    "fix": 0.0,
+    "docs": 1.1256848637568895,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_fault": {
+    "feat": 0.0,
+    "fix": 0.7556438514042376,
+    "docs": -0.3488019511087561,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_formatter": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.5978434150789715
+   },
+   "w2:the_handbook": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_hole": {
+    "feat": 0.0,
+    "fix": 0.5492833074888973,
+    "docs": -0.2433290557289313,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_leak": {
+    "feat": 0.0,
+    "fix": 0.6331082220756219,
+    "docs": -0.3418307512734632,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_license": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6616240332165008
+   },
+   "w2:the_linter": {
+    "feat": -0.22445665018656114,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.21413710682768117,
+    "test": 0.0,
+    "chore": 0.923076905274039
+   },
+   "w2:the_manual": {
+    "feat": 0.0,
+    "fix": -0.4373065320014943,
+    "docs": 0.8731817343971161,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_product": {
+    "feat": 0.9407510175421603,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.3961025728969604,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_readme": {
+    "feat": -0.2904175093939141,
+    "fix": -0.24106965447680875,
+    "docs": 0.6404409839883161,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_regression": {
+    "feat": 0.0,
+    "fix": 0.26514763766673993,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:the_repo": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2779413907810963,
+    "test": 0.0,
+    "chore": 0.6423018461532544
+   },
+   "w2:the_test": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4238453513492537,
+    "chore": 0.0
+   },
+   "w2:the_version": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.7467130791726737
+   },
+   "w2:the_wiki": {
+    "feat": 0.0,
+    "fix": -0.20116913568583372,
+    "docs": 0.3278690279514005,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:tidy_gitignore": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.34078734904411484,
+    "test": 0.0,
+    "chore": 0.6971365980090479
+   },
+   "w2:to_the": {
+    "feat": -0.7799875108196692,
+    "fix": 0.0,
+    "docs": 1.1256848637568895,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:tool_versions": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22494754204704068,
+    "test": 0.0,
+    "chore": 0.7263975430551132
+   },
+   "w2:under_test": {
+    "feat": -0.23774806851398417,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.32685699970305193,
+    "test": 0.9206850477862865,
+    "chore": 0.0
+   },
+   "w2:unit_tests": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5852482986918519,
+    "chore": 0.0
+   },
+   "w2:up_webhook": {
+    "feat": 0.40168544885156215,
+    "fix": -0.36824041783453737,
+    "docs": 0.0,
+    "refactor": 0.24375239805349544,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:update_ci": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6745767691011495
+   },
+   "w2:update_readme": {
+    "feat": -0.23339310094293406,
+    "fix": 0.0,
+    "docs": 0.9457238202158222,
+    "refactor": -0.26190642412700055,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:update_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.5978434150789715
+   },
+   "w2:upgrade_the": {
+    "feat": -0.22445665018656114,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.21413710682768117,
+    "test": 0.0,
+    "chore": 0.923076905274039
+   },
+   "w2:verify_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5662050651646717,
+    "chore": 0.0
+   },
+   "w2:wire_up": {
+    "feat": 1.6013520690875114,
+    "fix": -0.39026059374453514,
+    "docs": -0.3766793799402385,
+    "refactor": -0.6024437597438176,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:with_unit": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5852482986918519,
+    "chore": 0.0
+   },
+   "w2:write_about": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:write_docs": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.38753693937082406,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:write_test": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": -0.3740038713320071,
+    "refactor": 0.0,
+    "test": 0.593089659881876,
+    "chore": 0.0
+   },
+   "w2:write_up": {
+    "feat": -0.5740045832095113,
+    "fix": -0.32220157454501697,
+    "docs": 1.5123334768766608,
+    "refactor": -0.3588402223724356,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:address": {
+    "feat": 0.0,
+    "fix": 0.7556438514042376,
+    "docs": -0.3488019511087561,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:an": {
+    "feat": 0.8048610872384216,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2894787466718664,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:annotate": {
+    "feat": -1.1083123387554306,
+    "fix": -0.7621630705557597,
+    "docs": 4.16579777702933,
+    "refactor": -1.4608376487209545,
+    "test": -0.5216558838272495,
+    "chore": -0.34031837105892215
+   },
+   "w:archive": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w:as": {
+    "feat": 0.8048610872384216,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2894787466718664,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:assert": {
+    "feat": -0.5695165434675311,
+    "fix": -0.4117896132196237,
+    "docs": -0.2666435490585329,
+    "refactor": -0.6433981582274817,
+    "test": 2.063013023142099,
+    "chore": 0.0
+   },
+   "w:behaves": {
+    "feat": -0.5929216131114199,
+    "fix": -0.4912386942070242,
+    "docs": -0.26675525232849767,
+    "refactor": -0.604289130791264,
+    "test": 2.1536436335791027,
+    "chore": 0.0
+   },
+   "w:bring": {
+    "feat": 0.9407510175421603,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.3961025728969604,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:bug": {
+    "feat": 0.0,
+    "fix": 0.792856265922172,
+    "docs": -0.3426837272138367,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:bugfix": {
+    "feat": -1.0374538569848861,
+    "fix": 3.7026261260180093,
+    "docs": -0.5446160727855724,
+    "refactor": -1.3172373321107138,
+    "test": -0.5086590953518952,
+    "chore": -0.30485106971468656
+   },
+   "w:by": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w:case": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": -0.3740038713320071,
+    "refactor": 0.0,
+    "test": 0.593089659881876,
+    "chore": 0.0
+   },
+   "w:cases": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.7230057560430562,
+    "chore": 0.0
+   },
+   "w:certificates": {
+    "feat": -0.29416633075896453,
+    "fix": -0.20364113523727395,
+    "docs": 0.0,
+    "refactor": -0.34416943119738047,
+    "test": 0.0,
+    "chore": 1.0984564666371113
+   },
+   "w:check": {
+    "feat": -0.3078928585419631,
+    "fix": -0.36080945683021337,
+    "docs": 0.0,
+    "refactor": -0.2598616552069591,
+    "test": 1.2416752038117105,
+    "chore": 0.0
+   },
+   "w:chore": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.34078734904411484,
+    "test": 0.0,
+    "chore": 0.6971365980090479
+   },
+   "w:clarify": {
+    "feat": 0.0,
+    "fix": -0.4373065320014943,
+    "docs": 0.8731817343971161,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:clean": {
+    "feat": -0.7703194869023857,
+    "fix": -0.44340364086807915,
+    "docs": -0.33455563120438137,
+    "refactor": 1.8153470641703313,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:cli": {
+    "feat": 1.138950444667787,
+    "fix": -0.3809622493511087,
+    "docs": -0.5193102128612617,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:config": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.5978434150789715
+   },
+   "w:configuration": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6745767691011495
+   },
+   "w:consolidate": {
+    "feat": -0.8952930226298519,
+    "fix": -0.5916172577322389,
+    "docs": -0.4055990764763039,
+    "refactor": 2.5600524404807183,
+    "test": -0.4369480802146063,
+    "chore": -0.22478969272533283
+   },
+   "w:coverage": {
+    "feat": -0.23905896176543476,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.28030920675878496,
+    "test": 0.9592110487460815,
+    "chore": 0.0
+   },
+   "w:covered": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w:crash": {
+    "feat": 0.0,
+    "fix": 0.4068937712244998,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:crashing": {
+    "feat": -0.4825976671854104,
+    "fix": 1.1269578876479502,
+    "docs": 0.0,
+    "refactor": -0.3399943549646112,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:create": {
+    "feat": 0.6965374781630103,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.23726891839169612,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:decouple": {
+    "feat": -1.1068965276984117,
+    "fix": -0.7763015455899019,
+    "docs": -0.4187975171180349,
+    "refactor": 3.004631499754614,
+    "test": -0.4259418708633287,
+    "chore": -0.27119101011764546
+   },
+   "w:deliver": {
+    "feat": 2.659006922791713,
+    "fix": -0.6771338399109934,
+    "docs": -0.39176689549132127,
+    "refactor": -0.98027675631224,
+    "test": -0.3807647796644739,
+    "chore": -0.22978320359845694
+   },
+   "w:dependencies": {
+    "feat": -0.24333949394366997,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.29086107064160915,
+    "test": 0.0,
+    "chore": 0.9167035444537329
+   },
+   "w:documentation": {
+    "feat": -0.46440782690939764,
+    "fix": -0.31315894910215675,
+    "docs": 1.7214041509725162,
+    "refactor": -0.49907265415692287,
+    "test": -0.26539615142875006,
+    "chore": 0.0
+   },
+   "w:edge": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.7230057560430562,
+    "chore": 0.0
+   },
+   "w:enable": {
+    "feat": 3.1500406207415805,
+    "fix": -0.6636399462324549,
+    "docs": -0.4514152035673714,
+    "refactor": -1.1804071547543715,
+    "test": -0.6080782243967314,
+    "chore": -0.24809862745916372
+   },
+   "w:ensure": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w:exercise": {
+    "feat": 0.0,
+    "fix": -0.29572642010679917,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.881582734907826,
+    "chore": 0.0
+   },
+   "w:expand": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.4605061964064104,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:explain": {
+    "feat": -0.3599818162284672,
+    "fix": 0.0,
+    "docs": 1.320036309795687,
+    "refactor": -0.4271873100271285,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:expose": {
+    "feat": 0.8048610872384216,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2894787466718664,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:extend": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4238453513492537,
+    "chore": 0.0
+   },
+   "w:extract": {
+    "feat": -0.4098427295852729,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.9081567349866844,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:faq": {
+    "feat": -0.7799875108196692,
+    "fix": 0.0,
+    "docs": 1.1256848637568895,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:fault": {
+    "feat": 0.0,
+    "fix": 0.7556438514042376,
+    "docs": -0.3488019511087561,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:formatter": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.5978434150789715
+   },
+   "w:gitignore": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.34078734904411484,
+    "test": 0.0,
+    "chore": 0.6971365980090479
+   },
+   "w:guide": {
+    "feat": -0.4167060794616579,
+    "fix": -0.2524556990172719,
+    "docs": 1.307971818278141,
+    "refactor": 0.0,
+    "test": -0.4839714701473947,
+    "chore": 0.0
+   },
+   "w:handbook": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:headers": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6616240332165008
+   },
+   "w:helper": {
+    "feat": -0.4098427295852729,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.9081567349866844,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:hole": {
+    "feat": 0.0,
+    "fix": 0.5492833074888973,
+    "docs": -0.2433290557289313,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:hotfix": {
+    "feat": 0.0,
+    "fix": 1.7229897334065616,
+    "docs": -0.4010140774642146,
+    "refactor": -0.3465406426727313,
+    "test": -0.6687915159533531,
+    "chore": 0.0
+   },
+   "w:inline": {
+    "feat": -1.1634956764657305,
+    "fix": -0.8720812584851845,
+    "docs": -0.3280499679421783,
+    "refactor": 3.0702728251091163,
+    "test": -0.3925098960506053,
+    "chore": -0.3110251940148895
+   },
+   "w:introduce": {
+    "feat": 1.429909256359084,
+    "fix": -0.29602732108789936,
+    "docs": 0.0,
+    "refactor": -0.5482663845524175,
+    "test": -0.2571667333007488,
+    "chore": 0.0
+   },
+   "w:is": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5386973737102577,
+    "chore": 0.0
+   },
+   "w:its": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:keys": {
+    "feat": -0.23176070768034793,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6832359795228121
+   },
+   "w:launch": {
+    "feat": 3.202988976664249,
+    "fix": -0.8658828574783569,
+    "docs": -0.37979191346902075,
+    "refactor": -1.200054368622166,
+    "test": -0.44047277655433864,
+    "chore": -0.3178927883528343
+   },
+   "w:layout": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2779413907810963,
+    "test": 0.0,
+    "chore": 0.6423018461532544
+   },
+   "w:leak": {
+    "feat": 0.0,
+    "fix": 0.6331082220756219,
+    "docs": -0.3418307512734632,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:license": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6616240332165008
+   },
+   "w:linter": {
+    "feat": -0.22445665018656114,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.21413710682768117,
+    "test": 0.0,
+    "chore": 0.923076905274039
+   },
+   "w:lockfile": {
+    "feat": -0.29416633075896453,
+    "fix": -0.20364113523727395,
+    "docs": 0.0,
+    "refactor": -0.34416943119738047,
+    "test": 0.0,
+    "chore": 1.0984564666371113
+   },
+   "w:manual": {
+    "feat": 0.0,
+    "fix": -0.4373065320014943,
+    "docs": 0.8731817343971161,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:mend": {
+    "feat": -1.2013051866561468,
+    "fix": 3.5400952870857276,
+    "docs": -0.3277827754743809,
+    "refactor": -1.2134219749990856,
+    "test": -0.49927573703392486,
+    "chore": -0.3138484032761342
+   },
+   "w:module": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:move": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:note": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.3302377952326697,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:nothing": {
+    "feat": 0.8788498385523994,
+    "fix": -0.3522437582241173,
+    "docs": 0.0,
+    "refactor": -0.2585629076228729,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:of": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.7230057560430562,
+    "chore": 0.0
+   },
+   "w:old": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w:own": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.47322049258409443,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:parser": {
+    "feat": 0.34826034076107165,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:pin": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22494754204704068,
+    "test": 0.0,
+    "chore": 0.7263975430551132
+   },
+   "w:polish": {
+    "feat": -0.7657111942509647,
+    "fix": -0.5736591070248456,
+    "docs": -0.35096739131144894,
+    "refactor": 2.2740899495979243,
+    "test": -0.3836282731883922,
+    "chore": -0.20010520588317987
+   },
+   "w:product": {
+    "feat": 0.9407510175421603,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.3961025728969604,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:prune": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w:raise": {
+    "feat": -0.23905896176543476,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.28030920675878496,
+    "test": 0.9592110487460815,
+    "chore": 0.0
+   },
+   "w:refactor": {
+    "feat": -0.3854752416145502,
+    "fix": -0.28298100682135824,
+    "docs": -0.20241853797479858,
+    "refactor": 1.4334936285401374,
+    "test": -0.22290682408999968,
+    "chore": -0.339012958608955
+   },
+   "w:refresh": {
+    "feat": -0.29416633075896453,
+    "fix": -0.20364113523727395,
+    "docs": 0.0,
+    "refactor": -0.34416943119738047,
+    "test": 0.0,
+    "chore": 1.0984564666371113
+   },
+   "w:rename": {
+    "feat": -1.117202758526361,
+    "fix": -0.8010372947174608,
+    "docs": -0.4864466506328318,
+    "refactor": 3.2547663412916656,
+    "test": -0.5620642078237464,
+    "chore": -0.28261416711506193
+   },
+   "w:renew": {
+    "feat": -0.29416633075896453,
+    "fix": -0.20364113523727395,
+    "docs": 0.0,
+    "refactor": -0.34416943119738047,
+    "test": 0.0,
+    "chore": 1.0984564666371113
+   },
+   "w:reorganize": {
+    "feat": -0.6963519469117109,
+    "fix": -0.5366857229868748,
+    "docs": -0.3960807578150638,
+    "refactor": 2.1505777019310375,
+    "test": -0.3160197988988424,
+    "chore": -0.2058707766617575
+   },
+   "w:repair": {
+    "feat": -0.9793241611771811,
+    "fix": 3.0913358799997894,
+    "docs": -0.41398401187819467,
+    "refactor": -0.9406464821856527,
+    "test": -0.4650753083497847,
+    "chore": -0.30741312172542573
+   },
+   "w:repo": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2779413907810963,
+    "test": 0.0,
+    "chore": 0.6423018461532544
+   },
+   "w:restructure": {
+    "feat": -0.6169040740680902,
+    "fix": -0.3941812448930548,
+    "docs": -0.2421211883626782,
+    "refactor": 1.7407759014529605,
+    "test": -0.3068340547730555,
+    "chore": 0.0
+   },
+   "w:roll": {
+    "feat": 1.265616056688425,
+    "fix": -0.25345493969103966,
+    "docs": -0.28080224063878806,
+    "refactor": -0.43762867735448036,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:rotate": {
+    "feat": -0.23176070768034793,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6832359795228121
+   },
+   "w:set": {
+    "feat": 0.8788498385523994,
+    "fix": -0.3522437582241173,
+    "docs": 0.0,
+    "refactor": -0.2585629076228729,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:shipped": {
+    "feat": 2.1323702182833446,
+    "fix": -0.441925244858031,
+    "docs": -0.22606336096078905,
+    "refactor": -0.5512461727844519,
+    "test": -0.7408966063180026,
+    "chore": 0.0
+   },
+   "w:simplify": {
+    "feat": -0.8925575853685553,
+    "fix": -0.5849341951302454,
+    "docs": -0.41305984508843147,
+    "refactor": 2.7130901546468653,
+    "test": -0.5630491292704458,
+    "chore": -0.25525322088298974
+   },
+   "w:smoke": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4515258440581839,
+    "chore": 0.0
+   },
+   "w:snapshot": {
+    "feat": -0.9544908962365536,
+    "fix": -0.6657364521679986,
+    "docs": -0.48325922677869165,
+    "refactor": -1.0703345212766242,
+    "test": 3.4535130135452503,
+    "chore": -0.28305609326212183
+   },
+   "w:spell": {
+    "feat": -0.2904175093939141,
+    "fix": -0.24106965447680875,
+    "docs": 0.6404409839883161,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:squash": {
+    "feat": 0.0,
+    "fix": 0.792856265922172,
+    "docs": -0.3426837272138367,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:stale": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6273498155710551
+   },
+   "w:streamline": {
+    "feat": -0.9802770758273782,
+    "fix": -0.5938946986399124,
+    "docs": -0.3990779856058573,
+    "refactor": 2.64269914212546,
+    "test": -0.4557723606628074,
+    "chore": -0.21086005029634586
+   },
+   "w:suite": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4238453513492537,
+    "chore": 0.0
+   },
+   "w:sync": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.6616240332165008
+   },
+   "w:tested": {
+    "feat": -0.9419302250688327,
+    "fix": -0.26805836150159773,
+    "docs": -0.21395464807461967,
+    "refactor": -0.4190443532970444,
+    "test": 1.9730435523878935,
+    "chore": 0.0
+   },
+   "w:to": {
+    "feat": -0.7799875108196692,
+    "fix": 0.0,
+    "docs": 1.1256848637568895,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:tool": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22494754204704068,
+    "test": 0.0,
+    "chore": 0.7263975430551132
+   },
+   "w:under": {
+    "feat": -0.23774806851398417,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.32685699970305193,
+    "test": 0.9206850477862865,
+    "chore": 0.0
+   },
+   "w:unit": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5852482986918519,
+    "chore": 0.0
+   },
+   "w:untangle": {
+    "feat": -1.0200575506068141,
+    "fix": -0.6563081653744286,
+    "docs": -0.36854805313028643,
+    "refactor": 2.7024707392802716,
+    "test": -0.36659014521366795,
+    "chore": -0.28715376031436113
+   },
+   "w:upgrade": {
+    "feat": -0.22445665018656114,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.21413710682768117,
+    "test": 0.0,
+    "chore": 0.923076905274039
+   },
+   "w:version": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.7467130791726737
+   },
+   "w:versions": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22494754204704068,
+    "test": 0.0,
+    "chore": 0.7263975430551132
+   },
+   "w:wiki": {
+    "feat": 0.0,
+    "fix": -0.20116913568583372,
+    "docs": 0.3278690279514005,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:wire": {
+    "feat": 1.6013520690875114,
+    "fix": -0.39026059374453514,
+    "docs": -0.3766793799402385,
+    "refactor": -0.6024437597438176,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w:with": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5852482986918519,
+    "chore": 0.0
+   },
+   "w:works": {
+    "feat": -0.5695165434675311,
+    "fix": -0.4117896132196237,
+    "docs": -0.2666435490585329,
+    "refactor": -0.6433981582274817,
+    "test": 2.063013023142099,
+    "chore": 0.0
+   },
+   "w2:add_user": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:assert_the": {
+    "feat": -0.30347803406298185,
+    "fix": -0.23375081097077993,
+    "docs": 0.0,
+    "refactor": -0.3668261837965593,
+    "test": 1.1551126436951953,
+    "chore": 0.0
+   },
+   "w2:bring_the": {
+    "feat": 0.6253220289676831,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2680910708445249,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:build_the": {
+    "feat": 1.1226751424697992,
+    "fix": -0.24005278230986185,
+    "docs": 0.0,
+    "refactor": -0.3906998596632254,
+    "test": -0.23140583524455835,
+    "chore": 0.0
+   },
+   "w2:check_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.5670493290337864,
+    "chore": 0.0
+   },
+   "w2:consolidate_the": {
+    "feat": -0.36072403316534263,
+    "fix": -0.26431434970639694,
+    "docs": -0.21877789628747918,
+    "refactor": 1.2021323124450378,
+    "test": -0.23670282657847433,
+    "chore": 0.0
+   },
+   "w2:deliver_the": {
+    "feat": 1.3365313084217216,
+    "fix": -0.27967108116511924,
+    "docs": -0.214861219035737,
+    "refactor": -0.447756383813933,
+    "test": -0.2664926541485634,
+    "chore": 0.0
+   },
+   "w2:explain_the": {
+    "feat": -0.20295770157859785,
+    "fix": 0.0,
+    "docs": 0.7473827936773789,
+    "refactor": -0.2591797872251284,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:for_user": {
+    "feat": 0.0,
+    "fix": 0.20446836181596903,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:import_in": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:in_webhook": {
+    "feat": 0.0,
+    "fix": 0.37088873733487043,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:mode_in": {
+    "feat": 0.0,
+    "fix": -0.20706612413488698,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.37815059595268685,
+    "chore": 0.0
+   },
+   "w2:move_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.3509542230502645,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:page_in": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.21718322111367025,
+    "chore": 0.0
+   },
+   "w2:page_into": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.2157370367081856,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:repair_the": {
+    "feat": -0.40668793195721115,
+    "fix": 1.6353357146362082,
+    "docs": -0.2662255356636006,
+    "refactor": -0.524708540910549,
+    "test": -0.28585697242797736,
+    "chore": 0.0
+   },
+   "w2:retries_in": {
+    "feat": 0.21865612830222267,
+    "fix": -0.31950175773051526,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:simplify_the": {
+    "feat": -0.3367306026909753,
+    "fix": -0.2159318993809125,
+    "docs": 0.0,
+    "refactor": 1.0609708435716532,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:snapshot_the": {
+    "feat": -0.3544356850516846,
+    "fix": -0.2748141285497867,
+    "docs": -0.24786428519174675,
+    "refactor": -0.4265423289557557,
+    "test": 1.4516717063958589,
+    "chore": 0.0
+   },
+   "w2:streamline_webhook": {
+    "feat": -0.47269842148488966,
+    "fix": -0.3509582688117101,
+    "docs": 0.0,
+    "refactor": 1.2149966556195748,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:support_the": {
+    "feat": 0.7605654994142563,
+    "fix": -0.21514419072373783,
+    "docs": -0.3559653123530391,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:write_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.7173365532336454,
+    "refactor": -0.2135426446372894,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:about_webhook": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.5557122072521912,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:annotate_the": {
+    "feat": -0.31341424132128126,
+    "fix": 0.0,
+    "docs": 1.1246395432296241,
+    "refactor": -0.34429471348670476,
+    "test": -0.21582241680953002,
+    "chore": 0.0
+   },
+   "w2:bugfix_webhook": {
+    "feat": -0.3303144057847045,
+    "fix": 0.7918655806350664,
+    "docs": 0.0,
+    "refactor": -0.22513887410926003,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:clarify_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.3649793850753859,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:clarify_user": {
+    "feat": 0.0,
+    "fix": -0.2897372557584942,
+    "docs": 0.5096362061798916,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:document_batch": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.8650445304497243,
+    "refactor": -0.3903265074175691,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:document_session": {
+    "feat": -0.29813692586573975,
+    "fix": 0.0,
+    "docs": 1.1051474738899376,
+    "refactor": -0.2939602182091703,
+    "test": -0.23540442993571628,
+    "chore": 0.0
+   },
+   "w2:document_the": {
+    "feat": -0.38425700268504204,
+    "fix": -0.3007571049443988,
+    "docs": 1.4183727850136698,
+    "refactor": -0.4097308276346388,
+    "test": -0.20677639929190722,
+    "chore": 0.0
+   },
+   "w2:enable_the": {
+    "feat": 0.8192060486916757,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.29351116139009537,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:exercise_dark": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.4029030103872774,
+    "chore": 0.0
+   },
+   "w2:exercise_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.46692659422526617,
+    "chore": 0.0
+   },
+   "w2:exporter_into": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:expose_the": {
+    "feat": 0.26735305445038415,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:extract_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.43001169788489085,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:form_under": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.2960882924304308,
+    "chore": 0.0
+   },
+   "w2:get_webhook": {
+    "feat": 0.40979223977390816,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:implement_retry": {
+    "feat": 0.9766638741284625,
+    "fix": -0.24189873795984637,
+    "docs": 0.0,
+    "refactor": -0.44860487994659975,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:import_from": {
+    "feat": 0.24094680699222001,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.23688711036670002,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:in_batch": {
+    "feat": 0.0,
+    "fix": 0.21014364295122281,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:in_dark": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:index_behaves": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.36908419417056354,
+    "chore": 0.0
+   },
+   "w2:inline_webhook": {
+    "feat": -0.3086344956009025,
+    "fix": -0.20465930426209344,
+    "docs": 0.0,
+    "refactor": 0.7896079218245159,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:introduce_the": {
+    "feat": 0.5877185063983149,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.22062298900197572,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:layer_into": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.23794924703880402,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:logic_in": {
+    "feat": -0.23715634437210711,
+    "fix": -0.3720662898589703,
+    "docs": 0.302191235551098,
+    "refactor": 0.0,
+    "test": 0.5728311978216636,
+    "chore": 0.0
+   },
+   "w2:logic_into": {
+    "feat": -0.20556491330653737,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.3666836772013065,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:mend_the": {
+    "feat": -0.27609209514158733,
+    "fix": 1.0637394302311936,
+    "docs": 0.0,
+    "refactor": -0.3367569937514973,
+    "test": -0.20667651812616142,
+    "chore": 0.0
+   },
+   "w2:note_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:of_the": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:out_batch": {
+    "feat": 0.4731509431767008,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": -0.2251771007856806,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:out_user": {
+    "feat": 0.22578744315061872,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:out_webhook": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:page_documentation": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.4976462741517032,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:page_from": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:polish_dark": {
+    "feat": -0.3912855724607547,
+    "fix": -0.2468453705658196,
+    "docs": 0.0,
+    "refactor": 1.0616079589627723,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:polish_the": {
+    "feat": -0.37440199231327215,
+    "fix": -0.3259904989846718,
+    "docs": 0.0,
+    "refactor": 1.215392965860658,
+    "test": -0.21410518842513185,
+    "chore": 0.0
+   },
+   "w2:reorganize_batch": {
+    "feat": -0.2618517743592671,
+    "fix": -0.2563075726363994,
+    "docs": -0.22579993519853772,
+    "refactor": 0.9332930183116314,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:reorganize_the": {
+    "feat": -0.4344673530950565,
+    "fix": -0.2801295890181602,
+    "docs": 0.0,
+    "refactor": 1.2199798164157472,
+    "test": -0.24637784876006552,
+    "chore": 0.0
+   },
+   "w2:retries_from": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:retries_shipped": {
+    "feat": 0.40979223977390816,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:timeouts_in": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.21709815070139368,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:untangle_the": {
+    "feat": -0.2811130351180196,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.820482718334814,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:up_batch": {
+    "feat": 0.2550405468868936,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:up_session": {
+    "feat": -0.23416460204085252,
+    "fix": 0.2692031398627774,
+    "docs": 0.0,
+    "refactor": 0.2673160382921442,
+    "test": 0.0,
+    "chore": 0.0
+   },
+   "w2:verify_retry": {
+    "feat": 0.0,
+    "fix": 0.0,
+    "docs": 0.0,
+    "refactor": 0.0,
+    "test": 0.35994626208946506,
+    "chore": 0.0
+   }
+  },
+  "b": {
+   "feat": 0.0,
+   "fix": -0.689154614427924,
+   "docs": -1.745467694563601,
+   "refactor": 0.25870094154676565,
+   "test": -1.2051403936997376,
+   "chore": 1.6434917303305534
+  }
+ },
+ "params": 2376,
+ "footprint_bytes": 56220,
+ "path": "trained",
+ "heldout_acc": 0.9375,
+ "train_n": 380,
+ "heldout_n": 80,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.55
+  },
+  {
+   "name": "majority-class (feat)",
+   "acc": 0.2
+  }
+ ],
+ "bar": 0.7,
+ "attempts": [
+  {
+   "fmode": "words",
+   "hidden": 0,
+   "numpy_acc": 0.9125,
+   "dict_acc": 0.9125,
+   "params": 2376
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "commit-type-model#c0",
+  "commit-type-model#c1"
+ ],
+ "socialized_to": 3
+}

@@ -1,0 +1,4008 @@
+{
+ "name": "bug-swapped-operands-harvest-model",
+ "niche": "debugging",
+ "job": "decide whether a snippet's defect is swapped-operands (harvest-extended training, union representation)",
+ "classes": [
+  "swapped-operands",
+  "other"
+ ],
+ "features": [
+  "c:g:__c",
+  "c:g:__n",
+  "c:g:__o",
+  "c:g:_c_",
+  "c:g:_n_",
+  "c:g:_o_",
+  "c:g:_va",
+  "c:g:ar_",
+  "c:g:c__",
+  "c:g:def",
+  "c:g:ef_",
+  "c:g:f_v",
+  "c:g:o_v",
+  "c:g:r__",
+  "c:g:var",
+  "c:w:def",
+  "c:w:var",
+  "t:g:_c_",
+  "t:g:_n_",
+  "t:g:c_n",
+  "t:g:def",
+  "t:g:ef_",
+  "t:w:def",
+  "c:g:n_v",
+  "t:g:_re",
+  "c:g:_re",
+  "c:g:etu",
+  "c:g:ret",
+  "c:g:rn_",
+  "c:g:tur",
+  "c:g:urn",
+  "c:w:return",
+  "t:g:etu",
+  "t:g:ret",
+  "t:g:rn_",
+  "t:g:tur",
+  "t:g:urn",
+  "t:w:return",
+  "c:g:__a",
+  "c:g:__e",
+  "c:g:_a_",
+  "c:g:_e_",
+  "c:g:a_v",
+  "t:g:_a_",
+  "t:g:_e_",
+  "t:g:__e",
+  "c:g:_nu",
+  "c:g:num",
+  "c:g:um_",
+  "c:w:num",
+  "c:g:e_v",
+  "t:g:n_r",
+  "t:g:in_",
+  "c:g:__b",
+  "c:g:__k",
+  "c:g:_b_",
+  "c:g:_k_",
+  "c:g:e_n",
+  "c:g:r_v",
+  "t:g:_ox",
+  "t:g:oxs",
+  "t:g:xs_",
+  "t:w:xs",
+  "t:g:_p_",
+  "t:g:_xs",
+  "t:g:n_o",
+  "c:g:_fo",
+  "c:g:_in",
+  "c:g:for",
+  "c:g:in_",
+  "c:g:or_",
+  "c:g:r_i",
+  "c:w:for",
+  "c:w:in",
+  "t:g:_fo",
+  "t:g:_in",
+  "t:g:for",
+  "t:g:or_",
+  "t:w:for",
+  "t:w:in",
+  "c:g:__p",
+  "c:g:_p_",
+  "t:g:__p",
+  "t:g:_k_",
+  "t:g:s_c",
+  "c:g:n_r",
+  "t:g:_b_",
+  "t:g:_1_",
+  "t:g:_m_",
+  "t:g:_s_",
+  "c:g:b_v",
+  "t:g:_0_",
+  "t:g:e_0",
+  "c:g:m__",
+  "c:g:p_e",
+  "t:g:n_x",
+  "t:g:p_e",
+  "t:g:t_o",
+  "t:g:_i_",
+  "t:g:en_",
+  "t:g:len",
+  "t:w:len",
+  "t:g:a_b",
+  "c:g:__s",
+  "c:g:_if",
+  "c:g:_s_",
+  "c:g:if_",
+  "c:g:k__",
+  "c:w:if",
+  "t:g:__s",
+  "t:g:_if",
+  "t:g:a_a",
+  "t:g:e_1",
+  "t:g:f_c",
+  "t:g:if_",
+  "t:w:if",
+  "c:g:__m",
+  "c:g:_m_",
+  "c:g:m_f",
+  "t:g:__m",
+  "t:g:_oa",
+  "t:g:d_o",
+  "t:g:e_o",
+  "t:g:s_b",
+  "c:g:e__",
+  "c:g:m_v",
+  "c:g:n_i",
+  "t:g:_x_",
+  "t:g:n_i",
+  "t:g:oa_",
+  "t:g:s_a",
+  "t:g:b_c",
+  "t:g:c__",
+  "t:g:le_",
+  "t:g:n__",
+  "t:g:r_x",
+  "t:g:s_n",
+  "t:g:t__",
+  "t:g:_ta",
+  "t:g:e_x",
+  "t:g:nd_",
+  "c:g:__d",
+  "c:g:_d_",
+  "t:g:__d",
+  "t:g:_d_",
+  "t:g:_le",
+  "t:g:_v_",
+  "t:g:e__",
+  "t:g:e_i",
+  "t:g:f_s",
+  "t:g:k__",
+  "t:g:nt_",
+  "c:g:b__",
+  "c:g:s_v",
+  "t:g:__b",
+  "t:g:_bi",
+  "t:g:_co",
+  "t:g:_di",
+  "t:g:_wh",
+  "t:g:b_k",
+  "t:g:bi_",
+  "t:g:ge_",
+  "t:g:i_k",
+  "t:g:x_i",
+  "c:g:__t",
+  "c:g:_t_",
+  "c:g:m_r",
+  "c:g:t_v",
+  "t:g:0_f",
+  "t:g:_on",
+  "t:g:_ra",
+  "t:g:cou",
+  "t:g:end",
+  "t:g:oun",
+  "t:g:s__",
+  "t:g:unt",
+  "t:g:x__",
+  "c:g:c_r",
+  "c:g:d_v",
+  "t:g:_pr",
+  "t:g:c_r",
+  "t:g:e_v",
+  "t:g:f_x",
+  "t:g:n_s",
+  "c:g:_wh",
+  "c:g:hil",
+  "c:g:ile",
+  "c:g:le_",
+  "c:g:whi",
+  "c:w:while",
+  "t:g:ct_",
+  "t:g:hil",
+  "t:g:i__",
+  "t:g:ile",
+  "t:g:k_c",
+  "t:g:s_o",
+  "t:g:st_",
+  "t:g:whi",
+  "t:w:while",
+  "t:g:1_r",
+  "t:g:ang",
+  "t:g:app",
+  "t:g:f_o",
+  "t:g:f_p",
+  "t:g:i_i",
+  "t:g:n_p",
+  "t:g:nge",
+  "t:g:pen",
+  "t:g:ppe",
+  "t:g:r_i",
+  "t:g:ran",
+  "t:g:t_t",
+  "t:g:tap",
+  "t:w:append",
+  "t:w:range",
+  "c:g:e_e",
+  "c:g:r_r",
+  "t:g:_op",
+  "t:g:_ou",
+  "t:g:_su",
+  "t:g:a_v",
+  "t:g:c_c",
+  "t:g:e_e",
+  "t:g:n_c",
+  "t:g:on_",
+  "t:g:ota",
+  "t:g:out",
+  "t:g:ut_",
+  "t:g:v_c",
+  "t:w:out",
+  "c:g:__l",
+  "c:g:_l_",
+  "c:g:l_v",
+  "t:g:__l",
+  "t:g:_l_",
+  "t:g:_ma",
+  "t:g:n_m",
+  "t:g:x_o",
+  "c:g:k_v",
+  "c:g:m_w",
+  "c:g:n__",
+  "t:g:0_i",
+  "t:g:0_n",
+  "t:g:1_i",
+  "t:g:a__",
+  "t:g:es_",
+  "t:g:l_l",
+  "t:g:n_a",
+  "t:g:pri",
+  "c:g:__g",
+  "c:g:_g_",
+  "c:g:b_n",
+  "c:g:k_f",
+  "c:g:m_e",
+  "c:g:p_v",
+  "t:g:0_k",
+  "t:g:__g",
+  "t:g:_b0",
+  "t:g:_g_",
+  "t:g:_mi",
+  "t:g:_ol",
+  "t:g:_zi",
+  "t:g:b0_",
+  "t:g:dif",
+  "t:g:e_b",
+  "t:g:f_a",
+  "t:g:f_r",
+  "t:g:f_t",
+  "t:g:ff_",
+  "t:g:iff",
+  "t:g:ip_",
+  "t:g:k_f",
+  "t:g:m__",
+  "t:g:m_e",
+  "t:g:m_n",
+  "t:g:min",
+  "t:g:n_n",
+  "t:g:o_o",
+  "t:g:ole",
+  "t:g:res",
+  "t:g:s_e",
+  "t:g:sum",
+  "t:g:um_",
+  "t:g:v_n",
+  "t:g:zip",
+  "c:g:r_f",
+  "t:g:100",
+  "t:g:1_f",
+  "t:g:_10",
+  "t:g:_fi",
+  "t:g:a_m",
+  "t:g:ag_",
+  "t:g:ax_",
+  "t:g:b__",
+  "t:g:duc",
+  "t:g:f_d",
+  "t:g:f_f",
+  "t:g:g_a",
+  "t:g:g_m",
+  "t:g:max",
+  "t:g:n_b",
+  "t:g:odu",
+  "t:g:p__",
+  "t:g:p_o",
+  "t:g:pro",
+  "t:g:r_v",
+  "t:g:rod",
+  "t:g:tag",
+  "t:g:uct",
+  "t:g:v_i",
+  "t:w:100",
+  "c:g:__r",
+  "c:g:_r_",
+  "c:g:c_v",
+  "c:g:p_n",
+  "t:g:1_c",
+  "t:g:__r",
+  "t:g:_al",
+  "t:g:_av",
+  "t:g:_bx",
+  "t:g:_li",
+  "t:g:_ot",
+  "t:g:_r_",
+  "t:g:_to",
+  "t:g:a_c",
+  "t:g:al_",
+  "t:g:all",
+  "t:g:bx_",
+  "t:g:d_l",
+  "t:g:e_c",
+  "t:g:e_d",
+  "t:g:e_l",
+  "t:g:int",
+  "t:g:ist",
+  "t:g:l_o",
+  "t:g:lis",
+  "t:g:ll_",
+  "t:g:m_c",
+  "t:g:n_w",
+  "t:g:p_1",
+  "t:g:rin",
+  "t:g:t_c",
+  "t:g:tal",
+  "t:g:tot",
+  "t:w:list",
+  "t:w:print",
+  "c:g:g_n",
+  "c:g:k_r",
+  "c:g:m_n",
+  "c:g:o_n",
+  "c:g:r_w",
+  "c:g:s_e",
+  "t:g:0_w",
+  "t:g:1_a",
+  "t:g:1_w",
+  "t:g:_do",
+  "t:g:_me",
+  "t:g:_o1",
+  "t:g:_ob",
+  "t:g:_of",
+  "t:g:_ru",
+  "t:g:_sq",
+  "t:g:_up",
+  "t:g:a_n",
+  "t:g:age",
+  "t:g:an_",
+  "t:g:are",
+  "t:g:ave",
+  "t:g:b_b",
+  "t:g:c_k",
+  "t:g:col",
+  "t:g:dow",
+  "t:g:e_n",
+  "t:g:ean",
+  "t:g:ect",
+  "t:g:era",
+  "t:g:f_m",
+  "t:g:f_z",
+  "t:g:ing",
+  "t:g:k_i",
+  "t:g:k_r",
+  "t:g:l_m",
+  "t:g:l_u",
+  "t:g:lec",
+  "t:g:lle",
+  "t:g:m_1",
+  "t:g:m_a",
+  "t:g:m_o",
+  "t:g:mea",
+  "t:g:ms_",
+  "t:g:ng_",
+  "t:g:nin",
+  "t:g:nni",
+  "t:g:num",
+  "t:g:o1_",
+  "t:g:of_",
+  "t:g:oll",
+  "t:g:onu",
+  "t:g:op_",
+  "t:g:own",
+  "t:g:p_c",
+  "t:g:p_d",
+  "t:g:pto",
+  "t:g:qua",
+  "t:g:rag",
+  "t:g:run",
+  "t:g:s_x",
+  "t:g:squ",
+  "t:g:t_a",
+  "t:g:t_d",
+  "t:g:t_i",
+  "t:g:to_",
+  "t:g:uar",
+  "t:g:ums",
+  "t:g:unn",
+  "t:g:upt",
+  "t:g:v_r",
+  "t:g:ver",
+  "t:g:wn_",
+  "t:g:x_a",
+  "t:w:average",
+  "t:w:count_down",
+  "t:w:count_if",
+  "t:w:mean_of_squares",
+  "t:w:nums",
+  "t:w:running_min",
+  "t:w:sum",
+  "t:w:total_upto",
+  "t:w:zip_diff",
+  "c:g:6__",
+  "c:g:7__",
+  "c:g:_6_",
+  "c:g:_7_",
+  "c:g:__6",
+  "c:g:__7",
+  "c:g:_tr",
+  "c:g:d_n",
+  "c:g:e_t",
+  "c:g:g_v",
+  "c:g:n_n",
+  "c:g:rue",
+  "c:g:s_n",
+  "c:g:s_s",
+  "c:g:tru",
+  "c:g:ue_",
+  "c:w:true",
+  "t:g:0_r",
+  "t:g:1_n",
+  "t:g:1_p",
+  "t:g:6_c",
+  "t:g:7_6",
+  "t:g:_6_",
+  "t:g:_7_",
+  "t:g:__o",
+  "t:g:_ad",
+  "t:g:_ba",
+  "t:g:_bl",
+  "t:g:_bt",
+  "t:g:_cl",
+  "t:g:_ea",
+  "t:g:_f_",
+  "t:g:_hi",
+  "t:g:_la",
+  "t:g:_lo",
+  "t:g:_mo",
+  "t:g:_oh",
+  "t:g:_ok",
+  "t:g:_os",
+  "t:g:_ov",
+  "t:g:_pa",
+  "t:g:_pc",
+  "t:g:_po",
+  "t:g:_qu",
+  "t:g:_sa",
+  "t:g:_sc",
+  "t:g:_te",
+  "t:g:_tr",
+  "t:g:_y_",
+  "t:g:a_f",
+  "t:g:a_h",
+  "t:g:a_k",
+  "t:g:a_l",
+  "t:g:a_p",
+  "t:g:a_t",
+  "t:g:a_w",
+  "t:g:a_y",
+  "t:g:ach",
+  "t:g:add",
+  "t:g:afe",
+  "t:g:ags",
+  "t:g:ale",
+  "t:g:amp",
+  "t:g:art",
+  "t:g:ast",
+  "t:g:atc",
+  "t:g:ati",
+  "t:g:b_a",
+  "t:g:b_e",
+  "t:g:bag",
+  "t:g:ble",
+  "t:g:bta",
+  "t:g:c_e",
+  "t:g:c_t",
+  "t:g:cal",
+  "t:g:ce_",
+  "t:g:ch_",
+  "t:g:che",
+  "t:g:cla",
+  "t:g:cts",
+  "t:g:d_1",
+  "t:g:d_m",
+  "t:g:d_t",
+  "t:g:dd_",
+  "t:g:dis",
+  "t:g:div",
+  "t:g:e_7",
+  "t:g:e_a",
+  "t:g:e_r",
+  "t:g:e_t",
+  "t:g:eac",
+  "t:g:ed_",
+  "t:g:efi",
+  "t:g:ent",
+  "t:g:er_",
+  "t:g:ext",
+  "t:g:f_b",
+  "t:g:f_l",
+  "t:g:f_q",
+  "t:g:f_v",
+  "t:g:fe_",
+  "t:g:fin",
+  "t:g:fir",
+  "t:g:fix",
+  "t:g:g_0",
+  "t:g:g__",
+  "t:g:g_b",
+  "t:g:g_e",
+  "t:g:g_k",
+  "t:g:g_o",
+  "t:g:gs_",
+  "t:g:h_o",
+  "t:g:hes",
+  "t:g:hi_",
+  "t:g:hol",
+  "t:g:i_a",
+  "t:g:i_c",
+  "t:g:i_r",
+  "t:g:ice",
+  "t:g:ien",
+  "t:g:ind",
+  "t:g:io_",
+  "t:g:irs",
+  "t:g:isc",
+  "t:g:iv_",
+  "t:g:ix_",
+  "t:g:k_p",
+  "t:g:lam",
+  "t:g:las",
+  "t:g:lo_",
+  "t:g:m_b",
+  "t:g:m_f",
+  "t:g:mat",
+  "t:g:mod",
+  "t:g:mp_",
+  "t:g:n_0",
+  "t:g:n_t",
+  "t:g:n_z",
+  "t:g:nte",
+  "t:g:o_a",
+  "t:g:od_",
+  "t:g:ohi",
+  "t:g:ok_",
+  "t:g:olo",
+  "t:g:opa",
+  "t:g:opr",
+  "t:g:oti",
+  "t:g:ov_",
+  "t:g:owe",
+  "t:g:par",
+  "t:g:pct",
+  "t:g:pow",
+  "t:g:pre",
+  "t:g:quo",
+  "t:g:r_m",
+  "t:g:rat",
+  "t:g:ref",
+  "t:g:ric",
+  "t:g:rst",
+  "t:g:rt_",
+  "t:g:rue",
+  "t:g:s_1",
+  "t:g:s_k",
+  "t:g:s_p",
+  "t:g:s_s",
+  "t:g:saf",
+  "t:g:sca",
+  "t:g:sco",
+  "t:g:sub",
+  "t:g:t_e",
+  "t:g:t_m",
+  "t:g:tch",
+  "t:g:ted",
+  "t:g:ten",
+  "t:g:tex",
+  "t:g:tie",
+  "t:g:tio",
+  "t:g:tru",
+  "t:g:ts_",
+  "t:g:ub_",
+  "t:g:ue_",
+  "t:g:uot",
+  "t:g:v__",
+  "t:g:v_a",
+  "t:g:v_o",
+  "t:g:wer",
+  "t:g:who",
+  "t:g:x_p",
+  "t:g:x_r",
+  "t:g:xte",
+  "t:g:y_i",
+  "t:w:add_tag",
+  "t:w:bag",
+  "t:w:clamp",
+  "t:w:count_matches",
+  "t:w:diff",
+  "t:w:discounted",
+  "t:w:extend",
+  "t:w:find_max",
+  "t:w:hi",
+  "t:w:last",
+  "t:w:lo",
+  "t:w:max",
+  "t:w:min",
+  "t:w:part",
+  "t:w:pct",
+  "t:w:power_mod",
+  "t:w:prefix_products",
+  "t:w:price",
+  "t:w:product",
+  "t:w:quotient",
+  "t:w:ratio",
+  "t:w:safe_div",
+  "t:w:scale",
+  "t:w:sub_each",
+  "t:w:sum_first",
+  "t:w:tag",
+  "t:w:tag_all",
+  "t:w:tags",
+  "t:w:true",
+  "t:w:whole",
+  "t:w:zip",
+  "c:g:__x",
+  "c:g:_el",
+  "c:g:_no",
+  "c:g:_x_",
+  "c:g:c_i",
+  "c:g:d_d",
+  "c:g:e_r",
+  "c:g:els",
+  "c:g:lse",
+  "c:g:ne_",
+  "c:g:non",
+  "c:g:one",
+  "c:g:r_e",
+  "c:g:r_n",
+  "c:g:se_",
+  "c:g:x_e",
+  "c:w:else",
+  "c:w:none",
+  "t:g:1_k",
+  "t:g:2__",
+  "t:g:_2_",
+  "t:g:__x",
+  "t:g:_ac",
+  "t:g:_ds",
+  "t:g:_el",
+  "t:g:_en",
+  "t:g:_ev",
+  "t:g:_od",
+  "t:g:_oi",
+  "t:g:_pu",
+  "t:g:_sr",
+  "t:g:a_o",
+  "t:g:a_s",
+  "t:g:acc",
+  "t:g:c_b",
+  "t:g:c_i",
+  "t:g:cc_",
+  "t:g:d_a",
+  "t:g:d_b",
+  "t:g:d_d",
+  "t:g:d_s",
+  "t:g:dic",
+  "t:g:dst",
+  "t:g:e_s",
+  "t:g:els",
+  "t:g:em_",
+  "t:g:eno",
+  "t:g:ens",
+  "t:g:esu",
+  "t:g:eve",
+  "t:g:g_c",
+  "t:g:h_a",
+  "t:g:ict",
+  "t:g:ite",
+  "t:g:lse",
+  "t:g:lt_",
+  "t:g:m_p",
+  "t:g:n_d",
+  "t:g:n_l",
+  "t:g:ne_",
+  "t:g:non",
+  "t:g:ns_",
+  "t:g:ob_",
+  "t:g:oba",
+  "t:g:ods",
+  "t:g:oit",
+  "t:g:one",
+  "t:g:osr",
+  "t:g:ox_",
+  "t:g:p_b",
+  "t:g:p_x",
+  "t:g:pus",
+  "t:g:r_2",
+  "t:g:rc_",
+  "t:g:s_f",
+  "t:g:se_",
+  "t:g:sh_",
+  "t:g:src",
+  "t:g:sul",
+  "t:g:tem",
+  "t:g:ult",
+  "t:g:ush",
+  "t:g:ven",
+  "t:g:x_c",
+  "t:g:x_e",
+  "t:g:y_f",
+  "t:w:acc",
+  "t:w:collect",
+  "t:w:collect_evens",
+  "t:w:dict",
+  "t:w:dst",
+  "t:w:else",
+  "t:w:item",
+  "t:w:none",
+  "t:w:push_all",
+  "t:w:result",
+  "t:w:src",
+  "c:g:c_f",
+  "c:g:n_f",
+  "c:g:o__",
+  "t:g:_by",
+  "t:g:_o_",
+  "t:g:_oc",
+  "t:g:_oo",
+  "t:g:avg",
+  "t:g:by_",
+  "t:g:c_a",
+  "t:g:c_d",
+  "t:g:c_f",
+  "t:g:d_p",
+  "t:g:d_w",
+  "t:g:e_m",
+  "t:g:g_1",
+  "t:g:i_p",
+  "t:g:k_a",
+  "t:g:k_t",
+  "t:g:l__",
+  "t:g:m_m",
+  "t:g:m_x",
+  "t:g:m_y",
+  "t:g:n_f",
+  "t:g:o_c",
+  "t:g:oac",
+  "t:g:oc_",
+  "t:g:oou",
+  "t:g:os_",
+  "t:g:p_f",
+  "t:g:p_p",
+  "t:g:p_y",
+  "t:g:r_b",
+  "t:g:s_l",
+  "t:g:s_t",
+  "t:g:s_w",
+  "t:g:v_p",
+  "t:g:vg_",
+  "t:g:x_f",
+  "t:g:y__",
+  "t:w:avg",
+  "t:w:res",
+  "t:w:total"
+ ],
+ "hidden": 0,
+ "fmode": "codetext",
+ "weights": {
+  "w": {
+   "c:g:__c": {
+    "swapped-operands": -0.05643227860408998,
+    "other": 0.05643227860409042
+   },
+   "c:g:__n": {
+    "swapped-operands": -0.077132348307099,
+    "other": 0.0771323483070982
+   },
+   "c:g:__o": {
+    "swapped-operands": -0.05643227860408998,
+    "other": 0.05643227860409042
+   },
+   "c:g:_c_": {
+    "swapped-operands": -0.05643227860408998,
+    "other": 0.05643227860409042
+   },
+   "c:g:_n_": {
+    "swapped-operands": -0.077132348307099,
+    "other": 0.0771323483070982
+   },
+   "c:g:_o_": {
+    "swapped-operands": -0.05643227860408998,
+    "other": 0.05643227860409042
+   },
+   "c:g:_va": {
+    "swapped-operands": -0.06785037508385168,
+    "other": 0.06785037508385196
+   },
+   "c:g:ar_": {
+    "swapped-operands": -0.06785037508385168,
+    "other": 0.06785037508385196
+   },
+   "c:g:c__": {
+    "swapped-operands": 0.08337611520589346,
+    "other": -0.08337611520589361
+   },
+   "c:g:def": {
+    "swapped-operands": -0.061276251022705494,
+    "other": 0.061276251022705605
+   },
+   "c:g:ef_": {
+    "swapped-operands": -0.061276251022705494,
+    "other": 0.061276251022705605
+   },
+   "c:g:f_v": {
+    "swapped-operands": -0.08165442377041195,
+    "other": 0.08165442377041125
+   },
+   "c:g:o_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:r__": {
+    "swapped-operands": -0.06785037508385168,
+    "other": 0.06785037508385196
+   },
+   "c:g:var": {
+    "swapped-operands": -0.06785037508385168,
+    "other": 0.06785037508385196
+   },
+   "c:w:def": {
+    "swapped-operands": -0.061276251022705494,
+    "other": 0.061276251022705605
+   },
+   "c:w:var": {
+    "swapped-operands": -0.06785037508385168,
+    "other": 0.06785037508385196
+   },
+   "t:g:_c_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_n_": {
+    "swapped-operands": -0.08870170071111803,
+    "other": 0.08870170071111712
+   },
+   "t:g:c_n": {
+    "swapped-operands": -0.06724704039558392,
+    "other": 0.06724704039558345
+   },
+   "t:g:def": {
+    "swapped-operands": -0.061276251022705494,
+    "other": 0.061276251022705605
+   },
+   "t:g:ef_": {
+    "swapped-operands": -0.061276251022705494,
+    "other": 0.061276251022705605
+   },
+   "t:w:def": {
+    "swapped-operands": -0.061276251022705494,
+    "other": 0.061276251022705605
+   },
+   "c:g:n_v": {
+    "swapped-operands": -0.07649179247515162,
+    "other": 0.07649179247515077
+   },
+   "t:g:_re": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_re": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:g:etu": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:g:ret": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:g:rn_": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:g:tur": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:g:urn": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:w:return": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "t:g:etu": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "t:g:ret": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "t:g:rn_": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "t:g:tur": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "t:g:urn": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "t:w:return": {
+    "swapped-operands": 0.07169958343420015,
+    "other": -0.07169958343420012
+   },
+   "c:g:__a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__e": {
+    "swapped-operands": -0.2265001575289351,
+    "other": 0.22650015752893332
+   },
+   "c:g:_a_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_e_": {
+    "swapped-operands": -0.179594793478927,
+    "other": 0.17959479347892546
+   },
+   "c:g:a_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_a_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_e_": {
+    "swapped-operands": -0.17773150201222218,
+    "other": 0.17773150201222077
+   },
+   "t:g:__e": {
+    "swapped-operands": -0.21414342181245943,
+    "other": 0.21414342181245744
+   },
+   "c:g:_nu": {
+    "swapped-operands": -0.13697424323401472,
+    "other": 0.13697424323401303
+   },
+   "c:g:num": {
+    "swapped-operands": -0.13697424323401472,
+    "other": 0.13697424323401303
+   },
+   "c:g:um_": {
+    "swapped-operands": -0.13697424323401472,
+    "other": 0.13697424323401303
+   },
+   "c:w:num": {
+    "swapped-operands": -0.13697424323401472,
+    "other": 0.13697424323401303
+   },
+   "c:g:e_v": {
+    "swapped-operands": -0.2639310287966801,
+    "other": 0.2639310287966781
+   },
+   "t:g:n_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:in_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__b": {
+    "swapped-operands": -0.07824167718347808,
+    "other": 0.07824167718347667
+   },
+   "c:g:__k": {
+    "swapped-operands": -0.07824167718347808,
+    "other": 0.07824167718347667
+   },
+   "c:g:_b_": {
+    "swapped-operands": -0.07824167718347808,
+    "other": 0.07824167718347667
+   },
+   "c:g:_k_": {
+    "swapped-operands": -0.07824167718347808,
+    "other": 0.07824167718347667
+   },
+   "c:g:e_n": {
+    "swapped-operands": -0.12491569964944091,
+    "other": 0.12491569964943945
+   },
+   "c:g:r_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ox": {
+    "swapped-operands": -0.0848815862728999,
+    "other": 0.08488158627289978
+   },
+   "t:g:oxs": {
+    "swapped-operands": -0.07844352497133911,
+    "other": 0.07844352497133875
+   },
+   "t:g:xs_": {
+    "swapped-operands": -0.11086108702508897,
+    "other": 0.11086108702508855
+   },
+   "t:w:xs": {
+    "swapped-operands": -0.11444327487003303,
+    "other": 0.11444327487003288
+   },
+   "t:g:_p_": {
+    "swapped-operands": -0.18492714747203906,
+    "other": 0.18492714747203814
+   },
+   "t:g:_xs": {
+    "swapped-operands": -0.14314713132514,
+    "other": 0.14314713132513884
+   },
+   "t:g:n_o": {
+    "swapped-operands": 0.10457407750622232,
+    "other": -0.10457407750622259
+   },
+   "c:g:_fo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_in": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:for": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:in_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:or_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:r_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:w:for": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:w:in": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_fo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_in": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:for": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:or_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:for": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:in": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__p": {
+    "swapped-operands": -0.15803560130415603,
+    "other": 0.15803560130415414
+   },
+   "c:g:_p_": {
+    "swapped-operands": -0.15803560130415603,
+    "other": 0.15803560130415414
+   },
+   "t:g:__p": {
+    "swapped-operands": -0.15803560130415603,
+    "other": 0.15803560130415414
+   },
+   "t:g:_k_": {
+    "swapped-operands": -0.07124091434005515,
+    "other": 0.07124091434005309
+   },
+   "t:g:s_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:n_r": {
+    "swapped-operands": 0.13257484880217923,
+    "other": -0.1325748488021787
+   },
+   "t:g:_b_": {
+    "swapped-operands": 0.0794693997990918,
+    "other": -0.07946939979909165
+   },
+   "t:g:_1_": {
+    "swapped-operands": -0.23729837571594758,
+    "other": 0.23729837571594553
+   },
+   "t:g:_m_": {
+    "swapped-operands": -0.08187345012519005,
+    "other": 0.08187345012518837
+   },
+   "t:g:_s_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:b_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_0_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_0": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:m__": {
+    "swapped-operands": -0.16452784719579455,
+    "other": 0.16452784719579217
+   },
+   "c:g:p_e": {
+    "swapped-operands": 0.11499043279314446,
+    "other": -0.11499043279314675
+   },
+   "t:g:n_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_e": {
+    "swapped-operands": 0.11499043279314446,
+    "other": -0.11499043279314675
+   },
+   "t:g:t_o": {
+    "swapped-operands": -0.23271381926492896,
+    "other": 0.23271381926492937
+   },
+   "t:g:_i_": {
+    "swapped-operands": -0.17466769171294955,
+    "other": 0.1746676917129466
+   },
+   "t:g:en_": {
+    "swapped-operands": 0.0702225111825812,
+    "other": -0.07022251118258169
+   },
+   "t:g:len": {
+    "swapped-operands": 0.0702225111825812,
+    "other": -0.07022251118258169
+   },
+   "t:w:len": {
+    "swapped-operands": 0.0702225111825812,
+    "other": -0.07022251118258169
+   },
+   "t:g:a_b": {
+    "swapped-operands": 0.13211047465119488,
+    "other": -0.132110474651195
+   },
+   "c:g:__s": {
+    "swapped-operands": -0.10776197539091965,
+    "other": 0.10776197539092086
+   },
+   "c:g:_if": {
+    "swapped-operands": -0.08019734421214005,
+    "other": 0.08019734421213706
+   },
+   "c:g:_s_": {
+    "swapped-operands": -0.08963456239767048,
+    "other": 0.08963456239767183
+   },
+   "c:g:if_": {
+    "swapped-operands": -0.08019734421214005,
+    "other": 0.08019734421213706
+   },
+   "c:g:k__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:w:if": {
+    "swapped-operands": -0.08019734421214005,
+    "other": 0.08019734421213706
+   },
+   "t:g:__s": {
+    "swapped-operands": -0.10776197539091965,
+    "other": 0.10776197539092086
+   },
+   "t:g:_if": {
+    "swapped-operands": -0.10339917865219908,
+    "other": 0.10339917865219567
+   },
+   "t:g:a_a": {
+    "swapped-operands": 0.11130928446143414,
+    "other": -0.11130928446143419
+   },
+   "t:g:e_1": {
+    "swapped-operands": -0.1928084242029046,
+    "other": 0.19280842420290215
+   },
+   "t:g:f_c": {
+    "swapped-operands": -0.13971705494222217,
+    "other": 0.13971705494222147
+   },
+   "t:g:if_": {
+    "swapped-operands": -0.10339917865219908,
+    "other": 0.10339917865219567
+   },
+   "t:w:if": {
+    "swapped-operands": -0.08019734421214005,
+    "other": 0.08019734421213706
+   },
+   "c:g:__m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_m_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:m_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:__m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_oa": {
+    "swapped-operands": -0.3102666809194405,
+    "other": 0.31026668091944143
+   },
+   "t:g:d_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_o": {
+    "swapped-operands": -0.06867247096218491,
+    "other": 0.06867247096218514
+   },
+   "t:g:s_b": {
+    "swapped-operands": -0.43779258000118904,
+    "other": 0.43779258000118704
+   },
+   "c:g:e__": {
+    "swapped-operands": -0.08271907653347699,
+    "other": 0.08271907653347631
+   },
+   "c:g:m_v": {
+    "swapped-operands": 0.16924659522821464,
+    "other": -0.16924659522821592
+   },
+   "c:g:n_i": {
+    "swapped-operands": -0.066940753618265,
+    "other": 0.06694075361826198
+   },
+   "t:g:_x_": {
+    "swapped-operands": 0.36746746206405045,
+    "other": -0.3674674620640506
+   },
+   "t:g:n_i": {
+    "swapped-operands": -0.066940753618265,
+    "other": 0.06694075361826198
+   },
+   "t:g:oa_": {
+    "swapped-operands": -0.30526833361079964,
+    "other": 0.3052683336108005
+   },
+   "t:g:s_a": {
+    "swapped-operands": 0.1560952658362338,
+    "other": -0.15609526583623465
+   },
+   "t:g:b_c": {
+    "swapped-operands": -0.058793402888907005,
+    "other": 0.05879340288890741
+   },
+   "t:g:c__": {
+    "swapped-operands": 0.3453397656925359,
+    "other": -0.34533976569253594
+   },
+   "t:g:le_": {
+    "swapped-operands": -0.14567107103245427,
+    "other": 0.1456710710324529
+   },
+   "t:g:n__": {
+    "swapped-operands": -0.12574304190816057,
+    "other": 0.12574304190815952
+   },
+   "t:g:r_x": {
+    "swapped-operands": 0.07077774862394905,
+    "other": -0.0707777486239482
+   },
+   "t:g:s_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:t__": {
+    "swapped-operands": 0.47431164355471783,
+    "other": -0.4743116435547176
+   },
+   "t:g:_ta": {
+    "swapped-operands": -0.08654895514134808,
+    "other": 0.0865489551413483
+   },
+   "t:g:e_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:nd_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__d": {
+    "swapped-operands": 0.34953170272904327,
+    "other": -0.34953170272904344
+   },
+   "c:g:_d_": {
+    "swapped-operands": 0.31829719023254965,
+    "other": -0.3182971902325501
+   },
+   "t:g:__d": {
+    "swapped-operands": 0.34953170272904327,
+    "other": -0.34953170272904344
+   },
+   "t:g:_d_": {
+    "swapped-operands": 0.31829719023254965,
+    "other": -0.3182971902325501
+   },
+   "t:g:_le": {
+    "swapped-operands": 0.054650969792875925,
+    "other": -0.0546509697928779
+   },
+   "t:g:_v_": {
+    "swapped-operands": -0.16426695987988293,
+    "other": 0.16426695987988246
+   },
+   "t:g:e__": {
+    "swapped-operands": -0.40869797354477866,
+    "other": 0.40869797354477866
+   },
+   "t:g:e_i": {
+    "swapped-operands": -0.11969731808071683,
+    "other": 0.1196973180807137
+   },
+   "t:g:f_s": {
+    "swapped-operands": 0.16526830542754173,
+    "other": -0.1652683054275412
+   },
+   "t:g:k__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:nt_": {
+    "swapped-operands": -0.1823421161822583,
+    "other": 0.18234211618225724
+   },
+   "c:g:b__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:s_v": {
+    "swapped-operands": -0.09507430486236043,
+    "other": 0.09507430486236143
+   },
+   "t:g:__b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_bi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_co": {
+    "swapped-operands": -0.11680741331513832,
+    "other": 0.11680741331513697
+   },
+   "t:g:_di": {
+    "swapped-operands": 0.17054239833732787,
+    "other": -0.1705423983373281
+   },
+   "t:g:_wh": {
+    "swapped-operands": -0.11846307309215023,
+    "other": 0.11846307309214867
+   },
+   "t:g:b_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:bi_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ge_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:i_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_t_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:m_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:t_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:0_f": {
+    "swapped-operands": 0.07110582762640334,
+    "other": -0.07110582762640329
+   },
+   "t:g:_on": {
+    "swapped-operands": -0.12576267439234748,
+    "other": 0.12576267439234703
+   },
+   "t:g:_ra": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:cou": {
+    "swapped-operands": -0.06059421619494155,
+    "other": 0.06059421619494072
+   },
+   "t:g:end": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:oun": {
+    "swapped-operands": -0.06059421619494155,
+    "other": 0.06059421619494072
+   },
+   "t:g:s__": {
+    "swapped-operands": -0.33850391777598976,
+    "other": 0.3385039177759895
+   },
+   "t:g:unt": {
+    "swapped-operands": -0.06059421619494155,
+    "other": 0.06059421619494072
+   },
+   "t:g:x__": {
+    "swapped-operands": -0.2951363844031356,
+    "other": 0.2951363844031364
+   },
+   "c:g:c_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:d_v": {
+    "swapped-operands": 0.37128819148380565,
+    "other": -0.3712881914838059
+   },
+   "t:g:_pr": {
+    "swapped-operands": -0.5626373553623799,
+    "other": 0.5626373553623802
+   },
+   "t:g:c_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_v": {
+    "swapped-operands": -0.09648169751313138,
+    "other": 0.096481697513131
+   },
+   "t:g:f_x": {
+    "swapped-operands": -0.09675622358553596,
+    "other": 0.09675622358553271
+   },
+   "t:g:n_s": {
+    "swapped-operands": -0.5895581471371397,
+    "other": 0.5895581471371389
+   },
+   "c:g:_wh": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "c:g:hil": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "c:g:ile": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "c:g:le_": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "c:g:whi": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "c:w:while": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "t:g:ct_": {
+    "swapped-operands": 0.44576011602393106,
+    "other": -0.44576011602393084
+   },
+   "t:g:hil": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "t:g:i__": {
+    "swapped-operands": -0.20009803275465107,
+    "other": 0.2000980327546468
+   },
+   "t:g:ile": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "t:g:k_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_o": {
+    "swapped-operands": 0.09358547861200711,
+    "other": -0.0935854786120068
+   },
+   "t:g:st_": {
+    "swapped-operands": -0.15226602622163335,
+    "other": 0.15226602622163357
+   },
+   "t:g:whi": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "t:w:while": {
+    "swapped-operands": -0.08762483242858847,
+    "other": 0.0876248324285854
+   },
+   "t:g:1_r": {
+    "swapped-operands": -0.07817773992414662,
+    "other": 0.078177739924145
+   },
+   "t:g:ang": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:app": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:f_o": {
+    "swapped-operands": 0.0894098792491015,
+    "other": -0.08940987924910274
+   },
+   "t:g:f_p": {
+    "swapped-operands": -0.08481894181567134,
+    "other": 0.08481894181567257
+   },
+   "t:g:i_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_p": {
+    "swapped-operands": -0.878612506980857,
+    "other": 0.8786125069808598
+   },
+   "t:g:nge": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:pen": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ppe": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:r_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ran": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:t_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tap": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:append": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:range": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:e_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:r_r": {
+    "swapped-operands": 0.12378243545727739,
+    "other": -0.12378243545727674
+   },
+   "t:g:_op": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ou": {
+    "swapped-operands": 0.06095604260374,
+    "other": -0.060956042603740004
+   },
+   "t:g:_su": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_v": {
+    "swapped-operands": -0.053454336192975654,
+    "other": 0.05345433619297541
+   },
+   "t:g:c_c": {
+    "swapped-operands": 0.08620517822723818,
+    "other": -0.08620517822723772
+   },
+   "t:g:e_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_c": {
+    "swapped-operands": -0.13862341798720312,
+    "other": 0.13862341798720268
+   },
+   "t:g:on_": {
+    "swapped-operands": -0.06814049292553813,
+    "other": 0.0681404929255373
+   },
+   "t:g:ota": {
+    "swapped-operands": -0.082713697809107,
+    "other": 0.08271369780910624
+   },
+   "t:g:out": {
+    "swapped-operands": 0.06095604260374,
+    "other": -0.060956042603740004
+   },
+   "t:g:ut_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:v_c": {
+    "swapped-operands": -0.053454336192975654,
+    "other": 0.05345433619297541
+   },
+   "t:w:out": {
+    "swapped-operands": 0.06095604260374,
+    "other": -0.060956042603740004
+   },
+   "c:g:__l": {
+    "swapped-operands": -0.08762505764481088,
+    "other": 0.08762505764480587
+   },
+   "c:g:_l_": {
+    "swapped-operands": -0.08762505764481088,
+    "other": 0.08762505764480587
+   },
+   "c:g:l_v": {
+    "swapped-operands": -0.08762505764481088,
+    "other": 0.08762505764480587
+   },
+   "t:g:__l": {
+    "swapped-operands": -0.08762505764481088,
+    "other": 0.08762505764480587
+   },
+   "t:g:_l_": {
+    "swapped-operands": -0.08762505764481088,
+    "other": 0.08762505764480587
+   },
+   "t:g:_ma": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_m": {
+    "swapped-operands": 0.05282221026515653,
+    "other": -0.052822210265160076
+   },
+   "t:g:x_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:k_v": {
+    "swapped-operands": -0.08762981750438771,
+    "other": 0.08762981750438406
+   },
+   "c:g:m_w": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:n__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:0_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:0_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a__": {
+    "swapped-operands": -1.1056645914405827,
+    "other": 1.1056645914405827
+   },
+   "t:g:es_": {
+    "swapped-operands": -0.08427494920111815,
+    "other": 0.08427494920111932
+   },
+   "t:g:l_l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_a": {
+    "swapped-operands": -0.9544600171093616,
+    "other": 0.9544600171093602
+   },
+   "t:g:pri": {
+    "swapped-operands": -0.41851264119087944,
+    "other": 0.4185126411908794
+   },
+   "c:g:__g": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_g_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:b_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:k_f": {
+    "swapped-operands": 0.05808679102980053,
+    "other": -0.058086791029800314
+   },
+   "c:g:m_e": {
+    "swapped-operands": -0.2916813733229645,
+    "other": 0.2916813733229645
+   },
+   "c:g:p_v": {
+    "swapped-operands": -0.41497974779999064,
+    "other": 0.41497974779999136
+   },
+   "t:g:0_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:__g": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_b0": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_g_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_mi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ol": {
+    "swapped-operands": 0.09717478329392194,
+    "other": -0.097174783293921
+   },
+   "t:g:_zi": {
+    "swapped-operands": 0.12094349260153178,
+    "other": -0.12094349260153127
+   },
+   "t:g:b0_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:dif": {
+    "swapped-operands": 0.1310995059492583,
+    "other": -0.13109950594925782
+   },
+   "t:g:e_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:f_a": {
+    "swapped-operands": -0.07371178160765668,
+    "other": 0.07371178160765669
+   },
+   "t:g:f_r": {
+    "swapped-operands": -0.051571450583128724,
+    "other": 0.051571450583126933
+   },
+   "t:g:f_t": {
+    "swapped-operands": -0.058431054762744725,
+    "other": 0.05843105476274476
+   },
+   "t:g:ff_": {
+    "swapped-operands": 0.1310995059492583,
+    "other": -0.13109950594925782
+   },
+   "t:g:iff": {
+    "swapped-operands": 0.1310995059492583,
+    "other": -0.13109950594925782
+   },
+   "t:g:ip_": {
+    "swapped-operands": 0.12094349260153178,
+    "other": -0.12094349260153127
+   },
+   "t:g:k_f": {
+    "swapped-operands": 0.05808679102980053,
+    "other": -0.058086791029800314
+   },
+   "t:g:m__": {
+    "swapped-operands": -0.10475663166821875,
+    "other": 0.10475663166821471
+   },
+   "t:g:m_e": {
+    "swapped-operands": -0.2916813733229645,
+    "other": 0.2916813733229645
+   },
+   "t:g:m_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:min": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_n": {
+    "swapped-operands": -0.13862475679200018,
+    "other": 0.13862475679199776
+   },
+   "t:g:o_o": {
+    "swapped-operands": -0.05157271060535662,
+    "other": 0.051572710605356044
+   },
+   "t:g:ole": {
+    "swapped-operands": 0.062382177548623026,
+    "other": -0.062382177548622554
+   },
+   "t:g:res": {
+    "swapped-operands": -0.11726595366187778,
+    "other": 0.11726595366187863
+   },
+   "t:g:s_e": {
+    "swapped-operands": -0.05843340384753504,
+    "other": 0.058433403847536994
+   },
+   "t:g:sum": {
+    "swapped-operands": -0.05996952897352376,
+    "other": 0.05996952897352396
+   },
+   "t:g:um_": {
+    "swapped-operands": -0.05996952897352376,
+    "other": 0.05996952897352396
+   },
+   "t:g:v_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:zip": {
+    "swapped-operands": 0.12094349260153178,
+    "other": -0.12094349260153127
+   },
+   "c:g:r_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:100": {
+    "swapped-operands": 0.05302387280093293,
+    "other": -0.05302387280093289
+   },
+   "t:g:1_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_10": {
+    "swapped-operands": 0.05302387280093293,
+    "other": -0.05302387280093289
+   },
+   "t:g:_fi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ag_": {
+    "swapped-operands": -0.12634230099504604,
+    "other": 0.12634230099504595
+   },
+   "t:g:ax_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:b__": {
+    "swapped-operands": 1.1429641042156164,
+    "other": -1.1429641042156173
+   },
+   "t:g:duc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:f_d": {
+    "swapped-operands": 0.1038322568589538,
+    "other": -0.10383225685895388
+   },
+   "t:g:f_f": {
+    "swapped-operands": -0.05959866699508594,
+    "other": 0.059598666995086105
+   },
+   "t:g:g_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:max": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_b": {
+    "swapped-operands": 0.9380023086639676,
+    "other": -0.938002308663968
+   },
+   "t:g:odu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p__": {
+    "swapped-operands": -0.08763592432660379,
+    "other": 0.08763592432660584
+   },
+   "t:g:p_o": {
+    "swapped-operands": 0.07675709424477156,
+    "other": -0.076757094244771
+   },
+   "t:g:pro": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:r_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:rod": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tag": {
+    "swapped-operands": -0.16143634415215463,
+    "other": 0.16143634415215521
+   },
+   "t:g:uct": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:v_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:100": {
+    "swapped-operands": 0.05302387280093293,
+    "other": -0.05302387280093289
+   },
+   "c:g:__r": {
+    "swapped-operands": 0.05257813503180663,
+    "other": -0.05257813503180603
+   },
+   "c:g:_r_": {
+    "swapped-operands": 0.05257813503180663,
+    "other": -0.05257813503180603
+   },
+   "c:g:c_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:p_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_c": {
+    "swapped-operands": -0.08799056244120726,
+    "other": 0.08799056244120643
+   },
+   "t:g:__r": {
+    "swapped-operands": 0.05257813503180663,
+    "other": -0.05257813503180603
+   },
+   "t:g:_al": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_av": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_bx": {
+    "swapped-operands": -0.5129256866175379,
+    "other": 0.5129256866175386
+   },
+   "t:g:_li": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ot": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_r_": {
+    "swapped-operands": 0.05257813503180663,
+    "other": -0.05257813503180603
+   },
+   "t:g:_to": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_c": {
+    "swapped-operands": 0.44264204657535783,
+    "other": -0.44264204657535755
+   },
+   "t:g:al_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:all": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:bx_": {
+    "swapped-operands": -0.5129256866175379,
+    "other": 0.5129256866175386
+   },
+   "t:g:d_l": {
+    "swapped-operands": -1.3160239575775916,
+    "other": 1.3160239575775925
+   },
+   "t:g:e_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:int": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ist": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:l_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:lis": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ll_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:m_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_w": {
+    "swapped-operands": 1.2407922531882998,
+    "other": -1.2407922531882998
+   },
+   "t:g:p_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:rin": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:t_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tal": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tot": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:list": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:print": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:g_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:k_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:m_n": {
+    "swapped-operands": -0.09173839855827987,
+    "other": 0.09173839855827812
+   },
+   "c:g:o_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:r_w": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:s_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:0_w": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_w": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_do": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_me": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:_o1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ob": {
+    "swapped-operands": 1.1997392132119555,
+    "other": -1.1997392132119546
+   },
+   "t:g:_of": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:_ru": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_sq": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:_up": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:age": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:an_": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:are": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:ave": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:b_b": {
+    "swapped-operands": 0.09751265431058995,
+    "other": -0.09751265431058917
+   },
+   "t:g:c_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:col": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:dow": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ean": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:ect": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:era": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:f_m": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:f_z": {
+    "swapped-operands": 0.09751265431058995,
+    "other": -0.09751265431058917
+   },
+   "t:g:ing": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:k_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:k_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:l_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:l_u": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:lec": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:lle": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:m_1": {
+    "swapped-operands": -0.09173839855827987,
+    "other": 0.09173839855827812
+   },
+   "t:g:m_a": {
+    "swapped-operands": 1.1666511719925832,
+    "other": -1.166651171992584
+   },
+   "t:g:m_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:mea": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:ms_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ng_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:nin": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:nni": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:num": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:o1_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:of_": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:oll": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:onu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:op_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:own": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_d": {
+    "swapped-operands": 0.09751265431058995,
+    "other": -0.09751265431058917
+   },
+   "t:g:pto": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:qua": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:rag": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:run": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_x": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:squ": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:t_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:t_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:t_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:to_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:uar": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:g:ums": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:unn": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:upt": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:v_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ver": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:wn_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:average": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:count_down": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:count_if": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:mean_of_squares": {
+    "swapped-operands": 0.22233326916185045,
+    "other": -0.22233326916185014
+   },
+   "t:w:nums": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:running_min": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:sum": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:total_upto": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:zip_diff": {
+    "swapped-operands": 0.09751265431058995,
+    "other": -0.09751265431058917
+   },
+   "c:g:6__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:7__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_6_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_7_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__6": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:__7": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_tr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:d_n": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "c:g:e_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:g_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:n_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:rue": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:s_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:s_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:tru": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:ue_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:w:true": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:0_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:6_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:7_6": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_6_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_7_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:__o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ad": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ba": {
+    "swapped-operands": -0.1047789770889985,
+    "other": 0.10477897708899796
+   },
+   "t:g:_bl": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:g:_bt": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_cl": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ea": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:_f_": {
+    "swapped-operands": -0.09473937177242928,
+    "other": 0.09473937177243015
+   },
+   "t:g:_hi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_la": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:g:_lo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_mo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_oh": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ok": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_os": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ov": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_pa": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_pc": {
+    "swapped-operands": 0.5830538231097553,
+    "other": -0.5830538231097551
+   },
+   "t:g:_po": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_qu": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:_sa": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_sc": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:g:_te": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_tr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_y_": {
+    "swapped-operands": -0.3315059309012604,
+    "other": 0.33150593090126074
+   },
+   "t:g:a_f": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:g:a_h": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_p": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:a_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_w": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_y": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:ach": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:add": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:afe": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ags": {
+    "swapped-operands": -0.06016388070400537,
+    "other": 0.060163880704006786
+   },
+   "t:g:ale": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:g:amp": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:art": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ast": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:g:atc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ati": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:b_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:b_e": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:bag": {
+    "swapped-operands": -0.1047789770889985,
+    "other": 0.10477897708899796
+   },
+   "t:g:ble": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:g:bta": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:c_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:c_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:cal": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:g:ce_": {
+    "swapped-operands": -0.359721886973659,
+    "other": 0.35972188697365937
+   },
+   "t:g:ch_": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:che": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:cla": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:cts": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:d_1": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:d_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:d_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:dd_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:dis": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:div": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_7": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_a": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:e_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:e_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:eac": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:ed_": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:efi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ent": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:er_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ext": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:f_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:f_l": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:g:f_q": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:f_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:fe_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:fin": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:fir": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:fix": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_0": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:gs_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:h_o": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:hes": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:hi_": {
+    "swapped-operands": 0.06815441650968937,
+    "other": -0.06815441650968848
+   },
+   "t:g:hol": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:i_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:i_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:i_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ice": {
+    "swapped-operands": -0.359721886973659,
+    "other": 0.35972188697365937
+   },
+   "t:g:ien": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:ind": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:io_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:irs": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:isc": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:iv_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ix_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:k_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:lam": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:las": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:g:lo_": {
+    "swapped-operands": 0.06815441650968937,
+    "other": -0.06815441650968848
+   },
+   "t:g:m_b": {
+    "swapped-operands": -0.9129403671587794,
+    "other": 0.9129403671587791
+   },
+   "t:g:m_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:mat": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:mod": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:mp_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_0": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_z": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:nte": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:o_a": {
+    "swapped-operands": 0.06815441650968937,
+    "other": -0.06815441650968848
+   },
+   "t:g:od_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ohi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ok_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:olo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:opa": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:opr": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:oti": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:ov_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:owe": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:par": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:pct": {
+    "swapped-operands": 0.5830538231097553,
+    "other": -0.5830538231097551
+   },
+   "t:g:pow": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:pre": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:quo": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:r_m": {
+    "swapped-operands": 0.13138819732782173,
+    "other": -0.13138819732782112
+   },
+   "t:g:rat": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ref": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ric": {
+    "swapped-operands": -0.359721886973659,
+    "other": 0.35972188697365937
+   },
+   "t:g:rst": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:rt_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:rue": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_k": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:g:s_p": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:s_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:saf": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:sca": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:g:sco": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:sub": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:t_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:t_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tch": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ted": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:g:ten": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tex": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tie": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:tio": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tru": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ts_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ub_": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:g:ue_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:uot": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:g:v__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:v_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:v_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:wer": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:who": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_r": {
+    "swapped-operands": 0.2491795186057013,
+    "other": -0.24917951860570114
+   },
+   "t:g:xte": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:y_i": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:w:add_tag": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:bag": {
+    "swapped-operands": -0.1047789770889985,
+    "other": 0.10477897708899796
+   },
+   "t:w:clamp": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:count_matches": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:diff": {
+    "swapped-operands": 0.050006982013109054,
+    "other": -0.05000698201310941
+   },
+   "t:w:discounted": {
+    "swapped-operands": 0.05610575223449059,
+    "other": -0.05610575223449046
+   },
+   "t:w:extend": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:find_max": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:hi": {
+    "swapped-operands": 0.06815441650968937,
+    "other": -0.06815441650968848
+   },
+   "t:w:last": {
+    "swapped-operands": -0.06508496100020071,
+    "other": 0.06508496100020213
+   },
+   "t:w:lo": {
+    "swapped-operands": 0.06815441650968937,
+    "other": -0.06815441650968848
+   },
+   "t:w:max": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:min": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:part": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:pct": {
+    "swapped-operands": 0.5830538231097553,
+    "other": -0.5830538231097551
+   },
+   "t:w:power_mod": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:prefix_products": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:price": {
+    "swapped-operands": -0.359721886973659,
+    "other": 0.35972188697365937
+   },
+   "t:w:product": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:quotient": {
+    "swapped-operands": -0.06815825751383704,
+    "other": 0.06815825751383771
+   },
+   "t:w:ratio": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:safe_div": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:scale": {
+    "swapped-operands": -0.05170542568271906,
+    "other": 0.051705425682719144
+   },
+   "t:w:sub_each": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "t:w:sum_first": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:tag": {
+    "swapped-operands": -0.06560702919533805,
+    "other": 0.06560702919533737
+   },
+   "t:w:tag_all": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:tags": {
+    "swapped-operands": -0.06016388070400537,
+    "other": 0.060163880704006786
+   },
+   "t:w:true": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:whole": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:zip": {
+    "swapped-operands": 0.053170720415832394,
+    "other": -0.05317072041583201
+   },
+   "c:g:__x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_el": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_no": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:_x_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:c_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:d_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:e_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:els": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:lse": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:ne_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:non": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:one": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:r_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:r_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:se_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:x_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:w:else": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:w:none": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:1_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:2__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_2_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:__x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ac": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ds": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_el": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_en": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_ev": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_od": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_oi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_pu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_sr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:a_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:acc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:c_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:c_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:cc_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:d_a": {
+    "swapped-operands": 0.8019187904858951,
+    "other": -0.8019187904858958
+   },
+   "t:g:d_b": {
+    "swapped-operands": -0.7822885714478983,
+    "other": 0.7822885714478981
+   },
+   "t:g:d_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:d_s": {
+    "swapped-operands": 1.5217331002835663,
+    "other": -1.521733100283566
+   },
+   "t:g:dic": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:dst": {
+    "swapped-operands": -0.05732060205203207,
+    "other": 0.05732060205203191
+   },
+   "t:g:e_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:els": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:em_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:eno": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ens": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:esu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:eve": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:g_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:h_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ict": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ite": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:lse": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:lt_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:m_p": {
+    "swapped-operands": 0.1386745860708898,
+    "other": -0.13867458607088978
+   },
+   "t:g:n_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:n_l": {
+    "swapped-operands": 1.5217331002835663,
+    "other": -1.521733100283566
+   },
+   "t:g:ne_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:non": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ns_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ob_": {
+    "swapped-operands": 1.2317671354036173,
+    "other": -1.231767135403617
+   },
+   "t:g:oba": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ods": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:oit": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:one": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:osr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ox_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_b": {
+    "swapped-operands": -0.23894941991620242,
+    "other": 0.2389494199162031
+   },
+   "t:g:p_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:pus": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:r_2": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:rc_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:se_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:sh_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:src": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:sul": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:tem": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ult": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ush": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:ven": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:y_f": {
+    "swapped-operands": -0.4844156367805501,
+    "other": 0.4844156367805509
+   },
+   "t:w:acc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:collect": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:collect_evens": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:dict": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:dst": {
+    "swapped-operands": -0.05732060205203207,
+    "other": 0.05732060205203191
+   },
+   "t:w:else": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:item": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:none": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:push_all": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:result": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:src": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:c_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:n_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "c:g:o__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_by": {
+    "swapped-operands": 0.5270864942220249,
+    "other": -0.5270864942220255
+   },
+   "t:g:_o_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_oc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:_oo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:avg": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:by_": {
+    "swapped-operands": 0.5270864942220249,
+    "other": -0.5270864942220255
+   },
+   "t:g:c_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:c_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:c_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:d_p": {
+    "swapped-operands": 1.2982847225719434,
+    "other": -1.2982847225719443
+   },
+   "t:g:d_w": {
+    "swapped-operands": -1.1662675094233705,
+    "other": 1.1662675094233703
+   },
+   "t:g:e_m": {
+    "swapped-operands": -0.2322468873690477,
+    "other": 0.2322468873690485
+   },
+   "t:g:g_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:i_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:k_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:k_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:l__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:m_m": {
+    "swapped-operands": -0.10856276882754283,
+    "other": 0.10856276882754269
+   },
+   "t:g:m_x": {
+    "swapped-operands": 0.5270864942220249,
+    "other": -0.5270864942220255
+   },
+   "t:g:m_y": {
+    "swapped-operands": -0.4148837895619051,
+    "other": 0.4148837895619063
+   },
+   "t:g:n_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:o_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:oac": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:oc_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:oou": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:os_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:p_y": {
+    "swapped-operands": -0.06589577282269715,
+    "other": 0.06589577282269743
+   },
+   "t:g:r_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_l": {
+    "swapped-operands": -0.12743943110105696,
+    "other": 0.12743943110105702
+   },
+   "t:g:s_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:s_w": {
+    "swapped-operands": -0.1459538761717577,
+    "other": 0.14595387617175865
+   },
+   "t:g:v_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:vg_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:g:x_f": {
+    "swapped-operands": 0.5270864942220249,
+    "other": -0.5270864942220255
+   },
+   "t:g:y__": {
+    "swapped-operands": 0.5270864942220249,
+    "other": -0.5270864942220255
+   },
+   "t:w:avg": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "t:w:res": {
+    "swapped-operands": -0.2322468873690477,
+    "other": 0.2322468873690485
+   },
+   "t:w:total": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   }
+  },
+  "b": {
+   "swapped-operands": -0.07139316465011616,
+   "other": 0.07139316465011616
+  }
+ },
+ "params": 1584,
+ "footprint_bytes": 52333,
+ "path": "trained",
+ "heldout_acc": 0.9655,
+ "train_n": 85,
+ "heldout_n": 29,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.8966
+  },
+  {
+   "name": "majority-class (other)",
+   "acc": 0.8966
+  }
+ ],
+ "bar": 0.8966,
+ "attempts": [
+  {
+   "fmode": "codetext",
+   "hidden": 0,
+   "numpy_acc": 0.9655,
+   "dict_acc": 0.9655,
+   "params": 1584
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "bug-swapped-operands-harvest-model#c0",
+  "bug-swapped-operands-harvest-model#c1"
+ ],
+ "socialized_to": 3
+}

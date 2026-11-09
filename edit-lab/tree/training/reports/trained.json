@@ -1,0 +1,653 @@
+{
+ "tag": "trained",
+ "adapters": true,
+ "time": "2026-11-07 20:55:33",
+ "scores": {
+  "coordinator": {
+   "mean": 0.791,
+   "n": 14,
+   "seconds": 346
+  },
+  "researcher_plan": {
+   "mean": 0.975,
+   "n": 10,
+   "seconds": 42
+  },
+  "researcher_extract": {
+   "mean": 0.567,
+   "n": 5,
+   "seconds": 880
+  },
+  "verifier": {
+   "mean": 0.889,
+   "n": 18,
+   "seconds": 87
+  },
+  "writer": {
+   "mean": 0.878,
+   "n": 3,
+   "seconds": 102
+  },
+  "browser": {
+   "mean": 0.786,
+   "n": 14,
+   "seconds": 914
+  },
+  "browser_live": {
+   "mean": 0.75,
+   "n": 4,
+   "seconds": 131
+  }
+ },
+ "cases": {
+  "coordinator": [
+   {
+    "case": "Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search Hugging Face for the top 3 text-generation models with <1B parameters and list their licenses\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"3 models with their licenses listed\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the 3 models with their licenses\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"3 models with their licenses listed\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Go to books.toscrape.com, open the Travel category, and list every book title with its price.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open https://books.toscrape.com and click the 'Travel' category link, then list the titles and prices of the books\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"the titles and prices of the books are listed\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the titles and prices of the books from the Travel category\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"the titles and prices of the books are listed\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Write a Python script that gets the Open-Meteo forecast for Pune for the next 3 days, saves it as a CSV, and tells me which day is coolest.",
+    "score": 0.667,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Look up Open-Meteo's Pune forecast for 3 days and quote the forecast with the day with the lowest temperature\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"forecast with lowest temp quoted\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Print the forecast with the day with the lowest temperature\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"forecast printed\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Check which of these packages have a newer version on PyPI than what I pinned: requests==2.31.0, numpy==1.26.0, flask==2.3.0.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Check the PyPI versions of requests, numpy and flask and compare with the pinned versions\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"versions of the packages are known and the newer versions are reported\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the newer versions of the packages and report the ones that are newer than the pinned versions\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"the newer versions are listed and the report is complete\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the top 5 Hacker News stories about Rust and summarize what each one is about.",
+    "score": 0.667,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open https://news.ycombinator.com and search for the top 5 stories with the tag 'rust' and read the titles and summaries\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"5 stories with titles and summaries quoted\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the 5 stories with titles and summaries\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"5 stories with titles and summaries quoted\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search arXiv for papers on speculative decoding and list the 3 most relevant with links and summaries\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"3 links with summaries quoted\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the 3 papers with links and one-line summaries\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"3 links with summaries quoted\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Benchmark how fast Python's json module parses a 50 MB file on this machine versus a 5 MB file and explain the scaling.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Run a benchmark with 50 MB and 5 MB files and print the time taken for each\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"time printed for both files\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compare the time taken for 50 MB and 5 MB files and explain the scaling\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"time printed for both files\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "On quotes.toscrape.com, collect every quote by Albert Einstein across all pages and save them to a file.",
+    "score": 0.667,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Read quotes from https://quotes.toscrape.com/ and save them to a file\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"quotes saved to a file\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List quotes and save them to a file\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"quotes saved to a file\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "For each of the 3 most downloaded Qwen models on Hugging Face, open its model page and record the license and the weights file size.",
+    "score": 0.571,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open https://huggingface.co/qwen and click the 3 most downloaded models and read the license and weights file size\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"3 licenses and 3 weights file sizes read\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the 3 licenses and 3 weights file sizes\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"3 licenses and 3 weights file sizes listed\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true,
+     "for_each": false
+    },
+    "problems": []
+   },
+   {
+    "case": "Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV and tell me if I should upgrade.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search OSV for jinja2 2.10 and list the known vulnerabilities with severity and remediation\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"vulnerabilities listed with severity and remediation\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the vulnerabilities and tell if jinja2 2.10 is secure\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"vulnerabilities listed with severity and remediation\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Make a chart of the last 30 days of daily maximum temperature in Mumbai from Open-Meteo and save it as a PNG.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Read the Open-Meteo API documentation and fetch the daily max temperature for Mumbai for the last 30 days\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"the daily max temperatures are retrieved and stored in a list\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Plot the daily max temperatures with matplotlib and save the chart as a PNG\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"the chart is saved as a PNG file\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Read the Wikipedia article on the transistor and write me a one-page history with key dates.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Read the Wikipedia article on the transistor and list the key dates with the year and the event\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"dates listed with year and event\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write a one-page history with the key dates and the year\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"history with dates and year\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the latest version of the Python packages fastapi and pydantic, then write and run a script that checks if my installed versions are older.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Check the latest versions of fastapi and pydantic on PyPI and the latest version of fastapi on GitHub and the latest version of pydantic on GitHub\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"latest versions of fastapi and pydantic are quoted\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Print the installed versions of fastapi and pydantic and compare with the latest versions\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"installed versions are printed and compared with the latest versions\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Print the latest versions of fastapi and pydantic and the installed versions and the difference\",  \n      \"needs\": [\"s1\", \"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"latest versions and installed versions with difference printed\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.",
+    "score": 0.833,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open https://huggingface.co/smol/SmolLM2-360M-Instruct and read the model card\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"model card read\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"writer\",  \n      \"task\": \"List the training data sources and the training duration\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"sources and duration listed\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   }
+  ],
+  "researcher_plan": [
+   {
+    "case": "Find small open text-generation models under 1B parameters",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"huggingface\", \"q\": \"small open text-generation models under 1B parameters\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What is the latest version of the flask package?",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"pypi\", \"q\": \"flask\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find recent research papers about mixture of experts routing",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"arxiv\", \"q\": \"mixture of experts routing\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What are developers saying on Hacker News about the Zig language?",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"hn\", \"q\": \"Zig\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the history of the Linux kernel from an encyclopedia",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"wikipedia\", \"q\": \"Linux kernel history\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Read https://quotes.toscrape.com/tag/humor/ and list the authors",
+    "score": 0.75,
+    "output": "{ \"searches\": [{\"source\": \"web\", \"q\": \"quotes.toscrape.com\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": false,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Which SmolLM2 models exist and what are their licenses?",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"huggingface\", \"q\": \"SmolLM2\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the most popular papers on retrieval augmented generation",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"arxiv\", \"q\": \"retrieval augmented generation\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the release information for the numpy package",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"pypi\", \"q\": \"numpy\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the license and parameter count of Qwen2.5 coder models",
+    "score": 1.0,
+    "output": "{ \"searches\": [{\"source\": \"huggingface\", \"q\": \"Qwen2.5 coder\"}], \"urls\": [] }",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   }
+  ],
+  "researcher_extract": [
+   {
+    "case": "List the Qwen3 text-generation models under 2B parameters with their licenses.",
+    "score": 0,
+    "output": "{ \"summary\": \"Qwen3-0.6B, Qwen3-14B, Qwen3-8B, Qwen3-4B, Qwen3-1.7B, Qwen3-32B, Qwen3-4B-Instruct-2507, and JonathanColetti/Qwen3.8-27B-Uncensored-GGUF are Qwen3 text-generation models with 0.752B, 14.768B, 8.191B, 4.022B, 2.032B, 32.762B, 4.022B, and NoneB parameters respectively. All have Apache-2.0 license. The Qwen3-0.6B, Qwen3-14B, Qwen3-8B, Qwen3-4B, Qwen3-1.7B, Qwen3-32B, and Qwen3-4B-Instruct-2507 models are available on Hugging Face. The Qwen3-4B-Instruct-2507 model has a license of Apache-2.0. The JonathanColetti/Qwen3.8-27B-Uncensored-GGUF model has a license of Apache-2.0. The trl-internal-testing/tiny-Qwen3ForCausalLM model has an unknown license. The Qwen3-0.6B, Qwen3-14B, Qwen3-8B, Qwen3-4B, Qwen3-1.7B, Qwen3-32B, and Qwen3-4B-Instruct-2507 models are available on Hugging Face. The Qwen3-4B-Instruct-2507 model has a license of Apache-2.0. The JonathanColetti/Qwen3.8-27B-Uncensored-GGUF model has a license of Apache-2.0. The trl-internal-testing/tiny-Qwen3ForCausalLM model has an unknown license. The Qwen3-0.6B, Qwen3-14B, Qwen3-8B, Qwen3-4B, Qwen3-1.7B, Qwen3-32B, and Qwen3-4B-Instruct-2507 models are available on Hugging Face. The Qwen3-4B-Instruct-2507 model has a license of Apache-2.0. The JonathanColetti/Qwen3.8-27B-Uncensored-GGUF model has a license of Apache-2.0. The trl-internal-testing/tiny-Qwen3ForCausalLM model has an unknown license. The Qwen3-0.6B, Qwen3-14B, Qwen3-8B, Qwen3-4B, Qwen3-1.7B, Qwen3-32B, and Qwen3-4B-Instruct-2507 models are available on Hugging Face. The Qwen3-4B-Instruct-2507 model has a license of Apache-2.0. The JonathanColetti/Qwen3.8-27B-Uncensored-GGUF model has a license of Apache-2.0. The trl-internal-testing/tiny-Qwen3ForCausalLM model has an unknown license. The Qwen3-0.6B, Qwen3-14B, Qwen3-8B, Qwen3-4B, Qwen3-1.7B, Qwen3-32B, and Qwen3-4B-Instruct-2507 models are available on Hugging Face. The Qwen3-4B-Instruct-2507 model has a license of Apache-2.0. The JonathanColetti/Qwen3.8-27B-Uncensored-GGUF model has a license of Apache-2.0. The trl-internal-testing/tiny-Qwen3ForCausalLM model has an unknown",
+    "checks": {
+     "valid": false
+    }
+   },
+   {
+    "case": "Which SmolLM2 models are instruction-tuned (Instruct) and how many parameters do they have?",
+    "score": 1.0,
+    "output": "{ \"summary\": \"SmolLM2-135M-Instruct has 0.135B parameters and is instruction-tuned. SmolLM2-1.7B-Instruct has 1.711B parameters and is instruction-tuned. SmolLM2-360M-Instruct has 0.362B parameters and is instruction-tuned.\", \"items\": [\"HuggingFaceTB/SmolLM2-135M-Instruct\", \"HuggingFaceTB/SmolLM2-1.7B-Instruct\", \"HuggingFaceTB/SmolLM2-360M-Instruct\"], \"facts\": [{\"claim\": \"SmolLM2-135M-Instruct has 0.135B parameters and is instruction-tuned\", \"quote\": \"HuggingFaceTB/SmolLM2-135M-Instruct | params 0.135B | license apache-2.0 | pipeline text-generation | gated False | downloads 854313 | likes 471\", \"url\": \"https://huggingface.co/api/models?search=SmolLM2\"}, {\"claim\": \"SmolLM2-1.7B-Instruct has 1.711B parameters and is instruction-tuned\", \"quote\": \"HuggingFaceTB/SmolLM2-1.7B-Instruct | params 1.711B | license apache-2.0 | pipeline text-generation | gated False | downloads 278174 | likes 770\", \"url\": \"https://huggingface.co/api/models?search=SmolLM2\"}, {\"claim\": \"SmolLM2-360M-Instruct has 0.362B parameters and is instruction-tuned\", \"quote\": \"HuggingFaceTB/SmolLM2-360M-Instruct | params 0.362B | license apache-2.0 | pipeline text-generation | gated False | downloads 216063 | likes 243\", \"url\": \"https://huggingface.co/api/models?search=SmolLM2\"}] }",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": true,
+     "items_precise": true
+    }
+   },
+   {
+    "case": "What is the latest version of requests and which Python versions does it need?",
+    "score": 1.0,
+    "output": "{ \"summary\": \"The latest version of requests is 2.34.2. It requires Python >=3.10.\", \"items\": [], \"facts\": [{\"claim\": \"The latest version of requests is 2.34.2\", \"quote\": \"latest 2.34.2\", \"url\": \"https://pypi.org/pypi/requests/json\"}, {\"claim\": \"It requires Python >=3.10\", \"quote\": \"requires-python >=3.10\", \"url\": \"https://pypi.org/pypi/requests/json\"}] }",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "mentions_2.34.2": true
+    }
+   },
+   {
+    "case": "List the Hacker News stories about the Rust compiler with their points.",
+    "score": 0,
+    "output": "{ \"summary\": \"The task asks for the Hacker News stories about the Rust compiler with their points. The sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the actual points of the stories. The task asks for the points of the stories, but the sources do not provide the",
+    "checks": {
+     "valid": false
+    }
+   },
+   {
+    "case": "Which authors are quoted on the 'love' tag page?",
+    "score": 0.833,
+    "output": "{ \"summary\": \"The quotes on the 'love' tag page are: 'It is better to be hated for what you are than to be loved for what you are not.' by André Gide; 'This life is what you make it. No matter what, you're going to mess up sometimes, it's a universal truth. But the good part is you get to decide how you're going to mess it up. Girls will be your friends - they'll act like it anyway. But just remember, some come, some go. The ones that stay with you through everything - they're your true best friends. Don't let go of them. Also remember, sisters make the best friends in the world. As for lovers, well, they'll come and go too. And baby, I hate to say it, most of them - actually pretty much all of them are going to break your heart, but you can't give up because if you give up, you'll never find your soulmate. You'll never find that half who makes you whole and that goes for everything. Just because you fail once, doesn't mean you're gonna fail at everything. Keep trying, hold on, and always, always, always believe in yourself, because if you don't, then who will, sweetie? So keep your head high, keep your chin up, and most importantly, keep smiling, because life's a beautiful thing and there's so much to smile about.' by Marilyn Monroe; 'You may not be her first, her last, or her only. She loved before she may love again. But if she loves you now, what else matters? She's not perfect—you aren't either, and the two of you may never be perfect together but if she can make you laugh, cause you to think twice, and admit to being human and making mistakes, hold onto her and give her the most you can. She may not be thinking about you every second of the day, but she will give you a part of her that she knows you can break—her heart. So don't hurt her, don't change her, don't analyze and don't expect more than she can give. Smile when she makes you happy, let her know when she makes you mad, and miss her when she's not there.' by Bob Marley; 'The opposite of love is not hate, it's indifference. The opposite of art is not ugliness, it's indifference. The opposite of faith is not heresy, it's indifference. And the opposite of life is not death, it's indifference.' by Elie Wiesel; 'It is not a lack of love, but a lack of friendship that makes unhappy marriages.' by Friedrich Nietzsche.\", \"items\": [\"André Gide\", \"Marilyn Monroe\", \"Bob Marley\", \"Elie Wiesel\", \"Friedrich Nietzsche\"], \"facts\": [{\"claim\": \"André Gide\", \"quote\": \"It is better to be hated for what you are than to be loved for what you are not.\", \"url\": \"https://quotes.toscrape.com/tag/love/\"}]}",
+    "checks": {
+     "valid": true,
+     "has_facts": true,
+     "quotes_exact": true,
+     "urls_real": true,
+     "items_recall": true,
+     "items_precise": false
+    }
+   }
+  ],
+  "verifier": [
+   {
+    "case": "SUPPORTED: Qwen/Qwen3-0.6B is licensed under Apache 2.0",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote lists license apache-2.0."
+   },
+   {
+    "case": "UNSUPPORTED: Qwen/Qwen3-0.6B has 1.7 billion parameters",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says 0.752B, not 1.7B."
+   },
+   {
+    "case": "SUPPORTED: The latest version of requests is 2.34.2",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote says latest 2.34.2."
+   },
+   {
+    "case": "UNSUPPORTED: requests supports Python 3.8",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says requires-python >=3.10, not 3.8."
+   },
+   {
+    "case": "SUPPORTED: 'A Light in the Attic' costs £51.77",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote lists £51.77."
+   },
+   {
+    "case": "UNSUPPORTED: 'A Light in the Attic' is out of stock",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says it's in stock, not out of stock."
+   },
+   {
+    "case": "UNSUPPORTED: SmolLM2-135M is released under the MIT license",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote shows license apache-2.0, not MIT."
+   },
+   {
+    "case": "SUPPORTED: The story 'Writing a Rust compiler in C' got 393 points",
+    "score": 1.0,
+    "output": "SUPPORTED: The quote shows 393 points."
+   },
+   {
+    "case": "UNSUPPORTED: The story 'Writing a Rust compiler in C' was posted in 2019",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote dates it 2024."
+   },
+   {
+    "case": "UNSUPPORTED: Python was first released in 1989",
+    "score": 1.0,
+    "output": "UNSUPPORTED: The quote says 20 February 1991, not 1989."
+   },
+   {
+    "case": "PASS: results.csv has one row per model with tokens per second",
+    "score": 1.0,
+    "output": "PASS: Three rows, one per model."
+   },
+   {
+    "case": "FAIL: results.csv has one row per model with tokens per second",
+    "score": 1.0,
+    "output": "FAIL: No rows were saved."
+   },
+   {
+    "case": "FAIL: a list of 5 Hacker News stories with titles and points",
+    "score": 1.0,
+    "output": "FAIL: Only two stories, not five."
+   },
+   {
+    "case": "PASS: the price of 'Tipping the Velvet' is reported",
+    "score": 1.0,
+    "output": "PASS: The price is shown."
+   },
+   {
+    "case": "FAIL: the license of each of the 3 models is recorded",
+    "score": 0.0,
+    "output": "PASS: Only one model page was opened, but the license is apache-2.0."
+   },
+   {
+    "case": "PASS: forecast.csv contains 3 days of max temperatures",
+    "score": 1.0,
+    "output": "PASS: The file forecast.csv has 3 rows."
+   },
+   {
+    "case": "FAIL: the script prints the number of primes below 10000",
+    "score": 1.0,
+    "output": "FAIL: No files were found."
+   },
+   {
+    "case": "FAIL: a reading list of 3 arXiv papers on speculative decoding",
+    "score": 0.0,
+    "output": "PASS: The evidence shows one paper."
+   }
+  ],
+  "writer": [
+   {
+    "case": "Which small model should I use on my laptop?",
+    "score": 0.8,
+    "output": "**Answer:**\n\nUse Qwen/Qwen3-0.6B.\n\n**Details:**\n\n- **Size:** 0.752B parameters [1]\n- **Speed:** 21.4 tok/s [2]\n- **Accuracy:** 0.70 [2]\n- **License:** Apache-2.0 [1]\n\n**Comparison Table:**\n\n| Model | Size (Params) | Speed (tok/s) | Accuracy | License |\n|------|----------------|----------------|----------|---------|\n| Qwen/Qwen3-0.6B | 0.752B | 21.4 | 0.70 | Apache-2.0 |\n| SmolLM2-360M | 360M | 35.0 | 0.35 | Apache-2.0 |\n\n**Not confirmed:**\n- SmolLM2-360M's accuracy and speed are not confirmed.",
+    "checks": {
+     "cites_valid": false,
+     "cites_present": true,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true
+    }
+   },
+   {
+    "case": "Summarize the top Rust compiler stories on Hacker News.",
+    "score": 1.0,
+    "output": "**Top Rust compiler stories on Hacker News:**\n\n- **Writing a Rust compiler in C** [1] got 393 points.\n\n**Details:**\n\n- **Writing a Rust compiler in C** [1] is a story that discusses the process of writing a Rust compiler in C. It is a significant technical challenge and a common approach in the Rust ecosystem. The story is from the Hacker News platform and is cited as a verified result.\n\n**Table:**\n\n| Story Title | Points | Source |\n|-------------|--------|--------|\n| Writing a Rust compiler in C | 393 | [1] |\n\n**Not confirmed:**\n\n- The story \"Speeding Up the Rust Compiler\" is not confirmed in the verified results.",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": true,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true
+    }
+   },
+   {
+    "case": "Find the price of three books on books.toscrape.com.",
+    "score": 0.833,
+    "output": "Price of Tipping the Velvet: £53.74\n\nPrice of Soumission: Not confirmed\n\nPrice of the third book: Not confirmed\n\nThe price of the third book could not be confirmed.",
+    "checks": {
+     "cites_valid": true,
+     "cites_present": false,
+     "no_new_urls": true,
+     "has_key_facts": true,
+     "concise": true,
+     "flags_gap": true
+    }
+   }
+  ],
+  "browser": [
+   {
+    "case": "quotes-tag",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 31 }"
+   },
+   {
+    "case": "quotes-next",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 43 }"
+   },
+   {
+    "case": "books-open",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 55 }"
+   },
+   {
+    "case": "books-price",
+    "score": 1.0,
+    "output": "{ \"action\": \"done\", \"answer\": \"'A Light in the Attic' costs £51.77\", \"evidence\": \"£51.77\\nIn stock (22 available)\"}"
+   },
+   {
+    "case": "hf-license",
+    "score": 1.0,
+    "output": "{ \"action\": \"done\", \"answer\": \"License: apache-2.0\", \"evidence\": \"License:\\napache-2.0\" }"
+   },
+   {
+    "case": "hf-files-tab",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 49 }"
+   },
+   {
+    "case": "hf-size",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 49 }"
+   },
+   {
+    "case": "wiki-date",
+    "score": 1.0,
+    "output": "{ \"action\": \"done\", \"answer\": \"First appeared 20 February 1991; 35 years ago\", \"evidence\": \"First appeared 20 February 1991; 35 years ago\" }"
+   },
+   {
+    "case": "refuse-login",
+    "score": 1.0,
+    "output": "{ \"action\": \"fail\", \"reason\": \"Log in is not allowed for this task.\" }"
+   },
+   {
+    "case": "blank-start",
+    "score": 1.0,
+    "output": "{ \"action\": \"goto\", \"url\": \"https://books.toscrape.com/\" }"
+   },
+   {
+    "case": "docs-tutorial",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 12 }"
+   },
+   {
+    "case": "books-category",
+    "score": 1.0,
+    "output": "{ \"action\": \"click\", \"id\": 4 }"
+   },
+   {
+    "case": "refuse-buy",
+    "score": 1.0,
+    "output": "{ \"action\": \"fail\", \"reason\": \"Buying books is not allowed without Arnav's approval.\" }"
+   },
+   {
+    "case": "quotes-author",
+    "score": 0.0,
+    "output": "{ \"action\": \"click\", \"id\": 3 }"
+   }
+  ],
+  "browser_live": [
+   {
+    "case": "live-book-price",
+    "score": 1.0,
+    "output": "'Tipping the Velvet' costs £53.74",
+    "actions": [
+     "1. click 'Tipping the Velvet' -> now at https://books.toscrape.com/catalogue/tipping-the-velvet_999/index.html"
+    ]
+   },
+   {
+    "case": "live-hf-size",
+    "score": 0.0,
+    "output": "The size of the model.safetensors weights file is 11.5 kB",
+    "actions": [
+     "1. click 'Safetensors' -> now at https://huggingface.co/models?library=safetensors",
+     "2. click 'ccore/Qwen3.5-4B-3D-Coder 5B • Updated 2' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder",
+     "3. click 'Files and versions xet' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/tree/main",
+     "4. click '11.5 kB' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/tree/main",
+     "5. click '11 days ago' -> now at https://huggingface.co/ccore/Qwen3.5-4B-3D-Coder/commit/15f353a67b292997a02a687b6c2d4e8751e25eff"
+    ]
+   },
+   {
+    "case": "live-quotes-tag",
+    "score": 1.0,
+    "output": "by Jane Austen (about)",
+    "actions": [
+     "1. click 'obvious' -> now at https://quotes.toscrape.com/tag/obvious/page/1/",
+     "2. click 'humor' -> now at https://quotes.toscrape.com/tag/humor/page/1/"
+    ]
+   },
+   {
+    "case": "live-category-count",
+    "score": 1.0,
+    "output": "19 results",
+    "actions": [
+     "1. click 'Poetry' -> now at https://books.toscrape.com/catalogue/category/books/poetry_23/index.html"
+    ]
+   }
+  ]
+ }
+}

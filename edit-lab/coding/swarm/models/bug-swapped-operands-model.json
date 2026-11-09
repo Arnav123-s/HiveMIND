@@ -1,0 +1,2459 @@
+{
+ "name": "bug-swapped-operands-model",
+ "niche": "debugging",
+ "job": "decide whether a snippet's defect is swapped-operands (vs anything else, including clean)",
+ "classes": [
+  "swapped-operands",
+  "other"
+ ],
+ "features": [
+  "g:_c_",
+  "g:_n_",
+  "g:c_n",
+  "g:def",
+  "g:ef_",
+  "w:def",
+  "g:_re",
+  "g:etu",
+  "g:ret",
+  "g:rn_",
+  "g:tur",
+  "g:urn",
+  "w:return",
+  "g:_a_",
+  "g:n_r",
+  "g:_e_",
+  "g:in_",
+  "g:__e",
+  "g:_fo",
+  "g:_in",
+  "g:for",
+  "g:or_",
+  "w:for",
+  "w:in",
+  "g:_ox",
+  "g:oxs",
+  "g:xs_",
+  "w:xs",
+  "g:_xs",
+  "g:t_o",
+  "g:_p_",
+  "g:s_c",
+  "g:__p",
+  "g:_b_",
+  "g:_s_",
+  "g:e_o",
+  "g:n_x",
+  "g:_1_",
+  "g:_k_",
+  "g:_v_",
+  "g:s_a",
+  "g:a_a",
+  "g:f_c",
+  "g:ge_",
+  "g:n__",
+  "g:n_o",
+  "g:st_",
+  "g:0_f",
+  "g:_0_",
+  "g:_m_",
+  "g:_oa",
+  "g:_ra",
+  "g:_su",
+  "g:e_0",
+  "g:s__",
+  "g:_ma",
+  "g:_on",
+  "g:_x_",
+  "g:a_b",
+  "g:b_c",
+  "g:e_v",
+  "g:f_s",
+  "g:n_s",
+  "g:oa_",
+  "g:p_e",
+  "g:r_x",
+  "g:s_b",
+  "g:s_n",
+  "g:__b",
+  "g:__s",
+  "g:_if",
+  "g:if_",
+  "g:nd_",
+  "g:nt_",
+  "g:x__",
+  "w:if",
+  "g:__d",
+  "g:__m",
+  "g:_d_",
+  "g:_i_",
+  "g:ang",
+  "g:c__",
+  "g:en_",
+  "g:f_t",
+  "g:i_i",
+  "g:len",
+  "g:nge",
+  "g:o_o",
+  "g:r_i",
+  "g:ran",
+  "g:sum",
+  "g:um_",
+  "w:len",
+  "w:range",
+  "g:_fi",
+  "g:a_v",
+  "g:ax_",
+  "g:b_k",
+  "g:c_c",
+  "g:e_1",
+  "g:e__",
+  "g:e_x",
+  "g:f_f",
+  "g:k_c",
+  "g:le_",
+  "g:max",
+  "g:n_a",
+  "g:n_i",
+  "g:ota",
+  "g:p_o",
+  "g:r_v",
+  "g:t__",
+  "g:v_c",
+  "g:v_i",
+  "g:x_i",
+  "g:x_o",
+  "g:_al",
+  "g:_bx",
+  "g:_co",
+  "g:_pr",
+  "g:_ta",
+  "g:all",
+  "g:bx_",
+  "g:c_r",
+  "g:ct_",
+  "g:d_o",
+  "g:e_c",
+  "g:end",
+  "g:f_p",
+  "g:l_o",
+  "g:ll_",
+  "g:n_c",
+  "g:n_m",
+  "g:n_p",
+  "g:on_",
+  "g:p_1",
+  "g:s_e",
+  "g:1_a",
+  "g:1_c",
+  "g:_av",
+  "g:_le",
+  "g:_li",
+  "g:_o1",
+  "g:_op",
+  "g:_to",
+  "g:_up",
+  "g:a__",
+  "g:a_n",
+  "g:age",
+  "g:al_",
+  "g:ave",
+  "g:c_k",
+  "g:e_b",
+  "g:e_i",
+  "g:e_l",
+  "g:era",
+  "g:es_",
+  "g:f_a",
+  "g:ist",
+  "g:k_r",
+  "g:l_u",
+  "g:lis",
+  "g:m_o",
+  "g:ms_",
+  "g:num",
+  "g:o1_",
+  "g:onu",
+  "g:pto",
+  "g:rag",
+  "g:t_a",
+  "g:tal",
+  "g:to_",
+  "g:tot",
+  "g:ums",
+  "g:upt",
+  "g:v_r",
+  "g:ver",
+  "w:average",
+  "w:list",
+  "w:nums",
+  "w:sum",
+  "w:total_upto",
+  "g:0_k",
+  "g:100",
+  "g:1_f",
+  "g:_10",
+  "g:_b0",
+  "g:_bi",
+  "g:_bl",
+  "g:_cl",
+  "g:_di",
+  "g:_ea",
+  "g:_f_",
+  "g:_hi",
+  "g:_la",
+  "g:_lo",
+  "g:_mi",
+  "g:_oh",
+  "g:_ok",
+  "g:_ol",
+  "g:_os",
+  "g:_ov",
+  "g:_pa",
+  "g:_qu",
+  "g:_sc",
+  "g:_te",
+  "g:_wh",
+  "g:_y_",
+  "g:_zi",
+  "g:a_f",
+  "g:a_h",
+  "g:a_k",
+  "g:a_l",
+  "g:a_m",
+  "g:a_t",
+  "g:a_w",
+  "g:a_y",
+  "g:ach",
+  "g:ag_",
+  "g:ags",
+  "g:ale",
+  "g:amp",
+  "g:art",
+  "g:ast",
+  "g:atc",
+  "g:ati",
+  "g:b0_",
+  "g:b_e",
+  "g:bi_",
+  "g:ble",
+  "g:c_e",
+  "g:cal",
+  "g:ch_",
+  "g:che",
+  "g:cla",
+  "g:cou",
+  "g:d_m",
+  "g:dif",
+  "g:duc",
+  "g:eac",
+  "g:ent",
+  "g:ext",
+  "g:f_d",
+  "g:f_l",
+  "g:f_o",
+  "g:f_q",
+  "g:f_r",
+  "g:f_v",
+  "g:f_x",
+  "g:ff_",
+  "g:fin",
+  "g:fir",
+  "g:g_a",
+  "g:gs_",
+  "g:h_o",
+  "g:hes",
+  "g:hi_",
+  "g:hol",
+  "g:i_a",
+  "g:i_c",
+  "g:i_k",
+  "g:i_r",
+  "g:ien",
+  "g:iff",
+  "g:ind",
+  "g:int",
+  "g:io_",
+  "g:ip_",
+  "g:irs",
+  "g:k_f",
+  "g:lam",
+  "g:las",
+  "g:lo_",
+  "g:m__",
+  "g:m_a",
+  "g:m_f",
+  "g:m_n",
+  "g:mat",
+  "g:min",
+  "g:mp_",
+  "g:n_n",
+  "g:n_t",
+  "g:n_z",
+  "g:o_a",
+  "g:odu",
+  "g:ohi",
+  "g:ok_",
+  "g:ole",
+  "g:olo",
+  "g:opa",
+  "g:oti",
+  "g:oun",
+  "g:ov_",
+  "g:p__",
+  "g:par",
+  "g:pri",
+  "g:pro",
+  "g:quo",
+  "g:rat",
+  "g:rin",
+  "g:rod",
+  "g:rst",
+  "g:rt_",
+  "g:s_1",
+  "g:s_k",
+  "g:s_o",
+  "g:sca",
+  "g:sub",
+  "g:t_m",
+  "g:tag",
+  "g:tch",
+  "g:ten",
+  "g:tex",
+  "g:tie",
+  "g:tio",
+  "g:ub_",
+  "g:uct",
+  "g:unt",
+  "g:uot",
+  "g:v__",
+  "g:v_a",
+  "g:v_n",
+  "g:who",
+  "g:x_a",
+  "g:xte",
+  "g:y_i",
+  "g:zip",
+  "w:100",
+  "w:clamp",
+  "w:count_matches",
+  "w:diff",
+  "w:extend",
+  "w:find_max",
+  "w:hi",
+  "w:last",
+  "w:lo",
+  "w:max",
+  "w:min",
+  "w:part",
+  "w:print",
+  "w:product",
+  "w:quotient",
+  "w:ratio",
+  "w:scale",
+  "w:sub_each",
+  "w:sum_first",
+  "w:tag_all",
+  "w:tags",
+  "w:whole",
+  "w:zip",
+  "g:1_k",
+  "g:1_r",
+  "g:__g",
+  "g:_ac",
+  "g:_ds",
+  "g:_el",
+  "g:_en",
+  "g:_g_",
+  "g:_od",
+  "g:_oi",
+  "g:_ot",
+  "g:_pu",
+  "g:_sr",
+  "g:a_s",
+  "g:acc",
+  "g:app",
+  "g:b__",
+  "g:c_i",
+  "g:c_t",
+  "g:cc_",
+  "g:col",
+  "g:d_d",
+  "g:d_l",
+  "g:dst",
+  "g:e_e",
+  "g:ect",
+  "g:els",
+  "g:em_",
+  "g:eno",
+  "g:g_m",
+  "g:h_a",
+  "g:ite",
+  "g:lec",
+  "g:lle",
+  "g:lse",
+  "g:m_c",
+  "g:m_e",
+  "g:n_b",
+  "g:n_d",
+  "g:ne_",
+  "g:non",
+  "g:ods",
+  "g:oit",
+  "g:oll",
+  "g:one",
+  "g:osr",
+  "g:p_x",
+  "g:pen",
+  "g:ppe",
+  "g:pus",
+  "g:rc_",
+  "g:res",
+  "g:s_f",
+  "g:se_",
+  "g:sh_",
+  "g:src",
+  "g:t_t",
+  "g:tap",
+  "g:tem",
+  "g:ush",
+  "g:y_f",
+  "w:acc",
+  "w:append",
+  "w:collect",
+  "w:dst",
+  "w:else",
+  "w:item",
+  "w:none",
+  "w:push_all",
+  "w:src",
+  "g:1_p",
+  "g:__l",
+  "g:__r",
+  "g:__x",
+  "g:_by",
+  "g:_l_",
+  "g:_o_",
+  "g:_ou",
+  "g:_r_",
+  "g:by_",
+  "g:c_a",
+  "g:c_d",
+  "g:d_a",
+  "g:d_b",
+  "g:d_p",
+  "g:d_s",
+  "g:d_w",
+  "g:e_m",
+  "g:e_s",
+  "g:esu",
+  "g:i_p",
+  "g:k__",
+  "g:k_a",
+  "g:k_t",
+  "g:l_m",
+  "g:lt_",
+  "g:m_1",
+  "g:m_b",
+  "g:m_x",
+  "g:m_y",
+  "g:n_l",
+  "g:n_w",
+  "g:o_c",
+  "g:oac",
+  "g:op_",
+  "g:os_",
+  "g:out",
+  "g:p_b",
+  "g:p_c",
+  "g:p_f",
+  "g:p_y",
+  "g:r_b",
+  "g:s_l",
+  "g:s_t",
+  "g:s_w",
+  "g:sul",
+  "g:t_c",
+  "g:t_e",
+  "g:ult",
+  "g:ut_",
+  "g:v_p",
+  "g:x_e",
+  "g:x_f",
+  "g:y__",
+  "w:out",
+  "w:res",
+  "w:result"
+ ],
+ "hidden": 0,
+ "fmode": "text",
+ "weights": {
+  "w": {
+   "g:_c_": {
+    "swapped-operands": -0.13827607958097682,
+    "other": 0.1382760795809761
+   },
+   "g:_n_": {
+    "swapped-operands": -0.192674609299823,
+    "other": 0.19267460929982136
+   },
+   "g:c_n": {
+    "swapped-operands": -0.15243116038908822,
+    "other": 0.1524311603890873
+   },
+   "g:def": {
+    "swapped-operands": -0.1300819645834467,
+    "other": 0.1300819645834468
+   },
+   "g:ef_": {
+    "swapped-operands": -0.1300819645834467,
+    "other": 0.1300819645834468
+   },
+   "w:def": {
+    "swapped-operands": -0.1300819645834467,
+    "other": 0.1300819645834468
+   },
+   "g:_re": {
+    "swapped-operands": -0.1057349046191974,
+    "other": 0.1057349046191976
+   },
+   "g:etu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ret": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rn_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tur": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:urn": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:return": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_a_": {
+    "swapped-operands": -0.2550215872523474,
+    "other": 0.25502158725234686
+   },
+   "g:n_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_e_": {
+    "swapped-operands": -0.35828710730418656,
+    "other": 0.35828710730418445
+   },
+   "g:in_": {
+    "swapped-operands": -0.12365460059244156,
+    "other": 0.1236546005924402
+   },
+   "g:__e": {
+    "swapped-operands": -0.38772870430042555,
+    "other": 0.3877287043004233
+   },
+   "g:_fo": {
+    "swapped-operands": -0.153589793280213,
+    "other": 0.15358979328021133
+   },
+   "g:_in": {
+    "swapped-operands": -0.153589793280213,
+    "other": 0.15358979328021133
+   },
+   "g:for": {
+    "swapped-operands": -0.153589793280213,
+    "other": 0.15358979328021133
+   },
+   "g:or_": {
+    "swapped-operands": -0.153589793280213,
+    "other": 0.15358979328021133
+   },
+   "w:for": {
+    "swapped-operands": -0.153589793280213,
+    "other": 0.15358979328021133
+   },
+   "w:in": {
+    "swapped-operands": -0.153589793280213,
+    "other": 0.15358979328021133
+   },
+   "g:_ox": {
+    "swapped-operands": -0.22002066747978158,
+    "other": 0.22002066747978266
+   },
+   "g:oxs": {
+    "swapped-operands": -0.22002066747978158,
+    "other": 0.22002066747978266
+   },
+   "g:xs_": {
+    "swapped-operands": -0.25473600120037765,
+    "other": 0.25473600120037754
+   },
+   "w:xs": {
+    "swapped-operands": -0.256482306059634,
+    "other": 0.2564823060596341
+   },
+   "g:_xs": {
+    "swapped-operands": -0.21214952605828682,
+    "other": 0.2121495260582862
+   },
+   "g:t_o": {
+    "swapped-operands": -0.20803134586546357,
+    "other": 0.2080313458654647
+   },
+   "g:_p_": {
+    "swapped-operands": -0.3229460258345023,
+    "other": 0.3229460258345016
+   },
+   "g:s_c": {
+    "swapped-operands": -0.11895992179605515,
+    "other": 0.11895992179605626
+   },
+   "g:__p": {
+    "swapped-operands": -0.3257323077121208,
+    "other": 0.32573230771211886
+   },
+   "g:_b_": {
+    "swapped-operands": 0.49344425485249155,
+    "other": -0.4934442548524913
+   },
+   "g:_s_": {
+    "swapped-operands": -0.4154003994234091,
+    "other": 0.41540039942340756
+   },
+   "g:e_o": {
+    "swapped-operands": -0.12572319636465246,
+    "other": 0.12572319636465157
+   },
+   "g:n_x": {
+    "swapped-operands": -0.17630816230535284,
+    "other": 0.1763081623053535
+   },
+   "g:_1_": {
+    "swapped-operands": -0.15260755284566543,
+    "other": 0.15260755284566524
+   },
+   "g:_k_": {
+    "swapped-operands": -0.17485991867076392,
+    "other": 0.17485991867076212
+   },
+   "g:_v_": {
+    "swapped-operands": -0.16764347889495004,
+    "other": 0.16764347889494816
+   },
+   "g:s_a": {
+    "swapped-operands": -0.15091038087434436,
+    "other": 0.15091038087434291
+   },
+   "g:a_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ge_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:st_": {
+    "swapped-operands": -0.17313486047836835,
+    "other": 0.17313486047836738
+   },
+   "g:0_f": {
+    "swapped-operands": -0.13099221967929747,
+    "other": 0.13099221967929467
+   },
+   "g:_0_": {
+    "swapped-operands": -0.13099221967929747,
+    "other": 0.13099221967929467
+   },
+   "g:_m_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_oa": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ra": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_su": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_0": {
+    "swapped-operands": -0.13099221967929747,
+    "other": 0.13099221967929467
+   },
+   "g:s__": {
+    "swapped-operands": -0.3781384508436849,
+    "other": 0.3781384508436818
+   },
+   "g:_ma": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_on": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_x_": {
+    "swapped-operands": 0.28760899272928825,
+    "other": -0.28760899272928925
+   },
+   "g:a_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_v": {
+    "swapped-operands": -0.11942235833368851,
+    "other": 0.11942235833368742
+   },
+   "g:f_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_s": {
+    "swapped-operands": -0.8015484435309084,
+    "other": 0.8015484435309052
+   },
+   "g:oa_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_e": {
+    "swapped-operands": -0.11934564982169217,
+    "other": 0.11934564982169037
+   },
+   "g:r_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_b": {
+    "swapped-operands": -0.12361504267298981,
+    "other": 0.12361504267298894
+   },
+   "g:s_n": {
+    "swapped-operands": -0.11942235833368851,
+    "other": 0.11942235833368742
+   },
+   "g:__b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__s": {
+    "swapped-operands": -0.45448494802976525,
+    "other": 0.4544849480297669
+   },
+   "g:_if": {
+    "swapped-operands": -0.10613537387977207,
+    "other": 0.10613537387977041
+   },
+   "g:if_": {
+    "swapped-operands": -0.10613537387977207,
+    "other": 0.10613537387977041
+   },
+   "g:nd_": {
+    "swapped-operands": -0.10971518092212436,
+    "other": 0.10971518092212394
+   },
+   "g:nt_": {
+    "swapped-operands": -0.12637141392021203,
+    "other": 0.12637141392021184
+   },
+   "g:x__": {
+    "swapped-operands": -0.4945646458651045,
+    "other": 0.4945646458651031
+   },
+   "w:if": {
+    "swapped-operands": -0.10613537387977207,
+    "other": 0.10613537387977041
+   },
+   "g:__d": {
+    "swapped-operands": 0.4425337280586539,
+    "other": -0.4425337280586534
+   },
+   "g:__m": {
+    "swapped-operands": 0.2542595056604207,
+    "other": -0.2542595056604212
+   },
+   "g:_d_": {
+    "swapped-operands": 0.41003448072178245,
+    "other": -0.41003448072178184
+   },
+   "g:_i_": {
+    "swapped-operands": -0.14138252562955772,
+    "other": 0.14138252562955433
+   },
+   "g:ang": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:en_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_t": {
+    "swapped-operands": -0.11936268675609825,
+    "other": 0.11936268675609743
+   },
+   "g:i_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:len": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:nge": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:o_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:r_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ran": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:sum": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:um_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:len": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:range": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_fi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ax_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_c": {
+    "swapped-operands": -0.10679014983398498,
+    "other": 0.10679014983398367
+   },
+   "g:le_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:max": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_a": {
+    "swapped-operands": -1.0131858957830904,
+    "other": 1.01318589578309
+   },
+   "g:n_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ota": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:r_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:x_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:x_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_al": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_bx": {
+    "swapped-operands": -0.5205014315032245,
+    "other": 0.520501431503223
+   },
+   "g:_co": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_pr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ta": {
+    "swapped-operands": -0.14195521605744701,
+    "other": 0.14195521605744846
+   },
+   "g:all": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:bx_": {
+    "swapped-operands": -0.5205014315032245,
+    "other": 0.520501431503223
+   },
+   "g:c_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ct_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:d_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:end": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:l_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ll_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_m": {
+    "swapped-operands": 0.19998056812433126,
+    "other": -0.19998056812433387
+   },
+   "g:n_p": {
+    "swapped-operands": -1.0946722982492672,
+    "other": 1.094672298249268
+   },
+   "g:on_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:1_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:1_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_av": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_le": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_li": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_o1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_op": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_to": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_up": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a__": {
+    "swapped-operands": -1.1237707850194598,
+    "other": 1.123770785019461
+   },
+   "g:a_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:age": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:al_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ave": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:era": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:es_": {
+    "swapped-operands": -0.42127441262474724,
+    "other": 0.42127441262474574
+   },
+   "g:f_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ist": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:l_u": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lis": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ms_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:num": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:o1_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:onu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:pto": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rag": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tal": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:to_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tot": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ums": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:upt": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ver": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:average": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:list": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:nums": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:sum": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:total_upto": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:0_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:100": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:1_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_10": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_b0": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_bi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_bl": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_cl": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_di": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ea": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_f_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_hi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_la": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_lo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_mi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_oh": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ok": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ol": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_os": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ov": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_pa": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_qu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_sc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_te": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_wh": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_y_": {
+    "swapped-operands": -0.3755493631814374,
+    "other": 0.3755493631814357
+   },
+   "g:_zi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_h": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_w": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_y": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ach": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ag_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ags": {
+    "swapped-operands": -0.11944842987527973,
+    "other": 0.11944842987528068
+   },
+   "g:ale": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:amp": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:art": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ast": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:atc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ati": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b0_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:bi_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ble": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:cal": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ch_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:che": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:cla": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:cou": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:d_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:dif": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:duc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:eac": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ent": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ext": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_q": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_v": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:f_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ff_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:fin": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:fir": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:g_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:gs_": {
+    "swapped-operands": -0.10622231529190476,
+    "other": 0.10622231529190561
+   },
+   "g:h_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:hes": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:hi_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:hol": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:i_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:i_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:i_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:i_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ien": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:iff": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ind": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:int": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:io_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ip_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:irs": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lam": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:las": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lo_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_a": {
+    "swapped-operands": 0.5933257398266036,
+    "other": -0.5933257398266022
+   },
+   "g:m_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:mat": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:min": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:mp_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_n": {
+    "swapped-operands": -0.1061137990485647,
+    "other": 0.10611379904856116
+   },
+   "g:n_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_z": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:o_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:odu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ohi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ok_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ole": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:olo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:opa": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:oti": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:oun": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ov_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:par": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:pri": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:pro": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:quo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rat": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rin": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rod": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rst": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rt_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_o": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:sca": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:sub": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tag": {
+    "swapped-operands": -0.11944842987527973,
+    "other": 0.11944842987528068
+   },
+   "g:tch": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ten": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tex": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tie": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tio": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ub_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:uct": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:unt": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:uot": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v_n": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:who": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:x_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:xte": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:y_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:zip": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:100": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:clamp": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:count_matches": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:diff": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:extend": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:find_max": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:hi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:last": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:lo": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:max": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:min": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:part": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:print": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:product": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:quotient": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:ratio": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:scale": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:sub_each": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:sum_first": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:tag_all": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:tags": {
+    "swapped-operands": -0.11944842987527973,
+    "other": 0.11944842987528068
+   },
+   "w:whole": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:zip": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:1_k": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:1_r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__g": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ac": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ds": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_el": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_en": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_g_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_od": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_oi": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ot": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_pu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_sr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:a_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:acc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:app": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:b__": {
+    "swapped-operands": 1.0551231242895518,
+    "other": -1.0551231242895514
+   },
+   "g:c_i": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:cc_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:col": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:d_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:d_l": {
+    "swapped-operands": -1.25648420968792,
+    "other": 1.2564842096879194
+   },
+   "g:dst": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:e_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ect": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:els": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:em_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:eno": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:g_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:h_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ite": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lec": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lle": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lse": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:n_b": {
+    "swapped-operands": 1.0551231242895518,
+    "other": -1.0551231242895514
+   },
+   "g:n_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ne_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:non": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ods": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:oit": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:oll": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:one": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:osr": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:pen": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ppe": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:pus": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:rc_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:res": {
+    "swapped-operands": -0.5010452479985672,
+    "other": 0.5010452479985689
+   },
+   "g:s_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:se_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:sh_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:src": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tap": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:tem": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ush": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:y_f": {
+    "swapped-operands": -0.5339831102443392,
+    "other": 0.5339831102443376
+   },
+   "w:acc": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:append": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:collect": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:dst": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:else": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:item": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:none": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:push_all": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:src": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:1_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__l": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__r": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:__x": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_by": {
+    "swapped-operands": 0.5823597324787413,
+    "other": -0.5823597324787408
+   },
+   "g:_l_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_o_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_ou": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:_r_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:by_": {
+    "swapped-operands": 0.5823597324787413,
+    "other": -0.5823597324787408
+   },
+   "g:c_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:c_d": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:d_a": {
+    "swapped-operands": 0.5402375837671289,
+    "other": -0.5402375837671279
+   },
+   "g:d_b": {
+    "swapped-operands": -0.5198106005948029,
+    "other": 0.5198106005948029
+   },
+   "g:d_p": {
+    "swapped-operands": 1.4161243522706035,
+    "other": -1.4161243522706033
+   },
+   "g:d_s": {
+    "swapped-operands": 1.509296367321131,
+    "other": -1.509296367321131
+   },
+   "g:d_w": {
+    "swapped-operands": -1.17622561949992,
+    "other": 1.1762256194999208
+   },
+   "g:e_m": {
+    "swapped-operands": -0.3954474233166578,
+    "other": 0.39544742331665805
+   },
+   "g:e_s": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:esu": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:i_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k__": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_a": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:k_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:l_m": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:lt_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_1": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:m_b": {
+    "swapped-operands": -0.46157597118588545,
+    "other": 0.46157597118588484
+   },
+   "g:m_x": {
+    "swapped-operands": 0.5823597324787413,
+    "other": -0.5823597324787408
+   },
+   "g:m_y": {
+    "swapped-operands": -0.42278642069189665,
+    "other": 0.42278642069189576
+   },
+   "g:n_l": {
+    "swapped-operands": 1.509296367321131,
+    "other": -1.509296367321131
+   },
+   "g:n_w": {
+    "swapped-operands": 1.4161243522706035,
+    "other": -1.4161243522706033
+   },
+   "g:o_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:oac": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:op_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:os_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:out": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_b": {
+    "swapped-operands": -0.12588627143803774,
+    "other": 0.12588627143803713
+   },
+   "g:p_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_f": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:p_y": {
+    "swapped-operands": -0.11008618410389341,
+    "other": 0.1100861841038926
+   },
+   "g:r_b": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_l": {
+    "swapped-operands": -0.27519534916781974,
+    "other": 0.27519534916782024
+   },
+   "g:s_t": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:s_w": {
+    "swapped-operands": -0.2584590050815402,
+    "other": 0.2584590050815407
+   },
+   "g:sul": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t_c": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:t_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ult": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:ut_": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:v_p": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:x_e": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "g:x_f": {
+    "swapped-operands": 0.5823597324787413,
+    "other": -0.5823597324787408
+   },
+   "g:y__": {
+    "swapped-operands": 0.5823597324787413,
+    "other": -0.5823597324787408
+   },
+   "w:out": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   },
+   "w:res": {
+    "swapped-operands": -0.3954474233166578,
+    "other": 0.39544742331665805
+   },
+   "w:result": {
+    "swapped-operands": 0.0,
+    "other": 0.0
+   }
+  },
+  "b": {
+   "swapped-operands": -0.15391345407758092,
+   "other": 0.15391345407758097
+  }
+ },
+ "params": 956,
+ "footprint_bytes": 27308,
+ "path": "trained",
+ "heldout_acc": 0.9655,
+ "train_n": 48,
+ "heldout_n": 29,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.8966
+  },
+  {
+   "name": "majority-class (other)",
+   "acc": 0.8966
+  }
+ ],
+ "bar": 0.8966,
+ "attempts": [
+  {
+   "fmode": "code",
+   "hidden": 0,
+   "numpy_acc": 0.8966,
+   "dict_acc": 0.8966,
+   "params": 238
+  },
+  {
+   "fmode": "code",
+   "hidden": 4,
+   "numpy_acc": 0.8966,
+   "dict_acc": 0.8966,
+   "params": 485
+  },
+  {
+   "fmode": "code",
+   "hidden": 8,
+   "numpy_acc": 0.8966,
+   "dict_acc": 0.8966,
+   "params": 956
+  },
+  {
+   "fmode": "text",
+   "hidden": 0,
+   "numpy_acc": 0.9655,
+   "dict_acc": 0.9655,
+   "params": 956
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "bug-swapped-operands-model#c0",
+  "bug-swapped-operands-model#c1"
+ ],
+ "socialized_to": 3
+}
