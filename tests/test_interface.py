@@ -184,3 +184,54 @@ def test_hive_takes_a_prompt_shows_the_work_and_keeps_a_session(swarm, monkeypat
     cli.session(swarm, 0, inp=lambda p: next(prompts), out=said.append)
     last = FakeHive.calls[-1]
     assert last.goal == "Now make it one line." and "Arnav: Find it." in last.context and "Answer: 42." in last.context
+
+
+def test_hive_sends_its_prompt_to_the_always_on_service(swarm, monkeypatch):
+    from team import cli
+    srv, base = _server(swarm, monkeypatch)
+    try:
+        assert cli.service_up(base) and not cli.service_up("http://127.0.0.1:9")
+        said = []
+        job = cli.run_remote("Find it and give two lines.", rounds=1, out=said.append, url=base)
+        text = "\n".join(said)
+        assert job["status"] == "done" and "on the always-on service" in text and "Answer: 42." in text and "out.csv" in text
+    finally:
+        srv.shutdown()
+
+
+def test_the_device_is_kept_healthy(tmp_path, monkeypatch):
+    """Background training waits on battery, when hot, short of RAM or disk; a job never starts on a full disk."""
+    from team import health
+    monkeypatch.setattr(health, "on_battery", lambda: True)
+    monkeypatch.setattr(health, "cpu_temp", lambda: 82.0)
+    monkeypatch.setattr(health, "free_ram_gb", lambda: 1.0)
+    monkeypatch.setattr(health, "free_disk_gb", lambda p=".": 0.5)
+    monkeypatch.setattr(health, "others_busy", lambda: 80.0)
+    monkeypatch.setattr(health, "DISK_STOP_GB", 1.0)
+    why = health.why_not_heavy()
+    assert len(why) == 5 and "on battery" in why
+    monkeypatch.setattr(health, "DISK_STOP_GB", 1.0)
+    assert "never deletes" in health.why_not_job()
+    monkeypatch.setattr(health, "free_disk_gb", lambda p=".": 50.0)
+    assert health.why_not_job() is None
+    temps = iter([95.0, 85.0, 70.0])
+    monkeypatch.setattr(health, "cpu_temp", lambda: next(temps))
+    monkeypatch.setattr(health.time, "sleep", lambda s: None)
+    assert health.cool_down() >= 0  # waited until under 80 C
+
+
+def test_one_service_at_a_time_and_its_autostart_entry(tmp_path, monkeypatch):
+    import sys
+    from team import serve, service
+    monkeypatch.setattr(serve, "LOCK", tmp_path / "serve.lock")
+    first = serve.single_instance()
+    assert first is not None and serve.single_instance() is None  # a second service would not start
+    first.close()
+    monkeypatch.setattr(sys, "platform", "linux")
+    path, text, cmds = service.plan(tmp_path)
+    assert path == tmp_path / ".config/systemd/user/hivemind.service"
+    assert "-m team serve" in text and "Restart=on-failure" in text and "Nice=10" in text and "MemoryMax=10G" in text
+    assert cmds[-1] == ["systemctl", "--user", "enable", "--now", "hivemind.service"]
+    monkeypatch.setattr(sys, "platform", "darwin")
+    path, text, _ = service.plan(tmp_path)
+    assert path.name == "com.hivemind.agent.plist" and "<key>RunAtLoad</key><true/>" in text

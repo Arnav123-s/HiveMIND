@@ -4,6 +4,9 @@
     hive                                  a session: prompt after prompt, follow-ups keep the conversation
     hive --rounds 0 "..."                 one round only (default: up to 2 follow-up rounds until nothing is left undone)
     hive --unattended "..."               never stop to ask: risky actions you did not order are refused and listed
+    hive --local "..."                    run in this terminal even when the always-on service is up
+When the always-on service runs (python -m team serve, or python -m team install), hive sends the prompt to it: the
+models are already loaded there, and the job keeps running if this terminal closes.
 
 The prompt is the order, word for word. What it orders (buy, delete, send, log in, sign up) is approved by the order
 itself; anything risky it does not order stops and asks you (or, unattended, is refused and listed at the end).
@@ -13,6 +16,8 @@ In a session, earlier prompts and answers are context for the next prompt, never
 Session commands: /stop (kill switch), /jobs (recent jobs), /remember <fact> (your profile), /exit.
 """
 import argparse
+import json
+import os
 import signal
 import sys
 import time
@@ -26,6 +31,56 @@ def line(e):
     """One event as a short progress line."""
     t = time.strftime("%H:%M:%S", time.localtime(e.get("ts", time.time())))
     return f"  {t}  {e.get('agent', ''):<14} {e.get('kind', ''):<9} {str(e.get('msg', ''))[:150]}"
+
+
+SERVICE = os.environ.get("HIVE_URL", "http://127.0.0.1:8766")
+
+
+def service_up(url=None, timeout=0.5):
+    """Is the always-on service answering? (`hive` then sends prompts to it: models are already loaded there.)"""
+    import urllib.request
+    try:
+        with urllib.request.urlopen((url or SERVICE) + "/health", timeout=timeout) as r:
+            return r.status == 200
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _call(method, path, body=None, url=None, timeout=30):
+    import urllib.request
+    req = urllib.request.Request((url or SERVICE) + path, json.dumps(body).encode() if body is not None else None,
+                                 {"Content-Type": "application/json", **({"Authorization": "Bearer "
+                                  + os.environ["AGENT_TEAM_API_KEY"]} if os.environ.get("AGENT_TEAM_API_KEY") else {})},
+                                 method=method)
+    return urllib.request.urlopen(req, timeout=timeout)
+
+
+def run_remote(prompt, rounds=2, context="", out=print, url=None):
+    """The same as run_prompt, on the always-on service. Returns the finished job as a dict."""
+    with _call("POST", "/v1/jobs", {"task": prompt, "until_done": rounds, "context": context}, url) as r:
+        job = json.loads(r.read())
+    out(f"hive: job {job['id']} on the always-on service")
+    with _call("GET", f"/v1/jobs/{job['id']}/events", url=url, timeout=None) as r:
+        event = None
+        for raw in r:
+            ln = raw.decode("utf-8", "replace").rstrip("\n")
+            if ln.startswith("event: "):
+                event = ln[7:]
+            elif ln.startswith("data: "):
+                d = json.loads(ln[6:])
+                if event == "done":
+                    job = d
+                    break
+                if d.get("kind") in SHOW or str(d.get("agent", "")).startswith("cell:task_kind"):
+                    out(line(d))
+                event = None
+    out("\n" + (job.get("report") or "(no report)").strip())
+    if job.get("files"):
+        out("\nFiles:\n" + "\n".join(f"  {f}" for f in job["files"]))
+    if job.get("unmet"):
+        out(f"\nStill not done: " + "; ".join(job["unmet"][:5]))
+    out(f"\n(job {job['id']}: {job.get('status')}, run folder {job.get('dir')})")
+    return job
 
 
 def run_prompt(swarm, prompt, rounds=2, context="", out=print):
@@ -84,7 +139,17 @@ def main(argv=None):
     ap.add_argument("--unattended", action="store_true",
                     help="never stop to ask: risky actions you did not order are refused and listed at the end")
     ap.add_argument("--file", help="read the prompt from a file")
+    ap.add_argument("--local", action="store_true", help="run here even when the always-on service is up")
     a = ap.parse_args(argv)
+    prompt = open(a.file).read() if a.file else " ".join(a.prompt).strip()
+    if prompt and not a.local and service_up():  # the always-on agent has the models loaded: it does the job
+        try:
+            job = run_remote(prompt, a.rounds)
+        except KeyboardInterrupt:
+            _call("POST", "/v1/stop", {})
+            print("\n*** kill switch sent to the service: every running job stops now")
+            return 130
+        return 0 if job.get("status") == "done" else 1
     from . import sdk, stop
     approve = "never" if a.unattended or not sys.stdin.isatty() else "ask"
     swarm = sdk.Swarm(approve=approve)
@@ -95,7 +160,6 @@ def main(argv=None):
         stop.request("hive: Ctrl+C")
         print("\n*** stopping every specialist now (Ctrl+C again to exit immediately)", flush=True)
     signal.signal(signal.SIGINT, on_ctrl_c)
-    prompt = open(a.file).read() if a.file else " ".join(a.prompt).strip()
     if prompt:
         job = run_prompt(swarm, prompt, a.rounds)
         return 0 if job.status == "done" else 1

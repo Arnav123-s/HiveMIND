@@ -5,7 +5,8 @@
     python -m team api [--port 8766]      OpenAI/Anthropic-compatible API + jobs (any SDK or chat app can use the swarm)
     python -m team chat                   talk to it like an assistant
     python -m team web                    chat-style page at http://127.0.0.1:8765
-    python -m team serve                  always on: inbox + schedule + dreaming when idle
+    python -m team serve [--port 8766]    always on: API + chat page + inbox + schedule, dreaming when idle
+    python -m team install [--dry-run]    start the always-on agent with the device (uninstall: stop and remove it)
     python -m team add "task"             drop a task into the inbox for `serve`
     python -m team dream [--no-train] [--rehearse N]   replay past runs, learn lessons, retrain weights
     python -m team remember "fact"        add to your profile (how you like things done)
@@ -18,7 +19,8 @@ import argparse
 import json
 import sys
 
-COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow"}
+COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
+            "uninstall"}
 
 
 def main():
@@ -62,7 +64,13 @@ def main():
             return web(int(rest[0]) if rest else 8765)
         if cmd == "serve":
             from .serve import serve
-            return serve()
+            return serve(port=int(rest[rest.index("--port") + 1]) if "--port" in rest else 8766)
+        if cmd == "install":
+            from .service import install
+            return install(dry_run="--dry-run" in rest)
+        if cmd == "uninstall":
+            from .service import uninstall
+            return uninstall()
         if cmd == "add":
             from .serve import add
             return print("queued:", add(" ".join(rest)))

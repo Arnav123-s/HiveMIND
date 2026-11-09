@@ -144,6 +144,10 @@ class Swarm:
         task = (task or "").strip()
         if not task:
             raise ValueError("empty task")
+        from . import health
+        why = health.why_not_job(self.root)  # a nearly full disk: no new job fills it further
+        if why:
+            raise ValueError(why)
         jid = time.strftime("%Y%m%d-%H%M%S-") + secrets.token_hex(3)
         job = Job(self, jid, task, max(0, int(until_done)), allow_login, context)
         job._save()
