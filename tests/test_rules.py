@@ -1256,3 +1256,25 @@ def test_only_what_this_computer_can_test_is_an_experiment(tmp_path, monkeypatch
     assert [h for _, h in R.decompose("Research how lithium-ion batteries degrade over time.", b)] == ["read", "read"]
     got = R.decompose("Run an experiment to test whether Python's sort is faster than a merge sort.", b)
     assert [h for _, h in got] == ["read", "experiment"]
+
+
+def test_a_budget_spent_for_the_day_is_not_waited_for(monkeypatch):
+    """OpenAlex's anonymous budget ran out; every search then waited twice (about 90 s) for a 429 that could not
+    clear."""
+    from team.tools import web
+    calls = []
+
+    class R:
+        status_code, headers, url = 429, {}, "https://api.openalex.org/works?search=x"
+        apparent_encoding = encoding = "utf-8"
+        text = '{"error":"Rate limit exceeded","message":"Insufficient budget. This request has no API key, so ..."}'
+    monkeypatch.setattr(web._S, "get", lambda url, params=None, timeout=None: calls.append(url) or R())
+    monkeypatch.setattr(web, "_wait", lambda s: (_ for _ in ()).throw(AssertionError("waited")))
+    monkeypatch.setattr(web, "SPENT", {})
+    monkeypatch.setattr(web, "_cache", {})
+    import pytest
+    with pytest.raises(web.FetchError):
+        web.get("https://api.openalex.org/works", {"search": "x"})
+    with pytest.raises(web.FetchError, match="skipped for the rest of this run"):
+        web.get("https://api.openalex.org/works", {"search": "y"})
+    assert len(calls) == 1
