@@ -60,7 +60,7 @@ def main():
     sources = {p.name: goals_and_text(p) for p in sorted((ROOT / "training" / "data").glob("*.jsonl"))}
     code = {"skills.py": (ROOT / "team/cells/skills.py").read_text(), "prompts.py": (ROOT / "team/prompts.py").read_text()}
     out = {}
-    for tid, kind, task, _ in hb.TASKS + hb.HELDOUT:
+    for tid, kind, task, _ in hb.TASKS + hb.HELDOUT + hb.HELDOUT2:
         hits = []
         for term in terms(task):
             rx = re.compile(r"(?<![\w.])" + re.escape(term) + r"(?![\w])", re.I)  # whole words only
@@ -78,7 +78,7 @@ def main():
             if shared:
                 hits.append(f"{len(shared)} 5-word phrase(s) in training goals of {name}: {shared[0]!r}")
         out[tid] = {"heldout": tid.startswith("ho_"), "task": task[:120], "hits": hits}
-        print(f"{'HELD-OUT' if tid.startswith('ho_') else 'dev     '} {tid:14s} {len(hits):3d}  " + "; ".join(hits)[:300])
+        print(f"{'HELD-OUT' if tid.startswith(('ho_', 'h2_')) else 'dev     '} {tid:14s} {len(hits):3d}  " + "; ".join(hits)[:300])
     (ROOT / "training" / "reports" / "hive_bench" / "contamination.json").write_text(json.dumps(out, indent=1))
 
 
