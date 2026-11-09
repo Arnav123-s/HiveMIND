@@ -17,8 +17,9 @@ from training import cells as C  # noqa: E402
 from training.cells_promote import promote  # noqa: E402
 
 for skill in sys.argv[1:]:
-    C.eval_base(skill, "smol135")
-    C.train(skill, "smol135", [f"{i}:{m}" for i in range(30) for m in C.MODS], rank=2, steps=300, tag="all_r2_300")
+    if not (C.CELLS / "variants" / skill / "all_r2_300" / "result.json").exists():  # trained already: time it only
+        C.eval_base(skill, "smol135")
+        C.train(skill, "smol135", [f"{i}:{m}" for i in range(30) for m in C.MODS], rank=2, steps=300, tag="all_r2_300")
     entry = promote(skill)
     reg = runtime.registry().get(skill, {})
     inc_p = C.REPORTS / f"incumbent_{skill}.json"
