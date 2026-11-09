@@ -44,3 +44,17 @@ caused by my own edits on the development set (see miles and quotes below).
 
 The held-out set was then run again on code with these fixes ("heldout_after"). That run is **not** a clean held-out
 number: these tasks informed the fixes. A clean number needs new tasks the fixes have never seen.
+
+## The held-out set again, after those fixes ("heldout_after", frozen 2574473): 13/16
+
+**Not a clean held-out number**: these tasks informed the fixes. It shows whether the fixes did what they were for.
+chart, miles, spanish and explain now pass; book, the lookups and the rest still pass. Still failing, each with its
+cause and a general fix made after this freeze:
+
+| task | what happened | fix after the freeze |
+|---|---|---|
+| ho_quotes_csv | no more "Unknown" cover-up (it now fails honestly), but the 7B coder looked for `<span class="author">` twice although the preview showed `<small class="author">`; the step was then rerouted to a researcher searching the web for the class name | b33e7a9: a crash on find('tag', class_='x') finding nothing is looked up on the page itself ("class author is on <small>"); the same-error stop compares errors, not the hint appended to them |
+| ho_weekday | the calculator, now told to print names, printed "Answer: Sunday" (right); the verifier still demanded a number and failed it three times. My own miss: the calculator fix was tested without the verifier | 7bbf5df: a weekday or month name passes the calculator's check; the test runs both |
+| ho_polite | the writer gave the sentence back; the echo check caught it; the fix gave it three times, which the check did not see | d91fe4f: repeats count once, a rewrite with no word of its own is an echo; the ordered line count is checked again after a fix |
+
+A clean measure of all of this needs new tasks that no fix has seen.
