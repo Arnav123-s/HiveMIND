@@ -111,6 +111,36 @@ def ordered_format(instructions):
     return "; ".join(out), lines
 
 
+def ordered_sentences(instructions):
+    """The number of sentences Arnav ordered ("in two sentences", "a three-sentence message"), or None."""
+    m = re.search(_N + r"[- ]sentences?\b", " ".join(order_words(i) for i in instructions).lower())
+    return _n(m) if m else None
+
+
+def sentence_count(text):
+    body = re.sub(r"\s+", " ", (text or "").split("\n## ")[0]).strip()
+    return len([x for x in re.split(r"(?<=[.!?])\s+", body) if re.search(r"\w", x)])
+
+
+def dedupe_paragraphs(text):
+    """A paragraph or line given twice, word for word, once (held-out set 3: the queue explanation came twice, so
+    'in two sentences' became four)."""
+    out, seen = [], set()
+    for para in (text or "").split("\n\n"):
+        key = re.sub(r"\s+", " ", para).strip().lower()
+        if key and key in seen and not key.startswith("|"):
+            continue
+        seen.add(key)
+        out.append(para)
+    lines, prev = [], None
+    for ln in "\n\n".join(out).split("\n"):
+        if ln.strip() and ln.strip() == prev and not ln.lstrip().startswith("|"):
+            continue
+        lines.append(ln)
+        prev = ln.strip() or prev
+    return "\n".join(lines)
+
+
 def body_lines(text):
     return [ln for ln in text.split("\n") if ln.strip()]
 
@@ -260,7 +290,9 @@ def run(goal, task, board, needs):
     role = translator_role(goal, results_text)
     if role != "writer":
         board.log("writer", "translate", f"a translation: written by the {role} (training/reports/translator.json)")
-    text = drop_empty_sections(llm.chat(role, msgs, max_new_tokens=1200))
+    text = dedupe_paragraphs(drop_empty_sections(llm.chat(role, msgs, max_new_tokens=1200)))
+    n_sent = ordered_sentences(getattr(board, "checklist", None) or [goal])
+    text = keep_sentences(text, n_sent, role, msgs, board)
     if n_lines and len(body_lines(text)) != n_lines:  # checked in code: one more try, told what was wrong
         board.log("writer", "format", f"wrote {len(body_lines(text))} lines, {n_lines} ordered: asking again")
         text = llm.chat(role, msgs + [{"role": "assistant", "content": text},
@@ -324,6 +356,8 @@ def run(goal, task, board, needs):
                 board.log("editor", "dropped", "the editor's version was not better")
     else:
         board.log("critic", "ok", "every claim matches the verified results")
+    if fixes:
+        text = keep_sentences(dedupe_paragraphs(text), n_sent, role, msgs, board)
     if fixes and n_lines and len(body_lines(text)) != n_lines:  # a fix can break the layout he ordered: checked again
         board.log("writer", "format", f"after the fix: {len(body_lines(text))} lines, {n_lines} ordered: asking again")
         text = llm.chat(role, msgs + [{"role": "assistant", "content": text},
@@ -393,6 +427,20 @@ def ungrounded(text, verified, min_stems=6, share=0.3):
             if len(mine) >= min_stems and len(mine & have) / len(mine) < share:
                 out.append(sent.strip())
     return out
+
+
+def keep_sentences(text, n, role, msgs, board):
+    """Checked in code: the number of sentences he ordered. One more try, told the count; the version closer to it
+    is kept."""
+    if not n or sentence_count(text) == n:
+        return text
+    have = sentence_count(text)
+    board.log("writer", "format", f"wrote {have} sentences, {n} ordered: asking again")
+    again = dedupe_paragraphs(llm.chat(role, msgs + [{"role": "assistant", "content": text},
+                                                     {"role": "user", "content": f"That is {have} sentences. Write it as "
+                                                      f"exactly {n} sentence{'s' if n != 1 else ''}, nothing else."}],
+                                       max_new_tokens=600))
+    return again if abs(sentence_count(again) - n) < abs(have - n) else text
 
 
 def translator_role(goal, results_text):

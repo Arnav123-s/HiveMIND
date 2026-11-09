@@ -1407,3 +1407,21 @@ def test_the_browser_does_not_give_up_while_a_next_page_is_unread(tmp_path, monk
                               "evidence": "Top Ten tags", "page_text": "Top Ten tags 10,000 quotes",
                               "url": "https://quotes.toscrape.com/"}, Board(tmp_path, echo=False), tmp_path)
     assert "which the evidence copied from the page does not contain" not in why
+
+
+def test_a_repeated_paragraph_is_given_once_and_the_ordered_sentence_count_is_checked(tmp_path, monkeypatch):
+    """Held-out set 3: the queue explanation came twice, so 'in two sentences' became four."""
+    from team.board import Board
+    from team.specialists import writer
+    two = "A queue is first in, first out. The first element added is the first removed."
+    assert writer.dedupe_paragraphs(f"{two}\n\n{two}\n\n## Your instructions") == f"{two}\n\n## Your instructions"
+    assert writer.ordered_sentences(["In two sentences", "explain what a queue is"]) == 2
+    assert writer.sentence_count(f"{two}\n\n{two}") == 4
+    replies = iter([f"{two}\n\n{two} It is used for scheduling.", two])
+    monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **k: next(replies))
+    monkeypatch.setattr(writer.llm, "chat_json", lambda *a, **k: ({"unsupported": [], "unordered": [], "checklist": []}, ""))
+    monkeypatch.setattr(writer.memory, "profile", lambda: "")
+    b = Board(tmp_path, echo=False)
+    b.checklist = ["In two sentences", "explain what a queue is in programming"]
+    out = writer.run("In two sentences, explain what a queue is in programming.", "Write it", b, [])["summary"]
+    assert writer.sentence_count(out) == 2
