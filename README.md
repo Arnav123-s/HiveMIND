@@ -125,28 +125,32 @@ it agreed with the member at least 97% of the time; the member answers the rest,
 so the next `grow` learns from newer work. The always-on agent runs `grow` by itself when the device is idle. Tests
 and bench runs use a throwaway memory, so they never teach the hive.
 
-## Give it a prompt: `hive`
+## Just talk to it: `hive`
 
-Like a coding assistant: you type what you want, the hive does the job and keeps going until nothing is left undone.
+One prompt, then a normal conversation, the way you talk to an assistant. It decides the rest.
 
 ```bash
 ./hive "Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV"
 ```
 
 You see the hive work (plan, each specialist's step, each check), then the answer, the files it made and the run
-folder. Up to 2 follow-up rounds run by themselves for anything the critic marked not done (`--rounds N` to change).
-Your prompt is the order, word for word: what it orders (buy, delete, send, log in, sign up) is approved by the order
-itself; anything risky it does not order stops and asks you at the terminal (`--unattended`: refused and listed).
-Ctrl+C is the kill switch.
+folder, and then you keep talking:
 
-```bash
-./hive
 ```
-A session: prompt after prompt; earlier prompts and answers are context for the next one ("now make it shorter"),
-never orders. `/stop`, `/jobs`, `/remember <how you like things done>`, `/exit`.
+you> thanks! why those three?          answered at once from what was found (no job)
+you> now add their star ratings        a new job, with the conversation as context
+you> remember that I prefer prices in INR     saved; every report follows it
+you> stop                              the kill switch: every running job halts
+```
 
-When the always-on agent runs (next section), `hive` sends the prompt to it: the models are already loaded there and
-the job keeps running if you close the terminal (`--local` runs it in the terminal instead).
+Each message is answered directly when the conversation already holds the answer, or becomes a hive job (anything to
+look up, a website, code, files, a calculation, writing, a fact that must be right) that runs until nothing is left
+undone (`team/converse.py`). Your words are the order: what they order (buy, delete, send, log in, sign up) is approved
+by the order itself; anything risky they do not order stops and asks you. `./hive` alone starts the conversation
+without a prompt; `--once` answers one prompt and exits (scripts). Ctrl+C is the kill switch, `exit` leaves.
+
+When the always-on agent runs (next section), the conversation goes to it: the models are already loaded there and a
+job keeps running if you close the terminal. Chat apps on the API get the same conversation.
 
 ## Always on: your personal agent
 

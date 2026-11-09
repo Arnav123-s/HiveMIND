@@ -60,6 +60,13 @@ def task_from(messages):
     return turns[last][1].strip(), ctx
 
 
+def history_from(messages):
+    """The turns before the latest user message, as (role, text)."""
+    turns = [(m.get("role"), text_of(m.get("content"))) for m in messages or [] if m.get("role") in ("user", "assistant")]
+    users = [i for i, (r, t) in enumerate(turns) if r == "user" and t.strip()]
+    return [(r, t) for r, t in turns[:users[-1]] if t.strip()] if users else []
+
+
 def progress_line(ev):
     return f"[{time.strftime('%H:%M:%S', time.localtime(ev['ts']))}] {ev['agent']} {ev['kind']}: {ev['msg'][:200]}\n"
 
@@ -186,7 +193,12 @@ class H(BaseHTTPRequestHandler):
         task, ctx = task_from(body.get("messages"))
         if not task:
             raise ValueError("no user message with text")
-        return SWARM.submit(task, until_done=body.get("until_done", DEFAULTS["until_done"]), context=ctx)
+        rounds = body.get("until_done", DEFAULTS["until_done"])
+        from . import converse
+        if converse.on() and not body.get("job"):  # a conversation: talk is answered at once, work becomes a job
+            hist = history_from(body.get("messages"))
+            return converse.handle(task, hist, lambda t, c: SWARM.submit(t, until_done=rounds, context=c))
+        return SWARM.submit(task, until_done=rounds, context=ctx)
 
     def _openai(self, body):
         job = self._submit_chat(body)
