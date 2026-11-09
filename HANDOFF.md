@@ -2,6 +2,38 @@
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
+## Live status (kept current; read this first)
+Updated 2026-11-09 20:30 UTC. Branch `make-it-work`, draft PR #5, everything committed and pushed.
+
+**Built and tested this session (126 tests pass):**
+- `python -m team life` (`team/life.py`, `team/cells/spawn.py`, `training/cells_spawn.py`): the hive reads its own logged
+  calls (`runs/*/calls.jsonl`), finds call sites whose replies are a few fixed values, declares each a spawned skill
+  (`cells/spawned.json`), has the member decide practice cases, trains a cell (135M first, then 360M), and switches it
+  on only if the newest real decisions vouch for it. A working cell answers its member's call when sure; one call in
+  ten is audited against the member; under 93% live agreement it is retired. `serve` runs a turn when idle.
+- `python -m team org` (`team/org.py`): teams, members, cells, who holds each job.
+
+**Running / not finished:**
+- `training/life_drill.py 2 110` was started at 20:01 UTC to log real decisions (research step only, real sources),
+  about 2.7 min per question; logs in `runs/drill/` (not in git). Plan: stop at about 60 questions.
+- No cell has been spawned from real work yet. Next: `python -m team life --min 60`, read `cells/LIFE.md`, then run
+  the remaining questions (110-150) with the cell on to collect live audits.
+
+**Promised to Arnav, not started:**
+1. Chunked reading: the 1.7B extracts facts from short chunks of a page, a cell merges and checks; compare with the
+   4B reading the whole page, on the drill's real pages.
+2. The 16 dev tasks with no model above 1.7B (`AGENT_TEAM_ROSTER` override), to see which task kinds break.
+3. Per-job ladder: smallest model first, checked, move up a size only when the check fails; track the big models'
+   share per job as a list that shrinks.
+4. Later, only if he asks after seeing 1-3: several cell edits active at once with a router (mixture of experts),
+   and training the router and cells together against the 4B.
+
+**This machine (a fresh cloud VM, not the one of the earlier handoff):**
+- Python: `/home/user/agent-team/.venv/bin/python` (rebuilt here; `sentencepiece` added to requirements).
+- 30 GB disk free, 15 GB RAM, 4 cores. The session runs on the `agent-team` environment's network
+  (huggingface.co allowed). The disk note further down is from the old VM.
+- A new session on another account starts from this file plus the branch; `runs/` and `memory/` do not travel.
+
 ## What it is
 A hive of small CPU models working as one. You give it one prompt and then talk to it normally (`./hive`).
 - **Members:** a 4B brain (coordinator, researcher, critic, editor, jury); a 1.7B with per-role weight edits (writer, verifier, browser, order reader); a 7B coder.
