@@ -97,6 +97,10 @@ def background(last, dream_every_hours):
         log("idle and healthy: growing cells from the hive's own decisions")
         subprocess.run([sys.executable, "-m", "team", "grow"], cwd=config.ROOT)
         last["grow"] = time.time()
+    elif time.time() - last.get("life", 0) > dream_every_hours * 3600:
+        log("idle and healthy: a turn of the hive's life (new jobs noticed in its own calls, cells grown, checked, retired)")
+        subprocess.run([sys.executable, "-m", "team", "life"], cwd=config.ROOT)
+        last["life"] = time.time()
     return last
 
 

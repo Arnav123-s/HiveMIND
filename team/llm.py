@@ -369,6 +369,27 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
     from . import stop as _stop
     _stop.check()
     specialist = ROUTE.get(specialist, specialist)
+    from .cells import spawn
+    if not temperature and not prefix.strip("{") and stop in (None, "json"):
+        # a cell the hive spawned for this very call site answers when it is sure (team/cells/spawn.py)
+        t0 = time.time()
+        text = spawn.answer(specialist, messages)
+        if text is not None:
+            rec = _recorder()
+            if rec is not None:
+                try:
+                    rec(f"cell:{spawn.site_name(specialist, messages)}", messages, text,
+                        seconds=round(time.time() - t0, 2), model="smol135", by_cell=True, instead_of=specialist)
+                except Exception:  # noqa: BLE001
+                    pass
+            return text
+    text = _chat_member(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+    spawn.observe(specialist, messages, text)
+    return text
+
+
+def _chat_member(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop):
+    from . import stop as _stop
     if use_gguf():
         with _lock:
             t0 = time.time()

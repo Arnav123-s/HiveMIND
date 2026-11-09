@@ -42,11 +42,29 @@ def rows(skill):
     return [(x, y) for _, x, y in sorted(out)]
 
 
+def rehearsed(skill):
+    """Practice decisions (team/cells/spawn.py rehearse): inputs recombined from the oldest real ones, decided by the
+    member. A cell trains on them; it is never judged on them."""
+    p = DIR.parent / "rehearsed" / f"{skill}.jsonl"
+    if not p.exists():
+        return []
+    out = []
+    for ln in p.read_text().splitlines():
+        try:
+            d = json.loads(ln)
+            out.append((d["x"], d["y"]))
+        except (ValueError, KeyError):
+            continue
+    return out
+
+
 def split(skill):
-    """Oldest 70% train, next 15% dev, newest 15% test: a cell is judged on decisions newer than any it learned from."""
+    """Oldest 70% train, next 15% dev, newest 15% test: a cell is judged on decisions newer than any it learned from.
+    Practice decisions are added to train only."""
     r = rows(skill)
     a, b = int(len(r) * 0.7), int(len(r) * 0.85)
-    return r[:a], r[a:b], r[b:]
+    real = {x for x, _ in r}
+    return r[:a] + [(x, y) for x, y in rehearsed(skill) if x not in real], r[a:b], r[b:]
 
 
 def register():

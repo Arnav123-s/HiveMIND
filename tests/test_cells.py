@@ -46,8 +46,10 @@ def test_cells_switch_off(monkeypatch):
 
 
 def test_gate_groups_cover_every_skill():
-    for skill in S.SKILLS:
-        if skill != "gate":
+    for skill, spec in S.SKILLS.items():
+        # de_grammar is trained but the hive does not call it (cells/de_grammar_notes.md); a spawned cell is reached
+        # through its member's call site (team/cells/spawn.py), not through the gate
+        if skill not in ("gate", "de_grammar") and not spec.get("spawned"):
             assert any(skill in m for m in S.GROUPS.values()), skill
 
 

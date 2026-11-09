@@ -679,6 +679,28 @@ LEARNED = {
 for _k, _v in LEARNED.items():
     SKILLS[_k] = dict(part=_v["part"], labels=_v["labels"], instr=_v["instr"], gen=None, learned=True, new=True)
 
+
+# cells the hive SPAWNED: jobs nobody declared, noticed in the members' logged calls (team/cells/spawn.py). The file is
+# the catalogue entry; a process that is already running picks up new ones through load_spawned().
+SPAWNED_FILE = __import__("pathlib").Path(__file__).resolve().parents[2] / "cells" / "spawned.json"
+
+
+def load_spawned():
+    if not SPAWNED_FILE.exists():
+        return {}
+    try:
+        sp = json.loads(SPAWNED_FILE.read_text())
+    except ValueError:
+        return {}
+    for k, v in sp.items():
+        LEARNED[k] = dict(part=v["part"], labels=v["labels"], member=v["member"], instr=v["instr"])
+        SKILLS[k] = dict(part=v["part"], labels=v["labels"], instr=v["instr"], gen=None, learned=True, new=True,
+                         spawned=True)
+    return sp
+
+
+load_spawned()
+
 SKILLS["orders_any"] = dict(part="guard: is ANY risky action ordered (new skill made by the factory)", labels=["yes", "no"],
                            gen=gen_orders_any, new=True,
                            instr="Does the user ORDER the team to buy, pay, delete, send, post, log in or sign up? "
