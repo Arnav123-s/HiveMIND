@@ -59,11 +59,39 @@ def _judge_one(member, check, work, evidence):
     return ("PASS" if v == "PASS" else "FAIL"), str(data.get("reason", ""))[:300]
 
 
+PLACEHOLDER = {"", "unknown", "n/a", "na", "none", "null", "nan", "-", "?", "not found", "missing", "not available"}
+
+
+def placeholder_columns(path):
+    """Columns of a CSV/TSV whose every row holds the same placeholder: the value was never found. (Held-out run: the
+    author was in <small class="author">, the program looked for a span, and its fix wrote 'Unknown' in every row;
+    three jurors passed the file.)"""
+    import csv
+    try:
+        with open(path, newline="", encoding="utf-8", errors="replace") as f:
+            rows = list(csv.reader(f, delimiter="\t" if path.suffix.lower() == ".tsv" else ","))
+    except Exception:  # noqa: BLE001
+        return None
+    head, body = (rows[0], [r for r in rows[1:] if any(c.strip() for c in r)]) if rows else ([], [])
+    if len(body) < 2:
+        return None
+    out = []
+    for j, h in enumerate(head):
+        vals = {(r[j] if j < len(r) else "").strip() for r in body}
+        if len(vals) == 1 and next(iter(vals)).lower() in PLACEHOLDER:
+            out.append(f"column '{h}' is {next(iter(vals))!r} in all {len(body)} rows: its value was never found")
+    return "; ".join(out) or None
+
+
 def describe_file(path):
     """What a saved file holds, checked in code: an image's format and size in pixels, a text file's first lines."""
     name = path.name
     if not path.exists() or path.stat().st_size == 0:
         return f"EMPTY: {name} has no content"
+    if path.suffix.lower() in (".csv", ".tsv"):
+        bad = placeholder_columns(path)
+        if bad:
+            return f"BROKEN: {name}: {bad}"
     kb = path.stat().st_size / 1024
     if path.suffix.lower() in (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".pdf"):
         if path.suffix.lower() in (".svg", ".pdf"):

@@ -127,6 +127,13 @@ def run(task, context, board, step_id, guard, workdir):
         new = [p for p in workdir.iterdir() if p.name not in before and p.name != name and not p.name.startswith(".")]
         silent = not res["stdout"].strip() and not new
         unsaved = unsaved_output(task, code, [p.name for p in new]) if not missing and not silent else None
+        if res["returncode"] == 0 and not missing and not silent and not unsaved:
+            from .verifier import describe_file  # what it saved, checked in code: a placeholder column, a blank chart
+            bad = [d for d in (describe_file(p) for p in new if p.is_file()) if d.startswith(("BROKEN", "EMPTY"))]
+            if bad:
+                unsaved = ("The file it saved is wrong: " + "; ".join(bad)[:400] + ". Take each value from the "
+                           "element the DATA PREVIEW shows it in (its exact tag and class); never write a placeholder "
+                           "such as 'Unknown' for a value the task asks for.")
         if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing and not silent and not unsaved:
             checks = example_checks(task, code)
             if checks:  # his own examples, run against the program's functions
@@ -153,7 +160,7 @@ def run(task, context, board, step_id, guard, workdir):
             # it defined a function and never called it: the jury then rejected "the program ran, but no files"
             err = "It ran but printed nothing and saved nothing. Call the code and print the result the task asks for."
         elif res["returncode"] == 0 and unsaved:
-            board.log("coder", "unsaved", unsaved[:150])
+            board.log("coder", "file-check", unsaved[:150])
             err = unsaved + f"\nOutput was:\n{res['stdout'][-800:]}"
         elif res["returncode"] == 0 and missing:
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"

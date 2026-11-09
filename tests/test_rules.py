@@ -881,3 +881,33 @@ def test_the_browser_sees_the_rare_goal_word_before_the_menu():
     assert "6be3beb0793a53e7" in seen and len(seen) < 1800
     from team.tools.browser import goal_words
     assert "upc" in goal_words("tell me its UPC.") and "books.toscrape.com" in goal_words("on books.toscrape.com")
+
+
+def test_a_value_never_found_is_not_covered_with_a_placeholder(tmp_path, monkeypatch):
+    """Held-out run: the author was in <small class="author">, the program looked for a span, and its fix wrote
+    'Unknown' in all 10 rows; three jurors passed the CSV."""
+    from team.board import Board
+    from team.specialists import coder, verifier
+    from team import prompts
+    assert "placeholder" in prompts.FIX_HINTS["data"] and "check for missing values" not in prompts.FIX_HINTS["data"]
+    covered = ("import csv\nrows = [('a quote', None), ('another', None)]\nwith open('quotes.csv', 'w', newline='') as f:\n"
+               "    w = csv.writer(f)\n    w.writerow(['Text', 'Author'])\n"
+               "    for t, a in rows:\n        w.writerow([t, a or 'Unknown'])\nprint('saved 2 quotes')\n")
+    found = covered.replace("None), ('another', None)", "'Ann'), ('another', 'Bo')")
+    progs, asked = iter([covered, found]), []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"])
+                        or f"```python\n{next(progs)}```")
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    out = coder.run("Save the text and author of every quote to a CSV file.", "", Board(tmp_path, echo=False), "s1", G(),
+                    tmp_path / "w")
+    assert out["files"] == ["quotes.csv"] and "'Unknown' in all 2 rows" in asked[1]
+    p = tmp_path / "bad.csv"
+    p.write_text("Text,Author,Notes\nx,N/A,\ny,N/A,\n")
+    assert verifier.describe_file(p).startswith("BROKEN") and "'Author'" in verifier.describe_file(p)
+    p.write_text("Text,Author\nx,Ann\ny,Unknown\n")  # one author not known is data, not a cover-up
+    assert not verifier.describe_file(p).startswith("BROKEN")

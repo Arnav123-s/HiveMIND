@@ -70,6 +70,8 @@ CODER = """You are the coder on Arnav's team. Write one complete Python 3 progra
 - Use timeout=30 on every network call and the default requests User-Agent. Use https:// URLs (a site that also answers on https). Do not use input().
 - Build every link with urllib.parse.urljoin(the URL of the page it is on, href); never by joining strings (".../index.html" + "/page-2.html" is a page that does not exist).
 - Save files in the current folder with the exact names the task gives, and print what you saved and the key results.
+- Take every value from where the DATA PREVIEW shows it (the exact tag and class around it); never write a
+  placeholder such as 'Unknown' or 'N/A' for a value the task asks for.
 - A chart or plot: save it with plt.savefig("<name>.png") (the task's name for it, else a short one); never plt.show().
 - Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
   so characters like £ survive. A listing with several pages (a "next" link): read every page before choosing.
@@ -89,8 +91,9 @@ FIX_HINTS = {
                "cannot be reached, use another URL the task or preview gives.",
     "file": "A file was missing or not writable. Read only files that exist in the current folder; save new files in "
             "the current folder.",
-    "data": "The data did not have the shape the code expected. Use the keys, classes and columns the DATA PREVIEW "
-            "shows; check for missing values before using them.",
+    "data": "The data did not have the shape the code expected. Use the keys, tags, classes and columns the DATA "
+            "PREVIEW shows: find the element where it shows the value. Never replace a value you could not find with a "
+            "placeholder such as 'Unknown' or 'N/A'.",
     "timeout": "The program ran too long. Make fewer requests, stop loops early, and print the result as soon as it is "
                "known.",
     "check": "A check from Arnav's own examples failed: make the code give exactly the values his examples state.",
