@@ -677,6 +677,10 @@ def test_the_research_hive_splits_filters_fills_gaps_and_cross_checks(tmp_path, 
         sys_, user = msgs[0]["content"], msgs[-1]["content"]
         if sys_ == R.DECOMPOSE:
             return {"questions": ["How do tidal turbines work?", "How much power does the Kalo array make?"]}, ""
+        if sys_ == R.ANSWERS:  # the researcher's yes/no per fact (a fact about popularity answers nothing here)
+            pairs = __import__("re").findall(r"QUESTION: (.*)\n\s+FACT: (.*)", user)
+            return {"answers": ["no" if "popular" in f or ("power" in q and "MW" not in f) else "yes"
+                                for q, f in pairs]}, ""
         if "Choose where to look" in sys_:
             plans.append(user)
             return {"searches": [{"source": "wikipedia", "q": user.split("Task: ")[1].split("\n")[0][:40]}]}, ""
@@ -1280,22 +1284,24 @@ def test_a_budget_spent_for_the_day_is_not_waited_for(monkeypatch):
     assert len(calls) == 1
 
 
-def test_a_cell_that_says_the_same_to_every_fact_gets_a_second_opinion(tmp_path, monkeypatch):
-    """Research eval: the answers_q cell said 'no' to all 11 facts of the battery question, 'SEI growth is a
-    degradation mechanism' against 'How do lithium-ion batteries degrade?' among them."""
+def test_the_researcher_judges_which_facts_answer_a_sub_question(tmp_path, monkeypatch):
+    """Research eval: the answers_q cell said 'no' to all 15 real facts (3/15 right), 'SEI growth is a degradation
+    mechanism' against 'How do lithium-ion batteries degrade?' among them; it scored 0.933 on synthetic data."""
+    import json
     from team.board import Board
     from team.cells import use
     from team.specialists import research_hive as R
     b = Board(tmp_path, echo=False)
     facts = [{"question": "How do lithium-ion batteries degrade?", "claim": c} for c in
-             ("SEI growth is a degradation mechanism", "Lithium plating degrades the anode",
-              "Electrolyte decomposition reduces capacity", "Paris is the capital of France")]
+             ("SEI growth is a degradation mechanism", "Paris is the capital of France")]
     monkeypatch.setattr(use, "on", lambda s: s == "answers_q")
     monkeypatch.setattr(use, "ask_all", lambda skill, texts, board=None: ["no"] * len(texts))
-    monkeypatch.setattr(R.llm, "chat_json", lambda *a, **k: ({"answers": ["yes", "yes", "yes", "no"]}, ""))
-    assert R.answered(facts, b) == [True, True, True, False]
-    monkeypatch.setattr(use, "ask_all", lambda skill, texts, board=None: ["yes", "yes", "no", "no"])
-    assert R.answered(facts, b) == [True, True, False, False]  # a mixed batch is the cell's own answer
+    monkeypatch.setattr(R.llm, "chat_json", lambda *a, **k: ({"answers": ["yes", "no"]}, ""))
+    assert R.answered(facts, b) == [True, False]
+    monkeypatch.setattr(R.llm, "chat_json", lambda *a, **k: (None, "garbled"))
+    assert R.answered(facts, b) == [True, True]  # unreadable reply, cell not checked on real pairs: every fact counts
+    real = [json.loads(x) for x in open("training/evals/answers_q_real.jsonl")]
+    assert len(real) == 15 and sum(r["label"] == "yes" for r in real) == 12
 
 
 def test_an_instruction_no_source_answered_is_not_ticked_done(tmp_path):

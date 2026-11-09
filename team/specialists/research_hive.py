@@ -76,24 +76,24 @@ def subjects(q):
 
 
 def answered(facts, board=None):
-    """For each fact: does it answer its own sub-question? The answers_q cell (all at once), else any fact counts."""
+    """For each fact: does it answer its own sub-question? The researcher judges the batch in one call. On 15 real
+    (sub-question, fact) pairs from the research eval (training/evals/answers_q_real.jsonl, labelled by hand: 12 yes,
+    3 no) the answers_q cell said "no" to all 15 (3/15 right, where "every fact counts" scores 12/15), though it scored
+    0.933 on its synthetic test set; it answered "no" to "SEI growth is a crucial mechanism in lithium-ion battery
+    degradation" against "How do lithium-ion batteries degrade over time?". If the researcher's reply cannot be read:
+    the cell, once it has been checked on real pairs, else every fact counts."""
     if not facts:
         return []
-    if use.on("answers_q"):
-        yes = [a == "yes" for a in use.ask_all("answers_q", [f"QUESTION: {f['question']}\nFACT: {f['claim']}"
-                                                             for f in facts], board)]
-        if len(facts) >= 4 and len(set(yes)) == 1:
-            # the same answer for every fact of a batch is how this cell fails on real text: it said "no" to all 11
-            # facts of the battery question, "SEI growth ... is a degradation mechanism" against "How do lithium-ion
-            # batteries degrade?" among them (it scored 0.933 on its synthetic test set). The researcher checks it.
-            member = member_answers(facts)
-            if member is not None:
-                if board is not None:
-                    board.log("research_hive", "second-opinion", f"answers_q said {'yes' if yes[0] else 'no'} to all "
-                                                                 f"{len(facts)} facts; the researcher: {sum(member)} yes")
-                return member
-        return yes
+    member = member_answers(facts)
+    if member is not None:
+        return member
+    if use.on("answers_q") and REAL_CHECKED.get("answers_q"):
+        return [a == "yes" for a in use.ask_all("answers_q", [f"QUESTION: {f['question']}\nFACT: {f['claim']}"
+                                                              for f in facts], board)]
     return [True] * len(facts)
+
+
+REAL_CHECKED = {"answers_q": False}  # a cell judged on real pairs and found at least as good may answer first again
 
 
 ANSWERS = """For each numbered FACT, say whether it answers its QUESTION, fully or in part: a cause, a mechanism, a
