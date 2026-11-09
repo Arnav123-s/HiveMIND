@@ -1,0 +1,194 @@
+{
+ "skill": "result_relevant",
+ "incumbent": "juror_brain = brain4b",
+ "test": 0.7533,
+ "ms_per_call": 1847.5,
+ "n": 150,
+ "errors": [
+  [
+   "QUESTION: What are the benefits of cargo bikes?\nRESULT: New study on cargo bikes | Findings about cargo bikes published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain cargo bikes to a beginner.\nRESULT: New study on cargo bikes | Findings about cargo bikes published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain tidal energy to a beginner.\nRESULT: New study on tidal energy | Findings about tidal energy published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of heat pumps?\nRESULT: Heat pumps (overview) | A short summary of heat pumps.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain night trains to a beginner.\nRESULT: Night trains (overview) | A short summary of night trains.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of honey bees?\nRESULT: Honey bees (overview) | A short summary of honey bees.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of night trains?\nRESULT: New study on night trains | Findings about night trains published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain snow leopards to a beginner.\nRESULT: New study on snow leopards | Findings about snow leopards published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of honey bees?\nRESULT: Understanding honey bees | An introduction to honey bees for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of night trains?\nRESULT: Understanding night trains | An introduction to night trains for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of cargo bikes?\nRESULT: Cargo bikes (overview) | A short summary of cargo bikes.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of salt marshes?\nRESULT: New study on salt marshes | Findings about salt marshes published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of snow leopards?\nRESULT: New study on snow leopards | Findings about snow leopards published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of green tea?\nRESULT: Green tea (overview) | A short summary of green tea.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of green tea?\nRESULT: New study on green tea | Findings about green tea published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain fire ants to a beginner.\nRESULT: New study on fire ants | Findings about fire ants published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain salt marshes to a beginner.\nRESULT: New study on salt marshes | Findings about salt marshes published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What is known about tidal energy?\nRESULT: New study on tidal energy | Findings about tidal energy published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain green tea to a beginner.\nRESULT: New study on green tea | Findings about green tea published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of salt marshes?\nRESULT: Understanding salt marshes | An introduction to salt marshes for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of snow leopards?\nRESULT: Understanding snow leopards | An introduction to snow leopards for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of honey bees?\nRESULT: New study on honey bees | Findings about honey bees published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of night trains?\nRESULT: Night trains (overview) | A short summary of night trains.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of fire ants?\nRESULT: New study on fire ants | Findings about fire ants published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of tidal energy?\nRESULT: Tidal energy (overview) | A short summary of tidal energy.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of heat pumps?\nRESULT: Understanding heat pumps | An introduction to heat pumps for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of tidal energy?\nRESULT: Understanding tidal energy | An introduction to tidal energy for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain heat pumps to a beginner.\nRESULT: New study on heat pumps | Findings about heat pumps published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of snow leopards?\nRESULT: Snow leopards (overview) | A short summary of snow leopards.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of salt marshes?\nRESULT: Salt marshes (overview) | A short summary of salt marshes.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of heat pumps?\nRESULT: New study on heat pumps | Findings about heat pumps published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of cargo bikes?\nRESULT: Understanding cargo bikes | An introduction to cargo bikes for newcomers.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of tidal energy?\nRESULT: New study on tidal energy | Findings about tidal energy published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain cargo bikes to a beginner.\nRESULT: Cargo bikes (overview) | A short summary of cargo bikes.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Explain honey bees to a beginner.\nRESULT: New study on honey bees | Findings about honey bees published this month.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What are the benefits of fire ants?\nRESULT: Fire ants (overview) | A short summary of fire ants.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: What is known about fire ants?\nRESULT: New study on fire ants | Findings about fire ants published this month.",
+   "yes",
+   "no"
+  ]
+ ]
+}
