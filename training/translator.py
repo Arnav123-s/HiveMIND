@@ -1,0 +1,133 @@
+"""A translator: a surgical weight edit of the 1.7B, trained on human translations, kept only if it beats the members
+that translate today on sentences it never saw.
+
+    OPUS_DIR=<folder of OPUS-100 parquet files> python training/translator.py prep
+                                             # -> training/data/translator.jsonl and the held-out set
+    python training/train_lora.py writer --data training/data/translator.jsonl --out adapters/translator --epochs 1
+    bash training/to_gguf.sh translator
+    python training/translator.py eval       # chrF on the held-out set: writer (1.7B + its edit), editor (4B), translator
+
+Why: in held-out set 2 the writer (1.7B + its edit) translated 'The train leaves at nine in the morning.' as
+'Der Zug fährt um 9 Uhr in der Morgens.' (a grammar error). A small specialist can sharpen a skill its model has; it
+cannot create one it lacks, so the edit goes on the 1.7B (which knows German, French and Spanish), not on a 135M cell.
+Data: Helsinki-NLP/opus-100 (open; Tatoeba's set needs a login). Training pairs come from its validation split, the
+held-out pairs from its test split, so no held-out sentence is ever trained on. Each pair is put in exactly the prompt
+the hive sends for work on his own text (team/specialists/writer.py messages()). Score: chrF (character n-gram
+F-score, beta 2, n 1-6) against the human translation, and seconds per sentence.
+Writes training/reports/translator.json.
+"""
+import json
+import os
+import random
+import re
+import sys
+import time
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+RAW = Path(os.environ.get("OPUS_DIR", ROOT / "training" / "data" / "opus100"))  # the downloaded parquet files
+DATA = ROOT / "training" / "data" / "translator.jsonl"
+HELD = ROOT / "training" / "evals" / "translator_heldout.jsonl"
+OUT = ROOT / "training" / "reports" / "translator.json"
+LANGS = {"de": ("de-en", "German"), "fr": ("en-fr", "French"), "es": ("en-es", "Spanish")}
+ORDERS = ["Translate into {L}: '{t}'", "Translate this into {L}: {t}", "How do I say '{t}' in {L}?",
+          "Put this sentence into {L}, please: '{t}'", "Translate to {L} and give me only the translation: '{t}'"]
+N_TRAIN, N_HELD = 300, 40
+
+
+def clean(en, xx):
+    """A usable pair: a real sentence of 4 to 16 words, similar lengths, no markup or URLs."""
+    if not (4 <= len(en.split()) <= 16) or not re.match(r"^[A-Z\"'¿¡]", en) or not re.search(r"[.!?]['\"]?$", en):
+        return False
+    if re.search(r"https?://|www\.|<|>|\{|\}|\[|\]|@|#", en + xx) or en.strip() == xx.strip():
+        return False
+    return 0.6 <= len(xx) / max(1, len(en)) <= 1.8
+
+
+def pairs(code, split):
+    import pandas as pd
+    cfg, _ = LANGS[code]
+    d = pd.read_parquet(RAW / f"{cfg}-{split}.parquet")
+    out = [(r["en"].strip(), r[code].strip()) for r in d["translation"]]
+    return list(dict.fromkeys(p for p in out if clean(*p)))
+
+
+def messages(order):
+    from team.specialists.writer import OWN_TEXT, messages as writer_messages
+    return writer_messages(order, f"Write the finished answer for Arnav: {order}", f"{OWN_TEXT}\n{order}", [])
+
+
+def prep():
+    rng = random.Random(7)
+    rows, held = [], []
+    for code, (_, name) in LANGS.items():
+        train = pairs(code, "validation")
+        test = [p for p in pairs(code, "test") if p[0] not in {t[0] for t in train}]
+        for en, xx in rng.sample(train, min(N_TRAIN, len(train))):
+            order = rng.choice(ORDERS).format(L=name, t=en)
+            rows.append({"messages": messages(order) + [{"role": "assistant", "content": xx}]})
+        for en, xx in rng.sample(test, min(N_HELD, len(test))):
+            held.append({"lang": code, "order": f"Translate into {name}: '{en}'", "en": en, "ref": xx})
+    rng.shuffle(rows)
+    DATA.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + "\n")
+    HELD.parent.mkdir(parents=True, exist_ok=True)
+    HELD.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in held) + "\n")
+    print(f"{len(rows)} training pairs -> {DATA}; {len(held)} held-out -> {HELD}")
+
+
+def chrf(hyp, ref, n=6, beta=2.0):
+    """Character n-gram F-score (as in sacreBLEU's chrF): precision and recall averaged over n = 1..6, spaces out."""
+    precs, recs = [], []
+    h0, r0 = re.sub(r"\s+", "", hyp), re.sub(r"\s+", "", ref)
+    for k in range(1, n + 1):
+        h = Counter(h0[i:i + k] for i in range(len(h0) - k + 1))
+        r = Counter(r0[i:i + k] for i in range(len(r0) - k + 1))
+        if not h or not r:
+            continue
+        m = sum((h & r).values())
+        precs.append(m / sum(h.values()))
+        recs.append(m / sum(r.values()))
+    if not precs:
+        return 0.0
+    p, r = sum(precs) / len(precs), sum(recs) / len(recs)
+    return 0.0 if p + r == 0 else 100 * (1 + beta ** 2) * p * r / (beta ** 2 * p + r)
+
+
+def answer(text):
+    """The translation itself: the first non-empty line, without a list number, quotes or a label."""
+    line = next((ln.strip() for ln in (text or "").splitlines() if ln.strip()), "")
+    line = re.sub(r"^(\d+[.)]\s*|[-*]\s*|\*\*?[^*]+\*\*?:\s*|[A-Za-z ]{2,20}:\s+)", "", line)
+    return line.strip(" \"'“”«»*")
+
+
+def evaluate(roles=("writer", "editor", "translator")):
+    from team import config, llm
+    held = [json.loads(ln) for ln in HELD.read_text().splitlines() if ln.strip()]
+    if "translator" in roles and not (ROOT / "adapters_gguf" / "translator.gguf").exists():
+        roles = tuple(r for r in roles if r != "translator")
+    config.GGUF_ROSTER.setdefault("translator", "fast+translator")
+    res = {}
+    for role in roles:
+        rows = []
+        for h in held:
+            t = time.time()
+            out = llm.chat(role, messages(h["order"]), max_new_tokens=120)
+            hyp = answer(out)
+            rows.append({"lang": h["lang"], "en": h["en"], "ref": h["ref"], "hyp": hyp, "seconds": round(time.time() - t, 2),
+                         "chrf": round(chrf(hyp, h["ref"]), 1)})
+        by = {c: round(sum(r["chrf"] for r in rows if r["lang"] == c) / max(1, sum(r["lang"] == c for r in rows)), 1)
+              for c in LANGS}
+        res[role] = {"model": config.GGUF_ROSTER.get(role), "chrf": round(sum(r["chrf"] for r in rows) / len(rows), 1),
+                     "by_language": by, "seconds_per_sentence": round(sum(r["seconds"] for r in rows) / len(rows), 2),
+                     "rows": rows}
+        print(f"{role:11s} ({res[role]['model']}): chrF {res[role]['chrf']} {by}, "
+              f"{res[role]['seconds_per_sentence']} s/sentence", flush=True)
+        llm.unload_all()
+    prev = json.loads(OUT.read_text()) if OUT.exists() else {}
+    OUT.write_text(json.dumps({**prev, **res}, indent=1, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    {"prep": prep, "eval": lambda: evaluate(tuple(sys.argv[2:]) or ("writer", "editor", "translator"))}[sys.argv[1]]()
