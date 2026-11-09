@@ -171,5 +171,11 @@
   "cell": 0.9533,
   "incumbent": 0.8533,
   "incumbent_name": "juror_brain = brain4b"
+ },
+ "de_grammar": {
+  "use": true,
+  "cell": 0.5667,
+  "incumbent": 0.5,
+  "incumbent_name": "code:ok"
  }
 }
