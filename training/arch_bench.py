@@ -54,7 +54,7 @@ def calls():
 
 
 def one(setting):
-    os.environ["AGENT_TEAM_KV"] = "f16" if setting == "kv16" else "q8"
+    os.environ["AGENT_TEAM_KV"] = "f16" if "kv16" in setting else "q8"
     os.environ["AGENT_TEAM_LOOKUP"] = "1" if "lu" in setting else "0"
     os.environ["AGENT_TEAM_REPACK"] = "0" if "norepack" in setting else "1"
     from team import llm
@@ -74,14 +74,15 @@ def one(setting):
 
 def main():
     got = {}
-    for s in ("base", "kv16", "base+lu", "norepack", "norepack+lu"):
+    for s in (sys.argv[1:] or ("base", "kv16", "base+lu", "norepack", "norepack+lu", "norepack+kv16")):
         p = subprocess.run([sys.executable, __file__, "one", s], capture_output=True, text=True, cwd=ROOT)
         line = [ln for ln in p.stdout.splitlines() if ln.startswith("{")]
         if not line:
             print(f"{s} failed:\n{p.stderr[-1500:]}")
             continue
         got[s] = json.loads(line[-1])
-    base = {(c["task"], c["role"]): c["output"] for c in got.get("base", {}).get("calls", [])}
+    ref = got.get("base") or (json.loads(OUT.read_text())["raw"].get("base", {}) if OUT.exists() else {})
+    base = {(c["task"], c["role"]): c["output"] for c in ref.get("calls", [])}  # a saved base run when not re-run
     summary = {}
     for s, r in got.items():
         same = [c["output"] == base.get((c["task"], c["role"])) for c in r["calls"]]
@@ -97,5 +98,12 @@ def main():
 if __name__ == "__main__":
     if sys.argv[1:2] == ["one"]:
         one(sys.argv[2])
+    elif sys.argv[1:2] == ["only"]:  # some settings, merged into the saved report: python arch_bench.py only base x y
+        sys.argv = sys.argv[1:]
+        prev = json.loads(OUT.read_text()) if OUT.exists() else {"summary": {}, "raw": {}}
+        main()
+        new = json.loads(OUT.read_text())
+        OUT.write_text(json.dumps({"summary": {**prev["summary"], **new["summary"]}, "raw": {**prev["raw"], **new["raw"]}},
+                                  indent=1))
     else:
         main()
