@@ -83,11 +83,11 @@ _S = {
                     ["text-to-speech", "translation", "object detection", "summarisation", "reranking"]),
     "arxiv": (["papers on {t}", "a recent preprint about {t}", "research on {t}"],
               ["the latest studies of {t}", "academic work on {t}", "a survey paper on {t}"],
-              ["speculative decoding", "LoRA fine-tuning", "mixture of experts", "quantisation", "protein folding", "RLHF"],
+              ["speculative decoding", "LoRA fine-tuning", "graph neural networks", "quantisation", "protein folding", "RLHF"],
               ["sparse attention", "model merging", "retrieval augmented generation", "knowledge distillation"]),
     "pypi": (["the latest version of {p}", "a Python package for {t}", "the {p} library release notes"],
              ["which pip package does {t}", "the newest release of the {p} module", "a Python library to {t}"],
-             ["requests", "numpy", "pandas", "httpx"], ["polars", "pydantic", "rich", "fastapi"]),
+             ["flask", "numpy", "pandas", "httpx"], ["polars", "pydantic", "rich", "fastapi"]),
     "wikipedia": (["the history of {w}", "who invented {w}", "an overview of {w}", "when {w} was founded"],
                   ["background on {w}", "the biography behind {w}", "facts about {w}"],
                   ["the transistor", "Lisbon", "the printing press", "Ada Lovelace", "the Roman Empire", "photosynthesis"],
@@ -300,7 +300,7 @@ def gen_family_topic(split, r):
 
 # ---------------------------------------------------------------- claim_support: does the quote support the claim
 _ENT_TR = [("Qwen2.5-0.5B", "license", "apache-2.0", "mit"), ("SmolLM2-135M", "parameters", "135M", "360M"),
-           ("Lisbon", "population", "545,000", "455,000"), ("requests", "latest version", "2.32.3", "2.31.0"),
+           ("Lisbon", "population", "545,000", "455,000"), ("flask", "latest version", "3.0.3", "3.0.2"),
            ("the hiking boots", "price", "$89", "$98"), ("Llama-3.2-1B", "gated", "yes", "no"),
            ("books.toscrape.com", "number of books", "1000", "100")]
 _ENT_TE = [("Phi-3-mini", "license", "mit", "apache-2.0"), ("Gemma-2-2B", "parameters", "2.6B", "2.0B"),
@@ -386,10 +386,10 @@ def gen_quote_pick(split, r):
 
 
 # ---------------------------------------------------------------- pick_element: which page element to act on
-_UI_TR = ["Next", "Previous", "Login", "Search", "Add to basket", "Checkout", "Poetry", "Travel", "Load more", "Contact",
+_UI_TR = ["Next", "Previous", "Login", "Search", "Add to basket", "Checkout", "Gardening", "Travel", "Load more", "Contact",
           "About us", "Pricing", "Download", "Settings", "Help", "Home", "Blog", "Careers", "Cart", "Reviews",
           "Show comments", "Sort by price", "Filters", "Apply", "Subscribe", "Docs", "FAQ", "Profile", "Orders",
-          "Gift cards", "Sale", "New arrivals", "Mystery", "History", "Science"]
+          "Gift cards", "Sale", "New arrivals", "Cookbooks", "History", "Science"]
 _UI_TE = ["Older posts", "Newer posts", "Sign in", "Find", "Buy now", "Pay", "Fiction", "Romance", "See all", "Support",
           "Our team", "Plans", "Export", "Preferences", "Guide", "Start", "News", "Jobs", "Basket", "Ratings",
           "Expand replies", "Cheapest first", "Refine", "Confirm", "Follow"]
@@ -472,18 +472,18 @@ _TK_FILL = {
     "p": (["15", "6.5", "40"], ["12.5", "18", "3"]), "x": (["3,150", "64.20", "1200"], ["4,520", "39.99", "760"]),
     "y": (["7", "12"], ["9", "16"]), "n": (["one", "two", "3"], ["two", "three", "4"]),
     "d1": (["3 March 2026", "1 January 2027"], ["14 July 2026", "2026-11-30"]), "d2": (["30 April 2026", "15 June 2027"], ["2 September 2026", "2027-02-01"]),
-    "u1": (["miles", "pounds", "degrees Fahrenheit"], ["kilometres", "kilograms", "degrees Celsius"]),
-    "u2": (["kilometres", "kilograms", "degrees Celsius"], ["miles", "pounds", "degrees Fahrenheit"]),
+    "u1": (["litres", "ounces", "square feet"], ["cups", "stones", "yards"]),
+    "u2": (["gallons", "grams", "square metres"], ["millilitres", "kilograms", "metres"]),
     "nums": (["12, 18, 25 and 31", "Mon 14, Tue 9, Wed 21"], ["40, 42, 39, 47", "Q1 300, Q2 280, Q3 350"]),
-    "model": (["Qwen/Qwen3-1.7B", "HuggingFaceTB/SmolLM2-360M"], ["google/gemma-2-2b", "microsoft/phi-2"]),
+    "model": (["EleutherAI/pythia-160m", "facebook/opt-125m"], ["google/gemma-2-2b", "microsoft/phi-2"]),
     "model2": (["mistralai/Mistral-7B-v0.1", "TinyLlama/TinyLlama-1.1B"], ["meta-llama/Llama-3.2-1B", "Qwen/Qwen2.5-0.5B"]),
-    "pkg": (["requests", "numpy", "httpx"], ["pandas", "pydantic", "polars"]),
+    "pkg": (["flask", "numpy", "httpx"], ["pandas", "pydantic", "polars"]),
     "thing": (["SQLite", "the Linux kernel", "Python"], ["PostgreSQL", "Git", "the Rust language"]),
     "concept": (["a transformer", "a linked list"], ["quantisation", "a Bloom filter"]),
     "city": (["Lisbon", "Nairobi"], ["Osaka", "Lima"]),
     "site": (["books.toscrape.com", "quotes.toscrape.com", "news.ycombinator.com"], ["the library catalogue site", "example.org", "the shop's website"]),
-    "q": (["poetry", "travel"], ["humor", "science"]),
-    "cat": (["Mystery", "Travel"], ["Poetry", "History"]),
+    "q": (["gardening", "travel"], ["humor", "science"]),
+    "cat": (["Classics", "Travel"], ["Horror", "History"]),
     "job": (["returns the n-th prime", "counts words in a file", "sorts a list of prices"],
             ["reverses each line of a file", "finds duplicate rows", "computes a moving average"]),
     "code": (["for i in range(10): print(i/0)", "def add(a, b): return a - b"], ["x = [1, 2]; print(x[2])", "print('total: ' + 5)"]),

@@ -1,0 +1,6 @@
+#!/bin/sh
+# hive: give the swarm a prompt and it does the job (team/cli.py). Uses the repo's .venv when there is one.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+PY="${HIVE_PYTHON:-$HERE/.venv/bin/python}"
+[ -x "$PY" ] || PY=python3
+PYTHONPATH="$HERE${PYTHONPATH:+:$PYTHONPATH}" exec "$PY" -m team.cli "$@"
