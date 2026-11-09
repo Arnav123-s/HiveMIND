@@ -545,6 +545,71 @@ Commands: `python training/cells_build.py` (after a clone: rebuild the base and 
 
 Built and wired into `serve`; not run as a full cycle in this session (CPU time went to the demo and evals). `python -m team dream --no-train` runs the replay, lessons and distil parts in minutes.
 
+## The hive grows itself: jobs nobody declared (`python -m team life`, `team/cells/spawn.py`)
+
+Every cell above was a job somebody named first. This loop has no such step: the hive reads its own work and finds
+the small jobs in it.
+
+```
+members work -> every call is logged -> NOTICE: which call sites reply with a few fixed values? -> a new job
+   -> PRACTICE: the member decides recombined older cases (near misses, mismatches)
+   -> COMPETE: candidate edits of the 135M base (then the 360M, only if the 135M cannot hold the job)
+   -> GATE: judged on the newest real decisions, label by label
+   -> WORK: the cell answers the member's call when it is sure; the member answers the rest (and is logged)
+   -> AUDIT: one sure call in ten also goes to the member; under 93% agreement the cell is RETIRED
+   -> more work is logged -> retrain on the newer decisions -> ...
+```
+
+- **Notice.** A call site is one member with one instruction. If at least 97% of its replies are a few fixed values
+  (PASS/FAIL, true/false, ...), it is a job. Text beside the decision is allowed only when it is an explanation; a
+  label that comes with text only the member can write (a list of fixes) is never answered by a cell.
+- **Gate.** A cell that has learned nothing agrees nine times in ten on a site that says yes nine times in ten. So a
+  label is only switched on if the newest real decisions hold at least 3 where the member chose another label, and
+  the cell is wrong at most half as often as answering blindly would be; then 95% agreement on what it answers, at
+  least a fifth of the calls answered, at least 10 answered. Too few decisions to judge is reported as that, not as a
+  failure of the cell, and no bigger base is tried.
+- **Practice is training only.** A cell is judged only on real decisions newer than anything it trained on.
+- `python -m team serve` runs a turn when the device is idle; `cells/LIFE.md` lists every call site, what the member
+  spends there, whether it is a job and who holds it. `AGENT_TEAM_SPAWN=0` turns every spawned cell off.
+
+**Measured (this is one job, on one day of work; the numbers are small and are stated as they are).** The hive did 5
+whole tasks and 35 research questions on live sources (`training/life_feed.py`, `training/life_drill.py`; none of
+them bench tasks). It noticed 2 decision sites among 15. One had enough decisions: the verifier's fact check
+("does this quote support this claim"), 162 distinct real decisions (72 from that work, 90 from the verifier checking
+the facts of the reading test below).
+
+| spawned cell | base | newest 25 real decisions (15 supported, 10 unsupported) | cost per call |
+|---|---|---|---|
+| `sp_verifier_75e567` | SmolLM2-135M + rank-2 edit | answers 13 (52%), agrees with the verifier on 13 of 13; 92% agreement over all 25 | 81 ms against 4.7 s |
+
+It answers only SUPPORTED; UNSUPPORTED always goes to the verifier (dev did not vouch for that label). The first
+round, with 72 decisions, left 11 to judge on: the cell agreed on 10 and stayed off for lack of evidence.
+
+What the logs also show: the small checks are a small share of the hive's time (the fact check about 5%). The
+largest share by far is the 4B reading sources. That is the next section.
+
+`python -m team org` prints the hive as an organisation: teams, their members, their cells, and who holds each job.
+
+## Small models on the 4B's biggest job: reading in chunks (`training/chunk_read.py`)
+
+The researcher (Qwen3-4B) reads up to 9000 characters of sources in one call. The same 26 real inputs from the logs,
+read again by the plain Qwen3-1.7B in chunks of 1800 characters, each chunk its own call with a one-job instruction;
+both sides through the hive's checks (quote word for word in the source, the verifier on claim against quote).
+
+| | Qwen3-4B, whole | Qwen3-1.7B, in chunks |
+|---|---|---|
+| facts that passed the checks | 38 | 52 |
+| of the 4B's 38, also found | | 19 |
+| inputs with every fact of the 4B found (of 21 where it had any) | | 7 |
+| inputs with none found where the 4B had some | | 5 |
+| inputs where only this side had a checked fact | | 5 |
+| model seconds | 2202 | 1205 |
+
+Not shown by this: whether a checked fact answers the question (the checks test the quote, not relevance), and the
+4B's time includes its summary and item list. The small reader is good on long pages and bad on short search results
+and lists. Neither replaces the other; they miss different things. Not yet built: small reader first, 4B only where
+it comes back empty.
+
 ## The demo
 
 `demo/TASK.md` is the one prompt; `demo/README.md` is generated from the run's own records; `demo/run/` holds
