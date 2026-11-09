@@ -1,0 +1,119 @@
+{
+ "skill": "claims_agree",
+ "incumbent": "juror_brain = brain4b",
+ "test": 0.8533,
+ "ms_per_call": 2082.1,
+ "n": 150,
+ "errors": [
+  [
+   "A: Pelqui's download count stands at 7,210.\nB: Miul-4B reports 6,920 as its download count.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Dantormi's context length stands at \u00a3351.\nB: Dantormi's membership fee stands at $400.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Listed weight for Torvator: 870\nB: Zusor 9 reports 1,990 as its weight.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Danfenpel Pro reports \u00a3403 as its membership fee.\nB: Listed membership fee for Zudandan 7: 4.11.0",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Renva-9B reports 7,360 as its opening year.\nB: Listed weight for Renva-9B: 415",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Renfen reports 6,870 as its capacity.\nB: Sordanqui 6 reports 3,830 as its capacity.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Pelka reports mit as its membership fee.\nB: Listed membership fee for Pelka: 3.9 stars",
+   "conflict",
+   "unrelated"
+  ],
+  [
+   "A: Tormilo reports 3,680 as its context length.\nB: Listed opening year for Tormilo: 6.18.4",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: download count (Sorrenpel 8): mit\nB: download count (Lolopel Pro): 8,430",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: context length (Danpelnai-6B): mit\nB: Listed context length for Milobex 2: gpl-3.0",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Torfen 6 reports $306 as its context length.\nB: capacity (Torfen 6): 644",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Bexva reports bsd-3-clause as its top speed.\nB: top speed (Ulvabex): 3.13.8",
+   "unrelated",
+   "agree"
+  ],
+  [
+   "A: Listed weight for Quimi: mit\nB: Lolobex-5B reports mit as its weight.",
+   "unrelated",
+   "agree"
+  ],
+  [
+   "A: Zutor's capacity stands at 4.5 stars.\nB: Ulpelmi reports 7.11.0 as its capacity.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Lobex Pro reports 1,300 as its capacity.\nB: top speed (Lobex Pro): 956",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Listed opening year for Danbexdan 8: 8.10.4\nB: Danbexdan 8 reports 2.17.5 as its capacity.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Bexrenren Pro's top speed stands at 7.15.6.\nB: Renmidan reports 506 as its top speed.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Pelqui-1B reports bsd-3-clause as its weight.\nB: Kapel Hotel reports bsd-3-clause as its weight.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Kator reports 3,300 as its download count.\nB: Listed download count for Lozusor: 8,620",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: context length (Dandan-5B): 1.8.4\nB: Kalofen-1B reports 1.9.2 as its context length.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: Mitor 6's membership fee stands at gpl-3.0.\nB: Mitor 6 reports cc-by-4.0 as its weight.",
+   "unrelated",
+   "conflict"
+  ],
+  [
+   "A: membership fee (Fendan Hotel): 1,730\nB: membership fee (Pelren 3): 9,140",
+   "unrelated",
+   "conflict"
+  ]
+ ]
+}
