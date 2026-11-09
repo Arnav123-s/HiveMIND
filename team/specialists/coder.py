@@ -80,6 +80,25 @@ def example_checks(task, code):
     return list(dict.fromkeys(out))
 
 
+DRAWS = re.compile(r"\b(?:plt|ax|axes|fig|sns)\.(?:bar|barh|plot|pie|scatter|hist|imshow|boxplot|show|subplots|figure)\s*\(|"
+                   r"\.plot(?:\.\w+)?\s*\(\s*(?:kind\s*=|x\s*=|\))", re.I)
+IMAGE = re.compile(r"\.(?:png|jpe?g|svg|pdf|gif|webp)$", re.I)
+SAVE_ORDER = re.compile(r"\b(?:save|write|export|store|put)\b[^.]{0,60}\b(?:to|as|in|into)\s+(?:an?\s+|the\s+)?(?:new\s+)?"
+                        r"(?:csv|json|tsv|text|txt|excel|xlsx|spreadsheet|markdown|html|png|image|pdf)\b", re.I)
+
+
+def unsaved_output(task, code, files):
+    """Checked in code: a program that draws a chart but saved no image, or a step that orders a file and got none.
+    (A held-out run: the coder drew the bar chart with plt.show(), which shows nothing here, saved no file, and the
+    jury passed it because the program printed which model was higher.)"""
+    if DRAWS.search(code or "") and not any(IMAGE.search(f) for f in files):
+        return ("It drew a chart but saved no image file: plt.show() shows nothing here. Save the chart with "
+                "plt.savefig('<name>.png') (the name the task gives, if it gives one) and print the file name.")
+    if SAVE_ORDER.search(task or "") and not files:
+        return "The task asks for a file and the program saved none. Save it in the current folder and print its name."
+    return None
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -107,7 +126,8 @@ def run(task, context, board, step_id, guard, workdir):
         missing = [f for f in want if not (workdir / f).exists()]
         new = [p for p in workdir.iterdir() if p.name not in before and p.name != name and not p.name.startswith(".")]
         silent = not res["stdout"].strip() and not new
-        if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing and not silent:
+        unsaved = unsaved_output(task, code, [p.name for p in new]) if not missing and not silent else None
+        if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing and not silent and not unsaved:
             checks = example_checks(task, code)
             if checks:  # his own examples, run against the program's functions
                 chk = run_python(code + "\n\n# checks from Arnav's examples\n" + "\n".join(checks), workdir,
@@ -132,6 +152,9 @@ def run(task, context, board, step_id, guard, workdir):
         if res["returncode"] == 0 and not missing and silent:
             # it defined a function and never called it: the jury then rejected "the program ran, but no files"
             err = "It ran but printed nothing and saved nothing. Call the code and print the result the task asks for."
+        elif res["returncode"] == 0 and unsaved:
+            board.log("coder", "unsaved", unsaved[:150])
+            err = unsaved + f"\nOutput was:\n{res['stdout'][-800:]}"
         elif res["returncode"] == 0 and missing:
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"
         else:

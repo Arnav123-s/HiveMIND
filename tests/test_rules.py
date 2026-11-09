@@ -818,3 +818,49 @@ def test_data_he_hands_over_is_computed_on_not_researched():
     fixed, notes = ensure_data_steps(goal, plan)
     assert fixed[0]["agent"] == "calculator" and "Jan 120" in fixed[0]["task"] and notes
     assert ensure_data_steps("Find the licence of Qwen/Qwen3-1.7B.", plan)[0][0]["agent"] == "researcher"
+
+
+def test_a_chart_drawn_with_show_is_sent_back_and_never_passes_unsaved(tmp_path, monkeypatch):
+    """Held-out run: the coder drew the bar chart with plt.show(), which shows nothing here; no file was saved and the
+    jury passed it because the program printed which model was higher."""
+    from team.board import Board
+    from team.specialists import coder, verifier
+    from team.tools.sandbox import program_env
+    assert program_env()["MPLBACKEND"] == "Agg"  # on his desktop, plt.show() would open a window and wait
+    shown = ("import matplotlib.pyplot as plt\nplt.bar(['a', 'b'], [1, 2])\nplt.show()\nprint('b is higher')\n")
+    saved = ("import matplotlib.pyplot as plt\nplt.bar(['a', 'b'], [1, 2])\nplt.savefig('chart.png')\n"
+             "print('saved chart.png; b is higher')\n")
+    progs, asked = iter([shown, saved]), []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"])
+                        or f"```python\n{next(progs)}```")
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    task = "Plot the download counts of a and b as a bar chart"
+    out = coder.run(task, "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w")
+    assert out["files"] == ["chart.png"] and "plt.savefig" in asked[1] and "saved no image" in asked[1]
+    # and the verifier fails a drawn chart that was never saved, before any juror is asked
+    (tmp_path / "w" / "s1.py").write_text(shown)
+    v, why = verifier.verify({"agent": "coder", "id": "s1", "task": task},
+                             {"returncode": 0, "summary": "b is higher", "files": [],
+                              "code_path": str(tmp_path / "w" / "s1.py")}, Board(tmp_path, echo=False), tmp_path / "w")
+    assert v == "FAIL" and "saved no image" in why
+    assert coder.unsaved_output("Save the three cheapest books to a CSV", "print(1)", []) is not None
+    assert coder.unsaved_output("Compute the mean of data.csv", "print(1)", []) is None
+    assert coder.unsaved_output("Find the shortest path in this graph", "import networkx as nx\nprint(3)", []) is None
+
+
+def test_a_name_alone_is_not_an_instruction_of_its_own(monkeypatch):
+    """'Plot the counts of A and B as a bar chart' was cut into 'Plot the counts of A' and 'B'; the critic then had
+    nothing to check 'B' against."""
+    from team.cells import use
+    from team.specialists import coordinator
+    goal = ("Plot the Hugging Face download counts of org/model-a and other/model-b as a bar chart and tell me which "
+            "is higher.")
+    monkeypatch.setattr(use, "ask", lambda s, t, b=None: "Plot the Hugging Face download counts of org/model-a\n"
+                                                         "other/model-b\ntell me which is higher")
+    assert coordinator._split(goal) == ["Plot the Hugging Face download counts of org/model-a and other/model-b",
+                                        "tell me which is higher"]

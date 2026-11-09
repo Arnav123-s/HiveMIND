@@ -28,6 +28,8 @@ def program_env():
     """The environment model-written code runs with: only PASS names, and never one that looks like a secret."""
     env = {k: v for k, v in os.environ.items() if PASS.match(k) and not SECRET.search(k)}
     env["PYTHONUNBUFFERED"] = "1"
+    # charts are drawn to files, never to a window: on his desktop plt.show() would open one and wait until the timeout
+    env.setdefault("MPLBACKEND", "Agg")
     return env
 
 
