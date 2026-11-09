@@ -1003,3 +1003,27 @@ def test_a_research_question_never_takes_a_shortcut_to_another_specialist(tmp_pa
     assert coordinator.triage("Research how lithium-ion batteries degrade over time and what slows it.", b) is None
     assert [s["agent"] for s in coordinator.triage("Write a Python function that reverses a string.", b)] == \
         ["coder", "writer"]
+
+
+def test_layout_orders_are_the_report_s_and_verified_facts_carry_a_step(tmp_path, monkeypatch):
+    """A held-out explanation: every search title was dropped for 'not giving the two-sentence explanation', and the
+    step failed although its facts were checked against Wikipedia."""
+    from team.board import Board
+    from team.specialists import verifier
+    assert verifier.without_layout("Find what Arnav asked: In two sentences, explain what a hash table is.") == \
+        "Find what Arnav asked: explain what a hash table is."
+    assert verifier.without_layout("Summarise this in one sentence: the bridge") == "Summarise this: the bridge"
+    page = "In computer science, a hash table is a data structure that maps keys to values."
+    monkeypatch.setattr(verifier, "check_fact", lambda c, q: (True, "stub"))
+    monkeypatch.setattr(verifier.llm, "chat_json", lambda *a, **k: ({"meets": False, "why": "not two sentences"}, ""))
+    monkeypatch.setattr(verifier, "judge", lambda check, work, ev: ("PASS", "stub jury"))
+    from team.cells import learn
+    monkeypatch.setattr(learn, "decide", lambda *a, **k: None)
+    monkeypatch.setattr(learn, "record", lambda *a, **k: None)
+    url = "https://en.wikipedia.org/wiki/Hash_table"
+    v, why = verifier.verify(
+        {"agent": "researcher", "id": "s1", "task": "In two sentences, explain what a hash table is."},
+        {"corpus": {url: page}, "items": ["hash table"], "summary": "A hash table maps keys to values.",
+         "facts": [{"claim": "A hash table maps keys to values", "quote": "a hash table is a data structure that maps keys "
+                    "to values", "url": url}]}, Board(tmp_path, echo=False), tmp_path)
+    assert v == "PASS"
