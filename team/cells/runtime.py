@@ -61,8 +61,10 @@ def _base(base):
         except Exception:  # noqa: BLE001
             pass
         threads = int(__import__("os").environ.get("AGENT_TEAM_THREADS", 4))
-        _state["llm"][base] = Llama(model_path=str(GGUF / f"{base}.gguf"), n_ctx=1024, n_threads=threads, n_batch=512,
-                                    use_mmap=True, verbose=False)
+        # n_threads_batch too: llama-cpp-python defaults it to every core, and a cell call is mostly prompt reading,
+        # so pool workers told to use one thread each fought over all the cores (8-40 s per call instead of 0.06 s)
+        _state["llm"][base] = Llama(model_path=str(GGUF / f"{base}.gguf"), n_ctx=1024, n_threads=threads,
+                                    n_threads_batch=threads, n_batch=512, use_mmap=True, verbose=False)
         _state["tok"][base] = AutoTokenizer.from_pretrained(BASES[base])
         _state["active"][base] = None
     return _state["llm"][base], _state["tok"][base]
