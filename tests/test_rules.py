@@ -864,3 +864,20 @@ def test_a_name_alone_is_not_an_instruction_of_its_own(monkeypatch):
                                                          "other/model-b\ntell me which is higher")
     assert coordinator._split(goal) == ["Plot the Hugging Face download counts of org/model-a and other/model-b",
                                         "tell me which is higher"]
+
+
+def test_the_browser_sees_the_rare_goal_word_before_the_menu():
+    """On the right book page the UPC line was cut: 'Books' and 'Philosophy' in the menu and the long description used
+    up the budget first, and the browser gave up on the page that held the answer."""
+    from team.tools.browser import focus_text
+    menu = "\n".join(["Books to Scrape We love being scraped!", "Home  Books  Philosophy Sophie's World"]
+                     + [f"Books category {i}" for i in range(40)] + ["Philosophy"] * 3)
+    desc = "Product Description\n" + "\n".join(["A book of philosophy for every reader, " * 6] * 4)
+    table = ("Product Information\nUPC\n6be3beb0793a53e7\nProduct Type\nBooks\nPrice (excl. tax)\n£15.94\n"
+             "Availability\nIn stock (18 available)\nNumber of reviews\n0")  # one cell per line, as read
+    page = menu + "\n" + desc + "\n" + table
+    seen = focus_text(page, "On books.toscrape.com, go to the Philosophy category, open the first book there and "
+                            "tell me its UPC.")
+    assert "6be3beb0793a53e7" in seen and len(seen) < 1800
+    from team.tools.browser import goal_words
+    assert "upc" in goal_words("tell me its UPC.") and "books.toscrape.com" in goal_words("on books.toscrape.com")
