@@ -259,8 +259,12 @@ HELDOUT = [
 # ---- held-out set 2: written on 2026-11-09 after the fixes that the first held-out set informed, before any of them
 # ran, and run once on the final frozen code. Same kinds, fresh specifics; checked in code against the live answer.
 def check_h2_licence(run, report):
+    # the licence by its name: "Apache License 2.0" is the apache-2.0 Hugging Face lists (corrected after the run, which
+    # wanted the id form "apache-2.0" and failed a right answer; the as-run score is kept in heldout2_asrun.md)
     lic = str((_hf("google/flan-t5-small").get("cardData") or {}).get("license", "")).lower()
-    return bool(lic) and lic in _body(report).lower(), f"licence {lic} in the answer"
+    words = re.findall(r"[a-z]+|\d+(?:\.\d+)?", lic)
+    body = _body(report).lower()
+    return bool(words) and all(w in body for w in words), f"licence {lic} ({' + '.join(words)}) in the answer"
 
 
 def _hf(model):
