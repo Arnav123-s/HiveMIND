@@ -1090,3 +1090,35 @@ def test_a_retry_previews_his_pages_not_the_missing_page_in_its_error(tmp_path, 
         == "not_found"
     assert coder.error_kind("requests.exceptions.HTTPError: 503 Server Error") == "network"
     assert "urljoin(the URL of the page the link was found on" in coder.prompts.FIX_HINTS["not_found"]
+
+
+def test_a_missing_element_is_looked_up_on_the_page_itself(tmp_path, monkeypatch):
+    """Held-out, twice: the preview showed <small class="author">; the coder looked for a span both times, and the
+    same-error check compared the hint (the same every time), not the error."""
+    from team.board import Board
+    from team.specialists import coder
+    from team.tools import web
+    html = ('<div class="quote"><span class="text">"Be."</span><span>by <small class="author">Ann</small></span></div>'
+            '<div class="quote"><span class="text">"Go."</span><span>by <small class="author">Bo</small></span></div>')
+    monkeypatch.setattr(web, "get", lambda url, *a, **k: html)
+    err = ('Traceback (most recent call last):\n  File "s1.py", line 9, in <module>\n'
+           "    author = quote.find('span', class_='author').get_text(strip=True)\n"
+           "AttributeError: 'NoneType' object has no attribute 'get_text'")
+    fact = coder.page_fact(err, ["https://quotes.toscrape.com/"])
+    assert "no <span class=\"author\">" in fact and "is on <small>" in fact and "find('small', class_='author')" in fact
+    assert coder.page_fact(err.replace("'span'", "'small'"), ["https://quotes.toscrape.com/"]) is None
+    assert "is on <small>" in coder.page_fact("x = soup.select_one('span.author').text", ["https://q/"])
+    # in the loop: the coder is told, and a different error after it is not taken for 'the same error'
+    progs = iter(["import sys\nprint(None.get_text())  # quote.find('span', class_='author').get_text()\n",
+                  "print({}['a'])\n", "print('saved 2 quotes')\n"])
+    asked = []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"])
+                        or f"```python\n{next(progs)}```")
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    out = coder.run("Save every quote on quotes.toscrape.com", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w")
+    assert "Page check:" in asked[1] and "is on <small>" in asked[1] and out["summary"] == "saved 2 quotes"
