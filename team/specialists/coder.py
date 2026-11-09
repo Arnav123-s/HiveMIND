@@ -100,6 +100,37 @@ def unsaved_output(task, code, files):
     return None
 
 
+FIND = re.compile(r"""\.find(?:_all)?\(\s*['"](\w+)['"]\s*,\s*(?:class_\s*=\s*|\{\s*['"]class['"]\s*:\s*)['"]([\w-]+)['"]|"""
+                  r"""\.select(?:_one)?\(\s*['"](\w+)\.([\w-]+)['"]""")
+
+
+def web_urls(task, code):
+    from ..tools import web
+    return list(dict.fromkeys(web.urls_in(task) + web.urls_in(code or "")))[:4]
+
+
+def page_fact(err, urls):
+    """Checked on the page itself: the program asked for <tag class="x"> and got nothing; where is class x really?
+    (Held-out, twice: the preview showed <small class="author">, the 7B coder looked for a span both times.)"""
+    from bs4 import BeautifulSoup
+    from ..tools import web
+    for m in FIND.finditer(err or ""):
+        tag, cls = (m.group(1), m.group(2)) if m.group(1) else (m.group(3), m.group(4))
+        for url in urls:
+            try:
+                soup = BeautifulSoup(web.get(url), "lxml")
+            except Exception:  # noqa: BLE001 - a page that cannot be read gives no fact
+                continue
+            if soup.select(f"{tag}.{cls}"):
+                continue
+            hits = soup.select(f".{cls}")
+            if hits:
+                tags = sorted({h.name for h in hits})
+                return (f"on {url} there is no <{tag} class=\"{cls}\">; class \"{cls}\" is on <{'>, <'.join(tags)}> "
+                        f"({len(hits)} of them), e.g. {str(hits[0])[:160]}. Use find('{tags[0]}', class_='{cls}').")
+    return None
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -112,7 +143,8 @@ def run(task, context, board, step_id, guard, workdir):
     before = {p.name for p in workdir.iterdir()}
     # the pages his task names, never the URLs in a previous attempt's error: a retry carrying "404 ... for url:
     # .../page-2.html" previewed only that missing page and lost the Mystery listing the first preview had found
-    messages = task_messages(task, context, preview(task.split("\n(Previous attempt was rejected:")[0], workdir))
+    own = task.split("\n(Previous attempt was rejected:")[0]
+    messages = task_messages(task, context, preview(own, workdir))
     want = expected_outputs(task, before)
     last, last_error = None, None
     name = f"{re.sub(r'[^A-Za-z0-9_]', '_', step_id)}.py"
@@ -169,11 +201,14 @@ def run(task, context, board, step_id, guard, workdir):
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"
         else:
             err = (res["stderr"] or res["stdout"])[-1800:]
+        key = last_line(err)  # the error itself: compared before any hint is added (the hint is the same every time)
         kind = error_kind(err)
         if kind:  # the error reader names the kind of failure; the coder is told what that kind usually needs
             board.log("coder", "error-kind", f"attempt {attempt}: {kind}")
-            err = f"{err}\nHint ({kind}): {prompts.FIX_HINTS[kind]}"
-        key = last_line(err)
+            fact = page_fact(err, web_urls(own, code)) if kind == "data" else None
+            if fact:
+                board.log("coder", "page-check", fact[:200])
+            err = f"{err}\nHint ({kind}): {prompts.FIX_HINTS[kind]}" + (f"\nPage check: {fact}" if fact else "")
         if key and key == last_error:
             # its fix changed nothing: the same error 12 times (a host it could not reach) cost 28 minutes of the 7B
             # coder. The hive loop gets the error and decides: retry with the reason, another specialist, or stop.
