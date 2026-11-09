@@ -77,3 +77,24 @@ requirement in a way stated here. **Not done** = with the reason.
 | requirement | status | what / evidence |
 |---|---|---|
 | Use HiveMIND, keep it updated | Done | pushed after every milestone; PR #1 merged; cells in PR #2 |
+
+## Round 3: make it work for every kind of task (branch `make-it-work`, PR #5)
+
+| requirement | status | what / evidence |
+|---|---|---|
+| Fix every problem found | Done for every one found | each dev bench failure read and fixed generally (training/reports/hive_bench/new_notes.md, new2_notes.md); 90 tests |
+| Every task kind passes, as a hive, minimal compute | Partial | dev bench 7/16 (baseline) -> 9/16 -> 12/16 (new2, current checks); the held-out set runs once at the end (pending) |
+| Do NOT benchmax | Done, with leaks found and removed | training/contamination_check.py over all training data, cell generators and prompts: a calculator prompt example was a dev task (removed); cell generators named bench model ids, units, a category, a package and a version (removed, cells retrained); two held-out tasks were contaminated by older training data and were replaced before the held-out set ever ran. Older member training data still names some dev tasks' entities: those dev passes are marked as not evidence of generalisation |
+| Teach it / alter weights so it uses the browser more naturally | Done | new browser weight edit from 52 recorded expert steps; cases 0.714 -> 0.786, skills 0.333 -> 0.5 (training/reports/browser/) |
+| Smaller specialists for smaller tasks | Done | 25 cells; new this round: triage (task_kind), three research cells (gap finder 0.933 vs the 4B's 0.840; cross-check 0.953 vs 0.853), cells grown from the hive's own decisions (learned_claim, learned_item, learned_line) |
+| Many swarms at once under 10 GB | Built; measurement pending | `--workers N` (one process, shared models); training/workers_bench.py queued |
+| Give it a task and leave it, with a good SDK/interface | Done | team/sdk.py, team/api.py (OpenAI/Anthropic-compatible, jobs, SSE), checked with the official SDKs against a stand-in hive |
+| One prompt, then talk to it normally; it does the rest | Done | `./hive`: team/converse.py routes each message (talk / work / project / stop / remember); the API's chat endpoints route the same way |
+| A hive of many specialists working as one, not one big model | Done as far as measured | every judgement split into cells where they win; research hive (sub-questions, relevance, gaps, cross-checks, experiments) and coding hive (error reader, his examples as tests, previews); the big members keep what needs generation |
+| Grow new specialists from new problems and new data | Done (mechanism); first grown cell pending | team/cells/learn.py + `python -m team grow`: member decisions logged, a cell trained on them with the member as teacher, answers only when as sure as dev showed; runs by itself when idle |
+| Research that experiments and does math, not only reading | Done (built and tested); real-run evaluation pending | experiment/math sub-questions go to the coder; RESULT lines are claims backed by the program's output; arXiv papers read in full |
+| Hard multi-day coding / long tasks | Done (built and tested) | team/project.py: milestones, a persistent workspace, resume after restart, the service works on open projects when idle |
+| Always on, reachable, never damages the device | Done | `python -m team install` (systemd / launchd / logon task), team/health.py (low priority, a free core, idle unload, battery/heat/busy/RAM/disk checks, never deletes to make room), one instance only; checked live (health, lock, nice 10) |
+| Unfiltered | Not done on purpose | the models' own safety training is not removed; the hive adds no refusals beyond his rules, and his explicit order is the approval |
+| Better architecture: less RAM, faster | Partial | found: llama.cpp keeps a repacked second copy of the weights (the 4B 6.1 -> 3.6 GB without it); 8-bit KV already on; speed and answer equality measured by training/arch_bench.py (pending). The cell pool's first measurement failed (75x slower: a thread setting), fixed, off until re-measured |
+| Perfect on every task | Not met | measured pass rates are above; no system does every task perfectly |
