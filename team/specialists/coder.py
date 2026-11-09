@@ -131,6 +131,36 @@ def page_fact(err, urls):
     return None
 
 
+NOT_FOUND_URL = re.compile(r"404 Client Error: Not Found for url: (\S+)|HTTP Error 404[^\n]*?(https?://\S+)")
+
+
+def missing_page_fact(err, urls, code):
+    """Checked on the site itself: the program asked for a page that does not exist; joined to the pages the program
+    reads, where does that link really lead? (A held-out run and a dev run: the listing's next link 'page-2.html' was
+    joined to the site's home page, and the 404 hint, given twice, did not change the 7B coder's program.)"""
+    from urllib.parse import urljoin
+
+    from ..tools import web
+    m = NOT_FOUND_URL.search(err or "")
+    if not m:
+        return None
+    bad = (m.group(1) or m.group(2)).rstrip(".,;)'\"")
+    seg = bad.rstrip("/").rsplit("/", 1)[-1]
+    paths = re.findall(r"""["']((?:[\w.-]+/)*[\w.-]+\.html?)["']""", code or "")
+    bases = list(dict.fromkeys(urls + [urljoin(u, p) for u in urls for p in paths]))
+    for b in bases:
+        cand = urljoin(b, seg)
+        if cand == bad or cand.rstrip("/") == b.rstrip("/"):
+            continue
+        try:
+            web.get(cand)
+        except Exception:  # noqa: BLE001 - not this one
+            continue
+        return (f"{bad} does not exist. The link '{seg}' belongs to the page {b}: urljoin('{b}', '{seg}') = {cand}, "
+                f"which exists. Join each link to the URL of the page it was found on.")
+    return None
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -205,7 +235,8 @@ def run(task, context, board, step_id, guard, workdir):
         kind = error_kind(err)
         if kind:  # the error reader names the kind of failure; the coder is told what that kind usually needs
             board.log("coder", "error-kind", f"attempt {attempt}: {kind}")
-            fact = page_fact(err, web_urls(own, code)) if kind == "data" else None
+            fact = (page_fact(err, web_urls(own, code)) if kind == "data"
+                    else missing_page_fact(err, web_urls(own, code), code) if kind == "not_found" else None)
             if fact:
                 board.log("coder", "page-check", fact[:200])
             err = f"{err}\nHint ({kind}): {prompts.FIX_HINTS[kind]}" + (f"\nPage check: {fact}" if fact else "")
