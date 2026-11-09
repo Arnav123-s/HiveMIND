@@ -21,7 +21,7 @@ import sys
 import time
 
 SHOW = {"assign", "triage", "plan", "pass", "fail", "give-up", "reroute", "retry", "decompose", "gap", "conflict", "drop",
-        "format", "escalate", "kept", "nothing-verified", "same-error", "error-kind", "file-check", "examples", "finished", "round",
+        "format", "escalate", "kept", "nothing-verified", "same-error", "error-kind", "file-check", "form", "echo", "weekday", "examples", "finished", "round",
         "approval", "refused", "stopped"}
 SERVICE = os.environ.get("HIVE_URL", "http://127.0.0.1:8766")
 EXIT = {"exit", "quit", "/exit", "/quit", ":q"}

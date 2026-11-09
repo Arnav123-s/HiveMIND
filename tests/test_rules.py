@@ -343,11 +343,12 @@ def test_a_writer_only_task_uses_arnavs_words_as_the_source(tmp_path, monkeypatc
     from team.specialists import writer
     b = Board(tmp_path, echo=False)
     seen = []
-    monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **k: seen.append(msgs[-1]["content"]) or "La réunion est déplacée.")
+    monkeypatch.setattr(writer.llm, "chat", lambda role, msgs, **k: seen.append(msgs) or "La réunion est déplacée.")
     monkeypatch.setattr(writer.llm, "chat_json", lambda *a, **k: ({"unsupported": [], "unordered": [], "checklist": []}, ""))
     monkeypatch.setattr(writer.memory, "profile", lambda: "")
     writer.run("Translate into French: 'The meeting has been moved.'", "Translate it", b, [])
-    assert "Arnav's own words are the source" in seen[0] and "The meeting has been moved." in seen[0]
+    # his text is the material, and the writer is told to change it (not to report it "from the verified results")
+    assert seen[0][0]["content"] == writer.prompts.WRITER_TEXT and "The meeting has been moved." in seen[0][-1]["content"]
 
 
 def test_triage_takes_a_shortcut_only_when_the_cell_is_sure(tmp_path, monkeypatch):
@@ -578,7 +579,9 @@ def test_the_report_keeps_his_instructions_and_the_calendar_s_weekdays():
     assert extra == ["Provide a table with dates, days of the week, and notes"]
     text, wrong = check_weekdays("45 days.\n| Date | Day |\n|---|---|\n| 15 January 2026 | Monday |\n"
                                  "4 July 1976 was a Sunday. 2026-03-01 is a Sunday.")
-    assert wrong == ["| 15 January 2026 | Monday |"] and "| Date |" not in text and "4 July 1976 was a Sunday" in text
+    # the calendar is exact: the wrong day is corrected, not struck (striking left a held-out answer as the bare "6")
+    assert wrong == ["| 15 January 2026 | Monday |"] and "| 15 January 2026 | Thursday |" in text
+    assert "4 July 1976 was a Sunday" in text and "| Date | Day |" in text
 
 
 def test_the_layout_comes_from_his_order_not_from_the_text_he_hands_over():
@@ -911,3 +914,45 @@ def test_a_value_never_found_is_not_covered_with_a_placeholder(tmp_path, monkeyp
     assert verifier.describe_file(p).startswith("BROKEN") and "'Author'" in verifier.describe_file(p)
     p.write_text("Text,Author\nx,Ann\ny,Unknown\n")  # one author not known is data, not a cover-up
     assert not verifier.describe_file(p).startswith("BROKEN")
+
+
+def test_the_answer_comes_in_the_form_he_asked_for(tmp_path, monkeypatch):
+    """Held-out runs: 'One decimal place' printed 42.16 (the prompt's example said round(answer, 2)); 'what day of the
+    week' printed weekday() = 6 and the writer turned it into 'Saturday'."""
+    from team.board import Board
+    from team.specialists import calculator
+    from team import prompts
+    assert "round(answer, 2)" not in prompts.CALCULATOR and "strftime" in prompts.CALCULATOR
+    progs, asked = iter(["from datetime import date\nprint('Answer:', date(1976, 7, 4).weekday())",
+                         "from datetime import date\nprint('Answer:', date(1976, 7, 4).strftime('%A'))"]), []
+    monkeypatch.setattr(calculator.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"])
+                        or f"```python\n{next(progs)}\n```")
+    out = calculator.run("What day of the week was 4 July 1976?", "", Board(tmp_path, echo=False), "s1", tmp_path)
+    assert out["summary"] == "Answer: Sunday" and "strftime" in asked[1] and "Output was: Answer: 6" in asked[1]
+    assert calculator.form_problems("How many km is 26.2 miles? One decimal place.", "26.2 miles = 42.16 km")
+    assert not calculator.form_problems("How many km is 26.2 miles? One decimal place.", "Answer: 42.2")
+    assert not calculator.form_problems("What is 17% of 300?", "Answer: 51.0")
+
+
+def test_a_report_that_repeats_his_text_has_not_done_what_he_ordered_to_it():
+    """Held-out run: 'Translate into Spanish: ...' came back as the English sentence; the critic ticked it done."""
+    from team.specialists.writer import echoed, mark_echo
+    from team.board import Board
+    goal = "Translate into Spanish: 'The library closes at eight tonight.'"
+    assert echoed(goal, "The library closes at eight tonight.")
+    assert not echoed(goal, "La biblioteca cierra a las ocho esta noche.")
+    fix = "Correct the grammar of this sentence: 'She don't like the apples that was on the table.'"
+    assert echoed(fix, "She don't like the apples that was on the table.")
+    assert not echoed(fix, "She doesn't like the apples that were on the table.")
+    assert not echoed("What is a hash table?", "A hash table maps keys to values.")
+    import tempfile
+    from pathlib import Path
+    b = Board(Path(tempfile.mkdtemp()), echo=False)
+    ticks = mark_echo(goal, "The library closes at eight tonight.", [{"instruction": goal, "done": True}], b)
+    assert ticks[0]["done"] is False
+    # and the writer working on his own text is told to change it, not to report it "from the verified results"
+    from team.specialists.writer import OWN_TEXT, messages
+    from team import prompts
+    m = messages(goal, "Write the finished answer", f"{OWN_TEXT}\n{goal}", [])
+    assert m[0]["content"] == prompts.WRITER_TEXT and "VERIFIED RESULTS" not in m[1]["content"]
+    assert messages("What is X?", "s", "## s1 ...", [])[0]["content"] == prompts.WRITER
