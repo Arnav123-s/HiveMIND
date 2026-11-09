@@ -44,7 +44,7 @@
  },
  "quote_pick": {
   "use": true,
-  "cell": 0.9733,
+  "cell": 1.0,
   "incumbent": 0.9333,
   "incumbent_name": "researcher = brain4b"
  },
