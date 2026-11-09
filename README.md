@@ -137,8 +137,11 @@ reviewer reads it; the jury sees the program, its output and every file it saved
 a batch of cell questions (every search result, every fact, every pair of claims, every line of a page) is answered in
 parallel. Its first measurement was a failure: 160 questions took 9.8 s with no pool and 728 s with 2 workers, because
 llama-cpp-python reads prompts on every core unless told otherwise, so the workers fought over the cores (fixed), and
-workers of a killed run kept computing (they now exit with their parent). It stays off (`AGENT_TEAM_CELL_WORKERS=1`)
-until it measures faster (`training/cells_pool_bench.py`).
+workers of a killed run kept computing (they now exit with their parent). Measured again after the fix
+(`training/cells_pool_bench.py`, training/reports/cells/pool.json): 160 questions in 9.5 s with no pool, 7.9 s with 2
+workers (+1.0 GB), 7.7 s with 4 (+2.8 GB). Cells answer in about 0.1 s and a task asks 3 to 19 of them, so 2 workers
+save about a second a task for a gigabyte of RAM: it stays off (`AGENT_TEAM_CELL_WORKERS=1`); set 2 on a machine with
+RAM to spare and many cell questions per task.
 
 **The hive grows new cells from its own work** (`team/cells/learn.py`, `python -m team grow`): the verifier's claim
 checks, the juror's item checks and the condenser's line choices are logged with their inputs

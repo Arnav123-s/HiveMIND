@@ -18,8 +18,8 @@ STATS = {"batches": 0, "questions": 0}
 
 
 def workers():
-    # default 1 (no pool) until training/cells_pool_bench.py shows the pool is faster: its first measurement was 75x
-    # slower, because each worker read prompts on every core (fixed: n_threads_batch) and killed runs left workers
+    # default 1 (no pool), by measurement (training/reports/cells/pool.json): after the thread fix 2 workers answer
+    # 160 questions in 7.9 s against 9.5 s, for +1.0 GB; a task asks a few cells, so a second a task is not worth a GB
     return max(1, int(os.environ.get("AGENT_TEAM_CELL_WORKERS", 1)))
 
 
