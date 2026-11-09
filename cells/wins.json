@@ -177,5 +177,35 @@
   "cell": 0.5667,
   "incumbent": 0.5,
   "incumbent_name": "code:ok"
+ },
+ "sp_verifier_75e567": {
+  "use": true,
+  "learned": true,
+  "spawned": true,
+  "thresholds": {
+   "SUPPORTED": 0.5,
+   "UNSUPPORTED": 1.01
+  },
+  "answered": 13,
+  "agree_when_sure": 1.0,
+  "covers": 0.52,
+  "cell": 0.92,
+  "members_labels_in_test": {
+   "SUPPORTED": 15,
+   "UNSUPPORTED": 10
+  },
+  "thresholds_from_dev": {
+   "SUPPORTED": 0.5,
+   "UNSUPPORTED": 1.01
+  },
+  "test_rows": 25,
+  "cell_ms": 80.7,
+  "rows": 162,
+  "practice_rows": 150,
+  "base": "smol135",
+  "variant": "sp162p150_smol135_r2",
+  "incumbent_name": "verifier (the teacher)",
+  "incumbent": null,
+  "member_seconds_per_call": 4.69
  }
 }
