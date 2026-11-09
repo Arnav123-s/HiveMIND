@@ -10,9 +10,16 @@ def messages(goal, task, results_text, sources):
     prof = memory.profile()
     if prof:
         task = f"{task}\nArnav's preferences:\n{prof}"
+    if results_text.startswith(OWN_TEXT):  # his text is the material: do what he says to it
+        return [{"role": "system", "content": prompts.WRITER_TEXT},
+                {"role": "user", "content": f"ARNAV'S ORDER AND HIS TEXT: {goal}\nYOUR STEP: {task}"
+                                            + results_text[len(OWN_TEXT):].replace(goal, "", 1).rstrip()}]
     return [{"role": "system", "content": prompts.WRITER},
             {"role": "user", "content": f"ARNAV'S TASK: {goal}\nYOUR STEP: {task}\n\nVERIFIED RESULTS:\n{results_text}"
                                         f"\n\nSOURCES:\n{src}"}]
+
+
+OWN_TEXT = "(No research was needed: Arnav's own words are the source for this task.)"
 
 
 NUM = re.compile(r"(?<![\w/.-])\d+(?:[.,]\d+)*(?:\s*/\s*\d+)?")
@@ -189,34 +196,28 @@ def _date(m):
 
 
 def check_weekdays(text):
-    """A line that puts a weekday with a date must have the calendar's weekday (a report called 15 January 2026 a
-    Monday; it was a Thursday). Pairs in the order they appear when a line has as many dates as weekdays. Returns
-    (text without the wrong lines, the wrong lines)."""
-    ok, wrong = [], []
+    """A line that puts a weekday with a date gets the calendar's weekday (a report called 15 January 2026 a Monday; it
+    was a Thursday). Pairs in the order they appear when a line has as many dates as weekdays. The calendar is exact,
+    so a wrong day is corrected, not struck: striking it left a held-out answer as the bare '6'. Returns (text with
+    the days corrected, the lines as they were)."""
+    out, wrong = [], []
     for line in text.split("\n"):
         dates = [d for d in (_date(m) for m in DATE_RX.finditer(line)) if d]
-        days = [m.group(1).lower() for m in DAY_RX.finditer(line)]
+        days = list(DAY_RX.finditer(line))
         if line.startswith("##") or not dates or not days or len(dates) != len(days):
-            ok.append(line)
+            out.append(line)
             continue
-        if all(DAYS[d.weekday()] == w for d, w in zip(dates, days)):
-            ok.append(line)
-        else:
-            wrong.append(line.strip())
-    return drop_empty_tables("\n".join(ok)), wrong
-
-
-def drop_empty_tables(text):
-    """A table whose rows were all struck: its header and separator go too."""
-    lines, out, i = text.split("\n"), [], 0
-    while i < len(lines):
-        is_head = lines[i].lstrip().startswith("|") and i + 1 < len(lines) and re.fullmatch(r"\s*\|[\s:|-]+\|?\s*", lines[i + 1])
-        if is_head and not (i + 2 < len(lines) and lines[i + 2].lstrip().startswith("|")):
-            i += 2
+        if all(DAYS[d.weekday()] == w.group(1).lower() for d, w in zip(dates, days)):
+            out.append(line)
             continue
-        out.append(lines[i])
-        i += 1
-    return "\n".join(out)
+        wrong.append(line.strip())
+        fixed, last = [], 0
+        for d, w in zip(dates, days):
+            right = DAYS[d.weekday()]
+            fixed += [line[last:w.start()], right.capitalize() if w.group(1)[0].isupper() else right]
+            last = w.end()
+        out.append("".join(fixed) + line[last:])
+    return "\n".join(out), wrong
 
 
 def run(goal, task, board, needs):
@@ -226,7 +227,7 @@ def run(goal, task, board, needs):
     top = [s["id"] for s in board.steps() if s["agent"] != "writer" and "[" not in s["id"] and not s["id"].endswith("r")]
     results_text = board.context_for(list(dict.fromkeys(top + list(needs or []))), max_chars=7000)
     if not top and not needs:  # nothing to look up: translate, rewrite, summarise or fix his text, draft a message
-        results_text = f"(No research was needed: Arnav's own words are the source for this task.)\n{goal}"
+        results_text = f"{OWN_TEXT}\n{goal}"
         ctx = getattr(board, "context", "")
         if ctx:  # "make it shorter": the text to work on is in the conversation
             results_text += f"\n\nEarlier in this conversation:\n{ctx[:4000]}"
@@ -255,6 +256,7 @@ def run(goal, task, board, needs):
     # what it flags or finds missing (one round), and the critic checks the fixed report, so the ticks are about it
     todo = "\n".join(f"- {i}" for i in getattr(board, "checklist", []))
     checklist, unordered, flagged = critique(todo, results_text, text)
+    checklist = mark_echo(goal, text, checklist, board)
     missed = [c for c in checklist if not c.get("done")]
     fixes = []
     if flagged:
@@ -277,6 +279,7 @@ def run(goal, task, board, needs):
         again, unordered2, flagged = critique(todo, results_text, text)
         if again:  # no answer from the critic: keep the first ticks (they can only under-claim what was done)
             checklist, unordered = again, unordered2
+        checklist = mark_echo(goal, text, checklist, board)
         if flagged:
             board.log("critic", "flag", f"{len(flagged)} unsupported claim(s) after the fix: " + " | ".join(f[:80] for f in flagged[:3]))
         missed = [c for c in checklist if not c.get("done")]
@@ -291,6 +294,7 @@ def run(goal, task, board, needs):
                                                {"role": "user", "content": "\n\n".join(asks) + "\n\nReturn only the whole "
                                                                            "corrected report."}], max_new_tokens=1200)
             c2, u2, f2 = critique(todo, results_text, text2)
+            c2 = mark_echo(goal, text2, c2, board) if c2 else c2
             if c2 and len(f2) + sum(not c.get("done") for c in c2) < len(flagged) + len(missed):
                 board.log("editor", "kept", "the editor's version has fewer problems")
                 text, checklist, unordered, flagged = text2, c2, u2, f2
@@ -303,6 +307,34 @@ def run(goal, task, board, needs):
 
 NOTHING_VERIFIED = ("The team could not confirm an answer to this, so none is given: every step that looked it up was "
                     "rejected by the checks. What was tried and why it failed is listed below.")
+
+
+TRANSFORM = re.compile(r"\b(translate|rewrite|rephrase|paraphrase|reword|summari[sz]e|shorten|correct|fix|polish|"
+                       r"simplify)\b", re.I)
+
+
+def echoed(goal, text):
+    """Checked in code: the report repeats the text he gave instead of doing what he ordered to it. (A held-out run:
+    'Translate into Spanish: ...' came back as the English sentence, and the critic ticked it done.) Translating:
+    most of the report's words are copied from his message; any other change: the report is his text word for word."""
+    m = TRANSFORM.search(goal or "")
+    body = (text or "").split("\n## ")[0]
+    words = [w for w in re.findall(r"\w+", body.lower()) if len(w) >= 3]
+    if not m or len(words) < 3:
+        return False
+    have = re.findall(r"\w+", goal.lower())
+    if m.group(1).lower() == "translate":
+        return sum(w in have for w in words) / len(words) >= 0.8
+    return " ".join(re.findall(r"\w+", body.lower())) in " ".join(have[have.index(m.group(1).lower()) + 1:])
+
+
+def mark_echo(goal, text, checklist, board):
+    """The critic's ticks, with the ordered change marked not done when the report only repeats his text."""
+    if not echoed(goal, text):
+        return checklist
+    board.log("critic", "echo", "the report repeats his text instead of doing what he ordered to it")
+    hit = [c for c in checklist if TRANSFORM.search(str(c.get("instruction", "")))] or checklist
+    return [dict(c, done=False, why="the report repeats his text unchanged") if c in hit else c for c in checklist]
 
 
 def nothing_verified(goal, board, facts):
@@ -322,7 +354,7 @@ def finish(text, board, results_text, sources, checklist, unordered, flagged, fi
     text = fix_images(drop_empty_sections(text), saved)
     text, bad_days = check_weekdays(text)
     if bad_days:
-        board.log("critic", "strike", f"{len(bad_days)} line(s) with a date on the wrong day of the week removed")
+        board.log("critic", "weekday", f"{len(bad_days)} line(s) with a date on the wrong day of the week corrected")
     checklist, invented = align_checklist(checklist, list(getattr(board, "checklist", None) or []))
     if invented:
         board.log("critic", "invented", "checklist items that are not his instructions, dropped: " + " | ".join(invented)[:300])
@@ -331,7 +363,8 @@ def finish(text, board, results_text, sources, checklist, unordered, flagged, fi
         board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")
         text += "\n\n## Removed: numbers the team could not verify\n" + "\n".join(f"- {x[:160]}" for x in struck)
     if bad_days:
-        text += "\n\n## Removed: a date on the wrong day of the week\n" + "\n".join(f"- {x[:160]}" for x in bad_days)
+        text += ("\n\n## Corrected: the day of the week (from the calendar); the report had\n"
+                 + "\n".join(f"- {x[:160]}" for x in bad_days))
     if fixes and flagged:
         text += "\n\n## Not backed by the verified results (flagged by the critic)\n" + "\n".join(f"- {x[:160]}" for x in flagged)
     if checklist:
