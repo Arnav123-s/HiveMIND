@@ -1154,3 +1154,23 @@ def test_a_named_answer_passes_the_calculator_s_check(tmp_path, monkeypatch):
     bad = verifier.verify(step, {"summary": "Answer: done", "returncode": 0, "code": "print('Answer: done')"},
                           Board(tmp_path, echo=False), tmp_path)
     assert bad == ("FAIL", "the program printed no number")
+
+
+def test_a_browser_answer_s_values_must_be_in_its_evidence(tmp_path, monkeypatch):
+    """Held-out set 2: 'Thomas A. Edison was born on 1847-02-04' with the evidence 'by Thomas A. Edison (about)' (no
+    date at all) passed the jury 3/3; he was born on 11 February 1847."""
+    from team.board import Board
+    from team.specialists import verifier
+    monkeypatch.setattr(verifier, "judge", lambda *a: ("PASS", "stub jury"))
+    page = "“Genius is one percent inspiration...” by Thomas A. Edison (about) Born: February 11, 1847"
+    step = {"agent": "browser", "id": "s1", "task": "tell me his date of birth"}
+    v, why = verifier.verify(step, {"summary": "Thomas A. Edison was born on 1847-02-04", "page_text": page,
+                                    "evidence": "by Thomas A. Edison (about)", "url": "https://q/"},
+                             Board(tmp_path, echo=False), tmp_path)
+    assert v == "FAIL" and "1847-02-04" in why
+    v, _ = verifier.verify(step, {"summary": "He was born on February 11, 1847.", "page_text": page,
+                                  "evidence": "Born: February 11, 1847", "url": "https://q/"},
+                           Board(tmp_path, echo=False), tmp_path)
+    assert v == "PASS"
+    assert verifier.values_not_in("Here are the 3 quotes", "“A” “B” “C”") == []  # a small count is not a value to copy
+    assert verifier.values_not_in("It costs £51.77", "Price £51.77 In stock") == []

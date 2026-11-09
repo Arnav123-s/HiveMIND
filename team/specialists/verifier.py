@@ -104,6 +104,22 @@ def placeholder_columns(path):
     return "; ".join(out) or None
 
 
+VALUE = re.compile(r"\d[\d.,:/-]*\d|\d")
+
+
+def values_not_in(answer, evidence):
+    """Checked in code: the specific values of an answer (dates, prices, numbers of three digits or more) that its
+    evidence does not contain. (Held-out set 2: the browser answered 'born on 1847-02-04' with the evidence 'by Thomas
+    A. Edison (about)', which has no date at all; three jurors passed it. He was born on 11 February 1847.)"""
+    digits = re.sub(r"\D", "", evidence or "")
+    out = []
+    for v in VALUE.findall(answer or ""):
+        d = re.sub(r"\D", "", v)
+        if (len(d) >= 3 or re.search(r"[.,:/-]", v)) and d not in digits:
+            out.append(v)
+    return list(dict.fromkeys(out))
+
+
 def describe_file(path):
     """What a saved file holds, checked in code: an image's format and size in pixels, a text file's first lines."""
     name = path.name
@@ -277,6 +293,10 @@ def verify(step, result, board, workdir):
         ev = result.get("evidence", "")
         if not quote_in(ev, result.get("page_text", "")):
             return "FAIL", "the evidence quoted is not on the page the browser was on"
+        unbacked = values_not_in(result.get("summary", ""), ev)
+        if unbacked:
+            return "FAIL", (f"the answer gives {', '.join(unbacked)}, which the evidence copied from the page does not "
+                            f"contain: open the page that shows it and copy it from there")
         board.add_fact(sid, result.get("summary", ""), result.get("url", ""), ev, "supported", "evidence seen on page")
         return judge(check, result.get("summary", ""), f"Page {result.get('url')}: {ev}")
 
