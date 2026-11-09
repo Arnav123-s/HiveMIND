@@ -599,8 +599,9 @@ reach a run in progress, and is checked in code against the live answer (trainin
 
 | set | tasks | pass | what it means |
 |---|---|---|---|
-| development | 16 (lookups, papers, a chart, a website, a scrape to CSV, arithmetic, dates, units, translate, summarise, fix text, draft, code, fix code, explain, given data) | **14/16** | fixes were tried on these, so this flatters it |
-| held-out | 16 fresh tasks of the same kinds, written before the fixes and run once | **9/16** | the honest number |
+| development | 16 (lookups, papers, a chart, a website, a scrape to CSV, arithmetic, dates, units, translate, summarise, fix text, draft, code, fix code, explain, given data) | 14/16, then **15/16** | fixes were tried on these, so this flatters it |
+| held-out set 1 | 16 fresh tasks of the same kinds, written before the fixes and run once | **9/16** | the honest number then |
+| held-out set 2 | 16 more fresh tasks, contamination-checked before they ran, run once on later code | **11/16** (10/16 as first scored) | the honest number now; one check was wrong (it wanted "apache-2.0" for a right "Apache License 2.0") and was corrected |
 
 The gap is the measurement: fixes made on development tasks carried over to fresh tasks far less than the development
 score suggested. Each held-out failure and its cause is in `training/reports/hive_bench/heldout_notes.md`: a chart
@@ -608,6 +609,10 @@ shown but never saved, a column of "Unknown" covering a value never found, a wee
 where one was asked (the prompt's own example), a sentence handed back instead of translated or rewritten, and a
 Wikipedia article whose quotes could never match because the reader split every link onto its own line. All are fixed
 with checks in code and tests; the held-out score above stays as measured, because those tasks informed the fixes.
+Set 2's five failures (`heldout2_notes.md`): a birth date the browser made up and the jury passed, a 404 from a link
+joined to the wrong page, a right "$161.00" struck because the calculator printed "161.0", a German grammar error, and
+handed-over data sent to web search. Four were the hive's own checks letting a wrong result through or striking a
+right one. Each is fixed in code since; a third held-out set is needed to measure that cleanly.
 
 ## Limits (measured, not guessed)
 
