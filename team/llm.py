@@ -251,6 +251,9 @@ def _gguf_model(specialist, adapter):
                 _lora_ptrs.pop(k)
         # mmap: the weights file is mapped, not copied, and pages are shared with the OS cache
         kv = dict(flash_attn=True, type_k=8, type_v=8) if config.KV_8BIT else {}  # 8 = GGML_TYPE_Q8_0
+        if config.LOOKUP:
+            from llama_cpp.llama_speculative import LlamaPromptLookupDecoding
+            kv["draft_model"] = LlamaPromptLookupDecoding(num_pred_tokens=10)
         _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX_BY_MODEL.get(name, config.GGUF_CTX),
                             n_threads=config.THREADS, n_batch=512, use_mmap=True, verbose=False, **kv)
         _active_lora[name] = None

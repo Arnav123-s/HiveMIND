@@ -70,6 +70,9 @@ if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 
 # most N base models resident (least recently used is unloaded; reload ~4 s from the OS file cache).
 RAM_GB = float(os.environ.get("AGENT_TEAM_RAM_GB", 10))
 KV_8BIT = os.environ.get("AGENT_TEAM_KV", "q8" if RAM_GB <= 12 else "f16") == "q8"
+# prompt-lookup decoding: next tokens guessed from the prompt itself (quotes, claims, code being fixed), checked in one
+# pass; greedy outputs stay the same. Off until training/arch_bench.py measures it on the hive's real prompts.
+LOOKUP = os.environ.get("AGENT_TEAM_LOOKUP", "0") == "1"
 GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
 GGUF_CTX_BY_MODEL = {"fast": 4096}  # the 1.7B roles (browser, verifier, writer, condenser) need less context
 GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 1 if RAM_GB < 7 else 2))
