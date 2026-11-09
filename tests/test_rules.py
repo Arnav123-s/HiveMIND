@@ -732,3 +732,17 @@ def test_the_coder_is_held_to_his_own_examples_and_told_the_kind_of_error(tmp_pa
     assert out["summary"] == "832040" and "fib(1) returned 1" not in asked[1] and "but the task says fib(" in asked[1]
     assert coder.error_kind("requests.exceptions.ConnectionError: Max retries exceeded") == "network"
     assert coder.error_kind("NameError: name 'x' is not defined") is None
+
+
+def test_a_listing_s_next_page_is_pointed_out_and_the_site_name_is_not_a_task_word():
+    """Only page 1 of the Mystery listing was read (2 of the 3 cheapest); 'books' in books.toscrape.com picked the
+    all-books link."""
+    from bs4 import BeautifulSoup
+    from team.tools.preview import next_page, task_links
+    soup = BeautifulSoup('<a href="catalogue/category/books_1/index.html">Books</a>'
+                         '<a href="catalogue/category/books/mystery_3/index.html">Mystery</a>'
+                         '<li class="next"><a href="page-2.html">next</a></li>', "html.parser")
+    assert task_links(soup, "the cheapest Mystery books", "https://books.toscrape.com/") == \
+        ["Mystery -> https://books.toscrape.com/catalogue/category/books/mystery_3/index.html"]
+    assert next_page(soup, "https://books.toscrape.com/catalogue/category/books/mystery_3/index.html") == \
+        "https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html"

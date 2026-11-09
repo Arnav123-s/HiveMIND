@@ -34,7 +34,9 @@ def task_links(soup, task, base, limit=8):
     """Links whose text has a word of the task ("Mystery" -> the Mystery category's URL), as absolute URLs: the coder
     otherwise guesses where the data it needs lives."""
     from urllib.parse import urljoin
-    words = {w for w in re.findall(r"[a-z]{4,}", (task or "").lower()) if w not in STOP}
+    from urllib.parse import urlparse
+    site = set(re.findall(r"[a-z]{4,}", urlparse(base).netloc.lower()))  # "books" in books.toscrape.com names the site
+    words = {w for w in re.findall(r"[a-z]{4,}", (task or "").lower()) if w not in STOP and w not in site}
     out = []
     for a in soup.find_all("a", href=True):
         text = a.get_text(" ", strip=True)
@@ -43,6 +45,15 @@ def task_links(soup, task, base, limit=8):
             if line not in out:
                 out.append(line)
     return out[:limit]
+
+
+def next_page(soup, base):
+    """The URL of the listing's next page, if it has one."""
+    from urllib.parse import urljoin
+    a = soup.find("a", rel="next") or next((a for a in soup.find_all("a", href=True)
+                                            if re.fullmatch(r"\s*(next|next page|older|more)\s*[»›→>]*\s*",
+                                                            a.get_text(" ", strip=True), re.I)), None)
+    return urljoin(base, a["href"]) if a and a.get("href") else None
 
 
 def _html_preview(html, limit=1800, task="", base=""):
@@ -73,6 +84,9 @@ def _html_preview(html, limit=1800, task="", base=""):
     title = soup.title.get_text(strip=True) if soup.title else ""
     body = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))[:400]
     found = ("\nLinks matching the task: " + "; ".join(links)) if links else ""
+    nxt = next_page(soup, base)
+    if nxt:  # a listing with more pages: the cheapest of a category was missed by reading page 1 only
+        found += f"\nThis listing has more pages: the next one is {nxt} (follow 'next' links to read every page)"
     return (f"Title: {title}{found}\n" + "\n".join(out) + f"\nText start: {body}")[:limit]
 
 
@@ -80,7 +94,13 @@ def preview(task, workdir=None, max_urls=2):
     parts = []
     # a site named without a scheme is previewed too ("on books.toscrape.com": the coder saw nothing and wrote
     # http:// URLs and guessed the page's classes)
-    for url in web.urls_in(task)[:max_urls]:
+    queue = web.urls_in(task)[:max_urls]
+    seen = set()
+    while queue and len(seen) < max_urls + 1:
+        url = queue.pop(0)
+        if url in seen:
+            continue
+        seen.add(url)
         try:
             body = web.get(url)
         except Exception as e:  # noqa: BLE001
@@ -97,6 +117,13 @@ def preview(task, workdir=None, max_urls=2):
             parts.append(f"--- {url} (XML)\n{s[:1500]}")
         else:
             parts.append(f"--- {url} (HTML)\n{_html_preview(body, task=task, base=url)}")
+            if len(seen) == 1:  # the page his task names on that site ("Mystery" -> the Mystery listing): seen too
+                links = task_links(BeautifulSoup(body, "lxml"), task, url)
+                best = next((ln.split(" -> ")[1] for ln in links
+                             if ln.split(" -> ")[1].rstrip("/") not in (url.rstrip("/"), url.rstrip("/") + "/index.html")),
+                            None)
+                if best and best not in seen:
+                    queue.insert(0, best)
     if workdir:
         for name in dict.fromkeys(FILE_RX.findall(task)):
             p = Path(workdir) / name
