@@ -789,3 +789,21 @@ def test_several_quoted_items_are_each_checked_on_the_page_and_a_failed_step_s_f
     b.update_step("s1r", verdict="FAIL", status="failed", feedback="no listed item meets the task")
     b.add_fact("s1r", "Albert Einstein is quoted", "https://q", "Albert Einstein", "supported", "ok")
     assert writer.nothing_verified("List the first three quotes on the site.", b, b.facts(status="supported"))
+
+
+def test_a_quote_is_credited_to_the_page_read_in_full_not_a_search_snippet(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.specialists import verifier
+    monkeypatch.setattr(verifier, "check_fact", lambda c, q: (True, "ok"))
+    monkeypatch.setattr(verifier, "judge", lambda *a: ("PASS", "ok"))
+    article = "Mixture of experts (MoE) is a machine learning technique where multiple expert networks divide a problem space. " * 20
+    corpus = {"https://en.wikipedia.org/wiki/Mistral_AI": "Mistral AI | its models use a mixture of experts (MoE) is a machine "
+                                                          "learning technique where multiple expert networks divide",
+              "https://en.wikipedia.org/wiki/Mixture_of_experts": article, "search:wikipedia:moe": "listing"}
+    b = Board(tmp_path, echo=False)
+    b.add_step({"id": "s1", "agent": "researcher", "task": "explain MoE", "needs": []})
+    res = {"summary": "MoE", "items": [], "corpus": corpus, "facts": [
+        {"claim": "MoE uses multiple expert networks", "url": "search:wikipedia:moe",
+         "quote": "a machine learning technique where multiple expert networks divide"}]}
+    verifier.verify({"id": "s1", "agent": "researcher", "task": "explain MoE"}, res, b, tmp_path)
+    assert b.facts("s1", "supported")[0]["url"] == "https://en.wikipedia.org/wiki/Mixture_of_experts"
