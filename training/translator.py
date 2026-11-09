@@ -136,5 +136,58 @@ def evaluate(roles=("writer", "editor", "translator")):
     OUT.write_text(json.dumps({**prev, **res}, indent=1, ensure_ascii=False))
 
 
+NEWS = ROOT / "training" / "evals" / "translator_news_de.jsonl"
+CHAIN = ROOT / "training" / "reports" / "translator_chain_de.json"
+
+
+def chain(threshold=0.5):
+    """The smallest-specialist way to translate into German: the 1.7B writer translates, the de_grammar cell (135M)
+    says ok or error, and only a sentence it calls an error is translated by the 4B. Scored like the members on 160
+    sentences none of them trained on (120 from WMT news 2014, 40 from WMT24++), against the writer alone and the
+    4B alone: chrF and seconds per sentence."""
+    from team import llm
+    from team.cells import runtime
+    items = [json.loads(ln) for ln in NEWS.read_text().splitlines() if ln.strip()]
+    items += [json.loads(ln) for ln in HELD.read_text().splitlines() if ln.strip() and json.loads(ln)["lang"] == "de"]
+    done = json.loads(CHAIN.read_text()) if CHAIN.exists() else {}
+    rows = done.get("rows", [])
+    have = {r["en"] for r in rows}
+    for role in ("writer", "editor"):  # all of one member's translations, then the other's (one model loaded at a time)
+        for it in items:
+            row = next((r for r in rows if r["en"] == it["en"]), None)
+            if row is None:
+                row = {"en": it["en"], "ref": it["ref"], "set": "news" if it in items[:120] else "wmt24pp"}
+                rows.append(row)
+            if role in row:
+                continue
+            t = time.time()
+            row[role] = answer(llm.chat(role, messages(it["order"]), max_new_tokens=160))
+            row[f"{role}_s"] = round(time.time() - t, 2)
+            row[f"{role}_chrf"] = round(chrf(row[role], it["ref"]), 1)
+            CHAIN.write_text(json.dumps({"rows": rows}, indent=1, ensure_ascii=False))
+        llm.unload_all()
+    for row in rows:  # the cell's verdict on the writer's German
+        t = time.time()
+        p = runtime.label_probs("de_grammar", f"SENTENCE: {row['writer']}")
+        row["cell_s"] = round(time.time() - t, 3)
+        row["p_error"] = round(float(p.get("error", 0.0)), 3)
+    def score(flag):
+        chosen = [r["editor_chrf"] if flag(r) else r["writer_chrf"] for r in rows]
+        secs = [r["writer_s"] + r["cell_s"] + (r["editor_s"] if flag(r) else 0) for r in rows]
+        return round(sum(chosen) / len(rows), 1), round(sum(secs) / len(rows), 2), sum(map(flag, rows))
+    res = {"n": len(rows), "threshold": threshold,
+           "writer": {"chrf": round(sum(r["writer_chrf"] for r in rows) / len(rows), 1),
+                      "s": round(sum(r["writer_s"] for r in rows) / len(rows), 2)},
+           "editor_always": {"chrf": round(sum(r["editor_chrf"] for r in rows) / len(rows), 1),
+                             "s": round(sum(r["editor_s"] for r in rows) / len(rows), 2)}}
+    c, s_, k = score(lambda r: r["p_error"] >= threshold)
+    res["chain"] = {"chrf": c, "s": s_, "sent_to_4b": k}
+    o, so, ko = score(lambda r: r["editor_chrf"] > r["writer_chrf"])  # the best any judge could do
+    res["oracle_chain"] = {"chrf": o, "s": so, "sent_to_4b": ko}
+    CHAIN.write_text(json.dumps({**res, "rows": rows}, indent=1, ensure_ascii=False))
+    print(json.dumps(res, indent=1))
+
+
 if __name__ == "__main__":
-    {"prep": prep, "eval": lambda: evaluate(tuple(sys.argv[2:]) or ("writer", "editor", "translator"))}[sys.argv[1]]()
+    {"prep": prep, "eval": lambda: evaluate(tuple(sys.argv[2:]) or ("writer", "editor", "translator")),
+     "chain": lambda: chain(float(sys.argv[2]) if len(sys.argv) > 2 else 0.5)}[sys.argv[1]]()
