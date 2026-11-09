@@ -4,7 +4,7 @@ from pathlib import Path
 
 from .. import config, llm, prompts, stop
 from ..tools.preview import expected_outputs, preview
-from ..tools.sandbox import run_python
+from ..tools.sandbox import http_errors, run_python
 
 
 def task_messages(task, context, data_preview=""):
@@ -192,6 +192,13 @@ def run(task, context, board, step_id, guard, workdir):
         new = [p for p in workdir.iterdir() if p.name not in before and p.name != name and not p.name.startswith(".")]
         silent = not res["stdout"].strip() and not new
         unsaved = unsaved_output(task, code, [p.name for p in new]) if not missing and not silent else None
+        gone = [u for u, c in http_errors(res["stderr"]) if c == 404]
+        if res["returncode"] == 0 and gone and not unsaved:
+            # it "worked", but read pages that do not exist: in the same words as a 404 error, so its kind and the
+            # page check (where the link really leads) apply
+            unsaved = (f"It ran, but asked for pages that do not exist: 404 Client Error: Not Found for url: {gone[0]}"
+                       + (f" (and {len(gone) - 1} more)" if len(gone) > 1 else "")
+                       + ". What it read from them is missing from its results.")
         if res["returncode"] == 0 and not missing and not silent and not unsaved:
             from .verifier import describe_file  # what it saved, checked in code: a placeholder column, a blank chart
             bad = [d for d in (describe_file(p) for p in new if p.is_file()) if d.startswith(("BROKEN", "EMPTY"))]
