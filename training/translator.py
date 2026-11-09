@@ -74,7 +74,7 @@ def prep():
         test = [p for p in pairs(code, held=True) if p[0] not in {t[0] for t in train}]
         for en, xx in rng.sample(train, min(N_TRAIN, len(train))):
             order = rng.choice(ORDERS).format(L=name, t=en)
-            rows.append({"messages": messages(order) + [{"role": "assistant", "content": xx}]})
+            rows.append({"messages": messages(order), "output": xx})  # train_lora.py: the prompt, then the reply
         for en, xx in rng.sample(test, min(N_HELD, len(test))):
             held.append({"lang": code, "order": f"Translate into {name}: '{en}'", "en": en, "ref": xx})
     rng.shuffle(rows)
