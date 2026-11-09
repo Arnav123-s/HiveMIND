@@ -5,6 +5,7 @@ bot walls; the team does not try to get around them. It reports the wall and
 uses sources that publish APIs for scripts instead.
 """
 import json
+import os
 import re
 import time
 import xml.etree.ElementTree as ET
@@ -34,6 +35,27 @@ def urls_in(text):
     return urls + [f"https://{d}/" for d in dict.fromkeys(SITE.findall(text or "")) if not any(d in u for u in urls)]
 
 
+def redact(text):
+    return re.sub(r"((?:api_?key|key|token|access_token)=)[^&\s\"']+", r"\1[hidden]", str(text or ""), flags=re.I)
+
+
+def retry_wait(r, attempt):
+    """Seconds to wait after a 429: the server's own hint (Retry-After, or "retry in 31s" in the body; OpenAlex limits
+    anonymous searches under load), at most 45, else 3 then 6."""
+    hint = r.headers.get("Retry-After", "")
+    m = re.search(r"retry in (\d+)\s*s", r.text[:400], re.I) if not hint.isdigit() else None
+    secs = int(hint) if hint.isdigit() else int(m.group(1)) if m else 3 * (attempt + 1)
+    return min(45, max(1, secs))
+
+
+def _wait(secs):
+    from .. import stop
+    end = time.time() + secs
+    while time.time() < end:  # the kill switch is not kept waiting by a rate limit
+        stop.check()
+        time.sleep(min(1.0, end - time.time()) if end > time.time() else 0)
+
+
 def get(url, params=None, as_json=False):
     key = (url, json.dumps(params, sort_keys=True))
     if key in _cache:
@@ -41,13 +63,13 @@ def get(url, params=None, as_json=False):
     for attempt in range(3):
         r = _S.get(url, params=params, timeout=config.HTTP_TIMEOUT)
         if r.status_code == 429 and attempt < 2:
-            time.sleep(3 * (attempt + 1))
+            _wait(retry_wait(r, attempt))
             continue
         break
     if "charset" not in r.headers.get("content-type", "").lower():
         r.encoding = r.apparent_encoding or "utf-8"
-    if r.status_code >= 400:
-        raise FetchError(f"HTTP {r.status_code} from {r.url}: {r.text[:200]}")
+    if r.status_code >= 400:  # a key in the URL never reaches an error, a log or a trace
+        raise FetchError(f"HTTP {r.status_code} from {redact(r.url)}: {redact(r.text[:200])}")
     out = r.json() if as_json else r.text
     _cache[key] = out
     return out
@@ -259,8 +281,37 @@ def search_web(q, limit=8):
     return [{"title": a.get_text(strip=True), "url": a["href"], "snippet": ""} for a in res[:limit]]
 
 
+def abstract_text(inverted):
+    """OpenAlex keeps an abstract as {word: [positions]}: the words back in order."""
+    return " ".join(w for _, w in sorted((p, w) for w, ps in (inverted or {}).items() for p in ps))
+
+
+def search_openalex(q, limit=6, newest=False):
+    """Scholarly works in every field from OpenAlex (free, no key, over 250 million works): title, date, citation count
+    and the abstract, which is what a research step quotes. Each result's url is its DOI (else its landing page).
+    newest: most recent first; otherwise by relevance."""
+    params = {"search": q, "per-page": limit, "select": "id,doi,display_name,publication_date,cited_by_count,"
+                                                        "abstract_inverted_index,primary_location"}
+    if newest:
+        params["sort"] = "publication_date:desc"
+    if os.environ.get("OPENALEX_API_KEY"):  # optional, free from openalex.org: its own daily budget, not the shared one
+        params["api_key"] = os.environ["OPENALEX_API_KEY"]
+    out = []
+    for w in get("https://api.openalex.org/works", params, as_json=True).get("results", []):
+        loc = w.get("primary_location") or {}
+        url = w.get("doi") or loc.get("landing_page_url") or w.get("id", "")
+        venue = ((loc.get("source") or {}).get("display_name") or "")[:60]
+        out.append({"title": " ".join(str(w.get("display_name") or "").split()), "url": url,
+                    "snippet": f"published {w.get('publication_date')} | cited by {w.get('cited_by_count', 0)}"
+                               + (f" | {venue}" if venue else "") + f" | {abstract_text(w.get('abstract_inverted_index'))[:1200]}",
+                    "has_abstract": bool(w.get("abstract_inverted_index"))})
+    # a work with no abstract has nothing to quote: those with one first, each group in OpenAlex's order
+    out.sort(key=lambda r: not r["has_abstract"])  # stable: OpenAlex's order kept within each group
+    return [{k: v for k, v in r.items() if k != "has_abstract"} for r in out]
+
+
 SOURCES = {"huggingface": search_huggingface, "hf_model": search_hf_model, "hn": search_hn, "arxiv": search_arxiv,
-           "pypi": search_pypi, "wikipedia": search_wikipedia, "web": search_web}
+           "openalex": search_openalex, "pypi": search_pypi, "wikipedia": search_wikipedia, "web": search_web}
 
 
 def search(source, q, **kw):

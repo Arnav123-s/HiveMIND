@@ -1027,3 +1027,30 @@ def test_layout_orders_are_the_report_s_and_verified_facts_carry_a_step(tmp_path
          "facts": [{"claim": "A hash table maps keys to values", "quote": "a hash table is a data structure that maps keys "
                     "to values", "url": url}]}, Board(tmp_path, echo=False), tmp_path)
     assert v == "PASS"
+
+
+def test_scholarly_papers_are_a_source_with_their_abstracts(monkeypatch):
+    """Research needs what studies found: OpenAlex (free, every field) gives each paper's abstract, quotable and
+    credited to its DOI; a key, if he sets one, never reaches an error message."""
+    from team.tools import web
+    seen = {}
+
+    def fake_get(url, params=None, as_json=False):
+        seen.update(params or {})
+        return {"results": [
+            {"doi": "https://doi.org/10.1/none", "display_name": "No abstract", "publication_date": "2020-01-01",
+             "cited_by_count": 3, "abstract_inverted_index": None, "primary_location": {}},
+            {"doi": "https://doi.org/10.1/aging", "display_name": "Calendar  aging of cells", "publication_date": "2021-05-02",
+             "cited_by_count": 40, "abstract_inverted_index": {"Heat": [0], "speeds": [1], "aging.": [2]},
+             "primary_location": {"source": {"display_name": "J. Power Sources"}}}]}
+    monkeypatch.setattr(web, "get", fake_get)
+    monkeypatch.setenv("OPENALEX_API_KEY", "k-123")
+    res = web.search("openalex", "battery aging", newest=True)
+    assert res[0]["url"] == "https://doi.org/10.1/aging" and res[0]["title"] == "Calendar aging of cells"
+    assert res[0]["snippet"].endswith("| J. Power Sources | Heat speeds aging.") and res[1]["title"] == "No abstract"
+    assert seen["sort"] == "publication_date:desc" and seen["api_key"] == "k-123"
+    assert "k-123" not in web.redact("https://api.openalex.org/works?search=x&api_key=k-123&per-page=6")
+
+    class R:
+        headers, text = {}, '{"message": "Please retry in 31s"}'
+    assert web.retry_wait(R(), 0) == 31
