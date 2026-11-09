@@ -302,6 +302,11 @@ def run(goal, task, board, needs):
                 board.log("editor", "dropped", "the editor's version was not better")
     else:
         board.log("critic", "ok", "every claim matches the verified results")
+    if fixes and n_lines and len(body_lines(text)) != n_lines:  # a fix can break the layout he ordered: checked again
+        board.log("writer", "format", f"after the fix: {len(body_lines(text))} lines, {n_lines} ordered: asking again")
+        text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
+                                          {"role": "user", "content": f"That is {len(body_lines(text))} lines. Write it as "
+                                           f"exactly {n_lines} lines of plain text, nothing else."}], max_new_tokens=400)
     return finish(text, board, results_text, sources, checklist, unordered, flagged, fixes)
 
 
@@ -313,19 +318,28 @@ TRANSFORM = re.compile(r"\b(translate|rewrite|rephrase|paraphrase|reword|summari
                        r"simplify)\b", re.I)
 
 
+REWORD = {"rewrite", "rephrase", "paraphrase", "reword", "polish", "simplify"}
+
+
 def echoed(goal, text):
     """Checked in code: the report repeats the text he gave instead of doing what he ordered to it. (A held-out run:
     'Translate into Spanish: ...' came back as the English sentence, and the critic ticked it done.) Translating:
     most of the report's words are copied from his message; any other change: the report is his text word for word."""
     m = TRANSFORM.search(goal or "")
     body = (text or "").split("\n## ")[0]
-    words = [w for w in re.findall(r"\w+", body.lower()) if len(w) >= 3]
+    # the same sentence three times is still his sentence ("Send me the file now." x3 passed as a rewrite)
+    sents = list(dict.fromkeys(" ".join(re.findall(r"\w+", x.lower())) for x in re.split(r"(?<=[.!?])\s+|\n+", body)))
+    body = " ".join(x for x in sents if x)
+    words = [w for w in body.split() if len(w) >= 3]
     if not m or len(words) < 3:
         return False
     have = re.findall(r"\w+", goal.lower())
-    if m.group(1).lower() == "translate":
+    verb = m.group(1).lower()
+    if verb == "translate":
         return sum(w in have for w in words) / len(words) >= 0.8
-    return " ".join(re.findall(r"\w+", body.lower())) in " ".join(have[have.index(m.group(1).lower()) + 1:])
+    if verb in REWORD:  # a rewrite with no word of its own has not rewritten anything
+        return all(w in have for w in words)
+    return body in " ".join(have[have.index(verb) + 1:])
 
 
 def mark_echo(goal, text, checklist, board):
