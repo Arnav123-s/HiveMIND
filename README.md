@@ -88,36 +88,99 @@ writer → REPORT.md (sources numbered, gaps listed under "Not confirmed")
   `events.jsonl`, `calls.jsonl` (every model call), `screens/` (browser screenshots), `work/` (code and
   files), `TRACE.md`, `REPORT.md`.
 
-## Giving it a task
+## Many small specialists working as one
 
-```bash
-python -m team "Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV"
+The bigger members do what needs generation (planning, extracting claims with quotes, writing code and reports); every
+judgement around them is split into the smallest jobs, each with its own specialist: a **cell** (a 135M model with its
+own small weight delta, `team/cells/`), a code rule where a rule is exact, or a member. A cell takes a job only where
+it measured at least as well as what did the job before (`cells/wins.json`).
+
+**Research hive** (`team/specialists/research_hive.py`): a research question ("research ...", "compare ...", "how does
+...", several questions at once) is not one look-up:
+
+```
+question ─ decomposer (4B): 2-4 sub-questions
+             └ per sub-question: planner (sources, queries) ─ search ─ relevance cell on EVERY result, all at once
+                                 ─ reader + condenser on the kept pages ─ extractor (claims with exact quotes)
+           gap-finder cell: does any claim answer each sub-question? a gap gets one more search, other words
+           cross-check cell: two sources on the same point - agree, conflict or unrelated? conflicts are listed
+           verifier: every claim against its quote ─ writer: findings, disagreements, what no source answered
 ```
 
+**Coding hive** (`team/specialists/coder.py`): the coder sees a preview of the real data first (the site its task
+names, the page the task points at, whether a listing has more pages); an error reader names the kind of each
+failure (syntax, import, network, file, data, timeout) and tells the coder what that kind needs; examples you give in
+the task ("fib(1) = 1") are run against the program's own functions; a program that prints nothing goes back; the code
+reviewer reads it; the jury sees the program, its output and every file it saved; a fix that changes nothing stops.
+
+**Many cells at once** (`team/cells/pool.py`): worker processes, one CPU thread each, sharing the memory-mapped base:
+a batch of cell questions (every search result, every fact, every pair of claims, every line of a page) is answered in
+parallel. `AGENT_TEAM_CELL_WORKERS` sets the number (default: up to 4).
+
+**The hive grows new cells from its own work** (`team/cells/learn.py`, `python -m team grow`): the verifier's claim
+checks, the juror's item checks and the condenser's line choices are logged with their inputs
+(`memory/decisions/`). When a kind of decision has enough examples, a cell is trained on them with the member as the
+teacher (oldest 70% to train, next 15% to choose, newest 15% to judge), and it answers only from the confidence at which
+it agreed with the member at least 97% of the time; the member answers the rest, and those answers keep being logged,
+so the next `grow` learns from newer work. The always-on agent runs `grow` by itself when the device is idle. Tests
+and bench runs use a throwaway memory, so they never teach the hive.
+
+## Give it a prompt: `hive`
+
+Like a coding assistant: you type what you want, the hive does the job and keeps going until nothing is left undone.
+
 ```bash
-python -m team --file my_task.md
+./hive "Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV"
 ```
 
+You see the hive work (plan, each specialist's step, each check), then the answer, the files it made and the run
+folder. Up to 2 follow-up rounds run by themselves for anything the critic marked not done (`--rounds N` to change).
+Your prompt is the order, word for word: what it orders (buy, delete, send, log in, sign up) is approved by the order
+itself; anything risky it does not order stops and asks you at the terminal (`--unattended`: refused and listed).
+Ctrl+C is the kill switch.
+
 ```bash
-python -m team chat
+./hive
 ```
+A session: prompt after prompt; earlier prompts and answers are context for the next one ("now make it shorter"),
+never orders. `/stop`, `/jobs`, `/remember <how you like things done>`, `/exit`.
+
+When the always-on agent runs (next section), `hive` sends the prompt to it: the models are already loaded there and
+the job keeps running if you close the terminal (`--local` runs it in the terminal instead).
+
+## Always on: your personal agent
 
 ```bash
-python -m team web
+python -m team install
 ```
-(then open http://127.0.0.1:8765, a chat-style page that shows the team working live; it is the API server below,
-so the page and API clients share one queue)
+starts HiveMIND with the device and keeps it running: a systemd user service on Linux (to start before you log in,
+also run `loginctl enable-linger $USER` once), a launchd agent on macOS, a logon task on Windows. It restarts after a
+crash. `python -m team install --dry-run` shows exactly what it writes and runs; `python -m team uninstall` stops it
+and removes only that entry. Without installing: `python -m team serve`.
+
+It is reachable while the device is on:
+- `hive "prompt"` from any terminal
+- the chat page at http://127.0.0.1:8766 (shows the hive working live)
+- the API at http://127.0.0.1:8766/v1 for any OpenAI- or Anthropic-compatible app (next section)
+- the inbox: drop a `.md`/`.txt` file into `inbox/` (or `python -m team add "task"`); the report lands in `outbox/`
+- the schedule: recurring tasks in `memory/schedule.json`, e.g. `[{"task": "...", "every_hours": 24}]`
+
+**It does not harm the device** (`team/health.py`, `team/service.py`):
+- it runs at low priority (nice 10, idle IO); models use every core but one; on Linux, systemd also caps it at half
+  the machine's CPU time and 10 GB of RAM
+- after 10 minutes without a job every model is unloaded, so the RAM goes back to you
+- heavy background work (dreaming, growing cells) runs only when the device is plugged in, the CPU is under 75 C and
+  not busy with your own programs, and there are 3 GB of RAM and 2 GB of disk to spare
+- between model calls, a CPU above 90 C waits until it is under 80 C
+- when less than 1 GB of disk is free, new jobs are refused with the reason; nothing is ever deleted to make room
+- only one service runs at a time; it never keeps the device awake
+
+Other ways in:
 
 ```bash
-python -m team serve
-```
-Always on: drop tasks into `inbox/` (or `python -m team add "task"`), reports appear in `outbox/`.
-Recurring tasks go in `memory/schedule.json`. When idle, it dreams (below).
-
-Tell it how you like things done; every report follows it:
-
-```bash
-python -m team remember "Prices in INR. Short answers, table first."
+python -m team "your task"            # one round in this terminal (the original command)
+python -m team chat                   # small talk handled directly, tasks go to the hive
+python -m team remember "Prices in INR. Short answers, table first."   # every report follows it
 ```
 
 ## Use it like Claude, ChatGPT or Codex: hand over a task and leave it (`team/sdk.py`, `team/api.py`)
