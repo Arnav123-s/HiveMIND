@@ -587,6 +587,23 @@ Without llama-cpp-python the team falls back to PyTorch (`AGENT_TEAM_ENGINE=hf`)
 Lighter machine: `AGENT_TEAM_MAX_LOADED=1` keeps only one model in RAM at a time (slower: models
 reload when roles switch). Bigger machine: `AGENT_TEAM_BRAIN=brain8b` makes Qwen3-8B 4-bit (5 GB) the brain (supported, not measured here).
 
+## How well it does (measured on whole tasks, `training/hive_bench.py`)
+
+Each task runs through the whole hive (`python -m team`, unattended), from a frozen copy of the code so no edit can
+reach a run in progress, and is checked in code against the live answer (training/reports/hive_bench/).
+
+| set | tasks | pass | what it means |
+|---|---|---|---|
+| development | 16 (lookups, papers, a chart, a website, a scrape to CSV, arithmetic, dates, units, translate, summarise, fix text, draft, code, fix code, explain, given data) | **14/16** | fixes were tried on these, so this flatters it |
+| held-out | 16 fresh tasks of the same kinds, written before the fixes and run once | **9/16** | the honest number |
+
+The gap is the measurement: fixes made on development tasks carried over to fresh tasks far less than the development
+score suggested. Each held-out failure and its cause is in `training/reports/hive_bench/heldout_notes.md`: a chart
+shown but never saved, a column of "Unknown" covering a value never found, a weekday printed as a number, two decimals
+where one was asked (the prompt's own example), a sentence handed back instead of translated or rewritten, and a
+Wikipedia article whose quotes could never match because the reader split every link onto its own line. All are fixed
+with checks in code and tests; the held-out score above stays as measured, because those tasks informed the fixes.
+
 ## Limits (measured, not guessed)
 
 - **Speed.** On a 4-core CPU the 1.7B specialists generate ~8-10 tokens/s. A big multi-step task
@@ -597,8 +614,10 @@ reload when roles switch). Bigger machine: `AGENT_TEAM_BRAIN=brain8b` makes Qwen
   the models lack. Everything the team could not confirm goes under "Not confirmed" in the report.
 - **Search.** General web search engines block scripted queries (DuckDuckGo and Mojeek returned bot
   walls from the cloud machine this was built on). The team does not try to get around bot checks;
-  it uses sources that offer APIs (Hugging Face, Hacker News, arXiv, PyPI, Wikipedia pages, any
-  URL) and the real browser. On your own connection DuckDuckGo may work; the `web` source tries it.
+  it uses sources that offer APIs (Hugging Face, Hacker News, arXiv, OpenAlex for scholarly papers in every field,
+  PyPI, Wikipedia pages, any URL) and the real browser. On your own connection DuckDuckGo may work; the `web` source
+  tries it. OpenAlex needs no key; its anonymous budget is per IP address and per day (the cloud machine's ran out),
+  and an optional free key in `OPENALEX_API_KEY` gives you your own.
 - **Sites.** No logins unless you allow a site per task; no sign-ups ever; CAPTCHAs are not solved.
 - **Code isolation.** Code runs as your user in the run's `work/` folder with a timeout. It is not a
   container. The guard stops deleting/sending/spending code from running without your yes.
