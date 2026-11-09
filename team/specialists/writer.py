@@ -267,6 +267,12 @@ def run(goal, task, board, needs):
     # what it flags or finds missing (one round), and the critic checks the fixed report, so the ticks are about it
     todo = "\n".join(f"- {i}" for i in getattr(board, "checklist", []))
     checklist, unordered, flagged = critique(todo, results_text, text)
+    if sources:  # a report built from sources: sentences from memory are flagged in code too
+        loose = [x for x in ungrounded(text, results_text + "\n" + goal) if x not in flagged]
+        if loose:
+            board.log("critic", "ungrounded", f"{len(loose)} sentence(s) share few words with the verified results: "
+                      + " | ".join(x[:70] for x in loose[:3]))
+            flagged = flagged + loose[:10]
     checklist = mark_echo(goal, text, checklist, board)
     open_qs = open_questions(board)
     checklist = mark_open(checklist, open_qs, board)
@@ -369,6 +375,21 @@ def mark_echo(goal, text, checklist, board):
 def _stems(t):
     return {w[:4] for w in re.findall(r"[a-z]{4,}", (t or "").lower())} - {"what", "whic", "wher", "ther", "abou", "from",
                                                                           "with", "does", "that", "this", "have"}
+
+
+def ungrounded(text, verified, min_stems=6, share=0.3):
+    """Sentences of a report built from sources that make a substantial claim (6+ content words) sharing under 30% of
+    their words with the verified results: written from the model's memory. (The single researcher's battery report
+    gave four paragraphs on battery management systems and material quality from one verified claim about modelling,
+    said it was 'based on the verified results', and the critic flagged nothing.)"""
+    have = _stems(verified)
+    out = []
+    for block in (text or "").split("\n## ")[0].split("\n"):
+        for sent in re.split(r"(?<=[.!?])\s+", block.strip(" |*-#")):
+            mine = _stems(sent)
+            if len(mine) >= min_stems and len(mine & have) / len(mine) < share:
+                out.append(sent.strip())
+    return out
 
 
 def open_questions(board):
