@@ -82,7 +82,7 @@ def ask_code(skill, x):
     raise ValueError(skill)
 
 
-def run(skill):
+def run(skill, out_name=None):
     inc = INCUMBENT[skill]
     _, _, te = data(skill)
     t0 = time.time()
@@ -93,7 +93,7 @@ def run(skill):
     res = {"skill": skill, "incumbent": member, "test": round(acc, 4), "ms_per_call": round(sec * 1000, 1), "n": len(te),
            "errors": [(x, y, p) for (x, y), p in zip(te, preds) if not S.score(skill, p, y)]}
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"incumbent_{skill}.json").write_text(json.dumps(res, indent=1))
+    (OUT / (out_name or f"incumbent_{skill}.json")).write_text(json.dumps(res, indent=1))
     print(f"{skill}: {member} test {acc:.3f} ({sec * 1000:.0f} ms/call)", flush=True)
     return res
 
@@ -102,8 +102,7 @@ if __name__ == "__main__":
     for s in sys.argv[1:]:  # skill, or skill=member to measure another member on the same inputs (not the incumbent)
         if "=" in s:
             sk, member = s.split("=", 1)
-            INCUMBENT[sk] = member
-            res = run(sk)
-            (OUT / f"incumbent_{sk}.json").rename(OUT / f"alt_{sk}_{member}.json")
+            INCUMBENT[sk] = member  # its own file: the incumbent's measurement is never overwritten
+            run(sk, out_name=f"alt_{sk}_{member}.json")
         else:
             run(s)

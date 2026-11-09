@@ -1,0 +1,129 @@
+{
+ "skill": "answers_q",
+ "incumbent": "juror_brain = brain4b",
+ "test": 0.84,
+ "ms_per_call": 1789.1,
+ "n": 150,
+ "errors": [
+  [
+   "QUESTION: I need the membership fee of Sorpel Hotel.\nFACT: Listed membership fee for Sorpel Hotel: mit",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Which capacity does Loul 8 have?\nFACT: context length (Loul 8): apache-2.0",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the download count of Sorpel.\nFACT: download count (Sorpel): 3.9 stars",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Which download count does Torfen have?\nFACT: Listed download count for Torfen: 3.9 stars",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Sorlobex Hotel: what is its opening year?\nFACT: Listed opening year for Sorlobex Hotel: bsd-3-clause",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Renrenqui Hotel: what is its opening year?\nFACT: opening year (Renrenqui Hotel): mit",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Zumidan: what is its opening year?\nFACT: opening year (Zumidan): cc-by-4.0",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Renqui: what is its top speed?\nFACT: An article compares the top speed of Renqui with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the opening year of Naifenbex-7B.\nFACT: Naifenbex-7B's opening year stands at 1.13.2.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Bexulbex: what is its context length?\nFACT: context length (Renrentor): 2,330",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Loka Pro have?\nFACT: Loka Pro's download count stands at 4.5 stars.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Which top speed does Renka 5 have?\nFACT: Renka 5's top speed stands at bsd-3-clause.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: I need the capacity of Dansorsor.\nFACT: Listed capacity for Dansorsor: 7.20.7",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Which context length does Sorvasor 3 have?\nFACT: context length (Sorvasor 3): cc-by-4.0",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Which opening year does Naiva have?\nFACT: An article compares the opening year of Naiva with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Danbexva-1B have?\nFACT: Listed download count for Danbexva-1B: 3.9 stars",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Miqui-2B: what is its weight?\nFACT: Listed weight for Miqui-2B: \u20ac447",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: I need the top speed of Kaquimi.\nFACT: Kaquimi's top speed stands at apache-2.0.",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Vadanva 3: what is its capacity?\nFACT: An article compares the capacity of Vadanva 3 with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Mitor have?\nFACT: Listed download count for Mitor: \u00a3208",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Losorka: what is its top speed?\nFACT: top speed (Sorlo 8): 357",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Tordanzu-1B: what is its weight?\nFACT: Listed weight for Tordanzu-1B: \u20ac20",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: I need the download count of Quizu Pro.\nFACT: Listed download count for Quizu Pro: bsd-3-clause",
+   "yes",
+   "no"
+  ],
+  [
+   "QUESTION: Which capacity does Sorul have?\nFACT: Listed capacity for Sorul: cc-by-4.0",
+   "yes",
+   "no"
+  ]
+ ]
+}
