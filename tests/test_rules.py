@@ -1314,3 +1314,16 @@ def test_an_instruction_no_source_answered_is_not_ticked_done(tmp_path):
              {"instruction": "what slows the degradation", "done": True}]
     out = mark_open(ticks, open_qs)
     assert out[0]["done"] is True and out[1]["done"] is False and "no source" in out[1]["why"]
+
+
+def test_a_sentence_from_memory_in_a_sourced_report_is_flagged():
+    """The single researcher's battery report: four paragraphs on battery management systems from one verified claim
+    about modelling, 'based on the verified results', and nothing flagged."""
+    from team.specialists.writer import ungrounded
+    verified = ("- Lithium-ion battery degradation is caused by SEI growth, lithium plating and electrolyte "
+                "decomposition (quote: ...)\n- Degradation depends on design factors and operating conditions")
+    report = ("SEI growth, lithium plating and electrolyte decomposition cause lithium-ion battery degradation.\n"
+              "Effective battery management systems monitor and control charge cycles, keeping optimal operating "
+              "temperatures and humidity to extend service life considerably.\n## Sources\n[1] x")
+    flagged = ungrounded(report, verified)
+    assert len(flagged) == 1 and flagged[0].startswith("Effective battery management")
