@@ -306,11 +306,14 @@ NOTHING_VERIFIED = ("The team could not confirm an answer to this, so none is gi
 
 
 def nothing_verified(goal, board, facts):
-    """Every step that ran before the writer failed, no fact was verified, and the task hands over no text."""
+    """Every step that ran before the writer failed, and the task hands over no text. (A failed step's facts do not
+    count: a researcher step that failed had still checked some facts one by one, and the writer then wrote a report
+    of empty step headings.)"""
     from ..guard import split_material
     ran = [s for s in board.steps() if s["agent"] != "writer" and s.get("verdict")]
-    return bool(ran) and not facts and not split_material(goal)[1] \
-        and all(s["verdict"] not in ("PASS", "REROUTED") for s in ran)
+    passed = {s["id"] for s in ran if s["verdict"] in ("PASS", "REROUTED")}
+    return bool(ran) and not passed and not split_material(goal)[1] \
+        and not [f for f in facts if f.get("step") in passed]
 
 
 def finish(text, board, results_text, sources, checklist, unordered, flagged, fixes):

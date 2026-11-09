@@ -772,3 +772,20 @@ def test_research_can_run_experiments_and_do_math_not_only_read(tmp_path, monkey
     src = out["facts"][0]["url"]
     assert src.startswith("experiment:") and "RESULT: insertion sort mean time = 3.1 us" in out["corpus"][src]
     assert verifier.quote_in(out["facts"][0]["quote"], out["corpus"][src])
+
+
+def test_several_quoted_items_are_each_checked_on_the_page_and_a_failed_step_s_facts_verify_nothing(tmp_path):
+    """The browser copied the right three quotes one per line; on the page their authors and tags sit between them,
+    so the evidence was 'not on the page'. And a failed researcher step's checked facts had kept the writer writing
+    a report of empty step headings."""
+    from team.board import Board
+    from team.specialists.verifier import quote_in
+    from team.specialists import writer
+    page = "“Quote one.” by A (about)\nTags: x y\n“Quote two.” by B (about)\nTags: z\n“Quote three.” by C"
+    assert quote_in("“Quote one.”\n“Quote two.”\n“Quote three.”", page)
+    assert not quote_in("“Quote one.”\n“Quote four.”", page)
+    b = Board(tmp_path, echo=False)
+    b.add_step({"id": "s1r", "agent": "researcher", "task": "find quotes", "needs": []})
+    b.update_step("s1r", verdict="FAIL", status="failed", feedback="no listed item meets the task")
+    b.add_fact("s1r", "Albert Einstein is quoted", "https://q", "Albert Einstein", "supported", "ok")
+    assert writer.nothing_verified("List the first three quotes on the site.", b, b.facts(status="supported"))
