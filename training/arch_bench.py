@@ -4,10 +4,12 @@ without changing what it writes?
     python training/arch_bench.py
 Real prompts the hive sent in the development bench run (runs/bench/new2: a researcher extraction, a critic, a writer,
 a verifier, the coder), replayed with greedy decoding under three engine settings, each in a fresh process:
-  base    the attention memory (KV cache) in 16-bit, plain decoding
-  kv8     KV cache in 8-bit with flash attention: less RAM per token of context
-  kv8+lu  kv8, plus prompt-lookup decoding: the model's next tokens are guessed from text already in the prompt (a
-          quote, a claim, code being fixed) and checked in one pass, so copied spans cost less; no extra model, no RAM
+  base          the engine as it runs today: KV cache in 8-bit with flash attention, llama.cpp's repacked weights
+  kv16          the KV cache in 16-bit
+  base+lu       plus prompt-lookup decoding: next tokens guessed from text already in the prompt (a quote, a claim,
+                code being fixed) and checked in one pass; no extra model, no RAM
+  norepack      without llama.cpp's extra repacked copy of the weights (the 4B: 6.1 -> 3.6 GB resident)
+  norepack+lu   both
 Measured per call: seconds, generated tokens per second, whether the output is word for word the base output; per
 setting: the process's peak resident memory. A setting is worth switching on only if every output is unchanged (or
 only differs where the base output itself was cut off) and it is faster or smaller.
@@ -26,6 +28,17 @@ OUT = ROOT / "training" / "reports" / "arch_bench.json"
 PICK = [("explain", "researcher"), ("explain", "critic"), ("chart", "writer"), ("lookup", "verifier"), ("fib", "coder")]
 
 
+def decision(out):
+    """What a reply decides: a JSON reply's verdict/route/ok/meets and the keys it fills; else its numbers."""
+    import re
+    from team.llm import parse_json
+    d = parse_json(out or "")
+    if isinstance(d, dict):
+        return tuple(sorted((k, str(v)[:40]) for k, v in d.items() if k in ("verdict", "route", "ok", "meets", "answer")
+                            or not isinstance(v, (str, list, dict))))
+    return tuple(re.findall(r"\d[\d.,]*", out or ""))[:20]
+
+
 def calls():
     out = []
     for task, role in PICK:
@@ -41,8 +54,9 @@ def calls():
 
 
 def one(setting):
-    os.environ["AGENT_TEAM_KV"] = "f16" if setting == "base" else "q8"
-    os.environ["AGENT_TEAM_LOOKUP"] = "1" if setting.endswith("lu") else "0"
+    os.environ["AGENT_TEAM_KV"] = "f16" if setting == "kv16" else "q8"
+    os.environ["AGENT_TEAM_LOOKUP"] = "1" if "lu" in setting else "0"
+    os.environ["AGENT_TEAM_REPACK"] = "0" if "norepack" in setting else "1"
     from team import llm
     res = []
     for c in calls():
@@ -60,7 +74,7 @@ def one(setting):
 
 def main():
     got = {}
-    for s in ("base", "kv8", "kv8+lu"):
+    for s in ("base", "kv16", "base+lu", "norepack", "norepack+lu"):
         p = subprocess.run([sys.executable, __file__, "one", s], capture_output=True, text=True, cwd=ROOT)
         line = [ln for ln in p.stdout.splitlines() if ln.startswith("{")]
         if not line:
@@ -71,11 +85,12 @@ def main():
     summary = {}
     for s, r in got.items():
         same = [c["output"] == base.get((c["task"], c["role"])) for c in r["calls"]]
+        decided = [decision(c["output"]) == decision(base.get((c["task"], c["role"]), "")) for c in r["calls"]]
         summary[s] = {"peak_rss_gb": r["peak_rss_gb"], "seconds": round(sum(c["seconds"] for c in r["calls"]), 1),
-                      "same_output": f"{sum(same)}/{len(same)}",
+                      "same_output": f"{sum(same)}/{len(same)}", "same_decision": f"{sum(decided)}/{len(decided)}",
                       "per_call": [{k: c[k] for k in ("task", "role", "seconds", "tok_per_s")} for c in r["calls"]]}
         print(f"{s}: {summary[s]['seconds']} s for {len(same)} calls, peak {r['peak_rss_gb']} GB, "
-              f"same output as base {summary[s]['same_output']}", flush=True)
+              f"same output as base {summary[s]['same_output']}, same decision {summary[s]['same_decision']}", flush=True)
     OUT.write_text(json.dumps({"summary": summary, "raw": got}, indent=1))
 
 

@@ -233,6 +233,21 @@ def _set_lora(name, llm_, lora, cvec=None):
     _active_lora[name] = state
 
 
+def _no_repack(off):
+    """llama.cpp's extra CPU buffers hold a repacked copy of the weights; off, only the memory-mapped file is used."""
+    import llama_cpp.llama_cpp as C
+    if not hasattr(C, "_hive_default_params"):
+        C._hive_default_params = C.llama_model_default_params
+    if off:
+        def params():
+            p = C._hive_default_params()
+            p.use_extra_bufts = False
+            return p
+        C.llama_model_default_params = params
+    else:
+        C.llama_model_default_params = C._hive_default_params
+
+
 def _gguf_model(specialist, adapter):
     from huggingface_hub import hf_hub_download
     from llama_cpp import Llama
@@ -254,6 +269,7 @@ def _gguf_model(specialist, adapter):
         if config.LOOKUP:
             from llama_cpp.llama_speculative import LlamaPromptLookupDecoding
             kv["draft_model"] = LlamaPromptLookupDecoding(num_pred_tokens=10)
+        _no_repack(not config.REPACK)
         _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX_BY_MODEL.get(name, config.GGUF_CTX),
                             n_threads=config.THREADS, n_batch=512, use_mmap=True, verbose=False, **kv)
         _active_lora[name] = None
