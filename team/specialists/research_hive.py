@@ -61,8 +61,18 @@ def relevant(q, results, board=None):
     texts = [f"{r.get('title', '')} | {str(r.get('snippet', ''))[:200]}" for r in results]
     if use.on("result_relevant"):
         return [a == "yes" for a in use.ask_all("result_relevant", [f"QUESTION: {q}\nRESULT: {t}" for t in texts], board)]
-    w = words(q)
-    return [not w or len(w & words(t)) / len(w) >= 0.5 for t in texts]
+    w, names = words(q), subjects(q)
+    # a result that names what the question is about counts: "Compare the speed of SQLite and DuckDB for analytics on
+    # a laptop" has six content words, so Wikipedia's SQLite article (one of them) was dropped with every other result
+    return [not w or bool(names & words(t)) or len(w & words(t)) / len(w) >= 0.5 for t in texts]
+
+
+def subjects(q):
+    """The names in a question (SQLite, DuckDB, GPT-2, Webb): capitalised words after its first, or words with digits
+    or inner capitals."""
+    toks = re.findall(r"[A-Za-z][\w.+-]*", q or "")
+    out = {t for i, t in enumerate(toks) if (i > 0 and t[0].isupper()) or re.search(r"\d|[a-z][A-Z]", t)}
+    return {t.lower().strip(".") for t in out} - STOP - {"arnav", "i"}
 
 
 def answered(facts, board=None):
