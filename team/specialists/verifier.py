@@ -152,9 +152,12 @@ def verify(step, result, board, workdir):
         for f in result.get("facts", []):
             claim, quote, url = str(f.get("claim", "")), str(f.get("quote", "")), str(f.get("url", ""))
             if not quote_in(quote, corpus.get(url, "")) or not url.startswith("http"):
-                # cited the wrong source, or a search listing: credit the page that really contains the quote
-                url = (next((u for u, t in corpus.items() if u.startswith("http") and quote_in(quote, t)), None)
-                       or next((u for u, t in corpus.items() if quote_in(quote, t)), None) or url)
+                # cited the wrong source, or a search listing: credit the page that really contains the quote; of several,
+                # the one read in full (a 250-character search snippet of another article had taken the credit for a
+                # quote from the Wikipedia article the researcher read)
+                pages = [u for u, t in corpus.items() if u.startswith("http") and quote_in(quote, t)]
+                url = (max(pages, key=lambda u: len(corpus[u])) if pages else None) \
+                    or next((u for u, t in corpus.items() if quote_in(quote, t)), None) or url
             if not quote_in(quote, corpus.get(url, "") or all_text):
                 found = _rescue_quote(claim, corpus, board)
                 if not found:
