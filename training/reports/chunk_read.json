@@ -1,0 +1,51 @@
+{
+ "summary": {
+  "inputs": 2,
+  "chunk_chars": 1800,
+  "big_checked": 3,
+  "small_checked": 1,
+  "big_checked_also_found": 1,
+  "big_seconds": 77.8,
+  "small_seconds": 25.6,
+  "big_facts": 4,
+  "small_facts": 2,
+  "inputs_where_small_found_every_4b_fact": 0,
+  "inputs_where_4b_had_checked_facts": 2,
+  "inputs_where_small_found_none_but_4b_did": 1,
+  "inputs_where_only_small_had_checked_facts": 0
+ },
+ "rows": [
+  {
+   "task": "What licence does google-bert/bert-base-cased use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 1899,
+   "chunks": 2,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 48.4,
+   "small_facts": 1,
+   "small_checked": 1,
+   "small_seconds": 14.2,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": [
+    "The model has 3,277,157 downloads"
+   ]
+  },
+  {
+   "task": "What is the latest version of django on PyPI, and what licence does it have?",
+   "chars": 451,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 29.4,
+   "small_facts": 1,
+   "small_checked": 0,
+   "small_seconds": 11.4,
+   "big_checked_also_found": 0,
+   "small_only": [],
+   "missed": [
+    "The latest version of Django on PyPI is 6.1.3"
+   ]
+  }
+ ]
+}
