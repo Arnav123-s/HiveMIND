@@ -1,0 +1,8 @@
+{
+ "skill": "de_grammar",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.4375,
+ "test": 0.4666666666666667,
+ "trainable_params": 0
+}
