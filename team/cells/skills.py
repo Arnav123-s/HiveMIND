@@ -671,6 +671,10 @@ LEARNED = {
     "learned_item": dict(part="juror: does a listed item meet the task (learned from the juror's own decisions)",
                          labels=["yes", "no"], member="juror_brain",
                          instr="Does this ITEM meet every requirement of the TASK, judged from its SOURCE LINE? yes or no"),
+    "learned_line": dict(part="condenser: keep a page line for the task? (learned from the condenser's own choices; "
+                              "asked about every line of a page at once on the cell pool)",
+                         labels=["keep", "drop"], member="condenser",
+                         instr="Does this LINE of a page matter for the TASK? keep or drop"),
 }
 for _k, _v in LEARNED.items():
     SKILLS[_k] = dict(part=_v["part"], labels=_v["labels"], instr=_v["instr"], gen=None, learned=True, new=True)
@@ -718,7 +722,8 @@ GROUPS = {  # the gate routes by the kind of input; the group's organizer runs e
     "order": ["split_orders", "orders_spend", "orders_delete", "orders_send", "orders_login", "orders_signup",
               "orders_any", "family_topic", "task_kind"],
     "step": ["route_step", "pick_source", "family_topic"],
-    "failure": ["next_move"], "claim": ["claim_support", "learned_claim"], "item": ["learned_item"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
+    "failure": ["next_move"], "claim": ["claim_support", "learned_claim"], "item": ["learned_item"],
+    "line": ["learned_line"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
     "json": ["json_repair"], "licence": ["licence_open"],
     "research": ["answers_q", "claims_agree", "result_relevant"],
 }
