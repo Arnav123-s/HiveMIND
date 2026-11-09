@@ -9,6 +9,7 @@
     python -m team add "task"             drop a task into the inbox for `serve`
     python -m team dream [--no-train] [--rehearse N]   replay past runs, learn lessons, retrain weights
     python -m team remember "fact"        add to your profile (how you like things done)
+    python -m team grow [--min 200]       grow new cells from the hive's own logged decisions (team/cells/learn.py)
     python -m team stop                   KILL SWITCH: stop every running task now (also Ctrl+C, web Stop, inbox/STOP)
     python -m team smiths [cycle ROLE|gaps|tests]   the smith swarm: ledger, one improvement cycle, gaps, field tests
     python -m team evolve ROLE [--variants 3] [--generations 1]   evolve a specialist's prompt (gated)
@@ -17,7 +18,7 @@ import argparse
 import json
 import sys
 
-COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api"}
+COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow"}
 
 
 def main():
@@ -69,6 +70,10 @@ def main():
             from .dream import dream
             n = int(rest[rest.index("--rehearse") + 1]) if "--rehearse" in rest else 2
             return dream(train="--no-train" not in rest, rehearse_n=n)
+        if cmd == "grow":  # CPU-heavy training: its own process, like the other trainers
+            import subprocess
+            from . import config
+            return subprocess.run([sys.executable, str(config.ROOT / "training" / "cells_grow.py"), *rest]).returncode
         if cmd == "remember":
             from . import memory
             memory.remember(" ".join(rest))

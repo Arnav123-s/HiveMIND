@@ -70,6 +70,11 @@ def data(skill):
     goes to dev, never to train. A dev split with the training words saturates at 1.0 and cannot pick a winner."""
     if skill in _DATA:
         return _DATA[skill]
+    from team.cells import learn
+    learn.register()
+    if S.SKILLS[skill].get("learned"):  # a cell grown from the hive's own logged decisions: split by time
+        _DATA[skill] = learn.split(skill)
+        return _DATA[skill]
     pool = S.examples(skill, "train", N["train"] + N["dev"] * 2)
     te = S.examples(skill, "test", N["test"])
     from collections import Counter

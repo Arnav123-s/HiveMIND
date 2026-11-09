@@ -101,8 +101,14 @@ def check_fact(claim, quote):
     if use.on("claim_support"):  # one small cell trained only on "does this quote state this claim"
         v = use.ask("claim_support", f"CLAIM: {claim}\nQUOTE: {quote}")
         return v == "SUPPORTED", f"claim_support cell: {v}"
+    from ..cells import learn
+    text = f"CLAIM: {claim}\nQUOTE: {quote}"
+    v = learn.decide("learned_claim", text)  # a cell grown from the verifier's own decisions, when it is sure
+    if v:
+        return v == "SUPPORTED", f"learned_claim cell: {v}"
     data, raw = llm.chat_json("verifier", fact_messages(claim, quote), max_new_tokens=100)
     v = str((data or {}).get("verdict", "")).upper() if isinstance(data, dict) else ""
+    learn.record("learned_claim", text, v)  # the hive learns from its own work (memory/decisions/)
     return v == "SUPPORTED", str((data or {}).get("reason", raw[:100]) if isinstance(data, dict) else raw[:100])
 
 
@@ -179,12 +185,20 @@ def verify(step, result, board, workdir):
             if why:
                 dropped.append(f"{it} ({why})")
                 continue
-            data, _ = llm.chat_json("juror_brain", [
-                {"role": "system", "content": "Decide if ONE item meets every requirement of the task, using only its "
-                 "source line. Size and gating were already checked in code and passed: do not judge them again "
-                 "('gated False' means NOT gated). Judge only the other requirements (e.g. license, type). "
-                 'Reply with JSON only: {"meets": true} or {"meets": false, "why": "..."}'},
-                {"role": "user", "content": f"TASK: {step['task']}\nITEM: {it}\nSOURCE LINE: {ev}"}], max_new_tokens=80)
+            from ..cells import learn
+            item_text = f"TASK: {step['task']}\nITEM: {it}\nSOURCE LINE: {ev}"
+            said = learn.decide("learned_item", item_text)  # a cell grown from the juror's own decisions, when sure
+            if said:
+                data = {"meets": said == "yes", "why": "learned_item cell"}
+            else:
+                data, _ = llm.chat_json("juror_brain", [
+                    {"role": "system", "content": "Decide if ONE item meets every requirement of the task, using only its "
+                     "source line. Size and gating were already checked in code and passed: do not judge them again "
+                     "('gated False' means NOT gated). Judge only the other requirements (e.g. license, type). "
+                     'Reply with JSON only: {"meets": true} or {"meets": false, "why": "..."}'},
+                    {"role": "user", "content": item_text}], max_new_tokens=80)
+                if isinstance(data, dict) and isinstance(data.get("meets"), bool):
+                    learn.record("learned_item", item_text, "yes" if data["meets"] else "no")
             if isinstance(data, dict) and data.get("meets") is False:
                 dropped.append(f"{it} ({str(data.get('why', ''))[:80]})")
             else:

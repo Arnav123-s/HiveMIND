@@ -663,6 +663,18 @@ for _k, _v in {"spend": "buy, pay, book, order, rent, subscribe, donate", "delet
                                   instr=f"Does the user ORDER the team to {_v}? Nouns, questions and negations are not orders. yes or no")
 
 
+# cells the hive grows from its own logged decisions (team/cells/learn.py): no generator, the data is the log
+LEARNED = {
+    "learned_claim": dict(part="verifier: does a quote state a claim (learned from the verifier's own decisions)",
+                          labels=["SUPPORTED", "UNSUPPORTED"], member="verifier",
+                          instr="Does the QUOTE state exactly what the CLAIM says?"),
+    "learned_item": dict(part="juror: does a listed item meet the task (learned from the juror's own decisions)",
+                         labels=["yes", "no"], member="juror_brain",
+                         instr="Does this ITEM meet every requirement of the TASK, judged from its SOURCE LINE? yes or no"),
+}
+for _k, _v in LEARNED.items():
+    SKILLS[_k] = dict(part=_v["part"], labels=_v["labels"], instr=_v["instr"], gen=None, learned=True, new=True)
+
 SKILLS["orders_any"] = dict(part="guard: is ANY risky action ordered (new skill made by the factory)", labels=["yes", "no"],
                            gen=gen_orders_any, new=True,
                            instr="Does the user ORDER the team to buy, pay, delete, send, post, log in or sign up? "
@@ -672,6 +684,10 @@ SKILLS["orders_any"] = dict(part="guard: is ANY risky action ordered (new skill 
 def examples(skill, split, n, seed=0):
     """n labelled (input, target) pairs; distinct inputs where the pool allows."""
     s = SKILLS[skill]
+    if s.get("learned"):  # a cell grown from logged decisions: its examples are the log (oldest train, newest test)
+        from . import learn
+        tr, dv, te = learn.split(skill)
+        return (te if split == "test" else tr + dv)[:n]
     r = random.Random(f"{skill}:{split}:{seed}")
     out, seen, per = [], set(), {}
     cap = -(-n // len(s["labels"])) if "labels" in s else n  # balanced labels: no class can crowd out the rest
@@ -702,7 +718,7 @@ GROUPS = {  # the gate routes by the kind of input; the group's organizer runs e
     "order": ["split_orders", "orders_spend", "orders_delete", "orders_send", "orders_login", "orders_signup",
               "orders_any", "family_topic", "task_kind"],
     "step": ["route_step", "pick_source", "family_topic"],
-    "failure": ["next_move"], "claim": ["claim_support"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
+    "failure": ["next_move"], "claim": ["claim_support", "learned_claim"], "item": ["learned_item"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
     "json": ["json_repair"], "licence": ["licence_open"],
     "research": ["answers_q", "claims_agree", "result_relevant"],
 }
@@ -729,7 +745,8 @@ _GATE_CACHE = {}
 def gen_gate(split, r):
     labels = SKILLS["gate"]["labels"]
     g = r.choice(labels)
-    member = r.choice([k for k in SKILLS if group(k) == g and k != "gate"])
+    member = r.choice([k for k in SKILLS if group(k) == g and k != "gate" and not SKILLS[k].get("learned")]
+                      or [k for k in SKILLS if group(k) == g and k != "gate"])
     key = (member, split)
     if key not in _GATE_CACHE:
         _GATE_CACHE[key] = examples(member, split, 150 if split == "train" else 40, seed=5)
