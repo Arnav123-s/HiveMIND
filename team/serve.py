@@ -7,6 +7,7 @@ One process, one queue, models loaded once:
 - the inbox: drop a .md or .txt file into inbox/ (or `python -m team add "task"`); the report lands in
   outbox/<name>.REPORT.md and the task file moves to inbox/done/
 - the schedule: recurring tasks in memory/schedule.json, e.g. [{"task": "...", "every_hours": 24}]
+- open long projects (team/project.py) are worked on whenever nothing else is asked, and resume after a restart
 - when idle, plugged in, cool and not busy: dreaming (lessons, weight edits) once a day and growing cells from the
   hive's own decisions (team/cells/learn.py)
 Device health (team/health.py): low priority, one core left free, models unloaded after 10 idle minutes, heavy work
@@ -142,6 +143,10 @@ def serve(port=8766, host="127.0.0.1", poll=10, dream_every_hours=24, idle_minut
             for name, job in list(waiting.items()):
                 if job.status in ("done", "stopped", "error"):
                     write_outbox(name, waiting.pop(name))
+            if not any(j.status in ("queued", "running") for j in swarm.jobs.values()):
+                from . import project  # open projects are worked on whenever nothing else is asked
+                for p in project.open_projects()[:1]:
+                    project.launch(p, swarm, log=log)
             busy = any(j.status in ("queued", "running") for j in swarm.jobs.values())
             if busy:
                 last_work, loaded = time.time(), True

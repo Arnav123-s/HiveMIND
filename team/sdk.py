@@ -43,8 +43,9 @@ def body(report):
 
 
 class Job:
-    def __init__(self, swarm, jid, task, until_done=0, allow_login=(), context="", created=None):
+    def __init__(self, swarm, jid, task, until_done=0, allow_login=(), context="", created=None, workdir=None):
         self.swarm, self.id, self.task, self.until_done = swarm, jid, task, until_done
+        self.workdir = str(workdir) if workdir else None  # a project's shared workspace (else each round's own)
         self.allow_login, self.context = list(allow_login), context
         self.dir = swarm.root / jid
         self.status, self.error, self.rounds = "queued", "", []
@@ -67,6 +68,10 @@ class Job:
 
     @property
     def files(self):
+        if self.workdir:  # files this job made or changed in the shared workspace
+            w = Path(self.workdir)
+            return [str(p) for p in sorted(w.rglob("*")) if p.is_file() and not p.name.startswith(".")
+                    and p.stat().st_mtime >= self.created - 1] if w.exists() else []
         return [str(p) for d in self._round_dirs() if (d / "work").exists()
                 for p in sorted((d / "work").rglob("*")) if p.is_file() and not p.name.startswith(".")]
 
@@ -107,7 +112,8 @@ class Job:
 
     def to_dict(self, report=True):
         d = {"id": self.id, "task": self.task, "status": self.status, "error": self.error, "created": self.created,
-             "finished": self.finished, "until_done": self.until_done, "rounds": self.rounds, "dir": str(self.dir)}
+             "finished": self.finished, "until_done": self.until_done, "rounds": self.rounds, "dir": str(self.dir),
+             "workdir": self.workdir}
         if report and self.status in FINISHED:
             d |= {"report": self.report, "unmet": self.unmet, "files": self.files,
                   "pending_approvals": self.pending_approvals}
@@ -121,7 +127,8 @@ class Job:
     @classmethod
     def load(cls, swarm, path):
         d = json.loads((path / "job.json").read_text())
-        j = cls(swarm, d["id"], d["task"], d.get("until_done", 0), d.get("allow_login", ()), created=d.get("created"))
+        j = cls(swarm, d["id"], d["task"], d.get("until_done", 0), d.get("allow_login", ()), created=d.get("created"),
+                workdir=d.get("workdir"))
         j.status = d["status"] if d["status"] in FINISHED else "error"  # a job cut off by a restart did not finish
         j.error = d.get("error") or ("" if d["status"] in FINISHED else "the swarm stopped before this job finished")
         j.rounds, j.finished, j.best = d.get("rounds", []), d.get("finished"), d.get("best")
@@ -140,7 +147,7 @@ class Swarm:
         self.approve, self.workers = approve, max(1, int(workers))
         self.jobs, self._q, self._lock, self._threads = {}, queue.Queue(), threading.Lock(), []
 
-    def submit(self, task, until_done=0, allow_login=(), context=""):
+    def submit(self, task, until_done=0, allow_login=(), context="", workdir=None):
         task = (task or "").strip()
         if not task:
             raise ValueError("empty task")
@@ -149,7 +156,7 @@ class Swarm:
         if why:
             raise ValueError(why)
         jid = time.strftime("%Y%m%d-%H%M%S-") + secrets.token_hex(3)
-        job = Job(self, jid, task, max(0, int(until_done)), allow_login, context)
+        job = Job(self, jid, task, max(0, int(until_done)), allow_login, context, workdir=workdir)
         job._save()
         (job.dir / "TASK.md").write_text(task + "\n")
         with self._lock:
@@ -205,7 +212,7 @@ class Swarm:
             rdir = job.dir / f"r{n}"
             # the order is always his task as written: an earlier round's answer is context, never read as orders
             out = Hive(job.task, rdir, approve=self.approve, allow_login=job.allow_login, context=context,
-                       triage=n == 1).run()
+                       triage=n == 1, **({"work": job.workdir} if job.workdir else {})).run()
             report = (rdir / "REPORT.md").read_text() if (rdir / "REPORT.md").exists() else out.get("report", "")
             left = unmet(report)
             job.rounds.append({"dir": rdir.name, "unmet": left, "pending_approvals": out.get("pending_approvals", [])})

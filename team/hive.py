@@ -27,7 +27,7 @@ def retract_failed(board, step, why):
 
 
 class Hive:
-    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True):
+    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True, work=None):
         """context: earlier messages of a conversation (an API or chat client). The planner and writer read it; the
         guard and the checklist never do, so an old message is never an order."""
         self.goal = goal.strip()
@@ -39,7 +39,7 @@ class Hive:
         self.board.goal = self.goal
         self.board.context = self.context
         self.guard = Guard(self.board, approve, allow_login=allow_login, goal=self.goal, use_model=True)
-        self.work = self.dir / "work"
+        self.work = Path(work) if work else self.dir / "work"  # a project's workspace is shared by its milestones
         self.shots = self.dir / "screens"
         self.work.mkdir(parents=True, exist_ok=True)
         self.shots.mkdir(parents=True, exist_ok=True)

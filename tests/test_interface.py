@@ -13,8 +13,9 @@ class FakeHive:
     """Writes events and a report like the hive. The first round leaves one instruction undone."""
     calls = []
 
-    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True):
+    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True, work=None):
         self.goal, self.dir, self.context, self.triage = goal, run_dir, context, triage
+        self.work = Path(work) if work else None
         FakeHive.calls.append(self)
 
     def run(self):
@@ -27,8 +28,9 @@ class FakeHive:
         first = len(FakeHive.calls) % 2 == 1
         rep = "Answer: 42.\n\n## Your instructions\n- ✅ find it\n" + ("- ❌ give two lines - one line only\n" if first else "- ✅ give two lines\n")
         (self.dir / "REPORT.md").write_text(rep)
-        (self.dir / "work").mkdir(exist_ok=True)
-        (self.dir / "work" / "out.csv").write_text("a,b\n1,2\n")
+        w = self.work or self.dir / "work"
+        w.mkdir(parents=True, exist_ok=True)
+        (w / ("out.csv" if not self.work else f"step{len(FakeHive.calls)}.py")).write_text("a,b\n1,2\n")
         return {"dir": str(self.dir), "report": rep, "pending_approvals": []}
 
 
@@ -276,3 +278,45 @@ def test_chat_apps_converse_too(swarm, monkeypatch):
         assert json.loads(out)["choices"][0]["message"]["content"].startswith("Answer: 42.") and len(FakeHive.calls) == 1
     finally:
         srv.shutdown()
+
+
+
+def test_a_long_project_works_milestone_by_milestone_in_one_workspace_and_resumes(swarm, tmp_path, monkeypatch):
+    from team import converse, project
+    monkeypatch.setattr(project, "DIR", tmp_path / "projects")
+    monkeypatch.setattr(project.llm, "chat_json", lambda *a, **k: ({"milestones": [
+        {"title": "Parser", "task": "Write parser.py with tests", "done_when": "tests pass"},
+        {"title": "CLI", "task": "Write cli.py using parser.py", "done_when": "it runs"}]}, ""))
+    assert project.big("Build me a command-line expense tracker app with tests")
+    assert not project.big("What is 17% of 300?")
+    p = project.Project.start("Build me a command-line expense tracker app with tests")
+    assert [m["title"] for m in p.milestones] == ["Parser", "CLI"] and p.status == "running"
+    p.milestones[0]["status"] = "done"  # as if the device turned off after the first milestone
+    p.milestones[0]["summary"] = "parser.py written, 4 tests pass"
+    p.save()
+    again = project.Project.load(p.id)
+    assert again.run(swarm, rounds=1, log=lambda m: None) == "done"
+    second = FakeHive.calls[0]
+    assert second.goal.startswith("Write cli.py") and "parser.py written" in second.context  # it built on the first
+    assert second.work == p.workspace and any(p.workspace.iterdir())  # files land in the shared workspace
+    assert "✅ CLI" in (p.dir / "PROJECT_REPORT.md").read_text()
+    said = converse.handle("Build me a small inventory website from scratch", [], lambda t, c: None,
+                           start_project=lambda g: project.Project.start(g))
+    assert said.kind == "project" and "Started project" in said.report and "1. Parser" in said.report
+
+
+def test_a_milestone_that_stays_undone_blocks_the_project_with_the_reason(tmp_path, monkeypatch):
+    from team import hive, project, sdk
+
+    class Stuck(FakeHive):
+        def run(self):
+            out = super().run()
+            (self.dir / "REPORT.md").write_text("Tried.\n\n## Your instructions\n- ❌ tests pass - 2 tests fail\n")
+            return out
+    monkeypatch.setattr(hive, "Hive", Stuck)
+    monkeypatch.setattr(project, "DIR", tmp_path / "projects")
+    monkeypatch.setattr(project.llm, "chat_json", lambda *a, **k: ({"milestones": [
+        {"title": "Parser", "task": "Write parser.py", "done_when": "tests pass"}]}, ""))
+    p = project.Project.start("Build me a parser library from scratch")
+    assert p.run(sdk.Swarm(root=tmp_path / "runs"), rounds=0, attempts=2, log=lambda m: None) == "blocked"
+    assert p.milestones[0]["attempts"] == 2 and "2 tests fail" in p.milestones[0]["summary"]

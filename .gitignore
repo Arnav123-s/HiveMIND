@@ -22,3 +22,4 @@ cells/registry.json.tmp
 # candidate weight edits under evaluation (a winner replaces the tracked adapters_gguf/<name>.gguf)
 adapters_gguf/*2.gguf
 memory-eval/
+projects/

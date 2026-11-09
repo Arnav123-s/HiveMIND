@@ -11,6 +11,8 @@
     python -m team dream [--no-train] [--rehearse N]   replay past runs, learn lessons, retrain weights
     python -m team remember "fact"        add to your profile (how you like things done)
     python -m team grow [--min 200]       grow new cells from the hive's own logged decisions (team/cells/learn.py)
+    python -m team project "goal"         a long project: milestones in their own workspace, resumable (team/project.py)
+    python -m team projects               every project and how far it got
     python -m team stop                   KILL SWITCH: stop every running task now (also Ctrl+C, web Stop, inbox/STOP)
     python -m team smiths [cycle ROLE|gaps|tests]   the smith swarm: ledger, one improvement cycle, gaps, field tests
     python -m team evolve ROLE [--variants 3] [--generations 1]   evolve a specialist's prompt (gated)
@@ -20,7 +22,7 @@ import json
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
-            "uninstall"}
+            "uninstall", "project", "projects"}
 
 
 def main():
@@ -65,6 +67,20 @@ def main():
         if cmd == "serve":
             from .serve import serve
             return serve(port=int(rest[rest.index("--port") + 1]) if "--port" in rest else 8766)
+        if cmd == "projects":
+            from .project import status_text
+            return print(status_text())
+        if cmd == "project":
+            from . import project, sdk
+            sw = sdk.Swarm(approve="never")
+            if rest and rest[0] == "--resume":
+                ps = project.open_projects() if len(rest) == 1 else [project.Project.load(rest[1])]
+                for p in ps:
+                    print(p.run(sw))
+                return 0
+            p = project.Project.start(" ".join(rest))
+            print(project.started_text(p))
+            return print(p.run(sw))
         if cmd == "install":
             from .service import install
             return install(dry_run="--dry-run" in rest)

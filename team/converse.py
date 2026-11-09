@@ -7,6 +7,8 @@ Every message is one of:
             by a small member, no job
 - work     (anything to look up, a website, code, files, a calculation, writing, a fact that must be right): a hive
             job with the conversation as context, running until nothing is left undone
+- project  (too big for one job: "build me an app ...", "a research study on ...", "over the next days"): milestones
+            worked through in the background, in their own workspace, resumed after a restart (team/project.py)
 The first message of a conversation is work unless it is only a greeting. When unsure, it is work: doing the job
 is never wrong, answering from memory can be.
 """
@@ -44,6 +46,9 @@ def route(msg, history=()):
         return "remember"
     if SMALL.match(msg):
         return "talk"
+    from .project import big
+    if big(msg):  # too big for one job: milestones, a workspace, days if needed
+        return "project"
     if not history:  # the opening prompt is the job
         return "work"
     convo = "\n".join(f"{'Arnav' if r == 'user' else 'Team'}: {t[:600]}" for r, t in list(history)[-6:])
@@ -55,8 +60,10 @@ def route(msg, history=()):
 
 
 def talk(msg, history=()):
+    from .project import status_text
     prof = memory.profile()
-    msgs = [{"role": "system", "content": TALK + (f"\nHis preferences:\n{prof}" if prof else "")}]
+    msgs = [{"role": "system", "content": TALK + (f"\nHis preferences:\n{prof}" if prof else "")
+             + f"\nHis projects right now:\n{status_text()}"}]
     msgs += [{"role": "user" if r == "user" else "assistant", "content": t[:2000]} for r, t in list(history)[-8:]]
     return llm.chat("writer", msgs + [{"role": "user", "content": msg}], max_new_tokens=300, adapter=False).strip()
 
@@ -87,10 +94,16 @@ class Reply:
         return iter(())
 
 
-def handle(msg, history, submit):
-    """One message of the conversation. submit(task, context) starts a job. Returns a Reply or the job."""
+def handle(msg, history, submit, start_project=None):
+    """One message of the conversation. submit(task, context) starts a job; start_project(goal) starts a long project
+    in the background and returns it. Returns a Reply or the job."""
     from . import stop
     r = route(msg, history)
+    if r == "project" and start_project:
+        from .project import started_text
+        return Reply(started_text(start_project(msg)), "project")
+    if r == "project":
+        r = "work"
     if r == "stop":
         stop.request("conversation: " + msg[:60])
         return Reply("Stopping every running job now. What each one finished is kept in its run folder.", "stop")
