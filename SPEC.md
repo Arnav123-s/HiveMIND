@@ -83,7 +83,7 @@ requirement in a way stated here. **Not done** = with the reason.
 | requirement | status | what / evidence |
 |---|---|---|
 | Fix every problem found | Done for every one found | each dev bench failure read and fixed generally (training/reports/hive_bench/new_notes.md, new2_notes.md); 90 tests |
-| Every task kind passes, as a hive, minimal compute | Partial | dev bench 7/16 (baseline) -> 9/16 -> 12/16 (new2, current checks); the held-out set runs once at the end (pending) |
+| Every task kind passes, as a hive, minimal compute | Partial | dev bench 7/16 (baseline) -> 9/16 -> 12/16 -> 14/16 (new3) -> 15/16 (new4, frozen 2574473). Held-out set 1, run once on frozen code: **9/16** (the honest number then); again after the fixes it informed: 13/16 (not clean). Held-out set 2 (16 fresh tasks, contamination-checked before any run) runs once on the final frozen code (pending) |
 | Do NOT benchmax | Done, with leaks found and removed | training/contamination_check.py over all training data, cell generators and prompts: a calculator prompt example was a dev task (removed); cell generators named bench model ids, units, a category, a package and a version (removed, cells retrained); two held-out tasks were contaminated by older training data and were replaced before the held-out set ever ran. Older member training data still names some dev tasks' entities: those dev passes are marked as not evidence of generalisation |
 | Teach it / alter weights so it uses the browser more naturally | Done | new browser weight edit from 52 recorded expert steps; cases 0.714 -> 0.786, skills 0.333 -> 0.5 (training/reports/browser/) |
 | Smaller specialists for smaller tasks | Done | 25 cells; new this round: triage (task_kind), three research cells (gap finder 0.933 vs the 4B's 0.840; cross-check 0.953 vs 0.853), cells grown from the hive's own decisions (learned_claim, learned_item, learned_line) |
@@ -98,3 +98,18 @@ requirement in a way stated here. **Not done** = with the reason.
 | Unfiltered | Not done on purpose | the models' own safety training is not removed; the hive adds no refusals beyond his rules, and his explicit order is the approval |
 | Better architecture: less RAM, faster | Partial | found: llama.cpp keeps a repacked second copy of the weights (the 4B 6.1 -> 3.6 GB without it); 8-bit KV already on; speed and answer equality measured by training/arch_bench.py (pending). The cell pool's first measurement failed (75x slower: a thread setting), fixed, off until re-measured |
 | Perfect on every task | Not met | measured pass rates are above; no system does every task perfectly |
+
+## Round 4: what the held-out set showed (same branch)
+
+| finding | fix (general, checked in code, tested) |
+|---|---|
+| dev fixes carried over to fresh tasks far less than the dev score suggested (14/16 dev, 9/16 held-out) | a second held-out set, written and contamination-checked before it runs; failures are read for their cause, never tuned to the task |
+| a chart shown with plt.show() and never saved passed the jury | a drawn chart with no image file is sent back and never passes; programs run with a non-window plotting backend |
+| a value never found was covered with "Unknown" in every row; three jurors passed it | a placeholder column is a broken file; the data hint says never to use one; a missing element is looked up on the page itself ("class author is on <small>") |
+| answers in the wrong form (weekday as 6, two decimals for one) | the calculator checks the form asked for in code and gets one fix; a weekday next to a date is corrected from the calendar; named answers pass the verifier |
+| his own text handed back instead of translated or rewritten | its own writer prompt; a report that repeats his text (repeats included) is marked not done in code, which sends it to the fix and the editor |
+| Wikipedia quotes never matched: the reader split every link onto its own line | the reader keeps inline text inline (one line per block); quotes match on their words in order |
+| a long page crashed a model call (prompt over the window) | the engine fits every prompt to the model's window (the middle of the longest message is cut) |
+| research questions went to the coder (triage) or got padded plans | a research question goes to the research hive; steps added "if needed" are dropped |
+| no scholarly search (web search engines refuse automated queries) | OpenAlex (papers in every field, abstracts quotable, credited to the DOI); rate limits waited out as the server asks |
+| 404s from links joined to the wrong page; a retry previewed the missing page | 404s get their own hint (urljoin to the page the link is on); a retry previews only his task's pages |
