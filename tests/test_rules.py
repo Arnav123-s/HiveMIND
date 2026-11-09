@@ -1425,3 +1425,45 @@ def test_a_repeated_paragraph_is_given_once_and_the_ordered_sentence_count_is_ch
     b.checklist = ["In two sentences", "explain what a queue is in programming"]
     out = writer.run("In two sentences, explain what a queue is in programming.", "Write it", b, [])["summary"]
     assert writer.sentence_count(out) == 2
+
+
+def test_a_program_that_read_missing_pages_is_sent_back(tmp_path, monkeypatch):
+    """Dev run (frozen 0147aa4): the listing's next link joined to the home page gave a 404 page; the program parsed it as
+    an empty listing and finished 'successfully' with two of the three cheapest books."""
+    import http.server
+    import threading
+    from team.board import Board
+    from team.specialists import coder
+    from team.tools.sandbox import http_errors, run_python
+
+    class H(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200 if self.path == "/ok" else 404)
+            self.end_headers()
+            self.wfile.write(b"x")
+
+        def log_message(self, *a):
+            pass
+    srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{srv.server_port}"
+    monkeypatch.setenv("NO_PROXY", "127.0.0.1")
+    monkeypatch.setenv("no_proxy", "127.0.0.1")
+    res = run_python(f"import requests\nrequests.get('{base}/ok')\nrequests.get('{base}/page-2.html')\nprint('saved')",
+                     tmp_path / "w", name="p.py")
+    srv.shutdown()
+    assert res["returncode"] == 0 and http_errors(res["stderr"]) == [(f"{base}/page-2.html", 404)]
+    progs = iter([f"import sys\nsys.stderr.write('HIVE-HTTP: GET {base}/page-2.html returned 404\\n')\nprint('saved 2 books')",
+                  "print('saved 3 books')"])
+    asked = []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder, "missing_page_fact", lambda err, urls, code: None)
+    monkeypatch.setattr(coder.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"])
+                        or f"```python\n{next(progs)}\n```")
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    out = coder.run("Find the three cheapest books", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w2")
+    assert out["summary"] == "saved 3 books" and "404 Client Error: Not Found for url" in asked[1]
