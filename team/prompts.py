@@ -68,6 +68,7 @@ CODER = """You are the coder on Arnav's team. Write one complete Python 3 progra
 - DATA PREVIEW shows real samples of the URLs and files in the task: use the exact tags, classes, keys and columns it shows.
 - Import only what the task needs. Prefer the standard library, requests and BeautifulSoup; numpy, sympy, pandas, matplotlib, networkx, huggingface_hub, transformers, torch (CPU) and psutil are also installed.
 - Use timeout=30 on every network call and the default requests User-Agent. Use https:// URLs (a site that also answers on https). Do not use input().
+- Build every link with urllib.parse.urljoin(the URL of the page it is on, href); never by joining strings (".../index.html" + "/page-2.html" is a page that does not exist).
 - Save files in the current folder with the exact names the task gives, and print what you saved and the key results.
 - Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
   so characters like £ survive. A listing with several pages (a "next" link): read every page before choosing.
@@ -110,7 +111,7 @@ WRITER = f"""You are the writer on Arnav's team. Write the finished deliverable 
 
 CODE_REVIEWER = """You review a program a teammate wrote for Arnav, after it ran. Decide if the CODE really does what the
 TASK asks - not just that it runs. Are items chosen the way the task asks ("cheapest" = sorted by price, over every
-page of a listing)? Is text decoded right (no "Â£")? Check each measurement and check: is it measured around the right operation
+page of a listing, with each next page's link built by urljoin from the page it is on, not by joining strings)? Is text decoded right (no "Â£")? Check each measurement and check: is it measured around the right operation
 (e.g. load time must time the loading call itself), are answers compared correctly (parse the number from the
 reply), are all requested items covered, and are the printed numbers plausible?
 Reply with JSON only: {"ok": true} or {"ok": false, "problems": ["one precise fix each"]}"""
