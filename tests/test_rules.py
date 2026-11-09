@@ -1242,3 +1242,17 @@ def test_the_research_hive_splits_the_question_not_the_step_s_wrapper(tmp_path, 
           Board(tmp_path, echo=False), "s1")
     assert seen == ["Research how lithium-ion batteries degrade over time."]
     assert "Never for the physical world" in R.DECOMPOSE and "never about what Arnav asked" in R.DECOMPOSE
+
+
+def test_only_what_this_computer_can_test_is_an_experiment(tmp_path, monkeypatch):
+    """Research eval: the 4B called 'What factors slow the degradation of lithium-ion batteries?' an experiment; a
+    program would have invented a battery model and its numbers would have counted as verified."""
+    from team.board import Board
+    from team.specialists import research_hive as R
+    monkeypatch.setattr(R.llm, "chat_json", lambda *a, **k: ({"questions": [
+        {"q": "How do lithium-ion batteries degrade?", "how": "read"},
+        {"q": "What factors slow the degradation?", "how": "experiment"}]}, ""))
+    b = Board(tmp_path, echo=False)
+    assert [h for _, h in R.decompose("Research how lithium-ion batteries degrade over time.", b)] == ["read", "read"]
+    got = R.decompose("Run an experiment to test whether Python's sort is faster than a merge sort.", b)
+    assert [h for _, h in got] == ["read", "experiment"]
