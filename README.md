@@ -601,7 +601,8 @@ reach a run in progress, and is checked in code against the live answer (trainin
 |---|---|---|---|
 | development | 16 (lookups, papers, a chart, a website, a scrape to CSV, arithmetic, dates, units, translate, summarise, fix text, draft, code, fix code, explain, given data) | 14/16, then **15/16** | fixes were tried on these, so this flatters it |
 | held-out set 1 | 16 fresh tasks of the same kinds, written before the fixes and run once | **9/16** | the honest number then |
-| held-out set 2 | 16 more fresh tasks, contamination-checked before they ran, run once on later code | **11/16** (10/16 as first scored) | the honest number now; one check was wrong (it wanted "apache-2.0" for a right "Apache License 2.0") and was corrected |
+| held-out set 2 | 16 more fresh tasks, contamination-checked before they ran, run once on later code | **11/16** (10/16 as first scored) | one check was wrong (it wanted "apache-2.0" for a right "Apache License 2.0") and was corrected |
+| held-out set 3 | 16 more fresh tasks, contamination-checked, run once on the code of the evening (0147aa4) | **13/16** | the honest number now |
 
 The gap is the measurement: fixes made on development tasks carried over to fresh tasks far less than the development
 score suggested. Each held-out failure and its cause is in `training/reports/hive_bench/heldout_notes.md`: a chart
@@ -612,7 +613,21 @@ with checks in code and tests; the held-out score above stays as measured, becau
 Set 2's five failures (`heldout2_notes.md`): a birth date the browser made up and the jury passed, a 404 from a link
 joined to the wrong page, a right "$161.00" struck because the calculator printed "161.0", a German grammar error, and
 handed-over data sent to web search. Four were the hive's own checks letting a wrong result through or striking a
-right one. Each is fixed in code since; a third held-out set is needed to measure that cleanly.
+right one. Each was fixed in code, and held-out set 3, which no fix had seen, then scored 13/16 (`heldout3_notes.md`:
+a browser that gave up on page 1 of a listing, a formal rewrite that turned his question into a command, a right
+explanation given twice).
+
+Measured engine and swarm decisions (each switched only where measured better):
+- llama.cpp's repacked weight copies off: peak memory 12.9 GB -> 7.8 GB at the same speed and answers; the 16-bit
+  attention cache on: 1.6x faster at 8.2 GB, the same decisions (training/reports/arch_bench.json). Prompt-lookup
+  decoding crashed in llama-cpp-python 0.3.36 and stays off.
+- Two jobs at once: 4% faster for +2.2 GB (training/reports/workers.json); the cell pool: 1.2x for +1 GB
+  (training/reports/cells/pool.json). Both stay off: on a CPU the models already use every core.
+- Translations go to the 4B: chrF 51.6 on 120 held-out professional translations, against 48.4 for a translation
+  edit of the 1.7B made for it and 46.7 for the writer (training/reports/translator.json). The edit sharpened the 1.7B
+  (+1.8, not clear on 120 sentences); the bigger model simply knows the languages better.
+- Two cells that won on synthetic test data failed on real text (answers_q: 3/15 real pairs right; claims_agree:
+  rewordings called conflicts): their jobs went to the 4B and to a rule (training/reports/research_eval_notes.md).
 
 ## Limits (measured, not guessed)
 
