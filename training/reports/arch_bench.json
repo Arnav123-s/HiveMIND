@@ -113,6 +113,44 @@
      "tok_per_s": 2.94
     }
    ]
+  },
+  "norepack+kv16": {
+   "peak_rss_gb": 8.22,
+   "seconds": 185.4,
+   "same_output": "1/5",
+   "same_decision": "4/5",
+   "per_call": [
+    {
+     "task": "explain",
+     "role": "researcher",
+     "seconds": 105.2,
+     "tok_per_s": 3.1
+    },
+    {
+     "task": "explain",
+     "role": "critic",
+     "seconds": 20.5,
+     "tok_per_s": 4.44
+    },
+    {
+     "task": "chart",
+     "role": "writer",
+     "seconds": 25.9,
+     "tok_per_s": 7.31
+    },
+    {
+     "task": "lookup",
+     "role": "verifier",
+     "seconds": 6.7,
+     "tok_per_s": 4.93
+    },
+    {
+     "task": "fib",
+     "role": "coder",
+     "seconds": 27.1,
+     "tok_per_s": 2.99
+    }
+   ]
   }
  },
  "raw": {
@@ -251,6 +289,52 @@
      "tokens": 90,
      "tok_per_s": 2.94,
      "output": "```python\ndef fib(n):\n    if n == 1 or n == 2:\n        return 1\n    a, b = 1, 1\n    for _ in range(3, n + 1):\n        a, b = b, a + b\n    return b\n\n# Calculate fib(30)\nresult = fib(30)\nprint(f\"fib(30) = {result}\")\n```"
+    }
+   ]
+  },
+  "norepack+kv16": {
+   "setting": "norepack+kv16",
+   "peak_rss_gb": 8.22,
+   "calls": [
+    {
+     "task": "explain",
+     "role": "researcher",
+     "seconds": 105.2,
+     "tokens": 326,
+     "tok_per_s": 3.1,
+     "output": "{\"summary\":\"A mixture-of-experts (MoE) model is a machine learning technique where multiple expert networks work together, with a gating mechanism that routes each input to the most appropriate expert(s). MoE models can reduce inference time and resource usage by activating only a small set of experts per token, making them efficient for large language models.\",\"items\":[\"Mixture of experts\",\"Mistral Large 4\",\"Muse Spark Open\"],\"facts\":[{\"claim\":\"Mixture of experts is a machine learning technique where multiple expert networks work together\",\"quote\":\"Mixture of experts (MoE) is a machine learning technique where multiple expert networks (learners) are used to divide a problem space into homogeneous...\",\"url\":\"https://en.wikipedia.org/wiki/Mixture_of_experts\"},{\"claim\":\"Mistral Large 4 is a mixture of experts model with 1.04T parameters\",\"quote\":\"As of November 2026, its largest public model is Mistral Large 4, released on October 29th 2026, a mixture of experts model with 1...\",\"url\":\"https://en.wikipedia.org/wiki/Mistral_AI\"},{\"claim\":\"Muse Spark Open is a mixture of experts model consisting of 816 billion total parameters\",\"quote\":\"Muse (language model ) open-weight version of the model , Muse Spark Open, was released on October 15, 2026, and is a mixture of experts model consisting of 816 billion total parameters...\",\"url\":\"https://en.wikipedia.org/wiki/Muse_(language_model)\"}]}"
+    },
+    {
+     "task": "explain",
+     "role": "critic",
+     "seconds": 20.5,
+     "tokens": 91,
+     "tok_per_s": 4.44,
+     "output": "{\"unsupported\": [\"Not confirmed.\"], \"checklist\": [{\"instruction\": \"In three sentences\", \"done\": true, \"why\": \"The report explains the concept of a mixture-of-experts model in three sentences.\"}, {\"instruction\": \"explain what a mixture-of-experts model is\", \"done\": true, \"why\": \"The report provides a clear explanation of what a mixture-of-experts model is.\"}], \"unordered\": []}"
+    },
+    {
+     "task": "chart",
+     "role": "writer",
+     "seconds": 25.9,
+     "tokens": 189,
+     "tok_per_s": 7.31,
+     "output": "The bar chart comparing the number of downloads for Qwen/Qwen3-1.7B and HuggingFaceTB/SmolLM2-360M-Instruct on Hugging Face is saved as `downloads_bar_chart.png`.\n\n**Qwen/Qwen3-1.7B** has 3,905,849 downloads [1] and **HuggingFaceTB/SmolLM2-360M-Instruct** has 217,260 downloads [2].\n\n| Model | Downloads |\n|-------|-----------|\n| Qwen/Qwen3-1.7B | 3,905,849 |\n| HuggingFaceTB/SmolLM2-360M-Instruct | 217,260 |\n\n**Conclusion**: Qwen/Qwen3-1.7B has more downloads on Hugging Face."
+    },
+    {
+     "task": "lookup",
+     "role": "verifier",
+     "seconds": 6.7,
+     "tokens": 33,
+     "tok_per_s": 4.93,
+     "output": "{\"verdict\": \"PASS\", \"reason\": \"The license is apache-2.0 and the parameter count is 0.135B.\"}"
+    },
+    {
+     "task": "fib",
+     "role": "coder",
+     "seconds": 27.1,
+     "tokens": 81,
+     "tok_per_s": 2.99,
+     "output": "```python\ndef fib(n):\n    if n == 1 or n == 2:\n        return 1\n    a, b = 1, 1\n    for _ in range(3, n + 1):\n        a, b = b, a + b\n    return b\n\nfib_30 = fib(30)\nprint(fib_30)\n```"
     }
    ]
   }
