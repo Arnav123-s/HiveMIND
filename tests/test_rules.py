@@ -807,3 +807,14 @@ def test_a_quote_is_credited_to_the_page_read_in_full_not_a_search_snippet(tmp_p
          "quote": "a machine learning technique where multiple expert networks divide"}]}
     verifier.verify({"id": "s1", "agent": "researcher", "task": "explain MoE"}, res, b, tmp_path)
     assert b.facts("s1", "supported")[0]["url"] == "https://en.wikipedia.org/wiki/Mixture_of_experts"
+
+
+def test_data_he_hands_over_is_computed_on_not_researched():
+    from team.specialists.coordinator import ensure_data_steps
+    goal = "Monthly sales: Jan 120, Feb 95, Mar 143, Apr 110. Which month had the highest sales, and what was the average?"
+    plan = [{"id": "s1", "agent": "researcher", "task": "Find the month with the highest sales from the given data.",
+             "needs": []},
+            {"id": "s2", "agent": "writer", "task": "Write the answer", "needs": ["s1"]}]
+    fixed, notes = ensure_data_steps(goal, plan)
+    assert fixed[0]["agent"] == "calculator" and "Jan 120" in fixed[0]["task"] and notes
+    assert ensure_data_steps("Find the licence of Qwen/Qwen3-1.7B.", plan)[0][0]["agent"] == "researcher"

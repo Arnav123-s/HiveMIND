@@ -198,6 +198,23 @@ def ensure_file_step(goal, steps):
     return steps[:-1] + [step, w], [f"added {sid} (coder): {probs[0]}"]
 
 
+def ensure_data_steps(goal, steps):
+    """Data he hands over is computed on, not researched: a researcher step in a task that gives its own numbers
+    ("Monthly sales: Jan 120, Feb 95, ...") becomes a calculator step. (A plan sent two researchers to search the web
+    for 'average sales per month calculation method'; the writer then guessed 115.5 for an average of 117.)"""
+    from ..guard import DATA_RUN, split_material
+    order, material = split_material(goal)
+    if not (material and DATA_RUN.match(material)) or any(s["agent"] in ("browser", "coder") for s in steps):
+        return steps, []
+    fixed, notes = [], []
+    for st in steps:
+        if st["agent"] == "researcher":
+            st = dict(st, agent="calculator", task=f"Compute from the data Arnav gave ({material[:300]}): {st['task']}")
+            notes.append(f"{st['id']}: researcher -> calculator (the data is in his task)")
+        fixed.append(st)
+    return fixed, notes
+
+
 # the triage cell's kinds: one specialist then the writer; "plan" (several kinds, or unsure) goes to the coordinator
 TEMPLATES = {
     "write": [],
@@ -245,7 +262,8 @@ def reviewed_plan(goal, board, notes="", checklist=()):
         else:
             board.log("plan_reviewer", "ok", "plan covers the task")
         steps, added = ensure_file_step(goal, steps)
-        problems = problems + added
+        steps, swapped = ensure_data_steps(goal, steps)
+        problems = problems + added + swapped
     return steps, problems, raw
 
 
