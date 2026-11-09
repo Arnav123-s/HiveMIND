@@ -36,6 +36,17 @@ def quote_in(quote, text):
     return bool(parts) and all(p in kt for p in parts)
 
 
+LAYOUT = re.compile(r"\b(?:in|as|using|with|within)\s+(?:exactly\s+|at most\s+|no more than\s+)?(?:one|two|three|four|five|"
+                    r"six|\d+|a|an|a single|a short)\s+(?:short\s+)?(?:sentences?|words?|lines?|paragraphs?|bullet points?|"
+                    r"bullets?|table|list)\b,?\s*", re.I)
+
+
+def without_layout(task):
+    """The task without its layout orders ("In two sentences, ..."): those are the report's, and an item juror had
+    dropped every source line of a held-out explanation for 'not giving the two-sentence explanation'."""
+    return re.sub(r"\s+([,:;.])", r"\1", LAYOUT.sub("", task or "")).strip() or task
+
+
 def hard_item_check(task, evidence):
     """Reason an item breaks a hard limit the task states (size, gating), or None."""
     limit = re.search(r"(under|below|less than|smaller than|at most|up to|<)\s*(\d+(?:\.\d+)?)\s*b\b", task, re.I)
@@ -229,7 +240,7 @@ def verify(step, result, board, workdir):
                 dropped.append(f"{it} ({why})")
                 continue
             from ..cells import learn
-            item_text = f"TASK: {step['task']}\nITEM: {it}\nSOURCE LINE: {ev}"
+            item_text = f"TASK: {without_layout(step['task'])}\nITEM: {it}\nSOURCE LINE: {ev}"
             said = learn.decide("learned_item", item_text)  # a cell grown from the juror's own decisions, when sure
             if said:
                 data = {"meets": said == "yes", "why": "learned_item cell"}
@@ -238,6 +249,7 @@ def verify(step, result, board, workdir):
                     {"role": "system", "content": "Decide if ONE item meets every requirement of the task, using only its "
                      "source line. Size and gating were already checked in code and passed: do not judge them again "
                      "('gated False' means NOT gated). Judge only the other requirements (e.g. license, type). "
+                     "How the answer is laid out (sentences, a table, a list) is the report's job, never the item's. "
                      'Reply with JSON only: {"meets": true} or {"meets": false, "why": "..."}'},
                     {"role": "user", "content": item_text}], max_new_tokens=80)
                 if isinstance(data, dict) and isinstance(data.get("meets"), bool):
@@ -250,7 +262,9 @@ def verify(step, result, board, workdir):
             board.log("juror_brain", "drop", "items that do not meet the task: " + "; ".join(dropped))
             result["summary"] = (result.get("summary", "") + "\nDropped by the team's checks (do not use): "
                                  + "; ".join(dropped))
-        if result.get("items") and not kept:
+        if result.get("items") and not kept and good == 0:
+            # items are a list the researcher offers; its verified facts are the evidence: a held-out explanation's
+            # search titles ("Hash table", "Open addressing") were dropped and failed the step with them
             return "FAIL", "no listed item meets the task: " + "; ".join(dropped)[:200]
         result["items"] = kept or result.get("items", [])
         return judge(check, result.get("summary", "") + "\nItems: " + ", ".join(result["items"]),
