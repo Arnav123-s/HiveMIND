@@ -16,13 +16,16 @@
     python -m team stop                   KILL SWITCH: stop every running task now (also Ctrl+C, web Stop, inbox/STOP)
     python -m team smiths [cycle ROLE|gaps|tests]   the smith swarm: ledger, one improvement cycle, gaps, field tests
     python -m team evolve ROLE [--variants 3] [--generations 1]   evolve a specialist's prompt (gated)
+    python -m team life [--min 200] [--no-train]   one turn of the hive's life: notice new small jobs in its own calls,
+                                          grow a cell for each, check the working ones, retire the bad (team/life.py)
+    python -m team org                    the hive as an organisation: teams, members, cells, who holds each job
 """
 import argparse
 import json
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
-            "uninstall", "project", "projects"}
+            "uninstall", "project", "projects", "life", "org"}
 
 
 def main():
@@ -31,6 +34,12 @@ def main():
         if cmd == "chat":
             from .chat import main as chat
             return chat()
+        if cmd == "life":
+            from . import life
+            return life.main(rest)
+        if cmd == "org":
+            from . import org
+            return org.main()
         if cmd == "smiths":
             from . import smiths
             if rest and rest[0] == "cycle":
