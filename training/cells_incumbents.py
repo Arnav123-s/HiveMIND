@@ -28,6 +28,7 @@ INCUMBENT = {
     # the research hive's jobs: what does each without the cell (word overlap; any claim counts; the 4B juror, as
     # nothing cross-checks sources without the cell)
     "result_relevant": "code:words", "answers_q": "code:any", "claims_agree": "juror_brain",
+    "de_grammar": "code:ok",  # nothing checks a translation's German today: every sentence passes
     **{f"orders_{k}": "order_reader" for k in ("spend", "delete", "send", "login", "signup")},
 }
 
@@ -79,6 +80,8 @@ def ask_code(skill, x):
         return "yes" if research_hive.relevant(q.removeprefix("QUESTION: "), [{"title": t, "snippet": sn}])[0] else "no"
     if skill == "answers_q":
         return "yes"
+    if skill == "de_grammar":
+        return "ok"
     raise ValueError(skill)
 
 

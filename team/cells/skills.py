@@ -685,6 +685,73 @@ SKILLS["orders_any"] = dict(part="guard: is ANY risky action ordered (new skill 
                                  "Nouns, questions and negations are not orders. yes or no")
 
 
+# ---------------------------------------------------------------- de_grammar: is this German sentence grammatical?
+# The smallest job in a translation: the 1.7B writes German, this cell says ok or error, and only a sentence it calls
+# an error goes to the 4B. Grammatical sentences: professional German from the WMT news test sets (2016-2017 for
+# training, 2014 for test: no sentence in both). Errors: one thing broken in code per sentence, the kinds a small model
+# makes ("Der Zug fährt um 9 Uhr in der Morgens": a case and contraction error).
+_DE = {}
+_DE_ART = ["der", "die", "das", "den", "dem", "des"]
+_DE_DAT = r"\b(mit|von|zu|aus|bei|nach|seit)\s+(dem|der)\b"
+_DE_SUB = r",\s(dass|weil|wenn|ob|obwohl|damit|nachdem|bevor)\s"
+
+
+def _de_sentences(split):
+    if split not in _DE:
+        from pathlib import Path
+        f = Path(__file__).resolve().parents[2] / "training" / "data" / (
+            "de_sentences_test.txt" if split == "test" else "de_sentences_train.txt")
+        lines = [ln.strip() for ln in f.read_text(encoding="utf-8").splitlines() if ln.strip()] if f.exists() else []
+        if split != "test":  # dev: every tenth training sentence, never trained on
+            lines = [x for i, x in enumerate(lines) if (i % 10 == 0) == (split == "dev")]
+        _DE[split] = lines
+    return _DE[split]
+
+
+def de_break(s, r):
+    """The sentence with one grammar error put in by code, or None if this sentence offers none."""
+    ways = []
+    m = re.search(_DE_SUB + r"(.+?)\s(\w+)([.,!?])", s)
+    if m and len(m.group(2).split()) >= 2:  # the verb of a subordinate clause moved from its end to its start
+        ways.append(lambda: s[:m.start()] + f", {m.group(1)} {m.group(3)} {m.group(2)}{m.group(4)}" + s[m.end():])
+    if re.search(r"\b(im|am)\s+[A-ZÄÖÜ]", s):  # a contraction undone with the wrong article ("am Morgen" -> "in der Morgen")
+        ways.append(lambda: re.sub(r"\b(im|am)\s+(?=[A-ZÄÖÜ])", lambda x: {"im": "in die ", "am": "in der "}[x.group(1)], s,
+                                   count=1))
+    if re.search(_DE_DAT, s):  # the dative after mit / von / zu ... turned accusative
+        ways.append(lambda: re.sub(_DE_DAT, lambda x: f"{x.group(1)} {'den' if x.group(2) == 'dem' else 'die'}", s, count=1))
+    arts = [m for m in re.finditer(r"\b(der|die|das|den|dem|des)\s+(?=[A-ZÄÖÜ])", s)]
+    if arts:  # a definite article before a noun swapped for another
+        art = r.choice(arts)
+        ways.append(lambda art=art: s[:art.start()] + r.choice([x for x in _DE_ART if x != art.group(1)]) + " "
+                    + s[art.end():])
+    adj = [m for m in re.finditer(r"\b(?:der|die|das|den|dem|des|ein|eine|einen|einem|einer|eines)\s+([a-zäöüß]{3,}?)(en|e|er|es|em)\s+[A-ZÄÖÜ]", s)]
+    if adj:  # an adjective ending changed
+        ad = r.choice(adj)
+        new_end = r.choice([e for e in ("en", "e", "er", "es", "em") if e != ad.group(2)])
+        ways.append(lambda ad=ad, new_end=new_end: s[:ad.start(2)] + new_end + s[ad.end(2):])
+    if not ways:
+        return None
+    out = r.choice(ways)()
+    return out if out != s else None
+
+
+def gen_de_grammar(split, r):
+    pool = _de_sentences(split)
+    for _ in range(50):
+        sent = r.choice(pool)
+        if r.random() < 0.5:
+            return f"SENTENCE: {sent}", "ok"
+        bad = de_break(sent, r)
+        if bad:
+            return f"SENTENCE: {bad}", "error"
+    return f"SENTENCE: {r.choice(pool)}", "ok"
+
+
+SKILLS["de_grammar"] = dict(part="writer: is this German sentence grammatical (translations are checked before delivery)",
+                            labels=["ok", "error"], gen=gen_de_grammar,
+                            instr="Is this German sentence grammatically correct? Answer ok or error.")
+
+
 def examples(skill, split, n, seed=0):
     """n labelled (input, target) pairs; distinct inputs where the pool allows."""
     s = SKILLS[skill]
