@@ -1122,3 +1122,18 @@ def test_a_missing_element_is_looked_up_on_the_page_itself(tmp_path, monkeypatch
             return True
     out = coder.run("Save every quote on quotes.toscrape.com", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w")
     assert "Page check:" in asked[1] and "is on <small>" in asked[1] and out["summary"] == "saved 2 quotes"
+
+
+def test_a_named_answer_passes_the_calculator_s_check(tmp_path, monkeypatch):
+    """Held-out after the fixes: the calculator printed 'Answer: Sunday' (right), and the verifier failed it three
+    times for printing no number."""
+    from team.board import Board
+    from team.specialists import verifier
+    monkeypatch.setattr(verifier, "_judge_one", lambda *a, **k: ("PASS", "stub"))
+    step = {"agent": "calculator", "id": "s1", "task": "What day of the week was 4 July 1976?"}
+    ok = verifier.verify(step, {"summary": "Answer: Sunday", "returncode": 0, "code": "print('Answer: Sunday')"},
+                         Board(tmp_path, echo=False), tmp_path)
+    assert ok[0] == "PASS"
+    bad = verifier.verify(step, {"summary": "Answer: done", "returncode": 0, "code": "print('Answer: done')"},
+                          Board(tmp_path, echo=False), tmp_path)
+    assert bad == ("FAIL", "the program printed no number")
