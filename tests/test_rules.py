@@ -1174,3 +1174,24 @@ def test_a_browser_answer_s_values_must_be_in_its_evidence(tmp_path, monkeypatch
     assert v == "PASS"
     assert verifier.values_not_in("Here are the 3 quotes", "“A” “B” “C”") == []  # a small count is not a value to copy
     assert verifier.values_not_in("It costs £51.77", "Price £51.77 In stock") == []
+
+
+def test_a_missing_page_is_found_where_it_really_is_and_page_one_means_page_one(monkeypatch):
+    """Held-out set 2 and a dev run: 'page-2.html' was joined to the site's home page (404) and the hint, given
+    twice, did not change the program; the task had asked for the first page only."""
+    from team.specialists import coder
+    from team.tools import web
+    from team.tools.preview import FIRST_PAGE
+    real = {"https://books.toscrape.com/catalogue/category/books/food-and-drink_33/page-2.html"}
+
+    def fake_get(url, *a, **k):
+        if url in real or url.endswith("index.html") or url == "https://books.toscrape.com/":
+            return "<html></html>"
+        raise web.FetchError(f"HTTP 404 from {url}")
+    monkeypatch.setattr(web, "get", fake_get)
+    err = ("requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://books.toscrape.com/page-2.html")
+    code = 'url = urljoin(base_url, "catalogue/category/books/food-and-drink_33/index.html")'
+    fact = coder.missing_page_fact(err, ["https://books.toscrape.com/"], code)
+    assert "food-and-drink_33/page-2.html, which exists" in fact
+    assert FIRST_PAGE.search("every book's name and price from the first page of the Food and Drink category")
+    assert not FIRST_PAGE.search("the three cheapest Mystery books")

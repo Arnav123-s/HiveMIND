@@ -85,9 +85,14 @@ def _html_preview(html, limit=1800, task="", base=""):
     body = re.sub(r"\s+", " ", soup.get_text(" ", strip=True))[:400]
     found = ("\nLinks matching the task: " + "; ".join(links)) if links else ""
     nxt = next_page(soup, base)
-    if nxt:  # a listing with more pages: the cheapest of a category was missed by reading page 1 only
+    if nxt and FIRST_PAGE.search(task or ""):  # his order names one page: the others are not his to read
+        found += f"\nThis listing has more pages, but the task asks for the first page only: do not follow 'next' links"
+    elif nxt:  # a listing with more pages: the cheapest of a category was missed by reading page 1 only
         found += f"\nThis listing has more pages: the next one is {nxt} (follow 'next' links to read every page)"
     return (f"Title: {title}{found}\n" + "\n".join(out) + f"\nText start: {body}")[:limit]
+
+
+FIRST_PAGE = re.compile(r"\b(?:first|1st|front|opening) page\b|\bpage (?:1|one)\b", re.I)
 
 
 def preview(task, workdir=None, max_urls=2):
