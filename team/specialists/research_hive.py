@@ -99,8 +99,23 @@ def decompose(task, board):
             seen.add(q)
             qs.append((q, how if how in ("read", "experiment", "math") else "read"))
     qs = qs[:4]
+    if not RUNNABLE.search(task):
+        # checked in code: the 4B called "What factors slow the degradation of lithium-ion batteries?" an experiment
+        # although the prompt says never for the physical world; a program would invent a battery model, and its
+        # printed numbers would count as verified results
+        moved = [q for q, h in qs if h != "read"]
+        qs = [(q, "read") for q, _ in qs]
+        if moved:
+            board.log("research_hive", "read", f"nothing in his question can be run here; read from studies: {moved[0][:80]}")
     board.log("research_hive", "decompose", " | ".join(f"[{h}] {q}" for q, h in qs) or "no sub-questions: the question as one")
     return qs or [(task, "read")]
+
+
+# a question a program on this computer can answer: he asks for a test, a measurement or a computation, or it is about
+# code, algorithms, maths or data he gave
+RUNNABLE = re.compile(r"\b(experiment\w*|test whether|measur\w*|benchmark\w*|simulat\w*|run (?:a|an|the|it)|time (?:it|them)|"
+                      r"faster|slower|algorithm\w*|code|program\w*|python|function|sort\w*|dataset|data he gave|prove|"
+                      r"derive|calculat\w*|comput\w*|equation\w*|formula\w*|probabilit\w*|\d+\s*(?:%|x|times))\b", re.I)
 
 
 def experiment(q, board, step_id, guard, work):
