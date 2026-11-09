@@ -233,10 +233,16 @@ def verify(step, result, board, workdir):
             return "FAIL", result.get("summary", "not run")
         if result.get("returncode") != 0:
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
-        from .coder import sanity
+        from .coder import sanity, unsaved_output
         bad = sanity(result.get("summary", ""))
         if bad:
             return "FAIL", "; ".join(bad)
+        code = ""
+        if result.get("code_path") and Path(result["code_path"]).exists():
+            code = Path(result["code_path"]).read_text(errors="replace")
+        unsaved = unsaved_output(step["task"], code, result.get("files", []))
+        if unsaved:  # checked in code, before any juror: a chart nobody can open is not a chart
+            return "FAIL", unsaved
         missing = [f for f in result.get("files", []) if not (workdir / f).exists()]
         if missing:
             return "FAIL", f"files missing: {missing}"
@@ -248,9 +254,7 @@ def verify(step, result, board, workdir):
         # evidence shows the number of downloads, not the file"
         # the jury sees the program as well as what it printed: shown only "30", it could not tell that the fixed loop
         # sums the even numbers to 10 and rejected a right fix as "insufficient evidence"
-        code = ""
-        if result.get("code_path") and Path(result["code_path"]).exists():
-            code = Path(result["code_path"]).read_text(errors="replace")[:2500]
+        code = code[:2500]
         return judge(check, "Program ran (exit 0)." + (f" Files saved: {', '.join(result['files'])}" if result.get("files") else ""),
                      (f"PROGRAM:\n{code}\n\n" if code else "") + "OUTPUT:\n" + (result.get("summary", "") or "(nothing)")
                      + ("\n\nFILES SAVED (checked in code):\n" + "\n".join(shown) if shown else ""))

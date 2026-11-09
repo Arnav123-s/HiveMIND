@@ -111,6 +111,12 @@ def _split(goal, board=None):
     items = []
     for ln in lines:  # the cell may respell names ("Smol LM2"): keep Arnav's own words for each line
         got = _snap(ln, goal) if ln else None
+        if got and items and len(got.split()) == 1:
+            # a name alone is no instruction of its own: "Plot the counts of A and B as a bar chart" was cut into
+            # "Plot the counts of A" and "B", and the critic then had nothing to check "B" against. It joins the
+            # instruction before it, in Arnav's own words.
+            items[-1] = _join(items[-1], got, goal)
+            continue
         if got and grounded(got, goal) and not any(got.lower() in i.lower() for i in items):
             # a part of a line already listed is no instruction of its own ("List the three newest", from a
             # line the cell cut short)
@@ -127,6 +133,15 @@ def _split(goal, board=None):
             if len(re.findall(r"[a-z0-9]{3,}", clause.lower())) >= 2 and not _covered(clause, items):
                 items.append(clause)
     return items
+
+
+def _join(item, frag, goal):
+    """An instruction and a fragment cut from it, as one span of Arnav's words (else both with "and")."""
+    a = goal.find(item)
+    b = goal.find(frag, a + len(item)) if a >= 0 else -1
+    if a >= 0 and b >= 0 and b - (a + len(item)) <= 40:
+        return goal[a:b + len(frag)].strip(" ,;.")
+    return f"{item} and {frag}"
 
 
 def _snap(line, goal):
