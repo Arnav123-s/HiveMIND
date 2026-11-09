@@ -945,6 +945,12 @@ def test_a_report_that_repeats_his_text_has_not_done_what_he_ordered_to_it():
     assert echoed(fix, "She don't like the apples that was on the table.")
     assert not echoed(fix, "She doesn't like the apples that were on the table.")
     assert not echoed("What is a hash table?", "A hash table maps keys to values.")
+    # held-out after the fixes: the writer's fix gave the sentence three times, and it passed as a rewrite
+    polite = "Rewrite this to sound polite and give me only the new sentence: 'Send me the file now.'"
+    assert echoed(polite, "Send me the file now.  \nSend me the file now.  \nSend me the file now.")
+    assert echoed(polite, "Send me the file now, now.")
+    assert not echoed(polite, "Could you please send me the file?")
+    assert not echoed("Fix the bug in this code: def f(x): return x - 1  # should add one", "def f(x): return x + 1")
     import tempfile
     from pathlib import Path
     b = Board(Path(tempfile.mkdtemp()), echo=False)
