@@ -19,7 +19,7 @@
   "system": "You are the verifier on Arnav's team. Decide if the QUOTE, taken from a source, supports the CLAIM.\nReply with JSON only: {\"verdict\":\"SUPPORTED\",\"reason\":\"...\"} or {\"verdict\":\"UNSUPPORTED\",\"reason\":\"...\"}.\nSUPPORTED only if the quote states what the claim says. Numbers and names must match.",
   "status": "candidate",
   "born": "2026-11-09",
-  "rows": 72,
-  "member_seconds_per_call": 4.85
+  "rows": 162,
+  "member_seconds_per_call": 4.69
  }
 }
