@@ -1,0 +1,6171 @@
+{
+ "name": "gap-move-model",
+ "niche": "meta",
+ "job": "classify a failure/lesson text into the growth move it calls for",
+ "classes": [
+  "harvest",
+  "harvest+train",
+  "spawn+harvest",
+  "wait-for-backend",
+  "surgery"
+ ],
+ "features": [
+  "w:the",
+  "w:is",
+  "w:in",
+  "w:it",
+  "w:for",
+  "w:and",
+  "w:to",
+  "w:no",
+  "w:not",
+  "w:empty",
+  "w:debugging",
+  "w:reading",
+  "w:review",
+  "w:security",
+  "w:sql",
+  "w:testing",
+  "w:cases",
+  "w:on",
+  "w:that",
+  "w2:unicode_names",
+  "w:names",
+  "w:unicode",
+  "w:job",
+  "w:one",
+  "w2:empty_inputs",
+  "w2:long_lines",
+  "w:inputs",
+  "w:lines",
+  "w:long",
+  "w2:legacy_encodings",
+  "w:encodings",
+  "w:legacy",
+  "w2:nested_quotes",
+  "w:nested",
+  "w:quotes",
+  "w2:chained_tracebacks",
+  "w:chained",
+  "w:tracebacks",
+  "w2:is_not",
+  "w:examples",
+  "w:from",
+  "w:of",
+  "w:weight",
+  "w2:deep_nesting",
+  "w:deep",
+  "w:nesting",
+  "w2:mixed_tabs",
+  "w:mixed",
+  "w:tabs",
+  "w2:for_the",
+  "w2:that_is",
+  "w:all",
+  "w:are",
+  "w:be",
+  "w:cannot",
+  "w:data",
+  "w:every",
+  "w:labelled",
+  "w:model",
+  "w:more",
+  "w:must",
+  "w:new",
+  "w:nothing",
+  "w:out",
+  "w:refit",
+  "w:retrain",
+  "w:single",
+  "w:trace",
+  "w:training",
+  "w:until",
+  "w:up",
+  "w2:and_must",
+  "w2:and_refit",
+  "w2:at_all",
+  "w2:cases_and",
+  "w2:do_not",
+  "w2:feed_it",
+  "w2:in_debugging",
+  "w2:in_reading",
+  "w2:in_review",
+  "w2:in_security",
+  "w2:in_sql",
+  "w2:in_testing",
+  "w2:it_and",
+  "w2:labelled_cases",
+  "w2:must_be",
+  "w2:not_retrain",
+  "w2:one_weight",
+  "w2:single_bad",
+  "w2:the_job",
+  "w2:there_is",
+  "w2:to_learn",
+  "w2:training_set",
+  "w:an",
+  "w:anything",
+  "w:at",
+  "w:backend",
+  "w:bad",
+  "w:because",
+  "w:collect",
+  "w:coverage",
+  "w:desk",
+  "w:do",
+  "w:exist",
+  "w:feed",
+  "w:filed",
+  "w:first",
+  "w:fix",
+  "w:fresh",
+  "w:gather",
+  "w:has",
+  "w:its",
+  "w:learn",
+  "w:mapping",
+  "w:needs",
+  "w:never",
+  "w:niche",
+  "w:nobody",
+  "w:only",
+  "w:owns",
+  "w:pass",
+  "w:queue",
+  "w:right",
+  "w:samples",
+  "w:service",
+  "w:set",
+  "w:sits",
+  "w:specialist",
+  "w:then",
+  "w:there",
+  "w:thin",
+  "w:we",
+  "w:weights",
+  "w:what",
+  "w:whole",
+  "w:work",
+  "w:would",
+  "w:zero",
+  "w2:the_chained",
+  "w2:the_long",
+  "w2:accuracy_on",
+  "w2:all_for",
+  "w2:all_in",
+  "w2:all_pass",
+  "w2:always_errs",
+  "w2:an_api",
+  "w2:an_old",
+  "w2:and_change",
+  "w2:and_corrected",
+  "w2:and_feed",
+  "w2:and_fresh",
+  "w2:and_it",
+  "w2:and_new",
+  "w2:and_no",
+  "w2:and_they",
+  "w2:answers_it",
+  "w2:any_recorded",
+  "w2:anything_until",
+  "w2:api_that",
+  "w2:appears_where",
+  "w2:are_filed",
+  "w2:are_guessing",
+  "w2:are_needed",
+  "w2:attempt_it",
+  "w2:back_empty",
+  "w2:backend_is",
+  "w2:backend_never",
+  "w2:bad_mapping",
+  "w2:bad_weight",
+  "w2:batch_then",
+  "w2:be_created",
+  "w2:be_mapped",
+  "w2:be_wasteful",
+  "w2:because_its",
+  "w2:because_the",
+  "w2:before_deciding",
+  "w2:behaviour_nobody",
+  "w2:between_the",
+  "w2:blank_page",
+  "w2:bound_to",
+  "w2:by_the",
+  "w2:call_out",
+  "w2:came_up",
+  "w2:can_even",
+  "w2:cannot_call",
+  "w2:cannot_fit",
+  "w2:cannot_proceed",
+  "w2:case_of",
+  "w2:cases_are",
+  "w2:cases_for",
+  "w2:cases_in",
+  "w2:cases_then",
+  "w2:change_just",
+  "w2:classes_of",
+  "w2:classifier_was",
+  "w2:collect_batch",
+  "w2:collect_samples",
+  "w2:come_up",
+  "w2:comes_back",
+  "w2:component_owns",
+  "w2:coverage_hole",
+  "w2:covered_it",
+  "w2:covers_there",
+  "w2:data_and",
+  "w2:data_on",
+  "w2:data_thin",
+  "w2:deciding_anything",
+  "w2:defect_in",
+  "w2:desk_itself",
+  "w2:desk_no",
+  "w2:does_not",
+  "w2:does_the",
+  "w2:edit_only",
+  "w2:empty_and",
+  "w2:empty_handed",
+  "w2:error_is",
+  "w2:errs_the",
+  "w2:escalated_to",
+  "w2:even_attempt",
+  "w2:every_existing",
+  "w2:examples_and",
+  "w2:examples_at",
+  "w2:examples_exist",
+  "w2:examples_plus",
+  "w2:except_when",
+  "w2:existing_niche",
+  "w2:falls_between",
+  "w2:fault_sits",
+  "w2:file_for",
+  "w2:filed_under",
+  "w2:first_time",
+  "w2:fit_anything",
+  "w2:fitted_on",
+  "w2:fix_not",
+  "w2:fix_that",
+  "w2:flips_every",
+  "w2:for_chained",
+  "w2:for_it",
+  "w2:for_this",
+  "w2:fresh_training",
+  "w2:fresh_weights",
+  "w2:from_blank",
+  "w2:from_the",
+  "w2:from_yet",
+  "w2:gather_labelled",
+  "w2:gather_raw",
+  "w2:guessing_blind",
+  "w2:harder_case",
+  "w2:harvest_cases",
+  "w2:has_no",
+  "w2:has_to",
+  "w2:hole_zero",
+  "w2:idle_the",
+  "w2:in_fresh",
+  "w2:in_single",
+  "w2:in_the",
+  "w2:instances_of",
+  "w2:is_available",
+  "w2:is_bound",
+  "w2:is_data",
+  "w2:is_empty",
+  "w2:is_localized",
+  "w2:is_misleading",
+  "w2:is_new",
+  "w2:is_no",
+  "w2:is_one",
+  "w2:is_outside",
+  "w2:is_poor",
+  "w2:is_right",
+  "w2:is_simply",
+  "w2:is_unreachable",
+  "w2:is_unstaffed",
+  "w2:is_what",
+  "w2:it_always",
+  "w2:it_at",
+  "w2:it_cannot",
+  "w2:it_comes",
+  "w2:it_edit",
+  "w2:it_examples",
+  "w2:it_harvest",
+  "w2:it_is",
+  "w2:it_map",
+  "w2:it_needs",
+  "w2:its_neighbours",
+  "w2:itself_does",
+  "w2:job_do",
+  "w2:job_entirely",
+  "w2:job_in",
+  "w2:job_is",
+  "w2:job_new",
+  "w2:job_stays",
+  "w2:just_that",
+  "w2:keeps_missing",
+  "w2:key_in",
+  "w2:labelled_data",
+  "w2:lack_any",
+  "w2:learn_from",
+  "w2:little_more",
+  "w2:loaded_the",
+  "w2:local_model",
+  "w2:localized_one",
+  "w2:map_it",
+  "w2:mapped_and",
+  "w2:mapping_inside",
+  "w2:mapping_only",
+  "w2:material_first",
+  "w2:misleading_it",
+  "w2:miss_fix",
+  "w2:misses_trace",
+  "w2:missing_whole",
+  "w2:model_and",
+  "w2:model_for",
+  "w2:model_that",
+  "w2:more_examples",
+  "w2:more_labelled",
+  "w2:must_wait",
+  "w2:name_one",
+  "w2:needs_more",
+  "w2:neighbours_it",
+  "w2:never_came",
+  "w2:never_covered",
+  "w2:new_job",
+  "w2:new_specialist",
+  "w2:new_weights",
+  "w2:niche_has",
+  "w2:niche_job",
+  "w2:no_cases",
+  "w2:no_component",
+  "w2:no_coverage",
+  "w2:no_data",
+  "w2:no_desk",
+  "w2:no_examples",
+  "w2:no_key",
+  "w2:no_owner",
+  "w2:no_specialist",
+  "w2:nobody_covers",
+  "w2:nobody_in",
+  "w2:not_exist",
+  "w2:not_harder",
+  "w2:not_loaded",
+  "w2:not_resident",
+  "w2:not_running",
+  "w2:not_stop",
+  "w2:nothing_filed",
+  "w2:nothing_in",
+  "w2:nothing_to",
+  "w2:now_queue",
+  "w2:of_an",
+  "w2:offending_mapping",
+  "w2:old_job",
+  "w2:on_file",
+  "w2:on_it",
+  "w2:on_record",
+  "w2:on_the",
+  "w2:on_too",
+  "w2:one_for",
+  "w2:one_offending",
+  "w2:one_responsible",
+  "w2:only_that",
+  "w2:out_and",
+  "w2:out_that",
+  "w2:outside_every",
+  "w2:owner_no",
+  "w2:pass_are",
+  "w2:pass_through",
+  "w2:plus_quick",
+  "w2:poor_because",
+  "w2:problem_in",
+  "w2:proceed_meanwhile",
+  "w2:process_is",
+  "w2:produces_every",
+  "w2:queue_holds",
+  "w2:queue_the",
+  "w2:queued_until",
+  "w2:quick_refit",
+  "w2:raw_material",
+  "w2:record_nothing",
+  "w2:recorded_instances",
+  "w2:refit_it",
+  "w2:refit_would",
+  "w2:resident_right",
+  "w2:responsible_weight",
+  "w2:right_except",
+  "w2:right_now",
+  "w2:runtime_to",
+  "w2:same_way",
+  "w2:samples_before",
+  "w2:samples_on",
+  "w2:service_answers",
+  "w2:set_feed",
+  "w2:set_never",
+  "w2:shelf_is",
+  "w2:simply_nothing",
+  "w2:single_connection",
+  "w2:sits_idle",
+  "w2:sits_in",
+  "w2:small_top",
+  "w2:somebody_has",
+  "w2:spawn_one",
+  "w2:specialist_for",
+  "w2:specialist_must",
+  "w2:specialists_are",
+  "w2:stale_training",
+  "w2:starts_from",
+  "w2:stays_queued",
+  "w2:still_waiting",
+  "w2:stools_in",
+  "w2:supposed_to",
+  "w2:surgical_fix",
+  "w2:swarm_met",
+  "w2:systematically_calls",
+  "w2:that_mapping",
+  "w2:that_weight",
+  "w2:the_board",
+  "w2:the_defect",
+  "w2:the_desk",
+  "w2:the_first",
+  "w2:the_local",
+  "w2:the_model",
+  "w2:the_nested",
+  "w2:the_queue",
+  "w2:the_same",
+  "w2:the_shelf",
+  "w2:the_stools",
+  "w2:the_swarm",
+  "w2:the_training",
+  "w2:the_vault",
+  "w2:the_work",
+  "w2:the_wrong",
+  "w2:then_retrain",
+  "w2:then_train",
+  "w2:they_all",
+  "w2:thin_on",
+  "w2:thin_stale",
+  "w2:this_the",
+  "w2:through_single",
+  "w2:time_nothing",
+  "w2:to_an",
+  "w2:to_come",
+  "w2:to_gather",
+  "w2:to_model",
+  "w2:to_thin",
+  "w2:to_work",
+  "w2:too_little",
+  "w2:top_up",
+  "w2:trace_it",
+  "w2:trace_the",
+  "w2:trace_to",
+  "w2:train_on",
+  "w2:training_pass",
+  "w2:unknown_problem",
+  "w2:unreachable_the",
+  "w2:untangle_the",
+  "w2:until_backend",
+  "w2:until_examples",
+  "w2:until_the",
+  "w2:up_of",
+  "w2:vault_for",
+  "w2:verdict_trace",
+  "w2:verdicts_in",
+  "w2:waiting_for",
+  "w2:waits_on",
+  "w2:was_fitted",
+  "w2:wasteful_the",
+  "w2:way_surgical",
+  "w2:we_cannot",
+  "w2:we_lack",
+  "w2:weight_for",
+  "w2:weight_in",
+  "w2:weight_is",
+  "w2:weight_provably",
+  "w2:weights_out",
+  "w2:what_is",
+  "w2:where_it",
+  "w2:who_owns",
+  "w2:whole_classes",
+  "w2:whole_job",
+  "w2:with_its",
+  "w2:work_from",
+  "w2:work_waits",
+  "w2:worker_process",
+  "w2:would_be",
+  "w2:would_sort",
+  "w2:wrong_name",
+  "w2:zero_labelled",
+  "w2:zero_samples",
+  "w:accuracy",
+  "w:always",
+  "w:answers",
+  "w:any",
+  "w:api",
+  "w:appears",
+  "w:ask",
+  "w:attempt",
+  "w:available",
+  "w:back",
+  "w:batch",
+  "w:before",
+  "w:behaviour",
+  "w:between",
+  "w:blank",
+  "w:blind",
+  "w:board",
+  "w:bound",
+  "w:by",
+  "w:call",
+  "w:calls",
+  "w:came",
+  "w:can",
+  "w:case",
+  "w:change",
+  "w:classes",
+  "w:classifier",
+  "w:come",
+  "w:comes",
+  "w:component",
+  "w:confuses",
+  "w:connection",
+  "w:corrected",
+  "w:covered",
+  "w:covers",
+  "w:created",
+  "w:deciding",
+  "w:defect",
+  "w:does",
+  "w:edit",
+  "w:entirely",
+  "w:error",
+  "w:errs",
+  "w:escalated",
+  "w:even",
+  "w:except",
+  "w:existing",
+  "w:falls",
+  "w:fault",
+  "w:file",
+  "w:fit",
+  "w:fitted",
+  "w:flips",
+  "w:guessing",
+  "w:handed",
+  "w:harder",
+  "w:harvest",
+  "w:hit",
+  "w:hold",
+  "w:holds",
+  "w:hole",
+  "w:idle",
+  "w:inside",
+  "w:instances",
+  "w:itself",
+  "w:just",
+  "w:keeps",
+  "w:key",
+  "w:lack",
+  "w:little",
+  "w:loaded",
+  "w:local",
+  "w:localized",
+  "w:map",
+  "w:mapped",
+  "w:material",
+  "w:meanwhile",
+  "w:met",
+  "w:misleading",
+  "w:miss",
+  "w:misses",
+  "w:missing",
+  "w:name",
+  "w:needed",
+  "w:neighbours",
+  "w:now",
+  "w:offending",
+  "w:old",
+  "w:outside",
+  "w:owner",
+  "w:page",
+  "w:park",
+  "w:plus",
+  "w:poor",
+  "w:problem",
+  "w:proceed",
+  "w:process",
+  "w:produces",
+  "w:provably",
+  "w:queued",
+  "w:quick",
+  "w:raw",
+  "w:record",
+  "w:recorded",
+  "w:resident",
+  "w:responsible",
+  "w:retraining",
+  "w:running",
+  "w:runtime",
+  "w:same",
+  "w:shelf",
+  "w:simply",
+  "w:small",
+  "w:somebody",
+  "w:sort",
+  "w:spawn",
+  "w:specialists",
+  "w:stale",
+  "w:starts",
+  "w:stays",
+  "w:still",
+  "w:stools",
+  "w:stop",
+  "w:supposed",
+  "w:surgical",
+  "w:swarm",
+  "w:systematically",
+  "w:they",
+  "w:this",
+  "w:through",
+  "w:time",
+  "w:too",
+  "w:top",
+  "w:train",
+  "w:under",
+  "w:unknown",
+  "w:unreachable",
+  "w:unstaffed",
+  "w:untangle",
+  "w:vault",
+  "w:verdict",
+  "w:verdicts",
+  "w:wait",
+  "w:waiting",
+  "w:waits",
+  "w:was",
+  "w:wasteful",
+  "w:way",
+  "w:when",
+  "w:where",
+  "w:who",
+  "w:with",
+  "w:worker",
+  "w:wrong",
+  "w:yet",
+  "w2:debugging_is",
+  "w2:for_legacy",
+  "w2:for_long",
+  "w2:for_mixed",
+  "w2:for_unicode",
+  "w2:names_for",
+  "w2:reading_is",
+  "w2:review_is",
+  "w2:security_is",
+  "w2:sql_is",
+  "w2:testing_is",
+  "w2:the_unicode",
+  "w2:met_unicode",
+  "w2:nesting_in",
+  "w2:of_empty",
+  "w2:of_legacy",
+  "w2:of_nested",
+  "w2:the_legacy",
+  "w2:confuses_empty",
+  "w2:coverage_deep",
+  "w2:encodings_is",
+  "w2:encodings_service",
+  "w2:every_deep",
+  "w2:every_mixed",
+  "w2:for_debugging",
+  "w2:for_nested",
+  "w2:for_reading",
+  "w2:for_review",
+  "w2:for_security",
+  "w2:for_sql",
+  "w2:for_testing",
+  "w2:inputs_collect",
+  "w2:inputs_is",
+  "w2:inputs_with",
+  "w2:lines_collect",
+  "w2:lines_error",
+  "w2:lines_verdicts",
+  "w2:more_nested",
+  "w2:names_cases",
+  "w2:names_in",
+  "w2:names_the",
+  "w2:nesting_is",
+  "w2:owns_mixed",
+  "w2:quotes_cases",
+  "w2:quotes_collect",
+  "w2:quotes_in",
+  "w2:quotes_service",
+  "w2:tabs_untangle",
+  "w2:the_debugging",
+  "w2:the_deep",
+  "w2:the_empty",
+  "w2:the_mixed",
+  "w2:the_reading",
+  "w2:the_review",
+  "w2:the_security",
+  "w2:the_sql",
+  "w2:the_testing",
+  "w2:tracebacks_cases",
+  "w2:tracebacks_in",
+  "w2:tracebacks_service",
+  "w2:calls_empty",
+  "w2:calls_mixed",
+  "w2:confuses_legacy",
+  "w2:debugging_and",
+  "w2:debugging_for",
+  "w2:encodings_cases",
+  "w2:encodings_examples",
+  "w2:encodings_for",
+  "w2:encodings_misses",
+  "w2:encodings_we",
+  "w2:encodings_with",
+  "w2:every_legacy",
+  "w2:every_unicode",
+  "w2:hit_deep",
+  "w2:hit_nested",
+  "w2:inputs_appears",
+  "w2:inputs_by",
+  "w2:inputs_for",
+  "w2:inputs_from",
+  "w2:inputs_gather",
+  "w2:its_long",
+  "w2:learn_empty",
+  "w2:lines_backend",
+  "w2:lines_falls",
+  "w2:lines_in",
+  "w2:lines_is",
+  "w2:more_unicode",
+  "w2:names_appears",
+  "w2:names_is",
+  "w2:nesting_behaviour",
+  "w2:nesting_miss",
+  "w2:of_chained",
+  "w2:on_deep",
+  "w2:on_empty",
+  "w2:on_long",
+  "w2:on_nested",
+  "w2:on_unicode",
+  "w2:owns_legacy",
+  "w2:owns_long",
+  "w2:owns_nested",
+  "w2:quotes_behaviour",
+  "w2:quotes_examples",
+  "w2:quotes_is",
+  "w2:reading_and",
+  "w2:reading_for",
+  "w2:review_and",
+  "w2:review_for",
+  "w2:security_and",
+  "w2:security_for",
+  "w2:sql_and",
+  "w2:sql_for",
+  "w2:tabs_by",
+  "w2:tabs_is",
+  "w2:tabs_spawn",
+  "w2:tabs_verdict",
+  "w2:testing_and",
+  "w2:testing_for",
+  "w2:tracebacks_fault",
+  "w2:tracebacks_for",
+  "w2:tracebacks_runtime",
+  "w2:under_empty",
+  "w2:when_empty",
+  "w2:when_unicode"
+ ],
+ "hidden": 0,
+ "fmode": "words",
+ "weights": {
+  "w": {
+   "w:the": {
+    "harvest": -0.5884072736732671,
+    "harvest+train": -0.6906105151470145,
+    "spawn+harvest": -0.26453104228998864,
+    "wait-for-backend": 0.8512172054970305,
+    "surgery": 0.3013908814516101
+   },
+   "w:is": {
+    "harvest": -0.23653717343836145,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23000259908705373,
+    "wait-for-backend": 0.09783976250186338,
+    "surgery": 0.0
+   },
+   "w:in": {
+    "harvest": -0.362062706263062,
+    "harvest+train": -0.33009619475011015,
+    "spawn+harvest": 0.8370001475353535,
+    "wait-for-backend": -0.7039956364619023,
+    "surgery": 0.2757037030495576
+   },
+   "w:it": {
+    "harvest": -0.5105419478928309,
+    "harvest+train": 0.44291735743171073,
+    "spawn+harvest": 0.43879345450939844,
+    "wait-for-backend": -0.3630853103878803,
+    "surgery": 0.0
+   },
+   "w:for": {
+    "harvest": 0.7265059491957119,
+    "harvest+train": -0.6725698487643353,
+    "spawn+harvest": 0.11180797766333372,
+    "wait-for-backend": 0.0,
+    "surgery": -0.14933131342553665
+   },
+   "w:and": {
+    "harvest": 0.0,
+    "harvest+train": 0.3398659552021812,
+    "spawn+harvest": -0.27741396632464693,
+    "wait-for-backend": -0.3460724299324175,
+    "surgery": 0.3059535224623235
+   },
+   "w:to": {
+    "harvest": 0.626503225989904,
+    "harvest+train": -0.1757266185847869,
+    "spawn+harvest": -0.5240813478319593,
+    "wait-for-backend": 0.3973560584580219,
+    "surgery": -0.39608642122881943
+   },
+   "w:no": {
+    "harvest": 0.12072720329848924,
+    "harvest+train": -0.46260421314149736,
+    "spawn+harvest": 0.7870663892887431,
+    "wait-for-backend": -0.1919513525916013,
+    "surgery": -0.4349817027127284
+   },
+   "w:not": {
+    "harvest": -0.3456223586955483,
+    "harvest+train": -0.3179071266002856,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.4415728578215609,
+    "surgery": 0.13826060004709692
+   },
+   "w:empty": {
+    "harvest": 0.5055831155592526,
+    "harvest+train": -0.16192963797526172,
+    "spawn+harvest": -0.0906921424402083,
+    "wait-for-backend": -0.17724252828826176,
+    "surgery": -0.09269888705665875
+   },
+   "w:debugging": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:reading": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:review": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:security": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:sql": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:testing": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:cases": {
+    "harvest": 0.5442732899454265,
+    "harvest+train": 0.49299310050352063,
+    "spawn+harvest": -0.39513323638335146,
+    "wait-for-backend": -0.36967474502413455,
+    "surgery": -0.3355203113423589
+   },
+   "w:on": {
+    "harvest": 0.24937519309710227,
+    "harvest+train": 0.6382551732928102,
+    "spawn+harvest": -0.4168501668769254,
+    "wait-for-backend": -0.21044427505649038,
+    "surgery": -0.3680858287043787
+   },
+   "w:that": {
+    "harvest": -0.3117015898139515,
+    "harvest+train": 0.11027831902629712,
+    "spawn+harvest": -0.35866537068762716,
+    "wait-for-backend": 0.10679082105270736,
+    "surgery": 0.4343127224289848
+   },
+   "w2:unicode_names": {
+    "harvest": 0.08947965971118359,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.11777678494396916,
+    "surgery": 0.0
+   },
+   "w:names": {
+    "harvest": 0.08947965971118359,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.11777678494396916,
+    "surgery": 0.0
+   },
+   "w:unicode": {
+    "harvest": 0.08947965971118359,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.11777678494396916,
+    "surgery": 0.0
+   },
+   "w:job": {
+    "harvest": -0.22170868584724085,
+    "harvest+train": -0.2825108568137639,
+    "spawn+harvest": 0.7253096165493779,
+    "wait-for-backend": 0.0,
+    "surgery": -0.36829569329165424
+   },
+   "w:one": {
+    "harvest": -0.3332160233150853,
+    "harvest+train": -0.347021561669022,
+    "spawn+harvest": 0.15973926428192908,
+    "wait-for-backend": -0.3749768139139623,
+    "surgery": 0.7142093541841261
+   },
+   "w2:empty_inputs": {
+    "harvest": -0.11718763901822203,
+    "harvest+train": 0.07591097164444709,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:long_lines": {
+    "harvest": 0.05851992103424665,
+    "harvest+train": -0.0922701307474695,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06925542163197261,
+    "surgery": 0.08819053103045665
+   },
+   "w:inputs": {
+    "harvest": -0.11718763901822203,
+    "harvest+train": 0.07591097164444709,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:lines": {
+    "harvest": 0.05851992103424665,
+    "harvest+train": -0.0922701307474695,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06925542163197261,
+    "surgery": 0.08819053103045665
+   },
+   "w:long": {
+    "harvest": 0.05851992103424665,
+    "harvest+train": -0.0922701307474695,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06925542163197261,
+    "surgery": 0.08819053103045665
+   },
+   "w2:legacy_encodings": {
+    "harvest": 0.07309409093899395,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06879783203007048,
+    "surgery": 0.0
+   },
+   "w:encodings": {
+    "harvest": 0.07309409093899395,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06879783203007048,
+    "surgery": 0.0
+   },
+   "w:legacy": {
+    "harvest": 0.07309409093899395,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06879783203007048,
+    "surgery": 0.0
+   },
+   "w2:nested_quotes": {
+    "harvest": 0.0,
+    "harvest+train": 0.057798056024991565,
+    "spawn+harvest": 0.05130121083190884,
+    "wait-for-backend": -0.061869051036837305,
+    "surgery": 0.0
+   },
+   "w:nested": {
+    "harvest": 0.0,
+    "harvest+train": 0.057798056024991565,
+    "spawn+harvest": 0.05130121083190884,
+    "wait-for-backend": -0.061869051036837305,
+    "surgery": 0.0
+   },
+   "w:quotes": {
+    "harvest": 0.0,
+    "harvest+train": 0.057798056024991565,
+    "spawn+harvest": 0.05130121083190884,
+    "wait-for-backend": -0.061869051036837305,
+    "surgery": 0.0
+   },
+   "w2:chained_tracebacks": {
+    "harvest": 0.11555437059125682,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.07910225440614643,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:chained": {
+    "harvest": 0.11555437059125682,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.07910225440614643,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:tracebacks": {
+    "harvest": 0.11555437059125682,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.07910225440614643,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:is_not": {
+    "harvest": -0.15251501224457772,
+    "harvest+train": -0.1761097220045202,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.5749371445025776,
+    "surgery": -0.29333946730255456
+   },
+   "w:examples": {
+    "harvest": 0.191729698538194,
+    "harvest+train": 0.3049497137246422,
+    "spawn+harvest": 0.1251869353318193,
+    "wait-for-backend": -0.3616152007950337,
+    "surgery": -0.2588053145515697
+   },
+   "w:from": {
+    "harvest": 0.595033512283503,
+    "harvest+train": -0.22672406184888863,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.26379526606054143,
+    "surgery": -0.16147009958369193
+   },
+   "w:of": {
+    "harvest": 0.0,
+    "harvest+train": 0.39421724432058747,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.2633579234373054,
+    "surgery": -0.1864137862127404
+   },
+   "w:weight": {
+    "harvest": -0.16929092769890758,
+    "harvest+train": -0.2698691764324734,
+    "spawn+harvest": -0.34605843479203885,
+    "wait-for-backend": -0.28704074062669194,
+    "surgery": 0.7448929654071632
+   },
+   "w2:deep_nesting": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06300613226774865,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:deep": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06300613226774865,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:nesting": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06300613226774865,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:mixed_tabs": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07956544228301249,
+    "surgery": 0.07364243837507604
+   },
+   "w:mixed": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07956544228301249,
+    "surgery": 0.07364243837507604
+   },
+   "w:tabs": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07956544228301249,
+    "surgery": 0.07364243837507604
+   },
+   "w2:for_the": {
+    "harvest": -0.2985324755449551,
+    "harvest+train": -0.12036005994955126,
+    "spawn+harvest": 0.14602921117233628,
+    "wait-for-backend": 0.5032259271121219,
+    "surgery": -0.24136320510624987
+   },
+   "w2:that_is": {
+    "harvest": -0.189435883957145,
+    "harvest+train": 0.25844182905800267,
+    "spawn+harvest": -0.16313708363187918,
+    "wait-for-backend": 0.2701256220443929,
+    "surgery": -0.180780527916219
+   },
+   "w:all": {
+    "harvest": 0.07668263683628258,
+    "harvest+train": -0.12817756106382483,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.1756562922575563,
+    "surgery": 0.1793150411701047
+   },
+   "w:are": {
+    "harvest": 0.495265837707555,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.17155403261228205,
+    "wait-for-backend": -0.24135669237096904,
+    "surgery": -0.14706049664798074
+   },
+   "w:be": {
+    "harvest": -0.13875475212781893,
+    "harvest+train": -0.17054876196805716,
+    "spawn+harvest": 0.07638552510978185,
+    "wait-for-backend": -0.2160114546895388,
+    "surgery": 0.44265079190139184
+   },
+   "w:cannot": {
+    "harvest": 0.0909313946041538,
+    "harvest+train": -0.15661726258928194,
+    "spawn+harvest": -0.28799779716761165,
+    "wait-for-backend": 0.5462743940290795,
+    "surgery": -0.20728469062924534
+   },
+   "w:data": {
+    "harvest": 0.1911467396495393,
+    "harvest+train": 0.40890843688963524,
+    "spawn+harvest": -0.22393747917144904,
+    "wait-for-backend": -0.2240449534995888,
+    "surgery": -0.1564752457995854
+   },
+   "w:every": {
+    "harvest": -0.1331287816241669,
+    "harvest+train": -0.17466116152441008,
+    "spawn+harvest": 0.08342521366466107,
+    "wait-for-backend": -0.12603881504159972,
+    "surgery": 0.35043775987220943
+   },
+   "w:labelled": {
+    "harvest": 0.0,
+    "harvest+train": 0.4036095857570024,
+    "spawn+harvest": -0.1942398701544269,
+    "wait-for-backend": -0.11678339030019771,
+    "surgery": -0.12462753048497797
+   },
+   "w:model": {
+    "harvest": -0.08495999166643149,
+    "harvest+train": -0.056177457192782644,
+    "spawn+harvest": -0.16706391064344922,
+    "wait-for-backend": 0.22510630846556295,
+    "surgery": 0.08861078256481322
+   },
+   "w:more": {
+    "harvest": -0.23659377184439961,
+    "harvest+train": 0.6648251854059415,
+    "spawn+harvest": -0.17714324535982606,
+    "wait-for-backend": -0.1860019343617236,
+    "surgery": -0.17503933200644584
+   },
+   "w:must": {
+    "harvest": -0.1315047139963482,
+    "harvest+train": -0.13246359063126703,
+    "spawn+harvest": 0.06578865046423069,
+    "wait-for-backend": 0.17147005383323036,
+    "surgery": 0.0
+   },
+   "w:new": {
+    "harvest": -0.13771293784749356,
+    "harvest+train": 0.1083722744595317,
+    "spawn+harvest": 0.3487348849605309,
+    "wait-for-backend": -0.16449614962961753,
+    "surgery": -0.15937630801704347
+   },
+   "w:nothing": {
+    "harvest": 0.4944705775501475,
+    "harvest+train": -0.1635157134070026,
+    "spawn+harvest": 0.11681339888360695,
+    "wait-for-backend": -0.2760112730213722,
+    "surgery": -0.17997300785064116
+   },
+   "w:out": {
+    "harvest": -0.23968773237267496,
+    "harvest+train": 0.5938026675206767,
+    "spawn+harvest": -0.25178039374346156,
+    "wait-for-backend": 0.08625993459419362,
+    "surgery": -0.21299512491580777
+   },
+   "w:refit": {
+    "harvest": -0.2805148608168907,
+    "harvest+train": 0.6931758272051058,
+    "spawn+harvest": -0.19752310398859177,
+    "wait-for-backend": -0.1763548036124758,
+    "surgery": -0.16170071682264112
+   },
+   "w:retrain": {
+    "harvest": -0.1689915700176131,
+    "harvest+train": 0.11769930138933273,
+    "spawn+harvest": -0.18723999209098371,
+    "wait-for-backend": -0.30892533360029606,
+    "surgery": 0.5283799322631747
+   },
+   "w:single": {
+    "harvest": -0.16147760514522927,
+    "harvest+train": -0.16035413345924254,
+    "spawn+harvest": -0.24083589703238137,
+    "wait-for-backend": -0.23260484825932845,
+    "surgery": 0.68083547889684
+   },
+   "w:trace": {
+    "harvest": -0.13621693552482836,
+    "harvest+train": 0.12949825488138475,
+    "spawn+harvest": -0.21849432422993842,
+    "wait-for-backend": -0.1316310875049839,
+    "surgery": 0.3508162365064586
+   },
+   "w:training": {
+    "harvest": -0.185950498643006,
+    "harvest+train": 0.580133721523329,
+    "spawn+harvest": -0.1375590050461497,
+    "wait-for-backend": -0.18193516471876536,
+    "surgery": -0.1610713899646041
+   },
+   "w:until": {
+    "harvest": 0.12351306817871399,
+    "harvest+train": -0.15828139509401157,
+    "spawn+harvest": -0.2356177207936912,
+    "wait-for-backend": 0.42981734748554756,
+    "surgery": -0.16389931652213457
+   },
+   "w:up": {
+    "harvest": -0.32182866825869305,
+    "harvest+train": 0.11500015036118524,
+    "spawn+harvest": -0.21069322373608784,
+    "wait-for-backend": 0.6032901709636896,
+    "surgery": -0.2101075375160753
+   },
+   "w2:and_must": {
+    "harvest": -0.08104422043852351,
+    "harvest+train": -0.08525753478374828,
+    "spawn+harvest": -0.15169261641767293,
+    "wait-for-backend": 0.21639700355315128,
+    "surgery": 0.10374237649862983
+   },
+   "w2:and_refit": {
+    "harvest": -0.19719822915272667,
+    "harvest+train": 0.5027221977330674,
+    "spawn+harvest": -0.12972414850850045,
+    "wait-for-backend": -0.08401044411545676,
+    "surgery": -0.10820155301514647
+   },
+   "w2:at_all": {
+    "harvest": 0.13138665257681825,
+    "harvest+train": -0.0667426857900597,
+    "spawn+harvest": 0.12376981259933906,
+    "wait-for-backend": -0.11207079188254927,
+    "surgery": -0.07477223360259862
+   },
+   "w2:cases_and": {
+    "harvest": 0.2910770917570671,
+    "harvest+train": 0.0949403982266302,
+    "spawn+harvest": -0.15215538749605578,
+    "wait-for-backend": -0.09599049433749263,
+    "surgery": -0.1343534010335472
+   },
+   "w2:do_not": {
+    "harvest": -0.11005265462878445,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1529056585353073,
+    "wait-for-backend": 0.0,
+    "surgery": 0.29552729070603917
+   },
+   "w2:feed_it": {
+    "harvest": -0.20379541072865245,
+    "harvest+train": 0.11880854622269071,
+    "spawn+harvest": 0.35555846897494264,
+    "wait-for-backend": -0.10348006840046457,
+    "surgery": -0.16467127431244788
+   },
+   "w2:in_debugging": {
+    "harvest": 0.0,
+    "harvest+train": -0.09708538807188452,
+    "spawn+harvest": 0.273868663680839,
+    "wait-for-backend": -0.1393304634753952,
+    "surgery": 0.0
+   },
+   "w2:in_reading": {
+    "harvest": 0.0,
+    "harvest+train": -0.11645175744375687,
+    "spawn+harvest": 0.2425859753699052,
+    "wait-for-backend": -0.14654285058685057,
+    "surgery": 0.0
+   },
+   "w2:in_review": {
+    "harvest": 0.0,
+    "harvest+train": -0.10829601381238327,
+    "spawn+harvest": 0.24875707082080298,
+    "wait-for-backend": -0.13600529076202414,
+    "surgery": 0.0
+   },
+   "w2:in_security": {
+    "harvest": 0.0,
+    "harvest+train": -0.09976723428627245,
+    "spawn+harvest": 0.2436696157903851,
+    "wait-for-backend": -0.1261931479990041,
+    "surgery": 0.0
+   },
+   "w2:in_sql": {
+    "harvest": 0.0,
+    "harvest+train": -0.09476812122872416,
+    "spawn+harvest": 0.24519849343851205,
+    "wait-for-backend": -0.12265473404917618,
+    "surgery": 0.0
+   },
+   "w2:in_testing": {
+    "harvest": 0.0,
+    "harvest+train": -0.10658471898613896,
+    "spawn+harvest": 0.23205458098050297,
+    "wait-for-backend": -0.12305890409324544,
+    "surgery": 0.0
+   },
+   "w2:it_and": {
+    "harvest": -0.08606553405260982,
+    "harvest+train": 0.19612758425299984,
+    "spawn+harvest": -0.12353027913176602,
+    "wait-for-backend": -0.10106083193751468,
+    "surgery": 0.11785855100483726
+   },
+   "w2:labelled_cases": {
+    "harvest": 0.0904797615500295,
+    "harvest+train": 0.19374159778024436,
+    "spawn+harvest": -0.13232371174757504,
+    "wait-for-backend": -0.07147939002101242,
+    "surgery": -0.07781543814834198
+   },
+   "w2:must_be": {
+    "harvest": -0.07303448182438824,
+    "harvest+train": -0.1044190112614948,
+    "spawn+harvest": 0.1653492712417187,
+    "wait-for-backend": -0.09105185767030202,
+    "surgery": 0.1043068365540396
+   },
+   "w2:not_retrain": {
+    "harvest": -0.11918961262778235,
+    "harvest+train": -0.08947133970217644,
+    "spawn+harvest": -0.14984218045362702,
+    "wait-for-backend": -0.23556136545033068,
+    "surgery": 0.5629632959329764
+   },
+   "w2:one_weight": {
+    "harvest": -0.08828993300424426,
+    "harvest+train": -0.1235801379984353,
+    "spawn+harvest": -0.14133371809578463,
+    "wait-for-backend": -0.17178603993887484,
+    "surgery": 0.5080660428471875
+   },
+   "w2:single_bad": {
+    "harvest": -0.0725152120538108,
+    "harvest+train": -0.12226860089397595,
+    "spawn+harvest": -0.14672387303622852,
+    "wait-for-backend": -0.07692946111114139,
+    "surgery": 0.40873645237364775
+   },
+   "w2:the_job": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10456630991466216,
+    "wait-for-backend": 0.3020961221927482,
+    "surgery": -0.11441549065591526
+   },
+   "w2:there_is": {
+    "harvest": 0.17491805806222666,
+    "harvest+train": -0.08721816752496461,
+    "spawn+harvest": 0.1215191570829996,
+    "wait-for-backend": -0.11867751576777663,
+    "surgery": -0.08615640856492406
+   },
+   "w2:to_learn": {
+    "harvest": 0.4841600204182335,
+    "harvest+train": -0.11167237488069603,
+    "spawn+harvest": -0.151494515230433,
+    "wait-for-backend": -0.15949597549066888,
+    "surgery": -0.07336568604373718
+   },
+   "w2:training_set": {
+    "harvest": -0.11193184769072047,
+    "harvest+train": 0.44738378519369576,
+    "spawn+harvest": -0.10767903060889764,
+    "wait-for-backend": -0.12661773571736626,
+    "surgery": -0.11240360794982933
+   },
+   "w:an": {
+    "harvest": -0.08875849822578646,
+    "harvest+train": -0.12503239008705072,
+    "spawn+harvest": 0.16462417467009582,
+    "wait-for-backend": 0.14837812381145624,
+    "surgery": -0.09752961616299802
+   },
+   "w:anything": {
+    "harvest": 0.500265740350038,
+    "harvest+train": -0.13445124241049466,
+    "spawn+harvest": -0.16220629881316626,
+    "wait-for-backend": -0.14778297440255597,
+    "surgery": -0.08088031409778793
+   },
+   "w:at": {
+    "harvest": 0.13138665257681825,
+    "harvest+train": -0.0667426857900597,
+    "spawn+harvest": 0.12376981259933906,
+    "wait-for-backend": -0.11207079188254927,
+    "surgery": -0.07477223360259862
+   },
+   "w:backend": {
+    "harvest": -0.10647964402813874,
+    "harvest+train": -0.14505702709518584,
+    "spawn+harvest": -0.11519929392716972,
+    "wait-for-backend": 0.46900683212427324,
+    "surgery": -0.11818958072328983
+   },
+   "w:bad": {
+    "harvest": -0.0725152120538108,
+    "harvest+train": -0.12226860089397595,
+    "spawn+harvest": -0.14672387303622852,
+    "wait-for-backend": -0.07692946111114139,
+    "surgery": 0.40873645237364775
+   },
+   "w:because": {
+    "harvest": -0.13061053178863885,
+    "harvest+train": 0.09201426783745142,
+    "spawn+harvest": -0.1063542819200189,
+    "wait-for-backend": 0.2786365608596196,
+    "surgery": -0.130251849998481
+   },
+   "w:collect": {
+    "harvest": 0.16532710169808726,
+    "harvest+train": 0.1844559762819445,
+    "spawn+harvest": -0.1245941547281299,
+    "wait-for-backend": -0.12386109053154039,
+    "surgery": -0.09765022198603883
+   },
+   "w:coverage": {
+    "harvest": 0.0905914183366166,
+    "harvest+train": -0.10331720552244456,
+    "spawn+harvest": 0.15527342579236617,
+    "wait-for-backend": -0.07507501365619158,
+    "surgery": -0.06408243027805752
+   },
+   "w:desk": {
+    "harvest": -0.1891687151041253,
+    "harvest+train": -0.06951298314816697,
+    "spawn+harvest": 0.4979955500650352,
+    "wait-for-backend": -0.13217817344279256,
+    "surgery": -0.11745544655787515
+   },
+   "w:do": {
+    "harvest": -0.11005265462878445,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1529056585353073,
+    "wait-for-backend": 0.0,
+    "surgery": 0.29552729070603917
+   },
+   "w:exist": {
+    "harvest": 0.1881601751487675,
+    "harvest+train": -0.0688347027321736,
+    "spawn+harvest": 0.18009889277193641,
+    "wait-for-backend": -0.18247701984468226,
+    "surgery": -0.11527330952347115
+   },
+   "w:feed": {
+    "harvest": -0.20379541072865245,
+    "harvest+train": 0.11880854622269071,
+    "spawn+harvest": 0.35555846897494264,
+    "wait-for-backend": -0.10348006840046457,
+    "surgery": -0.16467127431244788
+   },
+   "w:filed": {
+    "harvest": 0.4841600204182335,
+    "harvest+train": -0.11167237488069603,
+    "spawn+harvest": -0.151494515230433,
+    "wait-for-backend": -0.15949597549066888,
+    "surgery": -0.07336568604373718
+   },
+   "w:first": {
+    "harvest": 0.14258457123724477,
+    "harvest+train": -0.10553406380015318,
+    "spawn+harvest": 0.2450311048800699,
+    "wait-for-backend": -0.15962670364047368,
+    "surgery": -0.1210584553821922
+   },
+   "w:fix": {
+    "harvest": -0.09563839109032501,
+    "harvest+train": -0.11897820186854481,
+    "spawn+harvest": -0.11947744835751985,
+    "wait-for-backend": -0.14831590246080084,
+    "surgery": 0.46447320819261073
+   },
+   "w:fresh": {
+    "harvest": -0.17161789227867005,
+    "harvest+train": 0.5346506865209003,
+    "spawn+harvest": -0.11534183734644339,
+    "wait-for-backend": -0.1400452080545864,
+    "surgery": -0.12781600449439984
+   },
+   "w:gather": {
+    "harvest": 0.0904797615500295,
+    "harvest+train": 0.19374159778024436,
+    "spawn+harvest": -0.13232371174757504,
+    "wait-for-backend": -0.07147939002101242,
+    "surgery": -0.07781543814834198
+   },
+   "w:has": {
+    "harvest": 0.44936342643424954,
+    "harvest+train": -0.10263942150220622,
+    "spawn+harvest": -0.17681683144144664,
+    "wait-for-backend": -0.12541798318773348,
+    "surgery": -0.061989258696931906
+   },
+   "w:its": {
+    "harvest": -0.14550483434065087,
+    "harvest+train": 0.0997879603308352,
+    "spawn+harvest": -0.13025122021355387,
+    "wait-for-backend": 0.30712773372670876,
+    "surgery": -0.1280337389019106
+   },
+   "w:learn": {
+    "harvest": 0.4841600204182335,
+    "harvest+train": -0.11167237488069603,
+    "spawn+harvest": -0.151494515230433,
+    "wait-for-backend": -0.15949597549066888,
+    "surgery": -0.07336568604373718
+   },
+   "w:mapping": {
+    "harvest": -0.18437576593850954,
+    "harvest+train": -0.1932237545553613,
+    "spawn+harvest": -0.20551133475898037,
+    "wait-for-backend": -0.19869285920151833,
+    "surgery": 0.6708542904573016
+   },
+   "w:needs": {
+    "harvest": -0.16245077443878006,
+    "harvest+train": 0.545155394749967,
+    "spawn+harvest": -0.1479225906242846,
+    "wait-for-backend": -0.12933609307822413,
+    "surgery": -0.1263417703106334
+   },
+   "w:never": {
+    "harvest": -0.13061053178863885,
+    "harvest+train": 0.09201426783745142,
+    "spawn+harvest": -0.1063542819200189,
+    "wait-for-backend": 0.2786365608596196,
+    "surgery": -0.130251849998481
+   },
+   "w:niche": {
+    "harvest": 0.19395653606482574,
+    "harvest+train": -0.07342327285907606,
+    "spawn+harvest": 0.11491722276425168,
+    "wait-for-backend": -0.1279395856708535,
+    "surgery": -0.10607807852182924
+   },
+   "w:nobody": {
+    "harvest": -0.1668811840115108,
+    "harvest+train": -0.08112383269207715,
+    "spawn+harvest": 0.4922624267770643,
+    "wait-for-backend": -0.12566433260685814,
+    "surgery": -0.1342766103482908
+   },
+   "w:only": {
+    "harvest": -0.08284567225465714,
+    "harvest+train": -0.1281226242604145,
+    "spawn+harvest": -0.13420391997761968,
+    "wait-for-backend": -0.08081289572419965,
+    "surgery": 0.41898795217051316
+   },
+   "w:owns": {
+    "harvest": -0.19599252738679393,
+    "harvest+train": -0.17601636026371284,
+    "spawn+harvest": 0.6668535293454159,
+    "wait-for-backend": -0.1480185344284146,
+    "surgery": -0.1875958468263488
+   },
+   "w:pass": {
+    "harvest": -0.1275399689619988,
+    "harvest+train": 0.14370447881522544,
+    "spawn+harvest": -0.10453698599029271,
+    "wait-for-backend": -0.11807293584800198,
+    "surgery": 0.20747933673979568
+   },
+   "w:queue": {
+    "harvest": -0.10328514374388847,
+    "harvest+train": -0.12296716959132524,
+    "spawn+harvest": -0.12822785269787426,
+    "wait-for-backend": 0.5000912815273689,
+    "surgery": -0.16086063790377647
+   },
+   "w:right": {
+    "harvest": -0.05291240758867669,
+    "harvest+train": -0.06029767345634084,
+    "spawn+harvest": -0.11448807931968803,
+    "wait-for-backend": 0.08722833382877603,
+    "surgery": 0.14222381729372513
+   },
+   "w:samples": {
+    "harvest": 0.553484993371058,
+    "harvest+train": -0.192027555203265,
+    "spawn+harvest": -0.1555173195242077,
+    "wait-for-backend": -0.12870869436954727,
+    "surgery": -0.10512673851892974
+   },
+   "w:service": {
+    "harvest": -0.15221599910298983,
+    "harvest+train": -0.12781794358420268,
+    "spawn+harvest": -0.18426557994286508,
+    "wait-for-backend": 0.609005430329684,
+    "surgery": -0.17790091467588035
+   },
+   "w:set": {
+    "harvest": -0.11193184769072047,
+    "harvest+train": 0.44738378519369576,
+    "spawn+harvest": -0.10767903060889764,
+    "wait-for-backend": -0.12661773571736626,
+    "surgery": -0.11240360794982933
+   },
+   "w:sits": {
+    "harvest": -0.16770806148283185,
+    "harvest+train": -0.11331183084586524,
+    "spawn+harvest": -0.2071365332247886,
+    "wait-for-backend": 0.2591611604491331,
+    "surgery": 0.2322291621658676
+   },
+   "w:specialist": {
+    "harvest": -0.16165960975442006,
+    "harvest+train": -0.0857245968218792,
+    "spawn+harvest": 0.4310955425132535,
+    "wait-for-backend": -0.07106548668626177,
+    "surgery": -0.12506225685986533
+   },
+   "w:then": {
+    "harvest": -0.1667964632799909,
+    "harvest+train": 0.48191225711711666,
+    "spawn+harvest": -0.10268087959323621,
+    "wait-for-backend": -0.13366051301761134,
+    "surgery": -0.09261337957153526
+   },
+   "w:there": {
+    "harvest": 0.17491805806222666,
+    "harvest+train": -0.08721816752496461,
+    "spawn+harvest": 0.1215191570829996,
+    "wait-for-backend": -0.11867751576777663,
+    "surgery": -0.08615640856492406
+   },
+   "w:thin": {
+    "harvest": -0.18033503169101556,
+    "harvest+train": 0.5254600561625757,
+    "spawn+harvest": -0.13664426127008772,
+    "wait-for-backend": -0.11405980012509309,
+    "surgery": -0.10917843666576044
+   },
+   "w:we": {
+    "harvest": 0.500265740350038,
+    "harvest+train": -0.13445124241049466,
+    "spawn+harvest": -0.16220629881316626,
+    "wait-for-backend": -0.14778297440255597,
+    "surgery": -0.08088031409778793
+   },
+   "w:weights": {
+    "harvest": -0.16245077443878006,
+    "harvest+train": 0.545155394749967,
+    "spawn+harvest": -0.1479225906242846,
+    "wait-for-backend": -0.12933609307822413,
+    "surgery": -0.1263417703106334
+   },
+   "w:what": {
+    "harvest": 0.11512289088078465,
+    "harvest+train": 0.2908294920730676,
+    "spawn+harvest": -0.13341440064640564,
+    "wait-for-backend": -0.15374857055220592,
+    "surgery": -0.11469814040157676
+   },
+   "w:whole": {
+    "harvest": -0.20723926969657663,
+    "harvest+train": 0.19178833026690134,
+    "spawn+harvest": 0.3263461926649625,
+    "wait-for-backend": -0.15835675004575522,
+    "surgery": -0.14987220134699997
+   },
+   "w:work": {
+    "harvest": 0.2354313801489108,
+    "harvest+train": -0.1496876658161698,
+    "spawn+harvest": -0.12606118975881658,
+    "wait-for-backend": 0.1580637684617914,
+    "surgery": -0.11535760683105596
+   },
+   "w:would": {
+    "harvest": -0.14756287594023548,
+    "harvest+train": 0.22651282342075046,
+    "spawn+harvest": -0.15439195805323058,
+    "wait-for-backend": -0.21531552810895913,
+    "surgery": 0.2932320531476159
+   },
+   "w:zero": {
+    "harvest": 0.5034954684185053,
+    "harvest+train": -0.16027727449388585,
+    "spawn+harvest": -0.17010636703082993,
+    "wait-for-backend": -0.106366213222022,
+    "surgery": -0.0862222448259923
+   },
+   "w2:the_chained": {
+    "harvest": -0.13245678299022307,
+    "harvest+train": -0.06619598367977196,
+    "spawn+harvest": -0.09341617332970584,
+    "wait-for-backend": 0.15017905698452227,
+    "surgery": 0.14275178499536248
+   },
+   "w2:the_long": {
+    "harvest": -0.09179802149172031,
+    "harvest+train": -0.07106211784649914,
+    "spawn+harvest": -0.11257644010910414,
+    "wait-for-backend": 0.06621051109535599,
+    "surgery": 0.21081762900131834
+   },
+   "w2:accuracy_on": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:all_for": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:all_in": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:all_pass": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:always_errs": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:an_api": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:an_old": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:and_change": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:and_corrected": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:and_feed": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w2:and_fresh": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:and_it": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w2:and_new": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:and_no": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:and_they": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:answers_it": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w2:any_recorded": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:anything_until": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:api_that": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:appears_where": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:are_filed": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:are_guessing": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:are_needed": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:attempt_it": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:back_empty": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w2:backend_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:backend_never": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w2:bad_mapping": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:bad_weight": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:batch_then": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:be_created": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:be_mapped": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:be_wasteful": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w2:because_its": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w2:because_the": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:before_deciding": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:behaviour_nobody": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:between_the": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:blank_page": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:bound_to": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:by_the": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:call_out": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:came_up": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w2:can_even": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:cannot_call": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:cannot_fit": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:cannot_proceed": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w2:case_of": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:cases_are": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:cases_for": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:cases_in": {
+    "harvest": -0.09826863397844546,
+    "harvest+train": 0.35689325660963916,
+    "spawn+harvest": -0.08712325319883134,
+    "wait-for-backend": -0.08408240176018393,
+    "surgery": -0.0800711290316819
+   },
+   "w2:cases_then": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:change_just": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:classes_of": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:classifier_was": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:collect_batch": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:collect_samples": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:come_up": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w2:comes_back": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w2:component_owns": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w2:coverage_hole": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:covered_it": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:covers_there": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:data_and": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:data_on": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:data_thin": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:deciding_anything": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:defect_in": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:desk_itself": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:desk_no": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:does_not": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:does_the": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:edit_only": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:empty_and": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:empty_handed": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w2:error_is": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w2:errs_the": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:escalated_to": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:even_attempt": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:every_existing": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:examples_and": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:examples_at": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:examples_exist": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:examples_plus": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:except_when": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:existing_niche": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:falls_between": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:fault_sits": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w2:file_for": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:filed_under": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w2:first_time": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:fit_anything": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:fitted_on": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:fix_not": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:fix_that": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:flips_every": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:for_chained": {
+    "harvest": 0.22630119640945132,
+    "harvest+train": -0.08597784983830192,
+    "spawn+harvest": -0.057507020833507685,
+    "wait-for-backend": -0.07124761592016497,
+    "surgery": 0.0
+   },
+   "w2:for_it": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_this": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w2:fresh_training": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:fresh_weights": {
+    "harvest": -0.09826863397844546,
+    "harvest+train": 0.35689325660963916,
+    "spawn+harvest": -0.08712325319883134,
+    "wait-for-backend": -0.08408240176018393,
+    "surgery": -0.0800711290316819
+   },
+   "w2:from_blank": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:from_the": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:from_yet": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:gather_labelled": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:gather_raw": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:guessing_blind": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:harder_case": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:harvest_cases": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:has_no": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:has_to": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:hole_zero": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:idle_the": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w2:in_fresh": {
+    "harvest": -0.09826863397844546,
+    "harvest+train": 0.35689325660963916,
+    "spawn+harvest": -0.08712325319883134,
+    "wait-for-backend": -0.08408240176018393,
+    "surgery": -0.0800711290316819
+   },
+   "w2:in_single": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w2:in_the": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:instances_of": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:is_available": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:is_bound": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:is_data": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:is_empty": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:is_localized": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:is_misleading": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:is_new": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:is_no": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:is_one": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w2:is_outside": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:is_poor": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:is_right": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:is_simply": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w2:is_unreachable": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:is_unstaffed": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:is_what": {
+    "harvest": -0.09826863397844546,
+    "harvest+train": 0.35689325660963916,
+    "spawn+harvest": -0.08712325319883134,
+    "wait-for-backend": -0.08408240176018393,
+    "surgery": -0.0800711290316819
+   },
+   "w2:it_always": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:it_at": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:it_cannot": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w2:it_comes": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w2:it_edit": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:it_examples": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w2:it_harvest": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:it_is": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:it_map": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:it_needs": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:its_neighbours": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:itself_does": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:job_do": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:job_entirely": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:job_in": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:job_is": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:job_new": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:job_stays": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:just_that": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:keeps_missing": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:key_in": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:labelled_data": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:lack_any": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:learn_from": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w2:little_more": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:loaded_the": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:local_model": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:localized_one": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:map_it": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:mapped_and": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:mapping_inside": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:mapping_only": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:material_first": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:misleading_it": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:miss_fix": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:misses_trace": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w2:missing_whole": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:model_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:model_for": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:model_that": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:more_examples": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:more_labelled": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:must_wait": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:name_one": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:needs_more": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:neighbours_it": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:never_came": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w2:never_covered": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:new_job": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:new_specialist": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:new_weights": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:niche_has": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:niche_job": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:no_cases": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:no_component": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w2:no_coverage": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:no_data": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:no_desk": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:no_examples": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:no_key": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:no_owner": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:no_specialist": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:nobody_covers": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:nobody_in": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:not_exist": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:not_harder": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:not_loaded": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:not_resident": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:not_running": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w2:not_stop": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:nothing_filed": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w2:nothing_in": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:nothing_to": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:now_queue": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:of_an": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:offending_mapping": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:old_job": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w2:on_file": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:on_it": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:on_record": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:on_the": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:on_too": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:one_for": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w2:one_offending": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:one_responsible": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:only_that": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:out_and": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:out_that": {
+    "harvest": -0.09826863397844546,
+    "harvest+train": 0.35689325660963916,
+    "spawn+harvest": -0.08712325319883134,
+    "wait-for-backend": -0.08408240176018393,
+    "surgery": -0.0800711290316819
+   },
+   "w2:outside_every": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:owner_no": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:pass_are": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:pass_through": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:plus_quick": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:poor_because": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:problem_in": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:proceed_meanwhile": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w2:process_is": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w2:produces_every": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:queue_holds": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w2:queue_the": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:queued_until": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:quick_refit": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:raw_material": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:record_nothing": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:recorded_instances": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:refit_it": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:refit_would": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:resident_right": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:responsible_weight": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:right_except": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:right_now": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:runtime_to": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w2:same_way": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:samples_before": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:samples_on": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:service_answers": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w2:set_feed": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w2:set_never": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:shelf_is": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:simply_nothing": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w2:single_connection": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w2:sits_idle": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w2:sits_in": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w2:small_top": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:somebody_has": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:spawn_one": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w2:specialist_for": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:specialist_must": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:specialists_are": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w2:stale_training": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w2:starts_from": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:stays_queued": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:still_waiting": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w2:stools_in": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:supposed_to": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:surgical_fix": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:swarm_met": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:systematically_calls": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:that_mapping": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w2:that_weight": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:the_board": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:the_defect": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:the_desk": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:the_first": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:the_local": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w2:the_model": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:the_nested": {
+    "harvest": -0.06271083831625011,
+    "harvest+train": -0.0916921369275654,
+    "spawn+harvest": -0.10751363499673817,
+    "wait-for-backend": 0.1698595094263537,
+    "surgery": 0.09337058032972952
+   },
+   "w2:the_queue": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w2:the_same": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:the_shelf": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:the_stools": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:the_swarm": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:the_training": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:the_vault": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:the_work": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:the_wrong": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:then_retrain": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w2:then_train": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:they_all": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:thin_on": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:thin_stale": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w2:this_the": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w2:through_single": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:time_nothing": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w2:to_an": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:to_come": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w2:to_gather": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:to_model": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:to_thin": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w2:to_work": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:too_little": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:top_up": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:trace_it": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:trace_the": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:trace_to": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w2:train_on": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w2:training_pass": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:unknown_problem": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w2:unreachable_the": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:untangle_the": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:until_backend": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w2:until_examples": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:until_the": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w2:up_of": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:vault_for": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w2:verdict_trace": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:verdicts_in": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w2:waiting_for": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w2:waits_on": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:was_fitted": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w2:wasteful_the": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w2:way_surgical": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:we_cannot": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w2:we_lack": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w2:weight_for": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w2:weight_in": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w2:weight_is": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:weight_provably": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w2:weights_out": {
+    "harvest": -0.09826863397844546,
+    "harvest+train": 0.35689325660963916,
+    "spawn+harvest": -0.08712325319883134,
+    "wait-for-backend": -0.08408240176018393,
+    "surgery": -0.0800711290316819
+   },
+   "w2:what_is": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w2:where_it": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w2:who_owns": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w2:whole_classes": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:whole_job": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w2:with_its": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:work_from": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:work_waits": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w2:worker_process": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w2:would_be": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w2:would_sort": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w2:wrong_name": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w2:zero_labelled": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:zero_samples": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w:accuracy": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w:always": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:answers": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w:any": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w:api": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w:appears": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:ask": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w:attempt": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w:available": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w:back": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w:batch": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w:before": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w:behaviour": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:between": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w:blank": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:blind": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w:board": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w:bound": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w:by": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:call": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w:calls": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:came": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w:can": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w:case": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w:change": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w:classes": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:classifier": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w:come": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w:comes": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w:component": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w:confuses": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:connection": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w:corrected": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:covered": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w:covers": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:created": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w:deciding": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w:defect": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w:does": {
+    "harvest": -0.10981374648366618,
+    "harvest+train": -0.08322485973531989,
+    "spawn+harvest": 0.5419727012197334,
+    "wait-for-backend": -0.19605790755251012,
+    "surgery": -0.17491169039255525
+   },
+   "w:edit": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w:entirely": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w:error": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w:errs": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:escalated": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w:even": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w:except": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:existing": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w:falls": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w:fault": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w:file": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w:fit": {
+    "harvest": 0.24397315560362656,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.10315893860993738,
+    "wait-for-backend": -0.08473003070889197,
+    "surgery": 0.0
+   },
+   "w:fitted": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w:flips": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w:guessing": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w:handed": {
+    "harvest": 0.42639175734012125,
+    "harvest+train": -0.17416770932509676,
+    "spawn+harvest": -0.0927748499617419,
+    "wait-for-backend": -0.06501686798294493,
+    "surgery": -0.0902732061151079
+   },
+   "w:harder": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w:harvest": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w:hit": {
+    "harvest": -0.11181012483469925,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.22889554527174244,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:hold": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w:holds": {
+    "harvest": -0.08117993860605735,
+    "harvest+train": -0.1151508297377343,
+    "spawn+harvest": -0.06912839935295001,
+    "wait-for-backend": 0.3525668006984693,
+    "surgery": -0.08194666582108677
+   },
+   "w:hole": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:idle": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w:inside": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w:instances": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w:itself": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w:just": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w:keeps": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:key": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w:lack": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w:little": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w:loaded": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w:local": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w:localized": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w:map": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w:mapped": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:material": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:meanwhile": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w:met": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w:misleading": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:miss": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w:misses": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w:missing": {
+    "harvest": -0.13412099237097236,
+    "harvest+train": 0.27080369098619195,
+    "spawn+harvest": -0.05853671019832723,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:name": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:needed": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w:neighbours": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:now": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w:offending": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w:old": {
+    "harvest": 0.0,
+    "harvest+train": -0.06024844100271209,
+    "spawn+harvest": 0.19607538106647043,
+    "wait-for-backend": -0.07439795684945649,
+    "surgery": 0.0
+   },
+   "w:outside": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w:owner": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:page": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:park": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w:plus": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w:poor": {
+    "harvest": 0.0,
+    "harvest+train": 0.20916635759988467,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.07315586676706949,
+    "surgery": 0.0
+   },
+   "w:problem": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w:proceed": {
+    "harvest": -0.09396687806739391,
+    "harvest+train": -0.10066094281020842,
+    "spawn+harvest": -0.08505379969807869,
+    "wait-for-backend": 0.3834830076475295,
+    "surgery": -0.09863657688750645
+   },
+   "w:process": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w:produces": {
+    "harvest": -0.06452527498770776,
+    "harvest+train": -0.06610675205959937,
+    "spawn+harvest": -0.0632830562740058,
+    "wait-for-backend": -0.06670942856804445,
+    "surgery": 0.2648858629650281
+   },
+   "w:provably": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w:queued": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w:quick": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w:raw": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:record": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w:recorded": {
+    "harvest": 0.2841715037774356,
+    "harvest+train": -0.10725928996477083,
+    "spawn+harvest": -0.05855099662228572,
+    "wait-for-backend": -0.0631449735363635,
+    "surgery": -0.05271543333836528
+   },
+   "w:resident": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w:responsible": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w:retraining": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w:running": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w:runtime": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w:same": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:shelf": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w:simply": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w:small": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w:somebody": {
+    "harvest": 0.22681510616531597,
+    "harvest+train": -0.07516158423535238,
+    "spawn+harvest": -0.07336389667075661,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:sort": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w:spawn": {
+    "harvest": -0.14117864563077445,
+    "harvest+train": -0.13385584656700594,
+    "spawn+harvest": 0.42726296258774316,
+    "wait-for-backend": 0.0,
+    "surgery": -0.10028391790127557
+   },
+   "w:specialists": {
+    "harvest": 0.3731533042678183,
+    "harvest+train": -0.09292356139878082,
+    "spawn+harvest": -0.09634401563933002,
+    "wait-for-backend": -0.11914905904317635,
+    "surgery": -0.06396757511544458
+   },
+   "w:stale": {
+    "harvest": -0.0627106974364198,
+    "harvest+train": 0.25638462496681896,
+    "spawn+harvest": -0.07016830097362822,
+    "wait-for-backend": -0.0530894284935152,
+    "surgery": -0.0638629292504657
+   },
+   "w:starts": {
+    "harvest": -0.13371837687708674,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.23183199234778507,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:stays": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.13743415021170038,
+    "surgery": 0.0
+   },
+   "w:still": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w:stools": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w:stop": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05849624291108554,
+    "wait-for-backend": 0.16989128389187558,
+    "surgery": -0.078039004943193
+   },
+   "w:supposed": {
+    "harvest": 0.2148373522459341,
+    "harvest+train": -0.06359477650953536,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.06863637117978989,
+    "surgery": 0.0
+   },
+   "w:surgical": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:swarm": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w:systematically": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:they": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w:this": {
+    "harvest": -0.0882284843179224,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.0942903751954986,
+    "wait-for-backend": -0.15405018628022094,
+    "surgery": 0.37477979102471887
+   },
+   "w:through": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w:time": {
+    "harvest": -0.08189633875494698,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.3186164004121261,
+    "wait-for-backend": -0.11942107267333346,
+    "surgery": -0.08676630610429154
+   },
+   "w:too": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w:top": {
+    "harvest": -0.0825175169850187,
+    "harvest+train": 0.2935389439359781,
+    "spawn+harvest": -0.06541078405208373,
+    "wait-for-backend": -0.09085232968922326,
+    "surgery": -0.05135768639379314
+   },
+   "w:train": {
+    "harvest": -0.11722679657343742,
+    "harvest+train": 0.293898945313462,
+    "spawn+harvest": -0.06534379246507156,
+    "wait-for-backend": -0.06001238401819816,
+    "surgery": 0.0
+   },
+   "w:under": {
+    "harvest": 0.28985019951593405,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.1040674286764716,
+    "wait-for-backend": -0.09043876992979667,
+    "surgery": 0.0
+   },
+   "w:unknown": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.21948645199746464,
+    "wait-for-backend": 0.0,
+    "surgery": -0.0777970012099143
+   },
+   "w:unreachable": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w:unstaffed": {
+    "harvest": -0.0724726001824958,
+    "harvest+train": -0.07643257884255031,
+    "spawn+harvest": 0.38672242772183874,
+    "wait-for-backend": -0.12770865499154624,
+    "surgery": -0.10565822325024077
+   },
+   "w:untangle": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06185393948799156,
+    "wait-for-backend": -0.08579541006190923,
+    "surgery": 0.2049863380962008
+   },
+   "w:vault": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w:verdict": {
+    "harvest": 0.0,
+    "harvest+train": -0.061849887467582305,
+    "spawn+harvest": -0.07025545276864285,
+    "wait-for-backend": 0.0,
+    "surgery": 0.16736602317316182
+   },
+   "w:verdicts": {
+    "harvest": -0.05403669773920765,
+    "harvest+train": -0.05989338759020778,
+    "spawn+harvest": -0.0764159432899363,
+    "wait-for-backend": -0.06323066590874855,
+    "surgery": 0.25582369581526415
+   },
+   "w:wait": {
+    "harvest": -0.05737512075556241,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.09932955472329907,
+    "wait-for-backend": 0.26501893895021966,
+    "surgery": -0.07829086817076931
+   },
+   "w:waiting": {
+    "harvest": -0.1588663517164989,
+    "harvest+train": -0.06002133313115688,
+    "spawn+harvest": -0.072530418808764,
+    "wait-for-backend": 0.3689814908681844,
+    "surgery": -0.07372629804835296
+   },
+   "w:waits": {
+    "harvest": -0.06507515475169207,
+    "harvest+train": -0.06442761866283436,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.2259696823173933,
+    "surgery": -0.06302413412923688
+   },
+   "w:was": {
+    "harvest": -0.07300426580436724,
+    "harvest+train": 0.2053887199016505,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": -0.054970135522239914,
+    "surgery": 0.0
+   },
+   "w:wasteful": {
+    "harvest": -0.06465603410634896,
+    "harvest+train": -0.06502175055370854,
+    "spawn+harvest": -0.087871449594698,
+    "wait-for-backend": -0.12427690218467716,
+    "surgery": 0.34685161868963416
+   },
+   "w:way": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:when": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:where": {
+    "harvest": 0.0,
+    "harvest+train": -0.052869982510891436,
+    "spawn+harvest": -0.05553214153643871,
+    "wait-for-backend": -0.08146760915110576,
+    "surgery": 0.22133697831601257
+   },
+   "w:who": {
+    "harvest": -0.05457620586186958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.2852279599142856,
+    "wait-for-backend": -0.09809137218368255,
+    "surgery": -0.0869276155385567
+   },
+   "w:with": {
+    "harvest": -0.06391634810038008,
+    "harvest+train": 0.21738296776081473,
+    "spawn+harvest": -0.06052031263528908,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w:worker": {
+    "harvest": -0.07933929308907242,
+    "harvest+train": -0.07654396023219794,
+    "spawn+harvest": -0.11233111896344679,
+    "wait-for-backend": 0.414966589974046,
+    "surgery": -0.14116127867266037
+   },
+   "w:wrong": {
+    "harvest": 0.0,
+    "harvest+train": -0.058064788158840426,
+    "spawn+harvest": -0.052416796275909464,
+    "wait-for-backend": 0.0,
+    "surgery": 0.18398469631298808
+   },
+   "w:yet": {
+    "harvest": 0.30229227391445934,
+    "harvest+train": -0.08524003373724297,
+    "spawn+harvest": -0.09653029417173277,
+    "wait-for-backend": -0.06463269966180701,
+    "surgery": -0.051655512549203454
+   },
+   "w2:debugging_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05039401156333084,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_legacy": {
+    "harvest": 0.24060302284477772,
+    "harvest+train": -0.07783122659253583,
+    "spawn+harvest": -0.07495338835805879,
+    "wait-for-backend": -0.051424785698060284,
+    "surgery": 0.0
+   },
+   "w2:for_long": {
+    "harvest": 0.22068999926048105,
+    "harvest+train": -0.05879218820651786,
+    "spawn+harvest": -0.07617635791970999,
+    "wait-for-backend": -0.07017775166308922,
+    "surgery": 0.0
+   },
+   "w2:for_mixed": {
+    "harvest": 0.11548369244028582,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.06675037070045617,
+    "wait-for-backend": -0.07754556268575544,
+    "surgery": 0.06185504524334567
+   },
+   "w2:for_unicode": {
+    "harvest": 0.26450910844745606,
+    "harvest+train": -0.08025568417439417,
+    "spawn+harvest": -0.07314204090123248,
+    "wait-for-backend": -0.06650176546448897,
+    "surgery": 0.0
+   },
+   "w2:names_for": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.15585555939336626,
+    "wait-for-backend": -0.0738355123877798,
+    "surgery": -0.05721444694271413
+   },
+   "w2:reading_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.052337082543113964,
+    "wait-for-backend": 0.0,
+    "surgery": 0.056860227677497245
+   },
+   "w2:review_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:security_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.05056469930978922
+   },
+   "w2:sql_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:testing_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:the_unicode": {
+    "harvest": -0.09957184672896276,
+    "harvest+train": -0.06708923966331713,
+    "spawn+harvest": -0.08668042132896649,
+    "wait-for-backend": 0.18138625427822075,
+    "surgery": 0.07247736904984084
+   },
+   "w2:met_unicode": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.17609063213295867,
+    "wait-for-backend": -0.061810501867596124,
+    "surgery": -0.05051302477513282
+   },
+   "w2:nesting_in": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06480557018137795,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:of_empty": {
+    "harvest": 0.0,
+    "harvest+train": 0.052131804868268794,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:of_legacy": {
+    "harvest": 0.0,
+    "harvest+train": 0.11365739702678745,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:of_nested": {
+    "harvest": 0.0,
+    "harvest+train": 0.08196543364572643,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:the_legacy": {
+    "harvest": -0.05699821039691269,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.07650540276740987,
+    "wait-for-backend": 0.12004550320517203,
+    "surgery": 0.0
+   },
+   "w2:confuses_empty": {
+    "harvest": 0.0,
+    "harvest+train": 0.09971182552707268,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:coverage_deep": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.08741240565285302,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.09692020044451895,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_service": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05268071151067321,
+    "wait-for-backend": 0.15438506130511143,
+    "surgery": 0.0
+   },
+   "w2:every_deep": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.1168631658345407
+   },
+   "w2:every_mixed": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.078332747252863
+   },
+   "w2:for_debugging": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_nested": {
+    "harvest": 0.10130405578887956,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.056409713720249416,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_reading": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_review": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_security": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05462647773954658,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_sql": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05080587869280985,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:for_testing": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:inputs_collect": {
+    "harvest": 0.05552000687067848,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:inputs_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.07204449073574919,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:inputs_with": {
+    "harvest": 0.0,
+    "harvest+train": 0.09971182552707268,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:lines_collect": {
+    "harvest": 0.0,
+    "harvest+train": 0.09921041237870784,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:lines_error": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.12537070642318107
+   },
+   "w2:lines_verdicts": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.09746831551817245
+   },
+   "w2:more_nested": {
+    "harvest": 0.0,
+    "harvest+train": 0.13685946212780753,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:names_cases": {
+    "harvest": 0.0,
+    "harvest+train": 0.09107956178664957,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:names_in": {
+    "harvest": 0.05698089154380507,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:names_the": {
+    "harvest": 0.15623667733856508,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:nesting_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05662251526245252,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:owns_mixed": {
+    "harvest": -0.05255856956871486,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.17583910092729452,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_cases": {
+    "harvest": 0.0,
+    "harvest+train": 0.13685946212780753,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_collect": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_in": {
+    "harvest": 0.09016818239521195,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_service": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.1530261656080425,
+    "surgery": 0.0
+   },
+   "w2:tabs_untangle": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.08482780456269132
+   },
+   "w2:the_debugging": {
+    "harvest": 0.07488549474021744,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:the_deep": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.051171698699226005,
+    "wait-for-backend": 0.14805635171921178,
+    "surgery": 0.0
+   },
+   "w2:the_empty": {
+    "harvest": -0.06723747838422348,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.05263485728524961,
+    "wait-for-backend": 0.11544830829005578,
+    "surgery": 0.0
+   },
+   "w2:the_mixed": {
+    "harvest": -0.050999627773510706,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.1252821618114946,
+    "surgery": 0.0
+   },
+   "w2:the_reading": {
+    "harvest": 0.08427065221864909,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:the_review": {
+    "harvest": 0.08507561353892178,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:the_security": {
+    "harvest": 0.09400557197490426,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:the_sql": {
+    "harvest": 0.1302438983178453,
+    "harvest+train": 0.0,
+    "spawn+harvest": -0.050866173531060925,
+    "wait-for-backend": -0.055503374338530594,
+    "surgery": 0.0
+   },
+   "w2:the_testing": {
+    "harvest": 0.07353487259498144,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tracebacks_cases": {
+    "harvest": 0.09664859094950395,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tracebacks_in": {
+    "harvest": 0.0882638369262997,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tracebacks_service": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.1333560628317214,
+    "surgery": 0.0
+   },
+   "w2:calls_empty": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.06305068494138974
+   },
+   "w2:calls_mixed": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:confuses_legacy": {
+    "harvest": 0.0,
+    "harvest+train": 0.07053396842497647,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:debugging_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0565311776294821,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:debugging_for": {
+    "harvest": 0.05007502323528335,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_cases": {
+    "harvest": 0.13761916510679822,
+    "harvest+train": -0.058556411916418534,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_examples": {
+    "harvest": 0.0,
+    "harvest+train": 0.08981958348286158,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_for": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_misses": {
+    "harvest": 0.0,
+    "harvest+train": 0.07127566816055839,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_we": {
+    "harvest": 0.06816334302149193,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:encodings_with": {
+    "harvest": 0.0,
+    "harvest+train": 0.07053396842497647,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:every_legacy": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.08808892846484283
+   },
+   "w2:every_unicode": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.06972305470307573
+   },
+   "w2:hit_deep": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05983875972576408,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:hit_nested": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06486822738490577,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:inputs_appears": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.07680825431900887
+   },
+   "w2:inputs_by": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.06305068494138974
+   },
+   "w2:inputs_for": {
+    "harvest": 0.07575003789203814,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:inputs_from": {
+    "harvest": 0.056438597598558966,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:inputs_gather": {
+    "harvest": 0.0,
+    "harvest+train": 0.08347322132625914,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:its_long": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.10119970069634643,
+    "surgery": 0.0
+   },
+   "w2:learn_empty": {
+    "harvest": 0.056438597598558966,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:lines_backend": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.10119970069634643,
+    "surgery": 0.0
+   },
+   "w2:lines_falls": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.11780375689247961,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:lines_in": {
+    "harvest": 0.07835782381024294,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:lines_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06583238052655008,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:more_unicode": {
+    "harvest": 0.0,
+    "harvest+train": 0.12503271233388402,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:names_appears": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.06977883941655458
+   },
+   "w2:names_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.060764544865997694,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:nesting_behaviour": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05983875972576408,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:nesting_miss": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.08696335188427033
+   },
+   "w2:of_chained": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:on_deep": {
+    "harvest": 0.0,
+    "harvest+train": 0.08307596442624017,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:on_empty": {
+    "harvest": 0.0,
+    "harvest+train": 0.0811446584079351,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:on_long": {
+    "harvest": 0.0,
+    "harvest+train": 0.11413543692793848,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:on_nested": {
+    "harvest": 0.0,
+    "harvest+train": 0.07317575341116977,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:on_unicode": {
+    "harvest": 0.0,
+    "harvest+train": 0.060764544865997694,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:owns_legacy": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.11268904218646539,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:owns_long": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.12152792894289059,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:owns_nested": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.10663648754817116,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_behaviour": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06486822738490577,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_examples": {
+    "harvest": 0.0,
+    "harvest+train": 0.07659566548381518,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:quotes_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06551541329258034,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:reading_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05631125568331301,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:reading_for": {
+    "harvest": 0.05644618696575958,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:review_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05294501799604268,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:review_for": {
+    "harvest": 0.05486141845369922,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.07088805841190095
+   },
+   "w2:security_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.06686385809184994,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:security_for": {
+    "harvest": 0.06866239916570914,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:sql_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.05920009887515188,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:sql_for": {
+    "harvest": 0.05263464976369271,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.06009627966530759
+   },
+   "w2:tabs_by": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tabs_is": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tabs_spawn": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.13290439649447802,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tabs_verdict": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:testing_and": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.056184571495400674,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:testing_for": {
+    "harvest": 0.0508225746592296,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tracebacks_fault": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.10400392199125036
+   },
+   "w2:tracebacks_for": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.07083047417937847,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:tracebacks_runtime": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.10216219344200972,
+    "surgery": 0.0
+   },
+   "w2:under_empty": {
+    "harvest": 0.07575003789203814,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.0
+   },
+   "w2:when_empty": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.07680825431900887
+   },
+   "w2:when_unicode": {
+    "harvest": 0.0,
+    "harvest+train": 0.0,
+    "spawn+harvest": 0.0,
+    "wait-for-backend": 0.0,
+    "surgery": 0.06977883941655458
+   }
+  },
+  "b": {
+   "harvest": 0.39192731320617413,
+   "harvest+train": 0.3227841649975182,
+   "spawn+harvest": -0.21899658066504687,
+   "wait-for-backend": 0.37266760363116974,
+   "surgery": -0.46597959982517595
+  }
+ },
+ "params": 3825,
+ "footprint_bytes": 132664,
+ "path": "trained",
+ "heldout_acc": 0.8778,
+ "train_n": 240,
+ "heldout_n": 90,
+ "incumbents": [
+  {
+   "name": "keyword-classifier (phase-1 trainer)",
+   "acc": 0.5667
+  },
+  {
+   "name": "majority-class (wait-for-backend)",
+   "acc": 0.2
+  }
+ ],
+ "bar": 0.8,
+ "attempts": [
+  {
+   "fmode": "words",
+   "hidden": 0,
+   "numpy_acc": 0.8778,
+   "dict_acc": 0.8778,
+   "params": 3825
+  }
+ ],
+ "adopted": true,
+ "clones": [
+  "gap-move-model#c0",
+  "gap-move-model#c1"
+ ],
+ "socialized_to": 3
+}
