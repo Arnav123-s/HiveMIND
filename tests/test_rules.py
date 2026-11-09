@@ -1226,3 +1226,19 @@ def test_data_he_hands_over_goes_to_the_calculator_whatever_the_cell_says(tmp_pa
     fixed, notes = coordinator.ensure_data_steps(rain, plan)
     assert [s["agent"] for s in fixed] == ["calculator", "calculator", "writer"]
     assert notes[1].startswith("s2: coder -> calculator")
+
+
+def test_the_research_hive_splits_the_question_not_the_step_s_wrapper(tmp_path, monkeypatch):
+    """Research eval: handed 'Find, with quotes from sources, what Arnav asked: Research how ...', the decomposer made
+    'What did Arnav ask about lithium-ion battery degradation?' a sub-question, and called a literature question about
+    batteries an experiment."""
+    from team.board import Board
+    from team.specialists import research_hive as R
+    seen = []
+    monkeypatch.setattr(R, "decompose", lambda task, board: seen.append(task) or [])
+    monkeypatch.setattr(R, "answered", lambda facts, board: [])
+    monkeypatch.setattr(R, "conflicts", lambda facts, board, limit=24: [])
+    R.run("Find, with quotes from sources, what Arnav asked: Research how lithium-ion batteries degrade over time.", "",
+          Board(tmp_path, echo=False), "s1")
+    assert seen == ["Research how lithium-ion batteries degrade over time."]
+    assert "Never for the physical world" in R.DECOMPOSE and "never about what Arnav asked" in R.DECOMPOSE

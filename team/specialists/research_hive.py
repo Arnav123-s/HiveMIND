@@ -30,9 +30,12 @@ BROAD = re.compile(r"\b(research|investigate|overview|survey|state of the art|la
 DECOMPOSE = """You lead research for Arnav's team. Split the QUESTION into 2 to 4 sub-questions that together answer it,
 and say how each is answered:
 - "read": from sources (papers, articles, docs): a fact, a definition, what is known, a comparison point
-- "experiment": by running a program: a test, a measurement, a simulation, a benchmark, data analysis
+- "experiment": by running a program on this computer: timing or testing code, an algorithm, a simulation from
+  numbers he gave, analysing data he gave. Never for the physical world (batteries, telescopes, the body, the
+  climate): what is known about it is "read" from studies
 - "math": by computing or deriving: an exact calculation, a formula, a proof check, solving equations
-Keep his names and terms exactly. Reply with JSON only:
+Each sub-question asks about the subject itself, never about what Arnav asked. Keep his names and terms exactly.
+Reply with JSON only:
 {"questions": [{"q": "...", "how": "read"}, {"q": "...", "how": "experiment"}]}"""
 EXPERIMENT = """Answer this research sub-question by running a program, not from memory:
 {q}
@@ -140,7 +143,14 @@ def one(q, board, step_id, context="", note=""):
     return facts, items, corpus, notes
 
 
+WRAPPER = re.compile(r"^.{0,80}?\bwhat Arnav asked:\s*", re.I | re.S)
+
+
 def run(task, context, board, step_id, guard=None, work=None):
+    # the question itself, not the step's wrapper: handed "Find, with quotes from sources, what Arnav asked: Research how
+    # ...", the decomposer made "What did Arnav ask about lithium-ion battery degradation?" a sub-question, and the
+    # relevance filter then rejected every Wikipedia result against it
+    task = WRAPPER.sub("", task or "", count=1)
     plan = decompose(task, board)
     qs = [q for q, _ in plan]
     facts, items, corpus, notes = [], [], {}, []
