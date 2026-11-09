@@ -1195,3 +1195,13 @@ def test_a_missing_page_is_found_where_it_really_is_and_page_one_means_page_one(
     assert "food-and-drink_33/page-2.html, which exists" in fact
     assert FIRST_PAGE.search("every book's name and price from the first page of the Food and Drink category")
     assert not FIRST_PAGE.search("the three cheapest Mystery books")
+
+
+def test_a_number_counts_by_its_value_not_its_spelling():
+    """Held-out set 2: the calculator printed 161.0, the writer wrote $161.00, and the report's grounding struck the
+    right answer because the strings differed."""
+    from team.specialists.writer import ground_numbers
+    text, struck = ground_numbers("The discount is **$161.00**.\n| 35% of 460 | 161.00 |", "Result: Answer: 161.0\n460 35%")
+    assert struck == [] and "161.00" in text
+    text, struck = ground_numbers("The discount is 162.", "Answer: 161.0")
+    assert struck == ["The discount is 162."]

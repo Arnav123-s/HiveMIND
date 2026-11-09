@@ -30,13 +30,24 @@ def _plain(x):
     return re.sub(r"(?<=\d),(?=\d{3}(?!\d))", "", x).replace(" ", "")
 
 
+def _value(x):
+    try:
+        return float(_plain(x))
+    except ValueError:
+        return None
+
+
 def ground_numbers(text, verified):
-    """Every number in the report must appear in the verified results; lines with unverified numbers are struck."""
+    """Every number in the report must appear in the verified results; lines with unverified numbers are struck.
+    A number counts by its value too: '$161.00' is the calculator's 161.0 (held-out set 2: the right discount was
+    struck because the strings differed)."""
     ok, struck = [], []
     plain = _plain(verified)  # "3,905,849" in the report is the "3905849" a source gave
+    values = {v for v in (_value(n) for n in NUM.findall(verified)) if v is not None}
     for line in text.split("\n"):
         nums = [n for n in NUM.findall(line) if not re.fullmatch(r"\d", n)]  # [1]-style citations / single digits
-        if line.startswith("##") or line.lstrip().startswith("[") or all(_plain(n) in plain for n in nums):
+        if line.startswith("##") or line.lstrip().startswith("[") or all(
+                _plain(n) in plain or _value(n) in values for n in nums):
             ok.append(line)
         else:
             struck.append(line.strip())
