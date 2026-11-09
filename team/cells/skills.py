@@ -693,6 +693,8 @@ def load_spawned():
     except ValueError:
         return {}
     for k, v in sp.items():
+        if not all(f in v for f in ("part", "labels", "member", "instr")):
+            continue  # a damaged entry is skipped, never a reason the hive cannot start
         LEARNED[k] = dict(part=v["part"], labels=v["labels"], member=v["member"], instr=v["instr"])
         SKILLS[k] = dict(part=v["part"], labels=v["labels"], instr=v["instr"], gen=None, learned=True, new=True,
                          spawned=True)

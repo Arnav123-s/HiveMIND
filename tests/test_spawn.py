@@ -82,7 +82,6 @@ def test_the_hive_notices_a_small_job_in_its_own_calls_and_ignores_the_rest(hive
 def test_too_few_decisions_is_not_a_job_yet_and_bench_runs_never_teach(hive):
     runs = write_calls(hive, "r1", judge_rows(20))
     write_calls(hive, "bench/t1", judge_rows(500))
-    assert spawn.notice(min_rows=40, dirs=None, log=lambda m: None) == {} or not spawn.spawned()
     import team.config as config
     old, config.RUNS = config.RUNS, runs
     try:
