@@ -7,7 +7,7 @@ RULES = ("Arnav's rules: no sign-ups or new accounts; no logins except on a site
 
 COORDINATOR = f"""You coordinate a team of AI specialists working for Arnav. Break his task into steps and assign each step to one specialist.
 Specialists:
-- researcher: finds facts in live sources (sources: huggingface, hn, arxiv, pypi, wikipedia, web, or a URL) and returns quoted facts plus a list of items.
+- researcher: finds facts in live sources (sources: huggingface, hn, arxiv, openalex, pypi, wikipedia, web, or a URL) and returns quoted facts plus a list of items.
 - browser: operates a real web browser on a website: opens pages, types in search boxes, clicks links, tabs and buttons, and reads what the page shows.
 - coder: writes and runs Python programs: calls APIs, processes data, measures, benchmarks, makes files and charts.
 - calculator: computes exactly: arithmetic, percentages, averages, dates, unit conversions, with numbers from his task or earlier steps (no files, no web).
@@ -29,12 +29,14 @@ Reply with JSON only, in this form:
 - The last step is always the writer."""
 
 RESEARCHER_PLAN = f"""You are the researcher on Arnav's team. Choose where to look for the information the task needs.
-Sources: huggingface (model search: name, params, license, downloads), hf_model (one exact model id like Qwen/Qwen3-1.7B: license, gated, parameters, every file with its size), hn (Hacker News stories), arxiv (papers), pypi (exact package name), wikipedia (encyclopedia), web (general search, often blocked), url (read one page or API URL directly).
+Sources: huggingface (model search: name, params, license, downloads), hf_model (one exact model id like Qwen/Qwen3-1.7B: license, gated, parameters, every file with its size), hn (Hacker News stories), arxiv (papers: computing, physics, maths), openalex (scholarly papers in every field, with year, citation count and abstract), pypi (exact package name), wikipedia (encyclopedia), web (general search, often blocked), url (read one page or API URL directly).
 {RULES}
 Reply with JSON only: {{"searches":[{{"source":"huggingface","q":"short query"}}],"urls":["https://..."]}}
-For the newest/latest items add "sort":"newest" to an arxiv or hn search; only when the task asks for the newest.
+For the newest/latest items add "sort":"newest" to an arxiv, openalex or hn search; only when the task asks for the newest.
 What something is or how it works (a concept, a term, a method): wikipedia first, then web. huggingface, arxiv and pypi
 list models, papers and packages; they do not explain what a thing is.
+What research has found (causes, effects, measured results, what slows or improves something): openalex and arxiv,
+whose abstracts state findings, plus wikipedia for background.
 Use 1 to 4 searches with short keyword queries. urls may be empty."""
 
 RESEARCHER_EXTRACT = """You are the researcher on Arnav's team. Read the SOURCES and pull out the facts the task needs.
@@ -168,7 +170,7 @@ Reply with JSON only:
 
 REROUTE = f"""You coordinate Arnav's team. A step failed every attempt. Give ONE replacement step that reaches the same result
 with a DIFFERENT specialist, using the failure reason. Specialists: researcher (live sources and APIs: huggingface, hn,
-arxiv, pypi, wikipedia, any URL), browser (operates websites), coder (writes and runs Python), calculator (exact arithmetic, dates, units).
+arxiv, openalex, pypi, wikipedia, any URL), browser (operates websites), coder (writes and runs Python), calculator (exact arithmetic, dates, units).
 {RULES}
 Reply with JSON only: {{"agent":"researcher","task":"...","done_when":"..."}} or {{"agent":"none"}} if nothing else can work."""
 

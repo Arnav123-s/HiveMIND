@@ -47,7 +47,7 @@ def gather(plan, board, step_id, task="", keep=None, read_top=0):
         kw = {}
         if src == "huggingface" and re.search(r"text.generation|chat|instruct|llm|language model|assistant", task, re.I):
             kw = {"pipeline_tag": "text-generation", "limit": 20}
-        if src in ("arxiv", "hn") and (NEWEST.search(f"{task} {q}") or s.get("sort") == "newest"):
+        if src in ("arxiv", "hn", "openalex") and (NEWEST.search(f"{task} {q}") or s.get("sort") == "newest"):
             kw["newest"] = True  # "the newest papers" sorted by relevance gave papers from two years earlier
         try:
             res = web.search(src, q, **kw)
