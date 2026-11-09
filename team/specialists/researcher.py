@@ -29,8 +29,10 @@ def extract_messages(task, sources_text):
             {"role": "user", "content": f"Today is {today()}.\nTask: {task}\n\nSOURCES:\n{sources_text}"}]
 
 
-def gather(plan, board, step_id, task=""):
-    """Run the searches and URL reads. Returns (blocks, corpus{url: text}, notes)."""
+def gather(plan, board, step_id, task="", keep=None, read_top=0):
+    """Run the searches and URL reads. Returns (blocks, corpus{url: text}, notes).
+    keep(result) -> bool drops search results that are not about the task (the research hive's relevance filter);
+    read_top: also read that many of the first kept results' pages."""
     blocks, corpus, notes = [], {}, []
     for s in (plan.get("searches") or [])[:4]:
         if not isinstance(s, dict):
@@ -53,6 +55,16 @@ def gather(plan, board, step_id, task=""):
             board.log("researcher", "tool-fail", notes[-1])
             continue
         board.log("researcher", "search", f"{src}: '{q}' -> {len(res)} results")
+        if keep is not None and res:
+            kept = [r for r in res if keep(r)]
+            if len(kept) < len(res):
+                board.log("researcher", "filter", f"{src}: kept {len(kept)} of {len(res)} results as about the question")
+            res = kept
+        if read_top:
+            plan.setdefault("urls", [])
+            for r in [r for r in res if str(r.get("url", "")).startswith("http")][:read_top]:
+                if r["url"] not in plan["urls"]:
+                    plan["urls"].append(r["url"])
         ids = re.findall(r"\b[\w.\-]+/[\w.\-]+\b", q) if src == "huggingface" else []
         for mid in ids[:2]:  # an exact model id: also get that model's own facts (license, files, sizes)
             try:

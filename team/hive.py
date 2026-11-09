@@ -13,7 +13,7 @@ from pathlib import Path
 from . import config, llm, memory, stop
 from .board import Board
 from .guard import Guard, check_task
-from .specialists import browser_agent, calculator, coder, coordinator, researcher, verifier, writer
+from .specialists import browser_agent, calculator, coder, coordinator, research_hive, researcher, verifier, writer
 
 
 def retract_failed(board, step, why):
@@ -260,6 +260,9 @@ class Hive:
 
     def _dispatch(self, s, task, ctx):
         if s["agent"] == "researcher":
+            if research_hive.broad(task) and "[" not in s["id"]:  # a research question, not one look-up (nor a fan-out item)
+                self.board.log("research_hive", "start", f"{s['id']}: sub-questions, relevance, gaps and cross-checks")
+                return research_hive.run(task, ctx, self.board, s["id"])
             return researcher.run(task, ctx, self.board, s["id"])
         if s["agent"] == "browser":
             m = re.search(r"https?://[^\s)\"']+", task)  # start where the task says; otherwise the model navigates
