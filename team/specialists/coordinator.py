@@ -245,6 +245,17 @@ def triage(goal, board):
     """The task_kind cell names the cheapest way through the hive; a template plan for one-kind tasks skips the 4B
     coordinator and plan reviewer. Returns steps, or None (the coordinator plans)."""
     from ..cells import runtime, use
+    from .research_hive import broad
+    if broad(goal):
+        # a research question goes to the research hive, which splits it into sub-questions and runs experiments
+        # with the coder when one needs it; planned by the coordinator, the battery question got a browser, a coder
+        # and a calculator step each "if needed", padding with nothing to do
+        if FILE_ORDER.search(goal) or MAKE_ORDER.search(goal):
+            board.log("coordinator", "triage", "a research question that also orders a file or a program: "
+                                               "the coordinator plans")
+            return None
+        board.log("coordinator", "triage", "a research question: the research hive takes it")
+        return _template("lookup", goal)
     if not use.on("task_kind"):
         return None
     p = runtime.label_probs("task_kind", goal[:600])
@@ -254,18 +265,33 @@ def triage(goal, board):
     need = use.wins().get("task_kind", {}).get("thresholds", {}).get(kind, TRIAGE_MIN)
     if kind not in TEMPLATES or conf < max(TRIAGE_MIN, need):
         return None
-    from .research_hive import broad
-    if kind != "lookup" and broad(goal):
-        # a research question is never a one-kind shortcut to another specialist: the cell said "code" (0.92) for
-        # "Research how lithium-ion batteries degrade over time ...", and the research hive never ran. The
-        # coordinator plans it (its researcher steps run the research hive, which runs experiments with the coder).
-        board.log("coordinator", "triage", f"cell said {kind}, but this is a research question: the coordinator plans")
-        return None
+    return _template(kind, goal)
+
+
+def _template(kind, goal):
     steps = [{"id": f"s{i + 1}", "agent": a, "task": t.format(goal=goal), "needs": [], "for_each": None, "done_when": d}
              for i, (a, t, d) in enumerate(TEMPLATES[kind])]
     steps.append({"id": f"s{len(steps) + 1}", "agent": "writer", "task": f"Write the finished answer for Arnav: {goal}",
                   "needs": [s["id"] for s in steps], "for_each": None, "done_when": "the answer does what he asked"})
     return steps
+
+
+# (the cell said "code" (0.92) for "Research how lithium-ion batteries degrade over time ...": a research question is
+# decided in code before the cell is asked)
+MAKE_ORDER = re.compile(r"\b(?:write|build|make|create|give me) (?:me )?(?:a |an )?(?:python |small |simple )?"
+                        r"(?:program|script|function|app|tool|class|module|chart|plot|graph|spreadsheet|table file)\b|"
+                        r"\b(?:chart|charts|plot|plots|graph|graphs|visuali[sz]e|diagram|histogram)\b", re.I)
+PADDING = re.compile(r"\b(?:if (?:needed|necessary|required|applicable|relevant)|as needed|where needed)\b", re.I)
+
+
+def drop_padding(steps):
+    """Steps the coordinator adds "if needed" are not his orders: dropped (with their ids taken out of later needs),
+    as long as another step still does the work."""
+    pad = {s["id"] for s in steps if s["agent"] != "writer" and PADDING.search(s.get("task", ""))}
+    if not pad or all(s["id"] in pad or s["agent"] == "writer" for s in steps):
+        return steps, []
+    kept = [dict(s, needs=[n for n in s.get("needs", []) if n not in pad]) for s in steps if s["id"] not in pad]
+    return kept, [f"dropped {sorted(pad)}: steps added 'if needed' are not his orders"]
 
 
 def reviewed_plan(goal, board, notes="", checklist=()):
@@ -283,9 +309,12 @@ def reviewed_plan(goal, board, notes="", checklist=()):
                 steps, problems, raw = steps2, problems2, raw2
         else:
             board.log("plan_reviewer", "ok", "plan covers the task")
+        steps, padded = drop_padding(steps)
+        if padded:
+            board.log("plan_reviewer", "drop", padded[0])
         steps, added = ensure_file_step(goal, steps)
         steps, swapped = ensure_data_steps(goal, steps)
-        problems = problems + added + swapped
+        problems = problems + padded + added + swapped
     return steps, problems, raw
 
 

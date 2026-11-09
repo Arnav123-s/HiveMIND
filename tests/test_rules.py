@@ -1006,9 +1006,20 @@ def test_a_research_question_never_takes_a_shortcut_to_another_specialist(tmp_pa
     monkeypatch.setattr(use, "on", lambda s: s == "task_kind")
     monkeypatch.setattr(use, "wins", lambda: {})
     monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"code": 0.95, "plan": 0.05})
-    assert coordinator.triage("Research how lithium-ion batteries degrade over time and what slows it.", b) is None
+    steps = coordinator.triage("Research how lithium-ion batteries degrade over time and what slows it.", b)
+    assert [s["agent"] for s in steps] == ["researcher", "writer"] and "batteries" in steps[0]["task"]
+    assert coordinator.triage("Research battery degradation and save the findings to a CSV file.", b) is None
     assert [s["agent"] for s in coordinator.triage("Write a Python function that reverses a string.", b)] == \
         ["coder", "writer"]
+    # the coordinator's padding: steps added "if needed" are not his orders
+    plan = [{"id": "s1", "agent": "researcher", "task": "Find facts about X", "needs": []},
+            {"id": "s2", "agent": "browser", "task": "Search the web for X, if needed", "needs": []},
+            {"id": "s3", "agent": "coder", "task": "Process data about X if necessary", "needs": ["s1"]},
+            {"id": "s4", "agent": "writer", "task": "Write it", "needs": ["s1", "s2", "s3"]}]
+    kept, note = coordinator.drop_padding(plan)
+    assert [s["id"] for s in kept] == ["s1", "s4"] and kept[1]["needs"] == ["s1"] and note
+    only = [{"id": "s1", "agent": "coder", "task": "Fix it if needed", "needs": []}, plan[3]]
+    assert coordinator.drop_padding(only) == (only, [])  # never the only step doing the work
 
 
 def test_layout_orders_are_the_report_s_and_verified_facts_carry_a_step(tmp_path, monkeypatch):
