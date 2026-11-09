@@ -1,0 +1,8 @@
+{
+ "skill": "sp_verifier_75e567",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.18181818181818182,
+ "test": 0.2727272727272727,
+ "trainable_params": 0
+}
