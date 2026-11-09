@@ -152,5 +152,12 @@
   "shortcut_share_test": 0.701,
   "incumbent": null,
   "incumbent_name": "coordinator + plan reviewer = brain4b (the shortcut skips them)"
+ },
+ "result_relevant": {
+  "use": false,
+  "cell": 1.0,
+  "incumbent": 1.0,
+  "incumbent_name": "code:words",
+  "note": "tied the word-overlap rule (1.0 vs 1.0) on test data too easy to tell them apart, at 70 ms vs 1 ms per call: the rule keeps the job"
  }
 }

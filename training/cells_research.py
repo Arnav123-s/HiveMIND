@@ -25,7 +25,9 @@ for skill in sys.argv[1:]:
     inc = json.loads(inc_p.read_text()) if inc_p.exists() else None
     cell = reg.get("test_runtime")
     w = json.loads((runtime.CELLS / "wins.json").read_text())
-    w[skill] = {"use": bool(entry) and inc is not None and cell is not None and cell >= inc["test"], "cell": cell,
+    beats = inc is not None and cell is not None and (cell > inc["test"] if str(inc["incumbent"]).startswith("code:")
+                                                      else cell >= inc["test"])  # a tie with a code rule: the rule is cheaper
+    w[skill] = {"use": bool(entry) and beats, "cell": cell,
                 "incumbent": inc and inc["test"], "incumbent_name": inc and inc["incumbent"]}
     (runtime.CELLS / "wins.json").write_text(json.dumps(w, indent=1))
     print(f"{skill}: cell {cell} vs {inc and inc['incumbent']} {inc and inc['test']} -> {'ON' if w[skill]['use'] else 'off'}",
