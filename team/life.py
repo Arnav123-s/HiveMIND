@@ -1,6 +1,6 @@
 """One turn of the hive's life: notice new jobs, grow cells for them, check the working cells, retire the bad ones.
 
-    python -m team life [--min 200] [--rehearse 200] [--runs DIR ...] [--bench] [--no-train]
+    python -m team life [--min 200] [--rehearse 200] [--quick] [--runs DIR ...] [--bench] [--no-train]
 
 1. notice   read every logged member call; find the call sites that are small decisions (team/cells/spawn.py);
             declare the ones with at least --min distinct decisions as spawned skills
@@ -38,7 +38,7 @@ def due(name, sp):
     return None
 
 
-def turn(min_rows=200, dirs=None, bench=False, train=True, rehearse=200, log=print):
+def turn(min_rows=200, dirs=None, bench=False, train=True, rehearse=200, quick=False, log=print):
     out = {"started": time.strftime("%F %T"), "trained": {}, "retired": []}
     sites = spawn.notice(min_rows, dirs, bench, log)
     out["sites"] = len(sites)
@@ -56,7 +56,8 @@ def turn(min_rows=200, dirs=None, bench=False, train=True, rehearse=200, log=pri
                 log(f"[life] {name}: no practice ({type(e).__name__}: {str(e)[:120]})")
             from . import llm
             llm.unload_all()  # the training process gets the RAM
-        r = subprocess.run([sys.executable, str(config.ROOT / "training" / "cells_spawn.py"), name],
+        r = subprocess.run([sys.executable, str(config.ROOT / "training" / "cells_spawn.py"), name,
+                            *(["--quick"] if quick else [])],
                            cwd=config.ROOT, capture_output=True, text=True)
         tail = (r.stdout or "").strip().splitlines()[-1:] or [(r.stderr or "").strip()[-300:]]
         out["trained"][name] = {"why": why, "status": spawn.spawned()[name].get("status"), "result": tail[0]}
@@ -111,5 +112,5 @@ def main(argv):
                 break
             dirs.append(a)
     turn(min_rows=opt("--min", 200), dirs=dirs or None, bench="--bench" in argv, train="--no-train" not in argv,
-         rehearse=opt("--rehearse", 200))
+         rehearse=opt("--rehearse", 200), quick="--quick" in argv)
     return 0
