@@ -1,0 +1,223 @@
+{
+ "lookup": {
+  "heldout": false,
+  "task": "Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me a two-line s",
+  "hits": [
+   "term 'Instruct' in 18 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 77 training goal(s) of verifier.jsonl"
+  ]
+ },
+ "arxiv": {
+  "heldout": false,
+  "task": "List the three newest arXiv papers about mixture of experts, with their titles and dates.",
+  "hits": []
+ },
+ "chart": {
+  "heldout": false,
+  "task": "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or HuggingFaceTB/SmolLM2-360M-Instruct? Make a bar chart of th",
+  "hits": [
+   "term 'HuggingFaceTB/SmolLM2-360M-Instruct' in 3 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 18 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 77 training goal(s) of verifier.jsonl",
+   "term 'Qwen' in 15 training goal(s) of browser.jsonl",
+   "term 'Qwen' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Qwen' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Qwen' in 35 training goal(s) of verifier.jsonl",
+   "term 'Qwen' in skills.py",
+   "term 'Qwen' in prompts.py",
+   "term 'Qwen/Qwen3-1.7B' in 3 training goal(s) of browser.jsonl",
+   "term 'Qwen/Qwen3-1.7B' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Qwen/Qwen3-1.7B' in skills.py",
+   "term 'Qwen/Qwen3-1.7B' in prompts.py",
+   "2 5-word phrase(s) in training goals of coordinator.jsonl: 'a bar chart of the'"
+  ]
+ },
+ "quotes": {
+  "heldout": false,
+  "task": "On quotes.toscrape.com, open the page for the tag 'inspirational' and list the first three quotes.",
+  "hits": [
+   "term 'inspirational' in 2 training goal(s) of browser.jsonl",
+   "term 'inspirational' in 1 training goal(s) of coordinator.jsonl",
+   "term 'inspirational' in 1 training goal(s) of researcher_extract.jsonl",
+   "1 5-word phrase(s) in training goals of browser_skills.jsonl: 'list the first three quotes'",
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'on quotes toscrape com open'"
+  ]
+ },
+ "csv": {
+  "heldout": false,
+  "task": "Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV.",
+  "hits": [
+   "term 'Mystery' in 2 training goal(s) of browser.jsonl",
+   "term 'Mystery' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Mystery' in skills.py",
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'on books toscrape com and'",
+   "6 5-word phrase(s) in training goals of coordinator.jsonl: 'and save them to a'"
+  ]
+ },
+ "percent": {
+  "heldout": false,
+  "task": "What is 17.5% of 2,340? Give the number to two decimals.",
+  "hits": []
+ },
+ "days": {
+  "heldout": false,
+  "task": "How many days are there from 15 January 2026 to 1 March 2026?",
+  "hits": [
+   "term '2026' in skills.py"
+  ]
+ },
+ "units": {
+  "heldout": false,
+  "task": "Convert 72 degrees Fahrenheit to Celsius, to one decimal place.",
+  "hits": [
+   "term 'Celsius' in skills.py",
+   "term 'Fahrenheit' in skills.py"
+  ]
+ },
+ "translate": {
+  "heldout": false,
+  "task": "Translate into French: 'The meeting has been moved to Friday afternoon.'",
+  "hits": []
+ },
+ "summary": {
+  "heldout": false,
+  "task": "Summarise this in one sentence: The Ridgeway bridge, built in 1932, was closed in March for repairs after inspectors fou",
+  "hits": [
+   "term '4.2' in 1 training goal(s) of coordinator.jsonl"
+  ]
+ },
+ "grammar": {
+  "heldout": false,
+  "task": "Correct the grammar of this sentence and give me only the corrected sentence: 'She don't like the apples that was on the",
+  "hits": []
+ },
+ "email": {
+  "heldout": false,
+  "task": "Write a two-sentence email to Priya declining Friday's 3pm meeting and suggesting Monday instead.",
+  "hits": []
+ },
+ "fib": {
+  "heldout": false,
+  "task": "Write a Python function that returns the n-th Fibonacci number (fib(1) = 1, fib(2) = 1) and tell me fib(30).",
+  "hits": []
+ },
+ "bugfix": {
+  "heldout": false,
+  "task": "This Python code should print the sum of the even numbers from 1 to 10 but prints the wrong answer. Fix it and tell me t",
+  "hits": []
+ },
+ "explain": {
+  "heldout": false,
+  "task": "In three sentences, explain what a mixture-of-experts model is.",
+  "hits": []
+ },
+ "sales": {
+  "heldout": false,
+  "task": "Monthly sales: Jan 120, Feb 95, Mar 143, Apr 110. Which month had the highest sales, and what was the average per month?",
+  "hits": [
+   "term '120,' in skills.py"
+  ]
+ },
+ "ho_lookup": {
+  "heldout": true,
+  "task": "What licence does allenai/OLMo-2-0425-1B-Instruct use on Hugging Face, and how many parameters does it have?",
+  "hits": [
+   "term 'Instruct' in 18 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 77 training goal(s) of verifier.jsonl",
+   "1 5-word phrase(s) in training goals of researcher_plan.jsonl: 'on hugging face and how'"
+  ]
+ },
+ "ho_pypi": {
+  "heldout": true,
+  "task": "What is the latest version of the requests package on PyPI?",
+  "hits": [
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'what is the latest version'",
+   "2 5-word phrase(s) in training goals of researcher_extract.jsonl: 'is the latest version of'",
+   "2 5-word phrase(s) in training goals of researcher_plan.jsonl: 'is the latest version of'"
+  ]
+ },
+ "ho_chart": {
+  "heldout": true,
+  "task": "Plot the Hugging Face download counts of distilbert/distilbert-base-uncased and google-bert/bert-base-uncased as a bar c",
+  "hits": []
+ },
+ "ho_book": {
+  "heldout": true,
+  "task": "On books.toscrape.com, go to the Philosophy category, open the first book there and tell me its UPC.",
+  "hits": []
+ },
+ "ho_quotes_csv": {
+  "heldout": true,
+  "task": "Save the text and author of every quote on the first page of quotes.toscrape.com to a CSV file.",
+  "hits": [
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'page of quotes toscrape com'",
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'on the first page of'"
+  ]
+ },
+ "ho_discount": {
+  "heldout": true,
+  "task": "A jacket costs 80 euros and is reduced by 35%. What is the new price?",
+  "hits": []
+ },
+ "ho_weekday": {
+  "heldout": true,
+  "task": "What day of the week was 4 July 1976?",
+  "hits": []
+ },
+ "ho_miles": {
+  "heldout": true,
+  "task": "How many kilometres is 26.2 miles? One decimal place.",
+  "hits": []
+ },
+ "ho_spanish": {
+  "heldout": true,
+  "task": "Translate into Spanish: 'The library closes at eight tonight.'",
+  "hits": []
+ },
+ "ho_office": {
+  "heldout": true,
+  "task": "Summarise in one sentence: Starting 1 June, the design team moves from the third floor to the new building on Harbour Ro",
+  "hits": []
+ },
+ "ho_polite": {
+  "heldout": true,
+  "task": "Rewrite this to sound polite and give me only the new sentence: 'Send me the file now.'",
+  "hits": []
+ },
+ "ho_notice": {
+  "heldout": true,
+  "task": "Write a three-sentence message to the team saying the office is closed on Monday for maintenance.",
+  "hits": []
+ },
+ "ho_palindrome": {
+  "heldout": true,
+  "task": "Write a Python function that checks whether a string is a palindrome and tell me its result for 'racecar' and for 'pytho",
+  "hits": [
+   "term 'python' in 2 training goal(s) of browser.jsonl",
+   "term 'python' in 6 training goal(s) of coordinator.jsonl",
+   "term 'python' in 11 training goal(s) of researcher_extract.jsonl",
+   "term 'python' in 2 training goal(s) of researcher_plan.jsonl",
+   "term 'python' in 6 training goal(s) of verifier.jsonl",
+   "term 'python' in skills.py",
+   "term 'python' in prompts.py"
+  ]
+ },
+ "ho_bugmax": {
+  "heldout": true,
+  "task": "This Python code should print the largest number in the list but prints the smallest. Fix it and tell me the right outpu",
+  "hits": []
+ },
+ "ho_explain": {
+  "heldout": true,
+  "task": "In two sentences, explain what a hash table is.",
+  "hits": []
+ },
+ "ho_scores": {
+  "heldout": true,
+  "task": "Test scores: Ana 78, Ben 92, Caro 85, Dev 61. Who scored highest, and what is the average score?",
+  "hits": [
+   "term 'Dev' in skills.py",
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'and what is the average'"
+  ]
+ }
+}
