@@ -1,18 +1,18 @@
 {
  "summary": {
-  "inputs": 2,
+  "inputs": 26,
   "chunk_chars": 1800,
-  "big_checked": 3,
-  "small_checked": 1,
-  "big_checked_also_found": 1,
-  "big_seconds": 77.8,
-  "small_seconds": 25.6,
-  "big_facts": 4,
-  "small_facts": 2,
-  "inputs_where_small_found_every_4b_fact": 0,
-  "inputs_where_4b_had_checked_facts": 2,
-  "inputs_where_small_found_none_but_4b_did": 1,
-  "inputs_where_only_small_had_checked_facts": 0
+  "big_checked": 38,
+  "small_checked": 52,
+  "big_checked_also_found": 19,
+  "big_seconds": 2201.5,
+  "small_seconds": 1204.6,
+  "big_facts": 49,
+  "small_facts": 98,
+  "inputs_where_small_found_every_4b_fact": 7,
+  "inputs_where_4b_had_checked_facts": 21,
+  "inputs_where_small_found_none_but_4b_did": 5,
+  "inputs_where_only_small_had_checked_facts": 5
  },
  "rows": [
   {
@@ -46,6 +46,414 @@
    "missed": [
     "The latest version of Django on PyPI is 6.1.3"
    ]
+  },
+  {
+   "task": "What is the population of Tallinn, and in which country is it?",
+   "chars": 6882,
+   "chunks": 5,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 73.3,
+   "small_facts": 5,
+   "small_checked": 2,
+   "small_seconds": 63.5,
+   "big_checked_also_found": 2,
+   "small_only": [],
+   "missed": []
+  },
+  {
+   "task": "List the three newest arXiv papers about federated learning, with their titles and dates.",
+   "chars": 2813,
+   "chunks": 2,
+   "big_facts": 0,
+   "big_checked": 0,
+   "big_seconds": 194.2,
+   "small_facts": 6,
+   "small_checked": 1,
+   "small_seconds": 104.5,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "Multi-Model Over-the-Air Federated Learning via Transceiver Beamforming and Device Grouping"
+   ],
+   "missed": []
+  },
+  {
+   "task": "What licence does FacebookAI/roberta-large use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 2107,
+   "chunks": 2,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 49.8,
+   "small_facts": 4,
+   "small_checked": 4,
+   "small_seconds": 27.9,
+   "big_checked_also_found": 2,
+   "small_only": [
+    "FacebookAI/roberta-large has 0.355B parameters",
+    "FacebookAI/roberta-large is gated False"
+   ],
+   "missed": []
+  },
+  {
+   "task": "What is the latest version of fastapi on PyPI, and what licence does it have?",
+   "chars": 223,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 30.1,
+   "small_facts": 1,
+   "small_checked": 1,
+   "small_seconds": 7.8,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": []
+  },
+  {
+   "task": "In which year was the Brooklyn Bridge opened, and how long is its main span?",
+   "chars": 9000,
+   "chunks": 7,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 89.6,
+   "small_facts": 3,
+   "small_checked": 2,
+   "small_seconds": 54.1,
+   "big_checked_also_found": 2,
+   "small_only": [],
+   "missed": []
+  },
+  {
+   "task": "List the three newest arXiv papers about graph neural networks, with their titles and dates.",
+   "chars": 2727,
+   "chunks": 2,
+   "big_facts": 0,
+   "big_checked": 0,
+   "big_seconds": 192.4,
+   "small_facts": 6,
+   "small_checked": 1,
+   "small_seconds": 71.7,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "Spatio-Temporal Traffic Forecasting Robust to Aperiodicity"
+   ],
+   "missed": []
+  },
+  {
+   "task": "What licence does google/flan-t5-large use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 2114,
+   "chunks": 2,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 46.9,
+   "small_facts": 2,
+   "small_checked": 1,
+   "small_seconds": 17.7,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": [
+    "google/flan-t5-large has 237346 downloads"
+   ]
+  },
+  {
+   "task": "What is the latest version of pytest on PyPI, and what licence does it have?",
+   "chars": 183,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 30.7,
+   "small_facts": 1,
+   "small_checked": 0,
+   "small_seconds": 11.3,
+   "big_checked_also_found": 0,
+   "small_only": [],
+   "missed": [
+    "The latest version of pytest on PyPI is 9.2.0"
+   ]
+  },
+  {
+   "task": "Who wrote the novel Frankenstein, and in which year was it first published?",
+   "chars": 9000,
+   "chunks": 6,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 71.5,
+   "small_facts": 6,
+   "small_checked": 4,
+   "small_seconds": 64.4,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "Mary Shelley wrote the novel Frankenstein",
+    "Mary Shelley wrote the novel Frankenstein"
+   ],
+   "missed": [
+    "The novel was first published in 1818"
+   ]
+  },
+  {
+   "task": "List the three newest arXiv papers about speech recognition, with their titles and dates.",
+   "chars": 2784,
+   "chunks": 2,
+   "big_facts": 3,
+   "big_checked": 3,
+   "big_seconds": 167.9,
+   "small_facts": 6,
+   "small_checked": 1,
+   "small_seconds": 53.6,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "Text-Only Domain Adaptation for Low-Resource Medical ASR: Shallow Fusion and Density Ratio Rescoring for Hausa"
+   ],
+   "missed": [
+    "Benchmarking Speaker Embedders in the Sub-Second Regime for Real-Time Voice AI Agents has a publication date of 2026-11-",
+    "Confucius4-R2T2: A Stable-Prefix Streaming ASR Model for Real Real-Time Transcription has a publication date of 2026-11-",
+    "Fine-Tuning a Transducer for Impaired Speech: Where the Gains Appear and What They Mean for Evaluation has a publication"
+   ]
+  },
+  {
+   "task": "What licence does microsoft/deberta-v3-base use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 1387,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 60.7,
+   "small_facts": 1,
+   "small_checked": 1,
+   "small_seconds": 11.2,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": [
+    "The model has 2,476,770 downloads."
+   ]
+  },
+  {
+   "task": "What is the latest version of pillow on PyPI, and what licence does it have?",
+   "chars": 165,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 27.8,
+   "small_facts": 1,
+   "small_checked": 1,
+   "small_seconds": 7.5,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": [
+    "The license for pillow is the Python Imaging Library (fork)"
+   ]
+  },
+  {
+   "task": "What is the height of Mont Blanc in metres?",
+   "chars": 5246,
+   "chunks": 3,
+   "big_facts": 1,
+   "big_checked": 1,
+   "big_seconds": 52.4,
+   "small_facts": 2,
+   "small_checked": 2,
+   "small_seconds": 42.6,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "Mont Blanc rises 4,807.3 m above sea level"
+   ],
+   "missed": []
+  },
+  {
+   "task": "List the three newest arXiv papers about reinforcement learning from human feedback, with their titles and dates.",
+   "chars": 2683,
+   "chunks": 2,
+   "big_facts": 3,
+   "big_checked": 0,
+   "big_seconds": 174.4,
+   "small_facts": 6,
+   "small_checked": 3,
+   "small_seconds": 50.2,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "Provable Zeroth-Order Safe Exploration for Reinforcement Learning from Human Feedback",
+    "Large Language Models (LLMs) are neural networks trained on huge text collections to generate text by predicting what co",
+    "Direct Preference Optimization (DPO) is widely used for offline Reinforcement Learning from Human Feedback."
+   ],
+   "missed": []
+  },
+  {
+   "task": "What licence does openai/whisper-base use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 9000,
+   "chunks": 6,
+   "big_facts": 3,
+   "big_checked": 2,
+   "big_seconds": 110.4,
+   "small_facts": 10,
+   "small_checked": 8,
+   "small_seconds": 115.5,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "openai/whisper-base has 0.073B parameters",
+    "openai/whisper-base uses TensorFlow model files on Hugging Face",
+    "openai/whisper-base uses PyTorch model files on Hugging Face",
+    "openai/whisper-base uses SafeTensor model files on Hugging Face",
+    "openai/whisper-base has 290.66 MB of TensorFlow model files on Hugging Face",
+    "openai/whisper-base has 0 likes"
+   ],
+   "missed": [
+    "openai/whisper-base has 313 likes"
+   ]
+  },
+  {
+   "task": "What is the latest version of matplotlib on PyPI, and what licence does it have?",
+   "chars": 349,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 31.5,
+   "small_facts": 1,
+   "small_checked": 0,
+   "small_seconds": 13.3,
+   "big_checked_also_found": 0,
+   "small_only": [],
+   "missed": [
+    "The latest version of matplotlib on PyPI is 3.11.2"
+   ]
+  },
+  {
+   "task": "What are the capital and the official language of Slovenia?",
+   "chars": 5311,
+   "chunks": 4,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 57.6,
+   "small_facts": 4,
+   "small_checked": 4,
+   "small_seconds": 46.7,
+   "big_checked_also_found": 2,
+   "small_only": [
+    "Ljubljana is the capital of Slovenia"
+   ],
+   "missed": []
+  },
+  {
+   "task": "List the three newest arXiv papers about vision transformers, with their titles and dates.",
+   "chars": 2751,
+   "chunks": 2,
+   "big_facts": 3,
+   "big_checked": 3,
+   "big_seconds": 155.0,
+   "small_facts": 6,
+   "small_checked": 0,
+   "small_seconds": 68.9,
+   "big_checked_also_found": 0,
+   "small_only": [],
+   "missed": [
+    "Breaking the Privacy Promise: Gradient Inversion Attacks on Federated Low-Rank Adapted Vision Transformers has a publica",
+    "Beyond Quadratic Attention: Separable Gaussian Operators for ODE Vision Transformers has a publication date of 2026-11-0",
+    "Fault-Guided Cross-Layer Prediction for Unsupervised Anomaly Detection has a publication date of 2026-11-05"
+   ]
+  },
+  {
+   "task": "What licence does sentence-transformers/all-mpnet-base-v2 use on Hugging Face, and how many downloads and likes does it ",
+   "chars": 5575,
+   "chunks": 4,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 75.7,
+   "small_facts": 8,
+   "small_checked": 4,
+   "small_seconds": 110.8,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "sentence-transformers/all-mpnet-base-v2 has 0.109B parameters",
+    "sentence-transformers/all-mpnet-base-v2 has 109.97 MB of openvino_model_qint8_quantized.bin",
+    "sentence-transformers/all-mpnet-base-v2 has 741.88 kB of openvino_model_qint8_quantized.xml"
+   ],
+   "missed": [
+    "The license for sentence-transformers/all-mpnet-base-v2 is apache-2.0"
+   ]
+  },
+  {
+   "task": "What is the latest version of sqlalchemy on PyPI, and what licence does it have?",
+   "chars": 172,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 29.3,
+   "small_facts": 1,
+   "small_checked": 0,
+   "small_seconds": 8.6,
+   "big_checked_also_found": 0,
+   "small_only": [],
+   "missed": [
+    "The latest version of sqlalchemy on PyPI is 2.1.8"
+   ]
+  },
+  {
+   "task": "In which year was the University of Bologna founded?",
+   "chars": 4093,
+   "chunks": 3,
+   "big_facts": 1,
+   "big_checked": 0,
+   "big_seconds": 54.5,
+   "small_facts": 2,
+   "small_checked": 2,
+   "small_seconds": 27.0,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "The University of Bologna was founded in 1088.",
+    "The University of Bologna was founded in 1088"
+   ],
+   "missed": []
+  },
+  {
+   "task": "List the three newest arXiv papers about model quantization, with their titles and dates.",
+   "chars": 2649,
+   "chunks": 2,
+   "big_facts": 0,
+   "big_checked": 0,
+   "big_seconds": 194.1,
+   "small_facts": 6,
+   "small_checked": 1,
+   "small_seconds": 100.5,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "Revisiting Error Feedback for Model Quantization was published on 2026-10-13"
+   ],
+   "missed": []
+  },
+  {
+   "task": "What licence does google/vit-base-patch16-224 use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 8674,
+   "chunks": 6,
+   "big_facts": 3,
+   "big_checked": 3,
+   "big_seconds": 127.5,
+   "small_facts": 7,
+   "small_checked": 7,
+   "small_seconds": 92.6,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "google/vit-base-patch16-224 has 0.087B parameters",
+    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_3 has 25 downloads",
+    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_3 has 0 likes",
+    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_5 has 23 downloads",
+    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_5 has 0 likes",
+    "jwt2706/google-vit-base-patch16-224-in21k-finetuned-food-classification-86M-v0.1 has 0.086B parameters"
+   ],
+   "missed": [
+    "google/vit-base-patch16-224 has 15008966 downloads",
+    "google/vit-base-patch16-224 has 1050 likes"
+   ]
+  },
+  {
+   "task": "What is the latest version of click on PyPI, and what licence does it have?",
+   "chars": 335,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 26.4,
+   "small_facts": 1,
+   "small_checked": 1,
+   "small_seconds": 7.1,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": []
   }
  ]
 }
