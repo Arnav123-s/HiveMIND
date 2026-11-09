@@ -4,7 +4,7 @@
 The researcher (Qwen3-4B) reads up to 9000 characters of sources in one call; in the logs that one call is the
 largest share of the hive's model time. Here the same real inputs (every logged extract call) are read again by the
 1.7B alone: the sources are cut at line ends into chunks of --chunk characters, each chunk is read in its own call
-with the same instruction, and the facts are put together. Both sides then pass the hive's own checks: the quote must
+with an instruction for that one small job, and the facts are put together. Both sides then pass the hive's own checks: the quote must
 be in the source word for word, and the verifier must find that it supports the claim.
 
 Measured per input: checked facts from each side, how many of the 4B's checked facts the small reading also found
@@ -25,8 +25,14 @@ from team import llm, prompts  # noqa: E402
 from team.specialists import verifier  # noqa: E402
 
 SMALL = "juror_fast"  # the plain Qwen3-1.7B, no weight edit
-CHUNK_NOTE = ('\nYou are given ONE PART of the sources. Reply with JSON only: {"facts":[{"claim":"...","quote":"...",'
-              '"url":"..."}]} - at most 4 facts, [] if this part holds nothing the task needs.')
+# the small reader's own instruction: one small job (facts of one part), not the researcher's whole reply. A first
+# run appended a note to the researcher's instruction; the 1.7B kept that instruction's reply format (summary, items)
+# and gave no facts at all, which measured the instruction, not the model.
+CHUNK_EXTRACT = """You read ONE PART of a source for Arnav's team and pull out the facts the TASK needs.
+Reply with JSON only: {"facts":[{"claim":"...","quote":"..."}]}
+- claim: one sentence stating the fact with its value ("X has 0.135B parameters"), never a bare label.
+- quote: the words copied exactly, character for character, from the part. Never invent or reword a quote.
+- At most 4 facts. {"facts":[]} if this part says nothing the task needs."""
 
 
 def extract_calls(dirs, limit):
@@ -103,8 +109,8 @@ def small_read(task_head, sources, size):
     facts, secs, n = [], 0.0, 0
     for ch in chunks(sources, size):
         t0 = time.time()
-        data, _ = llm.chat_json(SMALL, [{"role": "system", "content": prompts.RESEARCHER_EXTRACT + CHUNK_NOTE},
-                                        {"role": "user", "content": f"{task_head}\n\nSOURCES (one part):\n{ch}"}],
+        data, _ = llm.chat_json(SMALL, [{"role": "system", "content": CHUNK_EXTRACT},
+                                        {"role": "user", "content": f"{task_head}\n\nPART:\n{ch}"}],
                                 max_new_tokens=500, adapter=False)
         secs += time.time() - t0
         n += 1
