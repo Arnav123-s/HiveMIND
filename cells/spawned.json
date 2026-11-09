@@ -1,0 +1,25 @@
+{
+ "sp_verifier_75e567": {
+  "site": "75e567c9",
+  "member": "verifier",
+  "labels": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "answers": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "fill": {
+   "SUPPORTED": "{\"verdict\": \"SUPPORTED\", \"reason\": \"decided by a cell grown from this member's own decisions\"}",
+   "UNSUPPORTED": "{\"verdict\": \"UNSUPPORTED\", \"reason\": \"decided by a cell grown from this member's own decisions\"}"
+  },
+  "instr": "You are the verifier on Arnav's team. Decide if the QUOTE, taken from a source, supports the CLAIM. SUPPORTED only if the quote states what the claim says. Numbers and names must match.\nAnswer with one of: SUPPORTED, UNSUPPORTED",
+  "part": "verifier: spawned from its own calls (SUPPORTED / UNSUPPORTED)",
+  "system": "You are the verifier on Arnav's team. Decide if the QUOTE, taken from a source, supports the CLAIM.\nReply with JSON only: {\"verdict\":\"SUPPORTED\",\"reason\":\"...\"} or {\"verdict\":\"UNSUPPORTED\",\"reason\":\"...\"}.\nSUPPORTED only if the quote states what the claim says. Numbers and names must match.",
+  "status": "candidate",
+  "born": "2026-11-09",
+  "rows": 72,
+  "member_seconds_per_call": 4.85
+ }
+}
