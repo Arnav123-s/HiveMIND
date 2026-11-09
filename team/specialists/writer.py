@@ -166,6 +166,27 @@ def drop_empty_sections(text):
     return "\n".join(out).strip()
 
 
+SELF_TALK = re.compile(r"^\W*(?:wait\b|hmm+\b|let me\b|let's (?:re)?(?:calculate|check|compute|think|verify|try|see)\b|"
+                       r"actually,? (?:no|wait)\b|oops\b|on second thought|i (?:think|need to|will now|made a mistake)\b|"
+                       r"this is (?:not|in)correct\b)", re.I)
+LABEL_ONLY = re.compile(r"^\s*(?:\*\*[^*]{1,60}:?\*\*:?|#+\s*[^#]{1,60})\s*$")
+
+
+def drop_self_talk(text):
+    """A model thinking aloud is no deliverable: the 1.7B writer looped "**Wait, this is not correct.** Let's
+    recalculate." under "Correct Calculation:" headings (the dev set, days, on the final frozen copy). Lines of it go,
+    then bold labels and headings left with nothing under them (the report's own "## " sections stay)."""
+    lines = [ln for ln in (text or "").split("\n") if not SELF_TALK.search(ln.strip())]
+    out = []
+    for i, ln in enumerate(lines):
+        if LABEL_ONLY.match(ln) and not ln.lstrip().startswith("## "):
+            nxt = next((x for x in lines[i + 1:] if x.strip()), "")
+            if not nxt or LABEL_ONLY.match(nxt):
+                continue
+        out.append(ln)
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(out)).strip()
+
+
 HONEST = re.compile(r"could not|couldn't|not (be )?(confirmed|determined|verified|found|accessible|available)"
                     r"|inaccessible|unavailable|unable|unknown|no data", re.I)
 
@@ -498,7 +519,7 @@ def nothing_verified(goal, board, facts):
 def finish(text, board, results_text, sources, checklist, unordered, flagged, fixes):
     """The report's checked tail: numbers grounded, flags, the checklist, what failed, the sources."""
     saved = [Path(a["path"]) for a in board.artifacts() if a.get("kind") == "file"]
-    text = fix_images(drop_empty_sections(text), saved)
+    text = fix_images(drop_empty_sections(drop_self_talk(dedupe_paragraphs(text))), saved)
     text, bad_days = check_weekdays(text)
     if bad_days:
         board.log("critic", "weekday", f"{len(bad_days)} line(s) with a date on the wrong day of the week corrected")

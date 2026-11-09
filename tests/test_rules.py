@@ -1467,3 +1467,15 @@ def test_a_program_that_read_missing_pages_is_sent_back(tmp_path, monkeypatch):
             return True
     out = coder.run("Find the three cheapest books", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "w2")
     assert out["summary"] == "saved 3 books" and "404 Client Error: Not Found for url" in asked[1]
+
+
+def test_a_model_thinking_aloud_is_not_in_the_report():
+    """Dev set on the final frozen copy (days): '**Wait, this is not correct.** Let's recalculate.' six times under
+    empty 'Correct Calculation:' headings, after the right answer 45."""
+    from team.specialists.writer import dedupe_paragraphs, drop_self_talk
+    loop = "\n\n".join(["**Wait, this is not correct.** Let's recalculate.", "**Correct Calculation:**"] * 6)
+    text = "45\n\n| Date | Day |\n|---|---|\n| 15 January 2026 | Thursday |\n\n**Calculation:**\n\n" + loop + "\n\n## Your instructions"
+    out = drop_self_talk(dedupe_paragraphs(text))
+    assert "Wait" not in out and "Correct Calculation" not in out and "**Calculation:**" not in out
+    assert out.startswith("45") and "| 15 January 2026 | Thursday |" in out and "## Your instructions" in out
+    assert drop_self_talk("**Answer:** 45 days.") == "**Answer:** 45 days."
