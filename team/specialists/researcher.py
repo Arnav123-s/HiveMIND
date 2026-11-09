@@ -31,7 +31,8 @@ def extract_messages(task, sources_text):
 
 def gather(plan, board, step_id, task="", keep=None, read_top=0):
     """Run the searches and URL reads. Returns (blocks, corpus{url: text}, notes).
-    keep(result) -> bool drops search results that are not about the task (the research hive's relevance filter);
+    keep(results) -> [bool] drops search results that are not about the task (the research hive's relevance filter,
+    asked about every result of a search at once);
     read_top: also read that many of the first kept results' pages."""
     blocks, corpus, notes = [], {}, []
     for s in (plan.get("searches") or [])[:4]:
@@ -56,7 +57,7 @@ def gather(plan, board, step_id, task="", keep=None, read_top=0):
             continue
         board.log("researcher", "search", f"{src}: '{q}' -> {len(res)} results")
         if keep is not None and res:
-            kept = [r for r in res if keep(r)]
+            kept = [r for r, ok in zip(res, keep(res)) if ok]
             if len(kept) < len(res):
                 board.log("researcher", "filter", f"{src}: kept {len(kept)} of {len(res)} results as about the question")
             res = kept

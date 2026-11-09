@@ -106,3 +106,24 @@ def test_checklist_keeps_arnavs_words_and_skips_nothing(monkeypatch):
     items = coordinator.instructions(goal)
     assert "the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face" in items
     assert items[-1] == "Do not log in or pay"
+
+
+def test_the_hive_logs_its_members_decisions_and_a_learned_cell_answers_only_when_sure(tmp_path, monkeypatch):
+    """Decisions a member makes are logged for growing a cell; a grown cell answers when it is as sure as dev said."""
+    from team.cells import learn, runtime
+    from team.specialists import verifier
+    monkeypatch.setattr(learn, "DIR", tmp_path / "decisions")
+    monkeypatch.setattr(verifier.llm, "chat_json", lambda *a, **k: ({"verdict": "SUPPORTED", "reason": "ok"}, ""))
+    monkeypatch.setattr(use, "on", lambda k: False)
+    for i in range(3):
+        assert verifier.check_fact(f"Kalo has {i} pools.", f"Kalo: {i} pools")[0]
+    rows = learn.rows("learned_claim")
+    assert len(rows) == 3 and rows[0][1] == "SUPPORTED" and "CLAIM: Kalo has 0 pools." in rows[0][0]
+    tr, dv, te = learn.split("learned_claim")
+    assert len(tr) + len(dv) + len(te) == 3 and data("learned_claim") is not None
+    monkeypatch.setattr(use, "wins", lambda: {"learned_claim": {"use": True, "threshold": 0.9}})
+    monkeypatch.setattr(runtime, "available", lambda s: True)
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"SUPPORTED": 0.95, "UNSUPPORTED": 0.05})
+    assert learn.decide("learned_claim", "CLAIM: x\nQUOTE: x") == "SUPPORTED"
+    monkeypatch.setattr(runtime, "label_probs", lambda s, t: {"SUPPORTED": 0.6, "UNSUPPORTED": 0.4})
+    assert learn.decide("learned_claim", "CLAIM: x\nQUOTE: y") is None  # unsure: the member decides

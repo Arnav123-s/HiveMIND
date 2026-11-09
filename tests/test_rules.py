@@ -701,6 +701,7 @@ def test_the_research_hive_splits_filters_fills_gaps_and_cross_checks(tmp_path, 
             return "no" if "popular" in text or ("power" in text and "MW" not in text) else "yes"
         return "conflict" if "320" in text and "302" in text else "agree"
     monkeypatch.setattr(use, "ask", ask)
+    monkeypatch.setattr(use, "ask_all", lambda skill, texts, board=None: [ask(skill, t) for t in texts])
     assert R.broad("Research how tidal turbines work and how much power the Kalo array makes")
     out = R.run("Research how tidal turbines work and how much power the Kalo array makes", "", b, "s1")
     assert out["sub_questions"] == ["How do tidal turbines work?", "How much power does the Kalo array make?"]
