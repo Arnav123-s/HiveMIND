@@ -1,7 +1,7 @@
 {
  "skill": "task_kind",
  "base": "smol135",
- "tag": "all_r2_300",
+ "tag": "clean_all_r2_300",
  "modules": [
   "0:q_proj",
   "0:k_proj",
@@ -222,9 +222,9 @@
  "trainable_params": 610560,
  "parent": null,
  "copied_tensors": 0,
- "dev": 0.9454545454545454,
- "test": 0.905511811023622,
- "train_seconds": 685.1,
+ "dev": 0.9230769230769231,
+ "test": 0.889763779527559,
+ "train_seconds": 691.3,
  "test_errors": [
   [
    "Download the quotes and authors from the library catalogue site into a spreadsheet.",
@@ -237,34 +237,34 @@
    "plan"
   ],
   [
-   "Look up a Bloom filter, then write and run a small Python demo of it.",
-   "plan",
-   "write"
+   "Implement a program that computes a moving average and show the output.",
+   "code",
+   "plan"
   ],
   [
-   "Split a bill of 39.99 between 9 people.",
-   "calc",
-   "code"
+   "Find recent papers about quantisation.",
+   "lookup",
+   "site"
   ],
   [
    "In three sentences, explain quantisation.",
    "lookup",
-   "write"
+   "calc"
   ],
   [
-   "Split a bill of 39.99 between 16 people.",
-   "calc",
-   "code"
+   "Download the quotes and authors from example.org into a spreadsheet.",
+   "code",
+   "plan"
   ],
   [
-   "Split a bill of 760 between 16 people.",
-   "calc",
-   "write"
+   "Find recent papers about vector databases.",
+   "lookup",
+   "site"
   ],
   [
-   "Look up quantisation, then write and run a small Python demo of it.",
-   "plan",
-   "write"
+   "Download every product name from example.org into a spreadsheet.",
+   "code",
+   "plan"
   ]
  ]
 }

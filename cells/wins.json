@@ -142,13 +142,13 @@
  "task_kind": {
   "use": true,
   "thresholds": {
-   "write": 0.97,
+   "write": 0.9,
    "calc": 0.9,
    "lookup": 0.9,
-   "site": 0.9,
+   "site": 0.98,
    "code": 0.9
   },
-  "cell": 0.966,
+  "cell": 0.978,
   "shortcut_share_test": 0.701,
   "incumbent": null,
   "incumbent_name": "coordinator + plan reviewer = brain4b (the shortcut skips them)"
