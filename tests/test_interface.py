@@ -235,3 +235,44 @@ def test_one_service_at_a_time_and_its_autostart_entry(tmp_path, monkeypatch):
     monkeypatch.setattr(sys, "platform", "darwin")
     path, text, _ = service.plan(tmp_path)
     assert path.name == "com.hivemind.agent.plist" and "<key>RunAtLoad</key><true/>" in text
+
+
+def test_a_conversation_answers_talk_at_once_and_turns_work_into_jobs(swarm, monkeypatch):
+    """One prompt, then talk: thanks and questions the conversation answers need no job; new work becomes a job with
+    the conversation as context; 'stop' is the kill switch; 'remember' saves to the profile."""
+    from team import cli, converse, memory, stop
+    monkeypatch.setenv("AGENT_TEAM_CONVERSE", "1")
+    monkeypatch.setattr(stop, "FLAG", swarm.root / "STOP")
+    monkeypatch.setattr(converse.llm, "chat_json", lambda role, msgs, **k:
+                        ({"route": "talk" if "why" in msgs[-1]["content"].split("LATEST:")[1] else "work"}, ""))
+    monkeypatch.setattr(converse.llm, "chat", lambda role, msgs, **k: "Because it was the cheapest.")
+    saved = []
+    monkeypatch.setattr(memory, "remember", saved.append)
+    said = []
+    msgs = iter(["thanks!", "why that one?", "now make it a table", "remember that I prefer INR", "stop", "exit"])
+    hist = cli.converse_loop("Find the cheapest book.", lambda m, h: cli.say(swarm, m, h, 0, said.append),
+                             inp=lambda p: next(msgs), out=said.append)
+    goals = [c.goal for c in FakeHive.calls]
+    assert goals == ["Find the cheapest book.", "now make it a table"]  # only work became jobs
+    assert "Arnav: Find the cheapest book." in FakeHive.calls[-1].context
+    assert "hive> Because it was the cheapest." in said and saved == ["I prefer INR"] and stop.requested()
+    assert [r for r, _ in hist].count("user") == 6
+
+
+def test_chat_apps_converse_too(swarm, monkeypatch):
+    from team import converse
+    monkeypatch.setenv("AGENT_TEAM_CONVERSE", "1")
+    monkeypatch.setattr(converse, "talk", lambda m, h=(): "You're welcome.")
+    srv, base = _server(swarm, monkeypatch)
+    try:
+        code, out = _post(base + "/v1/chat/completions", {"model": "hivemind", "messages": [
+            {"role": "user", "content": "Find it."}, {"role": "assistant", "content": "Answer: 42."},
+            {"role": "user", "content": "thank you!"}]})
+        assert json.loads(out)["choices"][0]["message"]["content"] and not FakeHive.calls  # talk: no job
+        monkeypatch.setattr(converse, "route", lambda m, h=(): "work")
+        code, out = _post(base + "/v1/chat/completions", {"model": "hivemind", "messages": [
+            {"role": "user", "content": "Find it."}, {"role": "assistant", "content": "Answer: 42."},
+            {"role": "user", "content": "Now give two lines."}]})
+        assert json.loads(out)["choices"][0]["message"]["content"].startswith("Answer: 42.") and len(FakeHive.calls) == 1
+    finally:
+        srv.shutdown()
