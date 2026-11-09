@@ -19,8 +19,10 @@ def quote_in(quote, text):
         return False
     if q in t:
         return True
-    # tolerate ellipses / small gaps: every 25+ char chunk must be present
-    parts = [p.strip() for p in re.split(r"\.\.\.|…", q) if len(p.strip()) >= 4]
+    # tolerate ellipses / small gaps, and several items quoted one per line (three quotes from one page are
+    # separated there by their authors and tags): every piece must be on the page
+    pieces = [p.strip() for p in re.split(r"\.\.\.|…|\n", quote or "")]
+    parts = [norm(p) for p in pieces if len(norm(p)) >= 4]
     return bool(parts) and all(p in t for p in parts)
 
 
