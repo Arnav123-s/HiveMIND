@@ -1,0 +1,8 @@
+{
+ "skill": "result_relevant",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.4375,
+ "test": 0.49333333333333335,
+ "trainable_params": 0
+}
