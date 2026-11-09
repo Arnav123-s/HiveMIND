@@ -13,6 +13,8 @@ Morgen", the dative after mit/von/zu turned accusative, an article swapped, an a
 | bare SmolLM2-135M | 0.467 |
 | **cell on SmolLM2-135M** (every module, rank 2, 300 steps) | 0.573 (0.567 served) |
 | **cell on Qwen2.5-0.5B**, the next smallest base that knows German (same recipe) | 0.640 (torch; not served: the disk was full) |
+| the plain 1.7B asked the same question | 0.573 (1.6 s a sentence; the 135M cell: 0.15 s) |
+| the 4B asked the same question | 0.733 (1.9 s a sentence) |
 
 The 135M base has too little German to sharpen: it calls "Der Zug fährt um 9 Uhr in der Morgens." ok (0.96). The
 0.5B learned more, then memorised its 600 examples (training loss 0.009, test 0.640).
