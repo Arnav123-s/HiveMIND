@@ -256,6 +256,94 @@ HELDOUT = [
 ]
 
 
+# ---- held-out set 2: written on 2026-11-09 after the fixes that the first held-out set informed, before any of them
+# ran, and run once on the final frozen code. Same kinds, fresh specifics; checked in code against the live answer.
+def check_h2_licence(run, report):
+    lic = str((_hf("google/flan-t5-small").get("cardData") or {}).get("license", "")).lower()
+    return bool(lic) and lic in _body(report).lower(), f"licence {lic} in the answer"
+
+
+def _hf(model):
+    import requests
+    return requests.get(f"https://huggingface.co/api/models/{model}", timeout=30).json()
+
+
+def check_h2_pypi(run, report):
+    import requests
+    v = requests.get("https://pypi.org/pypi/numpy/json", timeout=30).json()["info"]["version"]
+    return v in _body(report), f"latest numpy {v} in the answer"
+
+
+def check_h2_chart(run, report):
+    d = {m: _hf(m).get("downloads", 0) for m in ("openai-community/gpt2", "distilbert/distilgpt2")}
+    top = max(d, key=d.get).split("/")[1]
+    body = _body(report).lower()
+    named = top in body.replace("distilgpt2", "") if top == "gpt2" else top in body
+    png = files(run, ".png")
+    return bool(png) and named, f"chart: {bool(png)}, names {top}: {named}"
+
+
+def _category(name):
+    from bs4 import BeautifulSoup
+    home = BeautifulSoup(_get("https://books.toscrape.com/"), "html.parser")
+    href = next(a["href"] for a in home.select(".side_categories a") if a.text.strip() == name)
+    return BeautifulSoup(_get("https://books.toscrape.com/" + href), "html.parser")
+
+
+def check_h2_born(run, report):
+    from bs4 import BeautifulSoup
+    born = BeautifulSoup(_get("https://quotes.toscrape.com/author/Thomas-A-Edison/"), "html.parser").select_one(
+        ".author-born-date").text.strip()  # e.g. "December 16, 1775"
+    month, day, year = born.replace(",", "").split()
+    body = _body(report)
+    ok = year in body and day in body and month[:3].lower() in body.lower()
+    return ok, f"born {born}: in the report {ok}"
+
+
+def check_h2_food_csv(run, report):
+    cs = files(run, ".csv")
+    if not cs:
+        return False, "no CSV made"
+    prices = [p.text.strip().lstrip("£Â") for p in _category("Food and Drink").select("article.product_pod .price_color")]
+    text = cs[0].read_text(errors="ignore")
+    got = [p for p in prices if p in text]
+    return len(got) >= len(prices) - 1, f"CSV has {len(got)}/{len(prices)} prices of the Food and Drink page"
+
+
+GARDEN = ("The community garden on Mill Lane reopens on 5 April after a winter of repairs. Volunteers rebuilt the raised "
+          "beds and fitted a new water tank. Allotments can be booked at the town hall for 20 pounds a season.")
+HELDOUT2 = [
+    ("h2_licence", "facts from a source", "Which licence does google/flan-t5-small use on Hugging Face?", check_h2_licence),
+    ("h2_pypi", "facts from a source", "What is the newest release of numpy on PyPI?", check_h2_pypi),
+    ("h2_chart", "numbers + chart", "Compare the Hugging Face download counts of openai-community/gpt2 and "
+     "distilbert/distilgpt2 in a bar chart, and tell me which one has more.", check_h2_chart),
+    ("h2_born", "operate a website", "Go to quotes.toscrape.com, find the author page of Thomas A. Edison and tell me his "
+     "date of birth.", check_h2_born),
+    ("h2_food_csv", "scrape to a file", "Put every book's name and price from the first page of the Food and Drink "
+     "category on books.toscrape.com into a CSV file.", check_h2_food_csv),
+    ("h2_tip", "arithmetic", "A bill of 460 dollars gets a 35% discount. How much is the discount?", has("161")),
+    ("h2_days", "dates", "How many days are there from 10 February 2025 to 1 April 2025?", has("50")),
+    ("h2_kg", "unit conversion", "How many pounds is 70 kilograms? Round to one decimal place.", has("154.3")),
+    ("h2_german", "translate given text", "Translate into German: 'The train leaves at nine in the morning.'",
+     has("Zug", "neun")),
+    ("h2_garden", "summarise given text", f"Summarise this in one sentence: {GARDEN}",
+     has("garden", any_of=("5 April", "April 5"), max_sentences=1)),
+    ("h2_spelling", "fix given text", "Correct the spelling in this sentence and give me only the corrected sentence: "
+     "'I recieved the pakage yesterday.'", has("received", "package", max_sentences=1)),
+    ("h2_landlord", "draft", "Write a two-sentence message to my landlord saying the kitchen tap is leaking.",
+     has("tap", any_of=("leak", "drip"), max_sentences=3)),
+    ("h2_factorial", "write and run code", "Write a Python function that returns the factorial of a number and tell me "
+     "factorial(10).", has("3628800", )),
+    ("h2_evensum", "fix code", "This Python code should print the sum of the even numbers in the list but adds the odd "
+     "ones. Fix it and tell me the right output:\nnums = [1, 2, 3, 4, 5, 6]\nprint(sum(n for n in nums if n % 2 == 1))",
+     has("12")),
+    ("h2_bsearch", "explain from knowledge", "In two sentences, explain what binary search is.",
+     has("sorted", any_of=("half", "halves", "middle"), max_sentences=3)),
+    ("h2_rain", "reason over given data", "Monthly rainfall in mm: Jan 80, Feb 65, Mar 72, Apr 40. Which month was the "
+     "driest, and what was the average rainfall?", has("Apr", any_of=("64.25", "64.3"))),
+]
+
+
 def cost(run):
     calls = [json.loads(ln) for ln in (run / "calls.jsonl").read_text().splitlines()] if (run / "calls.jsonl").exists() else []
     by = {}
@@ -310,11 +398,12 @@ def run_one(tag, tid, task, check, timeout=2400):
 if __name__ == "__main__":
     tag = sys.argv[1]
     held = "--heldout" in sys.argv
+    held2 = "--heldout2" in sys.argv
     RECHECK = "--recheck" in sys.argv
     only = {a for a in sys.argv[2:] if not a.startswith("--")}
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []
-    for tid, kind, task, check in (HELDOUT if held else TASKS):
+    for tid, kind, task, check in (HELDOUT2 if held2 else HELDOUT if held else TASKS):
         if only and tid not in only:
             continue
         r = run_one(tag, tid, task, check) | {"kind": kind}

@@ -27,7 +27,6 @@
    "term 'Qwen' in prompts.py",
    "term 'Qwen/Qwen3-1.7B' in 3 training goal(s) of browser.jsonl",
    "term 'Qwen/Qwen3-1.7B' in 1 training goal(s) of researcher_plan.jsonl",
-   "term 'Qwen/Qwen3-1.7B' in skills.py",
    "term 'Qwen/Qwen3-1.7B' in prompts.py",
    "2 5-word phrase(s) in training goals of coordinator.jsonl: 'a bar chart of the'"
   ]
@@ -40,7 +39,7 @@
    "term 'inspirational' in 1 training goal(s) of coordinator.jsonl",
    "term 'inspirational' in 1 training goal(s) of researcher_extract.jsonl",
    "1 5-word phrase(s) in training goals of browser_skills.jsonl: 'list the first three quotes'",
-   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'on quotes toscrape com open'"
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'quotes toscrape com open the'"
   ]
  },
  "csv": {
@@ -49,9 +48,8 @@
   "hits": [
    "term 'Mystery' in 2 training goal(s) of browser.jsonl",
    "term 'Mystery' in 1 training goal(s) of coordinator.jsonl",
-   "term 'Mystery' in skills.py",
    "1 5-word phrase(s) in training goals of browser.jsonl: 'on books toscrape com and'",
-   "6 5-word phrase(s) in training goals of coordinator.jsonl: 'and save them to a'"
+   "6 5-word phrase(s) in training goals of coordinator.jsonl: 'books toscrape com and save'"
   ]
  },
  "percent": {
@@ -69,10 +67,7 @@
  "units": {
   "heldout": false,
   "task": "Convert 72 degrees Fahrenheit to Celsius, to one decimal place.",
-  "hits": [
-   "term 'Celsius' in skills.py",
-   "term 'Fahrenheit' in skills.py"
-  ]
+  "hits": []
  },
  "translate": {
   "heldout": false,
@@ -218,6 +213,110 @@
   "hits": [
    "term 'Dev' in skills.py",
    "1 5-word phrase(s) in training goals of coordinator.jsonl: 'and what is the average'"
+  ]
+ },
+ "h2_licence": {
+  "heldout": false,
+  "task": "Which licence does google/flan-t5-small use on Hugging Face?",
+  "hits": []
+ },
+ "h2_pypi": {
+  "heldout": false,
+  "task": "What is the newest release of numpy on PyPI?",
+  "hits": []
+ },
+ "h2_chart": {
+  "heldout": false,
+  "task": "Compare the Hugging Face download counts of openai-community/gpt2 and distilbert/distilgpt2 in a bar chart, and tell me ",
+  "hits": [
+   "term 'Compare' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Compare' in 11 training goal(s) of order_reader.jsonl",
+   "term 'Compare' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Compare' in skills.py"
+  ]
+ },
+ "h2_born": {
+  "heldout": false,
+  "task": "Go to quotes.toscrape.com, find the author page of Thomas A. Edison and tell me his date of birth.",
+  "hits": [
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'quotes toscrape com find the'",
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'quotes toscrape com find the'"
+  ]
+ },
+ "h2_food_csv": {
+  "heldout": false,
+  "task": "Put every book's name and price from the first page of the Food and Drink category on books.toscrape.com into a CSV file",
+  "hits": [
+   "term 'Put' in skills.py",
+   "term 'Put' in prompts.py",
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'category on books toscrape com'",
+   "1 5-word phrase(s) in training goals of browser_skills.jsonl: 'category on books toscrape com'",
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'category on books toscrape com'"
+  ]
+ },
+ "h2_tip": {
+  "heldout": false,
+  "task": "A bill of 460 dollars gets a 35% discount. How much is the discount?",
+  "hits": []
+ },
+ "h2_days": {
+  "heldout": false,
+  "task": "How many days are there from 10 February 2025 to 1 April 2025?",
+  "hits": [
+   "term 'April' in skills.py"
+  ]
+ },
+ "h2_kg": {
+  "heldout": false,
+  "task": "How many pounds is 70 kilograms? Round to one decimal place.",
+  "hits": [
+   "term 'Round' in prompts.py"
+  ]
+ },
+ "h2_german": {
+  "heldout": false,
+  "task": "Translate into German: 'The train leaves at nine in the morning.'",
+  "hits": [
+   "term 'German' in skills.py"
+  ]
+ },
+ "h2_garden": {
+  "heldout": false,
+  "task": "Summarise this in one sentence: The community garden on Mill Lane reopens on 5 April after a winter of repairs. Voluntee",
+  "hits": [
+   "term 'April' in skills.py"
+  ]
+ },
+ "h2_spelling": {
+  "heldout": false,
+  "task": "Correct the spelling in this sentence and give me only the corrected sentence: 'I recieved the pakage yesterday.'",
+  "hits": []
+ },
+ "h2_landlord": {
+  "heldout": false,
+  "task": "Write a two-sentence message to my landlord saying the kitchen tap is leaking.",
+  "hits": []
+ },
+ "h2_factorial": {
+  "heldout": false,
+  "task": "Write a Python function that returns the factorial of a number and tell me factorial(10).",
+  "hits": []
+ },
+ "h2_evensum": {
+  "heldout": false,
+  "task": "This Python code should print the sum of the even numbers in the list but adds the odd ones. Fix it and tell me the righ",
+  "hits": []
+ },
+ "h2_bsearch": {
+  "heldout": false,
+  "task": "In two sentences, explain what binary search is.",
+  "hits": []
+ },
+ "h2_rain": {
+  "heldout": false,
+  "task": "Monthly rainfall in mm: Jan 80, Feb 65, Mar 72, Apr 40. Which month was the driest, and what was the average rainfall?",
+  "hits": [
+   "term '80,' in skills.py"
   ]
  }
 }
