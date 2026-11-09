@@ -117,7 +117,7 @@ The research cells, measured on the same test inputs (`training/reports/cells/`)
 |---|---|---|---|---|
 | does a claim answer its sub-question (gap finder) | **0.933**, 81 ms | 0.500 (any claim counts) | 0.840, 1.8 s | cell |
 | is a search result about the question | 1.000, 70 ms | 1.000 (word overlap), 1 ms | 0.753, 1.8 s | word rule (a tie; the test data has no paraphrases) |
-| do two sources agree or conflict | (training) | none | 0.853, 2.1 s | |
+| do two sources agree or conflict (cross-check) | **0.953**, 92 ms | none (no cross-check) | 0.853, 2.1 s | cell |
 
 **Long projects** (`team/project.py`): a goal too big for one job ("build me an app ...", "a research study on ...",
 anything over days) becomes 3-12 milestones, each a deliverable with how to check it, run one after another as jobs in
