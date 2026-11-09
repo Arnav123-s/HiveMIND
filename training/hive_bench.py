@@ -348,6 +348,91 @@ HELDOUT2 = [
 ]
 
 
+# ---- held-out set 3: written on 2026-11-09 after the fixes that held-out set 2 informed, before any of them ran, and
+# run once on the final frozen code. Same kinds, fresh specifics, contamination-checked; checked in code.
+def check_h3_licence(run, report):
+    lic = str((_hf("FacebookAI/roberta-base").get("cardData") or {}).get("license", "")).lower()
+    words = re.findall(r"[a-z]+|\d+(?:\.\d+)?", lic)
+    body = _body(report).lower()
+    return bool(words) and all(w in body for w in words), f"licence {lic} in the answer"
+
+
+def check_h3_pypi(run, report):
+    import requests
+    v = requests.get("https://pypi.org/pypi/tqdm/json", timeout=30).json()["info"]["version"]
+    return v in _body(report), f"latest tqdm {v} in the answer"
+
+
+def check_h3_chart(run, report):
+    d = {m: _hf(m).get("downloads", 0) for m in ("google-t5/t5-small", "FacebookAI/xlm-roberta-base")}
+    top = max(d, key=d.get).split("/")[1]
+    body = _body(report).lower()
+    named = top in body.replace("xlm-roberta-base", "") if top == "t5-small" else top in body
+    png = files(run, ".png")
+    return bool(png) and named, f"chart: {bool(png)}, names {top}: {named}"
+
+
+def check_h3_born(run, report):
+    from bs4 import BeautifulSoup
+    born = BeautifulSoup(_get("https://quotes.toscrape.com/author/Khaled-Hosseini/"), "html.parser").select_one(
+        ".author-born-date").text.strip()
+    month, day, year = born.replace(",", "").split()
+    body = _body(report)
+    ok = year in body and str(int(day)) in body and month[:3].lower() in body.lower()
+    return ok, f"born {born}: in the report {ok}"
+
+
+def check_h3_business_csv(run, report):
+    cs = files(run, ".csv")
+    if not cs:
+        return False, "no CSV made"
+    prices = [p.text.strip().lstrip("£Â") for p in _category("Business").select("article.product_pod .price_color")]
+    text = cs[0].read_text(errors="ignore")
+    got = [p for p in prices if p in text]
+    return len(got) >= len(prices) - 1, f"CSV has {len(got)}/{len(prices)} prices of the Business page"
+
+
+def check_h3_italian(run, report):
+    low = _body(report).lower()
+    ok = any(w in low for w in ("panetteria", "panificio", "forno", "pasticceria")) and ("sette" in low or "7" in low) \
+        and "domenic" in low
+    return ok, f"bakery, seven and Sunday in Italian: {ok}"
+
+
+PARK = ("The riverside park will close its east gate from 3 May while workers replace the old footbridge. The west gate "
+        "stays open, and a free shuttle will run from the car park every twenty minutes until the bridge reopens in July.")
+HELDOUT3 = [
+    ("h3_licence", "facts from a source", "Under which licence is FacebookAI/roberta-base published on Hugging Face?",
+     check_h3_licence),
+    ("h3_pypi", "facts from a source", "Tell me the current version of tqdm on PyPI.", check_h3_pypi),
+    ("h3_chart", "numbers + chart", "Draw a bar chart of how often google-t5/t5-small and FacebookAI/xlm-roberta-base "
+     "have been downloaded on Hugging Face, and say which one is downloaded more.", check_h3_chart),
+    ("h3_born", "operate a website", "Open quotes.toscrape.com, go to Khaled Hosseini's author page and give me his date "
+     "of birth.", check_h3_born),
+    ("h3_business_csv", "scrape to a file", "Make a CSV with the title and price of each book listed on the first page "
+     "of the Business category on books.toscrape.com.", check_h3_business_csv),
+    ("h3_rise", "arithmetic", "A laptop costs 740 dollars and the price rises by 15%. What is the new price?", has("851")),
+    ("h3_days", "dates", "How many days are there from 20 March 2026 to 2 June 2026?", has("74")),
+    ("h3_temp", "unit conversion", "What is 98.6 degrees Fahrenheit in Celsius? One decimal place.", has("37.0")),
+    ("h3_italian", "translate given text", "Translate into Italian: 'The bakery opens at seven on Sundays.'",
+     check_h3_italian),
+    ("h3_park", "summarise given text", f"Give me a one-sentence summary of this: {PARK}",
+     has("park", any_of=("3 May", "May 3"), max_sentences=1)),
+    ("h3_formal", "fix given text", "Make this sentence formal and give me only the new sentence: 'Hey, can u send the "
+     "report asap?'", has("report", any_of=("please", "could", "would"), max_sentences=2)),
+    ("h3_colleague", "draft", "Write a two-sentence note to my colleague asking them to cover my shift on Friday.",
+     has("shift", "Friday", max_sentences=3)),
+    ("h3_vowels", "write and run code", "Write a Python function that counts the vowels in a word and tell me how many "
+     "vowels 'imagination' has.", has("6")),
+    ("h3_average", "fix code", "This Python code should print the average of the numbers but prints their total. Fix it "
+     "and tell me the output:\nnums = [3, 5, 10]\nprint(sum(nums))", has(any_of=("6.0", "is 6", ": 6", "= 6", "**6**"))),
+    ("h3_queue", "explain from knowledge", "In two sentences, explain what a queue is in programming.",
+     has(any_of=("FIFO", "first in", "first-in", "first to"), max_sentences=3)),
+    ("h3_water", "reason over given data", "Daily water use in litres: Mon 140, Tue 95, Wed 160, Thu 125. Which day used "
+     "the least water, and what was the daily average?", has("Tue", "130")),
+]
+
+
 def cost(run):
     calls = [json.loads(ln) for ln in (run / "calls.jsonl").read_text().splitlines()] if (run / "calls.jsonl").exists() else []
     by = {}
@@ -403,11 +488,12 @@ if __name__ == "__main__":
     tag = sys.argv[1]
     held = "--heldout" in sys.argv
     held2 = "--heldout2" in sys.argv
+    held3 = "--heldout3" in sys.argv
     RECHECK = "--recheck" in sys.argv
     only = {a for a in sys.argv[2:] if not a.startswith("--")}
     OUT.mkdir(parents=True, exist_ok=True)
     rows = []
-    for tid, kind, task, check in (HELDOUT2 if held2 else HELDOUT if held else TASKS):
+    for tid, kind, task, check in (HELDOUT3 if held3 else HELDOUT2 if held2 else HELDOUT if held else TASKS):
         if only and tid not in only:
             continue
         r = run_one(tag, tid, task, check) | {"kind": kind}

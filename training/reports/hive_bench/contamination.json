@@ -28,7 +28,7 @@
    "term 'Qwen/Qwen3-1.7B' in 3 training goal(s) of browser.jsonl",
    "term 'Qwen/Qwen3-1.7B' in 1 training goal(s) of researcher_plan.jsonl",
    "term 'Qwen/Qwen3-1.7B' in prompts.py",
-   "2 5-word phrase(s) in training goals of coordinator.jsonl: 'a bar chart of the'"
+   "2 5-word phrase(s) in training goals of coordinator.jsonl: 'make a bar chart of'"
   ]
  },
  "quotes": {
@@ -39,7 +39,7 @@
    "term 'inspirational' in 1 training goal(s) of coordinator.jsonl",
    "term 'inspirational' in 1 training goal(s) of researcher_extract.jsonl",
    "1 5-word phrase(s) in training goals of browser_skills.jsonl: 'list the first three quotes'",
-   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'quotes toscrape com open the'"
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'on quotes toscrape com open'"
   ]
  },
  "csv": {
@@ -49,7 +49,7 @@
    "term 'Mystery' in 2 training goal(s) of browser.jsonl",
    "term 'Mystery' in 1 training goal(s) of coordinator.jsonl",
    "1 5-word phrase(s) in training goals of browser.jsonl: 'on books toscrape com and'",
-   "6 5-word phrase(s) in training goals of coordinator.jsonl: 'books toscrape com and save'"
+   "6 5-word phrase(s) in training goals of coordinator.jsonl: 'and save them to a'"
   ]
  },
  "percent": {
@@ -78,13 +78,16 @@
   "heldout": false,
   "task": "Summarise this in one sentence: The Ridgeway bridge, built in 1932, was closed in March for repairs after inspectors fou",
   "hits": [
-   "term '4.2' in 1 training goal(s) of coordinator.jsonl"
+   "term '4.2' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Until' in 6 training goal(s) of translator.jsonl"
   ]
  },
  "grammar": {
   "heldout": false,
   "task": "Correct the grammar of this sentence and give me only the corrected sentence: 'She don't like the apples that was on the",
-  "hits": []
+  "hits": [
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
  },
  "email": {
   "heldout": false,
@@ -177,7 +180,9 @@
  "ho_polite": {
   "heldout": true,
   "task": "Rewrite this to sound polite and give me only the new sentence: 'Send me the file now.'",
-  "hits": []
+  "hits": [
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
  },
  "ho_notice": {
   "heldout": true,
@@ -240,13 +245,15 @@
   "task": "Go to quotes.toscrape.com, find the author page of Thomas A. Edison and tell me his date of birth.",
   "hits": [
    "1 5-word phrase(s) in training goals of browser.jsonl: 'quotes toscrape com find the'",
-   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'quotes toscrape com find the'"
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'to quotes toscrape com find'"
   ]
  },
  "h2_food_csv": {
   "heldout": false,
   "task": "Put every book's name and price from the first page of the Food and Drink category on books.toscrape.com into a CSV file",
   "hits": [
+   "term 'Drink' in 5 training goal(s) of translator.jsonl",
+   "term 'Put' in 360 training goal(s) of translator.jsonl",
    "term 'Put' in skills.py",
    "term 'Put' in prompts.py",
    "1 5-word phrase(s) in training goals of browser.jsonl: 'category on books toscrape com'",
@@ -270,6 +277,7 @@
   "heldout": false,
   "task": "How many pounds is 70 kilograms? Round to one decimal place.",
   "hits": [
+   "term 'Round' in 9 training goal(s) of translator.jsonl",
    "term 'Round' in prompts.py"
   ]
  },
@@ -277,6 +285,7 @@
   "heldout": false,
   "task": "Translate into German: 'The train leaves at nine in the morning.'",
   "hits": [
+   "term 'German' in 584 training goal(s) of translator.jsonl",
    "term 'German' in skills.py"
   ]
  },
@@ -290,7 +299,9 @@
  "h2_spelling": {
   "heldout": false,
   "task": "Correct the spelling in this sentence and give me only the corrected sentence: 'I recieved the pakage yesterday.'",
-  "hits": []
+  "hits": [
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
  },
  "h2_landlord": {
   "heldout": false,
@@ -317,6 +328,128 @@
   "task": "Monthly rainfall in mm: Jan 80, Feb 65, Mar 72, Apr 40. Which month was the driest, and what was the average rainfall?",
   "hits": [
    "term '80,' in skills.py"
+  ]
+ },
+ "h3_licence": {
+  "heldout": false,
+  "task": "Under which licence is FacebookAI/roberta-base published on Hugging Face?",
+  "hits": [
+   "term 'Under' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Under' in 6 training goal(s) of order_reader.jsonl",
+   "term 'Under' in 9 training goal(s) of researcher_extract.jsonl",
+   "term 'Under' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Under' in 7 training goal(s) of translator.jsonl",
+   "term 'Under' in 36 training goal(s) of verifier.jsonl",
+   "term 'Under' in skills.py",
+   "term 'Under' in prompts.py"
+  ]
+ },
+ "h3_pypi": {
+  "heldout": false,
+  "task": "Tell me the current version of tqdm on PyPI.",
+  "hits": [
+   "term 'Tell' in 14 training goal(s) of browser.jsonl",
+   "term 'Tell' in 18 training goal(s) of browser_skills.jsonl",
+   "term 'Tell' in 5 training goal(s) of coordinator.jsonl",
+   "term 'Tell' in 1 training goal(s) of order_reader.jsonl",
+   "term 'Tell' in skills.py"
+  ]
+ },
+ "h3_chart": {
+  "heldout": false,
+  "task": "Draw a bar chart of how often google-t5/t5-small and FacebookAI/xlm-roberta-base have been downloaded on Hugging Face, a",
+  "hits": [
+   "term 'Draw' in skills.py"
+  ]
+ },
+ "h3_born": {
+  "heldout": false,
+  "task": "Open quotes.toscrape.com, go to Khaled Hosseini's author page and give me his date of birth.",
+  "hits": [
+   "term 'Open' in 16 training goal(s) of browser.jsonl",
+   "term 'Open' in 5 training goal(s) of coordinator.jsonl",
+   "term 'Open' in 10 training goal(s) of order_reader.jsonl",
+   "term 'Open' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Open' in 2 training goal(s) of translator.jsonl",
+   "term 'Open' in skills.py"
+  ]
+ },
+ "h3_business_csv": {
+  "heldout": false,
+  "task": "Make a CSV with the title and price of each book listed on the first page of the Business category on books.toscrape.com",
+  "hits": [
+   "term 'Business' in 2 training goal(s) of translator.jsonl",
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'category on books toscrape com'",
+   "2 5-word phrase(s) in training goals of browser_skills.jsonl: 'category on books toscrape com'",
+   "2 5-word phrase(s) in training goals of coordinator.jsonl: 'category on books toscrape com'"
+  ]
+ },
+ "h3_rise": {
+  "heldout": false,
+  "task": "A laptop costs 740 dollars and the price rises by 15%. What is the new price?",
+  "hits": []
+ },
+ "h3_days": {
+  "heldout": false,
+  "task": "How many days are there from 20 March 2026 to 2 June 2026?",
+  "hits": [
+   "term '2026' in skills.py"
+  ]
+ },
+ "h3_temp": {
+  "heldout": false,
+  "task": "What is 98.6 degrees Fahrenheit in Celsius? One decimal place.",
+  "hits": []
+ },
+ "h3_italian": {
+  "heldout": false,
+  "task": "Translate into Italian: 'The bakery opens at seven on Sundays.'",
+  "hits": [
+   "term 'Italian' in skills.py"
+  ]
+ },
+ "h3_park": {
+  "heldout": false,
+  "task": "Give me a one-sentence summary of this: The riverside park will close its east gate from 3 May while workers replace the",
+  "hits": []
+ },
+ "h3_formal": {
+  "heldout": false,
+  "task": "Make this sentence formal and give me only the new sentence: 'Hey, can u send the report asap?'",
+  "hits": [
+   "term 'Hey' in 6 training goal(s) of translator.jsonl",
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
+ },
+ "h3_colleague": {
+  "heldout": false,
+  "task": "Write a two-sentence note to my colleague asking them to cover my shift on Friday.",
+  "hits": []
+ },
+ "h3_vowels": {
+  "heldout": false,
+  "task": "Write a Python function that counts the vowels in a word and tell me how many vowels 'imagination' has.",
+  "hits": []
+ },
+ "h3_average": {
+  "heldout": false,
+  "task": "This Python code should print the average of the numbers but prints their total. Fix it and tell me the output:\nnums = [",
+  "hits": []
+ },
+ "h3_queue": {
+  "heldout": false,
+  "task": "In two sentences, explain what a queue is in programming.",
+  "hits": []
+ },
+ "h3_water": {
+  "heldout": false,
+  "task": "Daily water use in litres: Mon 140, Tue 95, Wed 160, Thu 125. Which day used the least water, and what was the daily ave",
+  "hits": [
+   "term '160,' in skills.py",
+   "term 'Mon' in 1 training goal(s) of translator.jsonl",
+   "term 'Mon' in skills.py",
+   "term 'Tue' in skills.py",
+   "term 'Wed' in skills.py"
   ]
  }
 }
