@@ -1387,3 +1387,23 @@ def test_a_translation_is_written_by_the_member_that_translates_best(tmp_path, m
                Board(tmp_path, echo=False), [])
     assert roles[0] == "editor"
     assert writer.translator_role("Summarise this: ...", f"{writer.OWN_TEXT}\n...") == "writer"
+
+
+def test_the_browser_does_not_give_up_while_a_next_page_is_unread(tmp_path, monkeypatch):
+    """Held-out set 3: Khaled Hosseini is not on the first page of quotes.toscrape.com; the browser gave up there
+    without following a link, and the page's lines failed on '10,000' (a check meant for answers)."""
+    from team.board import Board
+    from team.specialists import browser_agent, verifier
+
+    class B:
+        elements = {1: {"id": 1, "tag": "a", "text": "Next →", "href": "/page/2/"},
+                    2: {"id": 2, "tag": "a", "text": "Login", "href": "/login"}}
+    assert browser_agent.next_link(B())["id"] == 1
+    B.elements = {2: {"id": 2, "tag": "a", "text": "Login", "href": "/login"}}
+    assert browser_agent.next_link(B()) is None
+    monkeypatch.setattr(verifier, "judge", lambda *a: ("FAIL", "stub jury"))
+    v, why = verifier.verify({"agent": "browser", "id": "s1", "task": "his date of birth"},
+                             {"summary": "From https://quotes.toscrape.com/:\nTop Ten tags\n10,000 quotes",
+                              "evidence": "Top Ten tags", "page_text": "Top Ten tags 10,000 quotes",
+                              "url": "https://quotes.toscrape.com/"}, Board(tmp_path, echo=False), tmp_path)
+    assert "which the evidence copied from the page does not contain" not in why

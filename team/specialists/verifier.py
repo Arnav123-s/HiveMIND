@@ -293,7 +293,10 @@ def verify(step, result, board, workdir):
         ev = result.get("evidence", "")
         if not quote_in(ev, result.get("page_text", "")):
             return "FAIL", "the evidence quoted is not on the page the browser was on"
-        unbacked = values_not_in(result.get("summary", ""), ev)
+        # an answer's values must be in its evidence; the lines of a page it gave up on are no answer (they are the
+        # jury's to judge: "10,000" in a quotes page's lines failed a give-up that a retry could have fixed)
+        answer = result.get("summary", "")
+        unbacked = [] if answer.startswith("From http") else values_not_in(answer, ev)
         if unbacked:
             return "FAIL", (f"the answer gives {', '.join(unbacked)}, which the evidence copied from the page does not "
                             f"contain: open the page that shows it and copy it from there")

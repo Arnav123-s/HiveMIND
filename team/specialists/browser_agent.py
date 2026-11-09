@@ -28,6 +28,17 @@ def bad_page(b):
     return ""
 
 
+NEXT_RX = re.compile(r"^\s*(next|more|older|load more)\b|^\s*(→|»|›)\s*$", re.I)
+
+
+def next_link(b):
+    """The page's next-page link (an element whose text is Next / More / →), or None."""
+    for e in (getattr(b, "elements", None) or {}).values():
+        if isinstance(e, dict) and e.get("tag") in ("a", "button") and NEXT_RX.search(e.get("text") or ""):
+            return e
+    return None
+
+
 def recover(b, history, n):
     """After an error page, open the site's home page, as a person would, so the search box and links are in view
     (told to do it, the 1.7B browser replied "fail" on the 404 page instead)."""
@@ -83,6 +94,13 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                 # the 1.7B said "Arnav cannot click on links or buttons without his approval" with nothing blocked
                 history.append(f"{n + 1}. fail refused: nothing was blocked. Clicking links, tabs and buttons and typing in "
                                f"search boxes are allowed; only log in, sign up, buy, pay, send and delete need approval.")
+                continue
+            nxt = next_link(b)
+            if kind == "fail" and nxt and not any("fail refused (next)" in h for h in history):
+                # what it looks for may be on a later page: Khaled Hosseini is not on the first page of
+                # quotes.toscrape.com, and the browser gave up there without following a single link
+                history.append(f"{n + 1}. fail refused (next): this page has a next-page link [{nxt['id']}] "
+                               f"\"{nxt['text'][:20]}\"; what you look for may be on a later page: click it")
                 continue
             if kind == "fail" and not REFUSAL.search(str(action.get("reason", "")) + " " + task) and not bad_page(b) \
                     and b.page.url.startswith("http"):
