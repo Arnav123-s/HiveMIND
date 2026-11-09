@@ -287,14 +287,23 @@ def responses_messages(body):
             if isinstance(m, dict) and m.get("type", "message") == "message"]
 
 
-def main(port=8766, host="127.0.0.1", until_done=0, root=None, workers=1):
+def start(port=8766, host="127.0.0.1", until_done=0, swarm=None, block=True):
+    """Serve the API on a swarm (the always-on service passes its own, so inbox, schedule and API share one queue)."""
     global SWARM
-    SWARM = Swarm(root=root, workers=workers)
+    SWARM = swarm or Swarm()
     DEFAULTS["until_done"] = until_done
     if host not in ("127.0.0.1", "localhost", "::1") and not os.environ.get("AGENT_TEAM_API_KEY"):
         print("warning: listening beyond this machine with no AGENT_TEAM_API_KEY set", flush=True)
     print(f"HiveMIND API: http://{host}:{port}/v1  (model '{MODEL}'; jobs at /v1/jobs)", flush=True)
     srv = ThreadingHTTPServer((host, port), H)
     srv.daemon_threads = True
+    if not block:
+        import threading
+        threading.Thread(target=srv.serve_forever, daemon=True, name="hive-api").start()
+        return srv
     srv.serve_forever()
+
+
+def main(port=8766, host="127.0.0.1", until_done=0, root=None, workers=1):
+    start(port, host, until_done, Swarm(root=root, workers=workers))
 

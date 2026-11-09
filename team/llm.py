@@ -284,6 +284,8 @@ def _json_grammar():
 
 
 def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop):
+    from . import health
+    health.cool_down()  # a CPU above 90 C waits until it is under 80 C before the next model call
     llm_, tok = _gguf_model(specialist, adapter)
     prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
     kw = dict(max_tokens=max_new_tokens, temperature=temperature, top_p=0.9 if temperature else 1.0,
