@@ -1054,3 +1054,16 @@ def test_scholarly_papers_are_a_source_with_their_abstracts(monkeypatch):
     class R:
         headers, text = {}, '{"message": "Please retry in 31s"}'
     assert web.retry_wait(R(), 0) == 31
+
+
+def test_an_explanation_is_never_rerouted_to_a_program(monkeypatch):
+    """Held-out: the researcher's explanation failed and was rerouted to 'Write a Python program that explains what a
+    hash table is in two sentences', which made invalid Python."""
+    from team.specialists import coordinator
+    step = {"id": "s1", "agent": "researcher", "task": "Explain what a hash table is.", "needs": [], "done_when": ""}
+    monkeypatch.setattr(coordinator.llm, "chat_json", lambda *a, **k: (
+        {"agent": "coder", "task": "Write a Python program that explains what a hash table is in two sentences."}, ""))
+    assert coordinator.reroute("In two sentences, explain what a hash table is.", step, "no fact") is None
+    monkeypatch.setattr(coordinator.llm, "chat_json", lambda *a, **k: (
+        {"agent": "coder", "task": "Fetch the downloads from the Hugging Face API and print them."}, ""))
+    assert coordinator.reroute("Plot the download counts of a and b", step, "x")["agent"] == "coder"

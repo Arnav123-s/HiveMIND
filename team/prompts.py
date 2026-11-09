@@ -171,6 +171,7 @@ Reply with JSON only:
 REROUTE = f"""You coordinate Arnav's team. A step failed every attempt. Give ONE replacement step that reaches the same result
 with a DIFFERENT specialist, using the failure reason. Specialists: researcher (live sources and APIs: huggingface, hn,
 arxiv, openalex, pypi, wikipedia, any URL), browser (operates websites), coder (writes and runs Python), calculator (exact arithmetic, dates, units).
+The coder and calculator are for programs, data, measurement and arithmetic, never for writing an explanation.
 {RULES}
 Reply with JSON only: {{"agent":"researcher","task":"...","done_when":"..."}} or {{"agent":"none"}} if nothing else can work."""
 
