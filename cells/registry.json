@@ -3126,7 +3126,7 @@
   "skill": "task_kind",
   "part": "hive: the cheapest way through the hive for a whole task",
   "base": "smol135",
-  "variant": "all_r2_300",
+  "variant": "clean_all_r2_300",
   "modules": [
    "0:q_proj",
    "0:k_proj",
@@ -3343,38 +3343,23 @@
   "thin": null,
   "trainable_params": 610560,
   "parent": null,
-  "dev": 0.9454545454545454,
-  "test_torch": 0.905511811023622,
+  "dev": 0.9230769230769231,
+  "test_torch": 0.889763779527559,
   "variants": {
-   "all_r2_300": {
-    "dev": 0.9454545454545454,
-    "test": 0.905511811023622,
-    "params": 610560
-   },
    "base": {
-    "dev": 0.38636363636363635,
-    "test": 0.4409448818897638,
+    "dev": 0.5576923076923077,
+    "test": 0.4330708661417323,
     "params": 0
    },
-   "clone_element_match": {
-    "dev": 0.6818181818181818,
-    "test": 0.8188976377952756,
-    "params": 831744
-   },
-   "clone_element_match_300": {
-    "dev": 0.9454545454545454,
-    "test": 0.7795275590551181,
-    "params": 831744
-   },
-   "scratch": {
-    "dev": 0.7272727272727273,
-    "test": 0.7874015748031497,
-    "params": 831744
+   "clean_all_r2_300": {
+    "dev": 0.9230769230769231,
+    "test": 0.889763779527559,
+    "params": 610560
    }
   },
-  "promoted": "2026-11-08 21:35",
-  "test_runtime": 0.9134,
-  "ms_per_call": 62.3,
+  "promoted": "2026-11-09 02:24",
+  "test_runtime": 0.8898,
+  "ms_per_call": 65.6,
   "gguf_bytes": 2471488
  },
  "result_relevant": {
