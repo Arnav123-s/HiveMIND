@@ -73,6 +73,10 @@ KV_8BIT = os.environ.get("AGENT_TEAM_KV", "q8" if RAM_GB <= 12 else "f16") == "q
 # prompt-lookup decoding: next tokens guessed from the prompt itself (quotes, claims, code being fixed), checked in one
 # pass; greedy outputs stay the same. Off until training/arch_bench.py measures it on the hive's real prompts.
 LOOKUP = os.environ.get("AGENT_TEAM_LOOKUP", "0") == "1"
+# llama.cpp's extra CPU weight buffers keep a second, repacked copy of the weights for faster matrix maths: measured
+# +2.5 GB private RAM for the 4B (6.1 GB resident with them, 3.6 GB without). Off: less RAM, maybe slower
+# (training/arch_bench.py measures speed and whether answers change).
+REPACK = os.environ.get("AGENT_TEAM_REPACK", "1") == "1"
 GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
 GGUF_CTX_BY_MODEL = {"fast": 4096}  # the 1.7B roles (browser, verifier, writer, condenser) need less context
 GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 1 if RAM_GB < 7 else 2))
