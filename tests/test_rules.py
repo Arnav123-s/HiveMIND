@@ -658,3 +658,54 @@ def test_a_trailing_clause_of_his_order_stays_on_the_checklist(monkeypatch):
     assert coordinator._split("List the three newest arXiv papers about mixture of experts, with their titles and "
                               "dates.") == ["List the three newest arXiv papers about mixture of experts",
                                             "with their titles and dates"]
+
+
+def test_the_research_hive_splits_filters_fills_gaps_and_cross_checks(tmp_path, monkeypatch):
+    """A research question: sub-questions, a relevance cell per search result, a gap gets one more search, sources
+    that disagree are listed. Members and the web are stand-ins."""
+    from team.board import Board
+    from team.cells import use
+    from team.specialists import research_hive as R
+    from team.tools import web
+    b = Board(tmp_path, echo=False)
+    plans, asked = [], []
+
+    def chat_json(role, msgs, **kw):
+        sys_, user = msgs[0]["content"], msgs[-1]["content"]
+        if sys_ == R.DECOMPOSE:
+            return {"questions": ["How do tidal turbines work?", "How much power does the Kalo array make?"]}, ""
+        if "Choose where to look" in sys_:
+            plans.append(user)
+            return {"searches": [{"source": "wikipedia", "q": user.split("Task: ")[1].split("\n")[0][:40]}]}, ""
+        q = user.split("Task: ")[1].split("\n")[0] if "Task: " in user else ""
+        if "power" in q and sum("power" in p for p in plans) < 2:
+            return {"summary": "", "facts": [{"claim": "Tidal turbines are popular.", "quote": "popular", "url": "https://a"}]}, ""
+        claim = "The Kalo array makes 320 MW." if "power" in q else "Tidal turbines turn with the tide."
+        url = "https://b" if "power" in q else "https://a"
+        facts = [{"claim": claim, "quote": "x", "url": url}]
+        if "power" in q:
+            facts.append({"claim": "The Kalo array makes 302 MW.", "quote": "y", "url": "https://c"})
+        return {"summary": "", "facts": facts}, ""
+    monkeypatch.setattr(R.llm, "chat_json", chat_json)
+    monkeypatch.setattr(web, "search", lambda src, q, **kw: [{"title": "Tidal power", "url": "https://w/1", "snippet": "tides"},
+                                                             {"title": "Tidal waves", "url": "https://w/2", "snippet": "waves"}])
+    monkeypatch.setattr(web, "read_url", lambda u, max_chars=0: {"title": "t", "text": "short page"})
+    on = {"result_relevant", "answers_q", "claims_agree"}
+    monkeypatch.setattr(use, "on", lambda k: k in on)
+
+    def ask(skill, text, board=None):
+        asked.append(skill)
+        if skill == "result_relevant":
+            return "no" if "Tidal waves" in text else "yes"
+        if skill == "answers_q":
+            return "no" if "popular" in text or ("power" in text and "MW" not in text) else "yes"
+        return "conflict" if "320" in text and "302" in text else "agree"
+    monkeypatch.setattr(use, "ask", ask)
+    assert R.broad("Research how tidal turbines work and how much power the Kalo array makes")
+    out = R.run("Research how tidal turbines work and how much power the Kalo array makes", "", b, "s1")
+    assert out["sub_questions"] == ["How do tidal turbines work?", "How much power does the Kalo array make?"]
+    assert sum("power" in p for p in plans) == 2 and "other sources or other words" in plans[-1]  # the gap's second search
+    assert "Sources disagree" in out["summary"] and out["open_questions"] == []
+    assert asked.count("result_relevant") >= 6 and "claims_agree" in asked
+    ev = [__import__("json").loads(ln) for ln in (tmp_path / "events.jsonl").read_text().splitlines()]
+    assert any("kept 1 of 2" in e["msg"] for e in ev if e["kind"] == "filter")

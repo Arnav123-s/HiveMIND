@@ -532,6 +532,92 @@ def gen_task_kind(split, r):
     return frame.format(**fill), kind
 
 
+# ---------------------------------------------------------------- research cells: the research hive's smallest jobs
+# answers_q: does this fact answer this sub-question? (the gap finder: an unanswered sub-question gets another search)
+_AQ_TR = ["What is the {a} of {e}?", "Find the {a} of {e}.", "Tell me {e}'s {a}.", "Look up the {a} for {e}."]
+_AQ_TE = ["Which {a} does {e} have?", "I need the {a} of {e}.", "{e}: what is its {a}?"]
+_VAGUE_TR = ["The {a} of {e} was discussed in a blog post.", "{e} has not published its {a}.",
+             "Several reviews mention the {a} of {e}."]
+_VAGUE_TE = ["The {a} of {e} is a frequent question on forums.", "{e} declined to state its {a}.",
+             "An article compares the {a} of {e} with others."]
+
+
+def gen_answers_q(split, r):
+    """Made-up entities, so only reading the question against the fact can answer."""
+    e, a = _ename(r), r.choice(_pool(split, _ATTR_TR, _ATTR_TE))
+    v, _ = _val(r)
+    q = r.choice(_pool(split, _AQ_TR, _AQ_TE)).format(a=a, e=e)
+    f = r.choice(_pool(split, _QF_TR, _QF_TE))
+    if r.random() < 0.5:
+        return f"QUESTION: {q}\nFACT: {f.format(e=e, a=a, v=v)}", "yes"
+    kind = r.choice(["attr", "ent", "vague"])
+    if kind == "attr":
+        fact = f.format(e=e, a=r.choice([x for x in _pool(split, _ATTR_TR, _ATTR_TE) if x != a]), v=v)
+    elif kind == "ent":
+        fact = f.format(e=_ename(r), a=a, v=v)
+    else:
+        fact = r.choice(_pool(split, _VAGUE_TR, _VAGUE_TE)).format(a=a, e=e)
+    return f"QUESTION: {q}\nFACT: {fact}", "no"
+
+
+# claims_agree: two sources on the same point agree, conflict, or are about different things
+_CA_TR = ["The {a} of {e} is {v}.", "{e} has a {a} of {v}.", "{e} — {a}: {v}", "According to its site, {e}'s {a} is {v}."]
+_CA_TE = ["{e}'s {a} stands at {v}.", "{a} ({e}): {v}", "Listed {a} for {e}: {v}", "{e} reports {v} as its {a}."]
+
+
+def _plain_variant(v, r):
+    """The same value written another way (1,200 / 1200)."""
+    return v.replace(",", "") if "," in v and r.random() < 0.5 else v
+
+
+def gen_claims_agree(split, r):
+    e, a = _ename(r), r.choice(_pool(split, _ATTR_TR, _ATTR_TE))
+    v, _ = _val(r)
+    f1, f2 = r.choice(_pool(split, _CA_TR, _CA_TE)), r.choice(_pool(split, _CA_TR, _CA_TE))
+    first = f1.format(e=e, a=a, v=v)
+    k = r.randrange(3)
+    if k == 0:
+        return f"A: {first}\nB: {f2.format(e=e, a=a, v=_plain_variant(v, r))}", "agree"
+    if k == 1:
+        return f"A: {first}\nB: {f2.format(e=e, a=a, v=_near(v, r))}", "conflict"
+    if r.random() < 0.5:
+        other = f2.format(e=e, a=r.choice([x for x in _pool(split, _ATTR_TR, _ATTR_TE) if x != a]), v=_val(r)[0])
+    else:
+        other = f2.format(e=_ename(r), a=a, v=_val(r)[0])
+    return f"A: {first}\nB: {other}", "unrelated"
+
+
+# result_relevant: is a search result about what the sub-question asks? Topics come in near-miss pairs that share a
+# word, so word overlap is not enough ("solar panels" / "solar eclipses")
+_TOP_TR = [("solar panels", "solar eclipses"), ("coral reefs", "coral snakes"), ("sourdough bread", "bread mould"),
+           ("electric scooters", "electric eels"), ("black holes", "black pudding"), ("wind turbines", "wind chill"),
+           ("password managers", "password laws"), ("sea otters", "sea shanties"), ("glass recycling", "glass frogs"),
+           ("paper wasps", "paper airplanes"), ("rock climbing", "rock music"), ("blue whales", "blue cheese")]
+_TOP_TE = [("tidal energy", "tidal waves"), ("honey bees", "honey cake"), ("heat pumps", "heat stroke"),
+           ("cargo bikes", "cargo ships"), ("snow leopards", "snow tyres"), ("green tea", "green cards"),
+           ("salt marshes", "salt lamps"), ("night trains", "night vision"), ("fire ants", "fire drills")]
+_RQ_TR = ["How do {t} work?", "What are the main risks of {t}?", "Give me the history of {t}.", "Why do people study {t}?"]
+_RQ_TE = ["Explain {t} to a beginner.", "What is known about {t}?", "What are the benefits of {t}?"]
+_RES_TR = ["{T} explained | A guide to {t}: how they work and what they cost.", "{T} - Wikipedia | {T} are a widely studied topic.",
+           "The truth about {t} | Researchers looked at {t} for ten years.", "{T}: 7 facts | Everything about {t} in one page."]
+_RES_TE = ["Understanding {t} | An introduction to {t} for newcomers.", "{T} (overview) | A short summary of {t}.",
+           "New study on {t} | Findings about {t} published this month."]
+
+
+def gen_result_relevant(split, r):
+    pair = r.choice(_pool(split, _TOP_TR, _TOP_TE))
+    t = pair[0]
+    q = r.choice(_pool(split, _RQ_TR, _RQ_TE)).format(t=t)
+    tmpl = r.choice(_pool(split, _RES_TR, _RES_TE))
+    if r.random() < 0.5:
+        return f"QUESTION: {q}\nRESULT: {tmpl.format(t=t, T=_cap(t))}", "yes"
+    if r.random() < 0.7:  # the near miss: shares a word with the topic
+        o = pair[1]
+    else:
+        o = r.choice([p[0] for p in _pool(split, _TOP_TR, _TOP_TE) if p[0] != t])
+    return f"QUESTION: {q}\nRESULT: {tmpl.format(t=o, T=_cap(o))}", "no"
+
+
 # ---------------------------------------------------------------- the catalogue
 SKILLS = {
     "task_kind": dict(part="hive: the cheapest way through the hive for a whole task", labels=list(_TK), gen=gen_task_kind,
@@ -559,6 +645,16 @@ SKILLS = {
                           instr="Does clicking this ELEMENT reach the GOAL? yes or no"),
     "licence_open": dict(part="verifier: is a licence open for any use", labels=["yes", "no"], gen=gen_licence_open,
                          instr="Is this licence permissive (free for any use, including commercial)? yes or no", new=True),
+    "answers_q": dict(part="research hive: does this fact answer this sub-question (the gap finder)", labels=["yes", "no"],
+                      gen=gen_answers_q, new=True,
+                      instr="Does the FACT give the answer to the QUESTION (the asked thing, of the asked entity)? yes or no"),
+    "claims_agree": dict(part="research hive: do two sources agree on a point", labels=["agree", "conflict", "unrelated"],
+                         gen=gen_claims_agree, new=True,
+                         instr="Do A and B say the same thing (agree), give different values for the same thing (conflict), "
+                               "or talk about different things (unrelated)?"),
+    "result_relevant": dict(part="research hive: is a search result about what the question asks", labels=["yes", "no"],
+                            gen=gen_result_relevant, new=True,
+                            instr="Is this search RESULT about what the QUESTION asks? yes or no"),
 }
 for _k, _v in {"spend": "buy, pay, book, order, rent, subscribe, donate", "delete": "delete, remove, erase, cancel, unsubscribe",
                "send": "send, email, message, post, reply, share, upload", "login": "log in, sign in",
@@ -608,6 +704,7 @@ GROUPS = {  # the gate routes by the kind of input; the group's organizer runs e
     "step": ["route_step", "pick_source", "family_topic"],
     "failure": ["next_move"], "claim": ["claim_support"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
     "json": ["json_repair"], "licence": ["licence_open"],
+    "research": ["answers_q", "claims_agree", "result_relevant"],
 }
 
 
