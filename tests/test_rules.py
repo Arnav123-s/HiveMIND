@@ -710,3 +710,25 @@ def test_the_research_hive_splits_filters_fills_gaps_and_cross_checks(tmp_path, 
     assert asked.count("result_relevant") >= 6 and "claims_agree" in asked
     ev = [__import__("json").loads(ln) for ln in (tmp_path / "events.jsonl").read_text().splitlines()]
     assert any("kept 1 of 2" in e["msg"] for e in ev if e["kind"] == "filter")
+
+
+def test_the_coder_is_held_to_his_own_examples_and_told_the_kind_of_error(tmp_path, monkeypatch):
+    """fib(30) came out as fib(29): his 'fib(1) = 1, fib(2) = 1' now runs against the program's fib()."""
+    from team.board import Board
+    from team.specialists import coder
+    wrong = "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return b\nprint(fib(30))\n"
+    right = "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\nprint(fib(30))\n"
+    progs, asked = iter([wrong, right]), []
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder.llm, "chat", lambda role, msgs, **k: asked.append(msgs[-1]["content"])
+                        or f"```python\n{next(progs)}```")
+
+    class G:
+        def check_code(self, who, code):
+            return True
+    out = coder.run("Write fib (fib(1) = 1, fib(2) = 1) and tell me fib(30).", "", Board(tmp_path, echo=False), "s1", G(),
+                    tmp_path / "w")
+    assert out["summary"] == "832040" and "fib(1) returned 1" not in asked[1] and "but the task says fib(" in asked[1]
+    assert coder.error_kind("requests.exceptions.ConnectionError: Max retries exceeded") == "network"
+    assert coder.error_kind("NameError: name 'x' is not defined") is None

@@ -78,6 +78,22 @@ CODER_FIX = """The program did not do the task. Problem:
 {error}
 Return the complete fixed program in a single ```python block."""
 
+# what each kind of failure usually needs (team/specialists/coder.py error_kind): the coder is told the cause's kind
+FIX_HINTS = {
+    "syntax": "The program is not valid Python. Return the whole program, complete and valid.",
+    "import": "A module is not installed. Use only the standard library, requests, bs4 (BeautifulSoup), lxml, pandas, "
+              "matplotlib, numpy, huggingface_hub or psutil.",
+    "network": "A web request failed. Use https:// and the exact URLs the DATA PREVIEW shows; do not retry a host that "
+               "cannot be reached, use another URL the task or preview gives.",
+    "file": "A file was missing or not writable. Read only files that exist in the current folder; save new files in "
+            "the current folder.",
+    "data": "The data did not have the shape the code expected. Use the keys, classes and columns the DATA PREVIEW "
+            "shows; check for missing values before using them.",
+    "timeout": "The program ran too long. Make fewer requests, stop loops early, and print the result as soon as it is "
+               "known.",
+    "check": "A check from Arnav's own examples failed: make the code give exactly the values his examples state.",
+}
+
 VERIFIER = """You are the verifier on Arnav's team. Check one piece of work against its evidence.
 Reply with JSON only: {"verdict":"PASS","reason":"one sentence"} or {"verdict":"FAIL","reason":"one sentence"}.
 PASS only if the evidence shows the check is met. Missing, empty, failed or off-task evidence is FAIL."""

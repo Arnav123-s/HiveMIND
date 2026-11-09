@@ -47,6 +47,39 @@ def review(task, code, stdout):
     return [str(x)[:200] for x in data.get("problems", [])][:5]
 
 
+ERROR_KINDS = [  # the error reader: a code rule, exact on exception names (a cell would add nothing)
+    ("syntax", r"SyntaxError|IndentationError|TabError"),
+    ("import", r"ModuleNotFoundError|ImportError"),
+    ("network", r"ConnectionError|NameResolution|Max retries exceeded|HTTPError|Timeout(Error)?:|SSLError|"
+                r"getaddrinfo|Connection refused|HTTP Error \d{3}"),
+    ("file", r"FileNotFoundError|PermissionError|IsADirectoryError|NotADirectoryError"),
+    ("timeout", r"TIMEOUT after"),
+    ("check", r"AssertionError"),
+    ("data", r"KeyError|IndexError|TypeError|ValueError|AttributeError|ZeroDivisionError|JSONDecodeError"),
+]
+
+
+def error_kind(err):
+    """The kind of a failure, from the last error in the output (None when it names none of them)."""
+    tail = "\n".join((err or "").strip().splitlines()[-6:])
+    return next((k for k, rx in ERROR_KINDS if re.search(rx, tail)), None)
+
+
+EXAMPLE = re.compile(r"\b([A-Za-z_]\w*)\(([^()\n]{0,40})\)\s*(?:==|=|returns|should return|gives|is)\s*"
+                     r"(-?\d+(?:\.\d+)?|True|False|None|'[^'\n]{0,40}'|\"[^\"\n]{0,40}\")")
+
+
+def example_checks(task, code):
+    """Checks from the examples in his own task ("fib(1) = 1, fib(2) = 1"), for functions the program defines:
+    Python that calls each and says what it returned when it differs."""
+    out = []
+    for name, args, want in EXAMPLE.findall(task or ""):
+        if re.search(rf"^\s*def {re.escape(name)}\s*\(", code or "", re.M):
+            call = f"{name}({args})"
+            out.append(f"_got = {call}\nassert _got == {want}, f'{call} returned {{_got!r}}, but the task says {call} = {want}'")
+    return list(dict.fromkeys(out))
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -75,6 +108,18 @@ def run(task, context, board, step_id, guard, workdir):
         new = [p for p in workdir.iterdir() if p.name not in before and p.name != name and not p.name.startswith(".")]
         silent = not res["stdout"].strip() and not new
         if res["returncode"] == 0 and "Traceback" not in res["stderr"] and not missing and not silent:
+            checks = example_checks(task, code)
+            if checks:  # his own examples, run against the program's functions
+                chk = run_python(code + "\n\n# checks from Arnav's examples\n" + "\n".join(checks), workdir,
+                                 name=f"check_{name}")
+                board.log("coder", "examples", f"{len(checks)} check(s) from his examples: "
+                          + ("pass" if chk["returncode"] == 0 else "FAIL"))
+                if chk["returncode"] != 0:
+                    err = (chk["stderr"] or chk["stdout"])[-1200:]
+                    messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                                           {"role": "user", "content": prompts.CODER_FIX.format(
+                                               error=err + "\nHint: " + prompts.FIX_HINTS["check"])}]
+                    continue
             problems = sanity(res["stdout"]) or review(task, code, res["stdout"])
             if not problems or attempt == config.CODER_MAX_ATTEMPTS:
                 break
@@ -91,6 +136,10 @@ def run(task, context, board, step_id, guard, workdir):
             err = f"It ran but did not create {', '.join(missing)}. Output was:\n{res['stdout'][-800:]}"
         else:
             err = (res["stderr"] or res["stdout"])[-1800:]
+        kind = error_kind(err)
+        if kind:  # the error reader names the kind of failure; the coder is told what that kind usually needs
+            board.log("coder", "error-kind", f"attempt {attempt}: {kind}")
+            err = f"{err}\nHint ({kind}): {prompts.FIX_HINTS[kind]}"
         key = last_line(err)
         if key and key == last_error:
             # its fix changed nothing: the same error 12 times (a host it could not reach) cost 28 minutes of the 7B
