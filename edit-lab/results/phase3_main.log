@@ -1,0 +1,4 @@
+=== phase3a: train coordinator specialized ===
+run_phase3.sh: line 17:  6061 Killed                  $PY training/train_lora.py coordinator --data $D/coordinator_specialized.jsonl --epochs 2 --rank 16 --alpha 32 --lr 2e-4 --out $CS/coord-spec/coordinator > $R/train_coord_spec.log 2>&1
+exit=137
+=== phase3b: eval coordinator specialized ===

@@ -1,0 +1,7 @@
+=== phase3Ra: train coordinator specialized (1 epoch) ===
+run_phase3r.sh: line 20: 11899 Killed                  $PY -u training/train_lora.py coordinator --data $D/coordinator_specialized.jsonl --epochs 1 --rank 16 --alpha 32 --lr 2e-4 --out $CS/coord-spec/coordinator > $R/train_coord_spec1.log 2>&1
+exit=137
+=== phase3Rb: eval coordinator specialized ===
+Terminated
+exit=143
+=== phase3Rc: train researcher gentle (1 epoch, lr 1e-4) ===

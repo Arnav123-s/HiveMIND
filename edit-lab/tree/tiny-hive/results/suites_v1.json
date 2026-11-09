@@ -1,0 +1,19 @@
+{
+ "composed": {
+  "passed": 30,
+  "total": 30,
+  "fails": []
+ },
+ "fanout_wrong": 0,
+ "fanout_clone_jobs": {
+  "adder#9": 10,
+  "adder#10": 10,
+  "adder#11": 10,
+  "adder#12": 10
+ },
+ "vote_clean": "100/100",
+ "gap_probes": {
+  "divider": "capability_gap",
+  "adder_500_400": "out_of_domain"
+ }
+}

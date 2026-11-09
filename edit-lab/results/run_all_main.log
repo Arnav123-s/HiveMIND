@@ -1,0 +1,6 @@
+=== leg 1: coordinator specialized train ===
+coord train OK
+=== leg 2: coordinator eval ===
+coord eval exit=0
+=== leg 3: researcher gentle train ===
+Terminated

@@ -1,0 +1,39 @@
+{
+ "strengths": {
+  "off-by-one": {
+   "index": "whole",
+   "range": "whole"
+  },
+  "wrong-operator": {
+   "accumulator": "whole",
+   "comparison": "whole",
+   "expression": "whole"
+  },
+  "swapped-operands": {
+   "comprehension": "whole",
+   "plain": "whole"
+  },
+  "mutable-default": {
+   "whole": "whole"
+  },
+  "missing-return": {
+   "assigns": "whole",
+   "prints": "whole"
+  }
+ },
+ "thresholds": {
+  "off-by-one": 0.0,
+  "wrong-operator": 0.0,
+  "swapped-operands": 0.0,
+  "mutable-default": 0.0,
+  "missing-return": 0.0
+ },
+ "variant_routes": [
+  {
+   "cls": "wrong-operator",
+   "when": "named",
+   "model": "bug-wrong-operator-named-model"
+  }
+ ],
+ "ensemble": false
+}

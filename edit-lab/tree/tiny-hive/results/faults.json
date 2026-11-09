@@ -1,0 +1,5 @@
+{
+ "one_corrupted_clone_majority_wrong": "0/100",
+ "two_corrupted_clones_majority_wrong": "16/100",
+ "note": "with the reference verifier active every wrong majority is flagged, so silent wrong answers stay 0; two corrupted clones is the vote's breaking point and an evolution trigger"
+}

@@ -1,0 +1,9 @@
+=== anchor 1: base coordinator ===
+exit=0
+=== anchor 2: base researcher ===
+exit=0
+=== anchor 3: rejected coordinator (original adapter) ===
+exit=0
+=== anchor 4: original researcher (repo adapters) ===
+exit=0
+ANCHORS_DONE
