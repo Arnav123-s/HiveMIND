@@ -69,7 +69,10 @@ if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 
 # attention caches. Under the budget: 8-bit attention cache (half the size), per-model context sizes, and at
 # most N base models resident (least recently used is unloaded; reload ~4 s from the OS file cache).
 RAM_GB = float(os.environ.get("AGENT_TEAM_RAM_GB", 10))
-KV_8BIT = os.environ.get("AGENT_TEAM_KV", "q8" if RAM_GB <= 12 else "f16") == "q8"
+# 16-bit attention cache by measurement (training/reports/arch_bench.json, five real hive prompts, no repacked copies):
+# 185 s against 293 s with the 8-bit cache (the researcher's long prompt 105 s against 207 s), peak 8.22 GB against
+# 7.8 GB, inside the 10 GB budget; every verdict, value and conclusion the same. AGENT_TEAM_KV=q8 saves ~0.4 GB.
+KV_8BIT = os.environ.get("AGENT_TEAM_KV", "f16") == "q8"
 # prompt-lookup decoding: next tokens guessed from the prompt itself (quotes, claims, code being fixed), checked in one
 # pass. Off: in llama-cpp-python 0.3.36 it crashed on the hive's real prompts (training/reports/arch_bench.json).
 LOOKUP = os.environ.get("AGENT_TEAM_LOOKUP", "0") == "1"
