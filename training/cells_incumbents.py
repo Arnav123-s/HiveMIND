@@ -25,6 +25,9 @@ INCUMBENT = {
     "route_step": "coordinator", "pick_source": "researcher", "next_move": "coordinator", "split_orders": "coordinator",
     "quote_pick": "researcher", "claim_support": "verifier", "pick_element": "browser", "licence_open": "juror_brain",
     "json_repair": "code:parse_json", "family_topic": "code:guard.FAMILY",
+    # the research hive's jobs: what does each without the cell (word overlap; any claim counts; the 4B juror, as
+    # nothing cross-checks sources without the cell)
+    "result_relevant": "code:words", "answers_q": "code:any", "claims_agree": "juror_brain",
     **{f"orders_{k}": "order_reader" for k in ("spend", "delete", "send", "login", "signup")},
 }
 
@@ -69,6 +72,13 @@ def ask_code(skill, x):
         return json.dumps(got) if got is not None else ""
     if skill == "family_topic":
         return "yes" if guard.FAMILY.search(x) else "no"
+    if skill == "result_relevant":  # exactly the research hive's fallback
+        from team.specialists import research_hive
+        q, r = x.split("\nRESULT: ", 1)
+        t, _, sn = r.partition(" | ")
+        return "yes" if research_hive.relevant(q.removeprefix("QUESTION: "), [{"title": t, "snippet": sn}])[0] else "no"
+    if skill == "answers_q":
+        return "yes"
     raise ValueError(skill)
 
 
@@ -89,5 +99,11 @@ def run(skill):
 
 
 if __name__ == "__main__":
-    for s in sys.argv[1:]:
-        run(s)
+    for s in sys.argv[1:]:  # skill, or skill=member to measure another member on the same inputs (not the incumbent)
+        if "=" in s:
+            sk, member = s.split("=", 1)
+            INCUMBENT[sk] = member
+            res = run(sk)
+            (OUT / f"incumbent_{sk}.json").rename(OUT / f"alt_{sk}_{member}.json")
+        else:
+            run(s)
