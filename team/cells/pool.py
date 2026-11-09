@@ -4,7 +4,8 @@ The cells' base model file is memory-mapped, so the workers share its pages: N w
 (context and the deltas they load), not N models. A batch of cell questions (every search result of a search, every
 pair of claims, every element of a page, every fact against its sub-question) is spread over the workers and
 answered in parallel. The main process holds the CPU lock meanwhile, so the bigger members never compete with the
-pool for the cores. AGENT_TEAM_CELL_WORKERS sets the number of workers (1 = no pool: the cells answer in turn).
+pool for the cores. AGENT_TEAM_CELL_WORKERS sets the number of workers (default 1 = no pool: the cells answer in
+turn, until the pool is measured faster).
 """
 import atexit
 import multiprocessing
@@ -17,11 +18,22 @@ STATS = {"batches": 0, "questions": 0}
 
 
 def workers():
-    return max(1, int(os.environ.get("AGENT_TEAM_CELL_WORKERS", min(4, os.cpu_count() or 1))))
+    # default 1 (no pool) until training/cells_pool_bench.py shows the pool is faster: its first measurement was 75x
+    # slower, because each worker read prompts on every core (fixed: n_threads_batch) and killed runs left workers
+    return max(1, int(os.environ.get("AGENT_TEAM_CELL_WORKERS", 1)))
 
 
 def _init():
     os.environ["AGENT_TEAM_THREADS"] = "1"
+    parent = os.getppid()
+
+    def watch():  # a worker whose parent died exits: killed parents had left workers computing on their own
+        import time
+        while os.getppid() == parent:
+            time.sleep(2)
+        os._exit(0)
+    import threading
+    threading.Thread(target=watch, daemon=True).start()
 
 
 def _one(job):

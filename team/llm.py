@@ -271,7 +271,8 @@ def _gguf_model(specialist, adapter):
             kv["draft_model"] = LlamaPromptLookupDecoding(num_pred_tokens=10)
         _no_repack(not config.REPACK)
         _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX_BY_MODEL.get(name, config.GGUF_CTX),
-                            n_threads=config.THREADS, n_batch=512, use_mmap=True, verbose=False, **kv)
+                            n_threads=config.THREADS, n_threads_batch=config.THREADS, n_batch=512, use_mmap=True,
+                            verbose=False, **kv)
         _active_lora[name] = None
     if name in _lru:
         _lru.remove(name)
