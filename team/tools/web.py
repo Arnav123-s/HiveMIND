@@ -69,7 +69,18 @@ def readable(html, base_url="", max_chars=12000):
 
 
 def read_url(url, max_chars=12000):
-    """Fetch a page or API URL and return {'url','title','text','links'}."""
+    """Fetch a page or API URL and return {'url','title','text','links'}.
+    An arXiv abstract page is read as the whole paper when arXiv has its HTML version (most recent papers), so
+    research reads methods and results, not only the abstract."""
+    m = re.match(r"https?://(?:www\.)?arxiv\.org/(?:abs|pdf)/([\w.\-/]+?)(?:\.pdf)?/?$", url)
+    if m:
+        try:
+            page = readable(get(f"https://arxiv.org/html/{m.group(1)}"), url, max_chars)
+            if len(page.get("text", "")) > 2000:
+                page["url"] = url
+                return page
+        except FetchError:
+            pass
     body = get(url)
     if body.lstrip().startswith(("{", "[")):
         try:

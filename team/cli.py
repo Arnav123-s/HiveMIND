@@ -64,7 +64,9 @@ def say(swarm, msg, history, rounds=2, out=print):
     from . import converse
     if not converse.on():
         return show(swarm.submit(msg, until_done=rounds, context=converse.context(history)), out)
-    res = converse.handle(msg, history, lambda t, c: swarm.submit(t, until_done=rounds, context=c))
+    from . import project
+    res = converse.handle(msg, history, lambda t, c: swarm.submit(t, until_done=rounds, context=c),
+                          start_project=lambda g: project.launch(g, swarm, log=lambda m: out("  [project] " + m)))
     if isinstance(res, converse.Reply):
         out("hive> " + res.report)
         return res.report

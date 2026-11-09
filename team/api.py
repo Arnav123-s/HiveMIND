@@ -147,6 +147,10 @@ class H(BaseHTTPRequestHandler):
                     self._sse(ev)
             job.wait()
             return self._sse(job.to_dict(), event="done")
+        if path == "/v1/projects":
+            from . import project
+            return self._json(200, {"data": [{"id": p.id, "goal": p.goal, "status": p.status, "progress": p.progress(),
+                                              "milestones": p.milestones} for p in project.Project.all()]})
         if path == "/health":
             return self._json(200, {"ok": True, "model": MODEL})
         if path == "":  # the chat page (team/web.py), on the same queue as every API client
@@ -175,6 +179,10 @@ class H(BaseHTTPRequestHandler):
             if path in ("/v1/stop", "/api/stop"):
                 SWARM.stop("api: POST /v1/stop")
                 return self._json(200, {"stopping": True})
+            if path == "/v1/projects":
+                from . import project
+                p = project.launch(str(body.get("goal", "")).strip() or "", SWARM)
+                return self._json(202, {"id": p.id, "status": p.status, "milestones": p.milestones})
             if path == "/v1/jobs":
                 job = SWARM.submit(str(body.get("task", "")), until_done=body.get("until_done", DEFAULTS["until_done"]),
                                    context=str(body.get("context", "")))
@@ -197,7 +205,9 @@ class H(BaseHTTPRequestHandler):
         from . import converse
         if converse.on() and not body.get("job"):  # a conversation: talk is answered at once, work becomes a job
             hist = history_from(body.get("messages"))
-            return converse.handle(task, hist, lambda t, c: SWARM.submit(t, until_done=rounds, context=c))
+            from . import project
+            return converse.handle(task, hist, lambda t, c: SWARM.submit(t, until_done=rounds, context=c),
+                                   start_project=lambda g: project.launch(g, SWARM))
         return SWARM.submit(task, until_done=rounds, context=ctx)
 
     def _openai(self, body):
