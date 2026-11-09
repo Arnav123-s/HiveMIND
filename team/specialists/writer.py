@@ -268,6 +268,8 @@ def run(goal, task, board, needs):
     todo = "\n".join(f"- {i}" for i in getattr(board, "checklist", []))
     checklist, unordered, flagged = critique(todo, results_text, text)
     checklist = mark_echo(goal, text, checklist, board)
+    open_qs = open_questions(board)
+    checklist = mark_open(checklist, open_qs, board)
     missed = [c for c in checklist if not c.get("done")]
     fixes = []
     if flagged:
@@ -290,7 +292,7 @@ def run(goal, task, board, needs):
         again, unordered2, flagged = critique(todo, results_text, text)
         if again:  # no answer from the critic: keep the first ticks (they can only under-claim what was done)
             checklist, unordered = again, unordered2
-        checklist = mark_echo(goal, text, checklist, board)
+        checklist = mark_open(mark_echo(goal, text, checklist, board), open_qs)
         if flagged:
             board.log("critic", "flag", f"{len(flagged)} unsupported claim(s) after the fix: " + " | ".join(f[:80] for f in flagged[:3]))
         missed = [c for c in checklist if not c.get("done")]
@@ -318,6 +320,8 @@ def run(goal, task, board, needs):
         text = llm.chat("writer", msgs + [{"role": "assistant", "content": text},
                                           {"role": "user", "content": f"That is {len(body_lines(text))} lines. Write it as "
                                            f"exactly {n_lines} lines of plain text, nothing else."}], max_new_tokens=400)
+    if open_qs[1] and "not answered by any source" not in text.lower():
+        text += "\n\n## Not answered by any source the team read\n" + "\n".join(f"- {q}" for q in open_qs[1])
     return finish(text, board, results_text, sources, checklist, unordered, flagged, fixes)
 
 
@@ -360,6 +364,42 @@ def mark_echo(goal, text, checklist, board):
     board.log("critic", "echo", "the report repeats his text instead of doing what he ordered to it")
     hit = [c for c in checklist if TRANSFORM.search(str(c.get("instruction", "")))] or checklist
     return [dict(c, done=False, why="the report repeats his text unchanged") if c in hit else c for c in checklist]
+
+
+def _stems(t):
+    return {w[:4] for w in re.findall(r"[a-z]{4,}", (t or "").lower())} - {"what", "whic", "wher", "ther", "abou", "from",
+                                                                          "with", "does", "that", "this", "have"}
+
+
+def open_questions(board):
+    """(every sub-question the research hive worked on, those no source answered), from its passed steps."""
+    every, out = [], []
+    for st in board.steps():
+        res = st.get("result") or {}
+        if isinstance(res, dict) and st.get("verdict") == "PASS":
+            every += [q[0] if isinstance(q, (list, tuple)) else q for q in res.get("sub_questions") or []]
+            out += [q for q in res.get("open_questions") or [] if q not in out]
+    return list(dict.fromkeys(every + out)), out
+
+
+def mark_open(checklist, questions, board=None):
+    """An instruction whose closest sub-question no source answered is not done, whatever the critic ticked (the
+    battery report answered 'what slows the degradation' with factors that drive it, after the research hive had found
+    nothing that answers it, and the critic ticked it). questions = (all sub-questions, the open ones)."""
+    every, open_qs = questions
+    if not open_qs:
+        return checklist
+    out = []
+    for c in checklist:
+        mine = _stems(c.get("instruction", ""))
+        score = {q: len(mine & _stems(q)) / len(mine) for q in every} if mine else {}
+        best = max(score, key=score.get) if score else None
+        if best in open_qs and score[best] >= 0.5 and c.get("done"):
+            c = dict(c, done=False, why=f"no source the team read answers it ({best[:80]})")
+            if board is not None:
+                board.log("critic", "open", f"not done: {c.get('instruction', '')[:80]} (no source answered: {best[:80]})")
+        out.append(c)
+    return out
 
 
 def nothing_verified(goal, board, facts):

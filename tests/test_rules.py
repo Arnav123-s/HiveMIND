@@ -1278,3 +1278,39 @@ def test_a_budget_spent_for_the_day_is_not_waited_for(monkeypatch):
     with pytest.raises(web.FetchError, match="skipped for the rest of this run"):
         web.get("https://api.openalex.org/works", {"search": "y"})
     assert len(calls) == 1
+
+
+def test_a_cell_that_says_the_same_to_every_fact_gets_a_second_opinion(tmp_path, monkeypatch):
+    """Research eval: the answers_q cell said 'no' to all 11 facts of the battery question, 'SEI growth is a
+    degradation mechanism' against 'How do lithium-ion batteries degrade?' among them."""
+    from team.board import Board
+    from team.cells import use
+    from team.specialists import research_hive as R
+    b = Board(tmp_path, echo=False)
+    facts = [{"question": "How do lithium-ion batteries degrade?", "claim": c} for c in
+             ("SEI growth is a degradation mechanism", "Lithium plating degrades the anode",
+              "Electrolyte decomposition reduces capacity", "Paris is the capital of France")]
+    monkeypatch.setattr(use, "on", lambda s: s == "answers_q")
+    monkeypatch.setattr(use, "ask_all", lambda skill, texts, board=None: ["no"] * len(texts))
+    monkeypatch.setattr(R.llm, "chat_json", lambda *a, **k: ({"answers": ["yes", "yes", "yes", "no"]}, ""))
+    assert R.answered(facts, b) == [True, True, True, False]
+    monkeypatch.setattr(use, "ask_all", lambda skill, texts, board=None: ["yes", "yes", "no", "no"])
+    assert R.answered(facts, b) == [True, True, False, False]  # a mixed batch is the cell's own answer
+
+
+def test_an_instruction_no_source_answered_is_not_ticked_done(tmp_path):
+    """The battery report answered 'what slows the degradation' with factors that drive it, after the research hive
+    found nothing that answers it; the critic ticked it."""
+    from team.board import Board
+    from team.specialists.writer import mark_open, open_questions
+    b = Board(tmp_path, echo=False)
+    b.add_step({"id": "s1", "agent": "researcher", "task": "research", "needs": [], "for_each": None, "done_when": ""})
+    b.update_step("s1", verdict="PASS", status="done",
+                  result={"sub_questions": [["How do lithium-ion batteries degrade over time?", "read"],
+                                            ["What factors slow the degradation of lithium-ion batteries?", "read"]],
+                          "open_questions": ["What factors slow the degradation of lithium-ion batteries?"]})
+    open_qs = open_questions(b)
+    ticks = [{"instruction": "Research how lithium-ion batteries degrade over time", "done": True},
+             {"instruction": "what slows the degradation", "done": True}]
+    out = mark_open(ticks, open_qs)
+    assert out[0]["done"] is True and out[1]["done"] is False and "no source" in out[1]["why"]

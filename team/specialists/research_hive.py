@@ -70,9 +70,37 @@ def answered(facts, board=None):
     if not facts:
         return []
     if use.on("answers_q"):
-        return [a == "yes" for a in use.ask_all("answers_q", [f"QUESTION: {f['question']}\nFACT: {f['claim']}"
-                                                              for f in facts], board)]
+        yes = [a == "yes" for a in use.ask_all("answers_q", [f"QUESTION: {f['question']}\nFACT: {f['claim']}"
+                                                             for f in facts], board)]
+        if len(facts) >= 4 and len(set(yes)) == 1:
+            # the same answer for every fact of a batch is how this cell fails on real text: it said "no" to all 11
+            # facts of the battery question, "SEI growth ... is a degradation mechanism" against "How do lithium-ion
+            # batteries degrade?" among them (it scored 0.933 on its synthetic test set). The researcher checks it.
+            member = member_answers(facts)
+            if member is not None:
+                if board is not None:
+                    board.log("research_hive", "second-opinion", f"answers_q said {'yes' if yes[0] else 'no'} to all "
+                                                                 f"{len(facts)} facts; the researcher: {sum(member)} yes")
+                return member
+        return yes
     return [True] * len(facts)
+
+
+ANSWERS = """For each numbered FACT, say whether it answers its QUESTION, fully or in part: a cause, a mechanism, a
+value or a finding the question asks about counts; a fact about something else does not.
+Reply with JSON only: {"answers": ["yes", "no", ...]}, one entry per fact, in order."""
+
+
+def member_answers(facts):
+    """The researcher's own yes/no for each fact (one call for the batch), or None if its reply cannot be read."""
+    body = "\n".join(f"{i + 1}. QUESTION: {f['question']}\n   FACT: {f['claim']}" for i, f in enumerate(facts[:24]))
+    data, _ = llm.chat_json("researcher", [{"role": "system", "content": ANSWERS},
+                                           {"role": "user", "content": body}], max_new_tokens=220)
+    a = data.get("answers") if isinstance(data, dict) else None
+    if not isinstance(a, list) or len(a) < min(len(facts), 24):
+        return None
+    out = [str(x).strip().lower().startswith("y") for x in a[:len(facts)]]
+    return out + [False] * (len(facts) - len(out))
 
 
 def conflicts(facts, board=None, limit=24):
