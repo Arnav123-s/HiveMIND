@@ -103,6 +103,8 @@ EMPTY_NOT_CONFIRMED = re.compile(r"^\s*(?:#+\s*)?\**not confirmed\**[.:]?\**\s*$
 def drop_empty_sections(text):
     """A "Not confirmed" heading with nothing under it (the writer adds one even when everything was confirmed), and a
     sources block that only says there are none."""
+    # a bare "Not confirmed." sentence that says nothing (the writer ends an answer with it)
+    text = re.sub(r"(?m)(?<=[.!?])[ \t]+Not confirmed\.?[ \t]*$|^[ \t]*Not confirmed\.?[ \t]*$", "", text)
     # a sources block that only says there are none (copied from the prompt's "SOURCES: (none)")
     text = re.sub(r"(?im)^\s*(?:\*\*|#+\s*)?sources:?(?:\*\*)?:?\s*\n?\s*\(?none\)?\.?\s*$", "", text)
     lines = text.split("\n")
