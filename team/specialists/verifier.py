@@ -316,7 +316,12 @@ def verify(step, result, board, workdir):
             return "FAIL", result["failed"]
         if result.get("returncode") != 0:
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
-        if not re.search(r"\d", result.get("summary", "")):
+        out = result.get("summary", "")
+        named = re.search(r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|"
+                          r"may|june|july|august|september|october|november|december)\b", out, re.I)
+        if not re.search(r"\d", out) and not named:
+            # a weekday or a month is an answer too: "Answer: Sunday" (the right one) failed here three times, after
+            # the calculator was told to print names as names
             return "FAIL", "the program printed no number"
         # one check, not a jury: the arithmetic is Python's; only "does it compute what was asked" needs a model
         return _judge_one("verifier", check + " (Does the PROGRAM compute exactly what the task asks, with its numbers?)",
