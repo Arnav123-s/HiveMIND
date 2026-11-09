@@ -39,6 +39,10 @@ def redact(text):
     return re.sub(r"((?:api_?key|key|token|access_token)=)[^&\s\"']+", r"\1[hidden]", str(text or ""), flags=re.I)
 
 
+SPENT = {}  # host -> why it is skipped for the rest of this process
+SPENT_RX = re.compile(r"insufficient budget|daily (?:budget|limit|quota)|quota (?:exceeded|exhausted)|per day", re.I)
+
+
 def retry_wait(r, attempt):
     """Seconds to wait after a 429: the server's own hint (Retry-After, or "retry in 31s" in the body; OpenAlex limits
     anonymous searches under load), at most 45, else 3 then 6."""
@@ -60,8 +64,16 @@ def get(url, params=None, as_json=False):
     key = (url, json.dumps(params, sort_keys=True))
     if key in _cache:
         return _cache[key]
+    host = re.sub(r"^https?://([^/]+).*", r"\1", url)
+    if host in SPENT:
+        raise FetchError(f"{host}: {SPENT[host]} (skipped for the rest of this run)")
     for attempt in range(3):
         r = _S.get(url, params=params, timeout=config.HTTP_TIMEOUT)
+        if r.status_code == 429 and SPENT_RX.search(r.text[:600]):
+            # a budget spent for the day is not 'busy, retry soon': waiting cannot help, so the host is skipped from now
+            # on (OpenAlex's anonymous budget ran out and every search waited twice for nothing, about 90 s each)
+            SPENT[host] = "its free budget is spent for today"
+            break
         if r.status_code == 429 and attempt < 2:
             _wait(retry_wait(r, attempt))
             continue
