@@ -1327,3 +1327,14 @@ def test_a_sentence_from_memory_in_a_sourced_report_is_flagged():
               "temperatures and humidity to extend service life considerably.\n## Sources\n[1] x")
     flagged = ungrounded(report, verified)
     assert len(flagged) == 1 and flagged[0].startswith("Effective battery management")
+
+
+def test_a_search_result_naming_the_question_s_subject_is_relevant():
+    """Research eval: 'Compare the speed of SQLite and DuckDB for analytics on a laptop' has six content words, so
+    Wikipedia's SQLite article (one of them) was dropped with every other result."""
+    from team.specialists import research_hive as R
+    q = "Compare the speed of SQLite and DuckDB for analytics on a laptop"
+    assert R.subjects(q) == {"sqlite", "duckdb"}
+    res = [{"title": "SQLite", "snippet": "SQLite is a database engine written in C"},
+           {"title": "Laptop", "snippet": "A laptop is a small portable computer"}]
+    assert R.relevant(q, res) == [True, False]
