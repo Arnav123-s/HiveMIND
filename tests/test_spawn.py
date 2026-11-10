@@ -238,3 +238,14 @@ def test_the_hive_picks_the_specialist_that_failed_most_to_work_on_next(tmp_path
         b.update_step("s1", verdict=verdict)
     assert dream.worst_role() == "coder"
     assert dream.worst_role(least=5) is None  # too few failures to act on
+
+
+def test_school_specialists_answer_together():
+    from team import school
+    # what most decide; on a tie the one that did best in its exam (first in the order)
+    assert school.majority({"a": ["coder"], "b": ["writer"], "c": ["writer"]}, ["a", "b", "c"]) == ["writer"]
+    assert school.majority({"a": ["coder"], "b": ["writer"]}, ["a", "b"]) == ["coder"]
+    assert school.majority({"a": None, "b": ["writer"]}, ["a", "b"]) == ["writer"]
+    assert school.majority({"a": None}, ["a"]) is None
+    rows = [{"exam": False}, {"exam": True}, {"exam": False}]
+    assert [len(p) for p in school.split(rows)] == [2, 1]
