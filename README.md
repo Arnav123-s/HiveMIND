@@ -695,6 +695,28 @@ What this shows, and what it does not:
 - The lessons are pure computations. They do not teach what the 1.5B fails at inside the hive: changing a working
   program on feedback without breaking it, and reading values from a fetched page. That needs a second kind of lesson.
 
+## Recruits: the hive brings in other small models itself (`python -m team recruit`, `team/recruit.py`)
+
+Almost every member of the small hive is the same Qwen3-1.7B with another weight edit, and copies of one model make
+the same mistakes: the planner's second specialist got the same 9 exam lessons right as the first. A weight edit also
+sharpens what a model can nearly do and adds little where it cannot (the taught planner: 24 of 24 short plans, 3 of
+22 long ones). So the hive looks for other families, and it does that without anyone choosing models for it:
+
+1. **Find.** It searches Hugging Face for small chat models in GGUF it has not looked at. It takes a model only if it
+   has at most 2.0B parameters, is ungated (nothing logs in or uses a token), is under Apache-2.0, MIT or BSD (the
+   model and its base), comes from its own makers or a known converter, and is not a variant made to drop the
+   model's safety behaviour. Every model looked at is recorded with the reason it was passed over.
+2. **Download.** One file, and never when less than 4 GB would stay free. Nothing is deleted to make room.
+3. **Tryout.** The recruit takes each school role's exam untouched (the lessons nobody trained on).
+4. **Enrol.** At least as good as the role's untouched student: it becomes one more voice of the role, and the role's
+   exam decides by measurement whether answering together beats the best one alone.
+5. **Teach.** Better than the untouched student by the school's margin: it is the better student. An edit of its
+   weights is trained on the lessons the teacher already gave (no new teacher time), and that specialist takes the
+   exam too. The job goes to whoever measures best.
+
+The always-on agent recruits one model whenever the device is idle, in turn with dreaming, growing cells, evolving
+instructions and school. `python -m team org` lists every recruit and its tryouts; `cells/recruits.json` is the record.
+
 ## The demo
 
 `demo/TASK.md` is the one prompt; `demo/README.md` is generated from the run's own records; `demo/run/` holds
