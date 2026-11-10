@@ -1613,3 +1613,11 @@ def test_search_topic_drops_sort_and_source_words():
     assert topic("latest arXiv papers on mixture of experts") == "papers on mixture of experts"
     assert topic("mixture of experts") == "mixture of experts"
     assert topic("newest") == "newest"
+
+
+def test_the_note_about_dropped_items_is_not_the_researchers_admission():
+    from team.specialists import verifier
+    s = ("The three newest papers are A, B and C. They were published on 2026-11-09."
+         "\nDropped by the team's checks (do not use): D (The source line does not contain the full information.)")
+    assert verifier.admits_a_gap(s) is None and verifier.admits_nothing(s) is None
+    assert verifier.admits_a_gap("The model is X. The licence is not specified in the provided facts.")

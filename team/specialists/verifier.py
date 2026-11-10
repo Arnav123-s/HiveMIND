@@ -121,14 +121,21 @@ def _sentences(summary):
 
 def admits_nothing(summary):
     """The first sentence of a research result, when it says the thing asked for was not found; else None."""
-    first = (_sentences(summary) or [""])[0]
+    first = (_sentences(_own_words(summary)) or [""])[0]
     return first[:200] if _NOTHING.search(first) else None
+
+
+def _own_words(summary):
+    """The researcher's own summary, without the note the checks add about items they dropped: that note quotes a
+    juror ("the source line does not contain ..."), and read as the researcher's words it failed a step whose three
+    kept papers were right."""
+    return (summary or "").split("\nDropped by the team's checks")[0]
 
 
 def admits_a_gap(summary):
     """A later sentence of a research result that says one of the things asked for was not found ("The licence is
     not specified in the provided facts."), else None. The result has something; one part of the order is missing."""
-    return next((x[:200] for x in _sentences(summary)[1:] if _NOTHING.search(x)), None)
+    return next((x[:200] for x in _sentences(_own_words(summary))[1:] if _NOTHING.search(x)), None)
 
 
 SHORT = "the task asks for"
