@@ -13,7 +13,7 @@ by older agents may be outdated; what he described is what counts. Kept from the
 the guard (nothing that spends, deletes, sends as him or logs in unless he ordered it), credentials stay local, no
 benchmaxing, held-out sets run once, no model names in commits.
 
-**Built on this branch (139 tests):**
+**Built on this branch (143 tests):**
 - `python -m team school` (`team/school.py`, README "School"): a small model learns a bigger member's job from that
   member's own work, takes an exam on lessons it never trained on, and goes back for new lessons; gaps get new
   narrow specialists that sit beside the old ones (routing by the nearest known lesson; general ones can vote).
@@ -31,12 +31,19 @@ benchmaxing, held-out sets run once, no model names in commits.
   the coder's review; an unchanged program after feedback is asked for once more with sampling; a juror objection
   that sets a number against itself is void.
 - `serve`, when idle: evolve the specialist that failed most, then school, then a life turn.
+- Found by reading the small-only failures: an example value in an instruction is copied by a 1.7B model
+  ("X has 0.135B parameters" in the small reader's instruction came back as a fact). Instructions for small models
+  carry no example values.
 
 **Measured on the 16 development tasks (fixes were tried on these):**
 - Normal hive: 15 of 16 in one run (`normal_after`); the one fail (arxiv) passed after the short-list retry
   (`normal_arxiv`); csv, chart, fib pass after the coder changes (`normal_code`).
-- Nothing above 1.7B: BENCH_SMALL7
-- Regression check of the research tasks after the last verifier rule: BENCH_NORMAL_REG
+- Nothing above 1.7B, one clean run of all 16 (`small7`), the taught planner planning: 11 of 16; every plan right.
+  Fails: lookup, chart (the small reader copied its instruction's example value instead of reading what was asked),
+  fib (a program failing his examples was passed by the jury), arxiv, csv. After the fixes: lookup and fib pass
+  (`small8`); chart and arxiv with the reader's new instruction: see `small9` and `small_only_notes.md`.
+- Normal hive after all of today's check changes (`normal_reg`, `normal_reg2`): lookup, explain, arxiv, fib pass.
+- Two bench checks were wrong on right answers and were corrected (papers listed by title; "135M" for "0.135B").
 
 **Open, in order:**
 1. Cleaner lessons for long plans: teach the plan after the reviewer and the code checks (`coordinator.reviewed_plan`)
@@ -44,7 +51,8 @@ benchmaxing, held-out sets run once, no model names in commits.
 2. The coder's first class (`python -m team school coder`; about 2 minutes a lesson with the 7B, 160 lessons).
    Its lessons are pure computations; a second kind is needed for what fails without the 7B: changing a working
    program on feedback without breaking it (csv), and reading a number from a fetched page (chart).
-3. Small-only arxiv: the 1.7B juror judges one item against the whole order; it needs the item-level question only.
+3. Small-only arxiv and csv still fail. The item juror is now asked without the whole list's requirements
+   (`verifier.item_question`); arxiv's facts still do not survive the checks. csv: see 2.
 4. More roles in school: researcher (extract), critic, plan_reviewer, each with its own key.
 5. If routing by shared words sends tasks to the wrong narrow specialist once there are several, train a router cell.
 6. Older: more logged work for the item juror's site (about 60 decisions, needs about 200); near-miss numbers for
