@@ -799,6 +799,12 @@ Earlier attempts and what each one exposed are kept in `runs/demo-attempt-*` (no
 
 ## Install (your laptop)
 
+One command on Linux or macOS, from the folder of the checkout (it runs the steps below and installs the always-on
+agent; written on 2026-11-10 and not yet run from start to end on a fresh device):
+```bash
+sh setup.sh
+```
+
 Needs: Python 3.11+, ~8 GB free RAM for the team (16 GB machine is fine), ~10 GB disk for models.
 
 ```bash

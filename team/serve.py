@@ -112,7 +112,7 @@ def background(last, dream_every_hours):
         log("idle and healthy: school (a small model learns a bigger member's job; it takes the job only after its exam)")
         subprocess.run([sys.executable, "-m", "team", "school"], cwd=config.ROOT)
         last["school"] = time.time()
-    elif time.time() - last.get("body", 0) > dream_every_hours * 3600:
+    elif time.time() - last.get("body", 0) > min(dream_every_hours, 2) * 3600:  # a turn is short: every two hours
         # the body grown from nothing (training/body.py): more text is harvested, then one cell is grown on what the
         # body predicts worst and kept only if the body measures better on text it never trained on
         log("idle and healthy: the body grown from nothing (harvest, one new cell, kept only if it measures better)")
