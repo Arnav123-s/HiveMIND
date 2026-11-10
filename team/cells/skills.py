@@ -832,7 +832,8 @@ def gate_labels():
     p = Path(__file__).resolve().parent.parent.parent / "cells" / "registry.json"
     reg = json.loads(p.read_text()) if p.exists() else {}
     names = [k for k in reg if k != "gate"] or [k for k, v in SKILLS.items() if not v.get("new") and k != "gate"]
-    return sorted({group(k) for k in names})
+    # a spawned cell is reached through its member's call site, never through the gate
+    return sorted({group(k) for k in names if not SKILLS.get(k, {}).get("spawned")})
 
 
 _GATE_CACHE = {}
