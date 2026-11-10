@@ -13,16 +13,19 @@ a small model was measured worse at them. School is how a small model gets the j
               GRADUATE and beats the untouched student.
 5. graduate   cells/school.json records it; with AGENT_TEAM_SMALL=1 the role then runs on its small specialists
 
-Every later visit adds a specialist and removes none. The teacher writes new lessons; the present specialists take
-them first, and the lessons they get wrong together are the gaps: they count three times in the new specialist's
-training. No specialist has to be good at everything; the exam measures what they reach together, and the job
-goes to the group only where the group beats its best member.
+Every later visit can add a specialist and removes none. The teacher writes new lessons; the present specialists
+take them first, and the lessons the hive gets wrong are a gap. The teacher writes more tasks of that kind, and a
+new specialist learns that gap and nothing else: it does not have to know what the older ones know. A task that
+lies in its territory (most like one of its lessons) goes to it; everything else stays with the general ones, who
+answer together. The exam measures each way of holding the job (the best one alone, the general ones together,
+routed to the narrow ones), and a way with more specialists is used only where it measures better.
 
 Without ROLE, the role that most needs it is taken (the always-on agent does this when idle). Nothing is taken on
 trust: the record holds every exam number and the lessons are kept (training/data/school/).
 """
 import json
 import random
+import re
 import subprocess
 import sys
 import time
@@ -31,7 +34,7 @@ from . import config, llm
 
 DATA = config.ROOT / "training" / "data" / "school"
 RECORD = config.ROOT / "cells" / "school.json"
-GRADUATE, MARGIN, MIN_TEST, DONE = 0.85, 0.03, 30, 0.97
+GRADUATE, MARGIN, MIN_TEST, DONE, MIN_GAP = 0.85, 0.03, 30, 0.97, 6
 
 WRITE_TASKS = """You write tasks that Arnav might type to his team of AI specialists: a researcher who reads live web \
 sources, a browser operator, a coder who writes and runs Python, a calculator, and a writer.
@@ -143,22 +146,24 @@ def lessons(role):
     return rows
 
 
-def teach(role, n, log=print):
+def teach(role, n, log=print, tasks=None):
     """Bring the role's lessons up to n: each a task, the teacher's answer, and what that answer decides.
-    Returns (all lessons, the new ones). After the first class every fifth new lesson is an exam lesson."""
+    Returns (all lessons, the new ones). After the first class every fifth new lesson is an exam lesson.
+    With tasks, exactly those are taught (new tasks the teacher wrote for a gap)."""
     r, have = ROLES[role], lessons(role)
     if len(have) >= n:
         return have, []
     DATA.mkdir(parents=True, exist_ok=True)
     later, new = bool(have), []
     done = [x["task"] for x in have]
-    tasks = [t for t in logged_tasks() if t not in done]
-    pool = done + tasks
-    extra = (config.ROOT / "training" / "data" / "life_tasks.txt")
-    tasks += [t.strip() for t in extra.read_text().splitlines() if t.strip() and t.strip() not in pool] if extra.exists() else []
-    need = n - len(have) - len(tasks)
-    if need > 0:
-        tasks += write_tasks(int(need * 1.15) + 4, done + tasks, r["teacher"], log)
+    if tasks is None:
+        tasks = [t for t in logged_tasks() if t not in done]
+        pool = done + tasks
+        extra = (config.ROOT / "training" / "data" / "life_tasks.txt")
+        tasks += [t.strip() for t in extra.read_text().splitlines() if t.strip() and t.strip() not in pool] if extra.exists() else []
+        need = n - len(have) - len(tasks)
+        if need > 0:
+            tasks += write_tasks(int(need * 1.15) + 4, done + tasks, r["teacher"], log)
     with _as(role, r["teacher"]), open(DATA / f"{role}.jsonl", "a") as f:
         for t in tasks:
             if len(have) >= n:
@@ -184,19 +189,19 @@ def split(rows):
     return [x for x in rows if not x["exam"]], [x for x in rows if x["exam"]]
 
 
-def train(role, name, gaps=(), log=print, epochs=2, rank=8, seed=0):
-    """Edit the student's weights on the lessons that are not exam lessons. The lessons the hive's present
-    specialists got wrong (gaps) count three times: the new specialist is made for what the others cannot do."""
+def train(role, name, only=None, log=print, epochs=2, rank=8, seed=0):
+    """Edit the student's weights on the lessons that are not exam lessons. With only (a set of tasks), on those
+    lessons alone: a specialist for one gap learns that gap and nothing else."""
     tr, _ = split(lessons(role))
-    hard = set(gaps)
+    if only is not None:
+        tr = [x for x in tr if x["task"] in only]
     f = DATA / f"{role}_train.jsonl"
-    f.write_text("".join(json.dumps({"messages": x["messages"], "output": x["output"]}, ensure_ascii=False) + "\n"
-                         for x in tr for _ in range(3 if x["task"] in hard else 1)))
+    f.write_text("".join(json.dumps({"messages": x["messages"], "output": x["output"]}, ensure_ascii=False) + "\n" for x in tr))
     llm.unload_all()  # the training process gets the RAM
     out = config.ADAPTERS / name
     cmd = [sys.executable, str(config.ROOT / "training" / "train_lora.py"), role, "--data", str(f), "--out", str(out),
            "--rank", str(rank), "--epochs", str(epochs), "--seed", str(seed)]
-    log(f"[school] {role}: training {name} on {len(tr)} lessons ({len(hard & {x['task'] for x in tr})} of them gaps)", flush=True)
+    log(f"[school] {role}: training {name} on {len(tr)} lessons", flush=True)
     r = subprocess.run(cmd, cwd=config.ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("training failed: " + (r.stderr or r.stdout)[-600:])
@@ -257,43 +262,126 @@ def answers(role, voters, rows, log=print):
     return {v: {x["task"]: memo[v][x["task"]] for x in rows} for v in voters}
 
 
+SIMILAR = """You write tasks that Arnav might type to his team of AI specialists. You are given ONE task.
+Write {n} new tasks of exactly the same kind (the same sort of work, done by the same specialists), each about a
+different subject, site, text or numbers. One task per line, no numbering, nothing else."""
+
+
+def similar_tasks(gaps, have, teacher, per=4, log=print):
+    """For each lesson the present specialists got wrong, the teacher writes more tasks of the same kind."""
+    seen, out = {t.lower() for t in have}, {}
+    with _as("examiner", teacher):
+        for g in gaps:
+            text = llm.chat("examiner", [{"role": "system", "content": SIMILAR.format(n=per)},
+                                         {"role": "user", "content": g}], max_new_tokens=400, temperature=0.8)
+            mine = []
+            for ln in text.splitlines():
+                t = ln.strip(" -*\t0123456789.)")
+                if 25 <= len(t) <= 400 and t.lower() not in seen:
+                    seen.add(t.lower())
+                    mine.append(t)
+            out[g] = mine[:per]
+    return out
+
+
+def _words(t):
+    return set(re.sub(r"\d+", "0", t.lower()).replace("'", " ").split())
+
+
+def _near(a, b):
+    wa, wb = _words(a), _words(b)
+    return len(wa & wb) / max(1, len(wa | wb))
+
+
+def territories(role):
+    """Who knows which lessons: {"right": lessons the general specialists got right, <specialist>: its gap lessons}."""
+    try:
+        return json.loads((DATA / f"{role}_territory.json").read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def route(role, task, terr=None):
+    """Which narrow specialist this task belongs to, or None for the general ones: the owner of the known lesson
+    most like it. A specialist is asked only inside what it learned."""
+    terr = territories(role) if terr is None else terr
+    best, who = 0.0, None
+    for owner, tasks in terr.items():
+        for t in tasks:
+            sim = _near(task, t)
+            if sim > best:
+                best, who = sim, owner
+    return None if who in (None, "right") else who
+
+
 def exam(role, names, log=print):
-    """The exam lessons, never trained on. Every specialist alone, and all of them answering together."""
+    """The exam lessons, never trained on. Every specialist alone; the general ones answering together (what most
+    decide); and routed: a task that lies in a narrow specialist's territory goes to it, the rest to the general ones."""
     _, te = split(lessons(role))
-    voters = ["untouched", *names]
-    got = answers(role, voters, te, log)
+    terr = territories(role)
+    narrow = [n for n in names if n in terr]
+    general = ["untouched", *[n for n in names if n not in terr]]
+    everyone = general + narrow
+    got = answers(role, everyone, te, log)
     n = len(te)
-    alone = {v: round(sum(got[v][x["task"]] == x["key"] for x in te) / n, 3) for v in voters}
-    order = sorted(voters, key=lambda v: -alone[v])
-    groups = {"all together": order}
-    if len(order) > 3:
-        groups["best three together"] = order[:3]
-    together = {g: round(sum(majority({v: got[v][x["task"]] for v in vs}, vs) == x["key"] for x in te) / n, 3)
-                for g, vs in groups.items()}
+    alone = {v: round(sum(got[v][x["task"]] == x["key"] for x in te) / n, 3) for v in everyone}
+    order = sorted(general, key=lambda v: -alone[v])
+
+    def decide(x, scheme):
+        t = x["task"]
+        if scheme == "alone":
+            return got[order[0]][t]
+        if scheme == "routed":
+            who = route(role, t, terr)
+            if who in narrow and got[who][t] is not None:
+                return got[who][t]
+            scheme = "together" if len(order) > 2 else "alone"
+            return decide(x, scheme)
+        return majority({v: got[v][t] for v in order}, order)
+
+    schemes = ["alone"] + (["together"] if len(order) > 2 else []) + (["routed"] if narrow else [])
+    score = {sc: round(sum(decide(x, sc) == x["key"] for x in te) / n, 3) for sc in schemes}
     # how many exam lessons at least one specialist gets right: what a perfect choice between them could reach
-    someone = round(sum(any(got[v][x["task"]] == x["key"] for v in voters) for x in te) / n, 3)
-    best_group = max(together, key=together.get)
-    best = order[0]
-    runs = groups[best_group] if together[best_group] >= alone[best] + MARGIN else [best]
-    res = {"test_lessons": n, "alone": alone, "together": together, "someone_right": someone,
-           "untouched_agrees": alone["untouched"], "taught_agrees": max(together[best_group], alone[best]),
-           "voters": runs,
-           "misses": [{"task": x["task"][:160], "teacher": x["key"], **{v: got[v][x["task"]] for v in runs}}
-                      for x in te if majority({v: got[v][x["task"]] for v in runs}, runs) != x["key"]][:12]}
-    log(f"[school] {role}: on {n} unseen lessons, alone: {alone}; together: {together}; at least one right: {someone:.0%}; "
-        f"the job would go to {runs}", flush=True)
+    someone = round(sum(any(got[v][x["task"]] == x["key"] for v in everyone) for x in te) / n, 3)
+    best = "alone"
+    for sc in schemes[1:]:  # more specialists answering only where that measures better
+        if score[sc] >= score[best] + MARGIN:
+            best = sc
+    in_territory = {w: [x for x in te if route(role, x["task"], terr) == w] for w in narrow}
+    res = {"test_lessons": n, "alone": alone, "schemes": score, "someone_right": someone, "scheme": best,
+           "untouched_agrees": alone["untouched"], "taught_agrees": score[best], "general": order, "narrow": narrow,
+           "narrow_in_their_territory": {w: {"exam_lessons": len(xs),
+                                             "specialist_right": sum(got[w][x["task"]] == x["key"] for x in xs),
+                                             "general_right": sum(decide(x, "together" if len(order) > 2 else "alone") == x["key"] for x in xs)}
+                                         for w, xs in in_territory.items()},
+           "misses": [{"task": x["task"][:160], "teacher": x["key"], "hive": decide(x, best)}
+                      for x in te if decide(x, best) != x["key"]][:12]}
+    log(f"[school] {role}: on {n} unseen lessons, alone: {alone}; schemes: {score}; at least one right: {someone:.0%}; "
+        f"the job would be done: {best}", flush=True)
     return res
 
 
-def voters(role):
-    """The specialists that hold the role together after their exam, best first ([] if none graduated)."""
+def holders(role):
+    """How the role is held after its exams: (scheme, general specialists best first, narrow ones); None if the
+    role has not graduated."""
     v = record().get(role, {})
-    return list(v.get("voters") or []) if v.get("graduated") else []
+    return (v.get("scheme", "alone"), list(v.get("general") or []), list(v.get("narrow") or [])) if v.get("graduated") else None
 
 
 def answer(role, messages, task):
-    """The role's answer from its graduated specialists: each answers, and the hive takes what most decide."""
-    vs = voters(role)
+    """The role's answer from its small specialists: a task in a narrow specialist's territory goes to that one;
+    otherwise the general ones answer and the hive takes what most decide. None if the role has not graduated."""
+    h = holders(role)
+    if not h:
+        return None
+    scheme, general, narrow = h
+    if scheme == "routed":
+        who = route(role, task)
+        if who in narrow:
+            out, key = _ask(role, who, messages, task)
+            if key is not None:
+                return out
+    vs = general if scheme in ("together", "routed") and len(general) > 2 else general[:1]
     outs, keys = {}, {}
     for v in vs:
         outs[v], keys[v] = _ask(role, v, messages, task)
@@ -307,34 +395,55 @@ def attend(role, n=160, train_it=True, log=print):
     old = rec.get(role, {})
     names = list(old.get("specialists") or ([f"{role}_school"] if "taught_agrees" in old else []))
     rows, new = teach(role, n, log)
-    entry = {**old, "teacher": r["teacher"], "student": r["student"], "what": r["what"], "lessons": len(rows),
+    entry = {**old, "teacher": r["teacher"], "student": r["student"], "what": r["what"],
              "when": time.strftime("%Y-%m-%d %H:%M"), "specialists": names}
     entry.setdefault("graduated", False)
     tr, te = split(rows)
     if len(te) < MIN_TEST or len(tr) < MIN_TEST:
         entry["why"] = f"only {len(rows)} lessons; an exam needs {MIN_TEST} unseen ones and more to learn from"
     elif train_it:
-        gaps = []
-        if names and new:
-            # the new lessons are unseen by everyone: the present specialists take them first, and the ones they
-            # get wrong together are the gaps the new specialist is made for
+        if not names:  # the first class: one general specialist, taught everything
+            names.append(train(role, f"{role}_school", None, log))
+        elif new:
+            # the new lessons are unseen by everyone: the present specialists take them first. What they get wrong
+            # is a gap; the teacher writes more tasks of that kind, and a new specialist learns that gap and nothing
+            # else. The older ones keep what they know; nobody is retrained or replaced.
+            terr = territories(role)
             quiz = [x for x in new if not x["exam"]]
-            order = ["untouched", *names]
-            got = answers(role, order, quiz, log)
-            gaps = [x["task"] for x in quiz if majority({v: got[v][x["task"]] for v in order}, order) != x["key"]]
-            entry["last_quiz"] = {"new_lessons": len(quiz), "wrong_together": len(gaps)}
-            log(f"[school] {role}: the present specialists got {len(gaps)} of {len(quiz)} new lessons wrong together", flush=True)
-        if not names or new:
-            name = f"{role}_school" + (str(len(names) + 1) if names else "")
-            train(role, name, gaps, log, seed=len(names))
-            names.append(name)
+            first = [*names, "untouched"] if old.get("taught_agrees", 0) > old.get("untouched_agrees", 0) else ["untouched", *names]
+            h = (old.get("scheme", "alone"), old.get("general") or first, old.get("narrow") or [])
+            got = answers(role, ["untouched", *names], quiz, log)
+
+            def hive(x):
+                who = route(role, x["task"], terr) if h[0] == "routed" else None
+                if who in h[2] and got[who][x["task"]] is not None:
+                    return got[who][x["task"]]
+                vs = h[1] if h[0] != "alone" and len(h[1]) > 2 else h[1][:1]
+                return majority({v: got[v][x["task"]] for v in vs}, vs)
+            gaps = [x["task"] for x in quiz if hive(x) != x["key"]]
+            terr.setdefault("right", [])
+            terr["right"] += [x["task"] for x in quiz if x["task"] not in gaps]
+            entry["last_quiz"] = {"new_lessons": len(quiz), "hive_wrong": len(gaps)}
+            log(f"[school] {role}: the hive got {len(gaps)} of {len(quiz)} new lessons wrong", flush=True)
+            if len(gaps) >= MIN_GAP:
+                more = similar_tasks(gaps[:24], [x["task"] for x in rows], r["teacher"], log=log)
+                rows, taught = teach(role, len(rows) + sum(len(v) for v in more.values()), log,
+                                     tasks=[t for v in more.values() for t in v])
+                name = f"{role}_school{len(names) + 1}"
+                terr[name] = gaps + [x["task"] for x in taught if not x["exam"]]
+                (DATA / f"{role}_territory.json").write_text(json.dumps(terr, indent=1, ensure_ascii=False))
+                names.append(train(role, name, set(terr[name]), log, epochs=3, seed=len(names)))
+            else:
+                (DATA / f"{role}_territory.json").write_text(json.dumps(terr, indent=1, ensure_ascii=False))
+                log(f"[school] {role}: fewer than {MIN_GAP} gaps: no new specialist this time", flush=True)
         entry.update(exam(role, names, log))
         ok = entry["taught_agrees"] >= GRADUATE and entry["taught_agrees"] >= entry["untouched_agrees"] + MARGIN
         entry["graduated"] = ok
-        best = entry["voters"][0]
+        best = entry["general"][0]
         entry["runs_on"] = r["student"] if best == "untouched" else f"{r['student']}+{best}"
         entry["why"] = ("graduated" if ok else
                         f"not yet: it needs {GRADUATE:.0%} and {MARGIN:.0%} over the untouched student")
+    entry["lessons"] = len(lessons(role))
     rec[role] = entry
     RECORD.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
     log(f"[school] {role}: {entry.get('why', 'lessons taught')}", flush=True)
