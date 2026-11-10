@@ -107,6 +107,20 @@ def rehearse(log, limit=3):
     log["rehearsed"] = done
 
 
+def worst_role(last=30, least=3):
+    """The specialist with the most failed steps in the last runs (None under `least` failures): the one the hive
+    should work on next. Rehearsals and bench runs are not counted."""
+    fails = {}
+    for run in _runs()[-last:]:
+        if run.name.startswith("dream-"):
+            continue
+        for st in _steps(run).values():
+            if st.get("verdict") == "FAIL" and st.get("agent") in SUITES:
+                fails[st["agent"]] = fails.get(st["agent"], 0) + 1
+    role = max(fails, key=fails.get) if fails else None
+    return role if role and fails[role] >= least else None
+
+
 def _score(tag, spec, adapters_dir=None):
     env = dict(**__import__("os").environ, AGENT_TEAM_ENGINE="hf")  # edits are trained and scored on PyTorch
     if adapters_dir:
