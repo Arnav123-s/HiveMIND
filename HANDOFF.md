@@ -1,11 +1,12 @@
-# Handoff: HiveMIND (branch `make-it-work`, draft PR #5)
+# Handoff: HiveMIND (`main` has PR #5; work continues on `make-it-work`)
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
 ## Live status (kept current; read this first)
-Updated 2026-11-10 00:25 UTC. Branch `make-it-work`, draft PR #5, everything committed and pushed.
+Updated 2026-11-10 01:45 UTC. PR #5 was merged into `main` at 4d20e10 on Arnav's explicit yes. Nothing is running.
+Work continues on `make-it-work`, restarted from `main`; a new PR needs his yes again before it is merged.
 
-**Built, tested (126 tests) and measured this session; README has the numbers:**
+**Built, tested (128 tests) and measured; README has the numbers:**
 - `python -m team life` (`team/life.py`, `team/cells/spawn.py`, `training/cells_spawn.py`): the hive notices small
   jobs in its own logged calls, has the member decide practice cases, trains a cell (135M, then 360M), gates it on
   the newest real decisions, lets it answer when sure, audits one call in ten, retires under 93%. `serve` runs a turn
@@ -15,22 +16,28 @@ Updated 2026-11-10 00:25 UTC. Branch `make-it-work`, draft PR #5, everything com
 - `python -m team org`: teams, members, cells, who holds each job.
 - `training/chunk_read.py`: the 1.7B reading sources in chunks against the 4B whole, 26 real inputs: 52 against 38
   checked facts, 19 of the 4B's 38 found, 1205 s against 2202 s; relevance not measured.
+- Nothing above 1.7B on the 16 dev tasks: 9 pass, 6 fail, 1 unfinished (normal hive: 15 of 16). Causes, in
+  `training/reports/hive_bench/small_only_notes.md`: the 1.7B coordinator planned code tasks as research (fib,
+  bugfix); the 1.7B as coder wrote no working program (chart, csv); list extraction (arxiv); one order not kept
+  (summary); and it was slow.
 
-**Running / not finished:**
-- The 16 dev tasks with nothing above 1.7B (`AGENT_TEAM_SPAWN=0 AGENT_TEAM_BRAIN=fast AGENT_TEAM_GGUF_CODER=fast
-  python training/hive_bench.py small_only`). The container restarted after 3 tasks (lookup PASS, arxiv FAIL,
-  chart FAIL); the other 13 were restarted as tag `small_only_b`. Reports: `training/reports/hive_bench/`.
+**Arnav's direction for the failures (2026-11-10):** fix them with better architecture and more specialists or
+smaller models, not by going back to the big ones.
 
 **Open, in order:**
-1. Small reader first, 4B only where it comes back empty or fails a relevance check; measure relevance.
-2. Per-job ladder (smallest first, checked, up a size on failure) for reading and writing jobs; track the big
-   models' share per job.
-3. The spawned cell: keep auditing; the near-miss-number case is its weak spot (more practice of that kind).
-4. More logged work: only 1 of 2 decision sites had enough decisions; the item juror has about 60.
-5. Only if Arnav asks after seeing 1-2: several cell edits active at once with a router; joint training against the 4B.
-6. From the old list below: held-out set 4 and the unconfirmed post-freeze fixes.
+1. Planning without the 4B: check every plan step with the route_step cell (0.99 on "which specialist takes a
+   step"); it was not consulted for the whole plan in the small-only run. Re-run fib and bugfix.
+2. The coder's job in smaller pieces (plan the program, write one function, run, repair one error at a time), each
+   piece for a small model; re-run chart and csv.
+3. Small reader first, 4B only where it comes back empty or fails a relevance check; measure relevance; list
+   extraction (arxiv) is its weak spot.
+4. Per-job ladder (smallest first, checked, up a size on failure) and the big models' share per job as a tracked list.
+5. The spawned cell: keep auditing; more practice on near-miss numbers.
+6. More logged work: the item juror's site has about 60 decisions and needs about 200.
+7. Several cell edits active at once with a router; joint training against the 4B.
+8. From the old list below: held-out set 4 and the unconfirmed post-freeze fixes.
 
-**This machine (a cloud VM; it was restarted once at about 00:10 UTC, files survived, running jobs did not):**
+**This machine (a cloud VM; it was restarted twice, at about 00:10 and 01:15 UTC, files survived, running jobs did not):**
 - Python: `/home/user/agent-team/.venv/bin/python` (`sentencepiece` is now in requirements).
 - The session uses the `agent-team` environment's network (huggingface.co allowed).
 - `runs/` and `memory/` (the logged calls, decisions, audits) are not in git and do not travel to a new session;
@@ -62,7 +69,7 @@ Key files:
   - held-out sets are run once, on frozen code, and reported as measured.
 - CPU only, 10 GB budget, no spending. Don't delete caches or his files.
 - The final report uses the headings **Blocked on me / Changed / Found**, and marks anything unconfirmed.
-- Merging PR #5 needs **his explicit yes for this PR**. The earlier approval was for PR #4.
+- Merging any PR needs **his explicit yes for that PR**. PR #5 had it and is merged; the next one needs it again.
 - No model identifiers in commits or PRs. Commits end with the Co-Authored-By and Claude-Session lines.
 - His direction: a hive of the **smallest specialists, each doing the smallest job** it can do well, working as one. Not one big model.
 
