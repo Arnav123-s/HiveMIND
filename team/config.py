@@ -22,6 +22,7 @@ SPECIALISTS = {
     "verifier": BASE_MODEL,     # judges every result against its evidence
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
+    "coder_fix": CODER_MODEL,   # the coder's fix turns, where a taught specialist holds them (team/school.py)
 }
 for _role in ("calculator", "editor", "code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
               "lesson_writer"):
@@ -39,6 +40,13 @@ GGUF_MODELS = {
     "coder15": ("Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF", "qwen2.5-coder-1.5b-instruct-q8_0.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
     "coder7b": ("Qwen/Qwen2.5-Coder-7B-Instruct-GGUF", "qwen2.5-coder-7b-instruct-q4_k_m.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
 }
+try:  # models the hive recruited itself (team/recruit.py): other small families, each tried on the roles' exams
+    import json as _json
+    for _n, _v in _json.loads((ROOT / "cells" / "recruits.json").read_text()).items():
+        if not _n.startswith("_"):
+            GGUF_MODELS[_n] = (_v["repo"], _v["file"], _v["base"])
+except (OSError, ValueError, KeyError):
+    pass
 # AGENT_TEAM_SMALL=1: the hive with no model above 1.7B. Every job of the 4B goes to Qwen3-1.7B, programs to the
 # 1.5B coding specialist, and the researcher reads its sources in small parts (team/specialists/reader.py).
 # Measured against the normal hive in training/reports/hive_bench/small_only_notes.md.

@@ -23,3 +23,6 @@ cells/registry.json.tmp
 adapters_gguf/*2.gguf
 memory-eval/
 projects/
+cells/scratch/corpus.u16
+cells/scratch/*.pt
+cells/scratch/record.json

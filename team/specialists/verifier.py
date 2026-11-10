@@ -121,14 +121,21 @@ def _sentences(summary):
 
 def admits_nothing(summary):
     """The first sentence of a research result, when it says the thing asked for was not found; else None."""
-    first = (_sentences(summary) or [""])[0]
+    first = (_sentences(_own_words(summary)) or [""])[0]
     return first[:200] if _NOTHING.search(first) else None
+
+
+def _own_words(summary):
+    """The researcher's own summary, without the note the checks add about items they dropped: that note quotes a
+    juror ("the source line does not contain ..."), and read as the researcher's words it failed a step whose three
+    kept papers were right."""
+    return (summary or "").split("\nDropped by the team's checks")[0]
 
 
 def admits_a_gap(summary):
     """A later sentence of a research result that says one of the things asked for was not found ("The licence is
     not specified in the provided facts."), else None. The result has something; one part of the order is missing."""
-    return next((x[:200] for x in _sentences(summary)[1:] if _NOTHING.search(x)), None)
+    return next((x[:200] for x in _sentences(_own_words(summary))[1:] if _NOTHING.search(x)), None)
 
 
 SHORT = "the task asks for"
@@ -410,6 +417,8 @@ def verify(step, result, board, workdir):
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
         if result.get("examples_failed"):  # checked in code against the examples in his own task; no juror outvotes it
             return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
+        if result.get("unfixed"):  # found by the code checks on the program's last attempt; no juror outvotes it
+            return "FAIL", f"the program still has a problem the checks found: {result['unfixed']}"[:600]
         from .coder import sanity, unsaved_output
         bad = sanity(result.get("summary", ""))
         if bad:
@@ -443,6 +452,8 @@ def verify(step, result, board, workdir):
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
         if result.get("examples_failed"):  # checked in code against the examples in his own task; no juror outvotes it
             return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
+        if result.get("unfixed"):  # found by the code checks on the program's last attempt; no juror outvotes it
+            return "FAIL", f"the program still has a problem the checks found: {result['unfixed']}"[:600]
         out = result.get("summary", "")
         named = re.search(r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|"
                           r"may|june|july|august|september|october|november|december)\b", out, re.I)

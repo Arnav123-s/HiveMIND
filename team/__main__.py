@@ -18,6 +18,11 @@
     python -m team evolve ROLE [--variants 3] [--generations 1]   evolve a specialist's prompt (gated)
     python -m team life [--min 200] [--no-train]   one turn of the hive's life: notice new small jobs in its own calls,
                                           grow a cell for each, check the working ones, retire the bad (team/life.py)
+    python -m team harvest                the hive gathers its own reading matter (its logs, open text; team/harvest.py)
+    python -m team body                   one turn of the body grown from nothing: make what is missing, else grow one
+                                          cell where the body is worst and keep it only if it measures better
+    python -m team recruit                find a small open model the hive does not have, try it on the roles' exams,
+                                          enrol it where it measures up (team/recruit.py)
     python -m team org                    the hive as an organisation: teams, members, cells, who holds each job
 """
 import argparse
@@ -25,7 +30,7 @@ import json
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
-            "uninstall", "project", "projects", "life", "org", "school"}
+            "uninstall", "project", "projects", "life", "org", "school", "recruit", "harvest", "body"}
 
 
 def main():
@@ -37,6 +42,16 @@ def main():
         if cmd == "life":
             from . import life
             return life.main(rest)
+        if cmd == "body":
+            sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))
+            from training import body
+            return body.main(["turn", *rest])
+        if cmd == "harvest":
+            from . import harvest
+            return harvest.main(rest)
+        if cmd == "recruit":
+            from . import recruit
+            return recruit.main(rest)
         if cmd == "school":
             from . import school
             return school.main(rest)

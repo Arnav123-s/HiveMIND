@@ -678,8 +678,116 @@ In the small-only hive the taught planner holds the job. In one clean run of all
 above 1.7B (`small7`) every plan it made was the right one; the run scored 11 of 16, and the five failures were all
 after planning (`training/reports/hive_bench/small_only_notes.md`).
 
-**The coder (Qwen2.5-Coder-7B teaching Qwen2.5-Coder-1.5B)** is the second role: its lessons are programs that ran,
-and the exam asks whether the student's program prints what the teacher's prints. No class has been held yet.
+**Measured: the coder (Qwen2.5-Coder-7B teaching Qwen2.5-Coder-1.5B), one visit, 160 lessons.** Its lessons are
+programs that ran, and the exam asks whether the student's program prints what the teacher's prints.
+
+| | untouched 1.5B | taught 1.5B |
+|---|---|---|
+| prints the same as the 7B's program on 32 unseen lessons, as first scored | 59% (19) | 81% (26) |
+| the same exam, scored again after two corrections to the key (below) | 66% (21) | 84% (27) |
+
+What this shows, and what it does not:
+- The taught student is 22 points ahead of the untouched one after one class of 25 minutes' training. It has not
+  graduated (85%); in the small-only hive it holds the coder's job, as the rule above says.
+- Of its 6 misses, one is not a miss (166.3256237947956 against 166.32562379479558: the same sum; the key now compares
+  long decimals to 10 significant digits, for later exams; this exam stays as scored), one is a lesson where the
+  teacher itself was wrong (a future value of 1.6 million from 10000 and 200 a month), and four are real (vowels
+  counted wrong, a grouping, an off-by-one, a doubling time).
+- The key was corrected twice after the first scoring, and the unusable answers were asked again: long decimals are
+  compared to 10 significant digits, and an import a program never uses no longer keeps it out (the untouched
+  student had 11 programs refused for importing a web library it then did not use). Both students gained two
+  lessons. 84% is one lesson short of graduating.
+- The lessons are pure computations. They do not teach what the 1.5B fails at inside the hive: changing a working
+  program on feedback without breaking it, and reading values from a fetched page. That needs a second kind of lesson.
+
+## Recruits: the hive brings in other small models itself (`python -m team recruit`, `team/recruit.py`)
+
+Almost every member of the small hive is the same Qwen3-1.7B with another weight edit, and copies of one model make
+the same mistakes: the planner's second specialist got the same 9 exam lessons right as the first. A weight edit also
+sharpens what a model can nearly do and adds little where it cannot (the taught planner: 24 of 24 short plans, 3 of
+22 long ones). So the hive looks for other families, and it does that without anyone choosing models for it:
+
+1. **Find.** It searches Hugging Face for small chat models in GGUF it has not looked at. It takes a model only if it
+   has at most 2.0B parameters, is ungated (nothing logs in or uses a token), is under Apache-2.0, MIT or BSD (the
+   model and its base), comes from its own makers or a known converter, and is not a variant made to drop the
+   model's safety behaviour. Every model looked at is recorded with the reason it was passed over.
+2. **Download.** One file, and never when less than 4 GB would stay free. Nothing is deleted to make room.
+3. **Tryout.** The recruit takes each school role's exam untouched (the lessons nobody trained on).
+4. **Enrol.** At least as good as the role's untouched student: it becomes one more voice of the role, and the role's
+   exam decides by measurement whether answering together beats the best one alone.
+5. **Teach.** Better than the untouched student by the school's margin: it is the better student. An edit of its
+   weights is trained on the lessons the teacher already gave (no new teacher time), and that specialist takes the
+   exam too. The job goes to whoever measures best.
+
+**Measured: the first two recruits, and whether other families miss other things** (`training/diverse.py`,
+`training/reports/diverse_coders.json`; the coder's 32 unseen lessons, every model untouched except the taught one).
+
+| model | right alone, of 32 |
+|---|---|
+| Qwen2.5-Coder-1.5B, taught by the school | 27 |
+| Qwen2.5-Coder-1.5B, untouched | 21 |
+| Qwen3-1.7B (the hive's general small model) | 17 |
+| Yi-Coder-1.5B (recruit) | 12 |
+| SmolLM2-1.7B (recruit) | 0 |
+
+- Neither recruit was enrolled: both are under the untouched student on programs (38% and 0% against 66%) and on
+  plans (15% and 4% against 30%). SmolLM2-1.7B wrote no program that ran and printed the right thing.
+- The same model twice does share mistakes: the taught and the untouched 1.5B are both wrong on 4 lessons, where two
+  independent models with their scores would both be wrong on 1.7. With another family the overlap is nearer chance
+  (4 against 2.3 with Qwen3-1.7B, 4 against 3.1 with Yi-Coder).
+- But the other families are weaker, so they add little: at least one model is right on 28 lessons for the same
+  model twice, 29 for three families, 30 for all five. Taking what most models print gives 27, the same as the best
+  one alone. More voices did not make the answer better here.
+- What other families do give is a check that needs no teacher: whenever two models of different families printed
+  the same thing, it was right. 16 of 16 (taught 1.5B and Qwen3-1.7B), 11 of 11, 13 of 13, 11 of 11, 7 of 7. On 32
+  lessons that is a small sample; it says where the hive can trust a program without asking the jury, and where
+  (they disagree) the effort should go. Not built into the run loop yet.
+
+The always-on agent recruits one model whenever the device is idle, in turn with dreaming, growing cells, evolving
+instructions and school. `python -m team org` lists every recruit and its tryouts; `cells/recruits.json` is the record.
+
+## From nothing: a body of cells the hive grows itself (`python -m team body`, `training/scratch.py`, `training/body.py`)
+
+Everything above starts from somebody else's pretrained model. This part does not. It is the direction Arnav gave
+on 2026-11-10: thousands of cells, each the smallest model that can be made, none doing the same thing, their
+specialities overlapping, no cell important alone, the body important together, and more cells grown with more data,
+without anyone watching over it. All of it runs on the CPU.
+
+1. **Harvest** (`python -m team harvest`, `team/harvest.py`). The hive gathers its own reading matter: the text of
+   its own logged work, open text datasets (ungated, licence checked each time), and a slow trickle from Wikipedia's
+   API. Lines are kept once. The harvest is not in git; each machine gathers its own.
+2. **A vocabulary and a stem cell** (`training/scratch.py`). 4,096 word pieces learned from the harvest. A model of
+   2.6 million weights starts from random numbers and reads the harvest (it learns to predict the next piece).
+   A second way of reading, after LeCun's joint-embedding work: from one passage, predict what the passage next to
+   it means (`scratch.py pairs`).
+3. **Cells for the hive's jobs.** The stem cell with every weight trained on one cell job (`scratch.py fit`), or one
+   brain for all the jobs: a shared trunk, a small head per job, trained on all jobs at once, optionally with heads
+   that see what every other head says about the same input (`scratch.py together [--consult]`). Same rows, same
+   test of unseen words as the cells above.
+4. **A body** (`training/body.py`). After how a body does it:
+   - one origin: every cell starts as a copy of the stem cell, so all share a vocabulary and an inner language;
+   - territories that overlap: every window of text is placed by what the stem cell makes of it, and belongs to its
+     two nearest territories; one cell grows on each territory;
+   - each cell knows when it applies: the cells of the nearest territories wake and the rest sleep ("by territory"),
+     or every cell reads the start of a passage and one that predicted it well gets more say ("by fit");
+   - growth where the body fails: a new cell is grown on the text the whole body predicts worst;
+   - a cell that does not help is removed at birth.
+5. **Nobody watching.** `python -m team body` is one turn: whatever is missing is made (harvest, vocabulary, stem
+   cell, first cells); otherwise one cell is grown and **kept only if the body then predicts better on passages it
+   never trained on** (a "gate" set; a separate "report" set is only ever reported). The always-on agent runs a
+   harvest and a turn whenever the device is idle. That one rule is what lets it go on alone: nothing is kept that
+   did not measure better.
+
+**Measured so far.** The harvest: 48 MB (1 MB own work, 25 MB Simple English Wikipedia, 22 MB simple stories).
+The stem cell reads about 14,700 pieces a second on four cores. One cell job trained from random weights without
+reading first (licence check): 99% on words it saw, 53% on unseen words, which is chance. Everything else in this
+section is built and tested as code and **not measured yet**: cells against today's cells, one brain against cells
+trained apart, the body against one model with the same total training (`training/reports/scratch_cells.json`,
+`training/reports/body.json`).
+
+What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
+of simple text. Planning and programming still come from the pretrained small models and their school. The open
+question this section exists to answer by measurement is how far many such cells, grown this way, get together.
 
 ## The demo
 
@@ -690,6 +798,12 @@ not (the coder's program failed on the 4-bit models the researcher picked), and 
 Earlier attempts and what each one exposed are kept in `runs/demo-attempt-*` (not in git).
 
 ## Install (your laptop)
+
+One command on Linux or macOS, from the folder of the checkout (it runs the steps below and installs the always-on
+agent; written on 2026-11-10 and not yet run from start to end on a fresh device):
+```bash
+sh setup.sh
+```
 
 Needs: Python 3.11+, ~8 GB free RAM for the team (16 GB machine is fine), ~10 GB disk for models.
 

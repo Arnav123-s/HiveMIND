@@ -282,9 +282,201 @@ def test_a_school_program_is_judged_by_what_it_prints_when_run():
 def test_every_school_role_says_how_it_is_taught_and_the_next_one_is_the_one_longest_away(monkeypatch):
     from team import school
     for r in school.ROLES.values():
-        assert {"teacher", "student", "messages", "key", "tokens", "chat", "known", "write", "topics", "example"} <= set(r)
+        assert {"teacher", "student", "messages", "key", "tokens", "chat", "what"} <= set(r)
+        assert r.get("of") in school.ROLES or {"known", "write", "topics", "example"} <= set(r)
+    monkeypatch.setattr(school, "_has_work", lambda r: not school.ROLES[r].get("of"))
     monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"}})
     assert school.next_role() == "coder"                                               # never taught goes first
     monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"},
                                                    "coder": {"taught_agrees": 0.2, "when": "2026-11-10 12:00"}})
     assert school.next_role() == "coordinator"
+
+
+def test_program_key_floats_that_differ_in_the_last_digit_are_the_same():
+    from team import school
+    assert school._same_floats("166.3256237947956") == school._same_floats("166.32562379479558")
+    assert school._same_floats("7.701635339554948") != school._same_floats("8.043231726932046")
+    assert school._same_floats("version 3.14 of [2, 4, 6] 0.5") == "version 3.14 of [2, 4, 6] 0.5"
+
+
+def test_a_second_job_goes_to_school_only_while_its_first_job_has_unused_lessons(monkeypatch, tmp_path):
+    from team import school
+    monkeypatch.setattr(school, "DATA", tmp_path)
+    monkeypatch.setattr(school, "lessons", lambda role: [{"task": "a"}, {"task": "b"}] if role == "coder" else [])
+    assert school._has_work("coder") and school._has_work("coder_fix")
+    (tmp_path / "coder_fix_seen.json").write_text('["a", "b"]')
+    assert not school._has_work("coder_fix")
+
+
+def test_plain_feedback_is_what_the_run_loop_says(monkeypatch):
+    from team.specialists import coder
+    assert coder.plain_feedback("t", "x", {"returncode": 0, "stdout": "", "stderr": ""}) == coder.SILENT
+    died = coder.plain_feedback("t", "x", {"returncode": 1, "stdout": "", "stderr": "KeyError: 'a'"})
+    assert died.startswith("KeyError: 'a'") and "Hint (data)" in died
+    monkeypatch.setattr(coder, "review", lambda task, code, out: ["It counts y as a vowel."])
+    monkeypatch.setattr(coder, "order_problem", lambda task, code: None)
+    said = coder.plain_feedback("Count the vowels", "print(5)", {"returncode": 0, "stdout": "5\n", "stderr": ""})
+    assert said.startswith(coder.WRONG + "It counts y as a vowel.") and said.endswith("Output was:\n5\n")
+    monkeypatch.setattr(coder, "review", lambda task, code, out: [])
+    assert coder.plain_feedback("Count the vowels", "print(3)", {"returncode": 0, "stdout": "3\n", "stderr": ""}) is None
+
+
+def _candidate(**over):
+    c = {"id": "bartowski/Yi-Coder-1.5B-Chat-GGUF", "author": "bartowski", "gated": False, "license": "apache-2.0",
+         "params": 1.5e9, "template": True, "base": "01-ai/Yi-Coder-1.5B-Chat", "base_gated": False,
+         "base_license": "apache-2.0", "file": "x-Q8_0.gguf", "size": 1.6e9}
+    return {**c, **over}
+
+
+def test_the_hive_recruits_only_small_open_ungated_chat_models_from_known_hands():
+    from team import recruit
+    assert recruit.suitable(_candidate()) == (True, "")
+    for over, word in [({"gated": True}, "login"), ({"base_gated": True}, "login"), ({"license": "other"}, "licence"),
+                       ({"base_license": None}, "licence"), ({"params": 2.5e9}, "parameters"), ({"params": None}, "parameters"),
+                       ({"author": "someone"}, "neither its maker"), ({"file": None}, "no model file"),
+                       ({"template": False}, "not a chat model"), ({"id": "x/Qwen3-VL-2B-GGUF"}, "not a chat model"),
+                       ({"id": "x/Yi-Coder-abliterated-GGUF"}, "safety"), ({"base": None}, "no base model")]:
+        ok, why = recruit.suitable(_candidate(**over))
+        assert not ok and word in why, (over, why)
+    assert recruit.suitable(_candidate(author="01-ai")) == (True, "")                  # converted by its own makers
+
+
+def test_the_recruit_file_is_the_most_exact_one_that_fits():
+    from team import recruit
+    files = [("m-Q4_K_M.gguf", 1.0e9), ("m-Q6_K.gguf", 2.0e9), ("m-Q8_0.gguf", 3.0e9), ("m-f16.gguf", 5e9)]
+    assert recruit.pick_file(files) == ("m-Q6_K.gguf", 2.0e9)
+    assert recruit.pick_file([("m-f16.gguf", 5e9)]) is None
+
+
+def test_a_voice_of_a_role_can_be_another_model_or_an_edit_of_one(monkeypatch):
+    from team import config, school
+    monkeypatch.setitem(config.GGUF_MODELS, "yicoder15bchat", ("r", "f", "t"))
+    assert school._spec("coder", "untouched") == ("coder15", False)
+    assert school._spec("coder", "coder_school") == ("coder15+coder_school", True)
+    assert school._spec("coder", "yicoder15bchat") == ("yicoder15bchat", False)
+    assert school._spec("coder", "yicoder15bchat+coder_school_yicoder15bchat") == ("yicoder15bchat+coder_school_yicoder15bchat", True)
+
+
+def test_an_import_a_program_never_uses_does_not_keep_it_out_of_school():
+    from team import school
+    code = "import requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\nimport math\n\nprint(math.sqrt(16))\n"
+    out = school._without_idle_imports(code)
+    assert "requests" not in out and "bs4" not in out and "pandas" not in out and "import math" in out
+    assert school._program_key(f"```python\n{code}```", "t") == "4.0"
+    used = "import requests\nprint(requests.get('https://example.com').status_code)\n"
+    assert school._without_idle_imports(used) == used and school._program_key(f"```python\n{used}```", "t") is None
+    assert school._program_key("```python\nimport os\nprint(os.getcwd())\n```", "t") is None
+
+
+def test_harvest_keeps_a_line_once_and_only_lines_that_are_text(tmp_path, monkeypatch):
+    from team import harvest
+    monkeypatch.setattr(harvest, "HOME", tmp_path)
+    shelf = harvest._Shelf("t")
+    shelf.add("A real sentence about the price of books in a shop.\n{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}\nshort\n"
+              "A real sentence about the price of books in a shop.")
+    shelf.f.flush()
+    assert shelf.path.read_text().splitlines() == ["A real sentence about the price of books in a shop."]
+    again = harvest._Shelf("t")
+    again.add("A real sentence about the price of books in a shop.")
+    assert again.added == 0
+
+
+def test_a_cell_from_scratch_reads_left_to_right_so_padding_changes_nothing():
+    import torch
+    from training import scratch
+    torch.manual_seed(0)
+    m = scratch.Tiny(labels=3).eval()
+    ids = torch.tensor([[1, 5, 9, 7]])
+    padded = torch.tensor([[1, 5, 9, 7, 0, 0, 0]])
+    with torch.no_grad():
+        assert torch.allclose(m.label(ids, torch.tensor([3])), m.label(padded, torch.tensor([3])), atol=1e-5)
+    assert sum(p.numel() for p in scratch.Tiny().parameters()) < 3_000_000
+
+
+def test_one_brain_holds_every_job_and_a_consulting_head_sees_the_others():
+    import torch
+    from training import scratch
+    torch.manual_seed(0)
+    jobs = {"a": 2, "b": 3}
+    ids, last = torch.tensor([[1, 5, 9, 7]]), torch.tensor([3])
+    plain = scratch.Brain(jobs).eval()
+    final, own = plain("a", ids, last)
+    assert final.shape == (1, 2) and torch.equal(final, own)
+    talk = scratch.Brain(jobs, talk=True).eval()
+    final, own = talk("b", ids, last)
+    assert final.shape == (1, 3) and talk.second["b"].in_features == scratch.DIM + 5
+
+
+def test_the_from_scratch_trainer_knows_its_commands():
+    from training import scratch
+    for word in ("tokenizer", "pretrain", "pairs", "fit", "together", "all"):
+        assert f"scratch.py {word}" in scratch.__doc__
+    assert callable(scratch.pairs) and callable(scratch.together)
+
+
+def test_the_body_keeps_a_new_cell_only_if_it_gains_and_no_territory_it_knew_gets_worse():
+    import torch
+    from training import body as B
+    where = torch.tensor([0] * 6 + [1] * 6)
+    before = torch.full((12,), 2.50)
+    better = before - 0.05
+    assert B.judge(before, better, where, [0, 1])[0]
+    assert not B.judge(before, before - 0.0005, where, [0, 1])[0]                       # too small a gain
+    lopsided = before.clone()
+    lopsided[:6] -= 0.20                                                                # territory 0 gains a lot
+    lopsided[6:] += 0.05                                                                # territory 1 forgets
+    kept, why = B.judge(before, lopsided, where, [0, 1])
+    assert not kept and "territory 1 got worse" in why
+
+
+def test_the_immune_check_retires_the_cell_the_body_does_not_need(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    torch.save({"centre": torch.zeros(3, 4), "owns": {0: [1], 1: [2], 2: [3]}}, tmp_path / "territories.pt")
+    for k in range(3):
+        (tmp_path / f"cell_{k:02d}.pt").write_bytes(b"x")
+    pieces = B.W // 2
+    # cell 0 fits and predicts the first four passages, cell 1 the other four; cell 2 never fits what it reads
+    first = torch.tensor([[1.0, 9.0, 9.0]] * 4 + [[9.0, 1.0, 9.0]] * 4)
+    good, bad = torch.full((4, pieces), -1.0), torch.full((4, pieces), -6.0)
+    second = torch.stack([torch.cat([good, bad]), torch.cat([bad, good]), torch.full((8, pieces), -6.0)], 1)
+    out = B.immune(first, second, ["cell_00", "cell_01", "cell_02"], log=lambda *a, **k: None)
+    assert out["cell"] == 2 and not (tmp_path / "cell_02.pt").exists() and (tmp_path / "cell_00.pt").exists()
+    t = torch.load(tmp_path / "territories.pt")
+    assert t["centre"].shape[0] == 3 and t["retired"] == [2] and 2 not in t["owns"]     # its place in the map stays
+    assert B.immune(first[:, :2], second[:, :2], ["cell_00", "cell_01"], log=lambda *a, **k: None) is None  # never the last two
+
+
+def test_trainers_with_kept_cells_are_chosen_more_and_bred():
+    import random
+    from training import body as B
+    ts = [dict(t, births=0, kept=0) for t in B.TRAINERS]
+    ts[0].update(births=12, kept=0)
+    ts[1].update(births=12, kept=12)
+    picks = [B.pick_trainer(ts[:2], random.Random(i))["id"] for i in range(200)]
+    assert picks.count("t2") > 190
+    ts = [dict(t, births=1, kept=1) for t in B.TRAINERS]                                # four births in all: time to breed
+    ts[3].update(births=3, kept=0)
+    ts[0].update(births=0, kept=0)
+    ts[1].update(births=1, kept=1)
+    ts[2].update(births=0, kept=0)
+    grown = B.breed(ts, random.Random(0))
+    assert "t4" not in [t["id"] for t in grown] and grown[-1]["id"] == "t5" and grown[-1]["births"] == 0
+    assert sum(grown[-1][k] != next(t for t in grown if t["id"] == grown[-1]["parent"])[k] for k in ("start", "lr", "span", "on")) == 1
+
+
+def test_the_org_chart_shows_the_body_from_its_own_record(tmp_path, monkeypatch):
+    import json
+    from team import config, org
+    monkeypatch.setattr(config, "ROOT", tmp_path)
+    assert org.body_lines() == []
+    (tmp_path / "training" / "reports").mkdir(parents=True)
+    (tmp_path / "cells" / "scratch" / "body").mkdir(parents=True)
+    (tmp_path / "cells" / "scratch" / "body" / "cell_00.pt").write_bytes(b"x")
+    (tmp_path / "training" / "reports" / "body.json").write_text(json.dumps({
+        "births": [{"cell": 6, "when": "2026-11-10 20:00", "trainer": "t1", "on": "worst", "kept": True, "why": "the body gained +0.0100"}],
+        "retired": [], "trainers": [{"id": "t1", "start": "stem", "on": "worst", "lr": 5e-4, "span": 1.0, "births": 1, "kept": 1}],
+        "measured": [{"when": "2026-11-10 20:01", "passages": 300, "loss": {"stem cell alone": 2.7, "body, by fit: x": 2.6}}]}))
+    text = "\n".join(org.body_lines())
+    assert "1 cells alive" in text and "1 kept" in text and "the body at its best 2.6" in text and "trainer t1" in text

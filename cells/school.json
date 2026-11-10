@@ -193,5 +193,64 @@
    "hive_wrong": 11
   },
   "ahead": true
+ },
+ "coder": {
+  "teacher": "coder7b",
+  "student": "coder15",
+  "what": "programs: run, they print the same as the teacher's program",
+  "when": "2026-11-10 17:30",
+  "specialists": [
+   "coder_school"
+  ],
+  "graduated": false,
+  "test_lessons": 32,
+  "alone": {
+   "untouched": 0.656,
+   "coder_school": 0.844
+  },
+  "schemes": {
+   "alone": 0.844
+  },
+  "someone_right": 0.875,
+  "scheme": "alone",
+  "untouched_agrees": 0.656,
+  "taught_agrees": 0.844,
+  "general": [
+   "coder_school",
+   "untouched"
+  ],
+  "narrow": [],
+  "narrow_in_their_territory": {},
+  "misses": [
+   {
+    "task": "Determine the future value of an investment of $10000 with monthly contributions of $200 for 10 years at an annual interest rate of 6%. Print only the number",
+    "teacher": "1638793.468",
+    "hive": "18554.235"
+   },
+   {
+    "task": "Determine the time required for an investment of $5000 to double at an annual interest rate of 9% compounded continuously. Print only the number",
+    "teacher": "7.70163534",
+    "hive": "8.043231727"
+   },
+   {
+    "task": "Print the number of vowels in the string \"hello world\"",
+    "teacher": "3",
+    "hive": "5"
+   },
+   {
+    "task": "Group the list of tuples [(1, 2), (3, 4), (5, 6), (7, 8)] by the first element and print each group as a list of the second elements. Print only the number",
+    "teacher": "[2] [4] [6] [8]",
+    "hive": "[2, 4, 6, 8] [2, 4, 6, 8] [2, 4, 6, 8] [2, 4, 6, 8]"
+   },
+   {
+    "task": "Write a program that prints the first 5 even numbers in ascending order",
+    "teacher": "[2, 4, 6, 8, 10]",
+    "hive": "[2, 4, 6, 8]"
+   }
+  ],
+  "ahead": true,
+  "runs_on": "coder15+coder_school",
+  "why": "not yet: it needs 85% and 3% over the untouched student",
+  "lessons": 160
  }
 }

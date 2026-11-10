@@ -35,6 +35,7 @@ ap.add_argument("--lr", type=float, default=2e-4)
 ap.add_argument("--accum", type=int, default=4)
 ap.add_argument("--max-len", type=int, default=2048)
 ap.add_argument("--out", help="output dir (default adapters/<specialist>)")
+ap.add_argument("--model", help="the base model to edit (default: the specialist's own, team/config.py)")
 ap.add_argument("--threads", type=int, default=config.THREADS)
 ap.add_argument("--seed", type=int, default=0)
 args = ap.parse_args()
@@ -48,7 +49,7 @@ except OSError:
 random.seed(args.seed)
 torch.manual_seed(args.seed)
 
-model_id = config.SPECIALISTS[args.specialist]
+model_id = args.model or config.SPECIALISTS[args.specialist]
 out_dir = Path(args.out or config.ADAPTERS / args.specialist)
 files = args.data or sorted(str(p) for p in (ROOT / "training" / "data").glob(f"{args.specialist}*.jsonl"))
 files += sorted(str(p) for p in (ROOT / "training" / "data" / "self").glob(f"{args.specialist}*.jsonl")) if not args.data else []
