@@ -59,3 +59,10 @@ as before. The fail is arxiv: the item jury rejected one of three papers as off 
 remove it, and the answer listed two papers where three were ordered. The hive had no spare paper to put in its
 place. This task has failed the same way in earlier runs; one run cannot tell whether today's changes made it
 more likely.
+
+After the rule "fewer items than ordered: ask the researcher once for others" (same day):
+- Normal hive, arxiv alone (`normal_arxiv`): pass, 482 s. The rule fired (one paper dropped as off topic, two left,
+  retry) and the answer listed three mixture-of-experts papers. One run.
+- Small only (`small4`): arxiv fail (0 papers; on the retry the 1.7B juror dropped on-topic papers, saying the
+  source line "does not contain the three newest"; it judged one item against the whole order). csv fail (0 of the
+  3 cheapest prices); this run started before the coder's same-program rule.
