@@ -115,23 +115,33 @@ def _record(**new):
 
 
 def corpus(tk):
-    """The harvest as one long row of pieces (kept on disk; made again when the harvest has grown)."""
+    """The harvest as one long row of pieces, kept on disk. It only ever grows at its end: when the harvest has new
+    text (a longer file, a new source), only the new part is turned into pieces and added. What was at a place stays
+    at that place, so the windows the cells' territories and the held-out passages are made of never move."""
     import numpy as np
     from team import harvest
+    f, rec = HOME / "corpus.u16", _record()
+    done = rec.get("corpus_files")
     files = harvest.files()
-    size = sum(p.stat().st_size for p in files)
-    f = HOME / "corpus.u16"
-    if not f.exists() or _record().get("corpus_bytes") != size:
-        with open(f, "wb") as out:
-            for p in files:
-                with open(p, encoding="utf-8", errors="replace") as fh:
-                    while True:
-                        lines = fh.readlines(4_000_000)
-                        if not lines:
-                            break
-                        for e in tk.encode_batch(lines):
-                            np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
-        _record(corpus_bytes=size, corpus_pieces=f.stat().st_size // 2)
+    if done is None:  # a corpus made before this record was kept: everything there was read, in this order
+        done = {p.name: p.stat().st_size for p in files} if f.exists() and rec.get("corpus_bytes") else {}
+    grew = False
+    with open(f, "ab") as out:
+        for p in sorted(files, key=lambda p: (p.name not in done, p.name)):
+            at, size = done.get(p.name, 0), p.stat().st_size
+            if size <= at:
+                continue
+            with open(p, "rb") as fh:
+                fh.seek(at)
+                while True:
+                    lines = [ln.decode("utf-8", errors="replace") for ln in fh.readlines(4_000_000)]
+                    if not lines:
+                        break
+                    for e in tk.encode_batch(lines):
+                        np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
+            done[p.name], grew = size, True
+    if grew or rec.get("corpus_files") is None:
+        _record(corpus_files=done, corpus_bytes=sum(done.values()), corpus_pieces=f.stat().st_size // 2)
     return np.memmap(f, dtype=np.uint16, mode="r")
 
 
