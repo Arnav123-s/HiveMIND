@@ -1,0 +1,12 @@
+{
+ "yicoder15bchat": {
+  "repo": "bartowski/Yi-Coder-1.5B-Chat-GGUF",
+  "file": "Yi-Coder-1.5B-Chat-Q8_0.gguf",
+  "base": "01-ai/Yi-Coder-1.5B-Chat",
+  "params": 1476495360,
+  "license": "apache-2.0",
+  "size_gb": 1.57,
+  "found": "2026-11-10",
+  "tryouts": {}
+ }
+}
