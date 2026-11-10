@@ -1,0 +1,134 @@
+[
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "0 arXiv papers listed in the answer",
+  "seconds": 389,
+  "note": "",
+  "calls": 30,
+  "model_seconds": 380.5,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    2,
+    32.9
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.5
+   ],
+   "researcher (fast)": [
+    12,
+    262.1
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    4,
+    0.6
+   ],
+   "verifier (fast+verifier)": [
+    9,
+    61.5
+   ],
+   "juror_brain (fast)": [
+    1,
+    12.5
+   ],
+   "juror_fast (fast)": [
+    1,
+    5.5
+   ]
+  },
+  "cell_calls": 6,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ },
+ {
+  "id": "chart",
+  "ok": true,
+  "why": "chart: yes, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 442,
+  "note": "",
+  "calls": 22,
+  "model_seconds": 430.8,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    1,
+    37.7
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    7.6
+   ],
+   "researcher (fast)": [
+    7,
+    133.6
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    3,
+    0.4
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    17.0
+   ],
+   "juror_brain (fast)": [
+    2,
+    19.8
+   ],
+   "juror_fast (fast)": [
+    2,
+    7.2
+   ],
+   "coder (coder15)": [
+    1,
+    34.9
+   ],
+   "code_reviewer (coder15)": [
+    1,
+    9.1
+   ],
+   "writer (fast+writer)": [
+    1,
+    129.9
+   ],
+   "critic (fast)": [
+    1,
+    33.7
+   ]
+  },
+  "cell_calls": 7,
+  "plan": [
+   "researcher",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ },
+ {
+  "id": "csv",
+  "ok": false,
+  "why": "CSV has 2/3 of the cheapest prices ['10.69', '11.84', '12.29']",
+  "seconds": 355,
+  "note": "",
+  "calls": 10,
+  "model_seconds": 337.9,
+  "by_member": {
+   "coder (coder15)": [
+    9,
+    333.1
+   ],
+   "juror_fast (fast)": [
+    1,
+    4.7
+   ]
+  },
+  "cell_calls": 5,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "scrape to a file"
+ }
+]

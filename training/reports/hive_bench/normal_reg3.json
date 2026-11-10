@@ -1,0 +1,121 @@
+[
+ {
+  "id": "lookup",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 345,
+  "note": "",
+  "calls": 19,
+  "model_seconds": 337.5,
+  "by_member": {
+   "coordinator (brain4b)": [
+    1,
+    47.4
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    5.6
+   ],
+   "researcher (brain4b)": [
+    2,
+    128.0
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    13.4
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    1,
+    0.0
+   ],
+   "juror_brain (brain4b)": [
+    3,
+    21.0
+   ],
+   "juror_fast (fast)": [
+    1,
+    7.5
+   ],
+   "writer (fast+writer)": [
+    4,
+    17.7
+   ],
+   "critic (brain4b)": [
+    3,
+    86.8
+   ],
+   "editor (brain4b)": [
+    1,
+    9.9
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "facts from a source"
+ },
+ {
+  "id": "chart",
+  "ok": true,
+  "why": "chart: yes, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 1009,
+  "note": "",
+  "calls": 24,
+  "model_seconds": 984.7,
+  "by_member": {
+   "coordinator (brain4b)": [
+    2,
+    103.0
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    10.3
+   ],
+   "browser (fast+browser)": [
+    4,
+    85.0
+   ],
+   "condenser (fast)": [
+    3,
+    248.9
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    20.0
+   ],
+   "juror_brain (brain4b)": [
+    2,
+    22.9
+   ],
+   "juror_fast (fast)": [
+    2,
+    19.3
+   ],
+   "coder (coder7b)": [
+    3,
+    300.0
+   ],
+   "code_reviewer (coder7b)": [
+    1,
+    13.9
+   ],
+   "writer (fast+writer)": [
+    2,
+    63.5
+   ],
+   "critic (brain4b)": [
+    2,
+    97.9
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "browser",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ }
+]
