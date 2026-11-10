@@ -1,0 +1,455 @@
+{
+ "lookup": {
+  "heldout": false,
+  "task": "Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me a two-line s",
+  "hits": [
+   "term 'Instruct' in 18 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 77 training goal(s) of verifier.jsonl"
+  ]
+ },
+ "arxiv": {
+  "heldout": false,
+  "task": "List the three newest arXiv papers about mixture of experts, with their titles and dates.",
+  "hits": []
+ },
+ "chart": {
+  "heldout": false,
+  "task": "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or HuggingFaceTB/SmolLM2-360M-Instruct? Make a bar chart of th",
+  "hits": [
+   "term 'HuggingFaceTB/SmolLM2-360M-Instruct' in 3 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 18 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 77 training goal(s) of verifier.jsonl",
+   "term 'Qwen' in 15 training goal(s) of browser.jsonl",
+   "term 'Qwen' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Qwen' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Qwen' in 35 training goal(s) of verifier.jsonl",
+   "term 'Qwen' in skills.py",
+   "term 'Qwen' in prompts.py",
+   "term 'Qwen/Qwen3-1.7B' in 3 training goal(s) of browser.jsonl",
+   "term 'Qwen/Qwen3-1.7B' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Qwen/Qwen3-1.7B' in prompts.py",
+   "2 5-word phrase(s) in training goals of coordinator.jsonl: 'make a bar chart of'"
+  ]
+ },
+ "quotes": {
+  "heldout": false,
+  "task": "On quotes.toscrape.com, open the page for the tag 'inspirational' and list the first three quotes.",
+  "hits": [
+   "term 'inspirational' in 2 training goal(s) of browser.jsonl",
+   "term 'inspirational' in 1 training goal(s) of coordinator.jsonl",
+   "term 'inspirational' in 1 training goal(s) of researcher_extract.jsonl",
+   "1 5-word phrase(s) in training goals of browser_skills.jsonl: 'list the first three quotes'",
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'on quotes toscrape com open'"
+  ]
+ },
+ "csv": {
+  "heldout": false,
+  "task": "Find the three cheapest Mystery books on books.toscrape.com and save them to a CSV.",
+  "hits": [
+   "term 'Mystery' in 2 training goal(s) of browser.jsonl",
+   "term 'Mystery' in 1 training goal(s) of coordinator.jsonl",
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'on books toscrape com and'",
+   "6 5-word phrase(s) in training goals of coordinator.jsonl: 'and save them to a'"
+  ]
+ },
+ "percent": {
+  "heldout": false,
+  "task": "What is 17.5% of 2,340? Give the number to two decimals.",
+  "hits": []
+ },
+ "days": {
+  "heldout": false,
+  "task": "How many days are there from 15 January 2026 to 1 March 2026?",
+  "hits": [
+   "term '2026' in skills.py"
+  ]
+ },
+ "units": {
+  "heldout": false,
+  "task": "Convert 72 degrees Fahrenheit to Celsius, to one decimal place.",
+  "hits": []
+ },
+ "translate": {
+  "heldout": false,
+  "task": "Translate into French: 'The meeting has been moved to Friday afternoon.'",
+  "hits": []
+ },
+ "summary": {
+  "heldout": false,
+  "task": "Summarise this in one sentence: The Ridgeway bridge, built in 1932, was closed in March for repairs after inspectors fou",
+  "hits": [
+   "term '4.2' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Until' in 6 training goal(s) of translator.jsonl"
+  ]
+ },
+ "grammar": {
+  "heldout": false,
+  "task": "Correct the grammar of this sentence and give me only the corrected sentence: 'She don't like the apples that was on the",
+  "hits": [
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
+ },
+ "email": {
+  "heldout": false,
+  "task": "Write a two-sentence email to Priya declining Friday's 3pm meeting and suggesting Monday instead.",
+  "hits": []
+ },
+ "fib": {
+  "heldout": false,
+  "task": "Write a Python function that returns the n-th Fibonacci number (fib(1) = 1, fib(2) = 1) and tell me fib(30).",
+  "hits": []
+ },
+ "bugfix": {
+  "heldout": false,
+  "task": "This Python code should print the sum of the even numbers from 1 to 10 but prints the wrong answer. Fix it and tell me t",
+  "hits": []
+ },
+ "explain": {
+  "heldout": false,
+  "task": "In three sentences, explain what a mixture-of-experts model is.",
+  "hits": []
+ },
+ "sales": {
+  "heldout": false,
+  "task": "Monthly sales: Jan 120, Feb 95, Mar 143, Apr 110. Which month had the highest sales, and what was the average per month?",
+  "hits": [
+   "term '120,' in skills.py"
+  ]
+ },
+ "ho_lookup": {
+  "heldout": true,
+  "task": "What licence does allenai/OLMo-2-0425-1B-Instruct use on Hugging Face, and how many parameters does it have?",
+  "hits": [
+   "term 'Instruct' in 18 training goal(s) of browser.jsonl",
+   "term 'Instruct' in 77 training goal(s) of verifier.jsonl",
+   "1 5-word phrase(s) in training goals of researcher_plan.jsonl: 'on hugging face and how'"
+  ]
+ },
+ "ho_pypi": {
+  "heldout": true,
+  "task": "What is the latest version of the requests package on PyPI?",
+  "hits": [
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'what is the latest version'",
+   "2 5-word phrase(s) in training goals of researcher_extract.jsonl: 'is the latest version of'",
+   "2 5-word phrase(s) in training goals of researcher_plan.jsonl: 'is the latest version of'"
+  ]
+ },
+ "ho_chart": {
+  "heldout": true,
+  "task": "Plot the Hugging Face download counts of distilbert/distilbert-base-uncased and google-bert/bert-base-uncased as a bar c",
+  "hits": []
+ },
+ "ho_book": {
+  "heldout": true,
+  "task": "On books.toscrape.com, go to the Philosophy category, open the first book there and tell me its UPC.",
+  "hits": []
+ },
+ "ho_quotes_csv": {
+  "heldout": true,
+  "task": "Save the text and author of every quote on the first page of quotes.toscrape.com to a CSV file.",
+  "hits": [
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'page of quotes toscrape com'",
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'on the first page of'"
+  ]
+ },
+ "ho_discount": {
+  "heldout": true,
+  "task": "A jacket costs 80 euros and is reduced by 35%. What is the new price?",
+  "hits": []
+ },
+ "ho_weekday": {
+  "heldout": true,
+  "task": "What day of the week was 4 July 1976?",
+  "hits": []
+ },
+ "ho_miles": {
+  "heldout": true,
+  "task": "How many kilometres is 26.2 miles? One decimal place.",
+  "hits": []
+ },
+ "ho_spanish": {
+  "heldout": true,
+  "task": "Translate into Spanish: 'The library closes at eight tonight.'",
+  "hits": []
+ },
+ "ho_office": {
+  "heldout": true,
+  "task": "Summarise in one sentence: Starting 1 June, the design team moves from the third floor to the new building on Harbour Ro",
+  "hits": []
+ },
+ "ho_polite": {
+  "heldout": true,
+  "task": "Rewrite this to sound polite and give me only the new sentence: 'Send me the file now.'",
+  "hits": [
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
+ },
+ "ho_notice": {
+  "heldout": true,
+  "task": "Write a three-sentence message to the team saying the office is closed on Monday for maintenance.",
+  "hits": []
+ },
+ "ho_palindrome": {
+  "heldout": true,
+  "task": "Write a Python function that checks whether a string is a palindrome and tell me its result for 'racecar' and for 'pytho",
+  "hits": [
+   "term 'python' in 2 training goal(s) of browser.jsonl",
+   "term 'python' in 6 training goal(s) of coordinator.jsonl",
+   "term 'python' in 11 training goal(s) of researcher_extract.jsonl",
+   "term 'python' in 2 training goal(s) of researcher_plan.jsonl",
+   "term 'python' in 6 training goal(s) of verifier.jsonl",
+   "term 'python' in skills.py",
+   "term 'python' in prompts.py"
+  ]
+ },
+ "ho_bugmax": {
+  "heldout": true,
+  "task": "This Python code should print the largest number in the list but prints the smallest. Fix it and tell me the right outpu",
+  "hits": []
+ },
+ "ho_explain": {
+  "heldout": true,
+  "task": "In two sentences, explain what a hash table is.",
+  "hits": []
+ },
+ "ho_scores": {
+  "heldout": true,
+  "task": "Test scores: Ana 78, Ben 92, Caro 85, Dev 61. Who scored highest, and what is the average score?",
+  "hits": [
+   "term 'Dev' in skills.py",
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'and what is the average'"
+  ]
+ },
+ "h2_licence": {
+  "heldout": false,
+  "task": "Which licence does google/flan-t5-small use on Hugging Face?",
+  "hits": []
+ },
+ "h2_pypi": {
+  "heldout": false,
+  "task": "What is the newest release of numpy on PyPI?",
+  "hits": []
+ },
+ "h2_chart": {
+  "heldout": false,
+  "task": "Compare the Hugging Face download counts of openai-community/gpt2 and distilbert/distilgpt2 in a bar chart, and tell me ",
+  "hits": [
+   "term 'Compare' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Compare' in 11 training goal(s) of order_reader.jsonl",
+   "term 'Compare' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Compare' in skills.py"
+  ]
+ },
+ "h2_born": {
+  "heldout": false,
+  "task": "Go to quotes.toscrape.com, find the author page of Thomas A. Edison and tell me his date of birth.",
+  "hits": [
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'quotes toscrape com find the'",
+   "2 5-word phrase(s) in training goals of order_reader.jsonl: 'to quotes toscrape com find'"
+  ]
+ },
+ "h2_food_csv": {
+  "heldout": false,
+  "task": "Put every book's name and price from the first page of the Food and Drink category on books.toscrape.com into a CSV file",
+  "hits": [
+   "term 'Drink' in 5 training goal(s) of translator.jsonl",
+   "term 'Put' in 360 training goal(s) of translator.jsonl",
+   "term 'Put' in skills.py",
+   "term 'Put' in prompts.py",
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'category on books toscrape com'",
+   "1 5-word phrase(s) in training goals of browser_skills.jsonl: 'category on books toscrape com'",
+   "1 5-word phrase(s) in training goals of coordinator.jsonl: 'category on books toscrape com'"
+  ]
+ },
+ "h2_tip": {
+  "heldout": false,
+  "task": "A bill of 460 dollars gets a 35% discount. How much is the discount?",
+  "hits": []
+ },
+ "h2_days": {
+  "heldout": false,
+  "task": "How many days are there from 10 February 2025 to 1 April 2025?",
+  "hits": [
+   "term 'April' in skills.py"
+  ]
+ },
+ "h2_kg": {
+  "heldout": false,
+  "task": "How many pounds is 70 kilograms? Round to one decimal place.",
+  "hits": [
+   "term 'Round' in 9 training goal(s) of translator.jsonl",
+   "term 'Round' in prompts.py"
+  ]
+ },
+ "h2_german": {
+  "heldout": false,
+  "task": "Translate into German: 'The train leaves at nine in the morning.'",
+  "hits": [
+   "term 'German' in 584 training goal(s) of translator.jsonl",
+   "term 'German' in skills.py"
+  ]
+ },
+ "h2_garden": {
+  "heldout": false,
+  "task": "Summarise this in one sentence: The community garden on Mill Lane reopens on 5 April after a winter of repairs. Voluntee",
+  "hits": [
+   "term 'April' in skills.py"
+  ]
+ },
+ "h2_spelling": {
+  "heldout": false,
+  "task": "Correct the spelling in this sentence and give me only the corrected sentence: 'I recieved the pakage yesterday.'",
+  "hits": [
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
+ },
+ "h2_landlord": {
+  "heldout": false,
+  "task": "Write a two-sentence message to my landlord saying the kitchen tap is leaking.",
+  "hits": []
+ },
+ "h2_factorial": {
+  "heldout": false,
+  "task": "Write a Python function that returns the factorial of a number and tell me factorial(10).",
+  "hits": []
+ },
+ "h2_evensum": {
+  "heldout": false,
+  "task": "This Python code should print the sum of the even numbers in the list but adds the odd ones. Fix it and tell me the righ",
+  "hits": []
+ },
+ "h2_bsearch": {
+  "heldout": false,
+  "task": "In two sentences, explain what binary search is.",
+  "hits": []
+ },
+ "h2_rain": {
+  "heldout": false,
+  "task": "Monthly rainfall in mm: Jan 80, Feb 65, Mar 72, Apr 40. Which month was the driest, and what was the average rainfall?",
+  "hits": [
+   "term '80,' in skills.py"
+  ]
+ },
+ "h3_licence": {
+  "heldout": false,
+  "task": "Under which licence is FacebookAI/roberta-base published on Hugging Face?",
+  "hits": [
+   "term 'Under' in 1 training goal(s) of coordinator.jsonl",
+   "term 'Under' in 6 training goal(s) of order_reader.jsonl",
+   "term 'Under' in 9 training goal(s) of researcher_extract.jsonl",
+   "term 'Under' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Under' in 7 training goal(s) of translator.jsonl",
+   "term 'Under' in 36 training goal(s) of verifier.jsonl",
+   "term 'Under' in skills.py",
+   "term 'Under' in prompts.py"
+  ]
+ },
+ "h3_pypi": {
+  "heldout": false,
+  "task": "Tell me the current version of tqdm on PyPI.",
+  "hits": [
+   "term 'Tell' in 14 training goal(s) of browser.jsonl",
+   "term 'Tell' in 18 training goal(s) of browser_skills.jsonl",
+   "term 'Tell' in 5 training goal(s) of coordinator.jsonl",
+   "term 'Tell' in 1 training goal(s) of order_reader.jsonl",
+   "term 'Tell' in skills.py"
+  ]
+ },
+ "h3_chart": {
+  "heldout": false,
+  "task": "Draw a bar chart of how often google-t5/t5-small and FacebookAI/xlm-roberta-base have been downloaded on Hugging Face, a",
+  "hits": [
+   "term 'Draw' in skills.py"
+  ]
+ },
+ "h3_born": {
+  "heldout": false,
+  "task": "Open quotes.toscrape.com, go to Khaled Hosseini's author page and give me his date of birth.",
+  "hits": [
+   "term 'Open' in 16 training goal(s) of browser.jsonl",
+   "term 'Open' in 5 training goal(s) of coordinator.jsonl",
+   "term 'Open' in 10 training goal(s) of order_reader.jsonl",
+   "term 'Open' in 1 training goal(s) of researcher_plan.jsonl",
+   "term 'Open' in 2 training goal(s) of translator.jsonl",
+   "term 'Open' in skills.py"
+  ]
+ },
+ "h3_business_csv": {
+  "heldout": false,
+  "task": "Make a CSV with the title and price of each book listed on the first page of the Business category on books.toscrape.com",
+  "hits": [
+   "term 'Business' in 2 training goal(s) of translator.jsonl",
+   "1 5-word phrase(s) in training goals of browser.jsonl: 'category on books toscrape com'",
+   "2 5-word phrase(s) in training goals of browser_skills.jsonl: 'category on books toscrape com'",
+   "2 5-word phrase(s) in training goals of coordinator.jsonl: 'category on books toscrape com'"
+  ]
+ },
+ "h3_rise": {
+  "heldout": false,
+  "task": "A laptop costs 740 dollars and the price rises by 15%. What is the new price?",
+  "hits": []
+ },
+ "h3_days": {
+  "heldout": false,
+  "task": "How many days are there from 20 March 2026 to 2 June 2026?",
+  "hits": [
+   "term '2026' in skills.py"
+  ]
+ },
+ "h3_temp": {
+  "heldout": false,
+  "task": "What is 98.6 degrees Fahrenheit in Celsius? One decimal place.",
+  "hits": []
+ },
+ "h3_italian": {
+  "heldout": false,
+  "task": "Translate into Italian: 'The bakery opens at seven on Sundays.'",
+  "hits": [
+   "term 'Italian' in skills.py"
+  ]
+ },
+ "h3_park": {
+  "heldout": false,
+  "task": "Give me a one-sentence summary of this: The riverside park will close its east gate from 3 May while workers replace the",
+  "hits": []
+ },
+ "h3_formal": {
+  "heldout": false,
+  "task": "Make this sentence formal and give me only the new sentence: 'Hey, can u send the report asap?'",
+  "hits": [
+   "term 'Hey' in 6 training goal(s) of translator.jsonl",
+   "1 5-word phrase(s) in training goals of translator.jsonl: 'and give me only the'"
+  ]
+ },
+ "h3_colleague": {
+  "heldout": false,
+  "task": "Write a two-sentence note to my colleague asking them to cover my shift on Friday.",
+  "hits": []
+ },
+ "h3_vowels": {
+  "heldout": false,
+  "task": "Write a Python function that counts the vowels in a word and tell me how many vowels 'imagination' has.",
+  "hits": []
+ },
+ "h3_average": {
+  "heldout": false,
+  "task": "This Python code should print the average of the numbers but prints their total. Fix it and tell me the output:\nnums = [",
+  "hits": []
+ },
+ "h3_queue": {
+  "heldout": false,
+  "task": "In two sentences, explain what a queue is in programming.",
+  "hits": []
+ },
+ "h3_water": {
+  "heldout": false,
+  "task": "Daily water use in litres: Mon 140, Tue 95, Wed 160, Thu 125. Which day used the least water, and what was the daily ave",
+  "hits": [
+   "term '160,' in skills.py",
+   "term 'Mon' in 1 training goal(s) of translator.jsonl",
+   "term 'Mon' in skills.py",
+   "term 'Tue' in skills.py",
+   "term 'Wed' in skills.py"
+  ]
+ }
+}

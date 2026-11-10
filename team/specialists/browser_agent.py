@@ -1,5 +1,6 @@
 """Browser operator: observe the live page, pick one action, act, repeat."""
 import json
+import re
 
 from .. import config, llm, prompts, stop, vault
 from ..guard import Blocked
@@ -13,6 +14,48 @@ def turn_messages(goal, obs, history):
     return [{"role": "system", "content": prompts.BROWSER}, {"role": "user", "content": user}]
 
 
+REFUSAL = re.compile(r"log ?in|sign ?(in|up)|regist|account|buy|purchas|pay|checkout|basket|cart|order|send|post|email|"
+                     r"delete|remove|approv|permission|not allowed|rules?\b|password|credential", re.I)
+IMAGINED = re.compile(r"approv|permission|not allowed|cannot click|can't click|forbidden", re.I)
+
+
+def bad_page(b):
+    """What to tell the model when the page it is on is an HTTP error (a 404 page still has text and links)."""
+    st = getattr(b, "http_status", None)
+    if st and st >= 400:
+        return (f"HTTP {st}: this page does not exist or cannot be read. Do not guess addresses: open the site's home "
+                f"page and use its search box or links.")
+    return ""
+
+
+NEXT_RX = re.compile(r"^\s*(next|more|older|load more)\b|^\s*(→|»|›)\s*$", re.I)
+
+
+def next_link(b):
+    """The page's next-page link (an element whose text is Next / More / →), or None."""
+    for e in (getattr(b, "elements", None) or {}).values():
+        if isinstance(e, dict) and e.get("tag") in ("a", "button") and NEXT_RX.search(e.get("text") or ""):
+            return e
+    return None
+
+
+def recover(b, history, n):
+    """After an error page, open the site's home page, as a person would, so the search box and links are in view
+    (told to do it, the 1.7B browser replied "fail" on the 404 page instead)."""
+    from urllib.parse import urlparse
+    u = urlparse(b.page.url)
+    home = f"{u.scheme}://{u.netloc}/"
+    if not bad_page(b) or not u.netloc or b.page.url == home:
+        return
+    bad = b.page.url
+    try:
+        b.goto(home)
+        history.append(f"{n}. {bad} does not exist (HTTP error): opened the home page {home} instead. Use its search box "
+                       f"or links to reach the goal.")
+    except RuntimeError as e:
+        history.append(f"{n}. {e}")
+
+
 def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     goal = task if not context else f"{task}\n(Team notes: {context[:600]})"
     b = Browser()
@@ -21,6 +64,9 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
     try:
         try:
             b.goto(start_url or "about:blank")
+            if bad_page(b):
+                history.append(f"0. open {start_url} -> {bad_page(b)}")
+                recover(b, history, 0)
         except RuntimeError as e:
             history.append(f"0. {e}")
             b.page.goto("about:blank")
@@ -28,15 +74,43 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
             stop.check()
             obs = b.observe(task)
             page_text = b.text(20000)
-            action, raw = llm.chat_json("browser", turn_messages(goal, obs, history), max_new_tokens=160)
+            action, raw = llm.chat_json("browser", turn_messages(goal, obs, history), max_new_tokens=600)
             if not isinstance(action, dict) or "action" not in action:
                 history.append(f"{n + 1}. invalid reply: {raw[:80]}")
                 continue
             board.log("browser", "action", json.dumps(action)[:200])
             kind = action["action"]
+            if kind == "done" and bad_page(b):  # an error page is never the answer
+                history.append(f"{n + 1}. done refused: {bad_page(b)}")
+                continue
             if kind == "done":
+                from .researcher import condense  # extractive: the lines of the page the task needs, exactly
                 result = {"summary": str(action.get("answer", "")), "evidence": str(action.get("evidence", "")),
-                          "url": b.page.url, "page_text": page_text, "actions": history}
+                          "url": b.page.url, "page_text": page_text, "actions": history,
+                          "page": condense(task, b.page.title() or b.page.url, page_text, board, limit=2500)}
+                break
+            if kind == "fail" and IMAGINED.search(str(action.get("reason", ""))) and not any("BLOCKED" in h for h in history) \
+                    and not any("fail refused" in h for h in history):
+                # the 1.7B said "Arnav cannot click on links or buttons without his approval" with nothing blocked
+                history.append(f"{n + 1}. fail refused: nothing was blocked. Clicking links, tabs and buttons and typing in "
+                               f"search boxes are allowed; only log in, sign up, buy, pay, send and delete need approval.")
+                continue
+            nxt = next_link(b)
+            if kind == "fail" and nxt and not any("fail refused (next)" in h for h in history):
+                # what it looks for may be on a later page: Khaled Hosseini is not on the first page of
+                # quotes.toscrape.com, and the browser gave up there without following a single link
+                history.append(f"{n + 1}. fail refused (next): this page has a next-page link [{nxt['id']}] "
+                               f"\"{nxt['text'][:20]}\"; what you look for may be on a later page: click it")
+                continue
+            if kind == "fail" and not REFUSAL.search(str(action.get("reason", "")) + " " + task) and not bad_page(b) \
+                    and b.page.url.startswith("http"):
+                # the browser navigates; reading a page is the condenser's job (extractive) and the jury judges it.
+                # It gave up on the right page ("List the first three quotes tagged 'friends'": "cannot be reached")
+                from .researcher import condense
+                lines = condense(task, b.page.title() or b.page.url, page_text, board, limit=2500)
+                board.log("browser", "page", f"gave up ({str(action.get('reason', ''))[:80]}): the page's lines go to the jury")
+                result = {"summary": f"From {b.page.url}:\n{lines[:1500]}", "evidence": lines.split("\n")[0][:300],
+                          "url": b.page.url, "page_text": page_text, "actions": history, "page": lines}
                 break
             if kind == "fail":
                 result = {"summary": "", "failed": str(action.get("reason", "")), "url": b.page.url,
@@ -82,7 +156,8 @@ def run(task, context, board, step_id, guard, start_url=None, shots_dir=None):
                         break
                 else:
                     stuck = 0
-                    history.append(f"{n + 1}. {kind}{label} -> now at {url}")
+                    history.append(f"{n + 1}. {kind}{label} -> now at {url}" + (f" - {bad_page(b)}" if bad_page(b) else ""))
+                    recover(b, history, n + 1)
                 last_sig = sig
                 if shots_dir:
                     b.screenshot(f"{shots_dir}/{step_id.replace('[', '_').replace(']', '')}_{n + 1:02d}.png")

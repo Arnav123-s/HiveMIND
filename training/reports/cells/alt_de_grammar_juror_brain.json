@@ -1,0 +1,209 @@
+{
+ "skill": "de_grammar",
+ "incumbent": "juror_brain = brain4b",
+ "test": 0.7333,
+ "ms_per_call": 1881.3,
+ "n": 150,
+ "errors": [
+  [
+   "SENTENCE: Bei dem deutschen Gesetz geht es um die Zuweisung bei der Geburt.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Sie h\u00e4tten nie geglaubt, er sei so gestorben, wie es dem Sheriff geschlussfolgert habe.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Es war das 165. Stiftungsfest zu dem der MGV \"Friedrich Wilhelm Dinker\" in diesem Jahr eingeladen hatte und 52 G\u00e4ste, aktive S\u00e4nger und ihre Ehefrauen, waren gerne gekommen.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Schon gar nicht wie in einer Studenten-WG mit einem gemeinsames Bad und einer K\u00fcche.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: M\u00e4dchen, die fr\u00fch erbl\u00fchen, brauchen die Versicherung, das der Prozess ein normaler Teil des Lebens ist, selbst wenn er fr\u00fcher als gedacht eintritt.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Die Unternehmensf\u00fchrung versicherte am Donnerstag gegen\u00fcber Analysten und Medien au\u00dferdem, das Programm liege im Terminplan.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: \u201eKeiner wird es jemals erfahren\u201c, schrieb Mutuma Mathiu, Journalist bei der Nation, der die kenianischer Medien als einen entscheidenden Kontrollfaktor im \u00f6ffentlichen Leben bezeichnet.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Beim polizeilichen Verh\u00f6r gab er an, er betreibe sowohl unter seiner Privatadresse als auch am Arbeitsplatz ein B\u00fcro und Mandanten w\u00fcrden ihn zu Hause wegen juristischer Angelegenheiten anrufen.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Nass wurde deshalb auch der FC-Vorsitzende Albrecht Schlenker, der von der Erf\u00fcllung eines Traums sprach.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Sowohl Airbus als auch Boeing behaupten 20 Prozent mehr Effizienz pro Sitz bei ihren neuesten zweimotorigen Langstreckendesigns als der Marktf\u00fchrer in diesem Segment, die 365-sitzige Boeing 77-300ER.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Den ehemaligen Kindergarten in die Gartenstra\u00dfe hat die Kommune an eine Privatperson verkauft.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Viereinhalb Meter ist das Baumstamm lang und 25 bis 30 Kilogramm schwer.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Chen hatte mehrere Artikel f\u00fcr dem Neuen Express geschrieben, in denen er \u00fcber angebliche finanzielle Unregelm\u00e4\u00dfigkeiten bei einem Hersteller von Baumaschinen namens Zoomlion berichtete.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Und: 'Ohne gute Kenntnisse der Landessprache vereinsame man auch im Dolce Vita,' gibt die Fachbuchautorin Aussiedlungswilligen zu bedenken.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Doch da er depressiv war und wusste, dass stimmte etwas nicht, verlangte er seine medizinischen Akten.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Die Stadtwerke Pfullendorf bilden das letztem Glied in dieser Kette.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Sollte eine Mutter besorgt sein, wenn ihrer Tochter schon in die Alter von sieben oder acht Jahren Br\u00fcste und Schamhaare wachsen?",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Seit 2006 seien acht derartige Tunnel entdeckt worden, hie\u00df es auf die Pressekonferenz in San Diego weiter.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Neue Flugzeuge sind weitaus abh\u00e4ngiger von elektrischen Systemen als fr\u00fchere Generationen von Luftfahrzeugen, aber sie sind auch so konstruiert und von die FAA genehmigt, dass ihnen elektronische Interferenzen nichts ausmachen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Die Idee dazu kam ihm, nachdem er eine Forschungsarbeit \u00fcber Quallen gelesen hatte und chinesische Wissenschaftler \u00fcberzeugen konnte, das leuchtende Protein k\u00fcnstlich herzustellen.",
+   "ok",
+   "error"
+  ],
+  [
+   "SENTENCE: Hemingway erz\u00e4hlte die Geschichte eines K\u00e4mpfers, eines mutiges Mannes, der nicht aufgibt und letztendlich durch sein Wissen und auch seine Willensst\u00e4rke den Kampf gegen den Fisch gewinnt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: US-Staatsanwalt Michael Moore sagte am Donnerstag, es werde eine formellen Ermittlung zum Tod Johnsons geben, da eine Reihe wichtiger Fragen noch ungekl\u00e4rt seien.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Zu ihrem Repertoire geh\u00f6ren aber auch gef\u00fchlvolle Walzer und ein satten Big-Band-Sound.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Viele an der Wall Street betrachten die neue Gep\u00e4ckgeb\u00fchren als Zeichen daf\u00fcr, dass die Fluggesellschaften genug Geld einnehmen, um nach Jahren der Verluste die Kosten von Flugreisen zu decken.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Daf\u00fcr feiert dem A-Jugendliche Joost Wind\u00dfu\u00df, der mit Doppelspielrecht beim A-Jugend-Bundesligisten HC Bremen aktiv ist, sein Saisondeb\u00fct.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Es gibt dann nur noch einen gemeinsamer Pfarrgemeinderat f\u00fcr alle sechs Pfarreien.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Diese Fahrer werden bald die Meilengeb\u00fchren statt der Mineral\u00f6lsteuer an dem Bundesstaat zahlen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Nur als Torh\u00fcter Roman Weidenfeller wie immer als erster BVB-Spieler die Platz betrat, brandete kurzzeitiger Jubel auf.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Und eine, die schon so in des Jahre gekommen ist, dass sie bereits einem Fossil gleicht: Das erste Mal habe ich die \u201eUnabh\u00e4ngigkeit bedeutet Passkontrollen\u201c-Ente vor mindestens 40 Jahren geh\u00f6rt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Vielmehr war es ihr Ziel, in einem aufstrebender Markt f\u00fcr Kfz-Versicherungen Fu\u00df zu fassen, bei denen Fahrer auf Grundlage der gefahrenen Meilen zahlen sollen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Martin f\u00fcgte hinzu, dass liefere \u201eDouble Down\u201c keine definitive Antwort auf die Frage, ob die politischen Sondierungen Obamas Schreibtisch erreicht h\u00e4tten.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Nach der Film gibt es Kaffee, Tee und Kuchen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: In der Damenwertung war Christiane Cohsmann die Zeitschnellste in die Hauptrennen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Thomas Bittner, Fraktions- und Stadtverbandsvorsitzender der Liberalen, unterst\u00fctzt seinen Fraktionskollegen: \"Was mich \u00e4rgert, ist die Tatsache, dass hier klammheimlich den Leerungszeiten ge\u00e4ndert oder auch gestrichen werden\".",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Dick erkl\u00e4rt Amerika - das Reich des atemberaubenden technischen Fortschritts, gepaart mit Paranoia, Sicherheitswahn und des Glauben, auserw\u00e4hlt zu sein.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Ebenfalls besch\u00e4digt wurde der hinter das BMW fahrende VW Passat eines 19-J\u00e4hrigen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Auf die Empf\u00e4nger-Systemen wird ebenfalls ein Virus-Check vorgenommen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Mit dem Ausbau der Niedersachsenbr\u00fccke setzt Rhenus Midgard weiterhin auf der Kohleimport f\u00fcr Kraftwerke und ist auf diesem Sektor einer der Gro\u00dfen in Europa.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Jedoch kann ein Kardinal, der ein Alter von 80 Jahren erreicht hat, nicht mehr an den Papstwahl teilnehmen \u2013 das f\u00e4llt einer Gruppe von 120 \u201ewahlberechtigten Kardin\u00e4len\u201c zu.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Doch es liegen keine schl\u00fcssigen Beweise daf\u00fcr vor, dass Nahrungsmitteln Hormone in Milch oder anderen, Chemikalien in der Umwelt oder sexuelle Botschaften in den Medien urs\u00e4chlich w\u00e4ren.",
+   "error",
+   "ok"
+  ]
+ ]
+}

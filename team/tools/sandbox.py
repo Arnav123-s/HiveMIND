@@ -4,6 +4,7 @@ Not an isolation boundary: code runs as the current user. The guard checks
 the code for deleting, sending and spending before it runs.
 """
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -13,13 +14,61 @@ from pathlib import Path
 from .. import config
 
 
+# what a program needs to run, read files and reach the web (proxies, certificates); never tokens, keys or passwords
+# from the environment: model-written code got GH_TOKEN and cloud keys with everything else
+PASS = re.compile(r"^(PATH|HOME|USER|LOGNAME|SHELL|LANG|LANGUAGE|LC_\w+|TZ|TMPDIR|TEMP|TMP|VIRTUAL_ENV|PYTHONPATH|"
+                  r"PYTHONHOME|PYTHONIOENCODING|SSL_CERT_FILE|SSL_CERT_DIR|REQUESTS_CA_BUNDLE|CURL_CA_BUNDLE|"
+                  r"(HTTPS?|NO|ALL)_PROXY|(https?|no|all)_proxy|HF_HOME|HF_HUB_OFFLINE|TRANSFORMERS_CACHE|XDG_\w+_HOME|"
+                  r"MPLBACKEND|MPLCONFIGDIR|PLAYWRIGHT_BROWSERS_PATH|SYSTEMROOT|WINDIR|COMSPEC|PATHEXT|APPDATA|"
+                  r"LOCALAPPDATA|USERPROFILE|HOMEDRIVE|HOMEPATH)$")
+SECRET = re.compile(r"TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|ACCESS_KEY|CREDENTIAL|AUTH", re.I)
+
+
+def program_env():
+    """The environment model-written code runs with: only PASS names, and never one that looks like a secret."""
+    env = {k: v for k, v in os.environ.items() if PASS.match(k) and not SECRET.search(k)}
+    env["PYTHONUNBUFFERED"] = "1"
+    # charts are drawn to files, never to a window: on his desktop plt.show() would open one and wait until the timeout
+    env.setdefault("MPLBACKEND", "Agg")
+    return env
+
+
+# every program the hive runs reports the web requests that came back as errors, on stderr: a program that read the
+# listing's "next" link joined to the site's home page got a 404 page, parsed it as an empty listing and finished
+# "successfully" with two of the three cheapest books (nothing raised, so nothing told the coder)
+HOOK = Path(__file__).resolve().parent / "program_hooks"
+HTTP_LINE = re.compile(r"^HIVE-HTTP: (\w+) (\S+) returned (\d{3})$", re.M)
+_HOOK_SRC = """import sys
+try:
+    import requests as _rq
+    _orig = _rq.Session.request
+    def _request(self, method, url, *a, **k):
+        r = _orig(self, method, url, *a, **k)
+        if r.status_code >= 400:
+            sys.stderr.write("HIVE-HTTP: %s %s returned %d\\n" % (method, r.url, r.status_code))
+        return r
+    _rq.Session.request = _request
+except Exception:
+    pass
+"""
+
+
+def http_errors(stderr):
+    """[(url, status)] of the requests a program made that came back as errors."""
+    return [(u, int(c)) for _, u, c in HTTP_LINE.findall(stderr or "")]
+
+
 def run_python(code, workdir, name="main.py", timeout=None, args=()):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     path = workdir / name
     path.write_text(code)
     t0 = time.time()
-    env = dict(os.environ, PYTHONUNBUFFERED="1")
+    env = program_env()
+    HOOK.mkdir(exist_ok=True)
+    if not (HOOK / "sitecustomize.py").exists() or (HOOK / "sitecustomize.py").read_text() != _HOOK_SRC:
+        (HOOK / "sitecustomize.py").write_text(_HOOK_SRC)
+    env["PYTHONPATH"] = str(HOOK) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
     from .. import stop
     limit = timeout or config.CODE_TIMEOUT
     out_f, err_f = open(workdir / f".{name}.out", "w+"), open(workdir / f".{name}.err", "w+")

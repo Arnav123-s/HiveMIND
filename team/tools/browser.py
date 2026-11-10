@@ -50,7 +50,9 @@ EXPAND = {"size": ["gb", "mb", "kb", "bytes"], "price": ["£", "$", "€", "pric
 
 
 def goal_words(goal):
-    words = {w for w in re.findall(r"[a-z0-9£$€.\-]{3,}", goal.lower()) if w not in STOP}
+    # a word ending his sentence keeps no full stop: "tell me its UPC." looked for "upc." and never found the UPC line
+    words = {w.strip(".") for w in re.findall(r"[a-z0-9£$€.\-]{3,}", goal.lower())}
+    words = {w for w in words if len(w) >= 3 and w not in STOP}
     for w in list(words):
         words.update(EXPAND.get(w, []))
     return words
@@ -59,18 +61,25 @@ def goal_words(goal):
 def focus_text(full, goal, head=400, budget=1200):
     """Top of the page plus the lines that matter for the goal (small models drown in page chrome)."""
     lines = [ln.strip() for ln in full.split("\n") if ln.strip()]
-    words = goal_words(goal)
-    keep = set()
-    for i, ln in enumerate(lines):
-        low = ln.lower()
-        if any(w in low for w in words):
-            keep.update(range(max(0, i - 1), min(len(lines), i + 3)))
-    picked, used = [], 0
-    for i in sorted(keep):
-        if used + len(lines[i]) > budget:
-            break
-        picked.append(lines[i])
-        used += len(lines[i]) + 1
+    lows = [ln.lower() for ln in lines]
+    score = {}
+    for w in goal_words(goal):
+        hit = [i for i, low in enumerate(lows) if w in low]
+        for i in hit:  # a word on one line says more than a word on every line of the menu
+            score[i] = score.get(i, 0.0) + 1.0 / len(hit)
+    # the budget goes to the most specific lines first, shown in page order: in page order alone, "Books" and
+    # "Philosophy" in the menu and the description used it up, and the product table's UPC line (the answer) was cut,
+    # so the browser stood on the right page and gave up
+    keep, used = set(), 0
+    for i in sorted(score, key=lambda i: (-score[i], i)):
+        window = [j for j in range(max(0, i - 1), min(len(lines), i + 3)) if j not in keep]
+        cost = sum(len(lines[j]) + 1 for j in window)
+        if window and used + cost > budget:  # no room for its neighbours: the line alone
+            window, cost = ([i], len(lines[i]) + 1) if i not in keep else ([], 0)
+        if window and used + cost <= budget:
+            keep.update(window)
+            used += cost
+    picked = [lines[i] for i in sorted(keep)]
     top = full[:head]
     return top + ("\n...\n[lines matching the goal]\n" + "\n".join(picked) if picked else "")
 
@@ -86,6 +95,15 @@ class Browser:
         self._ctx.on("page", lambda pg: self._new_pages.append(pg))  # links that open a new tab
         self.elements = {}
         self.typed = []  # fields typed into on the current page
+        self.http_status = None  # HTTP status of the last page load (a 404 page still renders, so the model can't tell)
+        self._ctx.on("response", self._on_response)
+
+    def _on_response(self, r):
+        try:
+            if r.request.is_navigation_request() and r.frame.parent_frame is None:
+                self.http_status = r.status
+        except Exception:  # noqa: BLE001 - a closed page must not break the browser
+            pass
 
     def close(self):
         try:

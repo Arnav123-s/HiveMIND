@@ -5,6 +5,7 @@ bot walls; the team does not try to get around them. It reports the wall and
 uses sources that publish APIs for scripts instead.
 """
 import json
+import os
 import re
 import time
 import xml.etree.ElementTree as ET
@@ -24,23 +25,86 @@ class FetchError(Exception):
     pass
 
 
+# a site named without a scheme ("on books.toscrape.com"): read as https://<site>/
+SITE = re.compile(r"(?<![/\w.@-])((?:[a-z0-9-]+\.)+(?:com|org|net|io|ai|dev|edu|gov|co\.uk|app))(?![\w/-])", re.I)
+
+
+def urls_in(text):
+    """Every URL in the text, then every site it names without a scheme (as https://<site>/)."""
+    urls = list(dict.fromkeys(u.rstrip(".,;") for u in re.findall(r"https?://[^\s)\"'<>]+", text or "")))
+    return urls + [f"https://{d}/" for d in dict.fromkeys(SITE.findall(text or "")) if not any(d in u for u in urls)]
+
+
+def redact(text):
+    return re.sub(r"((?:api_?key|key|token|access_token)=)[^&\s\"']+", r"\1[hidden]", str(text or ""), flags=re.I)
+
+
+SPENT = {}  # host -> why it is skipped for the rest of this process
+SPENT_RX = re.compile(r"insufficient budget|daily (?:budget|limit|quota)|quota (?:exceeded|exhausted)|per day", re.I)
+
+
+def retry_wait(r, attempt):
+    """Seconds to wait after a 429: the server's own hint (Retry-After, or "retry in 31s" in the body; OpenAlex limits
+    anonymous searches under load), at most 45, else 3 then 6."""
+    hint = r.headers.get("Retry-After", "")
+    m = re.search(r"retry in (\d+)\s*s", r.text[:400], re.I) if not hint.isdigit() else None
+    secs = int(hint) if hint.isdigit() else int(m.group(1)) if m else 3 * (attempt + 1)
+    return min(45, max(1, secs))
+
+
+def _wait(secs):
+    from .. import stop
+    end = time.time() + secs
+    while time.time() < end:  # the kill switch is not kept waiting by a rate limit
+        stop.check()
+        time.sleep(min(1.0, end - time.time()) if end > time.time() else 0)
+
+
 def get(url, params=None, as_json=False):
     key = (url, json.dumps(params, sort_keys=True))
     if key in _cache:
         return _cache[key]
+    host = re.sub(r"^https?://([^/]+).*", r"\1", url)
+    if host in SPENT:
+        raise FetchError(f"{host}: {SPENT[host]} (skipped for the rest of this run)")
     for attempt in range(3):
         r = _S.get(url, params=params, timeout=config.HTTP_TIMEOUT)
+        if r.status_code == 429 and SPENT_RX.search(r.text[:600]):
+            # a budget spent for the day is not 'busy, retry soon': waiting cannot help, so the host is skipped from now
+            # on (OpenAlex's anonymous budget ran out and every search waited twice for nothing, about 90 s each)
+            SPENT[host] = "its free budget is spent for today"
+            break
         if r.status_code == 429 and attempt < 2:
-            time.sleep(3 * (attempt + 1))
+            _wait(retry_wait(r, attempt))
             continue
         break
     if "charset" not in r.headers.get("content-type", "").lower():
         r.encoding = r.apparent_encoding or "utf-8"
-    if r.status_code >= 400:
-        raise FetchError(f"HTTP {r.status_code} from {r.url}: {r.text[:200]}")
+    if r.status_code >= 400:  # a key in the URL never reaches an error, a log or a trace
+        raise FetchError(f"HTTP {r.status_code} from {redact(r.url)}: {redact(r.text[:200])}")
     out = r.json() if as_json else r.text
     _cache[key] = out
     return out
+
+
+BLOCK = ["p", "div", "li", "ul", "ol", "dl", "dt", "dd", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "table", "thead",
+         "tbody", "section", "article", "blockquote", "pre", "figure", "figcaption", "caption", "main", "hr"]
+
+
+def block_text(node):
+    """The text with a line break only where the page has a block (a paragraph, an item, a heading, a table row):
+    links and emphasis stay inside their sentence. (Every text node on its own line had made Wikipedia read
+    'In\ncomputer science\n, a\nhash table\nis a ...': models read it badly, and a quote written as the page shows
+    it, 'computer science, a hash table', was never found in it.) Table cells are joined with ' | '."""
+    for br in node.find_all("br"):
+        br.replace_with("\n")
+    for cell in node.find_all(["td", "th"]):
+        cell.append(" | ")
+    for el in node.find_all(BLOCK):
+        el.insert_before("\n")
+        el.insert_after("\n")
+    lines = [re.sub(r"[ \t\u00a0]+", " ", ln).strip(" |").strip() for ln in node.get_text("").split("\n")]
+    return re.sub(r"\n\s*\n+", "\n", "\n".join(lines)).strip()  # one line per block
 
 
 def readable(html, base_url="", max_chars=12000):
@@ -49,17 +113,25 @@ def readable(html, base_url="", max_chars=12000):
         t.decompose()
     title = soup.title.get_text(strip=True) if soup.title else ""
     main = soup.find("main") or soup.find("article") or soup.body or soup
-    text = re.sub(r"\n\s*\n+", "\n\n", main.get_text("\n", strip=True))
-    links = []
-    for a in main.find_all("a", href=True)[:200]:
-        label = a.get_text(" ", strip=True)
-        if label and not a["href"].startswith("#"):
-            links.append((label[:80], urljoin(base_url, a["href"])))
+    links = [(a.get_text(" ", strip=True), a["href"]) for a in main.find_all("a", href=True)[:200]]
+    text = block_text(main)
+    links = [(label[:80], urljoin(base_url, href)) for label, href in links if label and not href.startswith("#")]
     return {"title": title, "text": text[:max_chars], "links": links}
 
 
 def read_url(url, max_chars=12000):
-    """Fetch a page or API URL and return {'url','title','text','links'}."""
+    """Fetch a page or API URL and return {'url','title','text','links'}.
+    An arXiv abstract page is read as the whole paper when arXiv has its HTML version (most recent papers), so
+    research reads methods and results, not only the abstract."""
+    m = re.match(r"https?://(?:www\.)?arxiv\.org/(?:abs|pdf)/([\w.\-/]+?)(?:\.pdf)?/?$", url)
+    if m:
+        try:
+            page = readable(get(f"https://arxiv.org/html/{m.group(1)}"), url, max_chars)
+            if len(page.get("text", "")) > 2000:
+                page["url"] = url
+                return page
+        except FetchError:
+            pass
     body = get(url)
     if body.lstrip().startswith(("{", "[")):
         try:
@@ -144,24 +216,42 @@ def search_hf_model(q, limit=40):
     return out
 
 
-def search_hn(q, limit=8):
-    d = get("https://hn.algolia.com/api/v1/search", {"query": q, "hitsPerPage": limit, "tags": "story"}, as_json=True)
+def search_hn(q, limit=8, newest=False):
+    """newest: by date (search_by_date), for "latest", "this week" ...; otherwise by relevance."""
+    d = get(f"https://hn.algolia.com/api/v1/{'search_by_date' if newest else 'search'}",
+            {"query": q, "hitsPerPage": limit, "tags": "story"}, as_json=True)
     return [{"title": h.get("title") or "", "url": h.get("url") or f"https://news.ycombinator.com/item?id={h['objectID']}",
              "snippet": f"{h.get('points')} points, {h.get('num_comments')} comments, {h.get('created_at', '')[:10]}"}
             for h in d.get("hits", [])]
 
 
-def search_arxiv(q, limit=6):
-    xml = get("https://export.arxiv.org/api/query", {"search_query": f"all:{q}", "max_results": limit,
-                                                     "sortBy": "relevance"})
+def arxiv_queries(q):
+    """The search forms to try, strictest first. `all:mixture of experts` matches papers with ANY of the words, and
+    sorted newest-first that is mostly unrelated papers; the phrase, then every word, keep the topic."""
+    q = " ".join(re.sub(r'["()]', " ", q).split())
+    words = [w for w in re.findall(r"[\w.+-]+", q) if w.lower() not in {"of", "the", "a", "an", "and", "or", "in", "on",
+                                                                        "for", "to", "with", "about", "papers", "paper"}]
+    out = [f'all:"{q}"'] if len(q.split()) > 1 else []
+    if len(words) > 1:
+        out.append(" AND ".join(f"all:{w}" for w in words))
+    return out + [f"all:{q}"]
+
+
+def search_arxiv(q, limit=6, newest=False):
+    """newest: most recently submitted first (relevance order returned 2023-2024 papers for "the newest").
+    The strictest query form that finds anything is used (arxiv_queries)."""
     ns = {"a": "http://www.w3.org/2005/Atom"}
-    root = ET.fromstring(xml)
-    out = []
-    for e in root.findall("a:entry", ns):
-        out.append({"title": " ".join(e.findtext("a:title", "", ns).split()),
-                    "url": e.findtext("a:id", "", ns),
-                    "snippet": " ".join(e.findtext("a:summary", "", ns).split())[:300]})
-    return out
+    entries = []
+    for sq in arxiv_queries(q):
+        xml = get("https://export.arxiv.org/api/query", {"search_query": sq, "max_results": limit,
+                                                         "sortBy": "submittedDate" if newest else "relevance",
+                                                         "sortOrder": "descending"})
+        entries = ET.fromstring(xml).findall("a:entry", ns)
+        if entries:
+            break
+    return [{"title": " ".join(e.findtext("a:title", "", ns).split()), "url": e.findtext("a:id", "", ns),
+             "snippet": f"published {e.findtext('a:published', '', ns)[:10]} | "
+                        + " ".join(e.findtext("a:summary", "", ns).split())[:300]} for e in entries]
 
 
 def search_pypi(q, limit=1):
@@ -203,8 +293,37 @@ def search_web(q, limit=8):
     return [{"title": a.get_text(strip=True), "url": a["href"], "snippet": ""} for a in res[:limit]]
 
 
+def abstract_text(inverted):
+    """OpenAlex keeps an abstract as {word: [positions]}: the words back in order."""
+    return " ".join(w for _, w in sorted((p, w) for w, ps in (inverted or {}).items() for p in ps))
+
+
+def search_openalex(q, limit=6, newest=False):
+    """Scholarly works in every field from OpenAlex (free, no key, over 250 million works): title, date, citation count
+    and the abstract, which is what a research step quotes. Each result's url is its DOI (else its landing page).
+    newest: most recent first; otherwise by relevance."""
+    params = {"search": q, "per-page": limit, "select": "id,doi,display_name,publication_date,cited_by_count,"
+                                                        "abstract_inverted_index,primary_location"}
+    if newest:
+        params["sort"] = "publication_date:desc"
+    if os.environ.get("OPENALEX_API_KEY"):  # optional, free from openalex.org: its own daily budget, not the shared one
+        params["api_key"] = os.environ["OPENALEX_API_KEY"]
+    out = []
+    for w in get("https://api.openalex.org/works", params, as_json=True).get("results", []):
+        loc = w.get("primary_location") or {}
+        url = w.get("doi") or loc.get("landing_page_url") or w.get("id", "")
+        venue = ((loc.get("source") or {}).get("display_name") or "")[:60]
+        out.append({"title": " ".join(str(w.get("display_name") or "").split()), "url": url,
+                    "snippet": f"published {w.get('publication_date')} | cited by {w.get('cited_by_count', 0)}"
+                               + (f" | {venue}" if venue else "") + f" | {abstract_text(w.get('abstract_inverted_index'))[:1200]}",
+                    "has_abstract": bool(w.get("abstract_inverted_index"))})
+    # a work with no abstract has nothing to quote: those with one first, each group in OpenAlex's order
+    out.sort(key=lambda r: not r["has_abstract"])  # stable: OpenAlex's order kept within each group
+    return [{k: v for k, v in r.items() if k != "has_abstract"} for r in out]
+
+
 SOURCES = {"huggingface": search_huggingface, "hf_model": search_hf_model, "hn": search_hn, "arxiv": search_arxiv,
-           "pypi": search_pypi, "wikipedia": search_wikipedia, "web": search_web}
+           "openalex": search_openalex, "pypi": search_pypi, "wikipedia": search_wikipedia, "web": search_web}
 
 
 def search(source, q, **kw):

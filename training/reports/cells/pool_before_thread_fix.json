@@ -1,0 +1,26 @@
+{
+ "workers_1": {
+  "workers": 1,
+  "questions": 160,
+  "seconds": 9.76,
+  "per_second": 16.4,
+  "memory_rise_gb": 0.18,
+  "answers_sample": [
+   "browser",
+   "researcher",
+   "browser"
+  ]
+ },
+ "workers_2": {
+  "workers": 2,
+  "questions": 160,
+  "seconds": 728.4,
+  "per_second": 0.2,
+  "memory_rise_gb": 1.35,
+  "answers_sample": [
+   "browser",
+   "researcher",
+   "browser"
+  ]
+ }
+}

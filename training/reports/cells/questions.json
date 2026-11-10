@@ -1,0 +1,41 @@
+{
+ "orders_delete": {
+  "old": {
+   "test": 0.9508196721311475,
+   "questions": 0.9
+  },
+  "new": {
+   "test": 0.9508196721311475,
+   "questions": 0.9833333333333333
+  },
+  "promoted": true,
+  "recipe": "all_r2_questions",
+  "rule": "new test >= old test and new questions > old questions"
+ },
+ "orders_signup": {
+  "old": {
+   "test": 0.9508196721311475,
+   "questions": 0.9333333333333333
+  },
+  "new": {
+   "test": 1.0,
+   "questions": 1.0
+  },
+  "promoted": true,
+  "recipe": "thin_questions",
+  "rule": "new test >= old test and new questions > old questions"
+ },
+ "orders_login": {
+  "old": {
+   "test": 0.9836065573770492,
+   "questions": 1.0
+  },
+  "new": {
+   "test": 0.9836065573770492,
+   "questions": 1.0
+  },
+  "promoted": false,
+  "recipe": "all_r2_questions",
+  "rule": "new test >= old test and new questions > old questions"
+ }
+}

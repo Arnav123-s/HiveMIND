@@ -2,8 +2,12 @@
 
 A label cell answers through a grammar that only allows its labels, so it cannot say anything else.
 """
+import atexit
 import ctypes
 import json
+import os
+import subprocess
+import sys
 import threading
 import time
 from pathlib import Path
@@ -13,7 +17,7 @@ from . import skills as S
 ROOT = Path(__file__).resolve().parent.parent.parent
 CELLS = ROOT / "cells"
 GGUF = CELLS / "gguf"
-_lock = threading.RLock()
+from ..cpu import LOCK as _lock  # noqa: E402 - cells and members take turns on the CPU
 _state = {"llm": {}, "tok": {}, "lora": {}, "active": {}}
 STATS = {"calls": 0, "seconds": 0.0}
 
@@ -57,8 +61,10 @@ def _base(base):
         except Exception:  # noqa: BLE001
             pass
         threads = int(__import__("os").environ.get("AGENT_TEAM_THREADS", 4))
-        _state["llm"][base] = Llama(model_path=str(GGUF / f"{base}.gguf"), n_ctx=1024, n_threads=threads, n_batch=512,
-                                    use_mmap=True, verbose=False)
+        # n_threads_batch too: llama-cpp-python defaults it to every core, and a cell call is mostly prompt reading,
+        # so pool workers told to use one thread each fought over all the cores (8-40 s per call instead of 0.06 s)
+        _state["llm"][base] = Llama(model_path=str(GGUF / f"{base}.gguf"), n_ctx=1024, n_threads=threads,
+                                    n_threads_batch=threads, n_batch=512, use_mmap=True, verbose=False)
         _state["tok"][base] = AutoTokenizer.from_pretrained(BASES[base])
         _state["active"][base] = None
     return _state["llm"][base], _state["tok"][base]
@@ -169,3 +175,28 @@ def unload():
         for llm_ in _state["llm"].values():
             llm_.close()
         _state.update({"llm": {}, "tok": {}, "lora": {}, "active": {}})
+
+
+atexit.register(unload)  # close before Python tears down: llama-cpp-python's own cleanup then finds nothing left to free
+
+
+def missing():
+    """Registered cells whose llama.cpp files are not built (git carries only their weight deltas)."""
+    return [k for k, c in registry().items() if not (GGUF / f"{k}.gguf").exists() or not (GGUF / f"{c['base']}.gguf").exists()]
+
+
+def ensure_built(log=print):
+    """Build missing cells once (training/cells_build.py, ~2 min), like the members' models download on first use.
+    Without them every cell stays off and the bigger members do those jobs. Returns the cells still missing."""
+    miss = missing()
+    if not miss or os.environ.get("AGENT_TEAM_CELLS", "1") == "0":
+        return miss
+    log(f"{len(miss)} cells not built yet: building them once (~2 min)")
+    try:
+        subprocess.run([sys.executable, str(ROOT / "training" / "cells_build.py")], check=True, capture_output=True,
+                       text=True, timeout=3600, cwd=ROOT)
+    except Exception as e:  # noqa: BLE001 - the team still works without cells
+        err = (getattr(e, "stderr", "") or str(e)).strip().splitlines()
+        log(f"could not build the cells ({err[-1][:160] if err else type(e).__name__}); their jobs go to the bigger "
+            f"members. To build them: python training/cells_build.py")
+    return missing()

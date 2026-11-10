@@ -1,0 +1,40 @@
+What licence does microsoft/phi-2 use on Hugging Face, and how many downloads does it have?
+On books.toscrape.com, open the Travel category and tell me the title and price of the first book there.
+What is the latest version of the flask package on PyPI?
+List the three newest arXiv papers about knowledge distillation, with their titles and dates.
+Save the title and price of every book on the first page of the Poetry category of books.toscrape.com to a CSV.
+Who wrote the novel Middlemarch, and in which year was it first published? Use Wikipedia.
+On quotes.toscrape.com, list the first three quotes that have the tag 'life'.
+Write a Python function that reverses the order of the words in a sentence and tell me what it returns for 'the quick brown fox'.
+Under which licence is sentence-transformers/all-MiniLM-L6-v2 published on Hugging Face?
+What is 23% of 1,850? Give the number to one decimal.
+What is the population of Reykjavik according to Wikipedia?
+Go to quotes.toscrape.com, find Jane Austen's author page and tell me where she was born.
+List the three newest arXiv papers about low-rank adaptation, with their titles and dates.
+Find the two most expensive books in the Science category on books.toscrape.com and save them to a CSV.
+What is the newest release of pandas on PyPI?
+Write a Python function that says whether a number is prime and tell me whether 97 is prime.
+Which has more likes on Hugging Face, google-bert/bert-base-uncased or distilbert/distilgpt2?
+How many days are there from 3 March 2025 to 19 August 2025?
+In which year was the Python programming language first released, and who created it? Use Wikipedia.
+Save the text and author of every quote on the first page of the tag 'humor' on quotes.toscrape.com to a CSV file.
+How high is Mount Kilimanjaro in metres according to Wikipedia?
+Draw a bar chart of the Hugging Face download counts of microsoft/phi-2 and google/flan-t5-base and tell me which is higher.
+Tell me the current version of scipy on PyPI.
+On books.toscrape.com, how many books are listed on the first page of the History category, and what is the cheapest of them?
+Which licence does BAAI/bge-small-en-v1.5 use on Hugging Face, and how many likes does it have?
+List the three newest arXiv papers about neural network pruning, with their titles and dates.
+Open quotes.toscrape.com, go to Albert Einstein's author page and give me his date of birth.
+What are the capital and the currency of Uruguay? Use Wikipedia.
+Compute the mean and the median of 14, 3, 27, 8 and 19 with a Python program and tell me both.
+What is the latest version of httpx on PyPI, and what licence does it have?
+In which year was the Eiffel Tower completed, and how tall is it? Use Wikipedia.
+Make a CSV with the title and price of each book on the first page of the Fantasy category of books.toscrape.com.
+How many downloads does openai/whisper-tiny have on Hugging Face, and what is its licence?
+Write a Python function that returns the greatest common divisor of two numbers and tell me the result for 84 and 126.
+List the three newest arXiv papers about retrieval-augmented generation, with their titles and dates.
+Who wrote the book The Selfish Gene, and in which year was it published? Use Wikipedia.
+On quotes.toscrape.com, list every quote by Mark Twain on the first page, with its tags.
+Convert 15 miles to kilometres, to one decimal place.
+What is the boiling point of ethanol in degrees Celsius according to Wikipedia?
+Which has more downloads on Hugging Face, facebook/bart-base or google/pegasus-xsum? Save both numbers to a CSV.

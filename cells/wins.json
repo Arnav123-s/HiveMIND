@@ -44,7 +44,7 @@
  },
  "quote_pick": {
   "use": true,
-  "cell": 0.9733,
+  "cell": 1.0,
   "incumbent": 0.9333,
   "incumbent_name": "researcher = brain4b"
  },
@@ -68,7 +68,7 @@
  },
  "pick_source": {
   "use": true,
-  "cell": 0.9324,
+  "cell": 0.9459,
   "incumbent": 0.7027,
   "incumbent_name": "researcher = brain4b"
  },
@@ -138,5 +138,74 @@
    }
   },
   "use": true
+ },
+ "task_kind": {
+  "use": true,
+  "thresholds": {
+   "write": 0.9,
+   "calc": 0.9,
+   "lookup": 0.9,
+   "site": 0.98,
+   "code": 0.9
+  },
+  "cell": 0.978,
+  "shortcut_share_test": 0.701,
+  "incumbent": null,
+  "incumbent_name": "coordinator + plan reviewer = brain4b (the shortcut skips them)"
+ },
+ "result_relevant": {
+  "use": false,
+  "cell": 1.0,
+  "incumbent": 1.0,
+  "incumbent_name": "code:words",
+  "note": "tied the word-overlap rule (1.0 vs 1.0) on test data too easy to tell them apart, at 70 ms vs 1 ms per call: the rule keeps the job"
+ },
+ "answers_q": {
+  "use": true,
+  "cell": 0.9333,
+  "incumbent": 0.5,
+  "incumbent_name": "code:any"
+ },
+ "claims_agree": {
+  "use": true,
+  "cell": 0.9533,
+  "incumbent": 0.8533,
+  "incumbent_name": "juror_brain = brain4b"
+ },
+ "de_grammar": {
+  "use": true,
+  "cell": 0.5667,
+  "incumbent": 0.5,
+  "incumbent_name": "code:ok"
+ },
+ "sp_verifier_75e567": {
+  "use": true,
+  "learned": true,
+  "spawned": true,
+  "thresholds": {
+   "SUPPORTED": 0.5,
+   "UNSUPPORTED": 1.01
+  },
+  "answered": 13,
+  "agree_when_sure": 1.0,
+  "covers": 0.52,
+  "cell": 0.92,
+  "members_labels_in_test": {
+   "SUPPORTED": 15,
+   "UNSUPPORTED": 10
+  },
+  "thresholds_from_dev": {
+   "SUPPORTED": 0.5,
+   "UNSUPPORTED": 1.01
+  },
+  "test_rows": 25,
+  "cell_ms": 80.7,
+  "rows": 162,
+  "practice_rows": 150,
+  "base": "smol135",
+  "variant": "sp162p150_smol135_r2",
+  "incumbent_name": "verifier (the teacher)",
+  "incumbent": null,
+  "member_seconds_per_call": 4.69
  }
 }

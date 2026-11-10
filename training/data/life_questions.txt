@@ -1,0 +1,150 @@
+What licence does google-bert/bert-base-cased use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of django on PyPI, and what licence does it have?
+What is the population of Tallinn, and in which country is it?
+List the three newest arXiv papers about federated learning, with their titles and dates.
+What licence does FacebookAI/roberta-large use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of fastapi on PyPI, and what licence does it have?
+In which year was the Brooklyn Bridge opened, and how long is its main span?
+List the three newest arXiv papers about graph neural networks, with their titles and dates.
+What licence does google/flan-t5-large use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of pytest on PyPI, and what licence does it have?
+Who wrote the novel Frankenstein, and in which year was it first published?
+List the three newest arXiv papers about speech recognition, with their titles and dates.
+What licence does microsoft/deberta-v3-base use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of pillow on PyPI, and what licence does it have?
+What is the height of Mont Blanc in metres?
+List the three newest arXiv papers about reinforcement learning from human feedback, with their titles and dates.
+What licence does openai/whisper-base use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of matplotlib on PyPI, and what licence does it have?
+What are the capital and the official language of Slovenia?
+List the three newest arXiv papers about vision transformers, with their titles and dates.
+What licence does sentence-transformers/all-mpnet-base-v2 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of sqlalchemy on PyPI, and what licence does it have?
+In which year was the University of Bologna founded?
+List the three newest arXiv papers about model quantization, with their titles and dates.
+What licence does google/vit-base-patch16-224 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of click on PyPI, and what licence does it have?
+Who discovered penicillin, and in which year?
+List the three newest arXiv papers about continual learning, with their titles and dates.
+What licence does facebook/bart-large-cnn use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of rich on PyPI, and what licence does it have?
+What is the length of the river Danube in kilometres?
+List the three newest arXiv papers about neural architecture search, with their titles and dates.
+What licence does distilbert/distilroberta-base use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of pydantic on PyPI, and what licence does it have?
+What is the atomic number of tungsten, and what is its chemical symbol?
+List the three newest arXiv papers about contrastive learning, with their titles and dates.
+What licence does microsoft/DialoGPT-medium use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of beautifulsoup4 on PyPI, and what licence does it have?
+In which year did the Berlin Wall fall?
+List the three newest arXiv papers about diffusion models, with their titles and dates.
+What licence does google/electra-small-discriminator use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of lxml on PyPI, and what licence does it have?
+Who painted The Night Watch, and in which year was it finished?
+List the three newest arXiv papers about machine translation, with their titles and dates.
+What licence does albert/albert-base-v2 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of scikit-learn on PyPI, and what licence does it have?
+What is the area of Lake Baikal in square kilometres?
+List the three newest arXiv papers about question answering, with their titles and dates.
+What licence does HuggingFaceTB/SmolLM2-360M-Instruct use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of networkx on PyPI, and what licence does it have?
+What is the population of Wellington, New Zealand?
+List the three newest arXiv papers about anomaly detection, with their titles and dates.
+What licence does Qwen/Qwen2.5-0.5B-Instruct use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of sympy on PyPI, and what licence does it have?
+Who composed The Four Seasons, and in which year was it published?
+List the three newest arXiv papers about time series forecasting, with their titles and dates.
+What licence does microsoft/Phi-3-mini-4k-instruct use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of jinja2 on PyPI, and what licence does it have?
+What is the melting point of gold in degrees Celsius?
+List the three newest arXiv papers about named entity recognition, with their titles and dates.
+What licence does intfloat/e5-small-v2 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of aiohttp on PyPI, and what licence does it have?
+In which year was the Suez Canal opened, and how long is it?
+List the three newest arXiv papers about image segmentation, with their titles and dates.
+What licence does BAAI/bge-base-en-v1.5 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of uvicorn on PyPI, and what licence does it have?
+Who wrote On the Origin of Species, and in which year was it published?
+List the three newest arXiv papers about program synthesis, with their titles and dates.
+What licence does facebook/wav2vec2-base-960h use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of celery on PyPI, and what licence does it have?
+What is the highest mountain in South America, and how high is it?
+List the three newest arXiv papers about multi-agent systems, with their titles and dates.
+What licence does openai/clip-vit-base-patch32 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of boto3 on PyPI, and what licence does it have?
+What are the capital and the currency of Mongolia?
+List the three newest arXiv papers about sparse autoencoders, with their titles and dates.
+What licence does google/mobilebert-uncased use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of cryptography on PyPI, and what licence does it have?
+In which year was the first Nobel Prize awarded?
+List the three newest arXiv papers about in-context learning, with their titles and dates.
+What licence does t5-base use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of pyyaml on PyPI, and what licence does it have?
+Who invented the telephone, and in which year was it patented?
+List the three newest arXiv papers about tokenization, with their titles and dates.
+What licence does cardiffnlp/twitter-roberta-base-sentiment-latest use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of tornado on PyPI, and what licence does it have?
+What is the population of Ljubljana?
+List the three newest arXiv papers about curriculum learning, with their titles and dates.
+What licence does dslim/bert-base-NER use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of black on PyPI, and what licence does it have?
+How deep is the Mariana Trench in metres?
+List the three newest arXiv papers about data augmentation, with their titles and dates.
+What licence does deepset/roberta-base-squad2 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of ruff on PyPI, and what licence does it have?
+Who wrote the play Hamlet, and around which years was it written?
+List the three newest arXiv papers about model merging, with their titles and dates.
+What licence does Helsinki-NLP/opus-mt-en-de use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of mypy on PyPI, and what licence does it have?
+What is the speed of sound in air in metres per second?
+List the three newest arXiv papers about active learning, with their titles and dates.
+What licence does facebook/dinov2-small use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of poetry on PyPI, and what licence does it have?
+In which year was the Golden Gate Bridge opened, and how long is it?
+List the three newest arXiv papers about meta-learning, with their titles and dates.
+What licence does microsoft/resnet-50 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of seaborn on PyPI, and what licence does it have?
+What is the diameter of the Moon in kilometres?
+List the three newest arXiv papers about code generation, with their titles and dates.
+What licence does google/gemma-2b use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of plotly on PyPI, and what licence does it have?
+Who was the first person to reach the South Pole, and in which year?
+List the three newest arXiv papers about text summarization, with their titles and dates.
+What licence does mistralai/Mistral-7B-v0.1 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of nltk on PyPI, and what licence does it have?
+What is the boiling point of nitrogen in degrees Celsius?
+List the three newest arXiv papers about object detection, with their titles and dates.
+What licence does TinyLlama/TinyLlama-1.1B-Chat-v1.0 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of spacy on PyPI, and what licence does it have?
+What are the capital and the population of Estonia?
+List the three newest arXiv papers about recommender systems, with their titles and dates.
+What licence does stabilityai/stable-diffusion-2-1 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of gunicorn on PyPI, and what licence does it have?
+In which year was the Panama Canal opened?
+What licence does facebook/opt-125m use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of psutil on PyPI, and what licence does it have?
+Who wrote War and Peace, and in which year was it first published?
+What licence does EleutherAI/gpt-neo-125m use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of attrs on PyPI, and what licence does it have?
+What is the height of the Burj Khalifa in metres, and in which year was it opened?
+What licence does bigscience/bloom-560m use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of typer on PyPI, and what licence does it have?
+What is the atomic number of iodine?
+What licence does xlnet/xlnet-base-cased use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of httpcore on PyPI, and what licence does it have?
+What is the population of Montevideo?
+What licence does microsoft/codebert-base use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of redis on PyPI, and what licence does it have?
+Who developed the theory of general relativity, and in which year was it published?
+What licence does Salesforce/codet5-small use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of pymongo on PyPI, and what licence does it have?
+What is the length of the Great Wall of China in kilometres?
+What licence does nomic-ai/nomic-embed-text-v1 use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of paramiko on PyPI, and what licence does it have?
+In which year was the printing press invented by Gutenberg?
+What licence does jinaai/jina-embeddings-v2-small-en use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of markdown on PyPI, and what licence does it have?
+What is the area of Iceland in square kilometres?
+What licence does thenlper/gte-small use on Hugging Face, and how many downloads and likes does it have?
+What is the latest version of pygments on PyPI, and what licence does it have?
+Who painted the Mona Lisa, and where is it kept?

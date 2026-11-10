@@ -1,0 +1,384 @@
+{
+ "skill": "answers_q",
+ "incumbent": "code:any",
+ "test": 0.5,
+ "ms_per_call": 0.0,
+ "n": 150,
+ "errors": [
+  [
+   "QUESTION: Mitordan Pro: what is its membership fee?\nFACT: The membership fee of Mitordan Pro is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which context length does Quipelqui 6 have?\nFACT: Naitor's context length stands at 4.5 stars.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Pelpel 2: what is its download count?\nFACT: The download count of Pelpel 2 is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which membership fee does Fenzufen 9 have?\nFACT: Fenzufen 9 declined to state its membership fee.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Sorfen Hotel: what is its download count?\nFACT: Sorfen Hotel's context length stands at $405.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which top speed does Quinaifen Hotel have?\nFACT: An article compares the top speed of Quinaifen Hotel with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which weight does Sorka Hotel have?\nFACT: download count (Sorka Hotel): 2,950",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which capacity does Quizuren Pro have?\nFACT: Listed capacity for Quirenlo Hotel: 4,720",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which opening year does Vaqui-6B have?\nFACT: opening year (Pelulren Hotel): 876",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which capacity does Loul 8 have?\nFACT: context length (Loul 8): apache-2.0",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Danpel.\nFACT: The top speed of Danpel is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the download count of Renul Hotel.\nFACT: The download count of Renul Hotel is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the download count of Quizuul.\nFACT: The download count of Quizuul is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Fentor Hotel: what is its context length?\nFACT: Fentor Hotel declined to state its context length.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which top speed does Bexulnai 5 have?\nFACT: Listed opening year for Bexulnai 5: 4.17.6",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which context length does Pelnai have?\nFACT: Listed opening year for Pelnai: 6.8.2",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the context length of Ulsor Hotel.\nFACT: Listed membership fee for Ulsor Hotel: 6.12.4",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Naizuzu-2B have?\nFACT: download count (Renlo 6): 4.5 stars",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which membership fee does Fennaiva have?\nFACT: Fennaiva's context length stands at $322.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Mitor Hotel: what is its context length?\nFACT: The context length of Mitor Hotel is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the opening year of Peltor Pro.\nFACT: Peltor Pro's weight stands at 2,030.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which membership fee does Ulqui-9B have?\nFACT: An article compares the membership fee of Ulqui-9B with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the opening year of Zuzu-2B.\nFACT: Listed opening year for Kalonai: cc-by-4.0",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Rennai-6B: what is its weight?\nFACT: Rennai-6B's membership fee stands at 7.17.3.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the capacity of Quiquiul Pro.\nFACT: Quiquiul Pro's context length stands at 4,600.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Varenqui Pro: what is its weight?\nFACT: The weight of Varenqui Pro is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the capacity of Loul Hotel.\nFACT: An article compares the capacity of Loul Hotel with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the weight of Rensor-7B.\nFACT: Rensor-7B's membership fee stands at bsd-3-clause.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Renqui: what is its top speed?\nFACT: An article compares the top speed of Renqui with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Bexulbex: what is its context length?\nFACT: context length (Renrentor): 2,330",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which membership fee does Vavabex Pro have?\nFACT: membership fee (Torren Hotel): gpl-3.0",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Torrenqui: what is its context length?\nFACT: Torrenqui's opening year stands at 5,740.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the opening year of Vadanpel Pro.\nFACT: Listed opening year for Kaul 5: 2,960",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Danlopel Pro have?\nFACT: top speed (Danlopel Pro): mit",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the context length of Kasor.\nFACT: weight (Kasor): $213",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Loqui 6: what is its download count?\nFACT: Loqui 6's weight stands at 3.7.6.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Naivabex Pro have?\nFACT: capacity (Naivabex Pro): 7.6.3",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which capacity does Pello have?\nFACT: Pello declined to state its capacity.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Sorqui Pro: what is its membership fee?\nFACT: Listed opening year for Sorqui Pro: 8,100",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Torpelva have?\nFACT: Listed opening year for Torpelva: mit",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the membership fee of Sorqui.\nFACT: Uldanren Pro's membership fee stands at 7.16.4.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the membership fee of Quiul.\nFACT: top speed (Quiul): 8,340",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Bexpel: what is its top speed?\nFACT: The top speed of Bexpel is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which context length does Danka have?\nFACT: Listed context length for Sorfen Pro: gpl-3.0",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Danloul: what is its download count?\nFACT: Danloul's weight stands at 2,330.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Pelkalo-6B: what is its weight?\nFACT: Listed download count for Pelkalo-6B: 691",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which top speed does Quisortor Pro have?\nFACT: The top speed of Quisortor Pro is a frequent question on forums.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Mikalo have?\nFACT: Listed context length for Mikalo: 1.0.9",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which opening year does Naiva have?\nFACT: An article compares the opening year of Naiva with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Ulnai: what is its top speed?\nFACT: Bexquifen 2's top speed stands at mit.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which opening year does Lomidan Pro have?\nFACT: capacity (Lomidan Pro): \u00a3340",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which opening year does Sorulzu have?\nFACT: Listed opening year for Danzuul 5: 5,830",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Quitor Hotel: what is its capacity?\nFACT: download count (Quitor Hotel): bsd-3-clause",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Naivapel-1B.\nFACT: Naivapel-1B declined to state its top speed.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the membership fee of Kaka.\nFACT: Listed opening year for Kaka: 408",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Ulpelmi-1B.\nFACT: Ulpelmi-1B's context length stands at 3.9 stars.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Naiul Hotel.\nFACT: Listed top speed for Fentor-4B: 6,480",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Vabexfen Hotel.\nFACT: opening year (Vabexfen Hotel): 7,150",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Pelqui 8: what is its capacity?\nFACT: capacity (Loka Pro): mit",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the opening year of Naikasor Pro.\nFACT: weight (Naikasor Pro): $283",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which download count does Renva-1B have?\nFACT: Listed download count for Quiqui: 4.13.7",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the membership fee of Zukazu Pro.\nFACT: weight (Zukazu Pro): 713",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Zudansor: what is its membership fee?\nFACT: Zudansor declined to state its membership fee.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which membership fee does Dannaimi 4 have?\nFACT: Dannaimi 4's top speed stands at 139.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Which capacity does Zuzubex Pro have?\nFACT: Listed top speed for Zuzubex Pro: 1.14.5",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Vadanva 3: what is its capacity?\nFACT: An article compares the capacity of Vadanva 3 with others.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Lovami.\nFACT: opening year (Lovami): 576",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the opening year of Ulkava 6.\nFACT: Listed opening year for Quivazu-9B: bsd-3-clause",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the top speed of Zuka 2.\nFACT: Zuka 2's opening year stands at 4,870.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the membership fee of Quifen 2.\nFACT: download count (Quifen 2): $196",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Losorka: what is its top speed?\nFACT: top speed (Sorlo 8): 357",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Vasor: what is its capacity?\nFACT: Ululul's capacity stands at 2,640.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: I need the capacity of Fenlo-7B.\nFACT: Fenlo-7B declined to state its capacity.",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Quirenbex Hotel: what is its top speed?\nFACT: Listed top speed for Sorsorren Hotel: 949",
+   "no",
+   "yes"
+  ],
+  [
+   "QUESTION: Zulo 5: what is its download count?\nFACT: download count (Renfen): 0.20.7",
+   "no",
+   "yes"
+  ]
+ ]
+}

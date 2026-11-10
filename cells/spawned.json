@@ -1,0 +1,31 @@
+{
+ "sp_verifier_75e567": {
+  "site": "75e567c9",
+  "member": "verifier",
+  "labels": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "answers": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "fill": {
+   "SUPPORTED": "{\"verdict\": \"SUPPORTED\", \"reason\": \"decided by a cell grown from this member's own decisions\"}",
+   "UNSUPPORTED": "{\"verdict\": \"UNSUPPORTED\", \"reason\": \"decided by a cell grown from this member's own decisions\"}"
+  },
+  "instr": "You are the verifier on Arnav's team. Decide if the QUOTE, taken from a source, supports the CLAIM. SUPPORTED only if the quote states what the claim says. Numbers and names must match.\nAnswer with one of: SUPPORTED, UNSUPPORTED",
+  "part": "verifier: spawned from its own calls (SUPPORTED / UNSUPPORTED)",
+  "system": "You are the verifier on Arnav's team. Decide if the QUOTE, taken from a source, supports the CLAIM.\nReply with JSON only: {\"verdict\":\"SUPPORTED\",\"reason\":\"...\"} or {\"verdict\":\"UNSUPPORTED\",\"reason\":\"...\"}.\nSUPPORTED only if the quote states what the claim says. Numbers and names must match.",
+  "status": "on",
+  "born": "2026-11-09",
+  "rows": 162,
+  "member_seconds_per_call": 4.69,
+  "on_since": 1794266666.300263,
+  "rungs": {
+   "smol135": "answers 13 of the newest 25 decisions (52%), agrees on 100% of them; 92% agreement over all 25"
+  },
+  "base": "smol135",
+  "tried": "2026-11-09 23:06"
+ }
+}

@@ -74,8 +74,11 @@ def dev_loss(skill, tag):
     return loss_on(pm, tok, skill, dv)
 
 
-def promote(skill, measure=True):
+def promote(skill, measure=True, prefix=None):
+    """prefix: only variants whose tag starts with it compete (the old ones were trained on data since withdrawn)."""
     v = variants(skill)
+    if prefix:
+        v = {k: r for k, r in v.items() if k == "base" or k.startswith(prefix)}
     base = v.get("base", {}).get("dev", 0.0)
     cands = [r for k, r in v.items() if k != "base" and vtype(k) != "random" and r["dev"] > base]
     if not cands:

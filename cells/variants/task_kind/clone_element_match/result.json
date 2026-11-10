@@ -1,0 +1,86 @@
+{
+ "skill": "task_kind",
+ "base": "smol135",
+ "tag": "clone_element_match",
+ "modules": [
+  "8:o_proj",
+  "8:q_proj",
+  "8:v_proj",
+  "9:q_proj",
+  "9:v_proj",
+  "10:q_proj",
+  "10:v_proj",
+  "11:down_proj",
+  "11:q_proj",
+  "11:v_proj",
+  "12:down_proj",
+  "12:q_proj",
+  "12:v_proj",
+  "13:down_proj",
+  "13:q_proj",
+  "13:v_proj",
+  "14:down_proj",
+  "14:q_proj",
+  "14:v_proj",
+  "19:o_proj",
+  "28:down_proj",
+  "28:gate_proj",
+  "28:up_proj",
+  "29:down_proj",
+  "29:gate_proj",
+  "29:up_proj"
+ ],
+ "rank": 8,
+ "thin": 2,
+ "alpha": 16,
+ "steps": 100,
+ "lr": 0.001,
+ "trainable_params": 831744,
+ "parent": "/home/user/hivemind/cells/adapters/element_match",
+ "copied_tensors": 420,
+ "dev": 0.6818181818181818,
+ "test": 0.8188976377952756,
+ "train_seconds": 228.0,
+ "test_errors": [
+  [
+   "Download the quotes and authors from the library catalogue site into a spreadsheet.",
+   "code",
+   "lookup"
+  ],
+  [
+   "Write a program that finds duplicate rows.",
+   "code",
+   "lookup"
+  ],
+  [
+   "This code is wrong, correct it: print('total: ' + 5)",
+   "code",
+   "calc"
+  ],
+  [
+   "Get the parameter counts for google/gemma-2-2b and Qwen/Qwen2.5-0.5B, tabulate them and chart them.",
+   "plan",
+   "code"
+  ],
+  [
+   "This code is wrong, correct it: x = [1, 2]; print(x[2])",
+   "code",
+   "lookup"
+  ],
+  [
+   "Correct the grammar of: 'The train leaves at nine.'",
+   "write",
+   "lookup"
+  ],
+  [
+   "Download the quotes and authors from the shop's website into a spreadsheet.",
+   "code",
+   "calc"
+  ],
+  [
+   "Get the parameter counts for microsoft/phi-2 and meta-llama/Llama-3.2-1B, tabulate them and chart them.",
+   "plan",
+   "lookup"
+  ]
+ ]
+}

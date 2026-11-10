@@ -2,7 +2,7 @@
  "skill": "quote_pick",
  "base": "smol135",
  "tag": "base",
- "dev": 0.125,
- "test": 0.16666666666666666,
+ "dev": 0.1125,
+ "test": 0.17333333333333334,
  "trainable_params": 0
 }

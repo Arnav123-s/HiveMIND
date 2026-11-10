@@ -1,0 +1,384 @@
+{
+ "skill": "de_grammar",
+ "incumbent": "code:ok",
+ "test": 0.5,
+ "ms_per_call": 0.0,
+ "n": 150,
+ "errors": [
+  [
+   "SENTENCE: Alles, bis auf das IT-Branche.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Sie h\u00e4tten nie geglaubt, er sei so gestorben, wie es dem Sheriff geschlussfolgert habe.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Hare stritt aber ab, dass h\u00e4tte der YMCA ein kulturelles Problem, das Mitarbeiter davon abgehalten habe, Lords Verst\u00f6\u00dfe in Bezug auf die Sicherheit von Kindern zu melden.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: In Singapur sind etwa 70 Prozent der verpf\u00e4ndeten Gegenst\u00e4nde in den 200 Pfandh\u00e4usern das Stadtstaats Gold.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Desweiteren wurden in die Stadtgebiet wohl auch einige Sylvesterb\u00f6ller gez\u00fcndet, aber auch hier ist kein Sachschaden entstanden.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Politiker haben ihre Sorge dar\u00fcber zum Ausdruck gebracht, dass des EU bestimmte IT- und Internet-M\u00f6glichkeiten fehlten und sie ihre Abh\u00e4ngigkeit von den USA reduzieren sollte.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Schon gar nicht wie in einer Studenten-WG mit einem gemeinsames Bad und einer K\u00fcche.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Die Richterin hatte im August geurteilt, die Stadt versto\u00dfe gegen die Verfassung mit die Art und Weise, wie das Programm f\u00fcr das Anhalten und Befragen von Personen umgesetzt werde.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: H\u00e4u\u00dfler stellte klar: \"Die letztendlichen Entscheidungen f\u00e4llen das Mitglieder des Gemeinderats\".",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: \u201eKeiner wird es jemals erfahren\u201c, schrieb Mutuma Mathiu, Journalist bei der Nation, der die kenianischer Medien als einen entscheidenden Kontrollfaktor im \u00f6ffentlichen Leben bezeichnet.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Den ehemaligen Kindergarten in die Gartenstra\u00dfe hat die Kommune an eine Privatperson verkauft.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Es standen f\u00fcnf Spiele pro Team auf den Plan, wobei jeder gegen jeden spielte.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: 2011 unterzeichneten Dutzende franz\u00f6sische Abgeordnete des streng katholischen Landes eine Petition, dass solle die \u201eGeschlechtertheorie\u201c aus Schulb\u00fcchern entfernt werden.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Zusammen sind sie ein tollen Team.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Die Impfungen mussten zur Aufrechterhaltung des Antik\u00f6rperpegels so h\u00e4ufig gegeben werden, dass waren sie teuer und unpraktisch.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Viereinhalb Meter ist das Baumstamm lang und 25 bis 30 Kilogramm schwer.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Auftakt ist bereits am Freitag des Stoppelackerparty mit DJ Ralf.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Kurz vor dem Kreisverkehr am Sch\u00e4nzle bemerkte er, dass Fahrspur er sich auf der Linksabbiegespur in Richtung Stromeyersdorfstra\u00dfe befand und wechselte auf die rechte.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Chen hatte mehrere Artikel f\u00fcr dem Neuen Express geschrieben, in denen er \u00fcber angebliche finanzielle Unregelm\u00e4\u00dfigkeiten bei einem Hersteller von Baumaschinen namens Zoomlion berichtete.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Nun muss sich der 67-J\u00e4hrige wegen Betrugs verantworten, wie ein Sprecher in der Freitag sagte.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Als Ergebnis des Ver\u00f6ffentlichung dieser Bedenken sah ich mich ich einer schwerwiegenden und anhaltenden Hetze ausgesetzt, die mich zwang, meine Familie und meine Heimat zu verlassen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Doch da er depressiv war und wusste, dass stimmte etwas nicht, verlangte er seine medizinischen Akten.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Die Stadtwerke Pfullendorf bilden das letztem Glied in dieser Kette.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Sollte eine Mutter besorgt sein, wenn ihrer Tochter schon in die Alter von sieben oder acht Jahren Br\u00fcste und Schamhaare wachsen?",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Seit 2006 seien acht derartige Tunnel entdeckt worden, hie\u00df es auf die Pressekonferenz in San Diego weiter.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Neue Flugzeuge sind weitaus abh\u00e4ngiger von elektrischen Systemen als fr\u00fchere Generationen von Luftfahrzeugen, aber sie sind auch so konstruiert und von die FAA genehmigt, dass ihnen elektronische Interferenzen nichts ausmachen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Was macht Le Pen mit ihrer neu gewonnen Popularit\u00e4t unter den wei\u00dfen Franzosen das Arbeiterklasse?",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Das Theologiestudium biete eine breitem Ausbildung.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Das Tribunal hat au\u00dferdem das Recht, den Besitz der Betroffenen zu beschlagnahmen, wenn wird eine Strafe nicht bezahlt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Hemingway erz\u00e4hlte die Geschichte eines K\u00e4mpfers, eines mutiges Mannes, der nicht aufgibt und letztendlich durch sein Wissen und auch seine Willensst\u00e4rke den Kampf gegen den Fisch gewinnt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Elisa k\u00f6nnte das schaffen, hoffen die Wissenschaftler hinter die Projekt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: US-Staatsanwalt Michael Moore sagte am Donnerstag, es werde eine formellen Ermittlung zum Tod Johnsons geben, da eine Reihe wichtiger Fragen noch ungekl\u00e4rt seien.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Omar Sultane, ein Demonstrant, sagte, des Menschen wollten einfach nur Stabilit\u00e4t.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Zu ihrem Repertoire geh\u00f6ren aber auch gef\u00fchlvolle Walzer und ein satten Big-Band-Sound.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Der New Yorker Psychiater Dr. Jack Drescher, der sich auf die Problematik der Geschlechteridentifikation spezialisiert hat, sagte, das neue deutsche Gesetz \u201eklinge nach einer gutem Sache\u201c.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Das Unternehmen erkl\u00e4rt auch, laut Untersuchungen h\u00e4nge das Erlebnis in die Flugzeug von mehr als der Sitzbreite ab.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Viele an der Wall Street betrachten die neue Gep\u00e4ckgeb\u00fchren als Zeichen daf\u00fcr, dass die Fluggesellschaften genug Geld einnehmen, um nach Jahren der Verluste die Kosten von Flugreisen zu decken.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: \"Viele Leute \u00fcbersehen, dass eben nur das Fertigprodukte teuer sind, aber so verh\u00e4lt es sich bei \"gew\u00f6hnlichen\" Fertigprodukten bekannterma\u00dfen auch\".",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Pr\u00e4sident Fran\u00e7ois Hollande empfing zwar in der Donnerstag im Pariser \u00c9lys\u00e9e-Palast Vereins- und Verbandsvertreter und h\u00f6rte sich auch deren Klagen an.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Daf\u00fcr feiert dem A-Jugendliche Joost Wind\u00dfu\u00df, der mit Doppelspielrecht beim A-Jugend-Bundesligisten HC Bremen aktiv ist, sein Saisondeb\u00fct.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Es gibt dann nur noch einen gemeinsamer Pfarrgemeinderat f\u00fcr alle sechs Pfarreien.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Jetzt werde der Neue Express einer \u201eumfassenden Rektifizierung\u201c unterzogen, erkl\u00e4rte das Regulierungsbeh\u00f6rde.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Diese Fahrer werden bald die Meilengeb\u00fchren statt der Mineral\u00f6lsteuer an dem Bundesstaat zahlen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Nur als Torh\u00fcter Roman Weidenfeller wie immer als erster BVB-Spieler die Platz betrat, brandete kurzzeitiger Jubel auf.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Bombardier hofft, dass die Flugzeugreihe der CSeries das Unternehmen in das unterer Marktsegment katapultieren kann, das derzeit von Boeing und Airbus dominiert wird.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Und eine, die schon so in des Jahre gekommen ist, dass sie bereits einem Fossil gleicht: Das erste Mal habe ich die \u201eUnabh\u00e4ngigkeit bedeutet Passkontrollen\u201c-Ente vor mindestens 40 Jahren geh\u00f6rt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Zur Instant Message-Gruppe von Usher geh\u00f6rten Banker bei Barclays und das Citigroup, sagten der Situation nahestehende Personen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Vielmehr war es ihr Ziel, in einem aufstrebender Markt f\u00fcr Kfz-Versicherungen Fu\u00df zu fassen, bei denen Fahrer auf Grundlage der gefahrenen Meilen zahlen sollen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Martin f\u00fcgte hinzu, dass liefere \u201eDouble Down\u201c keine definitive Antwort auf die Frage, ob die politischen Sondierungen Obamas Schreibtisch erreicht h\u00e4tten.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Sie wei\u00df aber auch, dass sie zu den wenigen Menschen geh\u00f6rt, die sich \u00fcberhaupt mit der Thema 'Wohnen im Alter' auseinandersetzen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Nach der Film gibt es Kaffee, Tee und Kuchen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: In der Damenwertung war Christiane Cohsmann die Zeitschnellste in die Hauptrennen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: \"In diesem Fall verliert er seinen Fl\u00fcchtlingsstatus\", zitierte des Agentur ihre Quelle.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Die Bank informierte prompt die zust\u00e4ndigem Beh\u00f6rden und arbeitet mit ihnen zusammen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Der Tunnel, der im Zickzackmuster \u00fcber eine L\u00e4nge von knapp sechs Fu\u00dfballfeldern verl\u00e4uft, verbindet Lagerhallen in das N\u00e4he von Tijuana, Mexiko, und San Diego, USA.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Der Wunsch sollte mit Baumaterial in die Wert von maximal 2000 Euro und an einem (Aktions-) Tag zu realisieren sein.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Thomas Bittner, Fraktions- und Stadtverbandsvorsitzender der Liberalen, unterst\u00fctzt seinen Fraktionskollegen: \"Was mich \u00e4rgert, ist die Tatsache, dass hier klammheimlich den Leerungszeiten ge\u00e4ndert oder auch gestrichen werden\".",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: \u201eWir freuen uns, dass die FAA erkennt, dass ein angenehmes Passagiererlebnis nicht in die Widerspruch zur Sicherheit steht\u201c, sagte Roger Dow, CEO der U.S. Travel Association.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Bereits seit 15 Jahren l\u00e4dt dem Familie Kaul die Dietinger Senioren zu Kaffee, Kuchen und danach zu einem Vesper ein.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Auch sind nicht alle Menschen, dem Pfandleihe nutzen, in finanziellen Schwierigkeiten.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Dick erkl\u00e4rt Amerika - das Reich des atemberaubenden technischen Fortschritts, gepaart mit Paranoia, Sicherheitswahn und des Glauben, auserw\u00e4hlt zu sein.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Nicht mit den Geschlechterbild \u00fcbereinstimmende Jungen haben jetzt ein spezielles Camp.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Dr. Georges Bwelle geh\u00f6rt zu dem Top 10 der \u201eCNN Heroes of 2013\u201c.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: O'Malley erkl\u00e4rte, die Website von Frontier und die Check-in-Verfahren w\u00fcrden ge\u00e4ndert, sodass das Passagiere \u00fcber die Geb\u00fchr informiert seien, ehe sie zum Flugsteig k\u00e4men.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Ebenfalls besch\u00e4digt wurde der hinter das BMW fahrende VW Passat eines 19-J\u00e4hrigen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Auf die Empf\u00e4nger-Systemen wird ebenfalls ein Virus-Check vorgenommen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Mit dem Ausbau der Niedersachsenbr\u00fccke setzt Rhenus Midgard weiterhin auf der Kohleimport f\u00fcr Kraftwerke und ist auf diesem Sektor einer der Gro\u00dfen in Europa.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Jedoch kann ein Kardinal, der ein Alter von 80 Jahren erreicht hat, nicht mehr an den Papstwahl teilnehmen \u2013 das f\u00e4llt einer Gruppe von 120 \u201ewahlberechtigten Kardin\u00e4len\u201c zu.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Der in Guangzhou ans\u00e4ssige Neue Express hatte einen seltenen \u00f6ffentlichen Aufruf zur Freilassung den Journalisten Chen Yongzhou abgedruckt.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Doch es liegen keine schl\u00fcssigen Beweise daf\u00fcr vor, dass Nahrungsmitteln Hormone in Milch oder anderen, Chemikalien in der Umwelt oder sexuelle Botschaften in den Medien urs\u00e4chlich w\u00e4ren.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Rohan Ramchandani, Leiter des europ\u00e4ischem Spot Trading bei Citi, wurde diese Woche beurlaubt und Matt Gardiner, fr\u00fcher leitender W\u00e4hrungsh\u00e4ndler bei Barclays und UBS, wurde diese Woche bei Standard Chartered suspendiert.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Jetzt appelliert Airbus vor der Dubai Airshow, wo die 777X mit \u00fcber 100 Bestellungen voraussichtlich das Rennen machen wird, direkt an das \u00d6ffentlichkeit.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: In einer neuseel\u00e4ndischen Kleinstadt gilt Burt Muro als liebenswerter Kauz, weil hat er sich vorgenommen, mit seinem Motorrad, Baujahr 1920, an einem Rennen in Amerika teilzunehmen.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Alle anderen Bewohner seien w\u00e4hrend des Brands nicht zu Hause gewesen, erkl\u00e4rte des Polizeisprecher weiter.",
+   "error",
+   "ok"
+  ],
+  [
+   "SENTENCE: Er wirkte den polizeilichem Ermittlungen soweit wie m\u00f6glich entgegen, sodass sie weiterhin ihren kriminellen Aktivit\u00e4ten nachgehen konnten.",
+   "error",
+   "ok"
+  ]
+ ]
+}
