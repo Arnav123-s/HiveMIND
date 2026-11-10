@@ -115,3 +115,23 @@ downloads", and the 1.5B coder scraped a page element that does not exist instea
 not measured: arXiv's API timed out on every search of the run.
 After it: a claim that names a quantity without its number takes its quote's words; a coder that fetches values the
 team already found, in a step that names no page, is told before the run to write them in.
+
+With those two rules (`small10`; the normal hive on the same code, `normal_reg3`: chart and lookup pass):
+chart pass (442 s). arxiv fail: the 1.7B planner searched arXiv for "mixture of experts newest"; no paper has all
+four words, the any-word search sorted by date gave six unrelated papers of that day, and the small composer said,
+rightly, that none was about mixture of experts. csv fail (2 of the 3 cheapest): the first step attempt sorted the
+wrong way and read one page; the second saved the CSV, but the file was there from the first attempt, was compared by
+name only, counted as "saved none", and the step was given up.
+After it: a search in a source the hive sorts by date keeps only the topic (the words that say how to sort or where to
+look are dropped); a file written again counts as saved.
+
+With those two rules, and the taught 1.5B coder holding the coder's job (`small11`): arxiv fail, csv fail.
+arxiv: the search now returns mixture-of-experts papers and the reader took six facts; one unrelated paper was dropped
+by the item juror, and the note the checks add about a dropped item ("the source line does not contain ...") was read
+by the gap rule as the researcher saying it had found nothing. csv: the file was counted and the step passed, with 2
+of the 3 cheapest: the program read one page of the listing, the page check said so twice, the coder returned the same
+program, and on the last attempt a program with a code-checked problem went on to the jury of small models, which
+passed it.
+After it: the gap rules read only the researcher's own words; a program that runs out of attempts with a problem the
+code checks found carries it in its result, and the step fails whatever the jury says (the step is then retried with
+that feedback).

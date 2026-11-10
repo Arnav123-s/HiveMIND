@@ -23,6 +23,16 @@ def plan_messages(task, context):
         user += f"\n\nWhat the team already found:\n{context}"
     return [{"role": "system", "content": prompts.RESEARCHER_PLAN}, {"role": "user", "content": user}]
 
+_WHERE = re.compile(r"\b(arxiv|openalex|hacker ?news)\b", re.I)
+
+
+def topic(q):
+    """The subject of a search in a source the hive sorts itself. Words that say how to sort ("newest") or where to
+    look ("arXiv") are not in the papers: the 1.7B planner searched arXiv for "mixture of experts newest", no paper
+    has all four words, and the any-word search sorted by date returned six unrelated papers of that day."""
+    t = " ".join(_WHERE.sub(" ", NEWEST.sub(" ", q)).split())
+    return t if len(t) > 2 else q
+
 
 def extract_messages(task, sources_text):
     return [{"role": "system", "content": prompts.RESEARCHER_EXTRACT},
@@ -49,6 +59,8 @@ def gather(plan, board, step_id, task="", keep=None, read_top=0):
             kw = {"pipeline_tag": "text-generation", "limit": 20}
         if src in ("arxiv", "hn", "openalex") and (NEWEST.search(f"{task} {q}") or s.get("sort") == "newest"):
             kw["newest"] = True  # "the newest papers" sorted by relevance gave papers from two years earlier
+        if src in ("arxiv", "hn", "openalex"):
+            q = topic(q)
         try:
             res = web.search(src, q, **kw)
         except Exception as e:  # noqa: BLE001 - report every failure to the board

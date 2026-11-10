@@ -1591,3 +1591,55 @@ def test_the_coder_is_told_to_use_the_teams_values_instead_of_fetching_them_agai
     assert refetches(task, ctx, "import matplotlib\nvals = [3597908, 220473]") is None        # it uses the values
     assert refetches(task, "", code) is None                                                   # nothing was found before
     assert refetches("Scrape the prices from books.toscrape.com and chart them.", ctx, code) is None  # he ordered a fetch
+
+
+def test_a_file_written_again_counts_as_saved(tmp_path):
+    import os
+    from team.specialists import coder
+    (tmp_path / "old.csv").write_text("a")
+    (tmp_path / "again.csv").write_text("a")
+    before = coder.stamps(tmp_path)
+    (tmp_path / "again.csv").write_text("b")
+    os.utime(tmp_path / "again.csv", ns=(1, before["again.csv"] + 1_000_000))
+    (tmp_path / "new.csv").write_text("c")
+    (tmp_path / "s1.py").write_text("x")
+    (tmp_path / ".s1.py.out").write_text("x")
+    assert sorted(p.name for p in coder.saved(tmp_path, before, "s1.py")) == ["again.csv", "new.csv"]
+
+
+def test_search_topic_drops_sort_and_source_words():
+    from team.specialists.researcher import topic
+    assert topic("mixture of experts newest") == "mixture of experts"
+    assert topic("latest arXiv papers on mixture of experts") == "papers on mixture of experts"
+    assert topic("mixture of experts") == "mixture of experts"
+    assert topic("newest") == "newest"
+
+
+def test_the_note_about_dropped_items_is_not_the_researchers_admission():
+    from team.specialists import verifier
+    s = ("The three newest papers are A, B and C. They were published on 2026-11-09."
+         "\nDropped by the team's checks (do not use): D (The source line does not contain the full information.)")
+    assert verifier.admits_a_gap(s) is None and verifier.admits_nothing(s) is None
+    assert verifier.admits_a_gap("The model is X. The licence is not specified in the provided facts.")
+
+
+def test_a_program_left_with_a_problem_the_checks_found_fails_whatever_the_jury_would_say(tmp_path):
+    from team.specialists import verifier
+    v, why = verifier.verify({"id": "s1", "agent": "coder", "task": "save the three cheapest books to a CSV", "done_when": "x"},
+                             {"returncode": 0, "summary": "Saved books.csv", "files": ["books.csv"],
+                              "unfixed": "the page is only the first page of the listing"}, None, tmp_path)
+    assert v == "FAIL" and "only the first page" in why
+
+
+def test_the_model_files_own_template_builds_the_prompt():
+    from team.llm import FileTok
+
+    class Fake:
+        metadata = {"tokenizer.chat_template": "{{ bos_token }}{% for m in messages %}<|im_start|>{{ m['role'] }}\n{{ m['content'] }}<|im_end|>\n"
+                                               "{% endfor %}{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}"}
+
+        def tokenize(self, b, add_bos=False, special=True):
+            return list(b)
+    t = FileTok(Fake())
+    p = t.apply_chat_template([{"role": "user", "content": "hi"}], tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    assert p == "<|im_start|>user\nhi<|im_end|>\n<|im_start|>assistant\n" and len(t.encode("abc")) == 3

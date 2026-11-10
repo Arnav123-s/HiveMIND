@@ -1,0 +1,56 @@
+{
+ "yicoder15bchat": {
+  "repo": "bartowski/Yi-Coder-1.5B-Chat-GGUF",
+  "file": "Yi-Coder-1.5B-Chat-Q8_0.gguf",
+  "base": "01-ai/Yi-Coder-1.5B-Chat",
+  "params": 1476495360,
+  "license": "apache-2.0",
+  "size_gb": 1.57,
+  "found": "2026-11-10",
+  "tryouts": {
+   "coordinator": {
+    "exam_lessons": 46,
+    "alone": 0.152,
+    "untouched_student": 0.304,
+    "role_best": 0.587,
+    "right_where_the_holder_is_wrong": 0,
+    "when": "2026-11-10 17:52"
+   },
+   "coder": {
+    "exam_lessons": 32,
+    "alone": 0.375,
+    "untouched_student": 0.656,
+    "role_best": 0.844,
+    "right_where_the_holder_is_wrong": 1,
+    "when": "2026-11-10 17:59"
+   }
+  }
+ },
+ "smollm217binstruct": {
+  "repo": "bartowski/SmolLM2-1.7B-Instruct-GGUF",
+  "file": "SmolLM2-1.7B-Instruct-Q8_0.gguf",
+  "base": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "params": 1711376384,
+  "license": "apache-2.0",
+  "size_gb": 1.82,
+  "found": "2026-11-10",
+  "tryouts": {
+   "coordinator": {
+    "exam_lessons": 46,
+    "alone": 0.043,
+    "untouched_student": 0.304,
+    "role_best": 0.587,
+    "right_where_the_holder_is_wrong": 0,
+    "when": "2026-11-10 17:59"
+   },
+   "coder": {
+    "exam_lessons": 32,
+    "alone": 0.0,
+    "untouched_student": 0.656,
+    "role_best": 0.844,
+    "right_where_the_holder_is_wrong": 0,
+    "when": "2026-11-10 18:10"
+   }
+  }
+ }
+}

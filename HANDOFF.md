@@ -1,9 +1,9 @@
-# Handoff: HiveMIND (`main` has PR #5; work continues on `make-it-work`, PR #6)
+# Handoff: HiveMIND (`main` has PR #6; work continues on `make-it-work`, draft PR #7)
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
 ## Live status (kept current; read this first)
-Updated 2026-11-10 (afternoon UTC). Work is on `make-it-work` (draft PR #6 into `main`); everything is pushed.
+Updated 2026-11-10 (evening UTC). PR #6 is merged into `main` on his approval. Work continues on `make-it-work`, restarted from `main` (draft PR #7); everything is pushed.
 
 **Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
 freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow
@@ -12,6 +12,34 @@ know and they replace nobody: "a huge amount of cells acting as one creature". U
 by older agents may be outdated; what he described is what counts. Kept from the old rules because they protect him:
 the guard (nothing that spends, deletes, sends as him or logs in unless he ordered it), credentials stay local, no
 benchmaxing, held-out sets run once, no model names in commits.
+
+**Added by him later the same day (2026-11-10):**
+- The small hive may be losing because its members are all the same model. (Measured so far: the planner's two
+  specialists got the same 9 exam lessons right. Being tested: `training/diverse.py`.)
+- A weight edit may do nothing where the model has no capability; train specialists, then edit. (Measured: the edit
+  taught the planner 24 of 24 short plans and 3 of 22 long ones.)
+- The hive must not depend on the agent: it must multiply and gain models and capabilities on its own.
+- He would rather the hive train its own specialists (training, editing, fine-tuning) than recruit. Told him: that is
+  the main path; a model that plans or codes cannot be trained from nothing on four CPU cores, so recruiting stays
+  only as the way the hive gets a new starting model when the ones it has cannot learn a job.
+- The machine is the agent's: disk space may be freed. (Freed: an unused 2.5B model file and the package download
+  cache. The models the hive uses were kept.) "Don't delete caches" below no longer holds for this machine.
+- All specialists are trained on the CPU already (128 lessons: 25 minutes); he asked for exactly that.
+- Train from scratch on the CPU, and let the hive find, harvest and train on its own data. (Built: `team/harvest.py`,
+  `training/scratch.py`.)
+- Cells trained together, depending on each other, acting as one brain. (Built: `scratch.py together [--consult]`.)
+- His picture, in his words: thousands of cells in a body, each with a function, alone not always important, together
+  doing big jobs; all different; specialities may overlap; each cell the smallest model that can be made; more cells
+  with more data, conquering more. (Built: `training/body.py`: one stem cell, overlapping territories, cells that weigh
+  in by fit, growth where the body is worst.)
+- It must get better on its own: the agent cannot watch over it and his access to the agent is limited. (Built:
+  `python -m team body`, one unattended turn with a keep-only-if-measured-better gate, in `serve`'s idle loop.)
+- Research he pointed to, looked up: weight-space programming (MIT CSAIL, Nov 2026; tiny localized edits expose an
+  ability a model has, do not create one); LeCun and Balestriero's JEPA paper (Oct 2026; a 109M model lines up with
+  image models better than a 72B one; the training method counted, 42x fewer examples); Tiny Recursive Model (7M
+  weights, narrow puzzles, heavy augmentation); BitNet (fast on CPU, needs its own runtime).
+- **This cloud machine is reclaimed when idle.** The hive goes on evolving only where it is installed and left
+  running: `python -m team install` on a device of his (README "Install", "Always on").
 
 **Built on this branch (143 tests):**
 - `python -m team school` (`team/school.py`, README "School"): a small model learns a bigger member's job from that
@@ -48,12 +76,29 @@ benchmaxing, held-out sets run once, no model names in commits.
 **Open, in order:**
 1. Cleaner lessons for long plans: teach the plan after the reviewer and the code checks (`coordinator.reviewed_plan`)
    or plans from runs that passed, instead of the 4B's first plan. Then re-examine.
-2. The coder's first class (`python -m team school coder`; about 2 minutes a lesson with the 7B, 160 lessons).
+2. The coder's first class is held: 160 lessons, the taught 1.5B prints what the 7B's program prints on 84% of 32
+   unseen lessons (untouched 66%; first scored 81% and 59%, before two corrections to the key); not graduated (one
+   lesson short), holds the job in the small-only hive (`coder15+coder_school`).
    Its lessons are pure computations; a second kind is needed for what fails without the 7B: changing a working
-   program on feedback without breaking it (csv), and reading a number from a fetched page (chart).
+   program on feedback without breaking it (csv), and reading a number from a fetched page.
 3. Small-only arxiv and csv still fail. The item juror is now asked without the whole list's requirements
    (`verifier.item_question`); arxiv's facts still do not survive the checks. csv: see 2.
 4. More roles in school: researcher (extract), critic, plan_reviewer, each with its own key.
+   Built, no class held: `coder_fix` (fixing a program from the hive's own feedback; lessons from the students' real
+   mistakes, `school.teach_fixes`; several hours of the 7B for a first class).
+4b. Recruits (`python -m team recruit`, `team/recruit.py`, `cells/recruits.json`): the hive finds, checks, downloads
+   and tries small models of other families on the roles' exams, enrols and teaches by measurement. First tryouts
+   First tryouts: Yi-Coder-1.5B and SmolLM2-1.7B, neither enrolled (under the untouched students on both exams).
+   `training/diverse.py`: other families share fewer mistakes but are weaker, so voting gained nothing (27 of 32, as
+   the best alone); two different families printing the same was right every time (58 of 58 over five pairs): a
+   check to build into the coder's run loop (run a second family's program, trust agreement, spend effort on
+   disagreement).
+4c. From scratch on the CPU (`python -m team harvest`, `training/scratch.py`; his order of 2026-11-10): the hive
+   harvests text (own logs + open datasets, licence-checked; 48 MB so far in `memory/harvest/`, not in git), learns a
+   4096-piece vocabulary, a 2.6M-weight model reads it, then is trained whole on one cell job, same rows and test as
+   today's cells. Without reading first: licence_open 99% dev, 53% on unseen words. Next: `scratch.py all` after the
+   reading run, table in `training/reports/scratch_cells.json`; then harvest and reading in the idle loop, and the
+   hive finding datasets itself as it finds models.
 5. If routing by shared words sends tasks to the wrong narrow specialist once there are several, train a router cell.
 6. Older: more logged work for the item juror's site (about 60 decisions, needs about 200); near-miss numbers for
    the spawned cell; held-out set 4 (run once, on frozen code).
@@ -89,9 +134,10 @@ Key files:
 - No benchmaxing:
   - fixes must be general;
   - held-out sets are run once, on frozen code, and reported as measured.
-- CPU only, 10 GB budget, no spending. Don't delete caches or his files.
+- CPU only, 10 GB budget, no spending. Don't delete his files. (Caches and disk on this cloud machine: his word on
+  2026-11-10 is that the agent may free space as it sees fit.)
 - The final report uses the headings **Blocked on me / Changed / Found**, and marks anything unconfirmed.
-- Merging any PR needs **his explicit yes for that PR**. PR #5 had it and is merged; the next one needs it again.
+- Merging any PR needs **his explicit yes for that PR**. PR #5 and PR #6 had it and are merged; the next one needs it again.
 - No model identifiers in commits or PRs. Commits end with the Co-Authored-By and Claude-Session lines.
 - His direction: a hive of the **smallest specialists, each doing the smallest job** it can do well, working as one. Not one big model.
 
@@ -142,4 +188,4 @@ Measured decisions:
   2. Run `training/cells_incumbents.py <skill>`.
   3. Run `training/cells_research.py <skill>`.
   4. Check it on real inputs before it gets a job.
-- **GitHub:** use `gh api` (REST; GraphQL returns 403). The PR is Arnav123-s/HiveMIND#5.
+- **GitHub:** use `gh api` (REST; GraphQL returns 403). The PR is Arnav123-s/HiveMIND#7.
