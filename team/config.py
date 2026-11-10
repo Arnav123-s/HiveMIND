@@ -22,6 +22,7 @@ SPECIALISTS = {
     "verifier": BASE_MODEL,     # judges every result against its evidence
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
+    "coder_fix": CODER_MODEL,   # the coder's fix turns, where a taught specialist holds them (team/school.py)
 }
 for _role in ("calculator", "editor", "code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
               "lesson_writer"):
