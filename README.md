@@ -585,6 +585,12 @@ the facts of the reading test below).
 It answers only SUPPORTED; UNSUPPORTED always goes to the verifier (dev did not vouch for that label). The first
 round, with 72 decisions, left 11 to judge on: the cell agreed on 10 and stayed off for lack of evidence.
 
+Live, on 12 further research questions with every sure answer also sent to the verifier
+(`AGENT_TEAM_SPAWN_AUDIT=1`): 26 fact checks (the verifier: 22 supported, 4 unsupported); the cell was sure on 20 and
+agreed on 19 (95%). The miss: claim "-196 °C", quote "−195.8 °C"; the verifier rejected it, the cell would have passed
+it, so 1 of the verifier's 4 rejections would have slipped through. 20 audits are few, and the miss is a near-miss
+number, the kind that matters most. Its confidences were left as the gate set them, not tuned on these calls.
+
 What the logs also show: the small checks are a small share of the hive's time (the fact check about 5%). The
 largest share by far is the 4B reading sources. That is the next section.
 
