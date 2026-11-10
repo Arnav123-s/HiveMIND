@@ -211,6 +211,26 @@ def unread_pages(task, code):
     return None
 
 
+FETCHES = re.compile(r"\brequests\.(?:get|post)\s*\(|\burlopen\s*\(|\bhttpx\.|\bBeautifulSoup\s*\(")
+ASKS_FETCH = re.compile(r"https?://|\bwww\.|\b[\w-]+\.(?:com|org|net|io|co)\b|\b(?:fetch\w*|scrap\w*|crawl\w*|api|url|website|"
+                        r"web ?page|online)\b|\bdownload (?:the|it|them|from|a)\b|\bfrom the (?:web|site|page|internet)\b", re.I)
+
+
+def refetches(task, context, code):
+    """The program goes to the web for values an earlier step already found, and the step names no page to read: the
+    1.5B coder, handed "220,473 downloads" by the researcher, scraped a page element that does not exist instead.
+    Returns what to tell it, or None."""
+    results = (context or "").split("## ", 1)[1] if "## " in (context or "") else ""
+    if not results or not FETCHES.search(code or "") or ASKS_FETCH.search(task or ""):
+        return None
+    vals = [ln.strip()[:220] for ln in results.splitlines() if re.search(r"\d", ln) and not ln.startswith("Items:")][:6]
+    if not vals:
+        return None
+    return ("The program fetches pages, but this step names no page to read and the team already found the values. "
+            "Do not use requests or BeautifulSoup. Write the values into the program as plain numbers, taken from "
+            "these results:\n" + "\n".join(vals))
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -238,6 +258,12 @@ def run(task, context, board, step_id, guard, workdir):
             board.log("coder", "same-program", f"attempt {attempt}: the program did not change; asked again")
             code = extract_code(llm.chat("coder", messages, max_new_tokens=1400, stop="code", temperature=0.7))
         tried.add(code.strip())
+        again = refetches(own, context, code)
+        if again and attempt < config.CODER_MAX_ATTEMPTS:  # told before it runs; the last attempt runs whatever it is
+            board.log("coder", "team-values", f"attempt {attempt}: it fetches what the team already found; told to use the results")
+            messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                                   {"role": "user", "content": prompts.CODER_FIX.format(error=again)}]
+            continue
         if not guard.check_code("coder", code):
             return {"summary": "Stopped: the program needs Arnav's approval before it can run.", "code": code,
                     "returncode": None, "files": [], "attempts": attempt}

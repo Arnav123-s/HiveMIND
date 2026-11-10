@@ -143,12 +143,21 @@ def condense(task, title, text, board, limit=3000):
     return "\n".join(lines[i] for i in sorted(set(keep)))
 
 
+_VALUE = re.compile(r"(?<![\w./-])\d[\d,.]*\d|(?<![\w./-])\d(?![\w/-])")  # a number standing alone, not part of a name
+
+
 def with_value(fact):
     """A bare label ("parameter count") states nothing the checker can match to its quote ("params 0.135B"), so it was
-    rejected while the number still reached the report through the summary. Such a claim takes its quote's words."""
+    rejected while the number still reached the report through the summary. Such a claim takes its quote's words.
+    So does a claim that names a quantity and leaves the number out ("Number of downloads for Qwen/Qwen3-1.7B on
+    Hugging Face", quote "downloads 3597908": the small composer then wrote that the model had 0 downloads)."""
     claim, quote = str(fact.get("claim", "")).strip(), str(fact.get("quote", "")).strip()
-    if quote and not re.search(r"\d", claim) and len(claim.split()) <= 4 and quote.lower() not in claim.lower():
-        fact["claim"] = f"{claim}: {quote[:200]}"
+    if not quote or quote.lower() in claim.lower():
+        return fact
+    label = not re.search(r"\d", claim) and len(claim.split()) <= 4
+    no_number = not _VALUE.search(claim) and bool(_VALUE.search(quote))
+    if label or no_number:
+        fact["claim"] = f"{claim.rstrip('.')}: {quote[:200]}"
     return fact
 
 

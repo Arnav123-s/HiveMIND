@@ -104,3 +104,14 @@ Re-runs on the changed code:
 - Normal hive (`normal_reg2`): lookup, arxiv, fib all pass.
 - Small only (`small8`, before the reader's new instruction): lookup pass (after the check correction), fib pass
   (673 s; the example rule held the coder to fib(2) = 1), arxiv fail (no fact survived the checks).
+
+The small reader with its new instruction, on the same 26 logged reading inputs as before (`training/chunk_read.py`):
+28 of the 4B's 38 checked facts found (was 19), every fact of the 4B on 14 of 21 inputs (was 7), none on 1 (was 5),
+62 checked facts in all (was 52), the same time.
+
+Small only on that code (`small9`): lookup pass. chart fail, but further: the research step now found a download
+count and passed; the claim for the other model named the quantity without its number, the composer wrote "0
+downloads", and the 1.5B coder scraped a page element that does not exist instead of using the team's values. arxiv
+not measured: arXiv's API timed out on every search of the run.
+After it: a claim that names a quantity without its number takes its quote's words; a coder that fetches values the
+team already found, in a step that names no page, is told before the run to write them in.
