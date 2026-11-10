@@ -1,0 +1,665 @@
+[
+ {
+  "id": "lookup",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 412,
+  "note": "",
+  "calls": 19,
+  "model_seconds": 404.3,
+  "by_member": {
+   "coordinator (brain4b)": [
+    1,
+    118.5
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    5.5
+   ],
+   "researcher (brain4b)": [
+    2,
+    126.2
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    2,
+    0.1
+   ],
+   "juror_brain (brain4b)": [
+    3,
+    21.5
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    9.0
+   ],
+   "juror_fast (fast)": [
+    1,
+    7.8
+   ],
+   "writer (fast+writer)": [
+    4,
+    18.1
+   ],
+   "critic (brain4b)": [
+    3,
+    87.8
+   ],
+   "editor (brain4b)": [
+    1,
+    9.8
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "facts from a source"
+ },
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "2 arXiv papers listed in the answer",
+  "seconds": 288,
+  "note": "",
+  "calls": 18,
+  "model_seconds": 281.0,
+  "by_member": {
+   "coordinator (brain4b)": [
+    2,
+    39.4
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    10.8
+   ],
+   "researcher (brain4b)": [
+    2,
+    92.4
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    3,
+    0.3
+   ],
+   "juror_brain (brain4b)": [
+    4,
+    30.9
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    11.2
+   ],
+   "juror_fast (fast)": [
+    1,
+    11.3
+   ],
+   "writer (fast+writer)": [
+    2,
+    35.6
+   ],
+   "critic (brain4b)": [
+    2,
+    49.0
+   ]
+  },
+  "cell_calls": 4,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ },
+ {
+  "id": "chart",
+  "ok": true,
+  "why": "chart: yes, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 1601,
+  "note": "",
+  "calls": 28,
+  "model_seconds": 1567.9,
+  "by_member": {
+   "coordinator (brain4b)": [
+    2,
+    101.1
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    10.1
+   ],
+   "browser (fast+browser)": [
+    4,
+    87.5
+   ],
+   "condenser (fast)": [
+    3,
+    237.6
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    15.2
+   ],
+   "juror_brain (brain4b)": [
+    2,
+    20.1
+   ],
+   "juror_fast (fast)": [
+    2,
+    15.7
+   ],
+   "coder (coder7b)": [
+    2,
+    324.7
+   ],
+   "code_reviewer (coder7b)": [
+    4,
+    364.8
+   ],
+   "writer (fast+writer)": [
+    2,
+    36.0
+   ],
+   "critic (brain4b)": [
+    3,
+    160.2
+   ],
+   "editor (brain4b)": [
+    1,
+    194.9
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "browser",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ },
+ {
+  "id": "quotes",
+  "ok": true,
+  "why": "3/3 of the first three quotes",
+  "seconds": 249,
+  "note": "",
+  "calls": 10,
+  "model_seconds": 238.1,
+  "by_member": {
+   "browser (fast+browser)": [
+    2,
+    49.7
+   ],
+   "condenser (fast)": [
+    1,
+    15.9
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    5.8
+   ],
+   "juror_brain (brain4b)": [
+    1,
+    8.3
+   ],
+   "juror_fast (fast)": [
+    1,
+    6.2
+   ],
+   "writer (fast+writer)": [
+    2,
+    81.5
+   ],
+   "critic (brain4b)": [
+    2,
+    70.8
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "browser",
+   "writer"
+  ],
+  "kind": "operate a website"
+ },
+ {
+  "id": "csv",
+  "ok": true,
+  "why": "CSV has 3/3 of the cheapest prices ['10.69', '11.84', '12.29']",
+  "seconds": 337,
+  "note": "",
+  "calls": 10,
+  "model_seconds": 324.8,
+  "by_member": {
+   "coder (coder7b)": [
+    2,
+    215.4
+   ],
+   "code_reviewer (coder7b)": [
+    1,
+    13.0
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    13.1
+   ],
+   "juror_brain (brain4b)": [
+    1,
+    13.6
+   ],
+   "juror_fast (fast)": [
+    1,
+    12.1
+   ],
+   "writer (fast+writer)": [
+    2,
+    15.7
+   ],
+   "critic (brain4b)": [
+    2,
+    42.0
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "scrape to a file"
+ },
+ {
+  "id": "percent",
+  "ok": true,
+  "why": "1 sentences, 4 lines",
+  "seconds": 46,
+  "note": "",
+  "calls": 4,
+  "model_seconds": 40.0,
+  "by_member": {
+   "calculator (fast)": [
+    1,
+    11.4
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    7.3
+   ],
+   "writer (fast+writer)": [
+    1,
+    6.1
+   ],
+   "critic (brain4b)": [
+    1,
+    15.1
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "calculator",
+   "writer"
+  ],
+  "kind": "arithmetic"
+ },
+ {
+  "id": "days",
+  "ok": true,
+  "why": "1 sentences, 7 lines",
+  "seconds": 410,
+  "note": "",
+  "calls": 8,
+  "model_seconds": 403.8,
+  "by_member": {
+   "calculator (fast)": [
+    1,
+    10.8
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    5.3
+   ],
+   "writer (fast+writer)": [
+    2,
+    233.5
+   ],
+   "critic (brain4b)": [
+    3,
+    118.4
+   ],
+   "editor (brain4b)": [
+    1,
+    35.8
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "calculator",
+   "writer"
+  ],
+  "kind": "dates"
+ },
+ {
+  "id": "units",
+  "ok": true,
+  "why": "1 sentences, 4 lines",
+  "seconds": 55,
+  "note": "",
+  "calls": 5,
+  "model_seconds": 48.1,
+  "by_member": {
+   "calculator (fast)": [
+    2,
+    18.0
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    5.4
+   ],
+   "writer (fast+writer)": [
+    1,
+    5.8
+   ],
+   "critic (brain4b)": [
+    1,
+    18.9
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "calculator",
+   "writer"
+  ],
+  "kind": "unit conversion"
+ },
+ {
+  "id": "translate",
+  "ok": true,
+  "why": "2 sentences, 1 lines",
+  "seconds": 26,
+  "note": "",
+  "calls": 2,
+  "model_seconds": 19.5,
+  "by_member": {
+   "editor (brain4b)": [
+    1,
+    7.5
+   ],
+   "critic (brain4b)": [
+    1,
+    12.0
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "writer"
+  ],
+  "kind": "translate given text"
+ },
+ {
+  "id": "summary",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 65,
+  "note": "",
+  "calls": 4,
+  "model_seconds": 59.2,
+  "by_member": {
+   "coordinator (brain4b)": [
+    1,
+    28.7
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    5.5
+   ],
+   "writer (fast+writer)": [
+    1,
+    12.0
+   ],
+   "critic (brain4b)": [
+    1,
+    13.0
+   ]
+  },
+  "cell_calls": 4,
+  "plan": [
+   "writer"
+  ],
+  "kind": "summarise given text"
+ },
+ {
+  "id": "grammar",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 29,
+  "note": "",
+  "calls": 2,
+  "model_seconds": 23.1,
+  "by_member": {
+   "writer (fast+writer)": [
+    1,
+    5.9
+   ],
+   "critic (brain4b)": [
+    1,
+    17.2
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "writer"
+  ],
+  "kind": "fix given text"
+ },
+ {
+  "id": "email",
+  "ok": true,
+  "why": "3 sentences, 4 lines",
+  "seconds": 39,
+  "note": "",
+  "calls": 3,
+  "model_seconds": 33.1,
+  "by_member": {
+   "writer (fast+writer)": [
+    2,
+    10.9
+   ],
+   "critic (brain4b)": [
+    1,
+    22.2
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "writer"
+  ],
+  "kind": "draft"
+ },
+ {
+  "id": "fib",
+  "ok": true,
+  "why": "3 sentences, 21 lines",
+  "seconds": 144,
+  "note": "",
+  "calls": 7,
+  "model_seconds": 137.4,
+  "by_member": {
+   "coder (coder7b)": [
+    1,
+    24.9
+   ],
+   "code_reviewer (coder7b)": [
+    1,
+    7.4
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    11.1
+   ],
+   "juror_brain (brain4b)": [
+    1,
+    10.6
+   ],
+   "juror_fast (fast)": [
+    1,
+    9.8
+   ],
+   "writer (fast+writer)": [
+    1,
+    48.4
+   ],
+   "critic (brain4b)": [
+    1,
+    25.2
+   ]
+  },
+  "cell_calls": 4,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "write and run code"
+ },
+ {
+  "id": "bugfix",
+  "ok": true,
+  "why": "9 sentences, 29 lines",
+  "seconds": 297,
+  "note": "",
+  "calls": 16,
+  "model_seconds": 288.6,
+  "by_member": {
+   "coordinator (brain4b)": [
+    3,
+    101.7
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    16.9
+   ],
+   "researcher (brain4b)": [
+    3,
+    24.3
+   ],
+   "coder (coder7b)": [
+    1,
+    19.7
+   ],
+   "code_reviewer (coder7b)": [
+    1,
+    6.5
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    10.8
+   ],
+   "juror_brain (brain4b)": [
+    1,
+    9.7
+   ],
+   "juror_fast (fast)": [
+    1,
+    6.2
+   ],
+   "calculator (fast)": [
+    1,
+    7.7
+   ],
+   "writer (fast+writer)": [
+    1,
+    42.2
+   ],
+   "critic (brain4b)": [
+    1,
+    42.9
+   ]
+  },
+  "cell_calls": 6,
+  "plan": [
+   "researcher",
+   "coder",
+   "calculator",
+   "writer"
+  ],
+  "kind": "fix code"
+ },
+ {
+  "id": "explain",
+  "ok": true,
+  "why": "3 sentences, 1 lines",
+  "seconds": 468,
+  "note": "",
+  "calls": 16,
+  "model_seconds": 456.5,
+  "by_member": {
+   "researcher (brain4b)": [
+    2,
+    133.1
+   ],
+   "condenser (fast)": [
+    3,
+    241.7
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    2,
+    0.3
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    18.9
+   ],
+   "juror_brain (brain4b)": [
+    4,
+    21.1
+   ],
+   "juror_fast (fast)": [
+    1,
+    9.4
+   ],
+   "writer (fast+writer)": [
+    1,
+    12.0
+   ],
+   "critic (brain4b)": [
+    1,
+    20.0
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "explain from knowledge"
+ },
+ {
+  "id": "sales",
+  "ok": true,
+  "why": "1 sentences, 9 lines",
+  "seconds": 71,
+  "note": "",
+  "calls": 4,
+  "model_seconds": 64.5,
+  "by_member": {
+   "calculator (fast)": [
+    1,
+    17.1
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    8.3
+   ],
+   "writer (fast+writer)": [
+    1,
+    11.8
+   ],
+   "critic (brain4b)": [
+    1,
+    27.3
+   ]
+  },
+  "cell_calls": 2,
+  "plan": [
+   "calculator",
+   "writer"
+  ],
+  "kind": "reason over given data"
+ }
+]

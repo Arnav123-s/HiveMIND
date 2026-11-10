@@ -40,3 +40,22 @@ What holds: single look-ups, arithmetic, dates, units, translation, grammar, dra
 Next, in the order the failures suggest: a routing check on the plan (the route_step cell already scores 0.99 on
 "which specialist takes a step" and was not consulted for the whole plan here), then the coder's job cut into
 smaller pieces, then list extraction.
+
+## Re-runs after the fixes (10 Nov 2026)
+
+Small models only, tag `small3` (fib and sales, after the same-number rule and the lower second-opinion bar):
+
+| task | result | seconds | plan |
+|---|---|---|---|
+| fib | pass | 113 | coder → writer (was planned as research, 598 s) |
+| sales | pass | 57 | calculator → writer (was unfinished, then failed on "117.0, not 117") |
+
+Small models only, best measured result per task over `small_only*`, `small2`, `small3`: 13 of 16 pass. Still
+failing: csv and chart (the 1.5B coder's programs do not work) and arxiv (the small reader finds too few papers).
+These three were not run again after `small2`; the 13 is put together from separate runs, not one clean run.
+
+Normal hive, all 16 tasks, tag `normal_after`, to check the shared fixes did not break it: 15 of 16, the same count
+as before. The fail is arxiv: the item jury rejected one of three papers as off topic, the critic had the writer
+remove it, and the answer listed two papers where three were ordered. The hive had no spare paper to put in its
+place. This task has failed the same way in earlier runs; one run cannot tell whether today's changes made it
+more likely.
