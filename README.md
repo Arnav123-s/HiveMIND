@@ -661,6 +661,10 @@ What this shows, and what it does not:
   specialists is right on 61%. More specialists on the same noisy long plans will not move this; cleaner lessons
   for long plans will (the plan after the reviewer and the code checks, or plans from runs that passed).
 
+In the small-only hive the taught planner holds the job. In one clean run of all 16 development tasks with nothing
+above 1.7B (`small7`) every plan it made was the right one; the run scored 11 of 16, and the five failures were all
+after planning (`training/reports/hive_bench/small_only_notes.md`).
+
 **The coder (Qwen2.5-Coder-7B teaching Qwen2.5-Coder-1.5B)** is the second role: its lessons are programs that ran,
 and the exam asks whether the student's program prints what the teacher's prints. No class has been held yet.
 
