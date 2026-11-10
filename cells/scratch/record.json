@@ -4,5 +4,11 @@
  "pretrain_steps": 9300,
  "pretrain_loss": 2.703,
  "pretrain_pieces_read": 76185600,
- "weights": 2615424
+ "weights": 2615424,
+ "corpus_files": {
+  "own_work.txt": 1031154,
+  "roneneldan_tinystories.txt": 22065364,
+  "wikimedia_wikipedia.txt": 25361217,
+  "wikipedia.txt": 34212
+ }
 }
