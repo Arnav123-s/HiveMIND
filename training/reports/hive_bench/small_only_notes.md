@@ -70,3 +70,8 @@ After the rule "fewer items than ordered: ask the researcher once for others" (s
   cheapest prices where it had 0 (the check named the wrong-way sort and the coder fixed it; it read only the
   first of two pages). chart fail: the coder fetched the model page and found no number, and its retries, even
   sampled, ended in the same error.
+- Small only (`small6`), with the next-page check and "use the team's values": csv fail (0 of 3: told to fix the
+  sort and read every page, the 1.5B coder wrote a program that crashed and repeated it); chart fail (the research
+  step had passed with a result that said the download numbers were "not provided", so the coder had nothing to
+  chart). A research result that says it found nothing now fails its step; not measured in a run yet.
+- Normal hive, the three code tasks (`normal_code`) after the coder changes: csv, chart and fib all pass.
