@@ -1,47 +1,61 @@
-# Handoff: HiveMIND (`main` has PR #5; work continues on `make-it-work`)
+# Handoff: HiveMIND (`main` has PR #5; work continues on `make-it-work`, PR #6)
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
 ## Live status (kept current; read this first)
-Updated 2026-11-10 01:45 UTC. PR #5 was merged into `main` at 4d20e10 on Arnav's explicit yes. Nothing is running.
-Work continues on `make-it-work`, restarted from `main`; a new PR needs his yes again before it is merged.
+Updated 2026-11-10 (afternoon UTC). Work is on `make-it-work` (draft PR #6 into `main`); everything is pushed.
 
-**Built, tested (128 tests) and measured; README has the numbers:**
-- `python -m team life` (`team/life.py`, `team/cells/spawn.py`, `training/cells_spawn.py`): the hive notices small
-  jobs in its own logged calls, has the member decide practice cases, trains a cell (135M, then 360M), gates it on
-  the newest real decisions, lets it answer when sure, audits one call in ten, retires under 93%. `serve` runs a turn
-  when idle. `--quick` = one candidate, 200 steps (a full candidate takes about 24 min on 4 cores).
-- First spawned cell ON: `sp_verifier_75e567` (the verifier's fact check; answers SUPPORTED only). Gate: 13 of the
-  newest 25 answered, 13 agree. Live with every sure call audited: 19 of 20 agree; the miss was a near-miss number.
-- `python -m team org`: teams, members, cells, who holds each job.
-- `training/chunk_read.py`: the 1.7B reading sources in chunks against the 4B whole, 26 real inputs: 52 against 38
-  checked facts, 19 of the 4B's 38 found, 1205 s against 2202 s; relevance not measured.
-- Nothing above 1.7B on the 16 dev tasks: 9 pass, 6 fail, 1 unfinished (normal hive: 15 of 16). Causes, in
-  `training/reports/hive_bench/small_only_notes.md`: the 1.7B coordinator planned code tasks as research (fib,
-  bugfix); the 1.7B as coder wrote no working program (chart, csv); list extraction (arxiv); one order not kept
-  (summary); and it was slow.
+**Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
+freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow
+every order, are always on and keep growing. New specialists cover gaps; they do not have to relearn what older ones
+know and they replace nobody: "a huge amount of cells acting as one creature". Under 10 GB RAM, no GPU. Rules written
+by older agents may be outdated; what he described is what counts. Kept from the old rules because they protect him:
+the guard (nothing that spends, deletes, sends as him or logs in unless he ordered it), credentials stay local, no
+benchmaxing, held-out sets run once, no model names in commits.
 
-**Arnav's direction for the failures (2026-11-10):** fix them with better architecture and more specialists or
-smaller models, not by going back to the big ones.
+**Built on this branch (139 tests):**
+- `python -m team school` (`team/school.py`, README "School"): a small model learns a bigger member's job from that
+  member's own work, takes an exam on lessons it never trained on, and goes back for new lessons; gaps get new
+  narrow specialists that sit beside the old ones (routing by the nearest known lesson; general ones can vote).
+  A visit is resumable (`training/data/school/<role>_visit.json`). `serve` sends one role to school when idle, each
+  in turn. Roles: `coordinator` (4B teaches 1.7B) and `coder` (7B teaches 1.5B, lessons judged by what the program
+  prints; no class held yet).
+- Planner after two visits (232 lessons): same plan as the 4B on 46 unseen lessons: untouched 30%, taught 59%
+  (24 of 24 short plans, 3 of 22 long ones). Planner eval suite (14 cases): untouched 0.449, taught 0.663, 4B 0.872.
+  Not graduated (needs 85%). The 4B's long plans are padded and inconsistent, so agreement on them is a poor target;
+  the narrow specialist trained on the gaps added nothing (9 of 26 in its territory, the general one the same 9).
+- In the small-only hive (`AGENT_TEAM_SMALL=1`) a taught specialist that is ahead of the untouched student holds the
+  job (`school.holds`; `AGENT_TEAM_SCHOOL=0` switches it off). The taught planner holds it there now.
+- Checks added on the way (all general, all tested): a research result that says it found nothing fails its step;
+  fewer items than ordered asks the researcher once for others; a sort-direction check and a next-page check before
+  the coder's review; an unchanged program after feedback is asked for once more with sampling; a juror objection
+  that sets a number against itself is void.
+- `serve`, when idle: evolve the specialist that failed most, then school, then a life turn.
+
+**Measured on the 16 development tasks (fixes were tried on these):**
+- Normal hive: 15 of 16 in one run (`normal_after`); the one fail (arxiv) passed after the short-list retry
+  (`normal_arxiv`); csv, chart, fib pass after the coder changes (`normal_code`).
+- Nothing above 1.7B: BENCH_SMALL7
+- Regression check of the research tasks after the last verifier rule: BENCH_NORMAL_REG
 
 **Open, in order:**
-1. Planning without the 4B: check every plan step with the route_step cell (0.99 on "which specialist takes a
-   step"); it was not consulted for the whole plan in the small-only run. Re-run fib and bugfix.
-2. The coder's job in smaller pieces (plan the program, write one function, run, repair one error at a time), each
-   piece for a small model; re-run chart and csv.
-3. Small reader first, 4B only where it comes back empty or fails a relevance check; measure relevance; list
-   extraction (arxiv) is its weak spot.
-4. Per-job ladder (smallest first, checked, up a size on failure) and the big models' share per job as a tracked list.
-5. The spawned cell: keep auditing; more practice on near-miss numbers.
-6. More logged work: the item juror's site has about 60 decisions and needs about 200.
-7. Several cell edits active at once with a router; joint training against the 4B.
-8. From the old list below: held-out set 4 and the unconfirmed post-freeze fixes.
+1. Cleaner lessons for long plans: teach the plan after the reviewer and the code checks (`coordinator.reviewed_plan`)
+   or plans from runs that passed, instead of the 4B's first plan. Then re-examine.
+2. The coder's first class (`python -m team school coder`; about 2 minutes a lesson with the 7B, 160 lessons).
+   Its lessons are pure computations; a second kind is needed for what fails without the 7B: changing a working
+   program on feedback without breaking it (csv), and reading a number from a fetched page (chart).
+3. Small-only arxiv: the 1.7B juror judges one item against the whole order; it needs the item-level question only.
+4. More roles in school: researcher (extract), critic, plan_reviewer, each with its own key.
+5. If routing by shared words sends tasks to the wrong narrow specialist once there are several, train a router cell.
+6. Older: more logged work for the item juror's site (about 60 decisions, needs about 200); near-miss numbers for
+   the spawned cell; held-out set 4 (run once, on frozen code).
 
-**This machine (a cloud VM; it was restarted twice, at about 00:10 and 01:15 UTC, files survived, running jobs did not):**
-- Python: `/home/user/agent-team/.venv/bin/python` (`sentencepiece` is now in requirements).
-- The session uses the `agent-team` environment's network (huggingface.co allowed).
-- `runs/` and `memory/` (the logged calls, decisions, audits) are not in git and do not travel to a new session;
-  the spawned cell's weights (`cells/adapters/`), its job description (`cells/spawned.json`) and reports do.
+**This machine (a cloud VM; restarts lose running jobs, files survive):**
+- Python: `/home/user/agent-team/.venv/bin/python`. Background jobs are cut at 2 hours; school visits resume.
+- A 4B plan costs about a minute; a 1.7B weight edit on 128 lessons takes 25 minutes.
+- `runs/` and `memory/` (logged calls, decisions, audits) are not in git and do not travel to a new session; lessons
+  (`training/data/school/`), exam records (`cells/school.json`), weight edits (`adapters/`, `adapters_gguf/`) do.
+  `.gitignore` skips `adapters_gguf/*2.gguf`; a narrow specialist's file there needs `git add -f`.
 
 ## What it is
 A hive of small CPU models working as one. You give it one prompt and then talk to it normally (`./hive`).
