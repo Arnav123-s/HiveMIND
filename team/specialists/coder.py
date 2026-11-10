@@ -47,6 +47,25 @@ def review(task, code, stdout):
     return [str(x)[:200] for x in data.get("problems", [])][:5]
 
 
+SILENT = "It ran but printed nothing and saved nothing. Call the code and print the result the task asks for."
+WRONG = "It ran, but the code does not do the task correctly:\n- "
+
+
+def plain_feedback(task, code, res):
+    """What the run loop tells the coder about a program that only computes and prints (no page, no file): the error
+    it died with and what that kind of error usually needs, that it printed nothing, or what the code checks and the
+    reviewer object to. None: the loop would accept the program. The school makes its repair lessons from this, so a
+    lesson's feedback is feedback the hive really gives (team/school.py, teach_fixes)."""
+    if res.get("returncode") != 0:
+        err = (res.get("stderr") or res.get("stdout") or "")[-1800:]
+        kind = error_kind(err)
+        return f"{err}\nHint ({kind}): {prompts.FIX_HINTS[kind]}" if kind else err
+    if not (res.get("stdout") or "").strip():
+        return SILENT
+    problems = [x for x in (order_problem(task, code),) if x] or sanity(res["stdout"]) or review(task, code, res["stdout"])
+    return WRONG + "\n- ".join(problems) + f"\nOutput was:\n{res['stdout'][-800:]}" if problems else None
+
+
 ERROR_KINDS = [  # the error reader: a code rule, exact on exception names (a cell would add nothing)
     ("syntax", r"SyntaxError|IndentationError|TabError"),
     ("import", r"ModuleNotFoundError|ImportError"),
@@ -261,13 +280,15 @@ def run(task, context, board, step_id, guard, workdir):
     name = f"{re.sub(r'[^A-Za-z0-9_]', '_', step_id)}.py"
     for attempt in range(1, config.CODER_MAX_ATTEMPTS + 1):
         stop.check()
-        out = llm.chat("coder", messages, max_new_tokens=1400, stop="code")
+        # a fix turn goes to the specialist that learned fixing, where the school gave it that job (team/school.py)
+        who = "coder_fix" if len(messages) > 2 and config.GGUF_ROSTER.get("coder_fix") else "coder"
+        out = llm.chat(who, messages, max_new_tokens=1400, stop="code")
         code = extract_code(out)
         if code.strip() in tried:
             # told what was wrong, it wrote the same program again (the 1.5B coder: six times in one run). Asking the
             # same way gives the same program; it is asked once more with some chance in the choice of words.
             board.log("coder", "same-program", f"attempt {attempt}: the program did not change; asked again")
-            code = extract_code(llm.chat("coder", messages, max_new_tokens=1400, stop="code", temperature=0.7))
+            code = extract_code(llm.chat(who, messages, max_new_tokens=1400, stop="code", temperature=0.7))
         tried.add(code.strip())
         again = refetches(own, context, code)
         if again and attempt < config.CODER_MAX_ATTEMPTS:  # told before it runs; the last attempt runs whatever it is
@@ -323,12 +344,12 @@ def run(task, context, board, step_id, guard, workdir):
             board.log("code_reviewer", "fix", " | ".join(problems)[:300])
             messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
                                    {"role": "user", "content": prompts.CODER_FIX.format(
-                                       error="It ran, but the code does not do the task correctly:\n- " + "\n- ".join(problems)
+                                       error=WRONG + "\n- ".join(problems)
                                        + f"\nOutput was:\n{res['stdout'][-800:]}")}]
             continue
         if res["returncode"] == 0 and not missing and silent:
             # it defined a function and never called it: the jury then rejected "the program ran, but no files"
-            err = "It ran but printed nothing and saved nothing. Call the code and print the result the task asks for."
+            err = SILENT
         elif res["returncode"] == 0 and unsaved:
             board.log("coder", "file-check", unsaved[:150])
             err = unsaved + f"\nOutput was:\n{res['stdout'][-800:]}"

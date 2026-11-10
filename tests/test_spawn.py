@@ -282,7 +282,9 @@ def test_a_school_program_is_judged_by_what_it_prints_when_run():
 def test_every_school_role_says_how_it_is_taught_and_the_next_one_is_the_one_longest_away(monkeypatch):
     from team import school
     for r in school.ROLES.values():
-        assert {"teacher", "student", "messages", "key", "tokens", "chat", "known", "write", "topics", "example"} <= set(r)
+        assert {"teacher", "student", "messages", "key", "tokens", "chat", "what"} <= set(r)
+        assert r.get("of") in school.ROLES or {"known", "write", "topics", "example"} <= set(r)
+    monkeypatch.setattr(school, "_has_work", lambda r: not school.ROLES[r].get("of"))
     monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"}})
     assert school.next_role() == "coder"                                               # never taught goes first
     monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"},
@@ -295,3 +297,25 @@ def test_program_key_floats_that_differ_in_the_last_digit_are_the_same():
     assert school._same_floats("166.3256237947956") == school._same_floats("166.32562379479558")
     assert school._same_floats("7.701635339554948") != school._same_floats("8.043231726932046")
     assert school._same_floats("version 3.14 of [2, 4, 6] 0.5") == "version 3.14 of [2, 4, 6] 0.5"
+
+
+def test_a_second_job_goes_to_school_only_while_its_first_job_has_unused_lessons(monkeypatch, tmp_path):
+    from team import school
+    monkeypatch.setattr(school, "DATA", tmp_path)
+    monkeypatch.setattr(school, "lessons", lambda role: [{"task": "a"}, {"task": "b"}] if role == "coder" else [])
+    assert school._has_work("coder") and school._has_work("coder_fix")
+    (tmp_path / "coder_fix_seen.json").write_text('["a", "b"]')
+    assert not school._has_work("coder_fix")
+
+
+def test_plain_feedback_is_what_the_run_loop_says(monkeypatch):
+    from team.specialists import coder
+    assert coder.plain_feedback("t", "x", {"returncode": 0, "stdout": "", "stderr": ""}) == coder.SILENT
+    died = coder.plain_feedback("t", "x", {"returncode": 1, "stdout": "", "stderr": "KeyError: 'a'"})
+    assert died.startswith("KeyError: 'a'") and "Hint (data)" in died
+    monkeypatch.setattr(coder, "review", lambda task, code, out: ["It counts y as a vowel."])
+    monkeypatch.setattr(coder, "order_problem", lambda task, code: None)
+    said = coder.plain_feedback("Count the vowels", "print(5)", {"returncode": 0, "stdout": "5\n", "stderr": ""})
+    assert said.startswith(coder.WRONG + "It counts y as a vowel.") and said.endswith("Output was:\n5\n")
+    monkeypatch.setattr(coder, "review", lambda task, code, out: [])
+    assert coder.plain_feedback("Count the vowels", "print(3)", {"returncode": 0, "stdout": "3\n", "stderr": ""}) is None

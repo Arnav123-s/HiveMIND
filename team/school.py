@@ -100,8 +100,25 @@ def _program_key(output, task):
         return None
     with tempfile.TemporaryDirectory() as d:
         res = run_python(code, d, timeout=20)
+    return _printed(res)
+
+
+def _printed(res):
     out = _same_floats(" ".join((res.get("stdout") or "").split()).lower())
     return out[:2000] if res.get("returncode") == 0 and out else None
+
+
+def _ran(output):
+    """(the program in a reply, what happened when it ran); (None, None) if there is none or it is not for a lesson."""
+    import tempfile
+
+    from .specialists import coder
+    from .tools.sandbox import run_python
+    code = coder.extract_code(output or "")
+    if not code or _NOT_A_LESSON.search(code):
+        return None, None
+    with tempfile.TemporaryDirectory() as d:
+        return code, run_python(code, d, timeout=20)
 
 
 def _same_floats(text):
@@ -136,6 +153,12 @@ ROLES = {
               "write": WRITE_PROGRAMS, "topics": CODE_TOPICS, "similar": SIMILAR_PROGRAMS,
               "example": "Write a Python program that prints the sum of the squares of 3, 7 and 12. Print only the number.",
               "what": "programs: run, they print the same as the teacher's program"},
+    # the second job of the coder: its lessons are made from the first job's lessons (teach_fixes), a third of the
+    # source tasks are exam (a fix lesson costs several teacher calls, and an exam under 30 lessons says little)
+    "coder_fix": {"teacher": "coder7b", "student": "coder15", "messages": _program_messages, "key": _program_key,
+                  "of": "coder", "tokens": 900, "chat": {"stop": "code"},
+                  "what": "fixes: after the hive's own feedback on a wrong program, the fixed program prints the same "
+                          "as the teacher's"},
 }
 
 
@@ -162,7 +185,10 @@ class _as:
         config.GGUF_ROSTER[self.role] = self.spec
 
     def __exit__(self, *a):
-        config.GGUF_ROSTER[self.role] = self.old
+        if self.old is None:
+            config.GGUF_ROSTER.pop(self.role, None)
+        else:
+            config.GGUF_ROSTER[self.role] = self.old
 
 
 def logged_tasks():
@@ -222,6 +248,8 @@ def teach(role, n, log=print, tasks=None):
     Returns (all lessons, the new ones). After the first class every fifth new lesson is an exam lesson.
     With tasks, exactly those are taught (new tasks the teacher wrote for a gap)."""
     r, have = ROLES[role], lessons(role)
+    if r.get("of"):
+        return teach_fixes(role, n, log)
     if len(have) >= n and tasks is None:
         return have, []
     DATA.mkdir(parents=True, exist_ok=True)
@@ -286,6 +314,68 @@ def train(role, name, only=None, log=print, epochs=2, rank=8, seed=0):
     if r.returncode != 0:
         raise RuntimeError("converting the edit failed: " + (r.stderr or r.stdout)[-600:])
     return name
+
+
+def teach_fixes(role, n, log=print):
+    """Lessons in fixing a program, made from the lessons of the role's first job (ROLES[role]["of"]).
+    For each of those tasks the students write their own programs: the first job's best specialist, the untouched
+    student, and the untouched student twice more with some chance in its words. A program that does not print what
+    the teacher's program printed, and that the hive's own checks reject (it died, printed nothing, or the code checks
+    or the reviewer object: coder.plain_feedback), is a real mistake with the feedback the hive really gives. The
+    teacher gets the same turn the coder would get, and fixes it. It is a lesson only if the teacher's fix prints what
+    the teacher's first program printed. Nothing tells student or teacher the right output.
+    A cut-off class goes on where it stopped (<role>_seen.json: the source tasks already used)."""
+    import hashlib
+
+    from . import prompts
+    from .specialists import coder
+    r, have = ROLES[role], lessons(role)
+    DATA.mkdir(parents=True, exist_ok=True)
+    seen_f = DATA / f"{role}_seen.json"
+    try:
+        seen = set(json.loads(seen_f.read_text()))
+    except (OSError, ValueError):
+        seen = set()
+    best = (record().get(r["of"], {}).get("general") or ["untouched"])[0]
+    writers = ([(best, None)] if best != "untouched" else []) + [("untouched", None), ("untouched", 0.8), ("untouched", 0.8)]
+    new, todo = [], [x for x in lessons(r["of"]) if x["task"] not in seen]
+    with open(DATA / f"{role}.jsonl", "a") as f:
+        for x in todo:
+            if len(have) + len(new) >= n:
+                break
+            wrong = {}
+            for who, temp in writers:
+                spec, adapter = _spec(r["of"], who)
+                with _as(r["of"], spec):
+                    out = llm.chat(r["of"], x["messages"], max_new_tokens=r["tokens"], adapter=adapter,
+                                   **r["chat"], **({"temperature": temp} if temp else {}))
+                code, res = _ran(out)
+                if code and code.strip() not in wrong and _printed(res) != x["key"]:
+                    wrong[code.strip()] = (who, res)
+            for code, (who, res) in wrong.items():
+                with _as("code_reviewer", r["teacher"]):
+                    said = coder.plain_feedback(x["task"], code, res)
+                if not said:
+                    continue  # the hive would have accepted it: no fix turn ever follows such a program
+                msgs = x["messages"] + [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                                        {"role": "user", "content": prompts.CODER_FIX.format(error=said)}]
+                with _as(role, r["teacher"]):
+                    fix = llm.chat(role, msgs, max_new_tokens=r["tokens"], **r["chat"])
+                if r["key"](fix, x["task"]) != x["key"]:
+                    continue  # the teacher's own fix does not print what its first program printed: nothing to learn
+                k = sum(y.get("of") == x["task"] for y in have + new)
+                row = {"task": x["task"] + (f" (another wrong program: {k + 1})" if k else ""), "of": x["task"],
+                       "messages": msgs, "output": fix, "key": x["key"], "by": who,
+                       "exam": int(hashlib.sha1(x["task"].encode()).hexdigest(), 16) % 3 == 0}
+                new.append(row)
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+                f.flush()
+            seen.add(x["task"])
+            seen_f.write_text(json.dumps(sorted(seen), ensure_ascii=False))
+            if len(seen) % 10 == 0:
+                log(f"[school] {role}: {len(seen)} of {len(seen) + len(todo) - todo.index(x) - 1} source tasks used, "
+                    f"{len(have) + len(new)} fix lessons", flush=True)
+    return lessons(role), new
 
 
 # ---- the specialists of a role answer together -------------------------------------------------------------------
@@ -506,7 +596,7 @@ def attend(role, n=160, train_it=True, log=print):
     elif train_it:
         if not names:  # the first class: one general specialist, taught everything
             names.append(train(role, f"{role}_school", None, log))
-        elif _visit(role):
+        elif _visit(role) and not r.get("of"):
             # the new lessons are unseen by everyone: the present specialists take them first. What they get wrong
             # is a gap; the teacher writes more tasks of that kind, and a new specialist learns that gap and nothing
             # else. The older ones keep what they know; nobody is retrained or replaced.
@@ -549,7 +639,9 @@ def attend(role, n=160, train_it=True, log=print):
             else:
                 (DATA / f"{role}_territory.json").write_text(json.dumps(terr, indent=1, ensure_ascii=False))
                 log(f"[school] {role}: fewer than {MIN_GAP} gaps: no new specialist this time", flush=True)
-        entry.update(exam(role, names, log))
+        # a second job is also examined with the first job's specialists: the turn goes to whoever measures best
+        guests = [g for g in record().get(r.get("of"), {}).get("specialists", []) if g not in names] if r.get("of") else []
+        entry.update(exam(role, names + guests, log))
         ok = entry["taught_agrees"] >= GRADUATE and entry["taught_agrees"] >= entry["untouched_agrees"] + MARGIN
         entry["graduated"] = ok
         entry["ahead"] = (entry["test_lessons"] >= MIN_TEST and entry["general"][0] != "untouched"
@@ -566,11 +658,23 @@ def attend(role, n=160, train_it=True, log=print):
     return entry
 
 
+def _has_work(role):
+    """A second job has a class to hold only while its first job has lessons it has not used yet."""
+    of = ROLES[role].get("of")
+    if not of:
+        return True
+    try:
+        seen = set(json.loads((DATA / f"{role}_seen.json").read_text()))
+    except (OSError, ValueError):
+        seen = set()
+    return any(x["task"] not in seen for x in lessons(of))
+
+
 def next_role():
     """The role that goes to school now: one never taught; else, of those still under DONE, the one that was there
     longest ago, so every role gets its turn. A graduated role keeps going back while there is something to learn."""
     rec = record()
-    todo = [r for r in ROLES if rec.get(r, {}).get("taught_agrees", 0) < DONE]
+    todo = [r for r in ROLES if rec.get(r, {}).get("taught_agrees", 0) < DONE and _has_work(r)]
     return min(todo, key=lambda r: ("taught_agrees" in rec.get(r, {}), rec.get(r, {}).get("when", ""))) if todo else None
 
 
