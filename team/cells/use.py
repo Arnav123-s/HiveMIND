@@ -24,11 +24,16 @@ def wins():
 def on(skill):
     if os.environ.get("AGENT_TEAM_CELLS", "1") == "0":
         return False
+    from . import tiny
+    if skill in tiny.holds():  # the brain grown from nothing holds this job (it measured at least as well)
+        return True
     return bool(wins().get(skill, {}).get("use")) and runtime.available(skill)
 
 
 def ask(skill, text, board=None):
-    out = runtime.run(skill, text)
+    from . import tiny
+    held = skill in tiny.holds()
+    out = tiny.answer(skill, [text])[0] if held else runtime.run(skill, text)
     if board is not None:
         board.log(f"cell:{skill}", "answer", f"{text[:90]!r} -> {out[:80]!r}")
     return out
@@ -38,7 +43,11 @@ def ask_all(skill, texts, board=None):
     """The cell's answer for many inputs at once, spread over the cell pool (team/cells/pool.py)."""
     from . import pool
     texts = list(texts)
-    out = pool.map(skill, texts) if texts else []
+    from . import tiny
+    if texts and skill in tiny.holds():
+        out = tiny.answer(skill, texts)
+    else:
+        out = pool.map(skill, texts) if texts else []
     if board is not None and texts:
         board.log(f"cell:{skill}", "answer", f"{len(texts)} at once -> " + ", ".join(f"{o}" for o in out[:12])[:160])
     return out

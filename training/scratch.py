@@ -380,6 +380,14 @@ def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print, tr
     res["_" + key] = {"jobs": len(data), "weights": sum(p.numel() for p in model.parameters()), "mean_dev": round(best[0], 4),
                       "mean_test": round(sum(te.values()) / len(te), 4), "seconds": round(time.time() - t0)}
     f.write_text(json.dumps(res, indent=1))
+    if not plain:  # this brain goes to work: it holds each job where it scored at least as well as the present holder
+        from team.cells import tiny, use
+        torch.save(model.state_dict(), HOME / "brain.pt")
+        (HOME / "brain.json").write_text(json.dumps({"jobs": {k: v[3] for k, v in data.items()}, "talk": talk,
+                                                     "trunk": trunk, "test": {k: round(v, 4) for k, v in te.items()}}, indent=1))
+        held = tiny.decide_holds(te, use.wins())
+        (HOME / "holds.json").write_text(json.dumps(held, indent=1))
+        log(f"[scratch] the brain holds {len(held)} of {len(data)} jobs: {', '.join(held) or 'none'}", flush=True)
     log(f"[scratch] {key}: {len(data)} jobs in one model of {res['_' + key]['weights'] / 1e6:.2f}M weights, mean test "
         f"{res['_' + key]['mean_test']:.3f} (mean dev {best[0]:.3f}), {res['_' + key]['seconds']} s", flush=True)
     return res["_" + key]
