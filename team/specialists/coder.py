@@ -176,12 +176,18 @@ def run(task, context, board, step_id, guard, workdir):
     own = task.split("\n(Previous attempt was rejected:")[0]
     messages = task_messages(task, context, preview(own, workdir))
     want = expected_outputs(task, before)
-    last, last_error = None, None
+    last, last_error, tried = None, None, set()
     name = f"{re.sub(r'[^A-Za-z0-9_]', '_', step_id)}.py"
     for attempt in range(1, config.CODER_MAX_ATTEMPTS + 1):
         stop.check()
         out = llm.chat("coder", messages, max_new_tokens=1400, stop="code")
         code = extract_code(out)
+        if code.strip() in tried:
+            # told what was wrong, it wrote the same program again (the 1.5B coder: six times in one run). Asking the
+            # same way gives the same program; it is asked once more with some chance in the choice of words.
+            board.log("coder", "same-program", f"attempt {attempt}: the program did not change; asked again")
+            code = extract_code(llm.chat("coder", messages, max_new_tokens=1400, stop="code", temperature=0.7))
+        tried.add(code.strip())
         if not guard.check_code("coder", code):
             return {"summary": "Stopped: the program needs Arnav's approval before it can run.", "code": code,
                     "returncode": None, "files": [], "attempts": attempt}

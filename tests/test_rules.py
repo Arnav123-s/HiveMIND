@@ -558,7 +558,7 @@ def test_the_coder_stops_when_its_fix_changes_nothing(tmp_path, monkeypatch):
     from team.specialists import coder
     calls = []
     monkeypatch.setattr(coder, "preview", lambda task, wd: "")
-    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: calls.append(1) or "```python\nimport requests\n```")
+    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: calls.append(k.get("temperature", 0)) or "```python\nimport requests\n```")
     monkeypatch.setattr(coder, "run_python", lambda code, wd, name: {
         "returncode": 1, "stdout": "", "stderr": "Traceback ...\nConnectionError: Max retries exceeded (host unreachable)",
         "seconds": 0.2, "path": str(wd / name)})
@@ -567,7 +567,8 @@ def test_the_coder_stops_when_its_fix_changes_nothing(tmp_path, monkeypatch):
         def check_code(self, who, code):
             return True
     out = coder.run("Scrape the site", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "work")
-    assert len(calls) == 2 and out["returncode"] == 1 and "ConnectionError" in out["stderr"]
+    # the unchanged program is asked for once more with sampling, then the same error stops the loop
+    assert calls == [0, 0, 0.7] and out["returncode"] == 1 and "ConnectionError" in out["stderr"]
 
 
 def test_the_report_keeps_his_instructions_and_the_calendar_s_weekdays():
