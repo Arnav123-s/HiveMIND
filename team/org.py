@@ -78,7 +78,8 @@ def body_lines():
                    f"stem cell alone {m['loss'].get('stem cell alone')}, one model with the same total training "
                    f"{m['loss'].get('one model, same total training', 'not measured')}, the body at its best {best[0]} ({best[1]})")
     for t in rep.get("trainers", []):
-        out.append(f"  trainer {t['id']}: starts from {t['start']}, grows on {t['on']} text, lr {t['lr']:g}, span {t['span']:g}: "
+        out.append(f"  trainer {t['id']}: starts from {t['start']}, grows on {t['on']} text, "
+                   f"{'moves the three values directly' if t.get('how') == 'flips' else 'reads the ordinary way'}, span {t['span']:g}: "
                    f"{t['births']} births, {t['kept']} kept" + (f" (bred from {t['parent']})" if t.get("parent") else ""))
     if births:
         b = births[-1]

@@ -146,14 +146,9 @@ def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32, share_table=Tr
     rnd, t0, steps = random.Random(seed), time.time(), 0
 
     def checked():
-        model.eval()
-        tot = 0.0
-        with torch.no_grad():
-            for j in range(0, len(check), 32):
-                x = torch.stack([_window(data, i) for i in check[j:j + 32]])
-                tot += F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1)).item() * x.shape[0]
+        v = _check_loss(model, data, check)
         model.train()
-        return tot / len(check)
+        return v
     start = checked()
     best, stale = (start, {k: v.clone() for k, v in model.state_dict().items()}), 0
     while time.time() - t0 < minutes * 60 and stale < 3:
@@ -172,6 +167,72 @@ def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32, share_table=Tr
                 stale += 1
     model.load_state_dict(best[1])
     return steps, round(best[0], 3), round(start, 3)
+
+
+def _check_loss(model, data, check):
+    model.eval()
+    tot = 0.0
+    with torch.no_grad():
+        for j in range(0, len(check), 32):
+            x = torch.stack([_window(data, i) for i in check[j:j + 32]])
+            tot += F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1)).item() * x.shape[0]
+    return tot / len(check)
+
+
+def _flip_read(model, data, windows, minutes, seed, batch=32, share=0.002):
+    """A BitNet cell grown the direct way: no ordinary weights underneath. Each round the cell reads four batches and
+    asks, for every three-valued weight, which way the loss would fall if it moved one value; the weights that
+    would help most (a small share of all) are moved at once. The cell is then measured on windows of its territory
+    it never trains on: better, the moves stay; not better, they are undone and the next round moves half as many.
+    It ends when the time is up or the moves have become too few to matter. A round costs about six passes; reading
+    the ordinary way costs a pass a step and takes a thousand steps.
+    Returns (rounds, its loss on the check windows at its best, the same before it changed anything)."""
+    layers = [m for m in model.modules() if isinstance(m, T.BitLinear)]
+    for p in model.parameters():
+        p.requires_grad_(False)
+    state = []
+    for m in layers:  # each layer as its one number and its three values
+        scale = m.weight.abs().mean().clamp(min=1e-5)
+        state.append([float(scale), (m.weight / scale).round().clamp(-1, 1)])
+        m.weight.requires_grad_(True)
+
+    def install():
+        for m, (scale, t) in zip(layers, state):
+            m.weight.data = t * (scale / t.abs().mean().clamp(min=1e-5))  # rounding this again gives exactly t times scale
+    install()
+    check = windows[::10][:96] or windows[:8]
+    seen = [w for i, w in enumerate(windows) if i % 10] or windows
+    total = sum(t.numel() for _, t in state)
+    rnd, t0, rounds = random.Random(seed), time.time(), 0
+    start = best = _check_loss(model, data, check)
+    while time.time() - t0 < minutes * 60 and share * total >= 20:
+        model.train()
+        for m in layers:
+            m.weight.grad = None
+        for _ in range(4):
+            x = torch.stack([_window(data, rnd.choice(seen)) for _ in range(batch)])
+            F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1)).backward()
+        moves, gains = [], []
+        for m, (_, t) in zip(layers, state):
+            new = (t - m.weight.grad.sign()).clamp(-1, 1)
+            moves.append(new)
+            gains.append((m.weight.grad.abs() * (new != t)).flatten())
+        cut = torch.cat(gains).topk(int(share * total)).values[-1]
+        before = [t.clone() for _, t in state]
+        for i, (m, new) in enumerate(zip(layers, moves)):
+            pick = (m.weight.grad.abs() >= cut) & (new != state[i][1]) & (cut > 0)
+            state[i][1] = torch.where(pick, new, state[i][1])
+        install()
+        v = _check_loss(model, data, check)
+        rounds += 1
+        if v < best - 1e-4:
+            best = v
+        else:
+            for i, t in enumerate(before):
+                state[i][1] = t
+            install()
+            share /= 2
+    return rounds, round(best, 3), round(start, 3)
 
 
 def differentiate(minutes=10.0, log=print):
@@ -253,12 +314,19 @@ TRAINERS = [  # the first ways of growing a cell; more are bred from the ones wh
     {"id": "t2", "start": "nearest", "lr": 3e-4, "span": 1.0, "on": "worst"},
     {"id": "t3", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "uncharted"},
     {"id": "t4", "start": "nearest", "lr": 1e-3, "span": 0.5, "on": "worst"},
+    # for BitNet cells only: no ordinary weights underneath, the three values are moved directly (_flip_read)
+    {"id": "t5", "start": "stem", "lr": 0, "span": 0.5, "on": "worst", "how": "flips"},
+    {"id": "t6", "start": "nearest", "lr": 0, "span": 0.5, "on": "uncharted", "how": "flips"},
 ]
 KEEP, HARM, IDLE = 0.001, 0.01, 0.0005  # a birth must gain this much; no territory may lose this much; a cell must be worth this
 
 
 def trainers():
-    return _report().get("trainers") or [dict(t, births=0, kept=0) for t in TRAINERS]
+    """The trainers at work. The ones that move three-valued weights directly join once the cells are BitNets."""
+    ts = _report().get("trainers") or [dict(t, births=0, kept=0) for t in TRAINERS if "how" not in t]
+    if T.is_bit() and not any(t.get("how") == "flips" for t in ts):
+        ts += [dict(t, births=0, kept=0) for t in TRAINERS if t.get("how") == "flips"]
+    return ts
 
 
 def pick_trainer(ts, rnd):
@@ -276,7 +344,7 @@ def breed(ts, rnd):
     ts = [t for t in ts if not (t["births"] >= 3 and t["kept"] == 0)] or ts[:1]
     best = max(ts, key=lambda t: (t["kept"] + 1) / (t["births"] + 2))
     child = dict(best, births=0, kept=0, id=new_id, parent=best["id"])
-    what = rnd.choice(["start", "lr", "span", "on"])
+    what = rnd.choice(["start", "span", "on"] + ([] if best.get("how") == "flips" else ["lr"]))
     child[what] = {"start": "nearest" if best["start"] == "stem" else "stem", "lr": best["lr"] * rnd.choice([0.5, 2.0]),
                    "span": best["span"] * rnd.choice([0.5, 2.0]), "on": "uncharted" if best["on"] == "worst" else "worst"}[what]
     return (ts + [child])[-8:]
@@ -339,13 +407,17 @@ def grow(minutes=10.0, sample=3000, log=print, trainer=None):
         f = HOME / f"cell_{near:02d}.pt"
         if f.exists():
             cell = T.load_cell(f)
-    steps, loss, was = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"])
+    if t.get("how") == "flips" and getattr(cell, "bit", False):
+        steps, loss, was = _flip_read(cell, data, windows, minutes * t["span"], seed=k)
+    else:
+        steps, loss, was = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"] or 5e-4)
     T.save_cell(cell, HOME / f"cell_{k:02d}.pt")
     terr["centre"] = torch.cat([terr["centre"], centre[None]])
     terr["owns"][k] = windows
     torch.save(terr, HOME / "territories.pt")
-    log(f"[body] trainer {t['id']} ({t['start']}, {t['on']}, lr {t['lr']:g}, span {t['span']:g}) grew cell {k} on "
-        f"{len(windows)} windows: {steps} steps, loss on unseen windows there {was} -> {loss}", flush=True)
+    log(f"[body] trainer {t['id']} ({t['start']}, {t['on']}, {t.get('how', 'reading')}, span {t['span']:g}) grew cell {k} on "
+        f"{len(windows)} windows: {steps} {'rounds of moves' if t.get('how') == 'flips' else 'steps'}, loss on unseen "
+        f"windows there {was} -> {loss}", flush=True)
     return k
 
 

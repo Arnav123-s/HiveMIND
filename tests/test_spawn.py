@@ -451,12 +451,12 @@ def test_the_immune_check_retires_the_cell_the_body_does_not_need(tmp_path, monk
 def test_trainers_with_kept_cells_are_chosen_more_and_bred():
     import random
     from training import body as B
-    ts = [dict(t, births=0, kept=0) for t in B.TRAINERS]
+    ts = [dict(t, births=0, kept=0) for t in B.TRAINERS[:4]]
     ts[0].update(births=12, kept=0)
     ts[1].update(births=12, kept=12)
     picks = [B.pick_trainer(ts[:2], random.Random(i))["id"] for i in range(200)]
     assert picks.count("t2") > 190
-    ts = [dict(t, births=1, kept=1) for t in B.TRAINERS]                                # four births in all: time to breed
+    ts = [dict(t, births=1, kept=1) for t in B.TRAINERS[:4]]                                # four births in all: time to breed
     ts[3].update(births=3, kept=0)
     ts[0].update(births=0, kept=0)
     ts[1].update(births=1, kept=1)
@@ -579,3 +579,25 @@ def test_a_packed_bitnet_cell_answers_exactly_as_before_and_is_small(tmp_path, m
     full = T.Tiny(bit=False)
     T.save_cell(full, tmp_path / "cell_01.pt")
     assert not T.load_cell(tmp_path / "cell_01.pt").bit and (tmp_path / "cell_01.pt").stat().st_size > 5_000_000
+
+
+def test_a_bitnet_cell_can_be_grown_by_moving_its_three_values_directly(tmp_path, monkeypatch):
+    import numpy as np
+    import torch
+    from training import body as B
+    from training import scratch as T
+    torch.manual_seed(0)
+    torch.set_num_threads(2)
+    monkeypatch.setattr(T, "CTX", 32)
+    monkeypatch.setattr(B, "W", 32)
+    rng = np.random.default_rng(0)
+    data = np.tile(rng.integers(2, 60, size=33 * 8), 40).astype(np.uint16)              # text with a pattern to learn
+    cell = T.Tiny(bit=True)
+    before = {n: p.clone() for n, p in cell.state_dict().items()}
+    rounds, best, start = B._flip_read(cell, data, list(range(200)), minutes=0.25, seed=0, batch=8, share=0.01)
+    assert rounds >= 1 and best <= start
+    for m in cell.modules():
+        if isinstance(m, T.BitLinear):                                                  # every layer is still three values times a number
+            scale = m.weight.abs().mean()
+            assert set((m.weight / scale).round().clamp(-1, 1).unique().tolist()) <= {-1.0, 0.0, 1.0}
+    assert all(torch.equal(before[n], p) for n, p in cell.state_dict().items() if n.startswith(("tok.", "pos.", "norm.")))
