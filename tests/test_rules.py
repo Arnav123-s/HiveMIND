@@ -1521,3 +1521,11 @@ def test_a_listing_with_a_next_page_must_be_read_to_the_end(monkeypatch):
     assert coder.unread_pages(task, "while soup.select_one('li.next a'): ...") is None
     monkeypatch.setattr(web, "get", lambda u: "<p>one page</p>")
     assert coder.unread_pages(task, "requests.get(url)") is None
+
+
+def test_a_result_that_says_it_found_nothing_is_not_a_pass():
+    from team.specialists.verifier import admits_nothing
+    assert admits_nothing("The number of downloads for the two models is not provided in the facts. The facts only give sizes.")
+    assert admits_nothing("I could not find the release date.")
+    assert admits_nothing("Qwen3-1.7B has 1.2M downloads; SmolLM2 has 300k. The licence is not stated.") is None
+    assert admits_nothing("Paris is the capital of France.") is None

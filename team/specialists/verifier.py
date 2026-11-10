@@ -88,6 +88,17 @@ def _judge_one(member, check, work, evidence):
 _VS = re.compile(r"(-?\d[\d,]*(?:\.\d+)?)['\"]?(?:[^\d]{0,40}?)\bnot\b[^\d-]{0,20}(-?\d[\d,]*(?:\.\d+)?)")
 
 
+_NOTHING = re.compile(r"\b(?:is|are|was|were)\s+not\s+(?:provided|available|given|stated|mentioned|found|present)\b|"
+                      r"\b(?:could|can|did|does|do)\s*(?:not|n't)\s+(?:find|provide|contain|mention|include|state)\b|"
+                      r"\bno\s+(?:information|data|source|facts?)\b", re.I)
+
+
+def admits_nothing(summary):
+    """The first sentence of a research result, when it says the thing asked for was not found; else None."""
+    first = re.split(r"(?<=[.!?])\s+|\n", (summary or "").strip(), 1)[0]
+    return first[:200] if _NOTHING.search(first) else None
+
+
 SHORT = "the task asks for"
 _COUNT = re.compile(r"\b(two|three|four|five|six|seven|eight|[2-8])\s+(?!(?:sentences?|words?|lines?|paragraphs?|"
                     r"decimals?|bullets?|points?|days?|hours?|minutes?|weeks?|months?|years?|times|percent|steps?|"
@@ -315,6 +326,11 @@ def verify(step, result, board, workdir):
             board.log("juror_brain", "drop", "items that do not meet the task: " + "; ".join(dropped))
             result["summary"] = (result.get("summary", "") + "\nDropped by the team's checks (do not use): "
                                  + "; ".join(dropped))
+        gap = admits_nothing(result.get("summary", ""))
+        if gap:
+            # the small researcher wrote "the number of downloads ... is not provided in the facts", three small
+            # jurors passed it, and the coder was then asked to chart numbers nobody had
+            return "FAIL", f"the researcher's own result says it did not find what the step asks for: \"{gap}\""
         want = asked_count(without_layout(step["task"]))
         if dropped and kept and want and len(kept) < want and SHORT not in step["task"]:
             # "the three newest papers", one of three was off topic, and the answer listed two: the researcher is
