@@ -10,6 +10,8 @@ running code is killed as a whole process group, and the hive between every step
 seen. The run folder records what was finished, what was running, and who stopped it (STOPPED.txt, TRACE.md).
 """
 import json
+from pathlib import Path
+import threading
 import time
 
 from . import config
@@ -46,8 +48,35 @@ def check():
         raise Stopped(info().get("by", "stop"))
 
 
+_ACTIVE, _ALOCK = set(), threading.Lock()
+
+
+def enter(run_dir):
+    """A task starts in this process. True if it is the only one running."""
+    with _ALOCK:
+        _ACTIVE.add(str(run_dir))
+        return len(_ACTIVE) == 1
+
+
+def leave(run_dir):
+    with _ALOCK:
+        _ACTIVE.discard(str(run_dir))
+
+
+def active():
+    with _ALOCK:
+        return len(_ACTIVE)
+
+
 def archive(run_dir):
-    """Move the flag into the stopped run's folder (kept as a record, not deleted) so the next task can start."""
+    """Keep the flag in the stopped run's folder as a record (never deleted). While other tasks of this process are
+    still running, the flag stays (a copy is kept here): the kill switch stops every task, and the last one to stop
+    moves the flag away so the next task can start."""
+    with _ALOCK:
+        others = len(_ACTIVE - {str(run_dir)})
     for f in (FLAG, INBOX_FLAG):
         if f.exists():
-            f.rename(run_dir / "STOP.flag")
+            if others:
+                (Path(run_dir) / "STOP.flag").write_text(f.read_text())
+            else:
+                f.rename(Path(run_dir) / "STOP.flag")

@@ -1,0 +1,60 @@
+{
+ "workers_1": {
+  "workers": 1,
+  "wall_s": 204.8,
+  "peak_rss_gb": 8.94,
+  "peak_used_rise_gb": 6.02,
+  "jobs": [
+   {
+    "task": "What is the latest version of the numpy package on PyPI?",
+    "status": "done",
+    "seconds": 153.7,
+    "unmet": [],
+    "dir": "/tmp/workers_bench_gt0fkvu6/20261109-075654-39d7b4"
+   },
+   {
+    "task": "How many seconds are there in 3.5 hours?",
+    "status": "done",
+    "seconds": 185.2,
+    "unmet": [],
+    "dir": "/tmp/workers_bench_gt0fkvu6/20261109-075654-1f2c65"
+   },
+   {
+    "task": "Write a two-line reminder to water the plants on Saturday.",
+    "status": "done",
+    "seconds": 204.8,
+    "unmet": [],
+    "dir": "/tmp/workers_bench_gt0fkvu6/20261109-075654-efa7ee"
+   }
+  ]
+ },
+ "workers_2": {
+  "workers": 2,
+  "wall_s": 196.2,
+  "peak_rss_gb": 11.07,
+  "peak_used_rise_gb": 6.47,
+  "jobs": [
+   {
+    "task": "What is the latest version of the numpy package on PyPI?",
+    "status": "done",
+    "seconds": 173.0,
+    "unmet": [],
+    "dir": "/tmp/workers_bench_s60zrx_r/20261109-080021-3c94ad"
+   },
+   {
+    "task": "How many seconds are there in 3.5 hours?",
+    "status": "done",
+    "seconds": 112.3,
+    "unmet": [],
+    "dir": "/tmp/workers_bench_s60zrx_r/20261109-080021-c5b142"
+   },
+   {
+    "task": "Write a two-line reminder to water the plants on Saturday.",
+    "status": "done",
+    "seconds": 196.2,
+    "unmet": [],
+    "dir": "/tmp/workers_bench_s60zrx_r/20261109-080021-f4162a"
+   }
+  ]
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "orders_spend": {
+  "cell": 0.984,
+  "incumbent": 0.918,
+  "incumbent_name": "order_reader = fast+order_reader",
+  "threshold": 0.5,
+  "escalated": 0.0,
+  "cascade": 0.984,
+  "cell_ms": 41.0,
+  "incumbent_ms": 1162.3,
+  "cascade_ms": 41.0,
+  "n": 61
+ },
+ "orders_delete": {
+  "cell": 0.934,
+  "incumbent": 0.8852,
+  "incumbent_name": "order_reader = fast+order_reader",
+  "threshold": 0.5,
+  "escalated": 0.0,
+  "cascade": 0.934,
+  "cell_ms": 43.1,
+  "incumbent_ms": 0.0,
+  "cascade_ms": 43.1,
+  "n": 61
+ },
+ "orders_send": {
+  "cell": 0.885,
+  "incumbent": 0.918,
+  "incumbent_name": "order_reader = fast+order_reader",
+  "threshold": 0.5,
+  "escalated": 0.0,
+  "cascade": 0.885,
+  "cell_ms": 43.5,
+  "incumbent_ms": 0.0,
+  "cascade_ms": 43.5,
+  "n": 61
+ },
+ "orders_login": {
+  "cell": 0.984,
+  "incumbent": 1.0,
+  "incumbent_name": "order_reader = fast+order_reader",
+  "threshold": 0.5,
+  "escalated": 0.0,
+  "cascade": 0.984,
+  "cell_ms": 42.1,
+  "incumbent_ms": 0.0,
+  "cascade_ms": 42.1,
+  "n": 61
+ },
+ "orders_signup": {
+  "cell": 1.0,
+  "incumbent": 0.9836,
+  "incumbent_name": "order_reader = fast+order_reader",
+  "threshold": 0.5,
+  "escalated": 0.0,
+  "cascade": 1.0,
+  "cell_ms": 41.8,
+  "incumbent_ms": 0.0,
+  "cascade_ms": 41.8,
+  "n": 61
+ },
+ "route_step": {
+  "cell": 0.992,
+  "incumbent": 0.9746,
+  "incumbent_name": "coordinator = brain4b",
+  "threshold": 0.5,
+  "escalated": 0.0,
+  "cascade": 0.992,
+  "cell_ms": 33.7,
+  "incumbent_ms": 7094.6,
+  "cascade_ms": 33.7,
+  "n": 118
+ }
+}

@@ -31,7 +31,8 @@ def base_gguf(base="smol135"):
 if __name__ == "__main__":
     reg = runtime.registry()
     for base in sorted({c["base"] for c in reg.values()}):
-        if base != "smol135":
+        from training.cells import BASES
+        if Path(BASES[base]).exists():  # a base made here (not downloaded): training/cells_cut.py builds it
             print(f"base {base}: built by training/cells_cut.py")
             continue
         print(f"base {base}: {base_gguf(base)}")

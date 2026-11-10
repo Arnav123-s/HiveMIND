@@ -1,0 +1,8 @@
+{
+ "skill": "answers_q",
+ "base": "smol135",
+ "tag": "base",
+ "dev": 0.425,
+ "test": 0.5066666666666667,
+ "trainable_params": 0
+}

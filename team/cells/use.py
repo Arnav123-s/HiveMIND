@@ -34,6 +34,16 @@ def ask(skill, text, board=None):
     return out
 
 
+def ask_all(skill, texts, board=None):
+    """The cell's answer for many inputs at once, spread over the cell pool (team/cells/pool.py)."""
+    from . import pool
+    texts = list(texts)
+    out = pool.map(skill, texts) if texts else []
+    if board is not None and texts:
+        board.log(f"cell:{skill}", "answer", f"{len(texts)} at once -> " + ", ".join(f"{o}" for o in out[:12])[:160])
+    return out
+
+
 def orders(text, board=None):
     """The order organizer: one yes/no cell per risky kind; the kinds whose cell says yes."""
     got = {k for k in ("spend", "delete", "send", "login", "signup") if ask(f"orders_{k}", text, None) == "yes"}

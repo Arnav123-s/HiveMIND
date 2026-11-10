@@ -71,6 +71,38 @@ def sentences(text):
 
 # an order is a verb in command position: start of a sentence/clause, or after and/then/please/to/...
 COMMAND_POS = r"(?:^|[,;:]\s*|\b(?:and|then|please|also|to|must|should|can|could|will|go ahead and|you may|now)\s+)"
+# in a question, only a request to the team: "Can you delete ...?", "Would you please buy ...?"
+POLITE_ASK = r"^\s*(?:please\s+)?(?:can|could|would|will)\s+you\s+(?:please\s+)?(?:go ahead and\s+)?"
+
+
+MATERIAL_VERB = re.compile(r"\b(summari[sz]e|summary|translate|rewrite|paraphrase|correct|fix|proofread|shorten|edit|"
+                           r"improve|explain|analy[sz]e|review|reply to|respond to|format|convert|count|debug)\b", re.I)
+
+
+def split_material(goal):
+    """(Arnav's order, the material he hands over). "Summarise this in one sentence: <paragraph>", "Translate into
+    French: '<sentence>'", "Fix it:\n<code>": what follows the colon is what the order works on, not more orders.
+    Material is never split into instructions (a pasted paragraph became 7 "instructions") and never read for risky
+    orders ("Translate: 'Send the report to Sam.'" orders no sending)."""
+    m = re.match(r"(?s)\s*(.{3,300}?):\s*(.+)$", goal or "")
+    if not m:
+        return goal, ""
+    head, rest = m.group(1).strip(), m.group(2).strip()
+    quoted = bool(re.fullmatch(r"(?s)['\"“‘].+['\"”’][.!?]?", rest))
+    long_ = "\n" in rest or len(re.findall(r"[.!?](?:\s|$)", rest)) >= 2
+    if MATERIAL_VERB.search(head) and (quoted or long_):
+        return head, rest
+    d = DATA_RUN.match(rest)
+    if d and len(re.findall(r"\d", d.group(1))) >= 3:
+        # "Monthly sales: Jan 120, Feb 95, Mar 143, Apr 110. Which month ...?": the data is material, the questions
+        # after it are the order (each "Jan 120" had become an instruction of its own)
+        return (d.group(2).strip() or head), d.group(1).strip()
+    return goal, ""
+
+
+# three or more "<name> <number>" pairs in a row, then what he asks about them
+_PAIR = r"[A-Za-z][\w'’-]*(?:\s[A-Za-z][\w'’-]*){0,2}:?\s+[-+]?[$€£]?\d[\d.,]*%?"
+DATA_RUN = re.compile(rf"(?s)^((?:{_PAIR}\s*(?:,|;|\band\b)\s*){{2,}}(?:and\s+)?{_PAIR})\s*[.;]?\s*(.*)$")
 
 
 def parse_orders(goal):
@@ -78,9 +110,12 @@ def parse_orders(goal):
     sentences ("no paying", "don't delete") are not orders."""
     orders = {}
     for sent in sentences(goal):
+        question = sent.rstrip().endswith("?")
         for kind, pat in ORDER_VERBS.items():
             if kind == "family":
                 m = re.search(pat, sent, re.I)  # a family matter mentioned in his own order is ordered
+            elif question:  # "Is it safe to buy ...?" asks; only "Can you buy ...?" asks the team to do it
+                m = re.search(POLITE_ASK + pat + r"(?![-'\w])", sent, re.I)
             else:
                 m = re.search(COMMAND_POS + pat + r"(?![-'\w])", sent, re.I)
             if not m:
@@ -99,23 +134,32 @@ def ordered_sites(goal, orders, kind):
 
 
 def _family_cell(text):
+    """The family_topic cell says yes. With a threshold in cells/wins.json (chosen on dev by
+    training/cells_family_threshold.py), only when its probability for yes is at least that."""
     try:
-        from .cells import use
-        return use.on("family_topic") and bool(text) and use.ask("family_topic", text) == "yes"
+        from .cells import runtime, use
+        if not (use.on("family_topic") and text):
+            return False
+        t = use.wins().get("family_topic", {}).get("threshold")
+        if t is None:
+            return use.ask("family_topic", text) == "yes"
+        return runtime.label_probs("family_topic", text).get("yes", 0.0) >= t
     except Exception:  # noqa: BLE001
         return False
 
 
-def check_task(text, goal=""):
+def check_task(text, goal="", cell=True):
     """Family/relationship matters only when Arnav's own order is about them. Reason string, or None.
     Two readers: the rule and the family_topic cell (it also catches 'Mom', 'our son', 'the kids').
-    The cell only ever adds blocks: what the rule blocks, the cell can never unlock."""
+    The cell only ever adds blocks: what the rule blocks, the cell can never unlock. cell=False: the rule alone (the
+    writer's step: it acts on nothing and writes from what the team verified; the cell dropped "Write a three-sentence
+    explanation of what a mixture-of-experts model is" and the run had no report)."""
     m = FAMILY.search(text or "")
     if m:
         if FAMILY.search(goal or ""):
             return None
         return f"touches family/relationships ('{m.group(0)}'), which your order did not ask for"
-    if _family_cell(text) and not (FAMILY.search(goal or "") or _family_cell(goal)):
+    if cell and _family_cell(text) and not (FAMILY.search(goal or "") or _family_cell(goal)):
         return "touches family/relationships (family_topic cell), which your order did not ask for"
     return None
 
@@ -127,7 +171,7 @@ class Guard:
         self.board = board
         self.mode = approve
         self.goal = goal
-        self.orders = parse_orders(goal)
+        self.orders = parse_orders(split_material(goal)[0])  # text he hands over is material, not orders
         if use_model and goal:
             self._second_opinion(board)
         self.allow_login = {d.lower().removeprefix("www.") for d in allow_login}
@@ -144,7 +188,7 @@ class Guard:
         from . import llm, prompts
         from .cells import use
         if use.orders_on():  # five one-kind cells (spend, delete, send, login, signup) read the order
-            model = use.orders(self.goal, board)
+            model = use.orders(split_material(self.goal)[0], board)
         else:
             data, _ = llm.chat_json("order_reader", [{"role": "system", "content": prompts.ORDER_READER},
                                                      {"role": "user", "content": self.goal}], max_new_tokens=40)

@@ -77,3 +77,43 @@ requirement in a way stated here. **Not done** = with the reason.
 | requirement | status | what / evidence |
 |---|---|---|
 | Use HiveMIND, keep it updated | Done | pushed after every milestone; PR #1 merged; cells in PR #2 |
+
+## Round 3: make it work for every kind of task (branch `make-it-work`, PR #5)
+
+| requirement | status | what / evidence |
+|---|---|---|
+| Fix every problem found | Done for every one found | each dev bench failure read and fixed generally (training/reports/hive_bench/new_notes.md, new2_notes.md); 90 tests |
+| Every task kind passes, as a hive, minimal compute | Partial | dev bench 7/16 (baseline) -> 9/16 -> 12/16 -> 14/16 (new3) -> 15/16 (new4, frozen 2574473). Held-out set 1, run once on frozen code: **9/16** (the honest number then); again after the fixes it informed: 13/16 (not clean). Held-out set 2 (16 fresh tasks, contamination-checked before any run): 11/16 on d45bc04. Held-out set 3 (16 more): **13/16** on 0147aa4 |
+| Do NOT benchmax | Done, with leaks found and removed | training/contamination_check.py over all training data, cell generators and prompts: a calculator prompt example was a dev task (removed); cell generators named bench model ids, units, a category, a package and a version (removed, cells retrained); two held-out tasks were contaminated by older training data and were replaced before the held-out set ever ran. Older member training data still names some dev tasks' entities: those dev passes are marked as not evidence of generalisation |
+| Teach it / alter weights so it uses the browser more naturally | Done | new browser weight edit from 52 recorded expert steps; cases 0.714 -> 0.786, skills 0.333 -> 0.5 (training/reports/browser/) |
+| Smaller specialists for smaller tasks | Done | 25 cells; new this round: triage (task_kind), three research cells (gap finder 0.933 vs the 4B's 0.840; cross-check 0.953 vs 0.853), cells grown from the hive's own decisions (learned_claim, learned_item, learned_line) |
+| Many swarms at once under 10 GB | Built; measurement pending | `--workers N` (one process, shared models); training/workers_bench.py queued |
+| Give it a task and leave it, with a good SDK/interface | Done | team/sdk.py, team/api.py (OpenAI/Anthropic-compatible, jobs, SSE), checked with the official SDKs against a stand-in hive |
+| One prompt, then talk to it normally; it does the rest | Done | `./hive`: team/converse.py routes each message (talk / work / project / stop / remember); the API's chat endpoints route the same way |
+| A hive of many specialists working as one, not one big model | Done as far as measured | every judgement split into cells where they win; research hive (sub-questions, relevance, gaps, cross-checks, experiments) and coding hive (error reader, his examples as tests, previews); the big members keep what needs generation |
+| Grow new specialists from new problems and new data | Done (mechanism); first grown cell pending | team/cells/learn.py + `python -m team grow`: member decisions logged, a cell trained on them with the member as teacher, answers only when as sure as dev showed; runs by itself when idle |
+| Research that experiments and does math, not only reading | Done (built and tested); real-run evaluation pending | experiment/math sub-questions go to the coder; RESULT lines are claims backed by the program's output; arXiv papers read in full |
+| Hard multi-day coding / long tasks | Done (built and tested) | team/project.py: milestones, a persistent workspace, resume after restart, the service works on open projects when idle |
+| Always on, reachable, never damages the device | Done | `python -m team install` (systemd / launchd / logon task), team/health.py (low priority, a free core, idle unload, battery/heat/busy/RAM/disk checks, never deletes to make room), one instance only; checked live (health, lock, nice 10) |
+| Unfiltered | Not done on purpose | the models' own safety training is not removed; the hive adds no refusals beyond his rules, and his explicit order is the approval |
+| Better architecture: less RAM, faster | Partial | found: llama.cpp keeps a repacked second copy of the weights (the 4B 6.1 -> 3.6 GB without it); 8-bit KV already on; speed and answer equality measured by training/arch_bench.py (pending). The cell pool's first measurement failed (75x slower: a thread setting), fixed, off until re-measured |
+| Perfect on every task | Not met | measured pass rates are above; no system does every task perfectly |
+
+## Round 4: what the held-out set showed (same branch)
+
+| finding | fix (general, checked in code, tested) |
+|---|---|
+| dev fixes carried over to fresh tasks far less than the dev score suggested (14/16 dev, 9/16 held-out) | a second held-out set, written and contamination-checked before it runs; failures are read for their cause, never tuned to the task |
+| a chart shown with plt.show() and never saved passed the jury | a drawn chart with no image file is sent back and never passes; programs run with a non-window plotting backend |
+| a value never found was covered with "Unknown" in every row; three jurors passed it | a placeholder column is a broken file; the data hint says never to use one; a missing element is looked up on the page itself ("class author is on <small>") |
+| answers in the wrong form (weekday as 6, two decimals for one) | the calculator checks the form asked for in code and gets one fix; a weekday next to a date is corrected from the calendar; named answers pass the verifier |
+| his own text handed back instead of translated or rewritten | its own writer prompt; a report that repeats his text (repeats included) is marked not done in code, which sends it to the fix and the editor |
+| Wikipedia quotes never matched: the reader split every link onto its own line | the reader keeps inline text inline (one line per block); quotes match on their words in order |
+| a long page crashed a model call (prompt over the window) | the engine fits every prompt to the model's window (the middle of the longest message is cut) |
+| research questions went to the coder (triage) or got padded plans | a research question goes to the research hive; steps added "if needed" are dropped |
+| no scholarly search (web search engines refuse automated queries) | OpenAlex (papers in every field, abstracts quotable, credited to the DOI); rate limits waited out as the server asks |
+| 404s from links joined to the wrong page; a retry previewed the missing page | 404s get their own hint (urljoin to the page the link is on); a retry previews only his task's pages |
+| a translation edit of the 1.7B (WMT24++, 900 pairs) | measured on 120 held-out sentences: +1.8 chrF over the writer, not clear; the 4B +3.2 over the edit (CI +0.7 to +5.6): translations go to the 4B, the edit is kept in adapters/.rejected |
+| cells that won on synthetic data failed on real research text (answers_q 3/15, claims_agree rewordings as conflicts) | their jobs went to the 4B researcher and to a rule (two values for one thing); a cell answers first again only after a real-data check |
+| research questions: the meta sub-question, battery "experiments", relevance on long sub-questions, unlabelled experiment results, over-claimed ticks | each fixed in code (research_eval_notes.md); the research hive has not been measured again since |
+| engine: repacked weight copies and the 8-bit attention cache | off and on by measurement: 12.9 -> 8.2 GB peak and 1.6x faster with the same decisions |

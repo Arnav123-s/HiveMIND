@@ -1,5 +1,6 @@
 """Model pool: loads each base model once (CPU, bf16) and switches the
 specialist's own trained weights (LoRA delta) in and out per call."""
+import atexit
 import json
 import os
 import re
@@ -12,11 +13,47 @@ from . import config
 
 # torch is imported only on the PyTorch path, so the llama.cpp engine does not pay for it in RAM.
 
-_lock = threading.Lock()
+from .cpu import LOCK as _lock  # noqa: E402 - one CPU lock for members and cells
 _bases = {}  # model_id -> {"tok", "model", "adapters": set()}
 STATS = {"calls": 0, "tokens_out": 0, "seconds": 0.0}
-RECORDER = None  # callable(specialist, messages, output) - the hive records every call for self-training
-ROUTE = {}  # role -> specialised member the router teacher picked for the current step (e.g. browser -> browser_hf)
+RECORDER = None  # callable(specialist, messages, output, **info) for every thread (set_recorder: this thread only)
+_local = threading.local()
+
+
+def set_recorder(fn):
+    """Record this thread's model calls (each swarm job runs in its own thread and keeps its own calls.jsonl)."""
+    _local.recorder = fn
+
+
+def _recorder():
+    return getattr(_local, "recorder", None) or RECORDER
+
+
+class _PerThread:
+    """A dict per thread: concurrent swarm jobs route their own steps."""
+
+    def _d(self):
+        if not hasattr(_local, "route"):
+            _local.route = {}
+        return _local.route
+
+    def get(self, k, default=None):
+        return self._d().get(k, default)
+
+    def __setitem__(self, k, v):
+        self._d()[k] = v
+
+    def __getitem__(self, k):
+        return self._d()[k]
+
+    def __contains__(self, k):
+        return k in self._d()
+
+    def pop(self, k, default=None):
+        return self._d().pop(k, default)
+
+
+ROUTE = _PerThread()  # role -> specialised member the router picked for the current step (e.g. browser -> browser_hf)
 
 
 def _load(model_id):
@@ -196,6 +233,21 @@ def _set_lora(name, llm_, lora, cvec=None):
     _active_lora[name] = state
 
 
+def _no_repack(off):
+    """llama.cpp's extra CPU buffers hold a repacked copy of the weights; off, only the memory-mapped file is used."""
+    import llama_cpp.llama_cpp as C
+    if not hasattr(C, "_hive_default_params"):
+        C._hive_default_params = C.llama_model_default_params
+    if off:
+        def params():
+            p = C._hive_default_params()
+            p.use_extra_bufts = False
+            return p
+        C.llama_model_default_params = params
+    else:
+        C.llama_model_default_params = C._hive_default_params
+
+
 def _gguf_model(specialist, adapter):
     from huggingface_hub import hf_hub_download
     from llama_cpp import Llama
@@ -214,8 +266,13 @@ def _gguf_model(specialist, adapter):
                 _lora_ptrs.pop(k)
         # mmap: the weights file is mapped, not copied, and pages are shared with the OS cache
         kv = dict(flash_attn=True, type_k=8, type_v=8) if config.KV_8BIT else {}  # 8 = GGML_TYPE_Q8_0
+        if config.LOOKUP:
+            from llama_cpp.llama_speculative import LlamaPromptLookupDecoding
+            kv["draft_model"] = LlamaPromptLookupDecoding(num_pred_tokens=10)
+        _no_repack(not config.REPACK)
         _gguf[name] = Llama(model_path=hf_hub_download(repo, fname), n_ctx=config.GGUF_CTX_BY_MODEL.get(name, config.GGUF_CTX),
-                            n_threads=config.THREADS, n_batch=512, use_mmap=True, verbose=False, **kv)
+                            n_threads=config.THREADS, n_threads_batch=config.THREADS, n_batch=512, use_mmap=True,
+                            verbose=False, **kv)
         _active_lora[name] = None
     if name in _lru:
         _lru.remove(name)
@@ -235,6 +292,9 @@ def unload_all():
     _lora_ptrs.clear()
 
 
+atexit.register(unload_all)  # close before Python tears down (llama-cpp-python's __del__ fails after)
+
+
 def _json_grammar():
     global _grammar
     if _grammar is None:
@@ -243,9 +303,39 @@ def _json_grammar():
     return _grammar
 
 
+CUT = "\n[... cut here to fit the model's window ...]\n"
+
+
+def fit(messages, count, n_ctx, max_new, margin=48):
+    """The messages, trimmed so the prompt and the reply fit the model's window: the middle of the longest message
+    (a page's text, as a rule) is cut, its head and tail kept (they hold the instructions and the question). Returns
+    (messages, the reply budget), the budget lowered only when cutting alone cannot make room. (A researcher read a
+    long article and crashed: 'Requested tokens (4119) exceed context window of 4096'.)"""
+    budget = n_ctx - max_new - margin
+    for _ in range(6):
+        n = count(messages)
+        if n <= budget:
+            return messages, max_new
+        i = max(range(len(messages)), key=lambda k: len(str(messages[k].get("content", ""))))
+        c = str(messages[i].get("content", ""))
+        cpt = len(c) / max(1, count([messages[i]]))  # characters per token in this message
+        keep = len(c) - int((n - budget) * cpt * 1.15) - len(CUT) - 20
+        if keep < 400:
+            break
+        head = keep * 2 // 3
+        messages = messages[:i] + [dict(messages[i], content=c[:head] + CUT + c[len(c) - (keep - head):])] + messages[i + 1:]
+    n = count(messages)
+    return messages, max(64, min(max_new, n_ctx - n - margin))
+
+
 def _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop):
+    from . import health
+    health.cool_down()  # a CPU above 90 C waits until it is under 80 C before the next model call
     llm_, tok = _gguf_model(specialist, adapter)
-    prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    render = lambda ms: tok.apply_chat_template(ms, tokenize=False, add_generation_prompt=True,  # noqa: E731
+                                                enable_thinking=False)
+    messages, max_new_tokens = fit(messages, lambda ms: len(tok.encode(render(ms))), llm_.n_ctx(), max_new_tokens)
+    prompt = render(messages)
     kw = dict(max_tokens=max_new_tokens, temperature=temperature, top_p=0.9 if temperature else 1.0,
               repeat_penalty=1.0)  # a penalty stops the model copying page text verbatim (evidence)
     head = ""
@@ -279,14 +369,38 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
     from . import stop as _stop
     _stop.check()
     specialist = ROUTE.get(specialist, specialist)
+    from .cells import spawn
+    if not temperature and not prefix.strip("{") and stop in (None, "json"):
+        # a cell the hive spawned for this very call site answers when it is sure (team/cells/spawn.py)
+        t0 = time.time()
+        text = spawn.answer(specialist, messages)
+        if text is not None:
+            rec = _recorder()
+            if rec is not None:
+                try:
+                    rec(f"cell:{spawn.site_name(specialist, messages)}", messages, text,
+                        seconds=round(time.time() - t0, 2), model="smol135", by_cell=True, instead_of=specialist)
+                except Exception:  # noqa: BLE001
+                    pass
+            return text
+    text = _chat_member(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+    spawn.observe(specialist, messages, text)
+    return text
+
+
+def _chat_member(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop):
+    from . import stop as _stop
     if use_gguf():
         with _lock:
+            t0 = time.time()
             text = _chat_gguf(specialist, messages, max_new_tokens, adapter, temperature, prefix, stop)
+            secs = time.time() - t0
         _stop.check()  # a reply cut off by the kill switch is never used
         text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
-        if RECORDER is not None:
-            try:
-                RECORDER(specialist, messages, text)
+        rec = _recorder()
+        if rec is not None:
+            try:  # time and model per call: what each task costs, by member
+                rec(specialist, messages, text, seconds=round(secs, 2), model=config.GGUF_ROSTER.get(specialist))
             except Exception:  # noqa: BLE001
                 pass
         return text
@@ -324,9 +438,10 @@ def chat(specialist, messages, max_new_tokens=512, adapter=True, temperature=0.0
         text = prefix + tok.decode(new, skip_special_tokens=True)
     _stop.check()
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
-    if RECORDER is not None:
+    rec = _recorder()
+    if rec is not None:
         try:
-            RECORDER(specialist, messages, text)
+            rec(specialist, messages, text)
         except Exception:  # noqa: BLE001 - recording must never break a run
             pass
     return text
@@ -423,9 +538,21 @@ def _repair_cell(text):
         return None
 
 
+def cut_off(out):
+    """The reply stopped at the token limit inside the JSON (it never closed), not a format mistake."""
+    t = (out or "").rstrip()
+    return bool(t) and t[0] in "{[" and t[-1] not in "}]"
+
+
 def chat_json(specialist, messages, max_new_tokens=512, adapter=True, retries=1, prefix="{"):
     out = chat(specialist, messages, max_new_tokens, adapter, prefix=prefix, stop="json")
     data = parse_json(out)
+    if data is None and cut_off(out) and max_new_tokens < 2048:
+        # the browser's answer with three quotes and their evidence passed its 160-token limit; told "not valid
+        # JSON" with the same limit it was cut off again, 20 times, until it ran out of actions
+        max_new_tokens = min(2048, max_new_tokens * 2)
+        out = chat(specialist, messages, max_new_tokens, adapter, prefix=prefix, stop="json")
+        data = parse_json(out)
     tries = 0
     while data is None and tries < retries:
         tries += 1

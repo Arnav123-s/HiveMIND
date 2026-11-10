@@ -83,11 +83,11 @@ _S = {
                     ["text-to-speech", "translation", "object detection", "summarisation", "reranking"]),
     "arxiv": (["papers on {t}", "a recent preprint about {t}", "research on {t}"],
               ["the latest studies of {t}", "academic work on {t}", "a survey paper on {t}"],
-              ["speculative decoding", "LoRA fine-tuning", "mixture of experts", "quantisation", "protein folding", "RLHF"],
+              ["speculative decoding", "LoRA fine-tuning", "graph neural networks", "quantisation", "protein folding", "RLHF"],
               ["sparse attention", "model merging", "retrieval augmented generation", "knowledge distillation"]),
     "pypi": (["the latest version of {p}", "a Python package for {t}", "the {p} library release notes"],
              ["which pip package does {t}", "the newest release of the {p} module", "a Python library to {t}"],
-             ["requests", "numpy", "pandas", "httpx"], ["polars", "pydantic", "rich", "fastapi"]),
+             ["flask", "numpy", "pandas", "httpx"], ["polars", "pydantic", "rich", "fastapi"]),
     "wikipedia": (["the history of {w}", "who invented {w}", "an overview of {w}", "when {w} was founded"],
                   ["background on {w}", "the biography behind {w}", "facts about {w}"],
                   ["the transistor", "Lisbon", "the printing press", "Ada Lovelace", "the Roman Empire", "photosynthesis"],
@@ -233,6 +233,32 @@ def _orders_rows(split, seed):
     return rows[:150] + [r for r in more if r[0] not in dev]
 
 
+def _orders_q_rows(split):
+    """Questions for the order cells (training words for train/dev, held-out words for test); kept apart from the
+    rows above so the first cells' test scores stay comparable."""
+    from training import build_orders as bo
+    if split == "test":
+        return bo.questions(bo.QNEG_TEST, bo.QPOS_TEST, bo.OBJ_TEST, 60, 3)
+    rows = bo.questions(bo.QNEG_TRAIN, bo.QPOS_TRAIN, bo.OBJ_TRAIN, 200, 4)
+    return rows[180:] if split == "dev" else rows[:180]
+
+
+def _orders_gen_q(kind):
+    """The order cells' data with questions: a quarter of training examples are questions."""
+    base = _orders_gen(kind)
+
+    def gen(split, r, _cache={}):  # noqa: B006
+        if split == "test":
+            return base(split, r)
+        if split not in _cache:
+            _cache[split] = _orders_q_rows(split)
+        if r.random() < 0.25:
+            text, kinds = r.choice(_cache[split])
+            return text, "yes" if kind in kinds else "no"
+        return base(split, r)
+    return gen
+
+
 def _orders_gen(kind):
     def gen(split, r, _cache={}):  # noqa: B006 - per-process cache of the fixed builder output
         if split not in _cache:
@@ -274,7 +300,7 @@ def gen_family_topic(split, r):
 
 # ---------------------------------------------------------------- claim_support: does the quote support the claim
 _ENT_TR = [("Qwen2.5-0.5B", "license", "apache-2.0", "mit"), ("SmolLM2-135M", "parameters", "135M", "360M"),
-           ("Lisbon", "population", "545,000", "455,000"), ("requests", "latest version", "2.32.3", "2.31.0"),
+           ("Lisbon", "population", "545,000", "455,000"), ("flask", "latest version", "3.0.3", "3.0.2"),
            ("the hiking boots", "price", "$89", "$98"), ("Llama-3.2-1B", "gated", "yes", "no"),
            ("books.toscrape.com", "number of books", "1000", "100")]
 _ENT_TE = [("Phi-3-mini", "license", "mit", "apache-2.0"), ("Gemma-2-2B", "parameters", "2.6B", "2.0B"),
@@ -360,10 +386,10 @@ def gen_quote_pick(split, r):
 
 
 # ---------------------------------------------------------------- pick_element: which page element to act on
-_UI_TR = ["Next", "Previous", "Login", "Search", "Add to basket", "Checkout", "Poetry", "Travel", "Load more", "Contact",
+_UI_TR = ["Next", "Previous", "Login", "Search", "Add to basket", "Checkout", "Gardening", "Travel", "Load more", "Contact",
           "About us", "Pricing", "Download", "Settings", "Help", "Home", "Blog", "Careers", "Cart", "Reviews",
           "Show comments", "Sort by price", "Filters", "Apply", "Subscribe", "Docs", "FAQ", "Profile", "Orders",
-          "Gift cards", "Sale", "New arrivals", "Mystery", "History", "Science"]
+          "Gift cards", "Sale", "New arrivals", "Cookbooks", "History", "Science"]
 _UI_TE = ["Older posts", "Newer posts", "Sign in", "Find", "Buy now", "Pay", "Fiction", "Romance", "See all", "Support",
           "Our team", "Plans", "Export", "Preferences", "Guide", "Start", "News", "Jobs", "Basket", "Ratings",
           "Expand replies", "Cheapest first", "Refine", "Confirm", "Follow"]
@@ -428,8 +454,174 @@ def gen_licence_open(split, r):
     return fmt.format(m=model, l=lic, d=r.choice([120, 4500, 98000])), ok
 
 
+# ---------------------------------------------------------------- task_kind: the cheapest way through the hive
+# write: only his words are needed (writer); calc: numbers (calculator); lookup: facts from sources (researcher);
+# site: operate a website (browser); code: a program or a file (coder); plan: several kinds (the coordinator plans)
+_TK_FILL = {
+    "lang": (["French", "Spanish", "German"], ["Italian", "Portuguese", "Dutch"]),
+    "sent": (["The parcel arrives on Tuesday.", "We need the report by noon.", "He don't know where the keys is."],
+             ["The train leaves at nine.", "Their going to the market tomorow.", "Please send the invoice soon."]),
+    "para": (["The museum reopens in May after a two-year renovation that added a new wing and a rooftop cafe.",
+              "Sales rose 8% this quarter, driven by the new app; costs stayed flat."],
+             ["The river flooded twice this spring, so the council is building a higher wall along the east bank.",
+              "Our team shipped the beta, fixed 40 bugs and plans the launch for June."]),
+    "name": (["Sam", "Noor", "the landlord"], ["Ola", "Mr Chen", "the team"]),
+    "msg": (["that I will be late", "thanks for the help"], ["that the meeting moved to Monday", "congratulations on the launch"]),
+    "topic": (["autumn", "the sea", "speculative decoding", "Rust web frameworks"], ["winter", "mountains", "quantisation", "vector databases"]),
+    "notes": (["met supplier; price up 5%; decide by Friday"], ["server down 2h; root cause disk; fix deployed"]),
+    "p": (["15", "6.5", "40"], ["12.5", "18", "3"]), "x": (["3,150", "64.20", "1200"], ["4,520", "39.99", "760"]),
+    "y": (["7", "12"], ["9", "16"]), "n": (["one", "two", "3"], ["two", "three", "4"]),
+    "d1": (["3 March 2026", "1 January 2027"], ["14 July 2026", "2026-11-30"]), "d2": (["30 April 2026", "15 June 2027"], ["2 September 2026", "2027-02-01"]),
+    "u1": (["litres", "ounces", "square feet"], ["cups", "stones", "yards"]),
+    "u2": (["gallons", "grams", "square metres"], ["millilitres", "kilograms", "metres"]),
+    "nums": (["12, 18, 25 and 31", "Mon 14, Tue 9, Wed 21"], ["40, 42, 39, 47", "Q1 300, Q2 280, Q3 350"]),
+    "model": (["EleutherAI/pythia-160m", "facebook/opt-125m"], ["google/gemma-2-2b", "microsoft/phi-2"]),
+    "model2": (["mistralai/Mistral-7B-v0.1", "TinyLlama/TinyLlama-1.1B"], ["meta-llama/Llama-3.2-1B", "Qwen/Qwen2.5-0.5B"]),
+    "pkg": (["flask", "numpy", "httpx"], ["pandas", "pydantic", "polars"]),
+    "thing": (["SQLite", "the Linux kernel", "Python"], ["PostgreSQL", "Git", "the Rust language"]),
+    "concept": (["a transformer", "a linked list"], ["quantisation", "a Bloom filter"]),
+    "city": (["Lisbon", "Nairobi"], ["Osaka", "Lima"]),
+    "site": (["books.toscrape.com", "quotes.toscrape.com", "news.ycombinator.com"], ["the library catalogue site", "example.org", "the shop's website"]),
+    "q": (["gardening", "travel"], ["humor", "science"]),
+    "cat": (["Classics", "Travel"], ["Horror", "History"]),
+    "job": (["returns the n-th prime", "counts words in a file", "sorts a list of prices"],
+            ["reverses each line of a file", "finds duplicate rows", "computes a moving average"]),
+    "code": (["for i in range(10): print(i/0)", "def add(a, b): return a - b"], ["x = [1, 2]; print(x[2])", "print('total: ' + 5)"]),
+    "what": (["the book prices", "the top 10 titles"], ["the quotes and authors", "every product name"]),
+    "fact": (["the licences", "the download counts"], ["the parameter counts", "the release dates"]),
+}
+_TK = {
+    "write": (["Translate into {lang}: '{sent}'", "Make this sound friendlier: '{sent}'", "Shorten this: {para}", "Write a reply to {name} saying {msg}.", "Proofread: '{sent}'", "Give me a headline for this: {para}", "Rewrite in plain English: {para}", "Rewrite this more politely: '{sent}'", "Summarise this in {n} sentences: {para}",
+               "Fix the spelling in: '{sent}'", "Draft a short message to {name} saying {msg}.", "Write a short poem about {topic}.",
+               "Turn these notes into a paragraph: {notes}"],
+              ["Put this into {lang}: '{sent}'", "Correct the grammar of: '{sent}'", "Give me a one-paragraph summary of this: {para}",
+               "Write an email to {name} saying {msg}.", "Paraphrase: '{sent}'", "Write a {n}-sentence thank-you note to {name}."]),
+    "calc": (["What is {p}% of {x}?", "What is {x} plus {y} percent tax?", "How much is {x} times {y}?", "Average these: {nums}.", "How many hours are in {y} days?", "What is the total of {nums}?", "How many days are there between {d1} and {d2}?", "Convert {x} {u1} to {u2}.",
+              "What is the average of {nums}?", "If I pay {x} a month, how much is that in a year?",
+              "What is {x} divided by {y}, rounded to 2 decimals?"],
+             ["Calculate {p} percent of {x}.", "How many days from {d1} to {d2}?", "{x} {u1} in {u2}?",
+              "Numbers: {nums}. What is the mean and which is highest?", "What day of the week is {d1}?",
+              "Split a bill of {x} between {y} people."]),
+    "lookup": (["Find the licence of {model} on Hugging Face.", "How many downloads does {model} have?", "What does {pkg} do, according to its PyPI page?", "Summarise the Wikipedia article on {thing}.", "What is {concept}? Cite a source.", "What is the latest version of {pkg} on PyPI?",
+                "List the newest arXiv papers on {topic}.", "Who created {thing}?", "What are the top Hacker News stories about {topic}?",
+                "Explain what {concept} is.", "What is the population of {city}?"],
+               ["Look up the parameter count of {model}.", "Which release of {pkg} is current?", "Find recent papers about {topic}.",
+                "In {n} sentences, explain {concept}.", "When was {thing} first released?", "Give me facts about {city}."]),
+    "site": (["On {site}, search for {q} and list the results.", "Go to {site}, press the next button and read the second page.", "On {site}, fill the search field with {q} and open the first hit.", "Browse {site} and tell me what the {cat} page lists first.", "Go to {site} and click the {cat} link; tell me what it shows.",
+              "Open {site} and use the search box to find {q}.", "On {site}, open the {cat} category and read the first item."],
+             ["Use the search on {site} to look for {q}.", "Visit {site}, open the page for the tag '{q}' and list the first entries.",
+              "Navigate {site} to the {cat} section and report the top entry."]),
+    "code": (["Write a Python function that {job} and run it.", "Debug this snippet: {code}", "Write a unit test for a function that {job}.", "Save {what} from {site} as a JSON file.", "Plot {what} as a bar chart.", "Fix this code and run it: {code}", "Write a script that {job}.",
+              "Scrape {site} and save {what} to a CSV.", "Benchmark two ways to sort a list in Python."],
+             ["Implement a program that {job} and show the output.", "This code is wrong, correct it: {code}",
+              "Download {what} from {site} into a spreadsheet.", "Write a program that {job}."]),
+    "plan": (["Find {what} on {site}, then compute their average and write a report.", "Look up {fact} of {model}, compare it with {model2} and make a chart.", "Search {site} for {q}, save the results to a CSV and summarise them.",
+              "Compare {model} and {model2} on downloads and licence, make a chart, and summarise.",
+              "Research {topic}, benchmark two {pkg} versions and recommend one.",
+              "Collect {fact} of {model} and {model2} from Hugging Face and put them in a CSV."],
+             ["Get {fact} for {model} and {model2}, tabulate them and chart them.",
+              "Find {what} on {site} and the newest {pkg} release, then write a short report with a chart.",
+              "Look up {concept}, then write and run a small Python demo of it."]),
+}
+
+
+def gen_task_kind(split, r):
+    kind = r.choice(list(_TK))
+    frame = r.choice(_pool(split, *_TK[kind]))
+    fill = {k: r.choice(_pool(split, *v)) for k, v in _TK_FILL.items()}
+    return frame.format(**fill), kind
+
+
+# ---------------------------------------------------------------- research cells: the research hive's smallest jobs
+# answers_q: does this fact answer this sub-question? (the gap finder: an unanswered sub-question gets another search)
+_AQ_TR = ["What is the {a} of {e}?", "Find the {a} of {e}.", "Tell me {e}'s {a}.", "Look up the {a} for {e}."]
+_AQ_TE = ["Which {a} does {e} have?", "I need the {a} of {e}.", "{e}: what is its {a}?"]
+_VAGUE_TR = ["The {a} of {e} was discussed in a blog post.", "{e} has not published its {a}.",
+             "Several reviews mention the {a} of {e}."]
+_VAGUE_TE = ["The {a} of {e} is a frequent question on forums.", "{e} declined to state its {a}.",
+             "An article compares the {a} of {e} with others."]
+
+
+def gen_answers_q(split, r):
+    """Made-up entities, so only reading the question against the fact can answer."""
+    e, a = _ename(r), r.choice(_pool(split, _ATTR_TR, _ATTR_TE))
+    v, _ = _val(r)
+    q = r.choice(_pool(split, _AQ_TR, _AQ_TE)).format(a=a, e=e)
+    f = r.choice(_pool(split, _QF_TR, _QF_TE))
+    if r.random() < 0.5:
+        return f"QUESTION: {q}\nFACT: {f.format(e=e, a=a, v=v)}", "yes"
+    kind = r.choice(["attr", "ent", "vague"])
+    if kind == "attr":
+        fact = f.format(e=e, a=r.choice([x for x in _pool(split, _ATTR_TR, _ATTR_TE) if x != a]), v=v)
+    elif kind == "ent":
+        fact = f.format(e=_ename(r), a=a, v=v)
+    else:
+        fact = r.choice(_pool(split, _VAGUE_TR, _VAGUE_TE)).format(a=a, e=e)
+    return f"QUESTION: {q}\nFACT: {fact}", "no"
+
+
+# claims_agree: two sources on the same point agree, conflict, or are about different things
+_CA_TR = ["The {a} of {e} is {v}.", "{e} has a {a} of {v}.", "{e} — {a}: {v}", "According to its site, {e}'s {a} is {v}."]
+_CA_TE = ["{e}'s {a} stands at {v}.", "{a} ({e}): {v}", "Listed {a} for {e}: {v}", "{e} reports {v} as its {a}."]
+
+
+def _plain_variant(v, r):
+    """The same value written another way (1,200 / 1200)."""
+    return v.replace(",", "") if "," in v and r.random() < 0.5 else v
+
+
+def gen_claims_agree(split, r):
+    e, a = _ename(r), r.choice(_pool(split, _ATTR_TR, _ATTR_TE))
+    v, _ = _val(r)
+    f1, f2 = r.choice(_pool(split, _CA_TR, _CA_TE)), r.choice(_pool(split, _CA_TR, _CA_TE))
+    first = f1.format(e=e, a=a, v=v)
+    k = r.randrange(3)
+    if k == 0:
+        return f"A: {first}\nB: {f2.format(e=e, a=a, v=_plain_variant(v, r))}", "agree"
+    if k == 1:
+        return f"A: {first}\nB: {f2.format(e=e, a=a, v=_near(v, r))}", "conflict"
+    if r.random() < 0.5:
+        other = f2.format(e=e, a=r.choice([x for x in _pool(split, _ATTR_TR, _ATTR_TE) if x != a]), v=_val(r)[0])
+    else:
+        other = f2.format(e=_ename(r), a=a, v=_val(r)[0])
+    return f"A: {first}\nB: {other}", "unrelated"
+
+
+# result_relevant: is a search result about what the sub-question asks? Topics come in near-miss pairs that share a
+# word, so word overlap is not enough ("solar panels" / "solar eclipses")
+_TOP_TR = [("solar panels", "solar eclipses"), ("coral reefs", "coral snakes"), ("sourdough bread", "bread mould"),
+           ("electric scooters", "electric eels"), ("black holes", "black pudding"), ("wind turbines", "wind chill"),
+           ("password managers", "password laws"), ("sea otters", "sea shanties"), ("glass recycling", "glass frogs"),
+           ("paper wasps", "paper airplanes"), ("rock climbing", "rock music"), ("blue whales", "blue cheese")]
+_TOP_TE = [("tidal energy", "tidal waves"), ("honey bees", "honey cake"), ("heat pumps", "heat stroke"),
+           ("cargo bikes", "cargo ships"), ("snow leopards", "snow tyres"), ("green tea", "green cards"),
+           ("salt marshes", "salt lamps"), ("night trains", "night vision"), ("fire ants", "fire drills")]
+_RQ_TR = ["How do {t} work?", "What are the main risks of {t}?", "Give me the history of {t}.", "Why do people study {t}?"]
+_RQ_TE = ["Explain {t} to a beginner.", "What is known about {t}?", "What are the benefits of {t}?"]
+_RES_TR = ["{T} explained | A guide to {t}: how they work and what they cost.", "{T} - Wikipedia | {T} are a widely studied topic.",
+           "The truth about {t} | Researchers looked at {t} for ten years.", "{T}: 7 facts | Everything about {t} in one page."]
+_RES_TE = ["Understanding {t} | An introduction to {t} for newcomers.", "{T} (overview) | A short summary of {t}.",
+           "New study on {t} | Findings about {t} published this month."]
+
+
+def gen_result_relevant(split, r):
+    pair = r.choice(_pool(split, _TOP_TR, _TOP_TE))
+    t = pair[0]
+    q = r.choice(_pool(split, _RQ_TR, _RQ_TE)).format(t=t)
+    tmpl = r.choice(_pool(split, _RES_TR, _RES_TE))
+    if r.random() < 0.5:
+        return f"QUESTION: {q}\nRESULT: {tmpl.format(t=t, T=_cap(t))}", "yes"
+    if r.random() < 0.7:  # the near miss: shares a word with the topic
+        o = pair[1]
+    else:
+        o = r.choice([p[0] for p in _pool(split, _TOP_TR, _TOP_TE) if p[0] != t])
+    return f"QUESTION: {q}\nRESULT: {tmpl.format(t=o, T=_cap(o))}", "no"
+
+
 # ---------------------------------------------------------------- the catalogue
 SKILLS = {
+    "task_kind": dict(part="hive: the cheapest way through the hive for a whole task", labels=list(_TK), gen=gen_task_kind,
+                      new=True, instr="Which way does this task go: write, calc, lookup, site, code or plan?"),
     "route_step": dict(part="coordinator: which specialist takes a plan step", labels=list(_R), gen=gen_route_step,
                        instr="Which specialist does this step: researcher, browser, coder or writer?"),
     "pick_source": dict(part="researcher: which search source to query", labels=list(_S), gen=gen_pick_source,
@@ -453,6 +645,16 @@ SKILLS = {
                           instr="Does clicking this ELEMENT reach the GOAL? yes or no"),
     "licence_open": dict(part="verifier: is a licence open for any use", labels=["yes", "no"], gen=gen_licence_open,
                          instr="Is this licence permissive (free for any use, including commercial)? yes or no", new=True),
+    "answers_q": dict(part="research hive: does this fact answer this sub-question (the gap finder)", labels=["yes", "no"],
+                      gen=gen_answers_q, new=True,
+                      instr="Does the FACT give the answer to the QUESTION (the asked thing, of the asked entity)? yes or no"),
+    "claims_agree": dict(part="research hive: do two sources agree on a point", labels=["agree", "conflict", "unrelated"],
+                         gen=gen_claims_agree, new=True,
+                         instr="Do A and B say the same thing (agree), give different values for the same thing (conflict), "
+                               "or talk about different things (unrelated)?"),
+    "result_relevant": dict(part="research hive: is a search result about what the question asks", labels=["yes", "no"],
+                            gen=gen_result_relevant, new=True,
+                            instr="Is this search RESULT about what the QUESTION asks? yes or no"),
 }
 for _k, _v in {"spend": "buy, pay, book, order, rent, subscribe, donate", "delete": "delete, remove, erase, cancel, unsubscribe",
                "send": "send, email, message, post, reply, share, upload", "login": "log in, sign in",
@@ -461,15 +663,126 @@ for _k, _v in {"spend": "buy, pay, book, order, rent, subscribe, donate", "delet
                                   instr=f"Does the user ORDER the team to {_v}? Nouns, questions and negations are not orders. yes or no")
 
 
+# cells the hive grows from its own logged decisions (team/cells/learn.py): no generator, the data is the log
+LEARNED = {
+    "learned_claim": dict(part="verifier: does a quote state a claim (learned from the verifier's own decisions)",
+                          labels=["SUPPORTED", "UNSUPPORTED"], member="verifier",
+                          instr="Does the QUOTE state exactly what the CLAIM says?"),
+    "learned_item": dict(part="juror: does a listed item meet the task (learned from the juror's own decisions)",
+                         labels=["yes", "no"], member="juror_brain",
+                         instr="Does this ITEM meet every requirement of the TASK, judged from its SOURCE LINE? yes or no"),
+    "learned_line": dict(part="condenser: keep a page line for the task? (learned from the condenser's own choices; "
+                              "asked about every line of a page at once on the cell pool)",
+                         labels=["keep", "drop"], member="condenser",
+                         instr="Does this LINE of a page matter for the TASK? keep or drop"),
+}
+for _k, _v in LEARNED.items():
+    SKILLS[_k] = dict(part=_v["part"], labels=_v["labels"], instr=_v["instr"], gen=None, learned=True, new=True)
+
+
+# cells the hive SPAWNED: jobs nobody declared, noticed in the members' logged calls (team/cells/spawn.py). The file is
+# the catalogue entry; a process that is already running picks up new ones through load_spawned().
+SPAWNED_FILE = __import__("pathlib").Path(__file__).resolve().parents[2] / "cells" / "spawned.json"
+
+
+def load_spawned():
+    if not SPAWNED_FILE.exists():
+        return {}
+    try:
+        sp = json.loads(SPAWNED_FILE.read_text())
+    except ValueError:
+        return {}
+    for k, v in sp.items():
+        if not all(f in v for f in ("part", "labels", "member", "instr")):
+            continue  # a damaged entry is skipped, never a reason the hive cannot start
+        LEARNED[k] = dict(part=v["part"], labels=v["labels"], member=v["member"], instr=v["instr"])
+        SKILLS[k] = dict(part=v["part"], labels=v["labels"], instr=v["instr"], gen=None, learned=True, new=True,
+                         spawned=True)
+    return sp
+
+
+load_spawned()
+
 SKILLS["orders_any"] = dict(part="guard: is ANY risky action ordered (new skill made by the factory)", labels=["yes", "no"],
                            gen=gen_orders_any, new=True,
                            instr="Does the user ORDER the team to buy, pay, delete, send, post, log in or sign up? "
                                  "Nouns, questions and negations are not orders. yes or no")
 
 
+# ---------------------------------------------------------------- de_grammar: is this German sentence grammatical?
+# The smallest job in a translation: the 1.7B writes German, this cell says ok or error, and only a sentence it calls
+# an error goes to the 4B. Grammatical sentences: professional German from the WMT news test sets (2016-2017 for
+# training, 2014 for test: no sentence in both). Errors: one thing broken in code per sentence, the kinds a small model
+# makes ("Der Zug fährt um 9 Uhr in der Morgens": a case and contraction error).
+_DE = {}
+_DE_ART = ["der", "die", "das", "den", "dem", "des"]
+_DE_DAT = r"\b(mit|von|zu|aus|bei|nach|seit)\s+(dem|der)\b"
+_DE_SUB = r",\s(dass|weil|wenn|ob|obwohl|damit|nachdem|bevor)\s"
+
+
+def _de_sentences(split):
+    if split not in _DE:
+        from pathlib import Path
+        f = Path(__file__).resolve().parents[2] / "training" / "data" / (
+            "de_sentences_test.txt" if split == "test" else "de_sentences_train.txt")
+        lines = [ln.strip() for ln in f.read_text(encoding="utf-8").splitlines() if ln.strip()] if f.exists() else []
+        if split != "test":  # dev: every tenth training sentence, never trained on
+            lines = [x for i, x in enumerate(lines) if (i % 10 == 0) == (split == "dev")]
+        _DE[split] = lines
+    return _DE[split]
+
+
+def de_break(s, r):
+    """The sentence with one grammar error put in by code, or None if this sentence offers none."""
+    ways = []
+    m = re.search(_DE_SUB + r"(.+?)\s(\w+)([.,!?])", s)
+    if m and len(m.group(2).split()) >= 2:  # the verb of a subordinate clause moved from its end to its start
+        ways.append(lambda: s[:m.start()] + f", {m.group(1)} {m.group(3)} {m.group(2)}{m.group(4)}" + s[m.end():])
+    if re.search(r"\b(im|am)\s+[A-ZÄÖÜ]", s):  # a contraction undone with the wrong article ("am Morgen" -> "in der Morgen")
+        ways.append(lambda: re.sub(r"\b(im|am)\s+(?=[A-ZÄÖÜ])", lambda x: {"im": "in die ", "am": "in der "}[x.group(1)], s,
+                                   count=1))
+    if re.search(_DE_DAT, s):  # the dative after mit / von / zu ... turned accusative
+        ways.append(lambda: re.sub(_DE_DAT, lambda x: f"{x.group(1)} {'den' if x.group(2) == 'dem' else 'die'}", s, count=1))
+    arts = [m for m in re.finditer(r"\b(der|die|das|den|dem|des)\s+(?=[A-ZÄÖÜ])", s)]
+    if arts:  # a definite article before a noun swapped for another
+        art = r.choice(arts)
+        ways.append(lambda art=art: s[:art.start()] + r.choice([x for x in _DE_ART if x != art.group(1)]) + " "
+                    + s[art.end():])
+    adj = [m for m in re.finditer(r"\b(?:der|die|das|den|dem|des|ein|eine|einen|einem|einer|eines)\s+([a-zäöüß]{3,}?)(en|e|er|es|em)\s+[A-ZÄÖÜ]", s)]
+    if adj:  # an adjective ending changed
+        ad = r.choice(adj)
+        new_end = r.choice([e for e in ("en", "e", "er", "es", "em") if e != ad.group(2)])
+        ways.append(lambda ad=ad, new_end=new_end: s[:ad.start(2)] + new_end + s[ad.end(2):])
+    if not ways:
+        return None
+    out = r.choice(ways)()
+    return out if out != s else None
+
+
+def gen_de_grammar(split, r):
+    pool = _de_sentences(split)
+    for _ in range(50):
+        sent = r.choice(pool)
+        if r.random() < 0.5:
+            return f"SENTENCE: {sent}", "ok"
+        bad = de_break(sent, r)
+        if bad:
+            return f"SENTENCE: {bad}", "error"
+    return f"SENTENCE: {r.choice(pool)}", "ok"
+
+
+SKILLS["de_grammar"] = dict(part="writer: is this German sentence grammatical (translations are checked before delivery)",
+                            labels=["ok", "error"], gen=gen_de_grammar,
+                            instr="Is this German sentence grammatically correct? Answer ok or error.")
+
+
 def examples(skill, split, n, seed=0):
     """n labelled (input, target) pairs; distinct inputs where the pool allows."""
     s = SKILLS[skill]
+    if s.get("learned"):  # a cell grown from logged decisions: its examples are the log (oldest train, newest test)
+        from . import learn
+        tr, dv, te = learn.split(skill)
+        return (te if split == "test" else tr + dv)[:n]
     r = random.Random(f"{skill}:{split}:{seed}")
     out, seen, per = [], set(), {}
     cap = -(-n // len(s["labels"])) if "labels" in s else n  # balanced labels: no class can crowd out the rest
@@ -498,10 +811,12 @@ def score(skill, pred, target):
 # ---------------------------------------------------------------- gate: the router over all cells (mixture of experts)
 GROUPS = {  # the gate routes by the kind of input; the group's organizer runs every cell that reads that kind
     "order": ["split_orders", "orders_spend", "orders_delete", "orders_send", "orders_login", "orders_signup",
-              "orders_any", "family_topic"],
+              "orders_any", "family_topic", "task_kind"],
     "step": ["route_step", "pick_source", "family_topic"],
-    "failure": ["next_move"], "claim": ["claim_support"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
+    "failure": ["next_move"], "claim": ["claim_support", "learned_claim"], "item": ["learned_item"],
+    "line": ["learned_line"], "sentences": ["quote_pick"], "page": ["pick_element", "element_match"],
     "json": ["json_repair"], "licence": ["licence_open"],
+    "research": ["answers_q", "claims_agree", "result_relevant"],
 }
 
 
@@ -517,7 +832,8 @@ def gate_labels():
     p = Path(__file__).resolve().parent.parent.parent / "cells" / "registry.json"
     reg = json.loads(p.read_text()) if p.exists() else {}
     names = [k for k in reg if k != "gate"] or [k for k, v in SKILLS.items() if not v.get("new") and k != "gate"]
-    return sorted({group(k) for k in names})
+    # a spawned cell is reached through its member's call site, never through the gate
+    return sorted({group(k) for k in names if not SKILLS.get(k, {}).get("spawned")})
 
 
 _GATE_CACHE = {}
@@ -526,7 +842,8 @@ _GATE_CACHE = {}
 def gen_gate(split, r):
     labels = SKILLS["gate"]["labels"]
     g = r.choice(labels)
-    member = r.choice([k for k in SKILLS if group(k) == g and k != "gate"])
+    member = r.choice([k for k in SKILLS if group(k) == g and k != "gate" and not SKILLS[k].get("learned")]
+                      or [k for k in SKILLS if group(k) == g and k != "gate"])
     key = (member, split)
     if key not in _GATE_CACHE:
         _GATE_CACHE[key] = examples(member, split, 150 if split == "train" else 40, seed=5)

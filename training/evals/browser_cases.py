@@ -45,3 +45,27 @@ LIVE = [
     {"name": "live-category-count", "url": "https://books.toscrape.com/", "goal": "Open the Poetry category and report how many results it has",
      "answer": r"19"},
 ]
+
+# Skills added after real runs failed at them (training/build_browser_skills.py records the training side; these
+# held-out cases use other books, tags, categories and topics). Kept apart so the cases above stay comparable.
+RECOVER = ("0. https://books.toscrape.com/books/scott-pilgrims-precious-little-life.html does not exist (HTTP error): "
+           "opened the home page https://books.toscrape.com/ instead. Use its search box or links to reach the goal.")
+SKILL_CASES = [
+    {"name": "recover-from-404", "url": "https://books.toscrape.com/", "history": [RECOVER],
+     "goal": "Find the price of the book 'Scott Pilgrim's Precious Little Life' on books.toscrape.com",
+     "expect": {"click_text": r"Scott Pilgrim"}},
+    {"name": "list-quotes", "url": "https://quotes.toscrape.com/tag/friends/",
+     "history": ["1. click 'friends' -> now at https://quotes.toscrape.com/tag/friends/"],
+     "goal": "List the first three quotes tagged 'friends' on quotes.toscrape.com", "expect": {"done_parts": 3}},
+    {"name": "list-titles", "url": "https://books.toscrape.com/catalogue/category/books/travel_2/index.html",
+     "history": ["1. click 'Travel' -> now at https://books.toscrape.com/catalogue/category/books/travel_2/index.html"],
+     "goal": "List the titles of the first three books in the Travel category", "expect": {"done_parts": 3}},
+    {"name": "start-mid-site", "url": "https://books.toscrape.com/catalogue/category/books/nonfiction_13/index.html",
+     "goal": "On this Nonfiction page, tell me the title and price of the first book listed",
+     "expect": {"done_evidence": r"£\d+\.\d\d"}},
+    {"name": "without-logging-in", "url": "https://quotes.toscrape.com/",
+     "goal": "Without logging in, open the quotes tagged 'humor'", "expect": {"click_text": r"^humor$"}},
+    {"name": "search-box", "url": "https://en.wikipedia.org/wiki/Main_Page",
+     "goal": "Search Wikipedia for 'Haskell (programming language)' and tell me when it first appeared",
+     "expect": {"type_search": True}},
+]

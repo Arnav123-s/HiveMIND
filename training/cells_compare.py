@@ -89,6 +89,11 @@ if __name__ == "__main__":
         for k in KINDS:  # the order cells replace the order reader only as a group, judged as the guard uses them
             wins[f"orders_{k}"]["use"] = ok
         wins["_orders_organizer"] = {"cells": org, "order_reader_member": {"model": old["model"], "both": old["both"]}, "use": ok}
+    old_w = json.loads((runtime.CELLS / "wins.json").read_text()) if (runtime.CELLS / "wins.json").exists() else {}
+    wins.update({k: v for k, v in old_w.items() if isinstance(v, dict) and v.get("learned")})  # grown cells keep theirs
+    from training.cells_triage_threshold import wins_entry
+    if wins_entry():  # the triage cell is judged by its shortcut's precision (training/cells_triage_threshold.py)
+        wins["task_kind"] = wins_entry()
     (runtime.CELLS / "wins.json").write_text(json.dumps(wins, indent=1))
     lines = ["# Cells: measured", "",
              "Each cell = SmolLM2-135M (shared, frozen) + its own weight delta. Scores are on the TEST split (other "

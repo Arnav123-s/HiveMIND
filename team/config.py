@@ -23,7 +23,7 @@ SPECIALISTS = {
     "writer": BASE_MODEL,       # assembles the finished deliverable
     "coder": CODER_MODEL,       # writes, runs and repairs Python
 }
-for _role in ("code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
+for _role in ("calculator", "editor", "code_reviewer", "order_reader", "plan_reviewer", "condenser", "critic", "juror_brain", "juror_fast", "examiner", "prompt_smith",
               "lesson_writer"):
     SPECIALISTS[_role] = BASE_MODEL  # PyTorch fallback: same base, no edit
 
@@ -47,10 +47,12 @@ GGUF_ROSTER = {
     "writer": "fast+writer",        # 1.7B + edit: 1.00 = 4B, 2.2x faster
     "browser": "fast+browser",      # 1.7B + edit: 0.79 vs 0.43 (4B)
     "coder": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),  # 7B: 0.88 vs 0.50 (1.5B)
+    "calculator": "fast",           # writes a few lines of Python; Python does the arithmetic
     # quality-control specialists
     "plan_reviewer": BRAIN,         # second look at every plan before work starts
     "condenser": "fast",            # picks the relevant lines of long sources (extractive: quotes stay exact)
     "critic": BRAIN,                # checks the final report against verified results
+    "editor": BRAIN,                # rewrites a report only when the critic still rejects the writer's fix
     "juror_brain": BRAIN,           # jury: step verdicts are a vote of three
     "juror_fast": "fast",
     "order_reader": "fast+order_reader",
@@ -58,6 +60,9 @@ GGUF_ROSTER = {
     # evolution-harness specialists
     "examiner": BRAIN, "prompt_smith": BRAIN, "lesson_writer": "fast",
 }
+# who writes a translation of his text (training/reports/translator.json): the 4B editor, chrF 51.6 on 120 held-out
+# professional translations, against 48.4 for a translation edit of the 1.7B and 46.7 for the writer
+TRANSLATE_ROLE = os.environ.get("AGENT_TEAM_TRANSLATE_ROLE", "editor")
 JURY = [s.strip() for s in os.environ.get("AGENT_TEAM_JURY", "verifier,juror_brain,juror_fast").split(",") if s.strip()]
 if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
     import json as _json
@@ -67,7 +72,18 @@ if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 
 # attention caches. Under the budget: 8-bit attention cache (half the size), per-model context sizes, and at
 # most N base models resident (least recently used is unloaded; reload ~4 s from the OS file cache).
 RAM_GB = float(os.environ.get("AGENT_TEAM_RAM_GB", 10))
-KV_8BIT = os.environ.get("AGENT_TEAM_KV", "q8" if RAM_GB <= 12 else "f16") == "q8"
+# 16-bit attention cache by measurement (training/reports/arch_bench.json, five real hive prompts, no repacked copies):
+# 185 s against 293 s with the 8-bit cache (the researcher's long prompt 105 s against 207 s), peak 8.22 GB against
+# 7.8 GB, inside the 10 GB budget; every verdict, value and conclusion the same. AGENT_TEAM_KV=q8 saves ~0.4 GB.
+KV_8BIT = os.environ.get("AGENT_TEAM_KV", "f16") == "q8"
+# prompt-lookup decoding: next tokens guessed from the prompt itself (quotes, claims, code being fixed), checked in one
+# pass. Off: in llama-cpp-python 0.3.36 it crashed on the hive's real prompts (training/reports/arch_bench.json).
+LOOKUP = os.environ.get("AGENT_TEAM_LOOKUP", "0") == "1"
+# llama.cpp's extra CPU weight buffers keep a second, repacked copy of the weights for faster matrix maths. Off by
+# measurement (training/reports/arch_bench.json, five real hive prompts): with it the process peaked at 12.9 GB (the
+# 7B coder and a second model each with two copies: over the 10 GB budget and the service's memory cap); without it
+# 7.8 GB, in 293 s against 288 s, with the same verdicts, values and conclusions.
+REPACK = os.environ.get("AGENT_TEAM_REPACK", "0") == "1"
 GGUF_CTX = int(os.environ.get("AGENT_TEAM_CTX", 6144))
 GGUF_CTX_BY_MODEL = {"fast": 4096}  # the 1.7B roles (browser, verifier, writer, condenser) need less context
 GGUF_MAX_LOADED = int(os.environ.get("AGENT_TEAM_MAX_LOADED", 1 if RAM_GB < 7 else 2))

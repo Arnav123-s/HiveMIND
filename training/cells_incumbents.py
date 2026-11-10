@@ -25,6 +25,10 @@ INCUMBENT = {
     "route_step": "coordinator", "pick_source": "researcher", "next_move": "coordinator", "split_orders": "coordinator",
     "quote_pick": "researcher", "claim_support": "verifier", "pick_element": "browser", "licence_open": "juror_brain",
     "json_repair": "code:parse_json", "family_topic": "code:guard.FAMILY",
+    # the research hive's jobs: what does each without the cell (word overlap; any claim counts; the 4B juror, as
+    # nothing cross-checks sources without the cell)
+    "result_relevant": "code:words", "answers_q": "code:any", "claims_agree": "juror_brain",
+    "de_grammar": "code:ok",  # nothing checks a translation's German today: every sentence passes
     **{f"orders_{k}": "order_reader" for k in ("spend", "delete", "send", "login", "signup")},
 }
 
@@ -69,10 +73,19 @@ def ask_code(skill, x):
         return json.dumps(got) if got is not None else ""
     if skill == "family_topic":
         return "yes" if guard.FAMILY.search(x) else "no"
+    if skill == "result_relevant":  # exactly the research hive's fallback
+        from team.specialists import research_hive
+        q, r = x.split("\nRESULT: ", 1)
+        t, _, sn = r.partition(" | ")
+        return "yes" if research_hive.relevant(q.removeprefix("QUESTION: "), [{"title": t, "snippet": sn}])[0] else "no"
+    if skill == "answers_q":
+        return "yes"
+    if skill == "de_grammar":
+        return "ok"
     raise ValueError(skill)
 
 
-def run(skill):
+def run(skill, out_name=None):
     inc = INCUMBENT[skill]
     _, _, te = data(skill)
     t0 = time.time()
@@ -81,13 +94,18 @@ def run(skill):
     acc = sum(S.score(skill, p, y) for p, (_, y) in zip(preds, te)) / len(te)
     member = inc if inc.startswith("code:") else f"{inc} = {__import__('team.config', fromlist=['x']).GGUF_ROSTER[inc]}"
     res = {"skill": skill, "incumbent": member, "test": round(acc, 4), "ms_per_call": round(sec * 1000, 1), "n": len(te),
-           "errors": [(x, y, p) for (x, y), p in zip(te, preds) if not S.score(skill, p, y)][:6]}
+           "errors": [(x, y, p) for (x, y), p in zip(te, preds) if not S.score(skill, p, y)]}
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"incumbent_{skill}.json").write_text(json.dumps(res, indent=1))
+    (OUT / (out_name or f"incumbent_{skill}.json")).write_text(json.dumps(res, indent=1))
     print(f"{skill}: {member} test {acc:.3f} ({sec * 1000:.0f} ms/call)", flush=True)
     return res
 
 
 if __name__ == "__main__":
-    for s in sys.argv[1:]:
-        run(s)
+    for s in sys.argv[1:]:  # skill, or skill=member to measure another member on the same inputs (not the incumbent)
+        if "=" in s:
+            sk, member = s.split("=", 1)
+            INCUMBENT[sk] = member  # its own file: the incumbent's measurement is never overwritten
+            run(sk, out_name=f"alt_{sk}_{member}.json")
+        else:
+            run(s)

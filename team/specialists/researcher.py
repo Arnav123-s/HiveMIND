@@ -1,14 +1,24 @@
 """Researcher: picks live sources, reads them, returns facts with exact quotes."""
 import json
 import re
+import time
 
 from .. import llm, prompts
 from ..cells import use
 from ..tools import web
 
 
+SITE = web.SITE
+NEWEST = re.compile(r"\b(newest|latest|most recent|recent(ly)?|this (week|month|year)|today|yesterday|last (week|month))\b",
+                    re.I)
+
+
+def today():
+    return time.strftime("%Y-%m-%d (%A)")
+
+
 def plan_messages(task, context):
-    user = f"Task: {task}"
+    user = f"Today is {today()}.\nTask: {task}"
     if context:
         user += f"\n\nWhat the team already found:\n{context}"
     return [{"role": "system", "content": prompts.RESEARCHER_PLAN}, {"role": "user", "content": user}]
@@ -16,11 +26,14 @@ def plan_messages(task, context):
 
 def extract_messages(task, sources_text):
     return [{"role": "system", "content": prompts.RESEARCHER_EXTRACT},
-            {"role": "user", "content": f"Task: {task}\n\nSOURCES:\n{sources_text}"}]
+            {"role": "user", "content": f"Today is {today()}.\nTask: {task}\n\nSOURCES:\n{sources_text}"}]
 
 
-def gather(plan, board, step_id, task=""):
-    """Run the searches and URL reads. Returns (blocks, corpus{url: text}, notes)."""
+def gather(plan, board, step_id, task="", keep=None, read_top=0):
+    """Run the searches and URL reads. Returns (blocks, corpus{url: text}, notes).
+    keep(results) -> [bool] drops search results that are not about the task (the research hive's relevance filter,
+    asked about every result of a search at once);
+    read_top: also read that many of the first kept results' pages."""
     blocks, corpus, notes = [], {}, []
     for s in (plan.get("searches") or [])[:4]:
         if not isinstance(s, dict):
@@ -34,6 +47,8 @@ def gather(plan, board, step_id, task=""):
         kw = {}
         if src == "huggingface" and re.search(r"text.generation|chat|instruct|llm|language model|assistant", task, re.I):
             kw = {"pipeline_tag": "text-generation", "limit": 20}
+        if src in ("arxiv", "hn", "openalex") and (NEWEST.search(f"{task} {q}") or s.get("sort") == "newest"):
+            kw["newest"] = True  # "the newest papers" sorted by relevance gave papers from two years earlier
         try:
             res = web.search(src, q, **kw)
         except Exception as e:  # noqa: BLE001 - report every failure to the board
@@ -41,6 +56,16 @@ def gather(plan, board, step_id, task=""):
             board.log("researcher", "tool-fail", notes[-1])
             continue
         board.log("researcher", "search", f"{src}: '{q}' -> {len(res)} results")
+        if keep is not None and res:
+            kept = [r for r, ok in zip(res, keep(res)) if ok]
+            if len(kept) < len(res):
+                board.log("researcher", "filter", f"{src}: kept {len(kept)} of {len(res)} results as about the question")
+            res = kept
+        if read_top:
+            plan.setdefault("urls", [])
+            for r in [r for r in res if str(r.get("url", "")).startswith("http")][:read_top]:
+                if r["url"] not in plan["urls"]:
+                    plan["urls"].append(r["url"])
         ids = re.findall(r"\b[\w.\-]+/[\w.\-]+\b", q) if src == "huggingface" else []
         for mid in ids[:2]:  # an exact model id: also get that model's own facts (license, files, sizes)
             try:
@@ -49,9 +74,18 @@ def gather(plan, board, step_id, task=""):
                 board.log("researcher", "search", f"hf_model: {mid} -> {len(det)} facts")
             except Exception as e:  # noqa: BLE001
                 notes.append(f"hf_model {mid} failed: {e}")
+        if src == "wikipedia" and res and res[0].get("url", "").startswith("http"):
+            # a search lists 250-character snippets; what a thing is, is in the article (an explanation of a
+            # concept found only snippets from model and paper listings)
+            plan.setdefault("urls", [])
+            if res[0]["url"] not in plan["urls"]:
+                plan["urls"].insert(0, res[0]["url"])
         lines = [f"- {r['title']} | {r['url']} | {r['snippet']}" for r in res]
         url = res[0].get("source_url") if res and res[0].get("source_url") else f"search:{src}:{q}"
         text = "\n".join(lines)
+        for r, line in zip(res, lines):  # each result is also its own source, so a quote is credited to its page
+            if str(r.get("url", "")).startswith("http"):
+                corpus.setdefault(r["url"], line[2:])
         corpus[url] = text
         blocks.append(f"### Source: {url}\n{text}")
     for u in (plan.get("urls") or [])[:3]:
@@ -75,6 +109,20 @@ def condense(task, title, text, board, limit=3000):
     if len(text) <= limit:
         return text
     lines = [ln for ln in text.split("\n") if ln.strip()][:400]
+    from ..cells import learn
+    said = learn.decide_all("learned_line", [f"TASK: {task[:300]}\nLINE: {ln[:300]}" for ln in lines])
+    if lines and sum(x is not None for x in said) >= 0.9 * len(lines):
+        # a cell grown from the condenser's own choices, asked about every line at once on the cell pool
+        keep = [i for i, x in enumerate(said) if x == "keep"]
+        board.log("cell:learned_line", "condense", f"{title[:60]}: kept {len(keep)} of {len(lines)} lines")
+        if keep:
+            out, size = [], 0
+            for i in keep:  # whole lines, up to twice the budget
+                if size + len(lines[i]) > limit * 2 and out:
+                    break
+                out.append(lines[i])
+                size += len(lines[i]) + 1
+            return "\n".join(out)
     numbered = "\n".join(f"{i}: {ln[:300]}" for i, ln in enumerate(lines))[:14000]
     data, _ = llm.chat_json("condenser", [{"role": "system", "content": prompts.CONDENSER},
                                           {"role": "user", "content": f"TASK: {task}\nSOURCE: {title}\n\n{numbered}"}],
@@ -86,7 +134,22 @@ def condense(task, title, text, board, limit=3000):
         board.log("condenser", "fallback", f"{title[:60]}: kept goal-matching lines")
         return focus_text(text, task, head=600, budget=limit)
     board.log("condenser", "condense", f"{title[:60]}: kept {len(keep)} of {len(lines)} lines")
+    shown = len(numbered.split("\n"))  # the lines the condenser saw: its choices are logged to grow learned_line
+    kept = set(keep)
+    import random
+    dropped = [i for i in range(shown) if i not in kept]
+    for i in sorted(kept) + random.Random(len(lines)).sample(dropped, min(len(dropped), 3 * max(1, len(kept)))):
+        learn.record("learned_line", f"TASK: {task[:300]}\nLINE: {lines[i][:300]}", "keep" if i in kept else "drop")
     return "\n".join(lines[i] for i in sorted(set(keep)))
+
+
+def with_value(fact):
+    """A bare label ("parameter count") states nothing the checker can match to its quote ("params 0.135B"), so it was
+    rejected while the number still reached the report through the summary. Such a claim takes its quote's words."""
+    claim, quote = str(fact.get("claim", "")).strip(), str(fact.get("quote", "")).strip()
+    if quote and not re.search(r"\d", claim) and len(claim.split()) <= 4 and quote.lower() not in claim.lower():
+        fact["claim"] = f"{claim}: {quote[:200]}"
+    return fact
 
 
 def run(task, context, board, step_id):
@@ -96,6 +159,9 @@ def run(task, context, board, step_id):
         plan = {"searches": [{"source": src, "q": task[:80]}]}
     plan.setdefault("searches", [])
     urls_in_task = re.findall(r"https?://[^\s)\"']+", task)
+    # a site named without a link ("on books.toscrape.com"): read it, do not search the web for it (the web search was
+    # blocked by a bot check, and the site itself was never read)
+    urls_in_task += [f"https://{d}/" for d in SITE.findall(task) if not any(d in u for u in urls_in_task)]
     plan["urls"] = list(dict.fromkeys((plan.get("urls") or []) + urls_in_task))
     board.log("researcher", "plan", json.dumps(plan)[:300])
     blocks, corpus, notes = gather(plan, board, step_id, task)
@@ -106,7 +172,7 @@ def run(task, context, board, step_id):
     data, raw = llm.chat_json("researcher", extract_messages(task, text), max_new_tokens=900)
     if not isinstance(data, dict):
         data = {"summary": raw[:500], "items": [], "facts": []}
-    facts = [f for f in data.get("facts") or [] if isinstance(f, dict) and f.get("claim")]
+    facts = [with_value(f) for f in data.get("facts") or [] if isinstance(f, dict) and f.get("claim")]
     items = [str(i) for i in (data.get("items") or []) if str(i).strip()]
     return {"summary": str(data.get("summary", "")), "items": items, "facts": facts,
             "corpus": corpus, "notes": notes}

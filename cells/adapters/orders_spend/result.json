@@ -1,7 +1,7 @@
 {
  "skill": "orders_spend",
  "base": "smol135",
- "tag": "all_r2",
+ "tag": "all_r2_questions",
  "modules": [
   "0:q_proj",
   "0:k_proj",
@@ -222,19 +222,20 @@
  "trainable_params": 610560,
  "parent": null,
  "copied_tensors": 0,
- "dev": 1.0,
+ "dev": 0.9,
  "test": 0.9672131147540983,
- "train_seconds": 425.4,
+ "train_seconds": 255.9,
  "test_errors": [
-  [
-   "You should upload the invoice to the client today. What does a book cost on average there?",
-   "no",
-   "yes"
-  ],
   [
    "Summarise the purchase history. Just look - do not donate to the course.",
    "no",
    "yes"
+  ],
+  [
+   "You should delete the test branch today. Now subscribe to a yearly licence. Find the newsletter archive.",
+   "yes",
+   "no"
   ]
- ]
+ ],
+ "questions": 0.95
 }

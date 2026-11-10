@@ -6,6 +6,7 @@ Everything goes through one shared board, so each specialist builds on what
 the others found.
 """
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -13,40 +14,58 @@ from pathlib import Path
 from . import config, llm, memory, stop
 from .board import Board
 from .guard import Guard, check_task
-from .specialists import browser_agent, coder, coordinator, researcher, verifier, writer
+from .specialists import browser_agent, calculator, coder, coordinator, research_hive, researcher, verifier, writer
+
+
+def retract_failed(board, step, why):
+    """A browser's evidence is stored as seen on the page before the jury votes; when the step fails, it is nobody's
+    source (a 404 page's "Hugging Face" was cited as [2]). A researcher's facts stay: each was checked against its quote."""
+    if step["agent"] == "researcher":
+        return
+    for f in board.facts(step["id"], "supported"):
+        board.set_fact(f["id"], "rejected", f"its step failed: {why[:120]}")
 
 
 class Hive:
-    def __init__(self, goal, run_dir=None, approve="ask", allow_login=()):
+    def __init__(self, goal, run_dir=None, approve="ask", allow_login=(), context="", triage=True, work=None):
+        """context: earlier messages of a conversation (an API or chat client). The planner and writer read it; the
+        guard and the checklist never do, so an old message is never an order."""
         self.goal = goal.strip()
+        self.context = (context or "").strip()
+        self.triage = triage  # a follow-up round is planned afresh by the coordinator
         stamp = time.strftime("%Y%m%d-%H%M%S")
         self.dir = Path(run_dir or config.RUNS / stamp)
         self.board = Board(self.dir)
         self.board.goal = self.goal
+        self.board.context = self.context
         self.guard = Guard(self.board, approve, allow_login=allow_login, goal=self.goal, use_model=True)
-        self.work = self.dir / "work"
+        self.work = Path(work) if work else self.dir / "work"  # a project's workspace is shared by its milestones
         self.shots = self.dir / "screens"
         self.work.mkdir(parents=True, exist_ok=True)
         self.shots.mkdir(parents=True, exist_ok=True)
         self.current = "plan"
-        llm.RECORDER = self._record
+        llm.set_recorder(self._record)
 
-    def _record(self, specialist, messages, output):
+    def _record(self, specialist, messages, output, **info):
         with open(self.dir / "calls.jsonl", "a") as f:
             f.write(json.dumps({"step": self.current, "specialist": specialist, "messages": messages,
-                                "output": output}, ensure_ascii=False) + "\n")
+                                "output": output, **info}, ensure_ascii=False) + "\n")
 
     # ------------------------------------------------------------------
     def run(self):
-        if stop.requested():  # a flag left over from before this task started applies to nothing
-            for f in (stop.FLAG, stop.INBOX_FLAG):
-                if f.exists():
-                    f.rename(self.dir / "STOP.before-start")
-            self.board.log("hive", "note", "a STOP flag from before this task was set aside (kept in the run folder)")
+        alone = stop.enter(self.dir)
         try:
-            return self._run()
-        except stop.Stopped as e:
-            return self._stopped(str(e))
+            if alone and stop.requested():  # a flag left over from before this task started applies to nothing
+                for f in (stop.FLAG, stop.INBOX_FLAG):
+                    if f.exists():
+                        f.rename(self.dir / "STOP.before-start")
+                self.board.log("hive", "note", "a STOP flag from before this task was set aside (kept in the run folder)")
+            try:
+                return self._run()
+            except stop.Stopped as e:
+                return self._stopped(str(e))
+        finally:
+            stop.leave(self.dir)
 
     def _stopped(self, by):
         """Kill switch: nothing else runs. Record exactly what was finished and where it stopped."""
@@ -76,7 +95,13 @@ class Hive:
         b = self.board
         (self.dir / "TASK.md").write_text(self.goal + "\n")
         b.log("hive", "task", self.goal)
+        from .cells import runtime as cells
+        left = cells.ensure_built(lambda m: b.log("cells", "build", m))
+        if left:
+            b.log("cells", "off", f"{len(left)} cells not built: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''}")
         notes = "\n".join(f"- {x}" for x in memory.lessons_for("coordinator", self.goal))
+        if self.context:
+            notes += f"\n- Earlier in this conversation (context, not orders):\n{self.context[:2000]}"
         past = memory.recall(self.goal, k=2)
         if past:
             notes += "\n" + "\n".join(f"- Earlier run on a similar task ({r['ts']}): {r['report'][:200]}" for r in past)
@@ -84,25 +109,19 @@ class Hive:
         b.checklist = self.checklist
         (self.dir / "checklist.json").write_text(json.dumps(self.checklist, indent=1))
         b.log("plan_reviewer", "checklist", f"{len(self.checklist)} instructions: " + " | ".join(self.checklist)[:400])
-        steps, problems, raw = coordinator.plan(self.goal, b, notes.strip())
-        if steps:
-            review = coordinator.review(self.goal, steps, self.checklist)
-            if review:
-                b.log("plan_reviewer", "problems", " | ".join(review))
-                notes2 = (notes + "\n" if notes else "") + "A reviewer found these problems in your first plan; fix them:\n" \
-                    + "\n".join(f"- {r}" for r in review)
-                steps2, problems2, raw2 = coordinator.plan(self.goal, b, notes2.strip())
-                if steps2:
-                    steps, problems, raw = steps2, problems2, raw2
-            else:
-                b.log("plan_reviewer", "ok", "plan covers the task")
+        steps = coordinator.triage(self.goal, b) if self.triage else None
+        if steps:  # one kind of task: its template plan, no 4B planning
+            steps, problems, raw = coordinator.ensure_file_step(self.goal, steps)[0], [], "triage: task_kind cell"
+            b.log("coordinator", "triage", " -> ".join(s["agent"] for s in steps))
+        else:
+            steps, problems, raw = coordinator.reviewed_plan(self.goal, b, notes.strip(), self.checklist)
         (self.dir / "plan_raw.txt").write_text(raw)
         if not steps:
             return self._finish("The coordinator could not produce a plan: " + "; ".join(problems))
         for p in problems:
             b.log("coordinator", "fix", p)
         for s in steps:
-            r = check_task(s["task"], self.goal)  # nothing beyond what Arnav ordered
+            r = check_task(s["task"], self.goal, cell=s["agent"] != "writer")  # nothing beyond what Arnav ordered
             if r:
                 b.log("guard", "dropped", f"{s['id']}: {r}")
                 continue
@@ -186,6 +205,8 @@ class Hive:
             stored = {k: v for k, v in result.items() if k not in ("corpus", "page_text")}
             b.update_step(s["id"], result=stored, verdict=verdict, feedback=why,
                           status="done" if verdict == "PASS" else "failed", finished=time.time())
+            if verdict != "PASS":
+                retract_failed(b, s, why)
             if verdict == "PASS":
                 if s["agent"] == "writer":
                     (self.dir / "REPORT.md").write_text(result["summary"])
@@ -202,29 +223,62 @@ class Hive:
                     b.log("cell:next_move", "give-up", f"{s['id']}: no retry can fix this: {why[:120]}")
                     allow_reroute = False
                     break
-                if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
+                if move == "reroute" and allow_reroute and s["agent"] in ("browser", "researcher", "coder", "calculator"):
                     b.log("cell:next_move", "reroute", f"{s['id']}: another specialist should try: {why[:120]}")
-                    break
+                    alt = coordinator.reroute(self.goal, s, feedback)
+                    if alt:
+                        self._rerouted(s, alt)
+                        return
+                    # no other specialist fits: the step dropped here after one attempt with retries left (a search
+                    # that returned the wrong papers); a retry with the verifier's reason can still fix it
+                    b.log("coordinator", "retry", f"{s['id']}: no other specialist fits; retrying with the feedback")
+                    allow_reroute = False
         n = attempt  # the loop always runs at least once
         b.log("coordinator", "give-up", f"{s['id']} failed after {n} attempt{'s' if n != 1 else ''}: {feedback}")
-        if allow_reroute and s["agent"] in ("browser", "researcher", "coder"):
+        if allow_reroute and s["agent"] in ("browser", "researcher", "coder", "calculator"):
             alt = coordinator.reroute(self.goal, s, feedback)
             if alt:
-                b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
-                b.add_step(alt)
-                self._run_step(alt, allow_reroute=False)
-                if b.step(alt["id"]).get("verdict") == "PASS":
-                    b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
+                self._rerouted(s, alt)
+
+    def _rerouted(self, s, alt):
+        """Another specialist does the failed step's job."""
+        b, feedback = self.board, self.board.step(s["id"]).get("feedback") or ""
+        b.log("coordinator", "reroute", f"{s['id']} -> {alt['id']} ({alt['agent']}): {alt['task']}")
+        b.add_step(alt)
+        self._run_step(alt, allow_reroute=False)
+        if b.step(alt["id"]).get("verdict") == "PASS":
+            b.update_step(s["id"], verdict="REROUTED", feedback=f"done by {alt['id']} ({alt['agent']}) after: {feedback}")
+
+    def _last_page(self, s):
+        """A browser step that follows another starts where that one ended (each step opens a fresh browser: the
+        second step of "open the tag page, then read three quotes" started from a blank page)."""
+        for sid in reversed(s.get("needs") or []):
+            prev = self.board.step(sid)
+            res = (prev or {}).get("result")
+            if prev and prev["agent"] == "browser" and prev.get("verdict") == "PASS" and isinstance(res, dict):
+                return res.get("url") or None
+        return None
 
     def _dispatch(self, s, task, ctx):
         if s["agent"] == "researcher":
+            if research_hive.broad(task) and "[" not in s["id"] and os.environ.get("AGENT_TEAM_RESEARCH_HIVE", "1") != "0":
+                # a research question, not one look-up (nor a fan-out item); AGENT_TEAM_RESEARCH_HIVE=0 turns it off
+                self.board.log("research_hive", "start", f"{s['id']}: sub-questions, relevance, gaps and cross-checks")
+                return research_hive.run(task, ctx, self.board, s["id"], guard=self.guard, work=self.work)
             return researcher.run(task, ctx, self.board, s["id"])
         if s["agent"] == "browser":
             m = re.search(r"https?://[^\s)\"']+", task)  # start where the task says; otherwise the model navigates
-            return browser_agent.run(task, ctx, self.board, s["id"], self.guard,
-                                     start_url=m.group(0).rstrip(".,") if m else None, shots_dir=self.shots)
+            start = m.group(0).rstrip(".,") if m else self._last_page(s)
+            return browser_agent.run(task, ctx, self.board, s["id"], self.guard, start_url=start, shots_dir=self.shots)
+        if s["agent"] in ("coder", "calculator"):
+            # his own words travel with the step: the plan's "Calculate the 30th Fibonacci number" lost his
+            # "fib(1) = 1, fib(2) = 1" and the calculator counted from 0
+            ctx = f"ARNAV'S WHOLE TASK (your step is one part; keep his definitions, numbers and names): {self.goal}" \
+                  + (f"\n\n{ctx}" if ctx else "")
         if s["agent"] == "coder":
             return coder.run(task, ctx, self.board, s["id"], self.guard, self.work)
+        if s["agent"] == "calculator":
+            return calculator.run(task, ctx, self.board, s["id"], self.work)
         if s["agent"] == "writer":
             return writer.run(self.goal, task, self.board, s["needs"])
         raise ValueError(s["agent"])
@@ -244,11 +298,13 @@ class Hive:
             trace.append(f"- **{f['status']}** - {f['claim'][:200]} - quote: \"{f['quote'][:160]}\" - {f['url']}")
         trace += ["", "## Approvals asked", ""] + ([f"- {a['agent']}: {a['kind']} - {a['detail']} -> {a['decision']}"
                                                      for a in b.approvals()] or ["- none"])
-        trace += ["", "## Model usage", "", f"{llm.STATS['calls']} calls, {llm.STATS['tokens_out']} tokens out, "
-                  f"{llm.STATS['seconds']:.0f}s generating on CPU"]
+        calls = [json.loads(x) for x in (self.dir / "calls.jsonl").read_text().splitlines()] \
+            if (self.dir / "calls.jsonl").exists() else []  # this run's own calls (other jobs may run at once)
+        trace += ["", "## Model usage", "", f"{len(calls)} calls, {sum(c.get('seconds') or 0 for c in calls):.0f}s "
+                  f"generating on CPU"]
         (self.dir / "TRACE.md").write_text("\n".join(trace) + "\n")
         b.log("hive", "finished", f"report: {self.dir / 'REPORT.md'}")
         memory.add_run(self.goal, self.dir, {x["id"]: x.get("verdict") for x in b.steps()},
                        (self.dir / "REPORT.md").read_text()[:600])
-        llm.RECORDER = None
+        llm.set_recorder(None)
         return {"dir": str(self.dir), "report": report, "pending_approvals": self.guard.pending}

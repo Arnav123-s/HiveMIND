@@ -1,0 +1,55 @@
+[
+ {
+  "id": "quotes",
+  "ok": false,
+  "why": "0/3 of the first three quotes",
+  "seconds": 857,
+  "note": "",
+  "calls": 34,
+  "model_seconds": 843.0,
+  "by_member": {
+   "browser (fast+browser)": [
+    2,
+    66.2
+   ],
+   "condenser (fast)": [
+    1,
+    11.4
+   ],
+   "coordinator (brain4b)": [
+    1,
+    14.4
+   ],
+   "researcher (brain4b)": [
+    6,
+    206.7
+   ],
+   "verifier (fast+verifier)": [
+    9,
+    25.2
+   ],
+   "juror_brain (brain4b)": [
+    9,
+    64.2
+   ],
+   "writer (fast+writer)": [
+    2,
+    203.0
+   ],
+   "critic (brain4b)": [
+    3,
+    194.8
+   ],
+   "editor (brain4b)": [
+    1,
+    57.2
+   ]
+  },
+  "cell_calls": 6,
+  "plan": [
+   "browser",
+   "writer"
+  ],
+  "kind": "operate a website"
+ }
+]
