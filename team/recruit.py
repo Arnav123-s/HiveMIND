@@ -192,9 +192,12 @@ def tryout(name, role, log=print, train=True):
                 out["student"] = f"better than the untouched student, but {free / 1e9:.1f} GB free is too little to train it"
             else:
                 llm.unload_all()
-                school.train(role, edit, None, log, model=record()[name]["base"])
-                voices.append(f"{name}+{edit}")
-                out["student"] = f"taught: {name}+{edit}"
+                try:
+                    school.train(role, edit, None, log, model=record()[name]["base"])
+                    voices.append(f"{name}+{edit}")
+                    out["student"] = f"taught: {name}+{edit}"
+                except RuntimeError as e:  # e.g. its full weights need a package this machine does not have
+                    out["student"] = f"better than the untouched student, but it could not be taught: {str(e)[-200:]}"
     log(f"[recruit] {name} at {role}: {alone:.0%} alone on {len(te)} unseen lessons (untouched student "
         f"{srec['untouched_agrees']:.0%}, the role's best {srec['taught_agrees']:.0%}); right on {covers} the holder gets "
         f"wrong; {out.get('student') or out.get('enrolled') or 'not enrolled'}", flush=True)

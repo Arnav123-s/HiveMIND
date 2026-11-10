@@ -279,8 +279,35 @@ def _gguf_model(specialist, adapter):
     _lru.append(name)
     _set_lora(name, _gguf[name], lora, _cvec_for(specialist) if adapter else None)
     if tok_repo not in _gguf_tok:
-        _gguf_tok[tok_repo] = AutoTokenizer.from_pretrained(tok_repo)
+        try:
+            _gguf_tok[tok_repo] = AutoTokenizer.from_pretrained(tok_repo)
+        except Exception:  # noqa: BLE001 - e.g. a tokenizer that needs a package this machine does not have
+            _gguf_tok[tok_repo] = FileTok(_gguf[name])
     return _gguf[name], _gguf_tok[tok_repo]
+
+
+class FileTok:
+    """The prompt builder and token counter from the model file itself (its own chat template and vocabulary), for a
+    model whose tokenizer repo cannot be loaded here: a recruit's first tryout died on a tokenizer that wanted a
+    package that is not installed. The template comes from a downloaded file, so it is rendered in a sandbox."""
+
+    def __init__(self, llm_):
+        from jinja2.sandbox import ImmutableSandboxedEnvironment
+        env = ImmutableSandboxedEnvironment(trim_blocks=True, lstrip_blocks=True)
+
+        def raise_exception(msg):
+            raise ValueError(msg)
+        env.globals["raise_exception"] = raise_exception
+        self.template = env.from_string(llm_.metadata["tokenizer.chat_template"])
+        self.llm = llm_
+
+    def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=True, **kw):
+        # no begin-of-text here: llama.cpp adds the model's own when it tokenizes the prompt
+        return self.template.render(messages=messages, add_generation_prompt=add_generation_prompt, bos_token="",
+                                    eos_token="", **kw)
+
+    def encode(self, text):
+        return self.llm.tokenize(text.encode("utf-8"), add_bos=False, special=True)
 
 
 def unload_all():
