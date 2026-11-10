@@ -3,7 +3,7 @@ import json
 import re
 import time
 
-from .. import llm, prompts
+from .. import config, llm, prompts
 from ..cells import use
 from ..tools import web
 
@@ -169,6 +169,13 @@ def run(task, context, board, step_id):
         return {"summary": "No source could be read. " + "; ".join(notes), "items": [], "facts": [],
                 "corpus": {}, "notes": notes}
     text = "\n\n".join(blocks)[:9000]
+    if config.SMALL:  # no 4B: the sources are read in small parts, one small job per call (reader.py)
+        from . import reader
+        head = f"Today is {today()}.\nTask: {task}"
+        facts = [with_value(f) for f in reader.read(head, text)]
+        summary, items = reader.compose(head, facts)
+        board.log("researcher", "read", f"small reader: {len(facts)} facts from {len(reader.chunks(text))} parts")
+        return {"summary": summary, "items": items, "facts": facts, "corpus": corpus, "notes": notes}
     data, raw = llm.chat_json("researcher", extract_messages(task, text), max_new_tokens=900)
     if not isinstance(data, dict):
         data = {"summary": raw[:500], "items": [], "facts": []}

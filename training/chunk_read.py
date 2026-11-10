@@ -55,24 +55,7 @@ def extract_calls(dirs, limit):
     return out[:limit]
 
 
-def chunks(sources, size):
-    """Cut at line ends; every chunk starts with the header of the source its lines come from."""
-    out, cur, head = [], "", ""
-    for line in sources.split("\n"):
-        if line.startswith("### Source:"):
-            head = line
-        while len(line) > size:  # one very long line: cut it at a space
-            cut = line.rfind(" ", 0, size)
-            cut = cut if cut > size // 2 else size
-            out.append((head + "\n" if head and not line.startswith("###") else "") + line[:cut])
-            line = line[cut:]
-        if cur and len(cur) + len(line) + 1 > size:
-            out.append(cur)
-            cur = head + "\n" if head and line != head else ""
-        cur += line + "\n"
-    if cur.strip():
-        out.append(cur)
-    return [c for c in out if c.strip() and c.strip() != head]
+from team.specialists.reader import chunks  # noqa: E402 - the same cutting the hive's small reader uses
 
 
 def facts_of(data):

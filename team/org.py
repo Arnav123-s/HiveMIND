@@ -29,7 +29,7 @@ NOT_CALLED = {
     "answers_q": "3 of 15 real pairs right; the 4B does this job (training/evals/answers_q_real.jsonl)",
     "de_grammar": "cannot beat the 4B alone on short text (cells/de_grammar_notes.md)",
 }
-MODELS = {"brain4b": "Qwen3-4B", "brain8b": "Qwen3-8B", "fast": "Qwen3-1.7B", "coder7b": "Qwen2.5-Coder-7B"}
+MODELS = {"brain4b": "Qwen3-4B", "brain8b": "Qwen3-8B", "fast": "Qwen3-1.7B", "coder7b": "Qwen2.5-Coder-7B", "coder15": "Qwen2.5-Coder-1.5B"}
 
 
 def _brain(role):
