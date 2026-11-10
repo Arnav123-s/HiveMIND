@@ -3,36 +3,38 @@
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
 ## Live status (kept current; read this first)
-Updated 2026-11-09 20:30 UTC. Branch `make-it-work`, draft PR #5, everything committed and pushed.
+Updated 2026-11-10 00:25 UTC. Branch `make-it-work`, draft PR #5, everything committed and pushed.
 
-**Built and tested this session (126 tests pass):**
-- `python -m team life` (`team/life.py`, `team/cells/spawn.py`, `training/cells_spawn.py`): the hive reads its own logged
-  calls (`runs/*/calls.jsonl`), finds call sites whose replies are a few fixed values, declares each a spawned skill
-  (`cells/spawned.json`), has the member decide practice cases, trains a cell (135M first, then 360M), and switches it
-  on only if the newest real decisions vouch for it. A working cell answers its member's call when sure; one call in
-  ten is audited against the member; under 93% live agreement it is retired. `serve` runs a turn when idle.
-- `python -m team org` (`team/org.py`): teams, members, cells, who holds each job.
+**Built, tested (126 tests) and measured this session; README has the numbers:**
+- `python -m team life` (`team/life.py`, `team/cells/spawn.py`, `training/cells_spawn.py`): the hive notices small
+  jobs in its own logged calls, has the member decide practice cases, trains a cell (135M, then 360M), gates it on
+  the newest real decisions, lets it answer when sure, audits one call in ten, retires under 93%. `serve` runs a turn
+  when idle. `--quick` = one candidate, 200 steps (a full candidate takes about 24 min on 4 cores).
+- First spawned cell ON: `sp_verifier_75e567` (the verifier's fact check; answers SUPPORTED only). Gate: 13 of the
+  newest 25 answered, 13 agree. Live with every sure call audited: 19 of 20 agree; the miss was a near-miss number.
+- `python -m team org`: teams, members, cells, who holds each job.
+- `training/chunk_read.py`: the 1.7B reading sources in chunks against the 4B whole, 26 real inputs: 52 against 38
+  checked facts, 19 of the 4B's 38 found, 1205 s against 2202 s; relevance not measured.
 
 **Running / not finished:**
-- `training/life_drill.py 2 110` was started at 20:01 UTC to log real decisions (research step only, real sources),
-  about 2.7 min per question; logs in `runs/drill/` (not in git). Plan: stop at about 60 questions.
-- No cell has been spawned from real work yet. Next: `python -m team life --min 60`, read `cells/LIFE.md`, then run
-  the remaining questions (110-150) with the cell on to collect live audits.
+- The 16 dev tasks with nothing above 1.7B (`AGENT_TEAM_SPAWN=0 AGENT_TEAM_BRAIN=fast AGENT_TEAM_GGUF_CODER=fast
+  python training/hive_bench.py small_only`). The container restarted after 3 tasks (lookup PASS, arxiv FAIL,
+  chart FAIL); the other 13 were restarted as tag `small_only_b`. Reports: `training/reports/hive_bench/`.
 
-**Promised to Arnav, not started:**
-1. Chunked reading: the 1.7B extracts facts from short chunks of a page, a cell merges and checks; compare with the
-   4B reading the whole page, on the drill's real pages.
-2. The 16 dev tasks with no model above 1.7B (`AGENT_TEAM_ROSTER` override), to see which task kinds break.
-3. Per-job ladder: smallest model first, checked, move up a size only when the check fails; track the big models'
-   share per job as a list that shrinks.
-4. Later, only if he asks after seeing 1-3: several cell edits active at once with a router (mixture of experts),
-   and training the router and cells together against the 4B.
+**Open, in order:**
+1. Small reader first, 4B only where it comes back empty or fails a relevance check; measure relevance.
+2. Per-job ladder (smallest first, checked, up a size on failure) for reading and writing jobs; track the big
+   models' share per job.
+3. The spawned cell: keep auditing; the near-miss-number case is its weak spot (more practice of that kind).
+4. More logged work: only 1 of 2 decision sites had enough decisions; the item juror has about 60.
+5. Only if Arnav asks after seeing 1-2: several cell edits active at once with a router; joint training against the 4B.
+6. From the old list below: held-out set 4 and the unconfirmed post-freeze fixes.
 
-**This machine (a fresh cloud VM, not the one of the earlier handoff):**
-- Python: `/home/user/agent-team/.venv/bin/python` (rebuilt here; `sentencepiece` added to requirements).
-- 30 GB disk free, 15 GB RAM, 4 cores. The session runs on the `agent-team` environment's network
-  (huggingface.co allowed). The disk note further down is from the old VM.
-- A new session on another account starts from this file plus the branch; `runs/` and `memory/` do not travel.
+**This machine (a cloud VM; it was restarted once at about 00:10 UTC, files survived, running jobs did not):**
+- Python: `/home/user/agent-team/.venv/bin/python` (`sentencepiece` is now in requirements).
+- The session uses the `agent-team` environment's network (huggingface.co allowed).
+- `runs/` and `memory/` (the logged calls, decisions, audits) are not in git and do not travel to a new session;
+  the spawned cell's weights (`cells/adapters/`), its job description (`cells/spawned.json`) and reports do.
 
 ## What it is
 A hive of small CPU models working as one. You give it one prompt and then talk to it normally (`./hive`).
