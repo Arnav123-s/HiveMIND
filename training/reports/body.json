@@ -1,0 +1,48 @@
+{
+ "first_body": {
+  "what": "the first body, 2026-11-10: six cells, each a copy of the stem cell that read only a sample of its territory for ten minutes with nothing to stop it",
+  "measured": [
+   {
+    "when": "2026-11-10 20:49",
+    "cells": 6,
+    "passages": 300,
+    "loss": {
+     "stem cell alone": 2.4276,
+     "the best single cell for each passage (hindsight)": 2.4848,
+     "body, by territory: 1 cell awake": 2.7008,
+     "body, by territory: 2 cells awake": 2.5558,
+     "body, by fit: every cell reads, weighed by how it predicted the first half": 2.4975,
+     "body, every cell with the same say": 2.5756
+    },
+    "cell_alone": {
+     "cell_00": 3.7409,
+     "cell_01": 3.5255,
+     "cell_02": 2.6749,
+     "cell_03": 5.3321,
+     "cell_04": 4.1076,
+     "cell_05": 3.1029
+    }
+   }
+  ],
+  "births": [
+   {
+    "cell": 6,
+    "when": "2026-11-10 21:02",
+    "trainer": "t4",
+    "on": "worst",
+    "kept": false,
+    "why": "the body gained +0.0000 (it needs more than 0.001)",
+    "gate_before": 2.4688,
+    "gate_after": 2.4688
+   }
+  ],
+  "retired": [
+   {
+    "cell": 5,
+    "worth": -0.00247,
+    "when": "2026-11-10 20:55"
+   }
+  ],
+  "why_it_failed": "each cell knew its few thousand windows by heart (one reached loss 0.29 on them and 5.33 on new text); the stem cell was not a member of the body, so a passage no cell fitted had no good reader. The body (2.4975) was worse than its own stem cell (2.4276)."
+ }
+}

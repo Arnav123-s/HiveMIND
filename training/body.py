@@ -74,6 +74,12 @@ def _cells():
     return out
 
 
+def _body():
+    """Everyone who reads for the body: the stem cell, always, and every cell alive. The stem cell knows a little of
+    everything; with it in the body, a passage no cell fits is still read by someone who can."""
+    return {"stem": _stem().eval(), **_cells()}
+
+
 def _report(**new):
     rec = json.loads(REPORT.read_text()) if REPORT.exists() else {}
     rec.update(new)
@@ -88,13 +94,19 @@ def place(model, x):
 
 
 def territories(cells=6, sample=12000, seed=0, log=print):
+    """Territories are found on a sample of windows; then every training window is given its place (its two nearest
+    territories). The first body placed only the sample: its cells had a few thousand windows each and knew them by
+    heart."""
     data, stem = _data(), _stem().eval()
     n = _windows(data)
     rnd = random.Random(seed)
     train = [i for i in range(n) if i % HELD]
     pick = rnd.sample(train, min(sample, len(train)))
     t0 = time.time()
-    z = torch.cat([place(stem, torch.stack([_window(data, i)[:-1] for i in pick[j:j + 64]])) for j in range(0, len(pick), 64)])
+
+    def places(ws):
+        return torch.cat([place(stem, torch.stack([_window(data, i)[:-1] for i in ws[j:j + 64]])) for j in range(0, len(ws), 64)])
+    z = places(pick)
     g = torch.Generator().manual_seed(seed)
     centre = z[torch.randperm(len(z), generator=g)[:cells]].clone()
     for _ in range(25):  # k-means on directions
@@ -102,34 +114,66 @@ def territories(cells=6, sample=12000, seed=0, log=print):
         for k in range(cells):
             if (near == k).any():
                 centre[k] = F.normalize(z[near == k].mean(0), dim=0)
-    top2 = (z @ centre.T).topk(2, dim=1).indices
-    owns = {k: [pick[i] for i in range(len(pick)) if k in top2[i].tolist()] for k in range(cells)}
+    owns, nearest = {k: [] for k in range(cells)}, {}
+    for j in range(0, len(train), 2048):
+        part = train[j:j + 2048]
+        sim = places(part) @ centre.T
+        for i, pair in zip(part, sim.topk(min(2, cells), dim=1).indices.tolist()):
+            for k in pair:
+                owns[k].append(i)
+        for k in range(cells):
+            b = sim[:, k].argmax().item()
+            if k not in nearest or sim[b, k].item() > nearest[k][0]:
+                nearest[k] = (sim[b, k].item(), part[b])
     HOME.mkdir(parents=True, exist_ok=True)
     torch.save({"centre": centre, "owns": owns}, HOME / "territories.pt")
     tk = T.tokenizer()
-    shown = {k: tk.decode(_window(data, v[0])[:40].tolist())[:110] for k, v in owns.items() if v}
-    for k, s in shown.items():
-        log(f"[body] territory {k}: {len(owns[k])} windows, e.g. {s!r}", flush=True)
-    _report(territories={"cells": cells, "windows_placed": len(pick), "sizes": {str(k): len(v) for k, v in owns.items()},
-                         "examples": {str(k): s for k, s in shown.items()}, "seconds": round(time.time() - t0)})
+    shown = {k: tk.decode(_window(data, nearest[k][1])[:40].tolist())[:110] for k in owns if k in nearest}
+    for k, sh in shown.items():
+        log(f"[body] territory {k}: {len(owns[k])} windows, at its centre: {sh!r}", flush=True)
+    _report(territories={"cells": cells, "windows_placed": len(train), "sizes": {str(k): len(v) for k, v in owns.items()},
+                         "examples": {str(k): sh for k, sh in shown.items()}, "seconds": round(time.time() - t0)})
     return owns
 
 
 def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32):
-    """The model goes on reading these windows (next-piece prediction) for so many minutes."""
+    """The model goes on reading these windows (next-piece prediction), for at most so many minutes. A tenth of the
+    windows is its own check: it never trains on them. Every 100 steps it is measured on them; the best state is
+    kept, and the reading stops when three checks in a row brought nothing. (Without the check a cell read its
+    territory until it knew it by heart: loss 0.29 there, 5.3 on text it had not seen.)
+    Returns (steps taken, its loss on the check windows at its best, the same before it read anything)."""
+    check = windows[::10][:96] or windows[:8]
+    seen = [w for i, w in enumerate(windows) if i % 10] or windows
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01, betas=(0.9, 0.95))
-    rnd, t0, steps, losses = random.Random(seed), time.time(), 0, []
-    model.train()
-    while time.time() - t0 < minutes * 60:
-        x = torch.stack([_window(data, rnd.choice(windows)) for _ in range(batch)])
+    rnd, t0, steps = random.Random(seed), time.time(), 0
+
+    def checked():
+        model.eval()
+        tot = 0.0
+        with torch.no_grad():
+            for j in range(0, len(check), 32):
+                x = torch.stack([_window(data, i) for i in check[j:j + 32]])
+                tot += F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1)).item() * x.shape[0]
+        model.train()
+        return tot / len(check)
+    start = checked()
+    best, stale = (start, {k: v.clone() for k, v in model.state_dict().items()}), 0
+    while time.time() - t0 < minutes * 60 and stale < 3:
+        x = torch.stack([_window(data, rnd.choice(seen)) for _ in range(batch)])
         loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1))
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step()
         steps += 1
-        losses.append(loss.item())
-    return steps, round(sum(losses[-50:]) / max(1, len(losses[-50:])), 3)
+        if steps % 100 == 0:
+            v = checked()
+            if v < best[0] - 0.002:
+                best, stale = (v, {k: t.clone() for k, t in model.state_dict().items()}), 0
+            else:
+                stale += 1
+    model.load_state_dict(best[1])
+    return steps, round(best[0], 3), round(start, 3)
 
 
 def differentiate(minutes=10.0, log=print):
@@ -140,9 +184,10 @@ def differentiate(minutes=10.0, log=print):
         if f.exists() or not windows:
             continue
         cell = _stem()
-        steps, loss = _read(cell, data, windows, minutes, seed=int(k))
+        steps, loss, was = _read(cell, data, windows, minutes, seed=int(k))
         torch.save(cell.state_dict(), f)
-        log(f"[body] cell {k}: {steps} steps on its {len(windows)} windows, loss there {loss}", flush=True)
+        log(f"[body] cell {k}: {steps} steps on its {len(windows)} windows; on windows of its territory it never "
+            f"trained on, loss {was} -> {loss}", flush=True)
     return len(owns)
 
 
@@ -153,7 +198,7 @@ def control(log=print):
     minutes = rep.get("minutes_per_cell", 10.0) * len(list(HOME.glob("cell_*.pt")))
     train = [i for i in range(_windows(data)) if i % HELD]
     m = _stem()
-    steps, loss = _read(m, data, train, minutes, seed=99)
+    steps, loss, _ = _read(m, data, train, minutes, seed=99)
     torch.save(m.state_dict(), HOME / "control.pt")
     log(f"[body] control: one model, {steps} steps on everything ({minutes:.0f} minutes), loss {loss}", flush=True)
 
@@ -166,64 +211,40 @@ def _half_losses(model, x):
     return -lp[:, :h].mean(1), lp[:, h:]  # first-half loss, second-half log-probabilities per piece
 
 
-FIT = "body, by fit: every cell reads, weighed by how it predicted the first half"
+FIT = "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half"
+NEAR = "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep"
 
 
 def measure(n=300, log=print, part="report"):
     """part: the held-out passages are two sets that never mix. "gate" decides whether a new cell is kept; "report"
     is only ever reported, so the number shown is not one the body was selected on."""
-    data, stem, cells = _data(), _stem().eval(), _cells()
+    data, body = _data(), _body()
+    stem, names = body["stem"], list(body)
     terr = torch.load(HOME / "territories.pt")
-    held = [i for i in range(_windows(data)) if i % HELD == 0][(0 if part == "gate" else 1)::2]
-    held = held[::max(1, len(held) // n)][:n]
-    names = list(cells)
-    ctrl = None
+    held = _held(data, part, n)
+    first, second = _read_all(body, data, held)
+    res = {"stem cell alone": -second[:, 0].mean().item(), FIT: fit_loss(first, second).mean().item()}
     if (HOME / "control.pt").exists():
         ctrl = T.Tiny()
         ctrl.load_state_dict(torch.load(HOME / "control.pt"))
-        ctrl.eval()
-    tot = {"stem cell alone": 0.0, "one model, same total training": 0.0, "the best single cell for each passage (hindsight)": 0.0,
-           "body, by territory: 1 cell awake": 0.0, "body, by territory: 2 cells awake": 0.0,
-           "body, by fit: every cell reads, weighed by how it predicted the first half": 0.0,
-           "body, every cell with the same say": 0.0}
-    per_cell, count, h = {k: 0.0 for k in names}, 0, W // 2
-    for j in range(0, len(held), 32):
-        x = torch.stack([_window(data, i) for i in held[j:j + 32]])
-        b = x.shape[0]
-        _, s = _half_losses(stem, x)
-        tot["stem cell alone"] += -s.mean(1).sum().item()
-        if ctrl is not None:
-            tot["one model, same total training"] += -_half_losses(ctrl, x)[1].mean(1).sum().item()
-        first, second = zip(*[_half_losses(cells[k], x) for k in names])
-        first, second = torch.stack(first, 1), torch.stack(second, 1)  # [b, cells], [b, cells, pieces]
-        for c, k in enumerate(names):
-            per_cell[k] += -second[:, c].mean(1).sum().item()
-        tot["the best single cell for each passage (hindsight)"] += (-second.mean(2)).min(1).values.sum().item()
-        # by territory: where the stem cell places the first half decides who wakes
-        with torch.no_grad():
-            near = (place(stem, x[:, :h]) @ terr["centre"].T)
-        order = near.argsort(1, descending=True)
-        idx = {int(k.split("_")[1]): c for c, k in enumerate(names)}
-        for awake, key in ((1, "body, by territory: 1 cell awake"), (2, "body, by territory: 2 cells awake")):
-            for r in range(b):
-                who = [idx[t] for t in order[r].tolist() if t in idx][:awake]
-                w = torch.softmax(near[r, [t for t in order[r].tolist() if t in idx][:awake]] * 20, 0)
-                mix = torch.logsumexp(second[r, who] + w.log()[:, None], 0)
-                tot[key] += -mix.mean().item()
-        w = torch.softmax(-first * h, 1)  # a cell's say: how likely it found the first half (as a whole)
-        tot["body, by fit: every cell reads, weighed by how it predicted the first half"] += \
-            (-torch.logsumexp(second + w.log()[:, :, None], 1).mean(1)).sum().item()
-        tot["body, every cell with the same say"] += (-(torch.logsumexp(second, 1) - torch.log(torch.tensor(float(len(names))))).mean(1)).sum().item()
-        count += b
-    res = {k: round(v / count, 4) for k, v in tot.items() if v}
-    res_cells = {k: round(v / count, 4) for k, v in per_cell.items()}
-    log(f"[body] {count} passages no cell trained on, loss in predicting the second half (lower is better):", flush=True)
+        res["one model, same total training"] = -_read_all({"c": ctrl.eval()}, data, held)[1].mean().item()
+    col = {int(k.split("_")[1]): c for c, k in enumerate(names) if k != "stem"}
+    near = torch.cat([place(stem, torch.stack([_window(data, i)[:W // 2] for i in held[j:j + 64]])) @ terr["centre"].T
+                      for j in range(0, len(held), 64)])
+    tot = 0.0
+    for r in range(len(held)):
+        awake = [0] + [col[t] for t in near[r].argsort(descending=True).tolist() if t in col][:2]
+        tot += fit_loss(first[r:r + 1], second[r:r + 1], awake).item()
+    res[NEAR] = tot / len(held)
+    res = {k: round(v, 4) for k, v in res.items()}
+    alone = {k: round(-second[:, c].mean().item(), 4) for c, k in enumerate(names) if k != "stem"}
+    log(f"[body] {len(held)} passages nobody trained on, loss in predicting the second half (lower is better):", flush=True)
     for k, v in res.items():
         log(f"[body]   {v:.4f}  {k}", flush=True)
-    log(f"[body]   each cell alone: {res_cells}", flush=True)
+    log(f"[body]   each cell alone: {alone}", flush=True)
     if part == "report":
         hist = _report().get("measured", [])
-        hist.append({"when": time.strftime("%Y-%m-%d %H:%M"), "cells": len(names), "passages": count, "loss": res, "cell_alone": res_cells})
+        hist.append({"when": time.strftime("%Y-%m-%d %H:%M"), "cells": len(names) - 1, "passages": len(held), "loss": res, "cell_alone": alone})
         _report(measured=hist)
     return res
 
@@ -306,7 +327,7 @@ def _targets(on, data, cells, stem, terr, sample, rnd):
 
 def grow(minutes=10.0, sample=3000, log=print, trainer=None):
     """A new cell, grown by one trainer's way of doing it. Returns its number."""
-    data, cells, stem = _data(), _cells(), _stem().eval()
+    data, cells, stem = _data(), _body(), _stem().eval()
     terr = torch.load(HOME / "territories.pt")
     t = trainer or dict(TRAINERS[0])
     k = terr["centre"].shape[0]  # a new number, never one a retired cell had: its row in the map of territories
@@ -320,13 +341,13 @@ def grow(minutes=10.0, sample=3000, log=print, trainer=None):
         f = HOME / f"cell_{near:02d}.pt"
         if f.exists():
             cell.load_state_dict(torch.load(f))
-    steps, loss = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"])
+    steps, loss, was = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"])
     torch.save(cell.state_dict(), HOME / f"cell_{k:02d}.pt")
     terr["centre"] = torch.cat([terr["centre"], centre[None]])
     terr["owns"][k] = windows
     torch.save(terr, HOME / "territories.pt")
     log(f"[body] trainer {t['id']} ({t['start']}, {t['on']}, lr {t['lr']:g}, span {t['span']:g}) grew cell {k} on "
-        f"{len(windows)} windows: {steps} steps, loss there {loss}", flush=True)
+        f"{len(windows)} windows: {steps} steps, loss on unseen windows there {was} -> {loss}", flush=True)
     return k
 
 
@@ -354,12 +375,13 @@ def judge(before, after, where, places):
 
 def immune(first, second, names, log=print):
     """The body checks its own cells: for each, the gate loss of the body without it. The cell whose absence costs
-    least is retired if the body is not worse by IDLE without it (at most one a turn, never the last two)."""
-    if len(names) <= 2:
+    least is retired if the body is not worse by IDLE without it (at most one a turn, never the last two, never the
+    stem cell)."""
+    if sum(n != "stem" for n in names) <= 2:
         return None
     whole = fit_loss(first, second).mean().item()
     worth = {n: fit_loss(first, second, [c for c in range(len(names)) if c != i]).mean().item() - whole
-             for i, n in enumerate(names)}
+             for i, n in enumerate(names) if n != "stem"}
     idle = min(worth, key=worth.get)
     if worth[idle] < IDLE:
         k = int(idle.split("_")[1])
@@ -397,20 +419,20 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
         return f"the first {cells} cells grew from the stem cell"
     data, stem = _data(), _stem().eval()
     gate = _held(data, "gate")
-    body = _cells()
+    body = _body()
     first, second = _read_all(body, data, gate)
     rep = _report()
     retired = immune(first, second, list(body), log)
     if retired:
         _report(retired=rep.get("retired", []) + [dict(retired, when=time.strftime("%Y-%m-%d %H:%M"))])
-        body = _cells()
+        body = _body()
         first, second = _read_all(body, data, gate)
     before = fit_loss(first, second)
     ts = trainers()
     rnd = random.Random(sum(t["births"] for t in ts))
     t = pick_trainer(ts, rnd)
     k = grow(minutes, log=log, trainer=t)
-    body = _cells()
+    body = _body()
     first, second = _read_all(body, data, gate)
     after = fit_loss(first, second)
     terr = torch.load(HOME / "territories.pt")

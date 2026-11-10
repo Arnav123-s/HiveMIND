@@ -1,0 +1,147 @@
+{
+ "task_kind": {
+  "together": {
+   "test": 0.7008,
+   "test_rows": 127
+  }
+ },
+ "route_step": {
+  "together": {
+   "test": 0.4492,
+   "test_rows": 118
+  }
+ },
+ "pick_source": {
+  "together": {
+   "test": 0.3378,
+   "test_rows": 74
+  }
+ },
+ "next_move": {
+  "together": {
+   "test": 0.5267,
+   "test_rows": 150
+  }
+ },
+ "family_topic": {
+  "together": {
+   "test": 0.6375,
+   "test_rows": 80
+  }
+ },
+ "claim_support": {
+  "together": {
+   "test": 0.5933,
+   "test_rows": 150
+  }
+ },
+ "quote_pick": {
+  "together": {
+   "test": 0.5933,
+   "test_rows": 150
+  }
+ },
+ "element_match": {
+  "together": {
+   "test": 0.5,
+   "test_rows": 150
+  }
+ },
+ "licence_open": {
+  "together": {
+   "test": 0.7704,
+   "test_rows": 135
+  }
+ },
+ "answers_q": {
+  "together": {
+   "test": 0.4733,
+   "test_rows": 150
+  }
+ },
+ "claims_agree": {
+  "together": {
+   "test": 0.4333,
+   "test_rows": 150
+  }
+ },
+ "result_relevant": {
+  "together": {
+   "test": 0.4733,
+   "test_rows": 150
+  }
+ },
+ "orders_spend": {
+  "together": {
+   "test": 0.7869,
+   "test_rows": 61
+  }
+ },
+ "orders_delete": {
+  "together": {
+   "test": 0.8852,
+   "test_rows": 61
+  }
+ },
+ "orders_send": {
+  "together": {
+   "test": 0.8033,
+   "test_rows": 61
+  }
+ },
+ "orders_login": {
+  "together": {
+   "test": 0.918,
+   "test_rows": 61
+  }
+ },
+ "orders_signup": {
+  "together": {
+   "test": 0.8689,
+   "test_rows": 61
+  }
+ },
+ "learned_claim": {
+  "together": {
+   "test": 0.6615,
+   "test_rows": 65
+  }
+ },
+ "learned_item": {
+  "together": {
+   "test": 0.7273,
+   "test_rows": 11
+  }
+ },
+ "learned_line": {
+  "together": {
+   "test": 0.697,
+   "test_rows": 66
+  }
+ },
+ "sp_verifier_75e567": {
+  "together": {
+   "test": 0.8,
+   "test_rows": 25
+  }
+ },
+ "orders_any": {
+  "together": {
+   "test": 0.7049,
+   "test_rows": 61
+  }
+ },
+ "de_grammar": {
+  "together": {
+   "test": 0.5667,
+   "test_rows": 150
+  }
+ },
+ "_together": {
+  "jobs": 23,
+  "weights": 2627583,
+  "mean_dev": 0.7471,
+  "mean_test": 0.6482,
+  "seconds": 326
+ }
+}
