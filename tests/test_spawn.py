@@ -319,3 +319,39 @@ def test_plain_feedback_is_what_the_run_loop_says(monkeypatch):
     assert said.startswith(coder.WRONG + "It counts y as a vowel.") and said.endswith("Output was:\n5\n")
     monkeypatch.setattr(coder, "review", lambda task, code, out: [])
     assert coder.plain_feedback("Count the vowels", "print(3)", {"returncode": 0, "stdout": "3\n", "stderr": ""}) is None
+
+
+def _candidate(**over):
+    c = {"id": "bartowski/Yi-Coder-1.5B-Chat-GGUF", "author": "bartowski", "gated": False, "license": "apache-2.0",
+         "params": 1.5e9, "template": True, "base": "01-ai/Yi-Coder-1.5B-Chat", "base_gated": False,
+         "base_license": "apache-2.0", "file": "x-Q8_0.gguf", "size": 1.6e9}
+    return {**c, **over}
+
+
+def test_the_hive_recruits_only_small_open_ungated_chat_models_from_known_hands():
+    from team import recruit
+    assert recruit.suitable(_candidate()) == (True, "")
+    for over, word in [({"gated": True}, "login"), ({"base_gated": True}, "login"), ({"license": "other"}, "licence"),
+                       ({"base_license": None}, "licence"), ({"params": 2.5e9}, "parameters"), ({"params": None}, "parameters"),
+                       ({"author": "someone"}, "neither its maker"), ({"file": None}, "no model file"),
+                       ({"template": False}, "not a chat model"), ({"id": "x/Qwen3-VL-2B-GGUF"}, "not a chat model"),
+                       ({"id": "x/Yi-Coder-abliterated-GGUF"}, "safety"), ({"base": None}, "no base model")]:
+        ok, why = recruit.suitable(_candidate(**over))
+        assert not ok and word in why, (over, why)
+    assert recruit.suitable(_candidate(author="01-ai")) == (True, "")                  # converted by its own makers
+
+
+def test_the_recruit_file_is_the_most_exact_one_that_fits():
+    from team import recruit
+    files = [("m-Q4_K_M.gguf", 1.0e9), ("m-Q6_K.gguf", 2.0e9), ("m-Q8_0.gguf", 3.0e9), ("m-f16.gguf", 5e9)]
+    assert recruit.pick_file(files) == ("m-Q6_K.gguf", 2.0e9)
+    assert recruit.pick_file([("m-f16.gguf", 5e9)]) is None
+
+
+def test_a_voice_of_a_role_can_be_another_model_or_an_edit_of_one(monkeypatch):
+    from team import config, school
+    monkeypatch.setitem(config.GGUF_MODELS, "yicoder15bchat", ("r", "f", "t"))
+    assert school._spec("coder", "untouched") == ("coder15", False)
+    assert school._spec("coder", "coder_school") == ("coder15+coder_school", True)
+    assert school._spec("coder", "yicoder15bchat") == ("yicoder15bchat", False)
+    assert school._spec("coder", "yicoder15bchat+coder_school_yicoder15bchat") == ("yicoder15bchat+coder_school_yicoder15bchat", True)

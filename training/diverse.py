@@ -1,7 +1,7 @@
 """Do small models of different families miss different things? (His question: the small hive may be losing because
 its members are all the same model.)
 
-    python training/diverse.py [--n 32] [--models coder15 yicoder fast smol17 granite2b]
+    python training/diverse.py [--n 32] [--models ...]   (default: the coder's two, Qwen3-1.7B, and every recruit)
 The coder's exam lessons (training/data/school/coder.jsonl, never trained on by anyone): each small model writes the
 program alone, the program is run, and what it prints is compared with what the 7B teacher's program printed
 (team/school.py, _program_key). The taught Qwen2.5-Coder-1.5B (coder_school) and the untouched one are the same model
@@ -30,7 +30,9 @@ OUT = ROOT / "training" / "reports" / "diverse_coders.json"
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=32)
-    ap.add_argument("--models", nargs="+", default=["coder15+coder_school", "coder15", "yicoder", "fast", "smol17", "granite2b"])
+    from team import recruit
+    ap.add_argument("--models", nargs="+", default=["coder15+coder_school", "coder15", "fast"]
+                    + [k for k in recruit.record() if not k.startswith("_")])
     a = ap.parse_args()
     te = [x for x in school.lessons("coder") if x["exam"]][:a.n]
     try:
