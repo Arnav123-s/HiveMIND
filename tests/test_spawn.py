@@ -521,3 +521,23 @@ def test_a_scout_lets_in_only_text_that_reads_like_text():
     assert harvest.pick_file([("default/part-0.parquet", 5e6)]) == "default/part-0.parquet"
     assert harvest.pick_file([("corpus.txt", 4e6), ("data/train-0.parquet", 2e6)]) == "corpus.txt"
     assert harvest.pick_file([("model.bin", 5e6)]) is None
+
+
+def test_the_corpus_only_grows_at_its_end_so_no_window_moves(tmp_path, monkeypatch):
+    import numpy as np
+    from team import harvest
+    from training import scratch as T
+    if not (T.HOME / "tokenizer.json").exists():
+        return
+    tk = T.tokenizer()
+    shelf = tmp_path / "harvest"
+    shelf.mkdir()
+    monkeypatch.setattr(harvest, "HOME", shelf)
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    (shelf / "b.txt").write_text("The first shelf has one line about a river.\n")
+    first = np.array(T.corpus(tk)).copy()
+    (shelf / "b.txt").write_text("The first shelf has one line about a river.\nAnd now a second line about a bridge.\n")
+    (shelf / "a.txt").write_text("A new shelf whose name sorts first.\n")
+    grown = np.array(T.corpus(tk))
+    assert len(grown) > len(first) and (grown[:len(first)] == first).all()
+    assert len(np.array(T.corpus(tk))) == len(grown)                                     # nothing new: nothing added
