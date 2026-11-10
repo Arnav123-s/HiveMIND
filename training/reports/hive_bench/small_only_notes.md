@@ -75,3 +75,32 @@ After the rule "fewer items than ordered: ask the researcher once for others" (s
   step had passed with a result that said the download numbers were "not provided", so the coder had nothing to
   chart). A research result that says it found nothing now fails its step; not measured in a run yet.
 - Normal hive, the three code tasks (`normal_code`) after the coder changes: csv, chart and fib all pass.
+
+## 2026-11-10, later: the first clean run of all 16 with nothing above 1.7B, and what its failures showed
+
+`small7`, one run, all 16 tasks, the taught planner (school) holding the planning job: **11 of 16**. Every plan was
+the right one. The five failures and their causes:
+- lookup: the answer gave the parameter count and "The licence is not specified". The small reader had the line
+  `params 0.135B | license apache-2.0 | ... | downloads 220473` in front of it and returned only parameter counts.
+- chart: asked for download counts, with `downloads 3597908` in the part, the small reader returned parameter
+  counts, once "Qwen/Qwen3-1.7B has 0.135B parameters" (it has 2.032B). **0.135B is the example value in the
+  reader's own instruction.** The 1.7B copied the example instead of reading what the task asked for.
+- fib: the first program was right (printed 832040, his examples held). The verifier failed it with a reason that
+  itself said the program did what was asked. The retries made it worse; the last program failed his examples
+  (fib(2) returned 2) and a jury of three small models passed it; the writer's number was struck.
+- arxiv: the reader's facts did not survive the checks; the composer said the papers were "not found in the facts".
+- csv: 2 of the 3 cheapest prices; told to fix the sort and read every page, the 1.5B coder broke the program.
+
+Changed after it (all in code or instruction, all tested): the small reader's instruction has no example value; a
+program that contradicts an example from his task fails whatever the jury says; "0.135B, not 135M" is no objection;
+a research result that answers one part and says another is "not specified" is asked once for that part; rules that
+ask once see the previous rejection (they did not: the step's task never carried it).
+
+Two checks of the bench were wrong on right answers and were corrected: arxiv did not count papers listed by title
+without a citation number (normal hive, `normal_reg`: first scored fail, the three papers and dates were right);
+lookup wanted the text "0.135" and failed "135M" (`small8`: first scored fail).
+
+Re-runs on the changed code:
+- Normal hive (`normal_reg2`): lookup, arxiv, fib all pass.
+- Small only (`small8`, before the reader's new instruction): lookup pass (after the check correction), fib pass
+  (673 s; the example rule held the coder to fib(2) = 1), arxiv fail (no fact survived the checks).

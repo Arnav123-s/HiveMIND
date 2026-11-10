@@ -1,0 +1,162 @@
+[
+ {
+  "id": "lookup",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 341,
+  "note": "",
+  "calls": 26,
+  "model_seconds": 333.2,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    1,
+    20.5
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    6.0
+   ],
+   "researcher (fast)": [
+    5,
+    168.2
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    4,
+    0.3
+   ],
+   "verifier (fast+verifier)": [
+    7,
+    42.0
+   ],
+   "juror_brain (fast)": [
+    4,
+    31.5
+   ],
+   "juror_fast (fast)": [
+    1,
+    5.2
+   ],
+   "writer (fast+writer)": [
+    2,
+    30.3
+   ],
+   "critic (fast)": [
+    1,
+    29.0
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "rechecked": true,
+  "kind": "facts from a source"
+ },
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "0 arXiv papers listed in the answer",
+  "seconds": 363,
+  "note": "",
+  "calls": 30,
+  "model_seconds": 353.4,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    2,
+    28.4
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    4.6
+   ],
+   "researcher (fast)": [
+    12,
+    237.5
+   ],
+   "verifier (fast+verifier)": [
+    10,
+    65.6
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    3,
+    0.3
+   ],
+   "juror_brain (fast)": [
+    1,
+    11.6
+   ],
+   "juror_fast (fast)": [
+    1,
+    5.4
+   ]
+  },
+  "cell_calls": 6,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ },
+ {
+  "id": "fib",
+  "ok": true,
+  "why": "2 sentences, 12 lines",
+  "seconds": 673,
+  "note": "",
+  "calls": 38,
+  "model_seconds": 657.9,
+  "by_member": {
+   "coder (coder15)": [
+    12,
+    109.6
+   ],
+   "code_reviewer (coder15)": [
+    1,
+    3.9
+   ],
+   "verifier (fast+verifier)": [
+    4,
+    33.3
+   ],
+   "juror_brain (fast)": [
+    2,
+    25.9
+   ],
+   "juror_fast (fast)": [
+    2,
+    14.8
+   ],
+   "coordinator (fast+coordinator_school)": [
+    1,
+    13.0
+   ],
+   "researcher (fast)": [
+    6,
+    141.9
+   ],
+   "condenser (fast)": [
+    3,
+    242.3
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    5,
+    0.5
+   ],
+   "writer (fast+writer)": [
+    1,
+    45.0
+   ],
+   "critic (fast)": [
+    1,
+    27.4
+   ]
+  },
+  "cell_calls": 7,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "write and run code"
+ }
+]

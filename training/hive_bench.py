@@ -146,7 +146,8 @@ BRIDGE = ("The Ridgeway bridge, built in 1932, was closed in March for repairs a
 TASKS = [  # (id, kind, task, check)
     ("lookup", "facts from a source",
      "Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me a "
-     "two-line summary. Do not log in or pay.", has("apache", "0.135", max_lines=2)),
+     "two-line summary. Do not log in or pay.", # "135M" is the same count as "0.135B": run small8 gave "Apache-2.0 ... 135M" and was scored as missing 0.135
+     has("apache", any_of=("0.135", "135m", "135 m", "134.5"), max_lines=2)),
     ("arxiv", "list from a source", "List the three newest arXiv papers about mixture of experts, with their titles and dates.",
      check_arxiv),
     ("chart", "numbers + chart", "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or "
