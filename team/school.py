@@ -100,8 +100,14 @@ def _program_key(output, task):
         return None
     with tempfile.TemporaryDirectory() as d:
         res = run_python(code, d, timeout=20)
-    out = " ".join((res.get("stdout") or "").split()).lower()
+    out = _same_floats(" ".join((res.get("stdout") or "").split()).lower())
     return out[:2000] if res.get("returncode") == 0 and out else None
+
+
+def _same_floats(text):
+    """Long decimals to 10 significant digits: two right programs printed 166.3256237947956 and 166.32562379479558
+    (the same sum added in another order), and the exam counted the student wrong."""
+    return re.sub(r"(?<![\w.])-?\d+\.\d{6,}(?:e[+-]?\d+)?(?![\w.])", lambda m: f"{float(m.group()):.10g}", text)
 
 
 def _program_messages(task):

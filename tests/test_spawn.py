@@ -288,3 +288,10 @@ def test_every_school_role_says_how_it_is_taught_and_the_next_one_is_the_one_lon
     monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"},
                                                    "coder": {"taught_agrees": 0.2, "when": "2026-11-10 12:00"}})
     assert school.next_role() == "coordinator"
+
+
+def test_program_key_floats_that_differ_in_the_last_digit_are_the_same():
+    from team import school
+    assert school._same_floats("166.3256237947956") == school._same_floats("166.32562379479558")
+    assert school._same_floats("7.701635339554948") != school._same_floats("8.043231726932046")
+    assert school._same_floats("version 3.14 of [2, 4, 6] 0.5") == "version 3.14 of [2, 4, 6] 0.5"
