@@ -391,3 +391,17 @@ def test_a_cell_from_scratch_reads_left_to_right_so_padding_changes_nothing():
     with torch.no_grad():
         assert torch.allclose(m.label(ids, torch.tensor([3])), m.label(padded, torch.tensor([3])), atol=1e-5)
     assert sum(p.numel() for p in scratch.Tiny().parameters()) < 3_000_000
+
+
+def test_one_brain_holds_every_job_and_a_consulting_head_sees_the_others():
+    import torch
+    from training import scratch
+    torch.manual_seed(0)
+    jobs = {"a": 2, "b": 3}
+    ids, last = torch.tensor([[1, 5, 9, 7]]), torch.tensor([3])
+    plain = scratch.Brain(jobs).eval()
+    final, own = plain("a", ids, last)
+    assert final.shape == (1, 2) and torch.equal(final, own)
+    talk = scratch.Brain(jobs, talk=True).eval()
+    final, own = talk("b", ids, last)
+    assert final.shape == (1, 3) and talk.second["b"].in_features == scratch.DIM + 5

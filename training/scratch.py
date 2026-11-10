@@ -9,6 +9,10 @@
                                                          against the cells the hive has today (--rows: train on N
                                                          rows from the job's own generator, not a few hundred)
 
+    python training/scratch.py together [--consult]      ONE model for every cell job: a shared trunk and a small
+                                                         head per job, trained on all jobs at once (--consult: each
+                                                         head also sees what the other heads say about the input)
+
 Today's cells are SmolLM2-135M (someone else's pretrained weights) with a small edit. This is the other way to make
 one: a model of about 2.6 million weights that starts from random numbers. What it knows about words it gets from the
 text the hive harvested itself (team/harvest.py); what it knows about its job it gets from the same training rows as
@@ -231,6 +235,100 @@ def fit(skill, plain=False, epochs=12, batch=32, seed=0, log=print, rows=0):
     return out
 
 
+class Brain(nn.Module):
+    """Every cell job in one model: one trunk that reads the input, and a small head per job. With talk, a job's
+    head also sees what every other head says about the same input before it decides: the cells consult each other."""
+
+    def __init__(self, jobs, talk=False):
+        super().__init__()
+        self.trunk, self.jobs, self.talk = Tiny(), dict(jobs), talk
+        self.first = nn.ModuleDict({k: nn.Linear(DIM, n) for k, n in jobs.items()})
+        said = sum(jobs.values())
+        self.second = nn.ModuleDict({k: nn.Linear(DIM + said, n) for k, n in jobs.items()}) if talk else None
+
+    def forward(self, job, ids, last):
+        h = self.trunk.body(ids)[torch.arange(ids.shape[0]), last]
+        own = self.first[job](h)
+        if not self.talk:
+            return own, own
+        said = torch.cat([F.softmax(self.first[k](h), -1) for k in self.jobs], -1).detach()
+        return self.second[job](torch.cat([h, said], -1)), own
+
+
+def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print):
+    """One brain for all the cell jobs, trained on all of them at once (his direction: cells trained together, each
+    depending on the others, acting as one). Each step takes one job at random and a batch of its rows, so a job
+    with few rows counts as much as one with many. The same rows, dev and test as the cells trained alone."""
+    from team.cells import learn
+    from team.cells import skills as S
+    from training import cells as C
+    learn.register()
+    data = {}
+    for skill, sk in S.SKILLS.items():
+        if "labels" in sk and skill != "gate":
+            try:
+                tr, dv, te = C.data(skill)
+                if tr and dv and te:
+                    data[skill] = (tr, dv, te, sk["labels"])
+            except Exception as e:  # noqa: BLE001
+                log(f"[scratch] {skill}: left out ({type(e).__name__})", flush=True)
+    tk = tokenizer()
+    torch.manual_seed(seed)
+    model = Brain({k: len(v[3]) for k, v in data.items()}, talk)
+    if not plain:
+        model.trunk.load_state_dict(torch.load(HOME / "base.pt"), strict=False)
+    opt = torch.optim.AdamW(model.parameters(), lr=1e-3 if plain else 5e-4, weight_decay=0.05)
+    rnd, t0, names = random.Random(seed), time.time(), list(data)
+    steps = sum(len(v[0]) for v in data.values()) * epochs // batch
+
+    def acc(split):
+        model.eval()
+        out = {}
+        with torch.no_grad():
+            for k, v in data.items():
+                rows, labels, ok = v[split], v[3], 0
+                for i in range(0, len(rows), 64):
+                    part = rows[i:i + 64]
+                    ids, last = _batch(tk, [x for x, _ in part])
+                    ok += (model(k, ids, last)[0].argmax(-1) == torch.tensor([labels.index(y) for _, y in part])).sum().item()
+                out[k] = ok / len(rows)
+        return out
+    best = (-1.0, None)
+    for step in range(1, steps + 1):
+        model.train()
+        k = rnd.choice(names)
+        tr, labels = data[k][0], data[k][3]
+        part = [tr[rnd.randrange(len(tr))] for _ in range(batch)]
+        ids, last = _batch(tk, [x for x, _ in part])
+        y = torch.tensor([labels.index(t) for _, t in part])
+        final, own = model(k, ids, last)
+        loss = F.cross_entropy(final, y) + (F.cross_entropy(own, y) if talk else 0)
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        opt.step()
+        if step % max(1, steps // 12) == 0 or step == steps:
+            d = acc(1)
+            mean = sum(d.values()) / len(d)
+            if mean > best[0]:
+                best = (mean, {n: v.clone() for n, v in model.state_dict().items()})
+            log(f"[scratch] together{' (consulting)' if talk else ''}: step {step} of {steps}, mean dev {mean:.3f}", flush=True)
+    model.load_state_dict(best[1])
+    te = acc(2)
+    key = ("together_consulting" if talk else "together") + ("_plain" if plain else "")
+    torch.save(model.state_dict(), HOME / f"brain_{key}.pt")
+    f = ROOT / "training" / "reports" / "scratch_cells.json"
+    res = json.loads(f.read_text()) if f.exists() else {}
+    for k, v in te.items():
+        res.setdefault(k, {})[key] = {"test": round(v, 4), "test_rows": len(data[k][2])}
+    res["_" + key] = {"jobs": len(data), "weights": sum(p.numel() for p in model.parameters()), "mean_dev": round(best[0], 4),
+                      "mean_test": round(sum(te.values()) / len(te), 4), "seconds": round(time.time() - t0)}
+    f.write_text(json.dumps(res, indent=1))
+    log(f"[scratch] {key}: {len(data)} jobs in one model of {res['_' + key]['weights'] / 1e6:.2f}M weights, mean test "
+        f"{res['_' + key]['mean_test']:.3f} (mean dev {best[0]:.3f}), {res['_' + key]['seconds']} s", flush=True)
+    return res["_" + key]
+
+
 def everything(plain=False, rows=0):
     from team.cells import skills as S
     from team.cells import learn, use
@@ -262,6 +360,8 @@ def main(argv):
         print(json.dumps(pretrain(opt("--minutes", 60.0))))
     elif cmd == "fit":
         print(json.dumps(fit(argv[1], "--plain" in argv, rows=opt("--rows", 0))))
+    elif cmd == "together":
+        print(json.dumps(together("--consult" in argv, "--plain" in argv)))
     elif cmd == "all":
         everything("--plain" in argv, rows=opt("--rows", 0))
     else:
