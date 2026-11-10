@@ -12,7 +12,8 @@ twice; the others are other families. Measured:
 - "someone right": lessons at least one of a group gets right, for the same-model pair and for mixed groups;
 - a vote that needs no teacher: what most models print (a tie goes to the best one alone), and how often two
   different models that print the same are right.
-Nothing is trained. Writes training/reports/diverse_coders.json (answers are kept: a cut-off run goes on).
+Nothing is trained. Writes training/reports/diverse_coders.json. The answers are the school's own record
+(training/data/school/coder_answers.json), so a recruit's tryout and this measurement share them.
 """
 import argparse
 import itertools
@@ -31,27 +32,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=32)
     from team import recruit
-    ap.add_argument("--models", nargs="+", default=["coder15+coder_school", "coder15", "fast"]
+    ap.add_argument("--models", nargs="+", default=["coder_school", "untouched", "fast"]
                     + [k for k in recruit.record() if not k.startswith("_")])
     a = ap.parse_args()
     te = [x for x in school.lessons("coder") if x["exam"]][:a.n]
-    try:
-        got = json.loads(OUT.read_text())["answers"]
-    except (OSError, ValueError, KeyError):
-        got = {}
+    # the school's own record of who answered what (team/school.py, answers): nobody answers a lesson twice
+    got = school.answers("coder", a.models, te)
     for m in a.models:
-        mine = got.setdefault(m, {})
-        for i, x in enumerate(te):
-            if x["task"] in mine:
-                continue
-            with school._as("coder", m):
-                out = llm.chat("coder", x["messages"], max_new_tokens=900, adapter="+" in m, stop="code")
-            mine[x["task"]] = school._program_key(out, x["task"])
-            if i % 8 == 7:
-                OUT.write_text(json.dumps({"answers": got}, indent=1, ensure_ascii=False))
-        OUT.write_text(json.dumps({"answers": got}, indent=1, ensure_ascii=False))
-        print(f"{m}: {sum(school._k(mine[x['task']]) == x['key'] for x in te)} of {len(te)}", flush=True)
-        llm.unload_all()
+        print(f"{m}: {sum(got[m][x['task']] == x['key'] for x in te)} of {len(te)}", flush=True)
     n = len(te)
     right = {m: [school._k(got[m][x["task"]]) == x["key"] for x in te] for m in a.models}
     alone = {m: sum(right[m]) for m in a.models}
@@ -68,11 +56,11 @@ def main():
             keys = {m: school._k(got[m][x["task"]]) for m in ms}
             ok += school.majority(keys, [m for m in order if m in ms]) == x["key"]
         return ok
-    groups = {"same model twice": a.models[:2], "three families": [order[0]] + [m for m in order if m.split("+")[0] != order[0].split("+")[0]][:2],
+    groups = {"same model twice": a.models[:2], "three families": [order[0]] + [m for m in order if m not in a.models[:2]][:2],
               "all": a.models}
     agree = {}
     for p, q in itertools.combinations(a.models, 2):
-        if p.split("+")[0] == q.split("+")[0]:
+        if {p, q} == set(a.models[:2]):
             continue
         same = [x for x in te if got[p][x["task"]] is not None and school._k(got[p][x["task"]]) == school._k(got[q][x["task"]])]
         agree[f"{p} & {q}"] = {"print_the_same": len(same), "of_those_right": sum(school._k(got[p][x["task"]]) == x["key"] for x in same)}

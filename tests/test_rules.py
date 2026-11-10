@@ -1629,3 +1629,17 @@ def test_a_program_left_with_a_problem_the_checks_found_fails_whatever_the_jury_
                              {"returncode": 0, "summary": "Saved books.csv", "files": ["books.csv"],
                               "unfixed": "the page is only the first page of the listing"}, None, tmp_path)
     assert v == "FAIL" and "only the first page" in why
+
+
+def test_the_model_files_own_template_builds_the_prompt():
+    from team.llm import FileTok
+
+    class Fake:
+        metadata = {"tokenizer.chat_template": "{{ bos_token }}{% for m in messages %}<|im_start|>{{ m['role'] }}\n{{ m['content'] }}<|im_end|>\n"
+                                               "{% endfor %}{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}"}
+
+        def tokenize(self, b, add_bos=False, special=True):
+            return list(b)
+    t = FileTok(Fake())
+    p = t.apply_chat_template([{"role": "user", "content": "hi"}], tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    assert p == "<|im_start|>user\nhi<|im_end|>\n<|im_start|>assistant\n" and len(t.encode("abc")) == 3
