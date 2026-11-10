@@ -480,3 +480,30 @@ def test_the_org_chart_shows_the_body_from_its_own_record(tmp_path, monkeypatch)
         "measured": [{"when": "2026-11-10 20:01", "passages": 300, "loss": {"stem cell alone": 2.7, "body, by fit: x": 2.6}}]}))
     text = "\n".join(org.body_lines())
     assert "1 cells alive" in text and "1 kept" in text and "the body at its best 2.6" in text and "trainer t1" in text
+
+
+def test_the_brain_from_nothing_takes_a_job_only_where_it_measured_at_least_as_well():
+    from team.cells import tiny
+    wins = {"a": {"use": True, "cell": 0.90, "incumbent": 0.80}, "b": {"use": True, "cell": 0.95, "incumbent": 0.5},
+            "c": {"use": False, "cell": 0.40, "incumbent": 0.70}, "d": {}}
+    held = tiny.decide_holds({"a": 0.92, "b": 0.90, "c": 0.75, "d": 0.99}, wins)
+    assert set(held) == {"a", "c"} and held["a"]["from"] == "today's cell" and held["c"]["from"] == "the member or rule"
+
+
+def test_the_brain_answers_a_job_it_holds_and_can_be_switched_off(tmp_path, monkeypatch):
+    import json
+    import torch
+    from team.cells import tiny, use
+    from training import scratch as T
+    if not (T.HOME / "tokenizer.json").exists():
+        return  # no vocabulary on this checkout yet: the hive makes it on its first turns
+    monkeypatch.setattr(tiny, "HOME", tmp_path)
+    monkeypatch.setattr(tiny, "_state", {})
+    torch.manual_seed(0)
+    torch.save(T.Brain({"licence_open": 2}).state_dict(), tmp_path / "brain.pt")
+    (tmp_path / "brain.json").write_text(json.dumps({"jobs": {"licence_open": ["yes", "no"]}, "talk": False}))
+    (tmp_path / "holds.json").write_text(json.dumps({"licence_open": {"test": 0.99, "was": 0.9}}))
+    assert use.on("licence_open") and use.ask("licence_open", "org/model | apache-2.0") in ("yes", "no")
+    assert use.ask_all("licence_open", ["a | mit", "b | cc-by-nc-4.0"])[0] in ("yes", "no")
+    monkeypatch.setenv("AGENT_TEAM_TINY", "0")
+    assert tiny.holds() == {}
