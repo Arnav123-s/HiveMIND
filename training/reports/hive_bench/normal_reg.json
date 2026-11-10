@@ -1,0 +1,162 @@
+[
+ {
+  "id": "lookup",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 423,
+  "note": "",
+  "calls": 19,
+  "model_seconds": 414.6,
+  "by_member": {
+   "coordinator (brain4b)": [
+    1,
+    50.1
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    5.9
+   ],
+   "researcher (brain4b)": [
+    2,
+    150.7
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    1,
+    0.2
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    15.7
+   ],
+   "juror_brain (brain4b)": [
+    3,
+    22.8
+   ],
+   "juror_fast (fast)": [
+    1,
+    8.1
+   ],
+   "writer (fast+writer)": [
+    4,
+    26.4
+   ],
+   "critic (brain4b)": [
+    3,
+    124.8
+   ],
+   "editor (brain4b)": [
+    1,
+    10.0
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "facts from a source"
+ },
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "check failed: ParseError: syntax error: line 1, column 0",
+  "seconds": 263,
+  "note": "",
+  "calls": 16,
+  "model_seconds": 256.3,
+  "by_member": {
+   "coordinator (brain4b)": [
+    2,
+    39.7
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    11.1
+   ],
+   "researcher (brain4b)": [
+    2,
+    108.2
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    3,
+    0.3
+   ],
+   "juror_brain (brain4b)": [
+    4,
+    24.5
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    10.9
+   ],
+   "juror_fast (fast)": [
+    1,
+    11.1
+   ],
+   "writer (fast+writer)": [
+    1,
+    22.7
+   ],
+   "critic (brain4b)": [
+    1,
+    27.8
+   ]
+  },
+  "cell_calls": 4,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "rechecked": true,
+  "kind": "list from a source"
+ },
+ {
+  "id": "explain",
+  "ok": true,
+  "why": "3 sentences, 1 lines",
+  "seconds": 454,
+  "note": "",
+  "calls": 16,
+  "model_seconds": 443.0,
+  "by_member": {
+   "researcher (brain4b)": [
+    2,
+    128.2
+   ],
+   "condenser (fast)": [
+    3,
+    234.3
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    2,
+    0.2
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    14.1
+   ],
+   "juror_brain (brain4b)": [
+    4,
+    21.8
+   ],
+   "juror_fast (fast)": [
+    1,
+    9.7
+   ],
+   "writer (fast+writer)": [
+    1,
+    12.3
+   ],
+   "critic (brain4b)": [
+    1,
+    22.3
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "explain from knowledge"
+ }
+]

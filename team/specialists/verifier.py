@@ -102,18 +102,33 @@ def _judge_one(member, check, work, evidence):
     return ("PASS" if v == "PASS" else "FAIL"), reason
 
 
-_VS = re.compile(r"(-?\d[\d,]*(?:\.\d+)?)['\"]?(?:[^\d]{0,40}?)\bnot\b[^\d-]{0,20}(-?\d[\d,]*(?:\.\d+)?)")
+_UNIT = r"(?:\s?(k|m|b|bn|thousand|million|billion)\b)?"
+_VS = re.compile(r"(-?\d[\d,]*(?:\.\d+)?)" + _UNIT + r"['\"]?(?:[^\d]{0,40}?)\bnot\b[^\d-]{0,20}(-?\d[\d,]*(?:\.\d+)?)" + _UNIT,
+                 re.I)
+_SCALE = {"k": 1e3, "thousand": 1e3, "m": 1e6, "million": 1e6, "b": 1e9, "bn": 1e9, "billion": 1e9}
 
 
-_NOTHING = re.compile(r"\b(?:is|are|was|were)\s+not\s+(?:provided|available|given|stated|mentioned|found|present)\b|"
-                      r"\b(?:could|can|did|does|do)\s*(?:not|n't)\s+(?:find|provide|contain|mention|include|state)\b|"
+_NOTHING = re.compile(r"\b(?:is|are|was|were)\s+not\s+(?:provided|available|given|stated|mentioned|found|present|"
+                      r"specified|listed|included|shown|known|reported)\b|"
+                      r"\b(?:could|can|did|does|do)\s*(?:not|n't)\s+(?:find|provide|contain|mention|include|state|specify|list)\b|"
                       r"\bno\s+(?:information|data|source|facts?)\b", re.I)
+GAP = "the result itself says"
+
+
+def _sentences(summary):
+    return [x.strip() for x in re.split(r"(?<=[.!?])\s+|\n", (summary or "").strip()) if x.strip()]
 
 
 def admits_nothing(summary):
     """The first sentence of a research result, when it says the thing asked for was not found; else None."""
-    first = re.split(r"(?<=[.!?])\s+|\n", (summary or "").strip(), 1)[0]
+    first = (_sentences(summary) or [""])[0]
     return first[:200] if _NOTHING.search(first) else None
+
+
+def admits_a_gap(summary):
+    """A later sentence of a research result that says one of the things asked for was not found ("The licence is
+    not specified in the provided facts."), else None. The result has something; one part of the order is missing."""
+    return next((x[:200] for x in _sentences(summary)[1:] if _NOTHING.search(x)), None)
 
 
 SHORT = "the task asks for"
@@ -134,15 +149,18 @@ def asked_count(task):
 
 
 def same_number_objection(reason):
-    """True when a FAIL reason's only complaint is 'X, not Y' and X and Y are the same number."""
+    """True when a FAIL reason's only complaint is 'X, not Y' and X and Y are the same number, also when one is
+    written with another unit word ("0.135B, not 135M": three small jurors failed a right parameter count on that)."""
     m = _VS.search(reason or "")
     if not m:
         return False
     try:
-        a, b = (float(g.replace(",", "")) for g in m.groups())
+        a, ua, b, ub = m.groups()
+        a = float(a.replace(",", "")) * _SCALE.get((ua or "").lower(), 1)
+        b = float(b.replace(",", "")) * _SCALE.get((ub or "").lower(), 1)
     except ValueError:
         return False
-    return a == b
+    return a == b or (bool(ua or ub) and abs(a - b) <= 1e-6 * max(abs(a), abs(b)))
 
 
 PLACEHOLDER = {"", "unknown", "n/a", "na", "none", "null", "nan", "-", "?", "not found", "missing", "not available"}
@@ -348,8 +366,13 @@ def verify(step, result, board, workdir):
             # the small researcher wrote "the number of downloads ... is not provided in the facts", three small
             # jurors passed it, and the coder was then asked to chart numbers nobody had
             return "FAIL", f"the researcher's own result says it did not find what the step asks for: \"{gap}\""
+        part = admits_a_gap(result.get("summary", ""))
+        if part and GAP not in step.get("feedback", step["task"]):
+            # asked once more for exactly the missing part; if the sources do not have it, the second result stands
+            return "FAIL", (f"{GAP}: \"{part}\" That is part of what the step asks for. Find exactly that in the "
+                            "sources (read the source of the item itself) and state it with its quote.")
         want = asked_count(without_layout(step["task"]))
-        if dropped and kept and want and len(kept) < want and SHORT not in step["task"]:
+        if dropped and kept and want and len(kept) < want and SHORT not in step.get("feedback", step["task"]):
             # "the three newest papers", one of three was off topic, and the answer listed two: the researcher is
             # asked once for others in place of the dropped ones (a second shortfall goes on with what there is)
             return "FAIL", (f"{SHORT} {want}, and only {len(kept)} listed items meet the task. Keep: "
@@ -385,6 +408,8 @@ def verify(step, result, board, workdir):
             return "FAIL", result.get("summary", "not run")
         if result.get("returncode") != 0:
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
+        if result.get("examples_failed"):  # checked in code against the examples in his own task; no juror outvotes it
+            return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
         from .coder import sanity, unsaved_output
         bad = sanity(result.get("summary", ""))
         if bad:
@@ -416,6 +441,8 @@ def verify(step, result, board, workdir):
             return "FAIL", result["failed"]
         if result.get("returncode") != 0:
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
+        if result.get("examples_failed"):  # checked in code against the examples in his own task; no juror outvotes it
+            return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
         out = result.get("summary", "")
         named = re.search(r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|"
                           r"may|june|july|august|september|october|november|december)\b", out, re.I)

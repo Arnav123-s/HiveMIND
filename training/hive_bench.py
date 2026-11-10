@@ -69,9 +69,20 @@ def check_arxiv(run, report):
     srcs = dict(re.findall(r"^\[(\d+)\]\s*(\S+)", report, re.M))
     cited = [srcs[n] for n in re.findall(r"\[(\d+)\]", body) if n in srcs]
     ids = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", body + "\n" + "\n".join(cited))))[:3]
+    ns = {"a": "http://www.w3.org/2005/Atom"}
+    if len(ids) < 3:
+        # an answer may list a paper by its title alone, with the link only under Sources (run normal_reg did, and
+        # was scored "0 papers"): a source counts as listed when its real arXiv title stands in the answer's body
+        listed = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", "\n".join(srcs.values()))))
+        if listed:
+            squash = lambda t: re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()  # noqa: E731
+            for e in ET.fromstring(_get(f"https://export.arxiv.org/api/query?id_list={','.join(listed)}")).findall("a:entry", ns):
+                pid = re.search(r"(\d{4}\.\d{4,5})", e.findtext("a:id", "", ns)).group(1)
+                if pid not in ids and squash(e.findtext("a:title", "", ns)) in squash(body):
+                    ids.append(pid)
+            ids = ids[:3]
     if len(ids) < 3:
         return False, f"{len(ids)} arXiv papers listed in the answer"
-    ns = {"a": "http://www.w3.org/2005/Atom"}
     root = ET.fromstring(_get(f"https://export.arxiv.org/api/query?id_list={','.join(ids)}"))
     bad = []
     for e in root.findall("a:entry", ns):

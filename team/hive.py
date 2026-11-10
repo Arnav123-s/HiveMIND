@@ -200,7 +200,8 @@ class Hive:
             if result.get("failed") and s["agent"] != "browser":
                 verdict, why = "FAIL", result["failed"]
             else:
-                verdict, why = verifier.verify(s, result, b, self.work)
+                # the verifier sees why the attempt before was rejected: a rule that asks once does not ask twice
+                verdict, why = verifier.verify(dict(s, feedback=feedback or ""), result, b, self.work)
             b.log("verifier", verdict.lower(), f"{s['id']}: {why}")
             stored = {k: v for k, v in result.items() if k not in ("corpus", "page_text")}
             b.update_step(s["id"], result=stored, verdict=verdict, feedback=why,
