@@ -1,0 +1,181 @@
+{
+ "coordinator": {
+  "teacher": "brain4b",
+  "student": "fast",
+  "what": "plans: the same specialists in the same order",
+  "when": "2026-11-10 08:11",
+  "specialists": [
+   "coordinator_school"
+  ],
+  "graduated": false,
+  "test_lessons": 32,
+  "alone": {
+   "untouched": 0.281,
+   "coordinator_school": 0.625
+  },
+  "schemes": {
+   "alone": 0.625
+  },
+  "someone_right": 0.625,
+  "scheme": "alone",
+  "untouched_agrees": 0.281,
+  "taught_agrees": 0.625,
+  "general": [
+   "coordinator_school",
+   "untouched"
+  ],
+  "narrow": [],
+  "narrow_in_their_territory": {},
+  "misses": [
+   {
+    "task": "Find the current exchange rate between the US Dollar and the Japanese Yen using an online currency converter",
+    "teacher": [
+     "browser",
+     "researcher",
+     "writer"
+    ],
+    "hive": [
+     "researcher",
+     "writer"
+    ]
+   },
+   {
+    "task": "Write a Python script that searches for a given keyword on Google and returns the first three links",
+    "teacher": [
+     "browser",
+     "coder",
+     "writer"
+    ],
+    "hive": [
+     "browser",
+     "researcher",
+     "coder",
+     "calculator",
+     "writer"
+    ]
+   },
+   {
+    "task": "Extract the top 10 most searched terms on Google Trends for \"AI in healthcare\" in the last 7 days and present them in a table",
+    "teacher": [
+     "browser",
+     "researcher",
+     "coder",
+     "writer"
+    ],
+    "hive": [
+     "researcher",
+     "writer"
+    ]
+   },
+   {
+    "task": "Find the current exchange rate between USD and EUR from the European Central Bank's official website",
+    "teacher": [
+     "browser",
+     "browser",
+     "writer"
+    ],
+    "hive": [
+     "browser",
+     "writer"
+    ]
+   },
+   {
+    "task": "Calculate the average of 47, 89, 123, and 156 using only basic arithmetic operations",
+    "teacher": [
+     "calculator",
+     "calculator",
+     "writer"
+    ],
+    "hive": [
+     "calculator",
+     "writer"
+    ]
+   },
+   {
+    "task": "Summarize the article titled \"The Impact of Climate Change on Coastal Communities\" from the Guardian's climate section",
+    "teacher": [
+     "browser",
+     "researcher",
+     "writer"
+    ],
+    "hive": [
+     "researcher",
+     "writer"
+    ]
+   },
+   {
+    "task": "Generate a Python script that reads a CSV file containing customer names and emails, and prints each email on a new line",
+    "teacher": [
+     "coder",
+     "writer"
+    ],
+    "hive": [
+     "researcher",
+     "coder",
+     "coder",
+     "writer"
+    ]
+   },
+   {
+    "task": "Generate a Python script that calculates the factorial of a number using recursion",
+    "teacher": [
+     "writer"
+    ],
+    "hive": [
+     "coder",
+     "writer"
+    ]
+   },
+   {
+    "task": "Create a bar chart showing the monthly sales data: [1200, 1500, 1300, 1400, 1600]",
+    "teacher": [
+     "researcher",
+     "coder",
+     "writer"
+    ],
+    "hive": [
+     "coder",
+     "writer"
+    ]
+   },
+   {
+    "task": "Extract the top 10 most popular Python packages on PyPI, including their download counts and last updated dates",
+    "teacher": [
+     "coder",
+     "coder",
+     "writer"
+    ],
+    "hive": [
+     "researcher",
+     "writer"
+    ]
+   },
+   {
+    "task": "Find the current exchange rate between USD and INR using an API and save it to a text file",
+    "teacher": [
+     "coder",
+     "writer"
+    ],
+    "hive": [
+     "researcher",
+     "writer"
+    ]
+   },
+   {
+    "task": "Summarize the article titled \"The Impact of AI on Modern Business\" from the website ai-business.com in 100 words",
+    "teacher": [
+     "browser",
+     "researcher",
+     "writer"
+    ],
+    "hive": [
+     "browser",
+     "writer"
+    ]
+   }
+  ],
+  "runs_on": "fast+coordinator_school",
+  "why": "not yet: it needs 85% and 3% over the untouched student",
+  "lessons": 160
+ }
+}
