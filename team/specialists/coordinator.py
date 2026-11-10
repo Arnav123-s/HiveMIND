@@ -240,6 +240,7 @@ TEMPLATES = {
     "code": [("coder", "{goal}", "the program ran and did what he asked")],
 }
 TRIAGE_MIN = 0.9  # below this the cell is unsure, and the coordinator plans
+SECOND_MIN = 0.6  # each cell alone needs 0.9; two that agree need 0.5 and 0.6: they rarely err the same way
 SECOND = {"code": "coder", "lookup": "researcher", "site": "browser"}  # the specialist that confirms a task kind
 
 
@@ -284,7 +285,7 @@ def triage(goal, board):
         q = runtime.label_probs("route_step", goal[:300])
         who, sure = max(q.items(), key=lambda kv: kv[1])
         board.log("cell:route_step", "answer", f"second opinion on the whole task: {who} ({sure:.2f})")
-        if who != second or sure < TRIAGE_MIN:
+        if who != second or sure < SECOND_MIN:
             return None
         board.log("coordinator", "triage", f"task_kind ({kind}) and route_step ({who}) agree")
     return _template(kind, goal)

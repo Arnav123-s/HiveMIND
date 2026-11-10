@@ -1479,3 +1479,13 @@ def test_a_model_thinking_aloud_is_not_in_the_report():
     assert "Wait" not in out and "Correct Calculation" not in out and "**Calculation:**" not in out
     assert out.startswith("45") and "| 15 January 2026 | Thursday |" in out and "## Your instructions" in out
     assert drop_self_talk("**Answer:** 45 days.") == "**Answer:** 45 days."
+
+
+def test_a_juror_objection_that_sets_a_number_against_itself_is_void():
+    from team.specialists.verifier import same_number_objection as void
+    assert void("The program prints 117.0, not 117.")
+    assert void("The program prints 'Mar' and '117.0', not 'Mar' and '117'.")
+    assert void("The output is 1,200, not 1200")
+    assert not void("The output is Mar 117.0, not Mar 143.")
+    assert not void("The file has 2 rows, not 3.")
+    assert not void("The evidence does not show the price.")
