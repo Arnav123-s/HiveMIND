@@ -1543,3 +1543,28 @@ def test_the_item_juror_is_asked_without_the_requirements_of_the_whole_list():
             "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or HuggingFaceTB/SmolLM2-1.7B-Instruct?",
             "Name papers from 2024 about speculative decoding that report at least 2.5 times speed-up."]
     assert [q(t) for t in same] == same
+
+
+def test_a_number_set_against_itself_in_another_unit_is_no_objection():
+    from team.specialists.verifier import same_number_objection as same
+    assert same("The parameter count is 0.135B, not 135M.")
+    assert same("It says 1.5 million, not 1,500,000")
+    assert not same("The evidence shows 0.135B, not 1.35B.")
+    assert not same("It printed 135, not 135M.")
+    assert not same("It printed 135, not 136.")
+
+
+def test_a_research_result_missing_one_ordered_part_is_asked_for_it_once():
+    from team.specialists.verifier import GAP, admits_a_gap, admits_nothing
+    s = ("The model has 0.135B parameters. The licence is not specified in the provided facts. The items list is empty.")
+    assert admits_nothing(s) is None and admits_a_gap(s).startswith("The licence is not specified")
+    assert admits_a_gap("The model has 0.135B parameters. Its licence is apache-2.0.") is None
+    assert GAP == "the result itself says"
+
+
+def test_a_program_that_contradicts_his_example_fails_whatever_it_printed(tmp_path):
+    from team.specialists import verifier
+    v, why = verifier.verify({"id": "s1", "agent": "coder", "task": "fib(1) = 1, fib(2) = 1; tell me fib(30)", "done_when": "x"},
+                             {"returncode": 0, "summary": "1", "files": [],
+                              "examples_failed": "AssertionError: fib(2) returned 2, but the task says fib(2) = 1"}, None, tmp_path)
+    assert v == "FAIL" and "fib(2) returned 2" in why

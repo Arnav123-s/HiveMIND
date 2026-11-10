@@ -271,6 +271,9 @@ def run(task, context, board, step_id, guard, workdir):
                           + ("pass" if chk["returncode"] == 0 else "FAIL"))
                 if chk["returncode"] != 0:
                     err = (chk["stderr"] or chk["stdout"])[-1200:]
+                    # kept with the result: the program itself exits 0, and after the last attempt a jury of small
+                    # models passed a fib() that returned 2 for fib(2)
+                    last["examples_failed"] = last_line(err) or "an example from his task does not hold"
                     messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
                                            {"role": "user", "content": prompts.CODER_FIX.format(
                                                error=err + "\nHint: " + prompts.FIX_HINTS["check"])}]
@@ -318,4 +321,4 @@ def run(task, context, board, step_id, guard, workdir):
     summary = (last["stdout"] or "").strip()[-1500:] or (last["stderr"] or "")[-600:]
     return {"summary": summary, "code_path": str(workdir / name), "returncode": last["returncode"],
             "stderr": last["stderr"][-1500:], "files": files, "attempts": last["attempts"],
-            "seconds": last["seconds"]}
+            "seconds": last["seconds"], **({"examples_failed": last["examples_failed"]} if last.get("examples_failed") else {})}
