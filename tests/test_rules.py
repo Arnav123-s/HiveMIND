@@ -1510,3 +1510,14 @@ def test_a_sort_the_wrong_way_round_is_named(monkeypatch):
     assert coder.order_problem("Save the most expensive three books", code) is None
     assert coder.order_problem("Write fib(n) and print fib(30)", code) is None
     assert coder.order_problem("Find the three cheapest books", code.replace("[:3]", "[-3:]")) is None
+
+
+def test_a_listing_with_a_next_page_must_be_read_to_the_end(monkeypatch):
+    from team.specialists import coder
+    from team.tools import web
+    monkeypatch.setattr(web, "get", lambda u: '<ul><li class="next"><a href="page-2.html">next</a></li></ul>')
+    task = "Find the three cheapest books on https://example.com/list/index.html"
+    assert "first page" in coder.unread_pages(task, "requests.get(url)")
+    assert coder.unread_pages(task, "while soup.select_one('li.next a'): ...") is None
+    monkeypatch.setattr(web, "get", lambda u: "<p>one page</p>")
+    assert coder.unread_pages(task, "requests.get(url)") is None

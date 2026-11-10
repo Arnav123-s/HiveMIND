@@ -78,6 +78,8 @@ CODER = """You are the coder on Arnav's team. Write one complete Python 3 progra
 - Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
   so characters like £ survive. A listing with several pages (a "next" link): read every page before choosing.
 - "Cheapest", "top", "most", "newest": sort every item by that value, then take the number asked for.
+- When "Results from the team" already gives the values the task needs, write those values into the program as
+  they are; do not fetch them again from the web.
 - Do not log in, delete files, send messages or pay for anything."""
 
 CODER_FIX = """The program did not do the task. Problem:
