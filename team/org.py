@@ -58,6 +58,34 @@ def _cell_line(name, c, w, sp):
     return ("working: " if ww.get("use") else "benched: ") + score
 
 
+def body_lines():
+    """The body grown from nothing (training/body.py), from its own record."""
+    import json
+    f = config.ROOT / "training" / "reports" / "body.json"
+    try:
+        rep = json.loads(f.read_text())
+    except (OSError, ValueError):
+        return []
+    alive = len(list((config.ROOT / "cells" / "scratch" / "body").glob("cell_*.pt")))
+    births, retired = rep.get("births", []), rep.get("retired", [])
+    out = ["BODY: cells grown from one stem cell, from nothing, on the CPU (python -m team body)",
+           f"  {alive} cells alive; {len(births)} births since the first cells, {sum(b['kept'] for b in births)} kept, "
+           f"{len(births) - sum(b['kept'] for b in births)} removed at birth; {len(retired)} retired by the immune check"]
+    if rep.get("measured"):
+        m = rep["measured"][-1]
+        best = min((v, k) for k, v in m["loss"].items() if k.startswith("body"))
+        out.append(f"  last measured {m['when']} on {m['passages']} passages no cell trained on (loss, lower is better): "
+                   f"stem cell alone {m['loss'].get('stem cell alone')}, one model with the same total training "
+                   f"{m['loss'].get('one model, same total training', 'not measured')}, the body at its best {best[0]} ({best[1]})")
+    for t in rep.get("trainers", []):
+        out.append(f"  trainer {t['id']}: starts from {t['start']}, grows on {t['on']} text, lr {t['lr']:g}, span {t['span']:g}: "
+                   f"{t['births']} births, {t['kept']} kept" + (f" (bred from {t['parent']})" if t.get("parent") else ""))
+    if births:
+        b = births[-1]
+        out.append(f"  last birth {b['when']}: cell {b['cell']} by {b['trainer']}, {'kept' if b['kept'] else 'removed at birth'}: {b['why']}")
+    return out + [""]
+
+
 def chart():
     reg, w, sp = runtime.registry(), use.wins(), spawn.spawned()
     cells = {**{k: v.get("part", "") for k, v in reg.items()}, **{k: v["part"] for k, v in sp.items()}}
@@ -103,6 +131,7 @@ def chart():
                               for role, t in (v.get("tryouts") or {}).items()) or "not tried yet"
             out.append(f"  {name:<22} {v['base']} ({v['params'] / 1e9:.2f}B, {v['license']}): {tries}")
         out.append("")
+    out += body_lines()
     rest = [n for n in cells if n not in placed]
     if rest:
         out.append("UNPLACED CELLS: " + ", ".join(sorted(rest)))
