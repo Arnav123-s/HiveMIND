@@ -27,7 +27,7 @@ import json
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
-            "uninstall", "project", "projects", "life", "org", "school", "recruit"}
+            "uninstall", "project", "projects", "life", "org", "school", "recruit", "harvest"}
 
 
 def main():
@@ -39,6 +39,9 @@ def main():
         if cmd == "life":
             from . import life
             return life.main(rest)
+        if cmd == "harvest":
+            from . import harvest
+            return harvest.main(rest)
         if cmd == "recruit":
             from . import recruit
             return recruit.main(rest)
