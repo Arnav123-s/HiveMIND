@@ -3,29 +3,40 @@
   "teacher": "brain4b",
   "student": "fast",
   "what": "plans: the same specialists in the same order",
-  "when": "2026-11-10 08:11",
+  "when": "2026-11-10 09:27",
   "specialists": [
-   "coordinator_school"
+   "coordinator_school",
+   "coordinator_school2"
   ],
   "graduated": false,
-  "test_lessons": 32,
+  "test_lessons": 46,
   "alone": {
-   "untouched": 0.281,
-   "coordinator_school": 0.625
+   "untouched": 0.304,
+   "coordinator_school": 0.587,
+   "coordinator_school2": 0.543
   },
   "schemes": {
-   "alone": 0.625
+   "alone": 0.587,
+   "routed": 0.587
   },
-  "someone_right": 0.625,
+  "someone_right": 0.609,
   "scheme": "alone",
-  "untouched_agrees": 0.281,
-  "taught_agrees": 0.625,
+  "untouched_agrees": 0.304,
+  "taught_agrees": 0.587,
   "general": [
    "coordinator_school",
    "untouched"
   ],
-  "narrow": [],
-  "narrow_in_their_territory": {},
+  "narrow": [
+   "coordinator_school2"
+  ],
+  "narrow_in_their_territory": {
+   "coordinator_school2": {
+    "exam_lessons": 26,
+    "specialist_right": 9,
+    "general_right": 9
+   }
+  },
   "misses": [
    {
     "task": "Find the current exchange rate between the US Dollar and the Japanese Yen using an online currency converter",
@@ -176,6 +187,10 @@
   ],
   "runs_on": "fast+coordinator_school",
   "why": "not yet: it needs 85% and 3% over the untouched student",
-  "lessons": 160
+  "lessons": 232,
+  "last_quiz": {
+   "new_lessons": 32,
+   "hive_wrong": 11
+  }
  }
 }
