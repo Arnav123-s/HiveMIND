@@ -511,14 +511,8 @@ def test_the_brain_answers_a_job_it_holds_and_can_be_switched_off(tmp_path, monk
 
 def test_a_scout_lets_in_only_text_that_reads_like_text():
     from team import harvest
-    things = ["river", "bridge", "market", "school", "garden", "harbour", "station", "library", "tower", "farm", "mill", "square"]
-    acts = ["floods the fields", "draws many visitors", "closes in winter", "was built long ago", "stands by the road",
-            "burned down once", "feeds the whole town", "is painted blue", "hides an old well", "faces the hills"]
-    whens = ["every spring", "on market days", "after the rain", "in the old stories", "since the war", "at first light"]
-    good = [f"The {t} near the {u} {a} {w}, and people remember it." for t in things for u in things[:4] for a in acts[:3] for w in whens[:1]
-            if t != u][:120]
-    good = [g.replace("people", ["people", "children", "farmers", "sailors", "teachers"][i % 5]).replace("remember", ["remember", "like", "fear", "visit"][i % 4])
-            for i, g in enumerate(good)]
+    from team import config
+    good = (config.ROOT / "README.md").read_text().splitlines()                          # real, varied prose
     assert harvest.readable(good) == (True, "")
     assert not harvest.readable(["x"] * 300)[0]                                          # not running text
     assert "alphabet" in harvest.readable([f"Река возле города {i} длинная, и весной она заливает все поля вокруг." for i in range(120)])[1]
