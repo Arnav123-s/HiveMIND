@@ -8,6 +8,8 @@ A model trained from scratch knows no words until it has read some. Nobody hands
 - general English it fetches itself: open text datasets on Hugging Face (SOURCES; ungated, licence checked each
   time, --mb megabytes of each), and the opening paragraphs of random Wikipedia articles from the public API (a slow
   trickle: the API allows about two requests a minute).
+- new sources it finds itself: on every harvest one scout looks on Hugging Face for a text dataset it has not seen,
+  and lets it in only if it is open, small enough, and reads like running text (scout, readable). --no-scout: not now.
 Lines are kept once. The harvest lives in memory/harvest/ (not in git: each machine harvests its own); what was
 gathered is recorded in memory/harvest/record.json. A later run adds to it.
 """
@@ -148,6 +150,134 @@ def dataset(repo, file, column, mb, log=print):
     return shelf.size()
 
 
+# ---- scouts: the hive finds new reading matter itself --------------------------------------------------------------
+SEEK = ["simple english", "stories", "encyclopedia", "news articles", "questions and answers", "instructions how to",
+        "python code", "dialogue", "science explained", "books", "summaries", "definitions"]
+MAX_SOURCE, DISK_FLOOR = 300e6, 4e9
+
+
+def _record(**new):
+    f = HOME / "record.json"
+    try:
+        rec = json.loads(f.read_text())
+    except (OSError, ValueError):
+        rec = {}
+    rec.update(new)
+    HOME.mkdir(parents=True, exist_ok=True)
+    f.write_text(json.dumps(rec, indent=1))
+    return rec
+
+
+def sources():
+    """Where the harvest reads: the first sources, and every one a scout found and the check let in."""
+    return SOURCES + [tuple(x) for x in _record().get("found", [])]
+
+
+def pick_file(siblings):
+    """The file of a dataset to read: plain text first, else a parquet file of its training part; the smallest that
+    is not tiny, and never over MAX_SOURCE. siblings: [(name, bytes)]."""
+    ok = [(n, b) for n, b in siblings if b and 1e6 <= b <= MAX_SOURCE]
+    txt = sorted((b, n) for n, b in ok if n.endswith(".txt"))
+    par = sorted((("train" not in n.lower()), b, n) for n, b in ok if n.endswith(".parquet"))  # its training part first
+    return txt[0][1] if txt else par[0][2] if par else None
+
+
+def readable(lines):
+    """The check a new source must pass before it is let in (the body's guard against bad food), on a sample of its
+    lines: (True, "") or (False, why). It must be running text in the alphabet the hive reads, in sentences, and not
+    one line repeated."""
+    kept = [ln for raw in lines for ln in _lines(raw)]
+    if len(kept) < 50 or len(kept) < 0.2 * max(1, len(lines)):
+        return False, f"only {len(kept)} of {len(lines)} sampled lines are running text"
+    text = " ".join(kept)
+    latin = sum(c.isascii() and c.isalpha() for c in text) / max(1, sum(c.isalpha() for c in text))
+    if latin < 0.9:
+        return False, f"only {latin:.0%} of its letters are in the alphabet the hive reads"
+    words = text.split()
+    # different words among the first 2000 (a count over the whole sample falls with its length: a megabyte of simple
+    # stories was turned away as repeating itself)
+    if len(set(words[:2000])) < 0.15 * len(words[:2000]) or len(set(kept)) < 0.8 * len(kept):
+        return False, "it repeats itself"
+    if sum(len(w) for w in words) / len(words) > 9 or not any(ln.rstrip()[-1:] in ".!?\"'" for ln in kept[:200]):
+        return False, "it does not read like sentences"
+    return True, ""
+
+
+def _sample(repo, file, mb=1.0):
+    """(lines, text column) from the start of a file: up to mb megabytes."""
+    from huggingface_hub import hf_hub_download
+    path = hf_hub_download(repo, file, repo_type="dataset", token=False)
+    out, size = [], 0
+    if file.endswith(".parquet"):
+        import pyarrow.parquet as pq
+        pf = pq.ParquetFile(path)
+        first = next(pf.iter_batches(batch_size=200))
+        cols = {n: [v for v in first.column(i).to_pylist() if isinstance(v, str)] for i, n in enumerate(first.schema.names)}
+        cols = {n: v for n, v in cols.items() if len(v) > 100}
+        if not cols:
+            return [], None
+        column = max(cols, key=lambda n: sum(map(len, cols[n])) / len(cols[n]))  # the column with the longest text
+        for batch in pf.iter_batches(batch_size=500, columns=[column]):
+            for t in batch.column(0).to_pylist():
+                out += str(t or "").splitlines()
+                size += len(t or "")
+            if size >= mb * 1e6:
+                break
+        return out, column
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for ln in f:
+            out.append(ln)
+            size += len(ln)
+            if size >= mb * 1e6:
+                break
+    return out, None
+
+
+def scout(log=print, tries=8):
+    """One scouting trip: look on Hugging Face for a text dataset the hive has not looked at (one search word a trip,
+    in turn), and let in the first one that is open (ungated, licence in OPEN), has a file it can read, leaves the
+    disk its floor, and passes `readable`. Every dataset looked at is recorded with the verdict, so none is looked at
+    twice. Returns the source let in, or None."""
+    import shutil
+    from huggingface_hub import HfApi
+    api, rec = HfApi(token=False), _record()
+    seen, trips = rec.get("scouted", {}), rec.get("scout_trips", 0)
+    have = {r for r, _, _ in sources()}
+    term, found, looked = SEEK[trips % len(SEEK)], None, 0
+    for d in api.list_datasets(search=term, sort="downloads", limit=tries * 3):
+        if d.id in seen or d.id in have:
+            continue
+        if looked >= tries:  # a trip looks at so many and comes home
+            break
+        looked += 1
+        try:
+            info = api.dataset_info(d.id, files_metadata=True)
+            lic = {t.split(":", 1)[1] for t in info.tags or [] if t.startswith("license:")}
+            file = pick_file([(x.rfilename, x.size) for x in info.siblings or []])
+            if info.gated or not lic or not lic <= OPEN:
+                verdict = f"not open (gated: {bool(info.gated)}, licence: {sorted(lic) or 'none stated'})"
+            elif not file:
+                verdict = "no text or parquet file of a size it can read"
+            elif file.endswith(".parquet") and not __import__("importlib").util.find_spec("pyarrow"):
+                verdict = "a parquet file, and pyarrow is not installed here"
+            elif shutil.disk_usage(HOME).free - dict((x.rfilename, x.size) for x in info.siblings)[file] < DISK_FLOOR:
+                verdict = "the disk would get too full"
+            else:
+                lines, column = _sample(d.id, file)
+                ok, why = readable(lines)
+                verdict = "let in" if ok else f"not let in: {why}"
+                if ok:
+                    found = (d.id, file, column)
+        except Exception as e:  # noqa: BLE001 - a dataset that cannot be read is one more verdict
+            verdict = f"could not be read: {type(e).__name__}"
+        seen[d.id] = f"{term}: {verdict}"
+        log(f"[harvest] scout ({term}): {d.id}: {verdict}", flush=True)
+        if found:
+            break
+    _record(scouted=seen, scout_trips=trips + 1, found=rec.get("found", []) + ([list(found)] if found else []))
+    return found
+
+
 def files():
     return sorted(HOME.glob("*.txt"))
 
@@ -155,13 +285,18 @@ def files():
 def main(argv):
     mb = float(argv[argv.index("--mb") + 1]) if "--mb" in argv else 20.0
     rec = {"when": time.strftime("%Y-%m-%d %H:%M"), "own_work_bytes": own_work()}
-    for repo, file, column in SOURCES:
+    if "--no-scout" not in argv:
+        try:
+            scout()
+        except Exception as e:  # noqa: BLE001 - a failed trip is not a failed harvest
+            print(f"[harvest] scout: {type(e).__name__}: {str(e)[:120]}", flush=True)
+    for repo, file, column in sources():
         try:
             rec[repo] = dataset(repo, file, column, mb)
         except Exception as e:  # noqa: BLE001 - one source failing does not end the harvest
             rec[repo] = f"failed: {type(e).__name__}: {str(e)[:120]}"
     rec["wikipedia_api_bytes"] = wikipedia(mb, minutes=0 if "--no-trickle" in argv else 10)
-    (HOME / "record.json").write_text(json.dumps(rec, indent=1))
+    _record(**rec)
     print(json.dumps(rec))
     return 0
 

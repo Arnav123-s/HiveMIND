@@ -507,3 +507,23 @@ def test_the_brain_answers_a_job_it_holds_and_can_be_switched_off(tmp_path, monk
     assert use.ask_all("licence_open", ["a | mit", "b | cc-by-nc-4.0"])[0] in ("yes", "no")
     monkeypatch.setenv("AGENT_TEAM_TINY", "0")
     assert tiny.holds() == {}
+
+
+def test_a_scout_lets_in_only_text_that_reads_like_text():
+    from team import harvest
+    things = ["river", "bridge", "market", "school", "garden", "harbour", "station", "library", "tower", "farm", "mill", "square"]
+    acts = ["floods the fields", "draws many visitors", "closes in winter", "was built long ago", "stands by the road",
+            "burned down once", "feeds the whole town", "is painted blue", "hides an old well", "faces the hills"]
+    whens = ["every spring", "on market days", "after the rain", "in the old stories", "since the war", "at first light"]
+    good = [f"The {t} near the {u} {a} {w}, and people remember it." for t in things for u in things[:4] for a in acts[:3] for w in whens[:1]
+            if t != u][:120]
+    good = [g.replace("people", ["people", "children", "farmers", "sailors", "teachers"][i % 5]).replace("remember", ["remember", "like", "fear", "visit"][i % 4])
+            for i, g in enumerate(good)]
+    assert harvest.readable(good) == (True, "")
+    assert not harvest.readable(["x"] * 300)[0]                                          # not running text
+    assert "alphabet" in harvest.readable([f"Река возле города {i} длинная, и весной она заливает все поля вокруг." for i in range(120)])[1]
+    assert "repeats" in harvest.readable(["The same sentence is written here again and again, every time."] * 200)[1]
+    assert harvest.pick_file([("a.parquet", 5e6), ("data/train-0.parquet", 9e6), ("big.txt", 9e9), ("small.txt", 10)]) == "data/train-0.parquet"
+    assert harvest.pick_file([("default/part-0.parquet", 5e6)]) == "default/part-0.parquet"
+    assert harvest.pick_file([("corpus.txt", 4e6), ("data/train-0.parquet", 2e6)]) == "corpus.txt"
+    assert harvest.pick_file([("model.bin", 5e6)]) is None
