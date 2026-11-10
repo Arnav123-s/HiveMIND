@@ -1,8 +1,0 @@
-{
- "corpus_bytes": 48491947,
- "corpus_pieces": 14474774,
- "pretrain_steps": 28,
- "pretrain_loss": 8.048,
- "pretrain_pieces_read": 229376,
- "weights": 2615424
-}
