@@ -683,7 +683,8 @@ programs that ran, and the exam asks whether the student's program prints what t
 
 | | untouched 1.5B | taught 1.5B |
 |---|---|---|
-| prints the same as the 7B's program on 32 unseen lessons | 59% (19) | 81% (26) |
+| prints the same as the 7B's program on 32 unseen lessons, as first scored | 59% (19) | 81% (26) |
+| the same exam, scored again after two corrections to the key (below) | 66% (21) | 84% (27) |
 
 What this shows, and what it does not:
 - The taught student is 22 points ahead of the untouched one after one class of 25 minutes' training. It has not
@@ -692,6 +693,10 @@ What this shows, and what it does not:
   long decimals to 10 significant digits, for later exams; this exam stays as scored), one is a lesson where the
   teacher itself was wrong (a future value of 1.6 million from 10000 and 200 a month), and four are real (vowels
   counted wrong, a grouping, an off-by-one, a doubling time).
+- The key was corrected twice after the first scoring, and the unusable answers were asked again: long decimals are
+  compared to 10 significant digits, and an import a program never uses no longer keeps it out (the untouched
+  student had 11 programs refused for importing a web library it then did not use). Both students gained two
+  lessons. 84% is one lesson short of graduating.
 - The lessons are pure computations. They do not teach what the 1.5B fails at inside the hive: changing a working
   program on feedback without breaking it, and reading values from a fetched page. That needs a second kind of lesson.
 
@@ -713,6 +718,30 @@ sharpens what a model can nearly do and adds little where it cannot (the taught 
 5. **Teach.** Better than the untouched student by the school's margin: it is the better student. An edit of its
    weights is trained on the lessons the teacher already gave (no new teacher time), and that specialist takes the
    exam too. The job goes to whoever measures best.
+
+**Measured: the first two recruits, and whether other families miss other things** (`training/diverse.py`,
+`training/reports/diverse_coders.json`; the coder's 32 unseen lessons, every model untouched except the taught one).
+
+| model | right alone, of 32 |
+|---|---|
+| Qwen2.5-Coder-1.5B, taught by the school | 27 |
+| Qwen2.5-Coder-1.5B, untouched | 21 |
+| Qwen3-1.7B (the hive's general small model) | 17 |
+| Yi-Coder-1.5B (recruit) | 12 |
+| SmolLM2-1.7B (recruit) | 0 |
+
+- Neither recruit was enrolled: both are under the untouched student on programs (38% and 0% against 66%) and on
+  plans (15% and 4% against 30%). SmolLM2-1.7B wrote no program that ran and printed the right thing.
+- The same model twice does share mistakes: the taught and the untouched 1.5B are both wrong on 4 lessons, where two
+  independent models with their scores would both be wrong on 1.7. With another family the overlap is nearer chance
+  (4 against 2.3 with Qwen3-1.7B, 4 against 3.1 with Yi-Coder).
+- But the other families are weaker, so they add little: at least one model is right on 28 lessons for the same
+  model twice, 29 for three families, 30 for all five. Taking what most models print gives 27, the same as the best
+  one alone. More voices did not make the answer better here.
+- What other families do give is a check that needs no teacher: whenever two models of different families printed
+  the same thing, it was right. 16 of 16 (taught 1.5B and Qwen3-1.7B), 11 of 11, 13 of 13, 11 of 11, 7 of 7. On 32
+  lessons that is a small sample; it says where the hive can trust a program without asking the jury, and where
+  (they disagree) the effort should go. Not built into the run loop yet.
 
 The always-on agent recruits one model whenever the device is idle, in turn with dreaming, growing cells, evolving
 instructions and school. `python -m team org` lists every recruit and its tryouts; `cells/recruits.json` is the record.

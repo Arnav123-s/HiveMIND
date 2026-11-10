@@ -61,8 +61,9 @@ benchmaxing, held-out sets run once, no model names in commits.
 **Open, in order:**
 1. Cleaner lessons for long plans: teach the plan after the reviewer and the code checks (`coordinator.reviewed_plan`)
    or plans from runs that passed, instead of the 4B's first plan. Then re-examine.
-2. The coder's first class is held: 160 lessons, the taught 1.5B prints what the 7B's program prints on 81% of 32
-   unseen lessons (untouched 59%); not graduated, holds the job in the small-only hive (`coder15+coder_school`).
+2. The coder's first class is held: 160 lessons, the taught 1.5B prints what the 7B's program prints on 84% of 32
+   unseen lessons (untouched 66%; first scored 81% and 59%, before two corrections to the key); not graduated (one
+   lesson short), holds the job in the small-only hive (`coder15+coder_school`).
    Its lessons are pure computations; a second kind is needed for what fails without the 7B: changing a working
    program on feedback without breaking it (csv), and reading a number from a fetched page.
 3. Small-only arxiv and csv still fail. The item juror is now asked without the whole list's requirements
@@ -72,7 +73,17 @@ benchmaxing, held-out sets run once, no model names in commits.
    mistakes, `school.teach_fixes`; several hours of the 7B for a first class).
 4b. Recruits (`python -m team recruit`, `team/recruit.py`, `cells/recruits.json`): the hive finds, checks, downloads
    and tries small models of other families on the roles' exams, enrols and teaches by measurement. First tryouts
-   are in progress; a tryout where every answer is unusable is a prompt problem to look at, not a score.
+   First tryouts: Yi-Coder-1.5B and SmolLM2-1.7B, neither enrolled (under the untouched students on both exams).
+   `training/diverse.py`: other families share fewer mistakes but are weaker, so voting gained nothing (27 of 32, as
+   the best alone); two different families printing the same was right every time (58 of 58 over five pairs): a
+   check to build into the coder's run loop (run a second family's program, trust agreement, spend effort on
+   disagreement).
+4c. From scratch on the CPU (`python -m team harvest`, `training/scratch.py`; his order of 2026-11-10): the hive
+   harvests text (own logs + open datasets, licence-checked; 48 MB so far in `memory/harvest/`, not in git), learns a
+   4096-piece vocabulary, a 2.6M-weight model reads it, then is trained whole on one cell job, same rows and test as
+   today's cells. Without reading first: licence_open 99% dev, 53% on unseen words. Next: `scratch.py all` after the
+   reading run, table in `training/reports/scratch_cells.json`; then harvest and reading in the idle loop, and the
+   hive finding datasets itself as it finds models.
 5. If routing by shared words sends tasks to the wrong narrow specialist once there are several, train a router cell.
 6. Older: more logged work for the item juror's site (about 60 decisions, needs about 200); near-miss numbers for
    the spawned cell; held-out set 4 (run once, on frozen code).
