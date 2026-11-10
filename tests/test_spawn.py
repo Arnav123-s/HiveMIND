@@ -249,3 +249,12 @@ def test_school_specialists_answer_together():
     assert school.majority({"a": None}, ["a"]) is None
     rows = [{"exam": False}, {"exam": True}, {"exam": False}]
     assert [len(p) for p in school.split(rows)] == [2, 1]
+
+
+def test_a_task_goes_to_the_specialist_whose_lesson_it_is_most_like():
+    from team import school
+    terr = {"right": ["What is 17% of 250?", "Translate into French: good morning"],
+            "planner2": ["Scrape the ten newest posts on news.example.com and save them to posts.csv"]}
+    assert school.route("coordinator", "Scrape the five newest posts on blog.example.org and save them to blog.csv", terr) == "planner2"
+    assert school.route("coordinator", "What is 12% of 990?", terr) is None
+    assert school.route("coordinator", "anything", {}) is None

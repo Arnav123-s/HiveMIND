@@ -78,9 +78,8 @@ def plan(goal, board, notes=""):
     data, raw = None, ""
     if config.SMALL:  # the planner's small specialists, taught by the 4B, plan together (team/school.py)
         from .. import school
-        if len(school.voters("coordinator")) > 1:
-            raw = school.answer("coordinator", plan_messages(goal, notes), goal) or ""
-            data = llm.parse_json(raw) if raw else None
+        raw = school.answer("coordinator", plan_messages(goal, notes), goal) or ""
+        data = llm.parse_json(raw) if raw else None
     if data is None:
         data, raw = llm.chat_json("coordinator", plan_messages(goal, notes), max_new_tokens=900)
     steps, problems = normalize(data, goal)

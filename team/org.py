@@ -85,7 +85,8 @@ def chart():
         for role, v in rec.items():
             line = (f"untouched {v['untouched_agrees']:.0%}, taught {v['taught_agrees']:.0%} agreement with the teacher on "
                     f"{v['test_lessons']} unseen lessons" if "taught_agrees" in v else v.get("why", ""))
-            who = ", ".join(v.get("voters") or v.get("specialists") or []) or "no specialist yet"
+            who = (f"{v.get('scheme', 'alone')}: " + ", ".join((v.get("general") or [])[:1 if v.get("scheme", "alone") == "alone" else 9]
+                                                             + (v.get("narrow") or []))) if v.get("general") else "no specialist yet"
             out.append(f"  {role:<14} {MODELS.get(v['student'], v['student'])} learning from {MODELS.get(v['teacher'], v['teacher'])}: "
                        f"{'GRADUATED' if v.get('graduated') else 'in school'}; {v['lessons']} lessons; {line}; holds the job: {who}")
         out.append("")
