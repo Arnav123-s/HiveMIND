@@ -225,3 +225,16 @@ def test_the_org_chart_lists_every_cell_once():
     assert "UNPLACED" not in text
     for k in runtime.registry():
         assert text.count(f"cell  {k} ") + text.count(f"cell  {k:<22} ") >= 1
+
+
+def test_the_hive_picks_the_specialist_that_failed_most_to_work_on_next(tmp_path, monkeypatch):
+    import sqlite3
+    from team import config, dream
+    from team.board import Board
+    monkeypatch.setattr(config, "RUNS", tmp_path)
+    for n, (agent, verdict) in enumerate([("coder", "FAIL")] * 4 + [("researcher", "FAIL")] * 2 + [("coder", "PASS")] * 5):
+        b = Board(tmp_path / f"r{n:02d}", echo=False)
+        b.add_step({"id": "s1", "agent": agent, "task": "t"})
+        b.update_step("s1", verdict=verdict)
+    assert dream.worst_role() == "coder"
+    assert dream.worst_role(least=5) is None  # too few failures to act on

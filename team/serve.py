@@ -97,6 +97,16 @@ def background(last, dream_every_hours):
         log("idle and healthy: growing cells from the hive's own decisions")
         subprocess.run([sys.executable, "-m", "team", "grow"], cwd=config.ROOT)
         last["grow"] = time.time()
+    elif time.time() - last.get("evolve", 0) > dream_every_hours * 3600:
+        # the specialist that failed most in recent work gets its instructions evolved: the examiner diagnoses its
+        # failures, the prompt-smith breeds variants, and one is kept only if it scores strictly higher on that
+        # specialist's held-out evals (team/evolve.py). Nobody has to look at the failures first.
+        from . import dream
+        role = dream.worst_role()
+        last["evolve"] = time.time()
+        if role:
+            log(f"idle and healthy: {role} failed most in recent work; evolving its instructions (gated)")
+            subprocess.run([sys.executable, "-m", "team", "evolve", role, "--variants", "2"], cwd=config.ROOT)
     elif time.time() - last.get("life", 0) > dream_every_hours * 3600:
         log("idle and healthy: a turn of the hive's life (new jobs noticed in its own calls, cells grown, checked, retired)")
         subprocess.run([sys.executable, "-m", "team", "life"], cwd=config.ROOT)
