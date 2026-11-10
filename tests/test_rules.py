@@ -1499,3 +1499,14 @@ def test_asked_count_reads_items_not_layout():
     assert asked_count("Explain hash tables in three sentences") is None
     assert asked_count("How many days are there in 6 weeks?") is None
     assert asked_count("What is the capital of France?") is None
+
+
+def test_a_sort_the_wrong_way_round_is_named(monkeypatch):
+    """The 1.5B coder sorted the "cheapest" books with reverse=True and every small checker passed it."""
+    from team.specialists import coder
+    monkeypatch.setattr(coder.llm, "chat_json", lambda *a, **k: ({"first_item": "largest"}, ""))
+    code = "books = sorted(books, key=price, reverse=True)\nprint(books[:3])"
+    assert "smallest value must come first" in coder.order_problem("Find the three cheapest Mystery books", code)
+    assert coder.order_problem("Save the most expensive three books", code) is None
+    assert coder.order_problem("Write fib(n) and print fib(30)", code) is None
+    assert coder.order_problem("Find the three cheapest books", code.replace("[:3]", "[-3:]")) is None
