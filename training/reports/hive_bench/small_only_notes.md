@@ -115,3 +115,12 @@ downloads", and the 1.5B coder scraped a page element that does not exist instea
 not measured: arXiv's API timed out on every search of the run.
 After it: a claim that names a quantity without its number takes its quote's words; a coder that fetches values the
 team already found, in a step that names no page, is told before the run to write them in.
+
+With those two rules (`small10`; the normal hive on the same code, `normal_reg3`: chart and lookup pass):
+chart pass (442 s). arxiv fail: the 1.7B planner searched arXiv for "mixture of experts newest"; no paper has all
+four words, the any-word search sorted by date gave six unrelated papers of that day, and the small composer said,
+rightly, that none was about mixture of experts. csv fail (2 of the 3 cheapest): the first step attempt sorted the
+wrong way and read one page; the second saved the CSV, but the file was there from the first attempt, was compared by
+name only, counted as "saved none", and the step was given up.
+After it: a search in a source the hive sorts by date keeps only the topic (the words that say how to sort or where to
+look are dropped); a file written again counts as saved.

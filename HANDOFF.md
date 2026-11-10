@@ -1,9 +1,9 @@
-# Handoff: HiveMIND (`main` has PR #5; work continues on `make-it-work`, PR #6)
+# Handoff: HiveMIND (`main` has PR #6; work continues on `make-it-work`, draft PR #7)
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
 ## Live status (kept current; read this first)
-Updated 2026-11-10 (afternoon UTC). Work is on `make-it-work` (draft PR #6 into `main`); everything is pushed.
+Updated 2026-11-10 (evening UTC). PR #6 is merged into `main` on his approval. Work continues on `make-it-work`, restarted from `main` (draft PR #7); everything is pushed.
 
 **Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
 freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow
@@ -91,7 +91,7 @@ Key files:
   - held-out sets are run once, on frozen code, and reported as measured.
 - CPU only, 10 GB budget, no spending. Don't delete caches or his files.
 - The final report uses the headings **Blocked on me / Changed / Found**, and marks anything unconfirmed.
-- Merging any PR needs **his explicit yes for that PR**. PR #5 had it and is merged; the next one needs it again.
+- Merging any PR needs **his explicit yes for that PR**. PR #5 and PR #6 had it and are merged; the next one needs it again.
 - No model identifiers in commits or PRs. Commits end with the Co-Authored-By and Claude-Session lines.
 - His direction: a hive of the **smallest specialists, each doing the smallest job** it can do well, working as one. Not one big model.
 
@@ -142,4 +142,4 @@ Measured decisions:
   2. Run `training/cells_incumbents.py <skill>`.
   3. Run `training/cells_research.py <skill>`.
   4. Check it on real inputs before it gets a job.
-- **GitHub:** use `gh api` (REST; GraphQL returns 403). The PR is Arnav123-s/HiveMIND#5.
+- **GitHub:** use `gh api` (REST; GraphQL returns 403). The PR is Arnav123-s/HiveMIND#7.
