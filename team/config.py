@@ -71,6 +71,14 @@ GGUF_ROSTER = {
 # professional translations, against 48.4 for a translation edit of the 1.7B and 46.7 for the writer
 TRANSLATE_ROLE = os.environ.get("AGENT_TEAM_TRANSLATE_ROLE", "editor")
 JURY = [s.strip() for s in os.environ.get("AGENT_TEAM_JURY", "verifier,juror_brain,juror_fast").split(",") if s.strip()]
+if SMALL:  # roles a small model took over after passing its exam against the bigger member (team/school.py)
+    try:
+        import json as _json
+        for _r, _v in _json.loads((ROOT / "cells" / "school.json").read_text()).items():
+            if _v.get("graduated") and _v.get("runs_on"):
+                GGUF_ROSTER[_r] = _v["runs_on"]
+    except (OSError, ValueError):
+        pass
 if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
     import json as _json
     GGUF_ROSTER.update(_json.loads(os.environ["AGENT_TEAM_ROSTER"]))
