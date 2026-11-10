@@ -161,6 +161,36 @@ def missing_page_fact(err, urls, code):
     return None
 
 
+SMALLEST = re.compile(r"\b(cheapest|lowest|fewest|least|smallest|shortest|oldest|earliest)\b", re.I)
+LARGEST = re.compile(r"\b(most|highest|largest|biggest|longest|newest|latest|top|best)\b", re.I)
+SORT_LINE = re.compile(r"sorted\(|\.sort\(|sort_values\(|nlargest|nsmallest")
+SORT_DIRECTION = """You check ONE thing in a program: the direction of a sort. Reply with JSON only: {"first_item":"smallest" or "largest"}
+- sorted(...) or .sort(...) without reverse, or reverse=False, or ascending=True: the smallest value comes first.
+- reverse=True or ascending=False: the largest value comes first.
+- nsmallest: smallest first. nlargest: largest first."""
+
+
+def order_problem(task, code):
+    """One narrow question, asked of a small model: which way does the program's sort run? What the task wants is
+    read from its own word in code. (The 1.5B coder sorted the "cheapest" books with reverse=True; the reviewer and
+    the jury of three, all small, passed it. Asked only about the line, the 1.7B read 7 of 7 directions right.)"""
+    own = task.split("\n(Previous attempt was rejected:")[0]
+    lo, hi = SMALLEST.search(own), LARGEST.search(own)
+    if bool(lo) == bool(hi):  # no such word, or both: nothing to compare
+        return None
+    lines = [ln.strip() for ln in (code or "").splitlines() if SORT_LINE.search(ln)]
+    if len(lines) != 1 or "[-" in code or "reversed(" in code or ".reverse()" in code:
+        return None  # several sorts, or the far end is taken: not a question of one line
+    data, _ = llm.chat_json("juror_fast", [{"role": "system", "content": SORT_DIRECTION},
+                                           {"role": "user", "content": "LINE: " + lines[0][:400]}], max_new_tokens=30)
+    first = data.get("first_item") if isinstance(data, dict) else None
+    want = "smallest" if lo else "largest"
+    if first in ("smallest", "largest") and first != want:
+        return (f"The task asks for the {(lo or hi).group(0).lower()}: the {want} value must come first. This line "
+                f"puts the {first} first: {lines[0][:200]}. Change the direction of that sort.")
+    return None
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -225,7 +255,8 @@ def run(task, context, board, step_id, guard, workdir):
                                            {"role": "user", "content": prompts.CODER_FIX.format(
                                                error=err + "\nHint: " + prompts.FIX_HINTS["check"])}]
                     continue
-            problems = sanity(res["stdout"]) or review(task, code, res["stdout"])
+            wrong_way = order_problem(task, code)
+            problems = [wrong_way] if wrong_way else sanity(res["stdout"]) or review(task, code, res["stdout"])
             if not problems or attempt == config.CODER_MAX_ATTEMPTS:
                 break
             board.log("code_reviewer", "fix", " | ".join(problems)[:300])
