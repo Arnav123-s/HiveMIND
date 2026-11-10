@@ -464,3 +464,19 @@ def test_trainers_with_kept_cells_are_chosen_more_and_bred():
     grown = B.breed(ts, random.Random(0))
     assert "t4" not in [t["id"] for t in grown] and grown[-1]["id"] == "t5" and grown[-1]["births"] == 0
     assert sum(grown[-1][k] != next(t for t in grown if t["id"] == grown[-1]["parent"])[k] for k in ("start", "lr", "span", "on")) == 1
+
+
+def test_the_org_chart_shows_the_body_from_its_own_record(tmp_path, monkeypatch):
+    import json
+    from team import config, org
+    monkeypatch.setattr(config, "ROOT", tmp_path)
+    assert org.body_lines() == []
+    (tmp_path / "training" / "reports").mkdir(parents=True)
+    (tmp_path / "cells" / "scratch" / "body").mkdir(parents=True)
+    (tmp_path / "cells" / "scratch" / "body" / "cell_00.pt").write_bytes(b"x")
+    (tmp_path / "training" / "reports" / "body.json").write_text(json.dumps({
+        "births": [{"cell": 6, "when": "2026-11-10 20:00", "trainer": "t1", "on": "worst", "kept": True, "why": "the body gained +0.0100"}],
+        "retired": [], "trainers": [{"id": "t1", "start": "stem", "on": "worst", "lr": 5e-4, "span": 1.0, "births": 1, "kept": 1}],
+        "measured": [{"when": "2026-11-10 20:01", "passages": 300, "loss": {"stem cell alone": 2.7, "body, by fit: x": 2.6}}]}))
+    text = "\n".join(org.body_lines())
+    assert "1 cells alive" in text and "1 kept" in text and "the body at its best 2.6" in text and "trainer t1" in text
