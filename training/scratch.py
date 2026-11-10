@@ -17,6 +17,9 @@
                                                          passage next to it means (writes base_pairs.pt);
                                                          `together --trunk base_pairs` then builds the brain on it
 
+    python training/scratch.py bitnet [--minutes 30]     the stem cell becomes a BitNet (weights of -1, 0, +1), trained
+                                                         here; every cell grown from it afterwards is a BitNet cell
+
 Today's cells are SmolLM2-135M (someone else's pretrained weights) with a small edit. This is the other way to make
 one: a model of about 2.6 million weights that starts from random numbers. What it knows about words it gets from the
 text the hive harvested itself (team/harvest.py); what it knows about its job it gets from the same training rows as
@@ -44,12 +47,34 @@ VOCAB, DIM, LAYERS, HEADS, CTX = 4096, 192, 4, 4, 256
 PAD, BOS = 0, 1
 
 
+class BitLinear(nn.Linear):
+    """A layer of a BitNet (b1.58): when it works, every weight is -1, 0 or +1, times one number for the whole layer,
+    and what comes in is rounded to 8 bits. It is trained on ordinary weights underneath: at each step they are
+    rounded to the three values for the forward pass, and the correction flows back to the ordinary weights as if
+    no rounding had happened (the straight-through way). So training costs what it always costs; the cell that
+    comes out is stored in about two bits a weight (pack)."""
+
+    def forward(self, x):
+        w = self.weight
+        scale = w.abs().mean().clamp(min=1e-5)
+        w = w + ((w / scale).round().clamp(-1, 1) * scale - w).detach()
+        top = x.abs().amax(-1, keepdim=True).clamp(min=1e-5)
+        x = x + ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
+        return F.linear(x, w, self.bias)
+
+
+def is_bit():
+    """Are the hive's own cells BitNets? (cells/scratch/record.json; set once, when the stem cell is converted.)"""
+    return bool(_record().get("bit"))
+
+
 class Block(nn.Module):
-    def __init__(self):
+    def __init__(self, bit=False):
         super().__init__()
+        lin = BitLinear if bit else nn.Linear
         self.n1, self.n2 = nn.LayerNorm(DIM), nn.LayerNorm(DIM)
-        self.qkv, self.out = nn.Linear(DIM, 3 * DIM), nn.Linear(DIM, DIM)
-        self.up, self.down = nn.Linear(DIM, 4 * DIM), nn.Linear(4 * DIM, DIM)
+        self.qkv, self.out = lin(DIM, 3 * DIM), lin(DIM, DIM)
+        self.up, self.down = lin(DIM, 4 * DIM), lin(4 * DIM, DIM)
 
     def forward(self, x, causal):
         b, t, d = x.shape
@@ -63,10 +88,11 @@ class Tiny(nn.Module):
     """A small transformer. As a reader it predicts the next piece; as a cell it reads the whole input and its last
     position chooses a label."""
 
-    def __init__(self, labels=0):
+    def __init__(self, labels=0, bit=None):
         super().__init__()
+        self.bit = is_bit() if bit is None else bit
         self.tok, self.pos = nn.Embedding(VOCAB, DIM), nn.Embedding(CTX, DIM)
-        self.blocks = nn.ModuleList(Block() for _ in range(LAYERS))
+        self.blocks = nn.ModuleList(Block(self.bit) for _ in range(LAYERS))
         self.norm = nn.LayerNorm(DIM)
         self.head = nn.Linear(DIM, labels) if labels else None
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
@@ -83,6 +109,74 @@ class Tiny(nn.Module):
     def label(self, ids, last):
         h = self.body(ids)
         return self.head(h[torch.arange(ids.shape[0]), last])
+
+
+SHARED = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
+
+
+def pack(model):
+    """A BitNet cell as it is stored: for each of its three-valued layers the one number and two bit-planes (where
+    the weight is +1, where it is -1); the few other numbers (norms, biases) in 16 bits. The table of word pieces is
+    not stored: every cell has the stem cell's. About half a megabyte for 1.8 million weights."""
+    import numpy as np
+    out = {}
+    for name, p in model.state_dict().items():
+        if name.startswith(SHARED):
+            continue
+        if name.startswith("blocks.") and name.endswith(".weight") and p.dim() == 2:
+            scale = p.abs().mean().clamp(min=1e-5)
+            t = (p / scale).round().clamp(-1, 1)
+            out[name] = {"scale": float(scale), "shape": list(p.shape), "plus": np.packbits((t == 1).numpy()),
+                         "minus": np.packbits((t == -1).numpy())}
+        else:
+            out[name] = p.to(torch.float16)
+    return out
+
+
+def unpack(packed, stem_state):
+    """The weights of a stored BitNet cell. A three-valued layer comes back as its values times a number chosen so
+    that rounding it again gives exactly the same layer (the layer's one number divided by the share of weights
+    that are not zero)."""
+    import numpy as np
+    state = {k: v for k, v in stem_state.items() if k.startswith(SHARED)}
+    for name, v in packed.items():
+        if isinstance(v, dict):
+            n = v["shape"][0] * v["shape"][1]
+            t = (np.unpackbits(v["plus"])[:n].astype("float32") - np.unpackbits(v["minus"])[:n].astype("float32")).reshape(v["shape"])
+            share = max(float(np.abs(t).mean()), 1e-5)
+            state[name] = torch.from_numpy(t) * (v["scale"] / share)
+        else:
+            state[name] = v.to(torch.float32)
+    return state
+
+
+def save_cell(model, path):
+    torch.save(pack(model) if model.bit else model.state_dict(), path)
+
+
+def load_cell(path, labels=0):
+    """A cell from its file: a BitNet cell is unpacked onto the stem cell's table of word pieces."""
+    got = torch.load(path, weights_only=False)
+    packed = any(isinstance(v, dict) for v in got.values())
+    m = Tiny(labels, bit=packed)
+    m.load_state_dict(unpack(got, torch.load(HOME / "base.pt")) if packed else got)
+    return m
+
+
+def to_bitnet(minutes=30.0):
+    """The stem cell becomes a BitNet. Its ordinary weights are kept as what it is trained on underneath; from now on
+    it works in three values, and it goes on reading the harvest that way for so many minutes, so that it learns to
+    do with three values what it did with many. The stem cell as it was stays in base_full.pt. Every cell grown
+    after this is a BitNet cell; cells grown before are of the other kind and are put away."""
+    import shutil
+    if not is_bit():
+        shutil.copyfile(HOME / "base.pt", HOME / "base_full.pt")
+        old = HOME / "body"
+        if old.exists():
+            shutil.rmtree(HOME / "body_full", ignore_errors=True)
+            old.rename(HOME / "body_full")
+        _record(bit=True, bitnet_since=time.strftime("%Y-%m-%d %H:%M"), loss_before_bitnet=_record().get("pretrain_loss"))
+    return pretrain(minutes)
 
 
 def tokenizer(train=False):
@@ -430,6 +524,8 @@ def main(argv):
     cmd = argv[0] if argv else ""
     if cmd == "tokenizer":
         tokenizer(train=True)
+    elif cmd == "bitnet":
+        print(json.dumps(to_bitnet(opt("--minutes", 30.0))))
     elif cmd == "pretrain":
         print(json.dumps(pretrain(opt("--minutes", 60.0))))
     elif cmd == "fit":
