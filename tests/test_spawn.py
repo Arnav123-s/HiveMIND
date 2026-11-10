@@ -258,3 +258,33 @@ def test_a_task_goes_to_the_specialist_whose_lesson_it_is_most_like():
     assert school.route("coordinator", "Scrape the five newest posts on blog.example.org and save them to blog.csv", terr) == "planner2"
     assert school.route("coordinator", "What is 12% of 990?", terr) is None
     assert school.route("coordinator", "anything", {}) is None
+
+
+def test_a_taught_specialist_ahead_of_the_untouched_student_holds_the_job_only_in_the_small_hive(monkeypatch):
+    from team import config, school
+    ahead = {"graduated": False, "ahead": True}
+    monkeypatch.setattr(config, "SMALL", False)
+    assert not school.holds(ahead) and school.holds({"graduated": True})
+    monkeypatch.setattr(config, "SMALL", True)
+    assert school.holds(ahead) and not school.holds({"graduated": False})
+    monkeypatch.setenv("AGENT_TEAM_SCHOOL", "0")
+    assert not school.holds(ahead)
+
+
+def test_a_school_program_is_judged_by_what_it_prints_when_run():
+    from team import school
+    assert school._program_key("```python\nprint(2 + 3)\nprint('Done')\n```", "t") == "5 done"
+    assert school._program_key("```python\nprint(1/0)\n```", "t") is None            # it does not run
+    assert school._program_key("```python\nx = 1\n```", "t") is None                   # it prints nothing
+    assert school._program_key("```python\nimport os\nprint(os.getcwd())\n```", "t") is None  # not a school program
+
+
+def test_every_school_role_says_how_it_is_taught_and_the_next_one_is_the_one_longest_away(monkeypatch):
+    from team import school
+    for r in school.ROLES.values():
+        assert {"teacher", "student", "messages", "key", "tokens", "chat", "known", "write", "topics", "example"} <= set(r)
+    monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"}})
+    assert school.next_role() == "coder"                                               # never taught goes first
+    monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"},
+                                                   "coder": {"taught_agrees": 0.2, "when": "2026-11-10 12:00"}})
+    assert school.next_role() == "coordinator"

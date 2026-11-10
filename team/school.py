@@ -24,6 +24,7 @@ Without ROLE, the role that most needs it is taken (the always-on agent does thi
 trust: the record holds every exam number and the lessons are kept (training/data/school/).
 """
 import json
+import os
 import random
 import re
 import subprocess
@@ -63,9 +64,72 @@ def _plan_messages(task):
     return coordinator.plan_messages(task)
 
 
-ROLES = {  # role: its teacher, its student, how a lesson is asked, and what in the answer must match the teacher's
+WRITE_PROGRAMS = """You write programming tasks that Arnav might type to the coder on his team, who writes one Python \
+program and runs it. Write one task per line, no numbering, nothing else. Each task:
+- is solved by one short Python program with the standard library only: no internet, no files to read, no keyboard \
+input, nothing random, nothing that depends on today's date;
+- gives every value the program needs (the numbers, the words, the list) inside the task itself;
+- says exactly what the program must print, so that two correct programs print the same characters ("Print only the \
+number.", "Print one word per line, in alphabetical order.", "Print the result rounded to 2 decimals and nothing else.").
+Vary the work: arithmetic over given numbers, text handling, sorting and searching, counting, dates given in the task, \
+small data tables given in the task, recursion, classes, fixing a short broken snippet given in the task."""
+CODE_TOPICS = ["sums, averages and percentages of given numbers", "prime numbers and divisors", "strings and words",
+               "sorting given lists", "counting things in a given text", "dates and weekdays given in the task",
+               "a small table of sales given in the task", "unit conversion tables", "recursion", "dictionaries and sets",
+               "matrices as lists of lists", "number bases and bits", "a small class with methods", "parsing a given line "
+               "of CSV or JSON text", "fixing a short broken snippet given in the task", "sequences and series",
+               "searching in a sorted list", "money and interest", "validating given codes, emails or numbers",
+               "grouping given records"]
+SIMILAR_PROGRAMS = """You write programming tasks for the coder on Arnav's team. You are given ONE task.
+Write {n} new tasks of exactly the same kind of program, each with other values, words or data given inside the task,
+each saying exactly what to print. Standard library only, no internet, no files, no input, nothing random.
+One task per line, no numbering, nothing else."""
+# a school program computes and prints; one that reaches for the machine or the network is not a lesson
+_NOT_A_LESSON = re.compile(r"\b(?:import|from)\s+(?:os|subprocess|shutil|socket|requests|urllib|http|ctypes|httpx)\b|"
+                           r"\bopen\s*\(|\binput\s*\(|\bexec\s*\(|\beval\s*\(|__import__")
+
+
+def _program_key(output, task):
+    """What a program decides: what it prints when it is run (None if it does not run, or prints nothing)."""
+    import tempfile
+
+    from .specialists import coder
+    from .tools.sandbox import run_python
+    code = coder.extract_code(output or "")
+    if not code or _NOT_A_LESSON.search(code):
+        return None
+    with tempfile.TemporaryDirectory() as d:
+        res = run_python(code, d, timeout=20)
+    out = " ".join((res.get("stdout") or "").split()).lower()
+    return out[:2000] if res.get("returncode") == 0 and out else None
+
+
+def _program_messages(task):
+    from .specialists import coder
+    return coder.task_messages(task, "")
+
+
+def _planner_tasks():
+    """Tasks the planner already met: the logged ones, and the list the life drills use."""
+    tasks = logged_tasks()
+    extra = config.ROOT / "training" / "data" / "life_tasks.txt"
+    return tasks + ([t.strip() for t in extra.read_text().splitlines() if t.strip() and t.strip() not in tasks]
+                    if extra.exists() else [])
+
+
+# role: its teacher, its student, how a lesson is asked (messages, chat), what in the answer must match the teacher's
+# (key), and where its tasks come from (known: real ones; write, topics, similar: how the teacher writes new ones)
+ROLES = {
     "coordinator": {"teacher": "brain4b", "student": "fast", "messages": _plan_messages, "key": _plan_key,
-                    "tokens": 900, "what": "plans: the same specialists in the same order"},
+                    "tokens": 900, "chat": {"prefix": "{", "stop": "json"}, "known": _planner_tasks,
+                    "write": WRITE_TASKS, "topics": TOPICS, "similar": None,
+                    "example": "What is the latest version of the flask package on PyPI?",
+                    "what": "plans: the same specialists in the same order"},
+    "coder": {"teacher": "coder7b", "student": "coder15", "messages": _program_messages, "key": _program_key,
+              "writer": "brain4b", "tokens": 900, "chat": {"stop": "code"}, "known": lambda: [],
+              "write": WRITE_PROGRAMS, "topics": CODE_TOPICS, "similar": SIMILAR_PROGRAMS,
+              "example": "Write a Python program that prints the sum of the squares of 3, 7 and 12. Print only the number.",
+              "what": "programs: run, they print the same as the teacher's program"},
 }
 
 
@@ -113,10 +177,11 @@ def logged_tasks():
     return list(dict.fromkeys(out))
 
 
-def write_tasks(n, have, teacher, log=print, seed=0):
+def write_tasks(n, have, teacher, log=print, seed=0, role="coordinator"):
     """The teacher writes new tasks, eight at a time, each call on another topic with other examples."""
     rnd, new, seen = random.Random(seed + len(have)), [], {t.lower() for t in have}
-    examples = have or ["What is the latest version of the flask package on PyPI?"]
+    examples = have or [ROLES[role]["example"]]
+    WRITE_TASKS, TOPICS = ROLES[role]["write"], ROLES[role]["topics"]  # noqa: N806 - the role's own
     tries = 0
     with _as("examiner", teacher):
         while len(new) < n and tries < n:
@@ -128,7 +193,7 @@ def write_tasks(n, have, teacher, log=print, seed=0):
                             max_new_tokens=500, temperature=0.8)
             for ln in text.splitlines():
                 t = ln.strip(" -*\t0123456789.)")
-                if 25 <= len(t) <= 400 and t.lower() not in seen:
+                if 25 <= len(t) <= 600 and t.lower() not in seen:
                     seen.add(t.lower())
                     new.append(t)
             log(f"[school] the teacher wrote {len(new)} of {n} new tasks", flush=True)
@@ -160,19 +225,16 @@ def teach(role, n, log=print, tasks=None):
         tasks = [t for t in tasks if t not in done]
         n = len(have) + len(tasks)
     else:
-        tasks = [t for t in logged_tasks() if t not in done]
-        pool = done + tasks
-        extra = (config.ROOT / "training" / "data" / "life_tasks.txt")
-        tasks += [t.strip() for t in extra.read_text().splitlines() if t.strip() and t.strip() not in pool] if extra.exists() else []
+        tasks = [t for t in r["known"]() if t not in done]
         need = n - len(have) - len(tasks)
         if need > 0:
-            tasks += write_tasks(int(need * 1.15) + 4, done + tasks, r["teacher"], log)
+            tasks += write_tasks(int(need * 1.15) + 4, done + tasks, _writer(role), log, role=role)
     with _as(role, r["teacher"]), open(DATA / f"{role}.jsonl", "a") as f:
         for t in tasks:
             if len(have) >= n:
                 break
             msgs = r["messages"](t)
-            out = llm.chat(role, msgs, max_new_tokens=r["tokens"], prefix="{", stop="json")
+            out = llm.chat(role, msgs, max_new_tokens=r["tokens"], **r["chat"])
             key = r["key"](out, t)
             if key is None:
                 continue  # the teacher's own answer was unusable: nothing to learn from
@@ -230,7 +292,7 @@ def _ask(role, voter, messages, task):
     """One specialist's answer and what it decides."""
     spec, adapter = _spec(role, voter)
     with _as(role, spec):
-        out = llm.chat(role, messages, max_new_tokens=ROLES[role]["tokens"], prefix="{", stop="json", adapter=adapter)
+        out = llm.chat(role, messages, max_new_tokens=ROLES[role]["tokens"], adapter=adapter, **ROLES[role]["chat"])
     return out, ROLES[role]["key"](out, task)
 
 
@@ -270,17 +332,22 @@ Write {n} new tasks of exactly the same kind (the same sort of work, done by the
 different subject, site, text or numbers. One task per line, no numbering, nothing else."""
 
 
-def similar_tasks(gaps, have, teacher, per=4, log=print):
+def _writer(role):
+    """Who writes the role's new tasks: the role's teacher, unless another member is better at writing tasks."""
+    return ROLES[role].get("writer") or ROLES[role]["teacher"]
+
+
+def similar_tasks(gaps, have, teacher, per=4, log=print, prompt=None):
     """For each lesson the present specialists got wrong, the teacher writes more tasks of the same kind."""
     seen, out = {t.lower() for t in have}, {}
     with _as("examiner", teacher):
         for g in gaps:
-            text = llm.chat("examiner", [{"role": "system", "content": SIMILAR.format(n=per)},
+            text = llm.chat("examiner", [{"role": "system", "content": (prompt or SIMILAR).format(n=per)},
                                          {"role": "user", "content": g}], max_new_tokens=400, temperature=0.8)
             mine = []
             for ln in text.splitlines():
                 t = ln.strip(" -*\t0123456789.)")
-                if 25 <= len(t) <= 400 and t.lower() not in seen:
+                if 25 <= len(t) <= 600 and t.lower() not in seen:
                     seen.add(t.lower())
                     mine.append(t)
             out[g] = mine[:per]
@@ -364,16 +431,25 @@ def exam(role, names, log=print):
     return res
 
 
+def holds(v):
+    """Does the role's exam record give the job to its small specialists in this hive? Graduated: yes, anywhere.
+    In the hive without the bigger models (AGENT_TEAM_SMALL=1) the teacher is not there, and the job would go to the
+    untouched student: there the taught specialists hold it as soon as the exam puts them ahead of that student."""
+    if os.environ.get("AGENT_TEAM_SCHOOL", "1") == "0":
+        return False
+    return bool(v.get("graduated") or (config.SMALL and v.get("ahead")))
+
+
 def holders(role):
-    """How the role is held after its exams: (scheme, general specialists best first, narrow ones); None if the
-    role has not graduated."""
+    """How the role is held after its exams: (scheme, general specialists best first, narrow ones); None if its
+    small specialists do not hold it (holds)."""
     v = record().get(role, {})
-    return (v.get("scheme", "alone"), list(v.get("general") or []), list(v.get("narrow") or [])) if v.get("graduated") else None
+    return (v.get("scheme", "alone"), list(v.get("general") or []), list(v.get("narrow") or [])) if holds(v) else None
 
 
 def answer(role, messages, task):
     """The role's answer from its small specialists: a task in a narrow specialist's territory goes to that one;
-    otherwise the general ones answer and the hive takes what most decide. None if the role has not graduated."""
+    otherwise the general ones answer and the hive takes what most decide. None if they do not hold the job (holds)."""
     h = holders(role)
     if not h:
         return None
@@ -451,7 +527,8 @@ def attend(role, n=160, train_it=True, log=print):
             log(f"[school] {role}: the hive got {len(gaps)} of {len(quiz)} new lessons wrong", flush=True)
             if len(gaps) >= MIN_GAP:
                 if "similar" not in st:
-                    st["similar"] = similar_tasks(gaps[:MAX_GAP], [x["task"] for x in rows], r["teacher"], per=3, log=log)
+                    st["similar"] = similar_tasks(gaps[:MAX_GAP], [x["task"] for x in rows], _writer(role), per=3, log=log,
+                                                  prompt=r.get("similar"))
                     _visit(role, st)
                 written = {t for v in st["similar"].values() for t in v}
                 rows, _ = teach(role, 0, log, tasks=sorted(written))
@@ -469,6 +546,8 @@ def attend(role, n=160, train_it=True, log=print):
         entry.update(exam(role, names, log))
         ok = entry["taught_agrees"] >= GRADUATE and entry["taught_agrees"] >= entry["untouched_agrees"] + MARGIN
         entry["graduated"] = ok
+        entry["ahead"] = (entry["test_lessons"] >= MIN_TEST and entry["general"][0] != "untouched"
+                          and entry["taught_agrees"] >= entry["untouched_agrees"] + MARGIN)
         best = entry["general"][0]
         entry["runs_on"] = r["student"] if best == "untouched" else f"{r['student']}+{best}"
         entry["why"] = ("graduated" if ok else
@@ -482,11 +561,11 @@ def attend(role, n=160, train_it=True, log=print):
 
 
 def next_role():
-    """The role that most needs school: one never taught, else the one whose specialists agree least with their
-    teacher. A role that graduated keeps going back while there is something left to learn (under DONE)."""
+    """The role that goes to school now: one never taught; else, of those still under DONE, the one that was there
+    longest ago, so every role gets its turn. A graduated role keeps going back while there is something to learn."""
     rec = record()
     todo = [r for r in ROLES if rec.get(r, {}).get("taught_agrees", 0) < DONE]
-    return min(todo, key=lambda r: rec.get(r, {}).get("taught_agrees", -1)) if todo else None
+    return min(todo, key=lambda r: ("taught_agrees" in rec.get(r, {}), rec.get(r, {}).get("when", ""))) if todo else None
 
 
 def main(argv):

@@ -191,6 +191,7 @@
   "last_quiz": {
    "new_lessons": 32,
    "hive_wrong": 11
-  }
+  },
+  "ahead": true
  }
 }
