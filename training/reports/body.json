@@ -44,5 +44,27 @@
    }
   ],
   "why_it_failed": "each cell knew its few thousand windows by heart (one reached loss 0.29 on them and 5.33 on new text); the stem cell was not a member of the body, so a passage no cell fitted had no good reader. The body (2.4975) was worse than its own stem cell (2.4276)."
- }
+ },
+ "territories": {
+  "cells": 6,
+  "windows_placed": 55128,
+  "sizes": {
+   "0": 13101,
+   "1": 18900,
+   "2": 30957,
+   "3": 7346,
+   "4": 20195,
+   "5": 19757
+  },
+  "examples": {
+   "0": "jarval, Icelandic painter (b. 1885)\n 1975 \u2013 Larry Parks, American actor (b. 1914)\n 1975 - Fran\u00e7o",
+   "1": " little girl fell and started to cry.\n The villagers quickly ran over to help the little girl. They all lifted",
+   "2": "s of al-Bureij and Nusseirat. Israeli sources say it was a \"pinpoint\" operation against the \"terrorist infrast",
+   "3": ". They feel happy and warm.\n But then, a big goose comes. It is greedy and mean. It wants all the bread for it",
+   "4": " on its own! Tom and the duck were surprised. They followed the boat and saw that it was being pulled by a lit",
+   "5": " number of plants in the Nightshade family, genus Mandragora. The roots often look like man or woman, or can b"
+  },
+  "seconds": 647
+ },
+ "minutes_per_cell": 10.0
 }

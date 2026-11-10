@@ -26,3 +26,4 @@ projects/
 cells/scratch/corpus.u16
 cells/scratch/*.pt
 cells/scratch/record.json
+cells/scratch/body/
