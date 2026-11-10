@@ -14,11 +14,16 @@ import re
 from .. import llm
 
 PART = 1800
-EXTRACT = """You read ONE PART of a source for Arnav's team and pull out the facts the TASK needs.
+# No example value stands in this instruction. It used to say ("X has 0.135B parameters"): asked for download counts,
+# with "downloads 3597908" in front of it, the 1.7B returned parameter counts, once the example's own 0.135B for a
+# model that has 2.032B; asked for a licence and a parameter count it returned the parameter count alone.
+EXTRACT = """You read ONE PART of a source for Arnav's team and pull out the facts the TASK asks for.
 Reply with JSON only: {"facts":[{"claim":"...","quote":"..."}]}
-- claim: one sentence stating the fact with its value ("X has 0.135B parameters"), never a bare label.
+- First read the TASK: which things does it ask for (a licence, a number of downloads, a date, a price, a name)? \
+Take a fact for each of those things that this part states, and not other values that stand next to them.
+- claim: one full sentence that names the thing and gives the value this part states for it, never a bare label.
 - quote: the words copied exactly, character for character, from the part. Never invent or reword a quote.
-- At most 4 facts. {"facts":[]} if this part says nothing the task needs."""
+- At most 4 facts. {"facts":[]} if this part states nothing the task asks for."""
 COMPOSE = """You answer Arnav's TASK from the FACTS his team found. Use only the facts.
 Reply with JSON only: {"summary":"2-4 sentences answering the task","items":["..."]}
 - items: the list the task asks for (names, ids, titles), best first; [] if the task asks for no list.

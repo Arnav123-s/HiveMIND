@@ -25,14 +25,7 @@ from team import llm, prompts  # noqa: E402
 from team.specialists import verifier  # noqa: E402
 
 SMALL = "juror_fast"  # the plain Qwen3-1.7B, no weight edit
-# the small reader's own instruction: one small job (facts of one part), not the researcher's whole reply. A first
-# run appended a note to the researcher's instruction; the 1.7B kept that instruction's reply format (summary, items)
-# and gave no facts at all, which measured the instruction, not the model.
-CHUNK_EXTRACT = """You read ONE PART of a source for Arnav's team and pull out the facts the TASK needs.
-Reply with JSON only: {"facts":[{"claim":"...","quote":"..."}]}
-- claim: one sentence stating the fact with its value ("X has 0.135B parameters"), never a bare label.
-- quote: the words copied exactly, character for character, from the part. Never invent or reword a quote.
-- At most 4 facts. {"facts":[]} if this part says nothing the task needs."""
+from team.specialists.reader import EXTRACT as CHUNK_EXTRACT  # noqa: E402 - the hive's small reader's own instruction
 
 
 def extract_calls(dirs, limit):
