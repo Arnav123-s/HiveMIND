@@ -1,0 +1,243 @@
+{
+ "tag": "school_coord_untouched",
+ "adapters": true,
+ "time": "2026-11-10 08:53:37",
+ "scores": {
+  "coordinator": {
+   "mean": 0.449,
+   "n": 14,
+   "seconds": 170
+  }
+ },
+ "cases": {
+  "coordinator": [
+   {
+    "case": "Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.\",\"needs\":[],\"for_each\":null,\"done_when\":\"the task is completed\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Go to books.toscrape.com, open the Travel category, and list every book title with its price.",
+    "score": 0.333,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Go to books.toscrape.com, open the Travel category, and list every book title with its price.\",\"needs\":[],\"for_each\":null,\"done_when\":\"The researcher has successfully navigated to books.toscrape.com and opened the Travel category, and retrieved the list of book titles with their prices.\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Write a Python script that gets the Open-Meteo forecast for Pune for the next 3 days, saves it as a CSV, and tells me which day is coolest.",
+    "score": 0.833,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Get Open-Meteo forecast for Pune for the next 3 days\",\"needs\":[],\"for_each\":null,\"done_when\":\"Open-Meteo forecast for Pune for the next 3 days is retrieved\"},{\"id\":\"s2\",\"agent\":\"browser\",\"task\":\"Open Open-Meteo website and search for Pune forecast\",\"needs\":[\"s1\"],\"for_each\":null,\"done_when\":\"Open-Meteo website is opened\"},{\"id\":\"s3\",\"agent\":\"coder\",\"task\":\"Write Python script to fetch Open-Meteo forecast for Pune for the next 3 days\",\"needs\":[\"s2\"],\"for_each\":\"{item}\",\"done_when\":\"Python script to fetch Open-Meteo forecast for Pune for the next 3 days is written\"},{\"id\":\"s4\",\"agent\":\"coder\",\"task\":\"Save forecast data as CSV file\",\"needs\":[\"s3\"],\"for_each\":\"{item}\",\"done_when\":\"Forecast data is saved as CSV file\"},{\"id\":\"s5\",\"agent\":\"calculator\",\"task\":\"Calculate average temperature for the next 3 days\",\"needs\":[\"s4\"],\"for_each\":\"{item}\",\"done_when\":\"Average temperature for the next 3 days is calculated\"},{\"id\":\"s6\",\"agent\":\"writer\",\"task\":\"Write final deliverable with Python script and result\",\"needs\":[\"s5\"],\"for_each\":null,\"done_when\":\"Final deliverable with Python script and result is written\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": [
+     "for_each '{item}' is not an earlier step",
+     "for_each '{item}' is not an earlier step",
+     "for_each '{item}' is not an earlier step"
+    ]
+   },
+   {
+    "case": "Check which of these packages have a newer version on PyPI than what I pinned: requests==2.31.0, numpy==1.26.0, flask==2.3.0.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Check which of these packages have a newer version on PyPI than what I pinned: requests==2.31.0, numpy==1.26.0, flask==2.3.0.\",\"needs\":[],\"for_each\":null,\"done_when\":\"Check if the package versions are up-to-date on PyPI.\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Find the top 5 Hacker News stories about Rust and summarize what each one is about.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find the top 5 Hacker News stories about Rust and summarize what each one is about.\",\"needs\":[],\"for_each\":null,\"done_when\":\"the researcher has retrieved the top 5 Hacker News stories about Rust and has summarized each one\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.\",\"needs\":[],\"for_each\":null,\"done_when\":\"arXiv papers are retrieved and the 3 most relevant are selected\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Benchmark how fast Python's json module parses a 50 MB file on this machine versus a 5 MB file and explain the scaling.",
+    "score": 0.333,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find the current date and time (2026-11-10) and verify it from a reliable source (e.g., Wikipedia, a URL, or a clock website).\",\"needs\":[],\"for_each\":null,\"done_when\":\"The researcher confirms the current date and time is 2026-11-10 (Tuesday) from a verified source.\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "On quotes.toscrape.com, collect every quote by Albert Einstein across all pages and save them to a file.",
+    "score": 0.333,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Collect every quote by Albert Einstein from quotes.toscrape.com and save them to a file.\",\"needs\":[],\"for_each\":null,\"done_when\":\"Quotes by Albert Einstein are collected and saved to a file.\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "For each of the 3 most downloaded Qwen models on Hugging Face, open its model page and record the license and the weights file size.",
+    "score": 0.286,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find the 3 most downloaded Qwen models on Hugging Face and record their license and weights file size\",\"needs\":[],\"for_each\":null,\"done_when\":\"The researcher has retrieved the 3 most downloaded Qwen models and their license and weights file size.\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false,
+     "for_each": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV and tell me if I should upgrade.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV and tell me if I should upgrade.\",\"needs\":[],\"for_each\":null,\"done_when\":\"verified_vulnerabilities\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Make a chart of the last 30 days of daily maximum temperature in Mumbai from Open-Meteo and save it as a PNG.",
+    "score": 0.333,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find the last 30 days of daily maximum temperature in Mumbai from Open-Meteo\",\"needs\":[],\"for_each\":null,\"done_when\":\"...\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Read the Wikipedia article on the transistor and write me a one-page history with key dates.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Fetch the Wikipedia article on the transistor and extract key dates and events\",\"needs\":[],\"for_each\":null,\"done_when\":\"Wikipedia article on the transistor is retrieved and key dates are extracted\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Find the latest version of the Python packages fastapi and pydantic, then write and run a script that checks if my installed versions are older.",
+    "score": 0.333,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Find the latest version of the Python packages fastapi and pydantic\",\"needs\":[],\"for_each\":null,\"done_when\":\"latest versions of fastapi and pydantic are retrieved\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": false,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.",
+    "score": 0.5,
+    "output": "{\"steps\":[{\"id\":\"s1\",\"agent\":\"researcher\",\"task\":\"Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.\",\"needs\":[],\"for_each\":null,\"done_when\":\"model card is read and the training data is retrieved\"}]}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   }
+  ]
+ }
+}
