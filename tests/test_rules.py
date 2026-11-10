@@ -1591,3 +1591,25 @@ def test_the_coder_is_told_to_use_the_teams_values_instead_of_fetching_them_agai
     assert refetches(task, ctx, "import matplotlib\nvals = [3597908, 220473]") is None        # it uses the values
     assert refetches(task, "", code) is None                                                   # nothing was found before
     assert refetches("Scrape the prices from books.toscrape.com and chart them.", ctx, code) is None  # he ordered a fetch
+
+
+def test_a_file_written_again_counts_as_saved(tmp_path):
+    import os
+    from team.specialists import coder
+    (tmp_path / "old.csv").write_text("a")
+    (tmp_path / "again.csv").write_text("a")
+    before = coder.stamps(tmp_path)
+    (tmp_path / "again.csv").write_text("b")
+    os.utime(tmp_path / "again.csv", ns=(1, before["again.csv"] + 1_000_000))
+    (tmp_path / "new.csv").write_text("c")
+    (tmp_path / "s1.py").write_text("x")
+    (tmp_path / ".s1.py.out").write_text("x")
+    assert sorted(p.name for p in coder.saved(tmp_path, before, "s1.py")) == ["again.csv", "new.csv"]
+
+
+def test_search_topic_drops_sort_and_source_words():
+    from team.specialists.researcher import topic
+    assert topic("mixture of experts newest") == "mixture of experts"
+    assert topic("latest arXiv papers on mixture of experts") == "papers on mixture of experts"
+    assert topic("mixture of experts") == "mixture of experts"
+    assert topic("newest") == "newest"

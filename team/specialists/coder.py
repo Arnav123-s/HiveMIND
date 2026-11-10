@@ -237,10 +237,21 @@ def last_line(err):
     return re.sub(r"0x[0-9a-f]+|line \d+", "", lines[-1])[:300] if lines else ""
 
 
+def stamps(workdir):
+    return {p.name: p.stat().st_mtime_ns for p in Path(workdir).iterdir()}
+
+
+def saved(workdir, before, program):
+    """The files this step's programs wrote: new ones, and ones written again. (A step that was retried saved the same
+    CSV again; counted by name alone it had "saved none", and a program that did its job was rejected three times.)"""
+    return [p for p in Path(workdir).iterdir() if p.name != program and not p.name.startswith(".")
+            and before.get(p.name) != p.stat().st_mtime_ns]
+
+
 def run(task, context, board, step_id, guard, workdir):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
-    before = {p.name for p in workdir.iterdir()}
+    before = stamps(workdir)
     # the pages his task names, never the URLs in a previous attempt's error: a retry carrying "404 ... for url:
     # .../page-2.html" previewed only that missing page and lost the Mystery listing the first preview had found
     own = task.split("\n(Previous attempt was rejected:")[0]
@@ -271,7 +282,7 @@ def run(task, context, board, step_id, guard, workdir):
         board.log("coder", "run", f"attempt {attempt}: exit {res['returncode']} in {res['seconds']}s")
         last = {**res, "code": code, "attempts": attempt}
         missing = [f for f in want if not (workdir / f).exists()]
-        new = [p for p in workdir.iterdir() if p.name not in before and p.name != name and not p.name.startswith(".")]
+        new = saved(workdir, before, name)
         silent = not res["stdout"].strip() and not new
         unsaved = unsaved_output(task, code, [p.name for p in new]) if not missing and not silent else None
         gone = [u for u, c in http_errors(res["stderr"]) if c == 404]
@@ -342,8 +353,7 @@ def run(task, context, board, step_id, guard, workdir):
         last_error = key
         messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
                                {"role": "user", "content": prompts.CODER_FIX.format(error=err)}]
-    files = sorted(p.name for p in workdir.iterdir() if p.name not in before and p.name != name
-                   and not p.name.startswith("."))
+    files = sorted(p.name for p in saved(workdir, before, name))
     summary = (last["stdout"] or "").strip()[-1500:] or (last["stderr"] or "")[-600:]
     return {"summary": summary, "code_path": str(workdir / name), "returncode": last["returncode"],
             "stderr": last["stderr"][-1500:], "files": files, "attempts": last["attempts"],
