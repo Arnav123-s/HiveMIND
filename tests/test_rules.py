@@ -1621,3 +1621,11 @@ def test_the_note_about_dropped_items_is_not_the_researchers_admission():
          "\nDropped by the team's checks (do not use): D (The source line does not contain the full information.)")
     assert verifier.admits_a_gap(s) is None and verifier.admits_nothing(s) is None
     assert verifier.admits_a_gap("The model is X. The licence is not specified in the provided facts.")
+
+
+def test_a_program_left_with_a_problem_the_checks_found_fails_whatever_the_jury_would_say(tmp_path):
+    from team.specialists import verifier
+    v, why = verifier.verify({"id": "s1", "agent": "coder", "task": "save the three cheapest books to a CSV", "done_when": "x"},
+                             {"returncode": 0, "summary": "Saved books.csv", "files": ["books.csv"],
+                              "unfixed": "the page is only the first page of the listing"}, None, tmp_path)
+    assert v == "FAIL" and "only the first page" in why

@@ -39,6 +39,11 @@ GGUF_MODELS = {
     # the small coding specialist: with AGENT_TEAM_SMALL=1 it writes and reviews the programs
     "coder15": ("Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF", "qwen2.5-coder-1.5b-instruct-q8_0.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
     "coder7b": ("Qwen/Qwen2.5-Coder-7B-Instruct-GGUF", "qwen2.5-coder-7b-instruct-q4_k_m.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
+    # small models of other families (Apache-2.0, ungated): copies of one model make the same mistakes, and other
+    # families miss other things (training/diverse.py measures how far that holds)
+    "yicoder": ("bartowski/Yi-Coder-1.5B-Chat-GGUF", "Yi-Coder-1.5B-Chat-Q8_0.gguf", "01-ai/Yi-Coder-1.5B-Chat"),
+    "smol17": ("bartowski/SmolLM2-1.7B-Instruct-GGUF", "SmolLM2-1.7B-Instruct-Q8_0.gguf", "HuggingFaceTB/SmolLM2-1.7B-Instruct"),
+    "granite2b": ("ibm-granite/granite-3.3-2b-instruct-GGUF", "granite-3.3-2b-instruct-Q4_K_M.gguf", "ibm-granite/granite-3.3-2b-instruct"),
 }
 # AGENT_TEAM_SMALL=1: the hive with no model above 1.7B. Every job of the 4B goes to Qwen3-1.7B, programs to the
 # 1.5B coding specialist, and the researcher reads its sources in small parts (team/specialists/reader.py).

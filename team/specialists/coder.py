@@ -340,6 +340,11 @@ def run(task, context, board, step_id, guard, workdir):
             hard = [x for x in (wrong_way, unread_pages(task, code)) if x]  # checked in code and on the page
             problems = hard or sanity(res["stdout"]) or review(task, code, res["stdout"])
             if not problems or attempt == config.CODER_MAX_ATTEMPTS:
+                if hard:
+                    # out of attempts with a problem the code checks found (not an opinion of the reviewer): kept
+                    # with the result. The 1.5B coder read one page of a listing three times, was told each time,
+                    # and the jury of small models passed "saved the 3 cheapest" with two of the three right.
+                    last["unfixed"] = " | ".join(hard)[:600]
                 break
             board.log("code_reviewer", "fix", " | ".join(problems)[:300])
             messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
@@ -378,4 +383,4 @@ def run(task, context, board, step_id, guard, workdir):
     summary = (last["stdout"] or "").strip()[-1500:] or (last["stderr"] or "")[-600:]
     return {"summary": summary, "code_path": str(workdir / name), "returncode": last["returncode"],
             "stderr": last["stderr"][-1500:], "files": files, "attempts": last["attempts"],
-            "seconds": last["seconds"], **({"examples_failed": last["examples_failed"]} if last.get("examples_failed") else {})}
+            "seconds": last["seconds"], **({k: last[k] for k in ("examples_failed", "unfixed") if last.get(k)})}
