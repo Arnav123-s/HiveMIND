@@ -34,7 +34,7 @@ from . import config, llm
 
 DATA = config.ROOT / "training" / "data" / "school"
 RECORD = config.ROOT / "cells" / "school.json"
-GRADUATE, MARGIN, MIN_TEST, DONE, MIN_GAP = 0.85, 0.03, 30, 0.97, 6
+GRADUATE, MARGIN, MIN_TEST, DONE, MIN_GAP, MAX_GAP = 0.85, 0.03, 30, 0.97, 6, 12
 
 WRITE_TASKS = """You write tasks that Arnav might type to his team of AI specialists: a researcher who reads live web \
 sources, a browser operator, a coder who writes and runs Python, a calculator, and a writer.
@@ -151,12 +151,15 @@ def teach(role, n, log=print, tasks=None):
     Returns (all lessons, the new ones). After the first class every fifth new lesson is an exam lesson.
     With tasks, exactly those are taught (new tasks the teacher wrote for a gap)."""
     r, have = ROLES[role], lessons(role)
-    if len(have) >= n:
+    if len(have) >= n and tasks is None:
         return have, []
     DATA.mkdir(parents=True, exist_ok=True)
     later, new = bool(have), []
     done = [x["task"] for x in have]
-    if tasks is None:
+    if tasks is not None:
+        tasks = [t for t in tasks if t not in done]
+        n = len(have) + len(tasks)
+    else:
         tasks = [t for t in logged_tasks() if t not in done]
         pool = done + tasks
         extra = (config.ROOT / "training" / "data" / "life_tasks.txt")
@@ -389,11 +392,28 @@ def answer(role, messages, task):
     return next((outs[v] for v in vs if keys[v] is not None and keys[v] == top), None)
 
 
+def _visit(role, state=...):
+    """What a visit to school has done so far (read), kept (a dict) or cleared (None)."""
+    f = DATA / f"{role}_visit.json"
+    if state is ...:
+        try:
+            return json.loads(f.read_text())
+        except (OSError, ValueError):
+            return None
+    if state is None:
+        f.unlink(missing_ok=True)
+    else:
+        f.write_text(json.dumps(state, indent=1, ensure_ascii=False))
+    return state
+
+
 def attend(role, n=160, train_it=True, log=print):
     r = ROLES[role]
     rec = record()
     old = rec.get(role, {})
     names = list(old.get("specialists") or ([f"{role}_school"] if "taught_agrees" in old else []))
+    if names and train_it and not _visit(role) and len(lessons(role)) < n:
+        _visit(role, {"from": len(lessons(role)), "specialists": list(names)})  # a new visit starts here
     rows, new = teach(role, n, log)
     entry = {**old, "teacher": r["teacher"], "student": r["student"], "what": r["what"],
              "when": time.strftime("%Y-%m-%d %H:%M"), "specialists": names}
@@ -404,15 +424,20 @@ def attend(role, n=160, train_it=True, log=print):
     elif train_it:
         if not names:  # the first class: one general specialist, taught everything
             names.append(train(role, f"{role}_school", None, log))
-        elif new:
+        elif _visit(role):
             # the new lessons are unseen by everyone: the present specialists take them first. What they get wrong
             # is a gap; the teacher writes more tasks of that kind, and a new specialist learns that gap and nothing
             # else. The older ones keep what they know; nobody is retrained or replaced.
+            # A visit is long; what is done is kept (_visit), so one that was cut off goes on where it stopped.
+            st = _visit(role)
             terr = territories(role)
-            quiz = [x for x in new if not x["exam"]]
-            first = [*names, "untouched"] if old.get("taught_agrees", 0) > old.get("untouched_agrees", 0) else ["untouched", *names]
-            h = (old.get("scheme", "alone"), old.get("general") or first, old.get("narrow") or [])
-            got = answers(role, ["untouched", *names], quiz, log)
+            written = {t for v in st.get("similar", {}).values() for t in v}
+            quiz = [x for x in rows[st["from"]:] if x["task"] not in written and not x["exam"]]
+            before = st["specialists"]
+            first = [*before, "untouched"] if old.get("taught_agrees", 0) > old.get("untouched_agrees", 0) else ["untouched", *before]
+            h = (old.get("scheme", "alone"), [v for v in old.get("general") or first if v == "untouched" or v in before],
+                 [v for v in old.get("narrow") or [] if v in before])
+            got = answers(role, ["untouched", *before], quiz, log)
 
             def hive(x):
                 who = route(role, x["task"], terr) if h[0] == "routed" else None
@@ -421,18 +446,23 @@ def attend(role, n=160, train_it=True, log=print):
                 vs = h[1] if h[0] != "alone" and len(h[1]) > 2 else h[1][:1]
                 return majority({v: got[v][x["task"]] for v in vs}, vs)
             gaps = [x["task"] for x in quiz if hive(x) != x["key"]]
-            terr.setdefault("right", [])
-            terr["right"] += [x["task"] for x in quiz if x["task"] not in gaps]
+            terr["right"] = list(dict.fromkeys(terr.get("right", []) + [x["task"] for x in quiz if x["task"] not in gaps]))
             entry["last_quiz"] = {"new_lessons": len(quiz), "hive_wrong": len(gaps)}
             log(f"[school] {role}: the hive got {len(gaps)} of {len(quiz)} new lessons wrong", flush=True)
             if len(gaps) >= MIN_GAP:
-                more = similar_tasks(gaps[:24], [x["task"] for x in rows], r["teacher"], log=log)
-                rows, taught = teach(role, len(rows) + sum(len(v) for v in more.values()), log,
-                                     tasks=[t for v in more.values() for t in v])
-                name = f"{role}_school{len(names) + 1}"
-                terr[name] = gaps + [x["task"] for x in taught if not x["exam"]]
+                if "similar" not in st:
+                    st["similar"] = similar_tasks(gaps[:MAX_GAP], [x["task"] for x in rows], r["teacher"], per=3, log=log)
+                    _visit(role, st)
+                written = {t for v in st["similar"].values() for t in v}
+                rows, _ = teach(role, 0, log, tasks=sorted(written))
+                name = f"{role}_school{len(before) + 1}"
+                terr[name] = gaps + [x["task"] for x in rows if x["task"] in written and not x["exam"]]
                 (DATA / f"{role}_territory.json").write_text(json.dumps(terr, indent=1, ensure_ascii=False))
-                names.append(train(role, name, set(terr[name]), log, epochs=3, seed=len(names)))
+                if name not in names:
+                    train(role, name, set(terr[name]), log, epochs=3, seed=len(before))
+                    names.append(name)
+                    rec[role] = {**old, "specialists": names}  # kept at once: a cut-off visit does not train it again
+                    RECORD.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
             else:
                 (DATA / f"{role}_territory.json").write_text(json.dumps(terr, indent=1, ensure_ascii=False))
                 log(f"[school] {role}: fewer than {MIN_GAP} gaps: no new specialist this time", flush=True)
@@ -443,6 +473,7 @@ def attend(role, n=160, train_it=True, log=print):
         entry["runs_on"] = r["student"] if best == "untouched" else f"{r['student']}+{best}"
         entry["why"] = ("graduated" if ok else
                         f"not yet: it needs {GRADUATE:.0%} and {MARGIN:.0%} over the untouched student")
+        _visit(role, None)
     entry["lessons"] = len(lessons(role))
     rec[role] = entry
     RECORD.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
@@ -466,6 +497,6 @@ def main(argv):
         return 0
     # a role goes back with new lessons, not the same ones again
     tried = record().get(role, {})
-    more = min(800, tried.get("lessons", 0) + 80) if "taught_agrees" in tried else 160
+    more = min(1200, tried.get("lessons", 0) + 40) if "taught_agrees" in tried else 160
     attend(role, n=opt("--lessons", more), train_it="--no-train" not in argv)
     return 0
