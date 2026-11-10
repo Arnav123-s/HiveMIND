@@ -183,6 +183,8 @@ CALCULATOR = """You compute for Arnav's team. Write a short Python 3 program tha
 - Take every number from the TASK or RESULTS SO FAR; never invent data.
 - Print the answer with a short label: print("Answer:", answer). Round only as the task asks, to exactly the decimal
   places it names (round(x, n) for n places).
+- If the task asks for more than one thing, print each on its own line with a label that names it:
+  print("Highest month:", name) and print("Average per month:", average), never both after one "Answer:".
 - A day of the week, a month or any other name: print the name (date.strftime("%A")), never its number.
 - Use only math, datetime, statistics, fractions, decimal or calendar. No files, no network, no input().
 - Output only the program in a single ```python block."""

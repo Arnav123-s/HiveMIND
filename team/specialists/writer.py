@@ -202,7 +202,16 @@ def critique(todo, results_text, text):
     checklist = [c for c in data.get("checklist", []) if isinstance(c, dict)]
     unordered = [str(x) for x in data.get("unordered", [])]
     flagged = [str(x) for x in data.get("unsupported", [])]
+    # a complaint must point at the report: the sentence it flags has to be in it. (With the 1.7B as critic, the flag
+    # was the reply format's own placeholder, "exact sentence"; the writer "corrected" a right one-sentence summary
+    # into his three sentences again.) The same rule as for facts: no quote, no claim.
+    here = _flat(text)
+    flagged = [f for f in flagged if len(_flat(f)) >= 12 and _flat(f) in here]
     return checklist, unordered, [f for f in flagged if not HONEST.search(f)]  # saying what is unknown is never unsupported
+
+
+def _flat(t):
+    return re.sub(r"[^a-z0-9]+", " ", str(t).lower()).strip()
 
 
 def _words(t):
