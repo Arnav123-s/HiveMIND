@@ -7,7 +7,24 @@
   "license": "apache-2.0",
   "size_gb": 1.57,
   "found": "2026-11-10",
-  "tryouts": {}
+  "tryouts": {
+   "coordinator": {
+    "exam_lessons": 46,
+    "alone": 0.152,
+    "untouched_student": 0.304,
+    "role_best": 0.587,
+    "right_where_the_holder_is_wrong": 0,
+    "when": "2026-11-10 17:52"
+   },
+   "coder": {
+    "exam_lessons": 32,
+    "alone": 0.375,
+    "untouched_student": 0.656,
+    "role_best": 0.844,
+    "right_where_the_holder_is_wrong": 1,
+    "when": "2026-11-10 17:59"
+   }
+  }
  },
  "smollm217binstruct": {
   "repo": "bartowski/SmolLM2-1.7B-Instruct-GGUF",
@@ -24,15 +41,15 @@
     "untouched_student": 0.304,
     "role_best": 0.587,
     "right_where_the_holder_is_wrong": 0,
-    "when": "2026-11-10 16:57"
+    "when": "2026-11-10 17:59"
    },
    "coder": {
     "exam_lessons": 32,
     "alone": 0.0,
-    "untouched_student": 0.594,
-    "role_best": 0.812,
+    "untouched_student": 0.656,
+    "role_best": 0.844,
     "right_where_the_holder_is_wrong": 0,
-    "when": "2026-11-10 17:08"
+    "when": "2026-11-10 18:10"
    }
   }
  }
