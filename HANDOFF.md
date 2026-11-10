@@ -38,6 +38,17 @@ benchmaxing, held-out sets run once, no model names in commits.
   ability a model has, do not create one); LeCun and Balestriero's JEPA paper (Oct 2026; a 109M model lines up with
   image models better than a 72B one; the training method counted, 42x fewer examples); Tiny Recursive Model (7M
   weights, narrow puzzles, heavy augmentation); BitNet (fast on CPU, needs its own runtime).
+- BitNet (his question, 2026-11-10: many big generalist BitNets, each different, each working on the others'
+  weaknesses, trained by dreams that get harder). Checked: `microsoft/bitnet-b1.58-2B-4T` is 2.41B weights, MIT,
+  ungated, a 1.19 GB file; its bf16 master weights (4.83 GB) exist for fine-tuning. The official file does not load
+  in the hive's llama.cpp. A community conversion to the TQ2_0 format does load, and answered "Paris" and then
+  repeated itself, and wrote no program: either the conversion or the stock runtime's BitNet support is not right,
+  so that is not a fair trial. The fair trial needs Microsoft's own runtime (bitnet.cpp); building it here was
+  refused by the session's permissions (code from outside the repository) and waits for his say. Not true of BitNets:
+  cheap training (they are trained on full-precision weights underneath, as costly as any model), and "many
+  different big ones" (one strong one exists; different edits of one model share their mistakes, as measured).
+  True: small and fast to run, so several fit awake in 10 GB; three-valued weights suit small exact edits; cells
+  with three-valued weights would let thousands fit (2.6M weights: 10 MB each now, about 0.6 MB then).
 - **This cloud machine is reclaimed when idle.** The hive goes on evolving only where it is installed and left
   running: `python -m team install` on a device of his (README "Install", "Always on").
 
