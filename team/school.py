@@ -240,7 +240,14 @@ def lessons(role):
     k = max(MIN_TEST, len(first) // 5)
     for i, x in enumerate(first):
         x["exam"] = i >= len(first) - k
+    for x in rows:
+        x["key"] = _k(x["key"])
     return rows
+
+
+def _k(key):
+    """A key as it is compared today (keys written before long decimals were shortened are read the same way)."""
+    return _same_floats(key) if isinstance(key, str) else key
 
 
 def teach(role, n, log=print, tasks=None):
@@ -420,7 +427,7 @@ def answers(role, voters, rows, log=print):
                 if i % 10 == 9:
                     f.write_text(json.dumps(memo))
         f.write_text(json.dumps(memo))
-    return {v: {x["task"]: memo[v][x["task"]] for x in rows} for v in voters}
+    return {v: {x["task"]: _k(memo[v][x["task"]]) for x in rows} for v in voters}
 
 
 SIMILAR = """You write tasks that Arnav might type to his team of AI specialists. You are given ONE task.
