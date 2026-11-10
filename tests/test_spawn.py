@@ -414,30 +414,53 @@ def test_the_from_scratch_trainer_knows_its_commands():
     assert callable(scratch.pairs) and callable(scratch.together)
 
 
-def test_a_cell_that_does_not_make_the_body_better_is_removed_at_birth(tmp_path, monkeypatch):
+def test_the_body_keeps_a_new_cell_only_if_it_gains_and_no_territory_it_knew_gets_worse():
+    import torch
+    from training import body as B
+    where = torch.tensor([0] * 6 + [1] * 6)
+    before = torch.full((12,), 2.50)
+    better = before - 0.05
+    assert B.judge(before, better, where, [0, 1])[0]
+    assert not B.judge(before, before - 0.0005, where, [0, 1])[0]                       # too small a gain
+    lopsided = before.clone()
+    lopsided[:6] -= 0.20                                                                # territory 0 gains a lot
+    lopsided[6:] += 0.05                                                                # territory 1 forgets
+    kept, why = B.judge(before, lopsided, where, [0, 1])
+    assert not kept and "territory 1 got worse" in why
+
+
+def test_the_immune_check_retires_the_cell_the_body_does_not_need(tmp_path, monkeypatch):
     import torch
     from training import body as B
     monkeypatch.setattr(B, "HOME", tmp_path)
-    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
-    monkeypatch.setattr(B.T, "HOME", tmp_path)
-    for n in ("tokenizer.json", "base.pt", "cell_00.pt", "cell_01.pt"):
-        (tmp_path / n).write_bytes(b"x")
-    torch.save({"centre": torch.zeros(2, 4), "owns": {0: [1], 1: [2]}}, tmp_path / "territories.pt")
-    monkeypatch.setattr("team.harvest.files", lambda: ["x"])
-    losses = iter([2.50, 2.51, 2.51])                      # gate before, gate after (worse), the report
-
-    def grow(minutes, log=print):
-        (tmp_path / "cell_02.pt").write_bytes(b"x")
-        t = torch.load(tmp_path / "territories.pt")
-        t["centre"], t["owns"][2] = torch.zeros(3, 4), [3]
-        torch.save(t, tmp_path / "territories.pt")
-        return 2
-    monkeypatch.setattr(B, "grow", grow)
-    monkeypatch.setattr(B, "measure", lambda **k: {B.FIT: next(losses)})
-    line = B.turn(cells=2, log=lambda *a, **k: None)
-    assert "removed at birth" in line and not (tmp_path / "cell_02.pt").exists()
+    torch.save({"centre": torch.zeros(3, 4), "owns": {0: [1], 1: [2], 2: [3]}}, tmp_path / "territories.pt")
+    for k in range(3):
+        (tmp_path / f"cell_{k:02d}.pt").write_bytes(b"x")
+    pieces = B.W // 2
+    # cell 0 fits and predicts the first four passages, cell 1 the other four; cell 2 never fits what it reads
+    first = torch.tensor([[1.0, 9.0, 9.0]] * 4 + [[9.0, 1.0, 9.0]] * 4)
+    good, bad = torch.full((4, pieces), -1.0), torch.full((4, pieces), -6.0)
+    second = torch.stack([torch.cat([good, bad]), torch.cat([bad, good]), torch.full((8, pieces), -6.0)], 1)
+    out = B.immune(first, second, ["cell_00", "cell_01", "cell_02"], log=lambda *a, **k: None)
+    assert out["cell"] == 2 and not (tmp_path / "cell_02.pt").exists() and (tmp_path / "cell_00.pt").exists()
     t = torch.load(tmp_path / "territories.pt")
-    assert t["centre"].shape[0] == 2 and 2 not in t["owns"]
-    losses = iter([2.50, 2.40, 2.40])                      # this time the body gets better
-    monkeypatch.setattr(B, "measure", lambda **k: {B.FIT: next(losses)})
-    assert "kept" in B.turn(cells=2, log=lambda *a, **k: None) and (tmp_path / "cell_02.pt").exists()
+    assert t["centre"].shape[0] == 3 and t["retired"] == [2] and 2 not in t["owns"]     # its place in the map stays
+    assert B.immune(first[:, :2], second[:, :2], ["cell_00", "cell_01"], log=lambda *a, **k: None) is None  # never the last two
+
+
+def test_trainers_with_kept_cells_are_chosen_more_and_bred():
+    import random
+    from training import body as B
+    ts = [dict(t, births=0, kept=0) for t in B.TRAINERS]
+    ts[0].update(births=12, kept=0)
+    ts[1].update(births=12, kept=12)
+    picks = [B.pick_trainer(ts[:2], random.Random(i))["id"] for i in range(200)]
+    assert picks.count("t2") > 190
+    ts = [dict(t, births=1, kept=1) for t in B.TRAINERS]                                # four births in all: time to breed
+    ts[3].update(births=3, kept=0)
+    ts[0].update(births=0, kept=0)
+    ts[1].update(births=1, kept=1)
+    ts[2].update(births=0, kept=0)
+    grown = B.breed(ts, random.Random(0))
+    assert "t4" not in [t["id"] for t in grown] and grown[-1]["id"] == "t5" and grown[-1]["births"] == 0
+    assert sum(grown[-1][k] != next(t for t in grown if t["id"] == grown[-1]["parent"])[k] for k in ("start", "lr", "span", "on")) == 1
