@@ -144,43 +144,5 @@
    "gate_before": 2.2237,
    "gate_after": 2.2239
   }
- ],
- "trainers": [
-  {
-   "id": "t1",
-   "start": "stem",
-   "lr": 0.0005,
-   "span": 1.0,
-   "on": "worst",
-   "births": 0,
-   "kept": 0
-  },
-  {
-   "id": "t2",
-   "start": "nearest",
-   "lr": 0.0003,
-   "span": 1.0,
-   "on": "worst",
-   "births": 1,
-   "kept": 0
-  },
-  {
-   "id": "t3",
-   "start": "stem",
-   "lr": 0.0005,
-   "span": 1.0,
-   "on": "uncharted",
-   "births": 0,
-   "kept": 0
-  },
-  {
-   "id": "t4",
-   "start": "nearest",
-   "lr": 0.001,
-   "span": 0.5,
-   "on": "worst",
-   "births": 1,
-   "kept": 0
-  }
  ]
 }

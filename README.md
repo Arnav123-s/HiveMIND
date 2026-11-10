@@ -778,12 +778,43 @@ without anyone watching over it. All of it runs on the CPU.
    harvest and a turn whenever the device is idle. That one rule is what lets it go on alone: nothing is kept that
    did not measure better.
 
-**Measured so far.** The harvest: 48 MB (1 MB own work, 25 MB Simple English Wikipedia, 22 MB simple stories).
-The stem cell reads about 14,700 pieces a second on four cores. One cell job trained from random weights without
-reading first (licence check): 99% on words it saw, 53% on unseen words, which is chance. Everything else in this
-section is built and tested as code and **not measured yet**: cells against today's cells, one brain against cells
-trained apart, the body against one model with the same total training (`training/reports/scratch_cells.json`,
-`training/reports/body.json`).
+**Measured so far** (`training/reports/body.json`, `training/reports/scratch_cells.json`).
+- The harvest: 48 MB (1 MB own work, 25 MB Simple English Wikipedia, 22 MB simple stories); the scouts found and let
+  in one more source by themselves on their fourth trip.
+- The stem cell: 9,300 steps, about 14,000 pieces a second on four cores, loss 2.70.
+- One cell job from random weights without reading first (licence check): 99% on words it saw, 53% on unseen words.
+- **The first body failed**: six cells that each read a sample of their territory for ten minutes with nothing to
+  stop them knew it by heart (one: loss 0.29 on its own windows, 5.33 on new text), and the body (2.498) was worse
+  than its own stem cell (2.428). The immune check retired one cell and a birth was refused.
+- **The second body beats its stem cell.** Every window placed, a cell stops reading when it stops getting better
+  on windows of its territory it never trains on, and the stem cell stays a member:
+
+  | on 300 passages nobody trained on, loss in predicting the second half | |
+  |---|---|
+  | stem cell alone | 2.428 |
+  | each of the six cells alone | 2.60 to 3.08 |
+  | the body, every cell reading, weighed by fit | **2.294** |
+  | the body, the stem cell and the two nearest cells awake, the rest asleep | **2.295** |
+
+  No cell is as good as the stem cell alone; together they are better than it; and waking two of six is as good as
+  waking all. Not held against one model given the same total training (that comparison was dropped for now).
+- Two cells then grown on the windows the body reads worst learned nothing (those windows are mostly lists and
+  noise) and were removed at birth. Growth now goes by cell division: the worst-read territory is split and a
+  daughter cell grows on the worse half. Not run yet.
+- One brain for the 23 cell jobs: 65% on the test of unseen words on average; it holds none of the jobs, today's
+  cells stay.
+
+**BitNet cells, trained here** (`scratch.py bitnet`, `scratch.py direct`). The hive's own cells can be BitNets: in
+every layer of a cell each weight is -1, 0 or +1 times one number. A BitNet cell shares the stem cell's table of
+word pieces and is stored in two bits a weight: under 0.7 MB where a cell took 10 MB, which is what lets a body
+have thousands. Two ways of training them are built:
+- the published way: ordinary weights underneath, rounded to three values at each step;
+- a direct way made for this hive (`scratch.Direct`): no ordinary weights. A weight jumps one value toward lower loss
+  with a probability in proportion to its gradient, so a weak steady pull still arrives, by chance adding up. And
+  for growing a cell from the stem cell: the weights that would help most are moved at once, the cell is measured on
+  unseen text, and the moves are kept or undone (`body._flip_read`).
+Tested as code (a packed cell answers as before; the direct way learns a toy pattern with every weight three-valued).
+**Not measured on real text yet.**
 
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
 of simple text. Planning and programming still come from the pretrained small models and their school. The open

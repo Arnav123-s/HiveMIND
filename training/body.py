@@ -21,7 +21,8 @@ What is built here, each part after how a body does it:
 - Each cell knows when it applies. Two ways are measured: "by territory" (the stem cell reads the passage, the cells
   of the nearest territories wake, the rest sleep) and "by fit" (every cell reads the first half of a passage; a cell
   that predicted it well gets more say on the second half).
-- Growth where the body fails. grow finds the windows the whole body predicts worst, and a new cell is grown on them.
+- Growth where the body fails. A cell divides: the territory the body reads worst is split in two and a daughter
+  cell grows on the worse half (also: on text far from every territory, and on the windows read worst of all).
 
 Measured on windows kept out of every cell's and the control's training in this stage (every 40th window; the stem
 cell itself read all of the harvest before, the same for everyone who starts from it): the loss in predicting the
@@ -310,12 +311,12 @@ def measure(n=300, log=print, part="report"):
 
 # ---- the organs: trainers, immunity, memory, scouts --------------------------------------------------------------
 TRAINERS = [  # the first ways of growing a cell; more are bred from the ones whose cells are kept (breed)
-    {"id": "t1", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "worst"},
-    {"id": "t2", "start": "nearest", "lr": 3e-4, "span": 1.0, "on": "worst"},
+    {"id": "t1", "start": "nearest", "lr": 5e-4, "span": 1.0, "on": "division"},
+    {"id": "t2", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "division"},
     {"id": "t3", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "uncharted"},
-    {"id": "t4", "start": "nearest", "lr": 1e-3, "span": 0.5, "on": "worst"},
+    {"id": "t4", "start": "nearest", "lr": 3e-4, "span": 1.0, "on": "worst"},
     # for BitNet cells only: no ordinary weights underneath, the three values are moved directly (_flip_read)
-    {"id": "t5", "start": "stem", "lr": 0, "span": 0.5, "on": "worst", "how": "flips"},
+    {"id": "t5", "start": "nearest", "lr": 0, "span": 0.5, "on": "division", "how": "flips"},
     {"id": "t6", "start": "nearest", "lr": 0, "span": 0.5, "on": "uncharted", "how": "flips"},
 ]
 KEEP, HARM, IDLE = 0.001, 0.01, 0.0005  # a birth must gain this much; no territory may lose this much; a cell must be worth this
@@ -346,7 +347,7 @@ def breed(ts, rnd):
     child = dict(best, births=0, kept=0, id=new_id, parent=best["id"])
     what = rnd.choice(["start", "span", "on"] + ([] if best.get("how") == "flips" else ["lr"]))
     child[what] = {"start": "nearest" if best["start"] == "stem" else "stem", "lr": best["lr"] * rnd.choice([0.5, 2.0]),
-                   "span": best["span"] * rnd.choice([0.5, 2.0]), "on": "uncharted" if best["on"] == "worst" else "worst"}[what]
+                   "span": best["span"] * rnd.choice([0.5, 2.0]), "on": rnd.choice([o for o in ("division", "uncharted", "worst") if o != best["on"]])}[what]
     return (ts + [child])[-8:]
 
 
@@ -378,6 +379,8 @@ def fit_loss(first, second, cols=None):
 def _targets(on, data, cells, stem, terr, sample, rnd):
     """Where the new cell grows. "worst": the fifth of a sample of training windows the body predicts worst.
     "uncharted": the fifth that lies farthest from every territory the body has (the scouts)."""
+    if on == "division":
+        return _division(data, cells, stem, terr, rnd)
     pick = rnd.sample([i for i in range(_windows(data)) if i % HELD], sample)
     if on == "uncharted":
         far = []
@@ -391,6 +394,38 @@ def _targets(on, data, cells, stem, terr, sample, rnd):
     return [i for _, i in scored[:len(scored) // 5]]
 
 
+def _division(data, cells, stem, terr, rnd, probe=160, most=8000):
+    """Where a cell divides. The territory the body reads worst is found (on a sample of its own windows), its
+    windows are split in two by where the stem cell places them, and the half the body reads worse is where the
+    daughter cell grows. A territory is thousands of windows of real text, so there is something to learn; the
+    windows the body reads worst of all are mostly lists and noise, and two cells grown on those learned nothing."""
+    alive = {int(n.split("_")[1]) for n in cells if n != "stem"}
+
+    def loss_on(ws):
+        first, second = _read_all(cells, data, ws)
+        return fit_loss(first, second).mean().item()
+
+    def places(ws):
+        return torch.cat([place(stem, torch.stack([_window(data, i)[:-1] for i in ws[j:j + 64]])) for j in range(0, len(ws), 64)])
+    owned = {k: v for k, v in terr["owns"].items() if k in alive and len(v) >= 2000}
+    if not owned:
+        return []
+    worst = max(owned, key=lambda k: loss_on(rnd.sample(owned[k], min(probe, len(owned[k])))))
+    ws = rnd.sample(owned[worst], min(most, len(owned[worst])))
+    z = places(ws)
+    centre = F.normalize(torch.stack([z[0], z[(z @ z[0]).argmin()]]), dim=-1)  # two windows far apart to start from
+    for _ in range(15):
+        side = (z @ centre.T).argmax(1)
+        for c in (0, 1):
+            if (side == c).any():
+                centre[c] = F.normalize(z[side == c].mean(0), dim=0)
+    halves = [[w for w, sd in zip(ws, side.tolist()) if sd == c] for c in (0, 1)]
+    halves = [h for h in halves if len(h) >= 300]
+    if len(halves) < 2:
+        return halves[0] if halves else []
+    return max(halves, key=lambda h: loss_on(rnd.sample(h, min(probe, len(h)))))
+
+
 def grow(minutes=10.0, sample=3000, log=print, trainer=None):
     """A new cell, grown by one trainer's way of doing it. Returns its number."""
     data, cells, stem = _data(), _body(), _stem().eval()
@@ -399,6 +434,8 @@ def grow(minutes=10.0, sample=3000, log=print, trainer=None):
     k = terr["centre"].shape[0]  # a new number, never one a retired cell had: its row in the map of territories
     rnd = random.Random(k)
     windows = _targets(t["on"], data, cells, stem, terr, sample, rnd)
+    if len(windows) < 50:  # nowhere to grow this way just now: the trainer's other way
+        windows = _targets("uncharted", data, cells, stem, terr, sample, rnd)
     z = torch.cat([place(stem, torch.stack([_window(data, i)[:-1] for i in windows[j:j + 64]])) for j in range(0, len(windows), 64)])
     centre = F.normalize(z.mean(0), dim=0)
     cell = _stem()
