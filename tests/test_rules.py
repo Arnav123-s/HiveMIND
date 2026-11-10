@@ -1529,3 +1529,17 @@ def test_a_result_that_says_it_found_nothing_is_not_a_pass():
     assert admits_nothing("I could not find the release date.")
     assert admits_nothing("Qwen3-1.7B has 1.2M downloads; SmolLM2 has 300k. The licence is not stated.") is None
     assert admits_nothing("Paris is the capital of France.") is None
+
+
+def test_the_item_juror_is_asked_without_the_requirements_of_the_whole_list():
+    from team.specialists.verifier import item_question as q
+    assert q("List the three newest arXiv papers about mixture of experts, with their titles and dates.") == \
+        "List the arXiv papers about mixture of experts, with their titles and dates."
+    assert q("Find the top 5 Hacker News stories about Rust and summarize what each says.") == \
+        "Find the Hacker News stories about Rust and summarize what each says."
+    assert q("Find the 3 most downloaded text-generation models under 1B parameters on Hugging Face.") == \
+        "Find the text-generation models under 1B parameters on Hugging Face."
+    same = ["List open models with an Apache 2.0 license that came out in the first half of 2025.",
+            "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or HuggingFaceTB/SmolLM2-1.7B-Instruct?",
+            "Name papers from 2024 about speculative decoding that report at least 2.5 times speed-up."]
+    assert [q(t) for t in same] == same

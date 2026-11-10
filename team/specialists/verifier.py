@@ -47,6 +47,23 @@ def without_layout(task):
     return re.sub(r"\s+([,:;.])", r"\1", LAYOUT.sub("", task or "")).strip() or task
 
 
+_N = (r"(?<![\d.,])(?:two|three|four|five|six|seven|eight|nine|ten|[2-9]|10)(?![\d.,%])\s+(?!(?:sentences?|words?|"
+      r"lines?|paragraphs?|decimals?|bullets?|points?|days?|hours?|minutes?|weeks?|months?|years?|times|percent|"
+      r"steps?|parts?|columns?|rows?|degrees?|of)\b)")
+_MOST = (r"(?:(?:most|least)\s+(?!of\b)\w+|newest|latest|oldest|earliest|best|worst|largest|biggest|smallest|cheapest|"
+         r"highest|lowest|longest|shortest|fastest|slowest)\s+")
+WHOLE_LIST = re.compile(rf"\b(?:the\s+)?(?:(?:top|first|last)\s+)?{_N}(?:{_MOST})?|\b(?:the\s+)?{_MOST}(?:{_N})?", re.I)
+
+
+def item_question(task):
+    """The task as it applies to ONE item: without how many are wanted and which rank they must have ("the three
+    newest", "top 5", "the cheapest"). Those are requirements of the list as a whole. Shown them, the 1.7B juror
+    dropped on-topic papers because their source line "does not contain the three newest"."""
+    t = without_layout(task)
+    out = re.sub(r"\s{2,}", " ", WHOLE_LIST.sub(lambda m: "the " if m.group(0).lower().startswith("the") else "", t)).strip()
+    return out if len(out.split()) >= 3 else t
+
+
 def hard_item_check(task, evidence):
     """Reason an item breaks a hard limit the task states (size, gating), or None."""
     limit = re.search(r"(under|below|less than|smaller than|at most|up to|<)\s*(\d+(?:\.\d+)?)\s*b\b", task, re.I)
@@ -304,7 +321,7 @@ def verify(step, result, board, workdir):
                 dropped.append(f"{it} ({why})")
                 continue
             from ..cells import learn
-            item_text = f"TASK: {without_layout(step['task'])}\nITEM: {it}\nSOURCE LINE: {ev}"
+            item_text = f"TASK: {item_question(step['task'])}\nITEM: {it}\nSOURCE LINE: {ev}"
             said = learn.decide("learned_item", item_text)  # a cell grown from the juror's own decisions, when sure
             if said:
                 data = {"meets": said == "yes", "why": "learned_item cell"}
