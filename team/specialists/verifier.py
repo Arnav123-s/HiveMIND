@@ -77,7 +77,27 @@ def _judge_one(member, check, work, evidence):
     if not isinstance(data, dict):
         return "FAIL", f"{member} gave no verdict: {raw[:100]}"
     v = str(data.get("verdict", "")).upper()
-    return ("PASS" if v == "PASS" else "FAIL"), str(data.get("reason", ""))[:300]
+    reason = str(data.get("reason", ""))[:300]
+    if v != "PASS" and same_number_objection(reason):
+        # "prints 117.0, not 117": the two values the juror sets against each other are the same number, so its
+        # objection is void (three 1.7B jurors failed a right answer three times on exactly this)
+        return "PASS", f"objection void, the values are equal: {reason}"[:300]
+    return ("PASS" if v == "PASS" else "FAIL"), reason
+
+
+_VS = re.compile(r"(-?\d[\d,]*(?:\.\d+)?)['\"]?(?:[^\d]{0,40}?)\bnot\b[^\d-]{0,20}(-?\d[\d,]*(?:\.\d+)?)")
+
+
+def same_number_objection(reason):
+    """True when a FAIL reason's only complaint is 'X, not Y' and X and Y are the same number."""
+    m = _VS.search(reason or "")
+    if not m:
+        return False
+    try:
+        a, b = (float(g.replace(",", "")) for g in m.groups())
+    except ValueError:
+        return False
+    return a == b
 
 
 PLACEHOLDER = {"", "unknown", "n/a", "na", "none", "null", "nan", "-", "?", "not found", "missing", "not available"}
