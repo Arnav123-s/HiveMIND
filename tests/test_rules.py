@@ -1489,3 +1489,12 @@ def test_a_juror_objection_that_sets_a_number_against_itself_is_void():
     assert not void("The output is Mar 117.0, not Mar 143.")
     assert not void("The file has 2 rows, not 3.")
     assert not void("The evidence does not show the price.")
+
+
+def test_asked_count_reads_items_not_layout():
+    from team.specialists.verifier import asked_count
+    assert asked_count("List the three newest arXiv papers about mixture of experts") == 3
+    assert asked_count("Find the 5 cheapest Mystery books") == 5
+    assert asked_count("Explain hash tables in three sentences") is None
+    assert asked_count("How many days are there in 6 weeks?") is None
+    assert asked_count("What is the capital of France?") is None
