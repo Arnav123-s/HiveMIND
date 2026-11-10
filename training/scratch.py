@@ -5,8 +5,9 @@
                                                          the next piece); a later run goes on from where it stopped
     python training/scratch.py fit <skill> [--plain]     every weight is trained on one cell job (--plain: without the
                                                          reading first: random weights straight to the job)
-    python training/scratch.py all [--plain]             every cell job that is a choice between labels; a table
-                                                         against the cells the hive has today
+    python training/scratch.py all [--plain] [--rows N]  every cell job that is a choice between labels; a table
+                                                         against the cells the hive has today (--rows: train on N
+                                                         rows from the job's own generator, not a few hundred)
 
 Today's cells are SmolLM2-135M (someone else's pretrained weights) with a small edit. This is the other way to make
 one: a model of about 2.6 million weights that starts from random numbers. What it knows about words it gets from the
@@ -181,12 +182,22 @@ def accuracy(model, tk, rows, labels):
     return ok / max(1, len(rows))
 
 
-def fit(skill, plain=False, epochs=12, batch=32, seed=0, log=print):
-    """Train every weight on one cell job. Returns the scores; the weights go to cells/scratch/<skill>.pt."""
+def fit(skill, plain=False, epochs=12, batch=32, seed=0, log=print, rows=0):
+    """Train every weight on one cell job. Returns the scores; the weights go to cells/scratch/<skill>.pt.
+    rows: train on that many rows from the job's own generator instead of the few hundred today's cells get. A model
+    that starts from nothing needs far more examples (the Tiny Recursive Model, 7M weights, was trained on about a
+    thousand variations of each example). The extra rows come from the training pool of words only; none is a dev or
+    test input. With them the dev split no longer holds back words, so it picks the epoch and says little else; the
+    test split (the other pool of words) is unchanged."""
     from team.cells import skills as S
     from training import cells as C
     labels = S.SKILLS[skill]["labels"]
     tr, dv, te = C.data(skill)
+    if rows and not S.SKILLS[skill].get("learned"):
+        held = {x for x, _ in dv} | {x for x, _ in te}
+        more = [r for sd in range(1, 4) for r in S.examples(skill, "train", rows, seed=sd)]
+        tr = list({x: (x, y) for x, y in tr + more if x not in held}.values())[:rows]
+        epochs = max(3, min(epochs, 60000 // max(1, len(tr))))  # about the same number of steps as a long small run
     tk = tokenizer()
     torch.manual_seed(seed)
     model = Tiny(len(labels))
@@ -210,7 +221,7 @@ def fit(skill, plain=False, epochs=12, batch=32, seed=0, log=print):
         if d > best[0]:
             best = (d, {k: v.clone() for k, v in model.state_dict().items()})
     model.load_state_dict(best[1])
-    out = {"skill": skill, "labels": len(labels), "train_rows": len(tr), "dev": round(best[0], 4),
+    out = {"skill": skill, "labels": len(labels), "train_rows": len(tr), "epochs": epochs, "dev": round(best[0], 4),
            "test": round(accuracy(model, tk, te, labels), 4), "test_rows": len(te), "read_first": not plain,
            "seconds": round(time.time() - t0)}
     if not plain:
@@ -220,18 +231,18 @@ def fit(skill, plain=False, epochs=12, batch=32, seed=0, log=print):
     return out
 
 
-def everything(plain=False):
+def everything(plain=False, rows=0):
     from team.cells import skills as S
     from team.cells import learn, use
     learn.register()
     wins, f = use.wins(), ROOT / "training" / "reports" / "scratch_cells.json"
     res = json.loads(f.read_text()) if f.exists() else {}
-    key = "plain" if plain else "read_first"
+    key = ("plain" if plain else "read_first") + (f"_{rows}_rows" if rows else "")
     for skill, s in S.SKILLS.items():
         if "labels" not in s or skill == "gate" or key in res.get(skill, {}):
             continue
         try:
-            r = fit(skill, plain)
+            r = fit(skill, plain, rows=rows)
         except Exception as e:  # noqa: BLE001 - a job with no rows yet is skipped and named
             print(f"[scratch] {skill}: skipped ({type(e).__name__}: {str(e)[:100]})", flush=True)
             continue
@@ -250,9 +261,9 @@ def main(argv):
     elif cmd == "pretrain":
         print(json.dumps(pretrain(opt("--minutes", 60.0))))
     elif cmd == "fit":
-        print(json.dumps(fit(argv[1], "--plain" in argv)))
+        print(json.dumps(fit(argv[1], "--plain" in argv, rows=opt("--rows", 0))))
     elif cmd == "all":
-        everything("--plain" in argv)
+        everything("--plain" in argv, rows=opt("--rows", 0))
     else:
         print(__doc__)
     return 0
