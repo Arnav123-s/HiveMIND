@@ -800,7 +800,8 @@ Earlier attempts and what each one exposed are kept in `runs/demo-attempt-*` (no
 ## Install (your laptop)
 
 One command on Linux or macOS, from the folder of the checkout (it runs the steps below and installs the always-on
-agent; written on 2026-11-10 and not yet run from start to end on a fresh device):
+agent; run from start to end on 2026-11-10 on a fresh clone of `main` on Linux, where its 165 tests passed; the
+last step, installing the always-on agent, was left out there with `HIVE_NO_SERVICE=1`; not run on macOS):
 ```bash
 sh setup.sh
 ```
