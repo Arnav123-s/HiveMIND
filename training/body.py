@@ -228,44 +228,158 @@ def measure(n=300, log=print, part="report"):
     return res
 
 
-def grow(minutes=10.0, sample=4000, log=print):
-    """A new cell on what the whole body predicts worst (by fit): the worst fifth of a sample of training windows."""
-    data, cells = _data(), _cells()
-    names = list(cells)
-    rnd = random.Random(len(names))
+# ---- the organs: trainers, immunity, memory, scouts --------------------------------------------------------------
+TRAINERS = [  # the first ways of growing a cell; more are bred from the ones whose cells are kept (breed)
+    {"id": "t1", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "worst"},
+    {"id": "t2", "start": "nearest", "lr": 3e-4, "span": 1.0, "on": "worst"},
+    {"id": "t3", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "uncharted"},
+    {"id": "t4", "start": "nearest", "lr": 1e-3, "span": 0.5, "on": "worst"},
+]
+KEEP, HARM, IDLE = 0.001, 0.01, 0.0005  # a birth must gain this much; no territory may lose this much; a cell must be worth this
+
+
+def trainers():
+    return _report().get("trainers") or [dict(t, births=0, kept=0) for t in TRAINERS]
+
+
+def pick_trainer(ts, rnd):
+    """Which trainer grows the next cell: each is drawn in proportion to how often its cells were kept (a trainer
+    with no births yet gets its chance; Thompson sampling)."""
+    return max(ts, key=lambda t: rnd.betavariate(t["kept"] + 1, t["births"] - t["kept"] + 1))
+
+
+def breed(ts, rnd):
+    """After every fourth birth: a variant of the trainer with the best record joins, with one thing changed; a
+    trainer with three births and no kept cell leaves. At most eight trainers."""
+    if sum(t["births"] for t in ts) % 4 or not ts:
+        return ts
+    new_id = f"t{max(int(t['id'][1:]) for t in ts) + 1}"  # never the number of a trainer that left
+    ts = [t for t in ts if not (t["births"] >= 3 and t["kept"] == 0)] or ts[:1]
+    best = max(ts, key=lambda t: (t["kept"] + 1) / (t["births"] + 2))
+    child = dict(best, births=0, kept=0, id=new_id, parent=best["id"])
+    what = rnd.choice(["start", "lr", "span", "on"])
+    child[what] = {"start": "nearest" if best["start"] == "stem" else "stem", "lr": best["lr"] * rnd.choice([0.5, 2.0]),
+                   "span": best["span"] * rnd.choice([0.5, 2.0]), "on": "uncharted" if best["on"] == "worst" else "worst"}[what]
+    return (ts + [child])[-8:]
+
+
+def _held(data, part, n=240):
+    held = [i for i in range(_windows(data)) if i % HELD == 0][(0 if part == "gate" else 1)::2]
+    return held[::max(1, len(held) // n)][:n]
+
+
+def _read_all(cells, data, windows):
+    """Every cell reads every passage: (first-half loss [passages, cells], second-half log-probabilities [passages,
+    cells, pieces])."""
+    names, first, second = list(cells), [], []
+    for j in range(0, len(windows), 32):
+        x = torch.stack([_window(data, i) for i in windows[j:j + 32]])
+        f, s2 = zip(*[_half_losses(cells[k], x) for k in names])
+        first.append(torch.stack(f, 1))
+        second.append(torch.stack(s2, 1))
+    return torch.cat(first), torch.cat(second)
+
+
+def fit_loss(first, second, cols=None):
+    """The body's loss on each passage, cells weighed by fit; cols: only these cells (the body without the others)."""
+    if cols is not None:
+        first, second = first[:, cols], second[:, cols]
+    w = torch.softmax(-first * (W // 2), 1)
+    return -torch.logsumexp(second + w.log()[:, :, None], 1).mean(1)
+
+
+def _targets(on, data, cells, stem, terr, sample, rnd):
+    """Where the new cell grows. "worst": the fifth of a sample of training windows the body predicts worst.
+    "uncharted": the fifth that lies farthest from every territory the body has (the scouts)."""
     pick = rnd.sample([i for i in range(_windows(data)) if i % HELD], sample)
-    h, scored = W // 2, []
-    for j in range(0, len(pick), 32):
-        x = torch.stack([_window(data, i) for i in pick[j:j + 32]])
-        first, second = zip(*[_half_losses(cells[k], x) for k in names])
-        first, second = torch.stack(first, 1), torch.stack(second, 1)
-        w = torch.softmax(-first * h, 1)
-        loss = -torch.logsumexp(second + w.log()[:, :, None], 1).mean(1)
-        scored += list(zip(loss.tolist(), pick[j:j + 32]))
-    scored.sort(reverse=True)
-    worst = [i for _, i in scored[:len(scored) // 5]]
-    k = max(int(n.split("_")[1]) for n in names) + 1
-    cell = _stem()
-    steps, loss = _read(cell, data, worst, minutes, seed=k)
-    torch.save(cell.state_dict(), HOME / f"cell_{k:02d}.pt")
+    if on == "uncharted":
+        far = []
+        for j in range(0, len(pick), 64):
+            z = place(stem, torch.stack([_window(data, i)[:-1] for i in pick[j:j + 64]]))
+            far += (z @ terr["centre"].T).max(1).values.tolist()
+        scored = sorted(zip(far, pick))  # least like any territory first
+    else:
+        first, second = _read_all(cells, data, pick)
+        scored = sorted(zip(fit_loss(first, second).tolist(), pick), reverse=True)
+    return [i for _, i in scored[:len(scored) // 5]]
+
+
+def grow(minutes=10.0, sample=3000, log=print, trainer=None):
+    """A new cell, grown by one trainer's way of doing it. Returns its number."""
+    data, cells, stem = _data(), _cells(), _stem().eval()
     terr = torch.load(HOME / "territories.pt")
-    stem = _stem().eval()
-    z = torch.cat([place(stem, torch.stack([_window(data, i)[:-1] for i in worst[j:j + 64]])) for j in range(0, len(worst), 64)])
-    terr["centre"] = torch.cat([terr["centre"], F.normalize(z.mean(0), dim=0)[None]])
-    terr["owns"][k] = worst
+    t = trainer or dict(TRAINERS[0])
+    k = terr["centre"].shape[0]  # a new number, never one a retired cell had: its row in the map of territories
+    rnd = random.Random(k)
+    windows = _targets(t["on"], data, cells, stem, terr, sample, rnd)
+    z = torch.cat([place(stem, torch.stack([_window(data, i)[:-1] for i in windows[j:j + 64]])) for j in range(0, len(windows), 64)])
+    centre = F.normalize(z.mean(0), dim=0)
+    cell = _stem()
+    if t["start"] == "nearest":  # a daughter of the cell whose territory lies nearest
+        near = int((terr["centre"] @ centre).argmax())
+        f = HOME / f"cell_{near:02d}.pt"
+        if f.exists():
+            cell.load_state_dict(torch.load(f))
+    steps, loss = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"])
+    torch.save(cell.state_dict(), HOME / f"cell_{k:02d}.pt")
+    terr["centre"] = torch.cat([terr["centre"], centre[None]])
+    terr["owns"][k] = windows
     torch.save(terr, HOME / "territories.pt")
-    log(f"[body] grown: cell {k} on the {len(worst)} windows the body predicted worst (their loss {scored[0][0]:.2f} to "
-        f"{scored[len(worst) - 1][0]:.2f}, the body's mean {sum(s for s, _ in scored) / len(scored):.2f}); {steps} steps, loss there {loss}",
-        flush=True)
+    log(f"[body] trainer {t['id']} ({t['start']}, {t['on']}, lr {t['lr']:g}, span {t['span']:g}) grew cell {k} on "
+        f"{len(windows)} windows: {steps} steps, loss there {loss}", flush=True)
     return k
+
+
+def _remove(k):
+    (HOME / f"cell_{k:02d}.pt").unlink(missing_ok=True)
+    terr = torch.load(HOME / "territories.pt")
+    terr["owns"].pop(k, None)
+    terr["retired"] = sorted(set(terr.get("retired", [])) | {k})  # its place in the map stays; nobody is there
+    torch.save(terr, HOME / "territories.pt")
+
+
+def judge(before, after, where, places):
+    """Is a new cell kept? (yes/no, why). before/after: the body's loss on each gate passage; where: the territory
+    each passage lies in. It must make the body better on the whole (KEEP), and it must not make any territory the
+    body already knew worse by more than HARM: the body stays good at what it was."""
+    gain = (before.mean() - after.mean()).item()
+    if gain <= KEEP:
+        return False, f"the body gained {gain:+.4f} (it needs more than {KEEP})"
+    for t in places:
+        m = where == t
+        if m.sum() >= 5 and (after[m].mean() - before[m].mean()).item() > HARM:
+            return False, f"territory {t} got worse by {(after[m].mean() - before[m].mean()).item():.4f}"
+    return True, f"the body gained {gain:+.4f} and no territory lost more than {HARM}"
+
+
+def immune(first, second, names, log=print):
+    """The body checks its own cells: for each, the gate loss of the body without it. The cell whose absence costs
+    least is retired if the body is not worse by IDLE without it (at most one a turn, never the last two)."""
+    if len(names) <= 2:
+        return None
+    whole = fit_loss(first, second).mean().item()
+    worth = {n: fit_loss(first, second, [c for c in range(len(names)) if c != i]).mean().item() - whole
+             for i, n in enumerate(names)}
+    idle = min(worth, key=worth.get)
+    if worth[idle] < IDLE:
+        k = int(idle.split("_")[1])
+        _remove(k)
+        log(f"[body] immune: cell {k} retired; without it the body's loss changes by {worth[idle]:+.4f}", flush=True)
+        return {"cell": k, "worth": round(worth[idle], 5)}
+    return None
 
 
 def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
     """One turn of the body's life with nobody watching (`python -m team body`; the always-on agent runs it when
     the device is idle). Whatever is missing is made first: the harvest, the vocabulary, the stem cell, the first
-    cells. After that every turn grows one cell on what the body predicts worst, and the cell is kept only if the
-    body then predicts the gate passages better than before; otherwise it is removed at birth. Nothing is kept that
-    did not measure better on text it never trained on. Returns one line saying what the turn did."""
+    cells. After that, every turn:
+    - immunity: every cell is tried by leaving it out; one that the body does not need is retired;
+    - a trainer is chosen by its record, and grows one cell: where the body predicts worst, or where the text lies
+      far from every territory (the scouts);
+    - memory: the cell is kept only if the body then predicts the gate passages better AND no territory it already
+      knew got worse; otherwise it is removed at birth. Older cells are never retrained.
+    - the trainers' records are updated, and now and then a variant of the best trainer is bred.
+    Nothing is kept that did not measure better on text it never trained on. Returns one line on what the turn did."""
     from team import harvest
     if not harvest.files():
         harvest.main(["--no-trickle"])
@@ -276,26 +390,44 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
         return "the stem cell read the harvest"
     if not (HOME / "territories.pt").exists():
         territories(cells, log=log)
-    if len(list(HOME.glob("cell_*.pt"))) < cells:
+    if not list(HOME.glob("cell_*.pt")):
         _report(minutes_per_cell=minutes)
         differentiate(minutes, log=log)
         measure(log=log)
         return f"the first {cells} cells grew from the stem cell"
-    before = measure(log=lambda *a, **k: None, part="gate")[FIT]
-    k = grow(minutes, log=log)
-    after = measure(log=lambda *a, **k: None, part="gate")[FIT]
+    data, stem = _data(), _stem().eval()
+    gate = _held(data, "gate")
+    body = _cells()
+    first, second = _read_all(body, data, gate)
+    rep = _report()
+    retired = immune(first, second, list(body), log)
+    if retired:
+        _report(retired=rep.get("retired", []) + [dict(retired, when=time.strftime("%Y-%m-%d %H:%M"))])
+        body = _cells()
+        first, second = _read_all(body, data, gate)
+    before = fit_loss(first, second)
+    ts = trainers()
+    rnd = random.Random(sum(t["births"] for t in ts))
+    t = pick_trainer(ts, rnd)
+    k = grow(minutes, log=log, trainer=t)
+    body = _cells()
+    first, second = _read_all(body, data, gate)
+    after = fit_loss(first, second)
+    terr = torch.load(HOME / "territories.pt")
+    where = torch.cat([(place(stem, torch.stack([_window(data, i)[:-1] for i in gate[j:j + 64]])) @ terr["centre"][:-1].T).argmax(1)
+                       for j in range(0, len(gate), 64)])
+    kept, why = judge(before, after, where, sorted(set(where.tolist())))
+    if not kept:
+        _remove(k)
+    t["births"] += 1
+    t["kept"] += int(kept)
     born = _report().get("births", [])
-    kept = after < before - 0.001
-    if not kept:  # removed at birth: the body is as it was
-        (HOME / f"cell_{k:02d}.pt").unlink()
-        terr = torch.load(HOME / "territories.pt")
-        terr["centre"], _ = terr["centre"][:-1], terr["owns"].pop(k, None)
-        torch.save(terr, HOME / "territories.pt")
-    born.append({"cell": k, "when": time.strftime("%Y-%m-%d %H:%M"), "gate_before": before, "gate_after": after, "kept": kept})
-    _report(births=born)
+    born.append({"cell": k, "when": time.strftime("%Y-%m-%d %H:%M"), "trainer": t["id"], "on": t["on"], "kept": kept, "why": why,
+                 "gate_before": round(before.mean().item(), 4), "gate_after": round(after.mean().item(), 4)})
+    _report(births=born, trainers=breed(ts, rnd))
     measure(log=log)
-    line = (f"cell {k} was grown on what the body predicted worst and {'kept' if kept else 'removed at birth'}: "
-            f"the body's loss on the gate passages went from {before:.4f} to {after:.4f}")
+    line = (f"trainer {t['id']} grew cell {k} ({t['on']}); {'kept' if kept else 'removed at birth'}: {why}"
+            + (f"; cell {retired['cell']} was retired by the immune check" if retired else ""))
     log("[body] " + line, flush=True)
     return line
 
