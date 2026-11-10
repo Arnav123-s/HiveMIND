@@ -1,0 +1,158 @@
+[
+ {
+  "id": "chart",
+  "ok": true,
+  "why": "chart: yes, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 1861,
+  "note": "",
+  "calls": 33,
+  "model_seconds": 1826.8,
+  "by_member": {
+   "coordinator (brain4b)": [
+    2,
+    109.7
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    10.7
+   ],
+   "browser (fast+browser)": [
+    4,
+    89.3
+   ],
+   "condenser (fast)": [
+    3,
+    246.2
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    15.7
+   ],
+   "juror_brain (brain4b)": [
+    2,
+    21.4
+   ],
+   "juror_fast (fast)": [
+    2,
+    17.4
+   ],
+   "coder (coder7b)": [
+    7,
+    820.9
+   ],
+   "code_reviewer (coder7b)": [
+    4,
+    100.4
+   ],
+   "writer (fast+writer)": [
+    2,
+    43.2
+   ],
+   "critic (brain4b)": [
+    3,
+    160.6
+   ],
+   "editor (brain4b)": [
+    1,
+    191.1
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "browser",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ },
+ {
+  "id": "csv",
+  "ok": true,
+  "why": "CSV has 3/3 of the cheapest prices ['10.69', '11.84', '12.29']",
+  "seconds": 499,
+  "note": "",
+  "calls": 12,
+  "model_seconds": 486.3,
+  "by_member": {
+   "coder (coder7b)": [
+    3,
+    351.7
+   ],
+   "juror_fast (fast)": [
+    2,
+    15.8
+   ],
+   "code_reviewer (coder7b)": [
+    1,
+    13.7
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    11.4
+   ],
+   "juror_brain (brain4b)": [
+    1,
+    13.4
+   ],
+   "writer (fast+writer)": [
+    2,
+    33.0
+   ],
+   "critic (brain4b)": [
+    2,
+    47.3
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "scrape to a file"
+ },
+ {
+  "id": "fib",
+  "ok": true,
+  "why": "3 sentences, 21 lines",
+  "seconds": 156,
+  "note": "",
+  "calls": 7,
+  "model_seconds": 147.9,
+  "by_member": {
+   "coder (coder7b)": [
+    1,
+    28.5
+   ],
+   "code_reviewer (coder7b)": [
+    1,
+    7.6
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    11.9
+   ],
+   "juror_brain (brain4b)": [
+    1,
+    11.1
+   ],
+   "juror_fast (fast)": [
+    1,
+    10.3
+   ],
+   "writer (fast+writer)": [
+    1,
+    50.8
+   ],
+   "critic (brain4b)": [
+    1,
+    27.7
+   ]
+  },
+  "cell_calls": 4,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "write and run code"
+ }
+]
