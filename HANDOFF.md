@@ -13,6 +13,19 @@ by older agents may be outdated; what he described is what counts. Kept from the
 the guard (nothing that spends, deletes, sends as him or logs in unless he ordered it), credentials stay local, no
 benchmaxing, held-out sets run once, no model names in commits.
 
+**Added by him later the same day (2026-11-10):**
+- The small hive may be losing because its members are all the same model. (Measured so far: the planner's two
+  specialists got the same 9 exam lessons right. Being tested: `training/diverse.py`.)
+- A weight edit may do nothing where the model has no capability; train specialists, then edit. (Measured: the edit
+  taught the planner 24 of 24 short plans and 3 of 22 long ones.)
+- The hive must not depend on the agent: it must multiply and gain models and capabilities on its own.
+- He would rather the hive train its own specialists (training, editing, fine-tuning) than recruit. Told him: that is
+  the main path; a model that plans or codes cannot be trained from nothing on four CPU cores, so recruiting stays
+  only as the way the hive gets a new starting model when the ones it has cannot learn a job.
+- The machine is the agent's: disk space may be freed. (Freed: an unused 2.5B model file and the package download
+  cache. The models the hive uses were kept.) "Don't delete caches" below no longer holds for this machine.
+- All specialists are trained on the CPU already (128 lessons: 25 minutes); he asked for exactly that.
+
 **Built on this branch (143 tests):**
 - `python -m team school` (`team/school.py`, README "School"): a small model learns a bigger member's job from that
   member's own work, takes an exam on lessons it never trained on, and goes back for new lessons; gaps get new
@@ -55,6 +68,11 @@ benchmaxing, held-out sets run once, no model names in commits.
 3. Small-only arxiv and csv still fail. The item juror is now asked without the whole list's requirements
    (`verifier.item_question`); arxiv's facts still do not survive the checks. csv: see 2.
 4. More roles in school: researcher (extract), critic, plan_reviewer, each with its own key.
+   Built, no class held: `coder_fix` (fixing a program from the hive's own feedback; lessons from the students' real
+   mistakes, `school.teach_fixes`; several hours of the 7B for a first class).
+4b. Recruits (`python -m team recruit`, `team/recruit.py`, `cells/recruits.json`): the hive finds, checks, downloads
+   and tries small models of other families on the roles' exams, enrols and teaches by measurement. First tryouts
+   are in progress; a tryout where every answer is unusable is a prompt problem to look at, not a score.
 5. If routing by shared words sends tasks to the wrong narrow specialist once there are several, train a router cell.
 6. Older: more logged work for the item juror's site (about 60 decisions, needs about 200); near-miss numbers for
    the spawned cell; held-out set 4 (run once, on frozen code).
@@ -90,7 +108,8 @@ Key files:
 - No benchmaxing:
   - fixes must be general;
   - held-out sets are run once, on frozen code, and reported as measured.
-- CPU only, 10 GB budget, no spending. Don't delete caches or his files.
+- CPU only, 10 GB budget, no spending. Don't delete his files. (Caches and disk on this cloud machine: his word on
+  2026-11-10 is that the agent may free space as it sees fit.)
 - The final report uses the headings **Blocked on me / Changed / Found**, and marks anything unconfirmed.
 - Merging any PR needs **his explicit yes for that PR**. PR #5 and PR #6 had it and are merged; the next one needs it again.
 - No model identifiers in commits or PRs. Commits end with the Co-Authored-By and Claude-Session lines.
