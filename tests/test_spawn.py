@@ -405,3 +405,10 @@ def test_one_brain_holds_every_job_and_a_consulting_head_sees_the_others():
     talk = scratch.Brain(jobs, talk=True).eval()
     final, own = talk("b", ids, last)
     assert final.shape == (1, 3) and talk.second["b"].in_features == scratch.DIM + 5
+
+
+def test_the_from_scratch_trainer_knows_its_commands():
+    from training import scratch
+    for word in ("tokenizer", "pretrain", "pairs", "fit", "together", "all"):
+        assert f"scratch.py {word}" in scratch.__doc__
+    assert callable(scratch.pairs) and callable(scratch.together)
