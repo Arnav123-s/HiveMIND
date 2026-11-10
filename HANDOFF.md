@@ -48,9 +48,10 @@ benchmaxing, held-out sets run once, no model names in commits.
 **Open, in order:**
 1. Cleaner lessons for long plans: teach the plan after the reviewer and the code checks (`coordinator.reviewed_plan`)
    or plans from runs that passed, instead of the 4B's first plan. Then re-examine.
-2. The coder's first class (`python -m team school coder`; about 2 minutes a lesson with the 7B, 160 lessons).
+2. The coder's first class is held: 160 lessons, the taught 1.5B prints what the 7B's program prints on 81% of 32
+   unseen lessons (untouched 59%); not graduated, holds the job in the small-only hive (`coder15+coder_school`).
    Its lessons are pure computations; a second kind is needed for what fails without the 7B: changing a working
-   program on feedback without breaking it (csv), and reading a number from a fetched page (chart).
+   program on feedback without breaking it (csv), and reading a number from a fetched page.
 3. Small-only arxiv and csv still fail. The item juror is now asked without the whole list's requirements
    (`verifier.item_question`); arxiv's facts still do not survive the checks. csv: see 2.
 4. More roles in school: researcher (extract), critic, plan_reviewer, each with its own key.

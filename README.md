@@ -678,8 +678,22 @@ In the small-only hive the taught planner holds the job. In one clean run of all
 above 1.7B (`small7`) every plan it made was the right one; the run scored 11 of 16, and the five failures were all
 after planning (`training/reports/hive_bench/small_only_notes.md`).
 
-**The coder (Qwen2.5-Coder-7B teaching Qwen2.5-Coder-1.5B)** is the second role: its lessons are programs that ran,
-and the exam asks whether the student's program prints what the teacher's prints. No class has been held yet.
+**Measured: the coder (Qwen2.5-Coder-7B teaching Qwen2.5-Coder-1.5B), one visit, 160 lessons.** Its lessons are
+programs that ran, and the exam asks whether the student's program prints what the teacher's prints.
+
+| | untouched 1.5B | taught 1.5B |
+|---|---|---|
+| prints the same as the 7B's program on 32 unseen lessons | 59% (19) | 81% (26) |
+
+What this shows, and what it does not:
+- The taught student is 22 points ahead of the untouched one after one class of 25 minutes' training. It has not
+  graduated (85%); in the small-only hive it holds the coder's job, as the rule above says.
+- Of its 6 misses, one is not a miss (166.3256237947956 against 166.32562379479558: the same sum; the key now compares
+  long decimals to 10 significant digits, for later exams; this exam stays as scored), one is a lesson where the
+  teacher itself was wrong (a future value of 1.6 million from 10000 and 200 a month), and four are real (vowels
+  counted wrong, a grouping, an off-by-one, a doubling time).
+- The lessons are pure computations. They do not teach what the 1.5B fails at inside the hive: changing a working
+  program on feedback without breaking it, and reading values from a fetched page. That needs a second kind of lesson.
 
 ## The demo
 
