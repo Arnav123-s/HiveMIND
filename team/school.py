@@ -248,5 +248,8 @@ def main(argv):
     if not role:
         print("every role in school has graduated")
         return 0
-    attend(role, n=opt("--lessons", 160), train_it="--no-train" not in argv)
+    # a role that did not graduate goes back with more lessons, not the same ones again
+    tried = record().get(role, {})
+    more = min(640, tried.get("lessons", 0) + 80) if "taught_agrees" in tried else 160
+    attend(role, n=opt("--lessons", more), train_it="--no-train" not in argv)
     return 0

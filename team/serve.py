@@ -107,6 +107,11 @@ def background(last, dream_every_hours):
         if role:
             log(f"idle and healthy: {role} failed most in recent work; evolving its instructions (gated)")
             subprocess.run([sys.executable, "-m", "team", "evolve", role, "--variants", "2"], cwd=config.ROOT)
+    elif time.time() - last.get("school", 0) > dream_every_hours * 3600:
+        # a small model learns a bigger member's job from that member, and takes it after an exam (team/school.py)
+        log("idle and healthy: school (a small model learns a bigger member's job; it takes the job only after its exam)")
+        subprocess.run([sys.executable, "-m", "team", "school"], cwd=config.ROOT)
+        last["school"] = time.time()
     elif time.time() - last.get("life", 0) > dream_every_hours * 3600:
         log("idle and healthy: a turn of the hive's life (new jobs noticed in its own calls, cells grown, checked, retired)")
         subprocess.run([sys.executable, "-m", "team", "life"], cwd=config.ROOT)

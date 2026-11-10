@@ -78,6 +78,16 @@ def chart():
             out.append(f"    cell  {name:<22} {part.split(':', 1)[-1].strip()[:70]}")
             out.append(f"          {'':<22} {line}")
         out.append("")
+    from . import school
+    rec = school.record()
+    if rec:
+        out.append("SCHOOL: small models learning a bigger member's job from that member (python -m team school)")
+        for role, v in rec.items():
+            line = (f"untouched {v['untouched_agrees']:.0%}, taught {v['taught_agrees']:.0%} agreement with the teacher on "
+                    f"{v['test_lessons']} unseen lessons" if "taught_agrees" in v else v.get("why", ""))
+            out.append(f"  {role:<14} {MODELS.get(v['student'], v['student'])} learning from {MODELS.get(v['teacher'], v['teacher'])}: "
+                       f"{'GRADUATED' if v.get('graduated') else 'in school'}; {v['lessons']} lessons; {line}")
+        out.append("")
     rest = [n for n in cells if n not in placed]
     if rest:
         out.append("UNPLACED CELLS: " + ", ".join(sorted(rest)))
