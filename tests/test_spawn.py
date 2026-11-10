@@ -541,3 +541,41 @@ def test_the_corpus_only_grows_at_its_end_so_no_window_moves(tmp_path, monkeypat
     grown = np.array(T.corpus(tk))
     assert len(grown) > len(first) and (grown[:len(first)] == first).all()
     assert len(np.array(T.corpus(tk))) == len(grown)                                     # nothing new: nothing added
+
+
+def test_a_bitnet_layer_works_in_three_values_and_learns_on_ordinary_weights():
+    import torch
+    from training import scratch as T
+    torch.manual_seed(0)
+    layer = T.BitLinear(8, 4)
+    x = torch.randn(3, 8)
+    scale = layer.weight.abs().mean()
+    three = (layer.weight / scale).round().clamp(-1, 1) * scale
+    top = x.abs().amax(-1, keepdim=True)
+    x8 = (x * 127 / top).round().clamp(-128, 127) * top / 127
+    assert torch.allclose(layer(x), torch.nn.functional.linear(x8, three, layer.bias), atol=1e-6)
+    layer(x).sum().backward()
+    assert layer.weight.grad is not None and layer.weight.grad.abs().sum() > 0          # the ordinary weights learn
+
+
+def test_a_packed_bitnet_cell_answers_exactly_as_before_and_is_small(tmp_path, monkeypatch):
+    import torch
+    from training import scratch as T
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    torch.manual_seed(0)
+    stem = T.Tiny(bit=True)
+    torch.save(stem.state_dict(), tmp_path / "base.pt")
+    cell = T.Tiny(bit=True)
+    cell.load_state_dict(stem.state_dict())
+    with torch.no_grad():
+        for p in cell.blocks.parameters():
+            p.add_(torch.randn_like(p) * 0.01)                                          # it has grown away from the stem cell
+    T.save_cell(cell, tmp_path / "cell_00.pt")
+    back = T.load_cell(tmp_path / "cell_00.pt")
+    ids = torch.randint(2, T.VOCAB, (2, 40))
+    with torch.no_grad():
+        assert torch.allclose(cell.eval().next_piece(ids), back.eval().next_piece(ids), atol=2e-2)
+    assert (tmp_path / "cell_00.pt").stat().st_size < 700_000 and back.bit
+    full = T.Tiny(bit=False)
+    T.save_cell(full, tmp_path / "cell_01.pt")
+    assert not T.load_cell(tmp_path / "cell_01.pt").bit and (tmp_path / "cell_01.pt").stat().st_size > 5_000_000

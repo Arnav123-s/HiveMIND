@@ -66,12 +66,7 @@ def _stem():
 
 
 def _cells():
-    out = {}
-    for f in sorted(HOME.glob("cell_*.pt")):
-        m = T.Tiny()
-        m.load_state_dict(torch.load(f))
-        out[f.stem] = m.eval()
-    return out
+    return {f.stem: T.load_cell(f).eval() for f in sorted(HOME.glob("cell_*.pt"))}
 
 
 def _body():
@@ -136,15 +131,18 @@ def territories(cells=6, sample=12000, seed=0, log=print):
     return owns
 
 
-def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32):
+def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32, share_table=True):
     """The model goes on reading these windows (next-piece prediction), for at most so many minutes. A tenth of the
     windows is its own check: it never trains on them. Every 100 steps it is measured on them; the best state is
     kept, and the reading stops when three checks in a row brought nothing. (Without the check a cell read its
     territory until it knew it by heart: loss 0.29 there, 5.3 on text it had not seen.)
     Returns (steps taken, its loss on the check windows at its best, the same before it read anything)."""
+    if getattr(model, "bit", False) and share_table:
+        for p in (model.tok.weight, model.pos.weight):  # a BitNet cell keeps the stem cell's table of word pieces
+            p.requires_grad_(False)
     check = windows[::10][:96] or windows[:8]
     seen = [w for i, w in enumerate(windows) if i % 10] or windows
-    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01, betas=(0.9, 0.95))
+    opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=lr, weight_decay=0.01, betas=(0.9, 0.95))
     rnd, t0, steps = random.Random(seed), time.time(), 0
 
     def checked():
@@ -185,7 +183,7 @@ def differentiate(minutes=10.0, log=print):
             continue
         cell = _stem()
         steps, loss, was = _read(cell, data, windows, minutes, seed=int(k))
-        torch.save(cell.state_dict(), f)
+        T.save_cell(cell, f)
         log(f"[body] cell {k}: {steps} steps on its {len(windows)} windows; on windows of its territory it never "
             f"trained on, loss {was} -> {loss}", flush=True)
     return len(owns)
@@ -340,9 +338,9 @@ def grow(minutes=10.0, sample=3000, log=print, trainer=None):
         near = int((terr["centre"] @ centre).argmax())
         f = HOME / f"cell_{near:02d}.pt"
         if f.exists():
-            cell.load_state_dict(torch.load(f))
+            cell = T.load_cell(f)
     steps, loss, was = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"])
-    torch.save(cell.state_dict(), HOME / f"cell_{k:02d}.pt")
+    T.save_cell(cell, HOME / f"cell_{k:02d}.pt")
     terr["centre"] = torch.cat([terr["centre"], centre[None]])
     terr["owns"][k] = windows
     torch.save(terr, HOME / "territories.pt")
