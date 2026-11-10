@@ -355,3 +355,14 @@ def test_a_voice_of_a_role_can_be_another_model_or_an_edit_of_one(monkeypatch):
     assert school._spec("coder", "coder_school") == ("coder15+coder_school", True)
     assert school._spec("coder", "yicoder15bchat") == ("yicoder15bchat", False)
     assert school._spec("coder", "yicoder15bchat+coder_school_yicoder15bchat") == ("yicoder15bchat+coder_school_yicoder15bchat", True)
+
+
+def test_an_import_a_program_never_uses_does_not_keep_it_out_of_school():
+    from team import school
+    code = "import requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\nimport math\n\nprint(math.sqrt(16))\n"
+    out = school._without_idle_imports(code)
+    assert "requests" not in out and "bs4" not in out and "pandas" not in out and "import math" in out
+    assert school._program_key(f"```python\n{code}```", "t") == "4.0"
+    used = "import requests\nprint(requests.get('https://example.com').status_code)\n"
+    assert school._without_idle_imports(used) == used and school._program_key(f"```python\n{used}```", "t") is None
+    assert school._program_key("```python\nimport os\nprint(os.getcwd())\n```", "t") is None

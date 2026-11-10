@@ -91,16 +91,8 @@ _NOT_A_LESSON = re.compile(r"\b(?:import|from)\s+(?:os|subprocess|shutil|socket|
 
 def _program_key(output, task):
     """What a program decides: what it prints when it is run (None if it does not run, or prints nothing)."""
-    import tempfile
-
-    from .specialists import coder
-    from .tools.sandbox import run_python
-    code = coder.extract_code(output or "")
-    if not code or _NOT_A_LESSON.search(code):
-        return None
-    with tempfile.TemporaryDirectory() as d:
-        res = run_python(code, d, timeout=20)
-    return _printed(res)
+    code, res = _ran(output)
+    return _printed(res) if code else None
 
 
 def _printed(res):
@@ -114,11 +106,26 @@ def _ran(output):
 
     from .specialists import coder
     from .tools.sandbox import run_python
-    code = coder.extract_code(output or "")
+    code = _without_idle_imports(coder.extract_code(output or ""))
     if not code or _NOT_A_LESSON.search(code):
         return None, None
     with tempfile.TemporaryDirectory() as d:
         return code, run_python(code, d, timeout=20)
+
+
+_IMPORT = re.compile(r"^[ \t]*(?:import\s+([\w.]+)(?:\s+as\s+(\w+))?|from\s+([\w.]+)\s+import\s+([\w, \t]+?))[ \t]*(?:#.*)?$", re.M)
+
+
+def _without_idle_imports(code):
+    """The program without the imports it never uses. A recruit began every program with "import requests, bs4,
+    pandas, matplotlib" (the libraries its instruction names) and then only did arithmetic: all 32 of its exam
+    programs were refused as not for school, which measured the habit and not the programs. An import that is used
+    stays, and the program is refused as before if it is one of those a lesson may not use."""
+    def idle(m):
+        names = [m.group(2) or m.group(1).split(".")[0]] if m.group(1) else [n.split(" as ")[-1].strip() for n in m.group(4).split(",")]
+        rest = code[:m.start()] + code[m.end():]
+        return not any(re.search(rf"\b{re.escape(n)}\b", rest) for n in names if n)
+    return _IMPORT.sub(lambda m: "" if idle(m) else m.group(0), code or "")
 
 
 def _same_floats(text):
