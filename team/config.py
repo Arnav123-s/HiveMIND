@@ -35,9 +35,16 @@ GGUF_MODELS = {
     "brain4b": ("Qwen/Qwen3-4B-GGUF", "Qwen3-4B-Q4_K_M.gguf", "Qwen/Qwen3-1.7B"),
     "brain8b": ("Qwen/Qwen3-8B-GGUF", "Qwen3-8B-Q4_K_M.gguf", "Qwen/Qwen3-1.7B"),
     "fast": ("Qwen/Qwen3-1.7B-GGUF", "Qwen3-1.7B-Q8_0.gguf", "Qwen/Qwen3-1.7B"),
+    # the small coding specialist: with AGENT_TEAM_SMALL=1 it writes and reviews the programs
+    "coder15": ("Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF", "qwen2.5-coder-1.5b-instruct-q8_0.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
     "coder7b": ("Qwen/Qwen2.5-Coder-7B-Instruct-GGUF", "qwen2.5-coder-7b-instruct-q4_k_m.gguf", "Qwen/Qwen2.5-Coder-1.5B-Instruct"),
 }
-BRAIN = os.environ.get("AGENT_TEAM_BRAIN", "brain4b")
+# AGENT_TEAM_SMALL=1: the hive with no model above 1.7B. Every job of the 4B goes to Qwen3-1.7B, programs to the
+# 1.5B coding specialist, and the researcher reads its sources in small parts (team/specialists/reader.py).
+# Measured against the normal hive in training/reports/hive_bench/small_only_notes.md.
+SMALL = os.environ.get("AGENT_TEAM_SMALL", "") == "1"
+BRAIN = os.environ.get("AGENT_TEAM_BRAIN", "fast" if SMALL else "brain4b")
+_CODER = os.environ.get("AGENT_TEAM_GGUF_CODER", "coder15" if SMALL else "coder7b")
 # Chosen by measurement (training/reports/SUMMARY.md): each role gets the model that scored best on its
 # held-out evals; ties go to the smaller, faster model. "fast+X" = Qwen3-1.7B with specialist X's own weight edit.
 GGUF_ROSTER = {
@@ -46,7 +53,7 @@ GGUF_ROSTER = {
     "verifier": "fast+verifier",    # 1.7B + edit: 0.89 = 4B, 2.7x faster
     "writer": "fast+writer",        # 1.7B + edit: 1.00 = 4B, 2.2x faster
     "browser": "fast+browser",      # 1.7B + edit: 0.79 vs 0.43 (4B)
-    "coder": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),  # 7B: 0.88 vs 0.50 (1.5B)
+    "coder": _CODER,  # 7B: 0.88 vs 0.50 (1.5B)
     "calculator": "fast",           # writes a few lines of Python; Python does the arithmetic
     # quality-control specialists
     "plan_reviewer": BRAIN,         # second look at every plan before work starts
@@ -56,7 +63,7 @@ GGUF_ROSTER = {
     "juror_brain": BRAIN,           # jury: step verdicts are a vote of three
     "juror_fast": "fast",
     "order_reader": "fast+order_reader",
-    "code_reviewer": os.environ.get("AGENT_TEAM_GGUF_CODER", "coder7b"),  # reads the program against the task  # second, independent reading of what Arnav ordered (with the regex)
+    "code_reviewer": _CODER,  # reads the program against the task  # second, independent reading of what Arnav ordered (with the regex)
     # evolution-harness specialists
     "examiner": BRAIN, "prompt_smith": BRAIN, "lesson_writer": "fast",
 }
@@ -64,6 +71,16 @@ GGUF_ROSTER = {
 # professional translations, against 48.4 for a translation edit of the 1.7B and 46.7 for the writer
 TRANSLATE_ROLE = os.environ.get("AGENT_TEAM_TRANSLATE_ROLE", "editor")
 JURY = [s.strip() for s in os.environ.get("AGENT_TEAM_JURY", "verifier,juror_brain,juror_fast").split(",") if s.strip()]
+if SMALL and os.environ.get("AGENT_TEAM_SCHOOL", "1") != "0":
+    # roles whose taught small specialist holds the job here: it passed its exam against the bigger member, or it is
+    # ahead of the untouched student that would otherwise do the job in this hive (team/school.py, holds)
+    try:
+        import json as _json
+        for _r, _v in _json.loads((ROOT / "cells" / "school.json").read_text()).items():
+            if (_v.get("graduated") or _v.get("ahead")) and _v.get("runs_on"):
+                GGUF_ROSTER[_r] = _v["runs_on"]
+    except (OSError, ValueError):
+        pass
 if os.environ.get("AGENT_TEAM_ROSTER"):  # e.g. '{"browser": "fast+browser"}' = 1.7B + the browser's own weight edit
     import json as _json
     GGUF_ROSTER.update(_json.loads(os.environ["AGENT_TEAM_ROSTER"]))

@@ -558,7 +558,7 @@ def test_the_coder_stops_when_its_fix_changes_nothing(tmp_path, monkeypatch):
     from team.specialists import coder
     calls = []
     monkeypatch.setattr(coder, "preview", lambda task, wd: "")
-    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: calls.append(1) or "```python\nimport requests\n```")
+    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: calls.append(k.get("temperature", 0)) or "```python\nimport requests\n```")
     monkeypatch.setattr(coder, "run_python", lambda code, wd, name: {
         "returncode": 1, "stdout": "", "stderr": "Traceback ...\nConnectionError: Max retries exceeded (host unreachable)",
         "seconds": 0.2, "path": str(wd / name)})
@@ -567,7 +567,8 @@ def test_the_coder_stops_when_its_fix_changes_nothing(tmp_path, monkeypatch):
         def check_code(self, who, code):
             return True
     out = coder.run("Scrape the site", "", Board(tmp_path, echo=False), "s1", G(), tmp_path / "work")
-    assert len(calls) == 2 and out["returncode"] == 1 and "ConnectionError" in out["stderr"]
+    # the unchanged program is asked for once more with sampling, then the same error stops the loop
+    assert calls == [0, 0, 0.7] and out["returncode"] == 1 and "ConnectionError" in out["stderr"]
 
 
 def test_the_report_keeps_his_instructions_and_the_calendar_s_weekdays():
@@ -1479,3 +1480,114 @@ def test_a_model_thinking_aloud_is_not_in_the_report():
     assert "Wait" not in out and "Correct Calculation" not in out and "**Calculation:**" not in out
     assert out.startswith("45") and "| 15 January 2026 | Thursday |" in out and "## Your instructions" in out
     assert drop_self_talk("**Answer:** 45 days.") == "**Answer:** 45 days."
+
+
+def test_a_juror_objection_that_sets_a_number_against_itself_is_void():
+    from team.specialists.verifier import same_number_objection as void
+    assert void("The program prints 117.0, not 117.")
+    assert void("The program prints 'Mar' and '117.0', not 'Mar' and '117'.")
+    assert void("The output is 1,200, not 1200")
+    assert not void("The output is Mar 117.0, not Mar 143.")
+    assert not void("The file has 2 rows, not 3.")
+    assert not void("The evidence does not show the price.")
+
+
+def test_asked_count_reads_items_not_layout():
+    from team.specialists.verifier import asked_count
+    assert asked_count("List the three newest arXiv papers about mixture of experts") == 3
+    assert asked_count("Find the 5 cheapest Mystery books") == 5
+    assert asked_count("Explain hash tables in three sentences") is None
+    assert asked_count("How many days are there in 6 weeks?") is None
+    assert asked_count("What is the capital of France?") is None
+
+
+def test_a_sort_the_wrong_way_round_is_named(monkeypatch):
+    """The 1.5B coder sorted the "cheapest" books with reverse=True and every small checker passed it."""
+    from team.specialists import coder
+    monkeypatch.setattr(coder.llm, "chat_json", lambda *a, **k: ({"first_item": "largest"}, ""))
+    code = "books = sorted(books, key=price, reverse=True)\nprint(books[:3])"
+    assert "smallest value must come first" in coder.order_problem("Find the three cheapest Mystery books", code)
+    assert coder.order_problem("Save the most expensive three books", code) is None
+    assert coder.order_problem("Write fib(n) and print fib(30)", code) is None
+    assert coder.order_problem("Find the three cheapest books", code.replace("[:3]", "[-3:]")) is None
+
+
+def test_a_listing_with_a_next_page_must_be_read_to_the_end(monkeypatch):
+    from team.specialists import coder
+    from team.tools import web
+    monkeypatch.setattr(web, "get", lambda u: '<ul><li class="next"><a href="page-2.html">next</a></li></ul>')
+    task = "Find the three cheapest books on https://example.com/list/index.html"
+    assert "first page" in coder.unread_pages(task, "requests.get(url)")
+    assert coder.unread_pages(task, "while soup.select_one('li.next a'): ...") is None
+    monkeypatch.setattr(web, "get", lambda u: "<p>one page</p>")
+    assert coder.unread_pages(task, "requests.get(url)") is None
+
+
+def test_a_result_that_says_it_found_nothing_is_not_a_pass():
+    from team.specialists.verifier import admits_nothing
+    assert admits_nothing("The number of downloads for the two models is not provided in the facts. The facts only give sizes.")
+    assert admits_nothing("I could not find the release date.")
+    assert admits_nothing("Qwen3-1.7B has 1.2M downloads; SmolLM2 has 300k. The licence is not stated.") is None
+    assert admits_nothing("Paris is the capital of France.") is None
+
+
+def test_the_item_juror_is_asked_without_the_requirements_of_the_whole_list():
+    from team.specialists.verifier import item_question as q
+    assert q("List the three newest arXiv papers about mixture of experts, with their titles and dates.") == \
+        "List the arXiv papers about mixture of experts, with their titles and dates."
+    assert q("Find the top 5 Hacker News stories about Rust and summarize what each says.") == \
+        "Find the Hacker News stories about Rust and summarize what each says."
+    assert q("Find the 3 most downloaded text-generation models under 1B parameters on Hugging Face.") == \
+        "Find the text-generation models under 1B parameters on Hugging Face."
+    same = ["List open models with an Apache 2.0 license that came out in the first half of 2025.",
+            "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or HuggingFaceTB/SmolLM2-1.7B-Instruct?",
+            "Name papers from 2024 about speculative decoding that report at least 2.5 times speed-up."]
+    assert [q(t) for t in same] == same
+
+
+def test_a_number_set_against_itself_in_another_unit_is_no_objection():
+    from team.specialists.verifier import same_number_objection as same
+    assert same("The parameter count is 0.135B, not 135M.")
+    assert same("It says 1.5 million, not 1,500,000")
+    assert not same("The evidence shows 0.135B, not 1.35B.")
+    assert not same("It printed 135, not 135M.")
+    assert not same("It printed 135, not 136.")
+
+
+def test_a_research_result_missing_one_ordered_part_is_asked_for_it_once():
+    from team.specialists.verifier import GAP, admits_a_gap, admits_nothing
+    s = ("The model has 0.135B parameters. The licence is not specified in the provided facts. The items list is empty.")
+    assert admits_nothing(s) is None and admits_a_gap(s).startswith("The licence is not specified")
+    assert admits_a_gap("The model has 0.135B parameters. Its licence is apache-2.0.") is None
+    assert GAP == "the result itself says"
+
+
+def test_a_program_that_contradicts_his_example_fails_whatever_it_printed(tmp_path):
+    from team.specialists import verifier
+    v, why = verifier.verify({"id": "s1", "agent": "coder", "task": "fib(1) = 1, fib(2) = 1; tell me fib(30)", "done_when": "x"},
+                             {"returncode": 0, "summary": "1", "files": [],
+                              "examples_failed": "AssertionError: fib(2) returned 2, but the task says fib(2) = 1"}, None, tmp_path)
+    assert v == "FAIL" and "fib(2) returned 2" in why
+
+
+def test_a_claim_that_names_a_quantity_without_its_number_takes_the_quote():
+    from team.specialists.researcher import with_value
+    f = with_value({"claim": "Number of downloads for Qwen/Qwen3-1.7B on Hugging Face", "quote": "downloads 3597908"})
+    assert f["claim"].endswith(": downloads 3597908")
+    full = {"claim": "Qwen/Qwen3-1.7B has 3597908 downloads", "quote": "downloads 3597908"}
+    assert with_value(dict(full)) == full
+    words = {"claim": "The licence of the model is apache-2.0", "quote": "license apache-2.0"}
+    assert with_value(dict(words)) == words
+
+
+def test_the_coder_is_told_to_use_the_teams_values_instead_of_fetching_them_again():
+    from team.specialists.coder import refetches
+    ctx = ("ARNAV'S WHOLE TASK: Which has more downloads? Make a bar chart.\n\n## s1 (researcher, verdict=PASS): Find the "
+           "downloads.\nResult: A has 3,597,908 downloads and B has 220,473.\nItems: [\"A\", \"B\"]\n- B has 220,473 downloads [u]")
+    code = "import requests\nfrom bs4 import BeautifulSoup\nr = requests.get('https://huggingface.co/A')\n"
+    task = "Write a Python program to generate a bar chart comparing the number of downloads for A and B."
+    msg = refetches(task, ctx, code)
+    assert msg and "3,597,908" in msg and "Items:" not in msg
+    assert refetches(task, ctx, "import matplotlib\nvals = [3597908, 220473]") is None        # it uses the values
+    assert refetches(task, "", code) is None                                                   # nothing was found before
+    assert refetches("Scrape the prices from books.toscrape.com and chart them.", ctx, code) is None  # he ordered a fetch

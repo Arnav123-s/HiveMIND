@@ -1,0 +1,93 @@
+[
+ {
+  "id": "chart",
+  "ok": false,
+  "why": "chart: no, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 720,
+  "note": "",
+  "calls": 43,
+  "model_seconds": 706.6,
+  "by_member": {
+   "coordinator (fast)": [
+    3,
+    45.4
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.5
+   ],
+   "researcher (fast)": [
+    14,
+    309.7
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    3,
+    0.3
+   ],
+   "verifier (fast+verifier)": [
+    12,
+    73.5
+   ],
+   "juror_brain (fast)": [
+    2,
+    27.2
+   ],
+   "juror_fast (fast)": [
+    2,
+    14.7
+   ],
+   "coder (coder15)": [
+    4,
+    163.6
+   ],
+   "writer (fast+writer)": [
+    1,
+    29.4
+   ],
+   "critic (fast)": [
+    1,
+    37.3
+   ]
+  },
+  "cell_calls": 5,
+  "plan": [
+   "researcher",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ },
+ {
+  "id": "csv",
+  "ok": false,
+  "why": "CSV has 0/3 of the cheapest prices ['10.69', '11.84', '12.29']",
+  "seconds": 263,
+  "note": "",
+  "calls": 13,
+  "model_seconds": 249.1,
+  "by_member": {
+   "coder (coder15)": [
+    5,
+    201.8
+   ],
+   "juror_fast (fast)": [
+    1,
+    5.6
+   ],
+   "coordinator (fast)": [
+    1,
+    8.9
+   ],
+   "researcher (fast)": [
+    6,
+    32.8
+   ]
+  },
+  "cell_calls": 6,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "scrape to a file"
+ }
+]

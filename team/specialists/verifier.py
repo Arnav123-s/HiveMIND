@@ -47,6 +47,23 @@ def without_layout(task):
     return re.sub(r"\s+([,:;.])", r"\1", LAYOUT.sub("", task or "")).strip() or task
 
 
+_N = (r"(?<![\d.,])(?:two|three|four|five|six|seven|eight|nine|ten|[2-9]|10)(?![\d.,%])\s+(?!(?:sentences?|words?|"
+      r"lines?|paragraphs?|decimals?|bullets?|points?|days?|hours?|minutes?|weeks?|months?|years?|times|percent|"
+      r"steps?|parts?|columns?|rows?|degrees?|of)\b)")
+_MOST = (r"(?:(?:most|least)\s+(?!of\b)\w+|newest|latest|oldest|earliest|best|worst|largest|biggest|smallest|cheapest|"
+         r"highest|lowest|longest|shortest|fastest|slowest)\s+")
+WHOLE_LIST = re.compile(rf"\b(?:the\s+)?(?:(?:top|first|last)\s+)?{_N}(?:{_MOST})?|\b(?:the\s+)?{_MOST}(?:{_N})?", re.I)
+
+
+def item_question(task):
+    """The task as it applies to ONE item: without how many are wanted and which rank they must have ("the three
+    newest", "top 5", "the cheapest"). Those are requirements of the list as a whole. Shown them, the 1.7B juror
+    dropped on-topic papers because their source line "does not contain the three newest"."""
+    t = without_layout(task)
+    out = re.sub(r"\s{2,}", " ", WHOLE_LIST.sub(lambda m: "the " if m.group(0).lower().startswith("the") else "", t)).strip()
+    return out if len(out.split()) >= 3 else t
+
+
 def hard_item_check(task, evidence):
     """Reason an item breaks a hard limit the task states (size, gating), or None."""
     limit = re.search(r"(under|below|less than|smaller than|at most|up to|<)\s*(\d+(?:\.\d+)?)\s*b\b", task, re.I)
@@ -77,7 +94,73 @@ def _judge_one(member, check, work, evidence):
     if not isinstance(data, dict):
         return "FAIL", f"{member} gave no verdict: {raw[:100]}"
     v = str(data.get("verdict", "")).upper()
-    return ("PASS" if v == "PASS" else "FAIL"), str(data.get("reason", ""))[:300]
+    reason = str(data.get("reason", ""))[:300]
+    if v != "PASS" and same_number_objection(reason):
+        # "prints 117.0, not 117": the two values the juror sets against each other are the same number, so its
+        # objection is void (three 1.7B jurors failed a right answer three times on exactly this)
+        return "PASS", f"objection void, the values are equal: {reason}"[:300]
+    return ("PASS" if v == "PASS" else "FAIL"), reason
+
+
+_UNIT = r"(?:\s?(k|m|b|bn|thousand|million|billion)\b)?"
+_VS = re.compile(r"(-?\d[\d,]*(?:\.\d+)?)" + _UNIT + r"['\"]?(?:[^\d]{0,40}?)\bnot\b[^\d-]{0,20}(-?\d[\d,]*(?:\.\d+)?)" + _UNIT,
+                 re.I)
+_SCALE = {"k": 1e3, "thousand": 1e3, "m": 1e6, "million": 1e6, "b": 1e9, "bn": 1e9, "billion": 1e9}
+
+
+_NOTHING = re.compile(r"\b(?:is|are|was|were)\s+not\s+(?:provided|available|given|stated|mentioned|found|present|"
+                      r"specified|listed|included|shown|known|reported)\b|"
+                      r"\b(?:could|can|did|does|do)\s*(?:not|n't)\s+(?:find|provide|contain|mention|include|state|specify|list)\b|"
+                      r"\bno\s+(?:information|data|source|facts?)\b", re.I)
+GAP = "the result itself says"
+
+
+def _sentences(summary):
+    return [x.strip() for x in re.split(r"(?<=[.!?])\s+|\n", (summary or "").strip()) if x.strip()]
+
+
+def admits_nothing(summary):
+    """The first sentence of a research result, when it says the thing asked for was not found; else None."""
+    first = (_sentences(summary) or [""])[0]
+    return first[:200] if _NOTHING.search(first) else None
+
+
+def admits_a_gap(summary):
+    """A later sentence of a research result that says one of the things asked for was not found ("The licence is
+    not specified in the provided facts."), else None. The result has something; one part of the order is missing."""
+    return next((x[:200] for x in _sentences(summary)[1:] if _NOTHING.search(x)), None)
+
+
+SHORT = "the task asks for"
+_COUNT = re.compile(r"\b(two|three|four|five|six|seven|eight|[2-8])\s+(?!(?:sentences?|words?|lines?|paragraphs?|"
+                    r"decimals?|bullets?|points?|days?|hours?|minutes?|weeks?|months?|years?|times|percent|steps?|"
+                    r"parts?|columns?|rows?)\b)[a-z]", re.I)
+_NUM = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+
+
+def asked_count(task):
+    """How many things the task asks to be listed ("the three newest papers" -> 3); None when it names no such
+    count. Counts of layout or time ("three sentences", "5 days") are not counts of items."""
+    m = _COUNT.search(task or "")
+    if not m:
+        return None
+    w = m.group(1).lower()
+    return _NUM.get(w) or int(w)
+
+
+def same_number_objection(reason):
+    """True when a FAIL reason's only complaint is 'X, not Y' and X and Y are the same number, also when one is
+    written with another unit word ("0.135B, not 135M": three small jurors failed a right parameter count on that)."""
+    m = _VS.search(reason or "")
+    if not m:
+        return False
+    try:
+        a, ua, b, ub = m.groups()
+        a = float(a.replace(",", "")) * _SCALE.get((ua or "").lower(), 1)
+        b = float(b.replace(",", "")) * _SCALE.get((ub or "").lower(), 1)
+    except ValueError:
+        return False
+    return a == b or (bool(ua or ub) and abs(a - b) <= 1e-6 * max(abs(a), abs(b)))
 
 
 PLACEHOLDER = {"", "unknown", "n/a", "na", "none", "null", "nan", "-", "?", "not found", "missing", "not available"}
@@ -256,7 +339,7 @@ def verify(step, result, board, workdir):
                 dropped.append(f"{it} ({why})")
                 continue
             from ..cells import learn
-            item_text = f"TASK: {without_layout(step['task'])}\nITEM: {it}\nSOURCE LINE: {ev}"
+            item_text = f"TASK: {item_question(step['task'])}\nITEM: {it}\nSOURCE LINE: {ev}"
             said = learn.decide("learned_item", item_text)  # a cell grown from the juror's own decisions, when sure
             if said:
                 data = {"meets": said == "yes", "why": "learned_item cell"}
@@ -278,6 +361,23 @@ def verify(step, result, board, workdir):
             board.log("juror_brain", "drop", "items that do not meet the task: " + "; ".join(dropped))
             result["summary"] = (result.get("summary", "") + "\nDropped by the team's checks (do not use): "
                                  + "; ".join(dropped))
+        gap = admits_nothing(result.get("summary", ""))
+        if gap:
+            # the small researcher wrote "the number of downloads ... is not provided in the facts", three small
+            # jurors passed it, and the coder was then asked to chart numbers nobody had
+            return "FAIL", f"the researcher's own result says it did not find what the step asks for: \"{gap}\""
+        part = admits_a_gap(result.get("summary", ""))
+        if part and GAP not in step.get("feedback", step["task"]):
+            # asked once more for exactly the missing part; if the sources do not have it, the second result stands
+            return "FAIL", (f"{GAP}: \"{part}\" That is part of what the step asks for. Find exactly that in the "
+                            "sources (read the source of the item itself) and state it with its quote.")
+        want = asked_count(without_layout(step["task"]))
+        if dropped and kept and want and len(kept) < want and SHORT not in step.get("feedback", step["task"]):
+            # "the three newest papers", one of three was off topic, and the answer listed two: the researcher is
+            # asked once for others in place of the dropped ones (a second shortfall goes on with what there is)
+            return "FAIL", (f"{SHORT} {want}, and only {len(kept)} listed items meet the task. Keep: "
+                            + "; ".join(kept) + ". Do not list again: " + "; ".join(dropped)[:300]
+                            + ". List other items from the source in their place.")
         if result.get("items") and not kept and good == 0:
             # items are a list the researcher offers; its verified facts are the evidence: a held-out explanation's
             # search titles ("Hash table", "Open addressing") were dropped and failed the step with them
@@ -308,6 +408,8 @@ def verify(step, result, board, workdir):
             return "FAIL", result.get("summary", "not run")
         if result.get("returncode") != 0:
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
+        if result.get("examples_failed"):  # checked in code against the examples in his own task; no juror outvotes it
+            return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
         from .coder import sanity, unsaved_output
         bad = sanity(result.get("summary", ""))
         if bad:
@@ -339,6 +441,8 @@ def verify(step, result, board, workdir):
             return "FAIL", result["failed"]
         if result.get("returncode") != 0:
             return "FAIL", f"program exited {result.get('returncode')}: {result.get('stderr', '')[-300:]}"
+        if result.get("examples_failed"):  # checked in code against the examples in his own task; no juror outvotes it
+            return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
         out = result.get("summary", "")
         named = re.search(r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|"
                           r"may|june|july|august|september|october|november|december)\b", out, re.I)

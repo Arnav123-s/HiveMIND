@@ -1,0 +1,146 @@
+[
+ {
+  "id": "lookup",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 324,
+  "note": "",
+  "calls": 26,
+  "model_seconds": 316.5,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    1,
+    19.4
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.7
+   ],
+   "researcher (fast)": [
+    5,
+    160.3
+   ],
+   "verifier (fast+verifier)": [
+    7,
+    40.4
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    4,
+    0.3
+   ],
+   "juror_brain (fast)": [
+    4,
+    29.4
+   ],
+   "juror_fast (fast)": [
+    1,
+    4.8
+   ],
+   "writer (fast+writer)": [
+    2,
+    27.9
+   ],
+   "critic (fast)": [
+    1,
+    28.2
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "facts from a source"
+ },
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "0 arXiv papers listed in the answer",
+  "seconds": 325,
+  "note": "",
+  "calls": 11,
+  "model_seconds": 152.1,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    2,
+    27.1
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    4.5
+   ],
+   "researcher (fast)": [
+    6,
+    32.0
+   ],
+   "condenser (fast)": [
+    2,
+    88.5
+   ]
+  },
+  "cell_calls": 6,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ },
+ {
+  "id": "chart",
+  "ok": false,
+  "why": "chart: no, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 682,
+  "note": "",
+  "calls": 46,
+  "model_seconds": 667.3,
+  "by_member": {
+   "coordinator (fast+coordinator_school)": [
+    2,
+    50.0
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.7
+   ],
+   "researcher (fast)": [
+    14,
+    310.8
+   ],
+   "verifier (fast+verifier)": [
+    7,
+    63.3
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    9,
+    1.0
+   ],
+   "juror_brain (fast)": [
+    6,
+    53.3
+   ],
+   "juror_fast (fast)": [
+    2,
+    15.2
+   ],
+   "coder (coder15)": [
+    3,
+    82.7
+   ],
+   "writer (fast+writer)": [
+    1,
+    37.8
+   ],
+   "critic (fast)": [
+    1,
+    47.9
+   ]
+  },
+  "cell_calls": 9,
+  "plan": [
+   "researcher",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ }
+]
