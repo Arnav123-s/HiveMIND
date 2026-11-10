@@ -20,6 +20,9 @@
     python training/scratch.py bitnet [--minutes 30]     the stem cell becomes a BitNet (weights of -1, 0, +1), trained
                                                          here; every cell grown from it afterwards is a BitNet cell
 
+    python training/scratch.py direct [--minutes 20] [--rate 0.003]   a BitNet stem cell trained the direct way, from
+                                                         random three-valued weights, with no ordinary weights underneath
+
 Today's cells are SmolLM2-135M (someone else's pretrained weights) with a small edit. This is the other way to make
 one: a model of about 2.6 million weights that starts from random numbers. What it knows about words it gets from the
 text the hive harvested itself (team/harvest.py); what it knows about its job it gets from the same training rows as
@@ -109,6 +112,102 @@ class Tiny(nn.Module):
     def label(self, ids, last):
         h = self.body(ids)
         return self.head(h[torch.arange(ids.shape[0]), last])
+
+
+class Direct:
+    """Training a BitNet the direct way: there are no ordinary weights underneath.
+
+    The usual way keeps a full-precision copy of every weight and rounds it at each step. Here a weight of a
+    three-valued layer is never anything but -1, 0 or +1. At each step every such weight may jump one value in the
+    direction that lowers the loss, with a probability in proportion to how strongly its own gradient asks for it
+    (its gradient against the layer's average). A weight that is pulled weakly but always the same way still gets
+    there, by chance adding up over steps, which is what the stored copy was for. `rate` is the share of a layer's
+    weights expected to jump in one step; it is lowered as training goes on, and the jumping dies down.
+    What is not three-valued (the table of word pieces, the norms, the biases, and one number per layer that scales
+    its three values) is trained the ordinary way; that is under a third of the stem cell and is shared by all cells.
+    (His order, 2026-11-10: if no direct route exists, make one.)"""
+
+    def __init__(self, model, lr=1e-3, seed=0):
+        self.layers = [m for m in model.modules() if isinstance(m, BitLinear)]
+        own = {id(m.weight) for m in self.layers}
+        self.t, self.log_scale = [], []
+        for m in self.layers:
+            scale = m.weight.detach().abs().mean().clamp(min=1e-5)
+            self.t.append((m.weight.detach() / scale).round().clamp(-1, 1))
+            self.log_scale.append(torch.nn.Parameter(scale.log()))
+        self.opt = torch.optim.AdamW([p for p in model.parameters() if id(p) not in own] + self.log_scale, lr=lr,
+                                     weight_decay=0.0, betas=(0.9, 0.95))
+        self.gen = torch.Generator().manual_seed(seed)
+        self.model = model
+        self.install()
+
+    def install(self):
+        """Each layer's weights as its three values times a number such that rounding gives them back exactly."""
+        with torch.no_grad():
+            for m, t, ls in zip(self.layers, self.t, self.log_scale):
+                m.weight.copy_(t * (ls.exp() / t.abs().mean().clamp(min=1e-5)))
+
+    def step(self, loss, rate):
+        """One step. Returns the share of three-valued weights that jumped."""
+        self.opt.zero_grad(set_to_none=True)
+        for m in self.layers:
+            m.weight.grad = None
+        loss.backward()
+        nn.utils.clip_grad_norm_([p for g in self.opt.param_groups for p in g["params"] if p.grad is not None], 1.0)
+        jumped, total = 0, 0
+        with torch.no_grad():
+            for i, m in enumerate(self.layers):
+                g, t = m.weight.grad, self.t[i]
+                self.log_scale[i].grad = (g * t).sum() * self.log_scale[i].exp()  # the layer's number learns the ordinary way
+                want = (t - g.sign()).clamp(-1, 1)
+                go = (torch.rand(g.shape, generator=self.gen) < rate * g.abs() / g.abs().mean().clamp(min=1e-12)) & (want != t)
+                self.t[i] = torch.where(go, want, t)
+                jumped, total = jumped + int(go.sum()), total + t.numel()
+        self.opt.step()
+        self.install()
+        return jumped / total
+
+
+def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False):
+    """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
+    <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
+    Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
+    parts that are not three-valued learn by themselves) and usual=True (the published way: ordinary weights
+    underneath, rounded at every step)."""
+    tk = tokenizer()
+    data = corpus(tk)
+    torch.manual_seed(seed)
+    model = Tiny(bit=True)
+    if usual:
+        opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01, betas=(0.9, 0.95))
+
+        class trainer:  # noqa: N801 - the same two lines as pretrain, in the shape of Direct
+            @staticmethod
+            def step(loss, rate):
+                opt.zero_grad(set_to_none=True)
+                loss.backward()
+                nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                opt.step()
+                return 0.0
+    else:
+        trainer = Direct(model, seed=seed)
+    rnd, t0, steps, losses, jumps = random.Random(seed), time.time(), 0, [], []
+    while time.time() - t0 < minutes * 60:
+        done = (time.time() - t0) / (minutes * 60)
+        at = [rnd.randrange(0, len(data) - CTX - 1) for _ in range(batch)]
+        x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
+        loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
+        jumps.append(trainer.step(loss, rate * (1 - 0.95 * done)))
+        steps += 1
+        losses.append(loss.item())
+        if steps % 100 == 0:
+            log(f"[scratch] direct, step {steps}: loss {sum(losses[-100:]) / 100:.3f}, {sum(jumps[-100:]) / 100:.2%} of the "
+                f"three-valued weights jump a step", flush=True)
+    torch.save(model.state_dict(), HOME / f"{name}.pt")
+    out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
+           "way": "usual (ordinary weights underneath)" if usual else "direct" if rate else "direct with no jumps"}
+    _record(**{name: out})
+    return out
 
 
 SHARED = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
@@ -524,6 +623,9 @@ def main(argv):
     cmd = argv[0] if argv else ""
     if cmd == "tokenizer":
         tokenizer(train=True)
+    elif cmd == "direct":
+        print(json.dumps(pretrain_direct(opt("--minutes", 20.0), opt("--rate", 0.003), name=opt("--name", "base_direct"),
+                                         usual="--usual" in argv)))
     elif cmd == "bitnet":
         print(json.dumps(to_bitnet(opt("--minutes", 30.0))))
     elif cmd == "pretrain":

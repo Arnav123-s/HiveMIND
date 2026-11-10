@@ -601,3 +601,29 @@ def test_a_bitnet_cell_can_be_grown_by_moving_its_three_values_directly(tmp_path
             scale = m.weight.abs().mean()
             assert set((m.weight / scale).round().clamp(-1, 1).unique().tolist()) <= {-1.0, 0.0, 1.0}
     assert all(torch.equal(before[n], p) for n, p in cell.state_dict().items() if n.startswith(("tok.", "pos.", "norm.")))
+
+
+def test_the_direct_way_trains_a_bitnet_without_ordinary_weights_underneath(monkeypatch):
+    import numpy as np
+    import torch
+    import torch.nn.functional as F
+    from training import scratch as T
+    torch.manual_seed(0)
+    torch.set_num_threads(2)
+    monkeypatch.setattr(T, "CTX", 32)
+    rng = np.random.default_rng(0)
+    data = torch.from_numpy(np.tile(rng.integers(2, 60, size=33 * 4), 30).astype("int64"))   # text with a pattern to learn
+    model = T.Tiny(bit=True)
+    trainer = T.Direct(model, seed=0)
+    losses = []
+    for step in range(120):
+        at = torch.randint(0, len(data) - 33, (16,))
+        x = torch.stack([data[i:i + 33] for i in at.tolist()])
+        loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1))
+        losses.append(loss.item())
+        trainer.step(loss, 0.01)
+    assert sum(losses[-10:]) / 10 < sum(losses[:10]) / 10 - 1.0                          # it learns
+    for m, t in zip(trainer.layers, trainer.t):                                         # and every weight is one of three values
+        assert set(t.unique().tolist()) <= {-1.0, 0.0, 1.0}
+        scale = m.weight.abs().mean()
+        assert torch.equal((m.weight / scale).round().clamp(-1, 1), t)
