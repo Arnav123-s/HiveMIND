@@ -1,0 +1,317 @@
+[
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "0 arXiv papers listed in the answer",
+  "seconds": 714,
+  "note": "",
+  "calls": 38,
+  "model_seconds": 697.4,
+  "by_member": {
+   "coordinator (fast)": [
+    2,
+    35.6
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    4.8
+   ],
+   "researcher (fast)": [
+    17,
+    201.2
+   ],
+   "condenser (fast)": [
+    9,
+    373.9
+   ],
+   "verifier (fast+verifier)": [
+    7,
+    48.4
+   ],
+   "juror_brain (fast)": [
+    1,
+    20.7
+   ],
+   "juror_fast (fast)": [
+    1,
+    12.7
+   ]
+  },
+  "cell_calls": 7,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ },
+ {
+  "id": "chart",
+  "ok": false,
+  "why": "chart: no, names the most downloaded (Qwen/Qwen3-1.7B): True",
+  "seconds": 847,
+  "note": "",
+  "calls": 45,
+  "model_seconds": 824.2,
+  "by_member": {
+   "coordinator (fast)": [
+    3,
+    45.5
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.5
+   ],
+   "researcher (fast)": [
+    15,
+    299.6
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    5,
+    0.5
+   ],
+   "verifier (fast+verifier)": [
+    9,
+    57.3
+   ],
+   "juror_brain (fast)": [
+    2,
+    26.9
+   ],
+   "juror_fast (fast)": [
+    2,
+    13.9
+   ],
+   "coder (coder15)": [
+    6,
+    226.1
+   ],
+   "writer (fast+writer)": [
+    1,
+    131.8
+   ],
+   "critic (fast)": [
+    1,
+    17.6
+   ]
+  },
+  "cell_calls": 8,
+  "plan": [
+   "researcher",
+   "coder",
+   "writer"
+  ],
+  "kind": "numbers + chart"
+ },
+ {
+  "id": "csv",
+  "ok": false,
+  "why": "CSV has 0/3 of the cheapest prices ['10.69', '11.84', '12.29']",
+  "seconds": 145,
+  "note": "",
+  "calls": 8,
+  "model_seconds": 135.2,
+  "by_member": {
+   "coder (coder15)": [
+    2,
+    69.1
+   ],
+   "code_reviewer (coder15)": [
+    1,
+    6.5
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    11.3
+   ],
+   "juror_brain (fast)": [
+    1,
+    9.8
+   ],
+   "juror_fast (fast)": [
+    1,
+    4.2
+   ],
+   "writer (fast+writer)": [
+    1,
+    19.6
+   ],
+   "critic (fast)": [
+    1,
+    14.6
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "scrape to a file"
+ },
+ {
+  "id": "summary",
+  "ok": true,
+  "why": "1 sentences, 1 lines",
+  "seconds": 56,
+  "note": "",
+  "calls": 4,
+  "model_seconds": 49.3,
+  "by_member": {
+   "coordinator (fast)": [
+    1,
+    22.9
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.1
+   ],
+   "writer (fast+writer)": [
+    1,
+    9.9
+   ],
+   "critic (fast)": [
+    1,
+    11.4
+   ]
+  },
+  "cell_calls": 4,
+  "plan": [
+   "writer"
+  ],
+  "kind": "summarise given text"
+ },
+ {
+  "id": "fib",
+  "ok": false,
+  "why": "missing ['832040']; 2 sentences, 1 lines",
+  "seconds": 607,
+  "note": "",
+  "calls": 22,
+  "model_seconds": 593.5,
+  "by_member": {
+   "coordinator (fast)": [
+    2,
+    26.8
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    5.5
+   ],
+   "researcher (fast)": [
+    12,
+    93.6
+   ],
+   "condenser (fast)": [
+    6,
+    460.8
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    7.1
+   ]
+  },
+  "cell_calls": 7,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "write and run code"
+ },
+ {
+  "id": "bugfix",
+  "ok": true,
+  "why": "2 sentences, 2 lines",
+  "seconds": 743,
+  "note": "",
+  "calls": 31,
+  "model_seconds": 729.3,
+  "by_member": {
+   "coordinator (fast)": [
+    2,
+    24.9
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    6.4
+   ],
+   "researcher (fast)": [
+    12,
+    101.8
+   ],
+   "condenser (fast)": [
+    6,
+    475.8
+   ],
+   "verifier (fast+verifier)": [
+    3,
+    14.8
+   ],
+   "juror_brain (fast)": [
+    1,
+    15.3
+   ],
+   "writer (fast+writer)": [
+    2,
+    18.3
+   ],
+   "critic (fast)": [
+    3,
+    63.2
+   ],
+   "editor (fast)": [
+    1,
+    8.7
+   ]
+  },
+  "cell_calls": 9,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "fix code"
+ },
+ {
+  "id": "sales",
+  "ok": false,
+  "why": "missing ['117', 'Mar or March']; 0 sentences, 0 lines",
+  "seconds": 831,
+  "note": "",
+  "calls": 33,
+  "model_seconds": 815.5,
+  "by_member": {
+   "calculator (fast)": [
+    3,
+    45.2
+   ],
+   "verifier (fast+verifier)": [
+    3,
+    21.6
+   ],
+   "coordinator (fast)": [
+    1,
+    7.8
+   ],
+   "researcher (fast)": [
+    15,
+    82.2
+   ],
+   "condenser (fast)": [
+    9,
+    626.9
+   ],
+   "writer (fast+writer)": [
+    1,
+    11.6
+   ],
+   "critic (fast)": [
+    1,
+    20.3
+   ]
+  },
+  "cell_calls": 7,
+  "plan": [
+   "calculator",
+   "writer"
+  ],
+  "kind": "reason over given data"
+ }
+]

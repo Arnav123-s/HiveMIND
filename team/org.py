@@ -29,7 +29,7 @@ NOT_CALLED = {
     "answers_q": "3 of 15 real pairs right; the 4B does this job (training/evals/answers_q_real.jsonl)",
     "de_grammar": "cannot beat the 4B alone on short text (cells/de_grammar_notes.md)",
 }
-MODELS = {"brain4b": "Qwen3-4B", "brain8b": "Qwen3-8B", "fast": "Qwen3-1.7B", "coder7b": "Qwen2.5-Coder-7B"}
+MODELS = {"brain4b": "Qwen3-4B", "brain8b": "Qwen3-8B", "fast": "Qwen3-1.7B", "coder7b": "Qwen2.5-Coder-7B", "coder15": "Qwen2.5-Coder-1.5B"}
 
 
 def _brain(role):
@@ -77,6 +77,21 @@ def chart():
             n_work += line.startswith("working")
             out.append(f"    cell  {name:<22} {part.split(':', 1)[-1].strip()[:70]}")
             out.append(f"          {'':<22} {line}")
+        out.append("")
+    from . import school
+    rec = school.record()
+    if rec:
+        out.append("SCHOOL: small models learning a bigger member's job from that member (python -m team school)")
+        for role, v in rec.items():
+            line = (f"untouched {v['untouched_agrees']:.0%}, taught {v['taught_agrees']:.0%} agreement with the teacher on "
+                    f"{v['test_lessons']} unseen lessons" if "taught_agrees" in v else v.get("why", ""))
+            who = (f"{v.get('scheme', 'alone')}: " + ", ".join((v.get("general") or [])[:1 if v.get("scheme", "alone") == "alone" else 9]
+                                                             + (v.get("narrow") or []))) if v.get("general") else "no specialist yet"
+            status = ("GRADUATED: holds the job" if v.get("graduated") else
+                      "in school; ahead of the untouched student, so it holds the job in the small-only hive"
+                      if v.get("ahead") else "in school; the teacher keeps the job")
+            out.append(f"  {role:<14} {MODELS.get(v['student'], v['student'])} learning from {MODELS.get(v['teacher'], v['teacher'])}: "
+                       f"{status}; {v['lessons']} lessons; {line}; its specialists: {who}")
         out.append("")
     rest = [n for n in cells if n not in placed]
     if rest:

@@ -1,0 +1,55 @@
+[
+ {
+  "id": "arxiv",
+  "ok": true,
+  "why": "3 mixture-of-experts papers with their dates",
+  "seconds": 482,
+  "note": "",
+  "calls": 26,
+  "model_seconds": 474.4,
+  "by_member": {
+   "coordinator (brain4b)": [
+    2,
+    68.2
+   ],
+   "plan_reviewer (brain4b)": [
+    1,
+    18.5
+   ],
+   "researcher (brain4b)": [
+    4,
+    209.5
+   ],
+   "cell:sp_verifier_75e567 (smol135)": [
+    5,
+    0.6
+   ],
+   "verifier (fast+verifier)": [
+    2,
+    18.6
+   ],
+   "juror_brain (brain4b)": [
+    7,
+    44.0
+   ],
+   "juror_fast (fast)": [
+    1,
+    22.1
+   ],
+   "writer (fast+writer)": [
+    2,
+    40.5
+   ],
+   "critic (brain4b)": [
+    2,
+    52.3
+   ]
+  },
+  "cell_calls": 5,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ }
+]

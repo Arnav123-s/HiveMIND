@@ -75,7 +75,13 @@ def normalize(plan, goal):
 
 
 def plan(goal, board, notes=""):
-    data, raw = llm.chat_json("coordinator", plan_messages(goal, notes), max_new_tokens=900)
+    data, raw = None, ""
+    if config.SMALL:  # the planner's small specialists, taught by the 4B, plan together (team/school.py)
+        from .. import school
+        raw = school.answer("coordinator", plan_messages(goal, notes), goal) or ""
+        data = llm.parse_json(raw) if raw else None
+    if data is None:
+        data, raw = llm.chat_json("coordinator", plan_messages(goal, notes), max_new_tokens=900)
     steps, problems = normalize(data, goal)
     if steps is None:
         board.log("coordinator", "replan", f"plan unusable ({problems}); asking again")
@@ -240,6 +246,8 @@ TEMPLATES = {
     "code": [("coder", "{goal}", "the program ran and did what he asked")],
 }
 TRIAGE_MIN = 0.9  # below this the cell is unsure, and the coordinator plans
+SECOND_MIN = 0.6  # each cell alone needs 0.9; two that agree need 0.5 and 0.6: they rarely err the same way
+SECOND = {"code": "coder", "lookup": "researcher", "site": "browser"}  # the specialist that confirms a task kind
 
 
 def triage(goal, board):
@@ -271,8 +279,21 @@ def triage(goal, board):
     board.log("cell:task_kind", "answer", f"{kind} ({conf:.2f})")
     # per kind, chosen on dev by training/cells_triage_threshold.py (a wrong 'write' skips research and calculation)
     need = use.wins().get("task_kind", {}).get("thresholds", {}).get(kind, TRIAGE_MIN)
-    if kind not in TEMPLATES or conf < max(TRIAGE_MIN, need):
+    if kind not in TEMPLATES:
         return None
+    if conf < max(TRIAGE_MIN, need):
+        # an unsure cell asks a second one: the routing cell reads the same task and names a specialist. Two cells
+        # trained on different data that agree are taken at their word; alone, neither is. (With the 1.7B as
+        # coordinator, "write a function ... and tell me fib(30)" (code, 0.58) was planned as research.)
+        second = SECOND.get(kind)
+        if not (second and conf >= 0.5 and use.on("route_step")):
+            return None
+        q = runtime.label_probs("route_step", goal[:300])
+        who, sure = max(q.items(), key=lambda kv: kv[1])
+        board.log("cell:route_step", "answer", f"second opinion on the whole task: {who} ({sure:.2f})")
+        if who != second or sure < SECOND_MIN:
+            return None
+        board.log("coordinator", "triage", f"task_kind ({kind}) and route_step ({who}) agree")
     return _template(kind, goal)
 
 

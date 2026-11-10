@@ -25,14 +25,7 @@ from team import llm, prompts  # noqa: E402
 from team.specialists import verifier  # noqa: E402
 
 SMALL = "juror_fast"  # the plain Qwen3-1.7B, no weight edit
-# the small reader's own instruction: one small job (facts of one part), not the researcher's whole reply. A first
-# run appended a note to the researcher's instruction; the 1.7B kept that instruction's reply format (summary, items)
-# and gave no facts at all, which measured the instruction, not the model.
-CHUNK_EXTRACT = """You read ONE PART of a source for Arnav's team and pull out the facts the TASK needs.
-Reply with JSON only: {"facts":[{"claim":"...","quote":"..."}]}
-- claim: one sentence stating the fact with its value ("X has 0.135B parameters"), never a bare label.
-- quote: the words copied exactly, character for character, from the part. Never invent or reword a quote.
-- At most 4 facts. {"facts":[]} if this part says nothing the task needs."""
+from team.specialists.reader import EXTRACT as CHUNK_EXTRACT  # noqa: E402 - the hive's small reader's own instruction
 
 
 def extract_calls(dirs, limit):
@@ -55,24 +48,7 @@ def extract_calls(dirs, limit):
     return out[:limit]
 
 
-def chunks(sources, size):
-    """Cut at line ends; every chunk starts with the header of the source its lines come from."""
-    out, cur, head = [], "", ""
-    for line in sources.split("\n"):
-        if line.startswith("### Source:"):
-            head = line
-        while len(line) > size:  # one very long line: cut it at a space
-            cut = line.rfind(" ", 0, size)
-            cut = cut if cut > size // 2 else size
-            out.append((head + "\n" if head and not line.startswith("###") else "") + line[:cut])
-            line = line[cut:]
-        if cur and len(cur) + len(line) + 1 > size:
-            out.append(cur)
-            cur = head + "\n" if head and line != head else ""
-        cur += line + "\n"
-    if cur.strip():
-        out.append(cur)
-    return [c for c in out if c.strip() and c.strip() != head]
+from team.specialists.reader import chunks  # noqa: E402 - the same cutting the hive's small reader uses
 
 
 def facts_of(data):

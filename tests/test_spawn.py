@@ -225,3 +225,66 @@ def test_the_org_chart_lists_every_cell_once():
     assert "UNPLACED" not in text
     for k in runtime.registry():
         assert text.count(f"cell  {k} ") + text.count(f"cell  {k:<22} ") >= 1
+
+
+def test_the_hive_picks_the_specialist_that_failed_most_to_work_on_next(tmp_path, monkeypatch):
+    import sqlite3
+    from team import config, dream
+    from team.board import Board
+    monkeypatch.setattr(config, "RUNS", tmp_path)
+    for n, (agent, verdict) in enumerate([("coder", "FAIL")] * 4 + [("researcher", "FAIL")] * 2 + [("coder", "PASS")] * 5):
+        b = Board(tmp_path / f"r{n:02d}", echo=False)
+        b.add_step({"id": "s1", "agent": agent, "task": "t"})
+        b.update_step("s1", verdict=verdict)
+    assert dream.worst_role() == "coder"
+    assert dream.worst_role(least=5) is None  # too few failures to act on
+
+
+def test_school_specialists_answer_together():
+    from team import school
+    # what most decide; on a tie the one that did best in its exam (first in the order)
+    assert school.majority({"a": ["coder"], "b": ["writer"], "c": ["writer"]}, ["a", "b", "c"]) == ["writer"]
+    assert school.majority({"a": ["coder"], "b": ["writer"]}, ["a", "b"]) == ["coder"]
+    assert school.majority({"a": None, "b": ["writer"]}, ["a", "b"]) == ["writer"]
+    assert school.majority({"a": None}, ["a"]) is None
+    rows = [{"exam": False}, {"exam": True}, {"exam": False}]
+    assert [len(p) for p in school.split(rows)] == [2, 1]
+
+
+def test_a_task_goes_to_the_specialist_whose_lesson_it_is_most_like():
+    from team import school
+    terr = {"right": ["What is 17% of 250?", "Translate into French: good morning"],
+            "planner2": ["Scrape the ten newest posts on news.example.com and save them to posts.csv"]}
+    assert school.route("coordinator", "Scrape the five newest posts on blog.example.org and save them to blog.csv", terr) == "planner2"
+    assert school.route("coordinator", "What is 12% of 990?", terr) is None
+    assert school.route("coordinator", "anything", {}) is None
+
+
+def test_a_taught_specialist_ahead_of_the_untouched_student_holds_the_job_only_in_the_small_hive(monkeypatch):
+    from team import config, school
+    ahead = {"graduated": False, "ahead": True}
+    monkeypatch.setattr(config, "SMALL", False)
+    assert not school.holds(ahead) and school.holds({"graduated": True})
+    monkeypatch.setattr(config, "SMALL", True)
+    assert school.holds(ahead) and not school.holds({"graduated": False})
+    monkeypatch.setenv("AGENT_TEAM_SCHOOL", "0")
+    assert not school.holds(ahead)
+
+
+def test_a_school_program_is_judged_by_what_it_prints_when_run():
+    from team import school
+    assert school._program_key("```python\nprint(2 + 3)\nprint('Done')\n```", "t") == "5 done"
+    assert school._program_key("```python\nprint(1/0)\n```", "t") is None            # it does not run
+    assert school._program_key("```python\nx = 1\n```", "t") is None                   # it prints nothing
+    assert school._program_key("```python\nimport os\nprint(os.getcwd())\n```", "t") is None  # not a school program
+
+
+def test_every_school_role_says_how_it_is_taught_and_the_next_one_is_the_one_longest_away(monkeypatch):
+    from team import school
+    for r in school.ROLES.values():
+        assert {"teacher", "student", "messages", "key", "tokens", "chat", "known", "write", "topics", "example"} <= set(r)
+    monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"}})
+    assert school.next_role() == "coder"                                               # never taught goes first
+    monkeypatch.setattr(school, "record", lambda: {"coordinator": {"taught_agrees": 0.5, "when": "2026-11-10 09:27"},
+                                                   "coder": {"taught_agrees": 0.2, "when": "2026-11-10 12:00"}})
+    assert school.next_role() == "coordinator"

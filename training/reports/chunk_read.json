@@ -1,17 +1,17 @@
 {
  "summary": {
-  "inputs": 26,
+  "inputs": 30,
   "chunk_chars": 1800,
-  "big_checked": 38,
-  "small_checked": 52,
-  "big_checked_also_found": 19,
-  "big_seconds": 2201.5,
-  "small_seconds": 1204.6,
-  "big_facts": 49,
-  "small_facts": 98,
-  "inputs_where_small_found_every_4b_fact": 7,
-  "inputs_where_4b_had_checked_facts": 21,
-  "inputs_where_small_found_none_but_4b_did": 5,
+  "big_checked": 42,
+  "small_checked": 71,
+  "big_checked_also_found": 30,
+  "big_seconds": 2549.8,
+  "small_seconds": 1433.1,
+  "big_facts": 55,
+  "small_facts": 146,
+  "inputs_where_small_found_every_4b_fact": 16,
+  "inputs_where_4b_had_checked_facts": 24,
+  "inputs_where_small_found_none_but_4b_did": 1,
   "inputs_where_only_small_had_checked_facts": 5
  },
  "rows": [
@@ -22,9 +22,9 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 48.4,
-   "small_facts": 1,
+   "small_facts": 5,
    "small_checked": 1,
-   "small_seconds": 14.2,
+   "small_seconds": 31.5,
    "big_checked_also_found": 1,
    "small_only": [],
    "missed": [
@@ -38,14 +38,12 @@
    "big_facts": 2,
    "big_checked": 1,
    "big_seconds": 29.4,
-   "small_facts": 1,
-   "small_checked": 0,
-   "small_seconds": 11.4,
-   "big_checked_also_found": 0,
+   "small_facts": 2,
+   "small_checked": 1,
+   "small_seconds": 13.3,
+   "big_checked_also_found": 1,
    "small_only": [],
-   "missed": [
-    "The latest version of Django on PyPI is 6.1.3"
-   ]
+   "missed": []
   },
   {
    "task": "What is the population of Tallinn, and in which country is it?",
@@ -54,12 +52,16 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 73.3,
-   "small_facts": 5,
-   "small_checked": 2,
-   "small_seconds": 63.5,
-   "big_checked_also_found": 2,
-   "small_only": [],
-   "missed": []
+   "small_facts": 6,
+   "small_checked": 3,
+   "small_seconds": 67.4,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "Tallinn is in Estonia"
+   ],
+   "missed": [
+    "Tallinn has a population of 452,563 as of 2026"
+   ]
   },
   {
    "task": "List the three newest arXiv papers about federated learning, with their titles and dates.",
@@ -68,13 +70,11 @@
    "big_facts": 0,
    "big_checked": 0,
    "big_seconds": 194.2,
-   "small_facts": 6,
-   "small_checked": 1,
-   "small_seconds": 104.5,
+   "small_facts": 7,
+   "small_checked": 0,
+   "small_seconds": 63.9,
    "big_checked_also_found": 0,
-   "small_only": [
-    "Multi-Model Over-the-Air Federated Learning via Transceiver Beamforming and Device Grouping"
-   ],
+   "small_only": [],
    "missed": []
   },
   {
@@ -84,14 +84,11 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 49.8,
-   "small_facts": 4,
-   "small_checked": 4,
-   "small_seconds": 27.9,
+   "small_facts": 5,
+   "small_checked": 2,
+   "small_seconds": 31.4,
    "big_checked_also_found": 2,
-   "small_only": [
-    "FacebookAI/roberta-large has 0.355B parameters",
-    "FacebookAI/roberta-large is gated False"
-   ],
+   "small_only": [],
    "missed": []
   },
   {
@@ -101,9 +98,9 @@
    "big_facts": 2,
    "big_checked": 1,
    "big_seconds": 30.1,
-   "small_facts": 1,
+   "small_facts": 2,
    "small_checked": 1,
-   "small_seconds": 7.8,
+   "small_seconds": 13.2,
    "big_checked_also_found": 1,
    "small_only": [],
    "missed": []
@@ -115,11 +112,13 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 89.6,
-   "small_facts": 3,
-   "small_checked": 2,
-   "small_seconds": 54.1,
+   "small_facts": 6,
+   "small_checked": 3,
+   "small_seconds": 70.9,
    "big_checked_also_found": 2,
-   "small_only": [],
+   "small_only": [
+    "The main span of the Brooklyn Bridge is 272 ft (82.9 m)"
+   ],
    "missed": []
   },
   {
@@ -130,11 +129,12 @@
    "big_checked": 0,
    "big_seconds": 192.4,
    "small_facts": 6,
-   "small_checked": 1,
-   "small_seconds": 71.7,
+   "small_checked": 2,
+   "small_seconds": 56.2,
    "big_checked_also_found": 0,
    "small_only": [
-    "Spatio-Temporal Traffic Forecasting Robust to Aperiodicity"
+    "ArXiv paper on Training-Free Temporal Link Prediction with Tabular Foundation Models",
+    "ArXiv paper on Spatio-Temporal Traffic Forecasting Robust to Aperiodicity"
    ],
    "missed": []
   },
@@ -145,14 +145,14 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 46.9,
-   "small_facts": 2,
-   "small_checked": 1,
-   "small_seconds": 17.7,
-   "big_checked_also_found": 1,
-   "small_only": [],
-   "missed": [
-    "google/flan-t5-large has 237346 downloads"
-   ]
+   "small_facts": 4,
+   "small_checked": 3,
+   "small_seconds": 39.2,
+   "big_checked_also_found": 2,
+   "small_only": [
+    "google/flan-t5-large has 313,266,8804 bytes of weights total"
+   ],
+   "missed": []
   },
   {
    "task": "What is the latest version of pytest on PyPI, and what licence does it have?",
@@ -161,14 +161,12 @@
    "big_facts": 2,
    "big_checked": 1,
    "big_seconds": 30.7,
-   "small_facts": 1,
-   "small_checked": 0,
-   "small_seconds": 11.3,
-   "big_checked_also_found": 0,
+   "small_facts": 2,
+   "small_checked": 1,
+   "small_seconds": 10.0,
+   "big_checked_also_found": 1,
    "small_only": [],
-   "missed": [
-    "The latest version of pytest on PyPI is 9.2.0"
-   ]
+   "missed": []
   },
   {
    "task": "Who wrote the novel Frankenstein, and in which year was it first published?",
@@ -177,13 +175,13 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 71.5,
-   "small_facts": 6,
+   "small_facts": 7,
    "small_checked": 4,
-   "small_seconds": 64.4,
+   "small_seconds": 96.4,
    "big_checked_also_found": 1,
    "small_only": [
     "Mary Shelley wrote the novel Frankenstein",
-    "Mary Shelley wrote the novel Frankenstein"
+    "The novel was first published in 1818"
    ],
    "missed": [
     "The novel was first published in 1818"
@@ -197,15 +195,15 @@
    "big_checked": 3,
    "big_seconds": 167.9,
    "small_facts": 6,
-   "small_checked": 1,
-   "small_seconds": 53.6,
-   "big_checked_also_found": 0,
+   "small_checked": 3,
+   "small_seconds": 82.7,
+   "big_checked_also_found": 1,
    "small_only": [
-    "Text-Only Domain Adaptation for Low-Resource Medical ASR: Shallow Fusion and Density Ratio Rescoring for Hausa"
+    "Text-Only Domain Adaptation for Low-Resource Medical ASR has a date of 2026-11-03",
+    "Personalized Visual Support After Automatic Speech Recognition has a date of 2026-11-03"
    ],
    "missed": [
     "Benchmarking Speaker Embedders in the Sub-Second Regime for Real-Time Voice AI Agents has a publication date of 2026-11-",
-    "Confucius4-R2T2: A Stable-Prefix Streaming ASR Model for Real Real-Time Transcription has a publication date of 2026-11-",
     "Fine-Tuning a Transducer for Impaired Speech: Where the Gains Appear and What They Mean for Evaluation has a publication"
    ]
   },
@@ -216,13 +214,13 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 60.7,
-   "small_facts": 1,
+   "small_facts": 3,
    "small_checked": 1,
-   "small_seconds": 11.2,
+   "small_seconds": 16.6,
    "big_checked_also_found": 1,
    "small_only": [],
    "missed": [
-    "The model has 2,476,770 downloads."
+    "The microsoft/deberta-v3-base model uses the MIT license."
    ]
   },
   {
@@ -232,14 +230,12 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 27.8,
-   "small_facts": 1,
-   "small_checked": 1,
-   "small_seconds": 7.5,
-   "big_checked_also_found": 1,
+   "small_facts": 2,
+   "small_checked": 2,
+   "small_seconds": 9.8,
+   "big_checked_also_found": 2,
    "small_only": [],
-   "missed": [
-    "The license for pillow is the Python Imaging Library (fork)"
-   ]
+   "missed": []
   },
   {
    "task": "What is the height of Mont Blanc in metres?",
@@ -250,10 +246,10 @@
    "big_seconds": 52.4,
    "small_facts": 2,
    "small_checked": 2,
-   "small_seconds": 42.6,
+   "small_seconds": 34.3,
    "big_checked_also_found": 1,
    "small_only": [
-    "Mont Blanc rises 4,807.3 m above sea level"
+    "Mont Blanc is the highest mountain in the Alps"
    ],
    "missed": []
   },
@@ -264,14 +260,14 @@
    "big_facts": 3,
    "big_checked": 0,
    "big_seconds": 174.4,
-   "small_facts": 6,
+   "small_facts": 7,
    "small_checked": 3,
-   "small_seconds": 50.2,
+   "small_seconds": 42.3,
    "big_checked_also_found": 0,
    "small_only": [
-    "Provable Zeroth-Order Safe Exploration for Reinforcement Learning from Human Feedback",
-    "Large Language Models (LLMs) are neural networks trained on huge text collections to generate text by predicting what co",
-    "Direct Preference Optimization (DPO) is widely used for offline Reinforcement Learning from Human Feedback."
+    "The first paper was published on 2026-10-18",
+    "The second paper was published on 2026-10-16",
+    "The third paper was published on 2026-10-25"
    ],
    "missed": []
   },
@@ -282,21 +278,15 @@
    "big_facts": 3,
    "big_checked": 2,
    "big_seconds": 110.4,
-   "small_facts": 10,
-   "small_checked": 8,
-   "small_seconds": 115.5,
-   "big_checked_also_found": 1,
+   "small_facts": 9,
+   "small_checked": 5,
+   "small_seconds": 111.5,
+   "big_checked_also_found": 2,
    "small_only": [
-    "openai/whisper-base has 0.073B parameters",
-    "openai/whisper-base uses TensorFlow model files on Hugging Face",
-    "openai/whisper-base uses PyTorch model files on Hugging Face",
-    "openai/whisper-base uses SafeTensor model files on Hugging Face",
-    "openai/whisper-base has 290.66 MB of TensorFlow model files on Hugging Face",
-    "openai/whisper-base has 0 likes"
+    "openai/whisper-base has 0 likes",
+    "openai/whisper-base has 290.66 MB of file size"
    ],
-   "missed": [
-    "openai/whisper-base has 313 likes"
-   ]
+   "missed": []
   },
   {
    "task": "What is the latest version of matplotlib on PyPI, and what licence does it have?",
@@ -305,14 +295,12 @@
    "big_facts": 2,
    "big_checked": 1,
    "big_seconds": 31.5,
-   "small_facts": 1,
-   "small_checked": 0,
-   "small_seconds": 13.3,
-   "big_checked_also_found": 0,
+   "small_facts": 2,
+   "small_checked": 1,
+   "small_seconds": 11.7,
+   "big_checked_also_found": 1,
    "small_only": [],
-   "missed": [
-    "The latest version of matplotlib on PyPI is 3.11.2"
-   ]
+   "missed": []
   },
   {
    "task": "What are the capital and the official language of Slovenia?",
@@ -321,12 +309,12 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 57.6,
-   "small_facts": 4,
-   "small_checked": 4,
-   "small_seconds": 46.7,
+   "small_facts": 6,
+   "small_checked": 5,
+   "small_seconds": 58.0,
    "big_checked_also_found": 2,
    "small_only": [
-    "Ljubljana is the capital of Slovenia"
+    "The capital of Slovenia is Ljubljana"
    ],
    "missed": []
   },
@@ -339,7 +327,7 @@
    "big_seconds": 155.0,
    "small_facts": 6,
    "small_checked": 0,
-   "small_seconds": 68.9,
+   "small_seconds": 38.0,
    "big_checked_also_found": 0,
    "small_only": [],
    "missed": [
@@ -355,18 +343,12 @@
    "big_facts": 2,
    "big_checked": 2,
    "big_seconds": 75.7,
-   "small_facts": 8,
-   "small_checked": 4,
-   "small_seconds": 110.8,
-   "big_checked_also_found": 1,
-   "small_only": [
-    "sentence-transformers/all-mpnet-base-v2 has 0.109B parameters",
-    "sentence-transformers/all-mpnet-base-v2 has 109.97 MB of openvino_model_qint8_quantized.bin",
-    "sentence-transformers/all-mpnet-base-v2 has 741.88 kB of openvino_model_qint8_quantized.xml"
-   ],
-   "missed": [
-    "The license for sentence-transformers/all-mpnet-base-v2 is apache-2.0"
-   ]
+   "small_facts": 6,
+   "small_checked": 2,
+   "small_seconds": 71.2,
+   "big_checked_also_found": 2,
+   "small_only": [],
+   "missed": []
   },
   {
    "task": "What is the latest version of sqlalchemy on PyPI, and what licence does it have?",
@@ -375,14 +357,12 @@
    "big_facts": 2,
    "big_checked": 1,
    "big_seconds": 29.3,
-   "small_facts": 1,
-   "small_checked": 0,
-   "small_seconds": 8.6,
-   "big_checked_also_found": 0,
+   "small_facts": 2,
+   "small_checked": 1,
+   "small_seconds": 10.9,
+   "big_checked_also_found": 1,
    "small_only": [],
-   "missed": [
-    "The latest version of sqlalchemy on PyPI is 2.1.8"
-   ]
+   "missed": []
   },
   {
    "task": "In which year was the University of Bologna founded?",
@@ -393,7 +373,7 @@
    "big_seconds": 54.5,
    "small_facts": 2,
    "small_checked": 2,
-   "small_seconds": 27.0,
+   "small_seconds": 29.8,
    "big_checked_also_found": 0,
    "small_only": [
     "The University of Bologna was founded in 1088.",
@@ -408,12 +388,13 @@
    "big_facts": 0,
    "big_checked": 0,
    "big_seconds": 194.1,
-   "small_facts": 6,
-   "small_checked": 1,
-   "small_seconds": 100.5,
+   "small_facts": 5,
+   "small_checked": 2,
+   "small_seconds": 50.0,
    "big_checked_also_found": 0,
    "small_only": [
-    "Revisiting Error Feedback for Model Quantization was published on 2026-10-13"
+    "ArXiv paper on Revisiting Error Feedback for Model Quantization",
+    "ArXiv paper on FidelityQ: Preserving Predictive Fidelity in Ultra-Low-Bit Language Model Quantization"
    ],
    "missed": []
   },
@@ -424,20 +405,19 @@
    "big_facts": 3,
    "big_checked": 3,
    "big_seconds": 127.5,
-   "small_facts": 7,
-   "small_checked": 7,
-   "small_seconds": 92.6,
-   "big_checked_also_found": 1,
+   "small_facts": 12,
+   "small_checked": 11,
+   "small_seconds": 143.4,
+   "big_checked_also_found": 2,
    "small_only": [
-    "google/vit-base-patch16-224 has 0.087B parameters",
-    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_3 has 25 downloads",
-    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_3 has 0 likes",
-    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_5 has 23 downloads",
-    "jcbao77/google_vit-base-patch16-224-in21k_image_classification_5 has 0 likes",
-    "jwt2706/google-vit-base-patch16-224-in21k-finetuned-food-classification-86M-v0.1 has 0.086B parameters"
+    "google/vit-base-patch16-224 uses an unknown licence on Hugging Face",
+    "google/vit-base-patch16-224 has 25 downloads",
+    "google/vit-base-patch16-224 has 0 likes",
+    "google/vit-base-patch16-224 has 346.29 MB of weights",
+    "google/vit-base-patch16-224 is a pipeline for image-classification",
+    "The Google Vision Transformer (ViT) model is licensed under the Apache 2.0 License."
    ],
    "missed": [
-    "google/vit-base-patch16-224 has 15008966 downloads",
     "google/vit-base-patch16-224 has 1050 likes"
    ]
   },
@@ -448,9 +428,78 @@
    "big_facts": 2,
    "big_checked": 1,
    "big_seconds": 26.4,
-   "small_facts": 1,
+   "small_facts": 2,
    "small_checked": 1,
-   "small_seconds": 7.1,
+   "small_seconds": 12.5,
+   "big_checked_also_found": 1,
+   "small_only": [],
+   "missed": []
+  },
+  {
+   "task": "Who discovered penicillin, and in which year?",
+   "chars": 9000,
+   "chunks": 7,
+   "big_facts": 2,
+   "big_checked": 2,
+   "big_seconds": 80.3,
+   "small_facts": 7,
+   "small_checked": 1,
+   "small_seconds": 97.1,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "Penicillin is derived from the genus Penicillium"
+   ],
+   "missed": [
+    "Alexander Fleming discovered penicillin",
+    "The discovery was made in 1928"
+   ]
+  },
+  {
+   "task": "List the three newest arXiv papers about continual learning, with their titles and dates.",
+   "chars": 2681,
+   "chunks": 2,
+   "big_facts": 0,
+   "big_checked": 0,
+   "big_seconds": 196.1,
+   "small_facts": 6,
+   "small_checked": 3,
+   "small_seconds": 62.4,
+   "big_checked_also_found": 0,
+   "small_only": [
+    "ArXiv paper on 'Against All Likelihood' published on 2026-11-06 with title 'Against All Likelihood'",
+    "ArXiv paper on 'Copies Are Not Confirmations' published on 2026-11-06 with title 'Copies Are Not Confirmations'",
+    "ArXiv paper on 'DelegateEval' published on 2026-11-05 with title 'DelegateEval'"
+   ],
+   "missed": []
+  },
+  {
+   "task": "What licence does facebook/bart-large-cnn use on Hugging Face, and how many downloads and likes does it have?",
+   "chars": 2324,
+   "chunks": 2,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 46.1,
+   "small_facts": 7,
+   "small_checked": 4,
+   "small_seconds": 41.4,
+   "big_checked_also_found": 1,
+   "small_only": [
+    "facebook/bart-large-cnn is gated False",
+    "The model has 445 bytes in .gitattributes",
+    "The model has 363 bytes in generation_config.json"
+   ],
+   "missed": []
+  },
+  {
+   "task": "What is the latest version of rich on PyPI, and what licence does it have?",
+   "chars": 441,
+   "chunks": 1,
+   "big_facts": 2,
+   "big_checked": 1,
+   "big_seconds": 25.8,
+   "small_facts": 2,
+   "small_checked": 1,
+   "small_seconds": 16.1,
    "big_checked_also_found": 1,
    "small_only": [],
    "missed": []

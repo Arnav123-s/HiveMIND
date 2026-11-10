@@ -69,9 +69,20 @@ def check_arxiv(run, report):
     srcs = dict(re.findall(r"^\[(\d+)\]\s*(\S+)", report, re.M))
     cited = [srcs[n] for n in re.findall(r"\[(\d+)\]", body) if n in srcs]
     ids = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", body + "\n" + "\n".join(cited))))[:3]
+    ns = {"a": "http://www.w3.org/2005/Atom"}
+    if len(ids) < 3:
+        # an answer may list a paper by its title alone, with the link only under Sources (run normal_reg did, and
+        # was scored "0 papers"): a source counts as listed when its real arXiv title stands in the answer's body
+        listed = list(dict.fromkeys(re.findall(r"(\d{4}\.\d{4,5})(?:v\d+)?", "\n".join(srcs.values()))))
+        if listed:
+            squash = lambda t: re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()  # noqa: E731
+            for e in ET.fromstring(_get(f"https://export.arxiv.org/api/query?id_list={','.join(listed)}")).findall("a:entry", ns):
+                pid = re.search(r"(\d{4}\.\d{4,5})", e.findtext("a:id", "", ns)).group(1)
+                if pid not in ids and squash(e.findtext("a:title", "", ns)) in squash(body):
+                    ids.append(pid)
+            ids = ids[:3]
     if len(ids) < 3:
         return False, f"{len(ids)} arXiv papers listed in the answer"
-    ns = {"a": "http://www.w3.org/2005/Atom"}
     root = ET.fromstring(_get(f"https://export.arxiv.org/api/query?id_list={','.join(ids)}"))
     bad = []
     for e in root.findall("a:entry", ns):
@@ -135,7 +146,8 @@ BRIDGE = ("The Ridgeway bridge, built in 1932, was closed in March for repairs a
 TASKS = [  # (id, kind, task, check)
     ("lookup", "facts from a source",
      "Find the licence and the parameter count of HuggingFaceTB/SmolLM2-135M-Instruct on Hugging Face and give me a "
-     "two-line summary. Do not log in or pay.", has("apache", "0.135", max_lines=2)),
+     "two-line summary. Do not log in or pay.", # "135M" is the same count as "0.135B": run small8 gave "Apache-2.0 ... 135M" and was scored as missing 0.135
+     has("apache", any_of=("0.135", "135m", "135 m", "134.5"), max_lines=2)),
     ("arxiv", "list from a source", "List the three newest arXiv papers about mixture of experts, with their titles and dates.",
      check_arxiv),
     ("chart", "numbers + chart", "Which has more downloads on Hugging Face, Qwen/Qwen3-1.7B or "

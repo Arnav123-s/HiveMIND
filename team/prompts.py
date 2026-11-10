@@ -78,6 +78,8 @@ CODER = """You are the coder on Arnav's team. Write one complete Python 3 progra
 - Web pages: parse response.content (bytes) with BeautifulSoup, or set response.encoding = response.apparent_encoding,
   so characters like £ survive. A listing with several pages (a "next" link): read every page before choosing.
 - "Cheapest", "top", "most", "newest": sort every item by that value, then take the number asked for.
+- When "Results from the team" already gives the values the task needs, write those values into the program as
+  they are; do not fetch them again from the web.
 - Do not log in, delete files, send messages or pay for anything."""
 
 CODER_FIX = """The program did not do the task. Problem:
@@ -183,6 +185,8 @@ CALCULATOR = """You compute for Arnav's team. Write a short Python 3 program tha
 - Take every number from the TASK or RESULTS SO FAR; never invent data.
 - Print the answer with a short label: print("Answer:", answer). Round only as the task asks, to exactly the decimal
   places it names (round(x, n) for n places).
+- If the task asks for more than one thing, print each on its own line with a label that names it:
+  print("Highest month:", name) and print("Average per month:", average), never both after one "Answer:".
 - A day of the week, a month or any other name: print the name (date.strftime("%A")), never its number.
 - Use only math, datetime, statistics, fractions, decimal or calendar. No files, no network, no input().
 - Output only the program in a single ```python block."""

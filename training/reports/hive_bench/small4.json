@@ -1,0 +1,104 @@
+[
+ {
+  "id": "arxiv",
+  "ok": false,
+  "why": "0 arXiv papers listed in the answer",
+  "seconds": 639,
+  "note": "",
+  "calls": 37,
+  "model_seconds": 625.8,
+  "by_member": {
+   "coordinator (fast)": [
+    2,
+    24.2
+   ],
+   "plan_reviewer (fast)": [
+    1,
+    4.8
+   ],
+   "researcher (fast)": [
+    11,
+    148.2
+   ],
+   "condenser (fast)": [
+    6,
+    290.1
+   ],
+   "verifier (fast+verifier)": [
+    6,
+    38.2
+   ],
+   "juror_brain (fast)": [
+    4,
+    47.6
+   ],
+   "juror_fast (fast)": [
+    1,
+    10.1
+   ],
+   "writer (fast+writer)": [
+    2,
+    22.0
+   ],
+   "critic (fast)": [
+    3,
+    30.7
+   ],
+   "editor (fast)": [
+    1,
+    9.9
+   ]
+  },
+  "cell_calls": 8,
+  "plan": [
+   "researcher",
+   "writer"
+  ],
+  "kind": "list from a source"
+ },
+ {
+  "id": "csv",
+  "ok": false,
+  "why": "CSV has 0/3 of the cheapest prices ['10.69', '11.84', '12.29']",
+  "seconds": 142,
+  "note": "",
+  "calls": 8,
+  "model_seconds": 132.3,
+  "by_member": {
+   "coder (coder15)": [
+    2,
+    69.5
+   ],
+   "code_reviewer (coder15)": [
+    1,
+    6.3
+   ],
+   "verifier (fast+verifier)": [
+    1,
+    11.2
+   ],
+   "juror_brain (fast)": [
+    1,
+    9.9
+   ],
+   "juror_fast (fast)": [
+    1,
+    3.8
+   ],
+   "writer (fast+writer)": [
+    1,
+    18.2
+   ],
+   "critic (fast)": [
+    1,
+    13.4
+   ]
+  },
+  "cell_calls": 3,
+  "plan": [
+   "coder",
+   "writer"
+  ],
+  "kind": "scrape to a file"
+ }
+]

@@ -161,6 +161,76 @@ def missing_page_fact(err, urls, code):
     return None
 
 
+SMALLEST = re.compile(r"\b(cheapest|lowest|fewest|least|smallest|shortest|oldest|earliest)\b", re.I)
+LARGEST = re.compile(r"\b(most|highest|largest|biggest|longest|newest|latest|top|best)\b", re.I)
+SORT_LINE = re.compile(r"sorted\(|\.sort\(|sort_values\(|nlargest|nsmallest")
+SORT_DIRECTION = """You check ONE thing in a program: the direction of a sort. Reply with JSON only: {"first_item":"smallest" or "largest"}
+- sorted(...) or .sort(...) without reverse, or reverse=False, or ascending=True: the smallest value comes first.
+- reverse=True or ascending=False: the largest value comes first.
+- nsmallest: smallest first. nlargest: largest first."""
+
+
+def order_problem(task, code):
+    """One narrow question, asked of a small model: which way does the program's sort run? What the task wants is
+    read from its own word in code. (The 1.5B coder sorted the "cheapest" books with reverse=True; the reviewer and
+    the jury of three, all small, passed it. Asked only about the line, the 1.7B read 7 of 7 directions right.)"""
+    own = task.split("\n(Previous attempt was rejected:")[0]
+    lo, hi = SMALLEST.search(own), LARGEST.search(own)
+    if bool(lo) == bool(hi):  # no such word, or both: nothing to compare
+        return None
+    lines = [ln.strip() for ln in (code or "").splitlines() if SORT_LINE.search(ln)]
+    if len(lines) != 1 or "[-" in code or "reversed(" in code or ".reverse()" in code:
+        return None  # several sorts, or the far end is taken: not a question of one line
+    data, _ = llm.chat_json("juror_fast", [{"role": "system", "content": SORT_DIRECTION},
+                                           {"role": "user", "content": "LINE: " + lines[0][:400]}], max_new_tokens=30)
+    first = data.get("first_item") if isinstance(data, dict) else None
+    want = "smallest" if lo else "largest"
+    if first in ("smallest", "largest") and first != want:
+        return (f"The task asks for the {(lo or hi).group(0).lower()}: the {want} value must come first. This line "
+                f"puts the {first} first: {lines[0][:200]}. Change the direction of that sort.")
+    return None
+
+
+def unread_pages(task, code):
+    """Checked on the page itself: the listing goes on (a "next" link) and the program never follows one. (The 1.5B
+    coder read the first of two pages and saved two of the three cheapest books.)"""
+    if re.search(r"next|page-|page=|\?p=", code or "", re.I):
+        return None
+    from bs4 import BeautifulSoup
+    from ..tools import web
+    for url in web_urls(task.split("\n(Previous attempt was rejected:")[0], code):
+        try:
+            soup = BeautifulSoup(web.get(url), "lxml")
+        except Exception:  # noqa: BLE001 - a page that cannot be read gives no fact
+            continue
+        a = soup.select_one('a[rel~="next"], li.next a, a.next')
+        if a and a.get("href"):
+            return (f"{url} is only the first page of the listing: it has a \"next\" link ({str(a)[:120]}). Read "
+                    f"every page (follow the next link with urljoin(page url, href) until there is none) before "
+                    f"choosing or saving anything.")
+    return None
+
+
+FETCHES = re.compile(r"\brequests\.(?:get|post)\s*\(|\burlopen\s*\(|\bhttpx\.|\bBeautifulSoup\s*\(")
+ASKS_FETCH = re.compile(r"https?://|\bwww\.|\b[\w-]+\.(?:com|org|net|io|co)\b|\b(?:fetch\w*|scrap\w*|crawl\w*|api|url|website|"
+                        r"web ?page|online)\b|\bdownload (?:the|it|them|from|a)\b|\bfrom the (?:web|site|page|internet)\b", re.I)
+
+
+def refetches(task, context, code):
+    """The program goes to the web for values an earlier step already found, and the step names no page to read: the
+    1.5B coder, handed "220,473 downloads" by the researcher, scraped a page element that does not exist instead.
+    Returns what to tell it, or None."""
+    results = (context or "").split("## ", 1)[1] if "## " in (context or "") else ""
+    if not results or not FETCHES.search(code or "") or ASKS_FETCH.search(task or ""):
+        return None
+    vals = [ln.strip()[:220] for ln in results.splitlines() if re.search(r"\d", ln) and not ln.startswith("Items:")][:6]
+    if not vals:
+        return None
+    return ("The program fetches pages, but this step names no page to read and the team already found the values. "
+            "Do not use requests or BeautifulSoup. Write the values into the program as plain numbers, taken from "
+            "these results:\n" + "\n".join(vals))
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -176,12 +246,24 @@ def run(task, context, board, step_id, guard, workdir):
     own = task.split("\n(Previous attempt was rejected:")[0]
     messages = task_messages(task, context, preview(own, workdir))
     want = expected_outputs(task, before)
-    last, last_error = None, None
+    last, last_error, tried = None, None, set()
     name = f"{re.sub(r'[^A-Za-z0-9_]', '_', step_id)}.py"
     for attempt in range(1, config.CODER_MAX_ATTEMPTS + 1):
         stop.check()
         out = llm.chat("coder", messages, max_new_tokens=1400, stop="code")
         code = extract_code(out)
+        if code.strip() in tried:
+            # told what was wrong, it wrote the same program again (the 1.5B coder: six times in one run). Asking the
+            # same way gives the same program; it is asked once more with some chance in the choice of words.
+            board.log("coder", "same-program", f"attempt {attempt}: the program did not change; asked again")
+            code = extract_code(llm.chat("coder", messages, max_new_tokens=1400, stop="code", temperature=0.7))
+        tried.add(code.strip())
+        again = refetches(own, context, code)
+        if again and attempt < config.CODER_MAX_ATTEMPTS:  # told before it runs; the last attempt runs whatever it is
+            board.log("coder", "team-values", f"attempt {attempt}: it fetches what the team already found; told to use the results")
+            messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                                   {"role": "user", "content": prompts.CODER_FIX.format(error=again)}]
+            continue
         if not guard.check_code("coder", code):
             return {"summary": "Stopped: the program needs Arnav's approval before it can run.", "code": code,
                     "returncode": None, "files": [], "attempts": attempt}
@@ -215,11 +297,16 @@ def run(task, context, board, step_id, guard, workdir):
                           + ("pass" if chk["returncode"] == 0 else "FAIL"))
                 if chk["returncode"] != 0:
                     err = (chk["stderr"] or chk["stdout"])[-1200:]
+                    # kept with the result: the program itself exits 0, and after the last attempt a jury of small
+                    # models passed a fib() that returned 2 for fib(2)
+                    last["examples_failed"] = last_line(err) or "an example from his task does not hold"
                     messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
                                            {"role": "user", "content": prompts.CODER_FIX.format(
                                                error=err + "\nHint: " + prompts.FIX_HINTS["check"])}]
                     continue
-            problems = sanity(res["stdout"]) or review(task, code, res["stdout"])
+            wrong_way = order_problem(task, code)
+            hard = [x for x in (wrong_way, unread_pages(task, code)) if x]  # checked in code and on the page
+            problems = hard or sanity(res["stdout"]) or review(task, code, res["stdout"])
             if not problems or attempt == config.CODER_MAX_ATTEMPTS:
                 break
             board.log("code_reviewer", "fix", " | ".join(problems)[:300])
@@ -260,4 +347,4 @@ def run(task, context, board, step_id, guard, workdir):
     summary = (last["stdout"] or "").strip()[-1500:] or (last["stderr"] or "")[-600:]
     return {"summary": summary, "code_path": str(workdir / name), "returncode": last["returncode"],
             "stderr": last["stderr"][-1500:], "files": files, "attempts": last["attempts"],
-            "seconds": last["seconds"]}
+            "seconds": last["seconds"], **({"examples_failed": last["examples_failed"]} if last.get("examples_failed") else {})}

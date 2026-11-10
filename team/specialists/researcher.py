@@ -3,7 +3,7 @@ import json
 import re
 import time
 
-from .. import llm, prompts
+from .. import config, llm, prompts
 from ..cells import use
 from ..tools import web
 
@@ -143,12 +143,21 @@ def condense(task, title, text, board, limit=3000):
     return "\n".join(lines[i] for i in sorted(set(keep)))
 
 
+_VALUE = re.compile(r"(?<![\w./-])\d[\d,.]*\d|(?<![\w./-])\d(?![\w/-])")  # a number standing alone, not part of a name
+
+
 def with_value(fact):
     """A bare label ("parameter count") states nothing the checker can match to its quote ("params 0.135B"), so it was
-    rejected while the number still reached the report through the summary. Such a claim takes its quote's words."""
+    rejected while the number still reached the report through the summary. Such a claim takes its quote's words.
+    So does a claim that names a quantity and leaves the number out ("Number of downloads for Qwen/Qwen3-1.7B on
+    Hugging Face", quote "downloads 3597908": the small composer then wrote that the model had 0 downloads)."""
     claim, quote = str(fact.get("claim", "")).strip(), str(fact.get("quote", "")).strip()
-    if quote and not re.search(r"\d", claim) and len(claim.split()) <= 4 and quote.lower() not in claim.lower():
-        fact["claim"] = f"{claim}: {quote[:200]}"
+    if not quote or quote.lower() in claim.lower():
+        return fact
+    label = not re.search(r"\d", claim) and len(claim.split()) <= 4
+    no_number = not _VALUE.search(claim) and bool(_VALUE.search(quote))
+    if label or no_number:
+        fact["claim"] = f"{claim.rstrip('.')}: {quote[:200]}"
     return fact
 
 
@@ -169,6 +178,13 @@ def run(task, context, board, step_id):
         return {"summary": "No source could be read. " + "; ".join(notes), "items": [], "facts": [],
                 "corpus": {}, "notes": notes}
     text = "\n\n".join(blocks)[:9000]
+    if config.SMALL:  # no 4B: the sources are read in small parts, one small job per call (reader.py)
+        from . import reader
+        head = f"Today is {today()}.\nTask: {task}"
+        facts = [with_value(f) for f in reader.read(head, text)]
+        summary, items = reader.compose(head, facts)
+        board.log("researcher", "read", f"small reader: {len(facts)} facts from {len(reader.chunks(text))} parts")
+        return {"summary": summary, "items": items, "facts": facts, "corpus": corpus, "notes": notes}
     data, raw = llm.chat_json("researcher", extract_messages(task, text), max_new_tokens=900)
     if not isinstance(data, dict):
         data = {"summary": raw[:500], "items": [], "facts": []}
