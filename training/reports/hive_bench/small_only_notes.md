@@ -66,3 +66,7 @@ After the rule "fewer items than ordered: ask the researcher once for others" (s
 - Small only (`small4`): arxiv fail (0 papers; on the retry the 1.7B juror dropped on-topic papers, saying the
   source line "does not contain the three newest"; it judged one item against the whole order). csv fail (0 of the
   3 cheapest prices); this run started before the coder's same-program rule.
+- Small only (`small5`), with the sort-direction check and the same-program rule: csv fail, but 2 of the 3
+  cheapest prices where it had 0 (the check named the wrong-way sort and the coder fixed it; it read only the
+  first of two pages). chart fail: the coder fetched the model page and found no number, and its retries, even
+  sampled, ended in the same error.

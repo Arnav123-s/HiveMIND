@@ -191,6 +191,26 @@ def order_problem(task, code):
     return None
 
 
+def unread_pages(task, code):
+    """Checked on the page itself: the listing goes on (a "next" link) and the program never follows one. (The 1.5B
+    coder read the first of two pages and saved two of the three cheapest books.)"""
+    if re.search(r"next|page-|page=|\?p=", code or "", re.I):
+        return None
+    from bs4 import BeautifulSoup
+    from ..tools import web
+    for url in web_urls(task.split("\n(Previous attempt was rejected:")[0], code):
+        try:
+            soup = BeautifulSoup(web.get(url), "lxml")
+        except Exception:  # noqa: BLE001 - a page that cannot be read gives no fact
+            continue
+        a = soup.select_one('a[rel~="next"], li.next a, a.next')
+        if a and a.get("href"):
+            return (f"{url} is only the first page of the listing: it has a \"next\" link ({str(a)[:120]}). Read "
+                    f"every page (follow the next link with urljoin(page url, href) until there is none) before "
+                    f"choosing or saving anything.")
+    return None
+
+
 def last_line(err):
     """The error's last line without addresses and line numbers, to tell whether a fix changed anything."""
     lines = [ln.strip() for ln in (err or "").strip().splitlines() if ln.strip()]
@@ -256,7 +276,8 @@ def run(task, context, board, step_id, guard, workdir):
                                                error=err + "\nHint: " + prompts.FIX_HINTS["check"])}]
                     continue
             wrong_way = order_problem(task, code)
-            problems = [wrong_way] if wrong_way else sanity(res["stdout"]) or review(task, code, res["stdout"])
+            hard = [x for x in (wrong_way, unread_pages(task, code)) if x]  # checked in code and on the page
+            problems = hard or sanity(res["stdout"]) or review(task, code, res["stdout"])
             if not problems or attempt == config.CODER_MAX_ATTEMPTS:
                 break
             board.log("code_reviewer", "fix", " | ".join(problems)[:300])
