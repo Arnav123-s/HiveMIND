@@ -88,6 +88,23 @@ def _judge_one(member, check, work, evidence):
 _VS = re.compile(r"(-?\d[\d,]*(?:\.\d+)?)['\"]?(?:[^\d]{0,40}?)\bnot\b[^\d-]{0,20}(-?\d[\d,]*(?:\.\d+)?)")
 
 
+SHORT = "the task asks for"
+_COUNT = re.compile(r"\b(two|three|four|five|six|seven|eight|[2-8])\s+(?!(?:sentences?|words?|lines?|paragraphs?|"
+                    r"decimals?|bullets?|points?|days?|hours?|minutes?|weeks?|months?|years?|times|percent|steps?|"
+                    r"parts?|columns?|rows?)\b)[a-z]", re.I)
+_NUM = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8}
+
+
+def asked_count(task):
+    """How many things the task asks to be listed ("the three newest papers" -> 3); None when it names no such
+    count. Counts of layout or time ("three sentences", "5 days") are not counts of items."""
+    m = _COUNT.search(task or "")
+    if not m:
+        return None
+    w = m.group(1).lower()
+    return _NUM.get(w) or int(w)
+
+
 def same_number_objection(reason):
     """True when a FAIL reason's only complaint is 'X, not Y' and X and Y are the same number."""
     m = _VS.search(reason or "")
@@ -298,6 +315,13 @@ def verify(step, result, board, workdir):
             board.log("juror_brain", "drop", "items that do not meet the task: " + "; ".join(dropped))
             result["summary"] = (result.get("summary", "") + "\nDropped by the team's checks (do not use): "
                                  + "; ".join(dropped))
+        want = asked_count(without_layout(step["task"]))
+        if dropped and kept and want and len(kept) < want and SHORT not in step["task"]:
+            # "the three newest papers", one of three was off topic, and the answer listed two: the researcher is
+            # asked once for others in place of the dropped ones (a second shortfall goes on with what there is)
+            return "FAIL", (f"{SHORT} {want}, and only {len(kept)} listed items meet the task. Keep: "
+                            + "; ".join(kept) + ". Do not list again: " + "; ".join(dropped)[:300]
+                            + ". List other items from the source in their place.")
         if result.get("items") and not kept and good == 0:
             # items are a list the researcher offers; its verified facts are the evidence: a held-out explanation's
             # search titles ("Hash table", "Open addressing") were dropped and failed the step with them
