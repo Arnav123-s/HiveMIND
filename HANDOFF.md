@@ -25,6 +25,21 @@ benchmaxing, held-out sets run once, no model names in commits.
 - The machine is the agent's: disk space may be freed. (Freed: an unused 2.5B model file and the package download
   cache. The models the hive uses were kept.) "Don't delete caches" below no longer holds for this machine.
 - All specialists are trained on the CPU already (128 lessons: 25 minutes); he asked for exactly that.
+- Train from scratch on the CPU, and let the hive find, harvest and train on its own data. (Built: `team/harvest.py`,
+  `training/scratch.py`.)
+- Cells trained together, depending on each other, acting as one brain. (Built: `scratch.py together [--consult]`.)
+- His picture, in his words: thousands of cells in a body, each with a function, alone not always important, together
+  doing big jobs; all different; specialities may overlap; each cell the smallest model that can be made; more cells
+  with more data, conquering more. (Built: `training/body.py`: one stem cell, overlapping territories, cells that weigh
+  in by fit, growth where the body is worst.)
+- It must get better on its own: the agent cannot watch over it and his access to the agent is limited. (Built:
+  `python -m team body`, one unattended turn with a keep-only-if-measured-better gate, in `serve`'s idle loop.)
+- Research he pointed to, looked up: weight-space programming (MIT CSAIL, Nov 2026; tiny localized edits expose an
+  ability a model has, do not create one); LeCun and Balestriero's JEPA paper (Oct 2026; a 109M model lines up with
+  image models better than a 72B one; the training method counted, 42x fewer examples); Tiny Recursive Model (7M
+  weights, narrow puzzles, heavy augmentation); BitNet (fast on CPU, needs its own runtime).
+- **This cloud machine is reclaimed when idle.** The hive goes on evolving only where it is installed and left
+  running: `python -m team install` on a device of his (README "Install", "Always on").
 
 **Built on this branch (143 tests):**
 - `python -m team school` (`team/school.py`, README "School"): a small model learns a bigger member's job from that

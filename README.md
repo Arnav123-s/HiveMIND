@@ -746,6 +746,49 @@ sharpens what a model can nearly do and adds little where it cannot (the taught 
 The always-on agent recruits one model whenever the device is idle, in turn with dreaming, growing cells, evolving
 instructions and school. `python -m team org` lists every recruit and its tryouts; `cells/recruits.json` is the record.
 
+## From nothing: a body of cells the hive grows itself (`python -m team body`, `training/scratch.py`, `training/body.py`)
+
+Everything above starts from somebody else's pretrained model. This part does not. It is the direction Arnav gave
+on 2026-11-10: thousands of cells, each the smallest model that can be made, none doing the same thing, their
+specialities overlapping, no cell important alone, the body important together, and more cells grown with more data,
+without anyone watching over it. All of it runs on the CPU.
+
+1. **Harvest** (`python -m team harvest`, `team/harvest.py`). The hive gathers its own reading matter: the text of
+   its own logged work, open text datasets (ungated, licence checked each time), and a slow trickle from Wikipedia's
+   API. Lines are kept once. The harvest is not in git; each machine gathers its own.
+2. **A vocabulary and a stem cell** (`training/scratch.py`). 4,096 word pieces learned from the harvest. A model of
+   2.6 million weights starts from random numbers and reads the harvest (it learns to predict the next piece).
+   A second way of reading, after LeCun's joint-embedding work: from one passage, predict what the passage next to
+   it means (`scratch.py pairs`).
+3. **Cells for the hive's jobs.** The stem cell with every weight trained on one cell job (`scratch.py fit`), or one
+   brain for all the jobs: a shared trunk, a small head per job, trained on all jobs at once, optionally with heads
+   that see what every other head says about the same input (`scratch.py together [--consult]`). Same rows, same
+   test of unseen words as the cells above.
+4. **A body** (`training/body.py`). After how a body does it:
+   - one origin: every cell starts as a copy of the stem cell, so all share a vocabulary and an inner language;
+   - territories that overlap: every window of text is placed by what the stem cell makes of it, and belongs to its
+     two nearest territories; one cell grows on each territory;
+   - each cell knows when it applies: the cells of the nearest territories wake and the rest sleep ("by territory"),
+     or every cell reads the start of a passage and one that predicted it well gets more say ("by fit");
+   - growth where the body fails: a new cell is grown on the text the whole body predicts worst;
+   - a cell that does not help is removed at birth.
+5. **Nobody watching.** `python -m team body` is one turn: whatever is missing is made (harvest, vocabulary, stem
+   cell, first cells); otherwise one cell is grown and **kept only if the body then predicts better on passages it
+   never trained on** (a "gate" set; a separate "report" set is only ever reported). The always-on agent runs a
+   harvest and a turn whenever the device is idle. That one rule is what lets it go on alone: nothing is kept that
+   did not measure better.
+
+**Measured so far.** The harvest: 48 MB (1 MB own work, 25 MB Simple English Wikipedia, 22 MB simple stories).
+The stem cell reads about 14,700 pieces a second on four cores. One cell job trained from random weights without
+reading first (licence check): 99% on words it saw, 53% on unseen words, which is chance. Everything else in this
+section is built and tested as code and **not measured yet**: cells against today's cells, one brain against cells
+trained apart, the body against one model with the same total training (`training/reports/scratch_cells.json`,
+`training/reports/body.json`).
+
+What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
+of simple text. Planning and programming still come from the pretrained small models and their school. The open
+question this section exists to answer by measurement is how far many such cells, grown this way, get together.
+
 ## The demo
 
 `demo/TASK.md` is the one prompt; `demo/README.md` is generated from the run's own records; `demo/run/` holds
