@@ -13,6 +13,10 @@
                                                          head per job, trained on all jobs at once (--consult: each
                                                          head also sees what the other heads say about the input)
 
+    python training/scratch.py pairs [--minutes 30]      a second way of reading: from one passage, predict what the
+                                                         passage next to it means (writes base_pairs.pt);
+                                                         `together --trunk base_pairs` then builds the brain on it
+
 Today's cells are SmolLM2-135M (someone else's pretrained weights) with a small edit. This is the other way to make
 one: a model of about 2.6 million weights that starts from random numbers. What it knows about words it gets from the
 text the hive harvested itself (team/harvest.py); what it knows about its job it gets from the same training rows as
@@ -168,6 +172,58 @@ def pretrain(minutes=60, batch=32, lr=1e-3, seed=0):
                    pretrain_pieces_read=rec.get("pretrain_pieces_read", 0) + seen, weights=n)
 
 
+def pairs(minutes=30, batch=48, lr=3e-4, seed=0, width=64):
+    """A second way of reading, after LeCun's joint-embedding work (JEPA; a 109M model trained on paired views lined
+    up with image models better than a 72B language model): two passages that stand next to each other in the
+    harvest are two views of one thing. The trunk reads each; from what the first means it must predict what the
+    second means. Two terms keep it from the easy way out of saying the same for everything: every direction of the
+    meaning must keep its spread across a batch, and the directions must not copy each other (VICReg, from the same
+    lab). Next-piece prediction goes on beside it, so the trunk does not forget how to read.
+    It goes on from cells/scratch/base.pt and writes cells/scratch/base_pairs.pt; base.pt stays as it is."""
+    tk = tokenizer()
+    data = corpus(tk)
+    torch.manual_seed(seed)
+    model = Tiny()
+    src = HOME / "base_pairs.pt" if (HOME / "base_pairs.pt").exists() else HOME / "base.pt"
+    model.load_state_dict(torch.load(src))
+    predict = nn.Sequential(nn.Linear(DIM, 2 * DIM), nn.GELU(), nn.Linear(2 * DIM, DIM))
+    opt = torch.optim.AdamW(list(model.parameters()) + list(predict.parameters()), lr=lr, weight_decay=0.01)
+    rnd, t0, steps, log = random.Random(seed + _record().get("pairs_steps", 0)), time.time(), 0, []
+
+    def spread(z):
+        z = z - z.mean(0)
+        std = torch.sqrt(z.var(0) + 1e-4)
+        cov = (z.T @ z) / (z.shape[0] - 1)
+        off = cov - torch.diag(torch.diag(cov))
+        return F.relu(1 - std).mean(), (off ** 2).sum() / z.shape[1]
+    while time.time() - t0 < minutes * 60:
+        at = [rnd.randrange(0, len(data) - 2 * width - 1) for _ in range(batch)]
+        a = torch.stack([torch.from_numpy(data[i:i + width].astype("int64")) for i in at])
+        b = torch.stack([torch.from_numpy(data[i + width:i + 2 * width + 1].astype("int64")) for i in at])
+        ha, hb = model.body(a), model.body(b[:, :-1])
+        za, zb = ha.mean(1), hb.mean(1)
+        va, ca = spread(za)
+        vb, cb = spread(zb)
+        same = F.mse_loss(predict(za), zb)
+        read = F.cross_entropy((hb @ model.tok.weight.T).reshape(-1, VOCAB), b[:, 1:].reshape(-1))
+        loss = 25 * same + 25 * (va + vb) + (ca + cb) + read
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        opt.step()
+        steps += 1
+        log.append((same.item(), (va + vb).item(), read.item()))
+        if steps % 100 == 0:
+            m = [sum(x[i] for x in log[-100:]) / 100 for i in range(3)]
+            print(f"[scratch] pairs step {steps}: second view predicted to {m[0]:.4f}, spread lost {m[1]:.3f}, "
+                  f"next piece {m[2]:.3f}", flush=True)
+            torch.save(model.state_dict(), HOME / "base_pairs.pt")
+    torch.save(model.state_dict(), HOME / "base_pairs.pt")
+    m = [sum(x[i] for x in log[-100:]) / max(1, len(log[-100:])) for i in range(3)]
+    return _record(pairs_steps=_record().get("pairs_steps", 0) + steps, pairs_second_view=round(m[0], 4),
+                   pairs_next_piece=round(m[2], 3))
+
+
 def _batch(tk, xs):
     ids = [([BOS] + e.ids)[-CTX:] for e in tk.encode_batch(list(xs))]  # too long: the end of the input is kept
     width = max(len(i) for i in ids)
@@ -255,7 +311,7 @@ class Brain(nn.Module):
         return self.second[job](torch.cat([h, said], -1)), own
 
 
-def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print):
+def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print, trunk="base"):
     """One brain for all the cell jobs, trained on all of them at once (his direction: cells trained together, each
     depending on the others, acting as one). Each step takes one job at random and a batch of its rows, so a job
     with few rows counts as much as one with many. The same rows, dev and test as the cells trained alone."""
@@ -276,7 +332,7 @@ def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print):
     torch.manual_seed(seed)
     model = Brain({k: len(v[3]) for k, v in data.items()}, talk)
     if not plain:
-        model.trunk.load_state_dict(torch.load(HOME / "base.pt"), strict=False)
+        model.trunk.load_state_dict(torch.load(HOME / f"{trunk}.pt"), strict=False)
     opt = torch.optim.AdamW(model.parameters(), lr=1e-3 if plain else 5e-4, weight_decay=0.05)
     rnd, t0, names = random.Random(seed), time.time(), list(data)
     steps = sum(len(v[0]) for v in data.values()) * epochs // batch
@@ -315,7 +371,7 @@ def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print):
             log(f"[scratch] together{' (consulting)' if talk else ''}: step {step} of {steps}, mean dev {mean:.3f}", flush=True)
     model.load_state_dict(best[1])
     te = acc(2)
-    key = ("together_consulting" if talk else "together") + ("_plain" if plain else "")
+    key = ("together_consulting" if talk else "together") + ("_plain" if plain else "") + ("" if trunk == "base" else "_" + trunk[5:])
     torch.save(model.state_dict(), HOME / f"brain_{key}.pt")
     f = ROOT / "training" / "reports" / "scratch_cells.json"
     res = json.loads(f.read_text()) if f.exists() else {}
@@ -361,7 +417,9 @@ def main(argv):
     elif cmd == "fit":
         print(json.dumps(fit(argv[1], "--plain" in argv, rows=opt("--rows", 0))))
     elif cmd == "together":
-        print(json.dumps(together("--consult" in argv, "--plain" in argv)))
+        print(json.dumps(together("--consult" in argv, "--plain" in argv, trunk=opt("--trunk", "base"))))
+    elif cmd == "pairs":
+        print(json.dumps(pairs(opt("--minutes", 30.0))))
     elif cmd == "all":
         everything("--plain" in argv, rows=opt("--rows", 0))
     else:
