@@ -295,7 +295,7 @@ def split(rows):
     return [x for x in rows if not x["exam"]], [x for x in rows if x["exam"]]
 
 
-def train(role, name, only=None, log=print, epochs=2, rank=8, seed=0):
+def train(role, name, only=None, log=print, epochs=2, rank=8, seed=0, model=None):
     """Edit the student's weights on the lessons that are not exam lessons. With only (a set of tasks), on those
     lessons alone: a specialist for one gap learns that gap and nothing else."""
     tr, _ = split(lessons(role))
@@ -307,12 +307,14 @@ def train(role, name, only=None, log=print, epochs=2, rank=8, seed=0):
     out = config.ADAPTERS / name
     cmd = [sys.executable, str(config.ROOT / "training" / "train_lora.py"), role, "--data", str(f), "--out", str(out),
            "--rank", str(rank), "--epochs", str(epochs), "--seed", str(seed)]
+    if model:  # an edit of another model than the role's own student: a recruit that did better untouched
+        cmd += ["--model", model]
     log(f"[school] {role}: training {name} on {len(tr)} lessons", flush=True)
     r = subprocess.run(cmd, cwd=config.ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("training failed: " + (r.stderr or r.stdout)[-600:])
     from huggingface_hub import snapshot_download
-    base = snapshot_download(config.SPECIALISTS[role], allow_patterns=["*.json", "*.safetensors", "*.txt"])
+    base = snapshot_download(model or config.SPECIALISTS[role], allow_patterns=["*.json", "*.safetensors", "*.txt"])
     conv = config.ROOT / "training" / "llama_cpp_convert"
     (config.ROOT / "adapters_gguf").mkdir(exist_ok=True)
     r = subprocess.run([sys.executable, str(conv / "convert_lora_to_gguf.py"), str(out), "--base", base, "--outfile",
@@ -387,8 +389,16 @@ def teach_fixes(role, n, log=print):
 
 # ---- the specialists of a role answer together -------------------------------------------------------------------
 def _spec(role, voter):
+    """What a voice of the role runs on: the untouched student, one of the student's edits, another model the hive
+    recruited (team/recruit.py), or an edit of such a model ("model+edit")."""
     st = ROLES[role]["student"]
-    return (st, False) if voter == "untouched" else (f"{st}+{voter}", True)
+    if voter == "untouched":
+        return st, False
+    if "+" in voter:
+        return voter, True
+    if voter in config.GGUF_MODELS:
+        return voter, False
+    return f"{st}+{voter}", True
 
 
 def _ask(role, voter, messages, task):
@@ -648,13 +658,13 @@ def attend(role, n=160, train_it=True, log=print):
                 log(f"[school] {role}: fewer than {MIN_GAP} gaps: no new specialist this time", flush=True)
         # a second job is also examined with the first job's specialists: the turn goes to whoever measures best
         guests = [g for g in record().get(r.get("of"), {}).get("specialists", []) if g not in names] if r.get("of") else []
-        entry.update(exam(role, names + guests, log))
+        entry.update(exam(role, names + guests + list(old.get("recruits") or []), log))
         ok = entry["taught_agrees"] >= GRADUATE and entry["taught_agrees"] >= entry["untouched_agrees"] + MARGIN
         entry["graduated"] = ok
         entry["ahead"] = (entry["test_lessons"] >= MIN_TEST and entry["general"][0] != "untouched"
                           and entry["taught_agrees"] >= entry["untouched_agrees"] + MARGIN)
         best = entry["general"][0]
-        entry["runs_on"] = r["student"] if best == "untouched" else f"{r['student']}+{best}"
+        entry["runs_on"] = _spec(role, best)[0]
         entry["why"] = ("graduated" if ok else
                         f"not yet: it needs {GRADUATE:.0%} and {MARGIN:.0%} over the untouched student")
         _visit(role, None)

@@ -18,6 +18,8 @@
     python -m team evolve ROLE [--variants 3] [--generations 1]   evolve a specialist's prompt (gated)
     python -m team life [--min 200] [--no-train]   one turn of the hive's life: notice new small jobs in its own calls,
                                           grow a cell for each, check the working ones, retire the bad (team/life.py)
+    python -m team recruit                find a small open model the hive does not have, try it on the roles' exams,
+                                          enrol it where it measures up (team/recruit.py)
     python -m team org                    the hive as an organisation: teams, members, cells, who holds each job
 """
 import argparse
@@ -25,7 +27,7 @@ import json
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
-            "uninstall", "project", "projects", "life", "org", "school"}
+            "uninstall", "project", "projects", "life", "org", "school", "recruit"}
 
 
 def main():
@@ -37,6 +39,9 @@ def main():
         if cmd == "life":
             from . import life
             return life.main(rest)
+        if cmd == "recruit":
+            from . import recruit
+            return recruit.main(rest)
         if cmd == "school":
             from . import school
             return school.main(rest)

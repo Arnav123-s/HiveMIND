@@ -93,6 +93,16 @@ def chart():
             out.append(f"  {role:<14} {MODELS.get(v['student'], v['student'])} learning from {MODELS.get(v['teacher'], v['teacher'])}: "
                        f"{status}; {v['lessons']} lessons; {line}; its specialists: {who}")
         out.append("")
+    from . import recruit
+    recs = {k: v for k, v in recruit.record().items() if not k.startswith("_")}
+    if recs:
+        out.append("RECRUITS: small models of other families the hive found and tried itself (python -m team recruit)")
+        for name, v in recs.items():
+            tries = "; ".join(f"{role}: {t['alone']:.0%} alone (untouched student {t['untouched_student']:.0%})"
+                              + (f", {t.get('student') or t.get('enrolled')}" if t.get("student") or t.get("enrolled") else ", not enrolled")
+                              for role, t in (v.get("tryouts") or {}).items()) or "not tried yet"
+            out.append(f"  {name:<22} {v['base']} ({v['params'] / 1e9:.2f}B, {v['license']}): {tries}")
+        out.append("")
     rest = [n for n in cells if n not in placed]
     if rest:
         out.append("UNPLACED CELLS: " + ", ".join(sorted(rest)))
