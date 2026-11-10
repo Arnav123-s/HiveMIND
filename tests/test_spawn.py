@@ -412,3 +412,32 @@ def test_the_from_scratch_trainer_knows_its_commands():
     for word in ("tokenizer", "pretrain", "pairs", "fit", "together", "all"):
         assert f"scratch.py {word}" in scratch.__doc__
     assert callable(scratch.pairs) and callable(scratch.together)
+
+
+def test_a_cell_that_does_not_make_the_body_better_is_removed_at_birth(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(B.T, "HOME", tmp_path)
+    for n in ("tokenizer.json", "base.pt", "cell_00.pt", "cell_01.pt"):
+        (tmp_path / n).write_bytes(b"x")
+    torch.save({"centre": torch.zeros(2, 4), "owns": {0: [1], 1: [2]}}, tmp_path / "territories.pt")
+    monkeypatch.setattr("team.harvest.files", lambda: ["x"])
+    losses = iter([2.50, 2.51, 2.51])                      # gate before, gate after (worse), the report
+
+    def grow(minutes, log=print):
+        (tmp_path / "cell_02.pt").write_bytes(b"x")
+        t = torch.load(tmp_path / "territories.pt")
+        t["centre"], t["owns"][2] = torch.zeros(3, 4), [3]
+        torch.save(t, tmp_path / "territories.pt")
+        return 2
+    monkeypatch.setattr(B, "grow", grow)
+    monkeypatch.setattr(B, "measure", lambda **k: {B.FIT: next(losses)})
+    line = B.turn(cells=2, log=lambda *a, **k: None)
+    assert "removed at birth" in line and not (tmp_path / "cell_02.pt").exists()
+    t = torch.load(tmp_path / "territories.pt")
+    assert t["centre"].shape[0] == 2 and 2 not in t["owns"]
+    losses = iter([2.50, 2.40, 2.40])                      # this time the body gets better
+    monkeypatch.setattr(B, "measure", lambda **k: {B.FIT: next(losses)})
+    assert "kept" in B.turn(cells=2, log=lambda *a, **k: None) and (tmp_path / "cell_02.pt").exists()
