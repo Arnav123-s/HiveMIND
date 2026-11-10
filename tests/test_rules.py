@@ -1568,3 +1568,26 @@ def test_a_program_that_contradicts_his_example_fails_whatever_it_printed(tmp_pa
                              {"returncode": 0, "summary": "1", "files": [],
                               "examples_failed": "AssertionError: fib(2) returned 2, but the task says fib(2) = 1"}, None, tmp_path)
     assert v == "FAIL" and "fib(2) returned 2" in why
+
+
+def test_a_claim_that_names_a_quantity_without_its_number_takes_the_quote():
+    from team.specialists.researcher import with_value
+    f = with_value({"claim": "Number of downloads for Qwen/Qwen3-1.7B on Hugging Face", "quote": "downloads 3597908"})
+    assert f["claim"].endswith(": downloads 3597908")
+    full = {"claim": "Qwen/Qwen3-1.7B has 3597908 downloads", "quote": "downloads 3597908"}
+    assert with_value(dict(full)) == full
+    words = {"claim": "The licence of the model is apache-2.0", "quote": "license apache-2.0"}
+    assert with_value(dict(words)) == words
+
+
+def test_the_coder_is_told_to_use_the_teams_values_instead_of_fetching_them_again():
+    from team.specialists.coder import refetches
+    ctx = ("ARNAV'S WHOLE TASK: Which has more downloads? Make a bar chart.\n\n## s1 (researcher, verdict=PASS): Find the "
+           "downloads.\nResult: A has 3,597,908 downloads and B has 220,473.\nItems: [\"A\", \"B\"]\n- B has 220,473 downloads [u]")
+    code = "import requests\nfrom bs4 import BeautifulSoup\nr = requests.get('https://huggingface.co/A')\n"
+    task = "Write a Python program to generate a bar chart comparing the number of downloads for A and B."
+    msg = refetches(task, ctx, code)
+    assert msg and "3,597,908" in msg and "Items:" not in msg
+    assert refetches(task, ctx, "import matplotlib\nvals = [3597908, 220473]") is None        # it uses the values
+    assert refetches(task, "", code) is None                                                   # nothing was found before
+    assert refetches("Scrape the prices from books.toscrape.com and chart them.", ctx, code) is None  # he ordered a fetch

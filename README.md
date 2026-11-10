@@ -611,6 +611,19 @@ both sides through the hive's checks (quote word for word in the source, the ver
 | inputs where only this side had a checked fact | | 5 |
 | model seconds | 2202 | 1205 |
 
+**The same 26 inputs after the reader's instruction lost its example value** (`training/reports/chunk_read.json`; the
+table above is kept in `chunk_read_first_instruction.json`). The instruction used to show what a claim looks like with
+("X has 0.135B parameters"); in the small-only runs the 1.7B returned that parameter count as a fact when asked for
+download counts. Without the example, and told to read first what the task asks for:
+
+| Qwen3-1.7B in chunks | with the example | without it |
+|---|---|---|
+| facts that passed the checks | 52 | 62 |
+| of the 4B's 38, also found | 19 | 28 |
+| inputs with every fact of the 4B found (of 21) | 7 | 14 |
+| inputs with none found where the 4B had some | 5 | 1 |
+| model seconds | 1205 | 1216 |
+
 Not shown by this: whether a checked fact answers the question (the checks test the quote, not relevance), and the
 4B's time includes its summary and item list. The small reader is good on long pages and bad on short search results
 and lists. Neither replaces the other; they miss different things. Not yet built: small reader first, 4B only where
