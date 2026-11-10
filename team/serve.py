@@ -112,6 +112,13 @@ def background(last, dream_every_hours):
         log("idle and healthy: school (a small model learns a bigger member's job; it takes the job only after its exam)")
         subprocess.run([sys.executable, "-m", "team", "school"], cwd=config.ROOT)
         last["school"] = time.time()
+    elif time.time() - last.get("body", 0) > dream_every_hours * 3600:
+        # the body grown from nothing (training/body.py): more text is harvested, then one cell is grown on what the
+        # body predicts worst and kept only if the body measures better on text it never trained on
+        log("idle and healthy: the body grown from nothing (harvest, one new cell, kept only if it measures better)")
+        subprocess.run([sys.executable, "-m", "team", "harvest"], cwd=config.ROOT)
+        subprocess.run([sys.executable, "-m", "team", "body"], cwd=config.ROOT)
+        last["body"] = time.time()
     elif time.time() - last.get("recruit", 0) > dream_every_hours * 3600:
         # one small open model the hive does not have yet takes the roles' exams; it is enrolled where it measures
         # up, and taught where it is the better student (team/recruit.py). No login, nothing deleted, disk floor kept.
