@@ -143,10 +143,11 @@ def dataset(repo, file, column, mb, log=print):
                 break
     else:
         path = hf_hub_download(repo, file, repo_type="dataset", token=False)
+        had = shelf.size()
         with open(path, encoding="utf-8", errors="replace") as f:
             for ln in f:
                 shelf.add(ln)
-                if shelf.added >= mb * 1e6:
+                if had + shelf.added >= mb * 1e6:
                     break
     log(f"[harvest] {repo}: {shelf.added / 1e6:.2f} MB new, {shelf.size() / 1e6:.2f} MB in all", flush=True)
     return shelf.size()
@@ -323,6 +324,11 @@ def files():
 
 def main(argv):
     mb = float(argv[argv.index("--mb") + 1]) if "--mb" in argv else 20.0
+    more = float(argv[argv.index("--more") + 1]) if "--more" in argv else None
+
+    def room(name):  # --more X: a shelf that has text may grow by X megabytes this run; an empty one is filled as usual
+        f = HOME / f"{name}.txt"
+        return mb if more is None or not f.exists() or not f.stat().st_size else f.stat().st_size / 1e6 + more
     rec = {"when": time.strftime("%Y-%m-%d %H:%M"), "own_work_bytes": own_work()}
     if "--no-scout" not in argv:
         try:
@@ -331,10 +337,10 @@ def main(argv):
             print(f"[harvest] scout: {type(e).__name__}: {str(e)[:120]}", flush=True)
     for repo, file, column in sources():
         try:
-            rec[repo] = dataset(repo, file, column, mb)
+            rec[repo] = dataset(repo, file, column, room(re.sub(r"[^a-z0-9]+", "_", repo.lower())))
         except Exception as e:  # noqa: BLE001 - one source failing does not end the harvest
             rec[repo] = f"failed: {type(e).__name__}: {str(e)[:120]}"
-    rec["wikipedia_api_bytes"] = wikipedia(mb, minutes=0 if "--no-trickle" in argv else 10)
+    rec["wikipedia_api_bytes"] = wikipedia(room("wikipedia"), minutes=0 if "--no-trickle" in argv else 10)
     if "--no-dream" not in argv:
         try:
             dream()

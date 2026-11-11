@@ -210,5 +210,29 @@
    "awake on 200": 0.92,
    "alone on 200": 3.7211
   }
+ },
+ "at full length (the same start, the same text, 40 minutes each, 400 held windows neither trained on)": {
+  "the old recipe (lr 1e-3)": {
+   "steps": 3675,
+   "held": 3.0337
+  },
+  "the new one (lr 3e-3, warm-up, rounding eased in over the first half)": {
+   "steps": 3621,
+   "held": 2.9288
+  }
+ },
+ "what reading the held windows was worth to the older stem cells (lead over the third body's stem cell on old held Wikipedia windows, less the lead on new Wikipedia text nobody read)": {
+  "first": {
+   "worth": 0.0419,
+   "give or take": 0.0089
+  },
+  "b2": {
+   "worth": 0.0306,
+   "give or take": 0.0083
+  },
+  "windows": {
+   "old held": 385,
+   "new": 600
+  }
  }
 }

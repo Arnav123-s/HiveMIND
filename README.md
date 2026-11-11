@@ -856,7 +856,8 @@ have thousands. Two ways of training them are built:
   turns; all share one vocabulary and one harvest. A passage is read by every body and each body's say follows how it
   fits the passage (`together`). A new body is founded on what the others read worst: its stem cell starts from random
   three-valued weights of its own and half of all it reads is the worse-read half of a sample of windows (`found`);
-  one more body for every eight living cells. `python -m team body` gives every body its turn, founds a body when it
+  one more body when the bodies average eight cells, and two more for every body there already is
+  (`body_is_due`). `python -m team body` gives every body its turn, founds a body when it
   is time, and measures each alone and all as one (`training/reports/hive_of_bodies.json`).
 - *Regeneration.* Before anything else in its turn a body makes again what it lost (`heal`): a cell that is missing
   or cannot be read is grown again from the stem cell on the territory the map still knows; a lost stem cell comes
@@ -903,16 +904,60 @@ have thousands. Two ways of training them are built:
   loss 3.415; the second body's at the same age 3.517) and never a held window. Its first turn grew six cells.
   On 300 passages nobody trained on: stem cell alone 3.1146, the body 2.7806 (the second body with six cells:
   2.8412). The three bodies as one: 2.4760 (the two before it: 2.4807; the first body alone 2.4856).
-  How much reading the held passages helped the older stem cells could not be sized: the second body's stem cell
-  (read them about once) and the third's (never) are equally far behind on held text against training text (0.09
-  and 0.11), so once is within noise; for the first body's seven readings there is no text it has not read to
-  measure on. New harvest will give that.
+  What reading the held passages was worth to the older stem cells, sized on Wikipedia text harvested later that
+  nobody has read: each older stem cell's lead over the third body's is larger on the old held windows than on
+  the new text, by 0.042 (give or take 0.009) for the first body's and 0.031 (0.008) for the second's. So the first
+  two bodies' numbers above are about 0.03 to 0.04 better than they would be on new text.
+  The new recipe holds at full length: two stem cells from the same start on the same text, 40 minutes each, on 400
+  held windows neither trained on: the old recipe 3.0337 (3675 steps), the new one 2.9288 (3621 steps).
 - *A cell grown as one of the team* (trained on the body's loss with it in, `how: team`): on one territory of the
   first body, 12 minutes each, the usual way from the nearest cell added 0.0200 where the cell lives, the team way
   0.0136 at best (0.0003 with a smaller share), and from the stem cell neither way helped. It stays as one kind of
   trainer among the others, which keeps its place only if its cells are kept.
 - Storing a cell as its differences from the stem cell was tried and dropped: about 12% of a cell's three-valued
   weights differ from the stem cell's, which is not few enough to save space.
+
+**It grows with no machine of ours switched on** (2026-11-11; `.github/workflows/hive.yml`, `training/hive_state.py`).
+Every six hours GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
+is fetched, it harvests a little more open text (`harvest --more 2`: each source may grow two megabytes a run),
+every body takes its turn in the order of who waited longest and within a time budget (`body --budget 180`), a body
+that is due is founded, everything is measured, and a line is added to `training/reports/hive_growth.jsonl`.
+The hive is saved after every body's turn (`body --save`), each time under a new name on the release `hive-state`,
+which keeps its two newest states: a run that is cut off loses one body's turn at most, a save that is cut off
+loses nothing, and a hive is never saved over one it did not come from or smaller than it came
+(`hive_state.save`). Nothing in it logs in, spends, or needs the agent. The hive it starts from is the branch
+`hive-seed` (three bodies, 22 cells, as one 2.4760).
+- The record of growth has two numbers for the hive as one: on passages spread over all the text it has (which
+  changes whenever it harvests, so it cannot be compared from turn to turn) and on the yardstick, the same 300
+  passages every time, from the text as it was on 2026-11-11 (`body.YARD`). Only the yardstick says whether the
+  hive got better. In the rehearsal the hive harvested 34 MB by itself (a stories set its scouts had found, and more
+  Wikipedia) and read 2.6772 as one on all its text, new text included.
+- *The hive writes.* `python training/body.py write "Once upon a time"`: at every piece the stem cell and the cells
+  nearest to the text so far say what they expect, weighed by how each has fitted the text so far, and the next
+  piece is drawn from what they say together (`body.write`). Every measurement keeps what the best body writes
+  from the same two beginnings, and the release notes show it, so growth can be read and not only counted. The
+  first body, 2026-11-11: "Once upon a time there was a little girl named Lily. She was only three years old and
+  loved to play at the park. One day, she noticed something strange on the ground."
+- *The hive finds its own recipe* (`body.next_recipe`, `cells/scratch/recipes.json`). Every founding is an
+  experiment: the new body's stem cell is made with the best recipe so far with one thing changed (the rate, the
+  easing, the warm-up, the batch, the width, the depth), for the same minutes, and is then read on the same held
+  windows as every stem cell before it. The body is kept whatever comes of it; the recipe becomes the one to beat
+  only if its stem cell reads better than any before. A recipe changed by hand (`NEW_BODY`) is tried once as it
+  stands, then competes. So what was done by hand on 2026-11-11 the hive goes on doing by itself.
+- A body whose turn fails, or a founding that fails, is said aloud and makes the run show red, and the other bodies
+  still take their turns and are saved.
+- Two faults were found by rehearsing the run in a fresh clone with only the packages the run installs, and fixed
+  before it ever ran: a body other than the first learned the hive's vocabulary again at every turn (harmless
+  while the text was unchanged, ruin once the harvest grew: every cell would have read noise; `scratch.tokenizer`
+  now never learns it again once a stem cell exists), and the text kept as pieces was trusted even when it did not
+  match its book (now checked and made again).
+- Bring the grown hive to any device: `python training/hive_state.py pull` (it does not overwrite a hive that has
+  as many living cells or more). `setup.sh` does this once at install.
+- Run a turn by hand: the repository's Actions tab, "The hive grows", "Run workflow".
+- Stop it: disable that workflow in the Actions tab.
+- Not confirmed until its first run on GitHub: the run itself, and the upload to the release. Rehearsed here in a
+  fresh clone with only the packages the run installs (fetch, harvest, a founding, turns, measurement, pack). GitHub switches a schedule off after 60 days without a commit; the line the run adds to the growth
+  record is a commit, which should keep it on.
 
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
 of simple text. Planning and programming still come from the pretrained small models and their school. The open

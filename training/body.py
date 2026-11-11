@@ -163,6 +163,29 @@ class Body:
         return torch.cat(out)
 
 
+def write(b, beginning, pieces=60, heat=0.8, seed=0, m=NEAR_M):
+    """The body writes on from a beginning. At every piece the stem cell and the cells whose territories lie nearest
+    to the text so far each say what they expect next; they are weighed by the learned say, by how well each has
+    fitted the text so far; and the next piece is drawn from what they say together (heat: below 1 it keeps closer
+    to what it finds likeliest). This is the body used, not measured: what it can say today."""
+    tk, g = T.tokenizer(), torch.Generator().manual_seed(seed)
+    ids = [T.BOS] + tk.encode(beginning).ids
+    alive = [k for k in b.alive if k < b.terr["centre"].shape[0]]
+    m, rule = min(m, len(alive)), _rule()
+    open_ = torch.full((b.terr["centre"].shape[0],), float("-inf"))
+    open_[alive] = 0.0
+    for _ in range(pieces):
+        x = torch.tensor([ids[-W:]])
+        with torch.no_grad():
+            who = (place(b.placer, x) @ b.terr["centre"].T + open_).topk(m, dim=1).indices[0].tolist() if m else []
+            lps = [F.log_softmax(c.next_piece(x), -1)[0] for c in [b.stem] + [b.cell(k) for k in who]]
+        fit = torch.stack([-lp[:-1].gather(-1, x[0, 1:, None]).mean() if x.shape[1] > 1 else torch.tensor(0.0) for lp in lps])[None]
+        mix = torch.logsumexp(torch.stack([lp[-1] for lp in lps]) + _say(fit, rule)[0][:, None], 0)
+        mix[T.PAD] = float("-inf")
+        ids.append(torch.multinomial(F.softmax(mix / heat, -1), 1, generator=g).item())
+    return tk.decode(ids[1:])
+
+
 def _piece_lp(model, x):
     """The log-probability the model gives each piece that really comes next, [windows, pieces]."""
     with torch.no_grad():
@@ -559,9 +582,17 @@ def breed(ts, rnd):
     return ts
 
 
-def _held(data, part, n=240):
-    held = [i for i in range(_windows(data)) if i % HELD == 0][(0 if part == "gate" else 1)::2]
-    return held[::max(1, len(held) // n)][:n]
+def _even(xs, n):
+    """n of xs, from its first to its last, evenly."""
+    return list(xs) if len(xs) <= n else [xs[round(i * (len(xs) - 1) / (n - 1))] for i in range(n)]
+
+
+def _held(data, part, n=240, upto=None):
+    """Held passages, spread evenly over the text. upto: the yardstick, chosen over the text's first so many windows
+    exactly as the passages were chosen on 2026-11-11 (a rule that left the last stretch out; kept, so that the
+    yardstick is the same passages as every number before it)."""
+    held = [i for i in range(min(upto or 10 ** 12, _windows(data))) if i % HELD == 0][(0 if part == "gate" else 1)::2]
+    return held[::max(1, len(held) // n)][:n] if upto else _even(held, n)
 
 
 def _read_all(cells, data, windows):
@@ -839,10 +870,13 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     from team import harvest
     if not harvest.files():
         harvest.main(["--no-trickle"])
-    if not (T.HOME / "tokenizer.json").exists():
+    if not (T.SHARED / "tokenizer.json").exists():  # the hive's one vocabulary, in the shared folder (not this body's)
         T.tokenizer(train=True)
-    if not (T.HOME / "base.pt").exists():
-        T.pretrain(stem_minutes)
+    if not (T.HOME / "base.pt").exists() and not (HOME / "placer.pt").exists():  # no stem cell and no copy to heal it from
+        T.HOME.mkdir(parents=True, exist_ok=True)  # a hive from nothing: its first stem cell is made like any new body's
+        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"},
+                                                      "since": time.strftime("%Y-%m-%d %H:%M")}))
+        T.pretrain_direct(stem_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"], log=log)
         return "the stem cell read the harvest"
     heal(log)
     if not (HOME / "territories.pt").exists():
@@ -856,7 +890,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     data, b = _data(), Body()
     place_new(b, data, log)
     pool = _held(data, "gate", 10 ** 9)
-    spread = pool[::max(1, len(pool) // 200)][:200]
+    spread = _even(pool, 200)
     first, second, who = b.read(data, spread)
     learn_say(first, second, log)
     learned = stem_reads(data, spread, first, second, minutes=minutes * 0.3, log=log)
@@ -963,28 +997,106 @@ def together(reads, rule=None):
     return fit_loss(first, second, rule=rule)
 
 
+BEGINNINGS = ("Once upon a time there was a little", "The city is the capital of")
+
+
+def _write_as(name, beginning, pieces=60):
+    """What one body writes from a beginning, from a process of its own."""
+    import os
+    import subprocess
+    out = subprocess.run([sys.executable, str(Path(__file__)), "write", beginning, "--pieces", str(pieces)], cwd=ROOT, check=True,
+                         env={**os.environ, "HIVE_BODY": name}, capture_output=True, text=True).stdout
+    return out.strip()
+
+
+YARD = 56541  # windows of the text as it was on 2026-11-11: the yardstick the hive's growth is read against
+
+
 def hive_measure(n=300, log=print):
-    """Each body alone and all of them as one, on report passages nobody trained on."""
+    """Each body alone and all of them as one, on report passages nobody trained on. Twice: on passages spread over
+    all the text there is now, and on the yardstick, the same passages every time (from the text as it was on
+    2026-11-11). The harvest grows, so the first number is taken on other and harder text each time; only the
+    yardstick says whether the hive got better."""
     data = _data()
     held, gate = _held(data, "report", n), _held(data, "gate", n)
+    yard = _held(data, "report", n, upto=YARD)
+    if yard == held:
+        yard = []
     names = [b for b in bodies() if (T.SHARED / ("bodies/" + b if b else "") / "body" / "territories.pt").exists()]
     if names == bodies() and len(names) > 1:  # the say of each body is learned on gate passages, then measured on the others
         g = [_ask(b, gate, "gate") for b in names]
         rule = learn_rule(torch.stack([f for f, _ in g], 1), torch.stack([s2 for _, s2 in g], 1))
         (T.SHARED / HIVE_RULE).write_text(json.dumps(dict(rule, bodies=[b or "first" for b in names])))
-    reads = [_ask(b, held, "measure") for b in names]
+    both = [_ask(b, held + yard, "measure") for b in names]
+    reads, fixed = [(f[:len(held)], s2[:len(held)]) for f, s2 in both], [(f[len(held):], s2[len(held):]) for f, s2 in both]
     res = {"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, reads)},
            "as_one": round(together(reads).mean().item(), 4), "passages": len(held), "when": time.strftime("%Y-%m-%d %H:%M")}
+    res["yardstick"] = ({"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, fixed)},
+                         "as_one": round(together(fixed).mean().item(), 4)} if yard else
+                        {"bodies": res["bodies"], "as_one": res["as_one"]})
+    try:  # what the body that reads best writes today, from the same two beginnings every time
+        best = min(res["yardstick"]["bodies"], key=res["yardstick"]["bodies"].get)
+        res["wrote"] = {"body": best, "texts": [_write_as("" if best == "first" else best, start) for start in BEGINNINGS]}
+    except Exception as e:  # noqa: BLE001 - a sample that fails is not a failed measurement
+        res["wrote"] = {"failed": f"{type(e).__name__}: {str(e)[:120]}"}
     hist = json.loads(HIVE.read_text()) if HIVE.exists() else []
     HIVE.write_text(json.dumps(hist + [res], indent=1))
-    log(f"[hive] {len(names)} bodies on {len(held)} passages nobody trained on: each alone {res['bodies']}, as one {res['as_one']}", flush=True)
+    log(f"[hive] {len(names)} bodies on {len(held)} passages nobody trained on: each alone {res['bodies']}, as one {res['as_one']}; "
+        f"on the yardstick (the same passages every time): each alone {res['yardstick']['bodies']}, as one {res['yardstick']['as_one']}", flush=True)
     return res
 
 
 # How a new body's stem cell is made (measured: training/reports/bitnet_recipe.json): its shape (scratch.kind), its
 # rate, the share of its run over which the rounding to three values is eased in, and how much of its loss is what
 # the first body's stem cell expects next (0: no teacher).
-NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0}
+TURNS = "bodies_turns.json"  # when each body last had its turn
+
+
+def _turned():
+    try:
+        return {str(k): float(v) for k, v in json.loads((T.SHARED / TURNS).read_text()).items()}
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
+NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}
+
+# ---- the hive finds its own recipe -----------------------------------------------------------------------------------
+# What was done by hand on 2026-11-11 (rates, easing, shapes tried one against another) the hive goes on doing by
+# itself. Every founding is an experiment: the new body's stem cell is made with the best recipe so far with one thing
+# changed, for the same minutes, and is then read on the same held windows as every stem cell before it. The body is
+# kept whatever comes of it (the hive weighs each body by how it reads); the recipe becomes the one to beat only if
+# its stem cell reads better than any before. A recipe changed by hand here (NEW_BODY) is tried once, then competes.
+RECIPES = "recipes.json"  # in the shared folder: every founding, its recipe, and how its stem cell read afterwards
+GENES = {"lr": lambda r, v: round(v * r.choice([0.6, 1.6]), 5),
+         "ease": lambda r, v: r.choice([x for x in (0.0, 0.25, 0.5, 0.75) if x != v]),
+         "warm": lambda r, v: r.choice([x for x in (100, 200, 400) if x != v]),
+         "batch": lambda r, v: r.choice([x for x in (16, 32, 64) if x != v])}
+SHAPES = {"dim": lambda r, v: min(384, max(128, v + r.choice([-32, 32]))),   # heads stay 4: the width is a multiple of 32
+          "layers": lambda r, v: min(8, max(3, v + r.choice([-1, 1])))}
+
+
+def _recipes():
+    try:
+        return json.loads((T.SHARED / RECIPES).read_text())
+    except (OSError, ValueError):
+        return []
+
+
+def next_recipe(rnd):
+    """The recipe the next body is founded with, and what was changed in it (None: nothing, it is being measured as
+    it stands)."""
+    full = lambda r: {**NEW_BODY, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    tried = [r for r in _recipes() if r.get("score") is not None]
+    if not any(full(r["recipe"]) == full(NEW_BODY) for r in tried):
+        return full(NEW_BODY), None
+    child = full(min(tried, key=lambda r: r["score"])["recipe"])
+    what = rnd.choice(sorted(GENES) + sorted(SHAPES))
+    if what in GENES:
+        child[what] = GENES[what](rnd, child[what])
+    else:
+        child["shape"][what] = SHAPES[what](rnd, child["shape"][what])
+    return child, what
 
 
 def found(name, minutes=40.0, sample=8000, log=print):
@@ -1001,21 +1113,43 @@ def found(name, minutes=40.0, sample=8000, log=print):
     home = T.SHARED / "bodies" / name
     home.mkdir(parents=True, exist_ok=True)
     (home / ".hard.json").write_text(json.dumps(hard))
+    recipe, changed = next_recipe(rnd)
+    (home / ".recipe.json").write_text(json.dumps(recipe))
     subprocess.run([sys.executable, str(Path(__file__)), "stem", str(home / ".hard.json"), str(minutes)], cwd=ROOT, check=True,
                    env={**os.environ, "HIVE_BODY": name})
     (T.SHARED / "bodies.json").write_text(json.dumps(bodies() + [name]))
+    score = json.loads((home / "stem.json").read_text()).get("score")
+    before = [r["score"] for r in _recipes() if r.get("score") is not None and r.get("minutes") == minutes]
+    (T.SHARED / RECIPES).write_text(json.dumps(_recipes() + [{"body": name, "recipe": recipe, "changed": changed, "minutes": minutes, "score": score,
+                                                              "when": time.strftime("%Y-%m-%d %H:%M")}], indent=1))
     log(f"[hive] body {name!r} founded: its stem cell read for {minutes:.0f} minutes, half of it the {len(hard)} windows "
         f"the other bodies read worst (their loss there {sum(sorted(loss.tolist())[-len(hard):]) / len(hard):.3f}, "
-        f"on all {loss.mean().item():.3f})", flush=True)
+        f"on all {loss.mean().item():.3f}). Its recipe: {'as it stands' if changed is None else 'the best so far with ' + changed + ' changed'} "
+        f"({json.dumps(recipe)}); its stem cell reads the yardstick at {score}"
+        + (f", the best before it {min(before)}" if before else ""), flush=True)
     return name
 
 
-def hive_turn(minutes=10.0, births=3, log=print):
+def body_is_due(n_bodies, alive):
+    """One more body when the bodies there are have grown enough: on average eight cells each, and two more for every
+    body there already is. So the hive founds bodies for ever, each a little later than the last: the bodies get
+    deeper as the hive gets wider (inside a body only the nearest cells wake, so depth costs nothing to read, while
+    every body still reads every passage)."""
+    return alive >= n_bodies * (8 + 2 * (n_bodies - 1))
+
+
+def hive_turn(minutes=10.0, births=3, log=print, budget=0.0, after=None):
     """One turn of the whole hive with nobody watching: every body takes its own turn (it multiplies); a new body is
-    founded when the bodies there are have grown enough (one more body for every eight living cells); and the hive
-    is measured, each body alone and all as one."""
+    founded when the bodies there are have grown enough (body_is_due); and the hive
+    is measured, each body alone and all as one.
+    budget: minutes the turn may take (0: as long as it takes). With a budget the bodies go in the order of who
+    waited longest and the turn stops giving turns when the time is used, so a hive of any size fits a run that is
+    cut off after some hours; a body that is due is founded first, and the measurement is always made.
+    after: called when a body has been founded and after each body's turn (the run on GitHub saves the hive there,
+    so a run that is cut off loses one body's turn at most)."""
     import os
     import subprocess
+    t0, turned, failed = time.time(), _turned(), []
     names = bodies()
     for b in names[1:]:  # regeneration of a whole body: one whose stem cell and its copy are both gone is founded again
         home = T.SHARED / "bodies" / b
@@ -1023,13 +1157,32 @@ def hive_turn(minutes=10.0, births=3, log=print):
             log(f"[hive] regeneration: body {b!r} was lost and is founded again", flush=True)
             (T.SHARED / "bodies.json").write_text(json.dumps([x for x in names if x != b]))
             found(b, log=log)
-    for b in names:
-        subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
-                       cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
     alive = sum(len(list((T.SHARED / ("bodies/" + b if b else "") / "body").glob("cell_*.pt"))) for b in names)
-    if len(names) < 1 + alive // 8:
-        found(f"b{len(names) + 1}", log=log)
-    return hive_measure(log=log)
+    if body_is_due(len(names), alive):
+        try:
+            names.append(found(f"b{len(names) + 1}", log=log))
+            if after:
+                after()
+        except Exception as e:  # noqa: BLE001 - a founding that fails must not cost the bodies their turns
+            failed.append(f"the founding of b{len(names) + 1}")
+            log(f"[hive] the founding of body b{len(names) + 1} FAILED ({type(e).__name__}: {str(e)[:200]}); the bodies take their turns", flush=True)
+    for i, b in enumerate(sorted(names, key=lambda b: turned.get(b, 0))):  # who waited longest goes first
+        if budget and i and (time.time() - t0) / 60 > budget:
+            log(f"[hive] the time for this turn is used: {len(names) - i} of {len(names)} bodies wait for the next", flush=True)
+            break
+        went = subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
+                              cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
+        turned[b] = time.time()  # a body whose turn failed goes to the back of the line too: one sick body does not starve the rest
+        (T.SHARED / TURNS).write_text(json.dumps(turned))
+        if went.returncode:
+            failed.append(b or "first")
+            log(f"[hive] the turn of body {b or 'first'!r} FAILED (exit {went.returncode}); the body is as it was", flush=True)
+        elif after:
+            after()
+    res = hive_measure(log=log)
+    if failed:
+        res["failed_turns"] = failed
+    return res
 
 
 def main(argv):
@@ -1051,16 +1204,33 @@ def main(argv):
         torch.save({"first": first, "second": second}, argv[2])
     elif cmd == "stem":  # for found: this body's stem cell, from random three-valued weights
         T.HOME.mkdir(parents=True, exist_ok=True)  # what the body is comes first: the stem cell is built to it
-        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"}, "since": time.strftime("%Y-%m-%d %H:%M"),
-                                                      "founded_on": "the other bodies' worst-read windows"}))
+        try:
+            recipe = {**NEW_BODY, **json.loads((T.HOME / ".recipe.json").read_text())}
+        except (OSError, ValueError):
+            recipe = NEW_BODY
+        kind = {"bit": True, **recipe["shape"], "made": {k: v for k, v in recipe.items() if k != "shape"}, "since": time.strftime("%Y-%m-%d %H:%M"),
+                "founded_on": "the other bodies' worst-read windows"}
+        (T.HOME / "stem.json").write_text(json.dumps(kind))
         T.pretrain_direct(float(argv[2]), usual=True, name="base", hard=json.loads(Path(argv[1]).read_text()),
-                          seed=sum(map(ord, T.BODY)), lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"],
-                          teacher=T.SHARED if NEW_BODY["taught"] and (T.SHARED / "base.pt").exists() else None,
-                          taught=NEW_BODY["taught"])
+                          seed=sum(map(ord, T.BODY)), lr=recipe["lr"], warm=recipe["warm"], ease=recipe["ease"], batch=recipe["batch"],
+                          teacher=T.SHARED if recipe["taught"] and (T.SHARED / "base.pt").exists() else None,
+                          taught=recipe["taught"])
+        data = _data()  # how the new stem cell reads the same held windows as every stem cell before it (never trained on by any)
+        kind["score"] = round(_check_loss(_stem().eval(), data, _held(data, "gate", 300, upto=YARD)), 4)
+        (T.HOME / "stem.json").write_text(json.dumps(kind))
+    elif cmd == "write":  # the body writes on from a beginning: python training/body.py write "Once upon a time"
+        print(write(Body(), argv[1], pieces=opt("--pieces", 60), heat=opt("--heat", 0.8), seed=opt("--seed", 0)))
     elif cmd == "found":
         found(argv[1], opt("--minutes", 40.0))
     elif cmd == "hive":
-        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3))))
+        after = None
+        if "--save" in argv:  # the hive is saved after every body's turn (training/hive_state.py)
+            from training import hive_state
+            after = lambda: hive_state.save(log=print)  # noqa: E731
+        res = hive_turn(opt("--minutes", 10.0), opt("--births", 3), budget=opt("--budget", 0.0), after=after)
+        print(json.dumps(res))
+        if res.get("failed_turns"):  # said aloud: a run with nobody watching must not pass for a good one
+            return 1
     elif cmd == "hive-measure":
         print(json.dumps(hive_measure()))
     elif cmd == "turn":
