@@ -47,7 +47,7 @@ HOME = T.HOME / "body"
 REPORT = ROOT / "training" / "reports" / (f"body_{T.BODY}.json" if T.BODY else "body.json")  # each body keeps its own record
 HIVE = ROOT / "training" / "reports" / "hive_of_bodies.json"
 W = T.CTX  # one window of text
-HELD = 40  # every 40th window is never trained on here
+HELD = T.HELD  # every 40th window is never trained on, by a cell or (since 2026-11-11) by a stem cell
 
 
 def _data():
@@ -981,7 +981,10 @@ def hive_measure(n=300, log=print):
     return res
 
 
-NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200}  # how a new body's stem cell is made: its shape (scratch.kind) and its rate (training/reports/bitnet_recipe.json)
+# How a new body's stem cell is made (measured: training/reports/bitnet_recipe.json): its shape (scratch.kind), its
+# rate, the share of its run over which the rounding to three values is eased in, and how much of its loss is what
+# the first body's stem cell expects next (0: no teacher).
+NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.5}
 
 
 def found(name, minutes=40.0, sample=8000, log=print):
@@ -1048,10 +1051,12 @@ def main(argv):
         torch.save({"first": first, "second": second}, argv[2])
     elif cmd == "stem":  # for found: this body's stem cell, from random three-valued weights
         T.HOME.mkdir(parents=True, exist_ok=True)  # what the body is comes first: the stem cell is built to it
-        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "lr": NEW_BODY["lr"], "since": time.strftime("%Y-%m-%d %H:%M"),
+        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"}, "since": time.strftime("%Y-%m-%d %H:%M"),
                                                       "founded_on": "the other bodies' worst-read windows"}))
         T.pretrain_direct(float(argv[2]), usual=True, name="base", hard=json.loads(Path(argv[1]).read_text()),
-                          seed=sum(map(ord, T.BODY)), lr=NEW_BODY["lr"], warm=NEW_BODY["warm"])
+                          seed=sum(map(ord, T.BODY)), lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"],
+                          teacher=T.SHARED if NEW_BODY["taught"] and (T.SHARED / "base.pt").exists() else None,
+                          taught=NEW_BODY["taught"])
     elif cmd == "found":
         found(argv[1], opt("--minutes", 40.0))
     elif cmd == "hive":
