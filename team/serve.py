@@ -112,13 +112,19 @@ def background(last, dream_every_hours):
         log("idle and healthy: school (a small model learns a bigger member's job; it takes the job only after its exam)")
         subprocess.run([sys.executable, "-m", "team", "school"], cwd=config.ROOT)
         last["school"] = time.time()
-    elif time.time() - last.get("body", 0) > min(dream_every_hours, 2) * 3600:  # a turn is short: every two hours
+    elif time.time() - last.get("body", 0) > min(dream_every_hours, 0.5) * 3600:  # the body multiplies whenever it can
         # the body grown from nothing (training/body.py): more text is harvested, then one cell is grown on what the
         # body predicts worst and kept only if the body measures better on text it never trained on
         log("idle and healthy: the body grown from nothing (harvest, one new cell, kept only if it measures better)")
         subprocess.run([sys.executable, "-m", "team", "harvest"], cwd=config.ROOT)
         subprocess.run([sys.executable, "-m", "team", "body"], cwd=config.ROOT)
         last["body"] = time.time()
+    elif time.time() - last.get("brain", 0) > dream_every_hours * 3600:
+        # the brain for the hive's small jobs is trained again on the stem cell as it is now (it keeps learning), and
+        # takes a job only where it then measures at least as well as whoever holds it (training/scratch.py, together)
+        log("idle and healthy: the brain grown from nothing is trained again on today's stem cell (it takes a job only by measurement)")
+        subprocess.run([sys.executable, str(config.ROOT / "training" / "scratch.py"), "together"], cwd=config.ROOT)
+        last["brain"] = time.time()
     elif time.time() - last.get("recruit", 0) > dream_every_hours * 3600:
         # one small open model the hive does not have yet takes the roles' exams; it is enrolled where it measures
         # up, and taught where it is the better student (team/recruit.py). No login, nothing deleted, disk floor kept.

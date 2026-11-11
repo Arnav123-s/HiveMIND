@@ -1,4 +1,4 @@
-# Handoff: HiveMIND (`main` has PR #7; work continues on `make-it-work`, draft PR #8; checkpoint branch `checkpoint-2026-11-10`)
+# Handoff: HiveMIND (`main` has PR #8; work continues on `make-it-work`; checkpoint branch `checkpoint-2026-11-10`)
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
@@ -72,6 +72,22 @@ benchmaxing, held-out sets run once, no model names in commits.
     after every forty; part of every harvest. Tested with the member mocked; not run with a real model yet.
   - BitNet from Microsoft as a recruit: the official file does not load in the hive's llama.cpp; building
     Microsoft's runtime here was refused by the session's permissions. Open, for his device or his say.
+- 2026-11-11, early: PR #8 merged on his "update and merge". The stem cell is a BitNet (2.70 -> 3.02) and so are
+  the cells (0.61 MB each). The BitNet body beats its stem cell (2.574 against 2.748) and grew twice by cell division,
+  both kept. The stem cell keeps learning each turn with its word table held still (`body.stem_reads`, gated); the
+  map of territories is pinned to the stem cell that drew it (`body/placer.pt`). The always-on agent now also
+  retrains the brain for the cell jobs once a day (`scratch.py together`, takes jobs by measurement only).
+  His standing wish: it must keep getting better without the agent; "not finding a way is not good" (keep trying
+  direct BitNet training: variants of the vote way are in `scratch.Direct`, options strong / leak / agree).
+- 2026-11-11, his further picture and what was built for it (all in `training/body.py`, README "From nothing"):
+  "it can keep multiplying, no need for the same ones to get better" -> several births a turn, nearest-cells-only
+  reading at every check (`Body`), newborns judged locally (`judge_local`), new text placed (`place_new`);
+  "the whole is made of many growing bodies, each with weaknesses the others cover" -> a hive of bodies (`bodies`,
+  `found`, `together`, `hive_turn`; a process works on the body named in `HIVE_BODY`; further bodies live in
+  `cells/scratch/bodies/<name>/`, not in git); "regenerate lost or cut-off parts" -> `heal`, whole-file writes
+  (`scratch.whole`), map backup, the text stream's build log. `python -m team body` now runs `hive_turn`.
+  A test once wrote into the real text stream when the stream's place changed; it was cut back to its exact length
+  and the tests now patch `scratch.SHARED`. Any new test that calls `scratch.corpus` must do the same.
 - **This cloud machine is reclaimed when idle.** The hive goes on evolving only where it is installed and left
   running: `python -m team install` on a device of his (README "Install", "Always on").
 

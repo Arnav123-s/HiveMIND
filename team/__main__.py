@@ -45,7 +45,7 @@ def main():
         if cmd == "body":
             sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))
             from training import body
-            return body.main(["turn", *rest])
+            return body.main(["hive", *rest])  # every body takes its turn, a new one is founded when it is time
         if cmd == "harvest":
             from . import harvest
             return harvest.main(rest)
