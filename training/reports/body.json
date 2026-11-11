@@ -1,0 +1,292 @@
+{
+ "first_body": {
+  "what": "the first body, 2026-11-10: six cells, each a copy of the stem cell that read only a sample of its territory for ten minutes with nothing to stop it",
+  "measured": [
+   {
+    "when": "2026-11-10 20:49",
+    "cells": 6,
+    "passages": 300,
+    "loss": {
+     "stem cell alone": 2.4276,
+     "the best single cell for each passage (hindsight)": 2.4848,
+     "body, by territory: 1 cell awake": 2.7008,
+     "body, by territory: 2 cells awake": 2.5558,
+     "body, by fit: every cell reads, weighed by how it predicted the first half": 2.4975,
+     "body, every cell with the same say": 2.5756
+    },
+    "cell_alone": {
+     "cell_00": 3.7409,
+     "cell_01": 3.5255,
+     "cell_02": 2.6749,
+     "cell_03": 5.3321,
+     "cell_04": 4.1076,
+     "cell_05": 3.1029
+    }
+   }
+  ],
+  "births": [
+   {
+    "cell": 6,
+    "when": "2026-11-10 21:02",
+    "trainer": "t4",
+    "on": "worst",
+    "kept": false,
+    "why": "the body gained +0.0000 (it needs more than 0.001)",
+    "gate_before": 2.4688,
+    "gate_after": 2.4688
+   }
+  ],
+  "retired": [
+   {
+    "cell": 5,
+    "worth": -0.00247,
+    "when": "2026-11-10 20:55"
+   }
+  ],
+  "why_it_failed": "each cell knew its few thousand windows by heart (one reached loss 0.29 on them and 5.33 on new text); the stem cell was not a member of the body, so a passage no cell fitted had no good reader. The body (2.4975) was worse than its own stem cell (2.4276)."
+ },
+ "territories": {
+  "cells": 6,
+  "windows_placed": 55128,
+  "sizes": {
+   "0": 12310,
+   "1": 18005,
+   "2": 31503,
+   "3": 7411,
+   "4": 20650,
+   "5": 20377
+  },
+  "examples": {
+   "0": " Pius of Pietrelcina, Italian Franciscan Capuchin friar, priest and Saint in the Catholic Church (d. 1968)\n 18",
+   "1": " inside.\n Just then, she heard a loud and strong voice. It said, \"Come on in, little bunny! Don't be shy, you ",
+   "2": " Jewish service organization in the world).\n November 28 \u2013 Ka La Ku'oko'a: Hawaiian Independence Day. The King",
+   "3": " They shoo the dog away and pick up Anna's top. They check if it is okay and give it back to Anna. They hug he",
+   "4": " happy with their picture.\n Then, Lucy had an idea. She wanted to cut out the flowers and tree. She got some s",
+   "5": " Late Heavy Bombardment. Nowadays they sometimes hurt people and property. The 2013 Russian meteor event did t"
+  },
+  "seconds": 664
+ },
+ "minutes_per_cell": 10.0,
+ "measured": [
+  {
+   "when": "2026-11-10 23:22",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.4276,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.2942,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.2953
+   },
+   "cell_alone": {
+    "cell_00": 2.83,
+    "cell_01": 2.8697,
+    "cell_02": 2.6018,
+    "cell_03": 2.6912,
+    "cell_04": 3.0797,
+    "cell_05": 2.7223
+   }
+  },
+  {
+   "when": "2026-11-10 23:28",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.4276,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.2942,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.2953
+   },
+   "cell_alone": {
+    "cell_00": 2.83,
+    "cell_01": 2.8697,
+    "cell_02": 2.6018,
+    "cell_03": 2.6912,
+    "cell_04": 3.0797,
+    "cell_05": 2.7223
+   }
+  },
+  {
+   "when": "2026-11-10 23:33",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.4276,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.2942,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.2953
+   },
+   "cell_alone": {
+    "cell_00": 2.83,
+    "cell_01": 2.8697,
+    "cell_02": 2.6018,
+    "cell_03": 2.6912,
+    "cell_04": 3.0797,
+    "cell_05": 2.7223
+   }
+  },
+  {
+   "when": "2026-11-11 02:32",
+   "cells": 4,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5835,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.5834
+   },
+   "cell_alone": {
+    "cell_00": 2.85,
+    "cell_01": 2.8138,
+    "cell_02": 2.8325,
+    "cell_03": 2.8057
+   }
+  },
+  {
+   "when": "2026-11-11 02:43",
+   "cells": 5,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5751,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.5807
+   },
+   "cell_alone": {
+    "cell_00": 2.85,
+    "cell_01": 2.8138,
+    "cell_02": 2.8325,
+    "cell_03": 2.8057,
+    "cell_07": 2.8438
+   }
+  },
+  {
+   "when": "2026-11-11 02:51",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.574,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.5778
+   },
+   "cell_alone": {
+    "cell_00": 2.85,
+    "cell_01": 2.8138,
+    "cell_02": 2.8325,
+    "cell_03": 2.8057,
+    "cell_07": 2.8438,
+    "cell_08": 2.7863
+   }
+  }
+ ],
+ "births": [
+  {
+   "cell": 6,
+   "when": "2026-11-10 23:28",
+   "trainer": "t4",
+   "on": "worst",
+   "kept": false,
+   "why": "the body gained +0.0001 (it needs more than 0.001)",
+   "gate_before": 2.2237,
+   "gate_after": 2.2237
+  },
+  {
+   "cell": 7,
+   "when": "2026-11-10 23:33",
+   "trainer": "t2",
+   "on": "worst",
+   "kept": false,
+   "why": "the body gained -0.0001 (it needs more than 0.001)",
+   "gate_before": 2.2237,
+   "gate_after": 2.2239
+  },
+  {
+   "cell": 6,
+   "when": "2026-11-11 02:32",
+   "trainer": "t4",
+   "on": "worst",
+   "kept": false,
+   "why": "the body gained -0.0011 (it needs more than 0.001)",
+   "gate_before": 2.521,
+   "gate_after": 2.5221
+  },
+  {
+   "cell": 7,
+   "when": "2026-11-11 02:42",
+   "trainer": "t2",
+   "on": "division",
+   "kept": true,
+   "why": "the body gained +0.0074 and no territory lost more than 0.01",
+   "gate_before": 2.521,
+   "gate_after": 2.5136
+  },
+  {
+   "cell": 8,
+   "when": "2026-11-11 02:50",
+   "trainer": "t2",
+   "on": "division",
+   "kept": true,
+   "why": "the body gained +0.0016 and no territory lost more than 0.01",
+   "gate_before": 2.5136,
+   "gate_after": 2.512
+  }
+ ],
+ "weakest": {
+  "territory": 6,
+  "loss": 4.0315,
+  "text": "ch\u2013Kincaid Reading Level (Flesch-Kincaid Grade Index)\n Wikipedia Signposts 2015-06-24 surveyed recent studies of web information on medical topics, including articles in English wiki.\n \"The authors concluded that the readability of online patient information for \u2018liposuction\u2019 and \u2018breast reconstruction\u2019 is \u2018too difficult\u2019 for many patients as the readability scores of all 20 websites (10 each) far exceeds that of a 6th-grade reading level. The average score for the most popular \u2018liposuction\u2019 websites was determined equal to 13.6-grade level. As a comparison \u2018tattoo information\u2019 scored at the 7.8-grade level\".\n \"Health care information available at the most popular websites for \u2018breast reconstruction\u2019 had an average readability score of 13.4"
+ },
+ "trainers": [
+  {
+   "id": "t1",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t2",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 2,
+   "kept": 2
+  },
+  {
+   "id": "t3",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "uncharted",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t4",
+   "start": "nearest",
+   "lr": 0.0003,
+   "span": 1.0,
+   "on": "worst",
+   "births": 1,
+   "kept": 0
+  },
+  {
+   "id": "t5",
+   "start": "nearest",
+   "lr": 0,
+   "span": 0.5,
+   "on": "division",
+   "how": "flips",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t6",
+   "start": "nearest",
+   "lr": 0,
+   "span": 0.5,
+   "on": "uncharted",
+   "how": "flips",
+   "births": 0,
+   "kept": 0
+  }
+ ]
+}

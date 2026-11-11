@@ -1,0 +1,140 @@
+{
+ "jobs": {
+  "task_kind": [
+   "write",
+   "calc",
+   "lookup",
+   "site",
+   "code",
+   "plan"
+  ],
+  "route_step": [
+   "researcher",
+   "browser",
+   "coder",
+   "writer"
+  ],
+  "pick_source": [
+   "huggingface",
+   "arxiv",
+   "pypi",
+   "wikipedia",
+   "hn",
+   "web"
+  ],
+  "next_move": [
+   "retry",
+   "reroute",
+   "give_up"
+  ],
+  "family_topic": [
+   "yes",
+   "no"
+  ],
+  "claim_support": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "quote_pick": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "none"
+  ],
+  "element_match": [
+   "yes",
+   "no"
+  ],
+  "licence_open": [
+   "yes",
+   "no"
+  ],
+  "answers_q": [
+   "yes",
+   "no"
+  ],
+  "claims_agree": [
+   "agree",
+   "conflict",
+   "unrelated"
+  ],
+  "result_relevant": [
+   "yes",
+   "no"
+  ],
+  "orders_spend": [
+   "yes",
+   "no"
+  ],
+  "orders_delete": [
+   "yes",
+   "no"
+  ],
+  "orders_send": [
+   "yes",
+   "no"
+  ],
+  "orders_login": [
+   "yes",
+   "no"
+  ],
+  "orders_signup": [
+   "yes",
+   "no"
+  ],
+  "learned_claim": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "learned_item": [
+   "yes",
+   "no"
+  ],
+  "learned_line": [
+   "keep",
+   "drop"
+  ],
+  "sp_verifier_75e567": [
+   "SUPPORTED",
+   "UNSUPPORTED"
+  ],
+  "orders_any": [
+   "yes",
+   "no"
+  ],
+  "de_grammar": [
+   "ok",
+   "error"
+  ]
+ },
+ "talk": false,
+ "trunk": "base",
+ "test": {
+  "task_kind": 0.7008,
+  "route_step": 0.4492,
+  "pick_source": 0.3378,
+  "next_move": 0.5267,
+  "family_topic": 0.6375,
+  "claim_support": 0.5933,
+  "quote_pick": 0.5933,
+  "element_match": 0.5,
+  "licence_open": 0.7704,
+  "answers_q": 0.4733,
+  "claims_agree": 0.4333,
+  "result_relevant": 0.4733,
+  "orders_spend": 0.7869,
+  "orders_delete": 0.8852,
+  "orders_send": 0.8033,
+  "orders_login": 0.918,
+  "orders_signup": 0.8689,
+  "learned_claim": 0.6615,
+  "learned_item": 0.7273,
+  "learned_line": 0.697,
+  "sp_verifier_75e567": 0.8,
+  "orders_any": 0.7049,
+  "de_grammar": 0.5667
+ }
+}

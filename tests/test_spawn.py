@@ -451,12 +451,12 @@ def test_the_immune_check_retires_the_cell_the_body_does_not_need(tmp_path, monk
 def test_trainers_with_kept_cells_are_chosen_more_and_bred():
     import random
     from training import body as B
-    ts = [dict(t, births=0, kept=0) for t in B.TRAINERS]
+    ts = [dict(t, births=0, kept=0) for t in B.TRAINERS[:4]]
     ts[0].update(births=12, kept=0)
     ts[1].update(births=12, kept=12)
     picks = [B.pick_trainer(ts[:2], random.Random(i))["id"] for i in range(200)]
     assert picks.count("t2") > 190
-    ts = [dict(t, births=1, kept=1) for t in B.TRAINERS]                                # four births in all: time to breed
+    ts = [dict(t, births=1, kept=1) for t in B.TRAINERS[:4]]                                # four births in all: time to breed
     ts[3].update(births=3, kept=0)
     ts[0].update(births=0, kept=0)
     ts[1].update(births=1, kept=1)
@@ -480,3 +480,204 @@ def test_the_org_chart_shows_the_body_from_its_own_record(tmp_path, monkeypatch)
         "measured": [{"when": "2026-11-10 20:01", "passages": 300, "loss": {"stem cell alone": 2.7, "body, by fit: x": 2.6}}]}))
     text = "\n".join(org.body_lines())
     assert "1 cells alive" in text and "1 kept" in text and "the body at its best 2.6" in text and "trainer t1" in text
+
+
+def test_the_brain_from_nothing_takes_a_job_only_where_it_measured_at_least_as_well():
+    from team.cells import tiny
+    wins = {"a": {"use": True, "cell": 0.90, "incumbent": 0.80}, "b": {"use": True, "cell": 0.95, "incumbent": 0.5},
+            "c": {"use": False, "cell": 0.40, "incumbent": 0.70}, "d": {}}
+    held = tiny.decide_holds({"a": 0.92, "b": 0.90, "c": 0.75, "d": 0.99}, wins)
+    assert set(held) == {"a", "c"} and held["a"]["from"] == "today's cell" and held["c"]["from"] == "the member or rule"
+
+
+def test_the_brain_answers_a_job_it_holds_and_can_be_switched_off(tmp_path, monkeypatch):
+    import json
+    import torch
+    from team.cells import tiny, use
+    from training import scratch as T
+    if not (T.HOME / "tokenizer.json").exists():
+        return  # no vocabulary on this checkout yet: the hive makes it on its first turns
+    monkeypatch.setattr(tiny, "HOME", tmp_path)
+    monkeypatch.setattr(tiny, "_state", {})
+    torch.manual_seed(0)
+    torch.save(T.Brain({"licence_open": 2}).state_dict(), tmp_path / "brain.pt")
+    (tmp_path / "brain.json").write_text(json.dumps({"jobs": {"licence_open": ["yes", "no"]}, "talk": False}))
+    (tmp_path / "holds.json").write_text(json.dumps({"licence_open": {"test": 0.99, "was": 0.9}}))
+    assert use.on("licence_open") and use.ask("licence_open", "org/model | apache-2.0") in ("yes", "no")
+    assert use.ask_all("licence_open", ["a | mit", "b | cc-by-nc-4.0"])[0] in ("yes", "no")
+    monkeypatch.setenv("AGENT_TEAM_TINY", "0")
+    assert tiny.holds() == {}
+
+
+def test_a_scout_lets_in_only_text_that_reads_like_text():
+    from team import harvest
+    from team import config
+    good = (config.ROOT / "README.md").read_text().splitlines()                          # real, varied prose
+    assert harvest.readable(good) == (True, "")
+    assert not harvest.readable(["x"] * 300)[0]                                          # not running text
+    assert "alphabet" in harvest.readable([f"Река возле города {i} длинная, и весной она заливает все поля вокруг." for i in range(120)])[1]
+    assert "repeats" in harvest.readable(["The same sentence is written here again and again, every time."] * 200)[1]
+    assert harvest.pick_file([("a.parquet", 5e6), ("data/train-0.parquet", 9e6), ("big.txt", 9e9), ("small.txt", 10)]) == "data/train-0.parquet"
+    assert harvest.pick_file([("default/part-0.parquet", 5e6)]) == "default/part-0.parquet"
+    assert harvest.pick_file([("corpus.txt", 4e6), ("data/train-0.parquet", 2e6)]) == "corpus.txt"
+    assert harvest.pick_file([("model.bin", 5e6)]) is None
+
+
+def test_the_corpus_only_grows_at_its_end_so_no_window_moves(tmp_path, monkeypatch):
+    import numpy as np
+    from team import harvest
+    from training import scratch as T
+    if not (T.HOME / "tokenizer.json").exists():
+        return
+    tk = T.tokenizer()
+    shelf = tmp_path / "harvest"
+    shelf.mkdir()
+    monkeypatch.setattr(harvest, "HOME", shelf)
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    (shelf / "b.txt").write_text("The first shelf has one line about a river.\n")
+    first = np.array(T.corpus(tk)).copy()
+    (shelf / "b.txt").write_text("The first shelf has one line about a river.\nAnd now a second line about a bridge.\n")
+    (shelf / "a.txt").write_text("A new shelf whose name sorts first.\n")
+    grown = np.array(T.corpus(tk))
+    assert len(grown) > len(first) and (grown[:len(first)] == first).all()
+    assert len(np.array(T.corpus(tk))) == len(grown)                                     # nothing new: nothing added
+
+
+def test_a_bitnet_layer_works_in_three_values_and_learns_on_ordinary_weights():
+    import torch
+    from training import scratch as T
+    torch.manual_seed(0)
+    layer = T.BitLinear(8, 4)
+    x = torch.randn(3, 8)
+    scale = layer.weight.abs().mean()
+    three = (layer.weight / scale).round().clamp(-1, 1) * scale
+    top = x.abs().amax(-1, keepdim=True)
+    x8 = (x * 127 / top).round().clamp(-128, 127) * top / 127
+    assert torch.allclose(layer(x), torch.nn.functional.linear(x8, three, layer.bias), atol=1e-6)
+    layer(x).sum().backward()
+    assert layer.weight.grad is not None and layer.weight.grad.abs().sum() > 0          # the ordinary weights learn
+
+
+def test_a_packed_bitnet_cell_answers_exactly_as_before_and_is_small(tmp_path, monkeypatch):
+    import torch
+    from training import scratch as T
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    torch.manual_seed(0)
+    stem = T.Tiny(bit=True)
+    torch.save(stem.state_dict(), tmp_path / "base.pt")
+    cell = T.Tiny(bit=True)
+    cell.load_state_dict(stem.state_dict())
+    with torch.no_grad():
+        for p in cell.blocks.parameters():
+            p.add_(torch.randn_like(p) * 0.01)                                          # it has grown away from the stem cell
+    T.save_cell(cell, tmp_path / "cell_00.pt")
+    back = T.load_cell(tmp_path / "cell_00.pt")
+    ids = torch.randint(2, T.VOCAB, (2, 40))
+    with torch.no_grad():
+        assert torch.allclose(cell.eval().next_piece(ids), back.eval().next_piece(ids), atol=2e-2)
+    assert (tmp_path / "cell_00.pt").stat().st_size < 700_000 and back.bit
+    full = T.Tiny(bit=False)
+    T.save_cell(full, tmp_path / "cell_01.pt")
+    assert not T.load_cell(tmp_path / "cell_01.pt").bit and (tmp_path / "cell_01.pt").stat().st_size > 5_000_000
+
+
+def test_a_bitnet_cell_can_be_grown_by_moving_its_three_values_directly(tmp_path, monkeypatch):
+    import numpy as np
+    import torch
+    from training import body as B
+    from training import scratch as T
+    torch.manual_seed(0)
+    torch.set_num_threads(2)
+    monkeypatch.setattr(T, "CTX", 32)
+    monkeypatch.setattr(B, "W", 32)
+    rng = np.random.default_rng(0)
+    data = np.tile(rng.integers(2, 60, size=33 * 8), 40).astype(np.uint16)              # text with a pattern to learn
+    cell = T.Tiny(bit=True)
+    before = {n: p.clone() for n, p in cell.state_dict().items()}
+    rounds, best, start = B._flip_read(cell, data, list(range(200)), minutes=0.25, seed=0, batch=8, share=0.01)
+    assert rounds >= 1 and best <= start
+    for m in cell.modules():
+        if isinstance(m, T.BitLinear):                                                  # every layer is still three values times a number
+            scale = m.weight.abs().mean()
+            assert set((m.weight / scale).round().clamp(-1, 1).unique().tolist()) <= {-1.0, 0.0, 1.0}
+    assert all(torch.equal(before[n], p) for n, p in cell.state_dict().items() if n.startswith(("tok.", "pos.", "norm.")))
+
+
+def test_the_direct_way_trains_a_bitnet_without_ordinary_weights_underneath(monkeypatch):
+    import numpy as np
+    import torch
+    import torch.nn.functional as F
+    from training import scratch as T
+    torch.manual_seed(0)
+    torch.set_num_threads(2)
+    monkeypatch.setattr(T, "CTX", 32)
+    rng = np.random.default_rng(0)
+    data = torch.from_numpy(np.tile(rng.integers(2, 60, size=33 * 4), 30).astype("int64"))   # text with a pattern to learn
+    model = T.Tiny(bit=True)
+    trainer = T.Direct(model, seed=0)
+    losses = []
+    for step in range(120):
+        at = torch.randint(0, len(data) - 33, (16,))
+        x = torch.stack([data[i:i + 33] for i in at.tolist()])
+        loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1))
+        losses.append(loss.item())
+        trainer.step(loss, 0.01)
+    assert sum(losses[-10:]) / 10 < sum(losses[:10]) / 10 - 1.0                          # it learns
+    for m, t in zip(trainer.layers, trainer.t):                                         # and every weight is one of three values
+        assert set(t.unique().tolist()) <= {-1.0, 0.0, 1.0}
+        scale = m.weight.abs().mean()
+        assert torch.equal((m.weight / scale).round().clamp(-1, 1), t)
+
+
+def test_dreams_are_written_on_what_the_body_reads_worst_and_get_harder(tmp_path, monkeypatch):
+    import json
+    from team import config, harvest, llm
+    monkeypatch.setattr(harvest, "HOME", tmp_path / "harvest")
+    monkeypatch.setattr(config, "ROOT", tmp_path)
+    assert harvest.dream(log=lambda *a, **k: None) == 0                                  # no body yet: nothing to dream about
+    (tmp_path / "training" / "reports").mkdir(parents=True)
+    (tmp_path / "training" / "reports" / "body.json").write_text(json.dumps({"weakest": {"text": "The mill by the river grinds corn."}}))
+    asked = []
+
+    def chat(role, messages, **kw):
+        asked.append(messages[1]["content"])
+        return f"Dream number {len(asked)} tells how a mill turns grain into flour by the weight of falling water."
+    monkeypatch.setattr(llm, "chat", chat)
+    kept = harvest.dream(n=3, log=lambda *a, **k: None)
+    assert kept > 0 and all("The mill by the river" in a and harvest.LEVELS[0] in a for a in asked)
+    assert len((tmp_path / "harvest" / "dreams.txt").read_text().splitlines()) == 3
+    harvest._record(dreams=harvest.PER_LEVEL)
+    harvest.dream(n=1, log=lambda *a, **k: None)
+    assert harvest.LEVELS[1] in asked[-1]                                                # the next forty are harder
+
+
+def test_the_stem_cell_keeps_what_it_learned_only_if_the_body_is_better_for_it(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    from training import scratch as T
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    torch.manual_seed(0)
+    stem = T.Tiny(bit=True)
+    torch.save(stem.state_dict(), tmp_path / "base.pt")
+    monkeypatch.setattr(B, "_stem", lambda: T.Tiny(bit=True))
+    monkeypatch.setattr(B, "_windows", lambda data: 400)
+    froze = {}
+
+    def read(model, data, windows, minutes, seed, lr=5e-4, share_table=True):
+        froze["table"] = not model.tok.weight.requires_grad and not model.pos.weight.requires_grad
+        return 10, 2.0, 2.1
+    monkeypatch.setattr(B, "_read", read)
+    pieces = B.W // 2
+    first = torch.tensor([[1.0, 1.0]] * 6)
+    second = torch.full((6, 2, pieces), -2.0)
+    better = (torch.tensor([[1.0]] * 6), torch.full((6, 1, pieces), -1.0))
+    monkeypatch.setattr(B, "_read_all", lambda cells, data, windows: better)
+    out = B.stem_reads(None, list(range(6)), first, second, log=lambda *a, **k: None)
+    assert out["kept"] and froze["table"] and out["gate_after"] < out["gate_before"]
+    saved = (tmp_path / "base.pt").stat().st_mtime_ns
+    worse = (torch.tensor([[1.0]] * 6), torch.full((6, 1, pieces), -3.0))
+    monkeypatch.setattr(B, "_read_all", lambda cells, data, windows: worse)
+    out = B.stem_reads(None, list(range(6)), first, second, log=lambda *a, **k: None)
+    assert not out["kept"] and (tmp_path / "base.pt").stat().st_mtime_ns == saved      # it stays as it was
