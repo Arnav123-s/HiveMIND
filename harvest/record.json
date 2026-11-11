@@ -1,0 +1,36 @@
+{
+ "when": "2026-11-10 17:41",
+ "own_work_bytes": 1031154,
+ "wikimedia/wikipedia": 25361217,
+ "roneneldan/TinyStories": 22065364,
+ "wikipedia_api_bytes": 34212,
+ "scouted": {
+  "vsarathy/nl-robotics-translation-simple_english-30k-context": "simple english: not open (gated: False, licence: none stated)",
+  "vsarathy/nl-robotics-translation-simple_english-12k-context-TEST": "simple english: not open (gated: False, licence: none stated)",
+  "vsarathy/nl-robotics-translation-simple_english-2k-no-context-TEST": "simple english: not open (gated: False, licence: none stated)",
+  "vsarathy/nl-robotics-translation-simple_english-2k-context-TEST": "simple english: not open (gated: False, licence: none stated)",
+  "storagestuffnobody/stories-embedding": "stories: not open (gated: True, licence: none stated)",
+  "Chat-stories/Chat-stories": "stories: not open (gated: False, licence: ['unknown'])",
+  "storagestuffnobody/stories-semantic-long": "stories: not open (gated: False, licence: none stated)",
+  "storagestuffnobody/stories-semantic-word-bands": "stories: not open (gated: True, licence: none stated)",
+  "lucadiliello/STORIES": "stories: not open (gated: False, licence: ['cc'])",
+  "ffatty/plain-text-wikipedia-simpleenglish": "simple english: not let in: it does not read like sentences",
+  "BillGPT/OpenAI_embeddings_for_Wikipedia_Simple_English": "simple english: no text or parquet file of a size it can read",
+  "aisuko/simple_english_wikipedia": "simple english: no text or parquet file of a size it can read",
+  "aisuko/simple_english_wikipedia_p0": "simple english: no text or parquet file of a size it can read",
+  "vsarathy/nl-robotics-translation-simple_english-2k-novelty-context-TEST": "simple english: not open (gated: False, licence: none stated)",
+  "vsarathy/nl-robotics-translation-simple_english-30k-no-context": "simple english: not open (gated: False, licence: none stated)",
+  "vsarathy/nl-robotics-translation-simple_english-12k-no-context-TEST": "simple english: not open (gated: False, licence: none stated)",
+  "vsarathy/nl-robotics-translation-simple_english-2k-novelty-no-context-TEST": "simple english: not open (gated: False, licence: none stated)",
+  "demelin/moral_stories": "stories: no text or parquet file of a size it can read",
+  "delphi-suite/stories": "stories: let in"
+ },
+ "scout_trips": 2,
+ "found": [
+  [
+   "delphi-suite/stories",
+   "data/train-00004-of-00005.parquet",
+   "story"
+  ]
+ ]
+}

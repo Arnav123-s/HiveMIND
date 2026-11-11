@@ -1,0 +1,9 @@
+{
+ "base": {
+  "steps": 3545,
+  "loss": 3.415,
+  "rate": 0.003,
+  "minutes": 40.0,
+  "way": "usual (ordinary weights underneath)"
+ }
+}

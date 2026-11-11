@@ -1,0 +1,112 @@
+{
+ "corpus_bytes": 48491947,
+ "corpus_pieces": 14474774,
+ "pretrain_steps": 12241,
+ "pretrain_loss": 3.021,
+ "pretrain_pieces_read": 100278272,
+ "weights": 2615424,
+ "corpus_files": {
+  "own_work.txt": 1031154,
+  "roneneldan_tinystories.txt": 22065364,
+  "wikimedia_wikipedia.txt": 25361217,
+  "wikipedia.txt": 34212
+ },
+ "trial_direct": {
+  "steps": 754,
+  "loss": 4.25,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct"
+ },
+ "trial_nojump": {
+  "steps": 825,
+  "loss": 4.241,
+  "rate": 0.0,
+  "minutes": 8.0,
+  "way": "direct with no jumps"
+ },
+ "trial_usual": {
+  "steps": 787,
+  "loss": 4.031,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "usual (ordinary weights underneath)"
+ },
+ "trial_direct_fast": {
+  "steps": 779,
+  "loss": 4.293,
+  "rate": 0.01,
+  "minutes": 8.0,
+  "way": "direct"
+ },
+ "trial_direct_slow": {
+  "steps": 778,
+  "loss": 4.237,
+  "rate": 0.001,
+  "minutes": 8.0,
+  "way": "direct"
+ },
+ "trial_votes4": {
+  "steps": 763,
+  "loss": 4.667,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (4)"
+ },
+ "trial_votes8": {
+  "steps": 783,
+  "loss": 4.45,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (8)"
+ },
+ "trial_votes16": {
+  "steps": 771,
+  "loss": 4.181,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (16)"
+ },
+ "trial_votes32": {
+  "steps": 773,
+  "loss": 4.141,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (32)"
+ },
+ "trial_votes64": {
+  "steps": 775,
+  "loss": 4.174,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (64)"
+ },
+ "trial_a": {
+  "steps": 614,
+  "loss": 4.284,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (32; strong 0.5, leak 0, agree True)"
+ },
+ "trial_b": {
+  "steps": 507,
+  "loss": 4.375,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (32; strong 0.5, leak 16, agree False)"
+ },
+ "trial_c": {
+  "steps": 585,
+  "loss": 4.295,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (32; strong 0.75, leak 0, agree False)"
+ },
+ "trial_d": {
+  "steps": 647,
+  "loss": 4.338,
+  "rate": 0.003,
+  "minutes": 8.0,
+  "way": "direct by votes (16; strong 0.5, leak 0, agree True)"
+ }
+}
