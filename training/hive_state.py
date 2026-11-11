@@ -118,6 +118,9 @@ def unpack(path):
                 f.write(tar.extractfile(member).read())
             tmp.replace(dest)
             n += 1
+    row = h["scratch"] / "corpus.u16"  # the text as pieces belongs to the hive that was here: made again from what came
+    if n and row.exists():
+        row.unlink()
     return n
 
 
