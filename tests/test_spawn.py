@@ -915,3 +915,243 @@ def test_a_new_kind_of_trainer_joins_once_and_the_worst_record_makes_room(tmp_pa
     eight[7].update(births=4, kept=4)                                                    # sixteen births in all: time to breed
     out = B.breed(eight, random.Random(0))
     assert len(out) == 8 and "t1" not in {t["id"] for t in out} and {"t6", "t9"} <= {t["id"] for t in out}
+
+
+def test_the_hive_moves_as_one_file_and_a_bigger_hive_is_not_overwritten(tmp_path, monkeypatch):
+    import io
+    import json
+    import tarfile
+    import pytest
+    from training import hive_state as H
+
+    def hive(root, cells):
+        homes = {"scratch": root / "scratch", "harvest": root / "harvest", "reports": root / "reports"}
+        for h in homes.values():
+            h.mkdir(parents=True)
+        (homes["scratch"] / "base.pt").write_bytes(b"stem")
+        (homes["scratch"] / "corpus.u16").write_bytes(b"made again from the harvest")           # left out
+        (homes["scratch"] / "body").mkdir()
+        (homes["scratch"] / "bodies" / "b2" / "body").mkdir(parents=True)
+        for k in range(cells):
+            (homes["scratch"] / "body" / f"cell_{k:02d}.pt").write_bytes(b"cell %d" % k)
+        (homes["scratch"] / "bodies" / "b2" / "body" / "cell_00.pt").write_bytes(b"another body's cell")
+        (homes["scratch"] / "bodies" / "b2" / "base.pt.part").write_bytes(b"half written")       # left out
+        (homes["harvest"] / "wikipedia.txt").write_text("text " * 100)
+        (homes["reports"] / "hive_of_bodies.json").write_text(json.dumps([{"bodies": {"first": 2.5}, "as_one": 2.4, "when": "then"}]))
+        (homes["reports"] / "bench.json").write_text("{}")                                       # not the hive's
+        return homes
+
+    there, here = hive(tmp_path / "there", 3), hive(tmp_path / "here", 1)
+    monkeypatch.setattr(H, "_homes", lambda: there)
+    m = H.pack(tmp_path / "state.tar.gz")
+    assert (m["bodies"], m["cells"], m["as_one"]) == (2, 4, 2.4)
+    names = tarfile.open(tmp_path / "state.tar.gz").getnames()
+    assert "scratch/body/cell_02.pt" in names and "scratch/bodies/b2/body/cell_00.pt" in names
+    assert not [n for n in names if n.endswith((".part", "corpus.u16", "bench.json"))]
+
+    monkeypatch.setattr(H, "_homes", lambda: here)
+    assert "is here: 2 bodies, 4 living cells" in H.pull(tmp_path / "state.tar.gz")             # the smaller hive takes the bigger one
+    assert (here["scratch"] / "body" / "cell_02.pt").read_bytes() == b"cell 2"
+    assert (here["scratch"] / "bodies" / "b2" / "body" / "cell_00.pt").exists()
+    (here["scratch"] / "body" / "cell_09.pt").write_bytes(b"born here since")
+    assert H.pull(tmp_path / "state.tar.gz").startswith("left as it is")                        # a hive that grew past it is not overwritten
+    assert (here["scratch"] / "body" / "cell_09.pt").exists()
+
+    bad = tmp_path / "bad.tar"                                                                  # a file that reaches outside the hive is refused
+    with tarfile.open(bad, "w") as tar:
+        for name, blob in (("manifest.json", json.dumps({"bodies": 9, "cells": 99, "harvest_mb": 0, "as_one": 1}).encode()), ("scratch/../../evil.py", b"x")):
+            info = tarfile.TarInfo(name)
+            info.size = len(blob)
+            tar.addfile(info, io.BytesIO(blob))
+    with pytest.raises(ValueError):
+        H.pull(bad)
+    assert not (tmp_path / "evil.py").exists() and not (tmp_path / "here" / "evil.py").exists()
+
+
+def test_a_hive_turn_keeps_to_its_time_and_the_body_that_waited_longest_goes_first(tmp_path, monkeypatch):
+    import json
+    import subprocess
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    (tmp_path / "bodies.json").write_text(json.dumps(["", "b2", "b3"]))
+    (tmp_path / B.TURNS).write_text(json.dumps({"": 300.0, "b2": 100.0}))                       # b3 never had a turn, b2 waited longer than the first
+    went, clock = [], [1000.0]
+    monkeypatch.setattr(B.time, "time", lambda: clock[0])
+
+    sick = set()
+
+    def run(cmd, cwd=None, env=None, **kw):
+        went.append(env["HIVE_BODY"])
+        clock[0] += 50 * 60                                                                     # a body's turn takes fifty minutes
+        return subprocess.CompletedProcess(cmd, int(env["HIVE_BODY"] in sick))
+    monkeypatch.setattr(subprocess, "run", run)
+    monkeypatch.setattr(B, "_loads", lambda p: object())                                        # no body is lost
+    monkeypatch.setattr(B, "hive_measure", lambda log=print: {"as_one": 2.4})
+    monkeypatch.setattr(B, "found", lambda *a, **k: (_ for _ in ()).throw(AssertionError("no body is due")))
+    assert B.hive_turn(budget=90, log=lambda *a, **k: None) == {"as_one": 2.4}                  # the measurement is always made
+    assert went == ["b3", "b2"]                                                                 # the first body waits for the next turn
+    went.clear()
+    B.hive_turn(budget=40, log=lambda *a, **k: None)
+    assert went == [""]                                                                         # and then it is the one that waited longest
+    went.clear()
+    sick.add("b3")                                                                              # a body whose turn fails
+    saved = []
+    res = B.hive_turn(budget=0, log=lambda *a, **k: None, after=lambda: saved.append(went[-1]))
+    assert res["failed_turns"] == ["b3"] and went == ["b3", "b2", ""]                           # it is said, and the others still take their turns
+    assert saved == ["b2", ""]                                                                  # the hive is saved after the turns that worked
+
+
+def test_the_yardstick_is_the_same_passages_however_much_the_text_grows():
+    import numpy as np
+    from training import body as B
+    small, big = np.zeros(B.W * 4000 + 1, "uint16"), np.zeros(B.W * 9000 + 1, "uint16")
+    assert B._held(small, "report", 20, upto=4000) == B._held(big, "report", 20, upto=4000)
+    held = [i for i in range(4000) if i % B.HELD == 0][1::2]
+    assert B._held(big, "report", 20, upto=4000) == held[::len(held) // 20][:20]         # chosen as they were on 2026-11-11
+    assert B._held(big, "report", 20) != B._held(small, "report", 20)                    # spread over all the text, they move
+    assert all(i % B.HELD == 0 for i in B._held(big, "report", 20))
+    wide = B._held(big, "report", 20)
+    assert wide[-1] >= 9000 - 2 * B.HELD and len(set(wide)) == 20                         # and they reach the end of the text
+
+
+def test_the_hive_is_saved_under_a_new_name_and_never_smaller_than_it_came(tmp_path, monkeypatch):
+    import io
+    import json
+    import subprocess
+    import tarfile
+    import urllib.error
+    from training import hive_state as H
+    homes = {"scratch": tmp_path / "scratch", "harvest": tmp_path / "harvest", "reports": tmp_path / "reports"}
+    for h in homes.values():
+        h.mkdir()
+    (homes["scratch"] / "body").mkdir()
+    for k in range(4):
+        (homes["scratch"] / "body" / f"cell_{k:02d}.pt").write_bytes(b"cell")
+    (homes["scratch"] / "base.pt").write_bytes(b"stem")
+    monkeypatch.setattr(H, "_homes", lambda: homes)
+    monkeypatch.setattr(H.shutil, "which", lambda name: "/usr/bin/gh")
+    monkeypatch.setenv("GH_TOKEN", "t")
+    calls, there = [], [("hive-state-300.tar.gz", "u3"), ("hive-state-200.tar.gz", "u2"), ("hive-state-100.tar.gz", "u1")]
+
+    def run(cmd, **kw):
+        calls.append(cmd[1:4] + [a for a in cmd[4:] if a.startswith("hive-state-")])
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+    monkeypatch.setattr(H.subprocess, "run", run)
+    monkeypatch.setattr(H, "_states", lambda: there)
+    said = []
+    H.save(log=lambda *a, **k: said.append(a[0]))                                        # it did not come from the release, and a hive is there
+    assert not calls and "NOT saved" in said[-1]
+
+    (homes["scratch"] / H.CAME).write_text(json.dumps({"bodies": 1, "cells": 4}))
+    H.save(log=lambda *a, **k: said.append(a[0]))
+    assert [c[:2] for c in calls] == [["release", "view"], ["release", "upload"], ["release", "edit"], ["release", "delete-asset"]]
+    assert calls[-1][-1] == "hive-state-100.tar.gz"                                      # the two newest stay, the oldest goes
+    assert "saved as hive-state-" in said[-1]
+
+    calls.clear()
+    (homes["scratch"] / H.CAME).write_text(json.dumps({"bodies": 3, "cells": 22}))       # a run whose fetch went wrong has less than it came from
+    H.save(log=lambda *a, **k: said.append(a[0]))
+    assert not calls and "NOT saved" in said[-1]
+
+    (homes["scratch"] / H.CAME).unlink()                                                 # the very first hive: no release yet
+    monkeypatch.setattr(H, "_states", lambda: (_ for _ in ()).throw(urllib.error.HTTPError("u", 404, "no release", None, None)))
+    assert H._shrunk({"bodies": 1, "cells": 4}) is None
+    monkeypatch.setattr(H, "_states", lambda: (_ for _ in ()).throw(OSError("the network is down")))
+    assert H._shrunk({"bodies": 1, "cells": 4})                                          # it cannot be seen: not saved over it
+
+    # fetching: the newest state that can be read; a broken newest falls back to the one before
+    good = io.BytesIO()
+    with tarfile.open(fileobj=good, mode="w:gz") as tar:
+        blob = json.dumps({"bodies": 1, "cells": 4}).encode()
+        info = tarfile.TarInfo("manifest.json")
+        info.size = len(blob)
+        tar.addfile(info, io.BytesIO(blob))
+    monkeypatch.setattr(H, "_states", lambda: [("hive-state-300.tar.gz", "u3"), ("hive-state-200.tar.gz", "u2")])
+    monkeypatch.setattr(H.urllib.request, "urlopen", lambda url, timeout=0: io.BytesIO(b"cut off" if url == "u3" else good.getvalue()))
+    assert H.fetch(tmp_path / "got.tar.gz", log=lambda *a, **k: None) == "hive-state/hive-state-200.tar.gz"
+    monkeypatch.setattr(H, "fetch", lambda to, log=print: None)                           # nothing can be fetched
+    assert H.main(["pull", "--force"]) == 0 and H.main(["pull", "--force", "--must"]) == 1   # the run on GitHub stops there
+
+
+def test_the_vocabulary_is_learned_once_and_a_wrong_text_stream_is_made_again(tmp_path, monkeypatch):
+    import json
+    import numpy as np
+    from team import harvest
+    from training import body as B
+    from training import scratch as T
+    if not (T.SHARED / "tokenizer.json").exists():
+        return
+    real = (T.SHARED / "tokenizer.json").read_text()
+    tk = T.tokenizer()
+    shelf = tmp_path / "harvest"
+    shelf.mkdir()
+    monkeypatch.setattr(harvest, "HOME", shelf)
+    monkeypatch.setattr(T, "SHARED", tmp_path)
+    monkeypatch.setattr(T, "HOME", tmp_path / "bodies" / "b2")                            # a body that is not the first
+    (tmp_path / "bodies" / "b2").mkdir(parents=True)
+    (tmp_path / "tokenizer.json").write_text(real)
+    (tmp_path / "bodies" / "b2" / "base.pt").write_bytes(b"a stem cell made with this vocabulary")
+    (shelf / "new.txt").write_text("Text harvested since, full of zebras and quartz.\n" * 50)
+    T.tokenizer(train=True)                                                              # asked to learn it again: it is kept
+    assert (tmp_path / "tokenizer.json").read_text() == real
+    src = open(B.__file__).read()
+    assert 'T.HOME / "tokenizer.json"' not in src                                        # a body looks for the vocabulary where it is: shared
+
+    (shelf / "new.txt").write_text("One line about a harbour.\nAnother about a lighthouse.\n")
+    right = np.array(T.corpus(tk)).copy()
+    assert json.loads((tmp_path / "corpus.json").read_text())["pieces"] == len(right)
+    with open(tmp_path / "corpus.u16", "ab") as f:                                       # an addition that was cut off, or a row from another hive
+        np.asarray([7, 7, 7], dtype=np.uint16).tofile(f)
+    again = np.array(T.corpus(tk))
+    assert len(again) == len(right) and (again == right).all()
+
+
+def test_bodies_are_founded_for_ever_and_each_a_little_later():
+    from training import body as B
+    assert not B.body_is_due(1, 7) and B.body_is_due(1, 8)                                 # the second body at eight cells
+    assert not B.body_is_due(3, 35) and B.body_is_due(3, 36)                               # the fourth when three bodies average twelve
+    due = [next(a for a in range(10 ** 6) if B.body_is_due(n, a)) for n in range(1, 30)]
+    assert all(b > a for a, b in zip(due, due[1:]))                                        # there is always a next body
+    assert due[9] / 10 > due[1] / 2                                                        # and bodies are deeper by then
+
+
+def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
+    import json
+    import random
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    full = lambda r: {**B.NEW_BODY, **r, "shape": {"dim": B.T.DIM, "layers": B.T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    recipe, changed = B.next_recipe(random.Random(0))
+    assert changed is None and recipe == full(B.NEW_BODY)                                   # nothing measured yet: the recipe as it stands
+    (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10}]))
+    seen = set()
+    for seed in range(40):
+        child, what = B.next_recipe(random.Random(seed))
+        seen.add(what)
+        differs = [k for k in ("lr", "ease", "warm", "batch") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
+        assert differs == [what]                                                             # one thing changed, and only one
+        assert child["shape"]["dim"] % 32 == 0 and 3 <= child["shape"]["layers"] <= 8
+    assert seen == {"lr", "ease", "warm", "batch", "dim", "layers"}
+    better = dict(recipe, lr=0.0048)
+    (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10},
+                                                   {"body": "b4", "recipe": better, "minutes": 40.0, "score": 3.02},
+                                                   {"body": "b5", "recipe": dict(recipe, ease=0.0), "minutes": 40.0, "score": 3.20}]))
+    kids = [B.next_recipe(random.Random(seed))[0] for seed in range(40)]
+    assert all(k["lr"] in (0.0048, round(0.0048 * 0.6, 5), round(0.0048 * 1.6, 5)) for k in kids)   # the children are the best one's
+    monkeypatch.setitem(B.NEW_BODY, "warm", 100)                                            # the recipe changed by hand is tried once as it stands
+    assert B.next_recipe(random.Random(0)) == (full(B.NEW_BODY), None)
+
+
+def test_the_workflow_that_grows_the_hive_is_a_valid_file():
+    from pathlib import Path
+    try:
+        import yaml
+    except ImportError:
+        return
+    flow = yaml.safe_load((Path(__file__).resolve().parent.parent / ".github" / "workflows" / "hive.yml").read_text())
+    steps = flow["jobs"]["turn"]["steps"]
+    runs = " ".join(s.get("run", "") for s in steps)
+    assert "pull --force --must" in runs and "--save" in runs and "hive_state.py log" in runs
+    fetched = next(i for i, s in enumerate(steps) if s.get("id") == "fetched")
+    assert all("steps.fetched.outcome == 'success'" in s["if"] for s in steps[fetched + 1:] if "if" in s)   # nothing is saved over a hive that was not fetched
+    assert flow["permissions"] == {"contents": "write"} and flow["concurrency"]["group"] == "hive"

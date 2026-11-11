@@ -20,6 +20,8 @@ $PY -m pip install -q -r requirements.txt
 $PY -c "import llama_cpp" 2>/dev/null || CMAKE_ARGS="-DGGML_NATIVE=ON" $PY -m pip install llama-cpp-python==0.3.36
 $PY -m playwright install chromium
 $PY training/cells_build.py
+# the hive as it has grown on GitHub (bodies, cells, harvested text); a hive here that is as big or bigger is left alone
+$PY training/hive_state.py pull || echo "setup: the grown hive could not be fetched; the hive here starts from what it has"
 $PY -m pytest -q tests || echo "setup: some tests failed on this device; the hive is still installed, see the output above"
 if [ "${HIVE_NO_SERVICE:-0}" != "1" ]; then
     $PY -m team install

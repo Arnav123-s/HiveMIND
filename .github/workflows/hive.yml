@@ -1,0 +1,69 @@
+# The hive grows by itself here, with nobody watching and no machine of ours switched on.
+# Every six hours: the hive as it was is fetched, it harvests a little more text, every body takes its turn
+# (cells are born and judged, a new body is founded when it is time), all is measured on passages nobody trained
+# on, and the hive as it is now is put back. Free on a public repository; nothing here spends money or logs in.
+# The hive is saved after every body's turn (the release "hive-state" keeps its two newest states).
+# Fetch the grown hive onto your own device with:  python training/hive_state.py pull
+name: The hive grows
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: Minutes a newborn cell is grown for
+        default: "10"
+      births:
+        description: Births for each body in its turn
+        default: "3"
+      budget:
+        description: Minutes the bodies' turns may take in all
+        default: "180"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hive
+  cancel-in-progress: false
+
+jobs:
+  turn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MINUTES: ${{ inputs.minutes || '10' }}
+      BIRTHS: ${{ inputs.births || '3' }}
+      BUDGET: ${{ inputs.budget || '180' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: What a turn needs (the CPU build of torch; no model is downloaded)
+        run: |
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet numpy tokenizers requests huggingface_hub pyarrow beautifulsoup4 lxml psutil
+      - name: The hive as it was (the run stops here if it cannot be fetched, so it never starts a new hive by accident)
+        id: fetched
+        run: python training/hive_state.py pull --force --must
+      - name: A little more text (open datasets and Wikipedia; a failed harvest is not a failed turn)
+        run: python -m team harvest --no-dream --more 2 || true
+      - name: Every body takes its turn (the hive is saved after each, so a run that is cut off loses little)
+        run: python -m team body --minutes "$MINUTES" --births "$BIRTHS" --budget "$BUDGET" --save
+      # A body whose turn failed makes the step above fail, so the run shows red; what the others did is still kept.
+      - name: The hive as it is now
+        if: ${{ !cancelled() && steps.fetched.outcome == 'success' }}
+        run: python training/hive_state.py save >> "$GITHUB_STEP_SUMMARY"
+      - name: One line in the record of its growth
+        if: ${{ !cancelled() && steps.fetched.outcome == 'success' }}
+        run: |
+          python training/hive_state.py log
+          git config user.name "hive"
+          git config user.email "hive@users.noreply.github.com"
+          git add training/reports/hive_growth.jsonl
+          git commit -q -m "The hive took a turn" || exit 0
+          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push -q origin "HEAD:${GITHUB_REF_NAME}" || echo "the record could not be pushed; the hive itself is saved"

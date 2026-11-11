@@ -173,4 +173,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    code = main()
+    sys.exit(code if isinstance(code, int) else 0)

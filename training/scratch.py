@@ -382,9 +382,16 @@ def to_bitnet(minutes=30.0):
     return out
 
 
-def tokenizer(train=False):
+def tokenizer(train=False, force=False):
+    """The hive's vocabulary: learned once from the harvest, shared by every body. Every stem cell and every cell
+    is made of its pieces and the whole text is kept as its pieces, so once a stem cell exists it is never learned
+    again (a vocabulary learned again from a harvest that has grown is another vocabulary: every cell would read
+    noise). force: learn it again all the same, for a hive that is started over."""
     from tokenizers import Tokenizer, decoders, models, pre_tokenizers, trainers
     f = SHARED / "tokenizer.json"
+    if f.exists() and train and not force and ((SHARED / "base.pt").exists() or list(SHARED.glob("bodies/*/base.pt"))):
+        print("[scratch] the vocabulary is kept: stem cells have been made with it", flush=True)
+        train = False
     if f.exists() and not train:
         return Tokenizer.from_file(str(f))
     from team import harvest
@@ -434,6 +441,8 @@ def corpus(tk):
             old = {n: p.stat().st_size for n, p in files.items()}
         log = {"log": [[n, 0, b] for n, b in sorted((old or {}).items())]}
     SHARED.mkdir(parents=True, exist_ok=True)
+    if f.exists() and log.get("pieces") is not None and f.stat().st_size // 2 != log["pieces"]:
+        f.unlink()  # not the row the book describes (a hive brought from elsewhere, an addition cut off): made again below
 
     def add(out, path, start, end):
         """Exactly the bytes from start to end, line by line (a read "of about so many bytes" takes whole lines past
@@ -467,7 +476,9 @@ def corpus(tk):
                 add(out, files[name], at, size)
                 log["log"].append([name, at, size])
                 grew = True
-    if grew or moved or not book.exists():
+    pieces = f.stat().st_size // 2
+    if grew or moved or not book.exists() or log.get("pieces") != pieces:
+        log["pieces"] = pieces
         book.write_text(json.dumps(log))
     return np.memmap(f, dtype=np.uint16, mode="r")
 
@@ -757,7 +768,7 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
     if cmd == "tokenizer":
-        tokenizer(train=True)
+        tokenizer(train=True, force="--force" in argv)
     elif cmd == "direct":
         print(json.dumps(pretrain_direct(opt("--minutes", 20.0), opt("--rate", 0.003), name=opt("--name", "base_direct"),
                                          usual="--usual" in argv, votes=opt("--votes", 0), strong=opt("--strong", 0.5),
