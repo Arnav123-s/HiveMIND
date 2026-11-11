@@ -1226,3 +1226,11 @@ def test_a_stem_cell_reads_longer_while_it_is_still_learning_fast(tmp_path, monk
     assert B.stem_minutes(10) == 3                                                         # it has slowed down: a third
     (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"steps": 280, "kept": False}]}))
     assert B.stem_minutes(10) == 10                                                        # a record from before this was kept: tried in full once
+
+
+def test_turn_does_not_hide_stem_minutes():
+    """A parameter of turn named like the function stem_minutes hid it, and every body's turn failed."""
+    import inspect
+    from training import body as B
+    assert "stem_minutes" not in inspect.signature(B.turn).parameters
+    assert callable(B.stem_minutes)

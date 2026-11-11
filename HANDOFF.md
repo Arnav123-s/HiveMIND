@@ -27,6 +27,11 @@ is on GitHub survives. A new session should read this block, then "Live status" 
   no session. To pause it too: GitHub, repository Actions tab, "hive" workflow, "..." menu, Disable workflow.
   (`exam.yml` is not on `main`, so it does not run.)
 
+**Scripts for a fresh machine** (see `NEW_SESSION.md`, which also has the first message to send):
+`bash scripts/cloud_setup.sh [--light]` installs; `bash scripts/resume.sh status|grow|exam|ask|stop` starts work again.
+Fixed at the pause: `body.turn` had a parameter named `stem_minutes` that hid the function of that name, so every
+body's turn on `make-it-work` failed (found by running one; `main` does not have it; a test now guards it).
+
 **What the new account needs**
 - GitHub access to `Arnav123-s/HiveMIND` (connect GitHub in claude.ai Settings, Connectors, and pick this repo
   when starting a cloud session). Python 3.13; `pip install -r requirements.txt`; torch CPU; for the working hive

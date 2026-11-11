@@ -871,7 +871,7 @@ def judge_local(before, after, woke):
     return True, f"where it lives the body gained {gain:+.4f}; it wakes on {woke:.0%} of the passages near it"
 
 
-def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
+def turn(minutes=10.0, cells=6, found_minutes=90.0, log=print, births=3):
     """One turn of the body's life with nobody watching (`python -m team body`; the always-on agent runs it whenever
     the device is idle). Whatever is missing is made first: the harvest, the vocabulary, the stem cell, the first
     cells. After that, every turn:
@@ -893,7 +893,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
         T.HOME.mkdir(parents=True, exist_ok=True)  # a hive from nothing: its first stem cell is made like any new body's
         (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"},
                                                       "since": time.strftime("%Y-%m-%d %H:%M")}))
-        T.pretrain_direct(stem_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"], log=log)
+        T.pretrain_direct(found_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"], log=log)
         return "the stem cell read the harvest"
     heal(log)
     if not (HOME / "territories.pt").exists():
