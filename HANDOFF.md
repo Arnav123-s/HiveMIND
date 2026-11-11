@@ -1,4 +1,4 @@
-# Handoff: HiveMIND (`main` has PR #6; work continues on `make-it-work`, draft PR #7)
+# Handoff: HiveMIND (`main` has PR #7; work continues on `make-it-work`, draft PR #8; checkpoint branch `checkpoint-2026-11-10`)
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
@@ -49,6 +49,29 @@ benchmaxing, held-out sets run once, no model names in commits.
   different big ones" (one strong one exists; different edits of one model share their mistakes, as measured).
   True: small and fast to run, so several fit awake in 10 GB; three-valued weights suit small exact edits; cells
   with three-valued weights would let thousands fit (2.6M weights: 10 MB each now, about 0.6 MB then).
+- Later the same day, his orders and what was done:
+  - "Product first, measuring last; solve the missing parts." Done: PR #7 merged on his "merge yes"; `setup.sh` run
+    from start to end on a fresh clone of `main` (165 tests passed there); scouts that find new text sources; the
+    from-nothing brain wired into the cell jobs (it holds none yet: 65% mean test, today's cells are better).
+  - "Keep the success safe." The branch `checkpoint-2026-11-10` on GitHub holds the code, the full-precision stem
+    cell and the grown body (six cells). This session cannot push tags; a branch is the checkpoint.
+  - The body: the first one was worse than its stem cell (cells knew their windows by heart). The second beats it:
+    2.294 against 2.428 on 300 passages nobody trained on; each cell alone is worse than the stem cell; waking the
+    stem cell and the two nearest cells is as good as waking all (2.295). Growth on the worst-read windows learned
+    nothing (noise); growth is now by cell division (`body._division`), not run yet.
+  - "Train our own BitNets, the same hive with BitNets that multiply." Built: `scratch.BitLinear`, packed cells under
+    0.7 MB (`pack`/`unpack`), `scratch.py bitnet` converts the stem cell and keeps the old one (`base_full.pt`,
+    `body_full/`); `cells/scratch/stem.json` says which kind the stem cell is.
+  - "Find or make a direct way to train a BitNet." 8-minute runs from one random start, loss: no jumps 4.241; first
+    direct way (jump with probability in proportion to the gradient) 4.237 to 4.293: it taught nothing; by votes (a
+    small counter per weight) 4.667 / 4.450 / 4.181 / 4.141 / 4.174 at 4 / 8 / 16 / 32 / 64 votes; the published way
+    4.031. So votes work (half of the published way's gain at 32) and nothing-at-all-underneath does not. For
+    growing a cell from the stem cell there is `body._flip_read` (moves the best share of three-valued weights,
+    keeps or undoes); it is a trainer in the body's population and has only run in a toy test.
+  - "Data from dreaming." `harvest.dream`: the small member writes passages on what the body reads worst, harder
+    after every forty; part of every harvest. Tested with the member mocked; not run with a real model yet.
+  - BitNet from Microsoft as a recruit: the official file does not load in the hive's llama.cpp; building
+    Microsoft's runtime here was refused by the session's permissions. Open, for his device or his say.
 - **This cloud machine is reclaimed when idle.** The hive goes on evolving only where it is installed and left
   running: `python -m team install` on a device of his (README "Install", "Always on").
 
