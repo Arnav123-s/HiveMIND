@@ -70,6 +70,16 @@ def _cells():
     return {f.stem: T.load_cell(f).eval() for f in sorted(HOME.glob("cell_*.pt"))}
 
 
+def _placer():
+    """The stem cell as it was when the territories were drawn. Where a passage lies is always asked of this one, so
+    the map of territories stays true while the living stem cell goes on learning (placer.pt; a body made before
+    this existed is placed by the stem cell itself)."""
+    f = HOME / "placer.pt"
+    m = T.Tiny()
+    m.load_state_dict(torch.load(f if f.exists() else T.HOME / "base.pt"))
+    return m.eval()
+
+
 def _body():
     """Everyone who reads for the body: the stem cell, always, and every cell alive. The stem cell knows a little of
     everything; with it in the body, a passage no cell fits is still read by someone who can."""
@@ -123,6 +133,7 @@ def territories(cells=6, sample=12000, seed=0, log=print):
                 nearest[k] = (sim[b, k].item(), part[b])
     HOME.mkdir(parents=True, exist_ok=True)
     torch.save({"centre": centre, "owns": owns}, HOME / "territories.pt")
+    torch.save(stem.state_dict(), HOME / "placer.pt")  # the stem cell that drew this map keeps placing passages on it
     tk = T.tokenizer()
     shown = {k: tk.decode(_window(data, nearest[k][1])[:40].tolist())[:110] for k in owns if k in nearest}
     for k, sh in shown.items():
@@ -279,7 +290,7 @@ def measure(n=300, log=print, part="report"):
     """part: the held-out passages are two sets that never mix. "gate" decides whether a new cell is kept; "report"
     is only ever reported, so the number shown is not one the body was selected on."""
     data, body = _data(), _body()
-    stem, names = body["stem"], list(body)
+    stem, names = _placer(), list(body)
     terr = torch.load(HOME / "territories.pt")
     held = _held(data, part, n)
     first, second = _read_all(body, data, held)
@@ -428,7 +439,7 @@ def _division(data, cells, stem, terr, rnd, probe=160, most=8000):
 
 def grow(minutes=10.0, sample=3000, log=print, trainer=None):
     """A new cell, grown by one trainer's way of doing it. Returns its number."""
-    data, cells, stem = _data(), _body(), _stem().eval()
+    data, cells, stem = _data(), _body(), _placer()
     terr = torch.load(HOME / "territories.pt")
     t = trainer or dict(TRAINERS[0])
     k = terr["centre"].shape[0]  # a new number, never one a retired cell had: its row in the map of territories
@@ -498,10 +509,37 @@ def immune(first, second, names, log=print):
     return None
 
 
+def stem_reads(data, gate, first, second, minutes=3.0, log=print):
+    """The stem cell never stops learning. Each turn it reads everything a little longer, with its table of word
+    pieces held still: that table is the one thing every cell leans on, so the cells stay whole while the rest of the
+    stem cell changes. Its new self is kept only if the body, with it in the stem cell's place, predicts the gate
+    passages better; otherwise the stem cell stays as it was. (New cells start as copies of the stem cell as it is
+    then, so what it learns is inherited.)"""
+    stem = _stem()
+    for p in (stem.tok.weight, stem.pos.weight):
+        p.requires_grad_(False)
+    train = [i for i in range(_windows(data)) if i % HELD]
+    steps, loss, was = _read(stem, data, train, minutes, seed=len(_report().get("stem_reads", [])), lr=3e-4, share_table=False)
+    f2, s2 = _read_all({"stem": stem.eval()}, data, gate)
+    before = fit_loss(first, second).mean().item()
+    first, second = first.clone(), second.clone()
+    first[:, 0], second[:, 0] = f2[:, 0], s2[:, 0]  # the stem cell is the body's first member
+    after = fit_loss(first, second).mean().item()
+    kept = after < before - IDLE
+    if kept:
+        torch.save(stem.state_dict(), T.HOME / "base.pt")
+    out = {"when": time.strftime("%Y-%m-%d %H:%M"), "steps": steps, "gate_before": round(before, 4), "gate_after": round(after, 4), "kept": kept}
+    _report(stem_reads=_report().get("stem_reads", []) + [out])
+    log(f"[body] the stem cell read {steps} more steps; the body on the gate passages {before:.4f} -> {after:.4f}: "
+        f"{'kept' if kept else 'not kept, it stays as it was'}", flush=True)
+    return out
+
+
 def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
     """One turn of the body's life with nobody watching (`python -m team body`; the always-on agent runs it when
     the device is idle). Whatever is missing is made first: the harvest, the vocabulary, the stem cell, the first
     cells. After that, every turn:
+    - the stem cell reads a little more, and its new self is kept only if the body is better for it (stem_reads);
     - immunity: every cell is tried by leaving it out; one that the body does not need is retired;
     - a trainer is chosen by its record, and grows one cell: where the body predicts worst, or where the text lies
       far from every territory (the scouts);
@@ -524,11 +562,15 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
         differentiate(minutes, log=log)
         measure(log=log)
         return f"the first {cells} cells grew from the stem cell"
-    data, stem = _data(), _stem().eval()
+    data, stem = _data(), _placer()
     gate = _held(data, "gate")
     body = _body()
     first, second = _read_all(body, data, gate)
     rep = _report()
+    learned = stem_reads(data, gate, first, second, minutes=minutes * 0.3, log=log)
+    if learned and learned["kept"]:
+        body = _body()
+        first, second = _read_all(body, data, gate)
     retired = immune(first, second, list(body), log)
     if retired:
         _report(retired=rep.get("retired", []) + [dict(retired, when=time.strftime("%Y-%m-%d %H:%M"))])

@@ -81,6 +81,10 @@ def body_lines():
         out.append(f"  trainer {t['id']}: starts from {t['start']}, grows on {t['on']} text, "
                    f"{'moves the three values directly' if t.get('how') == 'flips' else 'reads the ordinary way'}, span {t['span']:g}: "
                    f"{t['births']} births, {t['kept']} kept" + (f" (bred from {t['parent']})" if t.get("parent") else ""))
+    sr = rep.get("stem_reads", [])
+    if sr:
+        out.append(f"  the stem cell went on reading in {len(sr)} turns and was the better for it in {sum(x['kept'] for x in sr)} "
+                   f"(last: the body {sr[-1]['gate_before']} -> {sr[-1]['gate_after']}, {'kept' if sr[-1]['kept'] else 'not kept'})")
     if births:
         b = births[-1]
         out.append(f"  last birth {b['when']}: cell {b['cell']} by {b['trainer']}, {'kept' if b['kept'] else 'removed at birth'}: {b['why']}")
