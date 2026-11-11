@@ -98,7 +98,7 @@ def unpack(path):
     n = 0
     with tarfile.open(path) as tar:
         for member in tar:
-            if member.name == "manifest.json":
+            if member.isdir() or "/" not in member.name:  # folders, the manifest, a note beside it
                 continue
             top, _, rest = member.name.partition("/")
             parts = Path(rest).parts
