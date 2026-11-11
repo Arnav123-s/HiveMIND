@@ -681,3 +681,33 @@ def test_the_stem_cell_keeps_what_it_learned_only_if_the_body_is_better_for_it(t
     monkeypatch.setattr(B, "_read_all", lambda cells, data, windows: worse)
     out = B.stem_reads(None, list(range(6)), first, second, log=lambda *a, **k: None)
     assert not out["kept"] and (tmp_path / "base.pt").stat().st_mtime_ns == saved      # it stays as it was
+
+
+def test_a_newborn_is_judged_where_it_lives():
+    import torch
+    from training import body as B
+    before, after = torch.full((60,), 2.50), torch.full((60,), 2.48)
+    assert B.judge_local(before, after, 0.4)[0]
+    assert not B.judge_local(before, before - 0.001, 0.4)[0]                             # too small a gain where it lives
+    kept, why = B.judge_local(before, after, 0.0)
+    assert not kept and "never be among the cells awake" in why
+
+
+def test_the_immune_check_of_a_big_body_judges_a_cell_where_it_was_awake(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    torch.save({"centre": torch.zeros(4, 4), "owns": {1: [1], 2: [2], 3: [3]}}, tmp_path / "territories.pt")
+    for k in (1, 2, 3):
+        (tmp_path / f"cell_{k:02d}.pt").write_bytes(b"x")
+
+    class Fake:
+        alive = [1, 2, 3]
+    pieces = B.W // 2
+    who = torch.tensor([[1, 2]] * 6 + [[3, 2]] * 6)                                      # cells 1 and 3 each wake on six passages, 2 on all
+    first = torch.full((12, 3), 1.0)
+    second = torch.full((12, 3, pieces), -2.0)
+    second[:6, 1] = -1.0                                                                 # cell 1 reads its passages well
+    second[6:, 1] = -4.0                                                                 # cell 3 reads its passages badly: the body is better without it
+    out = B.immune_near(Fake(), first, second, who, log=lambda *a, **k: None)
+    assert out["cell"] == 3 and not (tmp_path / "cell_03.pt").exists() and (tmp_path / "cell_01.pt").exists()
