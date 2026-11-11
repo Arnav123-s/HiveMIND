@@ -131,8 +131,11 @@ class Direct:
     its three values) is trained the ordinary way; that is under a third of the stem cell and is shared by all cells.
     (His order, 2026-11-10: if no direct route exists, make one.)"""
 
-    def __init__(self, model, lr=1e-3, seed=0, votes=0):
-        self.votes = votes
+    def __init__(self, model, lr=1e-3, seed=0, votes=0, strong=0.5, leak=0, agree=False):
+        # by votes, three things can be set: which share of a layer's weights is too weakly pulled to vote (strong),
+        # after how many steps every counter forgets one vote (leak; 0: never), and whether a vote only counts when
+        # the weight was pulled the same way at the step before (agree: one more bit per weight)
+        self.votes, self.strong, self.leak, self.agree, self.steps = votes, strong, leak, agree, 0
         self.layers = [m for m in model.modules() if isinstance(m, BitLinear)]
         own = {id(m.weight) for m in self.layers}
         self.t, self.log_scale = [], []
@@ -145,6 +148,7 @@ class Direct:
         self.gen = torch.Generator().manual_seed(seed)
         self.model = model
         self.count = [torch.zeros_like(t, dtype=torch.int8) for t in self.t]  # the votes, when it trains by votes
+        self.last = [torch.zeros_like(t, dtype=torch.int8) for t in self.t]   # which way each weight was pulled last
         self.install()
 
     def install(self):
@@ -171,8 +175,15 @@ class Direct:
                     # lowers the loss; at `votes` more votes one way than the other it jumps one value and its
                     # counter starts again. (The first direct way had nothing that added the evidence up, and on
                     # real text its jumps taught nothing: 4.25 with them, 4.24 without, 4.03 the published way.)
-                    strong = g.abs() >= g.abs().median()
-                    c = (self.count[i] - (g.sign() * strong).to(torch.int8)).clamp(-self.votes, self.votes)
+                    strong = g.abs() >= (g.abs().median() if self.strong == 0.5 else g.abs().flatten().kthvalue(
+                        max(1, int(self.strong * g.numel()))).values)
+                    vote = (-g.sign() * strong).to(torch.int8)
+                    if self.agree:
+                        vote, self.last[i] = torch.where(vote == self.last[i], vote, torch.zeros_like(vote)), vote
+                    c = self.count[i]
+                    if self.leak and self.steps % self.leak == 0:
+                        c = c - c.sign()
+                    c = (c + vote).clamp(-self.votes, self.votes)
                     go = c.abs() >= self.votes
                     want = (t + c.sign()).clamp(-1, 1)
                     self.count[i] = torch.where(go, torch.zeros_like(c), c)
@@ -184,10 +195,12 @@ class Direct:
                 jumped, total = jumped + int(go.sum()), total + t.numel()
         self.opt.step()
         self.install()
+        self.steps += 1
         return jumped / total
 
 
-def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0):
+def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
+                    strong=0.5, leak=0, agree=False):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
@@ -209,7 +222,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
                 opt.step()
                 return 0.0
     else:
-        trainer = Direct(model, seed=seed, votes=votes)
+        trainer = Direct(model, seed=seed, votes=votes, strong=strong, leak=leak, agree=agree)
     rnd, t0, steps, losses, jumps = random.Random(seed), time.time(), 0, [], []
     while time.time() - t0 < minutes * 60:
         done = (time.time() - t0) / (minutes * 60)
@@ -224,7 +237,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
                 f"three-valued weights jump a step", flush=True)
     torch.save(model.state_dict(), HOME / f"{name}.pt")
     out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
-           "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes})" if votes else "direct" if rate else "direct with no jumps"}
+           "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes}; strong {strong}, leak {leak}, agree {agree})" if votes else "direct" if rate else "direct with no jumps"}
     _record(**{name: out})
     return out
 
@@ -649,7 +662,8 @@ def main(argv):
         tokenizer(train=True)
     elif cmd == "direct":
         print(json.dumps(pretrain_direct(opt("--minutes", 20.0), opt("--rate", 0.003), name=opt("--name", "base_direct"),
-                                         usual="--usual" in argv, votes=opt("--votes", 0))))
+                                         usual="--usual" in argv, votes=opt("--votes", 0), strong=opt("--strong", 0.5),
+                                         leak=opt("--leak", 0), agree="--agree" in argv)))
     elif cmd == "bitnet":
         print(json.dumps(to_bitnet(opt("--minutes", 30.0))))
     elif cmd == "pretrain":
