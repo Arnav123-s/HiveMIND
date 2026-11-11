@@ -53,10 +53,10 @@ jobs:
         run: python -m team body --minutes "$MINUTES" --births "$BIRTHS" --budget "$BUDGET"
       - name: The hive as it is now
         run: |
-          python training/hive_state.py pack hive-state.tar > notes.md
+          python training/hive_state.py pack hive-state.tar.gz > notes.md
           cat notes.md >> "$GITHUB_STEP_SUMMARY"
           gh release view hive-state > /dev/null 2>&1 || gh release create hive-state --title "The hive as it is now" --notes-file notes.md
-          gh release upload hive-state hive-state.tar --clobber
+          gh release upload hive-state hive-state.tar.gz --clobber
           gh release edit hive-state --notes-file notes.md
       - name: One line in the record of its growth
         run: |

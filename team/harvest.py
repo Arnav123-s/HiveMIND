@@ -323,6 +323,8 @@ def files():
 
 def main(argv):
     mb = float(argv[argv.index("--mb") + 1]) if "--mb" in argv else 20.0
+    if "--more" in argv:  # each run the shelves may hold so much more than the fullest one does now: the harvest grows
+        mb = max([mb] + [p.stat().st_size / 1e6 + float(argv[argv.index("--more") + 1]) for p in files()])
     rec = {"when": time.strftime("%Y-%m-%d %H:%M"), "own_work_bytes": own_work()}
     if "--no-scout" not in argv:
         try:
