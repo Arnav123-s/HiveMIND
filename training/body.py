@@ -140,6 +140,34 @@ class Body:
         first, second, _ = self.read(data, windows, **kw)
         return fit_loss(first, second)
 
+    def said(self, data, windows, m=NEAR_M):
+        """What the body as it is already says about every piece of these windows: the log-probability it gives the
+        piece that really comes, [windows, pieces], its members weighed by the learned say. (For a cell that is
+        trained as one of the team: what the others know already.)"""
+        alive = [k for k in self.alive if k < self.terr["centre"].shape[0]]
+        m, out = min(m, len(alive)), []
+        open_ = torch.full((self.terr["centre"].shape[0],), float("-inf"))
+        open_[alive] = 0.0
+        rule = _rule()
+        for j in range(0, len(windows), 64):
+            ws = windows[j:j + 64]
+            x = torch.stack([_window(data, i) for i in ws])
+            lp = _piece_lp(self.stem, x)[:, None].repeat(1, 1 + m, 1)
+            if m:
+                who = (self.near(data, ws) + open_).topk(m, dim=1).indices
+                for k in sorted(set(who.flatten().tolist())):
+                    rows, slots = (who == k).nonzero(as_tuple=True)
+                    lp[rows, 1 + slots] = _piece_lp(self.cell(k), x[rows])
+            first = -lp[:, :, :lp.shape[2] // 2].mean(2)
+            out.append(torch.logsumexp(lp + _say(first, rule)[:, :, None], 1))
+        return torch.cat(out)
+
+
+def _piece_lp(model, x):
+    """The log-probability the model gives each piece that really comes next, [windows, pieces]."""
+    with torch.no_grad():
+        return F.log_softmax(model.next_piece(x[:, :-1]), -1).gather(-1, x[:, 1:, None])[..., 0]
+
 
 def place_new(b, data, log=print):
     """Text harvested since the last turn is given its place: each new window joins its two nearest territories, so
@@ -290,12 +318,23 @@ def territories(cells=6, sample=12000, seed=0, log=print):
     return owns
 
 
-def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32, share_table=True):
+def _team_loss(model, x, rest, share):
+    """The loss of the body with this cell in it: on every piece, the cell's say (share) and what the body said
+    already (rest). A piece the others know costs the cell little whatever it says; a piece they miss is where it
+    can gain. So the cell learns what the body lacks, not what it has."""
+    lp = F.log_softmax(model.next_piece(x[:, :-1]), -1).gather(-1, x[:, 1:, None])[..., 0]
+    return -torch.logaddexp(lp + math.log(share), rest + math.log(1 - share)).mean()
+
+
+def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32, share_table=True, rest=None, share=0.25):
     """The model goes on reading these windows (next-piece prediction), for at most so many minutes. A tenth of the
     windows is its own check: it never trains on them. Every 100 steps it is measured on them; the best state is
     kept, and the reading stops when three checks in a row brought nothing. (Without the check a cell read its
     territory until it knew it by heart: loss 0.29 there, 5.3 on text it had not seen.)
-    Returns (steps taken, its loss on the check windows at its best, the same before it read anything)."""
+    Returns (steps taken, its loss on the check windows at its best, the same before it read anything).
+    rest: what the body already says about every piece of these windows (Body.said, in the order of windows). With
+    it the cell is trained as one of the team: its loss, and its check, are the body's with the cell in it."""
+    row = {w: i for i, w in enumerate(windows)}
     if getattr(model, "bit", False) and share_table:
         for p in (model.tok.weight, model.pos.weight):  # a BitNet cell keeps the stem cell's table of word pieces
             p.requires_grad_(False)
@@ -305,14 +344,25 @@ def _read(model, data, windows, minutes, seed, lr=5e-4, batch=32, share_table=Tr
     rnd, t0, steps = random.Random(seed), time.time(), 0
 
     def checked():
-        v = _check_loss(model, data, check)
+        model.eval()
+        if rest is None:
+            v = _check_loss(model, data, check)
+        else:
+            with torch.no_grad():
+                v = sum(_team_loss(model, torch.stack([_window(data, i) for i in check[j:j + 32]]),
+                                   rest[[row[i] for i in check[j:j + 32]]], share).item() * len(check[j:j + 32])
+                        for j in range(0, len(check), 32)) / len(check)
         model.train()
         return v
     start = checked()
     best, stale = (start, {k: v.clone() for k, v in model.state_dict().items()}), 0
     while time.time() - t0 < minutes * 60 and stale < 3:
-        x = torch.stack([_window(data, rnd.choice(seen)) for _ in range(batch)])
-        loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1))
+        at = [rnd.choice(seen) for _ in range(batch)]
+        x = torch.stack([_window(data, i) for i in at])
+        if rest is None:
+            loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, T.VOCAB), x[:, 1:].reshape(-1))
+        else:
+            loss = _team_loss(model, x, rest[[row[i] for i in at]], share)
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -465,15 +515,21 @@ TRAINERS = [  # the first ways of growing a cell; more are bred from the ones wh
     # for BitNet cells only: no ordinary weights underneath, the three values are moved directly (_flip_read)
     {"id": "t5", "start": "nearest", "lr": 0, "span": 0.5, "on": "division", "how": "flips"},
     {"id": "t6", "start": "nearest", "lr": 0, "span": 0.5, "on": "uncharted", "how": "flips"},
+    # as one of the team: the cell is trained on the body's loss with it in, so it learns what the others miss
+    {"id": "t7", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "division", "how": "team", "share": 0.25},
+    {"id": "t8", "start": "nearest", "lr": 5e-4, "span": 1.0, "on": "division", "how": "team", "share": 0.5},
 ]
+TEAM_MOST = 4000  # windows a cell of the team is trained on
 KEEP, HARM, IDLE = 0.001, 0.01, 0.0005  # a birth must gain this much; no territory may lose this much; a cell must be worth this
 
 
 def trainers():
     """The trainers at work. The ones that move three-valued weights directly join once the cells are BitNets."""
     ts = _report().get("trainers") or [dict(t, births=0, kept=0) for t in TRAINERS if "how" not in t]
-    if T.is_bit() and not any(t.get("how") == "flips" for t in ts):
-        ts += [dict(t, births=0, kept=0) for t in TRAINERS if t.get("how") == "flips"]
+    for how in ("flips",) * T.is_bit() + ("team",):  # a kind of trainer the body has never had joins, under new numbers
+        if not any(t.get("how") == how for t in ts) and how not in _report().get("kinds_tried", []):
+            for t in (t for t in TRAINERS if t.get("how") == how):
+                ts.append(dict(t, births=0, kept=0, id=f"t{max(int(x['id'][1:]) for x in ts) + 1}"))
     return ts
 
 
@@ -492,10 +548,15 @@ def breed(ts, rnd):
     ts = [t for t in ts if not (t["births"] >= 3 and t["kept"] == 0)] or ts[:1]
     best = max(ts, key=lambda t: (t["kept"] + 1) / (t["births"] + 2))
     child = dict(best, births=0, kept=0, id=new_id, parent=best["id"])
-    what = rnd.choice(["start", "span", "on"] + ([] if best.get("how") == "flips" else ["lr"]))
+    what = rnd.choice(["start", "span", "on"] + ([] if best.get("how") == "flips" else ["lr"]) + (["share"] if best.get("how") == "team" else []))
     child[what] = {"start": "nearest" if best["start"] == "stem" else "stem", "lr": best["lr"] * rnd.choice([0.5, 2.0]),
-                   "span": best["span"] * rnd.choice([0.5, 2.0]), "on": rnd.choice([o for o in ("division", "uncharted", "worst") if o != best["on"]])}[what]
-    return (ts + [child])[-8:]
+                   "span": best["span"] * rnd.choice([0.5, 2.0]), "on": rnd.choice([o for o in ("division", "uncharted", "worst") if o != best["on"]]),
+                   "share": min(0.75, max(0.1, best.get("share", 0.25) * rnd.choice([0.5, 2.0])))}[what]
+    ts = ts + [child]
+    while len(ts) > 8:  # the one with the worst record makes room (never the newcomer, never one that has not had its chance)
+        tried = [t for t in ts[:-1] if t["births"]] or ts[:1]
+        ts.remove(min(tried, key=lambda t: (t["kept"] + 1) / (t["births"] + 2)))
+    return ts
 
 
 def _held(data, part, n=240):
@@ -632,6 +693,10 @@ def grow(minutes=10.0, sample=3000, log=print, trainer=None, body=None):
             cell = T.load_cell(f)
     if t.get("how") == "flips" and getattr(cell, "bit", False):
         steps, loss, was = _flip_read(cell, data, windows, minutes * t["span"], seed=k)
+    elif t.get("how") == "team":
+        windows = windows[:TEAM_MOST]  # what the body says about each of them is read first: that costs time too
+        steps, loss, was = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"] or 5e-4,
+                                 rest=cells.said(data, windows), share=t.get("share", 0.25))
     else:
         steps, loss, was = _read(cell, data, windows, minutes * t["span"], seed=k, lr=t["lr"] or 5e-4)
     T.save_cell(cell, HOME / f"cell_{k:02d}.pt")
@@ -814,6 +879,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     kept_n = 0
     for _ in range(births):
         ts = trainers()
+        _report(kinds_tried=sorted(set(_report().get("kinds_tried", [])) | {t["how"] for t in ts if t.get("how")}))
         rnd = random.Random(sum(t["births"] for t in ts))
         t = pick_trainer(ts, rnd)
         k = grow(minutes, log=log, trainer=t, body=b)

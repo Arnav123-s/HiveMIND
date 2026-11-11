@@ -824,3 +824,49 @@ def test_the_say_of_each_body_is_learned_too(tmp_path, monkeypatch):
     (tmp_path / B.HIVE_RULE).write_text(json.dumps(rule))
     assert B.together([big, small]).mean().item() < alone - 0.5                          # as one they are better than the best alone
     assert B.together([big, small, small]).shape == (n,)                                 # a body founded since: the rule's sharpness only
+
+
+def test_a_cell_of_the_team_learns_what_the_body_misses(tmp_path, monkeypatch):
+    import math
+    import torch
+    from training import body as B
+    from training import scratch as T
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(T, "CTX", 16)
+    torch.manual_seed(0)
+    cell = T.Tiny(bit=True)
+    x = torch.randint(2, T.VOCAB, (4, 17))
+    own = -B._piece_lp(cell, x).mean().item()                                            # the cell alone: it knows nothing yet
+    knows = torch.full((4, 16), -0.01)                                                   # the body knows every piece already
+    lost = torch.full((4, 16), -20.0)                                                    # the body knows none
+    assert B._team_loss(cell, x, knows, 0.25).item() < -math.log(0.75) + 0.02            # little is asked of the cell there
+    assert abs(B._team_loss(cell, x, lost, 0.25).item() - (own - math.log(0.25))) < 0.05  # here everything hangs on it
+    # the push on the cell comes from the pieces the body misses
+    half = knows.clone()
+    half[:, 8:] = -20.0
+    cell.zero_grad()
+    logits = cell.next_piece(x[:, :-1])
+    logits.retain_grad()
+    lp = torch.log_softmax(logits, -1).gather(-1, x[:, 1:, None])[..., 0]
+    (-torch.logaddexp(lp + math.log(0.25), half + math.log(0.75)).mean()).backward()
+    push = logits.grad.abs().sum(-1)
+    assert push[:, 8:].mean().item() > 50 * push[:, :8].mean().item()
+
+
+def test_a_new_kind_of_trainer_joins_once_and_the_worst_record_makes_room(tmp_path, monkeypatch):
+    import json
+    import random
+    from training import body as B
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(B.T, "is_bit", lambda: False)
+    ts = B.trainers()
+    team = [t for t in ts if t.get("how") == "team"]
+    assert len(team) == 2 and len({t["id"] for t in ts}) == len(ts) and not any(t.get("how") == "flips" for t in ts)
+    (tmp_path / "body.json").write_text(json.dumps({"trainers": [t for t in ts if "how" not in t], "kinds_tried": ["team"]}))
+    assert not any(t.get("how") == "team" for t in B.trainers())                        # it had its chance and left: it does not come back
+    eight = [{"id": f"t{i}", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "division", "births": 2, "kept": 2} for i in range(1, 9)]
+    eight[0].update(births=2, kept=0)                                                    # the oldest, and the worst record
+    eight[5].update(births=0, kept=0)                                                    # one that has not had its chance
+    eight[7].update(births=4, kept=4)                                                    # sixteen births in all: time to breed
+    out = B.breed(eight, random.Random(0))
+    assert len(out) == 8 and "t1" not in {t["id"] for t in out} and {"t6", "t9"} <= {t["id"] for t in out}
