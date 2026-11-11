@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT))
 REPO, RELEASE, SEED, NAME = "Arnav123-s/HiveMIND", "hive-state", "hive-seed", "hive-state.tar.gz"  # NAME: a pack made by hand
 GROWTH = ROOT / "training" / "reports" / "hive_growth.jsonl"
 # what is kept of cells/scratch (everything of a body's own folder is kept, except what is named in LEFT)
-TOP = ("base.pt", "stem.json", "tokenizer.json", "record.json", "corpus.json", "bodies.json", "bodies_rule.json",
+TOP = ("base.pt", "stem.json", "tokenizer.json", "record.json", "corpus.json", "bodies.json", "bodies_rule.json", "recipes.json",
        "bodies_turns.json")
 LEFT = (".part", ".hard.json", "corpus.u16")
 

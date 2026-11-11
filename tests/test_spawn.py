@@ -1098,3 +1098,39 @@ def test_the_vocabulary_is_learned_once_and_a_wrong_text_stream_is_made_again(tm
         np.asarray([7, 7, 7], dtype=np.uint16).tofile(f)
     again = np.array(T.corpus(tk))
     assert len(again) == len(right) and (again == right).all()
+
+
+def test_bodies_are_founded_for_ever_and_each_a_little_later():
+    from training import body as B
+    assert not B.body_is_due(1, 7) and B.body_is_due(1, 8)                                 # the second body at eight cells
+    assert not B.body_is_due(3, 35) and B.body_is_due(3, 36)                               # the fourth when three bodies average twelve
+    due = [next(a for a in range(10 ** 6) if B.body_is_due(n, a)) for n in range(1, 30)]
+    assert all(b > a for a, b in zip(due, due[1:]))                                        # there is always a next body
+    assert due[9] / 10 > due[1] / 2                                                        # and bodies are deeper by then
+
+
+def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
+    import json
+    import random
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    full = lambda r: {**B.NEW_BODY, **r, "shape": {"dim": B.T.DIM, "layers": B.T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    recipe, changed = B.next_recipe(random.Random(0))
+    assert changed is None and recipe == full(B.NEW_BODY)                                   # nothing measured yet: the recipe as it stands
+    (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10}]))
+    seen = set()
+    for seed in range(40):
+        child, what = B.next_recipe(random.Random(seed))
+        seen.add(what)
+        differs = [k for k in ("lr", "ease", "warm", "batch") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
+        assert differs == [what]                                                             # one thing changed, and only one
+        assert child["shape"]["dim"] % 32 == 0 and 3 <= child["shape"]["layers"] <= 8
+    assert seen == {"lr", "ease", "warm", "batch", "dim", "layers"}
+    better = dict(recipe, lr=0.0048)
+    (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10},
+                                                   {"body": "b4", "recipe": better, "minutes": 40.0, "score": 3.02},
+                                                   {"body": "b5", "recipe": dict(recipe, ease=0.0), "minutes": 40.0, "score": 3.20}]))
+    kids = [B.next_recipe(random.Random(seed))[0] for seed in range(40)]
+    assert all(k["lr"] in (0.0048, round(0.0048 * 0.6, 5), round(0.0048 * 1.6, 5)) for k in kids)   # the children are the best one's
+    monkeypatch.setitem(B.NEW_BODY, "warm", 100)                                            # the recipe changed by hand is tried once as it stands
+    assert B.next_recipe(random.Random(0)) == (full(B.NEW_BODY), None)
