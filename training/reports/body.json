@@ -245,6 +245,26 @@
    "why": "where it lives the body gained -0.0001 (it needs more than 0.004)",
    "near_before": 3.6233,
    "near_after": 3.6234
+  },
+  {
+   "cell": 10,
+   "when": "2026-11-11 05:42",
+   "trainer": "t2",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained +0.0032 (it needs more than 0.004)",
+   "near_before": 3.6799,
+   "near_after": 3.6767
+  },
+  {
+   "cell": 11,
+   "when": "2026-11-11 05:49",
+   "trainer": "t2",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0109 (it needs more than 0.004)",
+   "near_before": 3.6799,
+   "near_after": 3.6908
   }
  ],
  "weakest": {
@@ -268,7 +288,7 @@
    "lr": 0.0005,
    "span": 1.0,
    "on": "division",
-   "births": 2,
+   "births": 4,
    "kept": 2
   },
   {
@@ -335,6 +355,13 @@
    "gate_before": 2.6199,
    "gate_after": 2.6188,
    "kept": true
+  },
+  {
+   "when": "2026-11-11 05:33",
+   "steps": 290,
+   "gate_before": 2.6188,
+   "gate_after": 2.6188,
+   "kept": false
   }
  ]
 }

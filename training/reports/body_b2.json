@@ -1,0 +1,33 @@
+{
+ "territories": {
+  "cells": 4,
+  "windows_placed": 55128,
+  "sizes": {
+   "0": 19915,
+   "1": 30377,
+   "2": 32173,
+   "3": 27791
+  },
+  "examples": {
+   "0": " Jesus Christ of Latter-day Saints (d. 1994)\n 1900 - Nabi Tajima, Japanese supercentenarian (d. 2018)\n",
+   "1": " in the house, the little girl was still scared and said she wanted to quit. Her parents understood, so they k",
+   "2": " in the front, not the back, and is water-cooled (using a radiator). It is much more suited to today's modern ",
+   "3": " water from the bucket. She helped him wash his mouth.\n \"I told you not to eat the berries!\" she said. \"You sh"
+  },
+  "seconds": 621
+ },
+ "minutes_per_cell": 10.0,
+ "measured": [
+  {
+   "when": "2026-11-11 05:29",
+   "cells": 4,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.1299,
+    "body: the stem cell and the 2 nearest cells read, the rest sleep": 2.8973,
+    "body: the stem cell and the 4 nearest cells read": 2.8963,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.8963
+   }
+  }
+ ]
+}
