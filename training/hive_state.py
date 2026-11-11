@@ -68,7 +68,8 @@ def manifest(files=None):
             "bodies": len({n.split("/")[2] for n in names if n.startswith("scratch/bodies/")}) + any(n.startswith("scratch/body/") or n == "scratch/base.pt" for n in names),
             "cells": sum(bool(re.search(r"/cell_\d+\.pt$", n)) for n in names),
             "harvest_mb": round(sum(p.stat().st_size for n, p in files if n.startswith("harvest/") and n.endswith(".txt")) / 1e6, 1),
-            "each": last.get("bodies"), "as_one": last.get("as_one"), "measured": last.get("when")}
+            "each": last.get("bodies"), "as_one": last.get("as_one"), "measured": last.get("when"),
+            "yardstick": (last.get("yardstick") or {}).get("as_one", last.get("as_one"))}
 
 
 def pack(out):
@@ -165,7 +166,8 @@ def notes(m):
     return (f"The hive as it is now ({m['when']} UTC): **{m['bodies']} bodies, {m['cells']} living cells**, "
             f"{m['harvest_mb']} MB of harvested text.\n\n"
             f"Loss on passages nobody trained on (lower is better), measured {m.get('measured')}: "
-            f"each body alone: {each or 'not measured yet'}; **all as one: {m.get('as_one')}**.\n\n"
+            f"each body alone: {each or 'not measured yet'}; all as one: {m.get('as_one')} (on text spread over all it has "
+            f"harvested, which grows and changes). **On the yardstick, the same passages every time: {m.get('yardstick')}**.\n\n"
             f"Bring it to your device: `python training/hive_state.py pull`\n")
 
 
