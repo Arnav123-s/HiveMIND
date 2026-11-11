@@ -106,6 +106,16 @@
    "held": 3.5422,
    "steps": 990,
    "minutes": 18.5
+  },
+  "eased in + two three-valued layers added up (one set of weights underneath)": {
+   "held": 3.9473,
+   "steps": 600,
+   "minutes": 6.8
+  },
+  "eased in + two three-valued layers added up (each its own weights underneath)": {
+   "held": 4.0032,
+   "steps": 600,
+   "minutes": 6.5
   }
  },
  "full precision at the old rate (lr 1e-3, 600 steps, an earlier run of the same harness)": 4.1022,
@@ -165,6 +175,40 @@
    "gain on the 200 nearest unseen passages": 0.0024,
    "awake on 200": 0.92,
    "alone on 200": 4.1244
+  }
+ },
+ "the rate a newborn cell is grown at (the same territory of the first body, alone on the machine, 12 minutes each)": {
+  "usual, from the nearest cell, rate 5e-4": {
+   "gain on the 60 nearest unseen passages": 0.0177,
+   "awake on 60": 0.95,
+   "alone on 60": 3.5938,
+   "gain on the 200 nearest unseen passages": 0.016,
+   "awake on 200": 0.92,
+   "alone on 200": 3.5947
+  },
+  "usual, from the nearest cell, rate 1.5e-3": {
+   "gain on the 60 nearest unseen passages": 0.0077,
+   "awake on 60": 0.95,
+   "alone on 60": 3.6285,
+   "gain on the 200 nearest unseen passages": 0.0084,
+   "awake on 200": 0.92,
+   "alone on 200": 3.6223
+  },
+  "usual, from the nearest cell, rate 3e-3": {
+   "gain on the 60 nearest unseen passages": 0.0092,
+   "awake on 60": 0.95,
+   "alone on 60": 3.6692,
+   "gain on the 200 nearest unseen passages": 0.0081,
+   "awake on 200": 0.92,
+   "alone on 200": 3.6656
+  },
+  "usual, from the stem cell, rate 1.5e-3": {
+   "gain on the 60 nearest unseen passages": -0.0125,
+   "awake on 60": 0.95,
+   "alone on 60": 3.7298,
+   "gain on the 200 nearest unseen passages": -0.01,
+   "awake on 200": 0.92,
+   "alone on 200": 3.7211
   }
  }
 }

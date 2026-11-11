@@ -887,8 +887,11 @@ have thousands. Two ways of training them are built:
   (4.43 to 4.54), so it is off. Ideas that did nothing: a number per row, a stricter line for zero, the middle
   value instead of the mean, no weight decay, a falling rate. A teacher (the first body's stem cell) helps per step
   (3.8081) but costs 1.7 times the time, and that time spent on more steps without it does better (3.6988), so it
-  is off. Two more that help and are not built in yet: two three-valued layers added up (3.9474, twice the disk for
-  a cell) and a wider cell (3.9547 at width 256, 1.5 times the time). Full precision at the same rate and steps:
+  is off. Two more that help and are not built in: two three-valued layers added up (3.9474, twice the disk for
+  a cell; no better with the easing, 3.9473; with separate weights underneath no gain, 4.0032) and a wider cell
+  (3.9547 at width 256, 1.5 times the time). The higher rate is for a stem cell from nothing only: a newborn cell
+  grown from the nearest cell does best at the rate it had (5e-4: +0.0177 where it lives; 1.5e-3: +0.0077;
+  3e-3: +0.0092). Full precision at the same rate and steps:
   3.8966, so a BitNet of this size is still about 0.10 behind an ordinary net step for step. New bodies are founded
   with the rate and the easing (`body.NEW_BODY`); each body may have its own shape (`cells/.../stem.json`).
 - *A flaw found and closed:* stem cells drew their training text from anywhere, the held passages included (the
