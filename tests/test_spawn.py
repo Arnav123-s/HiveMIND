@@ -534,6 +534,7 @@ def test_the_corpus_only_grows_at_its_end_so_no_window_moves(tmp_path, monkeypat
     shelf.mkdir()
     monkeypatch.setattr(harvest, "HOME", shelf)
     monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(T, "SHARED", tmp_path)                                          # never the hive's real text
     (shelf / "b.txt").write_text("The first shelf has one line about a river.\n")
     first = np.array(T.corpus(tk)).copy()
     (shelf / "b.txt").write_text("The first shelf has one line about a river.\nAnd now a second line about a bridge.\n")
@@ -681,3 +682,145 @@ def test_the_stem_cell_keeps_what_it_learned_only_if_the_body_is_better_for_it(t
     monkeypatch.setattr(B, "_read_all", lambda cells, data, windows: worse)
     out = B.stem_reads(None, list(range(6)), first, second, log=lambda *a, **k: None)
     assert not out["kept"] and (tmp_path / "base.pt").stat().st_mtime_ns == saved      # it stays as it was
+
+
+def test_a_newborn_is_judged_where_it_lives():
+    import torch
+    from training import body as B
+    before, after = torch.full((60,), 2.50), torch.full((60,), 2.48)
+    assert B.judge_local(before, after, 0.4)[0]
+    assert not B.judge_local(before, before - 0.001, 0.4)[0]                             # too small a gain where it lives
+    kept, why = B.judge_local(before, after, 0.0)
+    assert not kept and "never be among the cells awake" in why
+
+
+def test_the_immune_check_of_a_big_body_judges_a_cell_where_it_was_awake(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    torch.save({"centre": torch.zeros(4, 4), "owns": {1: [1], 2: [2], 3: [3]}}, tmp_path / "territories.pt")
+    for k in (1, 2, 3):
+        (tmp_path / f"cell_{k:02d}.pt").write_bytes(b"x")
+
+    class Fake:
+        alive = [1, 2, 3]
+    pieces = B.W // 2
+    who = torch.tensor([[1, 2]] * 6 + [[3, 2]] * 6)                                      # cells 1 and 3 each wake on six passages, 2 on all
+    first = torch.full((12, 3), 1.0)
+    second = torch.full((12, 3, pieces), -2.0)
+    second[:6, 1] = -1.0                                                                 # cell 1 reads its passages well
+    second[6:, 1] = -4.0                                                                 # cell 3 reads its passages badly: the body is better without it
+    out = B.immune_near(Fake(), first, second, who, log=lambda *a, **k: None)
+    assert out["cell"] == 3 and not (tmp_path / "cell_03.pt").exists() and (tmp_path / "cell_01.pt").exists()
+
+
+def test_bodies_read_as_one_and_the_one_that_fits_has_the_say(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)                                         # no rule learned yet, one body
+    pieces = B.W // 2
+    fits = (torch.tensor([1.0, 1.0]), torch.full((2, pieces), -1.0))                     # this body knows these passages
+    lost = (torch.tensor([9.0, 9.0]), torch.full((2, pieces), -6.0))                     # this one does not
+    assert torch.allclose(B.together([fits, lost]), torch.tensor([1.0, 1.0]), atol=1e-3)
+    half = (torch.tensor([1.0, 9.0]), torch.stack([torch.full((pieces,), -1.0), torch.full((pieces,), -6.0)]))
+    other = (torch.tensor([9.0, 1.0]), torch.stack([torch.full((pieces,), -6.0), torch.full((pieces,), -1.0)]))
+    one = B.together([half, other])                                                     # each covers what the other misses
+    assert torch.allclose(one, torch.tensor([1.0, 1.0]), atol=1e-3)
+    assert -half[1].mean().item() > 3 and -other[1].mean().item() > 3 and one.mean().item() < 1.1
+    assert B.bodies()[0] == ""
+
+
+def test_the_body_regenerates_what_it_lost(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    from training import scratch as T
+    home = tmp_path / "body"
+    home.mkdir()
+    monkeypatch.setattr(B, "HOME", home)
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(B, "_data", lambda: list(range(B.W * 50 + 1)))
+    torch.manual_seed(0)
+    stem = T.Tiny(bit=True)
+    torch.save(stem.state_dict(), tmp_path / "base.pt")
+    torch.save(stem.state_dict(), home / "placer.pt")
+    B._save_map({"centre": torch.zeros(2, 4), "owns": {0: [1, 2, 3], 1: [4, 5, 999]}})
+    T.save_cell(stem, home / "cell_00.pt")
+    (home / "cell_01.pt").write_bytes(b"cut off in the middle")                          # a cell that was cut off
+    (tmp_path / "base.pt").unlink()                                                      # the stem cell is lost
+    (home / "territories.pt").write_bytes(b"torn")                                       # the map is torn
+    did = " | ".join(B.heal(log=lambda *a, **k: None))
+    assert "stem cell was lost and came back" in did and "map of territories was lost and came back" in did
+    assert "cell_01 could not be read" in did and not (home / "cell_01.pt").exists() and (home / "cell_00.pt").exists()
+    assert "no longer there" in did and torch.load(home / "territories.pt")["owns"][1] == [4, 5]
+    assert torch.load(tmp_path / "base.pt").keys() == stem.state_dict().keys()
+    assert B.heal(log=lambda *a, **k: None) == [] or "missing" in " ".join(B.heal(log=lambda *a, **k: None))
+
+
+def test_a_lost_text_stream_is_made_again_with_every_window_where_it_was(tmp_path, monkeypatch):
+    import numpy as np
+    from team import harvest
+    from training import scratch as T
+    if not (T.SHARED / "tokenizer.json").exists():
+        return
+    tk = T.tokenizer()
+    shelf = tmp_path / "harvest"
+    shelf.mkdir()
+    monkeypatch.setattr(harvest, "HOME", shelf)
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(T, "SHARED", tmp_path)
+    (shelf / "b.txt").write_text("The first shelf has one line about a river.\n")
+    T.corpus(tk)
+    (shelf / "a.txt").write_text("A new shelf whose name sorts first.\n")
+    with open(shelf / "b.txt", "a") as f:
+        f.write("And now a second line about a bridge.\n")
+    grown = np.array(T.corpus(tk)).copy()
+    (tmp_path / "corpus.u16").unlink()                                                   # the stream is lost
+    again = np.array(T.corpus(tk))
+    assert len(again) == len(grown) and (again == grown).all()
+
+
+def test_the_say_of_each_member_is_learned_and_beats_winner_takes_all(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    torch.manual_seed(0)
+    pieces, n = B.W // 2, 80
+    # two members that fit the first half about alike; each knows the pieces the other does not (which ones differs
+    # by passage); a third member that predicts nothing well
+    first = torch.cat([2.0 + 0.1 * torch.randn(n, 2), torch.full((n, 1), 2.2)], 1)
+    knows = torch.rand(n, pieces) < 0.5
+    second = torch.stack([torch.where(knows, -0.5, -5.0), torch.where(knows, -5.0, -0.5), torch.full((n, pieces), -6.0)], 1)
+    old = B.fit_loss(first, second, rule={"h": float(pieces), "bias": []}).mean().item()
+    msgs = []
+    rule = B.learn_say(first[::2], second[::2], log=lambda *a, **k: msgs.append(a[0]))
+    new = B.fit_loss(first[1::2], second[1::2]).mean().item()                            # passages the rule was not learned on
+    assert new < old - 0.3 and rule["h"] < pieces / 4
+    assert rule["bias"][2] < min(rule["bias"][:2]) - 1                                   # the member that knows nothing lost its standing
+    assert B._rule() == rule and "learned again" in msgs[0]
+    # a seat asleep (nobody fills it) still has no say under a soft rule
+    asleep = first.clone()
+    asleep[:, 2] = 50.0
+    assert B._say(asleep, rule)[:, 2].exp().max().item() < 1e-6
+    # every cell reading at once has more seats than the rule knows: its sharpness only
+    wide = torch.cat([first, first], 1)
+    assert torch.allclose(B._say(wide, rule), torch.log_softmax(-rule["h"] * wide, 1))
+
+
+def test_the_say_of_each_body_is_learned_too(tmp_path, monkeypatch):
+    import json
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    torch.manual_seed(1)
+    pieces, n = B.W // 2, 60
+    knows = torch.rand(n, pieces) < 0.7                                                  # the big body knows most pieces, the small one the rest
+    big = (torch.full((n,), 2.0), torch.where(knows, -0.5, -5.0))
+    small = (torch.full((n,), 2.4), torch.where(knows, -5.0, -0.5))
+    alone = -big[1].mean().item()
+    sharp = B.together([big, small], rule={"h": float(pieces), "bias": []}).mean().item()
+    assert abs(sharp - alone) < 0.01                                                     # the old rule: the weaker body is never heard
+    rule = B.learn_rule(torch.stack([big[0], small[0]], 1), torch.stack([big[1], small[1]], 1))
+    (tmp_path / B.HIVE_RULE).write_text(json.dumps(rule))
+    assert B.together([big, small]).mean().item() < alone - 0.5                          # as one they are better than the best alone
+    assert B.together([big, small, small]).shape == (n,)                                 # a body founded since: the rule's sharpness only

@@ -45,7 +45,9 @@ import torch.nn.functional as F
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-HOME = ROOT / "cells" / "scratch"
+SHARED = ROOT / "cells" / "scratch"  # what every body of the hive shares: the vocabulary and the harvested text as pieces
+BODY = __import__("os").environ.get("HIVE_BODY", "")  # which body this process works on ("": the first one)
+HOME = SHARED / "bodies" / BODY if BODY else SHARED  # that body's own stem cell, cells and records
 VOCAB, DIM, LAYERS, HEADS, CTX = 4096, 192, 4, 4, 256
 PAD, BOS = 0, 1
 
@@ -66,29 +68,46 @@ class BitLinear(nn.Linear):
         return F.linear(x, w, self.bias)
 
 
-def is_bit():
-    """Are the hive's own cells BitNets? (cells/scratch/stem.json, which travels with the stem cell in git; set once,
-    when the stem cell is converted.)"""
+def kind():
+    """What this body's cells are: {"bit", "dim", "layers", "heads", "subln"}. It is written once, when the body's
+    stem cell is made (stem.json beside the stem cell; the first body's travels with it in git), and every cell of
+    the body has it. Bodies may differ: what they share is the vocabulary and the harvest, not their shape."""
     try:
-        return bool(json.loads((HOME / "stem.json").read_text()).get("bit"))
+        k = json.loads((HOME / "stem.json").read_text())
     except (OSError, ValueError):
-        return False
+        k = {}
+    return {"bit": bool(k.get("bit")), "dim": int(k.get("dim", DIM)), "layers": int(k.get("layers", LAYERS)),
+            "heads": int(k.get("heads", HEADS)), "subln": bool(k.get("subln"))}
+
+
+def is_bit():
+    """Are this body's own cells BitNets?"""
+    return kind()["bit"]
 
 
 class Block(nn.Module):
-    def __init__(self, bit=False):
+    """subln: one more norm right before each of the block's two output layers (the published BitNet recipe: what
+    goes into a three-valued layer is normed before it is rounded to 8 bits; without it the stem cell's first
+    BitNets rounded un-normed numbers at those two layers)."""
+
+    def __init__(self, bit=False, dim=DIM, heads=HEADS, subln=False):
         super().__init__()
         lin = BitLinear if bit else nn.Linear
-        self.n1, self.n2 = nn.LayerNorm(DIM), nn.LayerNorm(DIM)
-        self.qkv, self.out = lin(DIM, 3 * DIM), lin(DIM, DIM)
-        self.up, self.down = lin(DIM, 4 * DIM), lin(4 * DIM, DIM)
+        self.heads = heads
+        self.n1, self.n2 = nn.LayerNorm(dim), nn.LayerNorm(dim)
+        self.qkv, self.out = lin(dim, 3 * dim), lin(dim, dim)
+        self.up, self.down = lin(dim, 4 * dim), lin(4 * dim, dim)
+        if subln:
+            self.s1, self.s2 = nn.LayerNorm(dim), nn.LayerNorm(4 * dim)
+        self.subln = subln
 
     def forward(self, x, causal):
         b, t, d = x.shape
-        q, k, v = self.qkv(self.n1(x)).view(b, t, 3, HEADS, d // HEADS).permute(2, 0, 3, 1, 4)
-        a = F.scaled_dot_product_attention(q, k, v, is_causal=causal)
-        x = x + self.out(a.transpose(1, 2).reshape(b, t, d))
-        return x + self.down(F.gelu(self.up(self.n2(x))))
+        q, k, v = self.qkv(self.n1(x)).view(b, t, 3, self.heads, d // self.heads).permute(2, 0, 3, 1, 4)
+        a = F.scaled_dot_product_attention(q, k, v, is_causal=causal).transpose(1, 2).reshape(b, t, d)
+        x = x + self.out(self.s1(a) if self.subln else a)
+        h = F.gelu(self.up(self.n2(x)))
+        return x + self.down(self.s2(h) if self.subln else h)
 
 
 class Tiny(nn.Module):
@@ -97,11 +116,13 @@ class Tiny(nn.Module):
 
     def __init__(self, labels=0, bit=None):
         super().__init__()
-        self.bit = is_bit() if bit is None else bit
-        self.tok, self.pos = nn.Embedding(VOCAB, DIM), nn.Embedding(CTX, DIM)
-        self.blocks = nn.ModuleList(Block(self.bit) for _ in range(LAYERS))
-        self.norm = nn.LayerNorm(DIM)
-        self.head = nn.Linear(DIM, labels) if labels else None
+        k = kind()
+        self.bit = k["bit"] if bit is None else bit
+        self.dim = dim = k["dim"]
+        self.tok, self.pos = nn.Embedding(VOCAB, dim), nn.Embedding(CTX, dim)
+        self.blocks = nn.ModuleList(Block(self.bit, dim, k["heads"], k["subln"]) for _ in range(k["layers"]))
+        self.norm = nn.LayerNorm(dim)
+        self.head = nn.Linear(dim, labels) if labels else None
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
 
     def body(self, ids, causal=True):
@@ -200,7 +221,7 @@ class Direct:
 
 
 def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
-                    strong=0.5, leak=0, agree=False):
+                    strong=0.5, leak=0, agree=False, hard=None):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
@@ -227,6 +248,8 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     while time.time() - t0 < minutes * 60:
         done = (time.time() - t0) / (minutes * 60)
         at = [rnd.randrange(0, len(data) - CTX - 1) for _ in range(batch)]
+        if hard:  # half of what it reads is the text the bodies before it read worst
+            at[:batch // 2] = [rnd.choice(hard) * CTX for _ in range(batch // 2)]
         x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
         loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
         jumps.append(trainer.step(loss, rate * (1 - 0.95 * done)))
@@ -235,6 +258,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
         if steps % 100 == 0:
             log(f"[scratch] direct, step {steps}: loss {sum(losses[-100:]) / 100:.3f}, {sum(jumps[-100:]) / 100:.2%} of the "
                 f"three-valued weights jump a step", flush=True)
+    HOME.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), HOME / f"{name}.pt")
     out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
            "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes}; strong {strong}, leak {leak}, agree {agree})" if votes else "direct" if rate else "direct with no jumps"}
@@ -242,7 +266,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     return out
 
 
-SHARED = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
+TABLE = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
 
 
 def pack(model):
@@ -252,7 +276,7 @@ def pack(model):
     import numpy as np
     out = {}
     for name, p in model.state_dict().items():
-        if name.startswith(SHARED):
+        if name.startswith(TABLE):
             continue
         if name.startswith("blocks.") and name.endswith(".weight") and p.dim() == 2:
             scale = p.abs().mean().clamp(min=1e-5)
@@ -269,7 +293,7 @@ def unpack(packed, stem_state):
     that rounding it again gives exactly the same layer (the layer's one number divided by the share of weights
     that are not zero)."""
     import numpy as np
-    state = {k: v for k, v in stem_state.items() if k.startswith(SHARED)}
+    state = {k: v for k, v in stem_state.items() if k.startswith(TABLE)}
     for name, v in packed.items():
         if isinstance(v, dict):
             n = v["shape"][0] * v["shape"][1]
@@ -281,8 +305,18 @@ def unpack(packed, stem_state):
     return state
 
 
+def whole(obj, path):
+    """Write a file whole or not at all: to a side file first, then in its place in one move. A run that is cut off
+    while it writes leaves the old file, never half of a new one."""
+    import os
+    path = Path(path)
+    tmp = path.with_name(path.name + ".part")
+    torch.save(obj, tmp)
+    os.replace(tmp, path)
+
+
 def save_cell(model, path):
-    torch.save(pack(model) if model.bit else model.state_dict(), path)
+    whole(pack(model) if model.bit else model.state_dict(), path)
 
 
 def load_cell(path, labels=0):
@@ -317,7 +351,7 @@ def to_bitnet(minutes=30.0):
 
 def tokenizer(train=False):
     from tokenizers import Tokenizer, decoders, models, pre_tokenizers, trainers
-    f = HOME / "tokenizer.json"
+    f = SHARED / "tokenizer.json"
     if f.exists() and not train:
         return Tokenizer.from_file(str(f))
     from team import harvest
@@ -329,7 +363,7 @@ def tokenizer(train=False):
     tk.decoder = decoders.ByteLevel()
     tk.train(files, trainers.BpeTrainer(vocab_size=VOCAB, special_tokens=["<pad>", "<bos>"],
                                         initial_alphabet=pre_tokenizers.ByteLevel.alphabet(), show_progress=False))
-    HOME.mkdir(parents=True, exist_ok=True)
+    SHARED.mkdir(parents=True, exist_ok=True)
     tk.save(str(f))
     print(f"[scratch] vocabulary of {tk.get_vocab_size()} pieces learned from {len(files)} harvested files", flush=True)
     return tk
@@ -345,33 +379,63 @@ def _record(**new):
 
 
 def corpus(tk):
-    """The harvest as one long row of pieces, kept on disk. It only ever grows at its end: when the harvest has new
-    text (a longer file, a new source), only the new part is turned into pieces and added. What was at a place stays
-    at that place, so the windows the cells' territories and the held-out passages are made of never move."""
+    """The harvest as one long row of pieces, kept on disk and shared by every body. It only ever grows at its end:
+    when the harvest has new text (a longer file, a new source), only the new part is turned into pieces and added.
+    What was at a place stays at that place, so the windows the cells' territories and the held-out passages are
+    made of never move. cells/scratch/corpus.json keeps the order in which every stretch of text was added; if the
+    row of pieces is lost it is made again in exactly that order (regeneration), and every window is where it was."""
     import numpy as np
     from team import harvest
-    f, rec = HOME / "corpus.u16", _record()
-    done = rec.get("corpus_files")
-    files = harvest.files()
-    if done is None:  # a corpus made before this record was kept: everything there was read, in this order
-        done = {p.name: p.stat().st_size for p in files} if f.exists() and rec.get("corpus_bytes") else {}
-    grew = False
+    f, book = SHARED / "corpus.u16", SHARED / "corpus.json"
+    try:
+        log = json.loads(book.read_text())
+    except (OSError, ValueError):
+        log = None
+    moved = False
+    if isinstance(log, dict) and "log" not in log:  # kept as name -> bytes before the order was kept: that order was by name
+        log, moved = {"log": [[n, 0, b] for n, b in sorted(log.items())]}, True
+    files = {p.name: p for p in harvest.files()}
+    if log is None:
+        old = json.loads((SHARED / "record.json").read_text()).get("corpus_files") if (SHARED / "record.json").exists() else None
+        if old is None and f.exists():
+            old = {n: p.stat().st_size for n, p in files.items()}
+        log = {"log": [[n, 0, b] for n, b in sorted((old or {}).items())]}
+    SHARED.mkdir(parents=True, exist_ok=True)
+
+    def add(out, path, start, end):
+        """Exactly the bytes from start to end, line by line (a read "of about so many bytes" takes whole lines past
+        the end, and a stretch read twice would move every window after it)."""
+        with open(path, "rb") as fh:
+            fh.seek(start)
+            left, carry = end - start, b""
+            while left > 0:
+                chunk = fh.read(min(4_000_000, left))
+                if not chunk:
+                    break
+                left -= len(chunk)
+                parts = (carry + chunk).split(b"\n")
+                carry = parts.pop()
+                lines = [p + b"\n" for p in parts] + ([carry] if left <= 0 and carry else [])
+                for e in tk.encode_batch([ln.decode("utf-8", errors="replace") for ln in lines]):
+                    np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
+    if not f.exists() and log["log"]:  # the row of pieces is gone: made again, every stretch in the order it was added
+        with open(f, "wb") as out:
+            for name, start, end in log["log"]:
+                if name in files:
+                    add(out, files[name], start, end)
+    done = {}
+    for name, _, end in log["log"]:
+        done[name] = max(done.get(name, 0), end)
+    grew = not book.exists()
     with open(f, "ab") as out:
-        for p in sorted(files, key=lambda p: (p.name not in done, p.name)):
-            at, size = done.get(p.name, 0), p.stat().st_size
-            if size <= at:
-                continue
-            with open(p, "rb") as fh:
-                fh.seek(at)
-                while True:
-                    lines = [ln.decode("utf-8", errors="replace") for ln in fh.readlines(4_000_000)]
-                    if not lines:
-                        break
-                    for e in tk.encode_batch(lines):
-                        np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
-            done[p.name], grew = size, True
-    if grew or rec.get("corpus_files") is None:
-        _record(corpus_files=done, corpus_bytes=sum(done.values()), corpus_pieces=f.stat().st_size // 2)
+        for name in sorted(files, key=lambda n: (n not in done, n)):
+            at, size = done.get(name, 0), files[name].stat().st_size
+            if size > at:
+                add(out, files[name], at, size)
+                log["log"].append([name, at, size])
+                grew = True
+    if grew or moved or not book.exists():
+        book.write_text(json.dumps(log))
     return np.memmap(f, dtype=np.uint16, mode="r")
 
 
@@ -426,7 +490,7 @@ def pairs(minutes=30, batch=48, lr=3e-4, seed=0, width=64):
     model = Tiny()
     src = HOME / "base_pairs.pt" if (HOME / "base_pairs.pt").exists() else HOME / "base.pt"
     model.load_state_dict(torch.load(src))
-    predict = nn.Sequential(nn.Linear(DIM, 2 * DIM), nn.GELU(), nn.Linear(2 * DIM, DIM))
+    predict = nn.Sequential(nn.Linear(model.dim, 2 * model.dim), nn.GELU(), nn.Linear(2 * model.dim, model.dim))
     opt = torch.optim.AdamW(list(model.parameters()) + list(predict.parameters()), lr=lr, weight_decay=0.01)
     rnd, t0, steps, log = random.Random(seed + _record().get("pairs_steps", 0)), time.time(), 0, []
 
@@ -538,9 +602,10 @@ class Brain(nn.Module):
     def __init__(self, jobs, talk=False):
         super().__init__()
         self.trunk, self.jobs, self.talk = Tiny(), dict(jobs), talk
-        self.first = nn.ModuleDict({k: nn.Linear(DIM, n) for k, n in jobs.items()})
+        dim = self.trunk.dim
+        self.first = nn.ModuleDict({k: nn.Linear(dim, n) for k, n in jobs.items()})
         said = sum(jobs.values())
-        self.second = nn.ModuleDict({k: nn.Linear(DIM + said, n) for k, n in jobs.items()}) if talk else None
+        self.second = nn.ModuleDict({k: nn.Linear(dim + said, n) for k, n in jobs.items()}) if talk else None
 
     def forward(self, job, ids, last):
         h = self.trunk.body(ids)[torch.arange(ids.shape[0]), last]
