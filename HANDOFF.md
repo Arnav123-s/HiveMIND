@@ -5,27 +5,51 @@ Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothin
 ## Live status (kept current; read this first)
 Updated 2026-11-10 (evening UTC). PR #6 is merged into `main` on his approval. Work continues on `make-it-work`, restarted from `main` (draft PR #7); everything is pushed.
 
-**Latest (2026-11-11, afternoon UTC).** PRs #6 to #9 are merged on his word; work is on `make-it-work`, draft PR #10
-(merging needs his yes for that PR). His two newest asks: "publised recipe can be done better? try to find a way" and
-"a bit net can be more intilget stronger and more capable and hiving it can be done better find that way".
-- Done for them, all measured (`training/reports/bitnet_recipe.json`, README "From nothing"): the hive's BitNets
-  trained at a third of the right rate (4.2315 -> 4.0220 at 3e-3); easing the rounding in over the first half of a
-  run helps a little more (3.9963); the published extra norms hurt; a teacher helps per step but loses at equal
-  time; two three-valued layers added up and a wider cell help but are not built in. `body.NEW_BODY` holds the
-  recipe a new body is founded with; `scratch.kind()` lets each body have its own shape.
-- Hiving: the say of each member and of each body is learned (`body.learn_say`, in main since PR #9). Team training
-  (`how: team`) lost its one fair test to the usual way from the nearest cell; it stays as a trainer kind only.
-- The hive: three bodies. On 300 held passages: first 2.4856 (ten cells), b2 2.8412 (six), b3 2.7806 (six, founded
-  with the new recipe), as one 2.4760. `cells/scratch/bodies/` is not in git (only the first body's stem cell is):
-  on this cloud machine b2 and b3 die with the container; on his device they persist.
-- A flaw closed: stem cells used to train on the held windows too (`scratch.offsets` now skips them). The first
-  two bodies' absolute numbers are better than they would be on new text by an amount not yet measured; b3 is clean.
-- Lessons about this machine: never run two trainings at once (four cores, the threads fight: a 6-minute run took
-  an hour); a background job is cut at two hours, so make experiments resumable (results appended as each ends).
-- Open next: build in two three-valued layers per cell (stored exactly); the rate at which newborn cells are grown
-  (being tested); a say that changes piece by piece (the best member per piece, picked knowing the answer, reads 1.86 where
-  the learned rule reads 2.29: a ceiling, not a target; a first try with each member's confidence as the signal
-  gained 0.008); measuring on text harvested after every stem cell was made.
+**Latest (2026-11-11, evening UTC).** PRs #6 to #11 are merged on his word. Work goes on in `make-it-work`,
+restarted from `main` after every merge; a new PR needs his yes for that PR. His newest words: "make it much more
+capable and capable to become higly inteligent on its own, faster, stronger, make any improvements you can" and
+"improve the idea as much as u can take it to its absolute heights".
+
+*The hive now grows with nobody present* (`.github/workflows/hive.yml`, in `main` since PR #11). Every six hours
+GitHub's runners fetch the hive (release `hive-state`, else the branch `hive-seed`), harvest a little, found a body
+if one is due, give bodies their turns within 180 minutes, measure, and save after every body's turn. Check on it:
+- `gh api repos/Arnav123-s/HiveMIND/releases/tags/hive-state --jq .body` (its numbers and what it wrote), and
+  `training/reports/hive_growth.jsonl` on `main` (one line a turn). The Actions API cannot be read through this
+  session's proxy; a run's log is only in the repository's Actions tab. A run cannot be started from here either.
+- The number to watch is the yardstick (`body.YARD`: the same 300 held passages every time; 2.4760 on 2026-11-11).
+  The number on all its text moves with what it harvested (stories read at about 2.2, Wikipedia at 3.2 to 4.0).
+- Before changing anything the run uses, rehearse the run's own commands in a fresh clone with only the packages
+  the workflow installs. Two faults that would have ruined the hive were caught only that way (a body other than
+  the first learned the vocabulary again every turn; a text stream that did not match its book was trusted).
+  A bare environment without downloads: a second venv with symlinks to the allowed packages only (do not use an
+  import blocker: `find_spec` must return None for what is absent).
+- Not confirmed when this was written: the first run on GitHub and the upload to the release.
+
+*Built and measured on 2026-11-11* (README "From nothing"; `training/reports/bitnet_recipe.json`):
+- BitNets from nothing: three times the rate plus rounding eased in. At 40 minutes: 2.9288 against 3.0337.
+  Published extra norms hurt; a teacher loses at equal time; two layers added up and a wider cell help per step
+  and are not built in. Newborn cells keep the rate 5e-4.
+- The say of each member and of each body is learned (`learn_say`). Team training (`how: team`) lost its fair test.
+- Three bodies: first 2.4856 (ten cells), b2 2.8412, b3 2.7806 (founded with the new recipe), as one 2.4760.
+- Stem cells no longer train on held windows; what that was worth to the older ones: about 0.04 (first), 0.03 (b2).
+- The hive writes (`body.write`), finds its own recipe (`next_recipe`: every founding changes one thing in the best
+  recipe so far and is scored on the same held windows), founds bodies for ever but each a little later
+  (`body_is_due`), and says a failed turn aloud.
+
+*Lessons about this machine:* never run two trainings at once (four cores; a 6-minute run took an hour); a
+background job is cut at two hours, so make experiments resumable; the container restarts now and then: files
+survive, running jobs do not; `cells/scratch/bodies/` is not in git (the seed branch and the release hold it).
+
+*Open next, in the order they would help:*
+1. The body teaches its stem cell ("sleep"): the stem cell learns what the whole body expects, so the next cells
+   start higher. Being measured when this was written (scratchpad `sleep.py`; plain reading on at three rates
+   against three forms of sleep). If it wins: `stem_reads` gets it, and as much time as a birth.
+2. Faster training: batch size at equal time, rotary positions, relu squared, a plainer norm, small-start output
+   layers, a running mean of the weights (scratchpad `recipe6.py`, not run yet). Winners become genes of the recipe.
+3. Reading as one costs every body a full read of every passage. Before the hive has more than about eight bodies
+   it needs a map over bodies (only the nearest bodies wake), like the map over cells inside a body, and the
+   hive's measurement should keep each unchanged body's readings.
+4. Two three-valued layers per cell, stored exactly; dreams with a real model; re-founding a whole lost body.
 
 **Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
 freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow
