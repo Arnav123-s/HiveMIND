@@ -1005,9 +1005,13 @@ def test_the_yardstick_is_the_same_passages_however_much_the_text_grows():
     import numpy as np
     from training import body as B
     small, big = np.zeros(B.W * 4000 + 1, "uint16"), np.zeros(B.W * 9000 + 1, "uint16")
-    assert B._held(small, "report", 20, upto=4000) == B._held(big, "report", 20, upto=4000) == B._held(small, "report", 20)
+    assert B._held(small, "report", 20, upto=4000) == B._held(big, "report", 20, upto=4000)
+    held = [i for i in range(4000) if i % B.HELD == 0][1::2]
+    assert B._held(big, "report", 20, upto=4000) == held[::len(held) // 20][:20]         # chosen as they were on 2026-11-11
     assert B._held(big, "report", 20) != B._held(small, "report", 20)                    # spread over all the text, they move
     assert all(i % B.HELD == 0 for i in B._held(big, "report", 20))
+    wide = B._held(big, "report", 20)
+    assert wide[-1] >= 9000 - 2 * B.HELD and len(set(wide)) == 20                         # and they reach the end of the text
 
 
 def test_the_hive_is_saved_under_a_new_name_and_never_smaller_than_it_came(tmp_path, monkeypatch):

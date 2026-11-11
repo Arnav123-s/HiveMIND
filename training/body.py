@@ -582,10 +582,17 @@ def breed(ts, rnd):
     return ts
 
 
+def _even(xs, n):
+    """n of xs, from its first to its last, evenly."""
+    return list(xs) if len(xs) <= n else [xs[round(i * (len(xs) - 1) / (n - 1))] for i in range(n)]
+
+
 def _held(data, part, n=240, upto=None):
-    """Held passages, spread evenly over the text (upto: over its first so many windows only)."""
+    """Held passages, spread evenly over the text. upto: the yardstick, chosen over the text's first so many windows
+    exactly as the passages were chosen on 2026-11-11 (a rule that left the last stretch out; kept, so that the
+    yardstick is the same passages as every number before it)."""
     held = [i for i in range(min(upto or 10 ** 12, _windows(data))) if i % HELD == 0][(0 if part == "gate" else 1)::2]
-    return held[::max(1, len(held) // n)][:n]
+    return held[::max(1, len(held) // n)][:n] if upto else _even(held, n)
 
 
 def _read_all(cells, data, windows):
@@ -883,7 +890,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     data, b = _data(), Body()
     place_new(b, data, log)
     pool = _held(data, "gate", 10 ** 9)
-    spread = pool[::max(1, len(pool) // 200)][:200]
+    spread = _even(pool, 200)
     first, second, who = b.read(data, spread)
     learn_say(first, second, log)
     learned = stem_reads(data, spread, first, second, minutes=minutes * 0.3, log=log)
