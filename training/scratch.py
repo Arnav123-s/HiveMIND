@@ -67,8 +67,12 @@ class BitLinear(nn.Linear):
 
 
 def is_bit():
-    """Are the hive's own cells BitNets? (cells/scratch/record.json; set once, when the stem cell is converted.)"""
-    return bool(_record().get("bit"))
+    """Are the hive's own cells BitNets? (cells/scratch/stem.json, which travels with the stem cell in git; set once,
+    when the stem cell is converted.)"""
+    try:
+        return bool(json.loads((HOME / "stem.json").read_text()).get("bit"))
+    except (OSError, ValueError):
+        return False
 
 
 class Block(nn.Module):
@@ -289,8 +293,13 @@ def to_bitnet(minutes=30.0):
         if old.exists():
             shutil.rmtree(HOME / "body_full", ignore_errors=True)
             old.rename(HOME / "body_full")
-        _record(bit=True, bitnet_since=time.strftime("%Y-%m-%d %H:%M"), loss_before_bitnet=_record().get("pretrain_loss"))
-    return pretrain(minutes)
+        (HOME / "stem.json").write_text(json.dumps({"bit": True, "since": time.strftime("%Y-%m-%d %H:%M"),
+                                                    "loss_before": _record().get("pretrain_loss")}, indent=1))
+    out = pretrain(minutes)
+    kind = json.loads((HOME / "stem.json").read_text())
+    kind.update(loss_now=out.get("pretrain_loss"), steps=out.get("pretrain_steps"))
+    (HOME / "stem.json").write_text(json.dumps(kind, indent=1))
+    return out
 
 
 def tokenizer(train=False):
