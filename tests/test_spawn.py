@@ -630,6 +630,51 @@ def test_the_direct_way_trains_a_bitnet_without_ordinary_weights_underneath(monk
         assert torch.equal((m.weight / scale).round().clamp(-1, 1), t)
 
 
+def test_a_stem_cell_never_trains_on_the_held_windows():
+    import random
+    from training import scratch as T
+    rnd = random.Random(0)
+    at = T.offsets(rnd, T.CTX * 400, 2000)
+    assert len(at) == 2000
+    assert all((i // T.CTX) % T.HELD and ((i + T.CTX) // T.CTX) % T.HELD for i in at)     # no window it reads touches a held one
+
+
+def test_a_new_stem_cell_eases_into_three_values_and_learns_from_a_teacher(tmp_path, monkeypatch):
+    import json
+    import numpy as np
+    import torch
+    from training import scratch as T
+    torch.manual_seed(0)
+    torch.set_num_threads(2)
+    layer, x = T.BitLinear(8, 8), torch.randn(4, 8)
+    try:
+        T.EASE[0] = 0.0
+        assert torch.allclose(layer(x), torch.nn.functional.linear(x, layer.weight, layer.bias))   # not eased in yet: an ordinary layer
+    finally:
+        T.EASE[0] = 1.0
+    assert not torch.allclose(layer(x), torch.nn.functional.linear(x, layer.weight, layer.bias))   # as it works: three values
+
+    monkeypatch.setattr(T, "CTX", 32)
+    monkeypatch.setattr(T, "HOME", tmp_path / "new")
+    rng = np.random.default_rng(0)
+    text = np.tile(rng.integers(2, 60, size=33 * 4), 60).astype("uint16")
+    monkeypatch.setattr(T, "tokenizer", lambda *a, **k: None)
+    monkeypatch.setattr(T, "corpus", lambda tk: text)
+    old = tmp_path / "old"                                                               # a teacher of another shape than the new body
+    old.mkdir()
+    (old / "stem.json").write_text(json.dumps({"bit": False, "dim": 64, "layers": 1, "heads": 2}))
+    torch.save(T.Tiny(shape=T.kind(old)).state_dict(), old / "base.pt")
+    (tmp_path / "new").mkdir()
+    (tmp_path / "new" / "stem.json").write_text(json.dumps({"bit": True, "dim": 64, "layers": 2, "heads": 2}))
+    seen = []
+    step = T.BitLinear.forward
+    monkeypatch.setattr(T.BitLinear, "forward", lambda self, x: (seen.append(T.EASE[0]), step(self, x))[1])
+    out = T.pretrain_direct(0.03, usual=True, name="base", lr=3e-3, warm=5, ease=0.5, teacher=old, log=lambda *a, **k: None)
+    assert out["steps"] > 3 and (tmp_path / "new" / "base.pt").exists()
+    assert min(seen) < 0.2 and max(seen) == 1.0 and T.EASE[0] == 1.0                    # it began nearly ordinary and ended a BitNet
+    assert T.Tiny().blocks[0].qkv.weight.shape == (3 * 64, 64)                          # and has its own body's shape
+
+
 def test_dreams_are_written_on_what_the_body_reads_worst_and_get_harder(tmp_path, monkeypatch):
     import json
     from team import config, harvest, llm
