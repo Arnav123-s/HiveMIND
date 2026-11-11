@@ -914,6 +914,21 @@ have thousands. Two ways of training them are built:
 - Storing a cell as its differences from the stem cell was tried and dropped: about 12% of a cell's three-valued
   weights differ from the stem cell's, which is not few enough to save space.
 
+**It grows with no machine of ours switched on** (2026-11-11; `.github/workflows/hive.yml`, `training/hive_state.py`).
+Every six hours GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
+is fetched, it harvests a little more open text (`harvest --more 4`), every body takes its turn in the order of who
+waited longest and within a time budget (`body --budget 240`), a body that is due is founded, everything is
+measured, and the hive as it is now is put back as one file on the release `hive-state`, with a line added to
+`training/reports/hive_growth.jsonl`. Nothing in it logs in, spends, or needs the agent. The hive it starts from
+is the branch `hive-seed` (three bodies, 22 cells, as one 2.4760).
+- Bring the grown hive to any device: `python training/hive_state.py pull` (it does not overwrite a hive that has
+  as many living cells or more). `setup.sh` does this once at install.
+- Run a turn by hand: the repository's Actions tab, "The hive grows", "Run workflow".
+- Stop it: disable that workflow in the Actions tab.
+- Not confirmed until its first run on GitHub: the run itself. Rehearsed here in a fresh clone (fetch, harvest,
+  turn, pack). GitHub switches a schedule off after 60 days without a commit; the line the run adds to the growth
+  record is a commit, which should keep it on.
+
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
 of simple text. Planning and programming still come from the pretrained small models and their school. The open
 question this section exists to answer by measurement is how far many such cells, grown this way, get together.

@@ -915,3 +915,78 @@ def test_a_new_kind_of_trainer_joins_once_and_the_worst_record_makes_room(tmp_pa
     eight[7].update(births=4, kept=4)                                                    # sixteen births in all: time to breed
     out = B.breed(eight, random.Random(0))
     assert len(out) == 8 and "t1" not in {t["id"] for t in out} and {"t6", "t9"} <= {t["id"] for t in out}
+
+
+def test_the_hive_moves_as_one_file_and_a_bigger_hive_is_not_overwritten(tmp_path, monkeypatch):
+    import io
+    import json
+    import tarfile
+    import pytest
+    from training import hive_state as H
+
+    def hive(root, cells):
+        homes = {"scratch": root / "scratch", "harvest": root / "harvest", "reports": root / "reports"}
+        for h in homes.values():
+            h.mkdir(parents=True)
+        (homes["scratch"] / "base.pt").write_bytes(b"stem")
+        (homes["scratch"] / "corpus.u16").write_bytes(b"made again from the harvest")           # left out
+        (homes["scratch"] / "body").mkdir()
+        (homes["scratch"] / "bodies" / "b2" / "body").mkdir(parents=True)
+        for k in range(cells):
+            (homes["scratch"] / "body" / f"cell_{k:02d}.pt").write_bytes(b"cell %d" % k)
+        (homes["scratch"] / "bodies" / "b2" / "body" / "cell_00.pt").write_bytes(b"another body's cell")
+        (homes["scratch"] / "bodies" / "b2" / "base.pt.part").write_bytes(b"half written")       # left out
+        (homes["harvest"] / "wikipedia.txt").write_text("text " * 100)
+        (homes["reports"] / "hive_of_bodies.json").write_text(json.dumps([{"bodies": {"first": 2.5}, "as_one": 2.4, "when": "then"}]))
+        (homes["reports"] / "bench.json").write_text("{}")                                       # not the hive's
+        return homes
+
+    there, here = hive(tmp_path / "there", 3), hive(tmp_path / "here", 1)
+    monkeypatch.setattr(H, "_homes", lambda: there)
+    m = H.pack(tmp_path / "state.tar.gz")
+    assert (m["bodies"], m["cells"], m["as_one"]) == (2, 4, 2.4)
+    names = tarfile.open(tmp_path / "state.tar.gz").getnames()
+    assert "scratch/body/cell_02.pt" in names and "scratch/bodies/b2/body/cell_00.pt" in names
+    assert not [n for n in names if n.endswith((".part", "corpus.u16", "bench.json"))]
+
+    monkeypatch.setattr(H, "_homes", lambda: here)
+    assert "is here: 2 bodies, 4 living cells" in H.pull(tmp_path / "state.tar.gz")             # the smaller hive takes the bigger one
+    assert (here["scratch"] / "body" / "cell_02.pt").read_bytes() == b"cell 2"
+    assert (here["scratch"] / "bodies" / "b2" / "body" / "cell_00.pt").exists()
+    (here["scratch"] / "body" / "cell_09.pt").write_bytes(b"born here since")
+    assert H.pull(tmp_path / "state.tar.gz").startswith("left as it is")                        # a hive that grew past it is not overwritten
+    assert (here["scratch"] / "body" / "cell_09.pt").exists()
+
+    bad = tmp_path / "bad.tar"                                                                  # a file that reaches outside the hive is refused
+    with tarfile.open(bad, "w") as tar:
+        for name, blob in (("manifest.json", json.dumps({"bodies": 9, "cells": 99, "harvest_mb": 0, "as_one": 1}).encode()), ("scratch/../../evil.py", b"x")):
+            info = tarfile.TarInfo(name)
+            info.size = len(blob)
+            tar.addfile(info, io.BytesIO(blob))
+    with pytest.raises(ValueError):
+        H.pull(bad)
+    assert not (tmp_path / "evil.py").exists() and not (tmp_path / "here" / "evil.py").exists()
+
+
+def test_a_hive_turn_keeps_to_its_time_and_the_body_that_waited_longest_goes_first(tmp_path, monkeypatch):
+    import json
+    import subprocess
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    (tmp_path / "bodies.json").write_text(json.dumps(["", "b2", "b3"]))
+    (tmp_path / B.TURNS).write_text(json.dumps({"": 300.0, "b2": 100.0}))                       # b3 never had a turn, b2 waited longer than the first
+    went, clock = [], [1000.0]
+    monkeypatch.setattr(B.time, "time", lambda: clock[0])
+
+    def run(cmd, cwd=None, env=None, **kw):
+        went.append(env["HIVE_BODY"])
+        clock[0] += 50 * 60                                                                     # a body's turn takes fifty minutes
+    monkeypatch.setattr(subprocess, "run", run)
+    monkeypatch.setattr(B, "_loads", lambda p: object())                                        # no body is lost
+    monkeypatch.setattr(B, "hive_measure", lambda log=print: {"as_one": 2.4})
+    monkeypatch.setattr(B, "found", lambda *a, **k: (_ for _ in ()).throw(AssertionError("no body is due")))
+    assert B.hive_turn(budget=90, log=lambda *a, **k: None) == {"as_one": 2.4}                  # the measurement is always made
+    assert went == ["b3", "b2"]                                                                 # the first body waits for the next turn
+    went.clear()
+    B.hive_turn(budget=40, log=lambda *a, **k: None)
+    assert went == [""]                                                                         # and then it is the one that waited longest
