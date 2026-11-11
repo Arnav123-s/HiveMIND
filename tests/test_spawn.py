@@ -627,3 +627,25 @@ def test_the_direct_way_trains_a_bitnet_without_ordinary_weights_underneath(monk
         assert set(t.unique().tolist()) <= {-1.0, 0.0, 1.0}
         scale = m.weight.abs().mean()
         assert torch.equal((m.weight / scale).round().clamp(-1, 1), t)
+
+
+def test_dreams_are_written_on_what_the_body_reads_worst_and_get_harder(tmp_path, monkeypatch):
+    import json
+    from team import config, harvest, llm
+    monkeypatch.setattr(harvest, "HOME", tmp_path / "harvest")
+    monkeypatch.setattr(config, "ROOT", tmp_path)
+    assert harvest.dream(log=lambda *a, **k: None) == 0                                  # no body yet: nothing to dream about
+    (tmp_path / "training" / "reports").mkdir(parents=True)
+    (tmp_path / "training" / "reports" / "body.json").write_text(json.dumps({"weakest": {"text": "The mill by the river grinds corn."}}))
+    asked = []
+
+    def chat(role, messages, **kw):
+        asked.append(messages[1]["content"])
+        return f"Dream number {len(asked)} tells how a mill turns grain into flour by the weight of falling water."
+    monkeypatch.setattr(llm, "chat", chat)
+    kept = harvest.dream(n=3, log=lambda *a, **k: None)
+    assert kept > 0 and all("The mill by the river" in a and harvest.LEVELS[0] in a for a in asked)
+    assert len((tmp_path / "harvest" / "dreams.txt").read_text().splitlines()) == 3
+    harvest._record(dreams=harvest.PER_LEVEL)
+    harvest.dream(n=1, log=lambda *a, **k: None)
+    assert harvest.LEVELS[1] in asked[-1]                                                # the next forty are harder
