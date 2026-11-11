@@ -907,9 +907,8 @@ have thousands. Two ways of training them are built:
   nobody has read: each older stem cell's lead over the third body's is larger on the old held windows than on
   the new text, by 0.042 (give or take 0.009) for the first body's and 0.031 (0.008) for the second's. So the first
   two bodies' numbers above are about 0.03 to 0.04 better than they would be on new text.
-  The same check says the new recipe is not yet shown at full length: on that new text the third body's stem cell
-  is 0.02 behind the second's, which was made the old way in the same 40 minutes (and has had one more reading
-  turn). A clean head-to-head at 40 minutes is being run.
+  The new recipe holds at full length: two stem cells from the same start on the same text, 40 minutes each, on 400
+  held windows neither trained on: the old recipe 3.0337 (3675 steps), the new one 2.9288 (3621 steps).
 - *A cell grown as one of the team* (trained on the body's loss with it in, `how: team`): on one territory of the
   first body, 12 minutes each, the usual way from the nearest cell added 0.0200 where the cell lives, the team way
   0.0136 at best (0.0003 with a smaller share), and from the stem cell neither way helped. It stays as one kind of
@@ -919,11 +918,14 @@ have thousands. Two ways of training them are built:
 
 **It grows with no machine of ours switched on** (2026-11-11; `.github/workflows/hive.yml`, `training/hive_state.py`).
 Every six hours GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
-is fetched, it harvests a little more open text (`harvest --more 4`), every body takes its turn in the order of who
-waited longest and within a time budget (`body --budget 240`), a body that is due is founded, everything is
-measured, and the hive as it is now is put back as one file on the release `hive-state`, with a line added to
-`training/reports/hive_growth.jsonl`. Nothing in it logs in, spends, or needs the agent. The hive it starts from
-is the branch `hive-seed` (three bodies, 22 cells, as one 2.4760).
+is fetched, it harvests a little more open text (`harvest --more 2`: each source may grow two megabytes a run),
+every body takes its turn in the order of who waited longest and within a time budget (`body --budget 210`), a body
+that is due is founded, everything is measured, and a line is added to `training/reports/hive_growth.jsonl`.
+The hive is saved after every body's turn (`body --save`), each time under a new name on the release `hive-state`,
+which keeps its two newest states: a run that is cut off loses one body's turn at most, a save that is cut off
+loses nothing, and a hive is never saved over one it did not come from or smaller than it came
+(`hive_state.save`). Nothing in it logs in, spends, or needs the agent. The hive it starts from is the branch
+`hive-seed` (three bodies, 22 cells, as one 2.4760).
 - The record of growth has two numbers for the hive as one: on passages spread over all the text it has (which
   changes whenever it harvests, so it cannot be compared from turn to turn) and on the yardstick, the same 300
   passages every time, from the text as it was on 2026-11-11 (`body.YARD`). Only the yardstick says whether the
