@@ -847,14 +847,14 @@ have thousands. Two ways of training them are built:
 
 **A body that multiplies, a hive of bodies, and regeneration** (2026-11-11; `training/body.py`).
 - *Multiplying.* A turn grows several cells (three by default) and comes whenever the device has been idle half an
-  hour. Every check is read the way a big body reads: the stem cell and the two nearest cells, every other cell
+  hour. Every check is read the way a big body reads: the stem cell and the four nearest cells, every other cell
   asleep on disk (`Body`). So a turn costs the same at ten cells and at ten thousand; only the disk grows, 0.6 MB a
   cell. A newborn is judged where it lives: on unseen passages nearest its territory, the body with it against the
   body without it (`judge_local`). Text harvested since the last turn is placed on the map, so there is always new
   ground to divide (`place_new`).
 - *A hive of bodies.* The whole is not one body. Each body has its own stem cell and cells and multiplies on its own
-  turns; all share one vocabulary and one harvest. A passage is read by every body and the body that fits it gets
-  the say (`together`). A new body is founded on what the others read worst: its stem cell starts from random
+  turns; all share one vocabulary and one harvest. A passage is read by every body and each body's say follows how it
+  fits the passage (`together`). A new body is founded on what the others read worst: its stem cell starts from random
   three-valued weights of its own and half of all it reads is the worse-read half of a sample of windows (`found`);
   one more body for every eight living cells. `python -m team body` gives every body its turn, founds a body when it
   is time, and measures each alone and all as one (`training/reports/hive_of_bodies.json`).
@@ -869,7 +869,19 @@ have thousands. Two ways of training them are built:
   seconds and is identical to the original byte for byte. Four more variants of the vote way of direct training
   (votes that must repeat, counters that forget, a stricter threshold for voting): 4.28 to 4.38, none better than
   plain 32 votes (4.141); those runs shared the CPU and took fewer steps, so they are not a clean comparison.
-- **Not measured yet:** a multiplying turn with three births, the second body, and the bodies as one.
+- *The say of each member is learned* (2026-11-11; `body.learn_say`, `body._say`). A passage used to be read by
+  whichever member fitted its first half best, nearly alone. Now every member awake has a share of the say: how
+  sharply the say follows the fit, and a standing for each seat (the stem cell, the nearest cell, the next nearest
+  and so on; between bodies, one for each body), are learned on passages nobody trained on, again at every turn
+  and at every measurement of the hive. Four cells are awake beside the stem cell, not two.
+- Measured, one full turn of the hive with nobody watching (three births in each body; passages nobody trained on
+  or chose by): the first body 2.5715 -> 2.4856 with ten cells (its stem cell alone 2.6446; the same cells under the
+  old rule 2.5582); the second body 2.8973 -> 2.8412 with six cells (stem cell alone 3.0108; old rule 2.8774); the
+  two as one 2.4807, the first time the bodies as one read better than the better body alone (under the old rule
+  they were worse: 2.5754 against 2.5715). Four of the six newborns were kept, two were removed by the immune
+  check. The second body's stem cell kept one turn of reading (2.9009 -> 2.8999); the first body's did not.
+- Storing a cell as its differences from the stem cell was tried and dropped: about 12% of a cell's three-valued
+  weights differ from the stem cell's, which is not few enough to save space.
 
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
 of simple text. Planning and programming still come from the pretrained small models and their school. The open
