@@ -286,8 +286,18 @@ def unpack(packed, stem_state):
     return state
 
 
+def whole(obj, path):
+    """Write a file whole or not at all: to a side file first, then in its place in one move. A run that is cut off
+    while it writes leaves the old file, never half of a new one."""
+    import os
+    path = Path(path)
+    tmp = path.with_name(path.name + ".part")
+    torch.save(obj, tmp)
+    os.replace(tmp, path)
+
+
 def save_cell(model, path):
-    torch.save(pack(model) if model.bit else model.state_dict(), path)
+    whole(pack(model) if model.bit else model.state_dict(), path)
 
 
 def load_cell(path, labels=0):
@@ -353,36 +363,60 @@ def corpus(tk):
     """The harvest as one long row of pieces, kept on disk and shared by every body. It only ever grows at its end:
     when the harvest has new text (a longer file, a new source), only the new part is turned into pieces and added.
     What was at a place stays at that place, so the windows the cells' territories and the held-out passages are
-    made of never move. (What has been read in is written in cells/scratch/corpus.json.)"""
+    made of never move. cells/scratch/corpus.json keeps the order in which every stretch of text was added; if the
+    row of pieces is lost it is made again in exactly that order (regeneration), and every window is where it was."""
     import numpy as np
     from team import harvest
     f, book = SHARED / "corpus.u16", SHARED / "corpus.json"
     try:
-        done = json.loads(book.read_text())
+        log = json.loads(book.read_text())
     except (OSError, ValueError):
-        old = json.loads((SHARED / "record.json").read_text()) if (SHARED / "record.json").exists() else {}
-        done = old.get("corpus_files")  # kept in the first body's record before there were several bodies
-    files = harvest.files()
-    if done is None:  # a corpus made before any record was kept: everything there was read, in this order
-        done = {p.name: p.stat().st_size for p in files} if f.exists() else {}
-    grew = not book.exists()
+        log = None
+    moved = False
+    if isinstance(log, dict) and "log" not in log:  # kept as name -> bytes before the order was kept: that order was by name
+        log, moved = {"log": [[n, 0, b] for n, b in sorted(log.items())]}, True
+    files = {p.name: p for p in harvest.files()}
+    if log is None:
+        old = json.loads((SHARED / "record.json").read_text()).get("corpus_files") if (SHARED / "record.json").exists() else None
+        if old is None and f.exists():
+            old = {n: p.stat().st_size for n, p in files.items()}
+        log = {"log": [[n, 0, b] for n, b in sorted((old or {}).items())]}
     SHARED.mkdir(parents=True, exist_ok=True)
+
+    def add(out, path, start, end):
+        """Exactly the bytes from start to end, line by line (a read "of about so many bytes" takes whole lines past
+        the end, and a stretch read twice would move every window after it)."""
+        with open(path, "rb") as fh:
+            fh.seek(start)
+            left, carry = end - start, b""
+            while left > 0:
+                chunk = fh.read(min(4_000_000, left))
+                if not chunk:
+                    break
+                left -= len(chunk)
+                parts = (carry + chunk).split(b"\n")
+                carry = parts.pop()
+                lines = [p + b"\n" for p in parts] + ([carry] if left <= 0 and carry else [])
+                for e in tk.encode_batch([ln.decode("utf-8", errors="replace") for ln in lines]):
+                    np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
+    if not f.exists() and log["log"]:  # the row of pieces is gone: made again, every stretch in the order it was added
+        with open(f, "wb") as out:
+            for name, start, end in log["log"]:
+                if name in files:
+                    add(out, files[name], start, end)
+    done = {}
+    for name, _, end in log["log"]:
+        done[name] = max(done.get(name, 0), end)
+    grew = not book.exists()
     with open(f, "ab") as out:
-        for p in sorted(files, key=lambda p: (p.name not in done, p.name)):
-            at, size = done.get(p.name, 0), p.stat().st_size
-            if size <= at:
-                continue
-            with open(p, "rb") as fh:
-                fh.seek(at)
-                while True:
-                    lines = [ln.decode("utf-8", errors="replace") for ln in fh.readlines(4_000_000)]
-                    if not lines:
-                        break
-                    for e in tk.encode_batch(lines):
-                        np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
-            done[p.name], grew = size, True
-    if grew:
-        book.write_text(json.dumps(done, indent=1))
+        for name in sorted(files, key=lambda n: (n not in done, n)):
+            at, size = done.get(name, 0), files[name].stat().st_size
+            if size > at:
+                add(out, files[name], at, size)
+                log["log"].append([name, at, size])
+                grew = True
+    if grew or moved or not book.exists():
+        book.write_text(json.dumps(log))
     return np.memmap(f, dtype=np.uint16, mode="r")
 
 

@@ -727,3 +727,53 @@ def test_bodies_read_as_one_and_the_one_that_fits_has_the_say():
     assert torch.allclose(one, torch.tensor([1.0, 1.0]), atol=1e-3)
     assert -half[1].mean().item() > 3 and -other[1].mean().item() > 3 and one.mean().item() < 1.1
     assert B.bodies()[0] == ""
+
+
+def test_the_body_regenerates_what_it_lost(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    from training import scratch as T
+    home = tmp_path / "body"
+    home.mkdir()
+    monkeypatch.setattr(B, "HOME", home)
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(B, "_data", lambda: list(range(B.W * 50 + 1)))
+    torch.manual_seed(0)
+    stem = T.Tiny(bit=True)
+    torch.save(stem.state_dict(), tmp_path / "base.pt")
+    torch.save(stem.state_dict(), home / "placer.pt")
+    B._save_map({"centre": torch.zeros(2, 4), "owns": {0: [1, 2, 3], 1: [4, 5, 999]}})
+    T.save_cell(stem, home / "cell_00.pt")
+    (home / "cell_01.pt").write_bytes(b"cut off in the middle")                          # a cell that was cut off
+    (tmp_path / "base.pt").unlink()                                                      # the stem cell is lost
+    (home / "territories.pt").write_bytes(b"torn")                                       # the map is torn
+    did = " | ".join(B.heal(log=lambda *a, **k: None))
+    assert "stem cell was lost and came back" in did and "map of territories was lost and came back" in did
+    assert "cell_01 could not be read" in did and not (home / "cell_01.pt").exists() and (home / "cell_00.pt").exists()
+    assert "no longer there" in did and torch.load(home / "territories.pt")["owns"][1] == [4, 5]
+    assert torch.load(tmp_path / "base.pt").keys() == stem.state_dict().keys()
+    assert B.heal(log=lambda *a, **k: None) == [] or "missing" in " ".join(B.heal(log=lambda *a, **k: None))
+
+
+def test_a_lost_text_stream_is_made_again_with_every_window_where_it_was(tmp_path, monkeypatch):
+    import numpy as np
+    from team import harvest
+    from training import scratch as T
+    if not (T.SHARED / "tokenizer.json").exists():
+        return
+    tk = T.tokenizer()
+    shelf = tmp_path / "harvest"
+    shelf.mkdir()
+    monkeypatch.setattr(harvest, "HOME", shelf)
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(T, "SHARED", tmp_path)
+    (shelf / "b.txt").write_text("The first shelf has one line about a river.\n")
+    T.corpus(tk)
+    (shelf / "a.txt").write_text("A new shelf whose name sorts first.\n")
+    with open(shelf / "b.txt", "a") as f:
+        f.write("And now a second line about a bridge.\n")
+    grown = np.array(T.corpus(tk)).copy()
+    (tmp_path / "corpus.u16").unlink()                                                   # the stream is lost
+    again = np.array(T.corpus(tk))
+    assert len(again) == len(grown) and (again == grown).all()
