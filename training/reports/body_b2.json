@@ -28,6 +28,121 @@
     "body: the stem cell and the 4 nearest cells read": 2.8963,
     "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.8963
    }
+  },
+  {
+   "when": "2026-11-11 06:50",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.0108,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.8412,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.8774,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.8425
+   }
+  }
+ ],
+ "stem_reads": [
+  {
+   "when": "2026-11-11 06:31",
+   "steps": 256,
+   "gate_before": 2.9009,
+   "gate_after": 2.8999,
+   "kept": true
+  }
+ ],
+ "weakest": {
+  "territory": 2,
+  "loss": 3.8288,
+  "text": " against Aston Villa prematurely put an end to Lampard's 1996-97 season after thirteen appearances. He had to wait until the '97-98 campaign to score his first goal for West Ham, which came in a road victory over Barnsley F.C. He became a regular starter in 1998-99 season and appeared in every match as West Ham finished fifth in the Premiership standings.\n Following the sale of teammate and friend Rio Ferdinand to Leeds United after the 2000-01 season, simultaneously with the departures of his father Frank Lampard Sr. and uncle Redknapp, Lampard followed suit and left West Ham, but chose to stay in London by joining Chelsea for a \u00a311 million fee.\n On 24th July, a deal was agreed with New York City FC which would transfer Frank to the team on 1st July.\n Lampard made his debut for Chelsea on August 19 2001. He was a"
+ },
+ "births": [
+  {
+   "cell": 4,
+   "when": "2026-11-11 06:38",
+   "trainer": "t4",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0255; it wakes on 100% of the passages near it",
+   "near_before": 3.9228,
+   "near_after": 3.8973
+  },
+  {
+   "cell": 5,
+   "when": "2026-11-11 06:45",
+   "trainer": "t4",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0073; it wakes on 100% of the passages near it",
+   "near_before": 3.9787,
+   "near_after": 3.9714
+  },
+  {
+   "cell": 6,
+   "when": "2026-11-11 06:50",
+   "trainer": "t4",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0056 (it needs more than 0.004)",
+   "near_before": 3.9897,
+   "near_after": 3.9953
+  }
+ ],
+ "trainers": [
+  {
+   "id": "t1",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t2",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t3",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "uncharted",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t4",
+   "start": "nearest",
+   "lr": 0.0003,
+   "span": 0.5,
+   "on": "division",
+   "births": 3,
+   "kept": 2
+  },
+  {
+   "id": "t5",
+   "start": "nearest",
+   "lr": 0,
+   "span": 0.5,
+   "on": "division",
+   "how": "flips",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t6",
+   "start": "nearest",
+   "lr": 0,
+   "span": 0.5,
+   "on": "uncharted",
+   "how": "flips",
+   "births": 0,
+   "kept": 0
   }
  ]
 }
