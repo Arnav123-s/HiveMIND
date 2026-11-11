@@ -999,3 +999,60 @@ def test_the_yardstick_is_the_same_passages_however_much_the_text_grows():
     assert B._held(small, "report", 20, upto=4000) == B._held(big, "report", 20, upto=4000) == B._held(small, "report", 20)
     assert B._held(big, "report", 20) != B._held(small, "report", 20)                    # spread over all the text, they move
     assert all(i % B.HELD == 0 for i in B._held(big, "report", 20))
+
+
+def test_the_hive_is_saved_under_a_new_name_and_never_smaller_than_it_came(tmp_path, monkeypatch):
+    import io
+    import json
+    import subprocess
+    import tarfile
+    import urllib.error
+    from training import hive_state as H
+    homes = {"scratch": tmp_path / "scratch", "harvest": tmp_path / "harvest", "reports": tmp_path / "reports"}
+    for h in homes.values():
+        h.mkdir()
+    (homes["scratch"] / "body").mkdir()
+    for k in range(4):
+        (homes["scratch"] / "body" / f"cell_{k:02d}.pt").write_bytes(b"cell")
+    (homes["scratch"] / "base.pt").write_bytes(b"stem")
+    monkeypatch.setattr(H, "_homes", lambda: homes)
+    monkeypatch.setattr(H.shutil, "which", lambda name: "/usr/bin/gh")
+    monkeypatch.setenv("GH_TOKEN", "t")
+    calls, there = [], [("hive-state-300.tar.gz", "u3"), ("hive-state-200.tar.gz", "u2"), ("hive-state-100.tar.gz", "u1")]
+
+    def run(cmd, **kw):
+        calls.append(cmd[1:4] + [a for a in cmd[4:] if a.startswith("hive-state-")])
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+    monkeypatch.setattr(H.subprocess, "run", run)
+    monkeypatch.setattr(H, "_states", lambda: there)
+    said = []
+    H.save(log=lambda *a, **k: said.append(a[0]))                                        # it did not come from the release, and a hive is there
+    assert not calls and "NOT saved" in said[-1]
+
+    (homes["scratch"] / H.CAME).write_text(json.dumps({"bodies": 1, "cells": 4}))
+    H.save(log=lambda *a, **k: said.append(a[0]))
+    assert [c[:2] for c in calls] == [["release", "view"], ["release", "upload"], ["release", "edit"], ["release", "delete-asset"]]
+    assert calls[-1][-1] == "hive-state-100.tar.gz"                                      # the two newest stay, the oldest goes
+    assert "saved as hive-state-" in said[-1]
+
+    calls.clear()
+    (homes["scratch"] / H.CAME).write_text(json.dumps({"bodies": 3, "cells": 22}))       # a run whose fetch went wrong has less than it came from
+    H.save(log=lambda *a, **k: said.append(a[0]))
+    assert not calls and "NOT saved" in said[-1]
+
+    (homes["scratch"] / H.CAME).unlink()                                                 # the very first hive: no release yet
+    monkeypatch.setattr(H, "_states", lambda: (_ for _ in ()).throw(urllib.error.HTTPError("u", 404, "no release", None, None)))
+    assert H._shrunk({"bodies": 1, "cells": 4}) is None
+    monkeypatch.setattr(H, "_states", lambda: (_ for _ in ()).throw(OSError("the network is down")))
+    assert H._shrunk({"bodies": 1, "cells": 4})                                          # it cannot be seen: not saved over it
+
+    # fetching: the newest state that can be read; a broken newest falls back to the one before
+    good = io.BytesIO()
+    with tarfile.open(fileobj=good, mode="w:gz") as tar:
+        blob = json.dumps({"bodies": 1, "cells": 4}).encode()
+        info = tarfile.TarInfo("manifest.json")
+        info.size = len(blob)
+        tar.addfile(info, io.BytesIO(blob))
+    monkeypatch.setattr(H, "_states", lambda: [("hive-state-300.tar.gz", "u3"), ("hive-state-200.tar.gz", "u2")])
+    monkeypatch.setattr(H.urllib.request, "urlopen", lambda url, timeout=0: io.BytesIO(b"cut off" if url == "u3" else good.getvalue()))
+    assert H.fetch(tmp_path / "got.tar.gz", log=lambda *a, **k: None) == "hive-state/hive-state-200.tar.gz"

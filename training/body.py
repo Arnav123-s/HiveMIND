@@ -1035,13 +1035,15 @@ def found(name, minutes=40.0, sample=8000, log=print):
     return name
 
 
-def hive_turn(minutes=10.0, births=3, log=print, budget=0.0):
+def hive_turn(minutes=10.0, births=3, log=print, budget=0.0, after=None):
     """One turn of the whole hive with nobody watching: every body takes its own turn (it multiplies); a new body is
     founded when the bodies there are have grown enough (one more body for every eight living cells); and the hive
     is measured, each body alone and all as one.
     budget: minutes the turn may take (0: as long as it takes). With a budget the bodies go in the order of who
     waited longest and the turn stops giving turns when the time is used, so a hive of any size fits a run that is
-    cut off after some hours; a body that is due is founded first, and the measurement is always made."""
+    cut off after some hours; a body that is due is founded first, and the measurement is always made.
+    after: called when a body has been founded and after each body's turn (the run on GitHub saves the hive there,
+    so a run that is cut off loses one body's turn at most)."""
     import os
     import subprocess
     t0, turned = time.time(), _turned()
@@ -1055,6 +1057,8 @@ def hive_turn(minutes=10.0, births=3, log=print, budget=0.0):
     alive = sum(len(list((T.SHARED / ("bodies/" + b if b else "") / "body").glob("cell_*.pt"))) for b in names)
     if len(names) < 1 + alive // 8:
         names.append(found(f"b{len(names) + 1}", log=log))
+        if after:
+            after()
     for i, b in enumerate(sorted(names, key=lambda b: turned.get(b, 0))):  # who waited longest goes first
         if budget and i and (time.time() - t0) / 60 > budget:
             log(f"[hive] the time for this turn is used: {len(names) - i} of {len(names)} bodies wait for the next", flush=True)
@@ -1063,6 +1067,8 @@ def hive_turn(minutes=10.0, births=3, log=print, budget=0.0):
                        cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
         turned[b] = time.time()
         (T.SHARED / TURNS).write_text(json.dumps(turned))
+        if after:
+            after()
     return hive_measure(log=log)
 
 
@@ -1094,7 +1100,11 @@ def main(argv):
     elif cmd == "found":
         found(argv[1], opt("--minutes", 40.0))
     elif cmd == "hive":
-        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3), budget=opt("--budget", 0.0))))
+        after = None
+        if "--save" in argv:  # the hive is saved after every body's turn (training/hive_state.py)
+            from training import hive_state
+            after = lambda: hive_state.save(log=print)  # noqa: E731
+        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3), budget=opt("--budget", 0.0), after=after)))
     elif cmd == "hive-measure":
         print(json.dumps(hive_measure()))
     elif cmd == "turn":
