@@ -2,6 +2,119 @@
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
+## Picked up on the new account (2026-11-11, from 20:05 UTC): read this first, then START HERE below
+
+**Where the work lives now.** A cloud session on the new account is given a branch of its own and may not push to
+another without his word. The first one works on `claude/epic-johnson-7ene30`, started from `make-it-work` at d31fd51,
+with a draft PR from it into `make-it-work`. Until he says the old way holds ("push to make-it-work"), the newest
+state is on that branch, not on `make-it-work`. Nothing of his idea below is built: he asked for the flaws and a
+proposal first.
+
+**This cloud environment** (his "Default"). Package registries, GitHub and most of the web answer. The proxy refuses
+`download.pytorch.org`, `huggingface.co` with its file hosts, and Wikipedia. So here:
+- `scripts/cloud_setup.sh --light` works again: it takes torch from PyPI when the CPU build's host is refused (5.3 GB
+  in `.venv`; it runs on the CPU), and it installs `transformers`, which the tests import (the light list lacked it
+  and step 5 failed while collecting). 66 tests passed. The grown hive came from `hive-seed` and reads the yardstick
+  here exactly as recorded (first body 2.6446 alone and 2.4856 as a body; b3 3.1146 and 2.7806).
+- The working hive cannot be installed here (its models are on Hugging Face) and nothing can be harvested here, until
+  those hosts are allowed. An environment of its own for this repository, with those hosts and the setup, is to be
+  proposed to him (he gets an approval card); not done when this was written.
+- The Actions API CAN be read here, through the session's GitHub tools: runs, jobs, logs; a run can be started.
+
+**Checked at 20:14 UTC.** The workflow "The hive grows" is active on `main` and had not run yet (no runs, no release
+`hive-state`); its first scheduled run is due at 00:17 UTC on 2026-11-12. `exam.yml` and `ask.yml` are only on the
+work branch, so they do not run.
+
+**Measured here on 2026-11-11** (`training/experiments/`; each reads the hive or times the machine, none changes it):
+- `cpu_speed.py`, `cpu_speed_result.json`. A BitNet from nothing trains on these four cores at 11,221 pieces a second
+  at the stem cell's size (2.6M weights), 3,576 at 12M, 1,675 at 27M and 591 at 88M. On the runners as the hive uses
+  them (four turns of 180 minutes a day) the 88M one would read 26 million pieces a day. The one strong published
+  BitNet (2.4B weights) read 4 trillion, by its makers' account.
+- `gate_noise.py`, `gate_noise/*.json`. What each living cell is worth where it lives, with its standard error. A
+  newborn must gain 0.004 on 60 passages (`body.LOCAL`); the standard error of such a gain is 0.0035 on average. The
+  bar is about one standard error, so a newborn that adds nothing passes now and then by luck. Of the 6 living cells
+  that went through a gate, on report passages (which never decided anything): 3 add nothing that can be told from
+  zero (first body's 7 and 8: 0.0015 and 0.0002; b2's 4: 0.0021), one is at the edge (12: 0.0042, give or take
+  0.0030), two are real (13: 0.0201; b2's 5: 0.0115). Of the 16 first cells (one to a territory when it was drawn,
+  never gated) most are worth 0.02 to 0.08; the first body's cell 5 is worth 0.0000 and b2's cell 2 -0.009 (the body
+  reads better without it where it lives). The gate itself is unchanged.
+- The yardstick's passages end at window 47,880 of 56,542: they leave out the last seventh of the text, all of it
+  Wikipedia. The first body reads 2.4856 on the yardstick and 2.7062 on passages spread over all the text. A body's
+  own record (`measure`) now takes the second kind; its numbers from before commit 650bfec are yardstick numbers.
+- `one_model.py`, `one_model_b3.json` (started 20:54 UTC, an hour; see the file for the result): b3's stem cell
+  reading on alone for the 60 minutes its six cells may have read together, read every 6 minutes on the passages the
+  body is measured on (the body: 2.7806 on the yardstick). In its first ten steps it gained 0.08 (3.1146 -> 3.0376):
+  a stem cell founded at the high rate (3e-3) and never cooled down gains at once from a low rate, so part of what
+  b3's cells add to their stem cell is that and not their territories.
+- GitHub's terms for Actions, read on docs.github.com (version of 2026-08-27): Actions "should not be used for ...
+  any activity that places a burden on our servers, where that burden is disproportionate to the benefits provided
+  to users" nor, on GitHub's own runners, for "any other activity unrelated to the production, testing, deployment,
+  or publication of the software project associated with the repository"; "You may only access and use GitHub
+  Actions to develop and test your application(s)"; misuse "may result in termination of jobs, restrictions in your
+  ability to use GitHub Actions, disabling of repositories ... or in some cases, suspension or termination of your
+  GitHub account". Training the hive there for twelve hours a day is his account's risk and his decision; it was
+  put to him. Nothing in GitHub's Acceptable Use Policies names model training.
+
+**His idea, 2026-11-11 (night), his words, shortened:** "a hiveminded entity, in which a LOT of full precision bit net
+models exist, and they work together and act as one ... each one is really good at something and generally to an
+extent ... the hive keeps growing infinitely, reproducing, cloning, getting more models ... it can work agentically and
+conversationally and be able to do every and all tasks, it follows and understands instructions ... one model in the
+hive doesn't need to be good but all of them together are highly intelligent, strong and capable ... they are fast too
+... you can't always be present to evolve them, fix them, change their weights, they will need to be doing that
+themselves ... adapt to time, move forward with time, learn newer things ... self aware of their own selves and
+developments and time and space". He asked for its flaws, what works on CPU-only machines, the strongest version
+and how to measure that it is better, and that nothing be built before he answers.
+
+**What he was told: the flaws.**
+1. Members put side by side (a vote, a mix, more bodies) add coverage, not thinking. Measured in this repository:
+   voting scored 27 of 32, as the best member alone; the planner's second specialist was right on the same 9; two
+   more bodies moved the hive from 2.4856 to 2.4760. What does add: one member working on another's output, exact
+   checks, tools, memory.
+2. From nothing on a CPU cannot reach conversation (the speeds above): at 26 million pieces a day, the 4 trillion
+   that the one strong BitNet read are 150,000 days, for a model 27 times smaller than it.
+3. A BitNet is cheap to run, not to train. Many different strong ones can neither be made here nor found (one strong
+   published one when last looked at; not looked at again today, Hugging Face is refused here).
+4. Growing without limit on a fixed machine spreads it thinner: every new body starts from random numbers and
+   learns the language again, and what a birth adds falls (most first cells 0.02 to 0.08, later ones 0.000 to 0.02).
+5. The birth gate keeps luck (above).
+6. With nobody present the referee must be code the hive cannot change. What its own models write and its own
+   models judge drifts.
+7. Knowing itself and knowing the time cannot live in weights: a record it writes and reads, the clock, live sources.
+8. The free runners are borrowed (GitHub's terms, above), and everything typed there is public.
+9. More members awake is not more speed: they share four cores.
+
+**What was proposed (the strongest version; waiting for his word).** One hive with a fixed division of labour.
+- *Thinkers* set what it can do at all: the best small pretrained models that fit 10 GB, three-valued ones as soon
+  as one tests as good (the published 2.4B BitNet first, with its makers' runtime). The hive finds, tries and takes
+  in newer ones itself (`recruit`, judged by its exam). Most of its future intelligence comes from here.
+- *Specialists and skills* make it fast and sure at what it has done before: cells, weight edits, lessons, and (new)
+  a library of programs that passed their checks, used again instead of written again. This is the part that
+  multiplies without limit: on disk, a few awake at a time, as the bodies already do.
+- *One gate for every change*, unattended on GitHub (open item 1 below, sharpened): the cheapest changes first
+  (a lesson, a skill, who holds a job, an instruction, a weight edit, a recruit); each tried on fresh tasks made and
+  checked by code, with and without it, on the same tasks; kept only when the win is beyond chance; the tasks that
+  decide are never the tasks that are reported, and some kinds of task never decide anything.
+- *Many tries, exact checks*: where code can check an answer (a program, a number, data), several members try and
+  the hive takes what passes, or what two different families agree on (58 of 58 right in `diverse.py`). This is the
+  one place where many weak members beat one.
+- *A self-record*: written at every run (the date, where it runs, its members, its exam by field, what it kept and
+  dropped, what it is worst at), read when it talks, plans and chooses what to improve. Before each exam task it
+  says whether it expects to pass.
+- *The exam grows*: levels in every kind of task (harder when it passes), tasks with several instructions at once,
+  and conversations of several turns checked by code.
+- *The BitNet bodies stay*, as the hive's own line from nothing, not as the road to conversation, with four repairs:
+  a gate that beats chance (more passages, two standard errors); a cool-down at the low rate for a new stem cell;
+  founding by copying the best stem cell, tried against founding from random; and the one-model comparison.
+- *How it is measured*: the exam by field with its margin, week on week (16 tasks a sitting: trends show in weeks);
+  the same line over weeks with no human commit (gets better alone); the same sitting by the best single member
+  with the same tools and time (the hive against one); a body against one model with the same training (many
+  against one); minutes a task at the same pass rate; how well "I expect to pass" matches what happened.
+
+**Asked of him (not answered when this was written).** Yes or no to that direction. Whether he has a device that can
+stay on (which, how much RAM): the hive's real home, private, no terms to break. Whether Microsoft's BitNet runtime
+may be built (code from outside the repository). Whether sessions push to `make-it-work` as before, and whether the
+three commits `main` lacks get a PR. Whether the runs on GitHub stay at about today's hours.
+
 ## START HERE: moving to a new account (paused 2026-11-11, 20:00 UTC)
 
 Arnav paused the work and is continuing from a different Claude account. The old cloud machine is gone; only what

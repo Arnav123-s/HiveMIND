@@ -18,9 +18,16 @@ PY=.venv/bin/python
 $PY -m pip install -q --upgrade pip
 
 say "2. packages"
-$PY -c "import torch" 2>/dev/null || $PY -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+$PY -c "import torch" 2>/dev/null || $PY -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu || {
+    # a cloud environment that lets only package registries through refuses download.pytorch.org (seen 2026-11-11):
+    # PyPI's build is several GB bigger (it carries GPU libraries it never uses here) and runs on the CPU all the same
+    echo "cloud_setup: the CPU build's host is not reachable here; taking torch from PyPI instead"
+    $PY -m pip install -q torch
+}
 if [ "$LIGHT" = 1 ]; then
-    $PY -m pip install -q numpy tokenizers requests huggingface_hub pyarrow beautifulsoup4 lxml psutil pytest pyyaml
+    # transformers: the growing hive does not use it, the tests of step 5 import it (team/llm.py)
+    $PY -m pip install -q numpy tokenizers requests huggingface_hub pyarrow beautifulsoup4 lxml psutil pytest pyyaml \
+        "$(grep '^transformers==' requirements.txt || echo transformers)"
 else
     $PY -m pip install -q -r requirements.txt
     say "3. llama.cpp for this CPU (about 10 minutes the first time), the browser, the cells"
