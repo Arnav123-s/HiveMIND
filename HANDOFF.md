@@ -40,16 +40,43 @@ if one is due, give bodies their turns within 180 minutes, measure, and save aft
 background job is cut at two hours, so make experiments resumable; the container restarts now and then: files
 survive, running jobs do not; `cells/scratch/bodies/` is not in git (the seed branch and the release hold it).
 
+*His newest words (2026-11-11, late):* "need high agentic abilits, high conrsatila and understand abilits as a hive
+and high insruction following ... strong in evey field as a hive, it should keep working on its own and gett better
+in eveything genrally the idea may have flaws and is open ended and need u to solve it and imrove it so i can actuly
+use it" and "u cant always be prnst so it should be self capable". What was told to him: the repository holds two
+hives. The working hive (pretrained small models with tools and checks; README "The team") is what he can use and
+is where agentic and conversational ability comes from. The growing hive (BitNet bodies) grows without limit but
+writes children's stories; cells this small from nothing on four cores will not converse or act in any useful time.
+So the unattended engine has to improve the working hive too, by the same rule as everywhere: variation, a fresh
+measurement, keep what is better.
+
+*Built for that (branch `make-it-work`, not merged when this was written):*
+- `.github/workflows/ask.yml`: he types a task in the Actions tab and the working hive does it on a runner; the
+  answer is the run's summary, the files an artifact. Public repository: task and answer are public.
+- `training/exam.py` + `.github/workflows/exam.yml`: every day the working hive sits a fresh exam made and checked
+  by code (16 tasks over maths, dates, units, tables, programs, live facts, websites, instructions, knowledge,
+  languages, writing, understanding); one line per sitting in `training/reports/exams.jsonl`. The job that runs the
+  hive has a read-only token; a second job (`training/exam_record.py`) takes only numbers and known names from it.
+- `.github/actions/hive/action.yml`: the working hive's installation on a runner, shared by both.
+
 *Open next, in the order they would help:*
-1. The body teaches its stem cell ("sleep"): the stem cell learns what the whole body expects, so the next cells
-   start higher. Being measured when this was written (scratchpad `sleep.py`; plain reading on at three rates
-   against three forms of sleep). If it wins: `stem_reads` gets it, and as much time as a birth.
-2. Faster training: batch size at equal time, rotary positions, relu squared, a plainer norm, small-start output
-   layers, a running mean of the weights (scratchpad `recipe6.py`, not run yet). Winners become genes of the recipe.
-3. Reading as one costs every body a full read of every passage. Before the hive has more than about eight bodies
-   it needs a map over bodies (only the nearest bodies wake), like the map over cells inside a body, and the
-   hive's measurement should keep each unchanged body's readings.
-4. Two three-valued layers per cell, stored exactly; dreams with a real model; re-founding a whole lost body.
+1. **The working hive learns on GitHub, gated by fresh exam tasks.** Not built. The design: a try-out. Take a kind
+   of task the last sittings failed (the exam's makers can draw any number of new tasks of one kind); make one
+   change (a lesson written from the failed task and the check's reason, a recruit in a role, a prompt bred by
+   `evolve`, an edit from `school`); sit 6 to 8 new tasks of that kind with and without the change; keep it only if
+   it passes more. Keep what is kept in a state file on the release (memory/lessons.jsonl, memory/policy.json,
+   cells/school.json, cells/recruits.json, new adapters), as `training/hive_state.py` does for the bodies. The job
+   that runs the hive must stay without a write token; a second job publishes after checking what it is given.
+2. Dreams with a real model: the working hive's bigger members write text on what the bodies read worst
+   (`harvest.dream` exists and has never run with a model). On a runner the models are there once the working
+   hive is installed, so the bodies' turn could use them.
+3. Faster training of the bodies (scratchpad `recipe6.py`, not run): batch size at equal time, rotary positions,
+   relu squared, a plainer norm, small-start output layers, a running mean of the weights. Winners become genes of
+   the recipe (`body.GENES`, `body.SHAPES`).
+4. A map over bodies (only the nearest bodies wake) before the hive has more than about eight; today every body
+   reads every passage when the hive reads as one.
+5. Two three-valued layers per cell, stored exactly; re-founding a whole lost body.
+Tried and dropped on 2026-11-11: the body teaching its stem cell (`training/reports/sleep.json`).
 
 **Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
 freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow

@@ -780,6 +780,22 @@ def immune(first, second, names, log=print):
     return None
 
 
+# Measured 2026-11-11 (training/reports/sleep.json): a stem cell goes on learning best at the low rate (3e-4 against
+# 1e-3 and 3e-3); being taught by its own body ("sleep") learns more per step but not per minute, so it is not built in;
+# and a stem cell 0.19 better moves its body by 0.004, because the cells were made from the stem cell as it was. What
+# it learns pays off in the cells born after it. So a stem cell that is still learning fast reads for as long as a
+# birth takes, and one that has slowed down reads a third of that.
+STEM_RATE, STEM_FAST = 3e-4, 0.02
+
+
+def stem_minutes(minutes):
+    """How long the stem cell reads this turn: as long as a birth while its last reading still brought it STEM_FAST on
+    its own check (or it has never read on), a third of that once it has slowed down."""
+    last = (_report().get("stem_reads") or [{}])[-1]
+    fast = "own_before" not in last or last["own_before"] - last["own_after"] >= STEM_FAST
+    return minutes * (1.0 if fast else 0.3)
+
+
 def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     """The stem cell never stops learning. Each turn it reads everything a little longer, with its table of word
     pieces held still: that table is the one thing every cell leans on, so the cells stay whole while the rest of the
@@ -790,7 +806,7 @@ def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     for p in (stem.tok.weight, stem.pos.weight):
         p.requires_grad_(False)
     train = [i for i in range(_windows(data)) if i % HELD]
-    steps, loss, was = _read(stem, data, train, minutes, seed=len(_report().get("stem_reads", [])), lr=3e-4, share_table=False)
+    steps, loss, was = _read(stem, data, train, minutes, seed=len(_report().get("stem_reads", [])), lr=STEM_RATE, share_table=False)
     f2, s2 = _read_all({"stem": stem.eval()}, data, gate)
     before = fit_loss(first, second).mean().item()
     first, second = first.clone(), second.clone()
@@ -799,7 +815,8 @@ def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     kept = after < before - IDLE
     if kept:
         T.whole(stem.state_dict(), T.HOME / "base.pt")
-    out = {"when": time.strftime("%Y-%m-%d %H:%M"), "steps": steps, "gate_before": round(before, 4), "gate_after": round(after, 4), "kept": kept}
+    out = {"when": time.strftime("%Y-%m-%d %H:%M"), "steps": steps, "gate_before": round(before, 4), "gate_after": round(after, 4), "kept": kept,
+           "own_before": was, "own_after": loss, "minutes": round(minutes, 1)}
     _report(stem_reads=_report().get("stem_reads", []) + [out])
     log(f"[body] the stem cell read {steps} more steps; the body on the gate passages {before:.4f} -> {after:.4f}: "
         f"{'kept' if kept else 'not kept, it stays as it was'}", flush=True)
@@ -893,7 +910,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     spread = _even(pool, 200)
     first, second, who = b.read(data, spread)
     learn_say(first, second, log)
-    learned = stem_reads(data, spread, first, second, minutes=minutes * 0.3, log=log)
+    learned = stem_reads(data, spread, first, second, minutes=stem_minutes(minutes), log=log)
     if learned and learned["kept"]:
         b = Body()
         first, second, who = b.read(data, spread)
