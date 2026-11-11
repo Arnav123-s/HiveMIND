@@ -630,6 +630,51 @@ def test_the_direct_way_trains_a_bitnet_without_ordinary_weights_underneath(monk
         assert torch.equal((m.weight / scale).round().clamp(-1, 1), t)
 
 
+def test_a_stem_cell_never_trains_on_the_held_windows():
+    import random
+    from training import scratch as T
+    rnd = random.Random(0)
+    at = T.offsets(rnd, T.CTX * 400, 2000)
+    assert len(at) == 2000
+    assert all((i // T.CTX) % T.HELD and ((i + T.CTX) // T.CTX) % T.HELD for i in at)     # no window it reads touches a held one
+
+
+def test_a_new_stem_cell_eases_into_three_values_and_learns_from_a_teacher(tmp_path, monkeypatch):
+    import json
+    import numpy as np
+    import torch
+    from training import scratch as T
+    torch.manual_seed(0)
+    torch.set_num_threads(2)
+    layer, x = T.BitLinear(8, 8), torch.randn(4, 8)
+    try:
+        T.EASE[0] = 0.0
+        assert torch.allclose(layer(x), torch.nn.functional.linear(x, layer.weight, layer.bias))   # not eased in yet: an ordinary layer
+    finally:
+        T.EASE[0] = 1.0
+    assert not torch.allclose(layer(x), torch.nn.functional.linear(x, layer.weight, layer.bias))   # as it works: three values
+
+    monkeypatch.setattr(T, "CTX", 32)
+    monkeypatch.setattr(T, "HOME", tmp_path / "new")
+    rng = np.random.default_rng(0)
+    text = np.tile(rng.integers(2, 60, size=33 * 4), 60).astype("uint16")
+    monkeypatch.setattr(T, "tokenizer", lambda *a, **k: None)
+    monkeypatch.setattr(T, "corpus", lambda tk: text)
+    old = tmp_path / "old"                                                               # a teacher of another shape than the new body
+    old.mkdir()
+    (old / "stem.json").write_text(json.dumps({"bit": False, "dim": 64, "layers": 1, "heads": 2}))
+    torch.save(T.Tiny(shape=T.kind(old)).state_dict(), old / "base.pt")
+    (tmp_path / "new").mkdir()
+    (tmp_path / "new" / "stem.json").write_text(json.dumps({"bit": True, "dim": 64, "layers": 2, "heads": 2}))
+    seen = []
+    step = T.BitLinear.forward
+    monkeypatch.setattr(T.BitLinear, "forward", lambda self, x: (seen.append(T.EASE[0]), step(self, x))[1])
+    out = T.pretrain_direct(0.03, usual=True, name="base", lr=3e-3, warm=5, ease=0.5, teacher=old, log=lambda *a, **k: None)
+    assert out["steps"] > 3 and (tmp_path / "new" / "base.pt").exists()
+    assert min(seen) < 0.2 and max(seen) == 1.0 and T.EASE[0] == 1.0                    # it began nearly ordinary and ended a BitNet
+    assert T.Tiny().blocks[0].qkv.weight.shape == (3 * 64, 64)                          # and has its own body's shape
+
+
 def test_dreams_are_written_on_what_the_body_reads_worst_and_get_harder(tmp_path, monkeypatch):
     import json
     from team import config, harvest, llm
@@ -824,3 +869,49 @@ def test_the_say_of_each_body_is_learned_too(tmp_path, monkeypatch):
     (tmp_path / B.HIVE_RULE).write_text(json.dumps(rule))
     assert B.together([big, small]).mean().item() < alone - 0.5                          # as one they are better than the best alone
     assert B.together([big, small, small]).shape == (n,)                                 # a body founded since: the rule's sharpness only
+
+
+def test_a_cell_of_the_team_learns_what_the_body_misses(tmp_path, monkeypatch):
+    import math
+    import torch
+    from training import body as B
+    from training import scratch as T
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(T, "CTX", 16)
+    torch.manual_seed(0)
+    cell = T.Tiny(bit=True)
+    x = torch.randint(2, T.VOCAB, (4, 17))
+    own = -B._piece_lp(cell, x).mean().item()                                            # the cell alone: it knows nothing yet
+    knows = torch.full((4, 16), -0.01)                                                   # the body knows every piece already
+    lost = torch.full((4, 16), -20.0)                                                    # the body knows none
+    assert B._team_loss(cell, x, knows, 0.25).item() < -math.log(0.75) + 0.02            # little is asked of the cell there
+    assert abs(B._team_loss(cell, x, lost, 0.25).item() - (own - math.log(0.25))) < 0.05  # here everything hangs on it
+    # the push on the cell comes from the pieces the body misses
+    half = knows.clone()
+    half[:, 8:] = -20.0
+    cell.zero_grad()
+    logits = cell.next_piece(x[:, :-1])
+    logits.retain_grad()
+    lp = torch.log_softmax(logits, -1).gather(-1, x[:, 1:, None])[..., 0]
+    (-torch.logaddexp(lp + math.log(0.25), half + math.log(0.75)).mean()).backward()
+    push = logits.grad.abs().sum(-1)
+    assert push[:, 8:].mean().item() > 50 * push[:, :8].mean().item()
+
+
+def test_a_new_kind_of_trainer_joins_once_and_the_worst_record_makes_room(tmp_path, monkeypatch):
+    import json
+    import random
+    from training import body as B
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(B.T, "is_bit", lambda: False)
+    ts = B.trainers()
+    team = [t for t in ts if t.get("how") == "team"]
+    assert len(team) == 2 and len({t["id"] for t in ts}) == len(ts) and not any(t.get("how") == "flips" for t in ts)
+    (tmp_path / "body.json").write_text(json.dumps({"trainers": [t for t in ts if "how" not in t], "kinds_tried": ["team"]}))
+    assert not any(t.get("how") == "team" for t in B.trainers())                        # it had its chance and left: it does not come back
+    eight = [{"id": f"t{i}", "start": "stem", "lr": 5e-4, "span": 1.0, "on": "division", "births": 2, "kept": 2} for i in range(1, 9)]
+    eight[0].update(births=2, kept=0)                                                    # the oldest, and the worst record
+    eight[5].update(births=0, kept=0)                                                    # one that has not had its chance
+    eight[7].update(births=4, kept=4)                                                    # sixteen births in all: time to breed
+    out = B.breed(eight, random.Random(0))
+    assert len(out) == 8 and "t1" not in {t["id"] for t in out} and {"t6", "t9"} <= {t["id"] for t in out}

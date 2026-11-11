@@ -1,0 +1,37 @@
+{
+ "territories": {
+  "cells": 6,
+  "windows_placed": 55128,
+  "sizes": {
+   "0": 12016,
+   "1": 23069,
+   "2": 28778,
+   "3": 23716,
+   "4": 19487,
+   "5": 3190
+  },
+  "examples": {
+   "0": " \u2013 Oswald Mosley, British politician (b. 1896)\n 1981 \u2013 Walter Knott, farmer and creator of Knott's Berry Farm ",
+   "1": " at her, its eyes kind and gentle.\n Daisy and the frog talked for a while. She told it how she was sad that he",
+   "2": "ce, because of its support for the American uprising.\n First Epsom Derby horse race run at Epsom Downs, Surrey",
+   "3": ". He is just protecting his home. He doesn't know you are playing. Maybe you can make friends with him later.\"",
+   "4": "\n In Poland, roman numerals are used to show the month in dates and as a short method of writing ordinals (i.e",
+   "5": " 2026\n - Listoflarge languagemodels | https://en.wikipedia.org/wiki/List_of_large_l"
+  },
+  "seconds": 729
+ },
+ "minutes_per_cell": 10.0,
+ "measured": [
+  {
+   "when": "2026-11-11 13:47",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.1146,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.7806,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.7935,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.7884
+   }
+  }
+ ]
+}
