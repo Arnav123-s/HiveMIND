@@ -1,0 +1,128 @@
+{
+ "body": "b2",
+ "cells": 6,
+ "needs": 0.004,
+ "passages": 60,
+ "standard_error_of_a_gain": 0.0034,
+ "gated_cells": {
+  "n": 2,
+  "gain_at_birth": 0.0164,
+  "gain_now_on_gate_passages": 0.0064,
+  "gain_now_on_report_passages": 0.0068
+ },
+ "first_cells": {
+  "n": 4,
+  "gain_now_on_gate_passages": 0.0311,
+  "gain_now_on_report_passages": 0.0305
+ },
+ "each": [
+  {
+   "cell": 0,
+   "on": "gate",
+   "gain": 0.0397,
+   "standard_error": 0.003,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 1,
+   "on": "gate",
+   "gain": 0.0362,
+   "standard_error": 0.0039,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 2,
+   "on": "gate",
+   "gain": -0.0056,
+   "standard_error": 0.0016,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 3,
+   "on": "gate",
+   "gain": 0.0542,
+   "standard_error": 0.0051,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 4,
+   "on": "gate",
+   "gain": 0.0051,
+   "standard_error": 0.0026,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0255
+  },
+  {
+   "cell": 5,
+   "on": "gate",
+   "gain": 0.0077,
+   "standard_error": 0.0027,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0073
+  },
+  {
+   "cell": 0,
+   "on": "report",
+   "gain": 0.0427,
+   "standard_error": 0.0029,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 1,
+   "on": "report",
+   "gain": 0.0313,
+   "standard_error": 0.004,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 2,
+   "on": "report",
+   "gain": -0.0094,
+   "standard_error": 0.0042,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 3,
+   "on": "report",
+   "gain": 0.0573,
+   "standard_error": 0.0047,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 4,
+   "on": "report",
+   "gain": 0.0021,
+   "standard_error": 0.0044,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0255
+  },
+  {
+   "cell": 5,
+   "on": "report",
+   "gain": 0.0115,
+   "standard_error": 0.0023,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0073
+  }
+ ]
+}

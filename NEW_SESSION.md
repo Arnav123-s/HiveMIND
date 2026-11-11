@@ -2,8 +2,12 @@
 
 ## 1. The cloud environment (once, in claude.ai/code when you create the environment)
 - Repository: `Arnav123-s/HiveMIND` (connect GitHub first: claude.ai Settings, Connectors).
-- Network: the default ("Trusted"/package managers) is enough for the growing hive. The working hive also needs
-  `huggingface.co` and the hosts its models download from (`cdn-lfs.huggingface.co`, `cas-bridge.xethub.hf.co`).
+- Network (as found on 2026-11-11): the default ("Trusted") reaches package registries, GitHub and most of the web,
+  and refuses `download.pytorch.org`, Hugging Face and Wikipedia. With the default the setup below still works (torch
+  then comes from PyPI, 5 GB bigger); a body's turn reads the text the hive has (no turn was run there), a harvest
+  cannot run. For
+  the harvest allow `en.wikipedia.org` and `huggingface.co`; for the working hive `huggingface.co` and the hosts its
+  models download from (`cdn-lfs.huggingface.co`, `cas-bridge.xethub.hf.co`); for the small torch `download.pytorch.org`.
 - Setup script (paste into the environment's setup script box; it runs once per fresh machine):
 
 ```bash
