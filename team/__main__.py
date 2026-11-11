@@ -160,6 +160,10 @@ def main():
         from .sdk import Swarm
         job = Swarm(approve=a.approve).submit(task, until_done=a.until_done, allow_login=a.allow_login)
         job.wait()  # the board prints each event as it happens
+        if a.run_dir:  # the job itself, every round of it, is in runs/; its answer is also put where it was asked for
+            from pathlib import Path
+            Path(a.run_dir).mkdir(parents=True, exist_ok=True)
+            (Path(a.run_dir) / "REPORT.md").write_text(job.report or "")
         print("\n" + "=" * 70 + "\n" + job.report[:6000])
         print(f"\nJob folder: {job.dir} ({len(job.rounds)} round(s)); still undone: {job.unmet or 'nothing'}")
         if job.pending_approvals:
