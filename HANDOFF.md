@@ -2,6 +2,54 @@
 
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
+## START HERE: moving to a new account (paused 2026-11-11, 20:00 UTC)
+
+Arnav paused the work and is continuing from a different Claude account. The old cloud machine is gone; only what
+is on GitHub survives. A new session should read this block, then "Live status" below, then README.md.
+
+**What survives and where**
+- Code: branch `make-it-work` (latest commit is the one that added this block). `main` has PRs #6 to #11.
+  `make-it-work` holds three commits past `main` that are NOT merged and have NO PR yet: the ask workflow
+  (`.github/workflows/ask.yml`), the daily exam (`training/exam.py`, `training/exam_record.py`,
+  `.github/workflows/exam.yml`), the shared installation (`.github/actions/hive/action.yml`), the sleep result.
+- The grown hive (three BitNet bodies, 22 living cells, 127 MB): branch `hive-seed` (commit be80d6e, saved
+  2026-11-11 16:35 UTC; nothing has grown since). Get it with `python training/hive_state.py pull`.
+  The release `hive-state` does not exist yet; the first unattended run should create it.
+- Experiments not yet run: `training/experiments/recipe6_speed.py` (what makes a stem cell learn faster in the same
+  time: batch size, rotary positions, relu squared, RMS norm, small init, normed q/k). Run:
+  `python training/experiments/recipe6_speed.py training/experiments/recipe6_result.json 19200`.
+  `training/experiments/sleep.py` + `sleep_result.json`: the sleep experiment, done, negative (see README).
+
+**Paused, and what still runs on its own**
+- Stopped: the exam rehearsal (six tasks, seed 315) was cut before it finished; its result is unknown. The
+  scheduled check-in on the first GitHub run was disabled (it belonged to the old account's session).
+- Still running unattended: `.github/workflows/hive.yml` on `main`, every six hours (17 */6 * * * UTC). It needs
+  no session. To pause it too: GitHub, repository Actions tab, "hive" workflow, "..." menu, Disable workflow.
+  (`exam.yml` is not on `main`, so it does not run.)
+
+**What the new account needs**
+- GitHub access to `Arnav123-s/HiveMIND` (connect GitHub in claude.ai Settings, Connectors, and pick this repo
+  when starting a cloud session). Python 3.13; `pip install -r requirements.txt`; torch CPU; for the working hive
+  also `llama-cpp-python==0.3.36` and `python training/cells_build.py` (see `.github/actions/hive/action.yml`).
+- Tests: `python -m pytest tests/test_spawn.py -q` (65 passed at pause).
+
+**Next steps, in order**
+1. Check whether the first unattended run worked: `gh api repos/Arnav123-s/HiveMIND/releases/tags/hive-state --jq .body`
+   and `training/reports/hive_growth.jsonl` on `main`. If it failed, the log is in the Actions tab.
+2. Re-run the exam rehearsal: `python training/exam.py sit --seed 315 --tasks 6` (after `cells_build.py`), report the
+   score as measured.
+3. Ask Arnav whether to open a PR for `make-it-work` into `main` (merging needs his explicit yes for that PR).
+4. Build HANDOFF open item 1 (the working hive learns on GitHub, gated by fresh exam tasks: try a change, sit 6-8 new
+   tasks of a failing kind with and without it, keep only what passes more).
+5. Conversation and instruction following for the working hive: start from `team/converse.py` (routes a message to
+   stop / remember / talk / work / project; a small coordinator model decides talk vs work). Not changed yet.
+6. Run `recipe6_speed.py`; build whatever wins by more than 0.01 into `body.GENES`.
+
+**His standing rules (keep them)**: risky actions (spending, deleting, sending as him, logging in, credentials) only on
+his explicit order; credentials stay local; no benchmaxing (held-out sets run once, on frozen code, reported as
+measured); CPU only; no model names in commits or PRs; every merge needs his yes for that PR; reports use the headings
+Blocked on me / Changed / Found and mark anything unconfirmed; commit and push before ending a turn.
+
 ## Live status (kept current; read this first)
 Updated 2026-11-10 (evening UTC). PR #6 is merged into `main` on his approval. Work continues on `make-it-work`, restarted from `main` (draft PR #7); everything is pushed.
 
