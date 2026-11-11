@@ -172,6 +172,17 @@
     "cell_07": 2.8438,
     "cell_08": 2.7863
    }
+  },
+  {
+   "when": "2026-11-11 03:43",
+   "cells": 8,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body: the stem cell and the 2 nearest cells read, the rest sleep": 2.5736,
+    "body: the stem cell and the 4 nearest cells read": 2.5655,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5628
+   }
   }
  ],
  "births": [
@@ -287,6 +298,14 @@
    "how": "flips",
    "births": 0,
    "kept": 0
+  }
+ ],
+ "regenerated": [
+  {
+   "when": "2026-11-11 03:24",
+   "what": [
+    "cells [4, 5] were missing and are grown again on their territories"
+   ]
   }
  ]
 }

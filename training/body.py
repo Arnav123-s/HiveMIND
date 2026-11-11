@@ -146,7 +146,7 @@ def place_new(b, data, log=print):
     n, done = _windows(data), b.terr.get("placed")
     if done is None:  # a map drawn before this was kept: everything there then was placed
         b.terr["placed"] = n
-        torch.save(b.terr, HOME / "territories.pt")
+        _save_map(b.terr)
         return 0
     new = [i for i in range(done, n) if i % HELD]
     if new and b.alive:
@@ -159,8 +159,77 @@ def place_new(b, data, log=print):
                     b.terr["owns"].setdefault(k, []).append(i)
         log(f"[body] {len(new)} new windows of harvested text were given their place on the map", flush=True)
     b.terr["placed"] = n
-    torch.save(b.terr, HOME / "territories.pt")
+    _save_map(b.terr)
     return len(new)
+
+
+def _save_map(terr):
+    """The map of territories, written whole, with a second copy beside it (what regeneration restores it from)."""
+    HOME.mkdir(parents=True, exist_ok=True)
+    T.whole(terr, HOME / "territories.pt")
+    T.whole(terr, HOME / "territories.bak")
+
+
+def _loads(path):
+    try:
+        return torch.load(path, weights_only=False)
+    except Exception:  # noqa: BLE001 - a file that cannot be read is a lost file
+        return None
+
+
+def heal(log=print):
+    """Regeneration: what this body has lost or had cut off is made again, before anything else in its turn.
+    - the stem cell gone or unreadable: it comes back from the copy that drew the map (placer.pt); that copy gone: it
+      is taken from the stem cell;
+    - the map gone or unreadable: it comes back from its second copy; both gone: the body draws a new map on its next
+      step and every cell regrows on it (the old cells belonged to the old map and are put away);
+    - a cell unreadable: it is removed, and since the map still knows its territory it is grown again from the stem
+      cell on that territory, like a cell that was never born; a cell file simply missing is regrown the same way;
+    - a territory pointing at text that is no longer there: those windows are dropped from it.
+    Returns what was done, in words; nothing lost, nothing said."""
+    import shutil
+    did = []
+    HOME.mkdir(parents=True, exist_ok=True)
+    base, placer = T.HOME / "base.pt", HOME / "placer.pt"
+    if _loads(base) is None and _loads(placer) is not None:
+        shutil.copyfile(placer, base)
+        did.append("the stem cell was lost and came back from the copy that drew the map")
+    if _loads(placer) is None and _loads(base) is not None and (HOME / "territories.pt").exists():
+        shutil.copyfile(base, placer)
+        did.append("the copy of the stem cell that places text was lost and was taken again from the stem cell")
+    terr = _loads(HOME / "territories.pt")
+    if terr is None and _loads(HOME / "territories.bak") is not None:
+        shutil.copyfile(HOME / "territories.bak", HOME / "territories.pt")
+        terr = _loads(HOME / "territories.pt")
+        did.append("the map of territories was lost and came back from its second copy")
+    if terr is None and list(HOME.glob("cell_*.pt")):
+        away = HOME.parent / f"body_lost_{time.strftime('%Y%m%d_%H%M')}"
+        away.mkdir(parents=True, exist_ok=True)
+        for f in HOME.glob("cell_*.pt"):
+            f.rename(away / f.name)
+        (HOME / "territories.pt").unlink(missing_ok=True)
+        did.append("the map and its second copy were lost: a new map is drawn and every cell regrows on it")
+    if terr is not None and _loads(base) is not None:
+        for f in sorted(HOME.glob("cell_*.pt")):
+            try:
+                T.load_cell(f)
+            except Exception:  # noqa: BLE001
+                f.unlink()
+                did.append(f"{f.stem} could not be read and is grown again on its territory")
+        gone = [int(k) for k in terr["owns"] if not (HOME / f"cell_{int(k):02d}.pt").exists()]
+        if gone and not any("grown again" in d for d in did) and _report().get("measured"):
+            did.append(f"cells {gone} were missing and are grown again on their territories")
+        n = _windows(_data())
+        cut = {k: [i for i in v if i < n] for k, v in terr["owns"].items()}
+        if any(len(cut[k]) != len(terr["owns"][k]) for k in cut):
+            terr["owns"], terr["placed"] = cut, min(terr.get("placed", n), n)
+            _save_map(terr)
+            did.append("territories pointed at text that is no longer there; those windows were dropped")
+    for d in did:
+        log(f"[body] regeneration: {d}", flush=True)
+    if did:
+        _report(regenerated=_report().get("regenerated", []) + [{"when": time.strftime("%Y-%m-%d %H:%M"), "what": did}])
+    return did
 
 
 def _report(**new):
@@ -209,7 +278,7 @@ def territories(cells=6, sample=12000, seed=0, log=print):
             if k not in nearest or sim[b, k].item() > nearest[k][0]:
                 nearest[k] = (sim[b, k].item(), part[b])
     HOME.mkdir(parents=True, exist_ok=True)
-    torch.save({"centre": centre, "owns": owns}, HOME / "territories.pt")
+    _save_map({"centre": centre, "owns": owns})
     torch.save(stem.state_dict(), HOME / "placer.pt")  # the stem cell that drew this map keeps placing passages on it
     tk = T.tokenizer()
     shown = {k: tk.decode(_window(data, nearest[k][1])[:40].tolist())[:110] for k in owns if k in nearest}
@@ -526,7 +595,7 @@ def grow(minutes=10.0, sample=3000, log=print, trainer=None, body=None):
     T.save_cell(cell, HOME / f"cell_{k:02d}.pt")
     terr["centre"] = torch.cat([terr["centre"], centre[None]])
     terr["owns"][k] = windows
-    torch.save(terr, HOME / "territories.pt")
+    _save_map(terr)
     log(f"[body] trainer {t['id']} ({t['start']}, {t['on']}, {t.get('how', 'reading')}, span {t['span']:g}) grew cell {k} on "
         f"{len(windows)} windows: {steps} {'rounds of moves' if t.get('how') == 'flips' else 'steps'}, loss on unseen "
         f"windows there {was} -> {loss}", flush=True)
@@ -538,7 +607,7 @@ def _remove(k):
     terr = torch.load(HOME / "territories.pt")
     terr["owns"].pop(k, None)
     terr["retired"] = sorted(set(terr.get("retired", [])) | {k})  # its place in the map stays; nobody is there
-    torch.save(terr, HOME / "territories.pt")
+    _save_map(terr)
 
 
 def judge(before, after, where, places):
@@ -591,7 +660,7 @@ def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     after = fit_loss(first, second).mean().item()
     kept = after < before - IDLE
     if kept:
-        torch.save(stem.state_dict(), T.HOME / "base.pt")
+        T.whole(stem.state_dict(), T.HOME / "base.pt")
     out = {"when": time.strftime("%Y-%m-%d %H:%M"), "steps": steps, "gate_before": round(before, 4), "gate_after": round(after, 4), "kept": kept}
     _report(stem_reads=_report().get("stem_reads", []) + [out])
     log(f"[body] the stem cell read {steps} more steps; the body on the gate passages {before:.4f} -> {after:.4f}: "
@@ -657,6 +726,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     if not (T.HOME / "base.pt").exists():
         T.pretrain(stem_minutes)
         return "the stem cell read the harvest"
+    heal(log)
     if not (HOME / "territories.pt").exists():
         territories(cells, log=log)
     unborn = [k for k in torch.load(HOME / "territories.pt")["owns"] if not (HOME / f"cell_{int(k):02d}.pt").exists()]
@@ -810,6 +880,12 @@ def hive_turn(minutes=10.0, births=3, log=print):
     import os
     import subprocess
     names = bodies()
+    for b in names[1:]:  # regeneration of a whole body: one whose stem cell and its copy are both gone is founded again
+        home = T.SHARED / "bodies" / b
+        if _loads(home / "base.pt") is None and _loads(home / "body" / "placer.pt") is None:
+            log(f"[hive] regeneration: body {b!r} was lost and is founded again", flush=True)
+            (T.SHARED / "bodies.json").write_text(json.dumps([x for x in names if x != b]))
+            found(b, log=log)
     for b in names:
         subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
                        cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
