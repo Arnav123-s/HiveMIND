@@ -1,0 +1,52 @@
+{
+ "what": "Can the body teach its stem cell? The third body's stem cell (it never read a held window) went on learning for 8 minutes in six ways. Reading on: plain text at three rates. Sleep: the body reads a set of training windows, what it expects at every piece is kept (its 32 likeliest pieces), and the stem cell takes half of every batch from those windows, learning the body's expectations as well as the text; the minutes the body needs to read count. Then each stem cell alone on 300 held windows, and the body with it in the stem cell's seat on 200 gate passages.",
+ "date": "2026-11-11",
+ "runs": {
+  "before": {
+   "stem cell alone, held": 3.3802,
+   "the body with it, gate": 2.8261
+  },
+  "reads on, rate 0.0003": {
+   "stem cell alone, held": 3.19,
+   "the body with it, gate": 2.8222,
+   "steps": 796,
+   "rate": 0.0003
+  },
+  "reads on, rate 0.001": {
+   "stem cell alone, held": 3.2266,
+   "the body with it, gate": 2.8216,
+   "steps": 711,
+   "rate": 0.001
+  },
+  "reads on, rate 0.003": {
+   "stem cell alone, held": 3.2919,
+   "the body with it, gate": 2.8204,
+   "steps": 785,
+   "rate": 0.003
+  },
+  "sleep: taught by the body, rate 0.0003": {
+   "stem cell alone, held": 3.1981,
+   "the body with it, gate": 2.8258,
+   "steps": 560,
+   "minutes_the_body_read": 1.55
+  },
+  "sleep, 4000 windows, rate 0.0003": {
+   "stem cell alone, held": 3.2032,
+   "the body with it, gate": 2.8268,
+   "steps": 433,
+   "minutes_the_body_read": 3.41
+  },
+  "sleep, the body's word counts for three quarters, rate 0.0003": {
+   "stem cell alone, held": 3.201,
+   "the body with it, gate": 2.8284,
+   "steps": 604,
+   "minutes_the_body_read": 1.48
+  }
+ },
+ "found": [
+  "Reading on at the low rate is best: 3e-4 beats 1e-3 and 3e-3 (as for newborn cells).",
+  "Sleep learns more per step (the same loss in 560 steps as plain reading in about 800) but not per minute: 3.198 against 3.190.",
+  "A stem cell 0.19 better moves its body by 0.004: the cells, made from the stem cell as it was, carry the body. A better stem cell pays off in the cells born after it."
+ ],
+ "decided": "sleep is not built in; the stem cell reads on at 3e-4, and for as long as a birth while it is still learning fast"
+}

@@ -1213,3 +1213,16 @@ def test_the_record_of_exams_takes_only_numbers_and_known_names(tmp_path, monkey
     assert R.main([str(tmp_path / "sitting")]) == 0 and R.main([str(tmp_path / "sitting")]) == 0   # a sitting is recorded once
     lines = [json.loads(ln) for ln in (tmp_path / "exams.jsonl").read_text().splitlines()]
     assert len(lines) == 1 and set(lines[0]) == {"seed", "when", "passed", "tasks", "by_field", "minutes", "code", "memory"}
+
+
+def test_a_stem_cell_reads_longer_while_it_is_still_learning_fast(tmp_path, monkeypatch):
+    import json
+    from training import body as B
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    assert B.stem_minutes(10) == 10                                                        # it has never read on: a full birth's time
+    (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"own_before": 3.38, "own_after": 3.19}]}))
+    assert B.stem_minutes(10) == 10                                                        # still learning fast
+    (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"own_before": 3.38, "own_after": 3.19}, {"own_before": 2.71, "own_after": 2.705}]}))
+    assert B.stem_minutes(10) == 3                                                         # it has slowed down: a third
+    (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"steps": 280, "kept": False}]}))
+    assert B.stem_minutes(10) == 10                                                        # a record from before this was kept: tried in full once
