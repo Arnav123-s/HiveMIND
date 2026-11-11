@@ -119,6 +119,12 @@ def background(last, dream_every_hours):
         subprocess.run([sys.executable, "-m", "team", "harvest"], cwd=config.ROOT)
         subprocess.run([sys.executable, "-m", "team", "body"], cwd=config.ROOT)
         last["body"] = time.time()
+    elif time.time() - last.get("brain", 0) > dream_every_hours * 3600:
+        # the brain for the hive's small jobs is trained again on the stem cell as it is now (it keeps learning), and
+        # takes a job only where it then measures at least as well as whoever holds it (training/scratch.py, together)
+        log("idle and healthy: the brain grown from nothing is trained again on today's stem cell (it takes a job only by measurement)")
+        subprocess.run([sys.executable, str(config.ROOT / "training" / "scratch.py"), "together"], cwd=config.ROOT)
+        last["brain"] = time.time()
     elif time.time() - last.get("recruit", 0) > dream_every_hours * 3600:
         # one small open model the hive does not have yet takes the roles' exams; it is enrolled where it measures
         # up, and taught where it is the better student (team/recruit.py). No login, nothing deleted, disk floor kept.
