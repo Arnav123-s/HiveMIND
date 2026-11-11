@@ -163,6 +163,29 @@ class Body:
         return torch.cat(out)
 
 
+def write(b, beginning, pieces=60, heat=0.8, seed=0, m=NEAR_M):
+    """The body writes on from a beginning. At every piece the stem cell and the cells whose territories lie nearest
+    to the text so far each say what they expect next; they are weighed by the learned say, by how well each has
+    fitted the text so far; and the next piece is drawn from what they say together (heat: below 1 it keeps closer
+    to what it finds likeliest). This is the body used, not measured: what it can say today."""
+    tk, g = T.tokenizer(), torch.Generator().manual_seed(seed)
+    ids = [T.BOS] + tk.encode(beginning).ids
+    alive = [k for k in b.alive if k < b.terr["centre"].shape[0]]
+    m, rule = min(m, len(alive)), _rule()
+    open_ = torch.full((b.terr["centre"].shape[0],), float("-inf"))
+    open_[alive] = 0.0
+    for _ in range(pieces):
+        x = torch.tensor([ids[-W:]])
+        with torch.no_grad():
+            who = (place(b.placer, x) @ b.terr["centre"].T + open_).topk(m, dim=1).indices[0].tolist() if m else []
+            lps = [F.log_softmax(c.next_piece(x), -1)[0] for c in [b.stem] + [b.cell(k) for k in who]]
+        fit = torch.stack([-lp[:-1].gather(-1, x[0, 1:, None]).mean() if x.shape[1] > 1 else torch.tensor(0.0) for lp in lps])[None]
+        mix = torch.logsumexp(torch.stack([lp[-1] for lp in lps]) + _say(fit, rule)[0][:, None], 0)
+        mix[T.PAD] = float("-inf")
+        ids.append(torch.multinomial(F.softmax(mix / heat, -1), 1, generator=g).item())
+    return tk.decode(ids[1:])
+
+
 def _piece_lp(model, x):
     """The log-probability the model gives each piece that really comes next, [windows, pieces]."""
     with torch.no_grad():
@@ -967,6 +990,18 @@ def together(reads, rule=None):
     return fit_loss(first, second, rule=rule)
 
 
+BEGINNINGS = ("Once upon a time there was a little", "The city is the capital of")
+
+
+def _write_as(name, beginning, pieces=60):
+    """What one body writes from a beginning, from a process of its own."""
+    import os
+    import subprocess
+    out = subprocess.run([sys.executable, str(Path(__file__)), "write", beginning, "--pieces", str(pieces)], cwd=ROOT, check=True,
+                         env={**os.environ, "HIVE_BODY": name}, capture_output=True, text=True).stdout
+    return out.strip()
+
+
 YARD = 56541  # windows of the text as it was on 2026-11-11: the yardstick the hive's growth is read against
 
 
@@ -992,6 +1027,11 @@ def hive_measure(n=300, log=print):
     res["yardstick"] = ({"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, fixed)},
                          "as_one": round(together(fixed).mean().item(), 4)} if yard else
                         {"bodies": res["bodies"], "as_one": res["as_one"]})
+    try:  # what the body that reads best writes today, from the same two beginnings every time
+        best = min(res["yardstick"]["bodies"], key=res["yardstick"]["bodies"].get)
+        res["wrote"] = {"body": best, "texts": [_write_as("" if best == "first" else best, start) for start in BEGINNINGS]}
+    except Exception as e:  # noqa: BLE001 - a sample that fails is not a failed measurement
+        res["wrote"] = {"failed": f"{type(e).__name__}: {str(e)[:120]}"}
     hist = json.loads(HIVE.read_text()) if HIVE.exists() else []
     HIVE.write_text(json.dumps(hist + [res], indent=1))
     log(f"[hive] {len(names)} bodies on {len(held)} passages nobody trained on: each alone {res['bodies']}, as one {res['as_one']}; "
@@ -1049,7 +1089,7 @@ def hive_turn(minutes=10.0, births=3, log=print, budget=0.0, after=None):
     so a run that is cut off loses one body's turn at most)."""
     import os
     import subprocess
-    t0, turned = time.time(), _turned()
+    t0, turned, failed = time.time(), _turned(), []
     names = bodies()
     for b in names[1:]:  # regeneration of a whole body: one whose stem cell and its copy are both gone is founded again
         home = T.SHARED / "bodies" / b
@@ -1066,13 +1106,19 @@ def hive_turn(minutes=10.0, births=3, log=print, budget=0.0, after=None):
         if budget and i and (time.time() - t0) / 60 > budget:
             log(f"[hive] the time for this turn is used: {len(names) - i} of {len(names)} bodies wait for the next", flush=True)
             break
-        subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
-                       cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
-        turned[b] = time.time()
+        went = subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
+                              cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
+        turned[b] = time.time()  # a body whose turn failed goes to the back of the line too: one sick body does not starve the rest
         (T.SHARED / TURNS).write_text(json.dumps(turned))
-        if after:
+        if went.returncode:
+            failed.append(b or "first")
+            log(f"[hive] the turn of body {b or 'first'!r} FAILED (exit {went.returncode}); the body is as it was", flush=True)
+        elif after:
             after()
-    return hive_measure(log=log)
+    res = hive_measure(log=log)
+    if failed:
+        res["failed_turns"] = failed
+    return res
 
 
 def main(argv):
@@ -1100,6 +1146,8 @@ def main(argv):
                           seed=sum(map(ord, T.BODY)), lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"],
                           teacher=T.SHARED if NEW_BODY["taught"] and (T.SHARED / "base.pt").exists() else None,
                           taught=NEW_BODY["taught"])
+    elif cmd == "write":  # the body writes on from a beginning: python training/body.py write "Once upon a time"
+        print(write(Body(), argv[1], pieces=opt("--pieces", 60), heat=opt("--heat", 0.8), seed=opt("--seed", 0)))
     elif cmd == "found":
         found(argv[1], opt("--minutes", 40.0))
     elif cmd == "hive":
@@ -1107,7 +1155,10 @@ def main(argv):
         if "--save" in argv:  # the hive is saved after every body's turn (training/hive_state.py)
             from training import hive_state
             after = lambda: hive_state.save(log=print)  # noqa: E731
-        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3), budget=opt("--budget", 0.0), after=after)))
+        res = hive_turn(opt("--minutes", 10.0), opt("--births", 3), budget=opt("--budget", 0.0), after=after)
+        print(json.dumps(res))
+        if res.get("failed_turns"):  # said aloud: a run with nobody watching must not pass for a good one
+            return 1
     elif cmd == "hive-measure":
         print(json.dumps(hive_measure()))
     elif cmd == "turn":

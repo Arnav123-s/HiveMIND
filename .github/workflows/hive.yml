@@ -19,7 +19,7 @@ on:
         default: "3"
       budget:
         description: Minutes the bodies' turns may take in all
-        default: "210"
+        default: "180"
 
 permissions:
   contents: write
@@ -36,7 +36,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       MINUTES: ${{ inputs.minutes || '10' }}
       BIRTHS: ${{ inputs.births || '3' }}
-      BUDGET: ${{ inputs.budget || '210' }}
+      BUDGET: ${{ inputs.budget || '180' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -52,9 +52,12 @@ jobs:
         run: python -m team harvest --no-dream --more 2 || true
       - name: Every body takes its turn (the hive is saved after each, so a run that is cut off loses little)
         run: python -m team body --minutes "$MINUTES" --births "$BIRTHS" --budget "$BUDGET" --save
+      # A body whose turn failed makes the step above fail, so the run shows red; what the others did is still kept.
       - name: The hive as it is now
+        if: ${{ !cancelled() }}
         run: python training/hive_state.py save >> "$GITHUB_STEP_SUMMARY"
       - name: One line in the record of its growth
+        if: ${{ !cancelled() }}
         run: |
           python training/hive_state.py log
           git config user.name "hive"
