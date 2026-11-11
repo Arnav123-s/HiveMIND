@@ -68,29 +68,46 @@ class BitLinear(nn.Linear):
         return F.linear(x, w, self.bias)
 
 
-def is_bit():
-    """Are the hive's own cells BitNets? (cells/scratch/stem.json, which travels with the stem cell in git; set once,
-    when the stem cell is converted.)"""
+def kind():
+    """What this body's cells are: {"bit", "dim", "layers", "heads", "subln"}. It is written once, when the body's
+    stem cell is made (stem.json beside the stem cell; the first body's travels with it in git), and every cell of
+    the body has it. Bodies may differ: what they share is the vocabulary and the harvest, not their shape."""
     try:
-        return bool(json.loads((HOME / "stem.json").read_text()).get("bit"))
+        k = json.loads((HOME / "stem.json").read_text())
     except (OSError, ValueError):
-        return False
+        k = {}
+    return {"bit": bool(k.get("bit")), "dim": int(k.get("dim", DIM)), "layers": int(k.get("layers", LAYERS)),
+            "heads": int(k.get("heads", HEADS)), "subln": bool(k.get("subln"))}
+
+
+def is_bit():
+    """Are this body's own cells BitNets?"""
+    return kind()["bit"]
 
 
 class Block(nn.Module):
-    def __init__(self, bit=False):
+    """subln: one more norm right before each of the block's two output layers (the published BitNet recipe: what
+    goes into a three-valued layer is normed before it is rounded to 8 bits; without it the stem cell's first
+    BitNets rounded un-normed numbers at those two layers)."""
+
+    def __init__(self, bit=False, dim=DIM, heads=HEADS, subln=False):
         super().__init__()
         lin = BitLinear if bit else nn.Linear
-        self.n1, self.n2 = nn.LayerNorm(DIM), nn.LayerNorm(DIM)
-        self.qkv, self.out = lin(DIM, 3 * DIM), lin(DIM, DIM)
-        self.up, self.down = lin(DIM, 4 * DIM), lin(4 * DIM, DIM)
+        self.heads = heads
+        self.n1, self.n2 = nn.LayerNorm(dim), nn.LayerNorm(dim)
+        self.qkv, self.out = lin(dim, 3 * dim), lin(dim, dim)
+        self.up, self.down = lin(dim, 4 * dim), lin(4 * dim, dim)
+        if subln:
+            self.s1, self.s2 = nn.LayerNorm(dim), nn.LayerNorm(4 * dim)
+        self.subln = subln
 
     def forward(self, x, causal):
         b, t, d = x.shape
-        q, k, v = self.qkv(self.n1(x)).view(b, t, 3, HEADS, d // HEADS).permute(2, 0, 3, 1, 4)
-        a = F.scaled_dot_product_attention(q, k, v, is_causal=causal)
-        x = x + self.out(a.transpose(1, 2).reshape(b, t, d))
-        return x + self.down(F.gelu(self.up(self.n2(x))))
+        q, k, v = self.qkv(self.n1(x)).view(b, t, 3, self.heads, d // self.heads).permute(2, 0, 3, 1, 4)
+        a = F.scaled_dot_product_attention(q, k, v, is_causal=causal).transpose(1, 2).reshape(b, t, d)
+        x = x + self.out(self.s1(a) if self.subln else a)
+        h = F.gelu(self.up(self.n2(x)))
+        return x + self.down(self.s2(h) if self.subln else h)
 
 
 class Tiny(nn.Module):
@@ -99,11 +116,13 @@ class Tiny(nn.Module):
 
     def __init__(self, labels=0, bit=None):
         super().__init__()
-        self.bit = is_bit() if bit is None else bit
-        self.tok, self.pos = nn.Embedding(VOCAB, DIM), nn.Embedding(CTX, DIM)
-        self.blocks = nn.ModuleList(Block(self.bit) for _ in range(LAYERS))
-        self.norm = nn.LayerNorm(DIM)
-        self.head = nn.Linear(DIM, labels) if labels else None
+        k = kind()
+        self.bit = k["bit"] if bit is None else bit
+        self.dim = dim = k["dim"]
+        self.tok, self.pos = nn.Embedding(VOCAB, dim), nn.Embedding(CTX, dim)
+        self.blocks = nn.ModuleList(Block(self.bit, dim, k["heads"], k["subln"]) for _ in range(k["layers"]))
+        self.norm = nn.LayerNorm(dim)
+        self.head = nn.Linear(dim, labels) if labels else None
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
 
     def body(self, ids, causal=True):
@@ -471,7 +490,7 @@ def pairs(minutes=30, batch=48, lr=3e-4, seed=0, width=64):
     model = Tiny()
     src = HOME / "base_pairs.pt" if (HOME / "base_pairs.pt").exists() else HOME / "base.pt"
     model.load_state_dict(torch.load(src))
-    predict = nn.Sequential(nn.Linear(DIM, 2 * DIM), nn.GELU(), nn.Linear(2 * DIM, DIM))
+    predict = nn.Sequential(nn.Linear(model.dim, 2 * model.dim), nn.GELU(), nn.Linear(2 * model.dim, model.dim))
     opt = torch.optim.AdamW(list(model.parameters()) + list(predict.parameters()), lr=lr, weight_decay=0.01)
     rnd, t0, steps, log = random.Random(seed + _record().get("pairs_steps", 0)), time.time(), 0, []
 
@@ -583,9 +602,10 @@ class Brain(nn.Module):
     def __init__(self, jobs, talk=False):
         super().__init__()
         self.trunk, self.jobs, self.talk = Tiny(), dict(jobs), talk
-        self.first = nn.ModuleDict({k: nn.Linear(DIM, n) for k, n in jobs.items()})
+        dim = self.trunk.dim
+        self.first = nn.ModuleDict({k: nn.Linear(dim, n) for k, n in jobs.items()})
         said = sum(jobs.values())
-        self.second = nn.ModuleDict({k: nn.Linear(DIM + said, n) for k, n in jobs.items()}) if talk else None
+        self.second = nn.ModuleDict({k: nn.Linear(dim + said, n) for k, n in jobs.items()}) if talk else None
 
     def forward(self, job, ids, last):
         h = self.trunk.body(ids)[torch.arange(ids.shape[0]), last]
