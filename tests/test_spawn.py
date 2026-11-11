@@ -1155,3 +1155,19 @@ def test_the_workflow_that_grows_the_hive_is_a_valid_file():
     fetched = next(i for i, s in enumerate(steps) if s.get("id") == "fetched")
     assert all("steps.fetched.outcome == 'success'" in s["if"] for s in steps[fetched + 1:] if "if" in s)   # nothing is saved over a hive that was not fetched
     assert flow["permissions"] == {"contents": "write"} and flow["concurrency"]["group"] == "hive"
+
+
+def test_a_founding_asks_the_bodies_that_read_best(tmp_path, monkeypatch):
+    import json
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    monkeypatch.setattr(B, "HIVE", tmp_path / "hive.json")
+    names = ["", "b2", "b3", "b4", "b5", "b6"]
+    (tmp_path / "bodies.json").write_text(json.dumps(names))
+    for b in names[:-1]:                                                                 # b6 was founded and has no cells yet
+        home = tmp_path / ("bodies/" + b if b else "") / "body"
+        home.mkdir(parents=True)
+        (home / "territories.pt").write_bytes(b"map")
+    assert B._readers() == ["", "b2", "b3", "b4"]                                         # nothing measured yet: the first four with a map
+    (tmp_path / "hive.json").write_text(json.dumps([{"bodies": {}, "yardstick": {"bodies": {"first": 2.4, "b2": 2.9, "b3": 2.7, "b4": 2.5, "b5": 2.6}}}]))
+    assert B._readers() == ["", "b4", "b5", "b3"]                                         # the four that read the yardstick best

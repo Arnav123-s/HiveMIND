@@ -1099,6 +1099,19 @@ def next_recipe(rnd):
     return child, what
 
 
+def _readers(most=4):
+    """The bodies that say what the hive reads worst, when a body is founded: the `most` that read the yardstick best
+    at the last measurement (the hive as one is carried by its best bodies, and every reader costs minutes)."""
+    names = [b for b in bodies() if (T.SHARED / ("bodies/" + b if b else "") / "body" / "territories.pt").exists()] or bodies()[:1]
+    try:
+        last = json.loads(HIVE.read_text())[-1]
+        score = (last.get("yardstick") or last)["bodies"]
+        names = sorted(names, key=lambda b: score.get(b or "first", float("inf")))
+    except (OSError, ValueError, KeyError, IndexError, TypeError):
+        pass
+    return names[:most]
+
+
 def found(name, minutes=40.0, sample=8000, log=print):
     """A new body is founded on what the bodies there are read worst. Its stem cell starts from random three-valued
     weights of its own and reads the harvest with half of every batch taken from the worse-read half of a sample of
@@ -1108,7 +1121,7 @@ def found(name, minutes=40.0, sample=8000, log=print):
     data = _data()
     rnd = random.Random(name)
     pick = rnd.sample([i for i in range(_windows(data)) if i % HELD], sample)
-    loss = together([_ask(b, pick, "found") for b in bodies()])
+    loss = together([_ask(b, pick, "found") for b in _readers()])
     hard = [i for _, i in sorted(zip(loss.tolist(), pick), reverse=True)[:sample // 2]]
     home = T.SHARED / "bodies" / name
     home.mkdir(parents=True, exist_ok=True)
