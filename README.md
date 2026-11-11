@@ -813,8 +813,37 @@ have thousands. Two ways of training them are built:
   with a probability in proportion to its gradient, so a weak steady pull still arrives, by chance adding up. And
   for growing a cell from the stem cell: the weights that would help most are moved at once, the cell is measured on
   unseen text, and the moves are kept or undone (`body._flip_read`).
-Tested as code (a packed cell answers as before; the direct way learns a toy pattern with every weight three-valued).
-**Not measured on real text yet.**
+
+**Measured: the hive's own BitNets** (2026-11-11).
+- The stem cell became a BitNet by thirty minutes of reading in three values: its loss 2.70 before, 3.02 after.
+- A BitNet cell is 0.61 MB on disk (a full-precision cell: 10.5 MB).
+- **The BitNet body beats its BitNet stem cell**, and it grew by itself:
+
+  | on 300 passages nobody trained on | loss |
+  |---|---|
+  | BitNet stem cell alone | 2.748 |
+  | the body with its first four cells | 2.584 |
+  | after one cell division (kept: the body gained 0.0074) | 2.575 |
+  | after a second cell division (kept: gained 0.0016) | 2.574 |
+
+  A cell grown on the worst-read windows was again removed at birth. Two of the first six cells were not grown
+  (a restart cut the run, and the turn then took the body for complete; fixed, they grow on the next turn).
+  The full-precision body before it stood at 2.294 against 2.428: the BitNet body is behind it, as its stem cell is.
+- **Training a BitNet directly**, 8 minutes each from one random start, loss:
+
+  | way | loss |
+  |---|---|
+  | no three-valued weight ever moves (what the other parts learn alone) | 4.241 |
+  | first direct way: jump with a probability in proportion to the gradient, three rates | 4.237 to 4.293 |
+  | by votes, a small counter per weight: 4 / 8 / 16 / 32 / 64 votes to jump | 4.667 / 4.450 / 4.181 / 4.141 / 4.174 |
+  | the published way: ordinary weights underneath | 4.031 |
+
+  With nothing at all underneath, the three-valued weights learned nothing. With a counter of a few bits per weight
+  they learn: about half of the published way's gain at 32 votes. Short runs: they rank the ways, they do not say
+  where each ends. The stem cell and the cells are trained the published way; the vote way is in the code
+  (`scratch.py direct --votes 32`) and more variants of it are being tried.
+- The stem cell now keeps learning on every turn (its word table held still, kept only if the body is better for
+  it: `body.stem_reads`), and dreams are part of every harvest. Neither has run on real data yet.
 
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
 of simple text. Planning and programming still come from the pretrained small models and their school. The open

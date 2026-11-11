@@ -121,6 +121,57 @@
     "cell_04": 3.0797,
     "cell_05": 2.7223
    }
+  },
+  {
+   "when": "2026-11-11 02:32",
+   "cells": 4,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5835,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.5834
+   },
+   "cell_alone": {
+    "cell_00": 2.85,
+    "cell_01": 2.8138,
+    "cell_02": 2.8325,
+    "cell_03": 2.8057
+   }
+  },
+  {
+   "when": "2026-11-11 02:43",
+   "cells": 5,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5751,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.5807
+   },
+   "cell_alone": {
+    "cell_00": 2.85,
+    "cell_01": 2.8138,
+    "cell_02": 2.8325,
+    "cell_03": 2.8057,
+    "cell_07": 2.8438
+   }
+  },
+  {
+   "when": "2026-11-11 02:51",
+   "cells": 6,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7475,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.574,
+    "body, by territory: the stem cell and the 2 nearest cells read, the rest sleep": 2.5778
+   },
+   "cell_alone": {
+    "cell_00": 2.85,
+    "cell_01": 2.8138,
+    "cell_02": 2.8325,
+    "cell_03": 2.8057,
+    "cell_07": 2.8438,
+    "cell_08": 2.7863
+   }
   }
  ],
  "births": [
@@ -143,6 +194,99 @@
    "why": "the body gained -0.0001 (it needs more than 0.001)",
    "gate_before": 2.2237,
    "gate_after": 2.2239
+  },
+  {
+   "cell": 6,
+   "when": "2026-11-11 02:32",
+   "trainer": "t4",
+   "on": "worst",
+   "kept": false,
+   "why": "the body gained -0.0011 (it needs more than 0.001)",
+   "gate_before": 2.521,
+   "gate_after": 2.5221
+  },
+  {
+   "cell": 7,
+   "when": "2026-11-11 02:42",
+   "trainer": "t2",
+   "on": "division",
+   "kept": true,
+   "why": "the body gained +0.0074 and no territory lost more than 0.01",
+   "gate_before": 2.521,
+   "gate_after": 2.5136
+  },
+  {
+   "cell": 8,
+   "when": "2026-11-11 02:50",
+   "trainer": "t2",
+   "on": "division",
+   "kept": true,
+   "why": "the body gained +0.0016 and no territory lost more than 0.01",
+   "gate_before": 2.5136,
+   "gate_after": 2.512
+  }
+ ],
+ "weakest": {
+  "territory": 6,
+  "loss": 4.0315,
+  "text": "ch\u2013Kincaid Reading Level (Flesch-Kincaid Grade Index)\n Wikipedia Signposts 2015-06-24 surveyed recent studies of web information on medical topics, including articles in English wiki.\n \"The authors concluded that the readability of online patient information for \u2018liposuction\u2019 and \u2018breast reconstruction\u2019 is \u2018too difficult\u2019 for many patients as the readability scores of all 20 websites (10 each) far exceeds that of a 6th-grade reading level. The average score for the most popular \u2018liposuction\u2019 websites was determined equal to 13.6-grade level. As a comparison \u2018tattoo information\u2019 scored at the 7.8-grade level\".\n \"Health care information available at the most popular websites for \u2018breast reconstruction\u2019 had an average readability score of 13.4"
+ },
+ "trainers": [
+  {
+   "id": "t1",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t2",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 2,
+   "kept": 2
+  },
+  {
+   "id": "t3",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "uncharted",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t4",
+   "start": "nearest",
+   "lr": 0.0003,
+   "span": 1.0,
+   "on": "worst",
+   "births": 1,
+   "kept": 0
+  },
+  {
+   "id": "t5",
+   "start": "nearest",
+   "lr": 0,
+   "span": 0.5,
+   "on": "division",
+   "how": "flips",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t6",
+   "start": "nearest",
+   "lr": 0,
+   "span": 0.5,
+   "on": "uncharted",
+   "how": "flips",
+   "births": 0,
+   "kept": 0
   }
  ]
 }

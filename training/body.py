@@ -557,11 +557,12 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
         return "the stem cell read the harvest"
     if not (HOME / "territories.pt").exists():
         territories(cells, log=log)
-    if not list(HOME.glob("cell_*.pt")):
+    unborn = [k for k in torch.load(HOME / "territories.pt")["owns"] if not (HOME / f"cell_{int(k):02d}.pt").exists()]
+    if unborn:  # the first cells, or the ones a cut-off turn left ungrown (a restart once left two territories empty)
         _report(minutes_per_cell=minutes)
         differentiate(minutes, log=log)
         measure(log=log)
-        return f"the first {cells} cells grew from the stem cell"
+        return f"{len(unborn)} cells grew from the stem cell on territories that had none"
     data, stem = _data(), _placer()
     gate = _held(data, "gate")
     body = _body()
