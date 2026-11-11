@@ -8,10 +8,13 @@ hive (bodies put away).
   python training/hive_state.py save                  pack it and put it where the hive grows from next time (the
                                                       release "hive-state"); only inside a run on GitHub, which has
                                                       the token for it. The two newest states are kept.
-  python training/hive_state.py pull [--force] [file] bring the hive here: from a file, else from where the hive
+  python training/hive_state.py pull [--force] [--must] [file]
+                                                      bring the hive here: from a file, else from where the hive
                                                       grows on GitHub (the newest state of the release), else from
                                                       the seed (the branch "hive-seed"). It is not unpacked over a
                                                       hive that has as many living cells or more, unless --force.
+                                                      --must: fail if no hive could be fetched (the run on GitHub
+                                                      must not start a new hive because a fetch went wrong).
   python training/hive_state.py log                   one line on the hive as it is, added to the record of its
                                                       growth (training/reports/hive_growth.jsonl)
 
@@ -294,8 +297,11 @@ def main(argv):
     elif cmd == "save":
         print(notes(save(log=lambda *a, **k: print(*a, file=sys.stderr, **k))))
     elif cmd == "pull":
-        rest = [a for a in argv[1:] if a != "--force"]
-        print(pull(rest[0] if rest else None, force="--force" in argv))
+        rest = [a for a in argv[1:] if not a.startswith("--")]
+        said = pull(rest[0] if rest else None, force="--force" in argv)
+        print(said)
+        if "--must" in argv and said.startswith("no hive to bring"):  # the run on GitHub: never start over by accident
+            return 1
     elif cmd == "seed":
         print(notes(seed(argv[1])))
     elif cmd == "log":

@@ -46,18 +46,19 @@ jobs:
         run: |
           pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
           pip install --quiet numpy tokenizers requests huggingface_hub pyarrow beautifulsoup4 lxml psutil
-      - name: The hive as it was
-        run: python training/hive_state.py pull --force
+      - name: The hive as it was (the run stops here if it cannot be fetched, so it never starts a new hive by accident)
+        id: fetched
+        run: python training/hive_state.py pull --force --must
       - name: A little more text (open datasets and Wikipedia; a failed harvest is not a failed turn)
         run: python -m team harvest --no-dream --more 2 || true
       - name: Every body takes its turn (the hive is saved after each, so a run that is cut off loses little)
         run: python -m team body --minutes "$MINUTES" --births "$BIRTHS" --budget "$BUDGET" --save
       # A body whose turn failed makes the step above fail, so the run shows red; what the others did is still kept.
       - name: The hive as it is now
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.fetched.outcome == 'success' }}
         run: python training/hive_state.py save >> "$GITHUB_STEP_SUMMARY"
       - name: One line in the record of its growth
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.fetched.outcome == 'success' }}
         run: |
           python training/hive_state.py log
           git config user.name "hive"

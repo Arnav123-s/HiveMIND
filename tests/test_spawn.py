@@ -1069,6 +1069,8 @@ def test_the_hive_is_saved_under_a_new_name_and_never_smaller_than_it_came(tmp_p
     monkeypatch.setattr(H, "_states", lambda: [("hive-state-300.tar.gz", "u3"), ("hive-state-200.tar.gz", "u2")])
     monkeypatch.setattr(H.urllib.request, "urlopen", lambda url, timeout=0: io.BytesIO(b"cut off" if url == "u3" else good.getvalue()))
     assert H.fetch(tmp_path / "got.tar.gz", log=lambda *a, **k: None) == "hive-state/hive-state-200.tar.gz"
+    monkeypatch.setattr(H, "fetch", lambda to, log=print: None)                           # nothing can be fetched
+    assert H.main(["pull", "--force"]) == 0 and H.main(["pull", "--force", "--must"]) == 1   # the run on GitHub stops there
 
 
 def test_the_vocabulary_is_learned_once_and_a_wrong_text_stream_is_made_again(tmp_path, monkeypatch):
@@ -1138,3 +1140,18 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     assert all(k["lr"] in (0.0048, round(0.0048 * 0.6, 5), round(0.0048 * 1.6, 5)) for k in kids)   # the children are the best one's
     monkeypatch.setitem(B.NEW_BODY, "warm", 100)                                            # the recipe changed by hand is tried once as it stands
     assert B.next_recipe(random.Random(0)) == (full(B.NEW_BODY), None)
+
+
+def test_the_workflow_that_grows_the_hive_is_a_valid_file():
+    from pathlib import Path
+    try:
+        import yaml
+    except ImportError:
+        return
+    flow = yaml.safe_load((Path(__file__).resolve().parent.parent / ".github" / "workflows" / "hive.yml").read_text())
+    steps = flow["jobs"]["turn"]["steps"]
+    runs = " ".join(s.get("run", "") for s in steps)
+    assert "pull --force --must" in runs and "--save" in runs and "hive_state.py log" in runs
+    fetched = next(i for i, s in enumerate(steps) if s.get("id") == "fetched")
+    assert all("steps.fetched.outcome == 'success'" in s["if"] for s in steps[fetched + 1:] if "if" in s)   # nothing is saved over a hive that was not fetched
+    assert flow["permissions"] == {"contents": "write"} and flow["concurrency"]["group"] == "hive"
