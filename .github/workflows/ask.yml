@@ -31,18 +31,7 @@ jobs:
       ROUNDS: ${{ inputs.rounds || '1' }}
     steps:
       - uses: actions/checkout@v4
-      - name: Room for the models (about ten gigabytes)
-        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL || true
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: The engine and the tools (about fifteen minutes)
-        run: |
-          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
-          pip install --quiet -r requirements.txt
-          CMAKE_ARGS="-DGGML_NATIVE=ON" pip install --quiet llama-cpp-python==0.3.36
-          python -m playwright install --with-deps chromium
-          python training/cells_build.py
+      - uses: ./.github/actions/hive
       - name: The hive works on it
         run: python -m team "$TASK" --approve never --until-done "$ROUNDS" --run-dir run
       - name: The answer
