@@ -856,7 +856,8 @@ have thousands. Two ways of training them are built:
   turns; all share one vocabulary and one harvest. A passage is read by every body and each body's say follows how it
   fits the passage (`together`). A new body is founded on what the others read worst: its stem cell starts from random
   three-valued weights of its own and half of all it reads is the worse-read half of a sample of windows (`found`);
-  one more body for every eight living cells. `python -m team body` gives every body its turn, founds a body when it
+  one more body when the bodies average eight cells, and two more for every body there already is
+  (`body_is_due`). `python -m team body` gives every body its turn, founds a body when it
   is time, and measures each alone and all as one (`training/reports/hive_of_bodies.json`).
 - *Regeneration.* Before anything else in its turn a body makes again what it lost (`heal`): a cell that is missing
   or cannot be read is grown again from the stem cell on the territory the map still knows; a lost stem cell comes
