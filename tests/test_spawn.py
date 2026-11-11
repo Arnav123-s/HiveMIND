@@ -990,3 +990,12 @@ def test_a_hive_turn_keeps_to_its_time_and_the_body_that_waited_longest_goes_fir
     went.clear()
     B.hive_turn(budget=40, log=lambda *a, **k: None)
     assert went == [""]                                                                         # and then it is the one that waited longest
+
+
+def test_the_yardstick_is_the_same_passages_however_much_the_text_grows():
+    import numpy as np
+    from training import body as B
+    small, big = np.zeros(B.W * 4000 + 1, "uint16"), np.zeros(B.W * 9000 + 1, "uint16")
+    assert B._held(small, "report", 20, upto=4000) == B._held(big, "report", 20, upto=4000) == B._held(small, "report", 20)
+    assert B._held(big, "report", 20) != B._held(small, "report", 20)                    # spread over all the text, they move
+    assert all(i % B.HELD == 0 for i in B._held(big, "report", 20))

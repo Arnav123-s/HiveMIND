@@ -903,10 +903,13 @@ have thousands. Two ways of training them are built:
   loss 3.415; the second body's at the same age 3.517) and never a held window. Its first turn grew six cells.
   On 300 passages nobody trained on: stem cell alone 3.1146, the body 2.7806 (the second body with six cells:
   2.8412). The three bodies as one: 2.4760 (the two before it: 2.4807; the first body alone 2.4856).
-  How much reading the held passages helped the older stem cells could not be sized: the second body's stem cell
-  (read them about once) and the third's (never) are equally far behind on held text against training text (0.09
-  and 0.11), so once is within noise; for the first body's seven readings there is no text it has not read to
-  measure on. New harvest will give that.
+  What reading the held passages was worth to the older stem cells, sized on Wikipedia text harvested later that
+  nobody has read: each older stem cell's lead over the third body's is larger on the old held windows than on
+  the new text, by 0.042 (give or take 0.009) for the first body's and 0.031 (0.008) for the second's. So the first
+  two bodies' numbers above are about 0.03 to 0.04 better than they would be on new text.
+  The same check says the new recipe is not yet shown at full length: on that new text the third body's stem cell
+  is 0.02 behind the second's, which was made the old way in the same 40 minutes (and has had one more reading
+  turn). A clean head-to-head at 40 minutes is being run.
 - *A cell grown as one of the team* (trained on the body's loss with it in, `how: team`): on one territory of the
   first body, 12 minutes each, the usual way from the nearest cell added 0.0200 where the cell lives, the team way
   0.0136 at best (0.0003 with a smaller share), and from the stem cell neither way helped. It stays as one kind of
@@ -921,6 +924,11 @@ waited longest and within a time budget (`body --budget 240`), a body that is du
 measured, and the hive as it is now is put back as one file on the release `hive-state`, with a line added to
 `training/reports/hive_growth.jsonl`. Nothing in it logs in, spends, or needs the agent. The hive it starts from
 is the branch `hive-seed` (three bodies, 22 cells, as one 2.4760).
+- The record of growth has two numbers for the hive as one: on passages spread over all the text it has (which
+  changes whenever it harvests, so it cannot be compared from turn to turn) and on the yardstick, the same 300
+  passages every time, from the text as it was on 2026-11-11 (`body.YARD`). Only the yardstick says whether the
+  hive got better. In the rehearsal the hive harvested 34 MB by itself (a stories set its scouts had found, and more
+  Wikipedia) and read 2.6772 as one on all its text, new text included.
 - Bring the grown hive to any device: `python training/hive_state.py pull` (it does not overwrite a hive that has
   as many living cells or more). `setup.sh` does this once at install.
 - Run a turn by hand: the repository's Actions tab, "The hive grows", "Run workflow".

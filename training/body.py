@@ -559,8 +559,9 @@ def breed(ts, rnd):
     return ts
 
 
-def _held(data, part, n=240):
-    held = [i for i in range(_windows(data)) if i % HELD == 0][(0 if part == "gate" else 1)::2]
+def _held(data, part, n=240, upto=None):
+    """Held passages, spread evenly over the text (upto: over its first so many windows only)."""
+    held = [i for i in range(min(upto or 10 ** 12, _windows(data))) if i % HELD == 0][(0 if part == "gate" else 1)::2]
     return held[::max(1, len(held) // n)][:n]
 
 
@@ -963,21 +964,35 @@ def together(reads, rule=None):
     return fit_loss(first, second, rule=rule)
 
 
+YARD = 56541  # windows of the text as it was on 2026-11-11: the yardstick the hive's growth is read against
+
+
 def hive_measure(n=300, log=print):
-    """Each body alone and all of them as one, on report passages nobody trained on."""
+    """Each body alone and all of them as one, on report passages nobody trained on. Twice: on passages spread over
+    all the text there is now, and on the yardstick, the same passages every time (from the text as it was on
+    2026-11-11). The harvest grows, so the first number is taken on other and harder text each time; only the
+    yardstick says whether the hive got better."""
     data = _data()
     held, gate = _held(data, "report", n), _held(data, "gate", n)
+    yard = _held(data, "report", n, upto=YARD)
+    if yard == held:
+        yard = []
     names = [b for b in bodies() if (T.SHARED / ("bodies/" + b if b else "") / "body" / "territories.pt").exists()]
     if names == bodies() and len(names) > 1:  # the say of each body is learned on gate passages, then measured on the others
         g = [_ask(b, gate, "gate") for b in names]
         rule = learn_rule(torch.stack([f for f, _ in g], 1), torch.stack([s2 for _, s2 in g], 1))
         (T.SHARED / HIVE_RULE).write_text(json.dumps(dict(rule, bodies=[b or "first" for b in names])))
-    reads = [_ask(b, held, "measure") for b in names]
+    both = [_ask(b, held + yard, "measure") for b in names]
+    reads, fixed = [(f[:len(held)], s2[:len(held)]) for f, s2 in both], [(f[len(held):], s2[len(held):]) for f, s2 in both]
     res = {"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, reads)},
            "as_one": round(together(reads).mean().item(), 4), "passages": len(held), "when": time.strftime("%Y-%m-%d %H:%M")}
+    res["yardstick"] = ({"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, fixed)},
+                         "as_one": round(together(fixed).mean().item(), 4)} if yard else
+                        {"bodies": res["bodies"], "as_one": res["as_one"]})
     hist = json.loads(HIVE.read_text()) if HIVE.exists() else []
     HIVE.write_text(json.dumps(hist + [res], indent=1))
-    log(f"[hive] {len(names)} bodies on {len(held)} passages nobody trained on: each alone {res['bodies']}, as one {res['as_one']}", flush=True)
+    log(f"[hive] {len(names)} bodies on {len(held)} passages nobody trained on: each alone {res['bodies']}, as one {res['as_one']}; "
+        f"on the yardstick (the same passages every time): each alone {res['yardstick']['bodies']}, as one {res['yardstick']['as_one']}", flush=True)
     return res
 
 
