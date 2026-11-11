@@ -984,7 +984,7 @@ def hive_measure(n=300, log=print):
 # How a new body's stem cell is made (measured: training/reports/bitnet_recipe.json): its shape (scratch.kind), its
 # rate, the share of its run over which the rounding to three values is eased in, and how much of its loss is what
 # the first body's stem cell expects next (0: no teacher).
-NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.5}
+NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0}
 
 
 def found(name, minutes=40.0, sample=8000, log=print):
