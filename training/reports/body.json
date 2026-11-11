@@ -235,12 +235,22 @@
    "why": "the body gained +0.0016 and no territory lost more than 0.01",
    "gate_before": 2.5136,
    "gate_after": 2.512
+  },
+  {
+   "cell": 9,
+   "when": "2026-11-11 04:32",
+   "trainer": "t6",
+   "on": "uncharted",
+   "kept": false,
+   "why": "where it lives the body gained -0.0001 (it needs more than 0.004)",
+   "near_before": 3.6233,
+   "near_after": 3.6234
   }
  ],
  "weakest": {
-  "territory": 6,
-  "loss": 4.0315,
-  "text": "ch\u2013Kincaid Reading Level (Flesch-Kincaid Grade Index)\n Wikipedia Signposts 2015-06-24 surveyed recent studies of web information on medical topics, including articles in English wiki.\n \"The authors concluded that the readability of online patient information for \u2018liposuction\u2019 and \u2018breast reconstruction\u2019 is \u2018too difficult\u2019 for many patients as the readability scores of all 20 websites (10 each) far exceeds that of a 6th-grade reading level. The average score for the most popular \u2018liposuction\u2019 websites was determined equal to 13.6-grade level. As a comparison \u2018tattoo information\u2019 scored at the 7.8-grade level\".\n \"Health care information available at the most popular websites for \u2018breast reconstruction\u2019 had an average readability score of 13.4"
+  "territory": 5,
+  "loss": 3.6241,
+  "text": " to make hunting easier. Many of the people hunt with poisoned arrows. The poisons come from the plants of the forest. That makes the animals easier to kill.\n Most of the forest people are slash-and-burn farmers. They raise crops in small clearings as well as hunting and gathering in the forest. This provides them with food year-round. They start by cutting (slashing) down the trees and the other plants in an area. They let the dead plants dry out, then they burn them. The ash from the burned plants goes into the soil and makes it fertile for a little while. This is called slash-and-burn farming.\n The small clearings grow food crops for a few years, then the family or group moves on and clears a new field. The old field is left to be overgrown by the forest. In a few years, it once again looks like the rain forest that surrounds it.\n This type of farming does not harm the rain forest when only a few people are doing it. The small clear"
  },
  "trainers": [
   {
@@ -296,8 +306,18 @@
    "span": 0.5,
    "on": "uncharted",
    "how": "flips",
-   "births": 0,
+   "births": 1,
    "kept": 0
+  },
+  {
+   "id": "t7",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 2.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0,
+   "parent": "t2"
   }
  ],
  "regenerated": [
@@ -306,6 +326,15 @@
    "what": [
     "cells [4, 5] were missing and are grown again on their territories"
    ]
+  }
+ ],
+ "stem_reads": [
+  {
+   "when": "2026-11-11 04:31",
+   "steps": 303,
+   "gate_before": 2.6199,
+   "gate_after": 2.6188,
+   "kept": true
   }
  ]
 }
