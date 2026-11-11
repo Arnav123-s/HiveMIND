@@ -919,7 +919,7 @@ have thousands. Two ways of training them are built:
 **It grows with no machine of ours switched on** (2026-11-11; `.github/workflows/hive.yml`, `training/hive_state.py`).
 Every six hours GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
 is fetched, it harvests a little more open text (`harvest --more 2`: each source may grow two megabytes a run),
-every body takes its turn in the order of who waited longest and within a time budget (`body --budget 210`), a body
+every body takes its turn in the order of who waited longest and within a time budget (`body --budget 180`), a body
 that is due is founded, everything is measured, and a line is added to `training/reports/hive_growth.jsonl`.
 The hive is saved after every body's turn (`body --save`), each time under a new name on the release `hive-state`,
 which keeps its two newest states: a run that is cut off loses one body's turn at most, a save that is cut off
