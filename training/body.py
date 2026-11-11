@@ -840,10 +840,13 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     from team import harvest
     if not harvest.files():
         harvest.main(["--no-trickle"])
-    if not (T.HOME / "tokenizer.json").exists():
+    if not (T.SHARED / "tokenizer.json").exists():  # the hive's one vocabulary, in the shared folder (not this body's)
         T.tokenizer(train=True)
-    if not (T.HOME / "base.pt").exists():
-        T.pretrain(stem_minutes)
+    if not (T.HOME / "base.pt").exists() and not (HOME / "placer.pt").exists():  # no stem cell and no copy to heal it from
+        T.HOME.mkdir(parents=True, exist_ok=True)  # a hive from nothing: its first stem cell is made like any new body's
+        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"},
+                                                      "since": time.strftime("%Y-%m-%d %H:%M")}))
+        T.pretrain_direct(stem_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"], log=log)
         return "the stem cell read the harvest"
     heal(log)
     if not (HOME / "territories.pt").exists():

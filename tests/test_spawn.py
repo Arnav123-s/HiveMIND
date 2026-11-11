@@ -1056,3 +1056,36 @@ def test_the_hive_is_saved_under_a_new_name_and_never_smaller_than_it_came(tmp_p
     monkeypatch.setattr(H, "_states", lambda: [("hive-state-300.tar.gz", "u3"), ("hive-state-200.tar.gz", "u2")])
     monkeypatch.setattr(H.urllib.request, "urlopen", lambda url, timeout=0: io.BytesIO(b"cut off" if url == "u3" else good.getvalue()))
     assert H.fetch(tmp_path / "got.tar.gz", log=lambda *a, **k: None) == "hive-state/hive-state-200.tar.gz"
+
+
+def test_the_vocabulary_is_learned_once_and_a_wrong_text_stream_is_made_again(tmp_path, monkeypatch):
+    import json
+    import numpy as np
+    from team import harvest
+    from training import body as B
+    from training import scratch as T
+    if not (T.SHARED / "tokenizer.json").exists():
+        return
+    real = (T.SHARED / "tokenizer.json").read_text()
+    tk = T.tokenizer()
+    shelf = tmp_path / "harvest"
+    shelf.mkdir()
+    monkeypatch.setattr(harvest, "HOME", shelf)
+    monkeypatch.setattr(T, "SHARED", tmp_path)
+    monkeypatch.setattr(T, "HOME", tmp_path / "bodies" / "b2")                            # a body that is not the first
+    (tmp_path / "bodies" / "b2").mkdir(parents=True)
+    (tmp_path / "tokenizer.json").write_text(real)
+    (tmp_path / "bodies" / "b2" / "base.pt").write_bytes(b"a stem cell made with this vocabulary")
+    (shelf / "new.txt").write_text("Text harvested since, full of zebras and quartz.\n" * 50)
+    T.tokenizer(train=True)                                                              # asked to learn it again: it is kept
+    assert (tmp_path / "tokenizer.json").read_text() == real
+    src = open(B.__file__).read()
+    assert 'T.HOME / "tokenizer.json"' not in src                                        # a body looks for the vocabulary where it is: shared
+
+    (shelf / "new.txt").write_text("One line about a harbour.\nAnother about a lighthouse.\n")
+    right = np.array(T.corpus(tk)).copy()
+    assert json.loads((tmp_path / "corpus.json").read_text())["pieces"] == len(right)
+    with open(tmp_path / "corpus.u16", "ab") as f:                                       # an addition that was cut off, or a row from another hive
+        np.asarray([7, 7, 7], dtype=np.uint16).tofile(f)
+    again = np.array(T.corpus(tk))
+    assert len(again) == len(right) and (again == right).all()
