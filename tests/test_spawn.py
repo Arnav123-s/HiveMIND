@@ -714,9 +714,10 @@ def test_the_immune_check_of_a_big_body_judges_a_cell_where_it_was_awake(tmp_pat
     assert out["cell"] == 3 and not (tmp_path / "cell_03.pt").exists() and (tmp_path / "cell_01.pt").exists()
 
 
-def test_bodies_read_as_one_and_the_one_that_fits_has_the_say():
+def test_bodies_read_as_one_and_the_one_that_fits_has_the_say(tmp_path, monkeypatch):
     import torch
     from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)                                         # no rule learned yet, one body
     pieces = B.W // 2
     fits = (torch.tensor([1.0, 1.0]), torch.full((2, pieces), -1.0))                     # this body knows these passages
     lost = (torch.tensor([9.0, 9.0]), torch.full((2, pieces), -6.0))                     # this one does not
@@ -777,3 +778,49 @@ def test_a_lost_text_stream_is_made_again_with_every_window_where_it_was(tmp_pat
     (tmp_path / "corpus.u16").unlink()                                                   # the stream is lost
     again = np.array(T.corpus(tk))
     assert len(again) == len(grown) and (again == grown).all()
+
+
+def test_the_say_of_each_member_is_learned_and_beats_winner_takes_all(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    torch.manual_seed(0)
+    pieces, n = B.W // 2, 80
+    # two members that fit the first half about alike; each knows the pieces the other does not (which ones differs
+    # by passage); a third member that predicts nothing well
+    first = torch.cat([2.0 + 0.1 * torch.randn(n, 2), torch.full((n, 1), 2.2)], 1)
+    knows = torch.rand(n, pieces) < 0.5
+    second = torch.stack([torch.where(knows, -0.5, -5.0), torch.where(knows, -5.0, -0.5), torch.full((n, pieces), -6.0)], 1)
+    old = B.fit_loss(first, second, rule={"h": float(pieces), "bias": []}).mean().item()
+    msgs = []
+    rule = B.learn_say(first[::2], second[::2], log=lambda *a, **k: msgs.append(a[0]))
+    new = B.fit_loss(first[1::2], second[1::2]).mean().item()                            # passages the rule was not learned on
+    assert new < old - 0.3 and rule["h"] < pieces / 4
+    assert rule["bias"][2] < min(rule["bias"][:2]) - 1                                   # the member that knows nothing lost its standing
+    assert B._rule() == rule and "learned again" in msgs[0]
+    # a seat asleep (nobody fills it) still has no say under a soft rule
+    asleep = first.clone()
+    asleep[:, 2] = 50.0
+    assert B._say(asleep, rule)[:, 2].exp().max().item() < 1e-6
+    # every cell reading at once has more seats than the rule knows: its sharpness only
+    wide = torch.cat([first, first], 1)
+    assert torch.allclose(B._say(wide, rule), torch.log_softmax(-rule["h"] * wide, 1))
+
+
+def test_the_say_of_each_body_is_learned_too(tmp_path, monkeypatch):
+    import json
+    import torch
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    torch.manual_seed(1)
+    pieces, n = B.W // 2, 60
+    knows = torch.rand(n, pieces) < 0.7                                                  # the big body knows most pieces, the small one the rest
+    big = (torch.full((n,), 2.0), torch.where(knows, -0.5, -5.0))
+    small = (torch.full((n,), 2.4), torch.where(knows, -5.0, -0.5))
+    alone = -big[1].mean().item()
+    sharp = B.together([big, small], rule={"h": float(pieces), "bias": []}).mean().item()
+    assert abs(sharp - alone) < 0.01                                                     # the old rule: the weaker body is never heard
+    rule = B.learn_rule(torch.stack([big[0], small[0]], 1), torch.stack([big[1], small[1]], 1))
+    (tmp_path / B.HIVE_RULE).write_text(json.dumps(rule))
+    assert B.together([big, small]).mean().item() < alone - 0.5                          # as one they are better than the best alone
+    assert B.together([big, small, small]).shape == (n,)                                 # a body founded since: the rule's sharpness only

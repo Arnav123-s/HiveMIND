@@ -30,6 +30,7 @@ second half of each window, for the stem cell, the control, one cell alone, and 
 Files: cells/scratch/body/ (territories, cells), training/reports/body.json.
 """
 import json
+import math
 import random
 import sys
 import time
@@ -87,7 +88,7 @@ def _body():
     return {"stem": _stem().eval(), **_cells()}
 
 
-NEAR_M, LOCAL = 2, 0.004  # cells awake beside the stem cell; what a newborn must gain where it lives
+NEAR_M, LOCAL = 4, 0.004  # cells awake beside the stem cell; what a newborn must gain where it lives
 
 
 class Body:
@@ -429,7 +430,7 @@ def _half_losses(model, x):
 
 
 FIT = "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half"
-NEAR = "body: the stem cell and the 2 nearest cells read, the rest sleep"
+NEAR = f"body: the stem cell and the {NEAR_M} nearest cells read, the rest sleep"
 
 
 def measure(n=300, log=print, part="report"):
@@ -439,8 +440,8 @@ def measure(n=300, log=print, part="report"):
     held = _held(data, part, n)
     first, second, _ = b.read(data, held)
     res = {"stem cell alone": -second[:, 0].mean().item(), NEAR: fit_loss(first, second).mean().item()}
-    if len(b.alive) > NEAR_M:
-        res["body: the stem cell and the 4 nearest cells read"] = b.losses(data, held, m=4).mean().item()
+    res["body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say"] = \
+        fit_loss(first, second, rule={"h": float(W // 2), "bias": []}).mean().item()
     if len(b.alive) <= 12:  # every cell reading: only while the body is small enough for that to be worth the time
         f, s2 = _read_all(_body(), data, held)
         res[FIT] = fit_loss(f, s2).mean().item()
@@ -514,12 +515,53 @@ def _read_all(cells, data, windows):
     return torch.cat(first), torch.cat(second)
 
 
-def fit_loss(first, second, cols=None):
-    """The body's loss on each passage, cells weighed by fit; cols: only these cells (the body without the others)."""
+# ---- the say of each member ------------------------------------------------------------------------------------------
+# Measured 2026-11-11: a member's say used to follow its whole likelihood of the first half (sharpness 128), which is
+# nearly winner-takes-all, and that threw most of the body away: the right piece was far more often well predicted by
+# SOME member (first body, per piece: 1.86 against 2.38 for the rule). So the say is learned. It has two parts: how
+# sharply fit on the first half counts, and a standing for each seat (the stem cell, the nearest cell, the next
+# nearest...; between bodies, each body). Both are learned on gate passages nobody trained on, a handful of numbers.
+SHARP = 4.0  # until a rule has been learned
+
+
+def _rule(path=None):
+    try:
+        r = json.loads((path or HOME / "combine.json").read_text())
+        return {"h": float(r["h"]), "bias": [float(x) for x in r["bias"]]}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {"h": SHARP, "bias": []}
+
+
+def _say(first, rule, cols=None):
+    """The log of each member's say on each passage [passages, members]. A rule learned for fewer seats than these
+    (every cell reading at once) gives its sharpness only."""
+    seats = list(range(first.shape[1])) if cols is None else list(cols)
+    known = len(rule["bias"]) >= first.shape[1]
+    bias = torch.tensor([rule["bias"][c] if known else 0.0 for c in seats])
     if cols is not None:
-        first, second = first[:, cols], second[:, cols]
-    w = torch.softmax(-first * (W // 2), 1)
-    return -torch.logsumexp(second + w.log()[:, :, None], 1).mean(1)
+        first = first[:, cols]
+    return torch.log_softmax(bias[None] - rule["h"] * first, 1)
+
+
+def learn_rule(first, second, steps=300):
+    """The rule that predicts these passages best: {"h": sharpness, "bias": the standing of each seat}."""
+    first, second = first.detach(), second.detach()
+    h, bias = torch.tensor(math.log(SHARP), requires_grad=True), torch.zeros(first.shape[1], requires_grad=True)
+    opt = torch.optim.Adam([h, bias], lr=0.05)
+    for _ in range(steps):
+        opt.zero_grad()
+        (-torch.logsumexp(second + torch.log_softmax(bias[None] - h.exp() * first, 1)[:, :, None], 1).mean()).backward()
+        opt.step()
+    return {"h": round(h.exp().item(), 4), "bias": [round(x, 4) for x in (bias - bias.mean()).tolist()]}
+
+
+def fit_loss(first, second, cols=None, rule=None):
+    """The body's loss on each passage, members weighed by the learned rule; cols: only these seats (the body
+    without the others)."""
+    say = _say(first, rule or _rule(), cols)
+    if cols is not None:
+        second = second[:, cols]
+    return -torch.logsumexp(second + say[:, :, None], 1).mean(1)
 
 
 def _targets(on, data, cells, stem, terr, sample, rnd):
@@ -692,6 +734,17 @@ def immune_near(b, first, second, who, log=print):
     return None
 
 
+def learn_say(first, second, log=print):
+    """The body learns the say of its members on gate passages (see _say) and keeps it beside its cells."""
+    was, rule = fit_loss(first, second).mean().item(), learn_rule(first, second)
+    part = HOME / "combine.json.part"
+    part.write_text(json.dumps(rule))
+    part.replace(HOME / "combine.json")
+    log(f"[body] the say of each member was learned again: sharpness {rule['h']:.2f}, standing of the seats {rule['bias']}; "
+        f"the body on the gate passages {was:.4f} -> {fit_loss(first, second).mean().item():.4f}", flush=True)
+    return rule
+
+
 def judge_local(before, after, woke):
     """Is a newborn kept? It is judged where it lives: on unseen passages nearest to its territory, the body with it
     against the body as if it were not there (it takes another cell's place among those awake, so what it costs is in
@@ -740,6 +793,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     pool = _held(data, "gate", 10 ** 9)
     spread = pool[::max(1, len(pool) // 200)][:200]
     first, second, who = b.read(data, spread)
+    learn_say(first, second, log)
     learned = stem_reads(data, spread, first, second, minutes=minutes * 0.3, log=log)
     if learned and learned["kept"]:
         b = Body()
@@ -761,7 +815,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     for _ in range(births):
         ts = trainers()
         rnd = random.Random(sum(t["births"] for t in ts))
-        t = next(x for x in ts if x["id"] == pick_trainer(ts, rnd)["id"])
+        t = pick_trainer(ts, rnd)
         k = grow(minutes, log=log, trainer=t, body=b)
         b = Body()
         near = b.near(data, pool)[:, k]
@@ -781,6 +835,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
                      "near_before": round(before.mean().item(), 4), "near_after": round(after.mean().item(), 4)})
         _report(births=born, trainers=breed(ts, rnd))
         log(f"[body] trainer {t['id']} grew cell {k} ({t['on']}); {'kept' if kept else 'removed at birth'}: {why}", flush=True)
+    learn_say(*Body().read(data, spread)[:2], log)
     measure(log=log)
     line = (f"{births} cells were grown, {kept_n} kept; the body has {len(Body().alive)} cells"
             + (f"; cell {retired['cell']} was retired by the immune check" if retired else ""))
@@ -809,8 +864,7 @@ def readings(windows):
     of the second half [n, pieces]). Its members are weighed by fit among themselves; the body's own fit is its best
     member's."""
     first, second, _ = Body().read(_data(), windows)
-    w = torch.softmax(-first * (W // 2), 1)
-    return first.min(1).values, torch.logsumexp(second + w.log()[:, :, None], 1)
+    return first.min(1).values, torch.logsumexp(second + _say(first, _rule())[:, :, None], 1)
 
 
 def _ask(name, windows, tag):
@@ -828,19 +882,30 @@ def _ask(name, windows, tag):
     return out["first"], out["second"]
 
 
-def together(reads):
-    """The bodies reading as one: each body's reading of the second half, weighed by how it fitted the first half.
-    reads: [(first [n], second [n, pieces])]. Returns the loss on each passage."""
+HIVE_RULE = "bodies_rule.json"  # in the shared folder: the say of each body, learned like the say of each cell
+
+
+def together(reads, rule=None):
+    """The bodies reading as one: each body's reading of the second half, weighed by the hive's learned rule (how it
+    fitted the first half, and the standing of each body). reads: [(first [n], second [n, pieces])], in the order
+    of bodies(). Returns the loss on each passage."""
     first = torch.stack([f for f, _ in reads], 1)
     second = torch.stack([s2 for _, s2 in reads], 1)
-    return fit_loss(first, second)
+    rule = rule or _rule(T.SHARED / HIVE_RULE)
+    if len(rule["bias"]) != len(reads):  # a body was founded or lost since the rule was learned
+        rule = {"h": rule["h"], "bias": []}
+    return fit_loss(first, second, rule=rule)
 
 
 def hive_measure(n=300, log=print):
     """Each body alone and all of them as one, on report passages nobody trained on."""
     data = _data()
-    held = _held(data, "report", n)
+    held, gate = _held(data, "report", n), _held(data, "gate", n)
     names = [b for b in bodies() if (T.SHARED / ("bodies/" + b if b else "") / "body" / "territories.pt").exists()]
+    if names == bodies() and len(names) > 1:  # the say of each body is learned on gate passages, then measured on the others
+        g = [_ask(b, gate, "gate") for b in names]
+        rule = learn_rule(torch.stack([f for f, _ in g], 1), torch.stack([s2 for _, s2 in g], 1))
+        (T.SHARED / HIVE_RULE).write_text(json.dumps(dict(rule, bodies=[b or "first" for b in names])))
     reads = [_ask(b, held, "measure") for b in names]
     res = {"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, reads)},
            "as_one": round(together(reads).mean().item(), 4), "passages": len(held), "when": time.strftime("%Y-%m-%d %H:%M")}
