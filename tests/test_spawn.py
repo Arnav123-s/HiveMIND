@@ -1171,3 +1171,45 @@ def test_a_founding_asks_the_bodies_that_read_best(tmp_path, monkeypatch):
     assert B._readers() == ["", "b2", "b3", "b4"]                                         # nothing measured yet: the first four with a map
     (tmp_path / "hive.json").write_text(json.dumps([{"bodies": {}, "yardstick": {"bodies": {"first": 2.4, "b2": 2.9, "b3": 2.7, "b4": 2.5, "b5": 2.6}}}]))
     assert B._readers() == ["", "b4", "b5", "b3"]                                         # the four that read the yardstick best
+
+
+def test_the_exam_is_fresh_every_sitting_and_checked_in_code():
+    from training import exam as E
+    a, b = E.exam(400), E.exam(401)
+    assert [t[3] for t in a] == [t[3] for t in E.exam(400)] and [t[3] for t in a] != [t[3] for t in b]   # the seed is the sitting
+    assert all(len({t[3] for t in E.exam(s)}) == 16 for s in range(400, 430))               # no task twice in a sitting
+    fields = {t[1] for s in range(400, 430) for t in E.exam(s)}
+    assert {"maths", "dates", "code", "live facts", "websites", "instructions", "knowledge", "languages", "understanding"} <= fields
+    ok = lambda check, body: check(None, body)[0]                                             # noqa: E731
+    assert ok(E.says(851), "The new price is $851.00.") and ok(E.says(1150), "It costs 1,150 dollars.") and not ok(E.says(851), "About 850.")
+    import random
+    for seed in range(30):                                                                   # every maker: a right answer passes, a wrong one fails
+        r = random.Random(seed)
+        _, _, task, check = E.m_steps(r)
+        nums = [int(x) for x in __import__("re").findall(r"multiply (\d+) by (\d+)", task)[0]]
+        word = __import__("re").search(r"word '(\w+)'", task).group(1)
+        country = task.rsplit("capital of ", 1)[1].rstrip(".")
+        right = f"A: {nums[0] * nums[1]}\nB: {word[::-1]}\nC: {E.CAPITALS[country]}"
+        assert ok(check, right) and not ok(check, right.replace(f"A: {nums[0] * nums[1]}", "A: 1")) and not ok(check, right.replace("C:", "D:"))
+    _, _, task, check = E.m_follow(random.Random(3))
+    assert not ok(check, "")                                                                 # an empty answer never passes
+    _, _, task, check = E.m_percent(random.Random(5))
+    assert not ok(check, "I could not work it out.")
+
+
+def test_the_record_of_exams_takes_only_numbers_and_known_names(tmp_path, monkeypatch):
+    import json
+    from training import exam_record as R
+    good = {"seed": 315, "when": "2026-11-12 09:43", "passed": 11, "tasks": 16, "by_field": {"maths": [1, 1], "code": [1, 2], "made up": [5, 5]},
+            "minutes": 71, "code": "8be45ff", "memory": "none"}
+    line = R.line(good)
+    assert line["passed"] == 11 and line["by_field"] == {"maths": [1, 1], "code": [1, 2]}       # a field the exam does not have is dropped
+    assert R.line(dict(good, passed=99)) is None and R.line(dict(good, seed="315; rm -rf")) is None and R.line("text") is None
+    assert R.line(dict(good, code="$(curl evil)", when="<script>"))["code"] == "" and R.line(dict(good, when="<script>"))["when"] == ""
+    monkeypatch.setattr(R, "RECORD", tmp_path / "exams.jsonl")
+    (tmp_path / "sitting").mkdir()
+    (tmp_path / "sitting" / "315.json").write_text(json.dumps({"summary": good, "tasks": [{"answer": "anything the hive wrote"}]}))
+    (tmp_path / "sitting" / "bad.json").write_text("not json")
+    assert R.main([str(tmp_path / "sitting")]) == 0 and R.main([str(tmp_path / "sitting")]) == 0   # a sitting is recorded once
+    lines = [json.loads(ln) for ln in (tmp_path / "exams.jsonl").read_text().splitlines()]
+    assert len(lines) == 1 and set(lines[0]) == {"seed", "when", "passed", "tasks", "by_field", "minutes", "code", "memory"}
