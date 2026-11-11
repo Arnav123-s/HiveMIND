@@ -5,6 +5,27 @@ Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothin
 ## Live status (kept current; read this first)
 Updated 2026-11-10 (evening UTC). PR #6 is merged into `main` on his approval. Work continues on `make-it-work`, restarted from `main` (draft PR #7); everything is pushed.
 
+**Latest (2026-11-11, afternoon UTC).** PRs #6 to #9 are merged on his word; work is on `make-it-work`, draft PR #10
+(merging needs his yes for that PR). His two newest asks: "publised recipe can be done better? try to find a way" and
+"a bit net can be more intilget stronger and more capable and hiving it can be done better find that way".
+- Done for them, all measured (`training/reports/bitnet_recipe.json`, README "From nothing"): the hive's BitNets
+  trained at a third of the right rate (4.2315 -> 4.0220 at 3e-3); easing the rounding in over the first half of a
+  run helps a little more (3.9963); the published extra norms hurt; a teacher helps per step but loses at equal
+  time; two three-valued layers added up and a wider cell help but are not built in. `body.NEW_BODY` holds the
+  recipe a new body is founded with; `scratch.kind()` lets each body have its own shape.
+- Hiving: the say of each member and of each body is learned (`body.learn_say`, in main since PR #9). Team training
+  (`how: team`) lost its one fair test to the usual way from the nearest cell; it stays as a trainer kind only.
+- The hive: three bodies. On 300 held passages: first 2.4856 (ten cells), b2 2.8412 (six), b3 2.7806 (six, founded
+  with the new recipe), as one 2.4760. `cells/scratch/bodies/` is not in git (only the first body's stem cell is):
+  on this cloud machine b2 and b3 die with the container; on his device they persist.
+- A flaw closed: stem cells used to train on the held windows too (`scratch.offsets` now skips them). The first
+  two bodies' absolute numbers are better than they would be on new text by an amount not yet measured; b3 is clean.
+- Lessons about this machine: never run two trainings at once (four cores, the threads fight: a 6-minute run took
+  an hour); a background job is cut at two hours, so make experiments resumable (results appended as each ends).
+- Open next: build in two three-valued layers per cell (stored exactly); the rate at which newborn cells are grown
+  (being tested); a say that changes piece by piece (the best member per piece reads 1.86 where the learned
+  rule reads 2.29: the largest gap left in hiving); measuring on text harvested after every stem cell was made.
+
 **Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
 freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow
 every order, are always on and keep growing. New specialists cover gaps; they do not have to relearn what older ones

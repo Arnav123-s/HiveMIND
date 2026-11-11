@@ -896,6 +896,14 @@ have thousands. Two ways of training them are built:
   them, so what the cells add to their stem cell is measured fairly, but the absolute losses above for the first
   two bodies are better than they would be on truly new text. From now on no stem cell reads a held window
   (`scratch.offsets`); the third body is the first whose numbers are clean.
+- *The third body, founded with the better recipe* (2026-11-11): its stem cell read 40 minutes (3545 steps, training
+  loss 3.415; the second body's at the same age 3.517) and never a held window. Its first turn grew six cells.
+  On 300 passages nobody trained on: stem cell alone 3.1146, the body 2.7806 (the second body with six cells:
+  2.8412). The three bodies as one: 2.4760 (the two before it: 2.4807; the first body alone 2.4856).
+  How much reading the held passages helped the older stem cells could not be sized: the second body's stem cell
+  (read them about once) and the third's (never) are equally far behind on held text against training text (0.09
+  and 0.11), so once is within noise; for the first body's seven readings there is no text it has not read to
+  measure on. New harvest will give that.
 - *A cell grown as one of the team* (trained on the body's loss with it in, `how: team`): on one territory of the
   first body, 12 minutes each, the usual way from the nearest cell added 0.0200 where the cell lives, the team way
   0.0136 at best (0.0003 with a smaller share), and from the stem cell neither way helped. It stays as one kind of
