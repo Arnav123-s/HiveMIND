@@ -50,6 +50,18 @@ BODY = __import__("os").environ.get("HIVE_BODY", "")  # which body this process 
 HOME = SHARED / "bodies" / BODY if BODY else SHARED  # that body's own stem cell, cells and records
 VOCAB, DIM, LAYERS, HEADS, CTX = 4096, 192, 4, 4, 256
 PAD, BOS = 0, 1
+HELD = 40  # every 40th window of the text is never trained on, by a stem cell or by a cell: the hive is measured there
+EASE = [1.0]  # how much of the rounding is on (1: a BitNet as it works; less only while a new stem cell eases into it)
+
+
+def offsets(rnd, n, batch):
+    """Where a batch of training windows starts in a text of n pieces: anywhere that does not touch a held window."""
+    out = []
+    while len(out) < batch:
+        i = rnd.randrange(0, n - CTX - 1)
+        if (i // CTX) % HELD and ((i + CTX) // CTX) % HELD:
+            out.append(i)
+    return out
 
 
 class BitLinear(nn.Linear):
@@ -60,20 +72,20 @@ class BitLinear(nn.Linear):
     comes out is stored in about two bits a weight (pack)."""
 
     def forward(self, x):
-        w = self.weight
+        w, ease = self.weight, EASE[0]
         scale = w.abs().mean().clamp(min=1e-5)
-        w = w + ((w / scale).round().clamp(-1, 1) * scale - w).detach()
+        w = w + ease * ((w / scale).round().clamp(-1, 1) * scale - w).detach()
         top = x.abs().amax(-1, keepdim=True).clamp(min=1e-5)
-        x = x + ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
+        x = x + ease * ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
         return F.linear(x, w, self.bias)
 
 
-def kind():
+def kind(home=None):
     """What this body's cells are: {"bit", "dim", "layers", "heads", "subln"}. It is written once, when the body's
     stem cell is made (stem.json beside the stem cell; the first body's travels with it in git), and every cell of
     the body has it. Bodies may differ: what they share is the vocabulary and the harvest, not their shape."""
     try:
-        k = json.loads((HOME / "stem.json").read_text())
+        k = json.loads(((home or HOME) / "stem.json").read_text())
     except (OSError, ValueError):
         k = {}
     return {"bit": bool(k.get("bit")), "dim": int(k.get("dim", DIM)), "layers": int(k.get("layers", LAYERS)),
@@ -114,9 +126,9 @@ class Tiny(nn.Module):
     """A small transformer. As a reader it predicts the next piece; as a cell it reads the whole input and its last
     position chooses a label."""
 
-    def __init__(self, labels=0, bit=None):
+    def __init__(self, labels=0, bit=None, shape=None):
         super().__init__()
-        k = kind()
+        k = shape or kind()
         self.bit = k["bit"] if bit is None else bit
         self.dim = dim = k["dim"]
         self.tok, self.pos = nn.Embedding(VOCAB, dim), nn.Embedding(CTX, dim)
@@ -221,22 +233,31 @@ class Direct:
 
 
 def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
-                    strong=0.5, leak=0, agree=False, hard=None):
+                    strong=0.5, leak=0, agree=False, hard=None, lr=1e-3, warm=0, ease=0.0, teacher=None, taught=0.5):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
     parts that are not three-valued learn by themselves) and usual=True (the published way: ordinary weights
-    underneath, rounded at every step)."""
+    underneath, rounded at every step; `lr` is its rate, reached over the first `warm` steps).
+    ease: the share of the run over which the rounding is eased in (it starts as an ordinary net and is a BitNet
+    from there on). teacher: the home of a body whose stem cell reads every batch too; the new one learns the text
+    and, for `taught` of its loss, what the teacher expects next. Both measured: training/reports/bitnet_recipe.json."""
     tk = tokenizer()
     data = corpus(tk)
     torch.manual_seed(seed)
     model = Tiny(bit=True)
+    if teacher is not None:
+        old = Tiny(shape=kind(Path(teacher)))
+        old.load_state_dict(torch.load(Path(teacher) / "base.pt"))
+        old.eval()
     if usual:
-        opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01, betas=(0.9, 0.95))
+        opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01, betas=(0.9, 0.95))
 
         class trainer:  # noqa: N801 - the same two lines as pretrain, in the shape of Direct
             @staticmethod
             def step(loss, rate):
+                for g in opt.param_groups:
+                    g["lr"] = lr * min(1.0, (steps + 1) / max(1, warm))
                 opt.zero_grad(set_to_none=True)
                 loss.backward()
                 nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -247,17 +268,29 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     rnd, t0, steps, losses, jumps = random.Random(seed), time.time(), 0, [], []
     while time.time() - t0 < minutes * 60:
         done = (time.time() - t0) / (minutes * 60)
-        at = [rnd.randrange(0, len(data) - CTX - 1) for _ in range(batch)]
+        at = offsets(rnd, len(data), batch)
         if hard:  # half of what it reads is the text the bodies before it read worst
             at[:batch // 2] = [rnd.choice(hard) * CTX for _ in range(batch // 2)]
         x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
-        loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
+        EASE[0] = min(1.0, done / ease) if ease else 1.0
+        logits = model.next_piece(x[:, :-1])
+        loss = F.cross_entropy(logits.reshape(-1, VOCAB), x[:, 1:].reshape(-1))
+        if teacher is not None:
+            EASE[0] = 1.0  # the teacher reads as it works
+            with torch.no_grad():
+                expects = F.log_softmax(old.next_piece(x[:, :-1]), -1)
+            EASE[0] = min(1.0, done / ease) if ease else 1.0
+            away = F.kl_div(F.log_softmax(logits, -1), expects, log_target=True, reduction="batchmean") / CTX
+            losses.append(loss.item())
+            loss = (1 - taught) * loss + taught * away
+        else:
+            losses.append(loss.item())
         jumps.append(trainer.step(loss, rate * (1 - 0.95 * done)))
         steps += 1
-        losses.append(loss.item())
         if steps % 100 == 0:
             log(f"[scratch] direct, step {steps}: loss {sum(losses[-100:]) / 100:.3f}, {sum(jumps[-100:]) / 100:.2%} of the "
                 f"three-valued weights jump a step", flush=True)
+    EASE[0] = 1.0
     HOME.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), HOME / f"{name}.pt")
     out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
@@ -456,7 +489,7 @@ def pretrain(minutes=60, batch=32, lr=1e-3, seed=0):
     while time.time() - t0 < minutes * 60:
         for g in opt.param_groups:  # a short warm-up, then steady: the run is cut by the clock, not by a schedule
             g["lr"] = lr * min(1.0, (steps + 1) / 200)
-        at = [rnd.randrange(0, len(data) - CTX - 1) for _ in range(batch)]
+        at = offsets(rnd, len(data), batch)
         x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
         loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
         opt.zero_grad(set_to_none=True)

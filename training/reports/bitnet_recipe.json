@@ -1,0 +1,214 @@
+{
+ "what": "A stem cell of the hive's shape (2.6M weights) trained from the same random start on the same batches of the harvest; loss on 96 held passages. One seed each: differences under about 0.01 are noise. Stem-cell training drew from all the text then, the held passages included (about a third of the text is read in 600 steps), the same for every row.",
+ "date": "2026-11-11",
+ "runs": {
+  "as now (lr 1e-3)": {
+   "held": 4.2315,
+   "steps": 600,
+   "minutes": 6.8
+  },
+  "lr 3e-3": {
+   "held": 4.022,
+   "steps": 600,
+   "minutes": 6.2
+  },
+  "lr 1e-2": {
+   "held": 4.0501,
+   "steps": 600,
+   "minutes": 6.3
+  },
+  "norms + lr 1e-3": {
+   "held": 4.5432,
+   "steps": 600,
+   "minutes": 6.5
+  },
+  "norms + lr 3e-3": {
+   "held": 4.4281,
+   "steps": 600,
+   "minutes": 6.2
+  },
+  "norms + lr 1e-2": {
+   "held": 4.4597,
+   "steps": 600,
+   "minutes": 6.6
+  },
+  "best + one number per row instead of per layer": {
+   "held": 4.0246,
+   "steps": 600,
+   "minutes": 5.8
+  },
+  "best + rounding eased in over the first fifth": {
+   "held": 4.024,
+   "steps": 600,
+   "minutes": 5.8
+  },
+  "best + rounding eased in over the first half": {
+   "held": 3.9963,
+   "steps": 600,
+   "minutes": 6.0
+  },
+  "best + a stricter line for zero (0.7), best-fitting number": {
+   "held": 4.0255,
+   "steps": 600,
+   "minutes": 6.2
+  },
+  "best + the middle value instead of the mean": {
+   "held": 4.0146,
+   "steps": 600,
+   "minutes": 6.4
+  },
+  "best + no pull toward zero on the weights underneath": {
+   "held": 4.0225,
+   "steps": 600,
+   "minutes": 6.2
+  },
+  "best + the rate falls over the run": {
+   "held": 4.059,
+   "steps": 600,
+   "minutes": 6.2
+  },
+  "best + taught by the stem cell": {
+   "held": 3.8406,
+   "steps": 600,
+   "minutes": 10.2
+  },
+  "best + two three-valued layers added up": {
+   "held": 3.9474,
+   "steps": 600,
+   "minutes": 6.1
+  },
+  "best + every idea that helped: {\"anneal\": 0.5, \"distill\": 0.5}": {
+   "held": 3.8081,
+   "steps": 600,
+   "minutes": 10.1
+  },
+  "best, width 256": {
+   "held": 3.9547,
+   "steps": 600,
+   "minutes": 9.3
+  },
+  "full precision, lr 3e-3": {
+   "held": 3.8966,
+   "steps": 600,
+   "minutes": 6.5
+  },
+  "eased in, no teacher, 990 steps (the teacher's time)": {
+   "held": 3.6988,
+   "steps": 990,
+   "minutes": 10.6
+  },
+  "eased in + a teacher that steps back over the first half": {
+   "held": 3.9773,
+   "steps": 600,
+   "minutes": 10.4
+  },
+  "eased in + teacher, 990 steps": {
+   "held": 3.5422,
+   "steps": 990,
+   "minutes": 18.5
+  },
+  "eased in + two three-valued layers added up (one set of weights underneath)": {
+   "held": 3.9473,
+   "steps": 600,
+   "minutes": 6.8
+  },
+  "eased in + two three-valued layers added up (each its own weights underneath)": {
+   "held": 4.0032,
+   "steps": 600,
+   "minutes": 6.5
+  }
+ },
+ "full precision at the old rate (lr 1e-3, 600 steps, an earlier run of the same harness)": 4.1022,
+ "built in": {
+  "lr": 0.003,
+  "warm": 200,
+  "ease": 0.5,
+  "taught": 0.0,
+  "norms": false
+ },
+ "why no teacher": "per step it helps (3.8081 against 3.9963 at 600 steps) but it costs 1.7 times the time, and the same time spent on more steps without it does better (3.6988)",
+ "a newborn cell, the usual way against as one of the team (one territory of the first body, 12 minutes each)": {
+  "usual": {
+   "gain on the 60 nearest unseen passages": -0.0124,
+   "awake on 60": 0.95,
+   "alone on 60": 3.7294,
+   "gain on the 200 nearest unseen passages": -0.01,
+   "awake on 200": 0.92,
+   "alone on 200": 3.7209
+  },
+  "team, share 0.25": {
+   "gain on the 60 nearest unseen passages": -0.0021,
+   "awake on 60": 0.95,
+   "alone on 60": 4.0761,
+   "gain on the 200 nearest unseen passages": -0.0011,
+   "awake on 200": 0.92,
+   "alone on 200": 4.0733
+  },
+  "team, share 0.5": {
+   "gain on the 60 nearest unseen passages": -0.0124,
+   "awake on 60": 0.95,
+   "alone on 60": 3.7294,
+   "gain on the 200 nearest unseen passages": -0.01,
+   "awake on 200": 0.92,
+   "alone on 200": 3.7209
+  },
+  "team, share 0.25, from the nearest cell": {
+   "gain on the 60 nearest unseen passages": 0.0136,
+   "awake on 60": 0.95,
+   "alone on 60": 3.8424,
+   "gain on the 200 nearest unseen passages": 0.0123,
+   "awake on 200": 0.92,
+   "alone on 200": 3.8461
+  },
+  "usual, from the nearest cell": {
+   "gain on the 60 nearest unseen passages": 0.02,
+   "awake on 60": 0.95,
+   "alone on 60": 3.5953,
+   "gain on the 200 nearest unseen passages": 0.0192,
+   "awake on 200": 0.92,
+   "alone on 200": 3.5953
+  },
+  "team, share 0.1, from the nearest cell": {
+   "gain on the 60 nearest unseen passages": 0.0003,
+   "awake on 60": 0.95,
+   "alone on 60": 4.1235,
+   "gain on the 200 nearest unseen passages": 0.0024,
+   "awake on 200": 0.92,
+   "alone on 200": 4.1244
+  }
+ },
+ "the rate a newborn cell is grown at (the same territory of the first body, alone on the machine, 12 minutes each)": {
+  "usual, from the nearest cell, rate 5e-4": {
+   "gain on the 60 nearest unseen passages": 0.0177,
+   "awake on 60": 0.95,
+   "alone on 60": 3.5938,
+   "gain on the 200 nearest unseen passages": 0.016,
+   "awake on 200": 0.92,
+   "alone on 200": 3.5947
+  },
+  "usual, from the nearest cell, rate 1.5e-3": {
+   "gain on the 60 nearest unseen passages": 0.0077,
+   "awake on 60": 0.95,
+   "alone on 60": 3.6285,
+   "gain on the 200 nearest unseen passages": 0.0084,
+   "awake on 200": 0.92,
+   "alone on 200": 3.6223
+  },
+  "usual, from the nearest cell, rate 3e-3": {
+   "gain on the 60 nearest unseen passages": 0.0092,
+   "awake on 60": 0.95,
+   "alone on 60": 3.6692,
+   "gain on the 200 nearest unseen passages": 0.0081,
+   "awake on 200": 0.92,
+   "alone on 200": 3.6656
+  },
+  "usual, from the stem cell, rate 1.5e-3": {
+   "gain on the 60 nearest unseen passages": -0.0125,
+   "awake on 60": 0.95,
+   "alone on 60": 3.7298,
+   "gain on the 200 nearest unseen passages": -0.01,
+   "awake on 200": 0.92,
+   "alone on 200": 3.7211
+  }
+ }
+}
