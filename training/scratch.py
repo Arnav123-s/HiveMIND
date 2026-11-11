@@ -17,6 +17,12 @@
                                                          passage next to it means (writes base_pairs.pt);
                                                          `together --trunk base_pairs` then builds the brain on it
 
+    python training/scratch.py bitnet [--minutes 30]     the stem cell becomes a BitNet (weights of -1, 0, +1), trained
+                                                         here; every cell grown from it afterwards is a BitNet cell
+
+    python training/scratch.py direct [--minutes 20] [--rate 0.003]   a BitNet stem cell trained the direct way, from
+                                                         random three-valued weights, with no ordinary weights underneath
+
 Today's cells are SmolLM2-135M (someone else's pretrained weights) with a small edit. This is the other way to make
 one: a model of about 2.6 million weights that starts from random numbers. What it knows about words it gets from the
 text the hive harvested itself (team/harvest.py); what it knows about its job it gets from the same training rows as
@@ -44,12 +50,38 @@ VOCAB, DIM, LAYERS, HEADS, CTX = 4096, 192, 4, 4, 256
 PAD, BOS = 0, 1
 
 
+class BitLinear(nn.Linear):
+    """A layer of a BitNet (b1.58): when it works, every weight is -1, 0 or +1, times one number for the whole layer,
+    and what comes in is rounded to 8 bits. It is trained on ordinary weights underneath: at each step they are
+    rounded to the three values for the forward pass, and the correction flows back to the ordinary weights as if
+    no rounding had happened (the straight-through way). So training costs what it always costs; the cell that
+    comes out is stored in about two bits a weight (pack)."""
+
+    def forward(self, x):
+        w = self.weight
+        scale = w.abs().mean().clamp(min=1e-5)
+        w = w + ((w / scale).round().clamp(-1, 1) * scale - w).detach()
+        top = x.abs().amax(-1, keepdim=True).clamp(min=1e-5)
+        x = x + ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
+        return F.linear(x, w, self.bias)
+
+
+def is_bit():
+    """Are the hive's own cells BitNets? (cells/scratch/stem.json, which travels with the stem cell in git; set once,
+    when the stem cell is converted.)"""
+    try:
+        return bool(json.loads((HOME / "stem.json").read_text()).get("bit"))
+    except (OSError, ValueError):
+        return False
+
+
 class Block(nn.Module):
-    def __init__(self):
+    def __init__(self, bit=False):
         super().__init__()
+        lin = BitLinear if bit else nn.Linear
         self.n1, self.n2 = nn.LayerNorm(DIM), nn.LayerNorm(DIM)
-        self.qkv, self.out = nn.Linear(DIM, 3 * DIM), nn.Linear(DIM, DIM)
-        self.up, self.down = nn.Linear(DIM, 4 * DIM), nn.Linear(4 * DIM, DIM)
+        self.qkv, self.out = lin(DIM, 3 * DIM), lin(DIM, DIM)
+        self.up, self.down = lin(DIM, 4 * DIM), lin(4 * DIM, DIM)
 
     def forward(self, x, causal):
         b, t, d = x.shape
@@ -63,10 +95,11 @@ class Tiny(nn.Module):
     """A small transformer. As a reader it predicts the next piece; as a cell it reads the whole input and its last
     position chooses a label."""
 
-    def __init__(self, labels=0):
+    def __init__(self, labels=0, bit=None):
         super().__init__()
+        self.bit = is_bit() if bit is None else bit
         self.tok, self.pos = nn.Embedding(VOCAB, DIM), nn.Embedding(CTX, DIM)
-        self.blocks = nn.ModuleList(Block() for _ in range(LAYERS))
+        self.blocks = nn.ModuleList(Block(self.bit) for _ in range(LAYERS))
         self.norm = nn.LayerNorm(DIM)
         self.head = nn.Linear(DIM, labels) if labels else None
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
@@ -83,6 +116,203 @@ class Tiny(nn.Module):
     def label(self, ids, last):
         h = self.body(ids)
         return self.head(h[torch.arange(ids.shape[0]), last])
+
+
+class Direct:
+    """Training a BitNet the direct way: there are no ordinary weights underneath.
+
+    The usual way keeps a full-precision copy of every weight and rounds it at each step. Here a weight of a
+    three-valued layer is never anything but -1, 0 or +1. At each step every such weight may jump one value in the
+    direction that lowers the loss, with a probability in proportion to how strongly its own gradient asks for it
+    (its gradient against the layer's average). A weight that is pulled weakly but always the same way still gets
+    there, by chance adding up over steps, which is what the stored copy was for. `rate` is the share of a layer's
+    weights expected to jump in one step; it is lowered as training goes on, and the jumping dies down.
+    What is not three-valued (the table of word pieces, the norms, the biases, and one number per layer that scales
+    its three values) is trained the ordinary way; that is under a third of the stem cell and is shared by all cells.
+    (His order, 2026-11-10: if no direct route exists, make one.)"""
+
+    def __init__(self, model, lr=1e-3, seed=0, votes=0, strong=0.5, leak=0, agree=False):
+        # by votes, three things can be set: which share of a layer's weights is too weakly pulled to vote (strong),
+        # after how many steps every counter forgets one vote (leak; 0: never), and whether a vote only counts when
+        # the weight was pulled the same way at the step before (agree: one more bit per weight)
+        self.votes, self.strong, self.leak, self.agree, self.steps = votes, strong, leak, agree, 0
+        self.layers = [m for m in model.modules() if isinstance(m, BitLinear)]
+        own = {id(m.weight) for m in self.layers}
+        self.t, self.log_scale = [], []
+        for m in self.layers:
+            scale = m.weight.detach().abs().mean().clamp(min=1e-5)
+            self.t.append((m.weight.detach() / scale).round().clamp(-1, 1))
+            self.log_scale.append(torch.nn.Parameter(scale.log()))
+        self.opt = torch.optim.AdamW([p for p in model.parameters() if id(p) not in own] + self.log_scale, lr=lr,
+                                     weight_decay=0.0, betas=(0.9, 0.95))
+        self.gen = torch.Generator().manual_seed(seed)
+        self.model = model
+        self.count = [torch.zeros_like(t, dtype=torch.int8) for t in self.t]  # the votes, when it trains by votes
+        self.last = [torch.zeros_like(t, dtype=torch.int8) for t in self.t]   # which way each weight was pulled last
+        self.install()
+
+    def install(self):
+        """Each layer's weights as its three values times a number such that rounding gives them back exactly."""
+        with torch.no_grad():
+            for m, t, ls in zip(self.layers, self.t, self.log_scale):
+                m.weight.copy_(t * (ls.exp() / t.abs().mean().clamp(min=1e-5)))
+
+    def step(self, loss, rate):
+        """One step. Returns the share of three-valued weights that jumped."""
+        self.opt.zero_grad(set_to_none=True)
+        for m in self.layers:
+            m.weight.grad = None
+        loss.backward()
+        nn.utils.clip_grad_norm_([p for g in self.opt.param_groups for p in g["params"] if p.grad is not None], 1.0)
+        jumped, total = 0, 0
+        with torch.no_grad():
+            for i, m in enumerate(self.layers):
+                g, t = m.weight.grad, self.t[i]
+                self.log_scale[i].grad = (g * t).sum() * self.log_scale[i].exp()  # the layer's number learns the ordinary way
+                if self.votes:
+                    # by votes: a small counter per weight (a few bits) instead of a full-precision copy. Each step a
+                    # weight whose gradient is not among the layer's weak half gets one vote for the direction that
+                    # lowers the loss; at `votes` more votes one way than the other it jumps one value and its
+                    # counter starts again. (The first direct way had nothing that added the evidence up, and on
+                    # real text its jumps taught nothing: 4.25 with them, 4.24 without, 4.03 the published way.)
+                    strong = g.abs() >= (g.abs().median() if self.strong == 0.5 else g.abs().flatten().kthvalue(
+                        max(1, int(self.strong * g.numel()))).values)
+                    vote = (-g.sign() * strong).to(torch.int8)
+                    if self.agree:
+                        vote, self.last[i] = torch.where(vote == self.last[i], vote, torch.zeros_like(vote)), vote
+                    c = self.count[i]
+                    if self.leak and self.steps % self.leak == 0:
+                        c = c - c.sign()
+                    c = (c + vote).clamp(-self.votes, self.votes)
+                    go = c.abs() >= self.votes
+                    want = (t + c.sign()).clamp(-1, 1)
+                    self.count[i] = torch.where(go, torch.zeros_like(c), c)
+                    go = go & (want != t)
+                else:
+                    want = (t - g.sign()).clamp(-1, 1)
+                    go = (torch.rand(g.shape, generator=self.gen) < rate * g.abs() / g.abs().mean().clamp(min=1e-12)) & (want != t)
+                self.t[i] = torch.where(go, want, t)
+                jumped, total = jumped + int(go.sum()), total + t.numel()
+        self.opt.step()
+        self.install()
+        self.steps += 1
+        return jumped / total
+
+
+def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
+                    strong=0.5, leak=0, agree=False):
+    """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
+    <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
+    Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
+    parts that are not three-valued learn by themselves) and usual=True (the published way: ordinary weights
+    underneath, rounded at every step)."""
+    tk = tokenizer()
+    data = corpus(tk)
+    torch.manual_seed(seed)
+    model = Tiny(bit=True)
+    if usual:
+        opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01, betas=(0.9, 0.95))
+
+        class trainer:  # noqa: N801 - the same two lines as pretrain, in the shape of Direct
+            @staticmethod
+            def step(loss, rate):
+                opt.zero_grad(set_to_none=True)
+                loss.backward()
+                nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                opt.step()
+                return 0.0
+    else:
+        trainer = Direct(model, seed=seed, votes=votes, strong=strong, leak=leak, agree=agree)
+    rnd, t0, steps, losses, jumps = random.Random(seed), time.time(), 0, [], []
+    while time.time() - t0 < minutes * 60:
+        done = (time.time() - t0) / (minutes * 60)
+        at = [rnd.randrange(0, len(data) - CTX - 1) for _ in range(batch)]
+        x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
+        loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
+        jumps.append(trainer.step(loss, rate * (1 - 0.95 * done)))
+        steps += 1
+        losses.append(loss.item())
+        if steps % 100 == 0:
+            log(f"[scratch] direct, step {steps}: loss {sum(losses[-100:]) / 100:.3f}, {sum(jumps[-100:]) / 100:.2%} of the "
+                f"three-valued weights jump a step", flush=True)
+    torch.save(model.state_dict(), HOME / f"{name}.pt")
+    out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
+           "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes}; strong {strong}, leak {leak}, agree {agree})" if votes else "direct" if rate else "direct with no jumps"}
+    _record(**{name: out})
+    return out
+
+
+SHARED = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
+
+
+def pack(model):
+    """A BitNet cell as it is stored: for each of its three-valued layers the one number and two bit-planes (where
+    the weight is +1, where it is -1); the few other numbers (norms, biases) in 16 bits. The table of word pieces is
+    not stored: every cell has the stem cell's. About half a megabyte for 1.8 million weights."""
+    import numpy as np
+    out = {}
+    for name, p in model.state_dict().items():
+        if name.startswith(SHARED):
+            continue
+        if name.startswith("blocks.") and name.endswith(".weight") and p.dim() == 2:
+            scale = p.abs().mean().clamp(min=1e-5)
+            t = (p / scale).round().clamp(-1, 1)
+            out[name] = {"scale": float(scale), "shape": list(p.shape), "plus": np.packbits((t == 1).numpy()),
+                         "minus": np.packbits((t == -1).numpy())}
+        else:
+            out[name] = p.to(torch.float16)
+    return out
+
+
+def unpack(packed, stem_state):
+    """The weights of a stored BitNet cell. A three-valued layer comes back as its values times a number chosen so
+    that rounding it again gives exactly the same layer (the layer's one number divided by the share of weights
+    that are not zero)."""
+    import numpy as np
+    state = {k: v for k, v in stem_state.items() if k.startswith(SHARED)}
+    for name, v in packed.items():
+        if isinstance(v, dict):
+            n = v["shape"][0] * v["shape"][1]
+            t = (np.unpackbits(v["plus"])[:n].astype("float32") - np.unpackbits(v["minus"])[:n].astype("float32")).reshape(v["shape"])
+            share = max(float(np.abs(t).mean()), 1e-5)
+            state[name] = torch.from_numpy(t) * (v["scale"] / share)
+        else:
+            state[name] = v.to(torch.float32)
+    return state
+
+
+def save_cell(model, path):
+    torch.save(pack(model) if model.bit else model.state_dict(), path)
+
+
+def load_cell(path, labels=0):
+    """A cell from its file: a BitNet cell is unpacked onto the stem cell's table of word pieces."""
+    got = torch.load(path, weights_only=False)
+    packed = any(isinstance(v, dict) for v in got.values())
+    m = Tiny(labels, bit=packed)
+    m.load_state_dict(unpack(got, torch.load(HOME / "base.pt")) if packed else got)
+    return m
+
+
+def to_bitnet(minutes=30.0):
+    """The stem cell becomes a BitNet. Its ordinary weights are kept as what it is trained on underneath; from now on
+    it works in three values, and it goes on reading the harvest that way for so many minutes, so that it learns to
+    do with three values what it did with many. The stem cell as it was stays in base_full.pt. Every cell grown
+    after this is a BitNet cell; cells grown before are of the other kind and are put away."""
+    import shutil
+    if not is_bit():
+        shutil.copyfile(HOME / "base.pt", HOME / "base_full.pt")
+        old = HOME / "body"
+        if old.exists():
+            shutil.rmtree(HOME / "body_full", ignore_errors=True)
+            old.rename(HOME / "body_full")
+        (HOME / "stem.json").write_text(json.dumps({"bit": True, "since": time.strftime("%Y-%m-%d %H:%M"),
+                                                    "loss_before": _record().get("pretrain_loss")}, indent=1))
+    out = pretrain(minutes)
+    kind = json.loads((HOME / "stem.json").read_text())
+    kind.update(loss_now=out.get("pretrain_loss"), steps=out.get("pretrain_steps"))
+    (HOME / "stem.json").write_text(json.dumps(kind, indent=1))
+    return out
 
 
 def tokenizer(train=False):
@@ -115,23 +345,33 @@ def _record(**new):
 
 
 def corpus(tk):
-    """The harvest as one long row of pieces (kept on disk; made again when the harvest has grown)."""
+    """The harvest as one long row of pieces, kept on disk. It only ever grows at its end: when the harvest has new
+    text (a longer file, a new source), only the new part is turned into pieces and added. What was at a place stays
+    at that place, so the windows the cells' territories and the held-out passages are made of never move."""
     import numpy as np
     from team import harvest
+    f, rec = HOME / "corpus.u16", _record()
+    done = rec.get("corpus_files")
     files = harvest.files()
-    size = sum(p.stat().st_size for p in files)
-    f = HOME / "corpus.u16"
-    if not f.exists() or _record().get("corpus_bytes") != size:
-        with open(f, "wb") as out:
-            for p in files:
-                with open(p, encoding="utf-8", errors="replace") as fh:
-                    while True:
-                        lines = fh.readlines(4_000_000)
-                        if not lines:
-                            break
-                        for e in tk.encode_batch(lines):
-                            np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
-        _record(corpus_bytes=size, corpus_pieces=f.stat().st_size // 2)
+    if done is None:  # a corpus made before this record was kept: everything there was read, in this order
+        done = {p.name: p.stat().st_size for p in files} if f.exists() and rec.get("corpus_bytes") else {}
+    grew = False
+    with open(f, "ab") as out:
+        for p in sorted(files, key=lambda p: (p.name not in done, p.name)):
+            at, size = done.get(p.name, 0), p.stat().st_size
+            if size <= at:
+                continue
+            with open(p, "rb") as fh:
+                fh.seek(at)
+                while True:
+                    lines = [ln.decode("utf-8", errors="replace") for ln in fh.readlines(4_000_000)]
+                    if not lines:
+                        break
+                    for e in tk.encode_batch(lines):
+                        np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
+            done[p.name], grew = size, True
+    if grew or rec.get("corpus_files") is None:
+        _record(corpus_files=done, corpus_bytes=sum(done.values()), corpus_pieces=f.stat().st_size // 2)
     return np.memmap(f, dtype=np.uint16, mode="r")
 
 
@@ -380,6 +620,14 @@ def together(talk=False, plain=False, epochs=12, batch=32, seed=0, log=print, tr
     res["_" + key] = {"jobs": len(data), "weights": sum(p.numel() for p in model.parameters()), "mean_dev": round(best[0], 4),
                       "mean_test": round(sum(te.values()) / len(te), 4), "seconds": round(time.time() - t0)}
     f.write_text(json.dumps(res, indent=1))
+    if not plain:  # this brain goes to work: it holds each job where it scored at least as well as the present holder
+        from team.cells import tiny, use
+        torch.save(model.state_dict(), HOME / "brain.pt")
+        (HOME / "brain.json").write_text(json.dumps({"jobs": {k: v[3] for k, v in data.items()}, "talk": talk,
+                                                     "trunk": trunk, "test": {k: round(v, 4) for k, v in te.items()}}, indent=1))
+        held = tiny.decide_holds(te, use.wins())
+        (HOME / "holds.json").write_text(json.dumps(held, indent=1))
+        log(f"[scratch] the brain holds {len(held)} of {len(data)} jobs: {', '.join(held) or 'none'}", flush=True)
     log(f"[scratch] {key}: {len(data)} jobs in one model of {res['_' + key]['weights'] / 1e6:.2f}M weights, mean test "
         f"{res['_' + key]['mean_test']:.3f} (mean dev {best[0]:.3f}), {res['_' + key]['seconds']} s", flush=True)
     return res["_" + key]
@@ -412,6 +660,12 @@ def main(argv):
     cmd = argv[0] if argv else ""
     if cmd == "tokenizer":
         tokenizer(train=True)
+    elif cmd == "direct":
+        print(json.dumps(pretrain_direct(opt("--minutes", 20.0), opt("--rate", 0.003), name=opt("--name", "base_direct"),
+                                         usual="--usual" in argv, votes=opt("--votes", 0), strong=opt("--strong", 0.5),
+                                         leak=opt("--leak", 0), agree="--agree" in argv)))
+    elif cmd == "bitnet":
+        print(json.dumps(to_bitnet(opt("--minutes", 30.0))))
     elif cmd == "pretrain":
         print(json.dumps(pretrain(opt("--minutes", 60.0))))
     elif cmd == "fit":
