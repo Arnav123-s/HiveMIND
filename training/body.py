@@ -984,6 +984,16 @@ def hive_measure(n=300, log=print):
 # How a new body's stem cell is made (measured: training/reports/bitnet_recipe.json): its shape (scratch.kind), its
 # rate, the share of its run over which the rounding to three values is eased in, and how much of its loss is what
 # the first body's stem cell expects next (0: no teacher).
+TURNS = "bodies_turns.json"  # when each body last had its turn
+
+
+def _turned():
+    try:
+        return {str(k): float(v) for k, v in json.loads((T.SHARED / TURNS).read_text()).items()}
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
 NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0}
 
 
@@ -1010,12 +1020,16 @@ def found(name, minutes=40.0, sample=8000, log=print):
     return name
 
 
-def hive_turn(minutes=10.0, births=3, log=print):
+def hive_turn(minutes=10.0, births=3, log=print, budget=0.0):
     """One turn of the whole hive with nobody watching: every body takes its own turn (it multiplies); a new body is
     founded when the bodies there are have grown enough (one more body for every eight living cells); and the hive
-    is measured, each body alone and all as one."""
+    is measured, each body alone and all as one.
+    budget: minutes the turn may take (0: as long as it takes). With a budget the bodies go in the order of who
+    waited longest and the turn stops giving turns when the time is used, so a hive of any size fits a run that is
+    cut off after some hours; a body that is due is founded first, and the measurement is always made."""
     import os
     import subprocess
+    t0, turned = time.time(), _turned()
     names = bodies()
     for b in names[1:]:  # regeneration of a whole body: one whose stem cell and its copy are both gone is founded again
         home = T.SHARED / "bodies" / b
@@ -1023,12 +1037,17 @@ def hive_turn(minutes=10.0, births=3, log=print):
             log(f"[hive] regeneration: body {b!r} was lost and is founded again", flush=True)
             (T.SHARED / "bodies.json").write_text(json.dumps([x for x in names if x != b]))
             found(b, log=log)
-    for b in names:
-        subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
-                       cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
     alive = sum(len(list((T.SHARED / ("bodies/" + b if b else "") / "body").glob("cell_*.pt"))) for b in names)
     if len(names) < 1 + alive // 8:
-        found(f"b{len(names) + 1}", log=log)
+        names.append(found(f"b{len(names) + 1}", log=log))
+    for i, b in enumerate(sorted(names, key=lambda b: turned.get(b, 0))):  # who waited longest goes first
+        if budget and i and (time.time() - t0) / 60 > budget:
+            log(f"[hive] the time for this turn is used: {len(names) - i} of {len(names)} bodies wait for the next", flush=True)
+            break
+        subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
+                       cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
+        turned[b] = time.time()
+        (T.SHARED / TURNS).write_text(json.dumps(turned))
     return hive_measure(log=log)
 
 
@@ -1060,7 +1079,7 @@ def main(argv):
     elif cmd == "found":
         found(argv[1], opt("--minutes", 40.0))
     elif cmd == "hive":
-        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3))))
+        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3), budget=opt("--budget", 0.0))))
     elif cmd == "hive-measure":
         print(json.dumps(hive_measure()))
     elif cmd == "turn":

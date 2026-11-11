@@ -32,3 +32,5 @@ cells/scratch/corpus.json
 cells/scratch/bodies/
 cells/scratch/bodies.json
 cells/scratch/bodies_rule.json
+cells/scratch/bodies_turns.json
+hive-state.tar.gz
