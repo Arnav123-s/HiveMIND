@@ -23,8 +23,9 @@ Updated 2026-11-10 (evening UTC). PR #6 is merged into `main` on his approval. W
 - Lessons about this machine: never run two trainings at once (four cores, the threads fight: a 6-minute run took
   an hour); a background job is cut at two hours, so make experiments resumable (results appended as each ends).
 - Open next: build in two three-valued layers per cell (stored exactly); the rate at which newborn cells are grown
-  (being tested); a say that changes piece by piece (the best member per piece reads 1.86 where the learned
-  rule reads 2.29: the largest gap left in hiving); measuring on text harvested after every stem cell was made.
+  (being tested); a say that changes piece by piece (the best member per piece, picked knowing the answer, reads 1.86 where
+  the learned rule reads 2.29: a ceiling, not a target; a first try with each member's confidence as the signal
+  gained 0.008); measuring on text harvested after every stem cell was made.
 
 **Arnav's direction now (2026-11-10, his words in short):** the codebase is the agent's to run; full approval to act
 freely. What he wants is a hive of a great many small specialist models that together are highly capable, follow
