@@ -932,12 +932,31 @@ loses nothing, and a hive is never saved over one it did not come from or smalle
   passages every time, from the text as it was on 2026-11-11 (`body.YARD`). Only the yardstick says whether the
   hive got better. In the rehearsal the hive harvested 34 MB by itself (a stories set its scouts had found, and more
   Wikipedia) and read 2.6772 as one on all its text, new text included.
+- *The hive writes.* `python training/body.py write "Once upon a time"`: at every piece the stem cell and the cells
+  nearest to the text so far say what they expect, weighed by how each has fitted the text so far, and the next
+  piece is drawn from what they say together (`body.write`). Every measurement keeps what the best body writes
+  from the same two beginnings, and the release notes show it, so growth can be read and not only counted. The
+  first body, 2026-11-11: "Once upon a time there was a little girl named Lily. She was only three years old and
+  loved to play at the park. One day, she noticed something strange on the ground."
+- *The hive finds its own recipe* (`body.next_recipe`, `cells/scratch/recipes.json`). Every founding is an
+  experiment: the new body's stem cell is made with the best recipe so far with one thing changed (the rate, the
+  easing, the warm-up, the batch, the width, the depth), for the same minutes, and is then read on the same held
+  windows as every stem cell before it. The body is kept whatever comes of it; the recipe becomes the one to beat
+  only if its stem cell reads better than any before. A recipe changed by hand (`NEW_BODY`) is tried once as it
+  stands, then competes. So what was done by hand on 2026-11-11 the hive goes on doing by itself.
+- A body whose turn fails, or a founding that fails, is said aloud and makes the run show red, and the other bodies
+  still take their turns and are saved.
+- Two faults were found by rehearsing the run in a fresh clone with only the packages the run installs, and fixed
+  before it ever ran: a body other than the first learned the hive's vocabulary again at every turn (harmless
+  while the text was unchanged, ruin once the harvest grew: every cell would have read noise; `scratch.tokenizer`
+  now never learns it again once a stem cell exists), and the text kept as pieces was trusted even when it did not
+  match its book (now checked and made again).
 - Bring the grown hive to any device: `python training/hive_state.py pull` (it does not overwrite a hive that has
   as many living cells or more). `setup.sh` does this once at install.
 - Run a turn by hand: the repository's Actions tab, "The hive grows", "Run workflow".
 - Stop it: disable that workflow in the Actions tab.
-- Not confirmed until its first run on GitHub: the run itself. Rehearsed here in a fresh clone (fetch, harvest,
-  turn, pack). GitHub switches a schedule off after 60 days without a commit; the line the run adds to the growth
+- Not confirmed until its first run on GitHub: the run itself, and the upload to the release. Rehearsed here in a
+  fresh clone with only the packages the run installs (fetch, harvest, a founding, turns, measurement, pack). GitHub switches a schedule off after 60 days without a commit; the line the run adds to the growth
   record is a commit, which should keep it on.
 
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
