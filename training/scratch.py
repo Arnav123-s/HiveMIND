@@ -45,7 +45,9 @@ import torch.nn.functional as F
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-HOME = ROOT / "cells" / "scratch"
+SHARED = ROOT / "cells" / "scratch"  # what every body of the hive shares: the vocabulary and the harvested text as pieces
+BODY = __import__("os").environ.get("HIVE_BODY", "")  # which body this process works on ("": the first one)
+HOME = SHARED / "bodies" / BODY if BODY else SHARED  # that body's own stem cell, cells and records
 VOCAB, DIM, LAYERS, HEADS, CTX = 4096, 192, 4, 4, 256
 PAD, BOS = 0, 1
 
@@ -200,7 +202,7 @@ class Direct:
 
 
 def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
-                    strong=0.5, leak=0, agree=False):
+                    strong=0.5, leak=0, agree=False, hard=None):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
@@ -227,6 +229,8 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     while time.time() - t0 < minutes * 60:
         done = (time.time() - t0) / (minutes * 60)
         at = [rnd.randrange(0, len(data) - CTX - 1) for _ in range(batch)]
+        if hard:  # half of what it reads is the text the bodies before it read worst
+            at[:batch // 2] = [rnd.choice(hard) * CTX for _ in range(batch // 2)]
         x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
         loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
         jumps.append(trainer.step(loss, rate * (1 - 0.95 * done)))
@@ -235,6 +239,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
         if steps % 100 == 0:
             log(f"[scratch] direct, step {steps}: loss {sum(losses[-100:]) / 100:.3f}, {sum(jumps[-100:]) / 100:.2%} of the "
                 f"three-valued weights jump a step", flush=True)
+    HOME.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), HOME / f"{name}.pt")
     out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
            "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes}; strong {strong}, leak {leak}, agree {agree})" if votes else "direct" if rate else "direct with no jumps"}
@@ -242,7 +247,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     return out
 
 
-SHARED = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
+TABLE = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
 
 
 def pack(model):
@@ -252,7 +257,7 @@ def pack(model):
     import numpy as np
     out = {}
     for name, p in model.state_dict().items():
-        if name.startswith(SHARED):
+        if name.startswith(TABLE):
             continue
         if name.startswith("blocks.") and name.endswith(".weight") and p.dim() == 2:
             scale = p.abs().mean().clamp(min=1e-5)
@@ -269,7 +274,7 @@ def unpack(packed, stem_state):
     that rounding it again gives exactly the same layer (the layer's one number divided by the share of weights
     that are not zero)."""
     import numpy as np
-    state = {k: v for k, v in stem_state.items() if k.startswith(SHARED)}
+    state = {k: v for k, v in stem_state.items() if k.startswith(TABLE)}
     for name, v in packed.items():
         if isinstance(v, dict):
             n = v["shape"][0] * v["shape"][1]
@@ -317,7 +322,7 @@ def to_bitnet(minutes=30.0):
 
 def tokenizer(train=False):
     from tokenizers import Tokenizer, decoders, models, pre_tokenizers, trainers
-    f = HOME / "tokenizer.json"
+    f = SHARED / "tokenizer.json"
     if f.exists() and not train:
         return Tokenizer.from_file(str(f))
     from team import harvest
@@ -329,7 +334,7 @@ def tokenizer(train=False):
     tk.decoder = decoders.ByteLevel()
     tk.train(files, trainers.BpeTrainer(vocab_size=VOCAB, special_tokens=["<pad>", "<bos>"],
                                         initial_alphabet=pre_tokenizers.ByteLevel.alphabet(), show_progress=False))
-    HOME.mkdir(parents=True, exist_ok=True)
+    SHARED.mkdir(parents=True, exist_ok=True)
     tk.save(str(f))
     print(f"[scratch] vocabulary of {tk.get_vocab_size()} pieces learned from {len(files)} harvested files", flush=True)
     return tk
@@ -345,17 +350,23 @@ def _record(**new):
 
 
 def corpus(tk):
-    """The harvest as one long row of pieces, kept on disk. It only ever grows at its end: when the harvest has new
-    text (a longer file, a new source), only the new part is turned into pieces and added. What was at a place stays
-    at that place, so the windows the cells' territories and the held-out passages are made of never move."""
+    """The harvest as one long row of pieces, kept on disk and shared by every body. It only ever grows at its end:
+    when the harvest has new text (a longer file, a new source), only the new part is turned into pieces and added.
+    What was at a place stays at that place, so the windows the cells' territories and the held-out passages are
+    made of never move. (What has been read in is written in cells/scratch/corpus.json.)"""
     import numpy as np
     from team import harvest
-    f, rec = HOME / "corpus.u16", _record()
-    done = rec.get("corpus_files")
+    f, book = SHARED / "corpus.u16", SHARED / "corpus.json"
+    try:
+        done = json.loads(book.read_text())
+    except (OSError, ValueError):
+        old = json.loads((SHARED / "record.json").read_text()) if (SHARED / "record.json").exists() else {}
+        done = old.get("corpus_files")  # kept in the first body's record before there were several bodies
     files = harvest.files()
-    if done is None:  # a corpus made before this record was kept: everything there was read, in this order
-        done = {p.name: p.stat().st_size for p in files} if f.exists() and rec.get("corpus_bytes") else {}
-    grew = False
+    if done is None:  # a corpus made before any record was kept: everything there was read, in this order
+        done = {p.name: p.stat().st_size for p in files} if f.exists() else {}
+    grew = not book.exists()
+    SHARED.mkdir(parents=True, exist_ok=True)
     with open(f, "ab") as out:
         for p in sorted(files, key=lambda p: (p.name not in done, p.name)):
             at, size = done.get(p.name, 0), p.stat().st_size
@@ -370,8 +381,8 @@ def corpus(tk):
                     for e in tk.encode_batch(lines):
                         np.asarray([BOS] + e.ids, dtype=np.uint16).tofile(out)
             done[p.name], grew = size, True
-    if grew or rec.get("corpus_files") is None:
-        _record(corpus_files=done, corpus_bytes=sum(done.values()), corpus_pieces=f.stat().st_size // 2)
+    if grew:
+        book.write_text(json.dumps(done, indent=1))
     return np.memmap(f, dtype=np.uint16, mode="r")
 
 

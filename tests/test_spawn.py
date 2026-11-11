@@ -534,6 +534,7 @@ def test_the_corpus_only_grows_at_its_end_so_no_window_moves(tmp_path, monkeypat
     shelf.mkdir()
     monkeypatch.setattr(harvest, "HOME", shelf)
     monkeypatch.setattr(T, "HOME", tmp_path)
+    monkeypatch.setattr(T, "SHARED", tmp_path)                                          # never the hive's real text
     (shelf / "b.txt").write_text("The first shelf has one line about a river.\n")
     first = np.array(T.corpus(tk)).copy()
     (shelf / "b.txt").write_text("The first shelf has one line about a river.\nAnd now a second line about a bridge.\n")
@@ -711,3 +712,18 @@ def test_the_immune_check_of_a_big_body_judges_a_cell_where_it_was_awake(tmp_pat
     second[6:, 1] = -4.0                                                                 # cell 3 reads its passages badly: the body is better without it
     out = B.immune_near(Fake(), first, second, who, log=lambda *a, **k: None)
     assert out["cell"] == 3 and not (tmp_path / "cell_03.pt").exists() and (tmp_path / "cell_01.pt").exists()
+
+
+def test_bodies_read_as_one_and_the_one_that_fits_has_the_say():
+    import torch
+    from training import body as B
+    pieces = B.W // 2
+    fits = (torch.tensor([1.0, 1.0]), torch.full((2, pieces), -1.0))                     # this body knows these passages
+    lost = (torch.tensor([9.0, 9.0]), torch.full((2, pieces), -6.0))                     # this one does not
+    assert torch.allclose(B.together([fits, lost]), torch.tensor([1.0, 1.0]), atol=1e-3)
+    half = (torch.tensor([1.0, 9.0]), torch.stack([torch.full((pieces,), -1.0), torch.full((pieces,), -6.0)]))
+    other = (torch.tensor([9.0, 1.0]), torch.stack([torch.full((pieces,), -6.0), torch.full((pieces,), -1.0)]))
+    one = B.together([half, other])                                                     # each covers what the other misses
+    assert torch.allclose(one, torch.tensor([1.0, 1.0]), atol=1e-3)
+    assert -half[1].mean().item() > 3 and -other[1].mean().item() > 3 and one.mean().item() < 1.1
+    assert B.bodies()[0] == ""
