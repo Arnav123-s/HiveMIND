@@ -43,7 +43,8 @@ sys.path.insert(0, str(ROOT))
 from training import scratch as T  # noqa: E402
 
 HOME = T.HOME / "body"
-REPORT = ROOT / "training" / "reports" / "body.json"
+REPORT = ROOT / "training" / "reports" / (f"body_{T.BODY}.json" if T.BODY else "body.json")  # each body keeps its own record
+HIVE = ROOT / "training" / "reports" / "hive_of_bodies.json"
 W = T.CTX  # one window of text
 HELD = 40  # every 40th window is never trained on here
 
@@ -717,6 +718,107 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     return line
 
 
+# ---- a hive of bodies ------------------------------------------------------------------------------------------------
+# His picture (2026-11-11): the whole is not one body. It is made of bodies that never stop growing, many alike or
+# overlapping, each with weaknesses the others do not have, each covering what another misses. So the same rule that
+# holds between cells holds between bodies: each body has its own stem cell and its own cells and grows on its own
+# turns; a passage is read by every body, and a body that fits it gets more say; and a new body is founded on what
+# the bodies there are read worst. All bodies share one vocabulary and one harvest, so their readings can be put
+# together. A body lives in cells/scratch/bodies/<name>/ (the first one in cells/scratch/), and a process works on
+# the body named in HIVE_BODY.
+def bodies():
+    """The names of the bodies there are, the first one ("") first."""
+    try:
+        return json.loads((T.SHARED / "bodies.json").read_text())
+    except (OSError, ValueError):
+        return [""]
+
+
+def readings(windows):
+    """This body reading these passages as one: (how it fitted the first half [n], its log-probability of every piece
+    of the second half [n, pieces]). Its members are weighed by fit among themselves; the body's own fit is its best
+    member's."""
+    first, second, _ = Body().read(_data(), windows)
+    w = torch.softmax(-first * (W // 2), 1)
+    return first.min(1).values, torch.logsumexp(second + w.log()[:, :, None], 1)
+
+
+def _ask(name, windows, tag):
+    """Another body's readings, from a process of its own (a body's folder is chosen when its process starts)."""
+    import os
+    import subprocess
+    tmp = T.SHARED / "bodies"
+    tmp.mkdir(parents=True, exist_ok=True)
+    wf, of = tmp / f".{tag}_windows.json", tmp / f".{tag}_{name or 'first'}.pt"
+    wf.write_text(json.dumps(windows))
+    subprocess.run([sys.executable, str(Path(__file__)), "readings", str(wf), str(of)], cwd=ROOT, check=True,
+                   env={**os.environ, "HIVE_BODY": name}, capture_output=True)
+    out = torch.load(of)
+    of.unlink()
+    return out["first"], out["second"]
+
+
+def together(reads):
+    """The bodies reading as one: each body's reading of the second half, weighed by how it fitted the first half.
+    reads: [(first [n], second [n, pieces])]. Returns the loss on each passage."""
+    first = torch.stack([f for f, _ in reads], 1)
+    second = torch.stack([s2 for _, s2 in reads], 1)
+    return fit_loss(first, second)
+
+
+def hive_measure(n=300, log=print):
+    """Each body alone and all of them as one, on report passages nobody trained on."""
+    data = _data()
+    held = _held(data, "report", n)
+    names = [b for b in bodies() if (T.SHARED / ("bodies/" + b if b else "") / "body" / "territories.pt").exists()]
+    reads = [_ask(b, held, "measure") for b in names]
+    res = {"bodies": {b or "first": round(-s2.mean().item(), 4) for b, (_, s2) in zip(names, reads)},
+           "as_one": round(together(reads).mean().item(), 4), "passages": len(held), "when": time.strftime("%Y-%m-%d %H:%M")}
+    hist = json.loads(HIVE.read_text()) if HIVE.exists() else []
+    HIVE.write_text(json.dumps(hist + [res], indent=1))
+    log(f"[hive] {len(names)} bodies on {len(held)} passages nobody trained on: each alone {res['bodies']}, as one {res['as_one']}", flush=True)
+    return res
+
+
+def found(name, minutes=40.0, sample=8000, log=print):
+    """A new body is founded on what the bodies there are read worst. Its stem cell starts from random three-valued
+    weights of its own and reads the harvest with half of every batch taken from the worse-read half of a sample of
+    windows; so it is a generalist that leans toward the others' weaknesses. Its cells then grow on its own turns."""
+    import os
+    import subprocess
+    data = _data()
+    rnd = random.Random(name)
+    pick = rnd.sample([i for i in range(_windows(data)) if i % HELD], sample)
+    loss = together([_ask(b, pick, "found") for b in bodies()])
+    hard = [i for _, i in sorted(zip(loss.tolist(), pick), reverse=True)[:sample // 2]]
+    home = T.SHARED / "bodies" / name
+    home.mkdir(parents=True, exist_ok=True)
+    (home / ".hard.json").write_text(json.dumps(hard))
+    subprocess.run([sys.executable, str(Path(__file__)), "stem", str(home / ".hard.json"), str(minutes)], cwd=ROOT, check=True,
+                   env={**os.environ, "HIVE_BODY": name})
+    (T.SHARED / "bodies.json").write_text(json.dumps(bodies() + [name]))
+    log(f"[hive] body {name!r} founded: its stem cell read for {minutes:.0f} minutes, half of it the {len(hard)} windows "
+        f"the other bodies read worst (their loss there {sum(sorted(loss.tolist())[-len(hard):]) / len(hard):.3f}, "
+        f"on all {loss.mean().item():.3f})", flush=True)
+    return name
+
+
+def hive_turn(minutes=10.0, births=3, log=print):
+    """One turn of the whole hive with nobody watching: every body takes its own turn (it multiplies); a new body is
+    founded when the bodies there are have grown enough (one more body for every eight living cells); and the hive
+    is measured, each body alone and all as one."""
+    import os
+    import subprocess
+    names = bodies()
+    for b in names:
+        subprocess.run([sys.executable, str(Path(__file__)), "turn", "--minutes", str(minutes), "--births", str(births)],
+                       cwd=ROOT, env={**os.environ, "HIVE_BODY": b})
+    alive = sum(len(list((T.SHARED / ("bodies/" + b if b else "") / "body").glob("cell_*.pt"))) for b in names)
+    if len(names) < 1 + alive // 8:
+        found(f"b{len(names) + 1}", log=log)
+    return hive_measure(log=log)
+
+
 def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
@@ -731,6 +833,19 @@ def main(argv):
         measure()
     elif cmd == "grow":
         grow(opt("--minutes", 10.0))
+    elif cmd == "readings":  # for another process: this body's readings of the windows in a file
+        first, second = readings(json.loads(Path(argv[1]).read_text()))
+        torch.save({"first": first, "second": second}, argv[2])
+    elif cmd == "stem":  # for found: this body's stem cell, from random three-valued weights
+        T.pretrain_direct(float(argv[2]), usual=True, name="base", hard=json.loads(Path(argv[1]).read_text()),
+                          seed=sum(map(ord, T.BODY)))
+        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, "since": time.strftime("%Y-%m-%d %H:%M"), "founded_on": "the other bodies' worst-read windows"}))
+    elif cmd == "found":
+        found(argv[1], opt("--minutes", 40.0))
+    elif cmd == "hive":
+        print(json.dumps(hive_turn(opt("--minutes", 10.0), opt("--births", 3))))
+    elif cmd == "hive-measure":
+        print(json.dumps(hive_measure()))
     elif cmd == "turn":
         print(turn(opt("--minutes", 10.0), opt("--cells", 6), births=opt("--births", 3)))
     else:
