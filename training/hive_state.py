@@ -5,28 +5,34 @@ the last measurements. What is left out can be made again from these (the text s
 hive (bodies put away).
 
   python training/hive_state.py pack [file]          write the state to a file; prints a short account of it
+  python training/hive_state.py save                  pack it and put it where the hive grows from next time (the
+                                                      release "hive-state"); only inside a run on GitHub, which has
+                                                      the token for it. The two newest states are kept.
   python training/hive_state.py pull [--force] [file] bring the hive here: from a file, else from where the hive
-                                                      grows on GitHub (the release "hive-state"), else from the
-                                                      seed (the branch "hive-seed"). It is not unpacked over a hive
-                                                      that has as many living cells or more, unless --force.
+                                                      grows on GitHub (the newest state of the release), else from
+                                                      the seed (the branch "hive-seed"). It is not unpacked over a
+                                                      hive that has as many living cells or more, unless --force.
   python training/hive_state.py log                   one line on the hive as it is, added to the record of its
                                                       growth (training/reports/hive_growth.jsonl)
 
 Nothing here logs in or needs a token: a public repository's release is fetched over plain HTTPS."""
 import io
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 import tarfile
 import tempfile
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-REPO, RELEASE, SEED, NAME = "Arnav123-s/HiveMIND", "hive-state", "hive-seed", "hive-state.tar.gz"
+REPO, RELEASE, SEED, NAME = "Arnav123-s/HiveMIND", "hive-state", "hive-seed", "hive-state.tar.gz"  # NAME: a pack made by hand
 GROWTH = ROOT / "training" / "reports" / "hive_growth.jsonl"
 # what is kept of cells/scratch (everything of a body's own folder is kept, except what is named in LEFT)
 TOP = ("base.pt", "stem.json", "tokenizer.json", "record.json", "corpus.json", "bodies.json", "bodies_rule.json",
@@ -124,16 +130,36 @@ def _repo():
         return REPO
 
 
+def _states():
+    """The states the release holds, newest first: [(name, where to download it)]. Each save has its own name (the
+    time it was made), so a save that is cut off never leaves the hive without a state."""
+    req = urllib.request.Request(f"https://api.github.com/repos/{_repo()}/releases/tags/{RELEASE}",
+                                 headers={"Accept": "application/vnd.github+json", "User-Agent": "hive"})
+    if os.environ.get("GH_TOKEN"):
+        req.add_header("Authorization", f"Bearer {os.environ['GH_TOKEN']}")
+    with urllib.request.urlopen(req, timeout=60) as r:
+        assets = json.loads(r.read()).get("assets", [])
+    return sorted(((a["name"], a["browser_download_url"]) for a in assets if re.fullmatch(r"hive-state-\d+\.tar\.gz", a["name"])),
+                  reverse=True)
+
+
 def fetch(to, log=print):
-    """The grown hive, from where it grows; else the seed it started from. Returns where it came from, or None."""
-    url = f"https://github.com/{_repo()}/releases/download/{RELEASE}/{NAME}"
+    """The grown hive, from where it grows (its newest state that can be read; else the one before); else the seed it
+    started from. Returns where it came from, or None."""
     try:
-        with urllib.request.urlopen(url, timeout=60) as r, open(to, "wb") as f:
-            while chunk := r.read(1 << 20):
-                f.write(chunk)
-        return url
-    except OSError as e:
-        log(f"[hive] no grown hive at {url} ({type(e).__name__}); trying the seed", flush=True)
+        states = _states()
+    except (OSError, ValueError) as e:
+        states = []
+        log(f"[hive] no grown hive on the release {RELEASE!r} ({type(e).__name__}); trying the seed", flush=True)
+    for name, url in states:
+        try:
+            with urllib.request.urlopen(url, timeout=120) as r, open(to, "wb") as f:
+                while chunk := r.read(1 << 20):
+                    f.write(chunk)
+            _manifest_of(to)
+            return f"{RELEASE}/{name}"
+        except (OSError, ValueError, tarfile.TarError, EOFError) as e:
+            log(f"[hive] the state {name} could not be read ({type(e).__name__}); trying the one before", flush=True)
     got = subprocess.run(["git", "fetch", "-q", "--depth", "1", "origin", SEED], cwd=ROOT, capture_output=True, text=True)
     if got.returncode:
         log(f"[hive] no seed either (branch {SEED!r}): {got.stderr.strip()[:120]}", flush=True)
@@ -157,8 +183,67 @@ def pull(path=None, force=False, log=print):
             return (f"left as it is: the hive here has {mine['cells']} living cells, the one from {where} has "
                     f"{theirs['cells']} (use --force to take it anyway)")
         n = unpack(path)
+        (_homes()["scratch"] / CAME).write_text(json.dumps(theirs))  # what this hive came from: save never puts less back
         return (f"the hive from {where} is here: {theirs['bodies']} bodies, {theirs['cells']} living cells, "
                 f"{theirs['harvest_mb']} MB of text, as one {theirs['as_one']} ({n} files)")
+
+
+CAME = ".came_from.json"  # beside the bodies: the manifest of the state this hive was unpacked from
+
+
+def _shrunk(m):
+    """Why this hive must not be put over the one on the release, or None. A hive is never saved smaller than what
+    it came from (a run whose fetch went wrong would otherwise put an empty hive over the grown one), and a hive
+    that did not come from the release is not put over one that is there."""
+    try:
+        was = json.loads((_homes()["scratch"] / CAME).read_text())
+    except (OSError, ValueError):
+        try:
+            there = bool(_states())
+        except urllib.error.HTTPError as e:
+            there = e.code != 404  # 404: no release yet, this is the first hive
+        except (OSError, ValueError):
+            there = True  # it cannot be seen: assume the grown hive is there
+        return "it was not fetched from the release, and the release holds a hive" if there else None
+    if m["bodies"] < was.get("bodies", 0) or m["cells"] < was.get("cells", 0) / 2:
+        return (f"it has {m['bodies']} bodies and {m['cells']} living cells; it came from one with "
+                f"{was.get('bodies')} and {was.get('cells')}")
+    return None
+
+
+def save(log=print):
+    """Pack the hive and put it on the release, under a name of its own; then the states older than the two newest
+    are removed. Needs the GitHub command line and a token (a run on GitHub has both); without them it only packs.
+    Returns the manifest; a failed upload is said, not raised: the hive goes on."""
+    name = f"hive-state-{int(time.time())}.tar.gz"
+    with tempfile.TemporaryDirectory() as tmp:
+        m = pack(Path(tmp) / name)
+        note = Path(tmp) / "notes.md"
+        note.write_text(notes(m))
+        if not os.environ.get("GH_TOKEN") or shutil.which("gh") is None:
+            log("[hive] packed, not uploaded: this is not a run on GitHub (no token, or no gh)", flush=True)
+            return m
+        why = _shrunk(m)
+        if why:
+            log(f"[hive] NOT saved over the hive on the release: {why}", flush=True)
+            return m
+
+        def gh(*a):
+            return subprocess.run(["gh", *a], cwd=ROOT, capture_output=True, text=True)
+        if gh("release", "view", RELEASE).returncode:
+            gh("release", "create", RELEASE, "--title", "The hive as it is now", "--notes-file", str(note))
+        up = gh("release", "upload", RELEASE, str(Path(tmp) / name))
+        if up.returncode:
+            log(f"[hive] the state could not be uploaded: {up.stderr.strip()[:200]}", flush=True)
+            return m
+        gh("release", "edit", RELEASE, "--notes-file", str(note))
+        try:
+            for old, _ in _states()[2:]:
+                gh("release", "delete-asset", RELEASE, old, "--yes")
+        except (OSError, ValueError):
+            pass
+    log(f"[hive] saved as {name}: {m['bodies']} bodies, {m['cells']} living cells", flush=True)
+    return m
 
 
 def notes(m):
@@ -196,6 +281,8 @@ def main(argv):
     cmd = argv[0] if argv else ""
     if cmd == "pack":
         print(notes(pack(argv[1] if len(argv) > 1 else NAME)))
+    elif cmd == "save":
+        print(notes(save(log=lambda *a, **k: print(*a, file=sys.stderr, **k))))
     elif cmd == "pull":
         rest = [a for a in argv[1:] if a != "--force"]
         print(pull(rest[0] if rest else None, force="--force" in argv))
