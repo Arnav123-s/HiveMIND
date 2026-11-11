@@ -10,6 +10,8 @@ A model trained from scratch knows no words until it has read some. Nobody hands
   trickle: the API allows about two requests a minute).
 - new sources it finds itself: on every harvest one scout looks on Hugging Face for a text dataset it has not seen,
   and lets it in only if it is open, small enough, and reads like running text (scout, readable). --no-scout: not now.
+- dreams: the hive's own small member writes practice passages on the kind of text its body reads worst, harder
+  after every forty (dream). --no-dream: not now.
 Lines are kept once. The harvest lives in memory/harvest/ (not in git: each machine harvests its own); what was
 gathered is recorded in memory/harvest/record.json. A later run adds to it.
 """
@@ -278,6 +280,43 @@ def scout(log=print, tries=8):
     return found
 
 
+# ---- dreams: the hive writes its own practice text, aimed at what its body reads worst --------------------------------
+DREAMER = """You write practice reading for a very small language model that is learning to read. You are shown a \
+passage it found hard. Write ONE new passage on the same kind of subject, in plain running sentences: no title, no \
+list, no questions to the reader. About 120 words."""
+LEVELS = ["Use short sentences and common words, as for a child.",
+          "Explain one thing clearly, in a few connected sentences.",
+          "Explain it and give the reason for it and one example.",
+          "Work through a small problem step by step, each step following from the one before.",
+          "Compare two things, say how they differ and why, and end with a conclusion."]
+PER_LEVEL = 40
+
+
+def dream(n=12, log=print):
+    """The hive's own small member writes n practice passages on the kind of text its body reads worst (the passage
+    the body's last turn recorded: training/reports/body.json, "weakest"). The dreams get harder: after every
+    PER_LEVEL of them the next level of LEVELS is asked for. Each dream passes the same line filter as all harvested
+    text and goes to the shelf "dreams"; in the body it lies in no territory yet, so the scouts find it.
+    A dream is as good as the member that writes it: this gives text aimed at a weakness, not a great amount of it."""
+    from . import llm
+    try:
+        hard = json.loads((config.ROOT / "training" / "reports" / "body.json").read_text())["weakest"]["text"]
+    except (OSError, ValueError, KeyError):
+        return 0
+    rec, shelf = _record(), _Shelf("dreams")
+    done = rec.get("dreams", 0)
+    for i in range(n):
+        level = min(len(LEVELS) - 1, (done + i) // PER_LEVEL)
+        text = llm.chat("lesson_writer", [{"role": "system", "content": DREAMER},
+                                          {"role": "user", "content": f"The passage it found hard:\n{hard[:900]}\n\n{LEVELS[level]}"}],
+                        max_new_tokens=220, temperature=0.8)
+        shelf.add(text)
+    _record(dreams=done + n, dream_level=min(len(LEVELS), (done + n) // PER_LEVEL + 1), dreams_bytes=shelf.size())
+    log(f"[harvest] dreams: {n} written at level {min(len(LEVELS), (done + n - 1) // PER_LEVEL + 1)} of {len(LEVELS)}, "
+        f"{shelf.added / 1e3:.1f} kB kept, {shelf.size() / 1e3:.1f} kB of dreams in all", flush=True)
+    return shelf.added
+
+
 def files():
     return sorted(HOME.glob("*.txt"))
 
@@ -296,6 +335,11 @@ def main(argv):
         except Exception as e:  # noqa: BLE001 - one source failing does not end the harvest
             rec[repo] = f"failed: {type(e).__name__}: {str(e)[:120]}"
     rec["wikipedia_api_bytes"] = wikipedia(mb, minutes=0 if "--no-trickle" in argv else 10)
+    if "--no-dream" not in argv:
+        try:
+            dream()
+        except Exception as e:  # noqa: BLE001 - no member to dream with (models not downloaded yet) is not a failed harvest
+            print(f"[harvest] dreams: none this time ({type(e).__name__}: {str(e)[:100]})", flush=True)
     _record(**rec)
     print(json.dumps(rec))
     return 0

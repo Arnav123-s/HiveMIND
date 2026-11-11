@@ -546,6 +546,14 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print):
     where = torch.cat([(place(stem, torch.stack([_window(data, i)[:-1] for i in gate[j:j + 64]])) @ terr["centre"][:-1].T).argmax(1)
                        for j in range(0, len(gate), 64)])
     kept, why = judge(before, after, where, sorted(set(where.tolist())))
+    try:  # the kind of text the body reads worst, for the hive's dreams (team/harvest.py, dream)
+        by = {t: before[where == t].mean().item() for t in set(where.tolist()) if (where == t).sum() >= 5}
+        worst = max(by, key=by.get)
+        hardest = max((i for i in range(len(gate)) if where[i] == worst), key=lambda i: before[i].item())
+        _report(weakest={"territory": worst, "loss": round(by[worst], 4),
+                         "text": T.tokenizer().decode(_window(data, gate[hardest])[:W].tolist())})
+    except (ValueError, RuntimeError):
+        pass
     if not kept:
         _remove(k)
     t["births"] += 1
