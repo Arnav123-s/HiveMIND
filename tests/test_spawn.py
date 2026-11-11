@@ -649,3 +649,35 @@ def test_dreams_are_written_on_what_the_body_reads_worst_and_get_harder(tmp_path
     harvest._record(dreams=harvest.PER_LEVEL)
     harvest.dream(n=1, log=lambda *a, **k: None)
     assert harvest.LEVELS[1] in asked[-1]                                                # the next forty are harder
+
+
+def test_the_stem_cell_keeps_what_it_learned_only_if_the_body_is_better_for_it(tmp_path, monkeypatch):
+    import torch
+    from training import body as B
+    from training import scratch as T
+    monkeypatch.setattr(B, "HOME", tmp_path)
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    monkeypatch.setattr(T, "HOME", tmp_path)
+    torch.manual_seed(0)
+    stem = T.Tiny(bit=True)
+    torch.save(stem.state_dict(), tmp_path / "base.pt")
+    monkeypatch.setattr(B, "_stem", lambda: T.Tiny(bit=True))
+    monkeypatch.setattr(B, "_windows", lambda data: 400)
+    froze = {}
+
+    def read(model, data, windows, minutes, seed, lr=5e-4, share_table=True):
+        froze["table"] = not model.tok.weight.requires_grad and not model.pos.weight.requires_grad
+        return 10, 2.0, 2.1
+    monkeypatch.setattr(B, "_read", read)
+    pieces = B.W // 2
+    first = torch.tensor([[1.0, 1.0]] * 6)
+    second = torch.full((6, 2, pieces), -2.0)
+    better = (torch.tensor([[1.0]] * 6), torch.full((6, 1, pieces), -1.0))
+    monkeypatch.setattr(B, "_read_all", lambda cells, data, windows: better)
+    out = B.stem_reads(None, list(range(6)), first, second, log=lambda *a, **k: None)
+    assert out["kept"] and froze["table"] and out["gate_after"] < out["gate_before"]
+    saved = (tmp_path / "base.pt").stat().st_mtime_ns
+    worse = (torch.tensor([[1.0]] * 6), torch.full((6, 1, pieces), -3.0))
+    monkeypatch.setattr(B, "_read_all", lambda cells, data, windows: worse)
+    out = B.stem_reads(None, list(range(6)), first, second, log=lambda *a, **k: None)
+    assert not out["kept"] and (tmp_path / "base.pt").stat().st_mtime_ns == saved      # it stays as it was
