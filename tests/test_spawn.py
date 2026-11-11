@@ -978,9 +978,12 @@ def test_a_hive_turn_keeps_to_its_time_and_the_body_that_waited_longest_goes_fir
     went, clock = [], [1000.0]
     monkeypatch.setattr(B.time, "time", lambda: clock[0])
 
+    sick = set()
+
     def run(cmd, cwd=None, env=None, **kw):
         went.append(env["HIVE_BODY"])
         clock[0] += 50 * 60                                                                     # a body's turn takes fifty minutes
+        return subprocess.CompletedProcess(cmd, int(env["HIVE_BODY"] in sick))
     monkeypatch.setattr(subprocess, "run", run)
     monkeypatch.setattr(B, "_loads", lambda p: object())                                        # no body is lost
     monkeypatch.setattr(B, "hive_measure", lambda log=print: {"as_one": 2.4})
@@ -990,6 +993,12 @@ def test_a_hive_turn_keeps_to_its_time_and_the_body_that_waited_longest_goes_fir
     went.clear()
     B.hive_turn(budget=40, log=lambda *a, **k: None)
     assert went == [""]                                                                         # and then it is the one that waited longest
+    went.clear()
+    sick.add("b3")                                                                              # a body whose turn fails
+    saved = []
+    res = B.hive_turn(budget=0, log=lambda *a, **k: None, after=lambda: saved.append(went[-1]))
+    assert res["failed_turns"] == ["b3"] and went == ["b3", "b2", ""]                           # it is said, and the others still take their turns
+    assert saved == ["b2", ""]                                                                  # the hive is saved after the turns that worked
 
 
 def test_the_yardstick_is_the_same_passages_however_much_the_text_grows():
