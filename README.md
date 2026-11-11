@@ -151,6 +151,20 @@ it agreed with the member at least 97% of the time; the member answers the rest,
 so the next `grow` learns from newer work. The always-on agent runs `grow` by itself when the device is idle. Tests
 and bench runs use a throwaway memory, so they never teach the hive.
 
+## Use it from anywhere, with no machine of yours on (`.github/workflows/ask.yml`)
+
+On GitHub: the repository's **Actions** tab, **Ask the hive**, **Run workflow**, and type what you want done. A
+runner installs the hive (about fifteen minutes), the hive plans the task, researches it on live sources, writes and
+runs code where that helps, checks its own work with a jury and writes the answer. The answer is on the run's page
+(Summary); every file it made (charts, CSVs, programs, the whole record of the run) is in the run's artifact
+`the-hive-answer`. It works from a phone.
+
+- **This repository is public, so the task you type and the answer are public too.** For anything private, install
+  the hive on your own device (`sh setup.sh`) and talk to it there.
+- The run has no token that can write anywhere, logs in nowhere and spends nothing; risky actions are never approved.
+- It is the same hive as on a device, without your memory and profile (a runner starts empty every time).
+- Not confirmed until its first run on GitHub. The same steps were rehearsed in a fresh clone on the cloud machine.
+
 ## Just talk to it: `hive`
 
 One prompt, then a normal conversation, the way you talk to an assistant. It decides the rest.
