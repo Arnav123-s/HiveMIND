@@ -880,6 +880,26 @@ have thousands. Two ways of training them are built:
   two as one 2.4807, the first time the bodies as one read better than the better body alone (under the old rule
   they were worse: 2.5754 against 2.5715). Four of the six newborns were kept, two were removed by the immune
   check. The second body's stem cell kept one turn of reading (2.9009 -> 2.8999); the first body's did not.
+- *A better BitNet from nothing* (2026-11-11; `training/reports/bitnet_recipe.json`). The same stem cell from the
+  same start on the same batches, 600 steps, loss on held passages: our BitNet as it was 4.2315; at three times
+  the learning rate 4.0220 (ten times: 4.0501); with the rounding to three values eased in over the first half of
+  the run as well, 3.9963. The published recipe's extra norm before each output layer made it worse at every rate
+  (4.43 to 4.54), so it is off. Ideas that did nothing: a number per row, a stricter line for zero, the middle
+  value instead of the mean, no weight decay, a falling rate. A teacher (the first body's stem cell) helps per step
+  (3.8081) but costs 1.7 times the time, and that time spent on more steps without it does better (3.6988), so it
+  is off. Two more that help and are not built in yet: two three-valued layers added up (3.9474, twice the disk for
+  a cell) and a wider cell (3.9547 at width 256, 1.5 times the time). Full precision at the same rate and steps:
+  3.8966, so a BitNet of this size is still about 0.10 behind an ordinary net step for step. New bodies are founded
+  with the rate and the easing (`body.NEW_BODY`); each body may have its own shape (`cells/.../stem.json`).
+- *A flaw found and closed:* stem cells drew their training text from anywhere, the held passages included (the
+  first body's stem cell has read all the text about seven times, the second's about twice). Cells never trained on
+  them, so what the cells add to their stem cell is measured fairly, but the absolute losses above for the first
+  two bodies are better than they would be on truly new text. From now on no stem cell reads a held window
+  (`scratch.offsets`); the third body is the first whose numbers are clean.
+- *A cell grown as one of the team* (trained on the body's loss with it in, `how: team`): on one territory of the
+  first body, 12 minutes each, the usual way from the nearest cell added 0.0200 where the cell lives, the team way
+  0.0136 at best (0.0003 with a smaller share), and from the stem cell neither way helped. It stays as one kind of
+  trainer among the others, which keeps its place only if its cells are kept.
 - Storing a cell as its differences from the stem cell was tried and dropped: about 12% of a cell's three-valued
   weights differ from the stem cell's, which is not few enough to save space.
 
