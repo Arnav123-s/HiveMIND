@@ -127,7 +127,8 @@ class Direct:
     its three values) is trained the ordinary way; that is under a third of the stem cell and is shared by all cells.
     (His order, 2026-11-10: if no direct route exists, make one.)"""
 
-    def __init__(self, model, lr=1e-3, seed=0):
+    def __init__(self, model, lr=1e-3, seed=0, votes=0):
+        self.votes = votes
         self.layers = [m for m in model.modules() if isinstance(m, BitLinear)]
         own = {id(m.weight) for m in self.layers}
         self.t, self.log_scale = [], []
@@ -139,6 +140,7 @@ class Direct:
                                      weight_decay=0.0, betas=(0.9, 0.95))
         self.gen = torch.Generator().manual_seed(seed)
         self.model = model
+        self.count = [torch.zeros_like(t, dtype=torch.int8) for t in self.t]  # the votes, when it trains by votes
         self.install()
 
     def install(self):
@@ -159,8 +161,21 @@ class Direct:
             for i, m in enumerate(self.layers):
                 g, t = m.weight.grad, self.t[i]
                 self.log_scale[i].grad = (g * t).sum() * self.log_scale[i].exp()  # the layer's number learns the ordinary way
-                want = (t - g.sign()).clamp(-1, 1)
-                go = (torch.rand(g.shape, generator=self.gen) < rate * g.abs() / g.abs().mean().clamp(min=1e-12)) & (want != t)
+                if self.votes:
+                    # by votes: a small counter per weight (a few bits) instead of a full-precision copy. Each step a
+                    # weight whose gradient is not among the layer's weak half gets one vote for the direction that
+                    # lowers the loss; at `votes` more votes one way than the other it jumps one value and its
+                    # counter starts again. (The first direct way had nothing that added the evidence up, and on
+                    # real text its jumps taught nothing: 4.25 with them, 4.24 without, 4.03 the published way.)
+                    strong = g.abs() >= g.abs().median()
+                    c = (self.count[i] - (g.sign() * strong).to(torch.int8)).clamp(-self.votes, self.votes)
+                    go = c.abs() >= self.votes
+                    want = (t + c.sign()).clamp(-1, 1)
+                    self.count[i] = torch.where(go, torch.zeros_like(c), c)
+                    go = go & (want != t)
+                else:
+                    want = (t - g.sign()).clamp(-1, 1)
+                    go = (torch.rand(g.shape, generator=self.gen) < rate * g.abs() / g.abs().mean().clamp(min=1e-12)) & (want != t)
                 self.t[i] = torch.where(go, want, t)
                 jumped, total = jumped + int(go.sum()), total + t.numel()
         self.opt.step()
@@ -168,7 +183,7 @@ class Direct:
         return jumped / total
 
 
-def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False):
+def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
@@ -190,7 +205,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
                 opt.step()
                 return 0.0
     else:
-        trainer = Direct(model, seed=seed)
+        trainer = Direct(model, seed=seed, votes=votes)
     rnd, t0, steps, losses, jumps = random.Random(seed), time.time(), 0, [], []
     while time.time() - t0 < minutes * 60:
         done = (time.time() - t0) / (minutes * 60)
@@ -205,7 +220,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
                 f"three-valued weights jump a step", flush=True)
     torch.save(model.state_dict(), HOME / f"{name}.pt")
     out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
-           "way": "usual (ordinary weights underneath)" if usual else "direct" if rate else "direct with no jumps"}
+           "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes})" if votes else "direct" if rate else "direct with no jumps"}
     _record(**{name: out})
     return out
 
@@ -625,7 +640,7 @@ def main(argv):
         tokenizer(train=True)
     elif cmd == "direct":
         print(json.dumps(pretrain_direct(opt("--minutes", 20.0), opt("--rate", 0.003), name=opt("--name", "base_direct"),
-                                         usual="--usual" in argv)))
+                                         usual="--usual" in argv, votes=opt("--votes", 0))))
     elif cmd == "bitnet":
         print(json.dumps(to_bitnet(opt("--minutes", 30.0))))
     elif cmd == "pretrain":
