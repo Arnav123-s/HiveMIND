@@ -981,6 +981,9 @@ def hive_measure(n=300, log=print):
     return res
 
 
+NEW_BODY = {"shape": {}, "lr": 1e-3, "warm": 0}  # how a new body's stem cell is made: its shape (scratch.kind) and its rate
+
+
 def found(name, minutes=40.0, sample=8000, log=print):
     """A new body is founded on what the bodies there are read worst. Its stem cell starts from random three-valued
     weights of its own and reads the harvest with half of every batch taken from the worse-read half of a sample of
@@ -1044,9 +1047,11 @@ def main(argv):
         first, second = readings(json.loads(Path(argv[1]).read_text()))
         torch.save({"first": first, "second": second}, argv[2])
     elif cmd == "stem":  # for found: this body's stem cell, from random three-valued weights
+        T.HOME.mkdir(parents=True, exist_ok=True)  # what the body is comes first: the stem cell is built to it
+        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "lr": NEW_BODY["lr"], "since": time.strftime("%Y-%m-%d %H:%M"),
+                                                      "founded_on": "the other bodies' worst-read windows"}))
         T.pretrain_direct(float(argv[2]), usual=True, name="base", hard=json.loads(Path(argv[1]).read_text()),
-                          seed=sum(map(ord, T.BODY)))
-        (T.HOME / "stem.json").write_text(json.dumps({"bit": True, "since": time.strftime("%Y-%m-%d %H:%M"), "founded_on": "the other bodies' worst-read windows"}))
+                          seed=sum(map(ord, T.BODY)), lr=NEW_BODY["lr"], warm=NEW_BODY["warm"])
     elif cmd == "found":
         found(argv[1], opt("--minutes", 40.0))
     elif cmd == "hive":

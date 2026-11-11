@@ -221,22 +221,24 @@ class Direct:
 
 
 def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
-                    strong=0.5, leak=0, agree=False, hard=None):
+                    strong=0.5, leak=0, agree=False, hard=None, lr=1e-3, warm=0):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
     parts that are not three-valued learn by themselves) and usual=True (the published way: ordinary weights
-    underneath, rounded at every step)."""
+    underneath, rounded at every step; `lr` is its rate, reached over the first `warm` steps)."""
     tk = tokenizer()
     data = corpus(tk)
     torch.manual_seed(seed)
     model = Tiny(bit=True)
     if usual:
-        opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01, betas=(0.9, 0.95))
+        opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01, betas=(0.9, 0.95))
 
         class trainer:  # noqa: N801 - the same two lines as pretrain, in the shape of Direct
             @staticmethod
             def step(loss, rate):
+                for g in opt.param_groups:
+                    g["lr"] = lr * min(1.0, (steps + 1) / max(1, warm))
                 opt.zero_grad(set_to_none=True)
                 loss.backward()
                 nn.utils.clip_grad_norm_(model.parameters(), 1.0)
