@@ -79,6 +79,15 @@ benchmaxing, held-out sets run once, no model names in commits.
   retrains the brain for the cell jobs once a day (`scratch.py together`, takes jobs by measurement only).
   His standing wish: it must keep getting better without the agent; "not finding a way is not good" (keep trying
   direct BitNet training: variants of the vote way are in `scratch.Direct`, options strong / leak / agree).
+- 2026-11-11, his further picture and what was built for it (all in `training/body.py`, README "From nothing"):
+  "it can keep multiplying, no need for the same ones to get better" -> several births a turn, nearest-cells-only
+  reading at every check (`Body`), newborns judged locally (`judge_local`), new text placed (`place_new`);
+  "the whole is made of many growing bodies, each with weaknesses the others cover" -> a hive of bodies (`bodies`,
+  `found`, `together`, `hive_turn`; a process works on the body named in `HIVE_BODY`; further bodies live in
+  `cells/scratch/bodies/<name>/`, not in git); "regenerate lost or cut-off parts" -> `heal`, whole-file writes
+  (`scratch.whole`), map backup, the text stream's build log. `python -m team body` now runs `hive_turn`.
+  A test once wrote into the real text stream when the stream's place changed; it was cut back to its exact length
+  and the tests now patch `scratch.SHARED`. Any new test that calls `scratch.corpus` must do the same.
 - **This cloud machine is reclaimed when idle.** The hive goes on evolving only where it is installed and left
   running: `python -m team install` on a device of his (README "Install", "Always on").
 

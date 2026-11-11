@@ -845,6 +845,32 @@ have thousands. Two ways of training them are built:
 - The stem cell now keeps learning on every turn (its word table held still, kept only if the body is better for
   it: `body.stem_reads`), and dreams are part of every harvest. Neither has run on real data yet.
 
+**A body that multiplies, a hive of bodies, and regeneration** (2026-11-11; `training/body.py`).
+- *Multiplying.* A turn grows several cells (three by default) and comes whenever the device has been idle half an
+  hour. Every check is read the way a big body reads: the stem cell and the two nearest cells, every other cell
+  asleep on disk (`Body`). So a turn costs the same at ten cells and at ten thousand; only the disk grows, 0.6 MB a
+  cell. A newborn is judged where it lives: on unseen passages nearest its territory, the body with it against the
+  body without it (`judge_local`). Text harvested since the last turn is placed on the map, so there is always new
+  ground to divide (`place_new`).
+- *A hive of bodies.* The whole is not one body. Each body has its own stem cell and cells and multiplies on its own
+  turns; all share one vocabulary and one harvest. A passage is read by every body and the body that fits it gets
+  the say (`together`). A new body is founded on what the others read worst: its stem cell starts from random
+  three-valued weights of its own and half of all it reads is the worse-read half of a sample of windows (`found`);
+  one more body for every eight living cells. `python -m team body` gives every body its turn, founds a body when it
+  is time, and measures each alone and all as one (`training/reports/hive_of_bodies.json`).
+- *Regeneration.* Before anything else in its turn a body makes again what it lost (`heal`): a cell that is missing
+  or cannot be read is grown again from the stem cell on the territory the map still knows; a lost stem cell comes
+  back from the copy that drew the map; a lost map from its second copy (both lost: a new map, and every cell
+  regrows); a lost body is founded again; a lost text stream is made again in the order it was built
+  (`cells/scratch/corpus.json`). Every file is written whole or not at all, so a cut-off run leaves no half cell.
+- Measured: the first body with all eight cells: stem cell alone 2.748; two nearest cells awake 2.574; four nearest
+  2.566; every cell reading 2.563. Its two cells left unborn by a restart were found missing and grown again by the
+  regeneration step itself. The hive's real text stream (14.5 million pieces) was made again from the harvest in 12
+  seconds and is identical to the original byte for byte. Four more variants of the vote way of direct training
+  (votes that must repeat, counters that forget, a stricter threshold for voting): 4.28 to 4.38, none better than
+  plain 32 votes (4.141); those runs shared the CPU and took fewer steps, so they are not a clean comparison.
+- **Not measured yet:** a multiplying turn with three births, the second body, and the bodies as one.
+
 What this can and cannot be today: a model of this size trained from nothing learns narrow decisions and the feel
 of simple text. Planning and programming still come from the pretrained small models and their school. The open
 question this section exists to answer by measurement is how far many such cells, grown this way, get together.
