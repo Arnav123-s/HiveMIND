@@ -26,5 +26,12 @@
   "minutes": 20.0,
   "train_last": 3.2338,
   "weights": 2615424
+ },
+ "six blocks, 20 minutes, start 0": {
+  "gate": 3.2295,
+  "steps": 1217,
+  "minutes": 20.0,
+  "train_last": 3.2144,
+  "weights": 3505152
  }
 }
