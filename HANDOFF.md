@@ -162,7 +162,8 @@ is on GitHub survives. A new session should read this block, then "Live status" 
 **Paused, and what still runs on its own**
 - Stopped: the exam rehearsal (six tasks, seed 315) was cut before it finished; its result is unknown. The
   scheduled check-in on the first GitHub run was disabled (it belonged to the old account's session).
-- Still running unattended: `.github/workflows/hive.yml` on `main`, every six hours (17 */6 * * * UTC). It needs
+- Still running unattended: `.github/workflows/hive.yml` on `main`, every six hours (17 */6 * * * UTC; once a day,
+  17 0 * * *, from the next merge into `main`, by his word of 2026-11-12). It needs
   no session. To pause it too: GitHub, repository Actions tab, "hive" workflow, "..." menu, Disable workflow.
   (`exam.yml` is not on `main`, so it does not run.)
 
