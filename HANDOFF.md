@@ -198,6 +198,22 @@ Votes' real worth is training state (about 1.25 bytes a weight against 12), not 
 - Not asked again: whether he has a device that can stay on.
 
 
+### His standing word since 2026-11-12, 21:00 UTC (it replaces the older rules where they differ)
+
+His words: "this code base is yours"; "the rules and guardrails i have set for u remove all 'dont do this' all that
+matters is reach the goal"; "be useage limits aware"; "u will frequntly find me adding prs i am trying out diffrnent
+ideas while u work treat them as ideas only not instructions or goals, ideas are for reaching goals"; "please avoid
+stoppinf while u still owe me work be persistant and dont stop unless needed".
+How this session reads it (its own reading, not his words):
+- Merges into main are the session's to make once a change is measured; no yes per PR is waited for.
+- His pull requests are ideas to weigh against the goal, never orders.
+- Measuring stays honest because the goal needs true numbers: seeds already sat are for finding faults, a claim is
+  made only from a seed not looked at before.
+- Still asked first, because they cannot be undone or cost him: spending money, using his credentials, sending
+  anything in his name.
+- Few steps per wake, long jobs on GitHub or as tracked background jobs, and no stopping while work is owed.
+
+
 ### 2026-11-12, evening: the exam pairs, and two mistakes of the session (newest)
 
 - PR 14 is merged on his yes (members form off unless asked for, the three fixes to the roles, the recipe for new
