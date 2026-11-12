@@ -1110,7 +1110,8 @@ GENES = {"lr": lambda r, v: round(v * r.choice([0.6, 1.6]), 5),
          "cool": lambda r, v: r.choice([x for x in (0.0, 0.25, 0.5, 0.75) if x != v]),   # the share of the run over which the rate falls
          "mean": lambda r, v: r.choice([x for x in (0.0, 0.99, 0.999) if x != v])}      # the running mean of the weights
 SHAPES = {"dim": lambda r, v: min(384, max(128, v + r.choice([-32, 32]))),   # heads stay 4: the width is a multiple of 32
-          "layers": lambda r, v: min(8, max(3, v + r.choice([-1, 1])))}
+          "layers": lambda r, v: min(8, max(3, v + r.choice([-1, 1]))),
+          "rotary": lambda r, v: not v}   # where a piece stands: told to the attention (scratch.rotated) or added at the bottom
 
 
 def _recipes():
@@ -1123,7 +1124,7 @@ def _recipes():
 def next_recipe(rnd):
     """The recipe the next body is founded with, and what was changed in it (None: nothing, it is being measured as
     it stands)."""
-    full = lambda r: {**NEW_BODY, **BEFORE, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    full = lambda r: {**NEW_BODY, **BEFORE, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, "rotary": False, **(r.get("shape") or {})}}  # noqa: E731
     tried = [r for r in _recipes() if r.get("score") is not None]
     if not any(full(r["recipe"]) == full(NEW_BODY) for r in tried):
         return full(NEW_BODY), None
