@@ -6,9 +6,10 @@ uses sources that publish APIs for scripts instead.
 """
 import json
 import re
+import threading
 import time
 import xml.etree.ElementTree as ET
-from urllib.parse import quote_plus, urljoin
+from urllib.parse import quote_plus, urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -19,19 +20,58 @@ _S = requests.Session()
 _S.headers["User-Agent"] = config.USER_AGENT
 _cache = {}
 
+# Resilience (added 2026-11-11 after battery failures b4/b6): the first version
+# retried only HTTP 429, three times with 3s/6s sleeps, and let connection
+# errors, timeouts and 5xx through on the first attempt. One dead host or one
+# rate-limited API therefore sank whole end-to-end tasks. Now: retry transient
+# failures (connection error, timeout, 429, 5xx) with exponential backoff,
+# honor Retry-After, and pace calls to hosts that publish a politeness rule
+# (arXiv asks for at most one request every 3 seconds).
+_RETRY_STATUSES = {429, 500, 502, 503, 504}
+_HOST_MIN_INTERVAL = {"export.arxiv.org": 3.1, "arxiv.org": 3.1}
+_host_lock = threading.Lock()
+_host_last = {}
+
 
 class FetchError(Exception):
     pass
 
 
-def get(url, params=None, as_json=False):
+def _pace(url):
+    host = urlparse(url).netloc
+    interval = _HOST_MIN_INTERVAL.get(host)
+    if not interval:
+        return
+    with _host_lock:
+        wait = interval - (time.monotonic() - _host_last.get(host, 0.0))
+        if wait > 0:
+            time.sleep(wait)
+        _host_last[host] = time.monotonic()
+
+
+def _retry_after(r, attempt):
+    try:
+        return min(float(r.headers.get("Retry-After", "")), 30.0)
+    except (TypeError, ValueError):
+        return 2.0 * (2 ** attempt)
+
+
+def get(url, params=None, as_json=False, attempts=4):
     key = (url, json.dumps(params, sort_keys=True))
     if key in _cache:
         return _cache[key]
-    for attempt in range(3):
-        r = _S.get(url, params=params, timeout=config.HTTP_TIMEOUT)
-        if r.status_code == 429 and attempt < 2:
-            time.sleep(3 * (attempt + 1))
+    r = None
+    for attempt in range(attempts):
+        _pace(url)
+        try:
+            r = _S.get(url, params=params, timeout=config.HTTP_TIMEOUT)
+        except requests.RequestException as e:
+            if attempt == attempts - 1:
+                raise FetchError(f"could not reach {url}: {e}") from e
+            time.sleep(2.0 * (2 ** attempt))
+            continue
+        if r.status_code in _RETRY_STATUSES and attempt < attempts - 1:
+            time.sleep(_retry_after(r, attempt))
             continue
         break
     if "charset" not in r.headers.get("content-type", "").lower():
@@ -151,9 +191,18 @@ def search_hn(q, limit=8):
             for h in d.get("hits", [])]
 
 
-def search_arxiv(q, limit=6):
-    xml = get("https://export.arxiv.org/api/query", {"search_query": f"all:{q}", "max_results": limit,
-                                                     "sortBy": "relevance"})
+def _arxiv_fetch(search_query, limit):
+    try:
+        xml = get("https://export.arxiv.org/api/query", {"search_query": search_query, "max_results": limit,
+                                                         "sortBy": "relevance"})
+    except FetchError as e:
+        # The API answers 400 for queries carrying characters its parser
+        # rejects; retry once with punctuation stripped before giving up.
+        if "HTTP 400" not in str(e):
+            raise
+        clean = " ".join(re.sub(r"[^\w\s\-]", " ", search_query).split())
+        xml = get("https://export.arxiv.org/api/query", {"search_query": clean, "max_results": limit,
+                                                         "sortBy": "relevance"})
     ns = {"a": "http://www.w3.org/2005/Atom"}
     root = ET.fromstring(xml)
     out = []
@@ -162,6 +211,24 @@ def search_arxiv(q, limit=6):
                     "url": e.findtext("a:id", "", ns),
                     "snippet": " ".join(e.findtext("a:summary", "", ns).split())[:300]})
     return out
+
+
+def search_arxiv(q, limit=6):
+    # Researchers usually pass a paper's title or near-title. The all: field's
+    # relevance ranking buries the canonical paper under newer papers that
+    # merely mention it (measured 2026-11-11: neither the DDPM nor the Codex
+    # paper appears in the all: top 6 for its own title), so ask the title
+    # field first and top up from all: only if the title search runs short.
+    phrase = " ".join(q.split()).replace('"', "")
+    out = _arxiv_fetch(f'ti:"{phrase}"', limit)
+    if len(out) < limit:
+        seen = {r["url"] for r in out}
+        for r in _arxiv_fetch(f"all:{q}", limit):
+            if r["url"] not in seen:
+                out.append(r)
+            if len(out) >= limit:
+                break
+    return out[:limit]
 
 
 def search_pypi(q, limit=1):
