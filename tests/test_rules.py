@@ -1747,5 +1747,10 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     assert not out["agreed"] and body.startswith("Not confirmed") and "19" not in body         # no member's values are handed over as the answer
     out, left = hive([broken, broken, broken, broken], "d")                                   # the same error twice: the member stops
     assert not out["agreed"] and not left and "No member got as far" in out["report"]
+    asked = []
+    left = ["print(\"The 'upload_time' key does not exist in the response.\")", "print('released 2024-12-06, 706 days ago')", "DONE"]
+    monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+    out = solo.run("When was the latest httpx released?", tmp_path / "e", "never", members=1)
+    assert "706 days ago" in out["report"] and "first prints what IS there" in asked[1]       # a printed failure is no answer; it is told to look
     assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
     assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
