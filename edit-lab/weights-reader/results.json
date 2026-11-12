@@ -1,0 +1,555 @@
+{
+ "pilot": "weights-reader",
+ "date": "2026-11-10",
+ "home_track": {
+  "HV1_verdict_constructed": {
+   "reader": 0.7257142857142858,
+   "baseline_hand": 0.6628571428571428,
+   "n_train": 490,
+   "n_test": 175,
+   "ref_v1_T3_heldout": 0.8057
+  },
+  "HV3_verdict_plus_gold": {
+   "reader": 0.7085714285714285,
+   "n_train": 850,
+   "delta_vs_HV1": -0.017142857142857237
+  },
+  "HV2_verdict_transfer_to_coordinator": {
+   "reader": 0.2727272727272727,
+   "n_train": 1000,
+   "n_test": 11,
+   "note": "train=maps-features, test=adapter-weight-features; disjoint feature spaces, honest zero-shot transfer test"
+  },
+  "HID_edit_identification_LOO": {
+   "reader": 0.7894736842105263,
+   "n": 19,
+   "classes": [
+    "other",
+    "retrain-thin",
+    "scale",
+    "surgery-drop",
+    "synth-retrain"
+   ]
+  },
+  "HSCR_score_family_holdout": {
+   "reader_r2": -1.2229527899351882,
+   "reader_mae": 0.09068618557525238,
+   "n_train": 26,
+   "n_test": 11
+  },
+  "HNICHE_swarm_niche_LOO": {
+   "reader": 0.8,
+   "n": 20
+  },
+  "HMAP_map_tasks": {
+   "has_dead_reader": 1.0,
+   "dom_reader": 0.20394736842105263,
+   "n_train": 451,
+   "n_test": 152,
+   "ref_T2_ceiling_heldout": 0.736
+  }
+ },
+ "part_team": {
+  "n_train": 850,
+  "n_test": 175,
+  "MONO_MLP": 0.6857142857142857,
+  "SHR_TEAM_OUT": 0.6285714285714286,
+  "SHR_parts_test": {
+   "grad": 0.6228571428571429,
+   "knock": 0.64,
+   "norms": 0.6,
+   "meta": 0.6057142857142858
+  },
+  "SHR_W3_SOUP": 0.6228571428571429,
+  "SHR_W2_GATED": 0.6228571428571429,
+  "SHR_W1_SWAP": 0.6457142857142857,
+  "SHR_TEAM_CONSULT_insample_stacker": 0.6742857142857143,
+  "IND_TEAM_OUT": 0.6228571428571429,
+  "IND_parts_test": {
+   "grad": 0.6228571428571429,
+   "knock": 0.6171428571428571,
+   "norms": 0.6057142857142858,
+   "meta": 0.6
+  },
+  "IND_W3_SOUP": 0.5485714285714286,
+  "IND_W2_GATED": 0.5657142857142857,
+  "IND_W1_SWAP": 0.6457142857142857,
+  "IND_TEAM_CONSULT_insample_stacker": 0.6514285714285715
+ },
+ "surgery_arm": {
+  "subjects": [
+   {
+    "subject": "single_reader_MLP",
+    "n_units": 256,
+    "base_val": 0.8161764705882353,
+    "base_heldout": 0.6857142857142857,
+    "indicted": 0,
+    "edits_applied": 0,
+    "edited_val": 0.8161764705882353,
+    "edited_heldout": 0.6857142857142857,
+    "heldout_delta": 0.0,
+    "verdict": "REVERTED (null)"
+   },
+   {
+    "subject": "trunk_SHR_grad",
+    "n_units": 64,
+    "base_val": 0.7720588235294118,
+    "base_heldout": 0.6228571428571429,
+    "indicted": 0,
+    "edits_applied": 0,
+    "edited_val": 0.7720588235294118,
+    "edited_heldout": 0.6228571428571429,
+    "heldout_delta": 0.0,
+    "verdict": "REVERTED (null)"
+   },
+   {
+    "subject": "trunk_SHR_knock",
+    "n_units": 64,
+    "base_val": 0.7720588235294118,
+    "base_heldout": 0.64,
+    "indicted": 0,
+    "edits_applied": 0,
+    "edited_val": 0.7720588235294118,
+    "edited_heldout": 0.64,
+    "heldout_delta": 0.0,
+    "verdict": "REVERTED (null)"
+   },
+   {
+    "subject": "trunk_SHR_norms",
+    "n_units": 64,
+    "base_val": 0.8014705882352942,
+    "base_heldout": 0.6,
+    "indicted": 5,
+    "edits_applied": 3,
+    "edited_val": 0.8161764705882353,
+    "edited_heldout": 0.6114285714285714,
+    "heldout_delta": 0.011428571428571455,
+    "verdict": "SHIPPED"
+   },
+   {
+    "subject": "trunk_SHR_meta",
+    "n_units": 64,
+    "base_val": 0.8308823529411765,
+    "base_heldout": 0.6057142857142858,
+    "indicted": 0,
+    "edits_applied": 0,
+    "edited_val": 0.8308823529411765,
+    "edited_heldout": 0.6057142857142858,
+    "heldout_delta": 0.0,
+    "verdict": "REVERTED (null)"
+   }
+  ],
+  "shipped": 1,
+  "internals_round_contrast": "internals round: 0 shipped edits across its subjects; defects were in data/instrument, not weights"
+ },
+ "masked_pretraining_arm": {
+  "HV1_verdict": {
+   "direct": 0.7085714285714285,
+   "pretrained_plus": 0.7085714285714285
+  },
+  "HMAP_dom": {
+   "direct": 0.20394736842105263,
+   "pretrained_plus": 0.17105263157894737
+  },
+  "HMAP_has_dead": {
+   "direct": 1.0,
+   "pretrained_plus": 1.0
+  },
+  "summary": {
+   "tasks": 3,
+   "pretrain_wins": 0,
+   "bar": "interesting only if wins on majority of tasks"
+  }
+ },
+ "public_track": {
+  "n_items": 29,
+  "families": [
+   "deepseek",
+   "gptoss",
+   "llama",
+   "mistral",
+   "olmo",
+   "phi",
+   "pythia",
+   "qwen",
+   "qwen3",
+   "smollm"
+  ],
+  "slugs": [
+   "smollm2-360m",
+   "smollm2-360m-instruct",
+   "pythia-410m",
+   "qwen2.5-0.5b",
+   "qwen2.5-0.5b-instruct",
+   "qwen2.5-3b-instruct-gptq",
+   "llama3.2-1b-instruct",
+   "qwen2.5-3b-instruct-awq",
+   "pythia-1.4b",
+   "pythia-1.4b-step3000",
+   "olmo2-1b-instruct",
+   "qwen2.5-1.5b",
+   "qwen2.5-1.5b-instruct",
+   "smollm2-1.7b-instruct",
+   "mistral-7b-instruct-v0.2-gptq",
+   "phi-2",
+   "llama3.1-8b-instruct-awq",
+   "olmo2-1b",
+   "qwen2.5-3b-instruct",
+   "llama3.2-3b",
+   "llama3.2-3b-instruct",
+   "phi-3-mini-4k-instruct",
+   "mistral-7b-instruct-v0.3",
+   "qwen3-4b",
+   "gpt-oss-20b",
+   "qwen2.5-coder-32b-instruct-awq",
+   "deepseek-v2-lite",
+   "llama3.1-70b-instruct-awq",
+   "qwen3-30b-a3b"
+  ],
+  "LOFO_bvi": {
+   "deepseek": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "llama": {
+    "reader": 0.6666666666666666,
+    "baseline": 0.6666666666666666,
+    "n": 3
+   },
+   "mistral": {
+    "reader": 1.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "olmo": {
+    "reader": 0.5,
+    "baseline": 0.5,
+    "n": 2
+   },
+   "phi": {
+    "reader": 0.5,
+    "baseline": 0.5,
+    "n": 2
+   },
+   "pythia": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 2
+   },
+   "qwen": {
+    "reader": 0.4,
+    "baseline": 0.4,
+    "n": 5
+   },
+   "qwen3": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "smollm": {
+    "reader": 0.3333333333333333,
+    "baseline": 0.3333333333333333,
+    "n": 3
+   }
+  },
+  "LOFO_bvi_w": 0.5,
+  "LOFO_bvi_bw": 0.45,
+  "LOFO_quant": {
+   "deepseek": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 1
+   },
+   "gptoss": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "llama": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 5
+   },
+   "mistral": {
+    "reader": 0.5,
+    "baseline": 1.0,
+    "n": 2
+   },
+   "olmo": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 2
+   },
+   "phi": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 2
+   },
+   "pythia": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 3
+   },
+   "qwen": {
+    "reader": 1.0,
+    "baseline": 0.875,
+    "n": 8
+   },
+   "qwen3": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 2
+   },
+   "smollm": {
+    "reader": 1.0,
+    "baseline": 1.0,
+    "n": 3
+   }
+  },
+  "LOFO_quant_w": 0.9310344827586207,
+  "LOFO_quant_bw": 0.9310344827586207,
+  "LOFO_layers": {
+   "deepseek": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "gptoss": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "llama": {
+    "reader": 0.5546262601503893,
+    "baseline": -1.3960119367315773,
+    "n": 5
+   },
+   "mistral": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "olmo": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "phi": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "pythia": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 3
+   },
+   "qwen": {
+    "reader": 0.4553227278026424,
+    "baseline": -1.0879633708848049,
+    "n": 8
+   },
+   "qwen3": {
+    "reader": -5.409075611036934,
+    "baseline": -13.919624220755985,
+    "n": 2
+   },
+   "smollm": {
+    "reader": -0.17287545183424502,
+    "baseline": -9.947722276279837,
+    "n": 3
+   }
+  },
+  "LOFO_layers_w": -0.1696918777380523,
+  "LOFO_layers_bw": -2.529868342106476,
+  "LOFO_hidden": {
+   "deepseek": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "gptoss": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "llama": {
+    "reader": -0.06903559888498112,
+    "baseline": -4.352906702836006,
+    "n": 5
+   },
+   "mistral": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "olmo": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "phi": {
+    "reader": -5.546266925415404,
+    "baseline": -17.26573796792249,
+    "n": 2
+   },
+   "pythia": {
+    "reader": -4.8963393992258535,
+    "baseline": -6.991850715451214,
+    "n": 3
+   },
+   "qwen": {
+    "reader": 0.06688470249369993,
+    "baseline": 0.20873821231846712,
+    "n": 8
+   },
+   "qwen3": {
+    "reader": -1.5436321976840541,
+    "baseline": -37.28206302093158,
+    "n": 2
+   },
+   "smollm": {
+    "reader": -0.15133225574412235,
+    "baseline": -13.213044267891352,
+    "n": 3
+   }
+  },
+  "LOFO_hidden_w": -1.0045832270891086,
+  "LOFO_hidden_bw": -6.544997060116144,
+  "LOFO_logparams": {
+   "deepseek": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "gptoss": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 1
+   },
+   "llama": {
+    "reader": -0.4000028719914459,
+    "baseline": -18.380022199697212,
+    "n": 5
+   },
+   "mistral": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "olmo": {
+    "reader": 0.0,
+    "baseline": 0.0,
+    "n": 2
+   },
+   "phi": {
+    "reader": -14.517947632898059,
+    "baseline": -7.164875263434428,
+    "n": 2
+   },
+   "pythia": {
+    "reader": -4.3990739993859,
+    "baseline": -8.821010686658187,
+    "n": 3
+   },
+   "qwen": {
+    "reader": -0.8835179466141174,
+    "baseline": -0.379754105655288,
+    "n": 7
+   },
+   "qwen3": {
+    "reader": -0.6271596272149418,
+    "baseline": -3.300940687804985,
+    "n": 2
+   },
+   "smollm": {
+    "reader": -2.5142136353086033,
+    "baseline": -1.6221517615554295,
+    "n": 3
+   }
+  },
+  "LOFO_logparams_w": -2.1148113360916274,
+  "LOFO_logparams_bw": -5.243553892328313,
+  "RAND_family_reader": 0.3333333333333333,
+  "RAND_family_base": 0.4583333333333333,
+  "RAND_bvi_reader": 0.4000000000000001,
+  "RAND_bvi_base": 0.3333333333333333,
+  "RAND_quant_reader": 0.75,
+  "RAND_quant_base": 0.8333333333333334,
+  "RAND_layers_reader": -2.1670388225828154,
+  "RAND_layers_base": -13.058152455270829,
+  "STRUCT_layers_r2_sanity": 0.002301098386686573,
+  "PROBE_size_bvi": 0.0,
+  "PROBE_size_layers": {
+   "r2": 0.15724159554794204,
+   "mae": 16.850115961790486
+  },
+  "PROBE_gen_bvi": null,
+  "PROBE_gen_layers": {
+   "r2": -1.5625,
+   "mae": 7.5
+  },
+  "PROBE_frontier_quant": null,
+  "PROBE_frontier_layers": null,
+  "ARM1_bands": {
+   "mmlu": {
+    "n": 5,
+    "reader_w": null,
+    "baseline_w": null,
+    "majority_control": 0.6,
+    "folds": {}
+   },
+   "humaneval": {
+    "n": 4,
+    "reader_w": null,
+    "baseline_w": null,
+    "majority_control": 0.5,
+    "folds": {}
+   },
+   "gsm8k": {
+    "n": 5,
+    "reader_w": null,
+    "baseline_w": null,
+    "majority_control": 0.8,
+    "folds": {}
+   },
+   "bbh": {
+    "n": 2,
+    "note": "too few verified labels"
+   }
+  },
+  "CONTROLS": {
+   "shuffled": {
+    "pred_family": "smollm",
+    "max_rel_feature_drift": 76.83946530380835
+   },
+   "random": {
+    "pred_family": "smollm",
+    "max_rel_feature_drift": 76.39473317781668
+   },
+   "permuted": {
+    "pred_family": "smollm",
+    "max_rel_feature_drift": 18.635259135100398
+   }
+  },
+  "GATE": {
+   "tasks_checked": [
+    "bvi",
+    "quant",
+    "layers",
+    "hidden",
+    "logparams"
+   ],
+   "reader_wins": [
+    "bvi",
+    "layers",
+    "hidden",
+    "logparams"
+   ],
+   "n_wins": 4,
+   "win": true,
+   "note": "pre-registered: win = reader beats baseline on >=4 of the LOFO task set; mmlu-band reported in ARM1 (verified labels too sparse for its own LOFO gate fold)"
+  }
+ }
+}

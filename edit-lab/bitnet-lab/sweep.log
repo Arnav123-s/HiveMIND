@@ -1,0 +1,88 @@
+[sweep 02:11:55Z] another heavy job is running; waiting 120 s
+[sweep 02:13:55Z] another heavy job is running; waiting 120 s
+[sweep 02:15:55Z] another heavy job is running; waiting 120 s
+[sweep 02:17:55Z] another heavy job is running; waiting 120 s
+[sweep 02:19:55Z] another heavy job is running; waiting 120 s
+[sweep 02:21:55Z] another heavy job is running; waiting 120 s
+[sweep 02:23:55Z] another heavy job is running; waiting 120 s
+[sweep 02:25:55Z] another heavy job is running; waiting 120 s
+[sweep 02:27:55Z] another heavy job is running; waiting 120 s
+[sweep 02:29:55Z] another heavy job is running; waiting 120 s
+[sweep 02:31:56Z] another heavy job is running; waiting 120 s
+[sweep 02:33:56Z] another heavy job is running; waiting 120 s
+[sweep 02:35:56Z] another heavy job is running; waiting 120 s
+[sweep 02:37:56Z] another heavy job is running; waiting 120 s
+[sweep 02:39:56Z] another heavy job is running; waiting 120 s
+[sweep 02:41:56Z] another heavy job is running; waiting 120 s
+[sweep 02:43:56Z] another heavy job is running; waiting 120 s
+[sweep 02:45:56Z] another heavy job is running; waiting 120 s
+[sweep 02:47:56Z] another heavy job is running; waiting 120 s
+[sweep 02:49:56Z] another heavy job is running; waiting 120 s
+[sweep 02:51:56Z] another heavy job is running; waiting 120 s
+[sweep 02:53:56Z] another heavy job is running; waiting 120 s
+[sweep 02:55:56Z] another heavy job is running; waiting 120 s
+[sweep 02:57:56Z] machine free; starting sweep
+[sweep 02:57:56Z] run plain seed 0
+[sweep 03:06:33Z] done plain s0 rc=0 RESULT {"arm": "plain", "seed": 0, "steps": 52, "wall_s": 482.6, "held_init": 8.3494, "held_final": 4.0206, "train_last100": 5.3111, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00021, "state_hist": {"-1": 0.3443, "0": 0.3106, "1": 0.3451}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 03:06:33Z] another heavy job appeared; waiting 120 s
+[sweep 03:08:33Z] another heavy job appeared; waiting 120 s
+[sweep 03:10:33Z] another heavy job appeared; waiting 120 s
+[sweep 03:12:33Z] another heavy job appeared; waiting 120 s
+[sweep 03:14:33Z] run plain seed 1
+[sweep 03:22:58Z] done plain s1 rc=0 RESULT {"arm": "plain", "seed": 1, "steps": 121, "wall_s": 482.4, "held_init": 8.3706, "held_final": 3.0658, "train_last100": 3.7048, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00038, "state_hist": {"-1": 0.3441, "0": 0.3115, "1": 0.3444}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 03:22:58Z] run plain seed 2
+[sweep 03:31:22Z] done plain s2 rc=0 RESULT {"arm": "plain", "seed": 2, "steps": 124, "wall_s": 482.6, "held_init": 8.4247, "held_final": 3.0478, "train_last100": 3.6652, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00037, "state_hist": {"-1": 0.3443, "0": 0.3117, "1": 0.344}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 03:31:22Z] run ste seed 0
+[sweep 03:39:14Z] machine free; starting sweep
+[sweep 03:39:14Z] run plain seed 0
+[sweep 03:47:39Z] done plain s0 rc=0 RESULT {"arm": "plain", "seed": 0, "steps": 115, "wall_s": 481.4, "held_init": 8.3494, "held_final": 3.1092, "train_last100": 3.9256, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00036, "state_hist": {"-1": 0.3438, "0": 0.3117, "1": 0.3445}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 03:47:39Z] skip plain s1: already recorded
+[sweep 03:47:39Z] skip plain s2: already recorded
+[sweep 03:47:39Z] run ste seed 0
+[sweep 03:56:04Z] done ste s0 rc=0 RESULT {"arm": "ste", "seed": 0, "steps": 119, "wall_s": 483.4, "held_init": 8.3494, "held_final": 2.9838, "train_last100": 4.0972, "ternary_weights": 1769472, "mech_state_bytes": 21233664, "mean_flip_share": 0.0, "state_hist": {}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 03:56:04Z] run ste seed 1
+[sweep 04:04:28Z] done ste s1 rc=0 RESULT {"arm": "ste", "seed": 1, "steps": 119, "wall_s": 480.4, "held_init": 8.3706, "held_final": 2.9785, "train_last100": 4.0312, "ternary_weights": 1769472, "mech_state_bytes": 21233664, "mean_flip_share": 0.0, "state_hist": {}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:04:28Z] run ste seed 2
+[sweep 04:12:54Z] done ste s2 rc=0 RESULT {"arm": "ste", "seed": 2, "steps": 115, "wall_s": 482.9, "held_init": 8.4247, "held_final": 3.0233, "train_last100": 4.2165, "ternary_weights": 1769472, "mech_state_bytes": 21233664, "mean_flip_share": 0.0, "state_hist": {}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:12:54Z] run mag seed 0
+[sweep 04:21:15Z] done mag s0 rc=0 RESULT {"arm": "mag", "seed": 0, "steps": 116, "wall_s": 480.1, "held_init": 8.3494, "held_final": 3.1761, "train_last100": 4.0133, "ternary_weights": 1769472, "mech_state_bytes": 3981312, "mean_flip_share": 0.00011, "state_hist": {"-1": 0.3442, "0": 0.3107, "1": 0.3451}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:21:16Z] run mag seed 1
+[sweep 04:29:41Z] done mag s1 rc=0 RESULT {"arm": "mag", "seed": 1, "steps": 116, "wall_s": 482.9, "held_init": 8.3706, "held_final": 3.1241, "train_last100": 3.9156, "ternary_weights": 1769472, "mech_state_bytes": 3981312, "mean_flip_share": 0.0001, "state_hist": {"-1": 0.3445, "0": 0.3105, "1": 0.345}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:29:41Z] run mag seed 2
+[sweep 04:38:06Z] done mag s2 rc=0 RESULT {"arm": "mag", "seed": 2, "steps": 118, "wall_s": 482.5, "held_init": 8.4247, "held_final": 3.1053, "train_last100": 3.9085, "ternary_weights": 1769472, "mech_state_bytes": 3981312, "mean_flip_share": 0.00011, "state_hist": {"-1": 0.3448, "0": 0.3107, "1": 0.3445}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:38:06Z] run layered seed 0
+[sweep 04:46:31Z] done layered s0 rc=0 RESULT {"arm": "layered", "seed": 0, "steps": 116, "wall_s": 483.2, "held_init": 8.3494, "held_final": 3.0994, "train_last100": 3.8849, "ternary_weights": 1769472, "mech_state_bytes": 4423680, "mean_flip_share": 0.00073, "state_hist": {"-2": 0.017, "-1": 0.3352, "0": 0.2948, "1": 0.3359, "2": 0.017}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:46:31Z] run layered seed 1
+[sweep 04:54:56Z] done layered s1 rc=0 RESULT {"arm": "layered", "seed": 1, "steps": 108, "wall_s": 482.4, "held_init": 8.3706, "held_final": 3.1063, "train_last100": 4.0056, "ternary_weights": 1769472, "mech_state_bytes": 4423680, "mean_flip_share": 0.00076, "state_hist": {"-2": 0.0166, "-1": 0.3357, "0": 0.2953, "1": 0.3359, "2": 0.0165}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 04:54:56Z] run layered seed 2
+[sweep 05:03:21Z] done layered s2 rc=0 RESULT {"arm": "layered", "seed": 2, "steps": 115, "wall_s": 481.8, "held_init": 8.4247, "held_final": 3.0873, "train_last100": 3.8316, "ternary_weights": 1769472, "mech_state_bytes": 4423680, "mean_flip_share": 0.00076, "state_hist": {"-2": 0.0176, "-1": 0.3352, "0": 0.2945, "1": 0.3351, "2": 0.0175}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 05:03:21Z] run layered_half seed 0
+[sweep 05:11:40Z] done layered_half s0 rc=0 RESULT {"arm": "layered_half", "seed": 0, "steps": 161, "wall_s": 480.1, "held_init": 8.3139, "held_final": 2.8937, "train_last100": 3.1351, "ternary_weights": 884736, "mech_state_bytes": 2211840, "mean_flip_share": 0.00107, "state_hist": {"-2": 0.0343, "-1": 0.3257, "0": 0.2794, "1": 0.326, "2": 0.0346}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 05:11:40Z] run layered_half seed 1
+[sweep 05:19:58Z] done layered_half s1 rc=0 RESULT {"arm": "layered_half", "seed": 1, "steps": 161, "wall_s": 480.1, "held_init": 8.2635, "held_final": 2.9073, "train_last100": 3.1509, "ternary_weights": 884736, "mech_state_bytes": 2211840, "mean_flip_share": 0.00112, "state_hist": {"-2": 0.0359, "-1": 0.3253, "0": 0.2777, "1": 0.325, "2": 0.036}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 05:19:58Z] run layered_half seed 2
+[sweep 05:28:18Z] done layered_half s2 rc=0 RESULT {"arm": "layered_half", "seed": 2, "steps": 163, "wall_s": 481.2, "held_init": 8.2918, "held_final": 2.8961, "train_last100": 3.1038, "ternary_weights": 884736, "mech_state_bytes": 2211840, "mean_flip_share": 0.00108, "state_hist": {"-2": 0.0352, "-1": 0.3257, "0": 0.2788, "1": 0.325, "2": 0.0353}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 05:28:18Z] run anneal seed 0
+[sweep 05:35:36Z] machine free; starting sweep
+[sweep 05:35:36Z] skip plain s0: already recorded
+[sweep 05:35:36Z] skip plain s1: already recorded
+[sweep 05:35:36Z] skip plain s2: already recorded
+[sweep 05:35:36Z] skip ste s0: already recorded
+[sweep 05:35:36Z] skip ste s1: already recorded
+[sweep 05:35:36Z] skip ste s2: already recorded
+[sweep 05:35:36Z] skip mag s0: already recorded
+[sweep 05:35:36Z] skip mag s1: already recorded
+[sweep 05:35:36Z] skip mag s2: already recorded
+[sweep 05:35:36Z] skip layered s0: already recorded
+[sweep 05:35:36Z] skip layered s1: already recorded
+[sweep 05:35:36Z] skip layered s2: already recorded
+[sweep 05:35:36Z] skip layered_half s0: already recorded
+[sweep 05:35:36Z] skip layered_half s1: already recorded
+[sweep 05:35:36Z] skip layered_half s2: already recorded
+[sweep 05:35:36Z] run anneal seed 0
+[sweep 05:44:03Z] done anneal s0 rc=0 RESULT {"arm": "anneal", "seed": 0, "steps": 120, "wall_s": 482.4, "held_init": 8.3494, "held_final": 3.8818, "train_last100": 4.3727, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00067, "state_hist": {"-1": 0.343, "0": 0.3136, "1": 0.3434}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 05:44:03Z] run anneal seed 1
+[sweep 05:52:26Z] done anneal s1 rc=0 RESULT {"arm": "anneal", "seed": 1, "steps": 116, "wall_s": 481.8, "held_init": 8.3706, "held_final": 3.8455, "train_last100": 4.3704, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00063, "state_hist": {"-1": 0.3434, "0": 0.313, "1": 0.3436}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 05:52:26Z] run anneal seed 2
+[sweep 06:00:49Z] done anneal s2 rc=0 RESULT {"arm": "anneal", "seed": 2, "steps": 120, "wall_s": 480.9, "held_init": 8.4247, "held_final": 3.8235, "train_last100": 4.3059, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00068, "state_hist": {"-1": 0.3434, "0": 0.3136, "1": 0.3431}, "corpus_pieces": 5917236, "minutes": 8.0}
+[sweep 06:00:49Z] sweep finished

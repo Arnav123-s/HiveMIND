@@ -1,0 +1,175 @@
+{
+ "tag": "dev_thin_r2",
+ "mean": 0.7479,
+ "n": 12,
+ "partial": false,
+ "seconds": 2011,
+ "cases": [
+  {
+   "case": "Find the 5 most downloaded sentence-embedding models on Hugging Face and tell me their sizes and licenses.",
+   "score": 0.5,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": true,
+    "size": false,
+    "done_when": true,
+    "ends_writer": false
+   },
+   "problems": [
+    "added final writer step"
+   ]
+  },
+  {
+   "case": "Go to books.toscrape.com and find the three cheapest books in the Mystery category.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "Is my pinned version django==4.2.0 outdated? What is the latest version and what Python does it need?",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "Benchmark list.sort against sorted() on 1 million integers on this machine.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "Collect all quotes tagged 'inspirational' on quotes.toscrape.com and save them to a CSV.",
+   "score": 0.833,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": false,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "For each of the top 3 Qwen2.5 models by downloads, open the Hugging Face page and note the license.",
+   "score": 0.857,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true,
+    "for_each": false
+   },
+   "problems": []
+  },
+  {
+   "case": "Make a bar chart of the 10 most downloaded text-generation models on Hugging Face.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "Find out the latest versions of fastapi, uvicorn and pydantic and write a requirements.txt pinned to them.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "Find the price and stock count of 'Soumission' on books.toscrape.com.",
+   "score": 0.333,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": false,
+    "size": false,
+    "done_when": true,
+    "ends_writer": false
+   },
+   "problems": [
+    "added final writer step"
+   ]
+  },
+  {
+   "case": "How many books are in the Travel category on books.toscrape.com and what is the average price?",
+   "score": 0.333,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": false,
+    "size": false,
+    "done_when": true,
+    "ends_writer": false
+   },
+   "problems": [
+    "added final writer step"
+   ]
+  },
+  {
+   "case": "Compute how much RAM a 1.7B parameter model needs in bf16, int8 and int4, and check it against Qwen3-1.7B's real file size.",
+   "score": 0.833,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": false,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": []
+  },
+  {
+   "case": "Find the current most popular GGUF quantized small model and how big its Q4 file is.",
+   "score": 0.286,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": false,
+    "size": false,
+    "done_when": true,
+    "ends_writer": false,
+    "for_each": false
+   },
+   "problems": [
+    "added final writer step"
+   ]
+  }
+ ]
+}

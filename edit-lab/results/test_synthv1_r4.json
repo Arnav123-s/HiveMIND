@@ -1,0 +1,215 @@
+{
+ "tag": "test_synthv1_r4",
+ "adapters": true,
+ "time": "2026-11-10 10:29:06",
+ "scores": {
+  "coordinator": {
+   "mean": 0.954,
+   "n": 14,
+   "seconds": 1965
+  }
+ },
+ "cases": {
+  "coordinator": [
+   {
+    "case": "Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.",
+    "score": 0.5,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the three most downloaded text-generation models under 1B parameters on Hugging Face and tell me their licenses.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The three most downloaded text-generation models under 1B parameters on Hugging Face are identified and their licenses are retrieved.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": false,
+     "right_agents": true,
+     "size": false,
+     "done_when": true,
+     "ends_writer": false
+    },
+    "problems": [
+     "added final writer step"
+    ]
+   },
+   {
+    "case": "Go to books.toscrape.com, open the Travel category, and list every book title with its price.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Go to books.toscrape.com, open the Travel category, and navigate to the page.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Page is successfully opened and the Travel category is visible.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract book titles and prices from the Travel category page.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"A list of book titles and their corresponding prices is extracted and verified.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Parse the extracted data and store it in a structured format (e.g., JSON or CSV).\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The data is successfully parsed and stored in a structured format.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a final deliverable listing every book title and its price from the Travel category.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"A clean and formatted deliverable is generated and ready for review.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Write a Python script that gets the Open-Meteo forecast for Pune for the next 3 days, saves it as a CSV, and tells me which day is coolest.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the Open-Meteo API endpoint for Pune, India, and retrieve the forecast data.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"API endpoint and forecast data are retrieved and verified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open the Open-Meteo API documentation and search for the correct endpoint for Pune, India.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The correct API endpoint is identified and verified.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write a Python script that makes a GET request to the identified API endpoint, retrieves the forecast data, and saves it as a CSV file.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The script is written and runs successfully, saving the forecast data as a CSV file.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Process the CSV file to extract the temperature data for each day and determine which day is the coolest.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The script is written and runs successfully, identifying the coolest day.\"  \n    },  \n    {  \n      \"id\": \"s5\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a final deliverable that includes the CSV file and a summary of the coolest day.\",  \n      \"needs\": [\"s4\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The deliverable is complete and ready for review.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Check which of these packages have a newer version on PyPI than what I pinned: requests==2.31.0, numpy==1.26.0, flask==2.3.0.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Fetch the latest versions of the specified packages from PyPI\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully retrieved the latest versions of requests, numpy, and flask from PyPI\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Compare the latest versions with the pinned versions\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully compared the latest versions with the pinned versions and identified discrepancies\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate the final report with the results of the comparison\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final report is generated and contains the results of the version comparison\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the top 5 Hacker News stories about Rust and summarize what each one is about.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search for the top 5 Hacker News stories about Rust and extract the titles, summaries, and URLs.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The results include the top 5 Hacker News stories about Rust with their titles, summaries, and URLs.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open Hacker News (https://news.ycombinator.com) and retrieve the top 5 stories about Rust.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The browser has successfully retrieved the top 5 Hacker News stories about Rust.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Parse the retrieved Hacker News stories and extract the titles, summaries, and URLs using Python.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The coder has successfully parsed the Hacker News stories and extracted the titles, summaries, and URLs.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Summarize the top 5 Hacker News stories about Rust and present the results in a clear format.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The writer has successfully summarized the top 5 Hacker News stories about Rust and presented the results in a clear format.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Look up arXiv papers on speculative decoding, pick the 3 most relevant, and build me a reading list with one-line summaries.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Search arXiv for papers on speculative decoding and retrieve the top 3 most relevant papers.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"3 arXiv papers are retrieved and verified as relevant to speculative decoding.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract one-line summaries from the top 3 arXiv papers.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"3 one-line summaries are extracted from the top 3 arXiv papers.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile a reading list with the top 3 arXiv papers and their one-line summaries.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"A reading list with the top 3 arXiv papers and their one-line summaries is generated.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Benchmark how fast Python's json module parses a 50 MB file on this machine versus a 5 MB file and explain the scaling.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the Python json module's parsing speed for 50 MB and 5 MB files on this machine\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The Python json module's parsing speed for 50 MB and 5 MB files is verified and recorded.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write and run a Python script to benchmark the json module's parsing speed for 50 MB and 5 MB files\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The Python script is executed and the results are recorded.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a report explaining the benchmark results and the scaling behavior of the json module\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The report is generated and verified by the verifier.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "On quotes.toscrape.com, collect every quote by Albert Einstein across all pages and save them to a file.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find all quotes by Albert Einstein from quotes.toscrape.com and return them as a list of items.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The list of quotes by Albert Einstein is retrieved and verified from quotes.toscrape.com.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Save the list of quotes by Albert Einstein to a file (e.g., 'einstein_quotes.txt') using Python.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The file 'einstein_quotes.txt' is successfully created and contains all quotes by Albert Einstein.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a final deliverable that includes the list of quotes by Albert Einstein and the file 'einstein_quotes.txt', formatted for Arnav's use.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The deliverable is complete and includes the list of quotes by Albert Einstein and the file 'einstein_quotes.txt'.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "For each of the 3 most downloaded Qwen models on Hugging Face, open its model page and record the license and the weights file size.",
+    "score": 0.857,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the 3 most downloaded Qwen models on Hugging Face and retrieve their license and weights file size.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The results for the 3 most downloaded Qwen models are retrieved and stored.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open the model pages of the 3 most downloaded Qwen models on Hugging Face and record the license and weights file size.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The license and weights file size for each model are recorded and stored in the database.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Process the recorded data to extract the license and weights file size for each model and store it in a structured format.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The data is processed and stored in a structured format, ready for the final deliverable.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate the final deliverable with the license and weights file size for the 3 most downloaded Qwen models on Hugging Face.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is generated and ready for submission.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true,
+     "for_each": false
+    },
+    "problems": []
+   },
+   {
+    "case": "Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV and tell me if I should upgrade.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find known vulnerabilities for the Python package jinja2 version 2.10 using OSV\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully retrieved vulnerabilities from OSV for jinja2 version 2.10\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Check if jinja2 version 2.10 has known vulnerabilities using OSV data\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Successfully analyzed vulnerabilities for jinja2 version 2.10\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a report summarizing vulnerabilities for jinja2 version 2.10 and suggest whether an upgrade is recommended\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Report is generated and contains a recommendation for upgrading jinja2 version 2.10\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Make a chart of the last 30 days of daily maximum temperature in Mumbai from Open-Meteo and save it as a PNG.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the Open-Meteo API URL for daily maximum temperature in Mumbai and retrieve the data for the last 30 days.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"API URL and data retrieved successfully\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Use Python to fetch the data from the Open-Meteo API and save it as a CSV file.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"CSV file saved successfully\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Use Python to generate a chart of the daily maximum temperature in Mumbai for the last 30 days, and save it as a PNG file.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"PNG file saved successfully\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a final deliverable summarizing the process and the chart.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Deliverable created and verified\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Read the Wikipedia article on the transistor and write me a one-page history with key dates.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Fetch and verify the Wikipedia article on the transistor\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The article is retrieved and verified from Wikipedia.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract key dates and events from the transistor Wikipedia article\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The key dates and events are extracted and verified from the article.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Process the extracted data into a structured format (e.g., JSON or CSV)\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The data is processed and formatted into a structured format.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write a one-page history of the transistor with key dates and events\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The one-page history is written and verified for accuracy.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Find the latest version of the Python packages fastapi and pydantic, then write and run a script that checks if my installed versions are older.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the latest version of the Python packages fastapi and pydantic from official sources\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The latest versions of fastapi and pydantic are retrieved from the sources.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write and run a script to check if the installed versions of fastapi and pydantic are older than the latest versions\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The script is executed, and the results show the installed versions are either up-to-date or older than the latest versions.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable summarizing the findings and the script execution results\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The deliverable is written and verified by the verifier.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   },
+   {
+    "case": "Open the Hugging Face page of SmolLM2-360M-Instruct, read the model card, and tell me what it was trained on.",
+    "score": 1.0,
+    "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the Hugging Face page of SmolLM2-360M-Instruct and extract the model card information.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The model card is successfully retrieved and verified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open the Hugging Face page of SmolLM2-360M-Instruct and read the model card.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The model card is successfully read and verified.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Extract the training data and sources mentioned in the model card.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The training data and sources are successfully extracted and verified.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the final answer with the training data and sources from the model card.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final answer is ready and verified.\"  \n    }  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "clean": true,
+     "right_agents": true,
+     "size": true,
+     "done_when": true,
+     "ends_writer": true
+    },
+    "problems": []
+   }
+  ]
+ }
+}

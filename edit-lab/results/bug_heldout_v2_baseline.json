@@ -1,0 +1,26 @@
+{
+ "sealed_file": "coding/swarm/bug_heldout_v2.json",
+ "sealed_sha256": "cd17c92279bfb98707b234160ab93e461448f79b47f5d5d1eb9e349738fea0bb",
+ "measured_at": "2026-11-10T21:17:33",
+ "subject": "bug-pattern-composed (current adopted registry)",
+ "n": 36,
+ "composed_acc": 0.4444,
+ "per_class_recall": {
+  "wrong-operator": 0.2,
+  "mutable-default": 0.5,
+  "off-by-one": 0.3333,
+  "clean": 0.5455,
+  "missing-return": 1.0,
+  "swapped-operands": 0.0
+ },
+ "per_class_binary_acc": {
+  "off-by-one": 0.8333,
+  "wrong-operator": 0.6944,
+  "swapped-operands": 0.8611,
+  "mutable-default": 0.9722,
+  "missing-return": 1.0
+ },
+ "bar": 0.8,
+ "clears_bar": false,
+ "protocol": "single measurement pass over the sealed set; no threshold tuning, no model selection, no retries; the phase-4 confirm (0.8276 on the spent set) is the adoption evidence — this baseline is the new standing reference for future cycles"
+}

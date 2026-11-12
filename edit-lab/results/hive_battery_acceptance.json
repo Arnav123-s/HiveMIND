@@ -1,0 +1,111 @@
+{
+ "battery": "whole-hive acceptance (final product)",
+ "started": "2026-11-10 21:27 UTC",
+ "results": {
+  "classify-secret-line": {
+   "task": "classify-secret-line",
+   "system": "registry serving artifact secret-line-model-v3 via factory.serve",
+   "status": "completed",
+   "score": 0.8333,
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "task": "classify-error-class",
+   "system": "registry serving artifact error-class-model-v2 via factory.serve",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "task": "classify-commit-type",
+   "system": "registry serving artifact commit-type-model-v2 via factory.serve",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "task": "classify-contract-judgment",
+   "system": "registry serving artifact contract-judgment-model-v2 via factory.serve",
+   "status": "completed",
+   "score": 0.9167,
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "task": "classify-gap-move",
+   "system": "registry serving artifact gap-move-model-v3 via factory.serve",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "task": "bug-pattern-composed-sealed-v2",
+   "system": "registry bug-pattern composition (14 members) via factory.serve, sealed v2 held-out set",
+   "status": "completed",
+   "score": 0.8333,
+   "detail": "composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "task": "classify-secret-line-ternary",
+   "system": "ternary substrate secret-line-model-ternary (coexisting alternative; fp v2 serves by default)",
+   "status": "completed",
+   "score": 0.9167,
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: the substrate is not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "task": "tiny-hive-ops",
+   "system": "tiny-hive constructed specialists (clone vote + reference check)",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  },
+  "classify-contract-judgment-v3-not-served": {
+   "task": "classify-contract-judgment-v3-not-served",
+   "system": "dream-adopted contract-judgment-model-v3 (adoption record stands; NOT the serving artifact — see registry serving_override)",
+   "status": "partial",
+   "score": 0.4167,
+   "detail": "5/12 correct on the hand-written battery items (bar 9) vs v2 11/12; measured before the serving override; the served product line is classify-contract-judgment"
+  },
+  "hive-b1": {
+   "task": "hive-b1",
+   "system": "team.Hive end-to-end (coordinator = registry Tier-1 winner synthv1-r4)",
+   "status": "failed",
+   "score": 0.0,
+   "detail": "5400s cap reached during the writer step; all three checks fail on the artifacts produced. Cause: the arXiv API was unreachable for the whole run (read timeouts, then HTTP 400 from export.arxiv.org); the coordinator gave up steps s2 and s3 after 3 attempts each with no source read. Environmental failure, recorded as measured — the same task completed 3/3 in 1376s in the 2026-11-10 battery under working network conditions."
+  },
+  "hive-b2": {
+   "task": "hive-b2",
+   "system": "team.Hive end-to-end (coordinator = registry Tier-1 winner synthv1-r4)",
+   "status": "failed",
+   "score": 0.0,
+   "detail": "two attempts, no deliverable either time: attempt 1 killed mid-run by a VM restart; the clean re-run hit the 3600s per-task cap with the work directory still empty. Dynamic check at scoring: requests==2.34.2, numpy==2.5.4 — no report existed to contain them."
+  },
+  "hive-b3": {
+   "task": "hive-b3",
+   "system": "team.Hive end-to-end (plan->steps->verify->writer; coordinator = registry Tier-1 winner synthv1-r4)",
+   "status": "failed",
+   "score": 0.0,
+   "detail": "1608s; checks: contains '1856': False; steps: | step | specialist | verdict | attempts | task | verifier | | | s1 | researcher | PASS | 1 | Find the exact title of the arXiv paper with ID 1706.03762 using Wikipedia and verify the incorporation year of San Luis | The evidence confirms the title of the arXiv paper and the absence of the incorpora"
+  },
+  "hive-b4": {
+   "task": "hive-b4",
+   "system": "team.Hive end-to-end (coordinator = registry Tier-1 winner synthv1-r4)",
+   "status": "failed",
+   "score": 0.0,
+   "detail": "run killed by a VM restart (chain SIGTERM) before completion; scored on the artifacts present: mad.py was not produced, so the file check fails. The 2026-11-10 battery also failed b4 (its plan required an unreachable host, 1990s)."
+  },
+  "hive-b5": {
+   "task": "hive-b5",
+   "system": "team.Hive end-to-end (plan->steps->verify->writer; coordinator = registry Tier-1 winner synthv1-r4)",
+   "status": "failed",
+   "score": 0.0,
+   "detail": "1703s; checks: fixed.py not produced; steps: | step | specialist | verdict | attempts | task | verifier | | | s1 | researcher | FAIL | 3 | Find the exact title of the arXiv paper with ID 2026-11-10-12-37-10 | no source could be read: arxiv search 'id:2026-11-10-12-37-10' failed: HTTP 400 from https://export.arxiv.org/api/query?search_query=all"
+  },
+  "hive-b6": {
+   "task": "hive-b6",
+   "system": "team.Hive end-to-end (plan->steps->verify->writer; coordinator = registry Tier-1 winner synthv1-r4)",
+   "status": "failed",
+   "score": 0.0,
+   "detail": "591s; checks: contains 'denoising diffusion probabilistic': False; contains 'deep bidirectional transformers': False; contains 'trained on code': False; steps: | step | specialist | verdict | attempts | task | verifier | | | s1 | researcher | FAIL | 3 | Find the exact title of the arXiv paper with ID 2103.00020, 2005.11401, and 1810.04805. | no source could be read: arxiv search 'id:2103.00020 id:2005.11401 id:1810.04805' failed: HTTP 400 from https://expo"
+  }
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "sources": {
+  "synth": {
+   "in": 106,
+   "kept": 106
+  },
+  "micro_for_each": {
+   "in": 11,
+   "kept": 11
+  }
+ },
+ "dropped": [],
+ "total_rows": 117,
+ "synth_families": {
+  "multihop": 3,
+  "code_compute": 27,
+  "toscrape_browse": 23,
+  "hf_models": 23,
+  "pypi_versions": 11,
+  "arxiv": 12,
+  "compare": 3,
+  "mixed": 2,
+  "research_compute": 2
+ }
+}

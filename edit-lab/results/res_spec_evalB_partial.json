@@ -1,0 +1,126 @@
+{
+ "tag": "res_spec",
+ "adapters": true,
+ "time": "2026-11-09 07:01:16",
+ "scores": {
+  "researcher_plan": {
+   "mean": 0.975,
+   "n": 10,
+   "seconds": 2868
+  }
+ },
+ "cases": {
+  "researcher_plan": [
+   {
+    "case": "Find small open text-generation models under 1B parameters",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"small text-generation models under 1B parameters\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What is the latest version of the flask package?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"pypi\",  \n      \"q\": \"flask version\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find recent research papers about mixture of experts routing",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"arxiv\", \"q\": \"mixture of experts routing\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "What are developers saying on Hacker News about the Zig language?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"hn\",  \n      \"q\": \"Zig\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the history of the Linux kernel from an encyclopedia",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"wikipedia\",  \n      \"q\": \"Linux kernel history\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Read https://quotes.toscrape.com/tag/humor/ and list the authors",
+    "score": 0.75,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"web\",  \n      \"q\": \"list of authors from https://quotes.toscrape.com/tag/humor/\"  \n    }  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": false,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Which SmolLM2 models exist and what are their licenses?",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"SmolLM2 model\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the most popular papers on retrieval augmented generation",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"arxiv\", \"q\": \"retrieval augmented generation\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Get the release information for the numpy package",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {  \n      \"source\": \"pypi\",  \n      \"q\": \"numpy version\"  \n    }  \n  ],  \n  \"urls\": [  \n    \"https://pypi.org/project/numpy/1.23.5/\"  \n  ]  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   },
+   {
+    "case": "Find the license and parameter count of Qwen2.5 coder models",
+    "score": 1.0,
+    "output": "{  \n  \"searches\": [  \n    {\"source\": \"huggingface\", \"q\": \"Qwen2.5 coder license\"}  \n  ],  \n  \"urls\": []  \n}",
+    "checks": {
+     "valid": true,
+     "known_sources": true,
+     "right_source": true,
+     "short_queries": true
+    }
+   }
+  ]
+ }
+}

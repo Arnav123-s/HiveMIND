@@ -1,0 +1,65 @@
+{
+ "tiny-hive-ops": {
+  "task": "tiny-hive-ops",
+  "system": "tiny-hive constructed specialists (clone vote + reference check)",
+  "status": "completed",
+  "score": 1.0,
+  "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+ },
+ "classify-secret-line": {
+  "task": "classify-secret-line",
+  "system": "coding-swarm TinyNet",
+  "status": "completed",
+  "score": 0.8333,
+  "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"benign\", \"got\": \"secret\", \"text\": \"greeting = \\\"hello, world, and welcome back\\\"\"}, {\"want\": \"benign\", \"got\": \"secret\", \"text\": \"API_URL = \\\"https://api.example.com/v1/items\\\"\"}]"
+ },
+ "classify-error-class": {
+  "task": "classify-error-class",
+  "system": "coding-swarm TinyNet",
+  "status": "completed",
+  "score": 1.0,
+  "detail": "12/12 correct (bar 9); wrong: []"
+ },
+ "classify-commit-type": {
+  "task": "classify-commit-type",
+  "system": "coding-swarm TinyNet",
+  "status": "completed",
+  "score": 0.8333,
+  "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"feat\", \"got\": \"chore\", \"text\": \"introduce CSV export for monthly reports\"}, {\"want\": \"refactor\", \"got\": \"fix\", \"text\": \"rename variables for clarity in the billing code\"}]"
+ },
+ "classify-contract-judgment": {
+  "task": "classify-contract-judgment",
+  "system": "coding-swarm TinyNet",
+  "status": "partial",
+  "score": 0.5833,
+  "detail": "7/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}, {\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def first_or_zero(xs):\\n    if xs is None:\\n        return 0\\n \"}, {\"want\": \"mutates-input\", \"got\": \"ok\", \"text\": \"def append_item(xs, v):\\n    if xs is None:\\n        return [v\"}, {\"want\": \"mutates-input\", \"got\": \"ok\", \"text\": \"def s"
+ },
+ "classify-gap-move": {
+  "task": "classify-gap-move",
+  "system": "coding-swarm TinyNet",
+  "status": "partial",
+  "score": 0.4,
+  "detail": "4/10 correct (bar 6); wrong: [{\"want\": \"harvest\", \"got\": \"harvest+train\", \"text\": \"Users keep hitting a case type that is completely missing fr\"}, {\"want\": \"harvest+train\", \"got\": \"wait-for-backend\", \"text\": \"New examples for the failing pattern were collected last wee\"}, {\"want\": \"harvest+train\", \"got\": \"wait-for-backend\", \"text\": \"We now have a full harvested set for the defect, but accurac\"}, {\"want\": \"spawn+harvest\", \"got"
+ },
+ "hive-b1": {
+  "task": "hive-b1",
+  "system": "team.Hive end-to-end (plan->steps->verify->writer)",
+  "status": "completed",
+  "score": 1.0,
+  "detail": "1376s; checks: contains 'attention is all you need': True; contains 'vaswani': True; contains '2017': True; steps: | step | specialist | verdict | attempts | task | verifier | | | s1 | researcher | PASS | 1 | Look up the arXiv paper with id 1706.03762 and retrieve its exact title, first author, and submission year. | The evidence provides the title 'Attention Is All You Need', the first author 'Ashish Vaswani', "
+ },
+ "hive-b4": {
+  "task": "hive-b4",
+  "system": "team.Hive end-to-end (plan->steps->verify->writer)",
+  "status": "failed",
+  "score": 0.0,
+  "detail": "1990s; checks: mad.py not produced; steps: | step | specialist | verdict | attempts | task | verifier | | | s1 | researcher | FAIL | 3 | Find the definition of median absolute deviation and its implementation in Python. | no source could be read: huggingface search 'median absolute deviation' failed: HTTPSConnectionPool(host='huggingface.co'"
+ },
+ "hive-b6": {
+  "task": "hive-b6",
+  "system": "team.Hive end-to-end (plan->steps->verify->writer)",
+  "status": "failed",
+  "score": 0.0,
+  "detail": "3015s; checks: contains 'denoising diffusion probabilistic': False; contains 'deep bidirectional transformers': False; contains 'trained on code': False; steps: | step | specialist | verdict | attempts | task | verifier | | | s1 | researcher | FAIL | 3 | Find the exact title of the arXiv paper with ID 2103.00020, 2005.11401, and 1810.04805. | no source could be read: arxiv search 'id:2103.00020 id:2005.11401 id:1810.04805' failed: HTTP 400 from https://expo"
+ }
+}

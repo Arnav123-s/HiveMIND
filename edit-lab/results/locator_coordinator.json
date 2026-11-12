@@ -1,0 +1,107 @@
+{
+ "adapter": "D:\\muse\\work\\edit-lab\\tree\\adapters\\.rejected\\coordinator",
+ "data": "D:\\muse\\work\\edit-lab\\tree\\training\\data\\coordinator.jsonl",
+ "n_rows": 38,
+ "baseline_loss_evalmode": 0.6853095912619641,
+ "grad_pass_mean_loss": 0.6853095912619641,
+ "layers": {
+  "14": {
+   "grad_abs_Wg": 9.425169420894235,
+   "knockout": {
+    "loss_without_layer": 0.7027356334422764,
+    "delta": 0.017426042180312296
+   }
+  },
+  "15": {
+   "grad_abs_Wg": 9.333075459580868,
+   "knockout": {
+    "loss_without_layer": 0.6986894301678005,
+    "delta": 0.013379838905836383
+   }
+  },
+  "16": {
+   "grad_abs_Wg": 8.316148480866104,
+   "knockout": {
+    "loss_without_layer": 0.6965967973596171,
+    "delta": 0.011287206097652991
+   }
+  },
+  "17": {
+   "grad_abs_Wg": 8.015933624468744,
+   "knockout": {
+    "loss_without_layer": 0.6954032653256467,
+    "delta": 0.010093674063682556
+   }
+  },
+  "18": {
+   "grad_abs_Wg": 7.841052304953337,
+   "knockout": {
+    "loss_without_layer": 0.6968194991350174,
+    "delta": 0.011509907873053282
+   }
+  },
+  "19": {
+   "grad_abs_Wg": 6.816419540671632,
+   "knockout": {
+    "loss_without_layer": 0.6963947776116823,
+    "delta": 0.011085186349718223
+   }
+  },
+  "20": {
+   "grad_abs_Wg": 5.6633308820892125,
+   "knockout": {
+    "loss_without_layer": 0.6919400856683129,
+    "delta": 0.006630494406348775
+   }
+  },
+  "21": {
+   "grad_abs_Wg": 5.249633267754689,
+   "knockout": {
+    "loss_without_layer": 0.6929467014576259,
+    "delta": 0.007637110195661823
+   }
+  },
+  "22": {
+   "grad_abs_Wg": 4.490454946411774,
+   "knockout": {
+    "loss_without_layer": 0.6919410989472741,
+    "delta": 0.006631507685309956
+   }
+  },
+  "23": {
+   "grad_abs_Wg": 3.7152709915535524,
+   "knockout": {
+    "loss_without_layer": 0.6902468824072888,
+    "delta": 0.004937291145324707
+   }
+  },
+  "24": {
+   "grad_abs_Wg": 4.086184083018452,
+   "knockout": {
+    "loss_without_layer": 0.6921405972618806,
+    "delta": 0.006831005999916484
+   }
+  },
+  "25": {
+   "grad_abs_Wg": 4.116985518252477,
+   "knockout": {
+    "loss_without_layer": 0.6915409839466998,
+    "delta": 0.006231392684735715
+   }
+  },
+  "26": {
+   "grad_abs_Wg": 5.1066703798715025,
+   "knockout": {
+    "loss_without_layer": 0.693953065495742,
+    "delta": 0.00864347423377787
+   }
+  },
+  "27": {
+   "grad_abs_Wg": 6.668399979476817,
+   "knockout": {
+    "loss_without_layer": 0.6992229858511373,
+    "delta": 0.013913394589173178
+   }
+  }
+ }
+}

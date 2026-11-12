@@ -1,0 +1,1 @@
+Write a Python function median_absolute_deviation(xs) that returns the median absolute deviation of a non-empty list of numbers. Save it as mad.py in the work directory. Include a self-test under if __name__ == '__main__': that prints the result for [1, 1, 2, 2, 4, 6, 9].

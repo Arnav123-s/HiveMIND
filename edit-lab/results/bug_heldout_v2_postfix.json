@@ -1,0 +1,51 @@
+{
+ "sealed_file": "coding/swarm/bug_heldout_v2.json",
+ "sealed_sha256": "cd17c92279bfb98707b234160ab93e461448f79b47f5d5d1eb9e349738fea0bb",
+ "measured_at": "2026-11-10T22:11:50",
+ "subject": "bug-pattern-composed (as served after the fix attempts)",
+ "fix_cycle": "bugfix-2026-11-10-004",
+ "fix_attempts": [
+  "bugfix-2026-11-10-001",
+  "bugfix-2026-11-10-002",
+  "bugfix-2026-11-10-003",
+  "bugfix-2026-11-10-004"
+ ],
+ "n": 36,
+ "composed_acc": 0.4444,
+ "per_class_recall": {
+  "wrong-operator": 0.2,
+  "mutable-default": 0.5,
+  "off-by-one": 0.3333,
+  "clean": 0.5455,
+  "missing-return": 1.0,
+  "swapped-operands": 0.0
+ },
+ "per_class_binary_acc": {
+  "off-by-one": 0.8333,
+  "wrong-operator": 0.6944,
+  "swapped-operands": 0.8611,
+  "mutable-default": 0.9722,
+  "missing-return": 1.0
+ },
+ "bar": 0.8,
+ "clears_bar": false,
+ "baseline_composed_acc": 0.4444,
+ "baseline_per_class_recall": {
+  "wrong-operator": 0.2,
+  "mutable-default": 0.5,
+  "off-by-one": 0.3333,
+  "clean": 0.5455,
+  "missing-return": 1.0,
+  "swapped-operands": 0.0
+ },
+ "delta_composed_acc": 0.0,
+ "delta_per_class_recall": {
+  "wrong-operator": 0.0,
+  "mutable-default": 0.0,
+  "off-by-one": 0.0,
+  "clean": 0.0,
+  "missing-return": 0.0,
+  "swapped-operands": 0.0
+ },
+ "protocol": "the single post-fix measurement of the sealed set, taken after all fix decisions were made on spent sets; no fix decision ever read this set (it was a contamination reference only)"
+}

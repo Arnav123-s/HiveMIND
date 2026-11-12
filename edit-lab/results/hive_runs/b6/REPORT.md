@@ -1,0 +1,6 @@
+The exact titles of the arXiv papers with the given IDs could not be retrieved due to technical issues with the arXiv API.
+
+## Not confirmed by the team
+- s1 (researcher): Find the exact title of the arXiv paper with ID 2103.00020, 2005.11401, and 1810.04805. - no source could be read: arxiv search 'id:2103.00020 id:2005.11401 id:1810.04805' failed: HTTP 400 from https://export.arxiv.org/api/query?search_query=all%3Aid%3A2103.00020+id%3A2005.11401+id%3A1810.04805&max_results=6&sortB
+- s2 (researcher): Find the exact title of the arXiv paper with ID 2005.11401. - no source could be read: arxiv search 'id:2005.11401' failed: HTTP 429 from https://export.arxiv.org/api/query?search_query=all%3Aid%3A2005.11401&max_results=6&sortBy=relevance: Rate exceeded.; read https://export.arxiv.org/a
+- s3 (researcher): Find the exact title of the arXiv paper with ID 1810.04805. - no source could be read: arxiv search 'id:1810.04805' failed: HTTPSConnectionPool(host='export.arxiv.org', port=443): Read timed out. (read timeout=30); read https://export.arxiv.org/api/query?search_query=all%3Aid%3A1810.048

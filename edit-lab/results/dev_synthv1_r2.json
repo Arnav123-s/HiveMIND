@@ -1,0 +1,187 @@
+{
+ "tag": "synthv1-r2",
+ "mean": 0.8511,
+ "n": 12,
+ "partial": false,
+ "seconds": 3496,
+ "adapters_dir": "/home/hatch/workspace/edit-lab/candsets/synthv1-r2",
+ "use_adapters": true,
+ "cases": [
+  {
+   "case": "Find the 5 most downloaded sentence-embedding models on Hugging Face and tell me their sizes and licenses.",
+   "score": 0.5,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": true,
+    "size": false,
+    "done_when": true,
+    "ends_writer": false
+   },
+   "problems": [
+    "added final writer step"
+   ],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the 5 most downloaded sentence-embedding models on Hugging Face and tell me their sizes and licenses.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The results are retrieved and verified.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Go to books.toscrape.com and find the three cheapest books in the Mystery category.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Go to books.toscrape.com and open the website\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Website is opened and displayed\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the three cheapest books in the Mystery category\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"List of books in the Mystery category is retrieved and verified\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Extract the prices of the three cheapest books in the Mystery category\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Prices of the three cheapest books are extracted and verified\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable with the three cheapest books in the Mystery category\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final deliverable is written and ready for review\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Is my pinned version django==4.2.0 outdated? What is the latest version and what Python does it need?",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the latest version of Django and the required Python version for django==4.2.0\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The latest version of Django is retrieved and the required Python version is identified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Check the pinned version in the user's environment (e.g., pip list or virtualenv)\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The pinned version is verified against the latest version of Django.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Compare the pinned version with the latest version of Django and determine if it is outdated\",  \n      \"needs\": [\"s1\", \"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The comparison is completed and the result is stored.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate the final answer based on the results from the previous steps\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final answer is written and ready for Arnav.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Benchmark list.sort against sorted() on 1 million integers on this machine.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the benchmarks for comparing list.sort and sorted() on 1 million integers on this machine.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The benchmark results are retrieved and verified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write and run a Python script to benchmark list.sort and sorted() on 1 million integers.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The benchmark results are generated and stored.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate the final deliverable with the benchmark results.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The deliverable is complete and ready for review.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Collect all quotes tagged 'inspirational' on quotes.toscrape.com and save them to a CSV.",
+   "score": 0.833,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": false,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find all quotes tagged 'inspirational' on quotes.toscrape.com and return them as a list of items.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The list of inspirational quotes is retrieved and verified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Save the list of inspirational quotes to a CSV file named 'inspirational_quotes.csv'.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The CSV file 'inspirational_quotes.csv' is successfully created and saved.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Generate a final deliverable with the list of inspirational quotes from the CSV file.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is completed and ready for review.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "For each of the top 3 Qwen2.5 models by downloads, open the Hugging Face page and note the license.",
+   "score": 0.857,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true,
+    "for_each": true
+   },
+   "problems": [
+    "s2: fanned out over s1 (task says 'each')"
+   ],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the top 3 Qwen2.5 models by downloads on Hugging Face and note their licenses.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The top 3 Qwen2.5 models by downloads are retrieved and their licenses are noted.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open the Hugging Face page for the top 3 Qwen2.5 models and note the license of each model.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The license of each top 3 Qwen2.5 model is successfully noted.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Process the data from the Hugging Face page to extract the licenses of the top 3 Qwen2.5 models.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The licenses of the top 3 Qwen2.5 models are successfully extracted and stored in a structured format.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable with the licenses of the top 3 Qwen2.5 models by downloads.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is written and contains the licenses of the top 3 Qwen2.5 models by downloads.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Make a bar chart of the 10 most downloaded text-generation models on Hugging Face.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the 10 most downloaded text-generation models on Hugging Face\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The 10 most downloaded text-generation models are identified and verified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Visit Hugging Face's website and retrieve the list of models\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The list of models is successfully retrieved from Hugging Face.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Extract the top 10 models based on download counts from the retrieved list\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The top 10 models are extracted and verified.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Generate a bar chart using the top 10 models' download counts\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"A bar chart is generated and saved as a file.\"  \n    },  \n    {  \n      \"id\": \"s5\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the final deliverable with the bar chart and the list of top 10 models\",  \n      \"needs\": [\"s4\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is completed and ready for review.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Find out the latest versions of fastapi, uvicorn and pydantic and write a requirements.txt pinned to them.",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the latest versions of fastapi, uvicorn, and pydantic from live sources.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The latest versions of fastapi, uvicorn, and pydantic are retrieved from the sources.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Generate a requirements.txt file with the latest versions of fastapi, uvicorn, and pydantic.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The requirements.txt file is generated with the latest versions of fastapi, uvicorn, and pydantic.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable with the requirements.txt file.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable with the requirements.txt file is written.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Find the price and stock count of 'Soumission' on books.toscrape.com.",
+   "score": 0.333,
+   "checks": {
+    "valid": true,
+    "clean": false,
+    "right_agents": false,
+    "size": false,
+    "done_when": true,
+    "ends_writer": false
+   },
+   "problems": [
+    "added final writer step"
+   ],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the price and stock count of 'Soumission' on books.toscrape.com.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The task is completed and the results are verified.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "How many books are in the Travel category on books.toscrape.com and what is the average price?",
+   "score": 1.0,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the number of books in the 'Travel' category on books.toscrape.com and the average price of books in that category.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The results are retrieved and verified from the website.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Visit books.toscrape.com and navigate to the 'Travel' category page.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The browser successfully opens the 'Travel' category page.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Extract the number of books in the 'Travel' category and the average price from the page using Python code.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The code is executed and the results are retrieved.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Compile the final answer with the number of books and the average price from the results.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is written and verified.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Compute how much RAM a 1.7B parameter model needs in bf16, int8 and int4, and check it against Qwen3-1.7B's real file size.",
+   "score": 0.833,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": false,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the RAM requirements for a 1.7B parameter model in bf16, int8, and int4 formats.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"Results are retrieved from reliable sources and verified.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the real file size of Qwen3-1.7B and compare it with the calculated RAM requirements.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Results are retrieved from reliable sources and verified.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Calculate the RAM requirements for a 1.7B parameter model in bf16, int8, and int4 formats using formulas and code.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Code is written, executed, and results are verified.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Calculate the real file size of Qwen3-1.7B using the file system and compare it with the calculated RAM requirements.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"File size is retrieved and compared with the calculated RAM requirements.\"  \n    },  \n    {  \n      \"id\": \"s5\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable summarizing the RAM requirements and comparison with Qwen3-1.7B's real file size.\",  \n      \"needs\": [\"s3\", \"s4\"],  \n      \"for_each\": null,  \n      \"done_when\": \"Final deliverable is written and verified.\"  \n    }  \n  ]  \n}"
+  },
+  {
+   "case": "Find the current most popular GGUF quantized small model and how big its Q4 file is.",
+   "score": 0.857,
+   "checks": {
+    "valid": true,
+    "clean": true,
+    "right_agents": true,
+    "size": true,
+    "done_when": true,
+    "ends_writer": true,
+    "for_each": false
+   },
+   "problems": [],
+   "output": "{  \n  \"steps\": [  \n    {  \n      \"id\": \"s1\",  \n      \"agent\": \"researcher\",  \n      \"task\": \"Find the current most popular GGUF quantized small model and how big its Q4 file is by checking live sources.\",  \n      \"needs\": [],  \n      \"for_each\": null,  \n      \"done_when\": \"The results are verified and confirmed to be the most popular GGUF quantized small model and its Q4 file size.\"  \n    },  \n    {  \n      \"id\": \"s2\",  \n      \"agent\": \"browser\",  \n      \"task\": \"Open a website that lists the most popular GGUF quantized small models and their file sizes, such as Hugging Face or GitHub.\",  \n      \"needs\": [\"s1\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The browser successfully opens the website and retrieves the most popular GGUF quantized small models and their file sizes.\"  \n    },  \n    {  \n      \"id\": \"s3\",  \n      \"agent\": \"coder\",  \n      \"task\": \"Write and run a Python script to extract the most popular GGUF quantized small model and its Q4 file size from the website opened in step s2.\",  \n      \"needs\": [\"s2\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The Python script successfully extracts and verifies the most popular GGUF quantized small model and its Q4 file size.\"  \n    },  \n    {  \n      \"id\": \"s4\",  \n      \"agent\": \"writer\",  \n      \"task\": \"Write the final deliverable for Arnav, summarizing the most popular GGUF quantized small model and its Q4 file size.\",  \n      \"needs\": [\"s3\"],  \n      \"for_each\": null,  \n      \"done_when\": \"The final deliverable is written and confirmed to include the most popular GGUF quantized small model and its Q4 file size.\"  \n    }  \n  ]  \n}"
+  }
+ ]
+}

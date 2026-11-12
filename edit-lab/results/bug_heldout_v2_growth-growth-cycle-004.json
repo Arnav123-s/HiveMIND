@@ -1,0 +1,16 @@
+{
+ "cycle_id": "growth-cycle-004",
+ "fix_cycle": "growth-cycle-004",
+ "composed_acc": 0.4722,
+ "per_class_recall": {
+  "wrong-operator": 0.2,
+  "mutable-default": 0.5,
+  "off-by-one": 0.3333,
+  "clean": 0.6364,
+  "missing-return": 1.0,
+  "swapped-operands": 0.0
+ },
+ "n": 36,
+ "previous_acc": 0.4722,
+ "measured_via": "factory.growth_cycle post-adoption judge (the audit's own measurement path); the sealed set was never trained on and never selected candidates"
+}

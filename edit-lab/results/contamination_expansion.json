@@ -1,0 +1,293 @@
+{
+ "n_gram": 8,
+ "total": 44,
+ "kept": 31,
+ "report": [
+  {
+   "task": "Find the 4 most downloaded token-classification models on Hugging Face and list their licenses and parameter counts.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Open the Python documentation page for the pathlib module and summarize the main classes it documents.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Write a Python script that downloads the text of Pride and Prejudice from Project Gutenberg, counts how often each chapter heading appears, and saves the counts to a CSV file.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Check whether the versions I pinned are outdated: numpy==1.26.0 and pillow==10.1.0 - compare them against the latest releases on PyPI and tell me what you find.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Find the top 5 Hacker News stories about retro gaming and summarize each one in a single line.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "find the top 5 hacker news stories about"
+    ]
+   }
+  },
+  {
+   "task": "Look up arXiv papers on mechanistic interpretability, pick the 2 most relevant, and build me a reading list with one-line summaries.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "and build me a reading list with one",
+     "build me a reading list with one line",
+     "me a reading list with one line summaries"
+    ]
+   }
+  },
+  {
+   "task": "Benchmark how long it takes Python to compute the SHA-256 hash of a 100 MB file when reading it in 4 KB chunks versus reading it all at once, on this machine.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "On quotes.toscrape.com, collect every quote tagged 'life' across all pages and save them to a JSON file.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "across all pages and save them to a"
+    ]
+   }
+  },
+  {
+   "task": "For each of the 3 most downloaded SmolLM2 models on Hugging Face, open its model page and record its parameter count and license.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "hugging face open its model page and record",
+     "models on hugging face open its model page",
+     "on hugging face open its model page and"
+    ]
+   }
+  },
+  {
+   "task": "Find known vulnerabilities for the Python package requests version 2.28.0 using OSV and tell me whether I should upgrade.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Make a chart of the last 14 days of daily maximum temperature in Bengaluru from Open-Meteo and save it as a PNG.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "from open meteo and save it as a",
+     "open meteo and save it as a png"
+    ]
+   }
+  },
+  {
+   "task": "Read the Wikipedia article on the printing press and write me a one-page history with key dates.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "and write me a one page history with",
+     "me a one page history with key dates",
+     "write me a one page history with key"
+    ]
+   }
+  },
+  {
+   "task": "Find the latest version of the Python packages httpx and rich, then write and run a script that prints both versions and says which package has the higher version number.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "find the latest version of the python packages"
+    ]
+   }
+  },
+  {
+   "task": "Open the Hugging Face page of Qwen3-0.6B, read the model card, and tell me what it was trained for.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "card and tell me what it was trained",
+     "model card and tell me what it was",
+     "read the model card and tell me what"
+    ]
+   }
+  },
+  {
+   "task": "Find the current stable version of the Rust programming language and what changed in its most recent release, from the official release notes.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Go to books.toscrape.com, open the Science category, and list the titles of all books that have a five-star rating.",
+   "flagged": true,
+   "hits": {
+    "synth_tasks bank": [
+     "books toscrape com open the science category and",
+     "go to books toscrape com open the science",
+     "to books toscrape com open the science category"
+    ]
+   }
+  },
+  {
+   "task": "Write a Python script that finds all palindromic primes below 10000 and saves them to a file.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Find the populations of Canada, Australia and Mexico, compute each country's share of the three-country total with a script, and write up the result.",
+   "flagged": true,
+   "hits": {
+    "synth_tasks bank": [
+     "compute each country s share of the three",
+     "country s share of the three country total",
+     "country total with a script and write up"
+    ]
+   }
+  },
+  {
+   "task": "For each of these books on books.toscrape.com - 'Sapiens', 'Norwegian Wood' and 'Soumission' - find which is cheapest and which has the most stock, and write up the comparison.",
+   "flagged": true,
+   "hits": {
+    "synth_tasks bank": [
+     "each of these books on books toscrape com",
+     "for each of these books on books toscrape"
+    ]
+   }
+  },
+  {
+   "task": "What is the latest long-term-support release of Node.js and when does its maintenance period end? Answer from the official Node.js site.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Collect every quote by Jane Austen from quotes.toscrape.com across all pages and save them to a text file.",
+   "flagged": true,
+   "hits": {
+    "original test 14": [
+     "across all pages and save them to a"
+    ]
+   }
+  },
+  {
+   "task": "Write a Python script that generates the first 200 prime numbers using the Sieve of Eratosthenes and writes them to a file, one per line.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Find three recent arXiv papers on world models and summarize the approach of each in two lines.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Compare SQLite and DuckDB for analytics work on a laptop: strengths, weaknesses, and which one fits a single-user project. Write a recommendation.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "For each of Python, Go, Rust and Ruby, find the year of its first public release and its current stable version, and compile everything into one report.",
+   "flagged": true,
+   "hits": {
+    "synth_tasks bank": [
+     "stable version and compile everything into one report"
+    ]
+   }
+  },
+  {
+   "task": "First find out what the most starred repository on GitHub is, then look up what programming language it is mainly written in, and write up both answers.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Open the MDN Web Docs page on the fetch API and summarize what it covers.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Write a Python script that reads a text file of numbers, computes the median and the interquartile range, and prints a small report.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "I need a PNG line graph showing daily high temperatures in Bengaluru over the past two weeks, using Open-Meteo data.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Give me a one-page history of the printing press based on its Wikipedia article, including the key dates.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "After finding the current releases of httpx and rich, use a small script to print the two version numbers side by side.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Tell me about Qwen3-0.6B: visit its Hugging Face model card and describe its intended use and who released it.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Browse the Science section of books.toscrape.com and give me the titles of the books rated five stars.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "How many people live in Canada, Australia and Mexico? Use a script to work out each country's percentage of the combined population, and summarize.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Among 'Sapiens', 'Norwegian Wood' and 'Soumission' on books.toscrape.com, which costs least and which has the largest stock? Put the comparison in a short note.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Gather all of Jane Austen's quotes from quotes.toscrape.com, checking every page, into a single text file.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Python, Go, Rust and Ruby: give me the year each language first appeared publicly and the newest stable release of each, gathered into a single report.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Search arXiv for papers about test-time compute and summarize what they propose.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "What are people saying on Hacker News about home automation this week? Pick the 5 top stories and summarize each in one line.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "In the Horror section of books.toscrape.com, find the book with the lowest price that is in stock and report its title and price.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Using OSV, check the Python package urllib3 at version 1.26.5 for known vulnerabilities and tell me if an upgrade is needed.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Download the text of Alice's Adventures in Wonderland from Project Gutenberg and count how many times the word 'Alice' appears, saving the result to a file.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "What were the closing prices of the S&P 500 index for the last five trading days? Put them in a small table.",
+   "flagged": false,
+   "hits": {}
+  },
+  {
+   "task": "Write a Python script that converts a CSV of temperatures from Fahrenheit to Celsius and writes the converted values to a new CSV file.",
+   "flagged": false,
+   "hits": {}
+  }
+ ]
+}
