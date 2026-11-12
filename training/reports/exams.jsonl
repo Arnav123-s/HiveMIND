@@ -1,0 +1,1 @@
+{"seed": 315, "when": "2026-11-12 12:22", "passed": 12, "tasks": 16, "by_field": {"code": [2, 2], "dates": [2, 2], "given data": [1, 1], "instructions": [0, 2], "knowledge": [1, 1], "languages": [0, 1], "live facts": [2, 2], "maths": [1, 1], "units": [1, 1], "websites": [2, 2], "writing": [0, 1]}, "minutes": 61, "code": "9b4116f", "memory": "its own"}
