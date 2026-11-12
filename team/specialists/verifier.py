@@ -419,6 +419,8 @@ def verify(step, result, board, workdir):
             return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
         if result.get("unfixed"):  # found by the code checks on the program's last attempt; no juror outvotes it
             return "FAIL", f"the program still has a problem the checks found: {result['unfixed']}"[:600]
+        if result.get("unagreed"):  # worked out again by independent programs, compared in code; no juror outvotes it
+            return "FAIL", str(result["unagreed"])[:600]
         from .coder import sanity, unsaved_output
         bad = sanity(result.get("summary", ""))
         if bad:
@@ -454,6 +456,8 @@ def verify(step, result, board, workdir):
             return "FAIL", f"the program contradicts an example from his task: {result['examples_failed']}"[:400]
         if result.get("unfixed"):  # found by the code checks on the program's last attempt; no juror outvotes it
             return "FAIL", f"the program still has a problem the checks found: {result['unfixed']}"[:600]
+        if result.get("unagreed"):  # worked out again by independent programs, compared in code; no juror outvotes it
+            return "FAIL", str(result["unagreed"])[:600]
         out = result.get("summary", "")
         named = re.search(r"\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|"
                           r"may|june|july|august|september|october|november|december)\b", out, re.I)
