@@ -1,6 +1,6 @@
 {
  "registry_version": 1,
- "built_at": "2026-11-12T06:52:55",
+ "built_at": "2026-11-12T12:53:00",
  "built_by": "factory.registry.build_registry",
  "note": "the single serving book for this side of the hive; verify with factory.audit; serve only through factory.serve (which audits at load and fails closed on mismatch)",
  "specialists": {
@@ -589,19 +589,19 @@
      "name": "bug-off-by-one-index-model",
      "role": "member",
      "path": "coding/swarm/models/bug-off-by-one-index-model.json",
-     "sha256": "6c39c3e70fe7257d6dde1650e86814b63a44df1a22a00f91d14e88cfb5b17029",
+     "sha256": "b2ee3e7c32b82a8fe907cc9122c46e36f698b22e3d0977d31cfdae4b960ae26b",
      "substrate": "fp",
-     "params": 3830,
-     "footprint_bytes": 63260,
+     "params": 2072,
+     "footprint_bytes": 55936,
      "heldout_acc": 1.0,
      "evidence": {
-      "factory_cycle": "growth-cycle-004",
-      "path_taken": "factory birth — split + name-intent data (growth cycle)",
+      "factory_cycle": "growth-cycle-005",
+      "path_taken": "factory birth — split + name-intent data + parent-initialized fine-tuning (growth cycle)",
       "supersedes": null,
       "fresh_confirm_acc": null,
       "fresh_screen_acc": null,
       "battery_reference_acc": null,
-      "train_n": 583,
+      "train_n": 609,
       "heldout_n": 20,
       "dream": null,
       "flips_applied": null
@@ -774,19 +774,19 @@
      "name": "bug-wrong-operator-expression-model",
      "role": "member",
      "path": "coding/swarm/models/bug-wrong-operator-expression-model.json",
-     "sha256": "94b66d160efe48d9c8cf0f649d26fd535ad542fa8e7a29e739b21a83091fd7c7",
+     "sha256": "df1ed78767485dd558c055568a4e22539598cc4c9af5a54c1e6e750afd3aa99c",
      "substrate": "fp",
-     "params": 3366,
-     "footprint_bytes": 106294,
+     "params": 3438,
+     "footprint_bytes": 83894,
      "heldout_acc": 1.0,
      "evidence": {
-      "factory_cycle": "growth-cycle-004",
+      "factory_cycle": "growth-cycle-005",
       "path_taken": "factory birth — split + name-intent data (growth cycle)",
       "supersedes": null,
       "fresh_confirm_acc": null,
       "fresh_screen_acc": null,
       "battery_reference_acc": null,
-      "train_n": 507,
+      "train_n": 538,
       "heldout_n": 20,
       "dream": null,
       "flips_applied": null
@@ -913,8 +913,8 @@
       "missing-return": 1.0,
       "swapped-operands": 0.0
      },
-     "growth_judge_file": "results/bug_heldout_v2_growth-growth-cycle-004.json",
-     "growth_cycle": "growth-cycle-004"
+     "growth_judge_file": "results/bug_heldout_v2_growth-growth-cycle-005.json",
+     "growth_cycle": "growth-cycle-005"
     }
    },
    "fallback": "the phase-4 composition (plateau 0.7931): the pre-dream member records are backed up inside factory/runs/dream-phaseC-002",
