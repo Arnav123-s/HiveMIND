@@ -525,6 +525,34 @@ def nothing_verified(goal, board, facts):
         and not [f for f in facts if f.get("step") in passed]
 
 
+UNCHECKED = "the critic did not check it"
+ONE = """You check one thing for Arnav. Was his INSTRUCTION done, according to the VERIFIED RESULTS and the REPORT?
+It is done only if the report holds what the instruction asks for and the verified results back it.
+Reply with JSON only: {"done": true, "why": "short"}"""
+
+
+def ask_again(checklist, board, results_text, text):
+    """An instruction the critic did not check is put to it once more, alone. (Asked about three instructions at
+    once, the critic checked the plan's steps instead; none matched, and a report whose every step had passed was
+    handed over as "0/3 of your instructions done".) Only where every step of the team passed: where one failed, an
+    unchecked instruction stays not done."""
+    steps = [s for s in board.steps() if s["agent"] != "writer" and s.get("verdict")]
+    if not steps or any(s["verdict"] not in ("PASS", "REROUTED") for s in steps):
+        return checklist
+    out = []
+    for c in checklist:
+        if not c.get("done") and c.get("why") == UNCHECKED:
+            data, _ = llm.chat_json("critic", [{"role": "system", "content": ONE},
+                                               {"role": "user", "content": f"INSTRUCTION:\n{c.get('instruction', '')}\n\nVERIFIED RESULTS:\n"
+                                                                           f"{results_text[:5000]}\n\nREPORT:\n{text[:4000]}"}],
+                                    max_new_tokens=120)
+            if isinstance(data, dict) and isinstance(data.get("done"), bool):
+                c = {**c, "done": data["done"], "why": str(data.get("why") or "")[:200]}
+                board.log("critic", "asked-again", f"{'done' if c['done'] else 'not done'}: {c.get('instruction', '')[:80]}")
+        out.append(c)
+    return out
+
+
 def finish(text, board, results_text, sources, checklist, unordered, flagged, fixes):
     """The report's checked tail: numbers grounded, flags, the checklist, what failed, the sources."""
     saved = [Path(a["path"]) for a in board.artifacts() if a.get("kind") == "file"]
@@ -535,6 +563,7 @@ def finish(text, board, results_text, sources, checklist, unordered, flagged, fi
     checklist, invented = align_checklist(checklist, list(getattr(board, "checklist", None) or []))
     if invented:
         board.log("critic", "invented", "checklist items that are not his instructions, dropped: " + " | ".join(invented)[:300])
+    checklist = ask_again(checklist, board, results_text, text)
     text, struck = ground_numbers(text, results_text + "\n" + "\n".join(sources))
     if struck:
         board.log("critic", "strike", f"{len(struck)} line(s) with numbers not in the verified results removed")

@@ -15,12 +15,18 @@ on:
       tasks:
         description: How many tasks
         default: "16"
+      seed:
+        description: "The sitting's number (empty: today's)"
+        default: ""
+      members:
+        description: "A trial, not for the record: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
+        default: ""
 
 permissions:
   contents: read
 
 concurrency:
-  group: exam
+  group: exam-${{ inputs.members || 'as-it-is' }}
   cancel-in-progress: false
 
 jobs:
@@ -29,11 +35,13 @@ jobs:
     timeout-minutes: 330
     env:
       TASKS: ${{ inputs.tasks || '16' }}
+      AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
+      SEED: ${{ inputs.seed || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive
       - name: The exam
-        run: python training/exam.py sit --tasks "$TASKS"
+        run: python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"}
       - name: How it went
         if: ${{ !cancelled() }}
         run: cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY" || true
@@ -45,6 +53,7 @@ jobs:
           retention-days: 30
   record:
     needs: sit
+    if: ${{ !inputs.members }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
