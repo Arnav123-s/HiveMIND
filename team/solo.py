@@ -48,9 +48,10 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""
-MORE = ("If this output, as it stands, is the complete and correct answer to the TASK, reply with the one word DONE. "
-        "If not, reply with a better complete program.")
-TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 6))
+MORE = ("If this output is the complete answer to the TASK (every value asked for, said in words), reply with the one "
+        "word DONE. If it only shows data you were looking at, or something is missing or wrong, reply with the "
+        "complete program that prints the answer.")
+TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 8))
 FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing", re.I)
 LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing", re.I)
 
@@ -78,7 +79,7 @@ def member(task, n, board, guard, work, temperature):
     printed ("" when none ran)."""
     messages = [{"role": "system", "content": MEMBER.format(today=time.strftime("%Y-%m-%d (%A)"))},
                 {"role": "user", "content": f"TASK: {task}"}]
-    good, last_error, turn = None, None, 0
+    good, last_error, repeats, turn = None, None, 0, 0
     for turn in range(1, TURNS + 1):
         stop.check()
         reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
@@ -106,14 +107,15 @@ def member(task, n, board, guard, work, temperature):
             messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n{MORE}"})
             continue
         line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
-        if line == last_error:  # its fix changed nothing: another turn of the same would cost minutes and give the same
+        repeats = repeats + 1 if line == last_error else 0
+        if repeats >= 2:  # the same failure three times running: its fixes change nothing
             board.log(f"member{n}", "same-error", line[:150])
             break
         last_error = line
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
-            "\n\nWhat you expected is not there. Reply with a program that first prints what IS there (the keys of "
-            "the data, or its first 600 characters) so that you can see it." if LOOK.search(err or out) else
+            "\n\nWhat you expected is not there. Reply with a program that only fetches the data and prints what IS "
+            "there, with print(str(data)[:800]), so that you can see its real shape." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn}
 
@@ -128,8 +130,8 @@ def run(task, run_dir=None, approve="never", members=2):
     work = home / "work"
     tries = []
     agreed = None
-    for n in range(1, max(1, members) + 2):  # one more than asked, only to decide a difference
-        if n > members and (members < 2 or len([t for t in tries if t["answer"]]) < 2):
+    for n in range(1, max(1, members) + 2):  # one more than asked: to decide a difference, or in place of one that got nowhere
+        if n > members and members < 2:
             break
         t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7)
         tries.append(t)
