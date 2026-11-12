@@ -44,6 +44,7 @@ from swarm import decomposers as D  # noqa: E402
 from swarm import factory as F  # noqa: E402
 from swarm import phase3 as P3  # noqa: E402
 
+from . import champion as champion_mod  # noqa: E402
 from . import dream as dream_mod  # noqa: E402
 from . import dream_gen as G  # noqa: E402
 from .executors import _atomic_json, contamination_filter, \
@@ -193,7 +194,17 @@ def _methods_arms(*, cls: str, slice_name: str, task, parent,
         it cannot run inside a birth attempt, so this arm uses its
         machinery pieces (gen_pool, contamination_filter,
         difficulty_filter) at birth scale. That is the closest
-        honest version, and it is recorded as such."""
+        honest version, and it is recorded as such.
+    (4) CHAMPION RECIPE (Fable-study Build 1, 2026-11-12): only
+        on the cycle's designated target (cfg["champion"] true):
+        the persistent champion recipe (factory/champion.py)
+        and a challenger mutating exactly ONE of its genes each
+        train at full budget as ordinary gate candidates. Their
+        DEV accuracies are read here (dev only — held never
+        selects); whether the challenger is crowned is decided
+        by the crown rule in factory/champion.py and applied by
+        the cycle runner only after the cycle's births survive
+        serving verification."""
     prov: Dict[str, Any] = {}
     seed = int(cfg.get("seed", METHODS_DEFAULTS["seed"]))
     probe_epochs = int(cfg.get("probe_epochs",
@@ -364,6 +375,63 @@ def _methods_arms(*, cls: str, slice_name: str, task, parent,
                          "for this slice — no repair attempted")
     prov["dream_first"] = df
 
+    # ---- (4) champion recipe: one-gene challenger (Build 1)
+    ch: Dict[str, Any] = {"note": "persistent champion recipe "
+                                  "(Fable-study Build 1): on the "
+                                  "cycle's designated target, the "
+                                  "champion and its one-gene "
+                                  "mutant train at full budget "
+                                  "as gate candidates; the crown "
+                                  "reads DEV only and is applied "
+                                  "by the cycle runner after "
+                                  "serving verification"}
+    if cfg.get("champion"):
+        try:
+            rec = champion_mod.load_record()
+            champ_recipe = rec["recipe"]
+            mutant_recipe, mutation = champion_mod.mutate(
+                champ_recipe, random.Random(seed + 90210))
+            ch.update({"version": rec["version"],
+                       "recipe": champ_recipe,
+                       "mutation": mutation,
+                       "mutant_recipe": mutant_recipe})
+            trained_by_label: Dict[str, Any] = {}
+            for label, recipe in (("champion", champ_recipe),
+                                  ("champion-mutant",
+                                   mutant_recipe)):
+                kw, diet_kind = champion_mod.train_kwargs(
+                    recipe, parent)
+                diet = init_train if diet_kind == "init" \
+                    else train_child
+                n_before = len(trained)
+                _train_and_judge(diet, label, "champion-recipe",
+                                 **kw)
+                if len(trained) > n_before:
+                    trained_by_label[label] = trained[-1][0]
+            if dev:
+                for label, key in (("champion", "champ_dev_acc"),
+                                   ("champion-mutant",
+                                    "mutant_dev_acc")):
+                    if label in trained_by_label:
+                        ch[key] = round(
+                            F.accuracy(trained_by_label[label],
+                                       dev), 4)
+                if "champ_dev_acc" in ch and \
+                        "mutant_dev_acc" in ch:
+                    ch["dev_margin"] = round(
+                        ch["mutant_dev_acc"]
+                        - ch["champ_dev_acc"], 4)
+            else:
+                ch["dev_note"] = ("dev split empty — no margin "
+                                  "can be read, no crown "
+                                  "possible this cycle")
+        except (ValueError, KeyError) as exc:
+            ch["blocked"] = str(exc)
+    else:
+        ch["skipped"] = ("not this cycle's designated champion "
+                         "target")
+    prov["champion"] = ch
+
     lineage.append("birth_methods", cycle_id=cycle_id, subject=cls,
                    slice=slice_name,
                    headtohead_winner=(prov.get("headtohead") or {})
@@ -373,7 +441,11 @@ def _methods_arms(*, cls: str, slice_name: str, task, parent,
                    breadth_indicted=(prov.get("breadth") or {})
                    .get("indicted_tensor"),
                    dream_first_kept=(prov.get("dream_first") or {})
-                   .get("kept_n"))
+                   .get("kept_n"),
+                   champion_mutation=(prov.get("champion") or {})
+                   .get("mutation"),
+                   champion_dev_margin=(prov.get("champion") or {})
+                   .get("dev_margin"))
     return prov
 
 
@@ -748,6 +820,10 @@ def attempt_birth(cls: str, slice_name: str, run_dir: Path,
             top = max(scored, key=lambda t: t[1]["slice_heldout_acc"])
             out["child_slice_heldout_acc"] = \
                 top[1]["slice_heldout_acc"]
+        if isinstance((out.get("methods") or {}).get("champion"),
+                      dict):
+            out["methods"]["champion"]["mutant_born"] = False
+            out["methods"]["champion"]["champion_born"] = False
         out["rejection"] = (
             f"gate failed: no candidate beat the parent on "
             f"{'both held slices' if intent_held_slice else 'the held slice'} "
@@ -766,6 +842,15 @@ def attempt_birth(cls: str, slice_name: str, run_dir: Path,
     child, win_row = best
     out["child_slice_heldout_acc"] = win_row["slice_heldout_acc"]
     out["winning_arm"] = win_row.get("arm")
+    if isinstance((out.get("methods") or {}).get("champion"),
+                  dict):
+        # The crown rule's birth leg, recorded here; the crown
+        # itself is applied by the cycle runner only if this
+        # birth survives serving verification (never on rollback).
+        out["methods"]["champion"]["mutant_born"] = \
+            win_row.get("arm") == "champion-mutant"
+        out["methods"]["champion"]["champion_born"] = \
+            win_row.get("arm") == "champion"
     if intent_held_slice is not None:
         out["child_intent_heldout_acc"] = win_row["intent_heldout_acc"]
     out["child_remainder_heldout_acc"] = measure(child, held_rest)["acc"] \

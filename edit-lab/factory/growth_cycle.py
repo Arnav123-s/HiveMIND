@@ -591,6 +591,44 @@ def _rollback(born: List[Dict[str, Any]], snapshots: Dict[str, bytes],
 
 
 # ------------------------------------------------------------ report
+def _apply_champion_crowns(cycle_id: str,
+                           attempts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Build 1 crown application — called ONLY from the
+    births-kept branch of a cycle, after serving verification
+    has passed. A challenger is crowned when its candidate was
+    the attempt's born child AND its dev margin over the
+    champion candidate was positive (factory/champion.py's
+    crown rule; dev selects, held never does). Rolled-back or
+    unborn challengers can never reach this function."""
+    from . import champion as champion_mod
+    applied: List[Dict[str, Any]] = []
+    rec = champion_mod.ensure_record()
+    for att in attempts:
+        if not att.get("born"):
+            continue
+        ch = (att.get("methods") or {}).get("champion") or {}
+        if not ch.get("mutation"):
+            continue
+        if champion_mod.should_crown(
+                mutant_born=bool(ch.get("mutant_born")),
+                dev_margin=ch.get("dev_margin")):
+            rec = champion_mod.crown(
+                rec, cycle_id=cycle_id,
+                target=f"{att['cls']}/{att['slice']}",
+                mutant_recipe=ch["mutant_recipe"],
+                mutation=ch["mutation"],
+                dev_margin=ch["dev_margin"],
+                champ_dev_acc=ch.get("champ_dev_acc"),
+                mutant_dev_acc=ch.get("mutant_dev_acc"))
+            champion_mod.save_record(rec)
+            applied.append(
+                {"target": f"{att['cls']}/{att['slice']}",
+                 "version": rec["version"],
+                 "mutation": ch["mutation"],
+                 "dev_margin": ch["dev_margin"]})
+    return applied
+
+
 def _fmt(x):
     return "—" if x is None else (f"{x:.4f}" if isinstance(x, float)
                                   else str(x))
@@ -703,7 +741,41 @@ def write_report(cycle: Dict[str, Any]) -> None:
                         f"children seeded from it."
                         + (f" BLOCKED: {df['blocked']}"
                            if df.get("blocked") else ""))
+            cp = mp.get("champion") or {}
+            if cp:
+                if cp.get("skipped"):
+                    lines.append(f"- Champion recipe: skipped — "
+                                 f"{cp['skipped']}")
+                elif cp.get("blocked"):
+                    lines.append(f"- Champion recipe: BLOCKED — "
+                                 f"{cp['blocked']}")
+                else:
+                    mut = cp.get("mutation") or {}
+                    lines.append(
+                        f"- Champion recipe v{cp.get('version')} "
+                        f"(Build 1): one-gene mutant "
+                        f"({mut.get('gene')}: {mut.get('from')} "
+                        f"-> {mut.get('to')}); dev champion "
+                        f"{_fmt(cp.get('champ_dev_acc'))} vs "
+                        f"mutant {_fmt(cp.get('mutant_dev_acc'))} "
+                        f"(margin {_fmt(cp.get('dev_margin'))}); "
+                        f"mutant born: {cp.get('mutant_born')}. "
+                        f"A crown lands only if the birth is "
+                        f"kept after verification.")
             lines.append("")
+    champ_cycle = cycle.get("champion") or {}
+    if champ_cycle:
+        lines += ["", "## Champion recipe (Build 1)", "",
+                  f"Designated target: "
+                  f"{champ_cycle.get('designated_target')}; "
+                  f"record v{champ_cycle.get('version_before')}"
+                  + (f" -> v{champ_cycle['version_after']}"
+                     if champ_cycle.get("version_after")
+                     is not None else "")
+                  + f"; crowns applied: "
+                    f"{len(champ_cycle.get('crowns_applied') or [])}"
+                  + (f" — {champ_cycle['note']}"
+                     if champ_cycle.get("note") else "")]
     lines += ["", "## Served battery (acceptance, Tier-0 sections)",
               "", "| check | before | after |", "|---|---|---|"]
     for task in b:
@@ -1636,6 +1708,18 @@ def run_cycle3(cycle_id: str,
     lineage.append("growth_cycle_start", cycle_id=cycle_id,
                    strategy="cycle3")
 
+    from . import champion as champion_mod
+    champ_rec = champion_mod.ensure_record()
+    champ_idx = cycle_number(cycle_id) % len(TARGETS)
+    cycle["champion"] = {
+        "designated_target":
+            f"{TARGETS[champ_idx][0]}/{TARGETS[champ_idx][1]}",
+        "version_before": champ_rec["version"],
+        "recipe_before": champ_rec["recipe"],
+        "crowns_applied": [],
+        "note": "crowns apply only in the births-kept branch, "
+                "after serving verification"}
+
     if not (name_intent.DATA_DIR / "name_intent_train.json").exists():
         name_intent.build_datasets()
     intent_train = name_intent.load_train()
@@ -1670,6 +1754,11 @@ def run_cycle3(cycle_id: str,
                    "repaired on difficulty-filtered verified "
                    "dreams of its own measured failures, children "
                    "seeded from the repaired parent",
+                   "persistent champion recipe (Fable-study "
+                   "Build 1): one designated target per cycle "
+                   "races the champion against its one-gene "
+                   "mutant; a kept mutant birth with a positive "
+                   "dev margin crowns the mutation",
                    "learned-say check (Fable) — measured only"],
         "strategy": "cycle3",
     }
@@ -1696,6 +1785,9 @@ def run_cycle3(cycle_id: str,
         extra = cap_intent(intent_train, cls, slice_name,
                            seed=rotation["intent_seed"] if rotation
                            else 99)
+        target_methods = dict(methods_cfg)
+        if (cls, slice_name) == TARGETS[champ_idx]:
+            target_methods["champion"] = True
         out = growth.attempt_birth(
             cls, slice_name, run_dir / "births" / f"{cls}-{slice_name}",
             lineage, cycle_id,
@@ -1703,7 +1795,7 @@ def run_cycle3(cycle_id: str,
             arms=("scratch", "init"), init_train_extra=replay,
             failure_weight=True,
             pool_counts=rotation["pool_counts"] if rotation else None,
-            methods=methods_cfg)
+            methods=target_methods)
         out["intent_train_capped_n"] = len(extra)
         attempts.append(out)
         print(f"[{cycle_id}]   -> born={out['born']} "
@@ -1749,12 +1841,25 @@ def run_cycle3(cycle_id: str,
             cycle["rolled_back"] = True
             cycle["rollback_reason"] = reason
             cycle["audit"] = _full_audit()
+            cycle["champion"]["note"] = (
+                "no crowns: the cycle rolled back — a "
+                "rolled-back birth can never crown a recipe")
             print(f"[{cycle_id}] ROLLED BACK: {reason}", flush=True)
         else:
+            cycle["champion"]["crowns_applied"] = \
+                _apply_champion_crowns(cycle_id, attempts)
+            cycle["champion"]["version_after"] = \
+                champion_mod.load_record()["version"]
+            if cycle["champion"]["crowns_applied"]:
+                lineage.append(
+                    "champion_crowned", cycle_id=cycle_id,
+                    crowns=cycle["champion"]["crowns_applied"])
             print(f"[{cycle_id}] births KEPT; whole verified",
                   flush=True)
     else:
         cycle["audit"] = _full_audit()
+        cycle["champion"]["note"] = (
+            "no crowns: no births this cycle")
 
     cycle["next_attack"] = (
         "First cycle under the methods upgrade: read the "
