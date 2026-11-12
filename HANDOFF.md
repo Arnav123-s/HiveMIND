@@ -198,6 +198,33 @@ Votes' real worth is training state (about 1.25 bytes a weight against 12), not 
 - Not asked again: whether he has a device that can stay on.
 
 
+### 2026-11-12, evening: the exam pairs, and two mistakes of the session (newest)
+
+- PR 14 is merged on his yes (members form off unless asked for, the three fixes to the roles, the recipe for new
+  bodies). PR 15 (draft, `make-it-work`): the library of solved tasks, practice, the cache on GitHub. It is NOT
+  measured better and must not be asked for until it is.
+- A scheduled exam fired on main at 17:44 UTC, the first schedule ever to fire here (due 09:43). Schedules work,
+  hours late.
+- Exam pairs, each on 16 fresh tasks (tables in `training/reports/exams/`):
+  - seed 315: roles as on main 12 in 61 min; members alone (code 68f3fd4) 10 in 15 min.
+  - seed 9001: members first then roles 9 in 209 min; roles alone 9 in 193 min. The members confirmed almost
+    nothing in that sitting (code f7a435d).
+  - seed 9002: members alone with the library 5 in 56 min (code d527a87): four crashes of mine in `__main__`
+    (fixed), and members agreeing on wrong answers.
+  - seed 9003: members alone, nothing learned, 10 in 56 min (code f705ae1); one of the ten is a lenient check
+    passing a "Not confirmed" body, one is a raw dump that happens to hold the licence. The sitting with the library
+    was still running. Seed 9004 (members first then roles against roles alone, nothing learned) was started 20:56 UTC.
+- Two mistakes, both made after the good sitting and neither measured before it went in:
+  1. the wording of what a member is asked after each program (longer; members rewrote right programs). Put back.
+  2. the library shown to every member: they copied the same old program, values and all, and agreed on the same
+     wrong answer. Now only member 1 sees it; the others start from nothing, so agreement still checks something.
+- Not explained: members alone took 15 minutes on seed 315 and 56 on seeds 9002 and 9003 with the same model
+  (`AGENT_TEAM_SMALL` is not set on the runner). The third member standing in is part of it, not all.
+- What the evidence supports today: for something worked out or read from an API, the members get it right and say
+  "not confirmed" when they do not; for websites the roles are better; neither follows a form to the letter, sums up
+  a text or handles several orders in one message reliably. Neither form is shown better on the exam as a whole.
+
+
 ## START HERE: moving to a new account (paused 2026-11-11, 20:00 UTC)
 
 Arnav paused the work and is continuing from a different Claude account. The old cloud machine is gone; only what
