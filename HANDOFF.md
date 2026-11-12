@@ -146,6 +146,58 @@ not answered.
 - The published 2.4B BitNet as a member: its makers' runtime, its speed and exams here, then weight edits beside its
   three-valued weights. Needs Hugging Face.
 
+### 2026-11-12: his "approve on all", and what the day found (newest; read before the list above)
+
+His words: "approve on all", "come back to me with the final product I can actually use", "RSI as a hive by
+multiplication". He also sent the other lab's results (branch `hivemind_muse`, `edit-lab/bitnet-lab/`): votes and
+"layered" five-level weights. His usage limit ran out three times on this session: keep steps few, run long jobs as
+tracked background jobs of under two hours (a detached job dies when the machine is restarted, which happens within
+minutes of a turn ending), and wake on their end.
+
+**Done**
+- PR 13 merged into main on his yes (Ask the hive, the daily exam, one growing turn a day). Later work is on
+  `make-it-work` and is NOT on main: a new PR needs his yes for that PR.
+- GitHub schedules have never fired on this repository (the 00:17 growing turn, the 09:43 exam). Started by hand
+  they run: "The hive grows" ran 2 h 40 min to the end. Cause not confirmed.
+- New bodies are founded with rotary positions (`scratch.kind()["rotary"]`), the rate falling over the second
+  half (`cool` 0.5) and the running mean of the weights (`mean` 0.99). Measured at 20 minutes from one start
+  (`training/experiments/recipe7_long.json`): as it was 3.4825, rotary 3.2764, rotary with the falling rate 3.1045
+  (mean 3.0960). What won at 600 steps but costs time (Muon, 16 at a time, relu squared) read 3.5680 at 20
+  minutes: a 600-step verdict is not a verdict at equal time.
+- The birth gate needs twice the standard error (`body.judge_local`).
+
+**The working hive failed its first real tasks.** Three tasks typed into "Ask the hive" on GitHub, none written to
+suit it: 0 of 3 right. A wrong program passed because it ran; a planner sent a sum to a researcher; a release date
+was made up and ticked as done. Three fixes for exactly those are on `make-it-work` (coder: an independent second
+program and a comparison in code, `coder.agreement`; hive: `_worked_out`; writer: `ask_again`); the rerun never
+reached them (the task-kind cell planned researcher then writer).
+
+**The trial form: `team/solo.py`** (`AGENT_TEAM_SOLO=2 python -m team "task"`, or the input "members" of Ask the
+hive and of the exam). No roles. A member is the 7B coder working by programs alone: program, output, a better
+program, the word DONE. A second member does the task again independently; code compares the numbers of the two
+answers (words where there are none); one more member decides a difference or stands in for one that got nowhere;
+no agreement is "Not confirmed" with no value in the body. First exam sitting, seed 315, 16 fresh tasks: 10 of 16
+in 15 minutes (`training/reports/exams/315_members2_trial.md`). The hive as on main and the hive with the three
+fixes sat the same seed the same day (runs started 11:12 UTC): compare before deciding which form "Ask the hive"
+uses. Do not tune the trial form on seed 315's failures; its next sitting is a new seed, paired with the roles.
+
+**Votes and five levels** (`training/experiments/votes5.py`, `votes5_result.json`, `votes5_20min.json`; the layered
+rule is the other lab's own, line for line). At 8 minutes, two starts: five levels beat three by votes at half size
+(3.842/3.918 against 3.947/3.988); half-size gradient training beats both (3.717/3.762); the other lab's headline
+(layered-half beats gradient training) compared a half-size net with a full-size one, as its own record says.
+Rotary positions help votes too. At 20 minutes, one start: votes with five levels, half size, rotary 3.3769;
+votes, rotary, full size 3.5727; gradient training, rotary, full size 3.2764 (3.1045 with the falling rate).
+Votes' real worth is training state (about 1.25 bytes a weight against 12), not quality per minute.
+
+**Not done**
+- The published 2.4B BitNet: the runtime built in /home/user/microsoft/bitnet prints repeated nonsense at 20
+  tokens a second and its benchmark prints nothing. Probably the build (the kernels setup_env.py generates were
+  not generated). Not a member; nothing measured.
+- Unattended learning of the working hive (a try-out gate on practice tasks, state kept between runs): not built.
+- Bodies: the stem cell cooling before cells are born, cell renewal, founding by copy: not built.
+- Not asked again: whether he has a device that can stay on.
+
+
 ## START HERE: moving to a new account (paused 2026-11-11, 20:00 UTC)
 
 Arnav paused the work and is continuing from a different Claude account. The old cloud machine is gone; only what
