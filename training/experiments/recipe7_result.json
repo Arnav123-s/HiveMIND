@@ -233,5 +233,233 @@
    "gate": 3.8407,
    "the 96": 3.8736
   }
+ },
+ "a plainer norm (no mean, no shift)": {
+  "held": {
+   "gate": 3.9642,
+   "the 96": 3.9986
+  },
+  "minutes": 8.5,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "rms": true,
+  "weights": 2613696,
+  "train_last": 4.0118,
+  "held, running mean of the weights": {
+   "gate": 3.8959,
+   "the 96": 3.9293
+  }
+ },
+ "the layers that write into the stream start small": {
+  "held": {
+   "gate": 3.9824,
+   "the 96": 4.0244
+  },
+  "minutes": 7.9,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "small": true,
+  "weights": 2615424,
+  "train_last": 4.0323,
+  "held, running mean of the weights": {
+   "gate": 3.9208,
+   "the 96": 3.9534
+  }
+ },
+ "normed queries and keys": {
+  "held": {
+   "gate": 4.0433,
+   "the 96": 4.0763
+  },
+  "minutes": 8.6,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "qknorm": true,
+  "weights": 2615424,
+  "train_last": 4.0855,
+  "held, running mean of the weights": {
+   "gate": 3.9681,
+   "the 96": 3.9954
+  }
+ },
+ "16 at a time, twice the steps": {
+  "held": {
+   "gate": 3.9215,
+   "the 96": 3.9633
+  },
+  "minutes": 7.5,
+  "steps": 1200,
+  "seed": 0,
+  "batch": 16,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.9685,
+  "held, running mean of the weights": {
+   "gate": 3.8039,
+   "the 96": 3.8377
+  }
+ },
+ "16 at a time, rate 2e-3": {
+  "held": {
+   "gate": 3.923,
+   "the 96": 3.9648
+  },
+  "minutes": 7.2,
+  "steps": 1200,
+  "seed": 0,
+  "batch": 16,
+  "lr": 0.002,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.9803,
+  "held, running mean of the weights": {
+   "gate": 3.8449,
+   "the 96": 3.8835
+  }
+ },
+ "8 at a time, four times the steps, rate 2e-3": {
+  "held": {
+   "gate": 3.9588,
+   "the 96": 4.0094
+  },
+  "minutes": 6.7,
+  "steps": 2400,
+  "seed": 0,
+  "batch": 8,
+  "lr": 0.002,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 4.0039,
+  "held, running mean of the weights": {
+   "gate": 3.8246,
+   "the 96": 3.8633
+  }
+ },
+ "everything that helped, together, start 0: {\"act\": \"relu2\", \"batch\": 16, \"fall\": 0.5, \"muon\": 0.05, \"rope\": true}": {
+  "held": {
+   "gate": 3.6182,
+   "the 96": 3.6672
+  },
+  "minutes": 10.0,
+  "steps": 1200,
+  "seed": 0,
+  "batch": 16,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.5,
+  "floor": 0.1,
+  "muon": 0.05,
+  "rope": true,
+  "act": "relu2",
+  "weights": 2615424,
+  "train_last": 3.6807,
+  "held, running mean of the weights": {
+   "gate": 3.6577,
+   "the 96": 3.7049
+  }
+ },
+ "everything that helped, together, start 1: {\"act\": \"relu2\", \"batch\": 16, \"fall\": 0.5, \"muon\": 0.05, \"rope\": true}": {
+  "held": {
+   "gate": 3.6195,
+   "the 96": 3.6526
+  },
+  "minutes": 10.2,
+  "steps": 1200,
+  "seed": 1,
+  "batch": 16,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.5,
+  "floor": 0.1,
+  "muon": 0.05,
+  "rope": true,
+  "act": "relu2",
+  "weights": 2615424,
+  "train_last": 3.6495,
+  "held, running mean of the weights": {
+   "gate": 3.6605,
+   "the 96": 3.6968
+  }
+ },
+ "everything that helped, together, start 2: {\"act\": \"relu2\", \"batch\": 16, \"fall\": 0.5, \"muon\": 0.05, \"rope\": true}": {
+  "held": {
+   "gate": 3.598,
+   "the 96": 3.6368
+  },
+  "minutes": 10.7,
+  "steps": 1200,
+  "seed": 2,
+  "batch": 16,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.5,
+  "floor": 0.1,
+  "muon": 0.05,
+  "rope": true,
+  "act": "relu2",
+  "weights": 2615424,
+  "train_last": 3.6294,
+  "held, running mean of the weights": {
+   "gate": 3.6354,
+   "the 96": 3.6825
+  }
+ },
+ "_verdict": {
+  "base_mean": 3.9636,
+  "base_sd": 0.0053,
+  "bar": 3.9531,
+  "helped": {
+   "rope": true,
+   "fall": 0.5,
+   "muon": 0.05,
+   "act": "relu2",
+   "batch": 16
+  },
+  "each": {
+   "the rate falls in the second half, to a tenth": 3.8753,
+   "the rate falls in the second half, to a hundredth": 3.891,
+   "Muon at 0.05 for the three-valued layers": 3.919,
+   "Muon at 0.1 for the three-valued layers": 4.364,
+   "a term of rank 4 beside every three-valued layer": 3.9594,
+   "a term of rank 8 beside every three-valued layer": 3.9575,
+   "rotary positions": 3.694,
+   "relu squared instead of gelu": 3.9194,
+   "a plainer norm (no mean, no shift)": 3.9642,
+   "the layers that write into the stream start small": 3.9824,
+   "normed queries and keys": 4.0433,
+   "16 at a time, twice the steps": 3.9215,
+   "16 at a time, rate 2e-3": 3.923,
+   "8 at a time, four times the steps, rate 2e-3": 3.9588
+  },
+  "together_mean": 3.6119,
+  "together_sd": 0.0121
  }
 }
