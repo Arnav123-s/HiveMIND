@@ -18,7 +18,7 @@ on held-out tasks, wrote training data aimed at what it got wrong, and edited it
   on ("Use it from anywhere"), on your own device (`./hive`), or through its API. Everything from "The team" down
   to "Limits" is about it.
 - **The growing hive** is what grows without limit: bodies of BitNet cells trained from random numbers on text the
-  hive harvests itself ("From nothing"). It takes a turn on GitHub every six hours with nobody present. Today it
+  hive harvests itself ("From nothing"). It takes a turn on GitHub once a day with nobody present. Today it
   writes simple stories; it cannot do tasks.
 - **One rule at every level:** try a variation, measure it on fresh material nobody tuned on, keep only what is
   better. Cells are grown by trainers that are bred by their record; stem cells by a recipe that every founding
@@ -960,7 +960,7 @@ have thousands. Two ways of training them are built:
   weights differ from the stem cell's, which is not few enough to save space.
 
 **It grows with no machine of ours switched on** (2026-11-11; `.github/workflows/hive.yml`, `training/hive_state.py`).
-Every six hours GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
+Once a day (every six hours until 2026-11-12) GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
 is fetched, it harvests a little more open text (`harvest --more 2`: each source may grow two megabytes a run),
 every body takes its turn in the order of who waited longest and within a time budget (`body --budget 180`), a body
 that is due is founded, everything is measured, and a line is added to `training/reports/hive_growth.jsonl`.
