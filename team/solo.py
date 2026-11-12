@@ -41,10 +41,13 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   https://pypi.org/pypi/NAME/json (["info"]["version"]; ["releases"][VERSION][0]["upload_time"])
   https://huggingface.co/api/models/OWNER/NAME
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
-  Use requests with timeout=30. If you do not know what a source returns, first print a small part of it and look.
+  Use requests with timeout=30 and headers={{"User-Agent": "hive/1.0"}} (Wikipedia refuses a request without one).
+  If you do not know what a source returns, first print a small part of it and look.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
-- What the program prints is what the user reads: print every result the task asks for, each with a few words saying
-  what it is. Print nothing else. A file the task asks for is saved in the current folder under the exact name given.
+- What the program prints is what the user reads: print every result the task asks for, each on its own line as
+  "name: value" (the names the task gives, if it gives any). Print nothing else. One piece of text (a summary, a
+  translation, a word) is printed alone, as it is.
+- A value that can be computed is computed by the program, never typed in ('garden'[::-1], not 'nedrag'). A file the task asks for is saved in the current folder under the exact name given.
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""
@@ -111,11 +114,25 @@ def key(answer, task):
     return numbers(answer, task)
 
 
+def values(answer):
+    """Where every line of an answer is "name: value", the values' words and numbers; else None."""
+    out = []
+    for line in [x for x in answer.splitlines() if x.strip()]:
+        if ":" not in line:
+            return None
+        out += re.findall(r"[\w.\-]+", line.rsplit(":", 1)[1].lower())
+    return sorted(out) or None
+
+
 def same(a, b, task=""):
-    """Do two members' answers agree? The same numbers; or, where neither holds a number (a translation, a name),
-    mostly the same words."""
+    """Do two members' answers agree? Where both give "name: value" lines, the same values ("B: nedrag" against
+    "B: derang" passed as agreement while only the numbers were compared). Else the same numbers; or, where
+    neither holds a number (a translation, a name), mostly the same words."""
     if not a.strip() or not b.strip():
         return False
+    va, vb = values(a), values(b)
+    if va is not None and vb is not None:
+        return va == vb
     ka, kb = key(a, task), key(b, task)
     if ka or kb:
         return ka == kb
@@ -141,13 +158,20 @@ def member(task, n, board, guard, work, temperature):
     for turn in range(1, TURNS + 1):
         stop.check()
         reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
-        if "```" not in reply and re.search(r"\bDONE\b", reply):
+        code = extract_code(reply)
+        # Seen once every member's programs were logged (2026-11-12): the word DONE comes back as a program, bare or
+        # as print("DONE"). Run, the first died on a NameError and the second replaced a right answer with the four
+        # letters DONE; and a member that thought its program final sent the same program again, turn after turn,
+        # to the last turn. All three mean the same thing: it is done.
+        said = (re.fullmatch(r"(?:print\(\s*)?[\"']?DONE[\"']?\.?\s*\)?", code.strip(), re.I) is not None
+                or ("```" not in reply and re.search(r"\bDONE\b", reply) is not None)
+                or (good is not None and code.strip() == good["program"].strip()))
+        if said:
             if good:
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:200]},
                          {"role": "user", "content": "No program of yours has printed an answer yet. Reply with a complete program."}]
             continue
-        code = extract_code(reply)
         if not guard.check_code("coder", code):
             board.log(f"member{n}", "stopped", "the program needs Arnav's approval; not run")
             break

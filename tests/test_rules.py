@@ -1755,6 +1755,12 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
     out = solo.run("When was the latest httpx released?", tmp_path / "e", "never", members=1)
     assert "706 days ago" in out["report"] and "prints what IS" in asked[1]       # a printed failure is no answer; it is told to look
+    summary = "print('The pool is closed for repairs until March.')"
+    for done in ('print("DONE")', "DONE", summary):                                           # DONE as a program, bare, or the same program again
+        out, left = hive([summary, done, summary.replace("is closed", "is shut"), "DONE"], "g" + str(len(done)))
+        assert out["agreed"] and not left and "closed for repairs" in out["report"] and "DONE" not in out["report"]
+    assert not solo.same("A: 65\nB: nedrag\nC: Wellington", "A: 65\nB: derang\nC: Wellington")  # the numbers agree, the answers do not
+    assert solo.same("Primes: [19, 37]\nCount: 2", "primes below 40: 19, 37\nhow many: 2")
     assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
     assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
 
