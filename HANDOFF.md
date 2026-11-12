@@ -241,6 +241,31 @@ How this session reads it (its own reading, not his words):
   a text or handles several orders in one message reliably. Neither form is shown better on the exam as a whole.
 
 
+### 2026-11-12, night: what the members' own logs showed, his ideas at 20 minutes, the 2.4B BitNet answers (newest)
+
+- **Members (team/solo.py), found by logging every program and reply of four failed tasks here:** DONE came back as
+  a program (crashed, or `print("DONE")` replaced a right answer), a finished program was sent again until the turns
+  ran out, answers were compared by their numbers only, and a typed-out answer ("A: 65 / B: dnarg") was run as a
+  program. All four mended (commits 6b74693, 2adec52, e62ab8d). After the first three: 3 of the 4 dev tasks right in
+  38 to 121 s each. The fourth mend is tested only by the unit test so far.
+- **The exam pairs still owed:** seed 9005 members alone, nothing learned, mended code (never looked at; dispatched
+  23:35 UTC); seed 9004 members first (run 43316842021) against roles alone (run 43305031131). Seeds 315 and 9001
+  to 9004 have been looked at: use them to find faults, never for a claim.
+- **A sitting pushed another out of the queue** (GitHub keeps one waiting run per concurrency group). The group now
+  has the seed and `alone` in it.
+- **His ideas at equal 20 minutes** (training/experiments/ideas.py, ideas_result.json, start 0, gate loss, lower is
+  better): as built in 3.1106; a scale for every row 3.1038 (level: one start, the spread between starts is not
+  measured at this length); predicting its own inner state 4 ahead 3.1448; the same with a running-mean teacher
+  3.2436 (it pays a second reading of every batch: 1192 steps against 1605). Six blocks and four-grown-to-six: see
+  the file (job bmcc3vo0t).
+- **The 2.4B BitNet on Microsoft's runtime works.** The nonsense was the prompt: it answers only in its own chat
+  format ("User: ...<|eot_id|>Assistant: "), about 22 pieces a second on 4 threads, 1.2 GB. team/bitnet.py is the
+  client; HIVE_BITNET_URL and HIVE_BITNET_MEMBERS make chosen members of the members form the BitNet. Whether it
+  is any good as a member is not measured yet. Runtime at /home/user/microsoft/bitnet on this machine (gone when
+  the container goes; build: clone github.com/microsoft/BitNet with submodules, download
+  microsoft/bitnet-b1.58-2B-4T-gguf into models/BitNet-b1.58-2B-4T, `python setup_env.py -md
+  models/BitNet-b1.58-2B-4T -q i2_s`, clang 18).
+
 ## START HERE: moving to a new account (paused 2026-11-11, 20:00 UTC)
 
 Arnav paused the work and is continuing from a different Claude account. The old cloud machine is gone; only what
