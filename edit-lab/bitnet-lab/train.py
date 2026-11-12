@@ -1,3 +1,4 @@
+# Muse's work — written by Muse, on Muse's side. Fable's HiveMIND was read read-only; nothing on Fable's side was touched.
 # Muse's work — built and run by Muse on Muse's side of the lab. Fable's HiveMIND was read read-only for the mechanism; nothing on Fable's side was touched or used.
 
 """BitNet direct-training experiments, Muse's side. A from-scratch reimplementation of the
@@ -16,6 +17,9 @@ never executed or modified). Arms:
              equal-total-state-bytes comparison (2 counters x half the weights = plain's
              1 counter x all the weights, up to the small packed-state difference).
   anneal   - plain votes with the threshold annealed 8 -> 64 linearly over the run (study C2).
+  --rope   - with any arm: rotary positions Fable's way (their scratch.rotated at 4bd8308) instead
+             of the built-in table of places; the table is still carried, exactly as in their shape,
+             but not used. Recorded under the arm name + "_rope".
 All arms: same corpus, same seed -> same init and same batch stream, batch 32, CTX 256,
 held windows (every 40th) never trained on, judged on a fixed set of 128 held windows.
 Non-ternary parts in the vote arms train exactly as Fable's Direct: AdamW lr 1e-3,
@@ -49,31 +53,47 @@ class BitLinear(nn.Linear):
         x = x + ease * ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
         return F.linear(x, w, self.bias)
 
+def rotated(x, cos, sin):
+    """Rotary positions, Fable's way (their scratch.rotated, read in the audit copy at 4bd8308 and
+    reimplemented here): each interleaved pair of numbers of a query or key is turned by an angle
+    that grows with its place in the text. x: [batch, heads, places, numbers]; cos/sin: [places, pairs]."""
+    a, b = x[..., ::2], x[..., 1::2]
+    return torch.stack([a * cos - b * sin, a * sin + b * cos], -1).flatten(-2)
+
 class Block(nn.Module):
-    def __init__(self, dim=DIM, heads=HEADS):
+    def __init__(self, dim=DIM, heads=HEADS, rotary=False):
         super().__init__()
         self.heads = heads
         self.n1, self.n2 = nn.LayerNorm(dim), nn.LayerNorm(dim)
         self.qkv, self.out = BitLinear(dim, 3 * dim), BitLinear(dim, dim)
         self.up, self.down = BitLinear(dim, 4 * dim), BitLinear(4 * dim, dim)
+        self.rotary = rotary
+        if rotary:
+            each = dim // heads
+            angle = torch.arange(CTX).float()[:, None] / (10000 ** (torch.arange(0, each, 2).float() / each))[None]
+            self.register_buffer("cos", angle.cos(), persistent=False)
+            self.register_buffer("sin", angle.sin(), persistent=False)
     def forward(self, x, causal=True):
         b, t, d = x.shape
         q, k, v = self.qkv(self.n1(x)).view(b, t, 3, self.heads, d // self.heads).permute(2, 0, 3, 1, 4)
+        if self.rotary:
+            q, k = rotated(q, self.cos[:t], self.sin[:t]), rotated(k, self.cos[:t], self.sin[:t])
         a = F.scaled_dot_product_attention(q, k, v, is_causal=causal).transpose(1, 2).reshape(b, t, d)
         x = x + self.out(a)
         h = F.gelu(self.up(self.n2(x)))
         return x + self.down(h)
 
 class Tiny(nn.Module):
-    def __init__(self, layers=4, dim=DIM):
+    def __init__(self, layers=4, dim=DIM, rotary=False):
         super().__init__()
         self.dim = dim
         self.tok, self.pos = nn.Embedding(VOCAB, dim), nn.Embedding(CTX, dim)
-        self.blocks = nn.ModuleList(Block(dim) for _ in range(layers))
+        self.rotary = rotary  # then the table of places (pos) is carried, as in Fable's shape, but not used
+        self.blocks = nn.ModuleList(Block(dim, rotary=rotary) for _ in range(layers))
         self.norm = nn.LayerNorm(dim)
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
     def body(self, ids):
-        x = self.tok(ids) + self.pos(torch.arange(ids.shape[1]))
+        x = self.tok(ids) if self.rotary else self.tok(ids) + self.pos(torch.arange(ids.shape[1]))
         for blk in self.blocks:
             x = blk(x)
         return self.norm(x)
@@ -238,12 +258,15 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--minutes", type=float, default=8.0)
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--rope", action="store_true",
+                    help="rotary positions Fable's way instead of the built-in (added) table of places")
     a = ap.parse_args()
+    label = a.arm + "_rope" if a.rope else a.arm
     data = np.memmap(LAB / "corpus.u16", dtype=np.uint16, mode="r")
     held = held_windows(data)
     torch.manual_seed(a.seed)
     layers = 2 if a.arm == "layered_half" else 4
-    model = Tiny(layers=layers)
+    model = Tiny(layers=layers, rotary=a.rope)
     if a.arm == "ste":
         trainer = STE(model)
     elif a.arm in ("layered", "layered_half"):
@@ -265,7 +288,7 @@ def main():
         jumps.append(trainer.step(loss, done))
         steps += 1
         if steps % 100 == 0:
-            print(f"[{a.arm} s{a.seed}] step {steps}: train {sum(losses[-100:])/100:.3f}, "
+            print(f"[{label} s{a.seed}] step {steps}: train {sum(losses[-100:])/100:.3f}, "
                   f"flips {sum(jumps[-100:])/100:.3%}", flush=True)
     wall = time.time() - t0
     h1 = held_loss(model, held)
@@ -279,12 +302,13 @@ def main():
         states = torch.cat([t.flatten() for t in trainer.t])
         hist = {int(v): round(float((states == v).float().mean()), 4) for v in (-1, 0, 1)}
         state_bytes = (2 if a.arm == "mag" else 1) * n_tern + n_tern // 4
-    rec = {"arm": a.arm, "seed": a.seed, "steps": steps, "wall_s": round(wall, 1),
+    rec = {"arm": label, "seed": a.seed, "steps": steps, "wall_s": round(wall, 1),
            "held_init": round(h0, 4), "held_final": round(h1, 4),
            "train_last100": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 4),
            "ternary_weights": n_tern, "mech_state_bytes": state_bytes,
            "mean_flip_share": round(sum(jumps) / max(1, len(jumps)), 5), "state_hist": hist,
-           "corpus_pieces": int(len(data)), "minutes": a.minutes}
+           "corpus_pieces": int(len(data)), "minutes": a.minutes,
+           "rope": bool(a.rope), "total_params": sum(p.numel() for p in model.parameters())}
     with open(LAB / "runs.jsonl", "a") as f:
         f.write(json.dumps(rec) + "\n")
     print("RESULT " + json.dumps(rec), flush=True)
