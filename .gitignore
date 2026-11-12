@@ -37,3 +37,6 @@ hive-state.tar.gz
 cells/scratch/.came_from.json
 cells/scratch/recipes.json
 logs/
+
+# what the hive has solved (kept between runs on GitHub in the Actions cache, not in git)
+memory/solved.jsonl

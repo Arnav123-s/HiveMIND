@@ -23,6 +23,7 @@ class FakeBoard:
 @pytest.fixture(autouse=True)
 def clean_policy(tmp_path, monkeypatch):
     monkeypatch.setattr(memory, "POLICY", tmp_path / "policy.json")
+    monkeypatch.setattr("team.solo.library", lambda: tmp_path / "solved.jsonl")  # no test writes into the hive's library
 
 
 def test_family_only_when_ordered():
@@ -1769,3 +1770,27 @@ def test_where_the_members_agree_their_answer_and_files_are_the_runs(tmp_path, m
     left = ["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"]
     out = solo.first("Pick a number", tmp_path / "b", "never", members=2)
     assert not out["agreed"] and not (tmp_path / "b" / "REPORT.md").exists()               # nothing confirmed: the run is left to the roles
+
+
+def test_a_task_two_members_agreed_on_leaves_its_program_for_the_next_task_like_it(tmp_path, monkeypatch):
+    from team import memory, solo
+    monkeypatch.setattr(memory, "HOME", tmp_path / "mem")
+    right = RIGHT_PRIMES + "print('The primes are', found, 'and there are', len(found))"
+    again = RIGHT_PRIMES + "print(len(found), 'primes:', *found)"
+    seen = []
+
+    def hive(replies, task, name):
+        left = list(replies)
+        monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: seen.append(msgs[1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+        return solo.run(task, tmp_path / name, "never", members=2)
+    hive([right, "DONE", again, "DONE"], PRIMES_TASK, "a")
+    assert [r["task"] for r in solo.solved()] == [PRIMES_TASK] and "prime(n)" in solo.solved()[0]["program"]
+    assert "solved tasks like this one" not in seen[0]                                     # the first time there was nothing to start from
+    seen.clear()
+    hive([right, "DONE", again, "DONE"], PRIMES_TASK.replace("200", "300").replace("10", "11"), "b")
+    assert "solved tasks like this one" in seen[0] and "def prime(n)" in seen[0]           # the next task like it starts from that program
+    hive(["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"], "Pick any number at all", "c")
+    assert len(solo.solved()) == 2                                                         # nothing agreed, nothing kept
+    solo.judge(PRIMES_TASK, True)
+    solo.judge(PRIMES_TASK.replace("200", "300").replace("10", "11"), False)               # practice: its check said the program was wrong
+    assert [(r["task"], r["checked"]) for r in solo.solved()] == [(PRIMES_TASK, True)]
