@@ -906,7 +906,8 @@ def turn(minutes=10.0, cells=6, found_minutes=90.0, log=print, births=3):
         T.HOME.mkdir(parents=True, exist_ok=True)  # a hive from nothing: its first stem cell is made like any new body's
         (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"},
                                                       "since": time.strftime("%Y-%m-%d %H:%M")}))
-        T.pretrain_direct(found_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"], log=log)
+        T.pretrain_direct(found_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"],
+                          cool=NEW_BODY["cool"], floor=NEW_BODY["floor"], mean=NEW_BODY["mean"], log=log)
         return "the stem cell read the harvest"
     heal(log)
     if not (HOME / "territories.pt").exists():
@@ -1092,7 +1093,8 @@ def _turned():
         return {}
 
 
-NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}
+NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32, "cool": 0.0, "floor": 0.1, "mean": 0.0}
+BEFORE = {"cool": 0.0, "floor": 0.1, "mean": 0.0}  # what a recipe on record had of the things recipes did not yet name
 
 # ---- the hive finds its own recipe -----------------------------------------------------------------------------------
 # What was done by hand on 2026-11-11 (rates, easing, shapes tried one against another) the hive goes on doing by
@@ -1104,7 +1106,9 @@ RECIPES = "recipes.json"  # in the shared folder: every founding, its recipe, an
 GENES = {"lr": lambda r, v: round(v * r.choice([0.6, 1.6]), 5),
          "ease": lambda r, v: r.choice([x for x in (0.0, 0.25, 0.5, 0.75) if x != v]),
          "warm": lambda r, v: r.choice([x for x in (100, 200, 400) if x != v]),
-         "batch": lambda r, v: r.choice([x for x in (16, 32, 64) if x != v])}
+         "batch": lambda r, v: r.choice([x for x in (16, 32, 64) if x != v]),
+         "cool": lambda r, v: r.choice([x for x in (0.0, 0.25, 0.5, 0.75) if x != v]),   # the share of the run over which the rate falls
+         "mean": lambda r, v: r.choice([x for x in (0.0, 0.99, 0.999) if x != v])}      # the running mean of the weights
 SHAPES = {"dim": lambda r, v: min(384, max(128, v + r.choice([-32, 32]))),   # heads stay 4: the width is a multiple of 32
           "layers": lambda r, v: min(8, max(3, v + r.choice([-1, 1])))}
 
@@ -1119,7 +1123,7 @@ def _recipes():
 def next_recipe(rnd):
     """The recipe the next body is founded with, and what was changed in it (None: nothing, it is being measured as
     it stands)."""
-    full = lambda r: {**NEW_BODY, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    full = lambda r: {**NEW_BODY, **BEFORE, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
     tried = [r for r in _recipes() if r.get("score") is not None]
     if not any(full(r["recipe"]) == full(NEW_BODY) for r in tried):
         return full(NEW_BODY), None
@@ -1260,7 +1264,7 @@ def main(argv):
         T.pretrain_direct(float(argv[2]), usual=True, name="base", hard=json.loads(Path(argv[1]).read_text()),
                           seed=sum(map(ord, T.BODY)), lr=recipe["lr"], warm=recipe["warm"], ease=recipe["ease"], batch=recipe["batch"],
                           teacher=T.SHARED if recipe["taught"] and (T.SHARED / "base.pt").exists() else None,
-                          taught=recipe["taught"])
+                          taught=recipe["taught"], cool=recipe["cool"], floor=recipe["floor"], mean=recipe["mean"])
         data = _data()  # how the new stem cell reads the same held windows as every stem cell before it (never trained on by any)
         kind["score"] = round(_check_loss(_stem().eval(), data, _held(data, "gate", 300, upto=YARD)), 4)
         (T.HOME / "stem.json").write_text(json.dumps(kind))

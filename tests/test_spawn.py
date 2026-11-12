@@ -1136,10 +1136,10 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     for seed in range(40):
         child, what = B.next_recipe(random.Random(seed))
         seen.add(what)
-        differs = [k for k in ("lr", "ease", "warm", "batch") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
+        differs = [k for k in ("lr", "ease", "warm", "batch", "cool", "mean") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
         assert differs == [what]                                                             # one thing changed, and only one
         assert child["shape"]["dim"] % 32 == 0 and 3 <= child["shape"]["layers"] <= 8
-    assert seen == {"lr", "ease", "warm", "batch", "dim", "layers"}
+    assert seen == {"lr", "ease", "warm", "batch", "cool", "mean", "dim", "layers"}
     better = dict(recipe, lr=0.0048)
     (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10},
                                                    {"body": "b4", "recipe": better, "minutes": 40.0, "score": 3.02},
@@ -1148,6 +1148,43 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     assert all(k["lr"] in (0.0048, round(0.0048 * 0.6, 5), round(0.0048 * 1.6, 5)) for k in kids)   # the children are the best one's
     monkeypatch.setitem(B.NEW_BODY, "warm", 100)                                            # the recipe changed by hand is tried once as it stands
     assert B.next_recipe(random.Random(0)) == (full(B.NEW_BODY), None)
+
+
+def test_a_recipe_on_record_from_before_a_setting_existed_is_read_as_it_was(tmp_path, monkeypatch):
+    import json
+    import random
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    old = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}  # b3's recipe: it names no falling rate
+    (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": old, "minutes": 40.0, "score": 3.10}]))
+    monkeypatch.setitem(B.NEW_BODY, "cool", 0.5)                                            # the recipe as built in now has one
+    recipe, changed = B.next_recipe(random.Random(0))
+    assert changed is None and recipe["cool"] == 0.5                                        # so it is new, and is tried as it stands
+    monkeypatch.setitem(B.NEW_BODY, "cool", 0.0)                                            # without one it is b3's recipe: tried already
+    child, what = B.next_recipe(random.Random(0))
+    assert what is not None
+
+
+def test_the_rate_falls_at_the_end_of_a_run_and_the_better_of_weights_and_their_mean_is_kept(tmp_path, monkeypatch):
+    import numpy as np
+    import torch
+    from training import scratch as T
+    assert T.falling(0.3, 0.5) == 1.0 and T.falling(0.5, 0.5) == 1.0                         # not before the last half
+    assert abs(T.falling(0.75, 0.5) - 0.55) < 1e-9 and abs(T.falling(1.0, 0.5) - 0.1) < 1e-9  # half a cosine, down to the floor
+    assert T.falling(0.9, 0.0) == 1.0                                                       # no cooling asked for
+    torch.manual_seed(0)
+    shape = {"bit": True, "dim": 32, "layers": 1, "heads": 4, "subln": False}
+    model = T.Tiny(shape=shape)
+    data = np.random.RandomState(0).randint(2, T.VOCAB, size=T.CTX * 400 + 1).astype("uint16")
+    as_it_is = {k: v.clone() for k, v in model.state_dict().items()}
+    worse = {k: (v + 0.5 * torch.randn_like(v) if v.is_floating_point() else v.clone()) for k, v in as_it_is.items()}
+    said = []
+    hear = lambda *a, **k: said.append(a)  # noqa: E731
+    assert T.better_of(model, worse, data, log=hear) == "the weights as they are"   # a mean that reads worse is not taken
+    assert all(torch.equal(v, as_it_is[k]) for k, v in model.state_dict().items())
+    model.load_state_dict(worse)
+    assert T.better_of(model, as_it_is, data, log=hear) == "the running mean of the weights"
+    assert all(torch.equal(v, as_it_is[k]) for k, v in model.state_dict().items())
 
 
 def test_the_workflow_that_grows_the_hive_is_a_valid_file():

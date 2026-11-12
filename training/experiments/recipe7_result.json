@@ -1,0 +1,65 @@
+{
+ "as built in, start 0": {
+  "held": {
+   "gate": 3.9593,
+   "the 96": 3.9963
+  },
+  "minutes": 15.8,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 4.0105,
+  "held, running mean of the weights": {
+   "gate": 3.8956,
+   "the 96": 3.925
+  }
+ },
+ "as built in, start 1": {
+  "held": {
+   "gate": 3.9695,
+   "the 96": 4.0239
+  },
+  "minutes": 26.7,
+  "steps": 600,
+  "seed": 1,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.989,
+  "held, running mean of the weights": {
+   "gate": 3.9088,
+   "the 96": 3.9356
+  }
+ },
+ "as built in, start 2": {
+  "held": {
+   "gate": 3.9621,
+   "the 96": 3.9881
+  },
+  "minutes": 7.3,
+  "steps": 600,
+  "seed": 2,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.9902,
+  "held, running mean of the weights": {
+   "gate": 3.9054,
+   "the 96": 3.9431
+  }
+ }
+}
