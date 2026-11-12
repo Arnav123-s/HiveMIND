@@ -1,0 +1,574 @@
+{
+ "cycle_id": "growth-cycle-002",
+ "date": "2026-11-11 18:36 UTC",
+ "targets": [
+  "wrong-operator/expression",
+  "off-by-one/index"
+ ],
+ "levers": [
+  "name-intent data family (Lever 1)",
+  "parent-initialized fine-tuning (Lever 2)",
+  "found-on-failure diet weighting (Fable)",
+  "cycle-2 merged recipes: mixture leans, two-stage curricula, raised intent cap variant",
+  "learned-say v2 fit (joint weights + threshold multipliers on the composed objective) — measured only"
+ ],
+ "strategy": "cycle2",
+ "battery_before": {
+  "classify-secret-line": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  }
+ },
+ "battery_overall_before": 0.9375,
+ "harvest": {
+  "wrong-operator/expression": {
+   "phase3_train_slice": {
+    "acc": 1.0,
+    "n": 32,
+    "wrong_n": 0,
+    "wrong_by_intent": {}
+   },
+   "intent_train_slice": {
+    "acc": 0.6803,
+    "n": 757,
+    "wrong_n": 242,
+    "wrong_by_intent": {
+     "remainder": 76,
+     "quotient": 17,
+     "difference": 16,
+     "product": 22,
+     "sum_pair": 54,
+     "max_of": 19,
+     "min_of": 18,
+     "minutes": 6,
+     "average_pair": 6,
+     "element_at": 6,
+     "average_list": 2
+    }
+   }
+  },
+  "off-by-one/index": {
+   "phase3_train_slice": {
+    "acc": 1.0,
+    "n": 41,
+    "wrong_n": 0,
+    "wrong_by_intent": {}
+   },
+   "intent_train_slice": {
+    "acc": 0.9115,
+    "n": 757,
+    "wrong_n": 67,
+    "wrong_by_intent": {
+     "max_of": 5,
+     "min_of": 3,
+     "first_two": 12,
+     "last_element": 6,
+     "first_k": 13,
+     "element_at": 14,
+     "last_two": 14
+    }
+   }
+  }
+ },
+ "learned_say": {
+  "judged_on": "phase-3 held set (spent confirm surface — measurement only, NOT pristine)",
+  "n": 29,
+  "fit": "v2 (cycle 2): joint coordinate ascent on COMPOSED train accuracy over per-class representation weights and per-class threshold multipliers; cycle 1 fitted per-class binary sign accuracy, weights only",
+  "train_composed_acc_learned": 0.9792,
+  "composed_acc": {
+   "routed": 0.8276,
+   "mean": 0.7931,
+   "learned": 0.7931
+  },
+  "learned_weights": {
+   "off-by-one": {
+    "bug-off-by-one-model": 1.0,
+    "bug-off-by-one-harvest-model": 1.0
+   },
+   "wrong-operator": {
+    "bug-wrong-operator-model": 1.0,
+    "bug-wrong-operator-named-model": 1.0,
+    "bug-wrong-operator-harvest-model": 1.0
+   },
+   "swapped-operands": {
+    "bug-swapped-operands-model": 1.0,
+    "bug-swapped-operands-named-model": 1.0,
+    "bug-swapped-operands-harvest-model": 1.0
+   },
+   "mutable-default": {
+    "bug-mutable-default-model": 1.0
+   },
+   "missing-return": {
+    "bug-missing-return-model": 1.0
+   }
+  },
+  "threshold_multipliers": {
+   "off-by-one": 1.0,
+   "wrong-operator": 1.0,
+   "swapped-operands": 1.0,
+   "mutable-default": 1.0,
+   "missing-return": 1.0
+  },
+  "adoption": "not decided in this cycle — a composition-rule change is a serving change and takes its own battery-gated step"
+ },
+ "attempts": [
+  {
+   "cls": "wrong-operator",
+   "slice": "expression",
+   "child": "bug-wrong-operator-expression-model",
+   "born": true,
+   "intent_train_n": 280,
+   "intent_train_pos": 120,
+   "failure_weighted_extra": 112,
+   "train_slice_n": 32,
+   "dream_slice_n": 70,
+   "train_child_n": 494,
+   "train_child_pos": 231,
+   "held_slice_n": 20,
+   "parent_slice_heldout_acc": 0.85,
+   "parent_intent_heldout_acc": 0.6326,
+   "intent_held_slice_n": 694,
+   "intent_held_slice_pos": 271,
+   "init_train_n": 579,
+   "attempts": [
+    {
+     "arm": "c2-wo-ep1200",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 1200,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 3266,
+     "intent_heldout_acc": 0.7608
+    },
+    {
+     "arm": "c2-wo-ep1600",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 1600,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 3256,
+     "intent_heldout_acc": 0.6167
+    },
+    {
+     "arm": "c2-wo-intentx2",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 1200,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 3366,
+     "intent_heldout_acc": 0.6196
+    },
+    {
+     "arm": "c2-wo-slicex2",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 3317,
+     "intent_heldout_acc": 0.6556
+    },
+    {
+     "arm": "c2-wo-stage-intent",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.8,
+     "params": 3361,
+     "intent_heldout_acc": 0.7363
+    },
+    {
+     "arm": "c2-wo-curr-i2s",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.85,
+     "params": 3466,
+     "intent_heldout_acc": 0.7118
+    },
+    {
+     "arm": "c2-wo-stage-slice",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.8,
+     "params": 3344,
+     "intent_heldout_acc": 0.6571
+    },
+    {
+     "arm": "c2-wo-curr-s2i",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.9,
+     "params": 3466,
+     "intent_heldout_acc": 0.696
+    },
+    {
+     "arm": "c2-wo-h6",
+     "fmode": "text",
+     "hidden": 6,
+     "epochs": 1200,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.8,
+     "params": 4898,
+     "intent_heldout_acc": 0.7478
+    },
+    {
+     "arm": "c2-wo-code-ep1200",
+     "fmode": "code",
+     "hidden": 4,
+     "epochs": 1200,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 454,
+     "intent_heldout_acc": 0.5504
+    }
+   ],
+   "child_slice_heldout_acc": 0.9,
+   "winning_arm": "c2-wo-ep1200",
+   "child_intent_heldout_acc": 0.7608,
+   "child_remainder_heldout_acc": 0.5556,
+   "parent_remainder_heldout_acc": 1.0,
+   "adopted_file": "coding/swarm/models/bug-wrong-operator-expression-model.json",
+   "composed_reference_after_birth": {
+    "acc": 0.8276,
+    "recall": {
+     "off-by-one": 0.75,
+     "missing-return": 1.0,
+     "clean": 0.9,
+     "swapped-operands": 0.6667,
+     "wrong-operator": 0.6667,
+     "mutable-default": 1.0
+    },
+    "pristine": false
+   },
+   "winning_variant": "merged-recipes-standard-cap",
+   "variants": [
+    {
+     "variant": "merged-recipes-standard-cap",
+     "cap_pos": 120,
+     "cap_neg": 160,
+     "slice_repeat": 1,
+     "intent_repeat": 1,
+     "intent_train_capped_n": 280,
+     "train_child_n": 494,
+     "born": true
+    }
+   ]
+  },
+  {
+   "cls": "off-by-one",
+   "slice": "index",
+   "child": "bug-off-by-one-index-model",
+   "born": true,
+   "intent_train_n": 228,
+   "intent_train_pos": 68,
+   "failure_weighted_extra": 106,
+   "train_slice_n": 41,
+   "dream_slice_n": 182,
+   "train_child_n": 557,
+   "train_child_pos": 216,
+   "held_slice_n": 20,
+   "parent_slice_heldout_acc": 0.95,
+   "parent_intent_heldout_acc": 0.9566,
+   "intent_held_slice_n": 692,
+   "intent_held_slice_pos": 36,
+   "init_train_n": 642,
+   "attempts": [
+    {
+     "arm": "c2-ob-init-sx2",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.95,
+     "params": 2058,
+     "intent_heldout_acc": 0.9957
+    },
+    {
+     "arm": "c2-ob-init-sx3",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 1.0,
+     "params": 2054,
+     "intent_heldout_acc": 0.9812
+    },
+    {
+     "arm": "c2-ob-init-ep1600",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 1600,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.95,
+     "params": 2074,
+     "intent_heldout_acc": 0.9971
+    },
+    {
+     "arm": "c2-ob-init-lr05",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.5,
+     "slice_heldout_acc": 0.95,
+     "params": 2074,
+     "intent_heldout_acc": 0.9971
+    },
+    {
+     "arm": "c2-ob-h8-ep1200",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 1200,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.95,
+     "params": 6666,
+     "intent_heldout_acc": 0.9827
+    },
+    {
+     "arm": "c2-ob-h8-sx2",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 1.0,
+     "params": 7322,
+     "intent_heldout_acc": 0.9827
+    },
+    {
+     "arm": "c2-ob-h0-ep1200",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 1200,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 1914,
+     "intent_heldout_acc": 0.9942
+    },
+    {
+     "arm": "c2-ob-stage",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 1.0,
+     "params": 7322,
+     "intent_heldout_acc": 0.9827
+    },
+    {
+     "arm": "c2-ob-curr-polish",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.95,
+     "params": 7938,
+     "intent_heldout_acc": 0.9957
+    }
+   ],
+   "child_slice_heldout_acc": 1.0,
+   "winning_arm": "c2-ob-h8-sx2",
+   "child_intent_heldout_acc": 0.9827,
+   "child_remainder_heldout_acc": 0.7778,
+   "parent_remainder_heldout_acc": 0.8889,
+   "adopted_file": "coding/swarm/models/bug-off-by-one-index-model.json",
+   "composed_reference_after_birth": {
+    "acc": 0.8621,
+    "recall": {
+     "off-by-one": 1.0,
+     "missing-return": 1.0,
+     "clean": 0.9,
+     "swapped-operands": 0.6667,
+     "wrong-operator": 0.6667,
+     "mutable-default": 1.0
+    },
+    "pristine": false
+   },
+   "winning_variant": "template-capacity",
+   "variants": [
+    {
+     "variant": "template-capacity",
+     "cap_pos": 120,
+     "cap_neg": 160,
+     "slice_repeat": 1,
+     "intent_repeat": 1,
+     "intent_train_capped_n": 228,
+     "train_child_n": 557,
+     "born": true
+    }
+   ]
+  }
+ ],
+ "rolled_back": false,
+ "sealed_raw_composed": {
+  "served_sealed_before": 0.8333,
+  "raw_composed_before": 0.4444,
+  "raw_composed_after": 0.5278,
+  "per_class_recall_after": {
+   "wrong-operator": 0.4,
+   "mutable-default": 0.5,
+   "off-by-one": 0.3333,
+   "clean": 0.6364,
+   "missing-return": 1.0,
+   "swapped-operands": 0.0
+  },
+  "note": "the battery line is the SERVED (waking-dream) number; the raw composed number is the audit's baseline leg, re-recorded by the growth judge"
+ },
+ "waking_dream_refresh": {
+  "acc": 0.8333,
+  "raw_composed_acc": 0.5278,
+  "per_class_recall": {
+   "wrong-operator": 0.9,
+   "mutable-default": 1.0,
+   "off-by-one": 0.6667,
+   "clean": 0.7273,
+   "missing-return": 1.0,
+   "swapped-operands": 1.0
+  }
+ },
+ "battery_after": {
+  "classify-secret-line": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  }
+ },
+ "battery_overall_after": 0.9375,
+ "audit": {
+  "ok": true,
+  "failures": [],
+  "score_checks": [
+   {
+    "artifact": "secret-line-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "secret-line-model:substrate-heldout",
+    "measured": 0.9385,
+    "recorded": 0.9385,
+    "ok": true
+   },
+   {
+    "artifact": "error-class-model:serving-heldout",
+    "measured": 0.9833,
+    "recorded": 0.9833,
+    "ok": true
+   },
+   {
+    "artifact": "commit-type-model:serving-heldout",
+    "measured": 0.9625,
+    "recorded": 0.9625,
+    "ok": true
+   },
+   {
+    "artifact": "contract-judgment-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "gap-move-model:serving-heldout",
+    "measured": 0.9444,
+    "recorded": 0.9444,
+    "ok": true
+   },
+   {
+    "artifact": "bug-pattern-composed:sealed-baseline",
+    "measured": 0.5278,
+    "recorded": 0.5278,
+    "ok": true
+   },
+   {
+    "artifact": "bug-pattern-composed:serving-layer-sealed",
+    "measured": 0.8333,
+    "recorded": 0.8333,
+    "ok": true
+   }
+  ]
+ },
+ "cycle3_recommendation": "Cycle 3 attacks, in order: (1) whichever dual-gate bar each target's cycle-2 per-config table shows still binding — if a single phase-3 held item (n=20 slice) is the whole blocker for a target, the honest fix is a LARGER pristine phase-3-style held slice (new template families, disjoint names/idioms), not more candidates against the same 20 items; (2) a second name-intent partition (comparison/accumulator intents) so the intent judge is not a fixed surface the grid can overfit; (3) the learned-say adoption step IF cycle 2's v2 fit beat the routed rule. Learned-say v2 (joint fit on the composed objective): held routed 0.8276, mean 0.7931, learned 0.7931. It does not beat the routed rule — the learned-say question is closed unless the representation set itself changes.",
+ "cron_readiness": "Runner readiness for a recurring ~6h cron: the cycle runs end to end non-interactively (one command, md+json+ledger written, rollback automatic on any serving regression) — the mechanics are ready. Four changes are needed before scheduling it: (1) cycle-id auto-increment from the ledger (today it is a CLI argument); (2) a single-instance lock + a lab-busy check (this VM runs one heavy job at a time; a cron cycle must skip, not collide, when another lab job is training); (3) per-cycle novelty — training is deterministic, so re-running a fixed grid reproduces the same candidates exactly; a cron'd cycle must rotate its grid or grow its data partitions keyed by cycle number, or it will spend compute re-proving cycle 2 forever; (4) an alert path on rollback or audit failure (today that is only a ledger line). With (1)-(4) it can be scheduled; without (3) it should not be.",
+ "next_attack": "Cycle 3 attacks, in order: (1) whichever dual-gate bar each target's cycle-2 per-config table shows still binding — if a single phase-3 held item (n=20 slice) is the whole blocker for a target, the honest fix is a LARGER pristine phase-3-style held slice (new template families, disjoint names/idioms), not more candidates against the same 20 items; (2) a second name-intent partition (comparison/accumulator intents) so the intent judge is not a fixed surface the grid can overfit; (3) the learned-say adoption step IF cycle 2's v2 fit beat the routed rule. Learned-say v2 (joint fit on the composed objective): held routed 0.8276, mean 0.7931, learned 0.7931. It does not beat the routed rule — the learned-say question is closed unless the representation set itself changes. Runner readiness for a recurring ~6h cron: the cycle runs end to end non-interactively (one command, md+json+ledger written, rollback automatic on any serving regression) — the mechanics are ready. Four changes are needed before scheduling it: (1) cycle-id auto-increment from the ledger (today it is a CLI argument); (2) a single-instance lock + a lab-busy check (this VM runs one heavy job at a time; a cron cycle must skip, not collide, when another lab job is training); (3) per-cycle novelty — training is deterministic, so re-running a fixed grid reproduces the same candidates exactly; a cron'd cycle must rotate its grid or grow its data partitions keyed by cycle number, or it will spend compute re-proving cycle 2 forever; (4) an alert path on rollback or audit failure (today that is only a ledger line). With (1)-(4) it can be scheduled; without (3) it should not be.",
+ "wall_seconds": 236.5
+}

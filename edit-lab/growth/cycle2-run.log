@@ -1,0 +1,38 @@
+[growth-cycle-002] battery BEFORE ...
+[classify-secret-line] completed score=0.8333 :: 10/12 correct (bar 9); wrong: [{"want": "secret", "got": "benign", "text": "db_password = 'Tr0pic!Thunder#42'"}, {"want": "secret", "got": "benign", "text": "pr
+[classify-error-class] completed score=1.0 :: 12/12 correct (bar 9); wrong: []
+[classify-commit-type] completed score=1.0 :: 12/12 correct (bar 9); wrong: []
+[classify-contract-judgment] completed score=0.9167 :: 11/12 correct (bar 9); wrong: [{"want": "ok", "got": "no-empty-guard", "text": "def total(xs):\n    if xs is None:\n        return 0\n    if le"}]
+[classify-gap-move] completed score=1.0 :: 10/10 correct (bar 6); wrong: []
+[bug-pattern-composed-sealed-v2] completed score=0.8333 :: composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands':
+[classify-secret-line-ternary] completed score=0.9167 :: 11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)
+[tiny-hive-ops] completed score=1.0 :: 21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)
+[growth-cycle-002] harvest ...
+[growth-cycle-002] learned-say v2 experiment ...
+[growth-cycle-002] birth attempt wrong-operator/expression ...
+[growth-cycle-002]   -> born=True 
+[growth-cycle-002] birth attempt off-by-one/index ...
+[growth-cycle-002]   -> born=True 
+[growth-cycle-002] serving verification ...
+[classify-secret-line] completed score=0.8333 :: 10/12 correct (bar 9); wrong: [{"want": "secret", "got": "benign", "text": "db_password = 'Tr0pic!Thunder#42'"}, {"want": "secret", "got": "benign", "text": "pr
+[classify-error-class] completed score=1.0 :: 12/12 correct (bar 9); wrong: []
+[classify-commit-type] completed score=1.0 :: 12/12 correct (bar 9); wrong: []
+[classify-contract-judgment] completed score=0.9167 :: 11/12 correct (bar 9); wrong: [{"want": "ok", "got": "no-empty-guard", "text": "def total(xs):\n    if xs is None:\n        return 0\n    if le"}]
+[classify-gap-move] completed score=1.0 :: 10/10 correct (bar 6); wrong: []
+[bug-pattern-composed-sealed-v2] completed score=0.8333 :: composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands':
+[classify-secret-line-ternary] completed score=0.9167 :: 11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)
+[tiny-hive-ops] completed score=1.0 :: 21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)
+<case>:1: SyntaxWarning: 'NoneType' object is not subscriptable; perhaps you missed a comma?
+[growth-cycle-002] births KEPT; whole verified
+{
+ "cycle_id": "growth-cycle-002",
+ "born": [
+  "bug-wrong-operator-expression-model",
+  "bug-off-by-one-index-model"
+ ],
+ "rolled_back": false,
+ "battery_overall_before": 0.9375,
+ "battery_overall_after": 0.9375,
+ "audit_ok": true,
+ "wall_seconds": 236.5
+}

@@ -1,0 +1,446 @@
+{
+ "cycle_id": "growth-cycle-001",
+ "date": "2026-11-11 17:27 UTC",
+ "targets": [
+  "wrong-operator/expression",
+  "off-by-one/index"
+ ],
+ "levers": [
+  "name-intent data family (Lever 1)",
+  "parent-initialized fine-tuning (Lever 2)",
+  "found-on-failure diet weighting (Fable)",
+  "learned-say check (Fable) — measured only"
+ ],
+ "battery_before": {
+  "classify-secret-line": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  }
+ },
+ "battery_overall_before": 0.9375,
+ "harvest": {
+  "wrong-operator/expression": {
+   "phase3_train_slice": {
+    "acc": 1.0,
+    "n": 32,
+    "wrong_n": 0,
+    "wrong_by_intent": {}
+   },
+   "intent_train_slice": {
+    "acc": 0.6803,
+    "n": 757,
+    "wrong_n": 242,
+    "wrong_by_intent": {
+     "remainder": 76,
+     "quotient": 17,
+     "difference": 16,
+     "product": 22,
+     "sum_pair": 54,
+     "max_of": 19,
+     "min_of": 18,
+     "minutes": 6,
+     "average_pair": 6,
+     "element_at": 6,
+     "average_list": 2
+    }
+   }
+  },
+  "off-by-one/index": {
+   "phase3_train_slice": {
+    "acc": 1.0,
+    "n": 41,
+    "wrong_n": 0,
+    "wrong_by_intent": {}
+   },
+   "intent_train_slice": {
+    "acc": 0.9115,
+    "n": 757,
+    "wrong_n": 67,
+    "wrong_by_intent": {
+     "max_of": 5,
+     "min_of": 3,
+     "first_two": 12,
+     "last_element": 6,
+     "first_k": 13,
+     "element_at": 14,
+     "last_two": 14
+    }
+   }
+  }
+ },
+ "learned_say": {
+  "judged_on": "phase-3 held set (spent confirm surface — measurement only, NOT pristine)",
+  "n": 29,
+  "composed_acc": {
+   "routed": 0.8276,
+   "mean": 0.7931,
+   "learned": 0.7931
+  },
+  "learned_weights": {
+   "off-by-one": {
+    "bug-off-by-one-model": 1.0,
+    "bug-off-by-one-harvest-model": 1.0
+   },
+   "wrong-operator": {
+    "bug-wrong-operator-model": 1.0,
+    "bug-wrong-operator-named-model": 1.0,
+    "bug-wrong-operator-harvest-model": 1.0
+   },
+   "swapped-operands": {
+    "bug-swapped-operands-model": 1.0,
+    "bug-swapped-operands-named-model": 1.0,
+    "bug-swapped-operands-harvest-model": 1.0
+   },
+   "mutable-default": {
+    "bug-mutable-default-model": 1.0
+   },
+   "missing-return": {
+    "bug-missing-return-model": 1.0
+   }
+  },
+  "adoption": "not decided in this cycle — a composition-rule change is a serving change and takes its own battery-gated step"
+ },
+ "attempts": [
+  {
+   "cls": "wrong-operator",
+   "slice": "expression",
+   "child": "bug-wrong-operator-expression-model",
+   "born": false,
+   "intent_train_n": 280,
+   "intent_train_pos": 120,
+   "failure_weighted_extra": 112,
+   "train_slice_n": 32,
+   "dream_slice_n": 70,
+   "train_child_n": 494,
+   "train_child_pos": 231,
+   "held_slice_n": 20,
+   "parent_slice_heldout_acc": 0.85,
+   "parent_intent_heldout_acc": 0.6326,
+   "intent_held_slice_n": 694,
+   "intent_held_slice_pos": 271,
+   "init_train_n": 579,
+   "attempts": [
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.75,
+     "params": 1628,
+     "intent_heldout_acc": 0.6542
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 3266,
+     "intent_heldout_acc": 0.7882
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 6530,
+     "intent_heldout_acc": 0.6282
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 222,
+     "intent_heldout_acc": 0.5548
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 454,
+     "intent_heldout_acc": 0.572
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 906,
+     "intent_heldout_acc": 0.6585
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.85,
+     "params": 2030,
+     "intent_heldout_acc": 0.6571
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 0.8,
+     "params": 2030,
+     "intent_heldout_acc": 0.6571
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.85,
+     "params": 2010,
+     "intent_heldout_acc": 0.6686
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 0.8,
+     "params": 2010,
+     "intent_heldout_acc": 0.67
+    }
+   ],
+   "child_slice_heldout_acc": 0.9,
+   "rejection": "gate failed: no candidate beat the parent on both held slices (phase-3 slice: parent 0.85, best child 0.9; name-intent slice: parent 0.6326, best child 0.7882) — no birth",
+   "intent_train_capped_n": 280
+  },
+  {
+   "cls": "off-by-one",
+   "slice": "index",
+   "child": "bug-off-by-one-index-model",
+   "born": false,
+   "intent_train_n": 228,
+   "intent_train_pos": 68,
+   "failure_weighted_extra": 106,
+   "train_slice_n": 41,
+   "dream_slice_n": 182,
+   "train_child_n": 557,
+   "train_child_pos": 216,
+   "held_slice_n": 20,
+   "parent_slice_heldout_acc": 0.95,
+   "parent_intent_heldout_acc": 0.9566,
+   "intent_held_slice_n": 692,
+   "intent_held_slice_pos": 36,
+   "init_train_n": 642,
+   "attempts": [
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 1914,
+     "intent_heldout_acc": 0.9928
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.8,
+     "params": 3836,
+     "intent_heldout_acc": 0.9162
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.95,
+     "params": 6792,
+     "intent_heldout_acc": 0.9711
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 254,
+     "intent_heldout_acc": 0.948
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 517,
+     "intent_heldout_acc": 0.9827
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 1034,
+     "intent_heldout_acc": 0.9827
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.85,
+     "params": 2074,
+     "intent_heldout_acc": 0.9841
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 0.9,
+     "params": 2074,
+     "intent_heldout_acc": 0.9928
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.95,
+     "params": 2074,
+     "intent_heldout_acc": 0.9971
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 0.9,
+     "params": 2074,
+     "intent_heldout_acc": 0.9971
+    }
+   ],
+   "child_slice_heldout_acc": 0.95,
+   "rejection": "gate failed: no candidate beat the parent on both held slices (phase-3 slice: parent 0.95, best child 0.95; name-intent slice: parent 0.9566, best child 0.9971) — no birth",
+   "intent_train_capped_n": 228
+  }
+ ],
+ "rolled_back": false,
+ "audit": {
+  "ok": true,
+  "failures": [],
+  "score_checks": [
+   {
+    "artifact": "secret-line-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "secret-line-model:substrate-heldout",
+    "measured": 0.9385,
+    "recorded": 0.9385,
+    "ok": true
+   },
+   {
+    "artifact": "error-class-model:serving-heldout",
+    "measured": 0.9833,
+    "recorded": 0.9833,
+    "ok": true
+   },
+   {
+    "artifact": "commit-type-model:serving-heldout",
+    "measured": 0.9625,
+    "recorded": 0.9625,
+    "ok": true
+   },
+   {
+    "artifact": "contract-judgment-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "gap-move-model:serving-heldout",
+    "measured": 0.9444,
+    "recorded": 0.9444,
+    "ok": true
+   },
+   {
+    "artifact": "bug-pattern-composed:sealed-baseline",
+    "measured": 0.4444,
+    "recorded": 0.4444,
+    "ok": true
+   },
+   {
+    "artifact": "bug-pattern-composed:serving-layer-sealed",
+    "measured": 0.8333,
+    "recorded": 0.8333,
+    "ok": true
+   }
+  ]
+ },
+ "next_attack": "No birth under the dual gate. Read the per-config table in the cycle JSON: whichever gate each best candidate failed names cycle 2's target (intent-slice supply quality vs template-slice capacity), plus the learned-say adoption step if its held margin holds.",
+ "wall_seconds": 85.7
+}

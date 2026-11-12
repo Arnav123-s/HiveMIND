@@ -1,0 +1,485 @@
+[
+ {
+  "text": "def area_rect(w, h):\n    return w * h",
+  "label": "clean",
+  "group": "phase3x-area_rect",
+  "family": "phase3x",
+  "template_family": "area_rect"
+ },
+ {
+  "text": "def area_rect(w, h):\n    return w + h",
+  "label": "wrong-operator",
+  "group": "phase3x-area_rect",
+  "family": "phase3x",
+  "template_family": "area_rect"
+ },
+ {
+  "text": "def area_rect(w, h):\n    res = w * h",
+  "label": "missing-return",
+  "group": "phase3x-area_rect",
+  "family": "phase3x",
+  "template_family": "area_rect"
+ },
+ {
+  "text": "def sale_price(price, off):\n    return price - off",
+  "label": "clean",
+  "group": "phase3x-sale_price",
+  "family": "phase3x",
+  "template_family": "sale_price"
+ },
+ {
+  "text": "def sale_price(price, off):\n    return off - price",
+  "label": "swapped-operands",
+  "group": "phase3x-sale_price",
+  "family": "phase3x",
+  "template_family": "sale_price"
+ },
+ {
+  "text": "def sale_price(price, off):\n    return price + off",
+  "label": "wrong-operator",
+  "group": "phase3x-sale_price",
+  "family": "phase3x",
+  "template_family": "sale_price"
+ },
+ {
+  "text": "def count_letter(s, ch):\n    n = 0\n    for c in s:\n        if c == ch:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "phase3x-count_letter",
+  "family": "phase3x",
+  "template_family": "count_letter"
+ },
+ {
+  "text": "def count_letter(s, ch):\n    n = 0\n    for c in s:\n        if c != ch:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "phase3x-count_letter",
+  "family": "phase3x",
+  "template_family": "count_letter"
+ },
+ {
+  "text": "def count_letter(s, ch):\n    n = 0\n    for c in s:\n        if c == ch:\n            n += 1\n    print(n)",
+  "label": "missing-return",
+  "group": "phase3x-count_letter",
+  "family": "phase3x",
+  "template_family": "count_letter"
+ },
+ {
+  "text": "def sum_step_range(a, b, step):\n    s = 0\n    for i in range(a, b, step):\n        s += i\n    return s",
+  "label": "clean",
+  "group": "phase3x-sum_step_range",
+  "family": "phase3x",
+  "template_family": "sum_step_range"
+ },
+ {
+  "text": "def sum_step_range(a, b, step):\n    s = 0\n    for i in range(a + step, b, step):\n        s += i\n    return s",
+  "label": "off-by-one",
+  "group": "phase3x-sum_step_range",
+  "family": "phase3x",
+  "template_family": "sum_step_range"
+ },
+ {
+  "text": "def sum_step_range(a, b, step):\n    s = 0\n    for i in range(a, b, step):\n        s -= i\n    return s",
+  "label": "wrong-operator",
+  "group": "phase3x-sum_step_range",
+  "family": "phase3x",
+  "template_family": "sum_step_range"
+ },
+ {
+  "text": "def second_last(xs):\n    return xs[-2]",
+  "label": "clean",
+  "group": "phase3x-second_last",
+  "family": "phase3x",
+  "template_family": "second_last"
+ },
+ {
+  "text": "def second_last(xs):\n    return xs[-1]",
+  "label": "off-by-one",
+  "group": "phase3x-second_last",
+  "family": "phase3x",
+  "template_family": "second_last"
+ },
+ {
+  "text": "def second_last(xs):\n    res = xs[-2]",
+  "label": "missing-return",
+  "group": "phase3x-second_last",
+  "family": "phase3x",
+  "template_family": "second_last"
+ },
+ {
+  "text": "def middle_slice(xs):\n    return xs[1:-1]",
+  "label": "clean",
+  "group": "phase3x-middle_slice",
+  "family": "phase3x",
+  "template_family": "middle_slice"
+ },
+ {
+  "text": "def middle_slice(xs):\n    return xs[2:-1]",
+  "label": "off-by-one",
+  "group": "phase3x-middle_slice",
+  "family": "phase3x",
+  "template_family": "middle_slice"
+ },
+ {
+  "text": "def middle_slice(xs):\n    res = xs[1:-1]",
+  "label": "missing-return",
+  "group": "phase3x-middle_slice",
+  "family": "phase3x",
+  "template_family": "middle_slice"
+ },
+ {
+  "text": "def running_max_list(xs):\n    m = xs[0]\n    out = []\n    for v in xs:\n        if v > m:\n            m = v\n        out.append(m)\n    return out",
+  "label": "clean",
+  "group": "phase3x-running_max_list",
+  "family": "phase3x",
+  "template_family": "running_max_list"
+ },
+ {
+  "text": "def running_max_list(xs):\n    m = xs[0]\n    out = []\n    for v in xs:\n        if v < m:\n            m = v\n        out.append(m)\n    return out",
+  "label": "wrong-operator",
+  "group": "phase3x-running_max_list",
+  "family": "phase3x",
+  "template_family": "running_max_list"
+ },
+ {
+  "text": "def running_max_list(xs):\n    m = xs[0]\n    out = []\n    for v in xs:\n        if v > m:\n            m = v\n        out.append(m)",
+  "label": "missing-return",
+  "group": "phase3x-running_max_list",
+  "family": "phase3x",
+  "template_family": "running_max_list"
+ },
+ {
+  "text": "def gather_odds(xs):\n    return [x for x in xs if x % 2 == 1]",
+  "label": "clean",
+  "group": "phase3x-gather_odds",
+  "family": "phase3x",
+  "template_family": "gather_odds"
+ },
+ {
+  "text": "def gather_odds(xs):\n    return [x for x in xs if x % 2 == 0]",
+  "label": "wrong-operator",
+  "group": "phase3x-gather_odds",
+  "family": "phase3x",
+  "template_family": "gather_odds"
+ },
+ {
+  "text": "def gather_odds(xs):\n    res = [x for x in xs if x % 2 == 1]",
+  "label": "missing-return",
+  "group": "phase3x-gather_odds",
+  "family": "phase3x",
+  "template_family": "gather_odds"
+ },
+ {
+  "text": "def append_copy(item, bag=None):\n    bag = list(bag) if bag else []\n    bag.append(item)\n    return bag",
+  "label": "clean",
+  "group": "phase3x-append_copy",
+  "family": "phase3x",
+  "template_family": "append_copy"
+ },
+ {
+  "text": "def append_copy(item, bag=[]):\n    bag.append(item)\n    return bag",
+  "label": "mutable-default",
+  "group": "phase3x-append_copy",
+  "family": "phase3x",
+  "template_family": "append_copy"
+ },
+ {
+  "text": "def append_copy(item, bag=None):\n    bag = list(bag) if bag else []\n    bag.append(item)",
+  "label": "missing-return",
+  "group": "phase3x-append_copy",
+  "family": "phase3x",
+  "template_family": "append_copy"
+ },
+ {
+  "text": "def collect_scores(name, pts, table=None):\n    table = dict(table) if table else {}\n    table[name] = pts\n    return table",
+  "label": "clean",
+  "group": "phase3x-collect_scores",
+  "family": "phase3x",
+  "template_family": "collect_scores"
+ },
+ {
+  "text": "def collect_scores(name, pts, table={}):\n    table[name] = pts\n    return table",
+  "label": "mutable-default",
+  "group": "phase3x-collect_scores",
+  "family": "phase3x",
+  "template_family": "collect_scores"
+ },
+ {
+  "text": "def collect_scores(name, pts, table=None):\n    table = dict(table) if table else {}\n    table[name] = pts",
+  "label": "missing-return",
+  "group": "phase3x-collect_scores",
+  "family": "phase3x",
+  "template_family": "collect_scores"
+ },
+ {
+  "text": "def total_cost(prices, fee):\n    return sum(prices) + fee",
+  "label": "clean",
+  "group": "phase3x-total_cost",
+  "family": "phase3x",
+  "template_family": "total_cost"
+ },
+ {
+  "text": "def total_cost(prices, fee):\n    return sum(prices) - fee",
+  "label": "wrong-operator",
+  "group": "phase3x-total_cost",
+  "family": "phase3x",
+  "template_family": "total_cost"
+ },
+ {
+  "text": "def total_cost(prices, fee):\n    res = sum(prices) + fee",
+  "label": "missing-return",
+  "group": "phase3x-total_cost",
+  "family": "phase3x",
+  "template_family": "total_cost"
+ },
+ {
+  "text": "def first_negative_index(xs):\n    for i in range(len(xs)):\n        if xs[i] < 0:\n            return i\n    return -1",
+  "label": "clean",
+  "group": "phase3x-first_negative_index",
+  "family": "phase3x",
+  "template_family": "first_negative_index"
+ },
+ {
+  "text": "def first_negative_index(xs):\n    for i in range(1, len(xs)):\n        if xs[i] < 0:\n            return i\n    return -1",
+  "label": "off-by-one",
+  "group": "phase3x-first_negative_index",
+  "family": "phase3x",
+  "template_family": "first_negative_index"
+ },
+ {
+  "text": "def first_negative_index(xs):\n    for i in range(len(xs)):\n        if xs[i] > 0:\n            return i\n    return -1",
+  "label": "wrong-operator",
+  "group": "phase3x-first_negative_index",
+  "family": "phase3x",
+  "template_family": "first_negative_index"
+ },
+ {
+  "text": "def every_second_sum(xs):\n    s = 0\n    for x in xs[::2]:\n        s += x\n    return s",
+  "label": "clean",
+  "group": "phase3x-every_second_sum",
+  "family": "phase3x",
+  "template_family": "every_second_sum"
+ },
+ {
+  "text": "def every_second_sum(xs):\n    s = 0\n    for x in xs[1::2]:\n        s += x\n    return s",
+  "label": "off-by-one",
+  "group": "phase3x-every_second_sum",
+  "family": "phase3x",
+  "template_family": "every_second_sum"
+ },
+ {
+  "text": "def every_second_sum(xs):\n    s = 0\n    for x in xs[::2]:\n        s -= x\n    return s",
+  "label": "wrong-operator",
+  "group": "phase3x-every_second_sum",
+  "family": "phase3x",
+  "template_family": "every_second_sum"
+ },
+ {
+  "text": "def sum_digits(s):\n    total = 0\n    for ch in s:\n        total += int(ch)\n    return total",
+  "label": "clean",
+  "group": "phase3x-sum_digits",
+  "family": "phase3x",
+  "template_family": "sum_digits"
+ },
+ {
+  "text": "def sum_digits(s):\n    total = 0\n    for ch in s:\n        total -= int(ch)\n    return total",
+  "label": "wrong-operator",
+  "group": "phase3x-sum_digits",
+  "family": "phase3x",
+  "template_family": "sum_digits"
+ },
+ {
+  "text": "def sum_digits(s):\n    total = 0\n    for ch in s:\n        total += int(ch)\n    print(total)",
+  "label": "missing-return",
+  "group": "phase3x-sum_digits",
+  "family": "phase3x",
+  "template_family": "sum_digits"
+ },
+ {
+  "text": "def countdown_list(n):\n    return list(range(n, 0, -1))",
+  "label": "clean",
+  "group": "phase3x-countdown_list",
+  "family": "phase3x",
+  "template_family": "countdown_list"
+ },
+ {
+  "text": "def countdown_list(n):\n    return list(range(n, 1, -1))",
+  "label": "off-by-one",
+  "group": "phase3x-countdown_list",
+  "family": "phase3x",
+  "template_family": "countdown_list"
+ },
+ {
+  "text": "def countdown_list(n):\n    return [i + 1 for i in range(n, 0, -1)]",
+  "label": "wrong-operator",
+  "group": "phase3x-countdown_list",
+  "family": "phase3x",
+  "template_family": "countdown_list"
+ },
+ {
+  "text": "def average_first_half(xs):\n    h = len(xs) // 2\n    return sum(xs[:h]) / h",
+  "label": "clean",
+  "group": "phase3x-average_first_half",
+  "family": "phase3x",
+  "template_family": "average_first_half"
+ },
+ {
+  "text": "def average_first_half(xs):\n    h = len(xs) // 2\n    return sum(xs[:h + 1]) / (h + 1)",
+  "label": "off-by-one",
+  "group": "phase3x-average_first_half",
+  "family": "phase3x",
+  "template_family": "average_first_half"
+ },
+ {
+  "text": "def average_first_half(xs):\n    h = len(xs) // 2\n    return sum(xs[:h]) * h",
+  "label": "wrong-operator",
+  "group": "phase3x-average_first_half",
+  "family": "phase3x",
+  "template_family": "average_first_half"
+ },
+ {
+  "text": "def both_ends_sum(xs):\n    return xs[0] + xs[-1]",
+  "label": "clean",
+  "group": "phase3x-both_ends_sum",
+  "family": "phase3x",
+  "template_family": "both_ends_sum"
+ },
+ {
+  "text": "def both_ends_sum(xs):\n    return xs[1] + xs[-1]",
+  "label": "off-by-one",
+  "group": "phase3x-both_ends_sum",
+  "family": "phase3x",
+  "template_family": "both_ends_sum"
+ },
+ {
+  "text": "def both_ends_sum(xs):\n    return xs[0] - xs[-1]",
+  "label": "wrong-operator",
+  "group": "phase3x-both_ends_sum",
+  "family": "phase3x",
+  "template_family": "both_ends_sum"
+ },
+ {
+  "text": "def count_starting(words, ch):\n    n = 0\n    for w in words:\n        if w[0] == ch:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "phase3x-count_starting",
+  "family": "phase3x",
+  "template_family": "count_starting"
+ },
+ {
+  "text": "def count_starting(words, ch):\n    n = 0\n    for w in words:\n        if w[0] != ch:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "phase3x-count_starting",
+  "family": "phase3x",
+  "template_family": "count_starting"
+ },
+ {
+  "text": "def count_starting(words, ch):\n    n = 0\n    for w in words:\n        if w[0] == ch:\n            n += 1\n    print(n)",
+  "label": "missing-return",
+  "group": "phase3x-count_starting",
+  "family": "phase3x",
+  "template_family": "count_starting"
+ },
+ {
+  "text": "def double_each(xs):\n    return [x * 2 for x in xs]",
+  "label": "clean",
+  "group": "phase3x-double_each",
+  "family": "phase3x",
+  "template_family": "double_each"
+ },
+ {
+  "text": "def double_each(xs):\n    return [x + 2 for x in xs]",
+  "label": "wrong-operator",
+  "group": "phase3x-double_each",
+  "family": "phase3x",
+  "template_family": "double_each"
+ },
+ {
+  "text": "def double_each(xs):\n    res = [x * 2 for x in xs]",
+  "label": "missing-return",
+  "group": "phase3x-double_each",
+  "family": "phase3x",
+  "template_family": "double_each"
+ },
+ {
+  "text": "def index_sum_pair(xs, i, j):\n    return xs[i] + xs[j]",
+  "label": "clean",
+  "group": "phase3x-index_sum_pair",
+  "family": "phase3x",
+  "template_family": "index_sum_pair"
+ },
+ {
+  "text": "def index_sum_pair(xs, i, j):\n    return xs[i + 1] + xs[j]",
+  "label": "off-by-one",
+  "group": "phase3x-index_sum_pair",
+  "family": "phase3x",
+  "template_family": "index_sum_pair"
+ },
+ {
+  "text": "def index_sum_pair(xs, i, j):\n    return xs[i] - xs[j]",
+  "label": "wrong-operator",
+  "group": "phase3x-index_sum_pair",
+  "family": "phase3x",
+  "template_family": "index_sum_pair"
+ },
+ {
+  "text": "def divide_pair(a, b):\n    return a / b",
+  "label": "clean",
+  "group": "phase3x-divide_pair",
+  "family": "phase3x",
+  "template_family": "divide_pair"
+ },
+ {
+  "text": "def divide_pair(a, b):\n    return b / a",
+  "label": "swapped-operands",
+  "group": "phase3x-divide_pair",
+  "family": "phase3x",
+  "template_family": "divide_pair"
+ },
+ {
+  "text": "def divide_pair(a, b):\n    return a * b",
+  "label": "wrong-operator",
+  "group": "phase3x-divide_pair",
+  "family": "phase3x",
+  "template_family": "divide_pair"
+ },
+ {
+  "text": "def power_pair(base, exp):\n    return base ** exp",
+  "label": "clean",
+  "group": "phase3x-power_pair",
+  "family": "phase3x",
+  "template_family": "power_pair"
+ },
+ {
+  "text": "def power_pair(base, exp):\n    return exp ** base",
+  "label": "swapped-operands",
+  "group": "phase3x-power_pair",
+  "family": "phase3x",
+  "template_family": "power_pair"
+ },
+ {
+  "text": "def power_pair(base, exp):\n    return base * exp",
+  "label": "wrong-operator",
+  "group": "phase3x-power_pair",
+  "family": "phase3x",
+  "template_family": "power_pair"
+ },
+ {
+  "text": "def sum_odds_upto(n):\n    s = 0\n    for i in range(1, n + 1, 2):\n        s += i\n    return s",
+  "label": "clean",
+  "group": "phase3x-sum_odds_upto",
+  "family": "phase3x",
+  "template_family": "sum_odds_upto"
+ },
+ {
+  "text": "def sum_odds_upto(n):\n    s = 0\n    for i in range(1, n, 2):\n        s += i\n    return s",
+  "label": "off-by-one",
+  "group": "phase3x-sum_odds_upto",
+  "family": "phase3x",
+  "template_family": "sum_odds_upto"
+ },
+ {
+  "text": "def sum_odds_upto(n):\n    s = 0\n    for i in range(1, n + 1, 2):\n        s -= i\n    return s",
+  "label": "wrong-operator",
+  "group": "phase3x-sum_odds_upto",
+  "family": "phase3x",
+  "template_family": "sum_odds_upto"
+ }
+]

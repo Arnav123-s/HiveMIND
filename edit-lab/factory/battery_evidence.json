@@ -1,0 +1,77 @@
+{
+ "artifacts": {
+  "commit-type-model": {
+   "battery_acc": 0.8333,
+   "n": 12,
+   "source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+  },
+  "commit-type-model-v2": {
+   "battery_acc": 1.0,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-commit-type (served, assembly battery re-run 2026-11-10)"
+  },
+  "contract-judgment-model": {
+   "battery_acc": 0.5833,
+   "n": 12,
+   "source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+  },
+  "contract-judgment-model-v2": {
+   "battery_acc": 0.9167,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-contract-judgment (served, assembly battery re-run 2026-11-10)"
+  },
+  "contract-judgment-model-v3": {
+   "battery_acc": 0.4167,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-contract-judgment-v3-not-served (measured 2026-11-10 before the override)"
+  },
+  "error-class-model": {
+   "battery_acc": 1.0,
+   "n": 12,
+   "source": "results/hive_battery.json and hive_battery_acceptance.json (12/12 in both)"
+  },
+  "gap-move-model": {
+   "battery_acc": 0.4,
+   "n": 10,
+   "source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+  },
+  "gap-move-model-v2": {
+   "battery_acc": 0.8,
+   "n": 10,
+   "source": "results/hive_battery_acceptance.json classify-gap-move (served, 2026-11-10)"
+  },
+  "secret-line-model": {
+   "battery_acc": 0.8333,
+   "n": 12,
+   "source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+  },
+  "secret-line-model-ternary": {
+   "battery_acc": 0.9167,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-secret-line-ternary (served, assembly battery re-run 2026-11-10)"
+  },
+  "secret-line-model-v2": {
+   "battery_acc": 0.8333,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-secret-line (served, 2026-11-10)"
+  },
+  "error-class-model-v2": {
+   "battery_acc": 1.0,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-error-class (served, assembly battery re-run 2026-11-10)"
+  },
+  "gap-move-model-v3": {
+   "battery_acc": 1.0,
+   "n": 10,
+   "source": "results/hive_battery_acceptance.json classify-gap-move (served, assembly battery re-run 2026-11-10)"
+  },
+  "secret-line-model-v3": {
+   "battery_acc": 0.8333,
+   "n": 12,
+   "source": "results/hive_battery_acceptance.json classify-secret-line (served, assembly battery re-run 2026-11-10)"
+  }
+ },
+ "created_by": "the contract-judgment v3 case, 2026-11-10: v3 passed its factory win-gates (paired fresh confirm 0.9048 vs incumbent 0.7619, held-out 1.0) but scored 5/12 on the acceptance battery against v2's 11/12 \u2014 its confirm surfaces were its own generator's idioms. The manual serving override that followed is now this standing rule.",
+ "note": "Measured battery slices per adopted artifact \u2014 the evidence the standing serving rule (factory/registry.py) promotes on. Every number here is a measurement from a named battery run, never a claim copied from a model record (the contract-judgment-model-v3 record's battery_reference_acc field says 0.9167, inherited at adoption; its MEASURED slice is 0.4167 and the measured value is what the rule uses). New adoptions enter as shadow until a battery run measures their slice and this file is updated.",
+ "rule": "An adopted artifact becomes the serving artifact only when its measured battery slice is >= the serving incumbent's slice. Until then it is registered as shadow: on the books, audited, never served, never a fallback."
+}

@@ -1,0 +1,1154 @@
+[
+ {
+  "text": "def count_above(xs, t):\n    n = 0\n    for v in xs:\n        if v > t:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_above-count_above",
+  "intent": "count_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def count_above(xs, t):\n    n = 0\n    for v in xs:\n        if v >= t:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_above-count_above",
+  "intent": "count_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def count_above(xs, t):\n    n = 0\n    for v in xs:\n        if v < t:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_above-count_above",
+  "intent": "count_above",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def count_above(xs, t):\n    n = 0\n    for v in xs:\n        if v > t + 1:\n            n += 1\n    return n",
+  "label": "off-by-one",
+  "group": "intent2-count_above-count_above",
+  "intent": "count_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_over(xs, t):\n    n = 0\n    for v in xs:\n        if v > t:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_above-tally_over",
+  "intent": "count_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_over(xs, t):\n    n = 0\n    for v in xs:\n        if v >= t:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_above-tally_over",
+  "intent": "count_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_over(xs, t):\n    n = 0\n    for v in xs:\n        if v < t:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_above-tally_over",
+  "intent": "count_above",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_over(xs, t):\n    n = 0\n    for v in xs:\n        if v > t + 1:\n            n += 1\n    return n",
+  "label": "off-by-one",
+  "group": "intent2-count_above-tally_over",
+  "intent": "count_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_over(xs, t):\n    n = 0\n    for v in xs:\n        if v > t:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_above-how_many_over",
+  "intent": "count_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_over(xs, t):\n    n = 0\n    for v in xs:\n        if v >= t:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_above-how_many_over",
+  "intent": "count_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_over(xs, t):\n    n = 0\n    for v in xs:\n        if v < t:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_above-how_many_over",
+  "intent": "count_above",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_over(xs, t):\n    n = 0\n    for v in xs:\n        if v > t + 1:\n            n += 1\n    return n",
+  "label": "off-by-one",
+  "group": "intent2-count_above-how_many_over",
+  "intent": "count_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs, t):\n    n = 0\n    for v in xs:\n        if v > t:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_above-neutral",
+  "intent": "count_above",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs, t):\n    n = 0\n    for v in xs:\n        if v > t:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_above-neutral",
+  "intent": "count_above",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def count_between(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo <= v <= hi:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_between-count_between",
+  "intent": "count_between",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def count_between(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo < v < hi:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_between-count_between",
+  "intent": "count_between",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def count_between(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo + 1 <= v <= hi:\n            n += 1\n    return n",
+  "label": "off-by-one",
+  "group": "intent2-count_between-count_between",
+  "intent": "count_between",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_in_range(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo <= v <= hi:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_between-tally_in_range",
+  "intent": "count_between",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_in_range(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo < v < hi:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_between-tally_in_range",
+  "intent": "count_between",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_in_range(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo + 1 <= v <= hi:\n            n += 1\n    return n",
+  "label": "off-by-one",
+  "group": "intent2-count_between-tally_in_range",
+  "intent": "count_between",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_between(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo <= v <= hi:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_between-how_many_between",
+  "intent": "count_between",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_between(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo < v < hi:\n            n += 1\n    return n",
+  "label": "wrong-operator",
+  "group": "intent2-count_between-how_many_between",
+  "intent": "count_between",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def how_many_between(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo + 1 <= v <= hi:\n            n += 1\n    return n",
+  "label": "off-by-one",
+  "group": "intent2-count_between-how_many_between",
+  "intent": "count_between",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo <= v <= hi:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_between-neutral",
+  "intent": "count_between",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs, lo, hi):\n    n = 0\n    for v in xs:\n        if lo <= v <= hi:\n            n += 1\n    return n",
+  "label": "clean",
+  "group": "intent2-count_between-neutral",
+  "intent": "count_between",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_index_above(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "clean",
+  "group": "intent2-first_index_above-first_index_above",
+  "intent": "first_index_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_index_above(xs, t):\n    for i in range(len(xs)):\n        if xs[i] >= t:\n            return i\n    return -1",
+  "label": "wrong-operator",
+  "group": "intent2-first_index_above-first_index_above",
+  "intent": "first_index_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_index_above(xs, t):\n    for i in range(1, len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "off-by-one",
+  "group": "intent2-first_index_above-first_index_above",
+  "intent": "first_index_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_index_above(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i + 1\n    return -1",
+  "label": "off-by-one",
+  "group": "intent2-first_index_above-first_index_above",
+  "intent": "first_index_above",
+  "kind": "mutation-off-by-one-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_over_at(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "clean",
+  "group": "intent2-first_index_above-first_over_at",
+  "intent": "first_index_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_over_at(xs, t):\n    for i in range(len(xs)):\n        if xs[i] >= t:\n            return i\n    return -1",
+  "label": "wrong-operator",
+  "group": "intent2-first_index_above-first_over_at",
+  "intent": "first_index_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_over_at(xs, t):\n    for i in range(1, len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "off-by-one",
+  "group": "intent2-first_index_above-first_over_at",
+  "intent": "first_index_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_over_at(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i + 1\n    return -1",
+  "label": "off-by-one",
+  "group": "intent2-first_index_above-first_over_at",
+  "intent": "first_index_above",
+  "kind": "mutation-off-by-one-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def where_first_over(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "clean",
+  "group": "intent2-first_index_above-where_first_over",
+  "intent": "first_index_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def where_first_over(xs, t):\n    for i in range(len(xs)):\n        if xs[i] >= t:\n            return i\n    return -1",
+  "label": "wrong-operator",
+  "group": "intent2-first_index_above-where_first_over",
+  "intent": "first_index_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def where_first_over(xs, t):\n    for i in range(1, len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "off-by-one",
+  "group": "intent2-first_index_above-where_first_over",
+  "intent": "first_index_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def where_first_over(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i + 1\n    return -1",
+  "label": "off-by-one",
+  "group": "intent2-first_index_above-where_first_over",
+  "intent": "first_index_above",
+  "kind": "mutation-off-by-one-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "clean",
+  "group": "intent2-first_index_above-neutral",
+  "intent": "first_index_above",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs, t):\n    for i in range(len(xs)):\n        if xs[i] > t:\n            return i\n    return -1",
+  "label": "clean",
+  "group": "intent2-first_index_above-neutral",
+  "intent": "first_index_above",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def any_below(xs, t):\n    for v in xs:\n        if v < t:\n            return True\n    return False",
+  "label": "clean",
+  "group": "intent2-any_below-any_below",
+  "intent": "any_below",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def any_below(xs, t):\n    for v in xs:\n        if v <= t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-any_below-any_below",
+  "intent": "any_below",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def any_below(xs, t):\n    for v in xs:\n        if v > t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-any_below-any_below",
+  "intent": "any_below",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def has_under(xs, t):\n    for v in xs:\n        if v < t:\n            return True\n    return False",
+  "label": "clean",
+  "group": "intent2-any_below-has_under",
+  "intent": "any_below",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def has_under(xs, t):\n    for v in xs:\n        if v <= t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-any_below-has_under",
+  "intent": "any_below",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def has_under(xs, t):\n    for v in xs:\n        if v > t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-any_below-has_under",
+  "intent": "any_below",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def some_below(xs, t):\n    for v in xs:\n        if v < t:\n            return True\n    return False",
+  "label": "clean",
+  "group": "intent2-any_below-some_below",
+  "intent": "any_below",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def some_below(xs, t):\n    for v in xs:\n        if v <= t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-any_below-some_below",
+  "intent": "any_below",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def some_below(xs, t):\n    for v in xs:\n        if v > t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-any_below-some_below",
+  "intent": "any_below",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs, t):\n    for v in xs:\n        if v < t:\n            return True\n    return False",
+  "label": "clean",
+  "group": "intent2-any_below-neutral",
+  "intent": "any_below",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs, t):\n    for v in xs:\n        if v < t:\n            return True\n    return False",
+  "label": "clean",
+  "group": "intent2-any_below-neutral",
+  "intent": "any_below",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_above(xs, t):\n    for v in xs:\n        if v <= t:\n            return False\n    return True",
+  "label": "clean",
+  "group": "intent2-all_above-all_above",
+  "intent": "all_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_above(xs, t):\n    for v in xs:\n        if v < t:\n            return False\n    return True",
+  "label": "wrong-operator",
+  "group": "intent2-all_above-all_above",
+  "intent": "all_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_above(xs, t):\n    for v in xs:\n        if v > t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-all_above-all_above",
+  "intent": "all_above",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_above(xs, t):\n    for v in xs:\n        if v <= t + 1:\n            return False\n    return True",
+  "label": "off-by-one",
+  "group": "intent2-all_above-all_above",
+  "intent": "all_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def every_over(xs, t):\n    for v in xs:\n        if v <= t:\n            return False\n    return True",
+  "label": "clean",
+  "group": "intent2-all_above-every_over",
+  "intent": "all_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def every_over(xs, t):\n    for v in xs:\n        if v < t:\n            return False\n    return True",
+  "label": "wrong-operator",
+  "group": "intent2-all_above-every_over",
+  "intent": "all_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def every_over(xs, t):\n    for v in xs:\n        if v > t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-all_above-every_over",
+  "intent": "all_above",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def every_over(xs, t):\n    for v in xs:\n        if v <= t + 1:\n            return False\n    return True",
+  "label": "off-by-one",
+  "group": "intent2-all_above-every_over",
+  "intent": "all_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_clear_over(xs, t):\n    for v in xs:\n        if v <= t:\n            return False\n    return True",
+  "label": "clean",
+  "group": "intent2-all_above-all_clear_over",
+  "intent": "all_above",
+  "kind": "correct",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_clear_over(xs, t):\n    for v in xs:\n        if v < t:\n            return False\n    return True",
+  "label": "wrong-operator",
+  "group": "intent2-all_above-all_clear_over",
+  "intent": "all_above",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_clear_over(xs, t):\n    for v in xs:\n        if v > t:\n            return True\n    return False",
+  "label": "wrong-operator",
+  "group": "intent2-all_above-all_clear_over",
+  "intent": "all_above",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def all_clear_over(xs, t):\n    for v in xs:\n        if v <= t + 1:\n            return False\n    return True",
+  "label": "off-by-one",
+  "group": "intent2-all_above-all_clear_over",
+  "intent": "all_above",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs, t):\n    for v in xs:\n        if v <= t:\n            return False\n    return True",
+  "label": "clean",
+  "group": "intent2-all_above-neutral",
+  "intent": "all_above",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs, t):\n    for v in xs:\n        if v <= t:\n            return False\n    return True",
+  "label": "clean",
+  "group": "intent2-all_above-neutral",
+  "intent": "all_above",
+  "kind": "control-neutral",
+  "family": "name-intent2-comparison",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_total(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_total-running_total",
+  "intent": "running_total",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_total(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s -= v\n        out.append(s)\n    return out",
+  "label": "wrong-operator",
+  "group": "intent2-running_total-running_total",
+  "intent": "running_total",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_total(xs):\n    s = 0\n    out = []\n    for v in xs:\n        out.append(s)\n        s += v\n    return out",
+  "label": "off-by-one",
+  "group": "intent2-running_total-running_total",
+  "intent": "running_total",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_total(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)",
+  "label": "missing-return",
+  "group": "intent2-running_total-running_total",
+  "intent": "running_total",
+  "kind": "mutation-missing-return-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_sums(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_total-prefix_sums",
+  "intent": "running_total",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_sums(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s -= v\n        out.append(s)\n    return out",
+  "label": "wrong-operator",
+  "group": "intent2-running_total-prefix_sums",
+  "intent": "running_total",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_sums(xs):\n    s = 0\n    out = []\n    for v in xs:\n        out.append(s)\n        s += v\n    return out",
+  "label": "off-by-one",
+  "group": "intent2-running_total-prefix_sums",
+  "intent": "running_total",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_sums(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)",
+  "label": "missing-return",
+  "group": "intent2-running_total-prefix_sums",
+  "intent": "running_total",
+  "kind": "mutation-missing-return-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_sum(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_total-cumulative_sum",
+  "intent": "running_total",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_sum(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s -= v\n        out.append(s)\n    return out",
+  "label": "wrong-operator",
+  "group": "intent2-running_total-cumulative_sum",
+  "intent": "running_total",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_sum(xs):\n    s = 0\n    out = []\n    for v in xs:\n        out.append(s)\n        s += v\n    return out",
+  "label": "off-by-one",
+  "group": "intent2-running_total-cumulative_sum",
+  "intent": "running_total",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_sum(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)",
+  "label": "missing-return",
+  "group": "intent2-running_total-cumulative_sum",
+  "intent": "running_total",
+  "kind": "mutation-missing-return-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_total-neutral",
+  "intent": "running_total",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs):\n    s = 0\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_total-neutral",
+  "intent": "running_total",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_product(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s *= v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_product-running_product",
+  "intent": "running_product",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_product(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "wrong-operator",
+  "group": "intent2-running_product-running_product",
+  "intent": "running_product",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def running_product(xs):\n    s = 1\n    out = []\n    for v in xs:\n        out.append(s)\n        s *= v\n    return out",
+  "label": "off-by-one",
+  "group": "intent2-running_product-running_product",
+  "intent": "running_product",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_products(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s *= v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_product-prefix_products",
+  "intent": "running_product",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_products(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "wrong-operator",
+  "group": "intent2-running_product-prefix_products",
+  "intent": "running_product",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def prefix_products(xs):\n    s = 1\n    out = []\n    for v in xs:\n        out.append(s)\n        s *= v\n    return out",
+  "label": "off-by-one",
+  "group": "intent2-running_product-prefix_products",
+  "intent": "running_product",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_prod(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s *= v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_product-cumulative_prod",
+  "intent": "running_product",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_prod(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s += v\n        out.append(s)\n    return out",
+  "label": "wrong-operator",
+  "group": "intent2-running_product-cumulative_prod",
+  "intent": "running_product",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def cumulative_prod(xs):\n    s = 1\n    out = []\n    for v in xs:\n        out.append(s)\n        s *= v\n    return out",
+  "label": "off-by-one",
+  "group": "intent2-running_product-cumulative_prod",
+  "intent": "running_product",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s *= v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_product-neutral",
+  "intent": "running_product",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs):\n    s = 1\n    out = []\n    for v in xs:\n        s *= v\n        out.append(s)\n    return out",
+  "label": "clean",
+  "group": "intent2-running_product-neutral",
+  "intent": "running_product",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def weighted_total(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a * b\n    return s",
+  "label": "clean",
+  "group": "intent2-weighted_total-weighted_total",
+  "intent": "weighted_total",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def weighted_total(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a + b\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-weighted_total-weighted_total",
+  "intent": "weighted_total",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def weighted_total(xs, ws):\n    s = 0\n    for a, b in zip(xs[1:], ws):\n        s += a * b\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-weighted_total-weighted_total",
+  "intent": "weighted_total",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def dot_total(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a * b\n    return s",
+  "label": "clean",
+  "group": "intent2-weighted_total-dot_total",
+  "intent": "weighted_total",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def dot_total(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a + b\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-weighted_total-dot_total",
+  "intent": "weighted_total",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def dot_total(xs, ws):\n    s = 0\n    for a, b in zip(xs[1:], ws):\n        s += a * b\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-weighted_total-dot_total",
+  "intent": "weighted_total",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def weighted_sum(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a * b\n    return s",
+  "label": "clean",
+  "group": "intent2-weighted_total-weighted_sum",
+  "intent": "weighted_total",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def weighted_sum(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a + b\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-weighted_total-weighted_sum",
+  "intent": "weighted_total",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def weighted_sum(xs, ws):\n    s = 0\n    for a, b in zip(xs[1:], ws):\n        s += a * b\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-weighted_total-weighted_sum",
+  "intent": "weighted_total",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a * b\n    return s",
+  "label": "clean",
+  "group": "intent2-weighted_total-neutral",
+  "intent": "weighted_total",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs, ws):\n    s = 0\n    for a, b in zip(xs, ws):\n        s += a * b\n    return s",
+  "label": "clean",
+  "group": "intent2-weighted_total-neutral",
+  "intent": "weighted_total",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_squares(xs):\n    s = 0\n    for v in xs:\n        s += v * v\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_squares-sum_squares",
+  "intent": "sum_squares",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_squares(xs):\n    s = 0\n    for v in xs:\n        s += v + v\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_squares-sum_squares",
+  "intent": "sum_squares",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_squares(xs):\n    s = 0\n    for v in xs:\n        s += v\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_squares-sum_squares",
+  "intent": "sum_squares",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_squares(xs):\n    s = 0\n    for v in xs:\n        s += v * v",
+  "label": "missing-return",
+  "group": "intent2-sum_squares-sum_squares",
+  "intent": "sum_squares",
+  "kind": "mutation-missing-return-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_squares(xs):\n    s = 0\n    for v in xs:\n        s += v * v\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_squares-total_squares",
+  "intent": "sum_squares",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_squares(xs):\n    s = 0\n    for v in xs:\n        s += v + v\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_squares-total_squares",
+  "intent": "sum_squares",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_squares(xs):\n    s = 0\n    for v in xs:\n        s += v\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_squares-total_squares",
+  "intent": "sum_squares",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_squares(xs):\n    s = 0\n    for v in xs:\n        s += v * v",
+  "label": "missing-return",
+  "group": "intent2-sum_squares-total_squares",
+  "intent": "sum_squares",
+  "kind": "mutation-missing-return-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def squares_total(xs):\n    s = 0\n    for v in xs:\n        s += v * v\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_squares-squares_total",
+  "intent": "sum_squares",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def squares_total(xs):\n    s = 0\n    for v in xs:\n        s += v + v\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_squares-squares_total",
+  "intent": "sum_squares",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def squares_total(xs):\n    s = 0\n    for v in xs:\n        s += v\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_squares-squares_total",
+  "intent": "sum_squares",
+  "kind": "mutation-wrong-operator-1",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def squares_total(xs):\n    s = 0\n    for v in xs:\n        s += v * v",
+  "label": "missing-return",
+  "group": "intent2-sum_squares-squares_total",
+  "intent": "sum_squares",
+  "kind": "mutation-missing-return-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(xs):\n    s = 0\n    for v in xs:\n        s += v * v\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_squares-neutral",
+  "intent": "sum_squares",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(xs):\n    s = 0\n    for v in xs:\n        s += v * v\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_squares-neutral",
+  "intent": "sum_squares",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_upto_n-sum_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s -= i\n        n2 += 1\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_upto_n-sum_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n):\n        s += i\n        n2 += 1\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-sum_upto_n-sum_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(2, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-sum_upto_n-sum_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "mutation-off-by-one-1",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_upto_n-total_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s -= i\n        n2 += 1\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_upto_n-total_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n):\n        s += i\n        n2 += 1\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-sum_upto_n-total_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_upto_n(n):\n    s = 0\n    n2 = 0\n    for i in range(2, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-sum_upto_n-total_upto_n",
+  "intent": "sum_upto_n",
+  "kind": "mutation-off-by-one-1",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_upto(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_upto_n-add_upto",
+  "intent": "sum_upto_n",
+  "kind": "correct",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_upto(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s -= i\n        n2 += 1\n    return s",
+  "label": "wrong-operator",
+  "group": "intent2-sum_upto_n-add_upto",
+  "intent": "sum_upto_n",
+  "kind": "mutation-wrong-operator-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_upto(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n):\n        s += i\n        n2 += 1\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-sum_upto_n-add_upto",
+  "intent": "sum_upto_n",
+  "kind": "mutation-off-by-one-0",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_upto(n):\n    s = 0\n    n2 = 0\n    for i in range(2, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "off-by-one",
+  "group": "intent2-sum_upto_n-add_upto",
+  "intent": "sum_upto_n",
+  "kind": "mutation-off-by-one-1",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tally_it(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_upto_n-neutral",
+  "intent": "sum_upto_n",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ },
+ {
+  "text": "def work_it(n):\n    s = 0\n    n2 = 0\n    for i in range(1, n + 1):\n        s += i\n        n2 += 1\n    return s",
+  "label": "clean",
+  "group": "intent2-sum_upto_n-neutral",
+  "intent": "sum_upto_n",
+  "kind": "control-neutral",
+  "family": "name-intent2-accumulator",
+  "sanity": "passed"
+ }
+]

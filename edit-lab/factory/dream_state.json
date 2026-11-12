@@ -1,0 +1,98 @@
+{
+ "bug-pattern-composed": {
+  "off-by-one": {
+   "edge_band": 1,
+   "probe": {
+    "1": {
+     "acc": 0.9714,
+     "n": 70,
+     "recall": 0.0,
+     "n_pos": 2
+    },
+    "2": {
+     "acc": 0.8289,
+     "n": 76,
+     "recall": 0.3571,
+     "n_pos": 14
+    },
+    "3": {
+     "acc": 0.7714,
+     "n": 70,
+     "recall": 0.0,
+     "n_pos": 16
+    }
+   },
+   "mastered": []
+  },
+  "wrong-operator": {
+   "edge_band": 1,
+   "probe": {
+    "1": {
+     "acc": 0.7857,
+     "n": 70,
+     "recall": 0.2222,
+     "n_pos": 18
+    },
+    "2": {
+     "acc": 0.6579,
+     "n": 76,
+     "recall": 0.75,
+     "n_pos": 24
+    },
+    "3": {
+     "acc": 0.8857,
+     "n": 70,
+     "recall": 0.65,
+     "n_pos": 20
+    }
+   },
+   "mastered": []
+  },
+  "swapped-operands": {
+   "edge_band": 1,
+   "probe": {
+    "1": {
+     "acc": 0.8286,
+     "n": 70,
+     "recall": 0.0,
+     "n_pos": 12
+    },
+    "2": {
+     "acc": 0.9474,
+     "n": 76,
+     "recall": 0.0,
+     "n_pos": 4
+    },
+    "3": {
+     "acc": 0.9571,
+     "n": 70,
+     "recall": 0.25,
+     "n_pos": 4
+    }
+   },
+   "mastered": []
+  }
+ },
+ "contract-judgment-model": {
+  "multiclass": {
+   "edge_band": 2,
+   "probe": {
+    "1": {
+     "acc": 1.0,
+     "n": 80
+    },
+    "2": {
+     "acc": 0.825,
+     "n": 80
+    },
+    "3": {
+     "acc": 0.825,
+     "n": 80
+    }
+   },
+   "mastered": [
+    1
+   ]
+  }
+ }
+}

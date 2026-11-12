@@ -1,0 +1,6815 @@
+[
+ {
+  "text": "def remainder(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(a, b):\n    return a // b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    return x // y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    return m // n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(a, b):\n    res = a // b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    res = x // y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    res = m // n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(a, b):\n    res = b % a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(x, y):\n    res = y % x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder(m, n):\n    res = n % m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    return a % b",
+  "label": "clean",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    return x % y",
+  "label": "clean",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    return m % n",
+  "label": "clean",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    return a // b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    return x // y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    return m // n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    res = a // b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    res = x // y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    res = m // n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    return b % a",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    return y % x",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    return n % m",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(a, b):\n    res = b % a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(x, y):\n    res = y % x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def rem(m, n):\n    res = n % m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-rem",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    return a % b",
+  "label": "clean",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    return x % y",
+  "label": "clean",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    return m % n",
+  "label": "clean",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    return a // b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    return x // y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    return m // n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    res = a // b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    res = x // y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    res = m // n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    return b % a",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    return y % x",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    return n % m",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(a, b):\n    res = b % a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(x, y):\n    res = y % x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def modulus(m, n):\n    res = n % m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-modulus",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    return x % y",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    return m % n",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    return a // b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    return x // y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    return m // n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    res = a // b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    res = x // y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    res = m // n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    return y % x",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    return n % m",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(a, b):\n    res = b % a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(x, y):\n    res = y % x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def remainder_of(m, n):\n    res = n % m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-remainder-remainder_of",
+  "intent": "remainder",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return a % b",
+  "label": "clean",
+  "group": "intent-bin-remainder-compute",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return x % y",
+  "label": "clean",
+  "group": "intent-bin-remainder-compute",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return m % n",
+  "label": "clean",
+  "group": "intent-bin-remainder-compute",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-compute",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-compute",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-compute",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return a % b",
+  "label": "clean",
+  "group": "intent-bin-remainder-calc",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return x % y",
+  "label": "clean",
+  "group": "intent-bin-remainder-calc",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return m % n",
+  "label": "clean",
+  "group": "intent-bin-remainder-calc",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-calc",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-calc",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-calc",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return a % b",
+  "label": "clean",
+  "group": "intent-bin-remainder-do_op",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return x % y",
+  "label": "clean",
+  "group": "intent-bin-remainder-do_op",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return m % n",
+  "label": "clean",
+  "group": "intent-bin-remainder-do_op",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = a % b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-do_op",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = x % y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-do_op",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = m % n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-do_op",
+  "intent": "remainder",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    return a - b",
+  "label": "clean",
+  "group": "intent-bin-remainder-difference",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-remainder-difference",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-remainder-difference",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-difference",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-difference",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-difference",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    return a - b",
+  "label": "clean",
+  "group": "intent-bin-remainder-subtract",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-remainder-subtract",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-remainder-subtract",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-subtract",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-subtract",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-subtract",
+  "intent": "remainder",
+  "kind": "control-agree-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    return x // y",
+  "label": "clean",
+  "group": "intent-bin-remainder-quotient",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    return m // n",
+  "label": "clean",
+  "group": "intent-bin-remainder-quotient",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(a, b):\n    res = a // b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-quotient",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    res = x // y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-quotient",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    res = m // n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-quotient",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    return a // b",
+  "label": "clean",
+  "group": "intent-bin-remainder-div_result",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    return x // y",
+  "label": "clean",
+  "group": "intent-bin-remainder-div_result",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    return m // n",
+  "label": "clean",
+  "group": "intent-bin-remainder-div_result",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    res = a // b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-div_result",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    res = x // y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-div_result",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    res = m // n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-div_result",
+  "intent": "remainder",
+  "kind": "control-agree-floordiv",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(a, b):\n    return a + b",
+  "label": "clean",
+  "group": "intent-bin-remainder-sum_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(x, y):\n    return x + y",
+  "label": "clean",
+  "group": "intent-bin-remainder-sum_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(m, n):\n    return m + n",
+  "label": "clean",
+  "group": "intent-bin-remainder-sum_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(a, b):\n    res = a + b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-sum_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(x, y):\n    res = x + y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-sum_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(m, n):\n    res = m + n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-sum_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(a, b):\n    return a + b",
+  "label": "clean",
+  "group": "intent-bin-remainder-total_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(x, y):\n    return x + y",
+  "label": "clean",
+  "group": "intent-bin-remainder-total_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(m, n):\n    return m + n",
+  "label": "clean",
+  "group": "intent-bin-remainder-total_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(a, b):\n    res = a + b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-total_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(x, y):\n    res = x + y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-total_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(m, n):\n    res = m + n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-remainder-total_pair",
+  "intent": "remainder",
+  "kind": "control-agree-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    return y // x",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    return n // m",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(a, b):\n    res = b // a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(x, y):\n    res = y // x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def quotient(m, n):\n    res = n // m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-quotient",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    return a % b",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    return b // a",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    return y // x",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    return n // m",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(a, b):\n    res = b // a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(x, y):\n    res = y // x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def div_result(m, n):\n    res = n // m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-div_result",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    return a // b",
+  "label": "clean",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    return x // y",
+  "label": "clean",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    return m // n",
+  "label": "clean",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    res = a // b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    res = x // y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    res = m // n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    return a % b",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    return b // a",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    return y // x",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    return n // m",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(a, b):\n    res = b // a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(x, y):\n    res = y // x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def whole_part(m, n):\n    res = n // m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-quotient-whole_part",
+  "intent": "quotient",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return a // b",
+  "label": "clean",
+  "group": "intent-bin-quotient-compute",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return x // y",
+  "label": "clean",
+  "group": "intent-bin-quotient-compute",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return m // n",
+  "label": "clean",
+  "group": "intent-bin-quotient-compute",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = a // b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-compute",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = x // y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-compute",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = m // n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-compute",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return a // b",
+  "label": "clean",
+  "group": "intent-bin-quotient-calc",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return x // y",
+  "label": "clean",
+  "group": "intent-bin-quotient-calc",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return m // n",
+  "label": "clean",
+  "group": "intent-bin-quotient-calc",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = a // b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-calc",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = x // y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-calc",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = m // n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-calc",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return a // b",
+  "label": "clean",
+  "group": "intent-bin-quotient-do_op",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return x // y",
+  "label": "clean",
+  "group": "intent-bin-quotient-do_op",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return m // n",
+  "label": "clean",
+  "group": "intent-bin-quotient-do_op",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = a // b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-do_op",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = x // y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-do_op",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = m // n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-quotient-do_op",
+  "intent": "quotient",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    return a % b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    return b - a",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    return y - x",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    return n - m",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(a, b):\n    res = b - a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(x, y):\n    res = y - x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def difference(m, n):\n    res = n - m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-difference",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    return a % b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    return b - a",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    return y - x",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    return n - m",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(a, b):\n    res = b - a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(x, y):\n    res = y - x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def subtract(m, n):\n    res = n - m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-subtract",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    return a - b",
+  "label": "clean",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    return a % b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    return b - a",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    return y - x",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    return n - m",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(a, b):\n    res = b - a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(x, y):\n    res = y - x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minus_vals(m, n):\n    res = n - m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-minus_vals",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(a, b):\n    return a % b",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    return x % y",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    return m % n",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(a, b):\n    res = a % b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    res = x % y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    res = m % n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-mod",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    return y - x",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    return n - m",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(a, b):\n    res = b - a\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(x, y):\n    res = y - x\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def diff_of(m, n):\n    res = n - m\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-bin-difference-diff_of",
+  "intent": "difference",
+  "kind": "mutation-swapped",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return a - b",
+  "label": "clean",
+  "group": "intent-bin-difference-compute",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-difference-compute",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-difference-compute",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-compute",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-compute",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-compute",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return a - b",
+  "label": "clean",
+  "group": "intent-bin-difference-calc",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-difference-calc",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-difference-calc",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-calc",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-calc",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-calc",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return a - b",
+  "label": "clean",
+  "group": "intent-bin-difference-do_op",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return x - y",
+  "label": "clean",
+  "group": "intent-bin-difference-do_op",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return m - n",
+  "label": "clean",
+  "group": "intent-bin-difference-do_op",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = a - b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-do_op",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = x - y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-do_op",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = m - n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-difference-do_op",
+  "intent": "difference",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(a, b):\n    return a * b",
+  "label": "clean",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(x, y):\n    return x * y",
+  "label": "clean",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(m, n):\n    return m * n",
+  "label": "clean",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(a, b):\n    res = a * b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(x, y):\n    res = x * y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(m, n):\n    res = m * n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def product_of(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-product_of",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(a, b):\n    return a * b",
+  "label": "clean",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(x, y):\n    return x * y",
+  "label": "clean",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(m, n):\n    return m * n",
+  "label": "clean",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(a, b):\n    res = a * b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(x, y):\n    res = x * y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(m, n):\n    res = m * n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def times_vals(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-times_vals",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(a, b):\n    return a * b",
+  "label": "clean",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(x, y):\n    return x * y",
+  "label": "clean",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(m, n):\n    return m * n",
+  "label": "clean",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(a, b):\n    res = a * b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(x, y):\n    res = x * y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(m, n):\n    res = m * n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(a, b):\n    return a + b",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(x, y):\n    return x + y",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(m, n):\n    return m + n",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(a, b):\n    res = a + b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(x, y):\n    res = x + y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(m, n):\n    res = m + n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-add",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def multiply_pair(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-product-multiply_pair",
+  "intent": "product",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return a * b",
+  "label": "clean",
+  "group": "intent-bin-product-compute",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return x * y",
+  "label": "clean",
+  "group": "intent-bin-product-compute",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return m * n",
+  "label": "clean",
+  "group": "intent-bin-product-compute",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = a * b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-compute",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = x * y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-compute",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = m * n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-compute",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return a * b",
+  "label": "clean",
+  "group": "intent-bin-product-calc",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return x * y",
+  "label": "clean",
+  "group": "intent-bin-product-calc",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return m * n",
+  "label": "clean",
+  "group": "intent-bin-product-calc",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = a * b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-calc",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = x * y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-calc",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = m * n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-calc",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return a * b",
+  "label": "clean",
+  "group": "intent-bin-product-do_op",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return x * y",
+  "label": "clean",
+  "group": "intent-bin-product-do_op",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return m * n",
+  "label": "clean",
+  "group": "intent-bin-product-do_op",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = a * b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-do_op",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = x * y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-do_op",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = m * n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-product-do_op",
+  "intent": "product",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(a, b):\n    return a * b",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(x, y):\n    return x * y",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(m, n):\n    return m * n",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(a, b):\n    res = a * b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(x, y):\n    res = x * y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_pair(m, n):\n    res = m * n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-sum_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(a, b):\n    return a * b",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(x, y):\n    return x * y",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(m, n):\n    return m * n",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(a, b):\n    res = a * b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(x, y):\n    res = x * y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_pair(m, n):\n    res = m * n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-total_pair",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(a, b):\n    return a + b",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(x, y):\n    return x + y",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(m, n):\n    return m + n",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(a, b):\n    res = a + b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(x, y):\n    res = x + y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(m, n):\n    res = m + n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(a, b):\n    return a - b",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(x, y):\n    return x - y",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(m, n):\n    return m - n",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(a, b):\n    res = a - b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(x, y):\n    res = x - y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(m, n):\n    res = m - n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-sub",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(a, b):\n    return a * b",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(x, y):\n    return x * y",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(m, n):\n    return m * n",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(a, b):\n    res = a * b\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(x, y):\n    res = x * y\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def add_up(m, n):\n    res = m * n\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-sum_pair-add_up",
+  "intent": "sum_pair",
+  "kind": "mutation-mul",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return a + b",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-compute",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return x + y",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-compute",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return m + n",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-compute",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = a + b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-compute",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = x + y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-compute",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = m + n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-compute",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return a + b",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-calc",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return x + y",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-calc",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return m + n",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-calc",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = a + b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-calc",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = x + y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-calc",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = m + n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-calc",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return a + b",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-do_op",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return x + y",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-do_op",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return m + n",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-do_op",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = a + b\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-do_op",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = x + y\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-do_op",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = m + n\n    return res",
+  "label": "clean",
+  "group": "intent-bin-sum_pair-do_op",
+  "intent": "sum_pair",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(a, b):\n    return max(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(x, y):\n    return max(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(m, n):\n    return max(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(a, b):\n    res = max(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(x, y):\n    res = max(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(m, n):\n    res = max(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(a, b):\n    return min(a, b)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(x, y):\n    return min(x, y)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(m, n):\n    return min(m, n)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(a, b):\n    res = min(a, b)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(x, y):\n    res = min(x, y)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bigger(m, n):\n    res = min(m, n)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-bigger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(a, b):\n    return max(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(x, y):\n    return max(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(m, n):\n    return max(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(a, b):\n    res = max(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(x, y):\n    res = max(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(m, n):\n    res = max(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(a, b):\n    return min(a, b)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(x, y):\n    return min(x, y)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(m, n):\n    return min(m, n)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(a, b):\n    res = min(a, b)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(x, y):\n    res = min(x, y)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def max_of(m, n):\n    res = min(m, n)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-max_of",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(a, b):\n    return max(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(x, y):\n    return max(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(m, n):\n    return max(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(a, b):\n    res = max(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(x, y):\n    res = max(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(m, n):\n    res = max(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(a, b):\n    return min(a, b)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(x, y):\n    return min(x, y)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(m, n):\n    return min(m, n)",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(a, b):\n    res = min(a, b)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(x, y):\n    res = min(x, y)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_larger(m, n):\n    res = min(m, n)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-max_of-the_larger",
+  "intent": "max_of",
+  "kind": "mutation-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return max(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-compute",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return max(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-compute",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return max(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-compute",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = max(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-compute",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = max(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-compute",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = max(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-compute",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return max(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-calc",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return max(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-calc",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return max(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-calc",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = max(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-calc",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = max(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-calc",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = max(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-calc",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return max(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-do_op",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return max(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-do_op",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return max(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-do_op",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = max(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-do_op",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = max(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-do_op",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = max(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-do_op",
+  "intent": "max_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(a, b):\n    return min(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-smaller",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(x, y):\n    return min(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-smaller",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(m, n):\n    return min(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-smaller",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(a, b):\n    res = min(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-smaller",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(x, y):\n    res = min(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-smaller",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(m, n):\n    res = min(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-smaller",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(a, b):\n    return min(a, b)",
+  "label": "clean",
+  "group": "intent-bin-max_of-min_of",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(x, y):\n    return min(x, y)",
+  "label": "clean",
+  "group": "intent-bin-max_of-min_of",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(m, n):\n    return min(m, n)",
+  "label": "clean",
+  "group": "intent-bin-max_of-min_of",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(a, b):\n    res = min(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-min_of",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(x, y):\n    res = min(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-min_of",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(m, n):\n    res = min(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-max_of-min_of",
+  "intent": "max_of",
+  "kind": "control-agree-min",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(a, b):\n    return max(a, b)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-smaller",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(x, y):\n    return max(x, y)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-smaller",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(m, n):\n    return max(m, n)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-smaller",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(a, b):\n    res = max(a, b)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-smaller",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(x, y):\n    res = max(x, y)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-smaller",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def smaller(m, n):\n    res = max(m, n)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-smaller",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(a, b):\n    return max(a, b)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-min_of",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(x, y):\n    return max(x, y)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-min_of",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(m, n):\n    return max(m, n)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-min_of",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(a, b):\n    res = max(a, b)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-min_of",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(x, y):\n    res = max(x, y)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-min_of",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def min_of(m, n):\n    res = max(m, n)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-min_of",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(a, b):\n    return min(a, b)",
+  "label": "clean",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(x, y):\n    return min(x, y)",
+  "label": "clean",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(m, n):\n    return min(m, n)",
+  "label": "clean",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(a, b):\n    res = min(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(x, y):\n    res = min(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(m, n):\n    res = min(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(a, b):\n    return max(a, b)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(x, y):\n    return max(x, y)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(m, n):\n    return max(m, n)",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(a, b):\n    res = max(a, b)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(x, y):\n    res = max(x, y)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_lesser(m, n):\n    res = max(m, n)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-bin-min_of-the_lesser",
+  "intent": "min_of",
+  "kind": "mutation-max",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return min(a, b)",
+  "label": "clean",
+  "group": "intent-bin-min_of-compute",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    return min(x, y)",
+  "label": "clean",
+  "group": "intent-bin-min_of-compute",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    return min(m, n)",
+  "label": "clean",
+  "group": "intent-bin-min_of-compute",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    res = min(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-compute",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(x, y):\n    res = min(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-compute",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(m, n):\n    res = min(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-compute",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return min(a, b)",
+  "label": "clean",
+  "group": "intent-bin-min_of-calc",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    return min(x, y)",
+  "label": "clean",
+  "group": "intent-bin-min_of-calc",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    return min(m, n)",
+  "label": "clean",
+  "group": "intent-bin-min_of-calc",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    res = min(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-calc",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(x, y):\n    res = min(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-calc",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(m, n):\n    res = min(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-calc",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    return min(a, b)",
+  "label": "clean",
+  "group": "intent-bin-min_of-do_op",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    return min(x, y)",
+  "label": "clean",
+  "group": "intent-bin-min_of-do_op",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    return min(m, n)",
+  "label": "clean",
+  "group": "intent-bin-min_of-do_op",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(a, b):\n    res = min(a, b)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-do_op",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(x, y):\n    res = min(x, y)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-do_op",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def do_op(m, n):\n    res = min(m, n)\n    return res",
+  "label": "clean",
+  "group": "intent-bin-min_of-do_op",
+  "intent": "min_of",
+  "kind": "control-neutral-correct",
+  "family": "name-intent-binary",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_minutes(hours, mins):\n    return hours * 60 + mins",
+  "label": "clean",
+  "group": "intent-expr-minutes-total_minutes",
+  "intent": "minutes",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_minutes(hours, mins):\n    return hours * 60 - mins",
+  "label": "wrong-operator",
+  "group": "intent-expr-minutes-total_minutes",
+  "intent": "minutes",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_minutes(hours, mins):\n    return mins * 60 + hours",
+  "label": "swapped-operands",
+  "group": "intent-expr-minutes-total_minutes",
+  "intent": "minutes",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_minutes(hours, mins):\n    res = hours * 60 + mins\n    return res",
+  "label": "clean",
+  "group": "intent-expr-minutes-total_minutes",
+  "intent": "minutes",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_minutes(hours, mins):\n    res = hours * 60 - mins\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-minutes-total_minutes",
+  "intent": "minutes",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_minutes(hours, mins):\n    res = mins * 60 + hours\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-minutes-total_minutes",
+  "intent": "minutes",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def to_minutes(hours, mins):\n    res = hours * 60 + mins\n    return res",
+  "label": "clean",
+  "group": "intent-expr-minutes-to_minutes",
+  "intent": "minutes",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def to_minutes(hours, mins):\n    res = hours * 60 - mins\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-minutes-to_minutes",
+  "intent": "minutes",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def to_minutes(hours, mins):\n    res = mins * 60 + hours\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-minutes-to_minutes",
+  "intent": "minutes",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minutes_of(hours, mins):\n    res = hours * 60 + mins\n    return res",
+  "label": "clean",
+  "group": "intent-expr-minutes-minutes_of",
+  "intent": "minutes",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minutes_of(hours, mins):\n    res = hours * 60 - mins\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-minutes-minutes_of",
+  "intent": "minutes",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def minutes_of(hours, mins):\n    res = mins * 60 + hours\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-minutes-minutes_of",
+  "intent": "minutes",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(hours, mins):\n    return hours * 60 + mins",
+  "label": "clean",
+  "group": "intent-expr-minutes-neutral",
+  "intent": "minutes",
+  "kind": "control-neutral",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(hours, mins):\n    return hours * 60 + mins",
+  "label": "clean",
+  "group": "intent-expr-minutes-neutral",
+  "intent": "minutes",
+  "kind": "control-neutral",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percent_of(part, whole):\n    return part / whole * 100",
+  "label": "clean",
+  "group": "intent-expr-percent-percent_of",
+  "intent": "percent",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percent_of(part, whole):\n    return part * whole * 100",
+  "label": "wrong-operator",
+  "group": "intent-expr-percent-percent_of",
+  "intent": "percent",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percent_of(part, whole):\n    return whole / part * 100",
+  "label": "swapped-operands",
+  "group": "intent-expr-percent-percent_of",
+  "intent": "percent",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percent_of(part, whole):\n    res = part / whole * 100\n    return res",
+  "label": "clean",
+  "group": "intent-expr-percent-percent_of",
+  "intent": "percent",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percent_of(part, whole):\n    res = part * whole * 100\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-percent-percent_of",
+  "intent": "percent",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percent_of(part, whole):\n    res = whole / part * 100\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-percent-percent_of",
+  "intent": "percent",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def pct(part, whole):\n    return part / whole * 100",
+  "label": "clean",
+  "group": "intent-expr-percent-pct",
+  "intent": "percent",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def pct(part, whole):\n    return part * whole * 100",
+  "label": "wrong-operator",
+  "group": "intent-expr-percent-pct",
+  "intent": "percent",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def pct(part, whole):\n    return whole / part * 100",
+  "label": "swapped-operands",
+  "group": "intent-expr-percent-pct",
+  "intent": "percent",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def pct(part, whole):\n    res = part / whole * 100\n    return res",
+  "label": "clean",
+  "group": "intent-expr-percent-pct",
+  "intent": "percent",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def pct(part, whole):\n    res = part * whole * 100\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-percent-pct",
+  "intent": "percent",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def pct(part, whole):\n    res = whole / part * 100\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-percent-pct",
+  "intent": "percent",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percentage(part, whole):\n    return part / whole * 100",
+  "label": "clean",
+  "group": "intent-expr-percent-percentage",
+  "intent": "percent",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percentage(part, whole):\n    return part * whole * 100",
+  "label": "wrong-operator",
+  "group": "intent-expr-percent-percentage",
+  "intent": "percent",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percentage(part, whole):\n    return whole / part * 100",
+  "label": "swapped-operands",
+  "group": "intent-expr-percent-percentage",
+  "intent": "percent",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percentage(part, whole):\n    res = part / whole * 100\n    return res",
+  "label": "clean",
+  "group": "intent-expr-percent-percentage",
+  "intent": "percent",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percentage(part, whole):\n    res = part * whole * 100\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-percent-percentage",
+  "intent": "percent",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def percentage(part, whole):\n    res = whole / part * 100\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-percent-percentage",
+  "intent": "percent",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(part, whole):\n    return part / whole * 100",
+  "label": "clean",
+  "group": "intent-expr-percent-neutral",
+  "intent": "percent",
+  "kind": "control-neutral",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(part, whole):\n    return part / whole * 100",
+  "label": "clean",
+  "group": "intent-expr-percent-neutral",
+  "intent": "percent",
+  "kind": "control-neutral",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_pair(a, b):\n    return (a + b) / 2",
+  "label": "clean",
+  "group": "intent-expr-average_pair-average_pair",
+  "intent": "average_pair",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_pair(a, b):\n    return (a - b) / 2",
+  "label": "wrong-operator",
+  "group": "intent-expr-average_pair-average_pair",
+  "intent": "average_pair",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_pair(a, b):\n    res = (a + b) / 2\n    return res",
+  "label": "clean",
+  "group": "intent-expr-average_pair-average_pair",
+  "intent": "average_pair",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_pair(a, b):\n    res = (a - b) / 2\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-average_pair-average_pair",
+  "intent": "average_pair",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_pair(a, b):\n    return (a + b) / 2",
+  "label": "clean",
+  "group": "intent-expr-average_pair-mean_pair",
+  "intent": "average_pair",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_pair(a, b):\n    return (a - b) / 2",
+  "label": "wrong-operator",
+  "group": "intent-expr-average_pair-mean_pair",
+  "intent": "average_pair",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_pair(a, b):\n    res = (a + b) / 2\n    return res",
+  "label": "clean",
+  "group": "intent-expr-average_pair-mean_pair",
+  "intent": "average_pair",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_pair(a, b):\n    res = (a - b) / 2\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-average_pair-mean_pair",
+  "intent": "average_pair",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def midpoint(a, b):\n    return (a + b) / 2",
+  "label": "clean",
+  "group": "intent-expr-average_pair-midpoint",
+  "intent": "average_pair",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def midpoint(a, b):\n    return (a - b) / 2",
+  "label": "wrong-operator",
+  "group": "intent-expr-average_pair-midpoint",
+  "intent": "average_pair",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def midpoint(a, b):\n    res = (a + b) / 2\n    return res",
+  "label": "clean",
+  "group": "intent-expr-average_pair-midpoint",
+  "intent": "average_pair",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def midpoint(a, b):\n    res = (a - b) / 2\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-expr-average_pair-midpoint",
+  "intent": "average_pair",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(a, b):\n    return (a + b) / 2",
+  "label": "clean",
+  "group": "intent-expr-average_pair-neutral",
+  "intent": "average_pair",
+  "kind": "control-neutral",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(a, b):\n    return (a + b) / 2",
+  "label": "clean",
+  "group": "intent-expr-average_pair-neutral",
+  "intent": "average_pair",
+  "kind": "control-neutral",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def clamp_it(v, lo, hi):\n    res = max(lo, min(hi, v))\n    return res",
+  "label": "clean",
+  "group": "intent-expr-clamp-clamp_it",
+  "intent": "clamp",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def clamp_it(v, lo, hi):\n    res = max(hi, min(lo, v))\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-clamp-clamp_it",
+  "intent": "clamp",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bounded(v, lo, hi):\n    res = max(lo, min(hi, v))\n    return res",
+  "label": "clean",
+  "group": "intent-expr-clamp-bounded",
+  "intent": "clamp",
+  "kind": "correct",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def bounded(v, lo, hi):\n    res = max(hi, min(lo, v))\n    return res",
+  "label": "swapped-operands",
+  "group": "intent-expr-clamp-bounded",
+  "intent": "clamp",
+  "kind": "mutation-swapped-operands",
+  "family": "name-intent-expr",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_two(xs):\n    out = xs[0], xs[1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-first_two-first_two",
+  "intent": "first_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_two(xs):\n    out = xs[1], xs[2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-first_two",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_two(xs):\n    out = xs[0], xs[1], xs[2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-first_two",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_pair(xs):\n    return xs[0], xs[1]",
+  "label": "clean",
+  "group": "intent-idx-first_two-first_pair",
+  "intent": "first_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_pair(xs):\n    return xs[1], xs[2]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-first_pair",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_pair(xs):\n    return xs[0], xs[1], xs[2]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-first_pair",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_pair(xs):\n    out = xs[0], xs[1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-first_two-first_pair",
+  "intent": "first_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_pair(xs):\n    out = xs[1], xs[2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-first_pair",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_pair(xs):\n    out = xs[0], xs[1], xs[2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-first_pair",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def opening_two(xs):\n    return xs[0], xs[1]",
+  "label": "clean",
+  "group": "intent-idx-first_two-opening_two",
+  "intent": "first_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def opening_two(xs):\n    return xs[1], xs[2]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-opening_two",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def opening_two(xs):\n    return xs[0], xs[1], xs[2]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-opening_two",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def opening_two(xs):\n    out = xs[0], xs[1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-first_two-opening_two",
+  "intent": "first_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def opening_two(xs):\n    out = xs[1], xs[2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-opening_two",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def opening_two(xs):\n    out = xs[0], xs[1], xs[2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-opening_two",
+  "intent": "first_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs):\n    return xs[0], xs[1]",
+  "label": "clean",
+  "group": "intent-idx-first_two-neutral",
+  "intent": "first_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs):\n    return xs[1], xs[2]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-neutral",
+  "intent": "first_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs):\n    return xs[0], xs[1]",
+  "label": "clean",
+  "group": "intent-idx-first_two-neutral",
+  "intent": "first_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs):\n    return xs[1], xs[2]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_two-neutral",
+  "intent": "first_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_item(xs):\n    return xs[len(xs) - 1]",
+  "label": "clean",
+  "group": "intent-idx-last_element-last_item",
+  "intent": "last_element",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_item(xs):\n    return xs[len(xs)]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_item",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_item(xs):\n    return xs[len(xs) - 2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_item",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_item(xs):\n    out = xs[len(xs) - 1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-last_element-last_item",
+  "intent": "last_element",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_item(xs):\n    out = xs[len(xs)]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_item",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_item(xs):\n    out = xs[len(xs) - 2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_item",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_val(xs):\n    return xs[len(xs) - 1]",
+  "label": "clean",
+  "group": "intent-idx-last_element-last_val",
+  "intent": "last_element",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_val(xs):\n    return xs[len(xs)]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_val",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_val(xs):\n    return xs[len(xs) - 2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_val",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_val(xs):\n    out = xs[len(xs) - 1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-last_element-last_val",
+  "intent": "last_element",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_val(xs):\n    out = xs[len(xs)]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_val",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_val(xs):\n    out = xs[len(xs) - 2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-last_val",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_last(xs):\n    return xs[len(xs) - 1]",
+  "label": "clean",
+  "group": "intent-idx-last_element-the_last",
+  "intent": "last_element",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_last(xs):\n    return xs[len(xs)]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-the_last",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_last(xs):\n    return xs[len(xs) - 2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-the_last",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_last(xs):\n    out = xs[len(xs) - 1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-last_element-the_last",
+  "intent": "last_element",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_last(xs):\n    out = xs[len(xs)]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-the_last",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def the_last(xs):\n    out = xs[len(xs) - 2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-the_last",
+  "intent": "last_element",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs):\n    return xs[len(xs) - 1]",
+  "label": "clean",
+  "group": "intent-idx-last_element-neutral",
+  "intent": "last_element",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs):\n    return xs[len(xs)]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-neutral",
+  "intent": "last_element",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs):\n    return xs[len(xs) - 1]",
+  "label": "clean",
+  "group": "intent-idx-last_element-neutral",
+  "intent": "last_element",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs):\n    return xs[len(xs)]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_element-neutral",
+  "intent": "last_element",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_k(xs, k):\n    return xs[:k]",
+  "label": "clean",
+  "group": "intent-idx-first_k-first_k",
+  "intent": "first_k",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_k(xs, k):\n    return xs[:k + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-first_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_k(xs, k):\n    return xs[:k - 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-first_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_k(xs, k):\n    out = xs[:k]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-first_k-first_k",
+  "intent": "first_k",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_k(xs, k):\n    out = xs[:k + 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-first_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def first_k(xs, k):\n    out = xs[:k - 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-first_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def take_first(xs, k):\n    return xs[:k]",
+  "label": "clean",
+  "group": "intent-idx-first_k-take_first",
+  "intent": "first_k",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def take_first(xs, k):\n    return xs[:k + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-take_first",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def take_first(xs, k):\n    return xs[:k - 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-take_first",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def take_first(xs, k):\n    out = xs[:k]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-first_k-take_first",
+  "intent": "first_k",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def take_first(xs, k):\n    out = xs[:k + 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-take_first",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def take_first(xs, k):\n    out = xs[:k - 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-take_first",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def head_k(xs, k):\n    return xs[:k]",
+  "label": "clean",
+  "group": "intent-idx-first_k-head_k",
+  "intent": "first_k",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def head_k(xs, k):\n    return xs[:k + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-head_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def head_k(xs, k):\n    return xs[:k - 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-head_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def head_k(xs, k):\n    out = xs[:k]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-first_k-head_k",
+  "intent": "first_k",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def head_k(xs, k):\n    out = xs[:k + 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-head_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def head_k(xs, k):\n    out = xs[:k - 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-head_k",
+  "intent": "first_k",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs, k):\n    return xs[:k]",
+  "label": "clean",
+  "group": "intent-idx-first_k-neutral",
+  "intent": "first_k",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs, k):\n    return xs[:k + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-neutral",
+  "intent": "first_k",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs, k):\n    return xs[:k]",
+  "label": "clean",
+  "group": "intent-idx-first_k-neutral",
+  "intent": "first_k",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs, k):\n    return xs[:k + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-first_k-neutral",
+  "intent": "first_k",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def element_at(xs, i):\n    return xs[i]",
+  "label": "clean",
+  "group": "intent-idx-element_at-element_at",
+  "intent": "element_at",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def element_at(xs, i):\n    return xs[i + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-element_at",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def element_at(xs, i):\n    return xs[i - 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-element_at",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def element_at(xs, i):\n    out = xs[i]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-element_at-element_at",
+  "intent": "element_at",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def element_at(xs, i):\n    out = xs[i + 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-element_at",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def element_at(xs, i):\n    out = xs[i - 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-element_at",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def get_item(xs, i):\n    return xs[i]",
+  "label": "clean",
+  "group": "intent-idx-element_at-get_item",
+  "intent": "element_at",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def get_item(xs, i):\n    return xs[i + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-get_item",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def get_item(xs, i):\n    return xs[i - 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-get_item",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def get_item(xs, i):\n    out = xs[i]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-element_at-get_item",
+  "intent": "element_at",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def get_item(xs, i):\n    out = xs[i + 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-get_item",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def get_item(xs, i):\n    out = xs[i - 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-get_item",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def item_at_i(xs, i):\n    return xs[i]",
+  "label": "clean",
+  "group": "intent-idx-element_at-item_at_i",
+  "intent": "element_at",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def item_at_i(xs, i):\n    return xs[i + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-item_at_i",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def item_at_i(xs, i):\n    return xs[i - 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-item_at_i",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def item_at_i(xs, i):\n    out = xs[i]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-element_at-item_at_i",
+  "intent": "element_at",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def item_at_i(xs, i):\n    out = xs[i + 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-item_at_i",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def item_at_i(xs, i):\n    out = xs[i - 1]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-item_at_i",
+  "intent": "element_at",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs, i):\n    return xs[i]",
+  "label": "clean",
+  "group": "intent-idx-element_at-neutral",
+  "intent": "element_at",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs, i):\n    return xs[i + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-neutral",
+  "intent": "element_at",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs, i):\n    return xs[i]",
+  "label": "clean",
+  "group": "intent-idx-element_at-neutral",
+  "intent": "element_at",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs, i):\n    return xs[i + 1]",
+  "label": "off-by-one",
+  "group": "intent-idx-element_at-neutral",
+  "intent": "element_at",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_two(xs):\n    return xs[-2], xs[-1]",
+  "label": "clean",
+  "group": "intent-idx-last_two-last_two",
+  "intent": "last_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_two(xs):\n    return xs[-3], xs[-2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-last_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_two(xs):\n    return xs[-1], xs[0]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-last_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_two(xs):\n    out = xs[-2], xs[-1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-last_two-last_two",
+  "intent": "last_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_two(xs):\n    out = xs[-3], xs[-2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-last_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def last_two(xs):\n    out = xs[-1], xs[0]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-last_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tail_pair(xs):\n    return xs[-2], xs[-1]",
+  "label": "clean",
+  "group": "intent-idx-last_two-tail_pair",
+  "intent": "last_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tail_pair(xs):\n    return xs[-3], xs[-2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-tail_pair",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tail_pair(xs):\n    return xs[-1], xs[0]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-tail_pair",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tail_pair(xs):\n    out = xs[-2], xs[-1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-last_two-tail_pair",
+  "intent": "last_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tail_pair(xs):\n    out = xs[-3], xs[-2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-tail_pair",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def tail_pair(xs):\n    out = xs[-1], xs[0]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-tail_pair",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def closing_two(xs):\n    return xs[-2], xs[-1]",
+  "label": "clean",
+  "group": "intent-idx-last_two-closing_two",
+  "intent": "last_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def closing_two(xs):\n    return xs[-3], xs[-2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-closing_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def closing_two(xs):\n    return xs[-1], xs[0]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-closing_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def closing_two(xs):\n    out = xs[-2], xs[-1]\n    return out",
+  "label": "clean",
+  "group": "intent-idx-last_two-closing_two",
+  "intent": "last_two",
+  "kind": "correct",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def closing_two(xs):\n    out = xs[-3], xs[-2]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-closing_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def closing_two(xs):\n    out = xs[-1], xs[0]\n    return out",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-closing_two",
+  "intent": "last_two",
+  "kind": "mutation-off-by-one",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs):\n    return xs[-2], xs[-1]",
+  "label": "clean",
+  "group": "intent-idx-last_two-neutral",
+  "intent": "last_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def compute(xs):\n    return xs[-3], xs[-2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-neutral",
+  "intent": "last_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs):\n    return xs[-2], xs[-1]",
+  "label": "clean",
+  "group": "intent-idx-last_two-neutral",
+  "intent": "last_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def calc(xs):\n    return xs[-3], xs[-2]",
+  "label": "off-by-one",
+  "group": "intent-idx-last_two-neutral",
+  "intent": "last_two",
+  "kind": "control-neutral",
+  "family": "name-intent-index",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_of(xs):\n    return sum(xs) / len(xs)",
+  "label": "clean",
+  "group": "intent-agg-average_list-average_of",
+  "intent": "average_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_of(xs):\n    return sum(xs) * len(xs)",
+  "label": "wrong-operator",
+  "group": "intent-agg-average_list-average_of",
+  "intent": "average_list",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_of(xs):\n    res = sum(xs) / len(xs)",
+  "label": "missing-return",
+  "group": "intent-agg-average_list-average_of",
+  "intent": "average_list",
+  "kind": "mutation-missing-return",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_of(xs):\n    res = sum(xs) / len(xs)\n    return res",
+  "label": "clean",
+  "group": "intent-agg-average_list-average_of",
+  "intent": "average_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def average_of(xs):\n    res = sum(xs) * len(xs)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-agg-average_list-average_of",
+  "intent": "average_list",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_of(xs):\n    return sum(xs) / len(xs)",
+  "label": "clean",
+  "group": "intent-agg-average_list-mean_of",
+  "intent": "average_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_of(xs):\n    return sum(xs) * len(xs)",
+  "label": "wrong-operator",
+  "group": "intent-agg-average_list-mean_of",
+  "intent": "average_list",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_of(xs):\n    res = sum(xs) / len(xs)",
+  "label": "missing-return",
+  "group": "intent-agg-average_list-mean_of",
+  "intent": "average_list",
+  "kind": "mutation-missing-return",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_of(xs):\n    res = sum(xs) / len(xs)\n    return res",
+  "label": "clean",
+  "group": "intent-agg-average_list-mean_of",
+  "intent": "average_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def mean_of(xs):\n    res = sum(xs) * len(xs)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-agg-average_list-mean_of",
+  "intent": "average_list",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def avg_list(xs):\n    return sum(xs) / len(xs)",
+  "label": "clean",
+  "group": "intent-agg-average_list-avg_list",
+  "intent": "average_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def avg_list(xs):\n    return sum(xs) * len(xs)",
+  "label": "wrong-operator",
+  "group": "intent-agg-average_list-avg_list",
+  "intent": "average_list",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def avg_list(xs):\n    res = sum(xs) / len(xs)",
+  "label": "missing-return",
+  "group": "intent-agg-average_list-avg_list",
+  "intent": "average_list",
+  "kind": "mutation-missing-return",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def avg_list(xs):\n    res = sum(xs) / len(xs)\n    return res",
+  "label": "clean",
+  "group": "intent-agg-average_list-avg_list",
+  "intent": "average_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def avg_list(xs):\n    res = sum(xs) * len(xs)\n    return res",
+  "label": "wrong-operator",
+  "group": "intent-agg-average_list-avg_list",
+  "intent": "average_list",
+  "kind": "mutation-wrong-operator",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_of(xs):\n    return sum(xs)",
+  "label": "clean",
+  "group": "intent-agg-total_list-total_of",
+  "intent": "total_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_of(xs):\n    res = sum(xs)",
+  "label": "missing-return",
+  "group": "intent-agg-total_list-total_of",
+  "intent": "total_list",
+  "kind": "mutation-missing-return",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def total_of(xs):\n    res = sum(xs)\n    return res",
+  "label": "clean",
+  "group": "intent-agg-total_list-total_of",
+  "intent": "total_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_list(xs):\n    return sum(xs)",
+  "label": "clean",
+  "group": "intent-agg-total_list-sum_list",
+  "intent": "total_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_list(xs):\n    res = sum(xs)",
+  "label": "missing-return",
+  "group": "intent-agg-total_list-sum_list",
+  "intent": "total_list",
+  "kind": "mutation-missing-return",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_list(xs):\n    res = sum(xs)\n    return res",
+  "label": "clean",
+  "group": "intent-agg-total_list-sum_list",
+  "intent": "total_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_all(xs):\n    return sum(xs)",
+  "label": "clean",
+  "group": "intent-agg-total_list-sum_all",
+  "intent": "total_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_all(xs):\n    res = sum(xs)",
+  "label": "missing-return",
+  "group": "intent-agg-total_list-sum_all",
+  "intent": "total_list",
+  "kind": "mutation-missing-return",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ },
+ {
+  "text": "def sum_all(xs):\n    res = sum(xs)\n    return res",
+  "label": "clean",
+  "group": "intent-agg-total_list-sum_all",
+  "intent": "total_list",
+  "kind": "correct",
+  "family": "name-intent-aggregate",
+  "sanity": "passed"
+ }
+]

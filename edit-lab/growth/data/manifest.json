@@ -1,0 +1,67 @@
+{
+ "family": "name-intent (growth Lever 1)",
+ "partitions": {
+  "train": {
+   "seed": 7101,
+   "file": "name_intent_train.json",
+   "raw_stats": {
+    "dropped_broken_correct": 0,
+    "dropped_noop_mutation": 0,
+    "dropped_unprobed": 0,
+    "raw": 976,
+    "deduped": 805,
+    "kept": 805
+   },
+   "after_contamination": 757,
+   "dropped_contamination": 42,
+   "label_dist": {
+    "clean": 333,
+    "wrong-operator": 278,
+    "swapped-operands": 72,
+    "off-by-one": 68,
+    "missing-return": 6
+   }
+  },
+  "held": {
+   "seed": 7202,
+   "file": "name_intent_held.json",
+   "raw_stats": {
+    "dropped_broken_correct": 0,
+    "dropped_noop_mutation": 0,
+    "dropped_unprobed": 0,
+    "raw": 952,
+    "deduped": 781,
+    "kept": 781
+   },
+   "after_contamination": 694,
+   "dropped_contamination": 87,
+   "label_dist": {
+    "clean": 310,
+    "wrong-operator": 271,
+    "swapped-operands": 71,
+    "off-by-one": 36,
+    "missing-return": 6
+   }
+  }
+ },
+ "partition_rules": [
+  "function names disjoint across partitions and disjoint from the phase-3 template names where the shape would collide (the contamination filter enforces the rest)",
+  "variable-name pairs disjoint: train (a,b),(x,y),(m,n); held (p,q),(u,v),(first,second)",
+  "idioms: train {direct, temp}; held {temp, guard_temp}",
+  "held is a judge surface only: never trained on; every training pool is contamination-filtered against it",
+  "contamination filter mode is TEXT (name-preserving) for this family — see build_datasets docstring; plus an explicit (name, anonymized-shape) guard against the phase-3 held gate surfaces"
+ ],
+ "name_shape_guard_drops": {
+  "train": 6,
+  "held": 0
+ },
+ "corpora_filtered_against": {
+  "phase3_train": 48,
+  "phase3_held": 29,
+  "swarm_dream": 37,
+  "factory_dream_pool": 492,
+  "sealed_v2_refs": 36,
+  "battery_code_items": 24
+ },
+ "labels": "construction-known (declared name intent vs body), NOT execution-verified — the new signal class; an execution sanity pass removes only degenerate items (broken correct bodies, no-op mutations)"
+}

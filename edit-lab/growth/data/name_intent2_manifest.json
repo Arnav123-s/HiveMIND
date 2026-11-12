@@ -1,0 +1,118 @@
+{
+ "family": "name-intent partition 2 (comparison/accumulator)",
+ "partitions": {
+  "train": {
+   "file": "name_intent2_train.json",
+   "raw_stats": {
+    "made": 131,
+    "dropped_broken_correct": 0,
+    "dropped_noop_mutation": 3,
+    "deduped": 131,
+    "kept": 128
+   },
+   "after_contamination": 128,
+   "dropped_contamination": 0,
+   "label_dist": {
+    "clean": 50,
+    "wrong-operator": 42,
+    "off-by-one": 30,
+    "missing-return": 6
+   },
+   "intent_dist": {
+    "count_above": 14,
+    "count_between": 11,
+    "first_index_above": 14,
+    "any_below": 11,
+    "all_above": 14,
+    "running_total": 14,
+    "running_product": 11,
+    "weighted_total": 11,
+    "sum_squares": 14,
+    "sum_upto_n": 14
+   },
+   "verification": {
+    "checked": {
+     "clean": 50,
+     "defect": 78
+    },
+    "failures": [],
+    "ok": true
+   }
+  },
+  "held": {
+   "file": "name_intent2_held.json",
+   "raw_stats": {
+    "made": 131,
+    "dropped_broken_correct": 0,
+    "dropped_noop_mutation": 3,
+    "deduped": 131,
+    "kept": 128
+   },
+   "after_contamination": 128,
+   "dropped_contamination": 0,
+   "label_dist": {
+    "clean": 50,
+    "wrong-operator": 42,
+    "off-by-one": 30,
+    "missing-return": 6
+   },
+   "intent_dist": {
+    "count_above": 14,
+    "count_between": 11,
+    "first_index_above": 14,
+    "any_below": 11,
+    "all_above": 14,
+    "running_total": 14,
+    "running_product": 11,
+    "weighted_total": 11,
+    "sum_squares": 14,
+    "sum_upto_n": 14
+   },
+   "verification": {
+    "checked": {
+     "clean": 50,
+     "defect": 78
+    },
+    "failures": [],
+    "ok": true
+   }
+  }
+ },
+ "intents": {
+  "count_above": "comparison",
+  "count_between": "comparison",
+  "first_index_above": "comparison",
+  "any_below": "comparison",
+  "all_above": "comparison",
+  "running_total": "accumulator",
+  "running_product": "accumulator",
+  "weighted_total": "accumulator",
+  "sum_squares": "accumulator",
+  "sum_upto_n": "accumulator"
+ },
+ "partition_rules": [
+  "intent ids, function names, identifier vocabulary and neutral names all DISJOINT from partition 1",
+  "comparison intents use loop + if-line idioms (they slice as 'comparison'); accumulator intents use += / *= loop idioms with no if-comparison line (they slice as 'accumulator') under swarm.decomposers.slice_of",
+  "held is a judge surface only: never trained on; training pools must be contamination-filtered against it (the growth runner does this for any pool it builds once cycle 3 wires it in)",
+  "contamination filter mode is TEXT (name-preserving), as partition 1; plus the (name, anonymized-shape) guard against the phase-3 held gate AND partition 1's held partition"
+ ],
+ "name_shape_guard_drops": {
+  "train": 0,
+  "held": 0
+ },
+ "orphaned_defect_drops": {
+  "train": 0,
+  "held": 0
+ },
+ "corpora_filtered_against": {
+  "phase3_train": 48,
+  "phase3_held": 29,
+  "swarm_dream": 37,
+  "factory_dream_pool": 492,
+  "name_intent1_train": 757,
+  "name_intent1_held": 694,
+  "sealed_v2_refs": 36,
+  "battery_code_items": 24
+ },
+ "labels": "construction-known (declared name intent vs body), NOT execution-verified as labels; every written item passed the execution sanity + re-verification pass (clean runs clean; defects behaviourally distinguishable from correct)"
+}

@@ -1,0 +1,439 @@
+{
+ "cycles": [
+  {
+   "cycle": "daemon-dry-proof-001",
+   "kind": "dry_run",
+   "wall_seconds": 2.0,
+   "verdicts": {
+    "error-class-model": "HOLD",
+    "contract-judgment-model": "HOLD",
+    "gap-move-model": "HOLD",
+    "commit-type-model": "SHADOW_PASS",
+    "secret-line-model": "HOLD",
+    "bug-pattern-composed": "SHADOW_PASS",
+    "synthv1-r4-coordinator": "HOLD"
+   }
+  },
+  {
+   "cycle": "dream-niche-commit-001",
+   "kind": "real",
+   "wall_seconds": 10.0,
+   "verdicts": {
+    "commit-type-model": "REVERT"
+   }
+  },
+  {
+   "cycle": "dream-niche-contract-001",
+   "kind": "real",
+   "wall_seconds": 10.0,
+   "verdicts": {
+    "contract-judgment-model": "WIN"
+   }
+  },
+  {
+   "cycle": "dream-phaseC-001",
+   "kind": "real",
+   "wall_seconds": 9.0,
+   "verdicts": {
+    "bug-pattern-composed": "REVERT"
+   }
+  },
+  {
+   "cycle": "dream-phaseC-002",
+   "kind": "real",
+   "wall_seconds": 16.0,
+   "verdicts": {
+    "bug-pattern-composed": "WIN"
+   }
+  },
+  {
+   "cycle": "dry-phaseA-001",
+   "kind": "dry_run",
+   "wall_seconds": 2.0,
+   "verdicts": {
+    "error-class-model": "HOLD",
+    "contract-judgment-model": "SHADOW_PASS",
+    "gap-move-model": "SHADOW_PASS",
+    "commit-type-model": "SHADOW_PASS",
+    "secret-line-model": "SHADOW_PASS",
+    "bug-pattern-composed": "SHADOW_PASS",
+    "synthv1-r4-coordinator": "HOLD"
+   }
+  },
+  {
+   "cycle": "dry-phaseB-smoke",
+   "kind": "dry_run",
+   "wall_seconds": 2.0,
+   "verdicts": {
+    "error-class-model": "HOLD",
+    "contract-judgment-model": "SHADOW_PASS",
+    "gap-move-model": "SHADOW_PASS",
+    "commit-type-model": "SHADOW_PASS",
+    "secret-line-model": "SHADOW_PASS",
+    "bug-pattern-composed": "SHADOW_PASS",
+    "synthv1-r4-coordinator": "HOLD"
+   }
+  },
+  {
+   "cycle": "dry-phaseC-check",
+   "kind": "dry_run",
+   "wall_seconds": 2.0,
+   "verdicts": {
+    "error-class-model": "HOLD",
+    "contract-judgment-model": "SHADOW_PASS",
+    "gap-move-model": "HOLD",
+    "commit-type-model": "SHADOW_PASS",
+    "secret-line-model": "HOLD",
+    "bug-pattern-composed": "SHADOW_PASS",
+    "synthv1-r4-coordinator": "HOLD"
+   }
+  },
+  {
+   "cycle": "phaseC-growth-001",
+   "kind": "growth",
+   "wall_seconds": null,
+   "verdicts": {
+    "bug-wrong-operator-expression-model": "rejected",
+    "bug-off-by-one-index-model": "rejected"
+   }
+  },
+  {
+   "cycle": "phaseC-ternary-001",
+   "kind": "ternary",
+   "wall_seconds": null,
+   "verdicts": {
+    "error-class-model": "fp stays",
+    "contract-judgment-model": "fp stays",
+    "gap-move-model": "fp stays",
+    "secret-line-model": "fp stays",
+    "commit-type-model": "fp stays"
+   },
+   "surgery": {
+    "subject_id": "contract-judgment-model",
+    "probe_n": 48,
+    "probe_base_acc": 1.0,
+    "weights_mapped": 1088,
+    "indicted_improving_flips": 0,
+    "top": [
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__a"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__b"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__c"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__d"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__e"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__g"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__k"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:__l"
+      ],
+      "from": 0,
+      "best_to": null,
+      "delta": 0.0
+     }
+    ]
+   }
+  },
+  {
+   "cycle": "phaseC-ternary-002",
+   "kind": "ternary",
+   "wall_seconds": null,
+   "verdicts": {
+    "error-class-model": "fp stays",
+    "contract-judgment-model": "fp stays",
+    "gap-move-model": "fp stays",
+    "secret-line-model": "fp stays",
+    "commit-type-model": "fp stays"
+   },
+   "surgery": {
+    "subject_id": "secret-line-model",
+    "probe_n": 64,
+    "probe_base_acc": 0.8594,
+    "weights_mapped": 2456,
+    "indicted_improving_flips": 114,
+    "top": [
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:ord"
+      ],
+      "from": -1,
+      "best_to": 1,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:ort"
+      ],
+      "from": -1,
+      "best_to": 1,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:rd_"
+      ],
+      "from": -1,
+      "best_to": 1,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u0",
+       "g:wor"
+      ],
+      "from": -1,
+      "best_to": 1,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u1",
+       "g:_db"
+      ],
+      "from": 0,
+      "best_to": 1,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u1",
+       "g:_pa"
+      ],
+      "from": -1,
+      "best_to": 0,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u1",
+       "g:b_p"
+      ],
+      "from": 0,
+      "best_to": 1,
+      "delta": 0.0312
+     },
+     {
+      "path": [
+       "w1",
+       "u1",
+       "g:db_"
+      ],
+      "from": 0,
+      "best_to": 1,
+      "delta": 0.0312
+     }
+    ],
+    "flips_applied": 114,
+    "heldout_before": 0.9154,
+    "heldout_after": 0.9385,
+    "adopted": true,
+    "note": "flips selected on training-side probes only; held-out judged once, after"
+   }
+  },
+  {
+   "cycle": "real-phaseB-001",
+   "kind": "real",
+   "wall_seconds": 2.0,
+   "verdicts": {
+    "contract-judgment-model": "WIN"
+   }
+  },
+  {
+   "cycle": "real-phaseB-002",
+   "kind": "real",
+   "wall_seconds": 18.0,
+   "verdicts": {
+    "gap-move-model": "WIN"
+   }
+  },
+  {
+   "cycle": "real-phaseB-003",
+   "kind": "real",
+   "wall_seconds": 14.0,
+   "verdicts": {
+    "commit-type-model": "WIN",
+    "secret-line-model": "WIN"
+   }
+  },
+  {
+   "cycle": "real-phaseB-004",
+   "kind": "real",
+   "wall_seconds": 0.0,
+   "verdicts": {
+    "error-class-model": "HOLD",
+    "bug-pattern-composed": "BLOCKED",
+    "synthv1-r4-coordinator": "HOLD"
+   }
+  }
+ ],
+ "adoptions": [
+  {
+   "cycle": "dream-niche-contract-001",
+   "subject": "contract-judgment-model",
+   "artifact": "coding/swarm/models/contract-judgment-model-v3.json",
+   "train_examples": 296,
+   "candidates": 3
+  },
+  {
+   "cycle": "dream-phaseC-002",
+   "subject": "bug-pattern-composed",
+   "artifact": "coding/swarm/models/bug-wrong-operator-model.json",
+   "train_examples": 87,
+   "candidates": 18
+  },
+  {
+   "cycle": "real-phaseB-001",
+   "subject": "contract-judgment-model",
+   "artifact": "coding/swarm/models/contract-judgment-model-v2.json",
+   "train_examples": 138,
+   "candidates": 3
+  },
+  {
+   "cycle": "real-phaseB-002",
+   "subject": "gap-move-model",
+   "artifact": "coding/swarm/models/gap-move-model-v2.json",
+   "train_examples": 308,
+   "candidates": 3
+  },
+  {
+   "cycle": "real-phaseB-003",
+   "subject": "commit-type-model",
+   "artifact": "coding/swarm/models/commit-type-model-v2.json",
+   "train_examples": 416,
+   "candidates": 3
+  },
+  {
+   "cycle": "real-phaseB-003",
+   "subject": "secret-line-model",
+   "artifact": "coding/swarm/models/secret-line-model-v2.json",
+   "train_examples": 163,
+   "candidates": 3
+  }
+ ],
+ "backoffs": [],
+ "host_profiles": {
+  "cpu=4, gpu=False, chunk=20min": 12
+ },
+ "candidate_evaluations_recorded": 54,
+ "substrate": {
+  "error-class-model": {
+   "fp_heldout": 0.9583,
+   "ternary_heldout": 0.95,
+   "winning_path": "ptq",
+   "packed_bytes": 4941,
+   "fp_artifact_bytes": 264151,
+   "agreement": 0.975,
+   "default": "fp"
+  },
+  "contract-judgment-model": {
+   "fp_heldout": 1.0,
+   "ternary_heldout": 0.9375,
+   "winning_path": "ptq",
+   "packed_bytes": 311,
+   "fp_artifact_bytes": 35286,
+   "agreement": 0.9375,
+   "default": "fp"
+  },
+  "gap-move-model": {
+   "fp_heldout": 0.9333,
+   "ternary_heldout": 0.8667,
+   "winning_path": "qat-h4",
+   "packed_bytes": 680,
+   "fp_artifact_bytes": 117639,
+   "agreement": 0.9333,
+   "default": "fp"
+  },
+  "secret-line-model": {
+   "fp_heldout": 1.0,
+   "ternary_heldout": 0.9923,
+   "winning_path": "qat-h4",
+   "packed_bytes": 252,
+   "fp_artifact_bytes": 67047,
+   "agreement": 0.9923,
+   "default": "fp"
+  },
+  "commit-type-model": {
+   "fp_heldout": 0.9625,
+   "ternary_heldout": 0.7625,
+   "winning_path": "qat-h4",
+   "packed_bytes": 397,
+   "fp_artifact_bytes": 85910,
+   "agreement": 0.7375,
+   "default": "fp"
+  }
+ }
+}

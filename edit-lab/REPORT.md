@@ -48,3 +48,14 @@ The VM's CPU throughput collapsed ~30–100× after a reboot (measured
 the remaining compute (researcher train+eval, five micro-cell trains,
 composite eval) is moving to ashp (GTX 1650 Ti, 32 GB RAM), where this
 lab is already backed up. The job is **not closed** and no win is claimed.
+
+## Coordinator repair contest — FINAL VERDICT (2026-11-10)
+- WIN: synthv1-r4 pristine test 0.954 vs gate/base 0.930 (n=14, observe.py anchor protocol); paired 2W/12T/0L vs base. Dev: r2 0.8511, r4 0.9483, r16 0.9483 (base dev 0.7479), all regression-clean.
+- Method that won: checker-in-the-loop synthetic data (240 attempts / 106 kept) + 11 micro rows = 117-row mix; thin LoRA retrain family. All surgery/dose/soup variants on the original adapter family remained below base (rejected 0.791, s50 0.894, coord-spec 0.849, drop14/soup50 dead by ceiling).
+- Administration: first test run VM-restart-killed at 10/14 (running 0.936, ceiling 0.9543); completed via one identical-protocol rerun; partial preserved at results/test_synthv1_r4_partial10.log.
+- Contest CLOSED per Arnav's 2026-11-09 18:46 PT decision. Researcher contest state stands as previously recorded (res-spec2 NO WIN, borderline).
+
+## Overnight 2026-11-09/10 addendum
+- Whole-hive battery: Part A specialists 5/7 bars met (tiny-hive 21/21 + 3/3 fail-closed; error-class 12/12; secret-line 10/12; commit-type 10/12; contract-judgment 7/12 PARTIAL; gap-move 4/10 PARTIAL). Part B composites: b1 arXiv lookup COMPLETED 1.0; b4 coder task FAILED (plan's unneeded research step + unreachable HF search host); b6 three-paper lookup FAILED (arXiv API 400/429/timeouts). b2/b3/b5 not run (time).
+- Defect hunt Phase 0 (math dev): Qwen3-4B base 187/189 (98.9%), both fails capability-class, defect share 0% — Phase 2 ablation not triggered on math. IF base run unfinished tonight.
+- Morning report: MORNING-REPORT-2026-11-10.md (full account, incl. the 93C thermal incident and the chunk+cool rule it produced).

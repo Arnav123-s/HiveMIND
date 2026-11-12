@@ -1,0 +1,114 @@
+{
+ "registered": "2026-11-11 18:49 UTC",
+ "for_cycle": "growth-cycle-003",
+ "surfaces": {
+  "phase3x_held": {
+   "file": "growth/data/phase3x_held.json",
+   "manifest": "growth/data/phase3x_manifest.json",
+   "builder": "factory/held_slice_v2.py",
+   "n": 69,
+   "sealed": true,
+   "role": "successor pristine judge to the phase-3 held slice (n=29 total / n=20 per target slice, spent twice); never trained on, never used for candidate selection",
+   "label_dist": {
+    "clean": 23,
+    "missing-return": 12,
+    "mutable-default": 2,
+    "off-by-one": 10,
+    "swapped-operands": 3,
+    "wrong-operator": 19
+   }
+  },
+  "name_intent2_held": {
+   "file": "growth/data/name_intent2_held.json",
+   "manifest": "growth/data/name_intent2_manifest.json",
+   "builder": "factory/name_intent2.py",
+   "n": 128,
+   "role": "second name-intent judge partition (comparison/accumulator intents), so the intent judge is not partition 1's fixed surface; held split of partition 2 (train split: growth/data/name_intent2_train.json, n=128)",
+   "label_dist": {
+    "clean": 50,
+    "missing-return": 6,
+    "off-by-one": 30,
+    "wrong-operator": 42
+   }
+  }
+ },
+ "targets": [
+  {
+   "target": "wrong-operator/accumulator",
+   "cls": "wrong-operator",
+   "slice": "accumulator",
+   "parent": "bug-wrong-operator-model",
+   "prospective_child": "bug-wrong-operator-accumulator-model",
+   "child_state": "file exists (Phase-era birth, adopted then, heldout 0.7778 on its era slice) but NOT routed — composer_config routes accumulator to 'whole'",
+   "routing_now": "whole (parent serves this slice)",
+   "judges": {
+    "phase3x_held": {
+     "n": 12,
+     "pos": 4
+    },
+    "name_intent2_held": {
+     "n": 64,
+     "pos": 18
+    },
+    "phase3_held_spent": {
+     "n": 9,
+     "pos": 3
+    }
+   },
+   "status": "registered for growth-cycle-003 — not attempted in this task"
+  },
+  {
+   "target": "wrong-operator/comparison",
+   "cls": "wrong-operator",
+   "slice": "comparison",
+   "parent": "bug-wrong-operator-model",
+   "prospective_child": "bug-wrong-operator-comparison-model",
+   "child_state": "no child file exists",
+   "routing_now": "whole (parent serves this slice)",
+   "judges": {
+    "phase3x_held": {
+     "n": 12,
+     "pos": 4
+    },
+    "name_intent2_held": {
+     "n": 64,
+     "pos": 24
+    },
+    "phase3_held_spent": {
+     "n": 0,
+     "pos": 0
+    }
+   },
+   "status": "registered for growth-cycle-003 — not attempted in this task"
+  },
+  {
+   "target": "off-by-one/range",
+   "cls": "off-by-one",
+   "slice": "range",
+   "parent": "bug-off-by-one-model",
+   "prospective_child": "bug-off-by-one-range-model",
+   "child_state": "file exists (Phase-era birth, adopted then, heldout 0.7778 on its era slice) but NOT routed — composer_config routes range to 'whole'",
+   "routing_now": "whole (parent serves this slice)",
+   "judges": {
+    "phase3x_held": {
+     "n": 12,
+     "pos": 4
+    },
+    "name_intent2_held": {
+     "n": 28,
+     "pos": 12
+    },
+    "phase3_held_spent": {
+     "n": 9,
+     "pos": 3
+    }
+   },
+   "status": "registered for growth-cycle-003 — not attempted in this task"
+  }
+ ],
+ "notes": [
+  "No model was measured on either new surface in this task; subset n/pos are construction facts (slice_of over item text). Parent baselines on the new judges are cycle 3's first measurement, under its own protocol.",
+  "Learned-say is closed (cycle-2 addendum) and is not a cycle-3 target.",
+  "The runner changes that make cycle 3 schedulable are in factory/growth_cycle.py (auto-id, lock + lab-busy skip, per-cycle novelty rotation, alert file)."
+ ]
+}

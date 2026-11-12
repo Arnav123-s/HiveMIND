@@ -1,0 +1,955 @@
+{
+ "registry_version": 1,
+ "built_at": "2026-11-12T06:52:55",
+ "built_by": "factory.registry.build_registry",
+ "note": "the single serving book for this side of the hive; verify with factory.audit; serve only through factory.serve (which audits at load and fails closed on mismatch)",
+ "specialists": {
+  "secret-line-model": {
+   "niche": "security",
+   "serving": {
+    "name": "secret-line-model-v3",
+    "role": "serving",
+    "path": "coding/swarm/models/secret-line-model-v3.json",
+    "sha256": "2cd39132633392ae2964af1ad0e518e969c91a199d306a444251c0cdc1642909",
+    "substrate": "ternary",
+    "params": 24562,
+    "footprint_bytes": 21614,
+    "heldout_acc": 1.0,
+    "evidence": {
+     "factory_cycle": "assembly-2026-11-10",
+     "path_taken": "BitNet scale-arm single, adopted at assembly (Arnav's ruling 2026-11-10): battery >= incumbent AND held-out >= incumbent fp, both re-measured in the factory harness before adoption (factory/runs/assembly-2026-11-10/candidate_measurements.json)",
+     "supersedes": "secret-line-model-v2",
+     "fresh_confirm_acc": 0.9091,
+     "fresh_screen_acc": null,
+     "battery_reference_acc": null,
+     "train_n": 1289,
+     "heldout_n": 130,
+     "dream": {
+      "source": "bitnet-hive/scale-arm (dreamed, execution-verified, contamination-filtered expansion; see its data_log.json)",
+      "final_train_n": 1289
+     },
+     "flips_applied": 0
+    },
+    "payload": {
+     "path": "bitnet-hive/scale-arm/members/secret-line-model-scale-single.npz",
+     "sha256": "91775b720a115d41f2e2fdf1c94960ba321462750c0764ca8c5b5634184c513d",
+     "runtime": "CTern — corrected BitNet b1.58 forward (per-matrix absmean ternary codes, RMSNorm + per-token int8 activation quantization), factory/tern_runtime.py over bitnet-hive/scale-arm/corrected_tern.py",
+     "payload_bytes_theoretical": 6148
+    },
+    "battery_acc": 0.8333,
+    "battery_source": "results/hive_battery_acceptance.json classify-secret-line (served, assembly battery re-run 2026-11-10)",
+    "promotion": {
+     "rule": "standing serving rule: battery slice >= the incumbent's slice",
+     "battery_acc": 0.8333,
+     "incumbent_battery_acc": 0.8333,
+     "source": "results/hive_battery_acceptance.json classify-secret-line (served, assembly battery re-run 2026-11-10)"
+    }
+   },
+   "fallbacks": [
+    {
+     "name": "secret-line-model-v2",
+     "role": "fallback",
+     "path": "coding/swarm/models/secret-line-model-v2.json",
+     "sha256": "fa9974bff8a4fda74f4604662f9012bd306c5ed06b698b44dd54932a08eac1b4",
+     "substrate": "fp",
+     "params": 2466,
+     "footprint_bytes": 52994,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": "real-phaseB-003",
+      "path_taken": "trained (factory widen, Phase B)",
+      "supersedes": "secret-line-model",
+      "fresh_confirm_acc": 0.9091,
+      "fresh_screen_acc": 0.8182,
+      "battery_reference_acc": 0.8333,
+      "train_n": 163,
+      "heldout_n": 130,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 0.8333,
+     "battery_source": "results/hive_battery_acceptance.json classify-secret-line (served, 2026-11-10)"
+    },
+    {
+     "name": "secret-line-model",
+     "role": "fallback",
+     "path": "coding/swarm/models/secret-line-model.json",
+     "sha256": "7b594661f4d7a099b5d7199b63bd7b4851574ee0aeccd4efd95cc17637bc9f2a",
+     "substrate": "fp",
+     "params": 512,
+     "footprint_bytes": 17714,
+     "heldout_acc": 0.9923,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 140,
+      "heldout_n": 130,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 0.8333,
+     "battery_source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+    }
+   ],
+   "shadow": [],
+   "substrate_default": "fp",
+   "substrates": [
+    {
+     "name": "secret-line-model-ternary",
+     "role": "coexisting_alternative",
+     "path": "coding/swarm/models/secret-line-model-ternary.json",
+     "sha256": "352ea1436fa2a312da391bd64c5f9852997b6752e42c4286e28c4f74464db04b",
+     "substrate": "ternary",
+     "params": 2466,
+     "footprint_bytes": 53465,
+     "heldout_acc": 0.9385,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "ternary/ptq+flip-surgery (Phase C)",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 140,
+      "heldout_n": 130,
+      "dream": null,
+      "flips_applied": 114
+     },
+     "niche_default": false,
+     "note": "flip-surgery-repaired ternary pack (Phase C); held-out 0.9385 < fp 1.0, so fp remains the niche default and this serves only where a caller names the ternary substrate"
+    }
+   ]
+  },
+  "error-class-model": {
+   "niche": "debugging",
+   "serving": {
+    "name": "error-class-model-v2",
+    "role": "serving",
+    "path": "coding/swarm/models/error-class-model-v2.json",
+    "sha256": "6962583377cc1d0b3121b5904c0c13e6c2830712a1a5f8581397d9a0d5cb24ba",
+    "substrate": "ternary",
+    "params": 92042,
+    "footprint_bytes": 56964,
+    "heldout_acc": 0.9833,
+    "evidence": {
+     "factory_cycle": "assembly-2026-11-10",
+     "path_taken": "BitNet scale-arm single, adopted at assembly (Arnav's ruling 2026-11-10): battery >= incumbent AND held-out >= incumbent fp, both re-measured in the factory harness before adoption (factory/runs/assembly-2026-11-10/candidate_measurements.json)",
+     "supersedes": "error-class-model",
+     "fresh_confirm_acc": null,
+     "fresh_screen_acc": null,
+     "battery_reference_acc": null,
+     "train_n": 800,
+     "heldout_n": 120,
+     "dream": {
+      "source": "bitnet-hive/scale-arm (dreamed, execution-verified, contamination-filtered expansion; see its data_log.json)",
+      "final_train_n": 800
+     },
+     "flips_applied": 0
+    },
+    "payload": {
+     "path": "bitnet-hive/scale-arm/members/error-class-model-scale-single.npz",
+     "sha256": "d7535ead27d66b782895f64581453b392acb57f03b7b4e0fcba9f2d959f7c584",
+     "runtime": "CTern — corrected BitNet b1.58 forward (per-matrix absmean ternary codes, RMSNorm + per-token int8 activation quantization), factory/tern_runtime.py over bitnet-hive/scale-arm/corrected_tern.py",
+     "payload_bytes_theoretical": 23018
+    },
+    "battery_acc": 1.0,
+    "battery_source": "results/hive_battery_acceptance.json classify-error-class (served, assembly battery re-run 2026-11-10)",
+    "promotion": {
+     "rule": "standing serving rule: battery slice >= the incumbent's slice",
+     "battery_acc": 1.0,
+     "incumbent_battery_acc": 1.0,
+     "source": "results/hive_battery_acceptance.json classify-error-class (served, assembly battery re-run 2026-11-10)"
+    }
+   },
+   "fallbacks": [
+    {
+     "name": "error-class-model",
+     "role": "fallback",
+     "path": "coding/swarm/models/error-class-model.json",
+     "sha256": "3cf9d7d8686e383de34803a1508fce053fb5ea3f79614dcafb23552ab5c09570",
+     "substrate": "fp",
+     "params": 9228,
+     "footprint_bytes": 210881,
+     "heldout_acc": 0.9583,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained+edited",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": null,
+      "heldout_n": 120,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 1.0,
+     "battery_source": "results/hive_battery.json and hive_battery_acceptance.json (12/12 in both)"
+    }
+   ],
+   "shadow": [],
+   "substrate_default": "fp"
+  },
+  "commit-type-model": {
+   "niche": "vcs",
+   "serving": {
+    "name": "commit-type-model-v2",
+    "role": "serving",
+    "path": "coding/swarm/models/commit-type-model-v2.json",
+    "sha256": "88786bff26a2d8f734a6fb90d2afb28e943e8a2ef54783aff10c24eb4533759f",
+    "substrate": "fp",
+    "params": 2700,
+    "footprint_bytes": 63257,
+    "heldout_acc": 0.9625,
+    "evidence": {
+     "factory_cycle": "real-phaseB-003",
+     "path_taken": "trained (factory widen, Phase B)",
+     "supersedes": "commit-type-model",
+     "fresh_confirm_acc": 0.8333,
+     "fresh_screen_acc": 1.0,
+     "battery_reference_acc": 1.0,
+     "train_n": 416,
+     "heldout_n": 80,
+     "dream": null,
+     "flips_applied": null
+    },
+    "battery_acc": 1.0,
+    "battery_source": "results/hive_battery_acceptance.json classify-commit-type (served, assembly battery re-run 2026-11-10)",
+    "promotion": {
+     "rule": "standing serving rule: battery slice >= the incumbent's slice",
+     "battery_acc": 1.0,
+     "incumbent_battery_acc": 0.8333,
+     "source": "results/hive_battery_acceptance.json classify-commit-type (served, assembly battery re-run 2026-11-10)"
+    }
+   },
+   "fallbacks": [
+    {
+     "name": "commit-type-model",
+     "role": "fallback",
+     "path": "coding/swarm/models/commit-type-model.json",
+     "sha256": "eca45d7cd49878b6cadb93e5cbef7769ffd975cca2314b5528bb370a712f4587",
+     "substrate": "fp",
+     "params": 2376,
+     "footprint_bytes": 56220,
+     "heldout_acc": 0.9375,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 380,
+      "heldout_n": 80,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 0.8333,
+     "battery_source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+    }
+   ],
+   "shadow": [],
+   "substrate_default": "fp"
+  },
+  "contract-judgment-model": {
+   "niche": "review",
+   "serving": {
+    "name": "contract-judgment-model-v2",
+    "role": "serving",
+    "path": "coding/swarm/models/contract-judgment-model-v2.json",
+    "sha256": "564af04fe0479bb8e54982eb62f378d31afb3f93494cc7ddc0c98a99755fc63b",
+    "substrate": "fp",
+    "params": 1100,
+    "footprint_bytes": 28642,
+    "heldout_acc": 1.0,
+    "evidence": {
+     "factory_cycle": "real-phaseB-001",
+     "path_taken": "trained (factory widen, Phase B)",
+     "supersedes": "contract-judgment-model",
+     "fresh_confirm_acc": 0.8889,
+     "fresh_screen_acc": 0.7857,
+     "battery_reference_acc": 0.9167,
+     "train_n": 138,
+     "heldout_n": 80,
+     "dream": null,
+     "flips_applied": null
+    },
+    "battery_acc": 0.9167,
+    "battery_source": "results/hive_battery_acceptance.json classify-contract-judgment (served, assembly battery re-run 2026-11-10)",
+    "promotion": {
+     "rule": "standing serving rule: battery slice >= the incumbent's slice",
+     "battery_acc": 0.9167,
+     "incumbent_battery_acc": 0.5833,
+     "source": "results/hive_battery_acceptance.json classify-contract-judgment (served, assembly battery re-run 2026-11-10)"
+    }
+   },
+   "fallbacks": [
+    {
+     "name": "contract-judgment-model",
+     "role": "fallback",
+     "path": "coding/swarm/models/contract-judgment-model.json",
+     "sha256": "ca83ae11164301d0ea32d80d62e3b9ca2e2d491f6f47602a1ae5f1b616850a2c",
+     "substrate": "fp",
+     "params": 468,
+     "footprint_bytes": 17185,
+     "heldout_acc": 0.9375,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 100,
+      "heldout_n": 80,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 0.5833,
+     "battery_source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+    }
+   ],
+   "shadow": [
+    {
+     "name": "contract-judgment-model-v3",
+     "role": "shadow",
+     "path": "coding/swarm/models/contract-judgment-model-v3.json",
+     "sha256": "e9644194696f2d6966e5f8b867c8f931f853227982cedd22c974ed48b2eeefa6",
+     "substrate": "fp",
+     "params": 500,
+     "footprint_bytes": 13647,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": "dream-niche-contract-001",
+      "path_taken": "trained (factory niche dream cycle, final-product)",
+      "supersedes": "contract-judgment-model-v2",
+      "fresh_confirm_acc": 0.9048,
+      "fresh_screen_acc": 0.7895,
+      "battery_reference_acc": 0.9167,
+      "train_n": 296,
+      "heldout_n": 80,
+      "dream": {
+       "executor": "dream_niche",
+       "edge_band": 2,
+       "kept_dream_items": 196,
+       "incumbent_confirm_acc": 0.7619,
+       "thermostat_round0": {
+        "edge_band": 2,
+        "probe": {
+         "1": {
+          "acc": 1.0,
+          "n": 80
+         },
+         "2": {
+          "acc": 0.85,
+          "n": 80
+         },
+         "3": {
+          "acc": 0.675,
+          "n": 80
+         }
+        },
+        "mastered": [
+         1
+        ]
+       },
+       "thermostat_round1": {
+        "edge_band": 2,
+        "probe": {
+         "1": {
+          "acc": 1.0,
+          "n": 80
+         },
+         "2": {
+          "acc": 0.825,
+          "n": 80
+         },
+         "3": {
+          "acc": 0.825,
+          "n": 80
+         }
+        },
+        "mastered": [
+         1
+        ]
+       }
+      },
+      "flips_applied": null
+     },
+     "battery_acc": 0.4167,
+     "battery_source": "results/hive_battery_acceptance.json classify-contract-judgment-v3-not-served (measured 2026-11-10 before the override)",
+     "shadow_reason": "standing serving rule: battery slice 0.4167 < incumbent contract-judgment-model-v2's 0.9167 (results/hive_battery_acceptance.json classify-contract-judgment-v3-not-served (measured 2026-11-10 before the override)) — adopted, audited, not served"
+    }
+   ],
+   "substrate_default": "fp"
+  },
+  "gap-move-model": {
+   "niche": "meta",
+   "serving": {
+    "name": "gap-move-model-v3",
+    "role": "serving",
+    "path": "coding/swarm/models/gap-move-model-v3.json",
+    "sha256": "21f245ed108100028e0b33a5078fe80da4219105724010153fae6584e7551adb",
+    "substrate": "ternary",
+    "params": 36642,
+    "footprint_bytes": 68758,
+    "heldout_acc": 0.9444,
+    "evidence": {
+     "factory_cycle": "assembly-2026-11-10",
+     "path_taken": "BitNet scale-arm single, adopted at assembly (Arnav's ruling 2026-11-10): battery >= incumbent AND held-out >= incumbent fp, both re-measured in the factory harness before adoption (factory/runs/assembly-2026-11-10/candidate_measurements.json)",
+     "supersedes": "gap-move-model-v2",
+     "fresh_confirm_acc": 0.9,
+     "fresh_screen_acc": null,
+     "battery_reference_acc": null,
+     "train_n": 2400,
+     "heldout_n": 90,
+     "dream": {
+      "source": "bitnet-hive/scale-arm (dreamed, execution-verified, contamination-filtered expansion; see its data_log.json)",
+      "final_train_n": 2400
+     },
+     "flips_applied": 0
+    },
+    "payload": {
+     "path": "bitnet-hive/scale-arm/members/gap-move-model-scale-single.npz",
+     "sha256": "a57d4aa73b18f00ac97caad899c5873c1d97cbc60306d45967fa839cd7e297c8",
+     "runtime": "CTern — corrected BitNet b1.58 forward (per-matrix absmean ternary codes, RMSNorm + per-token int8 activation quantization), factory/tern_runtime.py over bitnet-hive/scale-arm/corrected_tern.py",
+     "payload_bytes_theoretical": 9168
+    },
+    "battery_acc": 1.0,
+    "battery_source": "results/hive_battery_acceptance.json classify-gap-move (served, assembly battery re-run 2026-11-10)",
+    "promotion": {
+     "rule": "standing serving rule: battery slice >= the incumbent's slice",
+     "battery_acc": 1.0,
+     "incumbent_battery_acc": 0.8,
+     "source": "results/hive_battery_acceptance.json classify-gap-move (served, assembly battery re-run 2026-11-10)"
+    }
+   },
+   "fallbacks": [
+    {
+     "name": "gap-move-model-v2",
+     "role": "fallback",
+     "path": "coding/swarm/models/gap-move-model-v2.json",
+     "sha256": "6cabb429f00732ca5f7d9bd1c9516a1f143298a60c8f324d585ac939766b6d6b",
+     "substrate": "fp",
+     "params": 3673,
+     "footprint_bytes": 86479,
+     "heldout_acc": 0.9333,
+     "evidence": {
+      "factory_cycle": "real-phaseB-002",
+      "path_taken": "trained (factory widen, Phase B)",
+      "supersedes": "gap-move-model",
+      "fresh_confirm_acc": 0.9,
+      "fresh_screen_acc": 0.95,
+      "battery_reference_acc": 0.8,
+      "train_n": 308,
+      "heldout_n": 90,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 0.8,
+     "battery_source": "results/hive_battery_acceptance.json classify-gap-move (served, 2026-11-10)"
+    },
+    {
+     "name": "gap-move-model",
+     "role": "fallback",
+     "path": "coding/swarm/models/gap-move-model.json",
+     "sha256": "f4ee7e51a6a6391bc3b5ae34e93be1404ea9b51e25351307b96bad0f7a152299",
+     "substrate": "fp",
+     "params": 3825,
+     "footprint_bytes": 132664,
+     "heldout_acc": 0.8778,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 240,
+      "heldout_n": 90,
+      "dream": null,
+      "flips_applied": null
+     },
+     "battery_acc": 0.4,
+     "battery_source": "results/hive_battery.json (2026-11-10 battery, v1 artifacts)"
+    }
+   ],
+   "shadow": [],
+   "substrate_default": "fp"
+  }
+ },
+ "compositions": {
+  "bug-pattern-composed": {
+   "name": "bug-pattern-composed",
+   "niche": "debugging",
+   "role": "composition",
+   "members": [
+    {
+     "name": "bug-missing-return-assigns-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-missing-return-assigns-model.json",
+     "sha256": "5a35ba9ef403b1d23e7f9fa6949f7e6af6f0b36546205ef764a5ff512fe1206b",
+     "substrate": "fp",
+     "params": 238,
+     "footprint_bytes": 9254,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 45,
+      "heldout_n": 28,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-missing-return-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-missing-return-model.json",
+     "sha256": "c6de2848d3d4ef3085393db7831246a3a022d1fa9ea91256dbfe18c0fde5d988",
+     "substrate": "fp",
+     "params": 238,
+     "footprint_bytes": 9836,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained+dreamt",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 48,
+      "heldout_n": 29,
+      "dream": {
+       "heldout_before": 1.0,
+       "heldout_after": 1.0,
+       "kept": true,
+       "practice_acc": 1.0,
+       "practice_n": 85,
+       "map_precision_before": null,
+       "map_precision_after": null,
+       "map_topk": 8
+      },
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-mutable-default-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-mutable-default-model.json",
+     "sha256": "6c0907fcb060e17efbd01635a94f6a26681bf3a071c2872a6718a7fe14e005b1",
+     "substrate": "fp",
+     "params": 238,
+     "footprint_bytes": 8852,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 48,
+      "heldout_n": 29,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-off-by-one-harvest-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-off-by-one-harvest-model.json",
+     "sha256": "9c4eb3ae95e3f97218b0282ec7588fec11da292a5137fd38c1fdf977488ee73a",
+     "substrate": "fp",
+     "params": 1584,
+     "footprint_bytes": 45940,
+     "heldout_acc": 0.931,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 85,
+      "heldout_n": 29,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-off-by-one-index-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-off-by-one-index-model.json",
+     "sha256": "6c39c3e70fe7257d6dde1650e86814b63a44df1a22a00f91d14e88cfb5b17029",
+     "substrate": "fp",
+     "params": 3830,
+     "footprint_bytes": 63260,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": "growth-cycle-004",
+      "path_taken": "factory birth — split + name-intent data (growth cycle)",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 583,
+      "heldout_n": 20,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-off-by-one-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-off-by-one-model.json",
+     "sha256": "cde4be9f55216c5a4e67f653c9dc58ef16f5a5707984755ba0460e50a1fbb98b",
+     "substrate": "fp",
+     "params": 956,
+     "footprint_bytes": 37236,
+     "heldout_acc": 0.931,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained+dreamt",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 48,
+      "heldout_n": 29,
+      "dream": {
+       "heldout_before": 0.931,
+       "heldout_after": 0.931,
+       "kept": true,
+       "practice_acc": 1.0,
+       "practice_n": 85,
+       "map_precision_before": 1.0,
+       "map_precision_after": 1.0,
+       "map_topk": 8
+      },
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-off-by-one-range-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-off-by-one-range-model.json",
+     "sha256": "074c3ac962ebd243f22b33caded86eb3de4bdb904e1c1761f8975fd6275d1a3a",
+     "substrate": "fp",
+     "params": 226,
+     "footprint_bytes": 5376,
+     "heldout_acc": 0.7778,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 7,
+      "heldout_n": 9,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-swapped-operands-harvest-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-swapped-operands-harvest-model.json",
+     "sha256": "f07de2edc2147fc175be7616e3b6e5614077615fa1857e10dcdb7ffb1cf860b4",
+     "substrate": "fp",
+     "params": 1584,
+     "footprint_bytes": 52333,
+     "heldout_acc": 0.9655,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 85,
+      "heldout_n": 29,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-swapped-operands-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-swapped-operands-model.json",
+     "sha256": "5921b54ab927f9079dbb5128047d8fa02c0618a4e362894389600b8e87563269",
+     "substrate": "fp",
+     "params": 956,
+     "footprint_bytes": 27308,
+     "heldout_acc": 0.9655,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 48,
+      "heldout_n": 29,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-swapped-operands-named-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-swapped-operands-named-model.json",
+     "sha256": "afbbcd5d37088f23ab1a71f4931bac8965a17cce9140e804b42742a46ac8b89b",
+     "substrate": "fp",
+     "params": 744,
+     "footprint_bytes": 20048,
+     "heldout_acc": 0.9444,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 38,
+      "heldout_n": 18,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-swapped-operands-plain-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-swapped-operands-plain-model.json",
+     "sha256": "e7187b33be1035f7d8ff8f173e26bf83f7432ce793ddae47dd91bf15adce353a",
+     "substrate": "fp",
+     "params": 234,
+     "footprint_bytes": 8293,
+     "heldout_acc": 0.913,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 42,
+      "heldout_n": 23,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-wrong-operator-accumulator-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-wrong-operator-accumulator-model.json",
+     "sha256": "e30d4d86851d5926617ef6111c03b4ffbe07a18625a87c17c011c8db5a79a6c6",
+     "substrate": "fp",
+     "params": 132,
+     "footprint_bytes": 3766,
+     "heldout_acc": 0.7778,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 10,
+      "heldout_n": 9,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-wrong-operator-expression-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-wrong-operator-expression-model.json",
+     "sha256": "94b66d160efe48d9c8cf0f649d26fd535ad542fa8e7a29e739b21a83091fd7c7",
+     "substrate": "fp",
+     "params": 3366,
+     "footprint_bytes": 106294,
+     "heldout_acc": 1.0,
+     "evidence": {
+      "factory_cycle": "growth-cycle-004",
+      "path_taken": "factory birth — split + name-intent data (growth cycle)",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 507,
+      "heldout_n": 20,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-wrong-operator-harvest-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-wrong-operator-harvest-model.json",
+     "sha256": "7f16c791962ce7d3015c1a54a085641eae0cd87c825b53184bde50ad938d6d34",
+     "substrate": "fp",
+     "params": 1584,
+     "footprint_bytes": 60104,
+     "heldout_acc": 0.8276,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 85,
+      "heldout_n": 29,
+      "dream": null,
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-wrong-operator-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-wrong-operator-model.json",
+     "sha256": "9be0619b91337e4283e180643e545a43df3e0c31cb2aaaae3dd6cb28e3b72e93",
+     "substrate": "fp",
+     "params": 1252,
+     "footprint_bytes": 37570,
+     "heldout_acc": 0.8966,
+     "evidence": {
+      "factory_cycle": "dream-phaseC-002",
+      "path_taken": "trained (factory dream cycle, Phase C)",
+      "supersedes": "bug-wrong-operator-model (phase-4 record)",
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 87,
+      "heldout_n": 29,
+      "dream": {
+       "edge_band": 1,
+       "kept_dream_items": 39,
+       "composed_confirm_acc": 0.8276
+      },
+      "flips_applied": null
+     }
+    },
+    {
+     "name": "bug-wrong-operator-named-model",
+     "role": "member",
+     "path": "coding/swarm/models/bug-wrong-operator-named-model.json",
+     "sha256": "697b729dda84353f1c703e328346adc422e471dec7c0d521ede4846164e26ee7",
+     "substrate": "fp",
+     "params": 744,
+     "footprint_bytes": 28785,
+     "heldout_acc": 0.8333,
+     "evidence": {
+      "factory_cycle": null,
+      "path_taken": "trained",
+      "supersedes": null,
+      "fresh_confirm_acc": null,
+      "fresh_screen_acc": null,
+      "battery_reference_acc": null,
+      "train_n": 38,
+      "heldout_n": 18,
+      "dream": null,
+      "flips_applied": null
+     }
+    }
+   ],
+   "composer_config": {
+    "path": "coding/swarm/models/composer_config.json",
+    "sha256": "e5130b5dde0f2f6bc002a073cfb875b37a931146206e52cb86e353d1826514a6",
+    "ensemble": false,
+    "thresholds": {
+     "off-by-one": 0.0,
+     "wrong-operator": 0.0,
+     "swapped-operands": 0.0,
+     "mutable-default": 0.0,
+     "missing-return": 0.0
+    }
+   },
+   "evidence": {
+    "phase4_plateau_acc": 0.7931,
+    "bar": 0.8,
+    "dream_confirm_acc_on_spent_phase4_set": 0.8276,
+    "fresh_sealed_baseline": {
+     "acc": 0.4722,
+     "per_class_recall": {
+      "wrong-operator": 0.2,
+      "mutable-default": 0.5,
+      "off-by-one": 0.3333,
+      "clean": 0.6364,
+      "missing-return": 1.0,
+      "swapped-operands": 0.0
+     },
+     "n": 36,
+     "file": "results/bug_heldout_v2_baseline.json",
+     "sealed_file": "coding/swarm/bug_heldout_v2.json",
+     "sealed_sha256": "cd17c92279bfb98707b234160ab93e461448f79b47f5d5d1eb9e349738fea0bb",
+     "baseline_acc": 0.4444,
+     "baseline_recalls": {
+      "wrong-operator": 0.2,
+      "mutable-default": 0.5,
+      "off-by-one": 0.3333,
+      "clean": 0.5455,
+      "missing-return": 1.0,
+      "swapped-operands": 0.0
+     },
+     "post_fix_file": "results/bug_heldout_v2_postfix.json",
+     "post_fix_cycle": "bugfix-2026-11-10-004",
+     "pre_growth_acc": 0.4444,
+     "pre_growth_recalls": {
+      "wrong-operator": 0.2,
+      "mutable-default": 0.5,
+      "off-by-one": 0.3333,
+      "clean": 0.5455,
+      "missing-return": 1.0,
+      "swapped-operands": 0.0
+     },
+     "growth_judge_file": "results/bug_heldout_v2_growth-growth-cycle-004.json",
+     "growth_cycle": "growth-cycle-004"
+    }
+   },
+   "fallback": "the phase-4 composition (plateau 0.7931): the pre-dream member records are backed up inside factory/runs/dream-phaseC-002",
+   "serving_layer": {
+    "name": "waking-dream",
+    "role": "serving_layer",
+    "path": "waking-dream/waking_dream.py",
+    "sha256": "4981b27bc4312cbc73265d09e5c7b60a9904096c3e1c1e1abe1d9cddbbfd0800",
+    "mechanism": "margins nominate the top-3 defect candidates (+clean); each candidate must prove its behavioral signature by execution; strongest verified signature wins; none verifies -> raw composer verdict stands, flagged unverified",
+    "sealed_acc": 0.8611,
+    "sealed_n": 36,
+    "sealed_file": "coding/swarm/bug_heldout_v2.json",
+    "sealed_sha256": "cd17c92279bfb98707b234160ab93e461448f79b47f5d5d1eb9e349738fea0bb",
+    "raw_composition_acc": 0.4722,
+    "evidence_file": "waking-dream/results.json",
+    "fallback": "raw composer verdict (the members above)"
+   }
+  }
+ },
+ "tier1": {
+  "synthv1-r4-coordinator": {
+   "name": "synthv1-r4-coordinator",
+   "role": "tier1_adopted",
+   "artifact_dir": "candsets/synthv1-r4/coordinator",
+   "files": {
+    "adapter_config.json": "84b13a84f49dd63649e84c0b441520181cfac6d84af28bb71f0d151b06a56b19",
+    "adapter_model.safetensors": "3fbd9d65c63200e9974fada6c5e9664162a1e673918e91781b6b6061c4d7454c",
+    "training_meta.json": "f9a2ce4f0015460cdc20d13dc7e1ef9894d0a9c316e24b6b9a97058c34f1e38b"
+   },
+   "evidence": {
+    "pristine_test_acc": 0.954,
+    "gate": 0.93,
+    "contest": "CLOSED 2026-11-10 — WIN; the winner is untouched by the factory (no executor, by design and by Arnav's binding decision)"
+   },
+   "serving": "via team.Hive with the HF backend (see the whole-hive battery); not served by factory/serve.py"
+  }
+ }
+}

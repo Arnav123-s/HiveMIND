@@ -1,0 +1,86 @@
+{
+ "surface": "phase3x — larger pristine phase-3-style held slice",
+ "sealed": true,
+ "role": "pristine judge for future growth cycles; NEVER trained on, NEVER used for candidate selection",
+ "file": "phase3x_held.json",
+ "n": 69,
+ "families": [
+  "append_copy",
+  "area_rect",
+  "average_first_half",
+  "both_ends_sum",
+  "collect_scores",
+  "count_letter",
+  "count_starting",
+  "countdown_list",
+  "divide_pair",
+  "double_each",
+  "every_second_sum",
+  "first_negative_index",
+  "gather_odds",
+  "index_sum_pair",
+  "middle_slice",
+  "power_pair",
+  "running_max_list",
+  "sale_price",
+  "second_last",
+  "sum_digits",
+  "sum_odds_upto",
+  "sum_step_range",
+  "total_cost"
+ ],
+ "label_dist": {
+  "clean": 23,
+  "wrong-operator": 19,
+  "missing-return": 12,
+  "swapped-operands": 3,
+  "off-by-one": 10,
+  "mutable-default": 2
+ },
+ "slice_subset_sizes": {
+  "wrong-operator/accumulator": 12,
+  "wrong-operator/comparison": 12,
+  "wrong-operator/expression": 45,
+  "off-by-one/index": 57,
+  "off-by-one/range": 12,
+  "swapped-operands/comprehension": 7,
+  "swapped-operands/plain": 62,
+  "missing-return/assigns": 66,
+  "missing-return/prints": 3
+ },
+ "verification": {
+  "raw_families": {
+   "checked": {
+    "clean": 25,
+    "defect": 50
+   },
+   "failures": [],
+   "ok": true
+  },
+  "written_items": {
+   "checked": {
+    "clean": 23,
+    "defect": 46
+   },
+   "failures": [],
+   "ok": true
+  }
+ },
+ "dropped_contamination": 6,
+ "name_shape_guard_drops": 0,
+ "orphaned_defect_drops": 0,
+ "corpora_filtered_against": {
+  "phase3_train": 48,
+  "phase3_held": 29,
+  "swarm_dream": 37,
+  "factory_dream_pool": 492,
+  "name_intent1_train": 757,
+  "name_intent1_held": 694,
+  "name_intent2_train": 128,
+  "name_intent2_held": 128,
+  "sealed_v2_refs": 36,
+  "battery_code_items": 24
+ },
+ "disjointness": "template families, function names and body idioms are new — disjoint from phase-3 train/held templates and both name-intent partitions; enforced by the text-mode contamination filter + the (name, shape) guard against the phase-3 held gate",
+ "labels": "execution-verified: clean bodies run clean on their probes; every defect body differs behaviourally from its family's correct body on at least one probe (mutable-default via sequential-call probes)"
+}
