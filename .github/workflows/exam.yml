@@ -35,7 +35,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}
+  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}
   cancel-in-progress: false
 
 jobs:
