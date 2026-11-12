@@ -19,7 +19,7 @@ on:
         description: Follow-up rounds for anything left undone
         default: "1"
       members:
-        description: "A trial: members that each do the whole task and must agree (team/solo.py); how many (empty: the hive as it is)"
+        description: "A trial: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
         default: ""
 
 permissions:

@@ -156,3 +156,19 @@ def run(task, run_dir=None, approve="never", members=2):
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
     return {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending}
+
+
+def first(task, run_dir=None, approve="never", members=2):
+    """The members' try, kept apart (<run>/members) so that the roles can take the task in <run> if they confirm
+    nothing. Where they agree, their answer and the files they saved are the run's."""
+    import shutil
+    home = Path(run_dir or config.RUNS / time.strftime("%Y%m%d-%H%M%S"))
+    out = run(task, home / "members", approve, members)
+    out["dir"] = str(home)
+    if out["agreed"]:
+        (home / "REPORT.md").write_text(out["report"])
+        (home / "work").mkdir(parents=True, exist_ok=True)
+        for p in (home / "members" / "work").iterdir():
+            if p.is_file() and not p.name.startswith(".") and not re.fullmatch(r"member\d+_\d+\.py", p.name):
+                shutil.copy2(p, home / "work" / p.name)
+    return out

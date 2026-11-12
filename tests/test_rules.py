@@ -1756,3 +1756,16 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     assert "706 days ago" in out["report"] and "prints what IS" in asked[1]       # a printed failure is no answer; it is told to look
     assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
     assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
+
+
+def test_where_the_members_agree_their_answer_and_files_are_the_runs(tmp_path, monkeypatch):
+    from team import solo
+    prog = "open('primes.txt', 'w').write('19 37')\nprint('Saved the 2 primes 19 and 37 in primes.txt')"
+    left = [prog, "DONE", prog.replace("Saved", "Wrote"), "DONE"]
+    monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+    out = solo.first("Save the primes below 40 whose digits add up to 10 in primes.txt", tmp_path, "never", members=2)
+    assert out["agreed"] and out["dir"] == str(tmp_path) and "19 and 37" in (tmp_path / "REPORT.md").read_text()
+    assert [p.name for p in (tmp_path / "work").iterdir()] == ["primes.txt"]             # his file, not the members' programs
+    left = ["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"]
+    out = solo.first("Pick a number", tmp_path / "b", "never", members=2)
+    assert not out["agreed"] and not (tmp_path / "b" / "REPORT.md").exists()               # nothing confirmed: the run is left to the roles
