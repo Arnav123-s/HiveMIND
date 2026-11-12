@@ -737,6 +737,14 @@ def test_a_newborn_is_judged_where_it_lives():
     assert not B.judge_local(before, before - 0.001, 0.4)[0]                             # too small a gain where it lives
     kept, why = B.judge_local(before, after, 0.0)
     assert not kept and "never be among the cells awake" in why
+    assert not B.judge_local(before[:0], after[:0], 0.4)[0]                             # no passage it wakes on: nothing to judge by
+    # a gain above the bar that chance alone could give is not kept: +0.005 on average, give or take 0.0058
+    luck = before - torch.tensor([0.05, -0.04] * 30)
+    kept, why = B.judge_local(before, luck, 0.4)
+    assert not kept and "chance alone" in why
+    # the same average with little scatter is kept, and so is a larger gain with the same scatter
+    assert B.judge_local(before, before - 0.005 - torch.tensor([0.004, -0.004] * 30), 0.4)[0]
+    assert B.judge_local(before, luck - 0.02, 0.4)[0]
 
 
 def test_the_immune_check_of_a_big_body_judges_a_cell_where_it_was_awake(tmp_path, monkeypatch):

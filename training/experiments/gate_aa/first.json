@@ -1,0 +1,178 @@
+{
+ "body": "first",
+ "copies": 10,
+ "gate": {
+  "old_gate_kept": 1,
+  "new_gate_kept": 0,
+  "of": 10,
+  "mean_gain_of_a_copy": -0.0096
+ },
+ "report": {
+  "old_gate_kept": 0,
+  "new_gate_kept": 0,
+  "of": 10,
+  "mean_gain_of_a_copy": -0.0094
+ },
+ "each": [
+  {
+   "copy_of": 0,
+   "on": "gate",
+   "old_gate_gain": 0.0065,
+   "old_gate_keeps": true,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained +0.0011 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 1,
+   "on": "gate",
+   "old_gate_gain": -0.0036,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0019 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 2,
+   "on": "gate",
+   "old_gate_gain": -0.0172,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0155 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 3,
+   "on": "gate",
+   "old_gate_gain": -0.0031,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0040 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 4,
+   "on": "gate",
+   "old_gate_gain": -0.0036,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0040 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 5,
+   "on": "gate",
+   "old_gate_gain": -0.0138,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0123 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 7,
+   "on": "gate",
+   "old_gate_gain": -0.0127,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0129 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 8,
+   "on": "gate",
+   "old_gate_gain": -0.0201,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0188 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 12,
+   "on": "gate",
+   "old_gate_gain": -0.0112,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0103 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 13,
+   "on": "gate",
+   "old_gate_gain": -0.0176,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0166 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 0,
+   "on": "report",
+   "old_gate_gain": 0.004,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0000 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 1,
+   "on": "report",
+   "old_gate_gain": -0.0021,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0020 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 2,
+   "on": "report",
+   "old_gate_gain": -0.0199,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0180 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 3,
+   "on": "report",
+   "old_gate_gain": -0.0008,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0030 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 4,
+   "on": "report",
+   "old_gate_gain": -0.0032,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0025 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 5,
+   "on": "report",
+   "old_gate_gain": -0.0165,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0147 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 7,
+   "on": "report",
+   "old_gate_gain": -0.0089,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0114 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 8,
+   "on": "report",
+   "old_gate_gain": -0.0197,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0213 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 12,
+   "on": "report",
+   "old_gate_gain": -0.0123,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0184 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 13,
+   "on": "report",
+   "old_gate_gain": -0.0143,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0155 (it needs more than 0.004)"
+  }
+ ]
+}

@@ -1,0 +1,114 @@
+{
+ "body": "b3",
+ "copies": 6,
+ "gate": {
+  "old_gate_kept": 3,
+  "new_gate_kept": 3,
+  "of": 6,
+  "mean_gain_of_a_copy": 0.0072
+ },
+ "report": {
+  "old_gate_kept": 4,
+  "new_gate_kept": 4,
+  "of": 6,
+  "mean_gain_of_a_copy": 0.0076
+ },
+ "each": [
+  {
+   "copy_of": 0,
+   "on": "gate",
+   "old_gate_gain": 0.0218,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0143, give or take 0.0019 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 1,
+   "on": "gate",
+   "old_gate_gain": 0.0094,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0097, give or take 0.0010 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 2,
+   "on": "gate",
+   "old_gate_gain": -0.0025,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0014 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 3,
+   "on": "gate",
+   "old_gate_gain": 0.0123,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0105, give or take 0.0011 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 4,
+   "on": "gate",
+   "old_gate_gain": 0.0029,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained +0.0023 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 5,
+   "on": "gate",
+   "old_gate_gain": -0.0004,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0018 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 0,
+   "on": "report",
+   "old_gate_gain": 0.0217,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0143, give or take 0.0018 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 1,
+   "on": "report",
+   "old_gate_gain": 0.0082,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0102, give or take 0.0009 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 2,
+   "on": "report",
+   "old_gate_gain": -0.003,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0042 (it needs more than 0.004)"
+  },
+  {
+   "copy_of": 3,
+   "on": "report",
+   "old_gate_gain": 0.0107,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0104, give or take 0.0013 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 4,
+   "on": "report",
+   "old_gate_gain": 0.0051,
+   "old_gate_keeps": true,
+   "new_gate_keeps": true,
+   "new_gate_says": "where it lives the body gained +0.0048, give or take 0.0014 on 120 passages; it wakes on 100% of the passages near it"
+  },
+  {
+   "copy_of": 5,
+   "on": "report",
+   "old_gate_gain": 0.003,
+   "old_gate_keeps": false,
+   "new_gate_keeps": false,
+   "new_gate_says": "where it lives the body gained -0.0005 (it needs more than 0.004)"
+  }
+ ]
+}
