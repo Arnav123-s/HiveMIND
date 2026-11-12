@@ -1,0 +1,200 @@
+{
+ "body": "first",
+ "cells": 10,
+ "needs": 0.004,
+ "passages": 60,
+ "standard_error_of_a_gain": 0.0035,
+ "gated_cells": {
+  "n": 4,
+  "gain_at_birth": 0.0121,
+  "gain_now_on_gate_passages": 0.0066,
+  "gain_now_on_report_passages": 0.0065
+ },
+ "first_cells": {
+  "n": 6,
+  "gain_now_on_gate_passages": 0.0284,
+  "gain_now_on_report_passages": 0.0271
+ },
+ "each": [
+  {
+   "cell": 0,
+   "on": "gate",
+   "gain": 0.0643,
+   "standard_error": 0.0051,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 1,
+   "on": "gate",
+   "gain": 0.0304,
+   "standard_error": 0.0035,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 2,
+   "on": "gate",
+   "gain": 0.0075,
+   "standard_error": 0.0024,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 3,
+   "on": "gate",
+   "gain": 0.0402,
+   "standard_error": 0.0055,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 4,
+   "on": "gate",
+   "gain": 0.0239,
+   "standard_error": 0.0033,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 5,
+   "on": "gate",
+   "gain": 0.0041,
+   "standard_error": 0.0026,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 7,
+   "on": "gate",
+   "gain": 0.0035,
+   "standard_error": 0.0033,
+   "awake_on": 0.85,
+   "went_through_the_gate": true,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 8,
+   "on": "gate",
+   "gain": -0.0005,
+   "standard_error": 0.0024,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 12,
+   "on": "gate",
+   "gain": 0.0115,
+   "standard_error": 0.0038,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0124
+  },
+  {
+   "cell": 13,
+   "on": "gate",
+   "gain": 0.012,
+   "standard_error": 0.0041,
+   "awake_on": 0.93,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0118
+  },
+  {
+   "cell": 0,
+   "on": "report",
+   "gain": 0.0525,
+   "standard_error": 0.0034,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 1,
+   "on": "report",
+   "gain": 0.0354,
+   "standard_error": 0.0038,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 2,
+   "on": "report",
+   "gain": 0.0108,
+   "standard_error": 0.004,
+   "awake_on": 0.98,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 3,
+   "on": "report",
+   "gain": 0.0379,
+   "standard_error": 0.0059,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 4,
+   "on": "report",
+   "gain": 0.0257,
+   "standard_error": 0.0031,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 5,
+   "on": "report",
+   "gain": 0.0,
+   "standard_error": 0.0022,
+   "awake_on": 1.0,
+   "went_through_the_gate": false,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 7,
+   "on": "report",
+   "gain": 0.0015,
+   "standard_error": 0.0025,
+   "awake_on": 0.72,
+   "went_through_the_gate": true,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 8,
+   "on": "report",
+   "gain": 0.0002,
+   "standard_error": 0.0024,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": null
+  },
+  {
+   "cell": 12,
+   "on": "report",
+   "gain": 0.0042,
+   "standard_error": 0.003,
+   "awake_on": 1.0,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0124
+  },
+  {
+   "cell": 13,
+   "on": "report",
+   "gain": 0.0201,
+   "standard_error": 0.0039,
+   "awake_on": 0.9,
+   "went_through_the_gate": true,
+   "gain_at_birth": 0.0118
+  }
+ ]
+}

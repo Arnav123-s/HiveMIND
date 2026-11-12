@@ -1,0 +1,36 @@
+{
+ "when": "2026-11-11 20:30",
+ "threads": 4,
+ "torch": "2.15.0+cu132",
+ "seconds_each": 40.0,
+ "sizes": [
+  {
+   "size": "the hive's stem cell",
+   "weights": 2615424,
+   "pieces_a_second": 11221,
+   "pieces_a_day_on_the_runners": 484760440,
+   "years_to_read_4_trillion_pieces": 23
+  },
+  {
+   "size": "384 wide, 6 layers",
+   "weights": 12318720,
+   "pieces_a_second": 3576,
+   "pieces_a_day_on_the_runners": 154464423,
+   "years_to_read_4_trillion_pieces": 71
+  },
+  {
+   "size": "512 wide, 8 layers",
+   "weights": 27448320,
+   "pieces_a_second": 1675,
+   "pieces_a_day_on_the_runners": 72345782,
+   "years_to_read_4_trillion_pieces": 151
+  },
+  {
+   "size": "768 wide, 12 layers",
+   "weights": 88398336,
+   "pieces_a_second": 591,
+   "pieces_a_day_on_the_runners": 25543894,
+   "years_to_read_4_trillion_pieces": 429
+  }
+ ]
+}

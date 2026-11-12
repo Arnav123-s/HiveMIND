@@ -10,6 +10,27 @@ no API keys, no accounts, nothing to pay for. Each specialist has its own weight
 on held-out tasks, wrote training data aimed at what it got wrong, and edited its weights on CPU
 (details and before/after numbers below).
 
+## One hive, two layers (where it stands, 2026-11-11)
+
+- **The working hive** is what you use. Small pretrained models, each in its job (plan, research, browse, write
+  and run code, check, write up), with tools, a jury and a guard. It converses, follows orders and does whole
+  tasks; on fresh whole tasks it was never tuned on it passed 13 of 16. Use it on GitHub with no machine of yours
+  on ("Use it from anywhere"), on your own device (`./hive`), or through its API. Everything from "The team" down
+  to "Limits" is about it.
+- **The growing hive** is what grows without limit: bodies of BitNet cells trained from random numbers on text the
+  hive harvests itself ("From nothing"). It takes a turn on GitHub once a day with nobody present. Today it
+  writes simple stories; it cannot do tasks.
+- **One rule at every level:** try a variation, measure it on fresh material nobody tuned on, keep only what is
+  better. Cells are grown by trainers that are bred by their record; stem cells by a recipe that every founding
+  changes in one thing; bodies are founded on what the others read worst; the working hive's small models go to
+  school with its bigger ones, recruit other small models, and learn lessons from their own verified work; and
+  every day the working hive sits a fresh exam that code makes and code checks (`training/exam.py`), so that
+  whether it is getting better, field by field, is a measured line and not a claim.
+- **Not there yet, said plainly:** on GitHub the working hive is used and examined, but it does not yet learn there
+  (school, dreams and recruiting run on a device while it is idle). The growing hive does not yet do any of the
+  working hive's jobs. Models this small stay well below the large commercial ones at open-ended reasoning; what
+  the hive adds is checking, tools, many specialists, and the fact that it keeps improving on its own.
+
 ## The team
 
 | specialist | brain (all Apache-2.0, run on CPU) | job | tools |
@@ -150,6 +171,20 @@ teacher (oldest 70% to train, next 15% to choose, newest 15% to judge), and it a
 it agreed with the member at least 97% of the time; the member answers the rest, and those answers keep being logged,
 so the next `grow` learns from newer work. The always-on agent runs `grow` by itself when the device is idle. Tests
 and bench runs use a throwaway memory, so they never teach the hive.
+
+## Use it from anywhere, with no machine of yours on (`.github/workflows/ask.yml`)
+
+On GitHub: the repository's **Actions** tab, **Ask the hive**, **Run workflow**, and type what you want done. A
+runner installs the hive (about fifteen minutes), the hive plans the task, researches it on live sources, writes and
+runs code where that helps, checks its own work with a jury and writes the answer. The answer is on the run's page
+(Summary); every file it made (charts, CSVs, programs, the whole record of the run) is in the run's artifact
+`the-hive-answer`. It works from a phone.
+
+- **This repository is public, so the task you type and the answer are public too.** For anything private, install
+  the hive on your own device (`sh setup.sh`) and talk to it there.
+- The run has no token that can write anywhere, logs in nowhere and spends nothing; risky actions are never approved.
+- It is the same hive as on a device, without your memory and profile (a runner starts empty every time).
+- Not confirmed until its first run on GitHub. The same steps were rehearsed in a fresh clone on the cloud machine.
 
 ## Just talk to it: `hive`
 
@@ -850,7 +885,9 @@ have thousands. Two ways of training them are built:
   hour. Every check is read the way a big body reads: the stem cell and the four nearest cells, every other cell
   asleep on disk (`Body`). So a turn costs the same at ten cells and at ten thousand; only the disk grows, 0.6 MB a
   cell. A newborn is judged where it lives: on unseen passages nearest its territory, the body with it against the
-  body without it (`judge_local`). Text harvested since the last turn is placed on the map, so there is always new
+  body without it (`judge_local`). Since 2026-11-12 its gain there must also be twice the standard error of the
+  measurement: the bar of 0.004 alone was one standard error, and of six cells kept by it three added nothing that
+  could be told from zero on passages that never decided anything (`training/experiments/gate_noise.py`, `gate_aa.py`). Text harvested since the last turn is placed on the map, so there is always new
   ground to divide (`place_new`).
 - *A hive of bodies.* The whole is not one body. Each body has its own stem cell and cells and multiplies on its own
   turns; all share one vocabulary and one harvest. A passage is read by every body and each body's say follows how it
@@ -910,6 +947,13 @@ have thousands. Two ways of training them are built:
   two bodies' numbers above are about 0.03 to 0.04 better than they would be on new text.
   The new recipe holds at full length: two stem cells from the same start on the same text, 40 minutes each, on 400
   held windows neither trained on: the old recipe 3.0337 (3675 steps), the new one 2.9288 (3621 steps).
+- *Can the body teach its stem cell?* (2026-11-11; `training/reports/sleep.json`.) Tried and not built in. The
+  third body's stem cell went on learning for 8 minutes in six ways. Reading on at the low rate was best (3e-4:
+  3.380 -> 3.190 on held windows; 1e-3: 3.227; 3e-3: 3.292). Being taught by its own body (it reads half its
+  batches from windows where what the body expects at every piece was kept) learns more per step but not per
+  minute: 3.198. And a stem cell 0.19 better moved its body by only 0.004, because the cells were made from the
+  stem cell as it was: what a stem cell learns pays off in the cells born after it. So a stem cell that is still
+  learning fast now reads for as long as a birth takes (`body.stem_minutes`), a third of that once it has slowed.
 - *A cell grown as one of the team* (trained on the body's loss with it in, `how: team`): on one territory of the
   first body, 12 minutes each, the usual way from the nearest cell added 0.0200 where the cell lives, the team way
   0.0136 at best (0.0003 with a smaller share), and from the stem cell neither way helped. It stays as one kind of
@@ -918,7 +962,7 @@ have thousands. Two ways of training them are built:
   weights differ from the stem cell's, which is not few enough to save space.
 
 **It grows with no machine of ours switched on** (2026-11-11; `.github/workflows/hive.yml`, `training/hive_state.py`).
-Every six hours GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
+Once a day (every six hours until 2026-11-12) GitHub's own free runners (free for a public repository) give the hive a turn: the hive as it was
 is fetched, it harvests a little more open text (`harvest --more 2`: each source may grow two megabytes a run),
 every body takes its turn in the order of who waited longest and within a time budget (`body --budget 180`), a body
 that is due is founded, everything is measured, and a line is added to `training/reports/hive_growth.jsonl`.
