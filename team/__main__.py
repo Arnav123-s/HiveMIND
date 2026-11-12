@@ -158,10 +158,16 @@ def main():
 
     signal.signal(signal.SIGINT, on_ctrl_c)
     if os.environ.get("AGENT_TEAM_SOLO", "").isdigit() and int(os.environ["AGENT_TEAM_SOLO"]) > 0:
-        from . import solo  # members that each do the whole task, and agree (team/solo.py); measured against the roles
-        out = solo.run(task, a.run_dir, a.approve, members=int(os.environ["AGENT_TEAM_SOLO"]))
-        print("\n" + "=" * 70 + "\n" + out["report"][:6000] + "\nRun folder: " + out["dir"])
-        return None
+        # Members first (team/solo.py: each does the whole task by programs, and two must agree). On the first exam
+        # they sat, five of their six failures were "no answer given" and one was a wrong answer; the roles passed
+        # three of those five. So where the members confirm nothing, the roles take the task, as they always did.
+        from . import solo
+        out = solo.first(task, a.run_dir, a.approve, members=int(os.environ["AGENT_TEAM_SOLO"]))
+        if out["agreed"]:
+            print("\n" + "=" * 70 + "\n" + out["report"][:6000] + "\nRun folder: " + out["dir"])
+            return None
+        a.run_dir = out["dir"]
+        print("\n*** the members confirmed no answer; the roles take the task", flush=True)
     if a.until_done:
         from .sdk import Swarm
         job = Swarm(approve=a.approve).submit(task, until_done=a.until_done, allow_login=a.allow_login)
