@@ -21,6 +21,9 @@ on:
       practice:
         description: "1: not an exam but practice (the same as The hive practises): what the members solve stays in the library"
         default: ""
+      alone:
+        description: "1 (with members): the members by themselves, the roles do not take what they leave"
+        default: ""
       empty_memory:
         description: "1: sit it with nothing learned (to measure what the learning is worth)"
         default: ""
@@ -44,6 +47,7 @@ jobs:
       AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
       SEED: ${{ inputs.seed || '' }}
       EMPTY: ${{ inputs.empty_memory || '' }}
+      AGENT_TEAM_SOLO_ALONE: ${{ inputs.alone || '' }}
       PRACTICE: ${{ inputs.practice || '' }}
     steps:
       - uses: actions/checkout@v4
