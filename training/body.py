@@ -1093,7 +1093,11 @@ def _turned():
         return {}
 
 
-NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32, "cool": 0.0, "floor": 0.1, "mean": 0.0}
+# Since 2026-11-12 (training/experiments/recipe7_long.json; 20 minutes each from the same start, 352 gate passages):
+# as it was 3.4825; with rotary positions 3.2764; with rotary positions and the rate falling over the second half
+# 3.1045, and the running mean of those weights 3.0960 (the better of the two is kept). What won at 600 steps but
+# costs time (Muon, 16 passages at a time, relu squared: 3.5680 together) is not in it.
+NEW_BODY = {"shape": {"rotary": True}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32, "cool": 0.5, "floor": 0.1, "mean": 0.99}
 BEFORE = {"cool": 0.0, "floor": 0.1, "mean": 0.0}  # what a recipe on record had of the things recipes did not yet name
 
 # ---- the hive finds its own recipe -----------------------------------------------------------------------------------

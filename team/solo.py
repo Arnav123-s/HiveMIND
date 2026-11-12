@@ -38,7 +38,8 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Whatever can be computed, compute: arithmetic, primes, dates, counting, sorting, text handling. Do not look those up.
 - Only a fact about the world (a version, a release date, a price, a person, a population) is read from a source, by
   the program, never from your memory. APIs are better than pages:
-  https://pypi.org/pypi/NAME/json   https://huggingface.co/api/models/OWNER/NAME
+  https://pypi.org/pypi/NAME/json (["info"]["version"]; ["releases"][VERSION][0]["upload_time"])
+  https://huggingface.co/api/models/OWNER/NAME
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
   Use requests with timeout=30. If you do not know what a source returns, first print a small part of it and look.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
@@ -50,6 +51,8 @@ Every program is complete by itself: it does not use variables of an earlier pro
 MORE = ("If this output, as it stands, is the complete and correct answer to the TASK, reply with the one word DONE. "
         "If not, reply with a better complete program.")
 TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 6))
+FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing", re.I)
+LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing", re.I)
 
 
 def key(answer, task):
@@ -93,17 +96,25 @@ def member(task, n, board, guard, work, temperature):
         out, err = res["stdout"].strip(), res["stderr"].strip()
         board.log(f"member{n}", "run", f"turn {turn}: exit {res['returncode']}, printed {len(out)} characters")
         messages.append({"role": "assistant", "content": f"```python\n{code}\n```"})
+        if res["returncode"] == 0 and out and FAILED.search(out) and len(out) < 400:
+            # a program that catches its own error and prints it has not answered ("The 'upload_time' key does not
+            # exist in the response." was one member's answer to "when was the latest httpx released")
+            res = dict(res, returncode=1)
+            err = f"The program printed a failure, not an answer: {out[-300:]}"
         if res["returncode"] == 0 and out:
             good, last_error = {"answer": out[-3000:], "program": code}, None
             messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n{MORE}"})
             continue
-        line = (err.splitlines() or ["it printed nothing"])[-1][:300]
+        line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
         if line == last_error:  # its fix changed nothing: another turn of the same would cost minutes and give the same
             board.log(f"member{n}", "same-error", line[:150])
             break
         last_error = line
-        messages.append({"role": "user", "content": (f"ERROR:\n{err[-900:]}" if err else "It ran but printed nothing.")
-                         + "\n\nReply with the whole corrected program."})
+        shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
+        messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
+            "\n\nWhat you expected is not there. Reply with a program that first prints what IS there (the keys of "
+            "the data, or its first 600 characters) so that you can see it." if LOOK.search(err or out) else
+            "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn}
 
 

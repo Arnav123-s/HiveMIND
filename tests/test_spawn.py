@@ -1157,10 +1157,11 @@ def test_a_recipe_on_record_from_before_a_setting_existed_is_read_as_it_was(tmp_
     monkeypatch.setattr(B.T, "SHARED", tmp_path)
     old = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}  # b3's recipe: it names no falling rate
     (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": old, "minutes": 40.0, "score": 3.10}]))
-    monkeypatch.setitem(B.NEW_BODY, "cool", 0.5)                                            # the recipe as built in now has one
+    assert B.NEW_BODY["cool"] == 0.5 and B.NEW_BODY["mean"] == 0.99 and B.NEW_BODY["shape"] == {"rotary": True}  # as built in since 2026-11-12
     recipe, changed = B.next_recipe(random.Random(0))
-    assert changed is None and recipe["cool"] == 0.5                                        # so it is new, and is tried as it stands
-    monkeypatch.setitem(B.NEW_BODY, "cool", 0.0)                                            # without one it is b3's recipe: tried already
+    assert changed is None and recipe["cool"] == 0.5 and recipe["shape"]["rotary"]          # so it is new, and is tried as it stands
+    for k, v in {"cool": 0.0, "mean": 0.0, "shape": {}}.items():                            # as it was built in before: b3's recipe, tried already
+        monkeypatch.setitem(B.NEW_BODY, k, v)
     child, what = B.next_recipe(random.Random(0))
     assert what is not None
 
