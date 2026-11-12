@@ -18,6 +18,9 @@ on:
       seed:
         description: "The sitting's number (empty: today's)"
         default: ""
+      practice:
+        description: "1: not an exam but practice (the same as The hive practises): what the members solve stays in the library"
+        default: ""
       empty_memory:
         description: "1: sit it with nothing learned (to measure what the learning is worth)"
         default: ""
@@ -29,7 +32,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}
+  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}
   cancel-in-progress: false
 
 jobs:
@@ -41,6 +44,7 @@ jobs:
       AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
       SEED: ${{ inputs.seed || '' }}
       EMPTY: ${{ inputs.empty_memory || '' }}
+      PRACTICE: ${{ inputs.practice || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive
@@ -51,7 +55,19 @@ jobs:
           key: hive-solved-${{ github.run_id }}
           restore-keys: hive-solved-
       - name: The exam
-        run: python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory}
+        run: |
+          if [ -n "$PRACTICE" ]; then
+            python training/exam.py practice --tasks "$TASKS" | tee practice.txt
+            echo "### Practice" >> "$GITHUB_STEP_SUMMARY"; tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
+          else
+            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory}
+          fi
+      - name: Keep what it solved in practice
+        if: ${{ !cancelled() && inputs.practice && hashFiles('memory/solved.jsonl') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}
       - name: How it went
         if: ${{ !cancelled() }}
         run: cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY" || true
@@ -63,7 +79,7 @@ jobs:
           retention-days: 30
   record:
     needs: sit
-    if: ${{ !inputs.members && !inputs.empty_memory }}
+    if: ${{ !inputs.members && !inputs.empty_memory && !inputs.practice }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
