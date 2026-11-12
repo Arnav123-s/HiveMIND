@@ -885,7 +885,9 @@ have thousands. Two ways of training them are built:
   hour. Every check is read the way a big body reads: the stem cell and the four nearest cells, every other cell
   asleep on disk (`Body`). So a turn costs the same at ten cells and at ten thousand; only the disk grows, 0.6 MB a
   cell. A newborn is judged where it lives: on unseen passages nearest its territory, the body with it against the
-  body without it (`judge_local`). Text harvested since the last turn is placed on the map, so there is always new
+  body without it (`judge_local`). Since 2026-11-12 its gain there must also be twice the standard error of the
+  measurement: the bar of 0.004 alone was one standard error, and of six cells kept by it three added nothing that
+  could be told from zero on passages that never decided anything (`training/experiments/gate_noise.py`, `gate_aa.py`). Text harvested since the last turn is placed on the map, so there is always new
   ground to divide (`place_new`).
 - *A hive of bodies.* The whole is not one body. Each body has its own stem cell and cells and multiplies on its own
   turns; all share one vocabulary and one harvest. A passage is read by every body and each body's say follows how it

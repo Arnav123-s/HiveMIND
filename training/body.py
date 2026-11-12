@@ -89,6 +89,12 @@ def _body():
 
 
 NEAR_M, LOCAL = 4, 0.004  # cells awake beside the stem cell; what a newborn must gain where it lives
+# Measured 2026-11-11 (training/experiments/gate_noise.py): the gain of a cell on its 60 nearest unseen passages has a
+# standard error of 0.0035, as large as LOCAL, so a newborn that added nothing passed now and then by luck (of six
+# gated cells alive, three added nothing that could be told from zero on passages that never decided anything).
+# So a newborn is read on more passages (NEARBY, counted where it wakes), and its gain must also be SURE standard
+# errors above nothing.
+SURE, NEARBY = 2.0, 120
 
 
 class Body:
@@ -861,14 +867,21 @@ def learn_say(first, second, log=print):
 def judge_local(before, after, woke):
     """Is a newborn kept? It is judged where it lives: on unseen passages nearest to its territory, the body with it
     against the body as if it were not there (it takes another cell's place among those awake, so what it costs is in
-    the same number). It must wake on some of them and gain LOCAL there. Elsewhere it sleeps and changes nothing,
-    which is how the body stays good at what it was."""
-    gain = (before.mean() - after.mean()).item()
-    if woke <= 0:
+    the same number). It must wake on some of them, gain LOCAL there, and gain more than chance gives: SURE times
+    the standard error of its gain over those passages. Elsewhere it sleeps and changes nothing, which is how the
+    body stays good at what it was. before/after: the body's loss on each passage, without it and with it."""
+    if woke <= 0 or not len(before):
         return False, "it would never be among the cells awake on unseen passages near it"
+    each = before - after
+    gain = each.mean().item()
+    chance = each.std().item() / math.sqrt(len(each)) if len(each) > 1 else float("inf")
     if gain <= LOCAL:
         return False, f"where it lives the body gained {gain:+.4f} (it needs more than {LOCAL})"
-    return True, f"where it lives the body gained {gain:+.4f}; it wakes on {woke:.0%} of the passages near it"
+    if gain <= SURE * chance:
+        return False, (f"where it lives the body gained {gain:+.4f}, give or take {chance:.4f} on {len(each)} passages: "
+                       f"chance alone could give that (it needs {SURE:g} times the give-or-take)")
+    return True, (f"where it lives the body gained {gain:+.4f}, give or take {chance:.4f} on {len(each)} passages; "
+                  f"it wakes on {woke:.0%} of the passages near it")
 
 
 def turn(minutes=10.0, cells=6, found_minutes=90.0, log=print, births=3):
@@ -936,11 +949,12 @@ def turn(minutes=10.0, cells=6, found_minutes=90.0, log=print, births=3):
         k = grow(minutes, log=log, trainer=t, body=b)
         b = Body()
         near = b.near(data, pool)[:, k]
-        local = [pool[i] for i in near.topk(min(60, len(pool))).indices.tolist()]  # the unseen passages nearest to it
+        local = [pool[i] for i in near.topk(min(NEARBY, len(pool))).indices.tolist()]  # the unseen passages nearest to it
         f1, s1, _ = b.read(data, local, without=(k,))
         f2, s2, w2 = b.read(data, local)
-        before, after = fit_loss(f1, s1), fit_loss(f2, s2)
-        kept, why = judge_local(before, after, (w2 == k).any(1).float().mean().item())
+        wakes = (w2 == k).any(1)  # where it sleeps it changes nothing: it is judged on the passages it wakes on
+        before, after = fit_loss(f1, s1)[wakes], fit_loss(f2, s2)[wakes]
+        kept, why = judge_local(before, after, wakes.float().mean().item())
         if not kept:
             _remove(k)
             b = Body()
@@ -949,7 +963,9 @@ def turn(minutes=10.0, cells=6, found_minutes=90.0, log=print, births=3):
         t["kept"] += int(kept)
         born = _report().get("births", [])
         born.append({"cell": k, "when": time.strftime("%Y-%m-%d %H:%M"), "trainer": t["id"], "on": t["on"], "kept": kept, "why": why,
-                     "near_before": round(before.mean().item(), 4), "near_after": round(after.mean().item(), 4)})
+                     "passages": int(wakes.sum()),
+                     "near_before": round(before.mean().item(), 4) if len(before) else None,
+                     "near_after": round(after.mean().item(), 4) if len(after) else None})
         _report(births=born, trainers=breed(ts, rnd))
         log(f"[body] trainer {t['id']} grew cell {k} ({t['on']}); {'kept' if kept else 'removed at birth'}: {why}", flush=True)
     learn_say(*Body().read(data, spread)[:2], log)

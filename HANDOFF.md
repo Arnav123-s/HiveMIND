@@ -133,8 +133,13 @@ not answered.
   and recipe6's arms (batch, rotary positions, relu squared, a plainer norm, a small start, normed queries and keys).
   Whatever beats the three starts by twice their spread is run together, then held against today's recipe at the
   40 minutes of a founding, then built into `scratch.py` and `body.NEW_BODY`.
-- The birth gate: more passages and two standard errors (`body.judge_local`), with its rate of keeping a newborn that
-  adds nothing measured before and after.
+- DONE, the birth gate (`body.judge_local`, `SURE`, `NEARBY`): a newborn is read on the passages it wakes on among
+  its 120 nearest gate passages, and its gain must exceed 0.004 and twice its standard error. Measured with newborns
+  that add nothing (`training/experiments/gate_aa.py`: an exact copy of each living cell on the same territory; in
+  the first body and b2 a copy makes the body 0.005 to 0.010 worse on average): of 32 such judgements the old gate
+  kept 2, the new one none. In b3 a copy makes the body 0.007 BETTER and both gates keep half of them, rightly: b3
+  has never learned the say of its members (it has had no turn since its cells were made), so a second vote for a
+  good cell helps; a turn learns the say before it judges births.
 - Bodies: a new stem cell cools before its cells are born; a cell born from a stem cell that has since got much
   better is grown again and the better one kept; founding by copying the best stem cell against founding from random.
 - The working hive's gate for every change, on GitHub (open item 1 below). Needs the exam on `main` and Hugging Face.
