@@ -71,5 +71,43 @@
   "train_last": 3.7313,
   "three_valued_weights": 884736,
   "share_at_the_outer_levels": 0.22
+ },
+ "gradient training, half size, start 1": {
+  "gate": 3.7616,
+  "steps": 985,
+  "minutes": 8.0,
+  "train_last": 3.7244,
+  "three_valued_weights": 884736
+ },
+ "votes, half size, start 1": {
+  "gate": 3.9876,
+  "steps": 927,
+  "minutes": 8.0,
+  "train_last": 3.9861,
+  "three_valued_weights": 884736
+ },
+ "votes, five levels, half size, start 1": {
+  "gate": 3.9181,
+  "steps": 936,
+  "minutes": 8.0,
+  "train_last": 3.9063,
+  "three_valued_weights": 884736,
+  "share_at_the_outer_levels": 0.2128
+ },
+ "votes, five levels, start 1": {
+  "gate": 4.2568,
+  "steps": 534,
+  "minutes": 8.0,
+  "train_last": 4.2864,
+  "three_valued_weights": 1769472,
+  "share_at_the_outer_levels": 0.0884
+ },
+ "votes, five levels, half size, rotary positions, start 1": {
+  "gate": 3.7608,
+  "steps": 869,
+  "minutes": 8.0,
+  "train_last": 3.7495,
+  "three_valued_weights": 884736,
+  "share_at_the_outer_levels": 0.1961
  }
 }
