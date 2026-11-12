@@ -8,8 +8,11 @@ many days ago that was". It got none right: a wrong program passed because it ra
 researcher; a release date was made up and ticked as done. Each failure was at a hand-over between roles that are
 each a small model: the plan, the step's wording, the jury. So here there are no roles. A member is one model that
 sees the task as it was given and works on it the only way it can be checked: it writes a program, the program is
-run, the member reads what it printed, and goes on until a program does the whole task and prints the answer. What
-the member "knows" never reaches the answer unless a program printed it.
+run, the member reads what it printed, and writes a better one until it says the output is the answer. The answer
+is what that program printed: what the member "knows" never reaches it otherwise.
+(Its first form asked for a closing program with a marked last line. On GitHub one member worked the primes out
+right in its first program and then failed seven times at the closing form. So there is none: a program, its
+output, and the one word DONE.)
 
 One member can still be wrong. So the task is done again by another member, independently (it sees nothing of the
 first), and code compares the two answers' values. The same twice: that is the answer. Different: a third member
@@ -31,82 +34,77 @@ from .specialists.coder import extract_code
 from .tools.sandbox import run_python
 
 MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
-Each turn reply with ONE ```python block and nothing else. It is run, and you are shown what it printed.
-- Take small steps. First look: fetch the page or API and print the part that matters. Then compute from what you saw.
-- A fact about the world (a version, a date, a price, a person, a count) must come from a source a program of yours read
-  in this conversation, never from memory. APIs are better than pages:
+Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
+- Whatever can be computed, compute: arithmetic, primes, dates, counting, sorting, text handling. Do not look those up.
+- Only a fact about the world (a version, a release date, a price, a person, a population) is read from a source, by
+  the program, never from your memory. APIs are better than pages:
   https://pypi.org/pypi/NAME/json   https://huggingface.co/api/models/OWNER/NAME
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
-- requests and BeautifulSoup are installed. Use timeout=30. Print a few hundred characters, never a whole page.
-- Dates, counts and sums are worked out by the program (datetime, len, sum), never in your head. Today is {today}.
-- A file the task asks for is saved in the current folder under the exact name given.
+  Use requests with timeout=30. If you do not know what a source returns, first print a small part of it and look.
+- Dates and differences of dates are worked out with datetime. Today is {today}.
+- What the program prints is what the user reads: print every result the task asks for, each with a few words saying
+  what it is. Print nothing else. A file the task asks for is saved in the current folder under the exact name given.
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
-When a program of yours has shown everything the task asks for, write the LAST program: it does the whole task again
-from the start, by itself, and prints a line FINAL ANSWER, then the answer for the user in plain words (every value
-from a variable, none typed in), then one last line starting with KEY: that holds only the bare values asked for,
-separated by commas."""
-
-TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 8))
+Every program is complete by itself: it does not use variables of an earlier program."""
+MORE = ("If this output, as it stands, is the complete and correct answer to the TASK, reply with the one word DONE. "
+        "If not, reply with a better complete program.")
+TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 6))
 
 
 def key(answer, task):
-    """What two answers are compared by: the KEY line's values, lower-cased, numbers as numbers; without one, the
-    answer's numbers that the task does not itself name."""
-    m = re.search(r"(?im)^\s*KEY:\s*(.+)$", answer)
-    if m:
-        parts = [p.strip().lower().strip(".'\"") for p in re.split(r"[,;]", m.group(1)) if p.strip()]
-        out = []
-        for p in parts:
-            try:
-                out.append(str(round(float(p.replace(" ", "")), 4)))
-            except ValueError:
-                out.append(re.sub(r"\s+", " ", p))
-        return tuple(sorted(out))
+    """What two members' answers are compared by: their numbers, without those the task itself names."""
     from .specialists.coder import answer as numbers
-    return tuple(str(x) for x in numbers(answer, task))
+    return numbers(answer, task)
 
 
-def same(a, b):
-    """Do two answers' values agree? Equal; or, where they are words and no numbers (a translation, a name with or
-    without its article), mostly the same words."""
-    if not a or not b:
+def same(a, b, task=""):
+    """Do two members' answers agree? The same numbers; or, where neither holds a number (a translation, a name),
+    mostly the same words."""
+    if not a.strip() or not b.strip():
         return False
-    if a == b:
-        return True
-    ta, tb = " ".join(a), " ".join(b)
-    if re.search(r"\d", ta + tb):
-        return False
-    wa, wb = set(re.findall(r"\w+", ta)), set(re.findall(r"\w+", tb))
+    ka, kb = key(a, task), key(b, task)
+    if ka or kb:
+        return ka == kb
+    wa, wb = set(re.findall(r"\w+", a.lower())), set(re.findall(r"\w+", b.lower()))
     return len(wa & wb) / max(1, len(wa | wb)) >= 0.6
 
 
 def member(task, n, board, guard, work, temperature):
-    """One member's whole try. Returns {"answer", "program", "turns"} (answer "" when it never got there)."""
+    """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
+    printed ("" when none ran)."""
     messages = [{"role": "system", "content": MEMBER.format(today=time.strftime("%Y-%m-%d (%A)"))},
                 {"role": "user", "content": f"TASK: {task}"}]
-    seen = set()
+    good, last_error, turn = None, None, 0
     for turn in range(1, TURNS + 1):
         stop.check()
-        code = extract_code(llm.chat("coder", messages, max_new_tokens=900, stop="code", temperature=temperature))
-        if code.strip() in seen:  # the same program again: asked once more with chance in the choice of words
-            code = extract_code(llm.chat("coder", messages, max_new_tokens=900, stop="code", temperature=0.8))
-        seen.add(code.strip())
+        reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
+        if "```" not in reply and re.search(r"\bDONE\b", reply):
+            if good:
+                break
+            messages += [{"role": "assistant", "content": reply.strip()[:200]},
+                         {"role": "user", "content": "No program of yours has printed an answer yet. Reply with a complete program."}]
+            continue
+        code = extract_code(reply)
         if not guard.check_code("coder", code):
             board.log(f"member{n}", "stopped", "the program needs Arnav's approval; not run")
-            return {"answer": "", "program": code, "turns": turn, "stopped": True}
+            break
         res = run_python(code, work, name=f"member{n}_{turn}.py")
         out, err = res["stdout"].strip(), res["stderr"].strip()
         board.log(f"member{n}", "run", f"turn {turn}: exit {res['returncode']}, printed {len(out)} characters")
-        if res["returncode"] == 0 and "FINAL ANSWER" in out:
-            return {"answer": out.split("FINAL ANSWER", 1)[1].lstrip(" :\n").strip(), "program": code, "turns": turn}
-        shown = (out[-1800:] or "(nothing printed)") + (f"\nERROR:\n{err[-900:]}" if res["returncode"] != 0 else "")
-        last = turn >= TURNS - 1
-        messages += [{"role": "assistant", "content": f"```python\n{code}\n```"},
-                     {"role": "user", "content": f"OUTPUT:\n{shown}\n\n" + (
-                         "Write the LAST program now: the whole task from the start, FINAL ANSWER, the answer, the KEY: line."
-                         if last else "Go on. If this shows everything the task asks for, write the LAST program.")}]
-    return {"answer": "", "program": "", "turns": TURNS}
+        messages.append({"role": "assistant", "content": f"```python\n{code}\n```"})
+        if res["returncode"] == 0 and out:
+            good, last_error = {"answer": out[-3000:], "program": code}, None
+            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n{MORE}"})
+            continue
+        line = (err.splitlines() or ["it printed nothing"])[-1][:300]
+        if line == last_error:  # its fix changed nothing: another turn of the same would cost minutes and give the same
+            board.log(f"member{n}", "same-error", line[:150])
+            break
+        last_error = line
+        messages.append({"role": "user", "content": (f"ERROR:\n{err[-900:]}" if err else "It ran but printed nothing.")
+                         + "\n\nReply with the whole corrected program."})
+    return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn}
 
 
 def run(task, run_dir=None, approve="never", members=2):
@@ -123,10 +121,9 @@ def run(task, run_dir=None, approve="never", members=2):
         if n > members and (members < 2 or len([t for t in tries if t["answer"]]) < 2):
             break
         t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7)
-        t["key"] = key(t["answer"], task) if t["answer"] else None
         tries.append(t)
-        board.log(f"member{n}", "answer", (t["answer"][:200] or "no answer") + f" | key {t['key']}")
-        like = [x for x in tries[:-1] if same(x["key"], t["key"])]
+        board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
+        like = [x for x in tries[:-1] if same(x["answer"], t["answer"], task)]
         if like:
             agreed = like[0]
             break
@@ -142,7 +139,7 @@ def run(task, run_dir=None, approve="never", members=2):
                 + "\n\n## How it was checked\n- No two members gave the same values.")
     else:
         text = "No member got as far as an answer. Their programs and what they printed are in this run's folder."
-    text = re.sub(r"(?im)^\s*KEY:.*$\n?", "", text).strip() + "\n"
+    text = text.strip() + "\n"
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
     return {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending}
