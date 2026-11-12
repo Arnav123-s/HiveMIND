@@ -18,6 +18,9 @@ on:
       rounds:
         description: Follow-up rounds for anything left undone
         default: "1"
+      members:
+        description: "A trial: members that each do the whole task and must agree (team/solo.py); how many (empty: the hive as it is)"
+        default: ""
 
 permissions:
   contents: read
@@ -29,6 +32,7 @@ jobs:
     env:
       TASK: ${{ inputs.task }}
       ROUNDS: ${{ inputs.rounds || '1' }}
+      AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive

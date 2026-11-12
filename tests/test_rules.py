@@ -1726,3 +1726,26 @@ def test_an_instruction_the_critic_did_not_check_is_asked_again_alone_only_when_
     assert [c["done"] for c in out] == [True, False] and len(asked) == 1 and "INSTRUCTION:\nrun it" in asked[0]
     b.update_step("s1", verdict="FAIL")
     assert writer.ask_again(todo, b, "results", "report") == todo and len(asked) == 1    # a step failed: unchecked stays not done
+
+
+def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_path, monkeypatch):
+    from team import solo
+    look = "print('digits and primes')"
+    right = RIGHT_PRIMES + "print('FINAL ANSWER')\nprint('The primes are', found)\nprint('KEY:', ', '.join(map(str, found)), ',', len(found))"
+    wrong = WRONG_PRIMES + "\nprint('FINAL ANSWER')\nprint(out)\nprint('KEY:', ', '.join(map(str, out)), ',', len(out))"
+    other = "print('FINAL ANSWER')\nprint('none')\nprint('KEY: 0')"
+
+    def hive(programs, name, members=2):
+        left = list(programs)
+        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: f"```python\n{left.pop(0)}\n```")
+        return solo.run(PRIMES_TASK, tmp_path / name, "never", members=members), left
+    out, left = hive([look, right, right.replace("The primes are", "Found:")], "a")
+    assert out["agreed"] and out["tries"] == 2 and not left and "109" in out["report"] and "KEY:" not in out["report"]
+    out, left = hive([wrong, right, right.replace("The primes are", "Found:")], "b")          # the first member is wrong: a third decides
+    assert out["agreed"] and out["tries"] == 3 and "[19, 37, 73, 109, 127, 163, 181]" in out["report"].split("\n## ")[0]
+    out, left = hive([wrong, right, other], "c")
+    body = out["report"].split("\n## ")[0]
+    assert not out["agreed"] and body.startswith("Not confirmed") and "19" not in body         # no member's values are handed over as the answer
+    assert solo.same(("die bibliothek ist heute geschlossen",), ("die bibliothek ist heute geschlossen.",)[:1])
+    assert not solo.same(("12",), ("13",)) and not solo.same((), ()) and not solo.same(("sydney",), ("canberra",))
+    assert solo.key("It is 0.28.1\nKEY: 0.28.1, 2024-12-06, 706", "x") == tuple(sorted(["0.28.1", "2024-12-06", "706.0"]))

@@ -27,6 +27,7 @@
 """
 import argparse
 import json
+import os
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
@@ -156,6 +157,11 @@ def main():
         print("\n*** stopping every specialist now (Ctrl+C again to exit immediately)", flush=True)
 
     signal.signal(signal.SIGINT, on_ctrl_c)
+    if os.environ.get("AGENT_TEAM_SOLO", "").isdigit() and int(os.environ["AGENT_TEAM_SOLO"]) > 0:
+        from . import solo  # members that each do the whole task, and agree (team/solo.py); measured against the roles
+        out = solo.run(task, a.run_dir, a.approve, members=int(os.environ["AGENT_TEAM_SOLO"]))
+        print("\n" + "=" * 70 + "\n" + out["report"][:6000] + "\nRun folder: " + out["dir"])
+        return None
     if a.until_done:
         from .sdk import Swarm
         job = Swarm(approve=a.approve).submit(task, until_done=a.until_done, allow_login=a.allow_login)
