@@ -4,11 +4,10 @@ Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothin
 
 ## Picked up on the new account (2026-11-11, from 20:05 UTC): read this first, then START HERE below
 
-**Where the work lives now.** A cloud session on the new account is given a branch of its own and may not push to
-another without his word. The first one works on `claude/epic-johnson-7ene30`, started from `make-it-work` at d31fd51,
-with a draft PR from it into `make-it-work`. Until he says the old way holds ("push to make-it-work"), the newest
-state is on that branch, not on `make-it-work`. Nothing of his idea below is built: he asked for the flaws and a
-proposal first.
+**Where the work lives now.** A cloud session on the new account is given a branch of its own
+(`claude/epic-johnson-7ene30` for the first one). On 2026-11-12 he said the old way holds: sessions push to
+`make-it-work` as before, and the session's own branch is kept equal to it. What `main` lacks goes to it by a PR
+that needs his yes for that PR.
 
 **This cloud environment** (his "Default"). Package registries, GitHub and most of the web answer. The proxy refuses
 `download.pytorch.org`, `huggingface.co` with its file hosts, and Wikipedia. So here:
@@ -41,11 +40,16 @@ work branch, so they do not run.
 - The yardstick's passages end at window 47,880 of 56,542: they leave out the last seventh of the text, all of it
   Wikipedia. The first body reads 2.4856 on the yardstick and 2.7062 on passages spread over all the text. A body's
   own record (`measure`) now takes the second kind; its numbers from before commit 650bfec are yardstick numbers.
-- `one_model.py`, `one_model_b3.json` (started 20:54 UTC, an hour; see the file for the result): b3's stem cell
-  reading on alone for the 60 minutes its six cells may have read together, read every 6 minutes on the passages the
-  body is measured on (the body: 2.7806 on the yardstick). In its first ten steps it gained 0.08 (3.1146 -> 3.0376):
-  a stem cell founded at the high rate (3e-3) and never cooled down gains at once from a low rate, so part of what
-  b3's cells add to their stem cell is that and not their territories.
+- `one_model.py`, `one_model_b3.json`: b3's stem cell reading on alone, at the low rate, for the 60 minutes its six
+  cells may have read together, read every 6 minutes on the passages the body is measured on. On the yardstick: the
+  stem cell as it was 3.1146; after 6 minutes 2.8710, after 30 minutes 2.8142, after 60 minutes 2.7827; the body
+  with its six cells 2.7806. On passages over all the text: 2.9954 against the body's 2.9863. So one model of a
+  cell's size, given the minutes the cells had, reads as well as the whole body, with a fifth of the weights and one
+  model awake where the body wakes five. Two things follow. A stem cell founded at the high rate (3e-3) and never
+  cooled gains at once from a low rate, and most of what b3's cells add to their stem cell is that and not their
+  territories. And cells should be born from a stem cell that has cooled and slowed down; before that, reading on
+  pays as much. (For the first body, whose stem cell had slowed, ten cells add 0.16; that body was not put to this
+  comparison.)
 - GitHub's terms for Actions, read on docs.github.com (version of 2026-08-27): Actions "should not be used for ...
   any activity that places a burden on our servers, where that burden is disproportionate to the benefits provided
   to users" nor, on GitHub's own runners, for "any other activity unrelated to the production, testing, deployment,
@@ -110,10 +114,32 @@ and how to measure that it is better, and that nothing be built before he answer
   with the same tools and time (the hive against one); a body against one model with the same training (many
   against one); minutes a task at the same pass rate; how well "I expect to pass" matches what happened.
 
-**Asked of him (not answered when this was written).** Yes or no to that direction. Whether he has a device that can
-stay on (which, how much RAM): the hive's real home, private, no terms to break. Whether Microsoft's BitNet runtime
-may be built (code from outside the repository). Whether sessions push to `make-it-work` as before, and whether the
-three commits `main` lacks get a PR. Whether the runs on GitHub stay at about today's hours.
+**Asked of him, and his answer (2026-11-12).** Asked: yes or no to that direction; whether he has a device that can
+stay on; whether Microsoft's BitNet runtime may be built (code from outside the repository); whether sessions push to
+`make-it-work` as before and what `main` lacks gets a PR; whether the runs on GitHub go down to one growing turn and
+one exam a day. His words: "yes on all only if it improves, and the architecture etc the bit nets of microsoft can be
+done better than what it is, one thing do not reduce the capabilities or potential make it as better and stronger as
+possible idk how your job to find it existing items may not be perfect or using them as it is might not be the best
+idea might be need to improve bitnets and what they are and can do, their training creating and much more things
+across the whole thing". So: the direction stands, and every change is kept only if it measures better; the runtime
+may be built; sessions push to `make-it-work`; a PR into `main` is opened and waits for his yes for that PR; BitNets
+themselves (how they are made and trained, here and as published) are to be improved, not only used. The device was
+not answered.
+
+**In work since his answer** (each kept only if it measures better; see the files named for results).
+- `training/experiments/recipe7.py`, `recipe7_result.json`: what trains a BitNet stem cell further in the same time.
+  The recipe as built in from three starts (what chance is worth), then one change each: a rate that falls in the
+  second half, Muon for the three-valued layers, a low-rank term of ordinary weights beside each three-valued layer,
+  and recipe6's arms (batch, rotary positions, relu squared, a plainer norm, a small start, normed queries and keys).
+  Whatever beats the three starts by twice their spread is run together, then held against today's recipe at the
+  40 minutes of a founding, then built into `scratch.py` and `body.NEW_BODY`.
+- The birth gate: more passages and two standard errors (`body.judge_local`), with its rate of keeping a newborn that
+  adds nothing measured before and after.
+- Bodies: a new stem cell cools before its cells are born; a cell born from a stem cell that has since got much
+  better is grown again and the better one kept; founding by copying the best stem cell against founding from random.
+- The working hive's gate for every change, on GitHub (open item 1 below). Needs the exam on `main` and Hugging Face.
+- The published 2.4B BitNet as a member: its makers' runtime, its speed and exams here, then weight edits beside its
+  three-valued weights. Needs Hugging Face.
 
 ## START HERE: moving to a new account (paused 2026-11-11, 20:00 UTC)
 

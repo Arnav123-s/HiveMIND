@@ -28,6 +28,78 @@
     "yardstick": 2.871,
     "all_text": 3.0819
    }
+  },
+  {
+   "minutes": 12.0,
+   "steps": 1030,
+   "loss": {
+    "yardstick": 2.8488,
+    "all_text": 3.0592
+   }
+  },
+  {
+   "minutes": 18.0,
+   "steps": 1534,
+   "loss": {
+    "yardstick": 2.8366,
+    "all_text": 3.0474
+   }
+  },
+  {
+   "minutes": 24.0,
+   "steps": 2063,
+   "loss": {
+    "yardstick": 2.8234,
+    "all_text": 3.0358
+   }
+  },
+  {
+   "minutes": 30.0,
+   "steps": 2591,
+   "loss": {
+    "yardstick": 2.8142,
+    "all_text": 3.0255
+   }
+  },
+  {
+   "minutes": 36.0,
+   "steps": 3107,
+   "loss": {
+    "yardstick": 2.8075,
+    "all_text": 3.0156
+   }
+  },
+  {
+   "minutes": 42.0,
+   "steps": 3629,
+   "loss": {
+    "yardstick": 2.8059,
+    "all_text": 3.017
+   }
+  },
+  {
+   "minutes": 48.0,
+   "steps": 4143,
+   "loss": {
+    "yardstick": 2.7929,
+    "all_text": 3.0048
+   }
+  },
+  {
+   "minutes": 54.0,
+   "steps": 4647,
+   "loss": {
+    "yardstick": 2.7822,
+    "all_text": 2.9916
+   }
+  },
+  {
+   "minutes": 60.0,
+   "steps": 5156,
+   "loss": {
+    "yardstick": 2.7827,
+    "all_text": 2.9954
+   }
   }
  ],
  "when": "2026-11-11 20:54"
