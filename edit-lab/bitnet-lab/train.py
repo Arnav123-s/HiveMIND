@@ -16,10 +16,25 @@ never executed or modified). Arms:
   layered_half - layered with half the ternary weights (2 blocks instead of 4): the
              equal-total-state-bytes comparison (2 counters x half the weights = plain's
              1 counter x all the weights, up to the small packed-state difference).
+  plain_half - plain vote counter at half width (2 blocks, 884,736 weights, 3 levels):
+             the missing control for layered_half (2026-11-12) — same size, same step
+             count, no second layer. If it matches layered_half, the win was the steps.
+  ste_half - gradient/STE trainer (built-in recipe, unchanged) at the same half width:
+             does STE also gain from half size and its extra steps?
   anneal   - plain votes with the threshold annealed 8 -> 64 linearly over the run (study C2).
   --rope   - with any arm: rotary positions Fable's way (their scratch.rotated at 4bd8308) instead
              of the built-in table of places; the table is still carried, exactly as in their shape,
              but not used. Recorded under the arm name + "_rope".
+  --carry  - layered arms only (round 2, 2026-11-12): overshoot carry — the vote counters no
+             longer saturate at +-V and no longer reset on a flip; a flip keeps count - sign*V
+             (the direct-trainer study's one-line lever, tested separately). Counters are int16
+             so they can hold the overshoot. Recorded under the arm name + "_carry".
+  --cooldown - layered arms only (round 2, 2026-11-12): two-stage cooldown on the AdamW parts
+             only (embeddings, norms, per-layer scales), Microsoft b1.58 style: stage 1 (first
+             half of the run) at the current constant lr, stage 2 (second half) with lr and
+             weight decay decayed linearly toward zero. The vote rule (threshold, gate) never
+             changes — this is NOT the anneal arm, which moved the vote threshold and lost.
+             Recorded under the arm name + "_cooldown".
 All arms: same corpus, same seed -> same init and same batch stream, batch 32, CTX 256,
 held windows (every 40th) never trained on, judged on a fixed set of 128 held windows.
 Non-ternary parts in the vote arms train exactly as Fable's Direct: AdamW lr 1e-3,
@@ -166,8 +181,10 @@ class Layered:
     """Weight = t1 + t2, two ternary states with independent int8 vote counters (V=32).
     At most one component flips per weight per step (t1 first, unless its flip is a
     boundary no-op, then t2); only the flipped component's counter resets."""
-    def __init__(self, model, lr=1e-3, votes=32):
+    def __init__(self, model, lr=1e-3, votes=32, carry=False, cooldown=False):
         self.votes, self.steps = votes, 0
+        self.carry, self.cooldown = carry, cooldown
+        self.base_lr, self.base_wd = lr, 0.0  # the AdamW weight decay this trainer is built with
         self.layers = [m for m in model.modules() if isinstance(m, BitLinear)]
         own = {id(m.weight) for m in self.layers}
         self.t1, self.t2, self.log_scale = [], [], []
@@ -178,8 +195,10 @@ class Layered:
             self.log_scale.append(torch.nn.Parameter(scale.log()))
         self.opt = torch.optim.AdamW([p for p in model.parameters() if id(p) not in own] + self.log_scale,
                                      lr=lr, weight_decay=0.0, betas=(0.9, 0.95))
-        self.c1 = [torch.zeros_like(t, dtype=torch.int8) for t in self.t1]
-        self.c2 = [torch.zeros_like(t, dtype=torch.int8) for t in self.t1]
+        # carry needs counters that can pass +-V (overshoot); int8 would overflow, so int16.
+        cdt = torch.int16 if carry else torch.int8
+        self.c1 = [torch.zeros_like(t, dtype=cdt) for t in self.t1]
+        self.c2 = [torch.zeros_like(t, dtype=cdt) for t in self.t1]
         self.model = model
         self.install()
     def install(self):
@@ -188,6 +207,14 @@ class Layered:
                 s = t1 + t2
                 m.weight.copy_(s * (ls.exp() / s.abs().mean().clamp(min=1e-5)))
     def step(self, loss, done=0.0):
+        if self.cooldown:
+            # Two-stage schedule on the AdamW parts only: stage 1 constant, stage 2
+            # (second half) lr and weight decay decayed linearly toward zero. The
+            # vote threshold and gate below never see `done` — the vote rule is fixed.
+            mult = 1.0 if done < 0.5 else max(0.0, (1.0 - done) / 0.5)
+            for g in self.opt.param_groups:
+                g["lr"] = self.base_lr * mult
+                g["weight_decay"] = self.base_wd * mult
         self.opt.zero_grad(set_to_none=True)
         for m in self.layers:
             m.weight.grad = None
@@ -203,14 +230,24 @@ class Layered:
                 self.log_scale[i].grad = (g * s).sum() * self.log_scale[i].exp()
                 strong = g.abs() >= g.abs().median()
                 vote = (-g.sign() * strong).to(torch.int8)
-                c1 = (self.c1[i] + vote).clamp(-V, V)
-                c2 = (self.c2[i] + vote).clamp(-V, V)
+                if self.carry:
+                    # No saturation at +-V: votes that arrive while a flip is blocked
+                    # (boundary no-op, or the pair's one-flip-per-step rule) are kept,
+                    # not clamped away. A flip subtracts sign*V instead of resetting.
+                    c1, c2 = self.c1[i] + vote, self.c2[i] + vote
+                else:
+                    c1 = (self.c1[i] + vote).clamp(-V, V)
+                    c2 = (self.c2[i] + vote).clamp(-V, V)
                 go1 = (c1.abs() >= V) & ((t1 + c1.sign()).clamp(-1, 1) != t1)
                 go2 = (~go1) & (c2.abs() >= V) & ((t2 + c2.sign()).clamp(-1, 1) != t2)
                 self.t1[i] = torch.where(go1, (t1 + c1.sign()).clamp(-1, 1), t1)
                 self.t2[i] = torch.where(go2, (t2 + c2.sign()).clamp(-1, 1), t2)
-                self.c1[i] = torch.where(go1, torch.zeros_like(c1), c1)
-                self.c2[i] = torch.where(go2, torch.zeros_like(c2), c2)
+                if self.carry:
+                    self.c1[i] = torch.where(go1, c1 - c1.sign() * V, c1)
+                    self.c2[i] = torch.where(go2, c2 - c2.sign() * V, c2)
+                else:
+                    self.c1[i] = torch.where(go1, torch.zeros_like(c1), c1)
+                    self.c2[i] = torch.where(go2, torch.zeros_like(c2), c2)
                 jumped, total = jumped + int(go1.sum()) + int(go2.sum()), total + t1.numel()
         self.opt.step()
         self.install()
@@ -254,33 +291,41 @@ def held_loss(model, held):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--arm", required=True, choices=["plain", "ste", "mag", "layered", "layered_half", "anneal"])
+    ap.add_argument("--arm", required=True, choices=["plain", "ste", "mag", "layered", "layered_half", "anneal",
+                                                     "plain_half", "ste_half"])
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--minutes", type=float, default=8.0)
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--rope", action="store_true",
                     help="rotary positions Fable's way instead of the built-in (added) table of places")
+    ap.add_argument("--carry", action="store_true",
+                    help="layered arms only: overshoot carry — counters keep count - sign*V on a flip")
+    ap.add_argument("--cooldown", action="store_true",
+                    help="layered arms only: two-stage lr/wd cooldown on the AdamW parts (vote rule fixed)")
     a = ap.parse_args()
-    label = a.arm + "_rope" if a.rope else a.arm
+    if (a.carry or a.cooldown) and a.arm not in ("layered", "layered_half"):
+        ap.error("--carry/--cooldown are levers on the layered vote trainer only")
+    label = a.arm + ("_rope" if a.rope else "") + ("_carry" if a.carry else "") + \
+        ("_cooldown" if a.cooldown else "")
     data = np.memmap(LAB / "corpus.u16", dtype=np.uint16, mode="r")
     held = held_windows(data)
     torch.manual_seed(a.seed)
-    layers = 2 if a.arm == "layered_half" else 4
+    layers = 2 if a.arm in ("layered_half", "plain_half", "ste_half") else 4
     model = Tiny(layers=layers, rotary=a.rope)
-    if a.arm == "ste":
+    if a.arm in ("ste", "ste_half"):
         trainer = STE(model)
     elif a.arm in ("layered", "layered_half"):
-        trainer = Layered(model)
+        trainer = Layered(model, carry=a.carry, cooldown=a.cooldown)
     else:
-        trainer = Direct(model, mode=a.arm)
-    n_tern = sum(t.numel() for t in (trainer.t if hasattr(trainer, "t") else trainer.t1)) if a.arm != "ste" else \
+        trainer = Direct(model, mode="plain" if a.arm == "plain_half" else a.arm)
+    n_tern = sum(t.numel() for t in (trainer.t if hasattr(trainer, "t") else trainer.t1)) if a.arm not in ("ste", "ste_half") else \
         sum(p.numel() for m in model.modules() if isinstance(m, BitLinear) for p in [m.weight])
     h0 = held_loss(model, held)
     rnd, t0, steps, losses, jumps = random.Random(a.seed), time.time(), 0, [], []
     budget = a.minutes * 60
     while time.time() - t0 < budget:
         done = (time.time() - t0) / budget
-        EASE[0] = min(1.0, done / 0.5) if a.arm == "ste" else 1.0
+        EASE[0] = min(1.0, done / 0.5) if a.arm in ("ste", "ste_half") else 1.0
         at = offsets(rnd, len(data), a.batch)
         x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
         loss = F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1))
@@ -295,8 +340,9 @@ def main():
     if a.arm in ("layered", "layered_half"):
         states = torch.cat([(t1 + t2).flatten() for t1, t2 in zip(trainer.t1, trainer.t2)])
         hist = {int(v): round(float((states == v).float().mean()), 4) for v in (-2, -1, 0, 1, 2)}
-        state_bytes = 2 * n_tern + n_tern // 2  # 2 int8 counters + 2 ternary states at 2 bits each
-    elif a.arm == "ste":
+        # 2 counters (int8, or int16 with --carry) + 2 ternary states at 2 bits each
+        state_bytes = (4 if a.carry else 2) * n_tern + n_tern // 2
+    elif a.arm in ("ste", "ste_half"):
         hist, state_bytes = {}, 12 * n_tern
     else:
         states = torch.cat([t.flatten() for t in trainer.t])
@@ -308,7 +354,8 @@ def main():
            "ternary_weights": n_tern, "mech_state_bytes": state_bytes,
            "mean_flip_share": round(sum(jumps) / max(1, len(jumps)), 5), "state_hist": hist,
            "corpus_pieces": int(len(data)), "minutes": a.minutes,
-           "rope": bool(a.rope), "total_params": sum(p.numel() for p in model.parameters())}
+           "rope": bool(a.rope), "carry": bool(a.carry), "cooldown": bool(a.cooldown),
+           "total_params": sum(p.numel() for p in model.parameters())}
     with open(LAB / "runs.jsonl", "a") as f:
         f.write(json.dumps(rec) + "\n")
     print("RESULT " + json.dumps(rec), flush=True)

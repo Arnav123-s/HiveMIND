@@ -86,3 +86,100 @@
 [sweep 05:52:26Z] run anneal seed 2
 [sweep 06:00:49Z] done anneal s2 rc=0 RESULT {"arm": "anneal", "seed": 2, "steps": 120, "wall_s": 480.9, "held_init": 8.4247, "held_final": 3.8235, "train_last100": 4.3059, "ternary_weights": 1769472, "mech_state_bytes": 2211840, "mean_flip_share": 0.00068, "state_hist": {"-1": 0.3434, "0": 0.3136, "1": 0.3431}, "corpus_pieces": 5917236, "minutes": 8.0}
 [sweep 06:00:49Z] sweep finished
+[sweep 07:18:17Z] rope: machine free; starting rope runs
+[sweep 07:18:17Z] rope: run layered_half_rope seed 0
+[sweep 07:26:35Z] rope: done layered_half_rope s0 rc=0 RESULT {"arm": "layered_half_rope", "seed": 0, "steps": 154, "wall_s": 482.1, "held_init": 8.3138, "held_final": 2.8765, "train_last100": 3.1514, "ternary_weights": 884736, "mech_state_bytes": 2211840, "mean_flip_share": 0.0011, "state_hist": {"-2": 0.0339, "-1": 0.326, "0": 0.2802, "1": 0.3258, "2": 0.0342}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": true, "total_params": 1725696}
+[sweep 07:26:35Z] rope: run layered_half_rope seed 1
+[sweep 07:34:29Z] rope: machine free; starting rope runs
+[sweep 07:34:29Z] rope: skip layered_half_rope s0: already recorded
+[sweep 07:34:29Z] rope: run layered_half_rope seed 1
+[sweep 07:42:51Z] rope: done layered_half_rope s1 rc=0 RESULT {"arm": "layered_half_rope", "seed": 1, "steps": 170, "wall_s": 482.3, "held_init": 8.2652, "held_final": 2.8477, "train_last100": 3.0373, "ternary_weights": 884736, "mech_state_bytes": 2211840, "mean_flip_share": 0.00116, "state_hist": {"-2": 0.0397, "-1": 0.323, "0": 0.2751, "1": 0.3227, "2": 0.0395}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": true, "total_params": 1725696}
+[sweep 07:42:51Z] rope: run layered_half_rope seed 2
+[sweep 07:51:10Z] rope: done layered_half_rope s2 rc=0 RESULT {"arm": "layered_half_rope", "seed": 2, "steps": 168, "wall_s": 481.3, "held_init": 8.2892, "held_final": 2.8497, "train_last100": 3.0296, "ternary_weights": 884736, "mech_state_bytes": 2211840, "mean_flip_share": 0.00113, "state_hist": {"-2": 0.038, "-1": 0.3236, "0": 0.2769, "1": 0.3234, "2": 0.0381}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": true, "total_params": 1725696}
+[sweep 07:51:10Z] rope: rope runs finished
+[sweep 07:54:21Z] rope: VERDICT layered_half_rope mean 2.8580 vs baseline 2.8990, gain 0.0411 > 2sd and > 0.01 — WIN. Note: RESULTS-ROPE-2026-11-11.md
+[sweep 17:36:21Z] halfctl: machine free; starting half-control runs
+[sweep 17:36:21Z] halfctl: run plain_half seed 0
+[sweep 17:40:12Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:41:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:42:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:43:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:44:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:44:39Z] halfctl: done plain_half s0 rc=0 RESULT {"arm": "plain_half", "seed": 0, "steps": 150, "wall_s": 480.5, "held_init": 8.3139, "held_final": 2.9179, "train_last100": 3.2536, "ternary_weights": 884736, "mech_state_bytes": 1105920, "mean_flip_share": 0.00053, "state_hist": {"-1": 0.344, "0": 0.3119, "1": 0.3442}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": false, "total_params": 1725696}
+[sweep 17:44:39Z] halfctl: run plain_half seed 1
+[sweep 17:45:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:46:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:47:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:48:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:49:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:50:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:51:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:52:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:52:59Z] halfctl: done plain_half s1 rc=0 RESULT {"arm": "plain_half", "seed": 1, "steps": 158, "wall_s": 481.6, "held_init": 8.2635, "held_final": 2.916, "train_last100": 3.1957, "ternary_weights": 884736, "mech_state_bytes": 1105920, "mean_flip_share": 0.00055, "state_hist": {"-1": 0.3442, "0": 0.3121, "1": 0.3437}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": false, "carry": false, "cooldown": false, "total_params": 1725696}
+[sweep 17:52:59Z] halfctl: run plain_half seed 2
+[sweep 17:53:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:54:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:55:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:56:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:57:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:58:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 17:59:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:00:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:01:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:01:20Z] halfctl: done plain_half s2 rc=0 RESULT {"arm": "plain_half", "seed": 2, "steps": 176, "wall_s": 482.1, "held_init": 8.2918, "held_final": 2.8692, "train_last100": 3.0327, "ternary_weights": 884736, "mech_state_bytes": 1105920, "mean_flip_share": 0.00052, "state_hist": {"-1": 0.344, "0": 0.3121, "1": 0.3438}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": false, "carry": false, "cooldown": false, "total_params": 1725696}
+[sweep 18:01:20Z] halfctl: run ste_half seed 0
+[sweep 18:01:29Z] halfctl: done ste_half s0 rc=1 t-lab/bitnet-lab/train.py", line 321, in main
+    n_tern = sum(t.numel() for t in (trainer.t if hasattr(trainer, "t") else trainer.t1)) if a.arm != "ste" else \
+                                                                             ^^^^^^^^^^
+AttributeError: 'STE' object has no attribute 't1'
+
+[sweep 18:01:29Z] halfctl: run ste_half seed 1
+[sweep 18:01:33Z] halfctl: done ste_half s1 rc=1 t-lab/bitnet-lab/train.py", line 321, in main
+    n_tern = sum(t.numel() for t in (trainer.t if hasattr(trainer, "t") else trainer.t1)) if a.arm != "ste" else \
+                                                                             ^^^^^^^^^^
+AttributeError: 'STE' object has no attribute 't1'
+
+[sweep 18:01:33Z] halfctl: run ste_half seed 2
+[sweep 18:01:38Z] halfctl: done ste_half s2 rc=1 t-lab/bitnet-lab/train.py", line 321, in main
+    n_tern = sum(t.numel() for t in (trainer.t if hasattr(trainer, "t") else trainer.t1)) if a.arm != "ste" else \
+                                                                             ^^^^^^^^^^
+AttributeError: 'STE' object has no attribute 't1'
+
+[sweep 18:01:38Z] halfctl: half-control runs finished
+[sweep 18:02:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:03:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:04:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:05:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:06:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:06:33Z] halfctl-fix: run ste_half seed 0
+[sweep 18:07:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:08:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:09:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:10:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:11:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:12:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:13:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:14:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:14:54Z] halfctl-fix: done ste_half s0 rc=0 RESULT {"arm": "ste_half", "seed": 0, "steps": 161, "wall_s": 482.4, "held_init": 8.3139, "held_final": 2.815, "train_last100": 3.0708, "ternary_weights": 884736, "mech_state_bytes": 10616832, "mean_flip_share": 0.0, "state_hist": {}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": false, "carry": false, "cooldown": false, "total_params": 1725696}
+[sweep 18:14:54Z] halfctl-fix: run ste_half seed 1
+[sweep 18:15:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:16:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:17:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:18:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:19:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:20:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:21:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:22:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:23:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:23:14Z] halfctl-fix: done ste_half s1 rc=0 RESULT {"arm": "ste_half", "seed": 1, "steps": 163, "wall_s": 480.9, "held_init": 8.2635, "held_final": 2.8282, "train_last100": 3.0297, "ternary_weights": 884736, "mech_state_bytes": 10616832, "mean_flip_share": 0.0, "state_hist": {}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": false, "carry": false, "cooldown": false, "total_params": 1725696}
+[sweep 18:23:14Z] halfctl-fix: run ste_half seed 2
+[sweep 18:24:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:25:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:26:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:27:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:28:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:29:13Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:30:14Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:31:14Z] round2: waiting: before 11:05 PT; recheck in 60 s
+[sweep 18:31:34Z] halfctl-fix: done ste_half s2 rc=0 RESULT {"arm": "ste_half", "seed": 2, "steps": 154, "wall_s": 481.1, "held_init": 8.2918, "held_final": 2.8184, "train_last100": 3.1145, "ternary_weights": 884736, "mech_state_bytes": 10616832, "mean_flip_share": 0.0, "state_hist": {}, "corpus_pieces": 5917236, "minutes": 8.0, "rope": false, "carry": false, "cooldown": false, "total_params": 1725696}
+[sweep 18:31:34Z] halfctl-fix: ste_half relaunch finished
