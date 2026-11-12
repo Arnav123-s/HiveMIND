@@ -1730,22 +1730,22 @@ def test_an_instruction_the_critic_did_not_check_is_asked_again_alone_only_when_
 
 def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_path, monkeypatch):
     from team import solo
-    look = "print('digits and primes')"
-    right = RIGHT_PRIMES + "print('FINAL ANSWER')\nprint('The primes are', found)\nprint('KEY:', ', '.join(map(str, found)), ',', len(found))"
-    wrong = WRONG_PRIMES + "\nprint('FINAL ANSWER')\nprint(out)\nprint('KEY:', ', '.join(map(str, out)), ',', len(out))"
-    other = "print('FINAL ANSWER')\nprint('none')\nprint('KEY: 0')"
+    right = RIGHT_PRIMES + "print('The primes are', found, 'and there are', len(found))"
+    again = RIGHT_PRIMES + "print(len(found), 'primes:', *found)"
+    other, broken = "print('Found: [19, 37], 2 of them')", "print(undefined_name)"
 
-    def hive(programs, name, members=2):
-        left = list(programs)
-        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: f"```python\n{left.pop(0)}\n```")
+    def hive(replies, name, members=2):
+        left = list(replies)
+        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
         return solo.run(PRIMES_TASK, tmp_path / name, "never", members=members), left
-    out, left = hive([look, right, right.replace("The primes are", "Found:")], "a")
-    assert out["agreed"] and out["tries"] == 2 and not left and "109" in out["report"] and "KEY:" not in out["report"]
-    out, left = hive([wrong, right, right.replace("The primes are", "Found:")], "b")          # the first member is wrong: a third decides
+    out, left = hive(["DONE", broken, right, "DONE", again, "DONE"], "a")                     # DONE before anything ran is not taken; an error is fixed
+    assert out["agreed"] and out["tries"] == 2 and not left and "109" in out["report"].split("\n## ")[0]
+    out, left = hive([WRONG_PRIMES, "DONE", right, "DONE", again, "DONE"], "b")               # the first member is wrong: a third decides
     assert out["agreed"] and out["tries"] == 3 and "[19, 37, 73, 109, 127, 163, 181]" in out["report"].split("\n## ")[0]
-    out, left = hive([wrong, right, other], "c")
+    out, left = hive([WRONG_PRIMES, "DONE", right, "DONE", other, "DONE"], "c")
     body = out["report"].split("\n## ")[0]
     assert not out["agreed"] and body.startswith("Not confirmed") and "19" not in body         # no member's values are handed over as the answer
-    assert solo.same(("die bibliothek ist heute geschlossen",), ("die bibliothek ist heute geschlossen.",)[:1])
-    assert not solo.same(("12",), ("13",)) and not solo.same((), ()) and not solo.same(("sydney",), ("canberra",))
-    assert solo.key("It is 0.28.1\nKEY: 0.28.1, 2024-12-06, 706", "x") == tuple(sorted(["0.28.1", "2024-12-06", "706.0"]))
+    out, left = hive([broken, broken, broken, broken], "d")                                   # the same error twice: the member stops
+    assert not out["agreed"] and not left and "No member got as far" in out["report"]
+    assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
+    assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
