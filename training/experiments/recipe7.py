@@ -1,6 +1,9 @@
 """What gets a BitNet stem cell further in the same time: recipe6_speed.py taken in whole, and more.
 
     python training/experiments/recipe7.py OUT.json [--minutes M] [--seeds 0,1,2] [only ...]
+    python training/experiments/recipe7.py LONG.json --minutes 40 --seeds 0 --confirm OUT.json
+                        only the recipe as built in and everything that helped in OUT.json together, at the length
+                        of a founding: does what won in 600 steps still win in 40 minutes?
 
 Every run starts from the same random numbers and reads the same passages in the same order: 600 steps of 32
 passages, or, with --minutes, as many steps as fit (then the runs are equal in time, not in steps, and must run
@@ -271,17 +274,29 @@ def spread(xs):
 
 
 def main(argv):
-    minutes, seeds, rest = 0.0, [0, 1, 2], []
+    minutes, seeds, rest, confirm = 0.0, [0, 1, 2], [], None
     it = iter(argv[1:])
     for a in it:
         if a == "--minutes":
             minutes = float(next(it))
         elif a == "--seeds":
             seeds = [int(x) for x in next(it).split(",")]
+        elif a == "--confirm":
+            confirm = json.load(open(next(it)))["_verdict"]["helped"]
         else:
             rest.append(a)
     b = Bench(argv[0], minutes, rest)
     base = [b.run(f"{BASE}, start {sd}", seed=sd) for sd in seeds]
+    if confirm is not None:
+        both = [b.run(f"everything that helped, together, start {sd}: " + json.dumps(confirm, sort_keys=True), seed=sd, **confirm) for sd in seeds]
+        allr = b.done()
+        allr["_verdict"] = {"minutes": minutes, "helped": confirm, "base": [r["held"]["gate"] for r in base],
+                            "together": [r["held"]["gate"] for r in both],
+                            "base, running mean": [r["held, running mean of the weights"]["gate"] for r in base],
+                            "together, running mean": [r["held, running mean of the weights"]["gate"] for r in both]}
+        json.dump(allr, open(b.out, "w"), indent=1)
+        print("verdict", allr["_verdict"], flush=True)
+        return
     got = {name: (b.run(name, **kw), kw) for name, kw in CHANGES.items()}
     if any(r is None for r in base) or any(r is None for r, _ in got.values()):
         return  # only some runs were asked for
