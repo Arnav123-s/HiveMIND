@@ -22,6 +22,7 @@ acting as one" means here: not many roles, many whole tries.
 Whether this is better than the roles is not claimed here. It is measured on the same fresh exam
 (training/exam.py, AGENT_TEAM_SOLO set or not); the number decides.
 """
+import ast
 import os
 import re
 import time
@@ -146,9 +147,10 @@ TYPED = ("That is an answer typed out, not a program. Typed answers are often wr
 
 
 def is_program(text):
+    """Text that parses as Python and calls something. "A: 65" on a line is Python too (an annotation), but text
+    that calls nothing prints nothing."""
     try:
-        compile(text, "reply", "exec")
-        return True
+        return any(isinstance(x, ast.Call) for x in ast.walk(ast.parse(text)))
     except (SyntaxError, ValueError):
         return False
 
