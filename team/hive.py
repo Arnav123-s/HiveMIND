@@ -135,6 +135,7 @@ class Hive:
                 self._run_foreach(s)
             else:
                 self._run_step(s)
+            self._worked_out(s)
         final = b.step(steps[-1]["id"]) if steps else None
         report = (final or {}).get("result", {})
         report = report.get("summary", "") if isinstance(report, dict) else str(report)
@@ -240,6 +241,24 @@ class Hive:
             alt = coordinator.reroute(self.goal, s, feedback)
             if alt:
                 self._rerouted(s, alt)
+
+    def _worked_out(self, s):
+        """A look-up step that found nothing to look up, before a step that works the same thing out. (The planner put
+        "researcher: find all primes below 200 whose digits add up to 10" before the coder's program; the researcher
+        named no search and no page, the step failed, and the report said the team could confirm nothing, with the
+        coder's verified result in hand.) When the computing step that needed it passes, the look-up is recorded as
+        done by that step, as a rerouted step is."""
+        b = self.board
+        now = b.step(s["id"]) or {}
+        if now.get("agent") not in ("coder", "calculator") or now.get("verdict") != "PASS":
+            return
+        for sid in now.get("needs") or []:
+            prev = b.step(sid) or {}
+            res = prev.get("result") if isinstance(prev.get("result"), dict) else {}
+            if (prev.get("agent") == "researcher" and prev.get("verdict") == "FAIL" and not res.get("notes")
+                    and not res.get("facts") and str(prev.get("feedback") or "").startswith("no source could be read")):
+                b.update_step(sid, verdict="REROUTED", feedback=f"nothing to look up: worked out by {s['id']} ({now['agent']})")
+                b.log("hive", "worked-out", f"{sid}: nothing to look up; {s['id']} ({now['agent']}) worked it out")
 
     def _rerouted(self, s, alt):
         """Another specialist does the failed step's job."""
