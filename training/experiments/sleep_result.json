@@ -1,0 +1,42 @@
+{
+ "before": {
+  "stem cell alone, held": 3.3802,
+  "the body with it, gate": 2.8261
+ },
+ "reads on, rate 0.0003": {
+  "stem cell alone, held": 3.19,
+  "the body with it, gate": 2.8222,
+  "steps": 796,
+  "rate": 0.0003
+ },
+ "reads on, rate 0.001": {
+  "stem cell alone, held": 3.2266,
+  "the body with it, gate": 2.8216,
+  "steps": 711,
+  "rate": 0.001
+ },
+ "reads on, rate 0.003": {
+  "stem cell alone, held": 3.2919,
+  "the body with it, gate": 2.8204,
+  "steps": 785,
+  "rate": 0.003
+ },
+ "sleep: taught by the body, rate 0.0003": {
+  "stem cell alone, held": 3.1981,
+  "the body with it, gate": 2.8258,
+  "steps": 560,
+  "minutes_the_body_read": 1.55
+ },
+ "sleep, 4000 windows, rate 0.0003": {
+  "stem cell alone, held": 3.2032,
+  "the body with it, gate": 2.8268,
+  "steps": 433,
+  "minutes_the_body_read": 3.41
+ },
+ "sleep, the body's word counts for three quarters, rate 0.0003": {
+  "stem cell alone, held": 3.201,
+  "the body with it, gate": 2.8284,
+  "steps": 604,
+  "minutes_the_body_read": 1.48
+ }
+}

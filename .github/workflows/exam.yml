@@ -1,0 +1,65 @@
+# Every day the working hive sits a fresh exam that code makes and code checks: new sums, dates, programs to write
+# and to mend, facts read live from a source, a website to operate, instructions to follow to the letter, things to
+# know, sentences to translate (training/exam.py). Nobody wrote the tasks to suit it and no fix was tried on them,
+# so the line each sitting adds to training/reports/exams.jsonl is an honest record of whether the hive is getting
+# better, field by field, with nobody there.
+# The job that runs the hive has no token that can write anywhere. A second job, which runs no model and no code
+# the hive wrote, reads the sitting's numbers and adds the line.
+name: The hive sits an exam
+
+on:
+  schedule:
+    - cron: "43 9 * * *"
+  workflow_dispatch:
+    inputs:
+      tasks:
+        description: How many tasks
+        default: "16"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: exam
+  cancel-in-progress: false
+
+jobs:
+  sit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      TASKS: ${{ inputs.tasks || '16' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/hive
+      - name: The exam
+        run: python training/exam.py sit --tasks "$TASKS"
+      - name: How it went
+        if: ${{ !cancelled() }}
+        run: cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: the-sitting
+          path: training/reports/exams/
+          retention-days: 30
+  record:
+    needs: sit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: the-sitting
+          path: sitting
+      - name: One line in the record (only numbers and known names are taken from the sitting)
+        run: |
+          python3 training/exam_record.py sitting
+          git config user.name "hive"
+          git config user.email "hive@users.noreply.github.com"
+          git add training/reports/exams.jsonl
+          git commit -q -m "The hive sat an exam" || exit 0
+          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push -q origin "HEAD:${GITHUB_REF_NAME}" || echo "the record could not be pushed"

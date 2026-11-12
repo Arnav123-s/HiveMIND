@@ -737,6 +737,14 @@ def test_a_newborn_is_judged_where_it_lives():
     assert not B.judge_local(before, before - 0.001, 0.4)[0]                             # too small a gain where it lives
     kept, why = B.judge_local(before, after, 0.0)
     assert not kept and "never be among the cells awake" in why
+    assert not B.judge_local(before[:0], after[:0], 0.4)[0]                             # no passage it wakes on: nothing to judge by
+    # a gain above the bar that chance alone could give is not kept: +0.005 on average, give or take 0.0058
+    luck = before - torch.tensor([0.05, -0.04] * 30)
+    kept, why = B.judge_local(before, luck, 0.4)
+    assert not kept and "chance alone" in why
+    # the same average with little scatter is kept, and so is a larger gain with the same scatter
+    assert B.judge_local(before, before - 0.005 - torch.tensor([0.004, -0.004] * 30), 0.4)[0]
+    assert B.judge_local(before, luck - 0.02, 0.4)[0]
 
 
 def test_the_immune_check_of_a_big_body_judges_a_cell_where_it_was_awake(tmp_path, monkeypatch):
@@ -1128,10 +1136,10 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     for seed in range(40):
         child, what = B.next_recipe(random.Random(seed))
         seen.add(what)
-        differs = [k for k in ("lr", "ease", "warm", "batch") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
+        differs = [k for k in ("lr", "ease", "warm", "batch", "cool", "mean") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
         assert differs == [what]                                                             # one thing changed, and only one
         assert child["shape"]["dim"] % 32 == 0 and 3 <= child["shape"]["layers"] <= 8
-    assert seen == {"lr", "ease", "warm", "batch", "dim", "layers"}
+    assert seen == {"lr", "ease", "warm", "batch", "cool", "mean", "dim", "layers"}
     better = dict(recipe, lr=0.0048)
     (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10},
                                                    {"body": "b4", "recipe": better, "minutes": 40.0, "score": 3.02},
@@ -1140,6 +1148,43 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     assert all(k["lr"] in (0.0048, round(0.0048 * 0.6, 5), round(0.0048 * 1.6, 5)) for k in kids)   # the children are the best one's
     monkeypatch.setitem(B.NEW_BODY, "warm", 100)                                            # the recipe changed by hand is tried once as it stands
     assert B.next_recipe(random.Random(0)) == (full(B.NEW_BODY), None)
+
+
+def test_a_recipe_on_record_from_before_a_setting_existed_is_read_as_it_was(tmp_path, monkeypatch):
+    import json
+    import random
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    old = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}  # b3's recipe: it names no falling rate
+    (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": old, "minutes": 40.0, "score": 3.10}]))
+    monkeypatch.setitem(B.NEW_BODY, "cool", 0.5)                                            # the recipe as built in now has one
+    recipe, changed = B.next_recipe(random.Random(0))
+    assert changed is None and recipe["cool"] == 0.5                                        # so it is new, and is tried as it stands
+    monkeypatch.setitem(B.NEW_BODY, "cool", 0.0)                                            # without one it is b3's recipe: tried already
+    child, what = B.next_recipe(random.Random(0))
+    assert what is not None
+
+
+def test_the_rate_falls_at_the_end_of_a_run_and_the_better_of_weights_and_their_mean_is_kept(tmp_path, monkeypatch):
+    import numpy as np
+    import torch
+    from training import scratch as T
+    assert T.falling(0.3, 0.5) == 1.0 and T.falling(0.5, 0.5) == 1.0                         # not before the last half
+    assert abs(T.falling(0.75, 0.5) - 0.55) < 1e-9 and abs(T.falling(1.0, 0.5) - 0.1) < 1e-9  # half a cosine, down to the floor
+    assert T.falling(0.9, 0.0) == 1.0                                                       # no cooling asked for
+    torch.manual_seed(0)
+    shape = {"bit": True, "dim": 32, "layers": 1, "heads": 4, "subln": False}
+    model = T.Tiny(shape=shape)
+    data = np.random.RandomState(0).randint(2, T.VOCAB, size=T.CTX * 400 + 1).astype("uint16")
+    as_it_is = {k: v.clone() for k, v in model.state_dict().items()}
+    worse = {k: (v + 0.5 * torch.randn_like(v) if v.is_floating_point() else v.clone()) for k, v in as_it_is.items()}
+    said = []
+    hear = lambda *a, **k: said.append(a)  # noqa: E731
+    assert T.better_of(model, worse, data, log=hear) == "the weights as they are"   # a mean that reads worse is not taken
+    assert all(torch.equal(v, as_it_is[k]) for k, v in model.state_dict().items())
+    model.load_state_dict(worse)
+    assert T.better_of(model, as_it_is, data, log=hear) == "the running mean of the weights"
+    assert all(torch.equal(v, as_it_is[k]) for k, v in model.state_dict().items())
 
 
 def test_the_workflow_that_grows_the_hive_is_a_valid_file():
@@ -1155,3 +1200,82 @@ def test_the_workflow_that_grows_the_hive_is_a_valid_file():
     fetched = next(i for i, s in enumerate(steps) if s.get("id") == "fetched")
     assert all("steps.fetched.outcome == 'success'" in s["if"] for s in steps[fetched + 1:] if "if" in s)   # nothing is saved over a hive that was not fetched
     assert flow["permissions"] == {"contents": "write"} and flow["concurrency"]["group"] == "hive"
+
+
+def test_a_founding_asks_the_bodies_that_read_best(tmp_path, monkeypatch):
+    import json
+    from training import body as B
+    monkeypatch.setattr(B.T, "SHARED", tmp_path)
+    monkeypatch.setattr(B, "HIVE", tmp_path / "hive.json")
+    names = ["", "b2", "b3", "b4", "b5", "b6"]
+    (tmp_path / "bodies.json").write_text(json.dumps(names))
+    for b in names[:-1]:                                                                 # b6 was founded and has no cells yet
+        home = tmp_path / ("bodies/" + b if b else "") / "body"
+        home.mkdir(parents=True)
+        (home / "territories.pt").write_bytes(b"map")
+    assert B._readers() == ["", "b2", "b3", "b4"]                                         # nothing measured yet: the first four with a map
+    (tmp_path / "hive.json").write_text(json.dumps([{"bodies": {}, "yardstick": {"bodies": {"first": 2.4, "b2": 2.9, "b3": 2.7, "b4": 2.5, "b5": 2.6}}}]))
+    assert B._readers() == ["", "b4", "b5", "b3"]                                         # the four that read the yardstick best
+
+
+def test_the_exam_is_fresh_every_sitting_and_checked_in_code():
+    from training import exam as E
+    a, b = E.exam(400), E.exam(401)
+    assert [t[3] for t in a] == [t[3] for t in E.exam(400)] and [t[3] for t in a] != [t[3] for t in b]   # the seed is the sitting
+    assert all(len({t[3] for t in E.exam(s)}) == 16 for s in range(400, 430))               # no task twice in a sitting
+    fields = {t[1] for s in range(400, 430) for t in E.exam(s)}
+    assert {"maths", "dates", "code", "live facts", "websites", "instructions", "knowledge", "languages", "understanding"} <= fields
+    ok = lambda check, body: check(None, body)[0]                                             # noqa: E731
+    assert ok(E.says(851), "The new price is $851.00.") and ok(E.says(1150), "It costs 1,150 dollars.") and not ok(E.says(851), "About 850.")
+    import random
+    for seed in range(30):                                                                   # every maker: a right answer passes, a wrong one fails
+        r = random.Random(seed)
+        _, _, task, check = E.m_steps(r)
+        nums = [int(x) for x in __import__("re").findall(r"multiply (\d+) by (\d+)", task)[0]]
+        word = __import__("re").search(r"word '(\w+)'", task).group(1)
+        country = task.rsplit("capital of ", 1)[1].rstrip(".")
+        right = f"A: {nums[0] * nums[1]}\nB: {word[::-1]}\nC: {E.CAPITALS[country]}"
+        assert ok(check, right) and not ok(check, right.replace(f"A: {nums[0] * nums[1]}", "A: 1")) and not ok(check, right.replace("C:", "D:"))
+    _, _, task, check = E.m_follow(random.Random(3))
+    assert not ok(check, "")                                                                 # an empty answer never passes
+    _, _, task, check = E.m_percent(random.Random(5))
+    assert not ok(check, "I could not work it out.")
+
+
+def test_the_record_of_exams_takes_only_numbers_and_known_names(tmp_path, monkeypatch):
+    import json
+    from training import exam_record as R
+    good = {"seed": 315, "when": "2026-11-12 09:43", "passed": 11, "tasks": 16, "by_field": {"maths": [1, 1], "code": [1, 2], "made up": [5, 5]},
+            "minutes": 71, "code": "8be45ff", "memory": "none"}
+    line = R.line(good)
+    assert line["passed"] == 11 and line["by_field"] == {"maths": [1, 1], "code": [1, 2]}       # a field the exam does not have is dropped
+    assert R.line(dict(good, passed=99)) is None and R.line(dict(good, seed="315; rm -rf")) is None and R.line("text") is None
+    assert R.line(dict(good, code="$(curl evil)", when="<script>"))["code"] == "" and R.line(dict(good, when="<script>"))["when"] == ""
+    monkeypatch.setattr(R, "RECORD", tmp_path / "exams.jsonl")
+    (tmp_path / "sitting").mkdir()
+    (tmp_path / "sitting" / "315.json").write_text(json.dumps({"summary": good, "tasks": [{"answer": "anything the hive wrote"}]}))
+    (tmp_path / "sitting" / "bad.json").write_text("not json")
+    assert R.main([str(tmp_path / "sitting")]) == 0 and R.main([str(tmp_path / "sitting")]) == 0   # a sitting is recorded once
+    lines = [json.loads(ln) for ln in (tmp_path / "exams.jsonl").read_text().splitlines()]
+    assert len(lines) == 1 and set(lines[0]) == {"seed", "when", "passed", "tasks", "by_field", "minutes", "code", "memory"}
+
+
+def test_a_stem_cell_reads_longer_while_it_is_still_learning_fast(tmp_path, monkeypatch):
+    import json
+    from training import body as B
+    monkeypatch.setattr(B, "REPORT", tmp_path / "body.json")
+    assert B.stem_minutes(10) == 10                                                        # it has never read on: a full birth's time
+    (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"own_before": 3.38, "own_after": 3.19}]}))
+    assert B.stem_minutes(10) == 10                                                        # still learning fast
+    (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"own_before": 3.38, "own_after": 3.19}, {"own_before": 2.71, "own_after": 2.705}]}))
+    assert B.stem_minutes(10) == 3                                                         # it has slowed down: a third
+    (tmp_path / "body.json").write_text(json.dumps({"stem_reads": [{"steps": 280, "kept": False}]}))
+    assert B.stem_minutes(10) == 10                                                        # a record from before this was kept: tried in full once
+
+
+def test_turn_does_not_hide_stem_minutes():
+    """A parameter of turn named like the function stem_minutes hid it, and every body's turn failed."""
+    import inspect
+    from training import body as B
+    assert "stem_minutes" not in inspect.signature(B.turn).parameters
+    assert callable(B.stem_minutes)

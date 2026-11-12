@@ -89,6 +89,12 @@ def _body():
 
 
 NEAR_M, LOCAL = 4, 0.004  # cells awake beside the stem cell; what a newborn must gain where it lives
+# Measured 2026-11-11 (training/experiments/gate_noise.py): the gain of a cell on its 60 nearest unseen passages has a
+# standard error of 0.0035, as large as LOCAL, so a newborn that added nothing passed now and then by luck (of six
+# gated cells alive, three added nothing that could be told from zero on passages that never decided anything).
+# So a newborn is read on more passages (NEARBY, counted where it wakes), and its gain must also be SURE standard
+# errors above nothing.
+SURE, NEARBY = 2.0, 120
 
 
 class Body:
@@ -780,6 +786,22 @@ def immune(first, second, names, log=print):
     return None
 
 
+# Measured 2026-11-11 (training/reports/sleep.json): a stem cell goes on learning best at the low rate (3e-4 against
+# 1e-3 and 3e-3); being taught by its own body ("sleep") learns more per step but not per minute, so it is not built in;
+# and a stem cell 0.19 better moves its body by 0.004, because the cells were made from the stem cell as it was. What
+# it learns pays off in the cells born after it. So a stem cell that is still learning fast reads for as long as a
+# birth takes, and one that has slowed down reads a third of that.
+STEM_RATE, STEM_FAST = 3e-4, 0.02
+
+
+def stem_minutes(minutes):
+    """How long the stem cell reads this turn: as long as a birth while its last reading still brought it STEM_FAST on
+    its own check (or it has never read on), a third of that once it has slowed down."""
+    last = (_report().get("stem_reads") or [{}])[-1]
+    fast = "own_before" not in last or last["own_before"] - last["own_after"] >= STEM_FAST
+    return minutes * (1.0 if fast else 0.3)
+
+
 def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     """The stem cell never stops learning. Each turn it reads everything a little longer, with its table of word
     pieces held still: that table is the one thing every cell leans on, so the cells stay whole while the rest of the
@@ -790,7 +812,7 @@ def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     for p in (stem.tok.weight, stem.pos.weight):
         p.requires_grad_(False)
     train = [i for i in range(_windows(data)) if i % HELD]
-    steps, loss, was = _read(stem, data, train, minutes, seed=len(_report().get("stem_reads", [])), lr=3e-4, share_table=False)
+    steps, loss, was = _read(stem, data, train, minutes, seed=len(_report().get("stem_reads", [])), lr=STEM_RATE, share_table=False)
     f2, s2 = _read_all({"stem": stem.eval()}, data, gate)
     before = fit_loss(first, second).mean().item()
     first, second = first.clone(), second.clone()
@@ -799,7 +821,8 @@ def stem_reads(data, gate, first, second, minutes=3.0, log=print):
     kept = after < before - IDLE
     if kept:
         T.whole(stem.state_dict(), T.HOME / "base.pt")
-    out = {"when": time.strftime("%Y-%m-%d %H:%M"), "steps": steps, "gate_before": round(before, 4), "gate_after": round(after, 4), "kept": kept}
+    out = {"when": time.strftime("%Y-%m-%d %H:%M"), "steps": steps, "gate_before": round(before, 4), "gate_after": round(after, 4), "kept": kept,
+           "own_before": was, "own_after": loss, "minutes": round(minutes, 1)}
     _report(stem_reads=_report().get("stem_reads", []) + [out])
     log(f"[body] the stem cell read {steps} more steps; the body on the gate passages {before:.4f} -> {after:.4f}: "
         f"{'kept' if kept else 'not kept, it stays as it was'}", flush=True)
@@ -844,17 +867,24 @@ def learn_say(first, second, log=print):
 def judge_local(before, after, woke):
     """Is a newborn kept? It is judged where it lives: on unseen passages nearest to its territory, the body with it
     against the body as if it were not there (it takes another cell's place among those awake, so what it costs is in
-    the same number). It must wake on some of them and gain LOCAL there. Elsewhere it sleeps and changes nothing,
-    which is how the body stays good at what it was."""
-    gain = (before.mean() - after.mean()).item()
-    if woke <= 0:
+    the same number). It must wake on some of them, gain LOCAL there, and gain more than chance gives: SURE times
+    the standard error of its gain over those passages. Elsewhere it sleeps and changes nothing, which is how the
+    body stays good at what it was. before/after: the body's loss on each passage, without it and with it."""
+    if woke <= 0 or not len(before):
         return False, "it would never be among the cells awake on unseen passages near it"
+    each = before - after
+    gain = each.mean().item()
+    chance = each.std().item() / math.sqrt(len(each)) if len(each) > 1 else float("inf")
     if gain <= LOCAL:
         return False, f"where it lives the body gained {gain:+.4f} (it needs more than {LOCAL})"
-    return True, f"where it lives the body gained {gain:+.4f}; it wakes on {woke:.0%} of the passages near it"
+    if gain <= SURE * chance:
+        return False, (f"where it lives the body gained {gain:+.4f}, give or take {chance:.4f} on {len(each)} passages: "
+                       f"chance alone could give that (it needs {SURE:g} times the give-or-take)")
+    return True, (f"where it lives the body gained {gain:+.4f}, give or take {chance:.4f} on {len(each)} passages; "
+                  f"it wakes on {woke:.0%} of the passages near it")
 
 
-def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
+def turn(minutes=10.0, cells=6, found_minutes=90.0, log=print, births=3):
     """One turn of the body's life with nobody watching (`python -m team body`; the always-on agent runs it whenever
     the device is idle). Whatever is missing is made first: the harvest, the vocabulary, the stem cell, the first
     cells. After that, every turn:
@@ -876,7 +906,8 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
         T.HOME.mkdir(parents=True, exist_ok=True)  # a hive from nothing: its first stem cell is made like any new body's
         (T.HOME / "stem.json").write_text(json.dumps({"bit": True, **NEW_BODY["shape"], "made": {k: v for k, v in NEW_BODY.items() if k != "shape"},
                                                       "since": time.strftime("%Y-%m-%d %H:%M")}))
-        T.pretrain_direct(stem_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"], log=log)
+        T.pretrain_direct(found_minutes, usual=True, name="base", lr=NEW_BODY["lr"], warm=NEW_BODY["warm"], ease=NEW_BODY["ease"],
+                          cool=NEW_BODY["cool"], floor=NEW_BODY["floor"], mean=NEW_BODY["mean"], log=log)
         return "the stem cell read the harvest"
     heal(log)
     if not (HOME / "territories.pt").exists():
@@ -893,7 +924,7 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
     spread = _even(pool, 200)
     first, second, who = b.read(data, spread)
     learn_say(first, second, log)
-    learned = stem_reads(data, spread, first, second, minutes=minutes * 0.3, log=log)
+    learned = stem_reads(data, spread, first, second, minutes=stem_minutes(minutes), log=log)
     if learned and learned["kept"]:
         b = Body()
         first, second, who = b.read(data, spread)
@@ -919,11 +950,12 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
         k = grow(minutes, log=log, trainer=t, body=b)
         b = Body()
         near = b.near(data, pool)[:, k]
-        local = [pool[i] for i in near.topk(min(60, len(pool))).indices.tolist()]  # the unseen passages nearest to it
+        local = [pool[i] for i in near.topk(min(NEARBY, len(pool))).indices.tolist()]  # the unseen passages nearest to it
         f1, s1, _ = b.read(data, local, without=(k,))
         f2, s2, w2 = b.read(data, local)
-        before, after = fit_loss(f1, s1), fit_loss(f2, s2)
-        kept, why = judge_local(before, after, (w2 == k).any(1).float().mean().item())
+        wakes = (w2 == k).any(1)  # where it sleeps it changes nothing: it is judged on the passages it wakes on
+        before, after = fit_loss(f1, s1)[wakes], fit_loss(f2, s2)[wakes]
+        kept, why = judge_local(before, after, wakes.float().mean().item())
         if not kept:
             _remove(k)
             b = Body()
@@ -932,7 +964,9 @@ def turn(minutes=10.0, cells=6, stem_minutes=90.0, log=print, births=3):
         t["kept"] += int(kept)
         born = _report().get("births", [])
         born.append({"cell": k, "when": time.strftime("%Y-%m-%d %H:%M"), "trainer": t["id"], "on": t["on"], "kept": kept, "why": why,
-                     "near_before": round(before.mean().item(), 4), "near_after": round(after.mean().item(), 4)})
+                     "passages": int(wakes.sum()),
+                     "near_before": round(before.mean().item(), 4) if len(before) else None,
+                     "near_after": round(after.mean().item(), 4) if len(after) else None})
         _report(births=born, trainers=breed(ts, rnd))
         log(f"[body] trainer {t['id']} grew cell {k} ({t['on']}); {'kept' if kept else 'removed at birth'}: {why}", flush=True)
     learn_say(*Body().read(data, spread)[:2], log)
@@ -1059,7 +1093,8 @@ def _turned():
         return {}
 
 
-NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}
+NEW_BODY = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32, "cool": 0.0, "floor": 0.1, "mean": 0.0}
+BEFORE = {"cool": 0.0, "floor": 0.1, "mean": 0.0}  # what a recipe on record had of the things recipes did not yet name
 
 # ---- the hive finds its own recipe -----------------------------------------------------------------------------------
 # What was done by hand on 2026-11-11 (rates, easing, shapes tried one against another) the hive goes on doing by
@@ -1071,7 +1106,9 @@ RECIPES = "recipes.json"  # in the shared folder: every founding, its recipe, an
 GENES = {"lr": lambda r, v: round(v * r.choice([0.6, 1.6]), 5),
          "ease": lambda r, v: r.choice([x for x in (0.0, 0.25, 0.5, 0.75) if x != v]),
          "warm": lambda r, v: r.choice([x for x in (100, 200, 400) if x != v]),
-         "batch": lambda r, v: r.choice([x for x in (16, 32, 64) if x != v])}
+         "batch": lambda r, v: r.choice([x for x in (16, 32, 64) if x != v]),
+         "cool": lambda r, v: r.choice([x for x in (0.0, 0.25, 0.5, 0.75) if x != v]),   # the share of the run over which the rate falls
+         "mean": lambda r, v: r.choice([x for x in (0.0, 0.99, 0.999) if x != v])}      # the running mean of the weights
 SHAPES = {"dim": lambda r, v: min(384, max(128, v + r.choice([-32, 32]))),   # heads stay 4: the width is a multiple of 32
           "layers": lambda r, v: min(8, max(3, v + r.choice([-1, 1])))}
 
@@ -1086,7 +1123,7 @@ def _recipes():
 def next_recipe(rnd):
     """The recipe the next body is founded with, and what was changed in it (None: nothing, it is being measured as
     it stands)."""
-    full = lambda r: {**NEW_BODY, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    full = lambda r: {**NEW_BODY, **BEFORE, **r, "shape": {"dim": T.DIM, "layers": T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
     tried = [r for r in _recipes() if r.get("score") is not None]
     if not any(full(r["recipe"]) == full(NEW_BODY) for r in tried):
         return full(NEW_BODY), None
@@ -1099,6 +1136,19 @@ def next_recipe(rnd):
     return child, what
 
 
+def _readers(most=4):
+    """The bodies that say what the hive reads worst, when a body is founded: the `most` that read the yardstick best
+    at the last measurement (the hive as one is carried by its best bodies, and every reader costs minutes)."""
+    names = [b for b in bodies() if (T.SHARED / ("bodies/" + b if b else "") / "body" / "territories.pt").exists()] or bodies()[:1]
+    try:
+        last = json.loads(HIVE.read_text())[-1]
+        score = (last.get("yardstick") or last)["bodies"]
+        names = sorted(names, key=lambda b: score.get(b or "first", float("inf")))
+    except (OSError, ValueError, KeyError, IndexError, TypeError):
+        pass
+    return names[:most]
+
+
 def found(name, minutes=40.0, sample=8000, log=print):
     """A new body is founded on what the bodies there are read worst. Its stem cell starts from random three-valued
     weights of its own and reads the harvest with half of every batch taken from the worse-read half of a sample of
@@ -1108,7 +1158,7 @@ def found(name, minutes=40.0, sample=8000, log=print):
     data = _data()
     rnd = random.Random(name)
     pick = rnd.sample([i for i in range(_windows(data)) if i % HELD], sample)
-    loss = together([_ask(b, pick, "found") for b in bodies()])
+    loss = together([_ask(b, pick, "found") for b in _readers()])
     hard = [i for _, i in sorted(zip(loss.tolist(), pick), reverse=True)[:sample // 2]]
     home = T.SHARED / "bodies" / name
     home.mkdir(parents=True, exist_ok=True)
@@ -1214,7 +1264,7 @@ def main(argv):
         T.pretrain_direct(float(argv[2]), usual=True, name="base", hard=json.loads(Path(argv[1]).read_text()),
                           seed=sum(map(ord, T.BODY)), lr=recipe["lr"], warm=recipe["warm"], ease=recipe["ease"], batch=recipe["batch"],
                           teacher=T.SHARED if recipe["taught"] and (T.SHARED / "base.pt").exists() else None,
-                          taught=recipe["taught"])
+                          taught=recipe["taught"], cool=recipe["cool"], floor=recipe["floor"], mean=recipe["mean"])
         data = _data()  # how the new stem cell reads the same held windows as every stem cell before it (never trained on by any)
         kind["score"] = round(_check_loss(_stem().eval(), data, _held(data, "gate", 300, upto=YARD)), 4)
         (T.HOME / "stem.json").write_text(json.dumps(kind))

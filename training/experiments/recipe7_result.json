@@ -1,0 +1,215 @@
+{
+ "as built in, start 0": {
+  "held": {
+   "gate": 3.9593,
+   "the 96": 3.9963
+  },
+  "minutes": 15.8,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 4.0105,
+  "held, running mean of the weights": {
+   "gate": 3.8956,
+   "the 96": 3.925
+  }
+ },
+ "as built in, start 1": {
+  "held": {
+   "gate": 3.9695,
+   "the 96": 4.0239
+  },
+  "minutes": 26.7,
+  "steps": 600,
+  "seed": 1,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.989,
+  "held, running mean of the weights": {
+   "gate": 3.9088,
+   "the 96": 3.9356
+  }
+ },
+ "as built in, start 2": {
+  "held": {
+   "gate": 3.9621,
+   "the 96": 3.9881
+  },
+  "minutes": 7.3,
+  "steps": 600,
+  "seed": 2,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.9902,
+  "held, running mean of the weights": {
+   "gate": 3.9054,
+   "the 96": 3.9431
+  }
+ },
+ "the rate falls in the second half, to a tenth": {
+  "held": {
+   "gate": 3.8753,
+   "the 96": 3.9136
+  },
+  "minutes": 8.3,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.5,
+  "floor": 0.1,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.9231,
+  "held, running mean of the weights": {
+   "gate": 3.9307,
+   "the 96": 3.966
+  }
+ },
+ "the rate falls in the second half, to a hundredth": {
+  "held": {
+   "gate": 3.891,
+   "the 96": 3.9243
+  },
+  "minutes": 7.4,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.5,
+  "floor": 0.01,
+  "muon": 0.0,
+  "weights": 2615424,
+  "train_last": 3.925,
+  "held, running mean of the weights": {
+   "gate": 3.9443,
+   "the 96": 3.9793
+  }
+ },
+ "Muon at 0.05 for the three-valued layers": {
+  "held": {
+   "gate": 3.919,
+   "the 96": 3.9568
+  },
+  "minutes": 7.7,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.05,
+  "weights": 2615424,
+  "train_last": 3.965,
+  "held, running mean of the weights": {
+   "gate": 3.8373,
+   "the 96": 3.8789
+  }
+ },
+ "Muon at 0.1 for the three-valued layers": {
+  "held": {
+   "gate": 4.364,
+   "the 96": 4.4079
+  },
+  "minutes": 9.6,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.1,
+  "weights": 2615424,
+  "train_last": 4.3532,
+  "held, running mean of the weights": {
+   "gate": 4.2248,
+   "the 96": 4.2611
+  }
+ },
+ "a term of rank 4 beside every three-valued layer": {
+  "held": {
+   "gate": 3.9594,
+   "the 96": 4.0029
+  },
+  "minutes": 8.3,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "rank": 4,
+  "weights": 2664576,
+  "train_last": 4.0081,
+  "held, running mean of the weights": {
+   "gate": 3.8915,
+   "the 96": 3.9265
+  }
+ },
+ "a term of rank 8 beside every three-valued layer": {
+  "held": {
+   "gate": 3.9575,
+   "the 96": 3.991
+  },
+  "minutes": 8.2,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "rank": 8,
+  "weights": 2713728,
+  "train_last": 4.0044,
+  "held, running mean of the weights": {
+   "gate": 3.8862,
+   "the 96": 3.9209
+  }
+ },
+ "rotary positions": {
+  "held": {
+   "gate": 3.694,
+   "the 96": 3.7261
+  },
+  "minutes": 7.9,
+  "steps": 600,
+  "seed": 0,
+  "batch": 32,
+  "lr": 0.003,
+  "anneal": 0.5,
+  "fall": 0.0,
+  "floor": 0.1,
+  "muon": 0.0,
+  "rope": true,
+  "weights": 2615424,
+  "train_last": 3.7416,
+  "held, running mean of the weights": {
+   "gate": 3.6055,
+   "the 96": 3.6448
+  }
+ }
+}

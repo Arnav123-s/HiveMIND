@@ -1,14 +1,17 @@
 # The hive grows by itself here, with nobody watching and no machine of ours switched on.
-# Every six hours: the hive as it was is fetched, it harvests a little more text, every body takes its turn
+# Once a day: the hive as it was is fetched, it harvests a little more text, every body takes its turn
 # (cells are born and judged, a new body is founded when it is time), all is measured on passages nobody trained
 # on, and the hive as it is now is put back. Free on a public repository; nothing here spends money or logs in.
 # The hive is saved after every body's turn (the release "hive-state" keeps its two newest states).
 # Fetch the grown hive onto your own device with:  python training/hive_state.py pull
 name: The hive grows
 
+# Once a day since 2026-11-12 (it was every six hours: "17 */6 * * *"). GitHub's terms for Actions bar use whose
+# burden is out of proportion and let GitHub restrict an account for it; he chose one growing turn and one exam a
+# day, so that the runner hours go where they make the hive better. A turn can still be started by hand.
 on:
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17 0 * * *"
   workflow_dispatch:
     inputs:
       minutes:

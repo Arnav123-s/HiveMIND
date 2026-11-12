@@ -1,0 +1,52 @@
+# Use the working hive from anywhere, with no machine of yours switched on.
+#   Actions tab -> "Ask the hive" -> Run workflow -> type what you want done.
+# The hive plans the task, researches it on live sources, writes and runs code where that helps, checks its own
+# work with a jury, and writes the answer. The answer is on the run's page (Summary); every file it made (charts,
+# CSVs, programs, the full record of the run) is in the run's artifact "the-hive-answer".
+# This repository is public: the task you type and the answer are public too. Do not type anything private here;
+# for private work, install the hive on your own device (sh setup.sh).
+# The run has no token that can write anywhere, logs in nowhere and spends nothing. Risky actions are never approved.
+name: Ask the hive
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: What should the hive do?
+        required: true
+        type: string
+      rounds:
+        description: Follow-up rounds for anything left undone
+        default: "1"
+
+permissions:
+  contents: read
+
+jobs:
+  ask:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      TASK: ${{ inputs.task }}
+      ROUNDS: ${{ inputs.rounds || '1' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/hive
+      - name: The hive works on it
+        run: python -m team "$TASK" --approve never --until-done "$ROUNDS" --run-dir run
+      - name: The answer
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -f run/REPORT.md ]; then
+            cat run/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "The hive did not finish a report. The log of the step above says why." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: the-hive-answer
+          path: |
+            run/
+            runs/
+          retention-days: 30

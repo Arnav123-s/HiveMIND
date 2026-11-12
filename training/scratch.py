@@ -233,7 +233,8 @@ class Direct:
 
 
 def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direct", log=print, usual=False, votes=0,
-                    strong=0.5, leak=0, agree=False, hard=None, lr=1e-3, warm=0, ease=0.0, teacher=None, taught=0.5):
+                    strong=0.5, leak=0, agree=False, hard=None, lr=1e-3, warm=0, ease=0.0, teacher=None, taught=0.5,
+                    cool=0.0, floor=0.1, mean=0.0):
     """A BitNet stem cell from random three-valued weights, trained the direct way on the harvest (cells/scratch/
     <name>.pt). The rate of jumping falls in a straight line to a twentieth of its start over the run.
     Two things to hold it against, from the same start, for the same time: rate 0 (no weight ever jumps: what the
@@ -241,7 +242,12 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     underneath, rounded at every step; `lr` is its rate, reached over the first `warm` steps).
     ease: the share of the run over which the rounding is eased in (it starts as an ordinary net and is a BitNet
     from there on). teacher: the home of a body whose stem cell reads every batch too; the new one learns the text
-    and, for `taught` of its loss, what the teacher expects next. Both measured: training/reports/bitnet_recipe.json."""
+    and, for `taught` of its loss, what the teacher expects next. Both measured: training/reports/bitnet_recipe.json.
+    cool (the published way): the share of the run, from its end, over which the rate falls, by half a cosine, to
+    `floor` times itself. A stem cell left at the high rate reads worse than it could: the third body's gained 0.24
+    from six minutes at a low rate (training/experiments/one_model_b3.json). mean: a running mean of the weights is
+    kept beside them (this share of it stays at each step); when the run ends the stem cell is whichever of the two
+    reads a sample of gate passages better. Both measured: training/experiments/recipe7_result.json."""
     tk = tokenizer()
     data = corpus(tk)
     torch.manual_seed(seed)
@@ -257,7 +263,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
             @staticmethod
             def step(loss, rate):
                 for g in opt.param_groups:
-                    g["lr"] = lr * min(1.0, (steps + 1) / max(1, warm))
+                    g["lr"] = lr * min(1.0, (steps + 1) / max(1, warm)) * falling(done, cool, floor)
                 opt.zero_grad(set_to_none=True)
                 loss.backward()
                 nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -266,6 +272,7 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
     else:
         trainer = Direct(model, seed=seed, votes=votes, strong=strong, leak=leak, agree=agree)
     rnd, t0, steps, losses, jumps = random.Random(seed), time.time(), 0, [], []
+    avg = {k: v.clone() for k, v in model.state_dict().items()} if mean else None
     while time.time() - t0 < minutes * 60:
         done = (time.time() - t0) / (minutes * 60)
         at = offsets(rnd, len(data), batch)
@@ -287,16 +294,54 @@ def pretrain_direct(minutes=20.0, rate=0.003, batch=32, seed=0, name="base_direc
             losses.append(loss.item())
         jumps.append(trainer.step(loss, rate * (1 - 0.95 * done)))
         steps += 1
+        if avg is not None:
+            with torch.no_grad():
+                for k, v in model.state_dict().items():
+                    avg[k].mul_(mean).add_(v, alpha=1 - mean)
         if steps % 100 == 0:
             log(f"[scratch] direct, step {steps}: loss {sum(losses[-100:]) / 100:.3f}, {sum(jumps[-100:]) / 100:.2%} of the "
                 f"three-valued weights jump a step", flush=True)
     EASE[0] = 1.0
+    kept = better_of(model, avg, data, log) if avg is not None and steps else "the weights as they are"
     HOME.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), HOME / f"{name}.pt")
     out = {"steps": steps, "loss": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 3), "rate": rate, "minutes": minutes,
+           "cool": cool, "mean": mean, "kept": kept,
            "way": "usual (ordinary weights underneath)" if usual else f"direct by votes ({votes}; strong {strong}, leak {leak}, agree {agree})" if votes else "direct" if rate else "direct with no jumps"}
     _record(**{name: out})
     return out
+
+
+def falling(done, cool, floor=0.1):
+    """What the rate is multiplied by when `done` of a run is over: 1 until the last `cool` of it, then down by half a
+    cosine to `floor`."""
+    if not cool or done <= 1 - cool:
+        return 1.0
+    return floor + (1 - floor) * 0.5 * (1 + math.cos(math.pi * min(1.0, (done - (1 - cool)) / cool)))
+
+
+def better_of(model, avg, data, log=print, most=64):
+    """The model is left with whichever reads a sample of gate passages better: its weights as they are, or their
+    running mean. Gate passages are held windows nothing trains on; report passages are not touched. Returns which."""
+    gate = [i for i in range(0, (len(data) - 1) // CTX, HELD)][0::2]
+    check = gate[::max(1, len(gate) // most)][:most]
+
+    def reads():
+        model.eval()
+        with torch.no_grad():
+            tot = sum(F.cross_entropy(model.next_piece(x[:, :-1]).reshape(-1, VOCAB), x[:, 1:].reshape(-1)).item() * len(x)
+                      for x in (torch.stack([torch.from_numpy(data[i * CTX:i * CTX + CTX + 1].astype("int64")) for i in check[j:j + 32]])
+                                for j in range(0, len(check), 32)))
+        model.train()
+        return tot / max(1, len(check))
+    own, as_it_is = reads(), {k: v.clone() for k, v in model.state_dict().items()}
+    model.load_state_dict(avg)
+    mean = reads()
+    if mean >= own:
+        model.load_state_dict(as_it_is)
+    log(f"[scratch] on {len(check)} gate passages: the weights as they are {own:.4f}, their running mean {mean:.4f}; "
+        f"the stem cell is {'the running mean' if mean < own else 'the weights as they are'}", flush=True)
+    return "the running mean of the weights" if mean < own else "the weights as they are"
 
 
 TABLE = ("tok.", "pos.")  # what every cell has from the stem cell and does not carry itself
