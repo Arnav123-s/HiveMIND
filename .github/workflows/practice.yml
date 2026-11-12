@@ -1,0 +1,49 @@
+# The hive practises, with nobody there, and keeps what it solved.
+# Fresh tasks that are never an exam's are done by the members (team/solo.py): each member does the whole task by
+# writing and running programs, and two must agree. A program two members agreed on, and that the task's own check
+# then confirmed, stays in the hive's library; the next task like it starts from that program. The library lives in
+# the Actions cache (no token of this job can write to the repository).
+# Whether practice makes the hive better is measured by the exam: the same fresh sitting with the library and
+# with nothing learned (exam.yml, input empty_memory).
+name: The hive practises
+on:
+  schedule:
+    - cron: "23 15 * * *"
+  workflow_dispatch:
+    inputs:
+      tasks:
+        description: How many tasks
+        default: "16"
+permissions:
+  contents: read
+concurrency:
+  group: practice
+  cancel-in-progress: false
+jobs:
+  practise:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      TASKS: ${{ inputs.tasks || '16' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/hive
+      - name: What the hive has solved so far (kept between runs in the Actions cache, never in git)
+        uses: actions/cache/restore@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}
+          restore-keys: hive-solved-
+      - name: Practice
+        run: python training/exam.py practice --tasks "$TASKS" | tee practice.txt
+      - name: How it went
+        if: ${{ !cancelled() }}
+        run: |
+          echo "### Practice" >> "$GITHUB_STEP_SUMMARY"
+          tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Keep what it solved
+        if: ${{ !cancelled() && hashFiles('memory/solved.jsonl') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}

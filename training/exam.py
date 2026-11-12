@@ -13,6 +13,11 @@ whether the hive is getting better, field by field, with nobody there to see.
                                                        (python -m team, risky actions never). Writes
                                                        training/reports/exams/<seed>.json and .md and one line
                                                        in training/reports/exams.jsonl
+    python training/exam.py practice [--tasks 16] [--members 2]
+                                                       fresh tasks that are never an exam's, done by the members
+                                                       (team/solo.py) with the hive's real memory: a program two
+                                                       members agreed on and the task's check confirmed stays in
+                                                       the hive's library, for the next task like it
 The hive sits the exam with what it has learned (a copy of its memory, so a sitting cannot change it);
 --empty-memory: with none.
 """
@@ -390,7 +395,7 @@ def _memory(empty):
     home = Path(tempfile.mkdtemp(prefix="exam-memory-"))
     if not empty:
         from team import memory
-        for name in ("lessons.jsonl", "policy.json", "profile.md"):
+        for name in ("lessons.jsonl", "policy.json", "profile.md", "solved.jsonl"):
             if (memory.HOME / name).exists():
                 shutil.copyfile(memory.HOME / name, home / name)
     return home
@@ -446,6 +451,24 @@ def sit(seed, n=16, only=(), empty_memory=False, log=print):
     return line
 
 
+def practice(seed, n=16, only=(), members=2, log=print):
+    """Practice: fresh tasks that are never an exam's (their seeds start at ten million), done by the members with the
+    hive's real memory, so what two members agree on stays in its library (team/solo.py); then each task's own check
+    says whether that program was right, and a wrong one is taken out again. Nothing is written to the exam's record."""
+    from team import memory, solo
+    tag, rows = f"practice_{seed}", []
+    os.environ["AGENT_TEAM_SOLO"] = str(members)
+    had = len(solo.solved())
+    for tid, field, kind, task, check in exam(seed, n, only):
+        r = sit_one(tag, tid, task, check, memory.HOME)
+        solo.judge(task, r["ok"])
+        rows.append(r)
+        log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{field}: {kind}] {r['seconds']}s", flush=True)
+    now = solo.solved()
+    return {"practice": seed, "tasks": len(rows), "right": sum(r["ok"] for r in rows), "library_before": had, "library_now": len(now),
+            "confirmed_in_library": sum(bool(x.get("checked")) for x in now)}
+
+
 def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     seed = opt("--seed", (datetime.date.today() - datetime.date(2026, 1, 1)).days)
@@ -455,6 +478,8 @@ def main(argv):
     if cmd == "show":
         for tid, field, kind, task, _ in exam(seed, opt("--tasks", 16), only):
             print(f"{tid} [{field}: {kind}]\n    {task}\n")
+    elif cmd == "practice":
+        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 3600)), opt("--tasks", 16), only, opt("--members", 2))))
     elif cmd == "sit":
         print(json.dumps(sit(seed, opt("--tasks", 16), only, "--empty-memory" in argv)))
     else:

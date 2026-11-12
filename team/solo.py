@@ -52,6 +52,53 @@ MORE = ("If this output is the complete answer to the TASK (every value asked fo
         "word DONE. If it only shows data you were looking at, or something is missing or wrong, reply with the "
         "complete program that prints the answer.")
 TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 8))
+
+
+# ---- what the hive has solved --------------------------------------------------------------------------------------
+# A task two members agreed on leaves its program behind (memory/solved.jsonl). The next member that gets a task
+# like it starts from that program instead of from nothing. This is how the hive gets better with nobody there: by
+# doing tasks. Practice (training/exam.py practice) keeps only programs whose answer the task's own check confirmed.
+def library():
+    from . import memory
+    return memory.HOME / "solved.jsonl"
+
+
+def solved():
+    import json
+    try:
+        return [json.loads(x) for x in library().read_text().splitlines() if x.strip()]
+    except (OSError, ValueError):
+        return []
+
+
+def keep(task, program, answer):
+    import json
+    if not program.strip() or len(program) > 6000:
+        return
+    rows = [r for r in solved() if r.get("task") != task][-499:]
+    rows.append({"task": task[:1500], "program": program, "answer": answer[:600], "when": time.strftime("%Y-%m-%d %H:%M"), "checked": False})
+    library().parent.mkdir(parents=True, exist_ok=True)
+    library().write_text("".join(json.dumps(r) + "\n" for r in rows))
+
+
+def judge(task, right):
+    """Practice only: the task's own check has spoken. A confirmed program is marked; a wrong one leaves the library."""
+    import json
+    rows = [dict(r, checked=True) if r.get("task") == task[:1500] else r for r in solved() if right or r.get("task") != task[:1500]]
+    if library().exists():
+        library().write_text("".join(json.dumps(r) + "\n" for r in rows))
+
+
+def alike(task, most=2, least=0.3):
+    """The solved tasks most like this one (shared words over all words), confirmed ones first."""
+    from . import memory
+    mine, out = memory.words(task), []
+    for r in solved():
+        theirs = memory.words(r.get("task", ""))
+        score = len(mine & theirs) / max(1, len(mine | theirs))
+        if score >= least and r.get("task") != task[:1500]:
+            out.append((bool(r.get("checked")), score, r))
+    return [r for _, _, r in sorted(out, key=lambda x: (x[0], x[1]), reverse=True)[:most]]
 FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing", re.I)
 LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing", re.I)
 
@@ -79,6 +126,12 @@ def member(task, n, board, guard, work, temperature):
     printed ("" when none ran)."""
     messages = [{"role": "system", "content": MEMBER.format(today=time.strftime("%Y-%m-%d (%A)"))},
                 {"role": "user", "content": f"TASK: {task}"}]
+    before = alike(task) if os.environ.get("HIVE_LIBRARY", "1") != "0" else []
+    if before:
+        board.log(f"member{n}", "library", f"{len(before)} solved task(s) like this one")
+        messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
+                                    "values are different now.\n" + "\n".join(
+                                        f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
     good, last_error, repeats, turn = None, None, 0, 0
     for turn in range(1, TURNS + 1):
         stop.check()
@@ -142,6 +195,7 @@ def run(task, run_dir=None, approve="never", members=2):
             break
     got = [t for t in tries if t["answer"]]
     if agreed:
+        keep(task, agreed["program"], agreed["answer"])
         text = agreed["answer"] + f"\n\n## How it was checked\n- {len(tries)} members worked it out independently; two gave the same values."
     elif members < 2 and got:
         text = got[0]["answer"] + "\n\n## How it was checked\n- One member worked it out; nobody checked it."
