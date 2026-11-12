@@ -126,4 +126,6 @@ MAX_FOREACH = 6          # items a for_each step fans out to
 MAX_RETRIES = 2          # re-tries of a failed step (with verifier feedback)
 BROWSER_MAX_ACTIONS = 14
 CODER_MAX_ATTEMPTS = 4
+# what a program worked out and printed is worked out again by an independent program, and code compares the two
+CODER_SECOND = os.environ.get("AGENT_TEAM_SECOND", "1") != "0"
 CODE_TIMEOUT = int(os.environ.get("AGENT_TEAM_CODE_TIMEOUT", 1800))

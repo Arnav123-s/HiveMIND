@@ -1643,3 +1643,129 @@ def test_the_model_files_own_template_builds_the_prompt():
     t = FileTok(Fake())
     p = t.apply_chat_template([{"role": "user", "content": "hi"}], tokenize=False, add_generation_prompt=True, enable_thinking=False)
     assert p == "<|im_start|>user\nhi<|im_end|>\n<|im_start|>assistant\n" and len(t.encode("abc")) == 3
+
+
+PRIMES_TASK = "Write a Python program that finds every prime number below 200 whose digits add up to 10, run it, and report the list and how many there are."
+WRONG_PRIMES = ("out = [n for n in range(2, 200) if all(int(d) % 2 for d in str(n)) and sum(map(int, str(n))) == 10]\n"
+                "print('Primes below 200 with digit sum 10:', out)\nprint('Number of primes:', len(out))")
+RIGHT_PRIMES = ("def prime(n):\n    return n > 1 and all(n % k for k in range(2, int(n ** 0.5) + 1))\n"
+                "found = [n for n in range(200) if prime(n) and sum(int(d) for d in str(n)) == 10]\n")
+
+
+def _coder_writes(monkeypatch, tmp_path, programs):
+    from team import config
+    from team.board import Board
+    from team.specialists import coder
+    class G:  # noqa: E306
+        def check_code(self, *a):
+            return True
+    left = list(programs)
+    monkeypatch.setattr(config, "CODER_SECOND", True)
+    monkeypatch.setattr(coder, "preview", lambda task, wd: "")
+    monkeypatch.setattr(coder, "review", lambda *a: [])
+    monkeypatch.setattr(coder.llm, "chat", lambda *a, **k: f"```python\n{left.pop(0)}\n```")
+    out = coder.run(PRIMES_TASK, "", Board(tmp_path, echo=False), "s2", G(), tmp_path / "work")
+    return out, left
+
+
+def test_a_wrong_program_that_ran_is_outvoted_by_two_independent_programs_that_agree(tmp_path, monkeypatch):
+    """The first task the hive was given on GitHub: its coder's program ran, printed 19, 37, 55, 73, 91 and passed."""
+    out, left = _coder_writes(monkeypatch, tmp_path, [WRONG_PRIMES, RIGHT_PRIMES + "print(found, len(found))",
+                                                      RIGHT_PRIMES + "print('There are', len(found), 'of them:', *found)"])
+    assert out["agreed"] and not out.get("unagreed") and not left
+    assert "109" in out["summary"] and "55" not in out["summary"]                        # the result is the one two programs agree on
+    assert "prime(n)" in (tmp_path / "work" / "s2.py").read_text()                       # and the step's program is theirs
+    assert out["files"] == []                                                            # the opinions are not files of his
+
+
+def test_a_program_confirmed_by_an_independent_one_is_kept_and_three_different_results_are_no_result(tmp_path, monkeypatch):
+    from team.specialists import coder, verifier
+    out, left = _coder_writes(monkeypatch, tmp_path / "a", [RIGHT_PRIMES + "print(found, len(found))",
+                                                            RIGHT_PRIMES + "print(len(found), 'primes:', found)", "print('not asked for')"])
+    assert out["agreed"] and "181" in out["summary"] and len(left) == 1                  # the same numbers in another order of words: no third is written
+    out, _ = _coder_writes(monkeypatch, tmp_path / "b", [WRONG_PRIMES, RIGHT_PRIMES + "print(found, len(found))", "print([19, 37], 2)"])
+    assert "different results" in out["unagreed"] and not out.get("agreed")
+    v, why = verifier.verify({"id": "s2", "agent": "coder", "task": PRIMES_TASK, "done_when": "x"}, out, None, tmp_path)
+    assert v == "FAIL" and "different results" in why                                    # no juror outvotes it
+    assert coder.answer("Primes below 200 with digit sum 10: [19, 37]\nCount: 2", PRIMES_TASK) == (2.0, 19.0, 37.0)
+    assert not coder.only_computes("time list.sort", "import time\nt = time.time()", [], [])   # a measurement differs between runs
+    assert not coder.only_computes("read https://example.com", "print(1)", [], [])
+
+
+def test_a_lookup_with_nothing_to_look_up_is_done_by_the_step_that_works_it_out(tmp_path):
+    from team.board import Board
+    from team.hive import Hive
+    b = Board(tmp_path, echo=False)
+    for s in ({"id": "s1", "agent": "researcher", "task": "Find all primes", "needs": []},
+              {"id": "s2", "agent": "coder", "task": "Write and run the program", "needs": ["s1"]},
+              {"id": "s3", "agent": "researcher", "task": "Find the price", "needs": []},
+              {"id": "s4", "agent": "coder", "task": "Add the prices", "needs": ["s3"]}):
+        b.add_step({"for_each": None, "done_when": "x", **s})
+    b.update_step("s1", verdict="FAIL", feedback="no source could be read: ", result={"summary": "", "notes": [], "facts": []})
+    b.update_step("s2", verdict="PASS", result={"summary": "[19, 37]"})
+    b.update_step("s3", verdict="FAIL", feedback="no source could be read: shop.example: 403", result={"notes": ["shop.example: 403"]})
+    b.update_step("s4", verdict="PASS", result={"summary": "12"})
+    h = Hive.__new__(Hive)
+    h.board = b
+    for sid in ("s1", "s2", "s3", "s4"):
+        h._worked_out(b.step(sid))
+    assert b.step("s1")["verdict"] == "REROUTED" and "worked out by s2" in b.step("s1")["feedback"]
+    assert b.step("s3")["verdict"] == "FAIL"                                             # a source it tried and could not read stays a failure
+
+
+def test_an_instruction_the_critic_did_not_check_is_asked_again_alone_only_when_every_step_passed(tmp_path, monkeypatch):
+    from team.board import Board
+    from team.specialists import writer
+    asked = []
+    monkeypatch.setattr(writer.llm, "chat_json", lambda who, msgs, **k: (asked.append(msgs[-1]["content"]) or {"done": True, "why": "the list is in the report"}, ""))
+    b = Board(tmp_path, echo=False)
+    b.add_step({"id": "s1", "agent": "coder", "task": "t", "needs": [], "for_each": None, "done_when": "x"})
+    b.update_step("s1", verdict="PASS", result={"summary": "[19, 37]"})
+    todo = [{"instruction": "run it", "done": False, "why": writer.UNCHECKED}, {"instruction": "chart it", "done": False, "why": "no chart was made"}]
+    out = writer.ask_again(todo, b, "results", "report")
+    assert [c["done"] for c in out] == [True, False] and len(asked) == 1 and "INSTRUCTION:\nrun it" in asked[0]
+    b.update_step("s1", verdict="FAIL")
+    assert writer.ask_again(todo, b, "results", "report") == todo and len(asked) == 1    # a step failed: unchecked stays not done
+
+
+def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_path, monkeypatch):
+    from team import solo
+    right = RIGHT_PRIMES + "print('The primes are', found, 'and there are', len(found))"
+    again = RIGHT_PRIMES + "print(len(found), 'primes:', *found)"
+    other, broken = "print('Found: [19, 37], 2 of them')", "print(undefined_name)"
+
+    def hive(replies, name, members=2):
+        left = list(replies)
+        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+        return solo.run(PRIMES_TASK, tmp_path / name, "never", members=members), left
+    out, left = hive(["DONE", broken, right, "DONE", again, "DONE"], "a")                     # DONE before anything ran is not taken; an error is fixed
+    assert out["agreed"] and out["tries"] == 2 and not left and "109" in out["report"].split("\n## ")[0]
+    out, left = hive([WRONG_PRIMES, "DONE", right, "DONE", again, "DONE"], "b")               # the first member is wrong: a third decides
+    assert out["agreed"] and out["tries"] == 3 and "[19, 37, 73, 109, 127, 163, 181]" in out["report"].split("\n## ")[0]
+    out, left = hive([WRONG_PRIMES, "DONE", right, "DONE", other, "DONE"], "c")
+    body = out["report"].split("\n## ")[0]
+    assert not out["agreed"] and body.startswith("Not confirmed") and "19" not in body         # no member's values are handed over as the answer
+    out, left = hive([broken] * 9, "d")                                                       # the same error three times running: a member stops
+    assert not out["agreed"] and not left and out["tries"] == 3 and "No member got as far" in out["report"]
+    out, left = hive([broken] * 3 + [right, "DONE", again, "DONE"], "f")                      # one member got nowhere: a third stands in for it
+    assert out["agreed"] and out["tries"] == 3 and not left
+    asked = []
+    left = ["print(\"The 'upload_time' key does not exist in the response.\")", "print('released 2024-12-06, 706 days ago')", "DONE"]
+    monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+    out = solo.run("When was the latest httpx released?", tmp_path / "e", "never", members=1)
+    assert "706 days ago" in out["report"] and "prints what IS" in asked[1]       # a printed failure is no answer; it is told to look
+    assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
+    assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
+
+
+def test_where_the_members_agree_their_answer_and_files_are_the_runs(tmp_path, monkeypatch):
+    from team import solo
+    prog = "open('primes.txt', 'w').write('19 37')\nprint('Saved the 2 primes 19 and 37 in primes.txt')"
+    left = [prog, "DONE", prog.replace("Saved", "Wrote"), "DONE"]
+    monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+    out = solo.first("Save the primes below 40 whose digits add up to 10 in primes.txt", tmp_path, "never", members=2)
+    assert out["agreed"] and out["dir"] == str(tmp_path) and "19 and 37" in (tmp_path / "REPORT.md").read_text()
+    assert [p.name for p in (tmp_path / "work").iterdir()] == ["primes.txt"]             # his file, not the members' programs
+    left = ["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"]
+    out = solo.first("Pick a number", tmp_path / "b", "never", members=2)
+    assert not out["agreed"] and not (tmp_path / "b" / "REPORT.md").exists()               # nothing confirmed: the run is left to the roles

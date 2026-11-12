@@ -267,6 +267,61 @@ def saved(workdir, before, program):
             and before.get(p.name) != p.stat().st_mtime_ns]
 
 
+SECOND = ("Write a second, independent program for this task. Work it out by a different method than the most "
+          "obvious one, test every condition the task names on its own line, and print the result.")
+_CLOCK = re.compile(r"\b(random|time|datetime|psutil|os|sys|subprocess|socket|requests|urllib|httpx)\.\w|\binput\(|\bopen\(|https?://")
+
+
+def answer(stdout, task):
+    """What a program's output says, for comparing two programs that print it differently: its numbers,
+    without those the task itself names (a program that repeats "primes below 200" has said nothing by the 200)."""
+    nums = lambda t: [round(float(x), 6) for x in re.findall(r"(?<![\w.])-?\d+(?:\.\d+)?(?![\w]|\.\d)", re.sub(r"(?<=\d),(?=\d{3}\b)", "", t))]  # noqa: E731
+    named = set(nums(task))
+    return tuple(sorted(x for x in nums(stdout) if x not in named))  # sorted: one prints the count first, another last
+
+
+def only_computes(task, code, new, want):
+    """The program works something out and prints it: no page, no file, no clock, nothing that differs between runs."""
+    return not new and not want and not _CLOCK.search(code) and not re.search(r"https?://", task)
+
+
+def agreement(task, context, code, res, workdir, name, board, guard):
+    """A program that ran is not thereby right. (The first task given to the hive on GitHub, 2026-11-12: "every
+    prime below 200 whose digits add up to 10". The 7B coder tested the digits for oddness instead of the number for
+    primality, printed 19, 37, 55, 73, 91, and the reviewer and the verifier passed it: it ran and printed.)
+    So what one member worked out, another works out again, independently, and code compares what they print. The
+    same result twice: kept. Different: a third decides, and the program of the two that agree is the step's
+    program. Three different results: the step has no result, and says so. Returns what changes in the result."""
+    first = answer(res["stdout"], task)
+    if not first:
+        return {}
+    side = Path(workdir).parent / "second_opinions"
+    others = []
+    for n in (2, 3):
+        stop.check()
+        messages = task_messages(task, context)
+        messages[-1]["content"] += "\n\n" + SECOND
+        code2 = extract_code(llm.chat("coder", messages, max_new_tokens=1400, stop="code", temperature=0.8))
+        if not code2.strip() or code2.strip() == code.strip() or _CLOCK.search(code2) or not guard.check_code("coder", code2):
+            continue
+        res2 = run_python(code2, side, name=f"opinion{n}_{name}")
+        got = answer(res2["stdout"], task) if res2["returncode"] == 0 else ()
+        if not got:
+            continue
+        if got == first:
+            board.log("coder", "agreed", f"an independent program gives the same result ({len(others) + 2} written)")
+            return {"agreed": True}
+        if others and got == others[0][0]:
+            board.log("coder", "outvoted", "two independent programs agree against the first one; theirs is the result")
+            return {**run_python(others[0][1], workdir, name=name), "code": others[0][1], "agreed": True}
+        others.append((got, code2, res2["stdout"]))
+    if not others:
+        return {}  # nobody else got as far as a result: nothing is known against the first
+    board.log("coder", "no-agreement", f"{len(others) + 1} independent programs, {len(others) + 1} different results")
+    return {"unagreed": ("independent programs for the same task printed different results: "
+                         + " | ".join(o.strip()[-160:] for o in [res["stdout"]] + [o[2] for o in others]))[:600]}
+
+
 def run(task, context, board, step_id, guard, workdir):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
@@ -345,6 +400,8 @@ def run(task, context, board, step_id, guard, workdir):
                     # with the result. The 1.5B coder read one page of a listing three times, was told each time,
                     # and the jury of small models passed "saved the 3 cheapest" with two of the three right.
                     last["unfixed"] = " | ".join(hard)[:600]
+                elif not problems and config.CODER_SECOND and only_computes(own, code, new, want):
+                    last.update(agreement(task, context, code, res, workdir, name, board, guard))
                 break
             board.log("code_reviewer", "fix", " | ".join(problems)[:300])
             messages = messages + [{"role": "assistant", "content": f"```python\n{code}\n```"},
@@ -383,4 +440,4 @@ def run(task, context, board, step_id, guard, workdir):
     summary = (last["stdout"] or "").strip()[-1500:] or (last["stderr"] or "")[-600:]
     return {"summary": summary, "code_path": str(workdir / name), "returncode": last["returncode"],
             "stderr": last["stderr"][-1500:], "files": files, "attempts": last["attempts"],
-            "seconds": last["seconds"], **({k: last[k] for k in ("examples_failed", "unfixed") if last.get(k)})}
+            "seconds": last["seconds"], **({k: last[k] for k in ("examples_failed", "unfixed", "unagreed", "agreed") if last.get(k)})}

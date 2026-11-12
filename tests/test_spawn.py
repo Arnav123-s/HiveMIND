@@ -1128,7 +1128,7 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     import random
     from training import body as B
     monkeypatch.setattr(B.T, "SHARED", tmp_path)
-    full = lambda r: {**B.NEW_BODY, **r, "shape": {"dim": B.T.DIM, "layers": B.T.LAYERS, **(r.get("shape") or {})}}  # noqa: E731
+    full = lambda r: {**B.NEW_BODY, **r, "shape": {"dim": B.T.DIM, "layers": B.T.LAYERS, "rotary": False, **(r.get("shape") or {})}}  # noqa: E731
     recipe, changed = B.next_recipe(random.Random(0))
     assert changed is None and recipe == full(B.NEW_BODY)                                   # nothing measured yet: the recipe as it stands
     (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10}]))
@@ -1136,10 +1136,10 @@ def test_every_founding_is_an_experiment_on_the_recipe(tmp_path, monkeypatch):
     for seed in range(40):
         child, what = B.next_recipe(random.Random(seed))
         seen.add(what)
-        differs = [k for k in ("lr", "ease", "warm", "batch", "cool", "mean") if child[k] != recipe[k]] + [k for k in ("dim", "layers") if child["shape"][k] != recipe["shape"][k]]
+        differs = [k for k in ("lr", "ease", "warm", "batch", "cool", "mean") if child[k] != recipe[k]] + [k for k in ("dim", "layers", "rotary") if child["shape"][k] != recipe["shape"][k]]
         assert differs == [what]                                                             # one thing changed, and only one
         assert child["shape"]["dim"] % 32 == 0 and 3 <= child["shape"]["layers"] <= 8
-    assert seen == {"lr", "ease", "warm", "batch", "cool", "mean", "dim", "layers"}
+    assert seen == {"lr", "ease", "warm", "batch", "cool", "mean", "dim", "layers", "rotary"}
     better = dict(recipe, lr=0.0048)
     (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": recipe, "minutes": 40.0, "score": 3.10},
                                                    {"body": "b4", "recipe": better, "minutes": 40.0, "score": 3.02},
@@ -1157,10 +1157,11 @@ def test_a_recipe_on_record_from_before_a_setting_existed_is_read_as_it_was(tmp_
     monkeypatch.setattr(B.T, "SHARED", tmp_path)
     old = {"shape": {}, "lr": 3e-3, "warm": 200, "ease": 0.5, "taught": 0.0, "batch": 32}  # b3's recipe: it names no falling rate
     (tmp_path / B.RECIPES).write_text(json.dumps([{"body": "b3", "recipe": old, "minutes": 40.0, "score": 3.10}]))
-    monkeypatch.setitem(B.NEW_BODY, "cool", 0.5)                                            # the recipe as built in now has one
+    assert B.NEW_BODY["cool"] == 0.5 and B.NEW_BODY["mean"] == 0.99 and B.NEW_BODY["shape"] == {"rotary": True}  # as built in since 2026-11-12
     recipe, changed = B.next_recipe(random.Random(0))
-    assert changed is None and recipe["cool"] == 0.5                                        # so it is new, and is tried as it stands
-    monkeypatch.setitem(B.NEW_BODY, "cool", 0.0)                                            # without one it is b3's recipe: tried already
+    assert changed is None and recipe["cool"] == 0.5 and recipe["shape"]["rotary"]          # so it is new, and is tried as it stands
+    for k, v in {"cool": 0.0, "mean": 0.0, "shape": {}}.items():                            # as it was built in before: b3's recipe, tried already
+        monkeypatch.setitem(B.NEW_BODY, k, v)
     child, what = B.next_recipe(random.Random(0))
     assert what is not None
 
@@ -1279,3 +1280,24 @@ def test_turn_does_not_hide_stem_minutes():
     from training import body as B
     assert "stem_minutes" not in inspect.signature(B.turn).parameters
     assert callable(B.stem_minutes)
+
+
+def test_a_body_with_rotary_positions_reads_by_distance_and_its_cells_pack_as_before():
+    import torch
+    from training import scratch as T
+    shape = {"bit": True, "dim": 64, "layers": 2, "heads": 4, "subln": False, "rotary": True}
+    torch.manual_seed(0)
+    m = T.Tiny(shape=shape).eval()
+    ids = torch.randint(0, T.VOCAB, (2, 40))
+    out = m.next_piece(ids)
+    assert out.shape == (2, 40, T.VOCAB)
+    with torch.no_grad():
+        m.pos.weight.add_(5.0)                                                            # the table of places is carried but not used
+        assert torch.equal(m.next_piece(ids), out)
+        assert not torch.allclose(m.next_piece(ids.flip(1))[:, -1], out[:, -1], atol=1e-4)  # yet the order of the pieces matters
+    assert "blocks.0.cos" not in m.state_dict()                                           # the angles are not weights: nothing new in a cell's file
+    back = T.Tiny(shape=shape).eval()
+    back.load_state_dict(T.unpack(T.pack(m), m.state_dict()), strict=False)
+    assert torch.allclose(back.next_piece(ids), out, atol=2e-2)                           # two bits a weight, and it reads the same
+    plain = T.Tiny(shape={**shape, "rotary": False})
+    assert not plain.rotary and not hasattr(plain.blocks[0], "cos") and T.kind()["rotary"] is False

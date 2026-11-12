@@ -1,0 +1,17 @@
+{
+ "votes, rotary positions, start 0": {
+  "gate": 3.5727,
+  "steps": 1364,
+  "minutes": 20.0,
+  "train_last": 3.5461,
+  "three_valued_weights": 1769472
+ },
+ "votes, five levels, half size, rotary positions, start 0": {
+  "gate": 3.3769,
+  "steps": 2395,
+  "minutes": 20.0,
+  "train_last": 3.3324,
+  "three_valued_weights": 884736,
+  "share_at_the_outer_levels": 0.4025
+ }
+}

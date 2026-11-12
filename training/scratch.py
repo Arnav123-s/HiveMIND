@@ -81,7 +81,7 @@ class BitLinear(nn.Linear):
 
 
 def kind(home=None):
-    """What this body's cells are: {"bit", "dim", "layers", "heads", "subln"}. It is written once, when the body's
+    """What this body's cells are: {"bit", "dim", "layers", "heads", "subln", "rotary"}. It is written once, when the body's
     stem cell is made (stem.json beside the stem cell; the first body's travels with it in git), and every cell of
     the body has it. Bodies may differ: what they share is the vocabulary and the harvest, not their shape."""
     try:
@@ -89,7 +89,7 @@ def kind(home=None):
     except (OSError, ValueError):
         k = {}
     return {"bit": bool(k.get("bit")), "dim": int(k.get("dim", DIM)), "layers": int(k.get("layers", LAYERS)),
-            "heads": int(k.get("heads", HEADS)), "subln": bool(k.get("subln"))}
+            "heads": int(k.get("heads", HEADS)), "subln": bool(k.get("subln")), "rotary": bool(k.get("rotary"))}
 
 
 def is_bit():
@@ -97,12 +97,21 @@ def is_bit():
     return kind()["bit"]
 
 
+def rotated(x, cos, sin):
+    """Rotary positions: each pair of numbers of a query or key is turned by an angle that grows with its place in
+    the text, so two places attend to each other by how far apart they are. x: [batch, heads, places, numbers]."""
+    a, b = x[..., ::2], x[..., 1::2]
+    return torch.stack([a * cos - b * sin, a * sin + b * cos], -1).flatten(-2)
+
+
 class Block(nn.Module):
-    """subln: one more norm right before each of the block's two output layers (the published BitNet recipe: what
+    """rotary: where a piece stands is told to the attention itself (rotated) instead of being added to the piece
+    once at the bottom (measured 2026-11-12, training/experiments/recipe7_result.json: 3.6940 against 3.9636).
+    subln: one more norm right before each of the block's two output layers (the published BitNet recipe: what
     goes into a three-valued layer is normed before it is rounded to 8 bits; without it the stem cell's first
     BitNets rounded un-normed numbers at those two layers)."""
 
-    def __init__(self, bit=False, dim=DIM, heads=HEADS, subln=False):
+    def __init__(self, bit=False, dim=DIM, heads=HEADS, subln=False, rotary=False):
         super().__init__()
         lin = BitLinear if bit else nn.Linear
         self.heads = heads
@@ -111,11 +120,18 @@ class Block(nn.Module):
         self.up, self.down = lin(dim, 4 * dim), lin(4 * dim, dim)
         if subln:
             self.s1, self.s2 = nn.LayerNorm(dim), nn.LayerNorm(4 * dim)
-        self.subln = subln
+        self.subln, self.rotary = subln, rotary
+        if rotary:
+            each = dim // heads
+            angle = torch.arange(CTX).float()[:, None] / (10000 ** (torch.arange(0, each, 2).float() / each))[None]
+            self.register_buffer("cos", angle.cos(), persistent=False)
+            self.register_buffer("sin", angle.sin(), persistent=False)
 
     def forward(self, x, causal):
         b, t, d = x.shape
         q, k, v = self.qkv(self.n1(x)).view(b, t, 3, self.heads, d // self.heads).permute(2, 0, 3, 1, 4)
+        if self.rotary:
+            q, k = rotated(q, self.cos[:t], self.sin[:t]), rotated(k, self.cos[:t], self.sin[:t])
         a = F.scaled_dot_product_attention(q, k, v, is_causal=causal).transpose(1, 2).reshape(b, t, d)
         x = x + self.out(self.s1(a) if self.subln else a)
         h = F.gelu(self.up(self.n2(x)))
@@ -132,13 +148,14 @@ class Tiny(nn.Module):
         self.bit = k["bit"] if bit is None else bit
         self.dim = dim = k["dim"]
         self.tok, self.pos = nn.Embedding(VOCAB, dim), nn.Embedding(CTX, dim)
-        self.blocks = nn.ModuleList(Block(self.bit, dim, k["heads"], k["subln"]) for _ in range(k["layers"]))
+        self.rotary = bool(k.get("rotary"))  # then the table of places (pos) is carried, as every cell's file expects, but not used
+        self.blocks = nn.ModuleList(Block(self.bit, dim, k["heads"], k["subln"], self.rotary) for _ in range(k["layers"]))
         self.norm = nn.LayerNorm(dim)
         self.head = nn.Linear(dim, labels) if labels else None
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
 
     def body(self, ids, causal=True):
-        x = self.tok(ids) + self.pos(torch.arange(ids.shape[1]))
+        x = self.tok(ids) if self.rotary else self.tok(ids) + self.pos(torch.arange(ids.shape[1]))
         for blk in self.blocks:
             x = blk(x, causal)
         return self.norm(x)
