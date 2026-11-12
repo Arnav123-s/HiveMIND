@@ -140,6 +140,19 @@ def same(a, b, task=""):
     return len(wa & wb) / max(1, len(wa | wb)) >= 0.6
 
 
+TYPED = ("That is an answer typed out, not a program. Typed answers are often wrong (a word reversed by hand, a sum "
+         "done in the head). Reply with a complete Python program in a ```python block that works out every value "
+         "that can be worked out (for example word[::-1], 13 * 5) and prints each result on its own line.")
+
+
+def is_program(text):
+    try:
+        compile(text, "reply", "exec")
+        return True
+    except (SyntaxError, ValueError):
+        return False
+
+
 def member(task, n, board, guard, work, temperature):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
@@ -154,7 +167,7 @@ def member(task, n, board, guard, work, temperature):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
-    good, last_error, repeats, turn = None, None, 0, 0
+    good, last_error, repeats, turn, typed = None, None, 0, 0, 0
     for turn in range(1, TURNS + 1):
         stop.check()
         reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
@@ -171,6 +184,14 @@ def member(task, n, board, guard, work, temperature):
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:200]},
                          {"role": "user", "content": "No program of yours has printed an answer yet. Reply with a complete program."}]
+            continue
+        if "```" not in reply and not is_program(code):
+            # Seen on "multiply 13 by 5; write 'garden' backwards; name the capital": every member typed the three
+            # answers out ("B: dnarg"), the text was run as a program, failed the same way twice, and the member stopped.
+            typed += 1
+            if typed > 2:
+                break
+            messages += [{"role": "assistant", "content": reply.strip()[:600]}, {"role": "user", "content": TYPED}]
             continue
         if not guard.check_code("coder", code):
             board.log(f"member{n}", "stopped", "the program needs Arnav's approval; not run")
