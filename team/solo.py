@@ -48,10 +48,12 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""
-MORE = ("If this output is the complete answer to the TASK (every value asked for, said in words), reply with the one "
-        "word DONE. If it only shows data you were looking at, or something is missing or wrong, reply with the "
-        "complete program that prints the answer.")
-TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 8))
+# (For one afternoon this asked more: "... every value asked for, said in words ... if it only shows data you were
+# looking at ...". Members then rewrote programs that were already right: 16 tasks took an hour instead of 15 minutes
+# and fewer were right. The plain question is back.)
+MORE = ("If this output, as it stands, is the complete and correct answer to the TASK, reply with the one word DONE. "
+        "If not, reply with a better complete program.")
+TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 6))
 
 
 # ---- what the hive has solved --------------------------------------------------------------------------------------
@@ -126,7 +128,10 @@ def member(task, n, board, guard, work, temperature):
     printed ("" when none ran)."""
     messages = [{"role": "system", "content": MEMBER.format(today=time.strftime("%Y-%m-%d (%A)"))},
                 {"role": "user", "content": f"TASK: {task}"}]
-    before = alike(task) if os.environ.get("HIVE_LIBRARY", "1") != "0" else []
+    # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
+    # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
+    # wrong, seed 9002). Agreement only checks anything between tries that do not share a source.
+    before = alike(task) if n == 1 and os.environ.get("HIVE_LIBRARY", "1") != "0" else []
     if before:
         board.log(f"member{n}", "library", f"{len(before)} solved task(s) like this one")
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
@@ -161,7 +166,7 @@ def member(task, n, board, guard, work, temperature):
             continue
         line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
         repeats = repeats + 1 if line == last_error else 0
-        if repeats >= 2:  # the same failure three times running: its fixes change nothing
+        if repeats >= 1:  # the same failure twice running: its fixes change nothing
             board.log(f"member{n}", "same-error", line[:150])
             break
         last_error = line

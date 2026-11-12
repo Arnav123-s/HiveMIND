@@ -1746,9 +1746,9 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     out, left = hive([WRONG_PRIMES, "DONE", right, "DONE", other, "DONE"], "c")
     body = out["report"].split("\n## ")[0]
     assert not out["agreed"] and body.startswith("Not confirmed") and "19" not in body         # no member's values are handed over as the answer
-    out, left = hive([broken] * 9, "d")                                                       # the same error three times running: a member stops
+    out, left = hive([broken] * 6, "d")                                                       # the same error twice running: a member stops
     assert not out["agreed"] and not left and out["tries"] == 3 and "No member got as far" in out["report"]
-    out, left = hive([broken] * 3 + [right, "DONE", again, "DONE"], "f")                      # one member got nowhere: a third stands in for it
+    out, left = hive([broken] * 2 + [right, "DONE", again, "DONE"], "f")                      # one member got nowhere: a third stands in for it
     assert out["agreed"] and out["tries"] == 3 and not left
     asked = []
     left = ["print(\"The 'upload_time' key does not exist in the response.\")", "print('released 2024-12-06, 706 days ago')", "DONE"]
@@ -1789,6 +1789,7 @@ def test_a_task_two_members_agreed_on_leaves_its_program_for_the_next_task_like_
     seen.clear()
     hive([right, "DONE", again, "DONE"], PRIMES_TASK.replace("200", "300").replace("10", "11"), "b")
     assert "solved tasks like this one" in seen[0] and "def prime(n)" in seen[0]           # the next task like it starts from that program
+    assert "solved tasks like this one" not in seen[-1]                                    # but only its first member: the second starts from nothing
     hive(["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"], "Pick any number at all", "c")
     assert len(solo.solved()) == 2                                                         # nothing agreed, nothing kept
     solo.judge(PRIMES_TASK, True)
