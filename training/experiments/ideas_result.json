@@ -1,0 +1,30 @@
+{
+ "as built in, 20 minutes, start 0": {
+  "gate": 3.1106,
+  "steps": 1605,
+  "minutes": 20.0,
+  "train_last": 3.0578,
+  "weights": 2615424
+ },
+ "a scale for every row, 20 minutes, start 0": {
+  "gate": 3.1038,
+  "steps": 1577,
+  "minutes": 20.0,
+  "train_last": 3.053,
+  "weights": 2615424
+ },
+ "predicting what it will think (same net), 20 minutes, start 0": {
+  "gate": 3.1448,
+  "steps": 1556,
+  "minutes": 20.0,
+  "train_last": 3.0974,
+  "weights": 2615424
+ },
+ "predicting what it will think (running-mean teacher), 20 minutes, start 0": {
+  "gate": 3.2436,
+  "steps": 1192,
+  "minutes": 20.0,
+  "train_last": 3.2338,
+  "weights": 2615424
+ }
+}
