@@ -1,0 +1,75 @@
+{
+ "gradient training, as built in, start 0": {
+  "gate": 3.9749,
+  "steps": 591,
+  "minutes": 8.0,
+  "train_last": 4.0006,
+  "three_valued_weights": 1769472
+ },
+ "gradient training, half size, start 0": {
+  "gate": 3.7165,
+  "steps": 1040,
+  "minutes": 8.0,
+  "train_last": 3.6987,
+  "three_valued_weights": 884736
+ },
+ "votes, start 0": {
+  "gate": 4.2469,
+  "steps": 600,
+  "minutes": 8.0,
+  "train_last": 4.2617,
+  "three_valued_weights": 1769472
+ },
+ "votes, half size, start 0": {
+  "gate": 3.9471,
+  "steps": 1052,
+  "minutes": 8.0,
+  "train_last": 3.9394,
+  "three_valued_weights": 884736
+ },
+ "votes, five levels, half size, start 0": {
+  "gate": 3.8416,
+  "steps": 1102,
+  "minutes": 8.0,
+  "train_last": 3.8026,
+  "three_valued_weights": 884736,
+  "share_at_the_outer_levels": 0.2381
+ },
+ "votes, five levels, start 0": {
+  "gate": 4.1854,
+  "steps": 611,
+  "minutes": 8.0,
+  "train_last": 4.2132,
+  "three_valued_weights": 1769472,
+  "share_at_the_outer_levels": 0.1063
+ },
+ "gradient training, rotary positions, the rate falls in the second half, start 0": {
+  "gate": 3.6149,
+  "steps": 600,
+  "minutes": 8.0,
+  "train_last": 3.6275,
+  "three_valued_weights": 1769472
+ },
+ "votes, the bar rises in the second half, start 0": {
+  "gate": 4.3129,
+  "steps": 620,
+  "minutes": 8.0,
+  "train_last": 4.3163,
+  "three_valued_weights": 1769472
+ },
+ "votes, rotary positions, start 0": {
+  "gate": 4.0731,
+  "steps": 558,
+  "minutes": 8.0,
+  "train_last": 4.1124,
+  "three_valued_weights": 1769472
+ },
+ "votes, five levels, half size, rotary positions, start 0": {
+  "gate": 3.7146,
+  "steps": 978,
+  "minutes": 8.0,
+  "train_last": 3.7313,
+  "three_valued_weights": 884736,
+  "share_at_the_outer_levels": 0.22
+ }
+}
