@@ -1,0 +1,72 @@
+[
+ {
+  "kind": "follow a form to the letter",
+  "task": "Give me exactly 3 colours as a numbered list and nothing else.",
+  "why": "0 numbered items, 3 asked"
+ },
+ {
+  "kind": "translate a sentence",
+  "task": "Translate into Spanish: 'The museum closes at seven on Fridays.'",
+  "why": "place, hour and day in Spanish: [False, False, False]; the English word left in: False"
+ },
+ {
+  "kind": "several orders in one message",
+  "task": "Do these three things and label the answers A, B and C, each on its own line: first multiply 25 by 8; then write the word 'window' backwards; then name the capital of Vietnam.",
+  "why": "three labelled answers []; each right: False"
+ },
+ {
+  "kind": "sum up a text",
+  "task": "Give me a one-sentence summary of this: The Ridgeway bridge, built in 1954, was closed in March for repairs after inspectors found cracks in two support beams. The city expects the work to take 10 months and cost 2.6 million dollars. Until it reopens, visitors are sent to the Station Street entrance, says the city engineer Tomas Hartmann.",
+  "why": "1 sentence(s); names the bridge and the closing or the repairs: False"
+ },
+ {
+  "kind": "translate a sentence",
+  "task": "Translate into French: 'The museum opens at ten on Fridays.'",
+  "why": "place, hour and day in French: [False, False, False]; the English word left in: False"
+ },
+ {
+  "kind": "mend a program",
+  "task": "This Python code should print the average of the numbers but prints their total. Fix it and tell me the output:\nnums = [20, 30, 19, 10]\nprint(sum(nums))",
+  "why": "wants 19.75; the answer's numbers: [79.0]"
+ },
+ {
+  "kind": "sum up a text",
+  "task": "Give me a one-sentence summary of this: The Ridgeway library, built in 1935, was closed in March for repairs after inspectors found cracks in two support beams. The city expects the work to take 10 months and cost 4.8 million dollars. Until it reopens, visitors are sent to the Mill Lane entrance, says the city engineer Jonas Hartmann.",
+  "why": "1 sentence(s); names the library and the closing or the repairs: False"
+ },
+ {
+  "kind": "follow a form to the letter",
+  "task": "Give me exactly 4 European capital cities as a numbered list and nothing else.",
+  "why": "0 numbered items, 4 asked"
+ },
+ {
+  "kind": "several orders in one message",
+  "task": "Do these three things and label the answers A, B and C, each on its own line: first multiply 42 by 4; then write the word 'garden' backwards; then name the capital of Morocco.",
+  "why": "three labelled answers []; each right: False"
+ },
+ {
+  "kind": "mend a program",
+  "task": "This Python code should print the average of the numbers but prints their total. Fix it and tell me the output:\nnums = [30, 11, 36, 27]\nprint(sum(nums))",
+  "why": "wants 26; the answer's numbers: [104.0]"
+ },
+ {
+  "kind": "several orders in one message",
+  "task": "Do these three things and label the answers A, B and C, each on its own line: first multiply 51 by 3; then write the word 'harvest' backwards; then name the capital of Portugal.",
+  "why": "three labelled answers []; each right: False"
+ },
+ {
+  "kind": "sum up a text",
+  "task": "Give me a one-sentence summary of this: The Ridgeway bridge, built in 1988, was closed in March for repairs after inspectors found cracks in two support beams. The city expects the work to take 9 months and cost 3.4 million dollars. Until it reopens, visitors are sent to the Mill Lane entrance, says the city engineer Omar Hartmann.",
+  "why": "1 sentence(s); names the bridge and the closing or the repairs: False"
+ },
+ {
+  "kind": "a unit conversion",
+  "task": "How many pounds are 93 kilograms? One decimal place.",
+  "why": "wants 205; the answer's numbers: []"
+ },
+ {
+  "kind": "translate a sentence",
+  "task": "Translate into Italian: 'The museum opens at nine on Fridays.'",
+  "why": "place, hour and day in Italian: [False, False, False]; the English word left in: False"
+ }
+]
