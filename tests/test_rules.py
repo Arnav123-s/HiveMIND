@@ -1775,6 +1775,11 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
     out = solo.run("Give me a one-sentence summary of this: The pool closed in March. It cost 4.8 million dollars.", tmp_path / "k", "never", members=2)
     assert out["agreed"] and not left and out["report"].startswith("The pool, which cost")   # DONE on a broken form is not taken at once; of two that agree, the one that keeps the form
+    empty, full = "open('b.csv', 'w').write('title,price\\n')\nprint('CSV file created')", "open('b.csv', 'w').write('title,price\\nDune,5\\n')\nprint('CSV file created')"
+    asked, left = [], [empty, full, "DONE"]
+    monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+    out = solo.run("Make a CSV of the books.", tmp_path / "l", "never", members=1)
+    assert not left and "holds no rows" in asked[1]                                           # a file with only its heading is not an answer
     assert "numbered list of exactly 3" in solo.form("Give me exactly 3 colours as a numbered list and nothing else.", "1: Red\n2: Green\n3: Blue")
     assert not solo.form("Give me exactly 3 colours as a numbered list and nothing else.", "1. Red\n2. Green\n3. Blue") and solo.form("Give me exactly 3 colours as a numbered list.", "1. Red\n2. Green")
     assert "1 sentence" in solo.form("Give me a one-sentence summary of this: It cost 4.8 million. It closed.", "The pool cost 4.8 million. It closed in March.")

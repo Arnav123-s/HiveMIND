@@ -257,6 +257,20 @@ def member(task, n, board, guard, work, temperature):
         out, err = res["stdout"].strip(), res["stderr"].strip()
         board.log(f"member{n}", "run", f"turn {turn}: exit {res['returncode']}, printed {len(out)} characters")
         messages.append({"role": "assistant", "content": f"```python\n{code}\n```"})
+        # Seen on seed 9011 (the members' own work, uploaded): three members each made up the address of an inner
+        # page (horror_2, horror_26, horror_37), got a 404, saved a CSV with only its heading, printed "CSV file
+        # created", and two of them agreed on that sentence.
+        gone = re.search(r"HIVE-HTTP: \w+ (\S+) returned ([45]\d\d)", err)
+        if res["returncode"] == 0 and gone:
+            res = dict(res, returncode=1)
+            err = (f"The address {gone.group(1)} answered {gone.group(2)}: there is no such page. Do not make an address up. "
+                   "Fetch the site's first page, print the links on it (their text and href), and follow the one that matches.")
+        bare = [f.name for f in (Path(work).iterdir() if Path(work).exists() else []) if f.is_file() and f.suffix in (".csv", ".tsv")
+                and len([x for x in f.read_text(errors="ignore").splitlines() if x.strip()]) <= 1]
+        if res["returncode"] == 0 and bare:
+            res = dict(res, returncode=1)
+            err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
+                   "the page. Print what the page really holds and look.")
         if res["returncode"] == 0 and out and FAILED.search(out) and len(out) < 400:
             # a program that catches its own error and prints it has not answered ("The 'upload_time' key does not
             # exist in the response." was one member's answer to "when was the latest httpx released")

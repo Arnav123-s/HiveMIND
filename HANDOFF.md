@@ -266,6 +266,49 @@ How this session reads it (its own reading, not his words):
   the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
   and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
+### NEXT SESSION, START HERE (written 2026-11-13, 16:45 UTC)
+
+**Where it stands, measured.** The working hive on GitHub with its real models (llama.cpp, brain4b + coder7b,
+fixed in 7171805), two fresh seeds, nothing learned, three forms side by side:
+
+| Form | Seed 9011 (7171805) | Seed 9012 (b1a883d) |
+|---|---|---|
+| Members first, then roles | 14/16, 21 min | 16/16, 21 min |
+| Roles alone | 13/16, 48 min | 15/16, 48 min |
+| Members alone | 12/16, 21 min | 15/16, 17 min |
+
+Members first is the default of "Ask the hive" (ask.yml, members "2"). Every GitHub number before 7171805 is the
+small fallback models: never compare across that line. Seeds 315 and 9001-9012 have been read: faults only.
+
+**His standing word** (blocks below, verbatim): the codebase is mine; I am the biggest boss and reach the goal;
+Muse (other agent, branch hivemind_muse) is its own boss with the manpower, I advise it (FOR_MUSE.md); his ideas
+are side work, never goals; no pointless repetition; be usage-aware; don't stop while work is owed; merges are
+mine once measured. Still asked first: spending money, his credentials, sending anything in his name. Fable 5.2
+is available to him until 2026-11-16; this account's usage resets Sunday 2026-11-15; a second account is unused.
+
+**How faults are found (the only method that has worked):** read the members' own programs and outputs, never the
+score. Every members sitting uploads them (artifact `the-members-own-work`: TASK.md, REPORT.md, member*_*.py,
+.member*_*.py.out/.err). Locally: `scratchpad/dev_run.py OUT MEMBERS dev_tasks.json` reruns chosen tasks with logs.
+Read a sitting: actions_list list_workflow_run_artifacts -> actions_get download_workflow_run_artifact -> curl the
+signed URL -> unzip.
+
+**Open, in order of what moves the goal:**
+1. Operate a website (members alone fail it: quotes.toscrape.com author pages). Read seed 9012's members' work
+   (run 43417985351, artifact the-members-own-work) and mend.
+2. The hive improving by itself: a nightly job that reads the members' failed tasks with their logs, proposes a
+   rule/prompt change, and keeps it only if a fresh sitting is not worse. The mending done by hand on 11-13 is
+   exactly what it would automate. Not built.
+3. Harder tasks: the exam is near its ceiling (16/16). Add harder kinds to training/exam.py (multi-step research,
+   longer programs, multi-page sites) before more mending, or progress cannot be seen.
+4. Parked: the 2.4B BitNet on Microsoft's runtime (perplexity 70, loops; converting from bf16 fails with
+   KeyError BITNET_25; the May-2025 runtime does not build on the runner). Muse's Q3.
+5. BitNet bodies (training/body.py): growth at equal work lost (4 blocks 3.1017, grown 3.1704, 6 blocks 3.2837);
+   JEPA lost twice; row scales level. Muse's Q4 is the size/budget map.
+
+**Repo state:** main has everything up to PR 18 (merged). PR 19 (404 / empty-file failures) merged with this
+note. Work branch claude/epic-johnson-7ene30, mirrored to make-it-work (push both). The three old "hive"-signed
+commits were rewritten on GitHub; jobs now sign as github-actions[bot].
+
 ### 2026-11-13, 11:40 UTC: THE ENGINE. Read this before trusting any exam number from GitHub (newest)
 
 - **Until commit 7171805 every sitting on GitHub ran the small fallback models** (PyTorch, 1.7B and 1.5B), not
