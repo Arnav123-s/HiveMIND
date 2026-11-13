@@ -1,0 +1,6 @@
+{"cycle_id": "niche-expansion-001", "subject": "sec-code-model", "verdict": "BORN-STAGED", "ts": "2026-11-13T04:07:19+0000", "held_a": 0.9703, "held_b": 0.9811, "model_sha256": "b1fead6f44019898fe7019f8d7cc1b0d565dd713d1e2f1a0cbfdf68ff09e69ca"}
+{"cycle_id": "niche-expansion-002", "subject": "data-format-model", "verdict": "REJECTED", "ts": "2026-11-13T04:12:18+0000", "held_a": 0.6667, "held_b": 0.6, "model_sha256": null}
+{"cycle_id": "niche-expansion-002", "subject": "data-format-model", "verdict": "REJECTED", "ts": "2026-11-13T04:17:59+0000", "held_a": 0.8778, "held_b": 0.8444, "model_sha256": null}
+{"cycle_id": "niche-expansion-003", "subject": "sql-statement-model", "verdict": "REJECTED", "ts": "2026-11-13T04:21:19+0000", "held_a": 1.0, "held_b": 1.0, "model_sha256": null}
+{"cycle_id": "niche-expansion-003b", "subject": "sql-statement-model", "verdict": "BORN-STAGED", "ts": "2026-11-13T04:25:18+0000", "held_a": 1.0, "held_b": 1.0, "model_sha256": "7fcc2f706da53932e881d5bfef88b291bf89b7834f088c5920dc598275af96da"}
+{"cycle_id": "niche-expansion-002b", "subject": "data-format-model", "verdict": "REJECTED", "ts": "2026-11-13T04:47:04+0000", "held_a": 0.9111, "held_b": 0.9444, "model_sha256": null}

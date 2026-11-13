@@ -1,0 +1,62 @@
+{
+ "battery": "whole-hive acceptance (final product)",
+ "started": "2026-11-13 04:29 UTC",
+ "results": {
+  "classify-secret-line": {
+   "task": "classify-secret-line",
+   "system": "registry serving artifact secret-line-model-v3 via factory.serve",
+   "status": "completed",
+   "score": 0.8333,
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "task": "classify-error-class",
+   "system": "registry serving artifact error-class-model-v2 via factory.serve",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "task": "classify-commit-type",
+   "system": "registry serving artifact commit-type-model-v2 via factory.serve",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "task": "classify-contract-judgment",
+   "system": "registry serving artifact contract-judgment-model-v2 via factory.serve",
+   "status": "completed",
+   "score": 0.9167,
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "task": "classify-gap-move",
+   "system": "registry serving artifact gap-move-model-v3 via factory.serve",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "task": "bug-pattern-composed-sealed-v2",
+   "system": "registry bug-pattern composition (14 members) via factory.serve, sealed v2 held-out set",
+   "status": "completed",
+   "score": 0.8611,
+   "detail": "composed 31/36 = 0.8611 (bar 0.80); per-class recalls {'clean': 0.8182, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "task": "classify-secret-line-ternary",
+   "system": "ternary substrate secret-line-model-ternary (registered substrate alternate; the serving default is the registry's serving entry)",
+   "status": "completed",
+   "score": 0.9167,
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "task": "tiny-hive-ops",
+   "system": "tiny-hive constructed specialists (clone vote + reference check)",
+   "status": "completed",
+   "score": 1.0,
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  }
+ }
+}

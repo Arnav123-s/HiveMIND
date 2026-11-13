@@ -8,6 +8,16 @@ against the CURRENT adopted registry through the serving path.
          Phase D contract v3), bars 9/12 (gap-move 6/10)
     A1b  the bug-pattern composition on the SEALED v2 held-out
          set (factory/bug_heldout_v2.py), bar 0.80 composed
+    A1s  the learned say (Fable-study Build 2, 2026-11-12): fit
+         per-seat standings + thresholds on the dev pool
+         (factory/say_dev.py) with the serving members, then
+         measure BOTH composition paths on the sealed set in
+         this same run — incumbent fixed rule vs the say through
+         the full waking-dream serving path. The say is adopted
+         (factory/learned_say.json, outside the registry) only
+         if its sealed slice strictly beats the incumbent's;
+         otherwise it stays shadow and the record says so. Runs
+         automatically after A1b; also runnable standalone.
     A1c  the ternary secret-line substrate on the A1 secret
          items (it coexists; the fp v2 is the serving default)
     A2   tiny-hive in-domain ops (21) + out-of-domain refusal
@@ -117,6 +127,85 @@ def part_a1b() -> None:
           "score": round(acc, 4),
           "detail": f"composed {right}/{len(items)} = {acc:.4f} "
                     f"(bar 0.80); per-class recalls {recalls}"})
+
+
+# ------------------------------------------------------------------- A1s
+def _bug_reg(hive) -> dict:
+    """The serving composition's member models, keyed by name —
+    the same reg factory.serve builds, reused for direct
+    waking-dream measurements under an explicit config."""
+    comp = hive.registry["compositions"]["bug-pattern-composed"]
+    reg: dict = {}
+    for m in comp["members"]:
+        model = hive._model(m["path"])
+        reg[model.name] = model
+    return reg
+
+
+def _eval_bug_path(reg: dict, config: dict, items: list):
+    """Run the waking-dream serving path under an explicit
+    composer config over labelled items. Returns (acc, recalls)."""
+    wd_dir = str(LAB / "waking-dream")
+    if wd_dir not in sys.path:
+        sys.path.insert(0, wd_dir)
+    import waking_dream as wd_mod
+    wd = wd_mod.WakingDream(registry=reg, config=config)
+    right = 0
+    per: dict = {}
+    for it in items:
+        want = it["label"]
+        got = wd.answer(it["text"])["answer"]
+        per.setdefault(want, [0, 0])
+        per[want][1] += 1
+        if got == want:
+            right += 1
+            per[want][0] += 1
+    recalls = {c: round(r / n, 4) for c, (r, n) in sorted(per.items())}
+    return right / len(items), recalls
+
+
+def part_a1s() -> None:
+    from swarm import composers as C
+    from factory import learned_say as say_mod
+    from factory import say_dev
+    from factory.bug_heldout_v2 import load_sealed
+    from factory.serve import ServingHive
+    hive = ServingHive.load()
+    reg = _bug_reg(hive)
+    member_names = list(reg)
+    base_cfg = C.load_config()
+    dev_items = say_dev.load_dev_pool()["items"]
+    say = say_mod.fit_say(reg, dev_items, member_names, base_cfg)
+    items = load_sealed()["items"]
+    acc_inc, rec_inc = _eval_bug_path(reg, base_cfg, items)
+    acc_say, rec_say = _eval_bug_path(
+        reg, say_mod.merged_config(base_cfg, say), items)
+    adopted = acc_say > acc_inc
+    evidence = {
+        "incumbent_sealed_acc": round(acc_inc, 4),
+        "incumbent_recalls": rec_inc,
+        "say_sealed_acc": round(acc_say, 4),
+        "say_recalls": rec_say,
+        "sealed_n": len(items),
+        "dev_fit": say["fit"],
+        "rule": "adopted only if say sealed acc strictly beats "
+                "the incumbent's in this same battery run"}
+    say_mod.write_state("adopted" if adopted else "shadow",
+                        say, evidence)
+    save({"task": "bug-pattern-learned-say",
+          "system": "learned say (per-seat standings + thresholds, "
+                    "fit on the dev pool) through the waking-dream "
+                    "serving path vs the incumbent fixed composition, "
+                    "same sealed v2 set, same battery run",
+          "status": "completed",
+          "score": round(acc_say, 4),
+          "verdict": "adopted" if adopted else "shadow",
+          "detail": f"sealed: say {acc_say:.4f} vs incumbent "
+                    f"{acc_inc:.4f} (n={len(items)}) -> "
+                    f"{'ADOPTED: serving uses the say' if adopted else 'SHADOW: incumbent keeps serving'}; "
+                    f"dev fit acc uniform {say['fit']['dev_acc_uniform']} "
+                    f"-> say {say['fit']['dev_acc_say']}; "
+                    f"say recalls {rec_say}; incumbent recalls {rec_inc}"})
 
 
 def part_a1c() -> None:
@@ -229,6 +318,9 @@ if __name__ == "__main__":
             part_a1()
         elif w == "a1b":
             part_a1b()
+            part_a1s()
+        elif w == "a1s":
+            part_a1s()
         elif w == "a1c":
             part_a1c()
         elif w == "a2":

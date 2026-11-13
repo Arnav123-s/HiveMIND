@@ -1,0 +1,30 @@
+{
+ "history": [
+  {
+   "cycle_id": null,
+   "event": "seeded",
+   "origin": "seeded 2026-11-12 from the cycle-4 recipe head-to-head winner init-lr10 (dev-picked for both targets); enters the same one-gene competition as any crowned champion",
+   "recipe": {
+    "epochs": 800,
+    "fmode": "text",
+    "hidden": 4,
+    "init_source": "parent",
+    "lr_scale": 1.0
+   },
+   "version": 1
+  }
+ ],
+ "kind": "champion_recipe",
+ "origin": "seeded 2026-11-12 from the cycle-4 recipe head-to-head winner init-lr10 (dev-picked for both targets); enters the same one-gene competition as any crowned champion",
+ "recipe": {
+  "epochs": 800,
+  "fmode": "text",
+  "hidden": 4,
+  "init_source": "parent",
+  "lr_scale": 1.0
+ },
+ "stats": {
+  "crowns": 0
+ },
+ "version": 1
+}

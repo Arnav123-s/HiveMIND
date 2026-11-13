@@ -1,0 +1,185 @@
+{
+ "cycle_id": "niche-expansion-003b",
+ "subject": "sql-statement-model",
+ "runner": "python3 -m factory.niche_expansion.expansion_cycle --subject sql-statement-model --cycle-id niche-expansion-003b",
+ "ts": "2026-11-13T04:25:18+0000",
+ "niche": "sql",
+ "fmode": "words",
+ "epochs": 800,
+ "classes": [
+  "select",
+  "insert",
+  "update",
+  "delete",
+  "create",
+  "alter",
+  "drop"
+ ],
+ "snapshots": {
+  "factory/registry.json": "0ea29ece56b6a825c9e497dbdc89246f12ee73ad804ceb398ada0df4b549ee8c",
+  "factory/battery_evidence.json": "81d755a1ae16262a2535713e3035aa650c35d58e9b7ef5e19f98386ae903c553"
+ },
+ "battery_before": {
+  "classify-sql-statement": {
+   "job": "sql-statement-model",
+   "right": 0,
+   "n": 14,
+   "acc": 0.0,
+   "bar": 11,
+   "detail": "0/14 correct; bar 11/14; gaps: no specialist registered for job 'sql-statement-model'; update/delete-without-where subset: 0/2 correct"
+  }
+ },
+ "generation": {
+  "train": {
+   "families": 280,
+   "drops": {},
+   "items": 280
+  },
+  "held_a": {
+   "families": 126,
+   "drops": {},
+   "items": 126
+  },
+  "held_b": {
+   "families": 126,
+   "drops": {},
+   "items": 126
+  }
+ },
+ "determinism_assert": "held_fn(seed) twice identical; train_fn(seed) twice identical",
+ "contamination": {
+  "train": {
+   "in": 280,
+   "kept": 280,
+   "dropped": 0
+  },
+  "held_a": {
+   "in": 126,
+   "kept": 126,
+   "dropped": 0
+  },
+  "held_b": {
+   "in": 126,
+   "kept": 126,
+   "dropped": 0
+  },
+  "battery_reference_items": 72,
+  "dropped_reasons": {}
+ },
+ "dev_selection": {
+  "dev_n": 56,
+  "subtrain_n": 224,
+  "attempts": [
+   {
+    "hidden": 0,
+    "heldout_acc": 1.0,
+    "params": 1974
+   },
+   {
+    "hidden": 4,
+    "heldout_acc": 1.0,
+    "params": 1163
+   },
+   {
+    "hidden": 8,
+    "heldout_acc": 1.0,
+    "params": 2319
+   }
+  ],
+  "winner_by_dev_smallest_within_0.02": {
+   "hidden": 4,
+   "heldout_acc": 1.0,
+   "params": 1163
+  },
+  "note": "hidden/recipe choice made on a dev split of train only; held slices never used for this choice"
+ },
+ "finalists_ranked_on_held_a": [
+  {
+   "hidden": 4,
+   "params": 1287,
+   "held_a_acc": 1.0
+  },
+  {
+   "hidden": 0,
+   "params": 2191,
+   "held_a_acc": 1.0
+  },
+  {
+   "hidden": 8,
+   "params": 2567,
+   "held_a_acc": 1.0
+  }
+ ],
+ "gate": {
+  "held_a": {
+   "acc": 1.0,
+   "right": 126,
+   "n": 126,
+   "per_class_recall": {
+    "select": 1.0,
+    "insert": 1.0,
+    "update": 1.0,
+    "delete": 1.0,
+    "create": 1.0,
+    "alter": 1.0,
+    "drop": 1.0
+   },
+   "min_recall": 1.0
+  },
+  "held_b": {
+   "acc": 1.0,
+   "right": 126,
+   "n": 126,
+   "per_class_recall": {
+    "select": 1.0,
+    "insert": 1.0,
+    "update": 1.0,
+    "delete": 1.0,
+    "create": 1.0,
+    "alter": 1.0,
+    "drop": 1.0
+   },
+   "min_recall": 1.0
+  },
+  "baselines_held_a": {
+   "majority": {
+    "acc": 0.1429,
+    "predicts": "select"
+   },
+   "rule": {
+    "acc": 1.0,
+    "rule": "keyword/first-token (expansion_cycle.rule_predict)"
+   }
+  },
+  "baselines_held_b": {
+   "majority": {
+    "acc": 0.1429,
+    "predicts": "select"
+   },
+   "rule": {
+    "acc": 1.0,
+    "rule": "keyword/first-token (expansion_cycle.rule_predict)"
+   }
+  },
+  "thresholds": {
+   "acc": 0.9,
+   "per_class_recall": 0.8,
+   "strictly_above_baselines": true
+  },
+  "amendment": {
+   "name": "tie-at-perfection",
+   "ruled": "2026-11-13, department coordinator",
+   "reason": "rule baseline defines the class signal; strict superiority is unsatisfiable at 1.0000 on both pristine held slices with recall 1.0"
+  }
+ },
+ "methods_provenance": "dev-split recipe selection on train only (dev n=56): hidden 4 chosen smallest-first within 0.02 of best dev acc 1.0; finalists (hidden 0/4/8) trained on full train (n=280) via executors.retrain_candidates and ranked on held-A; held-B spent once on the winner (hidden 4, 1287 params). Data: three disjoint template partitions, oracle-verified at generation (drops in the generation stats), contamination-filtered against the other partitions and all five existing battery item sets plus this subject's hand-authored battery items.",
+ "verdict": "BORN-STAGED",
+ "model_file": {
+  "path": "coding/swarm/models/sql-statement-model.json",
+  "sha256": "7fcc2f706da53932e881d5bfef88b291bf89b7834f088c5920dc598275af96da",
+  "params": 1287,
+  "hidden": 4,
+  "heldout_acc_recorded": 1.0,
+  "note": "staged artifact only \u2014 registry adoption is the coordinator's section-4 sitting, not done here"
+ }
+}

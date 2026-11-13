@@ -1,6 +1,6 @@
 {
  "registry_version": 1,
- "built_at": "2026-11-12T12:53:00",
+ "built_at": "2026-11-13T04:31:29",
  "built_by": "factory.registry.build_registry",
  "note": "the single serving book for this side of the hive; verify with factory.audit; serve only through factory.serve (which audits at load and fails closed on mismatch)",
  "specialists": {
@@ -480,6 +480,66 @@
    ],
    "shadow": [],
    "substrate_default": "fp"
+  },
+  "sec-code-model": {
+   "niche": "sec-code",
+   "serving": {
+    "name": "sec-code-model",
+    "role": "serving",
+    "path": "coding/swarm/models/sec-code-model.json",
+    "sha256": "991f0af07107a6a69c91b7b3dd38eeb560472e67423ab122e3187958102f8fe5",
+    "substrate": "fp",
+    "params": 8076,
+    "footprint_bytes": 202117,
+    "heldout_acc": 0.972,
+    "evidence": {
+     "factory_cycle": null,
+     "path_taken": "niche-expansion",
+     "supersedes": null,
+     "fresh_confirm_acc": null,
+     "fresh_screen_acc": null,
+     "battery_reference_acc": null,
+     "train_n": 213,
+     "heldout_n": 107,
+     "dream": null,
+     "flips_applied": null
+    },
+    "battery_acc": 0.75,
+    "battery_source": "factory/niche_expansion/battery_sections.py classify-sec-code (served, niche-expansion wave 1 adoption 2026-11-13)"
+   },
+   "fallbacks": [],
+   "shadow": [],
+   "substrate_default": "fp"
+  },
+  "sql-statement-model": {
+   "niche": "sql",
+   "serving": {
+    "name": "sql-statement-model",
+    "role": "serving",
+    "path": "coding/swarm/models/sql-statement-model.json",
+    "sha256": "7fcc2f706da53932e881d5bfef88b291bf89b7834f088c5920dc598275af96da",
+    "substrate": "fp",
+    "params": 1287,
+    "footprint_bytes": 28113,
+    "heldout_acc": 1.0,
+    "evidence": {
+     "factory_cycle": null,
+     "path_taken": "niche-expansion",
+     "supersedes": null,
+     "fresh_confirm_acc": null,
+     "fresh_screen_acc": null,
+     "battery_reference_acc": null,
+     "train_n": 280,
+     "heldout_n": 126,
+     "dream": null,
+     "flips_applied": null
+    },
+    "battery_acc": 1.0,
+    "battery_source": "factory/niche_expansion/battery_sections.py classify-sql-statement (served, niche-expansion wave 1 adoption 2026-11-13)"
+   },
+   "fallbacks": [],
+   "shadow": [],
+   "substrate_default": "fp"
   }
  },
  "compositions": {
@@ -589,19 +649,19 @@
      "name": "bug-off-by-one-index-model",
      "role": "member",
      "path": "coding/swarm/models/bug-off-by-one-index-model.json",
-     "sha256": "b2ee3e7c32b82a8fe907cc9122c46e36f698b22e3d0977d31cfdae4b960ae26b",
+     "sha256": "5c8f50ff9610cbac09471d9d897297e2b3b5bf3f6963de75b0cf1c4878da53bf",
      "substrate": "fp",
-     "params": 2072,
-     "footprint_bytes": 55936,
+     "params": 2080,
+     "footprint_bytes": 51338,
      "heldout_acc": 1.0,
      "evidence": {
-      "factory_cycle": "growth-cycle-005",
-      "path_taken": "factory birth — split + name-intent data + parent-initialized fine-tuning (growth cycle)",
+      "factory_cycle": "repair-cycle007-2026-11-12b",
+      "path_taken": "factory birth — split + name-intent data (growth cycle)",
       "supersedes": null,
       "fresh_confirm_acc": null,
       "fresh_screen_acc": null,
       "battery_reference_acc": null,
-      "train_n": 609,
+      "train_n": 580,
       "heldout_n": 20,
       "dream": null,
       "flips_applied": null
@@ -774,19 +834,19 @@
      "name": "bug-wrong-operator-expression-model",
      "role": "member",
      "path": "coding/swarm/models/bug-wrong-operator-expression-model.json",
-     "sha256": "df1ed78767485dd558c055568a4e22539598cc4c9af5a54c1e6e750afd3aa99c",
+     "sha256": "fdd7f27fac2a74ed56bda5d6fbb6f961f1cab7cbcf782430ca5062f2edafc058",
      "substrate": "fp",
-     "params": 3438,
-     "footprint_bytes": 83894,
-     "heldout_acc": 1.0,
+     "params": 906,
+     "footprint_bytes": 22315,
+     "heldout_acc": 0.9,
      "evidence": {
-      "factory_cycle": "growth-cycle-005",
+      "factory_cycle": "repair-cycle007-2026-11-12",
       "path_taken": "factory birth — split + name-intent data (growth cycle)",
       "supersedes": null,
       "fresh_confirm_acc": null,
       "fresh_screen_acc": null,
       "battery_reference_acc": null,
-      "train_n": 538,
+      "train_n": 494,
       "heldout_n": 20,
       "dream": null,
       "flips_applied": null
@@ -880,9 +940,9 @@
     "bar": 0.8,
     "dream_confirm_acc_on_spent_phase4_set": 0.8276,
     "fresh_sealed_baseline": {
-     "acc": 0.4722,
+     "acc": 0.5,
      "per_class_recall": {
-      "wrong-operator": 0.2,
+      "wrong-operator": 0.3,
       "mutable-default": 0.5,
       "off-by-one": 0.3333,
       "clean": 0.6364,
@@ -913,8 +973,8 @@
       "missing-return": 1.0,
       "swapped-operands": 0.0
      },
-     "growth_judge_file": "results/bug_heldout_v2_growth-growth-cycle-005.json",
-     "growth_cycle": "growth-cycle-005"
+     "growth_judge_file": "results/bug_heldout_v2_growth-repair-cycle007-2026-11-12b.json",
+     "growth_cycle": "repair-cycle007-2026-11-12b"
     }
    },
    "fallback": "the phase-4 composition (plateau 0.7931): the pre-dream member records are backed up inside factory/runs/dream-phaseC-002",
@@ -922,13 +982,13 @@
     "name": "waking-dream",
     "role": "serving_layer",
     "path": "waking-dream/waking_dream.py",
-    "sha256": "4981b27bc4312cbc73265d09e5c7b60a9904096c3e1c1e1abe1d9cddbbfd0800",
+    "sha256": "d54272e794942b66bab3a19e2bfe121222ffc26bd70c520f3eb09a5d21e8dd8d",
     "mechanism": "margins nominate the top-3 defect candidates (+clean); each candidate must prove its behavioral signature by execution; strongest verified signature wins; none verifies -> raw composer verdict stands, flagged unverified",
     "sealed_acc": 0.8611,
     "sealed_n": 36,
     "sealed_file": "coding/swarm/bug_heldout_v2.json",
     "sealed_sha256": "cd17c92279bfb98707b234160ab93e461448f79b47f5d5d1eb9e349738fea0bb",
-    "raw_composition_acc": 0.4722,
+    "raw_composition_acc": 0.5,
     "evidence_file": "waking-dream/results.json",
     "fallback": "raw composer verdict (the members above)"
    }

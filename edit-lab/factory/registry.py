@@ -47,7 +47,12 @@ MODELS_DIR = LAB_ROOT / "coding" / "swarm" / "models"
 REGISTRY_PATH = Path(__file__).parent / "registry.json"
 SPECIALIST_JOBS = ["secret-line-model", "error-class-model",
                    "commit-type-model", "contract-judgment-model",
-                   "gap-move-model"]
+                   "gap-move-model",
+                   # niche-expansion wave 1 (2026-11-13, coordinator's
+                   # adoption sitting; factory/niche_expansion/PLAN.md
+                   # section 4): gate-passed first births, staged by
+                   # cycles niche-expansion-001 / -003b.
+                   "sec-code-model", "sql-statement-model"]
 
 
 # THE STANDING SERVING RULE (Arnav's direction 2026-11-10,

@@ -1,0 +1,167 @@
+{
+ "cycle_id": "niche-expansion-002b",
+ "subject": "data-format-model",
+ "runner": "python3 -m factory.niche_expansion.expansion_cycle --subject data-format-model --cycle-id niche-expansion-002b",
+ "ts": "2026-11-13T04:47:04+0000",
+ "niche": "data",
+ "fmode": "text",
+ "epochs": 300,
+ "classes": [
+  "json",
+  "malformed-json",
+  "csv",
+  "toml",
+  "plain-text"
+ ],
+ "snapshots": {
+  "factory/registry.json": "3a8658ef9d99b5777675bccb54d33a6c3da80d640f59b50df0afe70dbd61399f",
+  "factory/battery_evidence.json": "b19a96bcba55bde9500506e6c696f1cd381589bd614905f166e322cc2b5202e3"
+ },
+ "battery_before": {
+  "classify-data-format": {
+   "job": "data-format-model",
+   "right": 0,
+   "n": 10,
+   "acc": 0.0,
+   "bar": 8,
+   "detail": "0/10 correct; bar 8/10; gaps: no specialist registered for job 'data-format-model'"
+  }
+ },
+ "generation": {
+  "train": {
+   "families": 600,
+   "drops": {},
+   "items": 600
+  },
+  "held_a": {
+   "families": 90,
+   "drops": {},
+   "items": 90
+  },
+  "held_b": {
+   "families": 90,
+   "drops": {},
+   "items": 90
+  }
+ },
+ "determinism_assert": "held_fn(seed) twice identical; train_fn(seed) twice identical",
+ "contamination": {
+  "train": {
+   "in": 600,
+   "kept": 600,
+   "dropped": 0
+  },
+  "held_a": {
+   "in": 90,
+   "kept": 90,
+   "dropped": 0
+  },
+  "held_b": {
+   "in": 90,
+   "kept": 90,
+   "dropped": 0
+  },
+  "battery_reference_items": 68,
+  "dropped_reasons": {}
+ },
+ "dev_selection": {
+  "dev_n": 120,
+  "subtrain_n": 480,
+  "attempts": [
+   {
+    "hidden": 0,
+    "heldout_acc": 0.9917,
+    "params": 5125
+   },
+   {
+    "hidden": 4,
+    "heldout_acc": 0.9833,
+    "params": 4125
+   },
+   {
+    "hidden": 8,
+    "heldout_acc": 1.0,
+    "params": 8245
+   }
+  ],
+  "winner_by_dev_smallest_within_0.02": {
+   "hidden": 4,
+   "heldout_acc": 0.9833,
+   "params": 4125
+  },
+  "note": "hidden/recipe choice made on a dev split of train only; held slices never used for this choice"
+ },
+ "finalists_ranked_on_held_a": [
+  {
+   "hidden": 4,
+   "params": 4125,
+   "held_a_acc": 0.9111
+  },
+  {
+   "hidden": 8,
+   "params": 8245,
+   "held_a_acc": 0.8444
+  },
+  {
+   "hidden": 0,
+   "params": 5125,
+   "held_a_acc": 0.8222
+  }
+ ],
+ "gate": {
+  "held_a": {
+   "acc": 0.9111,
+   "right": 82,
+   "n": 90,
+   "per_class_recall": {
+    "json": 0.8889,
+    "malformed-json": 0.6667,
+    "csv": 1.0,
+    "toml": 1.0,
+    "plain-text": 1.0
+   },
+   "min_recall": 0.6667
+  },
+  "held_b": {
+   "acc": 0.9444,
+   "right": 85,
+   "n": 90,
+   "per_class_recall": {
+    "json": 1.0,
+    "malformed-json": 0.7222,
+    "csv": 1.0,
+    "toml": 1.0,
+    "plain-text": 1.0
+   },
+   "min_recall": 0.7222
+  },
+  "baselines_held_a": {
+   "majority": {
+    "acc": 0.2,
+    "predicts": "json"
+   },
+   "rule": {
+    "acc": 0.7333,
+    "rule": "keyword/first-token (expansion_cycle.rule_predict)"
+   }
+  },
+  "baselines_held_b": {
+   "majority": {
+    "acc": 0.2,
+    "predicts": "json"
+   },
+   "rule": {
+    "acc": 0.7333,
+    "rule": "keyword/first-token (expansion_cycle.rule_predict)"
+   }
+  },
+  "thresholds": {
+   "acc": 0.9,
+   "per_class_recall": 0.8,
+   "strictly_above_baselines": true
+  }
+ },
+ "methods_provenance": "dev-split recipe selection on train only (dev n=120): hidden 4 chosen smallest-first within 0.02 of best dev acc 1.0; finalists (hidden 0/4/8) trained on full train (n=600) via executors.retrain_candidates and ranked on held-A; held-B spent once on the winner (hidden 4, 4125 params). Data: three disjoint template partitions, oracle-verified at generation (drops in the generation stats), contamination-filtered against the other partitions and all five existing battery item sets plus this subject's hand-authored battery items.",
+ "verdict": "REJECTED",
+ "model_file": null
+}

@@ -74,10 +74,10 @@ def load_bug_registry() -> Dict[str, Any]:
     return reg
 
 
-def make_composer(reg: Dict[str, Any]) -> Specialist:
+def make_composer(reg: Dict[str, Any], config=None) -> Specialist:
     return Specialist("bug-pattern-composer", "debugging",
                       "compose the per-class bug models into one verdict",
-                      fn=C.make_bug_pattern_composer(reg))
+                      fn=C.make_bug_pattern_composer(reg, config))
 
 
 def composed_eval(reg: Dict[str, Any], examples: List[Dict[str, Any]]):

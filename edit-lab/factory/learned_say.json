@@ -1,0 +1,126 @@
+{
+ "status": "shadow",
+ "fitted_at": "2026-11-13 03:54 UTC",
+ "rule": "serves only when status == 'adopted', set by run_battery when the composed sealed slice with the say beat the incumbent's in the same run",
+ "say": {
+  "weights": {
+   "off-by-one": {
+    "bug-off-by-one-harvest-model": 0.4,
+    "bug-off-by-one-index-model": 0.2,
+    "bug-off-by-one-model": 0.2,
+    "bug-off-by-one-range-model": 0.2
+   },
+   "wrong-operator": {
+    "bug-wrong-operator-accumulator-model": 0.380952,
+    "bug-wrong-operator-expression-model": 0.047619,
+    "bug-wrong-operator-harvest-model": 0.190476,
+    "bug-wrong-operator-model": 0.190476,
+    "bug-wrong-operator-named-model": 0.190476
+   },
+   "swapped-operands": {
+    "bug-swapped-operands-harvest-model": 0.666667,
+    "bug-swapped-operands-model": 0.0,
+    "bug-swapped-operands-named-model": 0.333333,
+    "bug-swapped-operands-plain-model": 0.0
+   },
+   "mutable-default": {
+    "bug-mutable-default-model": 1.0
+   },
+   "missing-return": {
+    "bug-missing-return-assigns-model": 0.5,
+    "bug-missing-return-model": 0.5
+   }
+  },
+  "thresholds": {
+   "off-by-one": 0.0,
+   "wrong-operator": 0.0,
+   "swapped-operands": 0.0,
+   "mutable-default": 0.0,
+   "missing-return": 0.0
+  },
+  "sharpness_beta": 0.5,
+  "fit": {
+   "n": 216,
+   "passes": 4,
+   "ce_before": 2.2094,
+   "ce_after": 1.3583,
+   "dev_acc_uniform": 0.5972,
+   "dev_acc_say": 0.6528,
+   "class_freq": {
+    "missing-return": 21,
+    "off-by-one": 55,
+    "swapped-operands": 16,
+    "wrong-operator": 49,
+    "clean": 70,
+    "mutable-default": 5
+   }
+  },
+  "seats": {
+   "missing-return": [
+    "bug-missing-return-assigns-model",
+    "bug-missing-return-model"
+   ],
+   "mutable-default": [
+    "bug-mutable-default-model"
+   ],
+   "off-by-one": [
+    "bug-off-by-one-harvest-model",
+    "bug-off-by-one-index-model",
+    "bug-off-by-one-model",
+    "bug-off-by-one-range-model"
+   ],
+   "swapped-operands": [
+    "bug-swapped-operands-harvest-model",
+    "bug-swapped-operands-model",
+    "bug-swapped-operands-named-model",
+    "bug-swapped-operands-plain-model"
+   ],
+   "wrong-operator": [
+    "bug-wrong-operator-accumulator-model",
+    "bug-wrong-operator-expression-model",
+    "bug-wrong-operator-harvest-model",
+    "bug-wrong-operator-model",
+    "bug-wrong-operator-named-model"
+   ]
+  },
+  "fitted_on": "factory/say_dev.json (dev pool)"
+ },
+ "evidence": {
+  "incumbent_sealed_acc": 0.8611,
+  "incumbent_recalls": {
+   "clean": 0.8182,
+   "missing-return": 1.0,
+   "mutable-default": 1.0,
+   "off-by-one": 0.6667,
+   "swapped-operands": 1.0,
+   "wrong-operator": 0.9
+  },
+  "say_sealed_acc": 0.8056,
+  "say_recalls": {
+   "clean": 0.6364,
+   "missing-return": 1.0,
+   "mutable-default": 1.0,
+   "off-by-one": 0.6667,
+   "swapped-operands": 1.0,
+   "wrong-operator": 0.9
+  },
+  "sealed_n": 36,
+  "dev_fit": {
+   "n": 216,
+   "passes": 4,
+   "ce_before": 2.2094,
+   "ce_after": 1.3583,
+   "dev_acc_uniform": 0.5972,
+   "dev_acc_say": 0.6528,
+   "class_freq": {
+    "missing-return": 21,
+    "off-by-one": 55,
+    "swapped-operands": 16,
+    "wrong-operator": 49,
+    "clean": 70,
+    "mutable-default": 5
+   }
+  },
+  "rule": "adopted only if say sealed acc strictly beats the incumbent's in this same battery run"
+ }
+}

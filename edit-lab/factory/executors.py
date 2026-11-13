@@ -107,6 +107,18 @@ def subject_config(subject_id: str) -> Optional[Dict[str, Any]]:
             lambda: P3.gen_commit_types(P3._COMMIT_HELD, 52),
             B.COMMIT_ITEMS),
     }
+    # Niche-expansion wave 1 (2026-11-13, coordinator's adoption
+    # sitting; factory/niche_expansion/PLAN.md section 4): configs
+    # live in factory/niche_expansion/subjects.py and are merged here
+    # for ADOPTED jobs only, so full_audit can re-measure them on
+    # their deterministic held sets. A rejected/unadopted expansion
+    # subject (data-format-model) is deliberately absent.
+    from .niche_expansion import subjects as _expansion_subjects
+    for _sid in ("sec-code-model", "sql-statement-model"):
+        _c = _expansion_subjects.SUBJECTS[_sid]
+        table[_sid] = _cfg(_c["niche"], _c["job"], _c["classes"],
+                           _c["fmode"], _c["epochs"], _c["train_fn"],
+                           _c["held_fn"], _c["battery_items"])
     return table.get(subject_id)
 
 

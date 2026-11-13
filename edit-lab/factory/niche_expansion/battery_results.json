@@ -1,0 +1,26 @@
+{
+ "classify-sec-code": {
+  "job": "sec-code-model",
+  "right": 9,
+  "n": 12,
+  "acc": 0.75,
+  "bar": 9,
+  "detail": "9/12 correct; bar 9/12"
+ },
+ "classify-data-format": {
+  "job": "data-format-model",
+  "right": 0,
+  "n": 10,
+  "acc": 0.0,
+  "bar": 8,
+  "detail": "0/10 correct; bar 8/10; gaps: no specialist registered for job 'data-format-model'"
+ },
+ "classify-sql-statement": {
+  "job": "sql-statement-model",
+  "right": 14,
+  "n": 14,
+  "acc": 1.0,
+  "bar": 11,
+  "detail": "14/14 correct; bar 11/14; update/delete-without-where subset: 2/2 correct"
+ }
+}

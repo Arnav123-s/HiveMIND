@@ -1,0 +1,192 @@
+{
+ "cycle_id": "niche-expansion-001",
+ "subject": "sec-code-model",
+ "runner": "python3 -m factory.niche_expansion.expansion_cycle --subject sec-code-model --cycle-id niche-expansion-001",
+ "ts": "2026-11-13T04:07:19+0000",
+ "niche": "sec-code",
+ "fmode": "codetext",
+ "epochs": 300,
+ "classes": [
+  "clean",
+  "path-traversal",
+  "insecure-random",
+  "unsafe-yaml-load",
+  "tls-verify-off",
+  "ssrf"
+ ],
+ "snapshots": {
+  "factory/registry.json": "0ea29ece56b6a825c9e497dbdc89246f12ee73ad804ceb398ada0df4b549ee8c",
+  "factory/battery_evidence.json": "81d755a1ae16262a2535713e3035aa650c35d58e9b7ef5e19f98386ae903c553"
+ },
+ "battery_before": {
+  "classify-sec-code": {
+   "job": "sec-code-model",
+   "right": 0,
+   "n": 12,
+   "acc": 0.0,
+   "bar": 9,
+   "detail": "0/12 correct; bar 9/12; gaps: no specialist registered for job 'sec-code-model'"
+  }
+ },
+ "generation": {
+  "train": {
+   "families": 240,
+   "drops": {
+    "oracle_fired_insecure-random": 1
+   },
+   "items": 239
+  },
+  "held_a": {
+   "families": 108,
+   "drops": {
+    "oracle_fired_insecure-random": 1
+   },
+   "items": 107
+  },
+  "held_b": {
+   "families": 108,
+   "drops": {
+    "oracle_fired_insecure-random": 1
+   },
+   "items": 107
+  }
+ },
+ "determinism_assert": "held_fn(seed) twice identical; train_fn(seed) twice identical",
+ "contamination": {
+  "train": {
+   "in": 239,
+   "kept": 213,
+   "dropped": 26
+  },
+  "held_a": {
+   "in": 107,
+   "kept": 101,
+   "dropped": 6
+  },
+  "held_b": {
+   "in": 107,
+   "kept": 106,
+   "dropped": 1
+  },
+  "battery_reference_items": 70,
+  "dropped_reasons": {
+   "8-gram containment 0.63": 5,
+   "8-gram containment 0.46": 7,
+   "8-gram containment 0.59": 4,
+   "8-gram containment 0.50": 4,
+   "8-gram containment 0.53": 4,
+   "8-gram containment 0.36": 6,
+   "8-gram containment 0.42": 2,
+   "8-gram containment 0.35": 1
+  }
+ },
+ "dev_selection": {
+  "dev_n": 41,
+  "subtrain_n": 172,
+  "attempts": [
+   {
+    "hidden": 0,
+    "heldout_acc": 1.0,
+    "params": 5862
+   },
+   {
+    "hidden": 4,
+    "heldout_acc": 0.9024,
+    "params": 3936
+   },
+   {
+    "hidden": 8,
+    "heldout_acc": 1.0,
+    "params": 7867
+   }
+  ],
+  "winner_by_dev_smallest_within_0.02": {
+   "hidden": 0,
+   "heldout_acc": 1.0,
+   "params": 5862
+  },
+  "note": "hidden/recipe choice made on a dev split of train only; held slices never used for this choice"
+ },
+ "finalists_ranked_on_held_a": [
+  {
+   "hidden": 8,
+   "params": 8076,
+   "held_a_acc": 0.9703
+  },
+  {
+   "hidden": 4,
+   "params": 4041,
+   "held_a_acc": 0.9505
+  },
+  {
+   "hidden": 0,
+   "params": 6018,
+   "held_a_acc": 0.9406
+  }
+ ],
+ "gate": {
+  "held_a": {
+   "acc": 0.9703,
+   "right": 98,
+   "n": 101,
+   "per_class_recall": {
+    "clean": 1.0,
+    "path-traversal": 0.9444,
+    "insecure-random": 0.8333,
+    "unsafe-yaml-load": 1.0,
+    "tls-verify-off": 1.0,
+    "ssrf": 1.0
+   },
+   "min_recall": 0.8333
+  },
+  "held_b": {
+   "acc": 0.9811,
+   "right": 104,
+   "n": 106,
+   "per_class_recall": {
+    "clean": 0.8824,
+    "path-traversal": 1.0,
+    "insecure-random": 1.0,
+    "unsafe-yaml-load": 1.0,
+    "tls-verify-off": 1.0,
+    "ssrf": 1.0
+   },
+   "min_recall": 0.8824
+  },
+  "baselines_held_a": {
+   "majority": {
+    "acc": 0.1782,
+    "predicts": "path-traversal"
+   },
+   "rule": {
+    "acc": 0.8713,
+    "rule": "keyword/first-token (expansion_cycle.rule_predict)"
+   }
+  },
+  "baselines_held_b": {
+   "majority": {
+    "acc": 0.1698,
+    "predicts": "path-traversal"
+   },
+   "rule": {
+    "acc": 0.8868,
+    "rule": "keyword/first-token (expansion_cycle.rule_predict)"
+   }
+  },
+  "thresholds": {
+   "acc": 0.9,
+   "per_class_recall": 0.8,
+   "strictly_above_baselines": true
+  }
+ },
+ "methods_provenance": "dev-split recipe selection on train only (dev n=41): hidden 0 chosen smallest-first within 0.02 of best dev acc 1.0; finalists (hidden 0/4/8) trained on full train (n=213) via executors.retrain_candidates and ranked on held-A; held-B spent once on the winner (hidden 8, 8076 params). Data: three disjoint template partitions, oracle-verified at generation (drops in the generation stats), contamination-filtered against the other partitions and all five existing battery item sets plus this subject's hand-authored battery items.",
+ "verdict": "BORN-STAGED",
+ "model_file": {
+  "path": "coding/swarm/models/sec-code-model.json",
+  "sha256": "b1fead6f44019898fe7019f8d7cc1b0d565dd713d1e2f1a0cbfdf68ff09e69ca",
+  "params": 8076,
+  "hidden": 8,
+  "heldout_acc_recorded": 0.9703,
+  "note": "staged artifact only \u2014 registry adoption is the coordinator's section-4 sitting, not done here"
+ }
+}

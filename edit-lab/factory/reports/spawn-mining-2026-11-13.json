@@ -1,0 +1,304 @@
+{
+ "built_at": "2026-11-13 03:55 UTC",
+ "built_by": "factory/spawn_mining.py (Muse's work, Muse's side)",
+ "serve_log": {
+  "n": 37,
+  "by_kind": {
+   "bug-pattern": 37
+  },
+  "gap_kinds": {},
+  "bug_pattern": {
+   "n": 37,
+   "mechanisms": {
+    "verified": 31,
+    "fallback-unverified": 6
+   },
+   "composer_overruled": 14,
+   "note": "the waking layer overruling the raw composer is a composer failure site, counted per call"
+  }
+ },
+ "batteries": {
+  "eras": {
+   "2026-11-10": {
+    "tiny-hive-ops": 1.0,
+    "classify-secret-line": 0.8333,
+    "classify-error-class": 1.0,
+    "classify-commit-type": 0.8333,
+    "classify-contract-judgment": 0.5833,
+    "classify-gap-move": 0.4,
+    "hive-b1": 1.0,
+    "hive-b4": 0.0,
+    "hive-b6": 0.0
+   },
+   "current": {
+    "classify-secret-line": 0.8333,
+    "classify-error-class": 1.0,
+    "classify-commit-type": 1.0,
+    "classify-contract-judgment": 0.9167,
+    "classify-gap-move": 1.0,
+    "bug-pattern-composed-sealed-v2": 0.8611,
+    "classify-secret-line-ternary": 0.9167,
+    "tiny-hive-ops": 1.0,
+    "classify-contract-judgment-v3-not-served": 0.4167,
+    "hive-b1": 0.0,
+    "hive-b2": 0.0,
+    "hive-b3": 0.0,
+    "hive-b4": 0.0,
+    "hive-b5": 0.0,
+    "hive-b6": 0.0,
+    "bug-pattern-learned-say": 0.8056
+   }
+  },
+  "confusions": {
+   "classify-contract-judgment: ok -> no-empty-guard": 3,
+   "classify-secret-line: benign -> secret": 2,
+   "classify-contract-judgment: mutates-input -> ok": 2,
+   "classify-gap-move: harvest+train -> wait-for-backend": 2,
+   "classify-secret-line: secret -> benign": 2,
+   "classify-commit-type: feat -> chore": 1,
+   "classify-commit-type: refactor -> fix": 1,
+   "classify-gap-move: harvest -> harvest+train": 1
+  }
+ },
+ "sealed_trajectory_raw": {
+  "measurements": 11,
+  "per_class": {
+   "wrong-operator": {
+    "n_meas": 11,
+    "mean": 0.2727,
+    "last": 0.2,
+    "min": 0.2,
+    "max": 0.4
+   },
+   "mutable-default": {
+    "n_meas": 11,
+    "mean": 0.5,
+    "last": 0.5,
+    "min": 0.5,
+    "max": 0.5
+   },
+   "off-by-one": {
+    "n_meas": 11,
+    "mean": 0.3333,
+    "last": 0.3333,
+    "min": 0.3333,
+    "max": 0.3333
+   },
+   "clean": {
+    "n_meas": 11,
+    "mean": 0.6033,
+    "last": 0.5455,
+    "min": 0.5455,
+    "max": 0.6364
+   },
+   "missing-return": {
+    "n_meas": 11,
+    "mean": 1.0,
+    "last": 1.0,
+    "min": 1.0,
+    "max": 1.0
+   },
+   "swapped-operands": {
+    "n_meas": 11,
+    "mean": 0.0,
+    "last": 0.0,
+    "min": 0.0,
+    "max": 0.0
+   }
+  }
+ },
+ "growth_targets": {
+  "target_frequency": {
+   "wrong-operator/expression": 6,
+   "off-by-one/index": 6
+  },
+  "cycles": [
+   {
+    "cycle": "growth-cycle-001",
+    "targets": [
+     "wrong-operator/expression",
+     "off-by-one/index"
+    ],
+    "rolled_back": false,
+    "next_attack": "No birth under the dual gate. Read the per-config table in the cycle JSON: whichever gate each best candidate failed names cycle 2's target (intent-slice supply quality vs template-slice capacity), plus the learned-say adoption step if its held margin holds."
+   },
+   {
+    "cycle": "growth-cycle-002",
+    "targets": [
+     "wrong-operator/expression",
+     "off-by-one/index"
+    ],
+    "rolled_back": false,
+    "next_attack": "Cycle 3 attacks, in order: (1) whichever dual-gate bar each target's cycle-2 per-config table shows still binding — if a single phase-3 held item (n=20 slice) is the whole blocker for a target, the honest fix is a LARGER pristine phase-3-style held slice (new template families, disjoint names/idioms), not more candidates against the same 20 items; (2) a second name-intent partition (comparison/accumulator intents) so the intent judge is not a fixed surface the grid can overfit; (3) the learned-say adoption step IF cycle 2's v2 fit beat the routed rule. Learned-say v2 (joint fit on the composed objective): held routed 0.8276, mean 0.7931, learned 0.7931. It does not beat the routed rule — the learned-say question is closed unless the representation set itself changes. Runner readiness for a recurring ~6h cron: the cycle runs end to end non-interactively (one command, md+json+ledger written, rollback automatic on any serving regression) — the mechanics are ready. Four changes are needed before scheduling it: (1) cycle-id auto-increment from the ledger (today it is a CLI argument); (2) a single-instance lock + a lab-busy check (this VM runs one heavy job at a time; a cron cycle must skip, not collide, when another lab job is training); (3) per-cycle novelty — training is deterministic, so re-running a fixed grid reproduces the same candidates exactly; a cron'd cycle must rotate its grid or grow its data partitions keyed by cycle number, or it will spend compute re-proving cycle 2 forever; (4) an alert path on rollback or audit failure (today that is only a ledger line). With (1)-(4) it can be scheduled; without (3) it should not be."
+   },
+   {
+    "cycle": "growth-cycle-003",
+    "targets": [
+     "wrong-operator/expression",
+     "off-by-one/index"
+    ],
+    "rolled_back": false,
+    "next_attack": "Extend the loop: the remaining slices from the intake scan, the learned-say adoption step under its own battery gate, and a second name-intent partition (comparison/accumulator slices) so growth is not a one-cycle event."
+   },
+   {
+    "cycle": "growth-cycle-004",
+    "targets": [
+     "wrong-operator/expression",
+     "off-by-one/index"
+    ],
+    "rolled_back": false,
+    "next_attack": "First cycle under the methods upgrade: read the per-candidate table — which arm (recipe / breadth / concentrated / dream-first vs the standing scratch+init grid) produced each target's best dual-gate candidate names where the next cycle pushes. An arm that never produces a competitive candidate across both targets is dropped from the grid rather than re-proved forever; a winning recipe becomes the next cycle's declared default candidate shape. The accumulator/comparison/range surfaces sealed for the earlier plan remain available when a target's binding bar is judge size, not candidate quality."
+   },
+   {
+    "cycle": "growth-cycle-005",
+    "targets": [
+     "wrong-operator/expression",
+     "off-by-one/index"
+    ],
+    "rolled_back": false,
+    "next_attack": "First cycle under the methods upgrade: read the per-candidate table — which arm (recipe / breadth / concentrated / dream-first vs the standing scratch+init grid) produced each target's best dual-gate candidate names where the next cycle pushes. An arm that never produces a competitive candidate across both targets is dropped from the grid rather than re-proved forever; a winning recipe becomes the next cycle's declared default candidate shape. The accumulator/comparison/range surfaces sealed for the earlier plan remain available when a target's binding bar is judge size, not candidate quality."
+   },
+   {
+    "cycle": "growth-cycle-006",
+    "targets": [
+     "wrong-operator/expression",
+     "off-by-one/index"
+    ],
+    "rolled_back": true,
+    "next_attack": "First cycle under the methods upgrade: read the per-candidate table — which arm (recipe / breadth / concentrated / dream-first vs the standing scratch+init grid) produced each target's best dual-gate candidate names where the next cycle pushes. An arm that never produces a competitive candidate across both targets is dropped from the grid rather than re-proved forever; a winning recipe becomes the next cycle's declared default candidate shape. The accumulator/comparison/range surfaces sealed for the earlier plan remain available when a target's binding bar is judge size, not candidate quality."
+   }
+  ]
+ },
+ "dev_slices": {
+  "off-by-one": {
+   "dev_items": 55,
+   "routed_recall": 0.3636,
+   "seat_binary_acc": {
+    "bug-off-by-one-harvest-model": 0.8056,
+    "bug-off-by-one-index-model": 0.7639,
+    "bug-off-by-one-model": 0.8009,
+    "bug-off-by-one-range-model": 0.6389
+   },
+   "slices": {
+    "index": {
+     "right": 17,
+     "n": 51,
+     "recall": 0.3333
+    },
+    "range": {
+     "right": 3,
+     "n": 4,
+     "recall": 0.75
+    }
+   }
+  },
+  "wrong-operator": {
+   "dev_items": 49,
+   "routed_recall": 0.3878,
+   "seat_binary_acc": {
+    "bug-wrong-operator-accumulator-model": 0.7685,
+    "bug-wrong-operator-expression-model": 0.5231,
+    "bug-wrong-operator-harvest-model": 0.7315,
+    "bug-wrong-operator-model": 0.7778,
+    "bug-wrong-operator-named-model": 0.6667
+   },
+   "slices": {
+    "accumulator": {
+     "right": 2,
+     "n": 4,
+     "recall": 0.5
+    },
+    "comparison": {
+     "right": 9,
+     "n": 14,
+     "recall": 0.6429
+    },
+    "expression": {
+     "right": 8,
+     "n": 31,
+     "recall": 0.2581
+    }
+   }
+  },
+  "swapped-operands": {
+   "dev_items": 16,
+   "routed_recall": 0.125,
+   "seat_binary_acc": {
+    "bug-swapped-operands-harvest-model": 0.9583,
+    "bug-swapped-operands-model": 0.9352,
+    "bug-swapped-operands-named-model": 0.8796,
+    "bug-swapped-operands-plain-model": 0.9259
+   },
+   "slices": {
+    "comprehension": {
+     "right": 1,
+     "n": 1,
+     "recall": 1.0
+    },
+    "plain": {
+     "right": 1,
+     "n": 15,
+     "recall": 0.0667
+    }
+   }
+  },
+  "mutable-default": {
+   "dev_items": 5,
+   "routed_recall": 0.4,
+   "seat_binary_acc": {
+    "bug-mutable-default-model": 0.9722
+   },
+   "slices": {
+    "whole": {
+     "right": 2,
+     "n": 5,
+     "recall": 0.4
+    }
+   }
+  },
+  "missing-return": {
+   "dev_items": 21,
+   "routed_recall": 0.9524,
+   "seat_binary_acc": {
+    "bug-missing-return-assigns-model": 0.9861,
+    "bug-missing-return-model": 0.9954
+   },
+   "slices": {
+    "assigns": {
+     "right": 16,
+     "n": 17,
+     "recall": 0.9412
+    },
+    "prints": {
+     "right": 4,
+     "n": 4,
+     "recall": 1.0
+    }
+   }
+  }
+ },
+ "registry_gaps": {
+  "classify_jobs": [
+   "commit-type-model",
+   "contract-judgment-model",
+   "error-class-model",
+   "gap-move-model",
+   "secret-line-model"
+  ],
+  "compositions": [
+   "bug-pattern-composed"
+  ],
+  "fixed_answer_sites": [
+   {
+    "kind": "coordinate",
+    "answer": "gap: tier1-backend-required (fixed)",
+    "disposition": "noticed decision site — every coordinate call takes the same fixed answer; NOT Tier-0 staffable (needs the LM backend), recorded not built"
+   },
+   {
+    "kind": "unknown kind / unregistered job",
+    "answer": "gap with growth_move (fixed)",
+    "disposition": "fail-closed routing answer; the growth_move names the intake path"
+   }
+  ]
+ }
+}

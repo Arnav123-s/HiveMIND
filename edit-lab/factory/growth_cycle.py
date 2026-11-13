@@ -26,7 +26,13 @@ One invocable command runs one full growth cycle end to end:
      pristine judge) — both strict, child must beat parent on
      both. Training distributions are never judge surfaces.
   5. ADOPT only through the standing law: a passed dual gate
-     writes the child + routes its slice; then the WHOLE is
+     writes the child + routes its slice; Gate 3′ (2026-11-12,
+     from the E-007 retro-check) then judges the FULL serving
+     path on the say_dev pool — composer + the waking-dream
+     refresh a birth triggers, child vs parent — and blocks the
+     birth pre-adoption on any served total fall or a >=1-item
+     served clean-recall fall, restoring the child's two files
+     in place (no rollback involved); then the WHOLE is
      verified — registry rebuilt, the acceptance battery
      re-measured through the serving path, the full audit run.
      Any battery slice regression or audit failure ROLLS THE
@@ -566,17 +572,63 @@ def _full_audit() -> Dict[str, Any]:
             "score_checks": res["score_checks"]}
 
 
+# ------------------------------------------------- model-file snapshots
+def _target_child_names() -> List[str]:
+    """The serving model names a cycle's births can touch: one
+    child per target, named by factory/growth.py's convention."""
+    return [f"bug-{cls}-{slice_name}-model"
+            for cls, slice_name in TARGETS]
+
+
+def _snapshot_model_files(names: List[str]) -> Dict[str, Any]:
+    """Bytes of each named serving model file, or None where the
+    file does not exist yet. Taken BEFORE any birth attempt: a
+    birth overwrites the previous cycle's serving file of the
+    same name, so the pre-cycle bytes are the only copy of the
+    incumbent specialist. (Cycle-006 repair, 2026-11-12: rollback
+    used to unlink the child files outright, which — because the
+    birth had already overwritten the incumbents — deleted the
+    serving specialists instead of restoring them.)"""
+    out: Dict[str, Any] = {}
+    for name in names:
+        p = MODELS_DIR / f"{name}.json"
+        out[name] = p.read_bytes() if p.exists() else None
+    return out
+
+
+def _restore_model_files(
+        born: List[Dict[str, Any]],
+        model_snapshots: Optional[Dict[str, Any]]) -> List[str]:
+    """Undo a cycle's model-file writes. A child whose name has
+    pre-cycle bytes in the snapshot gets those bytes back
+    byte-for-byte; a genuinely new child file is removed.
+    Returns the names restored from snapshot."""
+    restored: List[str] = []
+    for b in born:
+        name = b["child"]
+        p = MODELS_DIR / f"{name}.json"
+        snap = (model_snapshots or {}).get(name)
+        if snap is not None:
+            p.write_bytes(snap)
+            restored.append(name)
+        elif p.exists():
+            p.unlink()
+    return restored
+
+
 # ------------------------------------------------------------ rollback
 def _rollback(born: List[Dict[str, Any]], snapshots: Dict[str, bytes],
               cycle_id: str, lineage: LineageLog,
-              reason: str) -> None:
+              reason: str,
+              model_snapshots: Optional[Dict[str, Any]] = None
+              ) -> None:
     """Remove the cycle's births and restore every file they
-    touched. The lineage keeps the whole story (append-only);
+    touched. Model files are restored from the pre-cycle
+    snapshot (see _snapshot_model_files): a birth that overwrote
+    an incumbent specialist must never become a deletion of it.
+    The lineage keeps the whole story (append-only);
     nothing about the attempt is hidden."""
-    for b in born:
-        p = MODELS_DIR / f"{b['child']}.json"
-        if p.exists():
-            p.unlink()
+    restored = _restore_model_files(born, model_snapshots)
     (MODELS_DIR / "composer_config.json").write_bytes(
         snapshots["composer_config"])
     wd_path = LAB_ROOT / "waking-dream" / "results.json"
@@ -587,7 +639,247 @@ def _rollback(born: List[Dict[str, Any]], snapshots: Dict[str, bytes],
     from .registry import write_registry
     write_registry()
     lineage.append("growth_rollback", cycle_id=cycle_id, reason=reason,
-                   removed=[b["child"] for b in born])
+                   removed=[b["child"] for b in born
+                            if b["child"] not in restored],
+                   restored=restored)
+
+
+# ------------------------------------------------------------ Gate 3′
+# Gate 3′ (2026-11-12, from the E-007 retro-check —
+# factory/reports/e007-retrocheck-2026-11-12.md). E-007 proposed a
+# third gate on the RAW composer's dev total; the retro-check
+# REFUTED it on the cycle-6/7 records: on every composed surface
+# anyone measured, the raw totals never fell (sealed raw 0.4722 ->
+# 0.4722 in cycle 6; 0.5 -> 0.5 in cycle 7). Both regressions
+# lived one layer down, in the waking-dream refresh a birth
+# triggers: the entire serving fall was clean recall (cycle 6:
+# clean 0.8182 -> 0.6364, -2 items; cycle 7: -1 item) while every
+# defect class stood still. Gate 3′ judges that layer: per child,
+# after the dual pristine gate passes and BEFORE the cycle's
+# registry rewrite makes the birth final, the FULL serving path
+# (composer + the waking-dream refresh, run in-memory over the
+# say_dev 216 pool — dev, never the sealed set) is measured with
+# the child installed and with the parent composition restored
+# in-memory, and the birth is blocked on any served total fall
+# OR a served clean-recall fall of >= 1 dev item, even when the
+# total is flat or rising (a compensated clean loss is the
+# demonstrated failure signature).
+#
+# A blocked child is un-born in place: attempt_birth writes
+# exactly two serving files (the child model + composer_config
+# routing), and the gate restores both from byte snapshots taken
+# immediately before the attempt. registry.json and
+# waking-dream/results.json are never written for a blocked
+# child, so no rollback path is involved (rollback remains only
+# for post-adoption verification failures of KEPT births).
+# Targets are gated independently: each child's parent scorecard
+# is measured against the composition current at its own gate,
+# so a sibling birth already kept in the same cycle is part of
+# the next child's parent state.
+#
+# Bookkeeping (retro-check §5, so the next retro-check is
+# computable): the child's model bytes are snapshotted into the
+# run dir (gate3/<child>.json, sha256 recorded) BEFORE the gate
+# decides, kept or blocked; both scorecards — served totals,
+# served per-class recalls AND the raw composed per-class
+# recalls before (parent) and after (child) — land on the
+# attempt record and in lineage.
+
+_GATE3_DEV_ITEMS: Optional[List[Dict[str, Any]]] = None
+
+
+def _gate3_dev_items() -> List[Dict[str, Any]]:
+    global _GATE3_DEV_ITEMS
+    if _GATE3_DEV_ITEMS is None:
+        from . import say_dev
+        _GATE3_DEV_ITEMS = say_dev.load_dev_pool()["items"]
+    return _GATE3_DEV_ITEMS
+
+
+def _gate3_pre_state(child_name: str) -> Dict[str, Any]:
+    """Byte snapshots of exactly what a birth for this target
+    can write, taken immediately BEFORE the attempt: the child
+    model file (None if no incumbent file of that name exists)
+    and composer_config.json."""
+    p = MODELS_DIR / f"{child_name}.json"
+    return {"child_name": child_name,
+            "child_bytes": p.read_bytes() if p.exists() else None,
+            "config_bytes": (MODELS_DIR / "composer_config.json")
+            .read_bytes()}
+
+
+def _gate3_registry(child_name: str,
+                    child_bytes: Optional[bytes]) -> Dict[str, Any]:
+    """dream.load_bug_registry with one member's bytes
+    substituted — the in-memory sandbox the parent scorecard is
+    measured in. child_bytes None = the member was absent
+    before the attempt, so it is absent from the parent
+    composition too."""
+    reg: Dict[str, Any] = {}
+    for f in sorted(MODELS_DIR.glob("bug-*.json")):
+        if f.stem == child_name:
+            if child_bytes is None:
+                continue
+            rec = json.loads(child_bytes.decode())
+        else:
+            rec = json.loads(f.read_text())
+        if rec.get("adopted"):
+            reg[rec["name"]] = F.TinyNet.from_record(rec)
+    return reg
+
+
+def _gate3_scorecard(reg: Dict[str, Any], config: Dict[str, Any],
+                     items: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """One serving-path pass over the dev pool: the waking-dream
+    wrapper exactly as production runs it (same WakingDream +
+    evaluate as _refresh_waking_dream_results, but in-memory —
+    nothing is written). evaluate's rows carry the bare
+    composer's verdict per item, so the raw composed leg is the
+    same pass's by-product (diagnostic only, per the spec)."""
+    wd_dir = str(LAB_ROOT / "waking-dream")
+    if wd_dir not in sys.path:
+        sys.path.insert(0, wd_dir)
+    import waking_dream as wd_mod
+    wrapper = wd_mod.WakingDream(registry=reg, config=config)
+    res = wd_mod.evaluate(wrapper, items)
+    rows = res["rows"]
+
+    def counts(key: str) -> Dict[str, Dict[str, int]]:
+        per: Dict[str, Dict[str, int]] = {}
+        for r in rows:
+            d = per.setdefault(r["label"], {"n": 0, "right": 0})
+            d["n"] += 1
+            d["right"] += 1 if r[key] else 0
+        return per
+
+    served = counts("correct")
+    raw = counts("composer_correct")
+    return {"n": res["n"],
+            "served_acc": res["acc"],
+            "served_right": sum(d["right"] for d in served.values()),
+            "served_per_class_recall": res["per_class_recall"],
+            "served_per_class": served,
+            "raw_acc": res["composer_acc"],
+            "raw_right": sum(d["right"] for d in raw.values()),
+            "raw_per_class_recall": res["composer_per_class_recall"],
+            "raw_per_class": raw}
+
+
+def _gate3_verdict(child_card: Dict[str, Any],
+                   parent_card: Dict[str, Any]) -> Optional[str]:
+    """Block reason, or None to keep the birth. Judged in exact
+    item counts on the SERVED path (same pool both ways, so
+    counts and accuracies order identically)."""
+    if child_card["served_right"] < parent_card["served_right"]:
+        return (f"serving-dev total fell "
+                f"{parent_card['served_right']}/{parent_card['n']} "
+                f"({parent_card['served_acc']}) -> "
+                f"{child_card['served_right']}/{child_card['n']} "
+                f"({child_card['served_acc']})")
+    pc = parent_card["served_per_class"].get(
+        "clean", {"right": 0, "n": 0})
+    cc = child_card["served_per_class"].get(
+        "clean", {"right": 0, "n": 0})
+    if cc["right"] < pc["right"]:
+        return (f"serving-dev clean recall fell by "
+                f"{pc['right'] - cc['right']} item(s) "
+                f"({pc['right']}/{pc['n']} -> {cc['right']}/{cc['n']}) "
+                f"at served total "
+                f"{parent_card['served_right']} -> "
+                f"{child_card['served_right']} — the cycle-6/7 "
+                f"signature (compensated clean loss in the "
+                f"waking-dream refresh)")
+    return None
+
+
+def _gate3_prime(out: Dict[str, Any], pre: Dict[str, Any],
+                 run_dir: Path, lineage: LineageLog,
+                 cycle_id: str) -> Dict[str, Any]:
+    """Gate 3′ for one dual-gate-passing child. On a block, the
+    attempt returns with born=False and the rejection recorded;
+    on a keep, the birth proceeds to the cycle's standing
+    post-adoption verification (sealed judge, waking refresh,
+    battery, audit) exactly as before."""
+    import hashlib
+
+    from . import dream as dream_mod
+    child_name = out["child"]
+    child_path = MODELS_DIR / f"{child_name}.json"
+    # Bookkeeping first (retro-check §5): the child's bytes are
+    # snapshotted into the run dir BEFORE adoption is decided,
+    # so a future retro-check can re-measure this exact child.
+    child_bytes_now = child_path.read_bytes()
+    snap_dir = Path(run_dir) / "gate3"
+    snap_dir.mkdir(parents=True, exist_ok=True)
+    (snap_dir / f"{child_name}.json").write_bytes(child_bytes_now)
+    items = _gate3_dev_items()
+    child_card = _gate3_scorecard(dream_mod.load_bug_registry(),
+                                  C.load_config(), items)
+    parent_card = _gate3_scorecard(
+        _gate3_registry(child_name, pre["child_bytes"]),
+        json.loads(pre["config_bytes"].decode()), items)
+    record: Dict[str, Any] = {
+        "gate": "Gate 3′ — full serving path (composer + "
+                "waking-dream refresh) on the say_dev pool, "
+                "child vs parent, pre-adoption",
+        "pool": "factory/say_dev.json (216 items, dev only — "
+                "the sealed set is never spent here)",
+        "child_snapshot": f"gate3/{child_name}.json",
+        "child_snapshot_sha256":
+            hashlib.sha256(child_bytes_now).hexdigest(),
+        "child": child_card,
+        "parent": parent_card,
+    }
+    reason = _gate3_verdict(child_card, parent_card)
+    if reason is None:
+        record["verdict"] = "kept"
+        out["gate3_prime"] = record
+        lineage.append("gate3_prime_kept", cycle_id=cycle_id,
+                       child=child_name,
+                       served_child=child_card["served_acc"],
+                       served_parent=parent_card["served_acc"],
+                       clean_child=child_card["served_per_class"]
+                       .get("clean", {}).get("right"),
+                       clean_parent=parent_card["served_per_class"]
+                       .get("clean", {}).get("right"))
+        print(f"[{cycle_id}] Gate 3′ KEPT {child_name}: served "
+              f"dev {parent_card['served_acc']} -> "
+              f"{child_card['served_acc']}, clean "
+              f"{parent_card['served_per_class'].get('clean', {}).get('right')}"
+              f" -> "
+              f"{child_card['served_per_class'].get('clean', {}).get('right')}",
+              flush=True)
+        return out
+    # Blocked: un-born in place. Restore the two files the
+    # birth wrote from the pre-attempt byte snapshots; nothing
+    # else was ever written for this child.
+    if pre["child_bytes"] is None:
+        child_path.unlink(missing_ok=True)
+    else:
+        child_path.write_bytes(pre["child_bytes"])
+    (MODELS_DIR / "composer_config.json").write_bytes(
+        pre["config_bytes"])
+    record["verdict"] = "blocked"
+    record["reason"] = reason
+    out["gate3_prime"] = record
+    out["born"] = False
+    out["rejection"] = (
+        f"Gate 3′ blocked the birth (the dual pristine gate had "
+        f"passed): {reason}. Serving state untouched — the "
+        f"child model file and composer config were restored "
+        f"from pre-attempt byte snapshots before any registry "
+        f"rewrite; no rollback was involved.")
+    lineage.append("gate3_prime_blocked", cycle_id=cycle_id,
+                   child=child_name, reason=reason,
+                   served_child=child_card["served_acc"],
+                   served_parent=parent_card["served_acc"],
+                   clean_child=child_card["served_per_class"]
+                   .get("clean", {}).get("right"),
+                   clean_parent=parent_card["served_per_class"]
+                   .get("clean", {}).get("right"))
+    print(f"[{cycle_id}] Gate 3′ BLOCKED {child_name}: {reason}",
+          flush=True)
+    return out
 
 
 # ------------------------------------------------------------ report
@@ -645,9 +937,12 @@ def write_report(cycle: Dict[str, Any]) -> None:
         "",
         "Runner: `python3 -m factory.growth_cycle`. Gates: dual "
         "pristine held slices (phase-3 held + name-intent held), "
-        "strict child > parent on both; adoption verified on the "
-        "served battery + full audit; any regression rolls the "
-        "births back.",
+        "strict child > parent on both; then Gate 3′ — the full "
+        "serving path on the say_dev pool (composer + waking-"
+        "dream refresh), child vs parent, blocking on any served "
+        "total fall or a >=1-item served clean-recall fall; "
+        "adoption verified on the served battery + full audit; "
+        "any regression rolls the births back.",
         "",
         "## Births",
         "",
@@ -1171,6 +1466,15 @@ def run_cycle(cycle_id: str,
     snap_dir.mkdir(exist_ok=True)
     for k, v in snapshots.items():
         (snap_dir / k).write_bytes(v)
+    # Pre-cycle serving model files (cycle-006 repair): a birth
+    # overwrites the incumbent file of the same name, so these
+    # bytes are the only restore point if the cycle rolls back.
+    model_snapshots = _snapshot_model_files(_target_child_names())
+    models_snap_dir = snap_dir / "models"
+    models_snap_dir.mkdir(exist_ok=True)
+    for name, data in model_snapshots.items():
+        if data is not None:
+            (models_snap_dir / f"{name}.json").write_bytes(data)
 
     cycle: Dict[str, Any] = {
         "cycle_id": cycle_id,
@@ -1202,6 +1506,8 @@ def run_cycle(cycle_id: str,
         extra = cap_intent(intent_train, cls, slice_name,
                            seed=rotation["intent_seed"] if rotation
                            else 99)
+        gate3_pre = _gate3_pre_state(
+            f"bug-{cls}-{slice_name}-model")
         out = growth.attempt_birth(
             cls, slice_name, run_dir / "births" / f"{cls}-{slice_name}",
             lineage, cycle_id,
@@ -1209,6 +1515,9 @@ def run_cycle(cycle_id: str,
             arms=("scratch", "init"), init_train_extra=replay,
             failure_weight=True,
             pool_counts=rotation["pool_counts"] if rotation else None)
+        if out["born"]:
+            out = _gate3_prime(out, gate3_pre, run_dir, lineage,
+                               cycle_id)
         out["intent_train_capped_n"] = len(extra)
         attempts.append(out)
         print(f"[{cycle_id}]   -> born={out['born']} "
@@ -1250,7 +1559,8 @@ def run_cycle(cycle_id: str,
                       + (f"; audit failures: "
                          f"{cycle['audit']['failures']}"
                          if not cycle["audit"]["ok"] else ""))
-            _rollback(born, snapshots, cycle_id, lineage, reason)
+            _rollback(born, snapshots, cycle_id, lineage, reason,
+                      model_snapshots=model_snapshots)
             cycle["rolled_back"] = True
             cycle["rollback_reason"] = reason
             cycle["audit"] = _full_audit()
@@ -1524,6 +1834,18 @@ def run_cycle2(cycle_id: str,
     snap_dir.mkdir(exist_ok=True)
     for k, v in snapshots.items():
         (snap_dir / k).write_bytes(v)
+    # Pre-cycle serving model files (cycle-006 repair; this block
+    # was MISSING here until the cycle-007 repair — the rollback
+    # call below passed model_snapshots that was never taken, so
+    # a rollback in this path died with NameError): a birth
+    # overwrites the incumbent file of the same name, so these
+    # bytes are the only restore point if the cycle rolls back.
+    model_snapshots = _snapshot_model_files(_target_child_names())
+    models_snap_dir = snap_dir / "models"
+    models_snap_dir.mkdir(exist_ok=True)
+    for name, data in model_snapshots.items():
+        if data is not None:
+            (models_snap_dir / f"{name}.json").write_bytes(data)
 
     cycle: Dict[str, Any] = {
         "cycle_id": cycle_id,
@@ -1557,10 +1879,15 @@ def run_cycle2(cycle_id: str,
     for cls, slice_name in TARGETS:
         print(f"[{cycle_id}] birth attempt {cls}/{slice_name} ...",
               flush=True)
+        gate3_pre = _gate3_pre_state(
+            f"bug-{cls}-{slice_name}-model")
         out = _attempt_target_cycle2(cls, slice_name, run_dir,
                                      lineage, cycle_id,
                                      intent_train, intent_held, replay,
                                      rotation=rotation)
+        if out["born"]:
+            out = _gate3_prime(out, gate3_pre, run_dir, lineage,
+                               cycle_id)
         attempts.append(out)
         print(f"[{cycle_id}]   -> born={out['born']} "
               f"{out.get('rejection') or ''}", flush=True)
@@ -1601,7 +1928,8 @@ def run_cycle2(cycle_id: str,
                       + (f"; audit failures: "
                          f"{cycle['audit']['failures']}"
                          if not cycle["audit"]["ok"] else ""))
-            _rollback(born, snapshots, cycle_id, lineage, reason)
+            _rollback(born, snapshots, cycle_id, lineage, reason,
+                      model_snapshots=model_snapshots)
             cycle["rolled_back"] = True
             cycle["rollback_reason"] = reason
             cycle["audit"] = _full_audit()
@@ -1711,7 +2039,11 @@ def run_cycle3(cycle_id: str,
     from . import champion as champion_mod
     champ_rec = champion_mod.ensure_record()
     champ_idx = cycle_number(cycle_id) % len(TARGETS)
-    cycle["champion"] = {
+    # Muse's fix, 2026-11-12 (cycle 006 crash): this block ran
+    # before `cycle` was created below, raising UnboundLocalError
+    # and killing the cycle before any training. Hold it in a
+    # local and attach it once the cycle dict exists.
+    champion_info = {
         "designated_target":
             f"{TARGETS[champ_idx][0]}/{TARGETS[champ_idx][1]}",
         "version_before": champ_rec["version"],
@@ -1736,6 +2068,19 @@ def run_cycle3(cycle_id: str,
     snap_dir.mkdir(exist_ok=True)
     for k, v in snapshots.items():
         (snap_dir / k).write_bytes(v)
+    # Pre-cycle serving model files (cycle-006 repair; this block
+    # was MISSING here until the cycle-007 repair — the rollback
+    # call below passed model_snapshots that was never taken, so
+    # cycle 007's rollback died with NameError and its regressed
+    # births stayed serving): a birth overwrites the incumbent
+    # file of the same name, so these bytes are the only restore
+    # point if the cycle rolls back.
+    model_snapshots = _snapshot_model_files(_target_child_names())
+    models_snap_dir = snap_dir / "models"
+    models_snap_dir.mkdir(exist_ok=True)
+    for name, data in model_snapshots.items():
+        if data is not None:
+            (models_snap_dir / f"{name}.json").write_bytes(data)
 
     cycle: Dict[str, Any] = {
         "cycle_id": cycle_id,
@@ -1762,6 +2107,7 @@ def run_cycle3(cycle_id: str,
                    "learned-say check (Fable) — measured only"],
         "strategy": "cycle3",
     }
+    cycle["champion"] = champion_info
     if rotation is not None:
         cycle["novelty"] = rotation
 
@@ -1788,6 +2134,8 @@ def run_cycle3(cycle_id: str,
         target_methods = dict(methods_cfg)
         if (cls, slice_name) == TARGETS[champ_idx]:
             target_methods["champion"] = True
+        gate3_pre = _gate3_pre_state(
+            f"bug-{cls}-{slice_name}-model")
         out = growth.attempt_birth(
             cls, slice_name, run_dir / "births" / f"{cls}-{slice_name}",
             lineage, cycle_id,
@@ -1796,6 +2144,9 @@ def run_cycle3(cycle_id: str,
             failure_weight=True,
             pool_counts=rotation["pool_counts"] if rotation else None,
             methods=target_methods)
+        if out["born"]:
+            out = _gate3_prime(out, gate3_pre, run_dir, lineage,
+                               cycle_id)
         out["intent_train_capped_n"] = len(extra)
         attempts.append(out)
         print(f"[{cycle_id}]   -> born={out['born']} "
@@ -1837,7 +2188,8 @@ def run_cycle3(cycle_id: str,
                       + (f"; audit failures: "
                          f"{cycle['audit']['failures']}"
                          if not cycle["audit"]["ok"] else ""))
-            _rollback(born, snapshots, cycle_id, lineage, reason)
+            _rollback(born, snapshots, cycle_id, lineage, reason,
+                      model_snapshots=model_snapshots)
             cycle["rolled_back"] = True
             cycle["rollback_reason"] = reason
             cycle["audit"] = _full_audit()
