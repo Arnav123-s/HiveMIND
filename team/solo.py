@@ -45,9 +45,10 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   Use requests with timeout=30 and headers={{"User-Agent": "hive/1.0"}} (Wikipedia refuses a request without one).
   If you do not know what a source returns, first print a small part of it and look.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
-- What the program prints is what the user reads: print every result the task asks for, each on its own line as
-  "name: value" (the names the task gives, if it gives any). Print nothing else. One piece of text (a summary, a
-  translation, a word) is printed alone, as it is.
+- What the program prints is what the user reads. Where the TASK says how the answer must look (a numbered list,
+  labels such as A, B, C, JSON, one word, one sentence, exactly so many items), print exactly that and nothing
+  else. Otherwise print every result the task asks for, each on its own line as "name: value". One piece of text
+  (a summary, a translation, a word) is printed alone, as it is.
 - A value that can be computed is computed by the program, never typed in ('garden'[::-1], not 'nedrag'). A file the task asks for is saved in the current folder under the exact name given.
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
@@ -150,7 +151,38 @@ def same(a, b, task=""):
 
 TYPED = ("That is an answer typed out, not a program. Typed answers are often wrong (a word reversed by hand, a sum "
          "done in the head). Reply with a complete Python program in a ```python block that works out every value "
-         "that can be worked out (for example word[::-1], 13 * 5) and prints each result on its own line.")
+         "that can be worked out and prints the answer in the form the TASK asks for, like this:\n"
+         "```python\nprint('A:', 13 * 5)\nprint('B:', 'garden'[::-1])\nprint('C:', 'Wellington')\n```\n"
+         "Text only you can write (a summary, a translation, a name you know) goes in a string and is printed.")
+NUMBER = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+
+
+def form(task, answer):
+    """What the TASK says about the shape of the answer that code can count, where the answer does not keep it:
+    said in words for the member, or "". Seen on seeds 9005 to 9007: a numbered list printed as "1: Red", a
+    one-sentence summary given as the three sentences of the text, the labels A, B, C left out."""
+    n = lambda w: int(w) if w.isdigit() else NUMBER.get(w.lower())  # noqa: E731
+    lines = [x.strip() for x in answer.splitlines() if x.strip()]
+    low = task.lower()
+    if "numbered list" in low:
+        items = [x for x in lines if re.match(r"\d+[.)]\s+\S", x)]
+        m = re.search(r"\bexactly (\d+|[a-z]+)\b", low)
+        want = n(m.group(1)) if m else None
+        if len(items) != len(lines) or (want and len(items) != want):
+            return (f"The TASK asks for a numbered list{f' of exactly {want} items' if want else ''} and nothing else: lines "
+                    f"like '1. ...' and '2. ...'. Your output has {len(items)} such line(s) among {len(lines)}.")
+    m = re.search(r"\b(\d+|one|two|three|four|five)[- ]sentence\b|\bin (\d+|one|two|three|four|five) sentences?\b", low)
+    if m and n(m.group(1) or m.group(2)):
+        want, have = n(m.group(1) or m.group(2)), len(re.findall(r"[.!?]+(?=\s|$)", answer.strip())) or 1
+        if have != want:
+            return f"The TASK asks for {want} sentence(s). Your output has {have}."
+    m = re.search(r"\blabel\w* (?:the |your )?(?:answers? |them |results? )?((?:[A-Z](?:, | and |,? and )?){2,})", task)
+    if m:
+        missing = [c for c in re.findall(r"[A-Z]", m.group(1)) if not any(re.match(rf"{c}\s*[:.)]", x) for x in lines)]
+        if missing:
+            return (f"The TASK asks for the answers labelled {', '.join(re.findall(r'[A-Z]', m.group(1)))}, each on its own line "
+                    f"('A: ...'). Your output has no line for {', '.join(missing)}.")
+    return ""
 
 
 def typed_out(reply, code):
@@ -180,7 +212,7 @@ def member(task, n, board, guard, work, temperature):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
-    good, last_error, repeats, turn, typed, looking = None, None, 0, 0, 0, False
+    good, last_error, repeats, turn, typed, looking, shaped = None, None, 0, 0, 0, False, 0
     for turn in range(1, TURNS + 1):
         stop.check()
         if bitnet.is_member(n):  # this member is another model: the published 2.4B BitNet (team/bitnet.py)
@@ -204,10 +236,10 @@ def member(task, n, board, guard, work, temperature):
         if typed_out(reply, code):
             # Seen on "multiply 13 by 5; write 'garden' backwards; name the capital": every member typed the three
             # answers out ("B: dnarg"), the text was run as a program, failed the same way twice, and the member stopped.
+            # (For a few hours what was typed twice was taken as the answer, for summaries and translations. Those
+            # come as programs that print a string anyway; what came typed twice was "B: dnarg", agreed on by two.)
             typed += 1
-            if typed > 1:  # asked for a program and it typed again: what it typed is its answer (a summary, a translation)
-                if good is None:
-                    good = {"answer": reply.strip()[-3000:], "program": ""}
+            if typed > 3:
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:600]}, {"role": "user", "content": TYPED}]
             continue
@@ -232,7 +264,10 @@ def member(task, n, board, guard, work, temperature):
             continue
         if res["returncode"] == 0 and out:
             good, last_error = {"answer": out[-3000:], "program": code}, None
-            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n{MORE}"})
+            shape = form(task, out) if shaped < 2 else ""
+            shaped += bool(shape)
+            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n" + (
+                shape + " Reply with the complete program that prints it that way." if shape else MORE)})
             continue
         line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
         repeats = repeats + 1 if line == last_error else 0

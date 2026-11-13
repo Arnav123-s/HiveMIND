@@ -1765,10 +1765,18 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
         assert out["agreed"] and not left and "closed for repairs" in out["report"] and "DONE" not in out["report"]
     typed, prog = "A: 65\nB: dnarg\nC: Wellington", "print('A:', 13 * 5)\nprint('B:', 'garden'[::-1])\nprint('C: Wellington')"
     out, left = hive([typed, prog, "DONE", typed, typed, prog, "DONE"], "h")                   # an answer typed out is not run; a program is asked for
-    assert out["agreed"] and out["tries"] == 3 and not left and "nedrag" in out["report"].split("\n## ")[0] and "dnarg" not in out["report"].split("\n## ")[0]
+    assert out["agreed"] and out["tries"] == 2 and not left and "nedrag" in out["report"].split("\n## ")[0] and "dnarg" not in out["report"].split("\n## ")[0]
     line = "Il museo apre alle nove il venerdi."
-    out, left = hive([line, line, line.replace("il venerdi", "di venerdi"), line.replace("il venerdi", "di venerdi")], "i")  # typed again after a program was asked for: its answer
+    out, left = hive([line, "print(%r)" % line, "DONE", "print(%r)" % line.replace("il venerdi", "di venerdi"), "DONE"], "i")  # typed text is never the answer: it comes printed by a program
     assert out["agreed"] and out["tries"] == 2 and not left and "museo" in out["report"]
+    out, left = hive(["print('1: Red')\nprint('2: Blue')", "print('1. Red')\nprint('2. Blue')", "DONE", "print('1. Red')\nprint('2. Blue')", "DONE"], "j")
+    assert out["agreed"] and not left                                                         # PRIMES_TASK asks no form: nothing is said
+    assert "numbered list of exactly 3" in solo.form("Give me exactly 3 colours as a numbered list and nothing else.", "1: Red\n2: Green\n3: Blue")
+    assert not solo.form("Give me exactly 3 colours as a numbered list and nothing else.", "1. Red\n2. Green\n3. Blue") and solo.form("Give me exactly 3 colours as a numbered list.", "1. Red\n2. Green")
+    assert "1 sentence" in solo.form("Give me a one-sentence summary of this: It cost 4.8 million. It closed.", "The pool cost 4.8 million. It closed in March.")
+    assert not solo.form("Give me a one-sentence summary of this: ...", "The pool, which cost 4.8 million dollars, closed in March.")
+    orders = "Do these three things and label the answers A, B and C, each on its own line: multiply 2 by 3; ..."
+    assert "no line for A, B, C" in solo.form(orders, "2 * 3: 6\nbackwards: nedrag\ncapital: Rome") and not solo.form(orders, "A: 6\nB: nedrag\nC: Rome")
     assert solo.same("New price: 935.0", "The new price is $935.00") and solo.same("Sunday", "weekday: Sunday") and solo.same("licence: mit", "License: MIT License")
     assert solo.same("pounds: 205.0", "93 kilograms are 205.03 pounds") and not solo.same("12 days", "12.4 days")
     assert solo.same("Il museo apre alle nove il venerdi.", "Il museo si apre alle 9 ogni venerdi.") and not solo.same("Il museo apre alle nove il venerdi.", "The shop closes at noon on Mondays.")
