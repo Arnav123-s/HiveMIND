@@ -40,10 +40,12 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Only a fact about the world (a version, a release date, a price, a person, a population) is read from a source, by
   the program, never from your memory. APIs are better than pages:
   https://pypi.org/pypi/NAME/json (["info"]["version"]; ["releases"][VERSION][0]["upload_time"])
-  https://huggingface.co/api/models/OWNER/NAME
+  https://huggingface.co/api/models/OWNER/NAME (["cardData"]["license"]; ["likes"]; ["downloads"]; ["tags"] holds "name:value")
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
   Use requests with timeout=30 and headers={{"User-Agent": "hive/1.0"}} (Wikipedia refuses a request without one).
   If you do not know what a source returns, first print a small part of it and look.
+- A page inside a website is reached from the site's first page (https://...), by finding there the link whose text
+  matches and following it. An inner address written from memory is usually wrong.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
 - What the program prints is what the user reads. Where the TASK says how the answer must look (a numbered list,
   labels such as A, B, C, JSON, one word, one sentence, exactly so many items), print exactly that and nothing
@@ -106,8 +108,8 @@ def alike(task, most=2, least=0.3):
         if score >= least and r.get("task") != task[:1500]:
             out.append((bool(r.get("checked")), score, r))
     return [r for _, _, r in sorted(out, key=lambda x: (x[0], x[1]), reverse=True)[:most]]
-FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing", re.I)
-LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing", re.I)
+FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
+LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
 
 
 def key(answer, task):
@@ -260,7 +262,7 @@ def member(task, n, board, guard, work, temperature):
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
-        if res["returncode"] == 0 and out and looking and "[:800]" in code:
+        if res["returncode"] == 0 and out and looking and re.search(r"\[:\d{3,4}\]", code):
             # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
             # members ended with a dump of JSON, one of them the source's own error message, as their answer)
             looking, last_error = False, None
@@ -284,7 +286,8 @@ def member(task, n, board, guard, work, temperature):
         looking = bool(LOOK.search(err or out))
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
             "\n\nWhat you expected is not there. Reply with a program that only fetches the data and prints what IS "
-            "there, with print(str(data)[:800]), so that you can see its real shape." if LOOK.search(err or out) else
+            "there, with print(list(data)[:40] if isinstance(data, dict) else type(data)) and print(str(data)[:1500]), so that "
+            "you can see its real shape (a license \"Unknown\" or None means the key you read is not there)." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn}
 

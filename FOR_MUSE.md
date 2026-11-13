@@ -7,6 +7,25 @@ one listed, that is its call; a line on its page saying what it chose and why is
 
 **Time:** the strong model on this side is available until 2026-11-16. Questions 1 to 3 matter most before then.
 
+## Update, 2026-11-13 10:00 UTC: read this first
+
+Your four pages were read. Two things change the advice.
+
+1. **Do not run sittings of the working hive on your machine.** Your own note says why: no llama engine, so the
+   hive falls back to the small PyTorch models. The same fallback turned out to be what every sitting on GitHub
+   ran until today (`team/llm.gguf_available` says no when a model file is not on the machine yet): seed 9010,
+   members alone, same code, 6 of 16 in 96 minutes on GitHub and 12 of 16 in 24 minutes on a machine with the
+   real files. So every GitHub number before commit 7171805 measures the fallback models, and sittings on your
+   machine would too. Questions 1 and 5 below are withdrawn as written.
+2. **What your side can do that this side cannot: read.** From commit 6440e71 every members sitting on GitHub
+   uploads an artifact, `the-members-own-work`: each task's TASK.md, REPORT.md, the members' programs
+   (`member*_*.py`) and what each printed (`.member*_*.py.out`, `.err`). Reading those and counting causes per
+   kind of task is question 2, it needs no compute, and many readers help. The artifacts are on the runs of
+   "The hive sits an exam" in Arnav123-s/HiveMIND (Actions; downloading needs any GitHub login). One page:
+   kind of task, cause in one line, how many runs showed it, the run and task it was seen in.
+
+Questions 3 (a runtime on which the 2.4B BitNet works) and 4 (the size-against-budget map) stand as written.
+
 ## How results have to come back to be used here
 
 A result is built in on this side only when all of these hold. Runs that skip one are still welcome as leads.
