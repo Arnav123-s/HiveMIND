@@ -1,6 +1,6 @@
 """His ideas of 2026-11-12, each against the recipe new bodies are founded with, at equal wall time.
 
-    python training/experiments/ideas.py OUT.json [--minutes 20] [--seed 0] [--only WORD ...]
+    python training/experiments/ideas.py OUT.json [--minutes 20] [--budget BLOCK_STEPS] [--seed 0] [--only WORD ...]
 
 The recipe as built in (body.NEW_BODY): the hive's own BitNet (scratch.Tiny, 192 wide, 4 blocks, rotary positions),
 rate 3e-3 reached over 200 steps and falling over the second half, the rounding eased in over the first half.
@@ -18,6 +18,10 @@ running, and is read on the 352 gate passages recipe7 and votes5 read (never tra
 - "grown from four blocks to six at half time": bigger by growing. Two blocks whose output layers are all zeros
   are added (the net reads exactly as before at that moment) and training goes on. If this holds, a body can
   start small and fast and get bigger turn by turn, without starting again.
+
+Equal minutes turned out not to be equal work on this machine: the grown net got 1607 steps in its 20 minutes where
+four blocks alone got 1605, though half its steps were through six blocks. So the arms that change the net's size
+are also run with --budget: the same number of block-steps for every arm (a step of a net of n blocks costs n).
 """
 import copy
 import json
@@ -68,7 +72,7 @@ def new_block(model):
     return b
 
 
-def run(name, how, seed, minutes, data, gate):
+def run(name, how, seed, minutes, data, gate, budget=0):
     shape = {"bit": True, "dim": T.DIM, "layers": how.get("layers", T.LAYERS), "heads": T.HEADS, "subln": False, "rotary": True}
     torch.manual_seed(seed)
     model = T.Tiny(shape=shape)
@@ -83,8 +87,9 @@ def run(name, how, seed, minutes, data, gate):
         teacher = copy.deepcopy(model) if how["jepa"] == "teacher" else None
     make = lambda: torch.optim.AdamW(list(model.parameters()) + extra, lr=3e-3, weight_decay=0.01, betas=(0.9, 0.95))  # noqa: E731
     opt, rnd, t0, steps, losses, grown = make(), random.Random(seed), time.time(), 0, [], False
+    spent = 0  # block-steps: one step of a net of n blocks costs n (the teacher's extra reading is not counted)
     while True:
-        done = (time.time() - t0) / (minutes * 60)
+        done = spent / budget if budget else (time.time() - t0) / (minutes * 60)
         if done >= 1:
             break
         if how.get("grow") and not grown and done >= 0.5:
@@ -114,19 +119,20 @@ def run(name, how, seed, minutes, data, gate):
                 for a, b in zip(teacher.parameters(), model.parameters()):
                     a.mul_(0.99).add_(b, alpha=0.01)
         steps += 1
+        spent += len(model.blocks)
     T.EASE[0] = 1.0
     model.eval()
     with torch.no_grad():
         tot = sum(F.cross_entropy(model.next_piece(gate[j:j + 32, :-1]).reshape(-1, VOCAB), gate[j:j + 32, 1:].reshape(-1)).item()
                   * len(gate[j:j + 32]) for j in range(0, len(gate), 32))
-    return {"gate": round(tot / len(gate), 4), "steps": steps, "minutes": minutes, "train_last": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 4),
+    return {"gate": round(tot / len(gate), 4), "steps": steps, "minutes": round((time.time() - t0) / 60, 1) if budget else minutes, "train_last": round(sum(losses[-100:]) / max(1, len(losses[-100:])), 4),
             "weights": sum(p.numel() for p in model.parameters())}
 
 
 def main(argv):
     out = Path(argv[0])
     opt = lambda k, d: argv[argv.index(k) + 1] if k in argv else d  # noqa: E731
-    minutes, seed = float(opt("--minutes", 20)), int(opt("--seed", 0))
+    minutes, seed, budget = float(opt("--minutes", 20)), int(opt("--seed", 0)), int(opt("--budget", 0))
     only = argv[argv.index("--only") + 1:] if "--only" in argv else []
     torch.set_num_threads(4)
     data = T.corpus(T.tokenizer())
@@ -134,10 +140,10 @@ def main(argv):
     gate = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in held[0::2][::2][:352]])
     for name, how in ARMS.items():
         got = json.loads(out.read_text()) if out.exists() else {}
-        key = f"{name}, {minutes:g} minutes, start {seed}"
+        key = f"{name}, {budget} block-steps, start {seed}" if budget else f"{name}, {minutes:g} minutes, start {seed}"
         if key in got or (only and not any(o in name for o in only)):
             continue
-        got[key] = run(name, how, seed, minutes, data, gate)
+        got[key] = run(name, how, seed, minutes, data, gate, budget)
         out.write_text(json.dumps(got, indent=1))
         print(key, got[key], flush=True)
 
