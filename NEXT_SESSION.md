@@ -30,9 +30,26 @@ Nobody has to grow them from nothing.
   the 0.43 GB packed base (`t17+<name>`). Checked with a toy edit: the member answers as trained.
 - `training/exam_hard.py`: 13 hard kinds (`--level hard`); four kinds are never practised (`HELD_OUT`).
 - `training/grow.py` + `.github/workflows/grow.yml` + `training/grow_record.py`: practice -> checked rows ->
-  train the 1.7B -> gate on fresh seeds (four arms) -> roster. **Written, not yet run end to end on GitHub.**
-- Dev seeds (read, for finding faults only): hard 7001, 7002; practice 10000001. Claims need other seeds.
-- This machine reaches quotes/books.toscrape.com and Hugging Face; GitHub release pages are not reachable from it.
+  train the 1.7B -> gate on fresh seeds (four arms) -> roster. Run 1 (id 43500614422, teachers t9,t4,t2, 6 runners x
+  16 mixed tasks) made **222 checked rows**; its training job was killed (memory). Run 2 trains from those rows
+  (`skip_practice=1`, `rows_from_run=43500614422`) with swap, short rows and gradient checkpointing, then gates.
+  **Read run 2's result first** (Actions, "The hive teaches its own members"; the record job's summary has the
+  table; `training/reports/generations.jsonl` gets the line).
+- **First baselines, hard exam, dev seed 7001, old code fbf9bf2 (before the mends below), members alone:**
+  7B coder 5 of 13 in 103 min; ternary 9B 2 of 13 in 140 min (GitHub's AVX2 runners are about half as fast as
+  this machine for it); 4B 2 of 13 in 28 min (seed 7002); 2B 0 of 13 in 30 min. So out of the box the ternary
+  members are weaker than the 7B coder; whether teaching closes the gap is what the gate measures.
+- Mends since, each read from members' programs: files a task names must be written (`solo.wanted`); labels a
+  task spells out (`form`); replies up to 1600 pieces (a module was cut off); `look(x)` built into every program
+  (JSON keys nested, or a page's links and text); data given in the task is no file; a taught member gets
+  short orders (`solo.SHORT`). Sittings with these: dispatched 2026-11-13 23:20 on seed 7001 (coder; t9; t4;
+  t4,t9,coder). Every sitting now ends its log with its numbers (read with get_job_logs, tail 60).
+- `--level mixed`: half the first exam's kinds, half hard ones (practice and the gate use it).
+- Dev seeds (read, for finding faults only): hard 7001-7003, basic 9001, practice 10000001. Claims need others.
+- This machine reaches quotes/books.toscrape.com and Hugging Face; GitHub release pages are not reachable from
+  it. Listing workflow runs through the GitHub tools returns very long text: note run ids when dispatching.
+- A workflow can be started by hand only if its file is on main: `grow.yml` on main is a placeholder (PR 27);
+  the real one is on make-it-work and replaces it when a generation has been measured.
 
 ---
 
