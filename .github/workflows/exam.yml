@@ -137,8 +137,8 @@ jobs:
       - name: One line in the record (only numbers and known names are taken from the sitting)
         run: |
           python3 training/exam_record.py sitting
-          git config user.name "hive"
-          git config user.email "hive@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/exams.jsonl
           git commit -q -m "The hive sat an exam" || exit 0
           git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true

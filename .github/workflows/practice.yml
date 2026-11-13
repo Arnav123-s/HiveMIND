@@ -7,8 +7,8 @@
 # with nothing learned (exam.yml, input empty_memory).
 name: The hive practises
 on:
-  schedule:
-    - cron: "23 15 * * *"
+  # No schedule: with the library the members did worse than with nothing learned (seeds 9002, 9003), so practice
+  # runs only when started by hand until the library is shown to help.
   workflow_dispatch:
     inputs:
       tasks:
