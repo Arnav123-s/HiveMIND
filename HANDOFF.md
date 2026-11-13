@@ -260,11 +260,11 @@ How this session reads it (its own reading, not his words):
   `bitnet` job of exam.yml: converting again from bf16 (failed for want of the runtime's own gguf package, now
   installed first) and the runtime of 2025-05-31 (its requirements did not build on the runner's Python; the
   build is now tried without them). Report: training/reports/bitnet_runtime_check_2026-11-13.txt.
-- **Jamie:** new commits are signed as GitHub's Actions bot (on main). Arnav said yes to rewriting the three old
-  commits; the force-push of main was refused by this session's permission check. The rewrite is one
-  filter-branch over main, make-it-work and claude/epic-johnson-7ene30 (author and committer of
-  hive@users.noreply.github.com to github-actions[bot], 41898282+github-actions[bot]@users.noreply.github.com),
-  verified: same trees, same messages and dates. It needs his allow rule or his own push.
+- **Jamie:** new commits are signed as GitHub's Actions bot (on main). The three old commits were rewritten on
+  GitHub at about 04:00 UTC, not from this session (its force-push of main was refused by the permission check):
+  main, make-it-work and claude/epic-johnson-7ene30 hold no commit signed hive@users.noreply.github.com any more;
+  the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
+  and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
 ### His word of 2026-11-13, about other agents (verbatim)
 
