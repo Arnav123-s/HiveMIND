@@ -134,13 +134,18 @@ def same(a, b, task=""):
         return False
     (na, wa, la), (nb, wb, lb) = parts(a, task), parts(b, task)
     inside = lambda x, y: bool(x and y) and (x <= y or y <= x)  # noqa: E731
-    if na or nb:
-        return inside(na, nb) and (not (la and lb and wa and wb) or inside(wa, wb))
+    prose = not la and not lb and min(len(a.split()), len(b.split())) >= 5
+    if (na or nb) and not prose:
+        # "205.0" and "205.03" are one answer given to different places (seed 9005: a conversion went unconfirmed)
+        near = lambda x, y: bool(x and y) and (all(any(abs(i - j) < 0.051 for j in y) for i in x)  # noqa: E731
+                                               or all(any(abs(i - j) < 0.051 for j in x) for i in y))
+        return near(na, nb) and (not (la and lb and wa and wb) or inside(wa, wb))
     if la or lb:
         if inside(wa, wb) and (la and lb or (wa if la else wb) <= (wb if la else wa)):
             return True
     full = [set(re.findall(r"\w+", x.lower())) for x in (a, b)]
-    return len(full[0] & full[1]) / max(1, len(full[0] | full[1])) >= 0.6
+    # sentences (a summary, a translation) by two members never match word for word: seed 9005 left both unconfirmed
+    return len(full[0] & full[1]) / max(1, len(full[0] | full[1])) >= (0.4 if prose else 0.6)
 
 
 TYPED = ("That is an answer typed out, not a program. Typed answers are often wrong (a word reversed by hand, a sum "

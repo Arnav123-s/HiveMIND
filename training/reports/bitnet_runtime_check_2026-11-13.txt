@@ -1,0 +1,67 @@
++ echo '######## models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf'
+######## models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf
++ timeout 900 build/bin/llama-perplexity -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -f text.txt -c 256 --chunks 6 -t 4
++ grep -iE 'estimate|pre-token'
+0.00.424.826 W load: missing pre-tokenizer type, using: 'default'
+0.15.248.283 I Final estimate: PPL = 70.2536 +/- 7.71118
++ for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."
++ timeout 300 build/bin/llama-completion -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -t 4 -n 160 --temp 0 --special -r '<|eot_id|>' -no-cnv -p 'User: What is the capital of Australia?<|eot_id|>Assistant: '
++ tail -30
+<|begin_of_text|>User: What is the capital of Australia?<|eot_id|>Assistant: The capital of Australia is Canberra. It is located in the capital of Australia.The capital of Australia is located in the capital of Australia.The capital of Australia is located in the capital of Australia.The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+
+
++ echo
+
++ for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."
++ timeout 300 build/bin/llama-completion -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -t 4 -n 160 --temp 0 --special -r '<|eot_id|>' -no-cnv -p 'User: Write a Python program that prints every prime below 30.<|eot_id|>Assistant: '
++ tail -30
+<|begin_of_text|>User: Write a Python program that prints every prime below 30.<|eot_id|>Assistant: Sure! Below 30 is a prime number.Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints
+
++ echo
+
++ echo '######## models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf'
+######## models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf
++ timeout 900 build/bin/llama-perplexity -m models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf -f text.txt -c 256 --chunks 6 -t 4
++ grep -iE 'estimate|pre-token'
++ true
++ for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."
++ timeout 300 build/bin/llama-completion -m models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf -t 4 -n 160 --temp 0 --special -r '<|eot_id|>' -no-cnv -p 'User: What is the capital of Australia?<|eot_id|>Assistant: '
++ tail -30
++ echo
+
++ for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."
++ tail -30
++ timeout 300 build/bin/llama-completion -m models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf -t 4 -n 160 --temp 0 --special -r '<|eot_id|>' -no-cnv -p 'User: Write a Python program that prints every prime below 30.<|eot_id|>Assistant: '
++ echo
+
