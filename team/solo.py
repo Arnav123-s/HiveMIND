@@ -115,30 +115,32 @@ def key(answer, task):
     return numbers(answer, task)
 
 
-def values(answer):
-    """Where every line of an answer is "name: value", the values' words and numbers; else None."""
-    out = []
-    for line in [x for x in answer.splitlines() if x.strip()]:
-        if ":" not in line:
-            return None
-        out += re.findall(r"[\w.\-]+", line.rsplit(":", 1)[1].lower())
-    return sorted(out) or None
+def parts(answer, task=""):
+    """An answer as what agreement is read from: its numbers (without the task's own), the words of its values
+    (of every line's part after the colon where all lines are "name: value", else of the whole), and whether it
+    was such lines."""
+    lines = [x for x in answer.splitlines() if x.strip()]
+    labelled = bool(lines) and all(":" in x for x in lines)
+    text = " ".join(x.split(":", 1)[1] if labelled else x for x in lines).lower()
+    return {round(x, 2) for x in key(answer, task)}, {w for w in re.findall(r"[^\W\d_]+", text) if len(w) > 1}, labelled
 
 
 def same(a, b, task=""):
-    """Do two members' answers agree? Where both give "name: value" lines, the same values ("B: nedrag" against
-    "B: derang" passed as agreement while only the numbers were compared). Else the same numbers; or, where
-    neither holds a number (a translation, a name), mostly the same words."""
+    """Do two members' answers agree? The numbers of one are all among the other's ("935.0" and "$935.00, down from
+    1100" agree; seed 9005: seven tasks went unconfirmed because values were compared as written), and where both
+    give "name: value" lines the words of one are all among the other's ("B: nedrag" against "B: derang" passed
+    while only numbers were compared). With no numbers: the value words likewise, or mostly the same words."""
     if not a.strip() or not b.strip():
         return False
-    va, vb = values(a), values(b)
-    if va is not None and vb is not None:
-        return va == vb
-    ka, kb = key(a, task), key(b, task)
-    if ka or kb:
-        return ka == kb
-    wa, wb = set(re.findall(r"\w+", a.lower())), set(re.findall(r"\w+", b.lower()))
-    return len(wa & wb) / max(1, len(wa | wb)) >= 0.6
+    (na, wa, la), (nb, wb, lb) = parts(a, task), parts(b, task)
+    inside = lambda x, y: bool(x and y) and (x <= y or y <= x)  # noqa: E731
+    if na or nb:
+        return inside(na, nb) and (not (la and lb and wa and wb) or inside(wa, wb))
+    if la or lb:
+        if inside(wa, wb) and (la and lb or (wa if la else wb) <= (wb if la else wa)):
+            return True
+    full = [set(re.findall(r"\w+", x.lower())) for x in (a, b)]
+    return len(full[0] & full[1]) / max(1, len(full[0] | full[1])) >= 0.6
 
 
 TYPED = ("That is an answer typed out, not a program. Typed answers are often wrong (a word reversed by hand, a sum "
@@ -194,7 +196,9 @@ def member(task, n, board, guard, work, temperature):
             # Seen on "multiply 13 by 5; write 'garden' backwards; name the capital": every member typed the three
             # answers out ("B: dnarg"), the text was run as a program, failed the same way twice, and the member stopped.
             typed += 1
-            if typed > 2:
+            if typed > 1:  # asked for a program and it typed again: what it typed is its answer (a summary, a translation)
+                if good is None:
+                    good = {"answer": reply.strip()[-3000:], "program": ""}
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:600]}, {"role": "user", "content": TYPED}]
             continue

@@ -1737,7 +1737,7 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
 
     def hive(replies, name, members=2):
         left = list(replies)
-        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" or r.startswith("A: ") else f"```python\n{r}\n```")(left.pop(0)))
+        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" or r.startswith(("A: ", "Il ")) else f"```python\n{r}\n```")(left.pop(0)))
         return solo.run(PRIMES_TASK, tmp_path / name, "never", members=members), left
     out, left = hive(["DONE", broken, right, "DONE", again, "DONE"], "a")                     # DONE before anything ran is not taken; an error is fixed
     assert out["agreed"] and out["tries"] == 2 and not left and "109" in out["report"].split("\n## ")[0]
@@ -1761,7 +1761,12 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
         assert out["agreed"] and not left and "closed for repairs" in out["report"] and "DONE" not in out["report"]
     typed, prog = "A: 65\nB: dnarg\nC: Wellington", "print('A:', 13 * 5)\nprint('B:', 'garden'[::-1])\nprint('C: Wellington')"
     out, left = hive([typed, prog, "DONE", typed, typed, prog, "DONE"], "h")                   # an answer typed out is not run; a program is asked for
-    assert out["agreed"] and out["tries"] == 2 and not left and "nedrag" in out["report"] and "dnarg" not in out["report"]
+    assert out["agreed"] and out["tries"] == 3 and not left and "nedrag" in out["report"].split("\n## ")[0] and "dnarg" not in out["report"].split("\n## ")[0]
+    line = "Il museo apre alle nove il venerdi."
+    out, left = hive([line, line, line.replace("il venerdi", "di venerdi"), line.replace("il venerdi", "di venerdi")], "i")  # typed again after a program was asked for: its answer
+    assert out["agreed"] and out["tries"] == 2 and not left and "museo" in out["report"]
+    assert solo.same("New price: 935.0", "The new price is $935.00") and solo.same("Sunday", "weekday: Sunday") and solo.same("licence: mit", "License: MIT License")
+    assert not solo.same("weekday: Sunday", "weekday: Monday") and not solo.same("pounds: 205.0", "pounds: 204.6") and solo.same("205.0 pounds", "pounds: 205.0")
     assert not solo.same("A: 65\nB: nedrag\nC: Wellington", "A: 65\nB: derang\nC: Wellington")  # the numbers agree, the answers do not
     assert solo.same("Primes: [19, 37]\nCount: 2", "primes below 40: 19, 37\nhow many: 2")
     assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
