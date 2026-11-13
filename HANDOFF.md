@@ -266,6 +266,16 @@ How this session reads it (its own reading, not his words):
   the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
   and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
+### His word of 2026-11-13, about the division of work (verbatim)
+
+"no need to test all the ideas muse will do it it self , muses side is learnign frm ur side and follow ur foot
+steps and trying more on its own since it can spane a lot of agents and huge teams if u point it the right way adn
+gudide it thigns will speed up much more and we will wned up will somthing higly more capable what do u think"
+
+My reading: breadth (many arms, many seeds, many sittings) is Muse's; this side points, checks once what comes
+back, and builds in what holds. The pointers and the form results must come back in are in FOR_MUSE.md. This side
+no longer runs wide sweeps of ideas itself.
+
 ### 2026-11-13, 04:30 UTC: the other agent's branch read again (hivemind_muse at 980c0b5), as ideas
 
 - Its half-size control agrees with votes5 here: the five-level win was the steps; gradient training at half size
