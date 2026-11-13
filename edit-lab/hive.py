@@ -10,6 +10,7 @@ answer + provenance out.
     python3 hive.py gap    'the model fails on inputs it never saw'
     python3 hive.py bug    --file buggy.py
     python3 hive.py jobs            # what serves, and its evidence
+    python3 hive.py status          # health, scores, growth (read-only)
 
 Everything goes through factory.serve.ServingHive — the audited
 registry is the only book, and the load fails closed if any
@@ -85,7 +86,25 @@ def main() -> int:
                            help="name a substrate instead of the "
                                 "serving default")
     sub.add_parser("jobs", help="list what serves, with evidence")
+    sub.add_parser("status", help="hive health, scores and growth "
+                                  "state, read from the factory's "
+                                  "records (read-only)")
     args = ap.parse_args()
+
+    if args.cmd == "status":
+        # Read-only product surface (factory/status.py): reports
+        # the serve-time gate's verdict instead of dying on it,
+        # and fails closed with a clear message when a required
+        # record is missing.
+        from factory.status import (StatusUnavailable, collect_status,
+                                    render)
+        try:
+            st = collect_status(LAB)
+        except StatusUnavailable as exc:
+            print(f"STATUS UNAVAILABLE: {exc}")
+            return 3
+        print(render(st))
+        return 0 if st["serving"]["healthy"] else 2
 
     try:
         hive = ServingHive.load()

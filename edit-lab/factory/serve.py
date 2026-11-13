@@ -36,11 +36,26 @@ Assembly 2026-11-10 (Arnav's ruling — proven fixes switched ON):
     registry's serving artifact, whatever its substrate; naming
     a substrate resolves: registered substrate members first,
     then the serving artifact, then fallbacks.
+
+Learned say (2026-11-12, Fable-study Build 2): when the battery
+has adopted a learned say (factory/learned_say.json, status
+"adopted" — run state, deliberately outside this registry), the
+waking-dream layer is built with the say's merged composer config
+(per-seat standings + fitted thresholds). Any problem reading the
+say state serves the incumbent fixed composition instead.
+
+Decision log (2026-11-12, Fable-study Build 3): every serve()
+call appends one JSON line to factory/serve_log.jsonl (override
+with FACTORY_SERVE_LOG) — the raw material for spawn mining.
+Logging never breaks serving: a failed append is swallowed.
 """
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -53,7 +68,41 @@ from swarm import factory as F  # noqa: E402
 
 from . import artifacts as artifacts_mod  # noqa: E402
 from . import audit as audit_mod  # noqa: E402
+from . import learned_say as say_mod  # noqa: E402
 from .registry import REGISTRY_PATH, load_registry  # noqa: E402
+
+SERVE_LOG_PATH = Path(__file__).parent / "serve_log.jsonl"
+
+
+def _append_serve_log(task: Dict[str, Any], result: Dict[str, Any]) -> None:
+    """Append one decision-log line (Build 3's mining source).
+    Swallows every failure — the log serves the hive, never the
+    other way round."""
+    try:
+        raw = task.get("text", task.get("code", "")) or ""
+        prov = result.get("provenance") or {}
+        entry = {
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "kind": task.get("kind"),
+            "job": task.get("job"),
+            "substrate": task.get("substrate"),
+            "input_sha": hashlib.sha256(
+                raw.encode("utf-8", "ignore")).hexdigest()[:16],
+            "input_head": raw[:80],
+            "ok": result.get("ok"),
+            "output": (str(result.get("output"))[:60]
+                       if result.get("output") is not None else None),
+            "gap": result.get("gap"),
+            "artifact": prov.get("artifact") or prov.get("composition"),
+            "mechanism": prov.get("mechanism"),
+            "verification_fired": prov.get("verification_fired"),
+            "composer_verdict": prov.get("composer_verdict"),
+        }
+        path = Path(os.environ.get("FACTORY_SERVE_LOG", SERVE_LOG_PATH))
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception:  # noqa: BLE001
+        pass
 
 
 class ServingRefused(Exception):
@@ -69,6 +118,7 @@ class ServingHive:
         self._models: Dict[str, Any] = {}
         self._composer = None
         self._waking = None
+        self._say: Optional[Dict[str, Any]] = None
 
     # ------------------------------------------------------------ load
     @classmethod
@@ -163,12 +213,25 @@ class ServingHive:
             if wd_dir not in sys.path:
                 sys.path.insert(0, wd_dir)
             import waking_dream as wd_mod
+            # Learned say (Build 2): an adopted say merges into the
+            # composer config the layer runs with; anything else
+            # (no state, shadow, unreadable) serves the incumbent
+            # fixed composition.
+            base_cfg = C.load_config()
+            self._say = say_mod.load_serving_say()
+            cfg = say_mod.merged_config(base_cfg, self._say) \
+                if self._say else base_cfg
             self._waking = wd_mod.WakingDream(
-                registry=reg, config=C.load_config())
+                registry=reg, config=cfg)
         return self._waking
 
     # ------------------------------------------------------------ serve
     def serve(self, task: Dict[str, Any]) -> Dict[str, Any]:
+        result = self._serve_impl(task)
+        _append_serve_log(task, result)
+        return result
+
+    def _serve_impl(self, task: Dict[str, Any]) -> Dict[str, Any]:
         kind = task.get("kind")
         if kind == "classify":
             job = task.get("job", "")
@@ -213,6 +276,11 @@ class ServingHive:
                     "verified_cls": ans["verified_cls"],
                     "mechanism": ans["mechanism"],
                     "composer_verdict": ans["composer"],
+                    "say": ({"status": "adopted",
+                             "sharpness_beta":
+                                 self._say.get("sharpness_beta"),
+                             "fitted_on": self._say.get("fitted_on")}
+                            if self._say else {"status": "none"}),
                     "sealed_layer_acc": layer["sealed_acc"],
                     "sealed_raw_composition_acc": base.get("acc"),
                     "bar": comp["evidence"].get("bar")}}

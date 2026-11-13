@@ -101,7 +101,13 @@ class TestRegistryAndServe(unittest.TestCase):
         cls.reg = registry_mod.load_registry()
 
     def test_book_shape(self):
-        self.assertEqual(len(self.reg["specialists"]), 5)
+        # niche-expansion wave 1 (2026-11-13): sec-code-model and
+        # sql-statement-model adopted through the dual held gate +
+        # battery + full audit (factory/niche_expansion/records/);
+        # the book grows 5 -> 7 specialist jobs.
+        self.assertEqual(len(self.reg["specialists"]), 7)
+        for job in ("sec-code-model", "sql-statement-model"):
+            self.assertIn(job, self.reg["specialists"])
         comp = self.reg["compositions"]["bug-pattern-composed"]
         self.assertGreaterEqual(len(comp["members"]), 10)
         base = comp["evidence"]["fresh_sealed_baseline"]

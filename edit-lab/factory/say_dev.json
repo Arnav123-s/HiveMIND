@@ -1,0 +1,1122 @@
+{
+ "name": "learned-say dev pool (fitting only, never a judge)",
+ "built_by": "factory/say_dev.py (Muse's work, Muse's side)",
+ "seed": 20261112,
+ "n": 216,
+ "per_class": {
+  "missing-return": 21,
+  "off-by-one": 55,
+  "swapped-operands": 16,
+  "wrong-operator": 49,
+  "clean": 70,
+  "mutable-default": 5
+ },
+ "per_source": {
+  "fresh": {
+   "in": 49,
+   "kept": 29
+  },
+  "held": {
+   "in": 29,
+   "kept": 20
+  },
+  "screen": {
+   "in": 172,
+   "kept": 154
+  },
+  "swarmdream": {
+   "in": 37,
+   "kept": 37
+  }
+ },
+ "decontamination": {
+  "references": {
+   "sealed_v2": 36,
+   "phase3_train": 48,
+   "all_corpora_for_fresh": 998
+  },
+  "dropped": 47
+ },
+ "items": [
+  {
+   "text": "def is_pal(s):\n    r = s == s[::-1]",
+   "label": "missing-return",
+   "source": "fresh"
+  },
+  {
+   "text": "def count_char(s, ch):\n    n = 0\n    for c in s[:-1]:\n        if c == ch:\n            n += 1\n    return n",
+   "label": "off-by-one",
+   "source": "fresh"
+  },
+  {
+   "text": "def second_largest(xs):\n    s = sorted(set(xs))\n    r = s[-2]",
+   "label": "missing-return",
+   "source": "fresh"
+  },
+  {
+   "text": "def rotate_left(xs):\n    return xs[:1] + xs[1:]",
+   "label": "swapped-operands",
+   "source": "fresh"
+  },
+  {
+   "text": "def count_pairs(xs):\n    n = 0\n    for i in range(len(xs) - 1):\n        if xs[i] != xs[i + 1]:\n            n += 1\n    return n",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def avg_evens(xs):\n    vals = [x for x in xs if x % 2 == 1]\n    return sum(vals) / len(vals)",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def count_pairs(xs):\n    n = 0\n    for i in range(len(xs) - 1):\n        if xs[i] == xs[i + 1]:\n            n += 1\n    return n",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def merge_counts(a, b):\n    out = dict(a)\n    for k in b:\n        out[k] = out.get(k, 0) + b[k]\n    result = out",
+   "label": "missing-return",
+   "source": "fresh"
+  },
+  {
+   "text": "def avg_evens(xs):\n    vals = [x for x in xs if x % 2 == 0]\n    return sum(vals) / len(vals)",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def second_largest(xs):\n    s = sorted(set(xs))\n    return s[-1]",
+   "label": "off-by-one",
+   "source": "fresh"
+  },
+  {
+   "text": "def rotate_left(xs):\n    return xs[1:] + xs[:1]",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def first_over(xs, target):\n    t = 0\n    for i, x in enumerate(xs):\n        t += x\n        if t < target:\n            return i\n    return -1",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def first_over(xs, target):\n    t = 0\n    for i, x in enumerate(xs):\n        t += x\n        if t > target:\n            found = i\n    return -1",
+   "label": "missing-return",
+   "source": "fresh"
+  },
+  {
+   "text": "def repeat_name(name, n):\n    out = []\n    for i in range(n):\n        out.append(name)\n    print(out)",
+   "label": "missing-return",
+   "source": "fresh"
+  },
+  {
+   "text": "def is_pal(s):\n    return s != s[::-1]",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def merge_counts(a, b):\n    out = dict(a)\n    for k in b:\n        out[k] = out.get(k, 0) + b[k]\n    return out",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def second_largest(xs):\n    s = sorted(set(xs))\n    return s[-2]",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def avg_evens(xs):\n    vals = [x for x in xs[1:] if x % 2 == 0]\n    return sum(vals) / len(vals)",
+   "label": "off-by-one",
+   "source": "fresh"
+  },
+  {
+   "text": "def count_pairs(xs):\n    n = 0\n    for i in range(len(xs) - 2):\n        if xs[i] == xs[i + 1]:\n            n += 1\n    return n",
+   "label": "off-by-one",
+   "source": "fresh"
+  },
+  {
+   "text": "def scale_all(xs, k):\n    return [x / k for x in xs]",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def is_pal(s):\n    return s == s[::-1]",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def collect_positive(xs, acc=[]):\n    for x in xs:\n        if x > 0:\n            acc.append(x)\n    return acc",
+   "label": "mutable-default",
+   "source": "fresh"
+  },
+  {
+   "text": "def sum_step_down(n):\n    t = 0\n    for i in range(n, 0, -1):\n        t -= i\n    return t",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def merge_counts(a, b):\n    out = dict(a)\n    for k in b:\n        out[k] = out.get(k, 0) - b[k]\n    return out",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def first_over(xs, target):\n    t = 0\n    for i, x in enumerate(xs):\n        t += x\n        if t > target:\n            return i\n    return -1",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def rotate_left(xs):\n    return xs[2:] + xs[:2]",
+   "label": "off-by-one",
+   "source": "fresh"
+  },
+  {
+   "text": "def collect_positive(xs, acc=[]):\n    acc = list(acc)\n    for x in xs:\n        if x < 0:\n            acc.append(x)\n    return acc",
+   "label": "wrong-operator",
+   "source": "fresh"
+  },
+  {
+   "text": "def first_over(xs, target):\n    t = 0\n    for i, x in enumerate(xs[:-1]):\n        t += x\n        if t > target:\n            return i\n    return -1",
+   "label": "off-by-one",
+   "source": "fresh"
+  },
+  {
+   "text": "def collect_positive(xs, acc=[]):\n    acc = list(acc)\n    for x in xs:\n        if x > 0:\n            acc.append(x)\n    return acc",
+   "label": "clean",
+   "source": "fresh"
+  },
+  {
+   "text": "def evens_upto(n):\n    return [i for i in range(0, n, 2)]",
+   "label": "off-by-one",
+   "source": "held"
+  },
+  {
+   "text": "def first_two(xs):\n    pair = xs[0], xs[1]",
+   "label": "missing-return",
+   "source": "held"
+  },
+  {
+   "text": "def mods(a, b):\n    return [x % y for x, y in zip(a, b)]",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def sum_last(xs, k):\n    s = 0\n    for i in range(len(xs) - k, len(xs) - 1):\n        s += xs[i]\n    return s",
+   "label": "off-by-one",
+   "source": "held"
+  },
+  {
+   "text": "def first_two(xs):\n    return xs[1], xs[2]",
+   "label": "off-by-one",
+   "source": "held"
+  },
+  {
+   "text": "def shout_all(words, out=None):\n    out = list(out) if out else []\n    for w in words:\n        out.append(w.upper())",
+   "label": "missing-return",
+   "source": "held"
+  },
+  {
+   "text": "def shout_all(words, out=None):\n    out = list(out) if out else []\n    for w in words:\n        out.append(w.upper())\n    return out",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def greet(name, out=[]):\n    out = list(out)\n    out.append('hi ' + name)\n    return out",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def minutes(hours, mins):\n    return hours * 60 - mins",
+   "label": "wrong-operator",
+   "source": "held"
+  },
+  {
+   "text": "def evens_upto(n):\n    res = [i for i in range(0, n + 1, 2)]",
+   "label": "missing-return",
+   "source": "held"
+  },
+  {
+   "text": "def mods(a, b):\n    return [y % x for x, y in zip(a, b)]",
+   "label": "swapped-operands",
+   "source": "held"
+  },
+  {
+   "text": "def minutes(hours, mins):\n    return mins * 60 + hours",
+   "label": "swapped-operands",
+   "source": "held"
+  },
+  {
+   "text": "def count_vowels(s):\n    n = 0\n    for ch in s:\n        if ch in 'aeiou':\n            n -= 1\n    return n",
+   "label": "wrong-operator",
+   "source": "held"
+  },
+  {
+   "text": "def minutes(hours, mins):\n    return hours * 60 + mins",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def shout_all(words, out=[]):\n    for w in words:\n        out.append(w.upper())\n    return out",
+   "label": "mutable-default",
+   "source": "held"
+  },
+  {
+   "text": "def count_vowels(s):\n    n = 0\n    for ch in s:\n        if ch in 'aeiou':\n            n += 1\n    print(n)",
+   "label": "missing-return",
+   "source": "held"
+  },
+  {
+   "text": "def first_two(xs):\n    return xs[0], xs[1]",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def evens_upto(n):\n    return [i for i in range(0, n + 1, 2)]",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def count_vowels(s):\n    n = 0\n    for ch in s:\n        if ch in 'aeiou':\n            n += 1\n    return n",
+   "label": "clean",
+   "source": "held"
+  },
+  {
+   "text": "def greet(name, out=[]):\n    out.append('hi ' + name)\n    return out",
+   "label": "mutable-default",
+   "source": "held"
+  },
+  {
+   "text": "def mesh(ys):\n    return ys[-1] * 2",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    return beta [-1 ]*2 ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(ys):\n    return ys[-2] * 2",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    return beta [-2 ]*2 ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def weigh(a, k):\n    t = a - k\n    return t * k",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (alpha ,beta ):\n    gamma =alpha -beta \n    return gamma *beta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def weigh(a, k):\n    t = k - a\n    return t * k",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (alpha ,beta ):\n    gamma =beta -alpha \n    return gamma *beta ",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def weigh(a, k):\n    t = a - k\n    return t + k",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (alpha ,beta ):\n    gamma =alpha -beta \n    return gamma +beta ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(m, k):\n    t = m - k\n    return t * k",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ,alpha ):\n    delta =beta -alpha \n    return delta *alpha ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(m, k):\n    t = k - m\n    return t * k",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ,alpha ):\n    delta =alpha -beta \n    return delta *alpha ",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(m, k):\n    t = m - k\n    return t + k",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ,alpha ):\n    delta =beta -alpha \n    return delta +alpha ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(xs):\n    return xs[0] - xs[len(xs)]",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    return beta [0 ]-beta [len (beta )]",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(xs):\n    return xs[0] + xs[len(xs) - 1]",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    return beta [0 ]+beta [len (beta )-1 ]",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(a, b):\n    t = a - b\n    return t * b",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (alpha ,beta ):\n    delta =alpha -beta \n    return delta *beta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(a, b):\n    t = b - a\n    return t * b",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (alpha ,beta ):\n    delta =beta -alpha \n    return delta *beta ",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(a, b):\n    t = a - b\n    return t + b",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (alpha ,beta ):\n    delta =alpha -beta \n    return delta +beta ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(pool):\n    return pool[0] - pool[len(pool)]",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    return alpha [0 ]-alpha [len (alpha )]",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(pool):\n    return pool[0] + pool[len(pool) - 1]",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    return alpha [0 ]+alpha [len (alpha )-1 ]",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def trim(nums):\n    return nums[-1] * 2",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    return alpha [-1 ]*2 ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def trim(nums):\n    return nums[-2] * 2",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    return alpha [-2 ]*2 ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(xs):\n    return xs[-1] * 2",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(xs):\n    return xs[-2] * 2",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(xs):\n    return xs[0] - xs[len(xs)]",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(xs):\n    return xs[0] + xs[len(xs) - 1]",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(rows):\n    return rows[-1] * 2",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(rows):\n    return rows[-2] * 2",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(xs):\n    return xs[0] - xs[len(xs)]",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(xs):\n    return xs[0] + xs[len(xs) - 1]",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(k, w):\n    t = k - w\n    return t * w",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ,delta ):\n    gamma =alpha -delta \n    return gamma *delta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(k, w):\n    t = w - k\n    return t * w",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ,delta ):\n    gamma =delta -alpha \n    return gamma *delta ",
+   "label": "swapped-operands",
+   "source": "screen"
+  },
+  {
+   "text": "def mesh(k, w):\n    t = k - w\n    return t + w",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ,delta ):\n    gamma =alpha -delta \n    return gamma +delta ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(pool):\n    s = 0\n    for i, x in enumerate(pool):\n        s += x * i\n    return s",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ):\n    delta =0 \n    for alpha ,omega in enumerate (beta ):\n        delta +=omega *alpha \n    return delta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(pool):\n    s = 0\n    for i, x in enumerate(pool, 1):\n        s += x * i\n    return s",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ):\n    delta =0 \n    for alpha ,omega in enumerate (beta ,1 ):\n        delta +=omega *alpha \n    return delta ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(ys):\n    return sum(ys[1:])",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    return sum (beta [1 :])",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(ys):\n    return sum(ys[2:])",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    return sum (beta [2 :])",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def gather_in(ys):\n    t = sum(ys[1:])",
+   "label": "missing-return",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (gamma ):\n    beta =sum (gamma [1 :])",
+   "label": "missing-return",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(nums):\n    return sum(nums[1:])",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(nums):\n    return sum(nums[2:])",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(nums):\n    t = sum(nums[1:])",
+   "label": "missing-return",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (beta ):\n    gamma =sum (beta [1 :])",
+   "label": "missing-return",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(nums):\n    s = 0\n    for i, x in enumerate(nums):\n        s += x * i\n    return s",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (beta ):\n    gamma =0 \n    for alpha ,omega in enumerate (beta ):\n        gamma +=omega *alpha \n    return gamma ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(nums):\n    s = 0\n    for i, x in enumerate(nums, 1):\n        s += x * i\n    return s",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (beta ):\n    gamma =0 \n    for alpha ,omega in enumerate (beta ,1 ):\n        gamma +=omega *alpha \n    return gamma ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(ys):\n    s = 0\n    for i, x in enumerate(ys):\n        s += x * i\n    return s",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (omega ):\n    gamma =0 \n    for beta ,delta in enumerate (omega ):\n        gamma +=delta *beta \n    return gamma ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(ys):\n    s = 0\n    for i, x in enumerate(ys, 1):\n        s += x * i\n    return s",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (omega ):\n    gamma =0 \n    for beta ,delta in enumerate (omega ,1 ):\n        gamma +=delta *beta \n    return gamma ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(nums):\n    s = 0\n    for i, x in enumerate(nums):\n        s += x * i\n    return s",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (gamma ):\n    delta =0 \n    for beta ,omega in enumerate (gamma ):\n        delta +=omega *beta \n    return delta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(nums):\n    s = 0\n    for i, x in enumerate(nums, 1):\n        s += x * i\n    return s",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (gamma ):\n    delta =0 \n    for beta ,omega in enumerate (gamma ,1 ):\n        delta +=omega *beta \n    return delta ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(items):\n    s = 0\n    for i, x in enumerate(items):\n        s += x * i\n    return s",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(items):\n    s = 0\n    for i, x in enumerate(items, 1):\n        s += x * i\n    return s",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(ys):\n    return sum(ys[1:])",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(ys):\n    return sum(ys[2:])",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(ys):\n    t = sum(ys[1:])",
+   "label": "missing-return",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(vals):\n    return sum(vals[1:])",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(vals):\n    return sum(vals[2:])",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(vals):\n    t = sum(vals[1:])",
+   "label": "missing-return",
+   "source": "screen"
+  },
+  {
+   "text": "def trim(ys):\n    seen = {}\n    for x in ys:\n        seen[x] = seen.get(x, 0) + 1\n    return seen",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (delta ):\n    alpha ={}\n    for gamma in delta :\n        alpha [gamma ]=alpha .get (gamma ,0 )+1 \n    return alpha ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def trim(ys):\n    seen = {}\n    for x in ys:\n        seen[x] = seen.get(x, 0) - 1\n    return seen",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (delta ):\n    alpha ={}\n    for gamma in delta :\n        alpha [gamma ]=alpha .get (gamma ,0 )-1 \n    return alpha ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def trim(ys):\n    seen = {}\n    for x in ys:\n        seen[x] = seen.get(x, 1) + 1\n    return seen",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (delta ):\n    alpha ={}\n    for gamma in delta :\n        alpha [gamma ]=alpha .get (gamma ,1 )+1 \n    return alpha ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def shift(pool, v):\n    i = 0\n    while i < len(pool):\n        if pool[i] == v:\n            break\n        i += 1\n    return i",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ,delta ):\n    alpha =0 \n    while alpha <len (beta ):\n        if beta [alpha ]==delta :\n            break \n        alpha +=1 \n    return alpha ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def shift(pool, v):\n    i = 0\n    while i < len(pool) - 1:\n        if pool[i] == v:\n            break\n        i += 1\n    return i",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ,delta ):\n    alpha =0 \n    while alpha <len (beta )-1 :\n        if beta [alpha ]==delta :\n            break \n        alpha +=1 \n    return alpha ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def shift(pool, v):\n    i = 0\n    while i < len(pool):\n        if pool[i] != v:\n            break\n        i += 1\n    return i",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (beta ,delta ):\n    alpha =0 \n    while alpha <len (beta ):\n        if beta [alpha ]!=delta :\n            break \n        alpha +=1 \n    return alpha ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(ys, v):\n    i = 0\n    while i < len(ys):\n        if ys[i] == v:\n            break\n        i += 1\n    return i",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (delta ,gamma ):\n    beta =0 \n    while beta <len (delta ):\n        if delta [beta ]==gamma :\n            break \n        beta +=1 \n    return beta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(ys, v):\n    i = 0\n    while i < len(ys) - 1:\n        if ys[i] == v:\n            break\n        i += 1\n    return i",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (delta ,gamma ):\n    beta =0 \n    while beta <len (delta )-1 :\n        if delta [beta ]==gamma :\n            break \n        beta +=1 \n    return beta ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def fold(ys, v):\n    i = 0\n    while i < len(ys):\n        if ys[i] != v:\n            break\n        i += 1\n    return i",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (delta ,gamma ):\n    beta =0 \n    while beta <len (delta ):\n        if delta [beta ]!=gamma :\n            break \n        beta +=1 \n    return beta ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(rows):\n    seen = {}\n    for x in rows:\n        seen[x] = seen.get(x, 0) + 1\n    return seen",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    gamma ={}\n    for delta in alpha :\n        gamma [delta ]=gamma .get (delta ,0 )+1 \n    return gamma ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(rows):\n    seen = {}\n    for x in rows:\n        seen[x] = seen.get(x, 0) - 1\n    return seen",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    gamma ={}\n    for delta in alpha :\n        gamma [delta ]=gamma .get (delta ,0 )-1 \n    return gamma ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(rows):\n    seen = {}\n    for x in rows:\n        seen[x] = seen.get(x, 1) + 1\n    return seen",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def beta (alpha ):\n    gamma ={}\n    for delta in alpha :\n        gamma [delta ]=gamma .get (delta ,1 )+1 \n    return gamma ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(rows, k):\n    i = 0\n    while i < len(rows):\n        if rows[i] == k:\n            break\n        i += 1\n    return i",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (gamma ,beta ):\n    alpha =0 \n    while alpha <len (gamma ):\n        if gamma [alpha ]==beta :\n            break \n        alpha +=1 \n    return alpha ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(rows, k):\n    i = 0\n    while i < len(rows) - 1:\n        if rows[i] == k:\n            break\n        i += 1\n    return i",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (gamma ,beta ):\n    alpha =0 \n    while alpha <len (gamma )-1 :\n        if gamma [alpha ]==beta :\n            break \n        alpha +=1 \n    return alpha ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def run_through(rows, k):\n    i = 0\n    while i < len(rows):\n        if rows[i] != k:\n            break\n        i += 1\n    return i",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def delta (gamma ,beta ):\n    alpha =0 \n    while alpha <len (gamma ):\n        if gamma [alpha ]!=beta :\n            break \n        alpha +=1 \n    return alpha ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(pool, p):\n    i = 0\n    while i < len(pool):\n        if pool[i] == p:\n            break\n        i += 1\n    return i",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(pool, p):\n    i = 0\n    while i < len(pool) - 1:\n        if pool[i] == p:\n            break\n        i += 1\n    return i",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def blend(pool, p):\n    i = 0\n    while i < len(pool):\n        if pool[i] != p:\n            break\n        i += 1\n    return i",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(items):\n    seen = {}\n    for x in items:\n        seen[x] = seen.get(x, 0) + 1\n    return seen",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (alpha ):\n    beta ={}\n    for delta in alpha :\n        beta [delta ]=beta .get (delta ,0 )+1 \n    return beta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(items):\n    seen = {}\n    for x in items:\n        seen[x] = seen.get(x, 0) - 1\n    return seen",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (alpha ):\n    beta ={}\n    for delta in alpha :\n        beta [delta ]=beta .get (delta ,0 )-1 \n    return beta ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def tally_up(items):\n    seen = {}\n    for x in items:\n        seen[x] = seen.get(x, 1) + 1\n    return seen",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def gamma (alpha ):\n    beta ={}\n    for delta in alpha :\n        beta [delta ]=beta .get (delta ,1 )+1 \n    return beta ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def shift(ys):\n    seen = {}\n    for x in ys:\n        seen[x] = seen.get(x, 0) + 1\n    return seen",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def shift(ys):\n    seen = {}\n    for x in ys:\n        seen[x] = seen.get(x, 0) - 1\n    return seen",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def shift(ys):\n    seen = {}\n    for x in ys:\n        seen[x] = seen.get(x, 1) + 1\n    return seen",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(vals):\n    seen = {}\n    for x in vals:\n        seen[x] = seen.get(x, 0) + 1\n    return seen",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (gamma ):\n    beta ={}\n    for delta in gamma :\n        beta [delta ]=beta .get (delta ,0 )+1 \n    return beta ",
+   "label": "clean",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(vals):\n    seen = {}\n    for x in vals:\n        seen[x] = seen.get(x, 0) - 1\n    return seen",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (gamma ):\n    beta ={}\n    for delta in gamma :\n        beta [delta ]=beta .get (delta ,0 )-1 \n    return beta ",
+   "label": "wrong-operator",
+   "source": "screen"
+  },
+  {
+   "text": "def pick(vals):\n    seen = {}\n    for x in vals:\n        seen[x] = seen.get(x, 1) + 1\n    return seen",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def alpha (gamma ):\n    beta ={}\n    for delta in gamma :\n        beta [delta ]=beta .get (delta ,1 )+1 \n    return beta ",
+   "label": "off-by-one",
+   "source": "screen"
+  },
+  {
+   "text": "def add_tag(tag, bag={}):\n    bag = dict(bag)\n    bag[tag] = True\n    result = bag",
+   "label": "missing-return",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def power_mod(a, b, m):\n    return (a ** b) % m",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_if(xs, v):\n    n = 0\n    i = 0\n    while i < len(xs):\n        if xs[i] == v:\n            n += 1\n        i += 1\n    print(n)",
+   "label": "missing-return",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_down(n):\n    c = 0\n    i = n\n    while i > 0:\n        c += 1\n        i -= 1\n    print(c)",
+   "label": "missing-return",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def power_mod(a, b, m):\n    return (a ** b) - m",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def running_min(xs):\n    m = xs[0]\n    i = 1\n    while i < len(xs):\n        if xs[i] < m:\n            m = xs[i]\n        i += 1",
+   "label": "missing-return",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def add_tag(tag, bag={}):\n    bag[tag] = True\n    return bag",
+   "label": "mutable-default",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def safe_div(a, b):\n    if b == 0:\n        return 0\n    return a * b",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_down(n):\n    c = 0\n    i = n\n    while i > 1:\n        c += 1\n        i -= 1\n    return c",
+   "label": "off-by-one",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def running_min(xs):\n    m = xs[0]\n    i = 1\n    while i < len(xs) - 1:\n        if xs[i] < m:\n            m = xs[i]\n        i += 1\n    return m",
+   "label": "off-by-one",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def collect_evens(xs, out=[]):\n    out = list(out)\n    for x in xs:\n        if x % 2 == 0:\n            out.append(x)\n    return out",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_down(n):\n    c = 0\n    i = n\n    while i > 0:\n        c -= 1\n        i -= 1\n    return c",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def add_tag(tag, bag={}):\n    bag = dict(bag)\n    bag[tag] = True\n    return bag",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def safe_div(a, b):\n    if b == 0:\n        return 0\n    return b / a",
+   "label": "swapped-operands",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def discounted(price, pct):\n    return price - price * pct / 100",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def zip_diff(a, b):\n    out = []\n    for i in range(len(a) - 1):\n        out.append(a[i] - b[i])\n    return out",
+   "label": "off-by-one",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def zip_diff(a, b):\n    out = []\n    for i in range(len(a)):\n        out.append(b[i] - a[i])\n    return out",
+   "label": "swapped-operands",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def discounted(price, pct):\n    return price + price * pct / 100",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def collect_evens(xs, out=[]):\n    for x in xs:\n        if x % 2 == 0:\n            out.append(x)\n    return out",
+   "label": "mutable-default",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def running_min(xs):\n    m = xs[0]\n    i = 1\n    while i < len(xs):\n        if xs[i] < m:\n            m = xs[i]\n        i += 1\n    return m",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_down(n):\n    c = 0\n    i = n\n    while i > 0:\n        c += 1\n        i -= 1\n    return c",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def mean_of_squares(xs):\n    s = 0\n    for x in xs:\n        s += x * x\n    avg = s / len(xs)",
+   "label": "missing-return",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def prefix_products(xs):\n    out = []\n    p = 1\n    for x in xs:\n        p *= x\n        out.append(p)\n    total = out",
+   "label": "missing-return",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def mean_of_squares(xs):\n    s = 0\n    for x in xs:\n        s += x * x\n    return len(xs) / s",
+   "label": "swapped-operands",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def discounted(price, pct):\n    return pct - pct * price / 100",
+   "label": "swapped-operands",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def zip_diff(a, b):\n    out = []\n    for i in range(len(a)):\n        out.append(a[i] - b[i])\n    return out",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def power_mod(a, b, m):\n    return (b ** a) % m",
+   "label": "swapped-operands",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def prefix_products(xs):\n    out = []\n    p = 1\n    for x in xs:\n        p *= x\n        out.append(p)\n    return out",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_if(xs, v):\n    n = 0\n    i = 0\n    while i < len(xs) - 1:\n        if xs[i] == v:\n            n += 1\n        i += 1\n    return n",
+   "label": "off-by-one",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def mean_of_squares(xs):\n    s = 0\n    for x in xs:\n        s += x * x\n    return s / len(xs)",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def running_min(xs):\n    m = xs[0]\n    i = 1\n    while i < len(xs):\n        if xs[i] > m:\n            m = xs[i]\n        i += 1\n    return m",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def zip_diff(a, b):\n    out = []\n    for i in range(len(a)):\n        out.append(a[i] + b[i])\n    return out",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def mean_of_squares(xs):\n    s = 0\n    for x in xs:\n        s -= x * x\n    return s / len(xs)",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_if(xs, v):\n    n = 0\n    i = 0\n    while i < len(xs):\n        if xs[i] == v:\n            n += 1\n        i += 1\n    return n",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def safe_div(a, b):\n    if b == 0:\n        return 0\n    return a / b",
+   "label": "clean",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def prefix_products(xs):\n    out = []\n    p = 1\n    for x in xs:\n        p += x\n        out.append(p)\n    return out",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  },
+  {
+   "text": "def count_if(xs, v):\n    n = 0\n    i = 0\n    while i < len(xs):\n        if xs[i] != v:\n            n += 1\n        i += 1\n    return n",
+   "label": "wrong-operator",
+   "source": "swarmdream"
+  }
+ ]
+}
