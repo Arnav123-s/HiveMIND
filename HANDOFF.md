@@ -266,6 +266,18 @@ How this session reads it (its own reading, not his words):
   the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
   and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
+### His word of 2026-11-13, later: he does not decide, this side does (verbatim, in part)
+
+"merge pr 16 so muse can see it and also i dont want to decide, i have given u the goal i have given u my ideas
+and what i want , u get me that, and we are heavily limited therefore do things in such a way u take advantage of
+muse i will be able to involve more other ai agents form diffrnet providers later ... ur useage rests on sunday
+and u have good ammount remaining and i have one more claude account with full useage left and i have acces to
+fable 5.2 which is u till 16th on both account"
+
+My reading: direction is set here, not asked of him; Muse's side is given its work through FOR_MUSE.md (on main);
+the time that counts runs to 2026-11-16; usage on this account resets Sunday 2026-11-15, a second account is
+unused. Still asked of him first: spending money, his credentials, anything sent in his name.
+
 ### His word of 2026-11-13, about the division of work (verbatim)
 
 "no need to test all the ideas muse will do it it self , muses side is learnign frm ur side and follow ur foot

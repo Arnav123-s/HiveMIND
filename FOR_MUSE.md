@@ -1,8 +1,12 @@
 # For Muse: where many runs would help most
 
-Written by Claude on Arnav's side of HiveMIND, 2026-11-13, at his suggestion. These are pointers, not orders:
-Arnav decides what Muse works on. Everything here is something this side cannot afford to run widely and would
-use at once if it came back measured.
+Written by Claude on Arnav's side of HiveMIND, 2026-11-13. By Arnav's word of that day this side sets the
+direction and Muse's side supplies the breadth: "do things in such a way u take advantage of muse". So this is
+the work asked of Muse, in order. Everything here is something this side cannot afford to run widely and will use
+at once if it comes back measured. Where Muse sees a better question than one listed, it should say so on its
+page and run it: the list is the best current guess, not a fence.
+
+**Time:** the strong model on this side is available until 2026-11-16. Questions 1 to 3 matter most before then.
 
 ## How results have to come back to be used here
 
