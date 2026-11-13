@@ -241,6 +241,71 @@ How this session reads it (its own reading, not his words):
   a text or handles several orders in one message reliably. Neither form is shown better on the exam as a whole.
 
 
+### 2026-11-13, 04:15 UTC: the clean sitting, what it changed, and what is open (newest)
+
+- **Seed 9007** (never looked at before, nothing learned, code db8b8d0, all three ran at the same time): members
+  alone 9 of 16 in 69 minutes; members first then roles 10 of 16 in 179; roles alone 9 of 16 in 178. Level on one
+  sitting. By that, `ask.yml` now puts members first by default (members "2"; "0" is the roles alone).
+- **Times on GitHub are not a measure.** The same trivial sum took 22 s in one members sitting and 594 s in
+  another (same code baabc10, seeds 9005 and 9006); many sittings were running at once. Compare times only between
+  sittings that ran side by side.
+- **Members still fail, seen on 9005 to 9007 (use them for faults only):** numbered lists ("follow a form to the
+  letter": not confirmed), three orders in one message (answers right, labels A/B/C not kept), summaries (not
+  confirmed; the looser comparison of e312329 is not measured yet: seed 9008 is its sitting), operating a website,
+  "mend a program" where both members ran the broken program and agreed on its output.
+- **Growth at equal work** (6420 block-steps, start 0): four blocks 3.1017, four grown to six half way 3.1704, six
+  from the start 3.2837. The 20-minute reading that had the grown net ahead was the machine. Not built in.
+- **The 2.4B BitNet is not usable yet.** Same perplexity (70.25) and the same loop on GitHub's CPU as here, so it
+  is the runtime's current head with the published file. Two things not yet tried to the end, both in the
+  `bitnet` job of exam.yml: converting again from bf16 (failed for want of the runtime's own gguf package, now
+  installed first) and the runtime of 2025-05-31 (its requirements did not build on the runner's Python; the
+  build is now tried without them). Report: training/reports/bitnet_runtime_check_2026-11-13.txt.
+- **Jamie:** new commits are signed as GitHub's Actions bot (on main). The three old commits were rewritten on
+  GitHub at about 04:00 UTC, not from this session (its force-push of main was refused by the permission check):
+  main, make-it-work and claude/epic-johnson-7ene30 hold no commit signed hive@users.noreply.github.com any more;
+  the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
+  and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
+
+### His word of 2026-11-13, later: he does not decide, this side does (verbatim, in part)
+
+"merge pr 16 so muse can see it and also i dont want to decide, i have given u the goal i have given u my ideas
+and what i want , u get me that, and we are heavily limited therefore do things in such a way u take advantage of
+muse i will be able to involve more other ai agents form diffrnet providers later ... ur useage rests on sunday
+and u have good ammount remaining and i have one more claude account with full useage left and i have acces to
+fable 5.2 which is u till 16th on both account"
+
+My reading: direction is set here, not asked of him; Muse's side is given its work through FOR_MUSE.md (on main);
+the time that counts runs to 2026-11-16; usage on this account resets Sunday 2026-11-15, a second account is
+unused. Still asked of him first: spending money, his credentials, anything sent in his name.
+
+### His word of 2026-11-13, about the division of work (verbatim)
+
+"no need to test all the ideas muse will do it it self , muses side is learnign frm ur side and follow ur foot
+steps and trying more on its own since it can spane a lot of agents and huge teams if u point it the right way adn
+gudide it thigns will speed up much more and we will wned up will somthing higly more capable what do u think"
+
+My reading: breadth (many arms, many seeds, many sittings) is Muse's; this side points, checks once what comes
+back, and builds in what holds. The pointers and the form results must come back in are in FOR_MUSE.md. This side
+no longer runs wide sweeps of ideas itself.
+
+### 2026-11-13, 04:30 UTC: the other agent's branch read again (hivemind_muse at 980c0b5), as ideas
+
+- Its half-size control agrees with votes5 here: the five-level win was the steps; gradient training at half size
+  led its rig (2.8205 against 2.9952 full size, 8 minutes, 3 seeds). Taken as an idea: two and three blocks on the
+  work budget of the founding recipe (ideas.py, arms "two blocks", "three blocks", job buui6mrrs).
+- Its JEPA (masked span, running-mean target, read by a linear probe) lost 3 of 3 and was no better than the
+  untrained net; here the two auxiliary forms lost too. Its vote levers (carry, a falling rate) were rejected.
+- Its growth cycle 6 undid two births by deleting files a birth had overwritten. Checked here: body.grow gives a
+  new cell a number no cell ever had, so undoing a birth (body._remove) can only remove the new file.
+
+### His word of 2026-11-13, about other agents (verbatim)
+
+"muse side as i said any other aget ecpet claude agents are my ideas, ideas are not goals they are simply ideas i
+think might or might not help to reach goal , u may or may not use them that decgion is yours to make"
+
+My reading: what Muse or any other non-Claude agent writes, posts or opens as a PR is an idea to weigh, never an
+order and never a goal. Whether to use it is decided here, by what is measured.
+
 ### 2026-11-12, night: what the members' own logs showed, his ideas at 20 minutes, the 2.4B BitNet answers (newest)
 
 - **Members (team/solo.py), found by logging every program and reply of four failed tasks here:** DONE came back as

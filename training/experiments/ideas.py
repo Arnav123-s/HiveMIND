@@ -15,6 +15,9 @@ running, and is read on the 352 gate passages recipe7 and votes5 read (never tra
 - "predicting what it will think (running-mean teacher)": the same, with the target read by a running mean of the
   net's weights, as JEPA has it. It costs a second reading of every batch; equal minutes charge it for that.
 - "six blocks": bigger, from the start.
+- "two blocks", "three blocks": smaller. At 8 minutes a net of half the blocks read better here (votes5) and on
+  the other agent's rig (its half-size control, 2026-11-12: 2.8205 against 2.9952), because it takes more steps.
+  Does that still hold at the length a new body is founded with, on an equal work budget?
 - "grown from four blocks to six at half time": bigger by growing. Two blocks whose output layers are all zeros
   are added (the net reads exactly as before at that moment) and training goes on. If this holds, a body can
   start small and fast and get bigger turn by turn, without starting again.
@@ -58,6 +61,8 @@ ARMS = {
     "predicting what it will think (same net)": {"jepa": "self"},
     "predicting what it will think (running-mean teacher)": {"jepa": "teacher"},
     "six blocks": {"layers": 6},
+    "two blocks": {"layers": 2},
+    "three blocks": {"layers": 3},
     "grown from four blocks to six at half time": {"grow": 2},
 }
 

@@ -69,9 +69,28 @@ jobs:
           try models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf 2>&1 | tee -a ../bitnet.txt
           df -h . | tail -1; free -g | sed -n 2p
           huggingface-cli download microsoft/bitnet-b1.58-2B-4T-bf16 --local-dir models/bitnet-b1.58-2B-4T-bf16 >/dev/null
-          python utils/convert-helper-bitnet.py models/bitnet-b1.58-2B-4T-bf16
-          ls -la models/bitnet-b1.58-2B-4T-bf16
-          try models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf 2>&1 | tee -a ../bitnet.txt
+          pip install -q ./3rdparty/llama.cpp/gguf-py || true  # the converter needs the runtime's own gguf (KeyError BITNET_25 with the public one)
+          python utils/convert-helper-bitnet.py models/bitnet-b1.58-2B-4T-bf16 > convert.log 2>&1 || true
+          { echo "######## converting again from the original weights: the end of its log"; tail -25 convert.log; ls -la models/bitnet-b1.58-2B-4T-bf16; } 2>&1 | tee -a ../bitnet.txt
+          if [ -f models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf ]; then try models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf 2>&1 | tee -a ../bitnet.txt; fi
+          rm -rf models/bitnet-b1.58-2B-4T-bf16
+          # The runtime as it was in May 2025, a month after the model came out (the same published file).
+          cd .. && git clone -q --recursive https://github.com/microsoft/BitNet.git old && cd old
+          git checkout -q "$(git rev-list -1 --before=2025-06-01 HEAD)" && git submodule update -q --init --recursive
+          git log -1 --format='######## the runtime of %ad (%h)' --date=short | tee -a ../bitnet.txt
+          mkdir -p models/BitNet-b1.58-2B-4T && cp ../BitNet/models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf models/BitNet-b1.58-2B-4T/
+          pip install -q ./3rdparty/llama.cpp/gguf-py || true  # its requirements do not build on this Python (sentencepiece); the model file is already made
+          python setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s > setup_old.log 2>&1 || { tail -15 setup_old.log logs/*.log | cut -c1-300 | tee -a ../bitnet.txt; }
+          ls build/bin | head -20 | tr '\n' ' ' | tee -a ../bitnet.txt
+          cp ../BitNet/text.txt .
+          {
+            timeout 900 build/bin/llama-perplexity -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -f text.txt -c 256 --chunks 6 -t 4 2>&1 | grep -iE "estimate|pre-token" || true
+            for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."; do
+              timeout 300 build/bin/llama-cli -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -t 4 -n 160 --temp 0 -p "User: $q<|eot_id|>Assistant: " 2>/dev/null </dev/null | tail -30 || true
+              echo
+            done
+          } 2>&1 | tee -a ../bitnet.txt
+          cd ../BitNet
           { echo '```'; cat ../bitnet.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

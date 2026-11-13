@@ -1770,6 +1770,8 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     out, left = hive([line, line, line.replace("il venerdi", "di venerdi"), line.replace("il venerdi", "di venerdi")], "i")  # typed again after a program was asked for: its answer
     assert out["agreed"] and out["tries"] == 2 and not left and "museo" in out["report"]
     assert solo.same("New price: 935.0", "The new price is $935.00") and solo.same("Sunday", "weekday: Sunday") and solo.same("licence: mit", "License: MIT License")
+    assert solo.same("pounds: 205.0", "93 kilograms are 205.03 pounds") and not solo.same("12 days", "12.4 days")
+    assert solo.same("Il museo apre alle nove il venerdi.", "Il museo si apre alle 9 ogni venerdi.") and not solo.same("Il museo apre alle nove il venerdi.", "The shop closes at noon on Mondays.")
     assert not solo.same("weekday: Sunday", "weekday: Monday") and not solo.same("pounds: 205.0", "pounds: 204.6") and solo.same("205.0 pounds", "pounds: 205.0")
     assert not solo.same("A: 65\nB: nedrag\nC: Wellington", "A: 65\nB: derang\nC: Wellington")  # the numbers agree, the answers do not
     assert solo.same("Primes: [19, 37]\nCount: 2", "primes below 40: 19, 37\nhow many: 2")

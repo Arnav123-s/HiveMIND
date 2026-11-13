@@ -19,8 +19,8 @@ on:
         description: Follow-up rounds for anything left undone
         default: "1"
       members:
-        description: "A trial: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
-        default: ""
+        description: "Members first: each does the whole task, two must agree (team/solo.py), the roles take what they confirm nothing on. How many (0: the roles alone)"
+        default: "2"
 
 permissions:
   contents: read
@@ -32,7 +32,9 @@ jobs:
     env:
       TASK: ${{ inputs.task }}
       ROUNDS: ${{ inputs.rounds || '1' }}
-      AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
+      # Seed 9007 (never looked at, nothing learned, code db8b8d0): members first 10 of 16 in 179 minutes, the roles
+      # alone 9 of 16 in 178, the members alone 9 of 16 in 69. Level on one sitting, and never slower.
+      AGENT_TEAM_SOLO: ${{ inputs.members == '0' && '' || inputs.members || '2' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive

@@ -1,0 +1,124 @@
+######## models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf
+0.00.482.008 W load: missing pre-tokenizer type, using: 'default'
+0.17.492.375 I Final estimate: PPL = 70.2536 +/- 7.71118
+<|begin_of_text|>User: What is the capital of Australia?<|eot_id|>Assistant: The capital of Australia is Canberra. It is located in the capital of Australia.The capital of Australia is located in the capital of Australia.The capital of Australia is located in the capital of Australia.The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+The capital of Australia is located in the capital of Australia.
+
+
+
+<|begin_of_text|>User: Write a Python program that prints every prime below 30.<|eot_id|>Assistant: Sure! Below 30 is a prime number.Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints every prime below 30.
+
+Here is a Python program that prints
+
+
+######## converting again from the original weights: the end of its log
+  File "/home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py", line 1755, in <module>
+    main()
+    ~~~~^^
+  File "/home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py", line 1749, in main
+    OutputFile.write_all(outfile, ftype, params, model, vocab, special_vocab,
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         concurrency=args.concurrency, endianess=endianess, pad_vocab=args.pad_vocab)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py", line 1321, in write_all
+    of = OutputFile(fname_out, endianess=endianess)
+  File "/home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py", line 1148, in __init__
+    self.gguf = gguf.GGUFWriter(fname_out, gguf.MODEL_ARCH_NAMES[ARCH], endianess=endianess)
+                                           ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: <MODEL_ARCH.BITNET_25: 83>
+Backing up '/home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors' to '/home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors.backup'
+Preprocessing huggingface checkpoint...
+Executing: /usr/bin/python /home/runner/work/HiveMIND/HiveMIND/BitNet/utils/preprocess-huggingface-bitnet.py --input /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors.backup --output /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors
+Converting to GGUF (f32)...
+Executing: /usr/bin/python /home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16 --vocab-type bpe --outtype f32 --concurrency 1 --outfile /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/ggml-model-f32-bitnet.gguf
+Error executing command: /usr/bin/python /home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16 --vocab-type bpe --outtype f32 --concurrency 1 --outfile /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/ggml-model-f32-bitnet.gguf
+Return code: 1
+An error occurred: Command '['/usr/bin/python', '/home/runner/work/HiveMIND/HiveMIND/BitNet/utils/convert-ms-to-gguf-bitnet.py', '/home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16', '--vocab-type', 'bpe', '--outtype', 'f32', '--concurrency', '1', '--outfile', '/home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/ggml-model-f32-bitnet.gguf']' returned no
+Cleaning up intermediate files...
+Removing preprocessed file: /home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors
+Restoring original '/home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors' from '/home/runner/work/HiveMIND/HiveMIND/BitNet/models/bitnet-b1.58-2B-4T-bf16/model.safetensors.backup'
+total 4721560
+drwxr-xr-x 3 runner runner       4096 Nov 13 02:26 .
+drwxr-xr-x 4 runner runner       4096 Nov 13 02:25 ..
+drwxr-xr-x 3 runner runner       4096 Nov 13 02:24 .cache
+-rw-r--r-- 1 runner runner       1519 Nov 13 02:24 .gitattributes
+-rw-r--r-- 1 runner runner       1073 Nov 13 02:24 LICENSE
+-rw-r--r-- 1 runner runner       8935 Nov 13 02:24 README.md
+-rw-r--r-- 1 runner runner        843 Nov 13 02:24 config.json
+-rw-r--r-- 1 runner runner       3861 Nov 13 02:24 data_summary_card.md
+-rw-r--r-- 1 runner runner        199 Nov 13 02:24 generation_config.json
+-rw-r--r-- 1 runner runner 4825679400 Nov 13 02:25 model.safetensors
+-rw-r--r-- 1 runner runner         73 Nov 13 02:24 special_tokens_map.json
+-rw-r--r-- 1 runner runner    9085698 Nov 13 02:24 tokenizer.json
+-rw-r--r-- 1 runner runner      50834 Nov 13 02:24 tokenizer_config.json
+######## the runtime of 2025-05-31 (c1e9a9a)
+          cmd_obj.run()
+          ~~~~~~~~~~~^^
+        File "/usr/lib/python3/dist-packages/setuptools/_distutils/command/build.py", line 135, in run
+          self.run_command(cmd_name)
+          ~~~~~~~~~~~~~~~~^^^^^^^^^^
+        File "/usr/lib/python3/dist-packages/setuptools/_distutils/cmd.py", line 357, in run_command
+          self.distribution.run_command(command)
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/usr/lib/python3/dist-packages/setuptools/dist.py", line 1104, in run_command
+          super().run_command(command)
+          ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/usr/lib/python3/dist-packages/setuptools/_distutils/dist.py", line 1021, in run_command
+          cmd_obj.run()
+          ~~~~~~~~~~~^^
+        File "/usr/lib/python3/dist-packages/setuptools/command/build_ext.py", line 99, in run
+          _build_ext.run(self)
+          ~~~~~~~~~~~~~~^^^^^^
+        File "/usr/lib/python3/dist-packages/setuptools/_distutils/command/build_ext.py", line 368, in run
+          self.build_extensions()
+          ~~~~~~~~~~~~~~~~~~~~~^^
+        File "/usr/lib/python3/dist-packages/setuptools/_distutils/command/build_ext.py", line 484, in build_extensions
+          self._build_extensions_serial()
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+        File "/usr/lib/python3/dist-packages/setuptools/_distutils/command/build_ext.py", line 510, in _build_extensions_serial
+          self.build_extension(ext)
+          ~~~~~~~~~~~~~~~~~~~~^^^^^
+        File "/tmp/pip-install-1jaun3wj/sentencepiece_f805078796584554b854c3775a2b7706/setup.py", line 87, in build_extension
+          subprocess.check_call(['./build_bundled.sh', __version__])
+          ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/usr/lib/python3.14/subprocess.py", line 420, in check_call
+          raise CalledProcessError(retcode, cmd)
+      subprocess.CalledProcessError: Command '['./build_bundled.sh', '0.2.0']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for sentencepiece
+  Running setup.py clean for sentencepiece
+Successfully built gguf
+Failed to build sentencepiece
+ERROR: Failed to build installable wheels for some pyproject.toml based projects (sentencepiece)
+
+
