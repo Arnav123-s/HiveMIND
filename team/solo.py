@@ -53,6 +53,8 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   else. Otherwise print every result the task asks for, each on its own line as "name: value". One piece of text
   (a summary, a translation, a word) is printed alone, as it is.
 - A value that can be computed is computed by the program, never typed in ('garden'[::-1], not 'nedrag'). A file the task asks for is saved in the current folder under the exact name given.
+- Data the TASK gives (a table, a log, a CSV, a list) exists only in the TASK: copy it into the program as a string.
+  There is no file unless your program writes it.
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""

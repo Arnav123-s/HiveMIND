@@ -119,6 +119,9 @@ jobs:
       LEVEL: ${{ inputs.level || '' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Only ternary members and no roles - the 4-bit engine, the browser and the cells are not installed
+        if: ${{ inputs.who && inputs.alone && !contains(inputs.who, 'coder') }}
+        run: echo "HIVE_LIGHT=1" >> "$GITHUB_ENV"
       - uses: ./.github/actions/hive
       - name: What the hive has solved so far (kept between runs in the Actions cache, never in git)
         uses: actions/cache/restore@v4
