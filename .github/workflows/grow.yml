@@ -32,9 +32,13 @@ on:
       skip_practice:
         description: "1: train from the rows already in the release, no new practice"
         default: ""
+      rows_from_run:
+        description: "With skip_practice: also take the rows an earlier run of this workflow practised (its run id)"
+        default: ""
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: grow
@@ -108,10 +112,21 @@ jobs:
           pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
           pip install --quiet -r requirements.txt
           python -c "from team import ternary; ternary.source()"
+      - name: Room in memory (a runner has 16 GB; training peaks near 11, and a long row must slow it, not kill it)
+        run: |
+          sudo fallocate -l 14G /mnt/hive.swap && sudo chmod 600 /mnt/hive.swap && sudo mkswap -q /mnt/hive.swap && sudo swapon /mnt/hive.swap || true
+          free -g | sed -n 2,3p
       - uses: actions/download-artifact@v4
         with:
           pattern: rows-*
           path: new
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.rows_from_run }}
+        with:
+          pattern: rows-*
+          path: new
+          run-id: ${{ inputs.rows_from_run }}
+          github-token: ${{ github.token }}
       - name: Every row checked so far (the release holds those of earlier nights)
         run: |
           curl -sfL -o old.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/rows.jsonl" || : > old.jsonl

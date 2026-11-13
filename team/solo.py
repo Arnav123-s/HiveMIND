@@ -59,6 +59,19 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""
+# A member the hive has taught (a ternary model with a weight edit of its own, "t17+gen3") was trained on the hive's
+# checked work under these few lines: what MEMBER spells out, it has in its weights. Short orders also make its
+# training rows short enough for a 16 GB runner, and its turns faster.
+SHORT = ("You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing "
+         "else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page "
+         "really holds. Today is {today}.")
+
+
+def orders(who, today=None):
+    """The system prompt of the member in a seat: the full orders, or the short ones for a member the hive taught."""
+    return (SHORT if "+" in who else MEMBER).format(today=today or time.strftime("%Y-%m-%d (%A)"))
+
+
 # (For one afternoon this asked more: "... every value asked for, said in words ... if it only shows data you were
 # looking at ...". Members then rewrote programs that were already right: 16 tasks took an hour instead of 15 minutes
 # and fewer were right. The plain question is back.)
@@ -224,7 +237,7 @@ def typed_out(reply, code):
 def member(task, n, board, guard, work, temperature):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
-    messages = [{"role": "system", "content": MEMBER.format(today=time.strftime("%Y-%m-%d (%A)"))},
+    messages = [{"role": "system", "content": orders(ternary.seat(n))},
                 {"role": "user", "content": f"TASK: {task}"}]
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and

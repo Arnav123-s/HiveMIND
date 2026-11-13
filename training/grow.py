@@ -16,13 +16,14 @@ gate       The same fresh exam sat by the hive with and without the new member; 
 
     python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl]
     python training/grow.py rows RUN_FOLDER ... [--out rows.jsonl]      rows from sittings already done (checked tasks only)
-    python training/grow.py train --rows rows.jsonl --name gen1 [--base t17] [--epochs 2] [--max-len 1536] [--minutes 240]
+    python training/grow.py train --rows rows.jsonl --name gen1 [--base t17] [--epochs 2] [--max-len 1152] [--minutes 240]
     python training/grow.py fetch                                        the weight edits the roster names, from the release
 """
 import json
 import math
 import os
 import random
+import re
 import subprocess
 import sys
 import time
@@ -54,7 +55,9 @@ def rows_of(run, task, kind="", seed=None):
         ms, program = t.get("messages") or [], (t.get("program") or "").strip()
         if len(ms) < 3 or not program or len(program) > 6000:
             continue
-        head = ms[:2]  # the member's orders and the task
+        # the taught member's short orders (team/solo.SHORT) with the day the work was done, and the task
+        day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", ms[0]["content"])
+        head = [{"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}, ms[1]]
         fenced = f"```python\n{program}\n```"
         base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n}
         out.append(base | {"type": "first", "messages": head, "output": fenced})
@@ -110,7 +113,7 @@ def rows_from(folders, out):
 
 
 # ---- train -----------------------------------------------------------------------------------------------------------
-def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1536, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print):
+def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     import torch
@@ -122,7 +125,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=153
     torch.set_num_threads(int(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4)))
     random.seed(seed)
     torch.manual_seed(seed)
+    from team import solo
     rows = [json.loads(x) for x in Path(rows_file).read_text().splitlines() if x.strip()]
+    for r in rows:  # rows made before the short orders existed carry the long ones: the taught member is trained under the short
+        day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", r["messages"][0]["content"])
+        r["messages"][0] = {"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}
     seen, uniq = set(), []
     for r in rows:  # the same exchange from two sittings teaches nothing twice
         k = json.dumps([r["messages"][1:], r["output"]])
@@ -138,6 +145,10 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=153
     model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
                                              target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]))
     model.config.use_cache = False
+    # Each layer's inner values are worked out again on the way back instead of being kept: a third slower, and the
+    # memory no longer grows with the length of a row (the first run on a 16 GB runner was killed at step 5).
+    model.gradient_checkpointing_enable()
+    model.enable_input_require_grads()
 
     def encode(row):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
@@ -198,13 +209,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=153
             hist.append(round(running / n, 4))
             running = 0.0
             if step % 5 == 0 or step == steps:
-                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s", flush=True)
+                import resource
+                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB", flush=True)
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(str(work))
     meta = {"member": f"{base}+{name}", "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
-            "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M")}
+            "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
+            "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     ternary.ADAPTERS.mkdir(parents=True, exist_ok=True)
@@ -246,7 +259,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1536), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0)), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0)), indent=1))
     elif cmd == "fetch":
         print(fetch([a for a in argv[1:] if not a.startswith("--")]))
     else:
