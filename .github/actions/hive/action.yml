@@ -20,3 +20,12 @@ runs:
         CMAKE_ARGS="-DGGML_NATIVE=ON" pip install --quiet llama-cpp-python==0.3.36
         python -m playwright install --with-deps chromium
         python training/cells_build.py
+    - name: The hive's own models (the 4-bit files of llama.cpp), fetched now and made the only engine
+      shell: bash
+      run: |
+        # Left to itself the hive takes the small PyTorch models whenever one of these files is not on the machine
+        # yet (team/llm.gguf_available), and on a fresh runner none is. Every sitting on GitHub up to 2026-11-13
+        # ran that way: seed 9010, members alone, same code: 6 of 16 in 96 minutes there, 12 of 16 in 24 minutes on
+        # a machine that had the files.
+        echo "AGENT_TEAM_ENGINE=gguf" >> "$GITHUB_ENV"
+        AGENT_TEAM_ENGINE=gguf python -c "from team import llm, config; print('engine ready:', llm.gguf_available(), sorted(set(config.GGUF_ROSTER.values())))"
