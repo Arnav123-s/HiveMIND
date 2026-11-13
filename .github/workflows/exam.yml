@@ -166,6 +166,12 @@ jobs:
             runs/exam/**/.member*_*.py.err
           include-hidden-files: true
           retention-days: 14
+      - name: The numbers once more, last in the log (so that they can be read without downloading anything)
+        if: ${{ !cancelled() }}
+        run: |
+          f=$(ls -t training/reports/exams/*.md | head -1)
+          grep -E "✅|❌" "$f" | awk -F'|' '{print $4 "|" $3 "|" $5}' | cut -c1-90
+          sed -n 3p "$f"
   record:
     needs: sit
     if: ${{ !inputs.members && !inputs.empty_memory && !inputs.practice && !inputs.bitnet }}
