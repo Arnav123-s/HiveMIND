@@ -160,12 +160,12 @@ jobs:
         run: |
           python training/grow.py fetch
           python training/exam.py sit --level mixed --tasks 16 --seed $((20000000 + ${{ github.run_number }} * 10 + ${{ matrix.seed }})) --empty-memory
-          cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY"
+          cat training/reports/exams/*_mixed.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: gate-${{ matrix.arm }}-${{ matrix.seed }}
-          path: training/reports/exams/*.json
+          path: training/reports/exams/*_mixed.json
           retention-days: 30
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
