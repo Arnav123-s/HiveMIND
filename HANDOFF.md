@@ -266,6 +266,24 @@ How this session reads it (its own reading, not his words):
   the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
   and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
+### 2026-11-13, 11:40 UTC: THE ENGINE. Read this before trusting any exam number from GitHub (newest)
+
+- **Until commit 7171805 every sitting on GitHub ran the small fallback models** (PyTorch, 1.7B and 1.5B), not
+  the hive's own (brain4b, coder7b, 4-bit, llama.cpp). `team/llm.gguf_available` answers no when a model file is
+  not on the machine yet, and on a fresh runner none is. The action `.github/actions/hive` now sets
+  AGENT_TEAM_ENGINE=gguf and fetches the files first. Every GitHub number before that (seeds 315, 9001 to 9010,
+  the daily record in training/reports/exams.jsonl) is the fallback models; do not compare across the line.
+- **Seed 9011** (never read, nothing learned, code 7171805, the three side by side, real engine):
+  members first then roles **14 of 16 in 21 minutes**; roles alone 13 of 16 in 48; members alone 12 of 16 in 21.
+  The same forms on the fallback models (seed 9007): 10, 9 and 9 of 16 in about three hours.
+- **How it was found:** seed 9010, members alone, same code: 6 of 16 in 96 minutes on GitHub, 12 of 16 in 24
+  minutes on this machine. The score could not say why; the difference between two machines did.
+- **Members' logs are uploaded by every members sitting** (artifact `the-members-own-work`): read those before
+  changing anything about the members. Still failing on 9011 with the real engine: a licence read from Hugging
+  Face (mended in 70fd746, not yet measured), scraping a page to a file, operating a website (members alone).
+- **Muse's side** (1.5 shared CPUs, no llama engine) cannot run sittings that mean anything; FOR_MUSE.md asks it
+  to read the uploaded logs instead. Its four pages of 2026-11-12 were all still pending.
+
 ### His word of 2026-11-13, on Muse (verbatim; it corrects the block below)
 
 "and i am not decinidn any more what muse works on my ideas are work on on the side, its its own boss and u are
