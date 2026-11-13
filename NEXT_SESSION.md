@@ -1,6 +1,8 @@
 # NEXT SESSION: read this first, then act
 
-For the BitNet mission and the prompts that start each session, see `BITNET_MISSION.md`.
+For the BitNet mission and the prompts that start each session, see `BITNET_MISSION.md`. **Where any rule below, or
+in HANDOFF.md, is stricter than that prompt, the prompt wins**: older rules were written for earlier sessions and
+many no longer hold. Read the rules here as background, not as limits.
 
 Written 2026-11-13, 17:00 UTC, at the end of a long session (Fable 5.2, then Opus 5.5 at the very end), for the
 next Claude session on HiveMIND. It is self-contained: after reading it you know the goal, who is who, the rules,
@@ -31,7 +33,7 @@ Two hives live in the repo:
   missing. Reports to him use the headings **Blocked on me / Changed / Found** and mark what is not confirmed.
 - **You** are "the biggest boss" for reaching the goal: the codebase is yours; you decide direction; **you merge
   into main yourself once a change is measured**. Don't stop while work is owed; be usage-aware; no pointless
-  repetition (no status notes on routine notifications, no re-wording rounds, no wide sweeps another agent can run).
+  repetition (no status notes on routine notifications, no re-wording rounds).
 - **Still ask him first:** spending money, using his credentials, sending anything in his name.
 - **Muse**: another agent (non-Claude), branch `hivemind_muse`, "its own boss" with lots of manpower (it can spawn
   many agents) but a weak machine: 1.5 shared CPUs, **no llama engine** (so it cannot run meaningful hive
@@ -134,7 +136,6 @@ page addresses, 404s taken as answers).
    pages of 2026-11-12 were all "pending"; `FOR_MUSE.md` now asks it to read uploaded logs and count causes
    (no compute needed) and to keep questions 3 (BitNet runtime) and 4 (size/budget map).
 5. **BitNets** only where it serves the goal: a size/budget map (from Muse) decides whether bigger bodies pay.
-   Do not run wide sweeps here.
 
 ## 6. Things that went wrong, so they are not repeated
 
