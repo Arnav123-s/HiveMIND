@@ -35,6 +35,11 @@ never executed or modified). Arms:
              weight decay decayed linearly toward zero. The vote rule (threshold, gate) never
              changes — this is NOT the anneal arm, which moved the vote threshold and lost.
              Recorded under the arm name + "_cooldown".
+  scale ladder (2026-11-12): --dim / --layers-n override the built-in shape (defaults reproduce
+             every prior arm exactly); --steps N runs a fixed step budget instead of a time box
+             (equal tokens across rungs; --minutes remains a safety cap); --tag suffixes the
+             recorded arm label; --ckpt turns on gradient checkpointing (memory-only trade,
+             same math) for rungs that do not fit this VM otherwise.
 All arms: same corpus, same seed -> same init and same batch stream, batch 32, CTX 256,
 held windows (every 40th) never trained on, judged on a fixed set of 128 held windows.
 Non-ternary parts in the vote arms train exactly as Fable's Direct: AdamW lr 1e-3,
@@ -102,6 +107,7 @@ class Tiny(nn.Module):
     def __init__(self, layers=4, dim=DIM, rotary=False):
         super().__init__()
         self.dim = dim
+        self.ckpt = False  # scale ladder (2026-11-12): gradient checkpointing, memory-only trade
         self.tok, self.pos = nn.Embedding(VOCAB, dim), nn.Embedding(CTX, dim)
         self.rotary = rotary  # then the table of places (pos) is carried, as in Fable's shape, but not used
         self.blocks = nn.ModuleList(Block(dim, rotary=rotary) for _ in range(layers))
@@ -110,7 +116,10 @@ class Tiny(nn.Module):
     def body(self, ids):
         x = self.tok(ids) if self.rotary else self.tok(ids) + self.pos(torch.arange(ids.shape[1]))
         for blk in self.blocks:
-            x = blk(x)
+            if self.ckpt and self.training:
+                x = torch.utils.checkpoint.checkpoint(blk, x, use_reentrant=False)
+            else:
+                x = blk(x)
         return self.norm(x)
     def next_piece(self, ids):
         return self.body(ids) @ self.tok.weight.T
@@ -302,16 +311,28 @@ def main():
                     help="layered arms only: overshoot carry — counters keep count - sign*V on a flip")
     ap.add_argument("--cooldown", action="store_true",
                     help="layered arms only: two-stage lr/wd cooldown on the AdamW parts (vote rule fixed)")
+    ap.add_argument("--dim", type=int, default=DIM,
+                    help="scale ladder (2026-11-12): model width override; default keeps every prior arm identical")
+    ap.add_argument("--layers-n", type=int, default=None,
+                    help="scale ladder: block-count override; default keeps the arm's built-in count")
+    ap.add_argument("--steps", type=int, default=0,
+                    help="scale ladder: fixed step budget (equal tokens across rungs); 0 = time-boxed as before. "
+                         "--minutes still applies as a safety cap")
+    ap.add_argument("--tag", default="",
+                    help="scale ladder: suffix appended to the recorded arm label, e.g. scale2m")
+    ap.add_argument("--ckpt", action="store_true",
+                    help="scale ladder: gradient checkpointing on the blocks (memory-only trade, same math)")
     a = ap.parse_args()
     if (a.carry or a.cooldown) and a.arm not in ("layered", "layered_half"):
         ap.error("--carry/--cooldown are levers on the layered vote trainer only")
     label = a.arm + ("_rope" if a.rope else "") + ("_carry" if a.carry else "") + \
-        ("_cooldown" if a.cooldown else "")
+        ("_cooldown" if a.cooldown else "") + (("_" + a.tag) if a.tag else "")
     data = np.memmap(LAB / "corpus.u16", dtype=np.uint16, mode="r")
     held = held_windows(data)
     torch.manual_seed(a.seed)
-    layers = 2 if a.arm in ("layered_half", "plain_half", "ste_half") else 4
-    model = Tiny(layers=layers, rotary=a.rope)
+    layers = a.layers_n if a.layers_n else (2 if a.arm in ("layered_half", "plain_half", "ste_half") else 4)
+    model = Tiny(layers=layers, dim=a.dim, rotary=a.rope)
+    model.ckpt = a.ckpt
     if a.arm in ("ste", "ste_half"):
         trainer = STE(model)
     elif a.arm in ("layered", "layered_half"):
@@ -324,7 +345,9 @@ def main():
     rnd, t0, steps, losses, jumps = random.Random(a.seed), time.time(), 0, [], []
     budget = a.minutes * 60
     while time.time() - t0 < budget:
-        done = (time.time() - t0) / budget
+        if a.steps and steps >= a.steps:
+            break
+        done = (steps / a.steps) if a.steps else (time.time() - t0) / budget
         EASE[0] = min(1.0, done / 0.5) if a.arm in ("ste", "ste_half") else 1.0
         at = offsets(rnd, len(data), a.batch)
         x = torch.stack([torch.from_numpy(data[i:i + CTX + 1].astype("int64")) for i in at])
@@ -355,6 +378,8 @@ def main():
            "mean_flip_share": round(sum(jumps) / max(1, len(jumps)), 5), "state_hist": hist,
            "corpus_pieces": int(len(data)), "minutes": a.minutes,
            "rope": bool(a.rope), "carry": bool(a.carry), "cooldown": bool(a.cooldown),
+           "dim": a.dim, "layers_n": layers, "ckpt": bool(a.ckpt),
+           "steps_target": a.steps if a.steps else None,
            "total_params": sum(p.numel() for p in model.parameters())}
     with open(LAB / "runs.jsonl", "a") as f:
         f.write(json.dumps(rec) + "\n")

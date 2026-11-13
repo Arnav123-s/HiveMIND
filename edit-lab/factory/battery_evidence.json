@@ -69,6 +69,16 @@
    "battery_acc": 0.8333,
    "n": 12,
    "source": "results/hive_battery_acceptance.json classify-secret-line (served, assembly battery re-run 2026-11-10)"
+  },
+  "sec-code-model": {
+   "battery_acc": 0.75,
+   "n": 12,
+   "source": "factory/niche_expansion/battery_sections.py classify-sec-code (served, niche-expansion wave 1 adoption 2026-11-13)"
+  },
+  "sql-statement-model": {
+   "battery_acc": 1.0,
+   "n": 14,
+   "source": "factory/niche_expansion/battery_sections.py classify-sql-statement (served, niche-expansion wave 1 adoption 2026-11-13)"
   }
  },
  "created_by": "the contract-judgment v3 case, 2026-11-10: v3 passed its factory win-gates (paired fresh confirm 0.9048 vs incumbent 0.7619, held-out 1.0) but scored 5/12 on the acceptance battery against v2's 11/12 \u2014 its confirm surfaces were its own generator's idioms. The manual serving override that followed is now this standing rule.",

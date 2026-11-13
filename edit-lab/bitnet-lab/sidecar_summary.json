@@ -1,0 +1,28 @@
+{
+ "pieces": 5917236,
+ "lines": 343465,
+ "training_side_distinct_line_contents": 177898,
+ "held_targets": 32768,
+ "leaked_targets": 18658,
+ "leaked_share": 0.5694,
+ "window_buckets": {
+  "german": 9,
+  "gibberish": 69,
+  "numeric": 32,
+  "prose": 18
+ },
+ "fine_class_targets": {
+  "numeric_dump": 8192,
+  "merges_gibberish": 17664,
+  "boilerplate": 492,
+  "german": 2304,
+  "prose_lab": 4116
+ },
+ "bucket_targets": {
+  "numeric": 8192,
+  "gibberish": 17664,
+  "german": 2304,
+  "lists": 0,
+  "prose": 4608
+ }
+}
