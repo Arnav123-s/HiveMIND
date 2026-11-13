@@ -241,6 +241,31 @@ How this session reads it (its own reading, not his words):
   a text or handles several orders in one message reliably. Neither form is shown better on the exam as a whole.
 
 
+### 2026-11-13, 04:15 UTC: the clean sitting, what it changed, and what is open (newest)
+
+- **Seed 9007** (never looked at before, nothing learned, code db8b8d0, all three ran at the same time): members
+  alone 9 of 16 in 69 minutes; members first then roles 10 of 16 in 179; roles alone 9 of 16 in 178. Level on one
+  sitting. By that, `ask.yml` now puts members first by default (members "2"; "0" is the roles alone).
+- **Times on GitHub are not a measure.** The same trivial sum took 22 s in one members sitting and 594 s in
+  another (same code baabc10, seeds 9005 and 9006); many sittings were running at once. Compare times only between
+  sittings that ran side by side.
+- **Members still fail, seen on 9005 to 9007 (use them for faults only):** numbered lists ("follow a form to the
+  letter": not confirmed), three orders in one message (answers right, labels A/B/C not kept), summaries (not
+  confirmed; the looser comparison of e312329 is not measured yet: seed 9008 is its sitting), operating a website,
+  "mend a program" where both members ran the broken program and agreed on its output.
+- **Growth at equal work** (6420 block-steps, start 0): four blocks 3.1017, four grown to six half way 3.1704, six
+  from the start 3.2837. The 20-minute reading that had the grown net ahead was the machine. Not built in.
+- **The 2.4B BitNet is not usable yet.** Same perplexity (70.25) and the same loop on GitHub's CPU as here, so it
+  is the runtime's current head with the published file. Two things not yet tried to the end, both in the
+  `bitnet` job of exam.yml: converting again from bf16 (failed for want of the runtime's own gguf package, now
+  installed first) and the runtime of 2025-05-31 (its requirements did not build on the runner's Python; the
+  build is now tried without them). Report: training/reports/bitnet_runtime_check_2026-11-13.txt.
+- **Jamie:** new commits are signed as GitHub's Actions bot (on main). Arnav said yes to rewriting the three old
+  commits; the force-push of main was refused by this session's permission check. The rewrite is one
+  filter-branch over main, make-it-work and claude/epic-johnson-7ene30 (author and committer of
+  hive@users.noreply.github.com to github-actions[bot], 41898282+github-actions[bot]@users.noreply.github.com),
+  verified: same trees, same messages and dates. It needs his allow rule or his own push.
+
 ### His word of 2026-11-13, about other agents (verbatim)
 
 "muse side as i said any other aget ecpet claude agents are my ideas, ideas are not goals they are simply ideas i
