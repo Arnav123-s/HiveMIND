@@ -33,5 +33,12 @@
   "minutes": 20.0,
   "train_last": 3.2144,
   "weights": 3505152
+ },
+ "grown from four blocks to six at half time, 20 minutes, start 0": {
+  "gate": 3.0846,
+  "steps": 1607,
+  "minutes": 20.0,
+  "train_last": 3.0425,
+  "weights": 3505152
  }
 }
