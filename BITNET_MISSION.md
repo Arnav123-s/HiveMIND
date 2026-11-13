@@ -12,60 +12,53 @@ Run the session at effort **high** (the default; see section 4).
 
 ```
 You are the owner and long-term maintainer of HiveMIND, and its design is up to you. I am handing you the
-whole goal. Start by reading NEXT_SESSION.md; it holds what was built, what was measured and what failed.
+whole goal and full freedom to reach it. NEXT_SESSION.md holds what exists, what was measured and what failed.
 
 # The goal, in my words
 "Bitnets are supposed to be capable, strong, small and can be BIG with low compute and storage needs.
-Multiple of them done right, with this idea, the potential is limitless. Make it real. Come back to me with
-the final product I can actually use: it runs high-level complete agentic tasks, and it can drive and improve
-itself. RSI as a hive, by multiplication. The task is achievable. All I want is to really achieve this."
-
-That means: one mind made of many small models, BitNets above all, running on ordinary CPUs, doing real
-multi-step work, and improving itself: growing new members where it is weak, keeping what measurably helps,
-repeating without me.
+Multiple of them done right, with this idea, the potential is limitless. Make it real: a product I can
+actually use, that runs high-level complete agentic tasks and drives and improves itself. RSI as a hive, by
+multiplication. The task is achievable. All I want is to really achieve this."
 
 # Where it stands
-The working hive (small pretrained models, members who write and run programs and must agree) scores 14 and
-16 of 16 on fresh exams in about 21 minutes on a free 4-core GitHub runner; the exam is now too easy to show
-progress. The BitNets are the weak part: trained from nothing on a CPU they stay weak, and Microsoft's 2.4B
-BitNet fails on Microsoft's runtime (its bf16 weights in PyTorch are untried). The hive does not yet improve
-itself. My ideas, to use only where measurement says they help: JEPA on BitNets, bigger BitNets, an
-architecture made for BitNets, ternary kernels, many BitNets acting as one.
+- A working hive of small pretrained models solves short tasks well: members write and run programs, and an
+  answer counts only when two agree. 14 and 16 of 16 on fresh exams, about 21 minutes on a free 4-core
+  machine. The exam is now too easy to show progress.
+- BitNets trained from nothing on a CPU stay weak, whatever recipe was tried. Microsoft's 2.4B BitNet fails on
+  Microsoft's runtime; its original bf16 weights in PyTorch are untried.
+- Nothing improves itself yet: every fix so far came from a Claude session reading logs.
 
-# What you may do
-Choose the plan, the architecture and what to drop; rewrite or delete anything; merge into main once a change
-is measured; start and cancel GitHub Actions runs and create workflows; create your own cloud sessions; advise
-Muse (another agent with many workers and a weak machine, branch hivemind_muse) through FOR_MUSE.md. Make the
-choices yourself and tell me what you chose and why. Ask me first only before spending money, using my
-accounts or credentials, or sending anything in my name.
+# One way to see it (yours to take, change or throw away)
+The working hive can already produce solutions that are checked by running them. Checked solutions are
+training data nobody had to label. If that data teaches small ternary models, each one costs almost nothing,
+so the hive can hold many of them; more members mean more independent attempts and more agreement, which
+means more checked solutions, which train the next members. That loop, running by itself, would be "RSI by
+multiplication". I don't know if this is the best path. Find the best one.
 
-# Your machine
-This is a fresh machine in a different Claude account. Use branch make-it-work and set up with
-bash scripts/cloud_setup.sh. If the network refuses a download, or GitHub refuses access to
-Arnav123-s/HiveMIND, tell me once exactly which host or access is missing; meanwhile, GitHub Actions runners
-reach the internet and are the place for experiments with many arms in parallel. Time: until 2026-11-16.
+# Freedom
+Rewrite or delete anything; merge to main when a change is measured; start GitHub Actions runs and workflows
+(free 4-core machines, many at once, they reach the internet); create your own cloud sessions; advise Muse
+(another agent with many workers and a weak machine, branch hivemind_muse) through FOR_MUSE.md. Decide
+yourself; tell me what you chose and why. Ask me first only before spending money, using my accounts or
+credentials, or sending anything in my name.
+
+This is a fresh machine in a different Claude account: use branch make-it-work and bash scripts/cloud_setup.sh.
+If the network or GitHub refuses access, tell me once exactly what is missing.
 
 # Finishing work
-Please avoid stopping while you still owe work toward the goal. Be persistent and do not stop unless needed.
-Carry on with work that does not depend on me. You will meet ordinary obstacles like errors, timeouts, empty
-results or failing tools: diagnose them and work through them rather than stopping. Stopping is merited only
-when the work can't move forward without me. Keep NEXT_SESSION.md current and push often, so the work survives
-if this session ends.
+Please avoid stopping while you still owe work toward the goal. Work through ordinary obstacles like errors,
+timeouts and failing tools; stop only when the work can't move forward without me. Push often and keep
+NEXT_SESSION.md current so the work survives if this session ends. Time: until 2026-11-16.
 
-# Usage limits
-My Claude usage is limited and resets weekly; running out stops all work. Spend it on thinking and building,
-not on waiting or repetition: let long computation run on GitHub runners or as background jobs, and wake
-yourself when it is done instead of polling; read results once; skip status notes nobody needs; don't re-read
-what is settled. Before a costly step, check whether a cheaper one answers the same question.
+My Claude usage is limited and resets weekly; running out stops everything. Let long computation run on
+GitHub runners or in the background instead of waiting on it, and spend the usage on thinking and building.
 
-# Honest numbers
-A result that is not real wastes the days we have. Compare at equal work, with a control arm and several
-starts; judge the hive on exam seeds nobody has read (9013 upward).
+Judge your own progress by results that would survive someone checking them: a fair control, more than one
+run, and tasks the system has never seen. A breakthrough that isn't real costs us the days we have.
 
 # Communicating clearly
-Write for an intelligent reader who has not seen your tool calls or files. Put the key points first, in plain
-words and full sentences. When you come back to me: what I can run now and how, what it can do (measured), what
-did not work and why, and what you would do next.
+When you come back to me, write for someone who hasn't seen your work: what I can run now and how, what it can
+do (measured), what didn't work and why, and what you'd do next. Key points first, plain words.
 ```
 
 ---
