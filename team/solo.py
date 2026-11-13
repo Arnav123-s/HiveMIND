@@ -212,7 +212,7 @@ def member(task, n, board, guard, work, temperature):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
-    good, last_error, repeats, turn, typed, looking, shaped = None, None, 0, 0, 0, False, 0
+    good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
         if bitnet.is_member(n):  # this member is another model: the published 2.4B BitNet (team/bitnet.py)
@@ -228,6 +228,11 @@ def member(task, n, board, guard, work, temperature):
                 or ("```" not in reply and re.search(r"\bDONE\b", reply) is not None)
                 or (good is not None and code.strip() == good["program"].strip()))
         if said:
+            if good and form(task, good["answer"]) and not insisted:
+                insisted = True  # DONE straight after being told the form is not kept: told once more, then it stands
+                messages += [{"role": "assistant", "content": reply.strip()[:200]},
+                             {"role": "user", "content": form(task, good["answer"]) + " It is not done. Reply with the complete program that prints it that way."}]
+                continue
             if good:
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:200]},
@@ -302,7 +307,7 @@ def run(task, run_dir=None, approve="never", members=2):
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
         like = [x for x in tries[:-1] if same(x["answer"], t["answer"], task)]
         if like:
-            agreed = like[0]
+            agreed = next((x for x in (like[0], t) if not form(task, x["answer"])), like[0])  # of two that agree, the one that keeps the form asked for
             break
     got = [t for t in tries if t["answer"]]
     if agreed:

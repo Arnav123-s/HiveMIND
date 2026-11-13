@@ -1771,6 +1771,10 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     assert out["agreed"] and out["tries"] == 2 and not left and "museo" in out["report"]
     out, left = hive(["print('1: Red')\nprint('2: Blue')", "print('1. Red')\nprint('2. Blue')", "DONE", "print('1. Red')\nprint('2. Blue')", "DONE"], "j")
     assert out["agreed"] and not left                                                         # PRIMES_TASK asks no form: nothing is said
+    left = ["print('The pool closed. It cost 4.8 million.')", "DONE", "print('The pool, which cost 4.8 million, closed.')", "DONE", "print('The pool closed. It cost 4.8 million.')", "DONE", "DONE"]
+    monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+    out = solo.run("Give me a one-sentence summary of this: The pool closed in March. It cost 4.8 million dollars.", tmp_path / "k", "never", members=2)
+    assert out["agreed"] and not left and out["report"].startswith("The pool, which cost")   # DONE on a broken form is not taken at once; of two that agree, the one that keeps the form
     assert "numbered list of exactly 3" in solo.form("Give me exactly 3 colours as a numbered list and nothing else.", "1: Red\n2: Green\n3: Blue")
     assert not solo.form("Give me exactly 3 colours as a numbered list and nothing else.", "1. Red\n2. Green\n3. Blue") and solo.form("Give me exactly 3 colours as a numbered list.", "1. Red\n2. Green")
     assert "1 sentence" in solo.form("Give me a one-sentence summary of this: It cost 4.8 million. It closed.", "The pool cost 4.8 million. It closed in March.")
