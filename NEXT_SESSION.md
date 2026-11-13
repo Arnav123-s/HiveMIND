@@ -1,5 +1,7 @@
 # NEXT SESSION: read this first, then act
 
+For the BitNet mission and the prompts that start each session, see `BITNET_MISSION.md`.
+
 Written 2026-11-13, 17:00 UTC, at the end of a long session (Fable 5.2, then Opus 5.5 at the very end), for the
 next Claude session on HiveMIND. It is self-contained: after reading it you know the goal, who is who, the rules,
 what was measured, how to work here, and exactly what to do next. Longer history: `HANDOFF.md` (newest blocks
