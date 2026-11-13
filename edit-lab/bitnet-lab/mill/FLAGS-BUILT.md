@@ -12,7 +12,7 @@ When the main agent merges `train_next.py` into `train.py`, the runnable count b
 not train.py flags at all).
 
 **Verification method.** Every run at a tiny config (`--dim 64 --layers-n 2 --batch 8
---steps 8 --seed 0 --rope`, in `/tmp/flaglab`, records never touch the lab's runs.jsonl):
+--steps 8 --seed 0 --rope`, in `bitnet-lab/flaglab/`, records never touch the lab's runs.jsonl):
 - *Baseline identity:* `train_next.py` with no mill flags vs live `train.py`, same seed —
   held_init / held_final / train_last100 / state_hist / mech_state_bytes must be
   **identical** (8 arm configs incl. `--carry` and `--cooldown`).
@@ -21,8 +21,18 @@ not train.py flags at all).
 - *Smoke:* each flag on at a pool-like value — trains, finite losses, mechanism evidence
   in the record where the design has some (e.g. `mag_thr` for --mag-cal, `level_hist` for
   --log-level-hist, `held_final_state` for --modal).
-Results: **(filled in when the verification suites complete — see the suite logs in
-/tmp/flaglab: base.log, neutral.log, smoke1.log, smoke2.log.)**
+Results (2026-11-13, verify.py in flaglab/): **base 8/8 identical, neutral 28/28
+identical, kernel pairs 6/6 identical, smoke1 25/25, smoke2 66/66** — every flag below
+passed. Two process notes: (1) the suites were first run from /tmp and lost to a runtime
+restart; the completed run above is the workspace re-run, and later confirmation re-runs
+under heavy cross-stream contention produced subprocess *timeouts* (empty records) on
+some base cases — never a value mismatch: every run that completed on both sides matched
+exactly, and the identity claims are independently backed by per-step bitwise proofs
+(flaglab/proof.py: identical per-step losses for layered_half/plain_half/ste_half vs live
+train.py; fused-vs-current trainer state torch.equal; proof2.py: repeated-run
+determinism). (2) The smoke case for --verify-flips originally passed the flag bare; the
+pool's own run lines use `--verify-flips 200`, which is what the implementation takes
+(the case was corrected to `--verify-flips 4` and passes).
 
 **Merge notes for the main agent.**
 1. `mill/sweep_probe.py` carries its own copy of the chassis argparse + run_one and has
@@ -46,6 +56,16 @@ Results: **(filled in when the verification suites complete — see the suite lo
 | `--buffer B` | A-050 (D-007's `--buffer 25` is the dream *runner's* ring size — different flag, see --dream) | Sampler exclusion: training windows within B window-positions of a held window are excluded (adjacency distance on window indices, both span endpoints). Neutral: `--buffer 0` ≡ absent (chassis branch kept verbatim). |
 | `--log-level-hist` | E-013 | Layered only: records `level_hist` snapshots (level-population shares + cumulative per-component flips) every 100 steps and at the end. |
 | `--cooldown-noemb` | E-016 | Layered + `--cooldown`: embeddings (tok/pos/+head) form their own AdamW group whose lr/wd the schedule never scales. |
+
+## Kernel landings (2026-11-13, from kernels/RESULTS-KERNELS.md)
+
+| item | status | evidence |
+|---|---|---|
+| Complex-multiplication RoPE | **staging default** (replaces `rotated()`'s slice/stack body, same interface — no flag, per the kernel stream's recommendation) | Measured by the kernel stream: err 0.0 (bitwise) at champion + 2M shapes, 1.4–2.9× on the rope+attention path. Re-proven here in `flaglab/proof.py`: `rotated()` torch.equal at 3 shapes; full 12-step training runs (layered_half / plain_half / ste_half, rope on) bitwise identical per-step losses + held_init/held_final vs live train.py; cross-checked by flaglab/micro.py (Direct per-step state) and proof2.py (repeated-run determinism). |
+| `--vote-kernel fused` | **built** (Direct + Layered; default `current`) | The kernel stream's fused update: sign computed once, flip test `(t+s).clamp(-1,1) != t` replaced by the exactly-equivalent `(s != 0) & (t != s)`, flipped value written as `t + s`, counters updated in place. Measured err 0.0, 1.7–1.8× on the update block at champion size. Verified here: proof.py part 2 (per-step losses + full trainer state torch.equal across layered default / carry / comps-3-counter / leak and Direct plain / mag), micro.py leak case, and the verify.py `pairs` suite end-to-end through main(). |
+| `--matmul` (C-family: int matmul, TL2-style LUT) | **NOT built — measured and rejected by the kernel stream** | int32 matmul loses 1.7–14× and LUT loses 12–160× to plain fp32 `F.linear` in torch on this VM; a flag would only slow the mill down. The C-family entries naming a matmul variant stay deferred-by-measurement, not by missing code. |
+| `--attn` manual | **NOT built — measured and rejected** | Manual attention is exact (~2e-7) but 2–7× slower than SDPA at both shapes. |
+| `--rope-impl` | **covered** by the complex-RoPE staging default above | No separate flag needed; the winning implementation is simply what `rotated()` now is. |
 
 ## New arms (chassis: layered_half shape, 2 blocks, per the pool header)
 
