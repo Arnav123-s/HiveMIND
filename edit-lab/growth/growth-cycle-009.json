@@ -1,0 +1,1167 @@
+{
+ "cycle_id": "growth-cycle-009",
+ "date": "2026-11-13 18:50 UTC",
+ "targets": [
+  "wrong-operator/expression",
+  "off-by-one/index"
+ ],
+ "levers": [
+  "name-intent data family (Lever 1)",
+  "parent-initialized fine-tuning (Lever 2)",
+  "found-on-failure diet weighting (Fable)",
+  "recipe head-to-head at a fixed small budget, winner chosen on a DEV split of train data (Fable selection discipline)",
+  "breadth edit arm: thin full-network blend vs concentrated single-module edit (Fable: breadth beats concentration)",
+  "dream-first repair arm (improvised): parent repaired on difficulty-filtered verified dreams of its own measured failures, children seeded from the repaired parent",
+  "persistent champion recipe (Fable-study Build 1): one designated target per cycle races the champion against its one-gene mutant; a kept mutant birth with a positive dev margin crowns the mutation",
+  "learned-say check (Fable) — measured only"
+ ],
+ "strategy": "cycle3",
+ "champion": {
+  "designated_target": "off-by-one/index",
+  "version_before": 1,
+  "recipe_before": {
+   "epochs": 800,
+   "fmode": "text",
+   "hidden": 4,
+   "init_source": "parent",
+   "lr_scale": 1.0
+  },
+  "crowns_applied": [],
+  "note": "no crowns: the cycle rolled back — a rolled-back birth can never crown a recipe"
+ },
+ "novelty": {
+  "cycle_no": 9,
+  "intent_seed": 71370,
+  "pool_counts": {
+   "1": 30,
+   "2": 30,
+   "3": 34
+  },
+  "grid_seed": 345446011,
+  "scheme": "keyed by cycle number: intent-cap sampling seed + dream-pool band counts + seeded transforms of the candidate grid (epoch ladder steps, mixture leans, curriculum leans, occasional hidden-size changes). Legacy invocations (explicit --cycle-id, no --rotate) skip all of it and reproduce the cycle-1/2 grids and seeds exactly."
+ },
+ "battery_before": {
+  "classify-secret-line": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "score": 0.8611,
+   "status": "completed",
+   "detail": "composed 31/36 = 0.8611 (bar 0.80); per-class recalls {'clean': 0.8182, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  }
+ },
+ "battery_overall_before": 0.941,
+ "harvest": {
+  "wrong-operator/expression": {
+   "phase3_train_slice": {
+    "acc": 1.0,
+    "n": 32,
+    "wrong_n": 0,
+    "wrong_by_intent": {}
+   },
+   "intent_train_slice": {
+    "acc": 0.6803,
+    "n": 757,
+    "wrong_n": 242,
+    "wrong_by_intent": {
+     "remainder": 76,
+     "quotient": 17,
+     "difference": 16,
+     "product": 22,
+     "sum_pair": 54,
+     "max_of": 19,
+     "min_of": 18,
+     "minutes": 6,
+     "average_pair": 6,
+     "element_at": 6,
+     "average_list": 2
+    }
+   }
+  },
+  "off-by-one/index": {
+   "phase3_train_slice": {
+    "acc": 1.0,
+    "n": 41,
+    "wrong_n": 0,
+    "wrong_by_intent": {}
+   },
+   "intent_train_slice": {
+    "acc": 0.9115,
+    "n": 757,
+    "wrong_n": 67,
+    "wrong_by_intent": {
+     "max_of": 5,
+     "min_of": 3,
+     "first_two": 12,
+     "last_element": 6,
+     "first_k": 13,
+     "element_at": 14,
+     "last_two": 14
+    }
+   }
+  }
+ },
+ "learned_say": {
+  "judged_on": "phase-3 held set (spent confirm surface — measurement only, NOT pristine)",
+  "n": 29,
+  "composed_acc": {
+   "routed": 0.8276,
+   "mean": 0.7931,
+   "learned": 0.7931
+  },
+  "learned_weights": {
+   "off-by-one": {
+    "bug-off-by-one-model": 1.0,
+    "bug-off-by-one-harvest-model": 1.0
+   },
+   "wrong-operator": {
+    "bug-wrong-operator-model": 1.0,
+    "bug-wrong-operator-named-model": 1.0,
+    "bug-wrong-operator-harvest-model": 1.0
+   },
+   "swapped-operands": {
+    "bug-swapped-operands-model": 1.0,
+    "bug-swapped-operands-named-model": 1.0,
+    "bug-swapped-operands-harvest-model": 1.0
+   },
+   "mutable-default": {
+    "bug-mutable-default-model": 1.0
+   },
+   "missing-return": {
+    "bug-missing-return-model": 1.0
+   }
+  },
+  "adoption": "not decided in this cycle — a composition-rule change is a serving change and takes its own battery-gated step"
+ },
+ "attempts": [
+  {
+   "cls": "wrong-operator",
+   "slice": "expression",
+   "child": "bug-wrong-operator-expression-model",
+   "born": true,
+   "intent_train_n": 280,
+   "intent_train_pos": 120,
+   "failure_weighted_extra": 100,
+   "train_slice_n": 32,
+   "dream_slice_n": 74,
+   "train_child_n": 486,
+   "train_child_pos": 222,
+   "held_slice_n": 20,
+   "parent_slice_heldout_acc": 0.85,
+   "parent_intent_heldout_acc": 0.6326,
+   "intent_held_slice_n": 694,
+   "intent_held_slice_pos": 271,
+   "init_train_n": 571,
+   "methods": {
+    "headtohead": {
+     "budget_epochs": 120,
+     "dev_n": 97,
+     "fit_n": 389,
+     "recipes": [
+      {
+       "id": "scratch-text-h4",
+       "dev_acc": 0.8454,
+       "params": 3170
+      },
+      {
+       "id": "init-lr03",
+       "dev_acc": 0.7526,
+       "params": 2006
+      },
+      {
+       "id": "init-lr10",
+       "dev_acc": 0.7732,
+       "params": 2006
+      }
+     ],
+     "note": "recipes chosen on a DEV split of the target's TRAIN diet; the held slices never select",
+     "winner": "scratch-text-h4",
+     "winner_dev_acc": 0.8454
+    },
+    "breadth": {
+     "probe_epochs": 300,
+     "thin_alpha": 0.3,
+     "tensor_deltas": {
+      "w": 377.8262,
+      "b": 0.1807
+     },
+     "indicted_tensor": "w"
+    },
+    "dream_first": {
+     "note": "improvised arm: parent repaired on difficulty-filtered verified dreams of its own failures, then children seeded from the repaired parent",
+     "pool_n": 570,
+     "pool_clean_n": 202,
+     "dream_slice_n": 78,
+     "kept_n": 21,
+     "kept_hard_n": 14,
+     "kept_easy_n": 7,
+     "repair_epochs": 200,
+     "repair_diet_n": 271,
+     "parent_wrong_train_items": 200
+    },
+    "champion": {
+     "note": "persistent champion recipe (Fable-study Build 1): on the cycle's designated target, the champion and its one-gene mutant train at full budget as gate candidates; the crown reads DEV only and is applied by the cycle runner after serving verification",
+     "skipped": "not this cycle's designated champion target",
+     "mutant_born": false,
+     "champion_born": false
+    }
+   },
+   "attempts": [
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.8,
+     "params": 1632,
+     "intent_heldout_acc": 0.6643
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 1.0,
+     "params": 3274,
+     "intent_heldout_acc": 0.7363
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 6546,
+     "intent_heldout_acc": 0.7795
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.7,
+     "params": 222,
+     "intent_heldout_acc": 0.5014
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 454,
+     "intent_heldout_acc": 0.5115
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.75,
+     "params": 906,
+     "intent_heldout_acc": 0.5807
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.9,
+     "params": 2028,
+     "intent_heldout_acc": 0.6484
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 0.8,
+     "params": 2030,
+     "intent_heldout_acc": 0.6729
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.75,
+     "params": 2006,
+     "intent_heldout_acc": 0.6758
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 0.7,
+     "params": 2006,
+     "intent_heldout_acc": 0.6354
+    },
+    {
+     "arm": "recipe:scratch-text-h4",
+     "method": "recipe-headtohead",
+     "epochs": 800,
+     "lr_scale": null,
+     "fmode": "text",
+     "hidden": 4,
+     "slice_heldout_acc": 1.0,
+     "params": 3274,
+     "intent_heldout_acc": 0.7363
+    },
+    {
+     "arm": "breadth",
+     "method": "breadth-thin-edit",
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 0.8,
+     "params": 2046,
+     "intent_heldout_acc": 0.6441
+    },
+    {
+     "arm": "concentrated",
+     "method": "concentrated-edit-control",
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 0.75,
+     "params": 2046,
+     "intent_heldout_acc": 0.6686
+    },
+    {
+     "arm": "dream-first",
+     "method": "dream-first-repair",
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 0.8,
+     "params": 2030,
+     "intent_heldout_acc": 0.6671
+    },
+    {
+     "arm": "dream-first",
+     "method": "dream-first-repair",
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 0.7,
+     "params": 2008,
+     "intent_heldout_acc": 0.6441
+    }
+   ],
+   "child_slice_heldout_acc": 1.0,
+   "winning_arm": "scratch",
+   "child_intent_heldout_acc": 0.7363,
+   "child_remainder_heldout_acc": 0.6667,
+   "parent_remainder_heldout_acc": 1.0,
+   "adopted_file": "coding/swarm/models/bug-wrong-operator-expression-model.json",
+   "composed_reference_after_birth": {
+    "acc": 0.8621,
+    "recall": {
+     "off-by-one": 1.0,
+     "missing-return": 1.0,
+     "clean": 0.9,
+     "swapped-operands": 0.6667,
+     "wrong-operator": 0.6667,
+     "mutable-default": 1.0
+    },
+    "pristine": false
+   },
+   "gate3_prime": {
+    "gate": "Gate 3′ — full serving path (composer + waking-dream refresh) on the say_dev pool, child vs parent, pre-adoption",
+    "pool": "factory/say_dev.json (216 items, dev only — the sealed set is never spent here)",
+    "child_snapshot": "gate3/bug-wrong-operator-expression-model.json",
+    "child_snapshot_sha256": "9730a36b7a049b4762d4234cce4d4d7fa370a462d4586295e36cce5c5c6311b6",
+    "child": {
+     "n": 216,
+     "served_acc": 0.625,
+     "served_right": 135,
+     "served_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.6,
+      "swapped-operands": 0.6875,
+      "wrong-operator": 0.3673,
+      "clean": 0.7,
+      "mutable-default": 0.8
+     },
+     "served_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 33
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 11
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 18
+      },
+      "clean": {
+       "n": 70,
+       "right": 49
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 4
+      }
+     },
+     "raw_acc": 0.5463,
+     "raw_right": 118,
+     "raw_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.4364,
+      "swapped-operands": 0.125,
+      "wrong-operator": 0.3469,
+      "clean": 0.7571,
+      "mutable-default": 0.4
+     },
+     "raw_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 24
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 2
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 17
+      },
+      "clean": {
+       "n": 70,
+       "right": 53
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 2
+      }
+     }
+    },
+    "parent": {
+     "n": 216,
+     "served_acc": 0.5463,
+     "served_right": 118,
+     "served_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.5273,
+      "swapped-operands": 0.6875,
+      "wrong-operator": 0.4082,
+      "clean": 0.4857,
+      "mutable-default": 0.8
+     },
+     "served_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 29
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 11
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 20
+      },
+      "clean": {
+       "n": 70,
+       "right": 34
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 4
+      }
+     },
+     "raw_acc": 0.4676,
+     "raw_right": 101,
+     "raw_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.3636,
+      "swapped-operands": 0.125,
+      "wrong-operator": 0.3878,
+      "clean": 0.5429,
+      "mutable-default": 0.4
+     },
+     "raw_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 20
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 2
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 19
+      },
+      "clean": {
+       "n": 70,
+       "right": 38
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 2
+      }
+     }
+    },
+    "verdict": "kept"
+   },
+   "intent_train_capped_n": 280
+  },
+  {
+   "cls": "off-by-one",
+   "slice": "index",
+   "child": "bug-off-by-one-index-model",
+   "born": false,
+   "intent_train_n": 228,
+   "intent_train_pos": 68,
+   "failure_weighted_extra": 114,
+   "train_slice_n": 41,
+   "dream_slice_n": 204,
+   "train_child_n": 587,
+   "train_child_pos": 228,
+   "held_slice_n": 20,
+   "parent_slice_heldout_acc": 0.95,
+   "parent_intent_heldout_acc": 0.9566,
+   "intent_held_slice_n": 692,
+   "intent_held_slice_pos": 36,
+   "init_train_n": 672,
+   "methods": {
+    "headtohead": {
+     "budget_epochs": 120,
+     "dev_n": 118,
+     "fit_n": 469,
+     "recipes": [
+      {
+       "id": "scratch-text-h4",
+       "dev_acc": 0.9831,
+       "params": 3614
+      },
+      {
+       "id": "init-lr03",
+       "dev_acc": 0.9831,
+       "params": 2066
+      },
+      {
+       "id": "init-lr10",
+       "dev_acc": 1.0,
+       "params": 2066
+      }
+     ],
+     "note": "recipes chosen on a DEV split of the target's TRAIN diet; the held slices never select",
+     "winner": "init-lr10",
+     "winner_dev_acc": 1.0
+    },
+    "breadth": {
+     "probe_epochs": 300,
+     "thin_alpha": 0.3,
+     "tensor_deltas": {
+      "w": 268.5342,
+      "b": 0.046
+     },
+     "indicted_tensor": "w"
+    },
+    "dream_first": {
+     "note": "improvised arm: parent repaired on difficulty-filtered verified dreams of its own failures, then children seeded from the repaired parent",
+     "pool_n": 570,
+     "pool_clean_n": 202,
+     "dream_slice_n": 202,
+     "kept_n": 48,
+     "kept_hard_n": 46,
+     "kept_easy_n": 2,
+     "repair_epochs": 200,
+     "repair_diet_n": 326,
+     "parent_wrong_train_items": 228
+    },
+    "champion": {
+     "note": "persistent champion recipe (Fable-study Build 1): on the cycle's designated target, the champion and its one-gene mutant train at full budget as gate candidates; the crown reads DEV only and is applied by the cycle runner after serving verification",
+     "version": 1,
+     "recipe": {
+      "epochs": 800,
+      "fmode": "text",
+      "hidden": 4,
+      "init_source": "parent",
+      "lr_scale": 1.0
+     },
+     "mutation": {
+      "gene": "epochs",
+      "from": 800,
+      "to": 300
+     },
+     "mutant_recipe": {
+      "epochs": 300,
+      "fmode": "text",
+      "hidden": 4,
+      "init_source": "parent",
+      "lr_scale": 1.0
+     },
+     "champ_dev_acc": 1.0,
+     "mutant_dev_acc": 0.9915,
+     "dev_margin": -0.0085,
+     "mutant_born": false,
+     "champion_born": false
+    }
+   },
+   "attempts": [
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.95,
+     "params": 1856,
+     "intent_heldout_acc": 0.9957
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.7,
+     "params": 3722,
+     "intent_heldout_acc": 0.8815
+    },
+    {
+     "arm": "scratch",
+     "fmode": "text",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 1.0,
+     "params": 7442,
+     "intent_heldout_acc": 0.9957
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 254,
+     "intent_heldout_acc": 0.9523
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 4,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.85,
+     "params": 518,
+     "intent_heldout_acc": 0.9783
+    },
+    {
+     "arm": "scratch",
+     "fmode": "code",
+     "hidden": 8,
+     "epochs": 800,
+     "lr_scale": null,
+     "slice_heldout_acc": 0.9,
+     "params": 1034,
+     "intent_heldout_acc": 0.974
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 0.9,
+     "params": 2072,
+     "intent_heldout_acc": 0.9899
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9884
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9884
+    },
+    {
+     "arm": "init",
+     "fmode": "text",
+     "hidden": 0,
+     "epochs": 800,
+     "lr_scale": 1.0,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9942
+    },
+    {
+     "arm": "recipe:init-lr10",
+     "method": "recipe-headtohead",
+     "epochs": 800,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9942
+    },
+    {
+     "arm": "breadth",
+     "method": "breadth-thin-edit",
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 0.95,
+     "params": 2072,
+     "intent_heldout_acc": 0.9697
+    },
+    {
+     "arm": "concentrated",
+     "method": "concentrated-edit-control",
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9884
+    },
+    {
+     "arm": "dream-first",
+     "method": "dream-first-repair",
+     "epochs": 300,
+     "lr_scale": 0.3,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 1.0,
+     "params": 2096,
+     "intent_heldout_acc": 0.9942
+    },
+    {
+     "arm": "dream-first",
+     "method": "dream-first-repair",
+     "epochs": 800,
+     "lr_scale": 0.3,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 1.0,
+     "params": 2076,
+     "intent_heldout_acc": 0.9957
+    },
+    {
+     "arm": "champion",
+     "method": "champion-recipe",
+     "epochs": 800,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9942
+    },
+    {
+     "arm": "champion-mutant",
+     "method": "champion-recipe",
+     "epochs": 300,
+     "lr_scale": 1.0,
+     "fmode": "text",
+     "hidden": 0,
+     "slice_heldout_acc": 1.0,
+     "params": 2072,
+     "intent_heldout_acc": 0.9884
+    }
+   ],
+   "child_slice_heldout_acc": 1.0,
+   "winning_arm": "dream-first",
+   "child_intent_heldout_acc": 0.9957,
+   "child_remainder_heldout_acc": 0.6667,
+   "parent_remainder_heldout_acc": 0.8889,
+   "adopted_file": "coding/swarm/models/bug-off-by-one-index-model.json",
+   "composed_reference_after_birth": {
+    "acc": 0.8621,
+    "recall": {
+     "off-by-one": 1.0,
+     "missing-return": 1.0,
+     "clean": 0.9,
+     "swapped-operands": 0.6667,
+     "wrong-operator": 0.6667,
+     "mutable-default": 1.0
+    },
+    "pristine": false
+   },
+   "gate3_prime": {
+    "gate": "Gate 3′ — full serving path (composer + waking-dream refresh) on the say_dev pool, child vs parent, pre-adoption",
+    "pool": "factory/say_dev.json (216 items, dev only — the sealed set is never spent here)",
+    "child_snapshot": "gate3/bug-off-by-one-index-model.json",
+    "child_snapshot_sha256": "cee6e74ce1da4668ffb4504d309711f19614d1b6dc65f9b872a7710fb1c7645f",
+    "child": {
+     "n": 216,
+     "served_acc": 0.6157,
+     "served_right": 133,
+     "served_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.5455,
+      "swapped-operands": 0.6875,
+      "wrong-operator": 0.3469,
+      "clean": 0.7286,
+      "mutable-default": 0.8
+     },
+     "served_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 30
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 11
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 17
+      },
+      "clean": {
+       "n": 70,
+       "right": 51
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 4
+      }
+     },
+     "raw_acc": 0.5556,
+     "raw_right": 120,
+     "raw_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.4182,
+      "swapped-operands": 0.125,
+      "wrong-operator": 0.3469,
+      "clean": 0.8,
+      "mutable-default": 0.4
+     },
+     "raw_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 23
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 2
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 17
+      },
+      "clean": {
+       "n": 70,
+       "right": 56
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 2
+      }
+     }
+    },
+    "parent": {
+     "n": 216,
+     "served_acc": 0.625,
+     "served_right": 135,
+     "served_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.6,
+      "swapped-operands": 0.6875,
+      "wrong-operator": 0.3673,
+      "clean": 0.7,
+      "mutable-default": 0.8
+     },
+     "served_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 33
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 11
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 18
+      },
+      "clean": {
+       "n": 70,
+       "right": 49
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 4
+      }
+     },
+     "raw_acc": 0.5463,
+     "raw_right": 118,
+     "raw_per_class_recall": {
+      "missing-return": 0.9524,
+      "off-by-one": 0.4364,
+      "swapped-operands": 0.125,
+      "wrong-operator": 0.3469,
+      "clean": 0.7571,
+      "mutable-default": 0.4
+     },
+     "raw_per_class": {
+      "missing-return": {
+       "n": 21,
+       "right": 20
+      },
+      "off-by-one": {
+       "n": 55,
+       "right": 24
+      },
+      "swapped-operands": {
+       "n": 16,
+       "right": 2
+      },
+      "wrong-operator": {
+       "n": 49,
+       "right": 17
+      },
+      "clean": {
+       "n": 70,
+       "right": 53
+      },
+      "mutable-default": {
+       "n": 5,
+       "right": 2
+      }
+     }
+    },
+    "verdict": "blocked",
+    "reason": "serving-dev total fell 135/216 (0.625) -> 133/216 (0.6157)"
+   },
+   "rejection": "Gate 3′ blocked the birth (the dual pristine gate had passed): serving-dev total fell 135/216 (0.625) -> 133/216 (0.6157). Serving state untouched — the child model file and composer config were restored from pre-attempt byte snapshots before any registry rewrite; no rollback was involved.",
+   "intent_train_capped_n": 228
+  }
+ ],
+ "rolled_back": true,
+ "sealed_raw_composed": {
+  "served_sealed_before": 0.8611,
+  "raw_composed_before": 0.5,
+  "raw_composed_after": 0.5278,
+  "per_class_recall_after": {
+   "wrong-operator": 0.5,
+   "mutable-default": 0.5,
+   "off-by-one": 0.3333,
+   "clean": 0.5455,
+   "missing-return": 1.0,
+   "swapped-operands": 0.0
+  },
+  "note": "the battery line is the SERVED (waking-dream) number; the raw composed number is the audit's baseline leg, re-recorded by the growth judge"
+ },
+ "waking_dream_refresh": {
+  "acc": 0.8333,
+  "raw_composed_acc": 0.5278,
+  "per_class_recall": {
+   "wrong-operator": 0.9,
+   "mutable-default": 1.0,
+   "off-by-one": 0.6667,
+   "clean": 0.7273,
+   "missing-return": 1.0,
+   "swapped-operands": 1.0
+  }
+ },
+ "battery_after": {
+  "classify-secret-line": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "10/12 correct (bar 9); wrong: [{\"want\": \"secret\", \"got\": \"benign\", \"text\": \"db_password = 'Tr0pic!Thunder#42'\"}, {\"want\": \"secret\", \"got\": \"benign\", \"text\": \"private_key = \\\"-----BEGIN RSA PRIVATE KEY-----\\\"\"}]"
+  },
+  "classify-error-class": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-commit-type": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "12/12 correct (bar 9); wrong: []"
+  },
+  "classify-contract-judgment": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct (bar 9); wrong: [{\"want\": \"ok\", \"got\": \"no-empty-guard\", \"text\": \"def total(xs):\\n    if xs is None:\\n        return 0\\n    if le\"}]"
+  },
+  "classify-gap-move": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "10/10 correct (bar 6); wrong: []"
+  },
+  "bug-pattern-composed-sealed-v2": {
+   "score": 0.8333,
+   "status": "completed",
+   "detail": "composed 30/36 = 0.8333 (bar 0.80); per-class recalls {'clean': 0.7273, 'missing-return': 1.0, 'mutable-default': 1.0, 'off-by-one': 0.6667, 'swapped-operands': 1.0, 'wrong-operator': 0.9}"
+  },
+  "classify-secret-line-ternary": {
+   "score": 0.9167,
+   "status": "completed",
+   "detail": "11/12 correct on the secret battery items (bar 9, informational: this measures the substrate alternate, not the serving default)"
+  },
+  "tiny-hive-ops": {
+   "score": 1.0,
+   "status": "completed",
+   "detail": "21/21 in-domain ops exact; fails: []; out-of-domain probes refused as: ['out_of_domain', 'out_of_domain', 'out_of_domain'] (fail-closed by design)"
+  }
+ },
+ "battery_overall_after": 0.9375,
+ "audit": {
+  "ok": true,
+  "failures": [],
+  "score_checks": [
+   {
+    "artifact": "secret-line-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "secret-line-model:substrate-heldout",
+    "measured": 0.9385,
+    "recorded": 0.9385,
+    "ok": true
+   },
+   {
+    "artifact": "error-class-model:serving-heldout",
+    "measured": 0.9833,
+    "recorded": 0.9833,
+    "ok": true
+   },
+   {
+    "artifact": "commit-type-model:serving-heldout",
+    "measured": 0.9625,
+    "recorded": 0.9625,
+    "ok": true
+   },
+   {
+    "artifact": "contract-judgment-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "gap-move-model:serving-heldout",
+    "measured": 0.9444,
+    "recorded": 0.9444,
+    "ok": true
+   },
+   {
+    "artifact": "sec-code-model:serving-heldout",
+    "measured": 0.972,
+    "recorded": 0.972,
+    "ok": true
+   },
+   {
+    "artifact": "sql-statement-model:serving-heldout",
+    "measured": 1.0,
+    "recorded": 1.0,
+    "ok": true
+   },
+   {
+    "artifact": "bug-pattern-composed:sealed-baseline",
+    "measured": 0.5,
+    "recorded": 0.5,
+    "ok": true
+   },
+   {
+    "artifact": "bug-pattern-composed:serving-layer-sealed",
+    "measured": 0.8611,
+    "recorded": 0.8611,
+    "ok": true
+   }
+  ]
+ },
+ "rollback_reason": "serving verification failed: bug-pattern-composed-sealed-v2: 0.8611 -> 0.8333; audit failures: [{'artifact': 'bug-pattern-composed:sealed-baseline', 'failure': 'score drift: measured 0.5278 vs recorded 0.5'}]",
+ "next_attack": "First cycle under the methods upgrade: read the per-candidate table — which arm (recipe / breadth / concentrated / dream-first vs the standing scratch+init grid) produced each target's best dual-gate candidate names where the next cycle pushes. An arm that never produces a competitive candidate across both targets is dropped from the grid rather than re-proved forever; a winning recipe becomes the next cycle's declared default candidate shape. The accumulator/comparison/range surfaces sealed for the earlier plan remain available when a target's binding bar is judge size, not candidate quality.",
+ "wall_seconds": 406.4
+}
