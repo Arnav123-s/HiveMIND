@@ -40,5 +40,19 @@
   "minutes": 20.0,
   "train_last": 3.0425,
   "weights": 3505152
+ },
+ "as built in, 6420 block-steps, start 0": {
+  "gate": 3.1017,
+  "steps": 1605,
+  "minutes": 24.6,
+  "train_last": 3.0529,
+  "weights": 2615424
+ },
+ "six blocks, 6420 block-steps, start 0": {
+  "gate": 3.2837,
+  "steps": 1070,
+  "minutes": 18.2,
+  "train_last": 3.2409,
+  "weights": 3505152
  }
 }

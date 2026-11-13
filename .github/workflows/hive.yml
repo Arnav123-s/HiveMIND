@@ -64,8 +64,8 @@ jobs:
         if: ${{ !cancelled() && steps.fetched.outcome == 'success' }}
         run: |
           python training/hive_state.py log
-          git config user.name "hive"
-          git config user.email "hive@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/hive_growth.jsonl
           git commit -q -m "The hive took a turn" || exit 0
           git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true
