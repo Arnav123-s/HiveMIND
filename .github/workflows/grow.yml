@@ -1,0 +1,32 @@
+# The hive teaches its own members (training/grow.py). This file only makes the workflow known to GitHub so that it
+# can be started on the branch where it is being measured (make-it-work holds the real one). Once a generation
+# has been measured there, the real workflow replaces this one.
+name: The hive teaches its own members
+
+on:
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: "Practice runners, as a JSON list"
+        default: "[1,2,3,4,5,6]"
+      tasks:
+        description: "Practice tasks on each runner"
+        default: "16"
+      who:
+        description: "Who practises"
+        default: ""
+      epochs:
+        description: "Passes over the rows when training"
+        default: "2"
+      skip_practice:
+        description: "1: train from the rows already in the release"
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  note:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Start this workflow on the branch make-it-work until it is merged."
