@@ -17,9 +17,13 @@ runs:
       run: |
         pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
         pip install --quiet -r requirements.txt
-        CMAKE_ARGS="-DGGML_NATIVE=ON" pip install --quiet llama-cpp-python==0.3.36
-        python -m playwright install --with-deps chromium
-        python training/cells_build.py
+        # HIVE_LIGHT: every member is a ternary model on its own runtime and the roles are not asked, so the 4-bit
+        # engine (ten minutes to compile), the browser and the cells are left out
+        if [ -z "$HIVE_LIGHT" ]; then
+          CMAKE_ARGS="-DGGML_NATIVE=ON" pip install --quiet llama-cpp-python==0.3.36
+          python -m playwright install --with-deps chromium
+          python training/cells_build.py
+        fi
     - name: The hive's own models (the 4-bit files of llama.cpp), fetched now and made the only engine
       shell: bash
       run: |
@@ -28,7 +32,7 @@ runs:
         # ran that way: seed 9010, members alone, same code: 6 of 16 in 96 minutes there, 12 of 16 in 24 minutes on
         # a machine that had the files.
         echo "AGENT_TEAM_ENGINE=gguf" >> "$GITHUB_ENV"
-        if [ -n "$HIVE_MEMBERS" ] && [ -n "$AGENT_TEAM_SOLO_ALONE" ] && ! echo "$HIVE_MEMBERS" | grep -q coder; then
+        if [ -n "$HIVE_LIGHT" ] || { [ -n "$HIVE_MEMBERS" ] && [ -n "$AGENT_TEAM_SOLO_ALONE" ] && ! echo "$HIVE_MEMBERS" | grep -q coder; }; then
           echo "every member is a ternary model and the roles are not asked: the 4-bit files are not fetched"
         else
           AGENT_TEAM_ENGINE=gguf python -c "from team import llm, config; print('engine ready:', llm.gguf_available(), sorted(set(config.GGUF_ROSTER.values())))"

@@ -52,21 +52,29 @@ def binary():
     return Path(os.environ.get("HIVE_TERNARY_BIN", HOME / "ik_llama.cpp" / "build" / "bin" / "llama-server"))
 
 
-def install(log=print):
-    """Build the runtime for this machine's CPU. Skipped when the binary is there."""
-    if binary().exists():
-        return binary()
+def source():
+    """The runtime's source at the pinned commit (the build needs it, and so does turning a trained edit into a file
+    the runtime reads: convert_lora_to_gguf.py)."""
     src = HOME / "ik_llama.cpp"
+    if (src / "convert_lora_to_gguf.py").exists():
+        return src
     HOME.mkdir(parents=True, exist_ok=True)
     if not (src / ".git").exists():
         subprocess.run(["git", "init", "-q", str(src)], check=True)
         subprocess.run(["git", "-C", str(src), "remote", "add", "origin", RUNTIME], check=True)
     subprocess.run(["git", "-C", str(src), "fetch", "-q", "--depth", "1", "origin", PIN], check=True)
     subprocess.run(["git", "-C", str(src), "checkout", "-q", "FETCH_HEAD"], check=True)
+    return src
+
+
+def install(log=print):
+    """Build the runtime for this machine's CPU. Skipped when the binary is there."""
+    if binary().exists():
+        return binary()
+    src = source()
     log("ternary: building the runtime (about 25 minutes on 4 cores)")
     subprocess.run(["cmake", "-S", str(src), "-B", str(src / "build"), "-DCMAKE_BUILD_TYPE=Release", "-DGGML_NATIVE=ON", "-DLLAMA_CURL=OFF",
-                    "-DBUILD_SHARED_LIBS=OFF"],
-                   check=True, stdout=subprocess.DEVNULL)
+                    "-DBUILD_SHARED_LIBS=OFF"], check=True, stdout=subprocess.DEVNULL)
     subprocess.run(["cmake", "--build", str(src / "build"), "--config", "Release", "-j", str(os.cpu_count() or 4), "--target", "llama-server"],
                    check=True, stdout=subprocess.DEVNULL)
     return binary()
@@ -170,10 +178,21 @@ def stop():
     subprocess.run(["pkill", "-f", str(binary())], check=False)
 
 
+ROSTER = Path(__file__).resolve().parent.parent / "cells" / "roster.json"
+
+
 def roster():
-    """Who sits where: HIVE_MEMBERS=t9,t9,t4 (the last one named also takes every later seat). 'coder' is the hive's
-    7B coder at 4 bits through llama.cpp, as before. Empty: every member is 'coder'."""
-    return [w.strip() for w in os.environ.get("HIVE_MEMBERS", "").split(",") if w.strip()]
+    """Who sits where. HIVE_MEMBERS=t9,t9,t4 says it for one run (the last one named also takes every later seat;
+    'coder' is the hive's 7B coder at 4 bits through llama.cpp, as before). Without it: the roster the hive holds in
+    cells/roster.json, which its own nightly gate changes (training/grow.py), on a machine where the ternary runtime
+    is built; otherwise every member is 'coder'."""
+    who = [w.strip() for w in os.environ.get("HIVE_MEMBERS", "").split(",") if w.strip()]
+    if not who and binary().exists():
+        try:
+            who = [w.strip() for w in json.loads(ROSTER.read_text())["members"].split(",") if w.strip()]
+        except (OSError, ValueError, KeyError):
+            who = []
+    return who
 
 
 def seat(n):

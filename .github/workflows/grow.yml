@@ -1,0 +1,209 @@
+# The hive teaches its own members, with nobody there (training/grow.py).
+#
+#   practice   several runners at once: the hive's members do fresh tasks that are never an exam's. A task counts
+#              only when two members agreed and the task's own check, computed by code, confirms the answer.
+#   train      a small weight edit (LoRA) of the 1.7B ternary member from everything checked so far, on a CPU.
+#   gate       fresh exam seeds nobody has seen, sat four ways side by side: the 1.7B as it was published, the
+#              1.7B with the new edit, the hive as it stands, and the hive with the new member in the first seat.
+#   record     a job that runs no model and no code the hive wrote. It keeps the edit and the rows in the
+#              release "hive-grown", writes the numbers into training/reports/generations.jsonl, and changes
+#              the roster (cells/roster.json) only when the numbers say the hive got better.
+#
+# Every night, and by hand from the Actions tab. The jobs that run models have no token that can write anywhere.
+name: The hive teaches its own members
+
+on:
+  schedule:
+    - cron: "17 1 * * *"
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: "Practice runners, as a JSON list"
+        default: "[1,2,3,4,5,6]"
+      tasks:
+        description: "Practice tasks on each runner"
+        default: "12"
+      who:
+        description: "Who practises (empty: the roster in cells/roster.json)"
+        default: ""
+      epochs:
+        description: "Passes over the rows when training"
+        default: "2"
+      skip_practice:
+        description: "1: train from the rows already in the release, no new practice"
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: grow
+  cancel-in-progress: false
+
+env:
+  HIVE_LIGHT: "1"
+  AGENT_TEAM_SOLO: "2"
+  AGENT_TEAM_SOLO_ALONE: "1"
+  NAME: gen${{ github.run_number }}
+
+jobs:
+  practice:
+    if: ${{ !inputs.skip_practice }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(inputs.shards || '[1,2,3,4,5,6]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Who practises
+        run: echo "HIVE_MEMBERS=${WHO:-$(python3 -c "import json; print(json.load(open('cells/roster.json'))['members'])")}" >> "$GITHUB_ENV"
+        env:
+          WHO: ${{ inputs.who || '' }}
+      - uses: ./.github/actions/hive
+      - name: Practice
+        run: |
+          python training/grow.py fetch
+          python training/grow.py practice --seed $((10000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "${{ inputs.tasks || '12' }}" --level hard --out rows.jsonl | tee practice.txt
+          tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: rows-${{ matrix.shard }}
+          path: rows.jsonl
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: practice-work-${{ matrix.shard }}
+          path: |
+            runs/exam/**/TASK.md
+            runs/exam/**/REPORT.md
+            runs/exam/**/exam.json
+            runs/exam/**/member*_*.py
+            runs/exam/**/.member*_*.py.out
+            runs/exam/**/.member*_*.py.err
+          include-hidden-files: true
+          retention-days: 14
+
+  train:
+    needs: practice
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - name: Room for the weights
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL || true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: What training needs
+        run: |
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet -r requirements.txt
+          python -c "from team import ternary; ternary.source()"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rows-*
+          path: new
+      - name: Every row checked so far (the release holds those of earlier nights)
+        run: |
+          curl -sfL -o old.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/rows.jsonl" || : > old.jsonl
+          cat old.jsonl new/*/rows.jsonl > all.jsonl 2>/dev/null || cp old.jsonl all.jsonl
+          echo "rows: $(wc -l < old.jsonl) from earlier nights, $(cat new/*/rows.jsonl 2>/dev/null | wc -l) new" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Train the member
+        run: |
+          python training/grow.py train --rows all.jsonl --name "$NAME" --epochs "${{ inputs.epochs || '2' }}" --minutes 270 | tee train.txt
+          mkdir out && cp cells/members/t17+$NAME.gguf out/t17.$NAME.gguf && cp cells/members/t17+$NAME.json out/t17.$NAME.json && cp all.jsonl out/rows.jsonl
+          cat out/t17.$NAME.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: member
+          path: out/
+          retention-days: 30
+
+  gate:
+    needs: train
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: [as-published, taught, hive, hive-with-taught]
+        seed: [1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: member
+          path: got
+      - name: Who sits (the arm)
+        run: |
+          mkdir -p cells/members && cp got/t17.$NAME.gguf "cells/members/t17+$NAME.gguf"
+          HIVE=$(python3 -c "import json; print(json.load(open('cells/roster.json'))['members'])")
+          case "${{ matrix.arm }}" in
+            as-published) WHO=t17 ;;
+            taught) WHO="t17+$NAME" ;;
+            hive) WHO="$HIVE" ;;
+            hive-with-taught) WHO="t17+$NAME,$(echo "$HIVE" | sed 's/t17+[^,]*,//')" ;;
+          esac
+          echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
+      - uses: ./.github/actions/hive
+      - name: A fresh exam of the hard kinds
+        run: |
+          python training/grow.py fetch
+          python training/exam.py sit --level hard --tasks 13 --seed $((20000000 + ${{ github.run_number }} * 10 + ${{ matrix.seed }})) --empty-memory
+          cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: gate-${{ matrix.arm }}-${{ matrix.seed }}
+          path: training/reports/exams/*.json
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: gate-work-${{ matrix.arm }}-${{ matrix.seed }}
+          path: |
+            runs/exam/**/TASK.md
+            runs/exam/**/REPORT.md
+            runs/exam/**/exam.json
+            runs/exam/**/member*_*.py
+            runs/exam/**/.member*_*.py.out
+            runs/exam/**/.member*_*.py.err
+          include-hidden-files: true
+          retention-days: 14
+
+  record:
+    needs: gate
+    if: ${{ !cancelled() && needs.train.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: member
+          path: got
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gate-*-[0-9]
+          path: gate
+      - name: The numbers decide (only numbers and names this repository knows are taken from the other jobs)
+        run: python3 training/grow_record.py gate got "$NAME" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Keep the member and the rows in the release, the numbers and the roster in the repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive taught itself" --notes "Weight edits of the hive's ternary members and the checked rows they were trained on (training/grow.py). Machine-made every night." --latest=false
+          gh release upload hive-grown got/t17.$NAME.gguf got/t17.$NAME.json got/rows.jsonl --clobber
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add training/reports/generations.jsonl cells/roster.json
+          git commit -q -m "The hive taught a member: $NAME" || exit 0
+          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push -q origin "HEAD:${GITHUB_REF_NAME}" || echo "the record could not be pushed"

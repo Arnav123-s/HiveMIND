@@ -11,6 +11,31 @@ first). Setting up a fresh cloud environment: `NEW_SESSION.md`.
 
 ---
 
+## 0. NEW, 2026-11-13 evening (a session on a fresh machine; read this block before the rest)
+
+**The finding that changes the plan: capable ternary (1.58-bit) models already exist, and run fast on a plain CPU.**
+Nobody has to grow them from nothing.
+
+- `prism-ml/Ternary-Bonsai-2-{2B,4B,9B,27B}-gguf` (Apache-2.0, September 2026; built on Qwen3.5/3.8) and
+  `prism-ml/Ternary-Bonsai-1.7B` (its full weights are published as `-unpacked`, so it can be trained).
+- The runtime is **ik_llama.cpp** (pinned in `team/ternary.py`), about 25 minutes to build, then kept in the
+  Actions cache. Measured here (4 cores, AVX-512, the members' own 608-piece prompt, `-rtr`):
+  2B 1.0 GB 27 pieces/s; 4B 1.9 GB 12/s; 9B 3.0 GB 7/s (the 7B coder at 4 bits: 5 GB, 3 to 4/s).
+- Microsoft's `bitnet-b1.58-2B-4T` is sound: in PyTorch from its original weights it answers correctly (0.7
+  pieces/s, 10 GB). Its failure before was Microsoft's runtime. On ik_llama.cpp it is member `bitnet`.
+- `team/ternary.py` serves these models; `HIVE_MEMBERS=t9,t9,t4` seats them in `team/solo.py`;
+  `cells/roster.json` is the standing roster where the runtime is built.
+- **A weight edit of a ternary member works end to end on a CPU**: LoRA in PyTorch on the 1.7B's unpacked
+  weights (about 6 s per 1000-piece row here), converted to a 39 MB GGUF adapter, loaded by the runtime beside
+  the 0.43 GB packed base (`t17+<name>`). Checked with a toy edit: the member answers as trained.
+- `training/exam_hard.py`: 13 hard kinds (`--level hard`); four kinds are never practised (`HELD_OUT`).
+- `training/grow.py` + `.github/workflows/grow.yml` + `training/grow_record.py`: practice -> checked rows ->
+  train the 1.7B -> gate on fresh seeds (four arms) -> roster. **Written, not yet run end to end on GitHub.**
+- Dev seeds (read, for finding faults only): hard 7001, 7002; practice 10000001. Claims need other seeds.
+- This machine reaches quotes/books.toscrape.com and Hugging Face; GitHub release pages are not reachable from it.
+
+---
+
 ## 1. The goal (Arnav's, in his words, condensed)
 
 HiveMIND is "a hiveminded entity": many small models (BitNets above all) acting as one, CPU only, that can "do
