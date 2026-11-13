@@ -148,13 +148,15 @@ TYPED = ("That is an answer typed out, not a program. Typed answers are often wr
          "that can be worked out (for example word[::-1], 13 * 5) and prints each result on its own line.")
 
 
-def is_program(text):
-    """Text that parses as Python and calls something. "A: 65" on a line is Python too (an annotation), but text
-    that calls nothing prints nothing."""
+def typed_out(reply, code):
+    """Is the reply an answer typed out and not a program? Text that does not parse and came without a code fence;
+    or text that parses but calls nothing ("A: 65" on a line is Python too, an annotation; in a fence or out of
+    one, text that calls nothing prints nothing)."""
     try:
-        return any(isinstance(x, ast.Call) for x in ast.walk(ast.parse(text)))
+        tree = ast.parse(code)
     except (SyntaxError, ValueError):
-        return False
+        return "```" not in reply
+    return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
 
 
 def member(task, n, board, guard, work, temperature):
@@ -171,7 +173,7 @@ def member(task, n, board, guard, work, temperature):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
-    good, last_error, repeats, turn, typed = None, None, 0, 0, 0
+    good, last_error, repeats, turn, typed, looking = None, None, 0, 0, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
         if bitnet.is_member(n):  # this member is another model: the published 2.4B BitNet (team/bitnet.py)
@@ -192,7 +194,7 @@ def member(task, n, board, guard, work, temperature):
             messages += [{"role": "assistant", "content": reply.strip()[:200]},
                          {"role": "user", "content": "No program of yours has printed an answer yet. Reply with a complete program."}]
             continue
-        if "```" not in reply and not is_program(code):
+        if typed_out(reply, code):
             # Seen on "multiply 13 by 5; write 'garden' backwards; name the capital": every member typed the three
             # answers out ("B: dnarg"), the text was run as a program, failed the same way twice, and the member stopped.
             typed += 1
@@ -214,6 +216,13 @@ def member(task, n, board, guard, work, temperature):
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
+        if res["returncode"] == 0 and out and looking and "[:800]" in code:
+            # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
+            # members ended with a dump of JSON, one of them the source's own error message, as their answer)
+            looking, last_error = False, None
+            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\nThat is what is really there. Now reply "
+                             "with the complete program that prints the answer to the TASK."})
+            continue
         if res["returncode"] == 0 and out:
             good, last_error = {"answer": out[-3000:], "program": code}, None
             messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n{MORE}"})
@@ -225,6 +234,7 @@ def member(task, n, board, guard, work, temperature):
             break
         last_error = line
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
+        looking = bool(LOOK.search(err or out))
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
             "\n\nWhat you expected is not there. Reply with a program that only fetches the data and prints what IS "
             "there, with print(str(data)[:800]), so that you can see its real shape." if LOOK.search(err or out) else

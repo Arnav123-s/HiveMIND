@@ -1755,6 +1755,10 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
     out = solo.run("When was the latest httpx released?", tmp_path / "e", "never", members=1)
     assert "706 days ago" in out["report"] and "prints what IS" in asked[1]       # a printed failure is no answer; it is told to look
+    asked, left = [], ["print({}['info'])", "print(str({'releases': 1})[:800])", "DONE", "print('released 2024-12-06')", "DONE"]
+    out = solo.run("When was the latest httpx released?", tmp_path / "e2", "never", members=1)
+    assert "2024-12-06" in out["report"] and "releases" not in out["report"].split("\n## ")[0] and "really there" in asked[2]  # what a look printed is not the answer
+    assert solo.typed_out("```\nA: 65\nB: dnarg\n```", "A: 65\nB: dnarg") and not solo.typed_out("```python\nprint(1\n```", "print(1") and solo.typed_out("It is 65.", "It is 65.")
     summary = "print('The pool is closed for repairs until March.')"
     for done in ('print("DONE")', "DONE", summary):                                           # DONE as a program, bare, or the same program again
         out, left = hive([summary, done, summary.replace("is closed", "is shut"), "DONE"], "g" + str(len(done)))
