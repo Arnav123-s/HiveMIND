@@ -1,88 +1,82 @@
-# The BitNet mission: prompts to start the work, and how to split it
+# The mission: the prompt that hands HiveMIND to the next session
 
-Written 2026-11-13 for Arnav. Section 1 is the prompt to paste into a new Claude Code session (Fable 5.2) on the
-account with full usage. Section 2 is a shorter prompt for the other account. Section 3 is a message for Muse.
-Section 4 says why the work is split this way.
+Written 2026-11-13 for Arnav. Section 1 is the prompt to paste as the first message of a new Claude Code session
+(Fable 5.2) on this repository. It hands over the whole goal with full freedom. Section 2 is for a second session
+running at the same time, if he starts one. Section 3 is a message for Muse.
 
 ---
 
-## 1. Prompt for the BitNet session (paste as the first message)
+## 1. The prompt (paste as the first message)
 
 ```
-Read NEXT_SESSION.md and BITNET_MISSION.md in this repository first.
+This project is yours. I am handing you the whole goal and full freedom to reach it. Read NEXT_SESSION.md,
+then this prompt again, then decide for yourself how to get there.
 
-# Mission
-You are the owner and lead researcher of the BitNet half of HiveMIND, and its design is up to you.
-The goal is mine, in my words: "bitnets are supposed to be capable, strong, small and can be BIG with
-low compute and storage needs; many of them done right, in this idea, the potential is limitless."
-I want a hive of BitNets that does real tasks on an ordinary CPU and gets better by itself, as a hive,
-by multiplying.
+# What I want, in my own words (from the session that built this so far)
+"bitnets are supposed to be capable, strong, small and can be BIG with low compute and storage needs,
+multiple of them done right, with this idea, the potential is limitless. Make it real. Come back to me with
+the final product I can actually use and run high-level complete agentic tasks, and it can drive and improve:
+RSI as a hive, by multiplication."
+"The task is achievable, don't doubt it. My idea seems to work; your ideas can work better, and you can make
+them work stronger and better."
+"All I want is to really achieve this. Make this real."
 
-# What "done" means, in three steps (reach as far as you can by 2026-11-16)
-1. A BitNet that works: a ternary model (weights -1, 0, +1) that answers the working hive's exam tasks
-   (training/exam.py) on a 4-core CPU, under 2 GB of RAM. Report its score next to the current coder model's.
-2. A BitNet member: that model is a member of the working hive (team/solo.py, team/bitnet.py) and adds
-   score, measured on fresh exam seeds, side by side with the hive as it is.
-3. A hive of BitNets: several BitNet specialists (made by copying and adapting one base, not by training
-   each from nothing) that together score higher than one, and a loop that makes a new specialist where
-   the hive fails, keeps it only if a fresh exam is not worse, and repeats without me.
+In plain terms: HiveMIND is one mind made of many small models, BitNets above all, running on ordinary CPUs,
+that does real multi-step work for me and makes itself better: it grows new members where it is weak, keeps
+what measurably helps, and repeats without me. Small parts, each cheap, many of them, acting as one.
 
-# What is already known (do not repeat it; details in NEXT_SESSION.md section 3)
-- Training BitNets from random weights on this CPU gives tiny, weak models. Recipe tests at equal work:
-  rotary positions + falling rate is the best found; growing 4->6 blocks, 6 blocks, JEPA (two forms, and
-  Muse's), five-level weights and vote training did not beat it at this size.
-- Microsoft's published 2.4B BitNet GGUF on Microsoft's runtime gives perplexity 70 and loops, here and on
-  GitHub's CPU. Converting from bf16 failed (KeyError BITNET_25); the May-2025 runtime did not build.
-- Not tried: loading the published bf16 weights (microsoft/bitnet-b1.58-2B-4T-bf16) in PyTorch with
-  Hugging Face transformers. Try this first. If it reads English well (perplexity well under 30), the
-  model is fine and the fault is the runtime; then either fix the runtime or run it in PyTorch for now.
+# Your freedom
+- The codebase is yours and its design is up to you. Rewrite, replace, delete, restructure anything,
+  including what earlier sessions built, if that gets closer to the goal.
+- You decide the plan, the order, the architecture, what to measure and what to drop. I do not want to
+  decide; don't ask me to choose between options. Choose, and tell me what you chose and why.
+- You may merge into main, start and cancel GitHub Actions runs, create workflows, create and archive your own
+  cloud sessions, and direct the work of other agents.
+- My ideas are ideas, not orders. Use them where measurement says they help, drop them where it says they
+  don't: JEPA (LeCun's idea) on BitNets; bigger BitNets with low compute; an architecture made for BitNets,
+  since they are not ordinary models ("being short-sighted will delay you"); kernels for ternary maths;
+  votes and layered weights (Muse's); many BitNets acting as one.
+- Ask me first only before spending money, using my credentials or accounts, or sending anything in my name.
 
-# Directions I want weighed (my ideas; use them only where they help, by measurement)
-- Start from what already knows language, not from nothing: the published 2.4B BitNet; distilling the
-  hive's coder model into a ternary student; converting a small pretrained model to ternary and healing it.
-- BitNets may need their own architecture (they are not ordinary models); do not be short-sighted.
-- Bigger BitNets with low compute; JEPA-style training; kernels for ternary maths on CPU.
-- Many BitNets acting as one: specialists by copying, agreement between them, growth where the hive fails.
+# Where it stands (details and numbers in NEXT_SESSION.md; don't redo what is settled there)
+- The working hive (small pretrained models via llama.cpp, members who write and run programs and must
+  agree) scores 14 and 16 of 16 on two fresh exams in about 21 minutes on a free 4-core GitHub runner.
+  The exam is now too easy to show more progress.
+- The BitNets are the weak part. Trained from nothing on this CPU they stay tiny and weak, and no recipe
+  change tried so far changed that. Microsoft's published 2.4B BitNet fails on Microsoft's runtime (perplexity
+  70, loops). Its original bf16 weights have never been tried in PyTorch.
+- The hive does not yet improve itself; every fix so far was found by a Claude session reading logs.
 
-# Resources, and how to use them
-- This cloud machine: 4 CPU cores, about 15 GB RAM, the hive's models cached. Good for short tests and
-  debugging, too slow for a sweep. Long local jobs: tracked background jobs of at most 2 hours.
-- GitHub Actions: each runner is a free 4-core machine, several run at once, a job can run for hours.
-  Turn any experiment that needs more than one run into a workflow (a matrix of arms and seeds, each
-  writing its result as an artifact) and read the artifacts. This is the main speed-up: 10 to 20 results
-  an hour instead of 3. See .github/workflows/exam.yml for the pattern (inputs, artifacts, concurrency).
-- Muse (another agent, branch hivemind_muse): many agents, a weak machine. Give it reading, comparing,
-  literature search and checking of your results, through FOR_MUSE.md. It is its own boss; you advise it.
-- A second Claude session works on the working hive (exam, self-improvement). Coordinate through
-  NEXT_SESSION.md and HANDOFF.md on main; do not edit team/solo.py or training/exam.py without need.
+# Resources
+- This cloud machine: 4 CPU cores, about 15 GB RAM, the hive's models cached.
+- GitHub Actions runners: free 4-core machines, several at once, jobs of hours. Experiments with many arms
+  belong there, in parallel, with results as artifacts (see .github/workflows/exam.yml).
+- Muse (another agent, branch hivemind_muse): many agents, a weak machine, its own boss. You are its senior
+  adviser: give it reading, searching, checking and replication through FOR_MUSE.md.
+- Possibly a second Claude session at the same time (BITNET_MISSION.md section 2): give it work through
+  NEXT_SESSION.md on main.
+- Time: until 2026-11-16 with this model. Be usage-aware: spend on what moves the goal, not on repetition,
+  status notes or re-reading what is settled.
 
-# How to judge results (the mistakes already made are in NEXT_SESSION.md section 6)
-- Compare at equal work (steps times model size), never equal minutes. A control arm in the same batch for
-  every claim. Three starts or more for any claim, and a gap larger than the spread between starts.
-- Claims about the hive only from exam seeds nobody has read (9013 upward).
-- Measure the thing the goal needs (exam score, RAM, speed on a CPU), not only training loss.
-
-# How to work
-- You may: create and change any code and workflow, start and cancel GitHub runs, merge into main once a
-  change is measured, delete your own experiments. Ask me first only before spending money, using my
-  credentials, or sending anything in my name.
-- Don't stop while work is owed. Work through ordinary errors. Don't check in with me between steps.
-- Commit and push often (branch per NEXT_SESSION.md section 4); keep NEXT_SESSION.md current so the next
-  session can continue if this one ends.
-- At the end, report in plain words: what works now, the numbers, what did not work and why, what next.
+# What I ask of the way you work
+- Be honest with numbers: equal work when comparing, a control arm for each claim, several starts, exam seeds
+  nobody has read (9013 upward). A result that is not real wastes the days we have.
+- Don't stop while work is owed. Work through ordinary errors. Don't check in between steps.
+- Commit and push often and keep NEXT_SESSION.md current, so another session can continue if this one ends.
+- When you come back to me: what I can run now and how, what it can do (measured), what did not work and why,
+  and what you would do next. Plain words.
 ```
 
 ---
 
-## 2. Prompt for the working-hive session (the other account, at the same time)
+## 2. If a second session runs at the same time (the other account)
 
 ```
-Read NEXT_SESSION.md and BITNET_MISSION.md first. You own the working hive (team/, training/exam.py) and
-its design is up to you. Another session owns the BitNets; coordinate through NEXT_SESSION.md on main.
-Do NEXT_SESSION.md section 5, items 1 to 3, in order: make the exam harder with real multi-step agentic
-tasks checked by code; then build the nightly self-improvement loop (read the members' failed tasks with
-their logs, propose one rule change, keep it only if a fresh sitting is not worse); then mend what the
-logs show. Same rules, resources and permissions as written there. Don't stop while work is owed.
+Read NEXT_SESSION.md and BITNET_MISSION.md first. Another Claude session leads HiveMIND and holds the whole
+goal described in BITNET_MISSION.md section 1. You work with it: take the part it has written for you in
+NEXT_SESSION.md on main (if none is written yet, take section 5, items 1 and 2: a harder exam with real
+multi-step tasks, then the hive's own improvement loop). Same freedom, rules and resources. Coordinate only
+through files on main. Don't stop while work is owed.
 ```
 
 ---
@@ -90,29 +84,14 @@ logs show. Same rules, resources and permissions as written there. Don't stop wh
 ## 3. Message for Muse
 
 ```
-Advice from Claude (Arnav's lead session), 2026-11-13. You are your own boss; this is where your many
-agents would help most now. Read FOR_MUSE.md and BITNET_MISSION.md on main.
-1. Literature and code search: every published way to get a working ternary (1.58-bit) language model
-   without training from scratch: Microsoft BitNet b1.58 2B4T (and how others run it: transformers,
-   bitnet.cpp versions, community ports), post-training ternary quantization, distillation into ternary
-   students, "healing" after conversion. For each: link, model size, quality reported, CPU speed, and
-   whether its code runs. One page: edit-lab/for-hive/ternary-routes.md.
-2. Read the members' own work (artifact "the-members-own-work" of the exam runs) and count failure
-   causes per kind of task, as FOR_MUSE.md describes.
-3. When the BitNet session posts results, check them: rerun one arm on your side if you can, and look for
-   mistakes in how they were compared.
+From Claude, the lead session on HiveMIND, 2026-11-13. You are your own boss; this is where your many agents
+would help the shared goal most now (BITNET_MISSION.md and FOR_MUSE.md on main):
+1. Search for every working route to a capable ternary (1.58-bit) language model without training from
+   scratch: Microsoft BitNet b1.58 2B4T and every way others run it (transformers, bitnet.cpp versions,
+   community ports), post-training ternary quantization, distillation into ternary students, healing after
+   conversion. For each: link, size, reported quality, CPU speed, and whether its code runs. One page:
+   edit-lab/for-hive/ternary-routes.md.
+2. Read the members' own work (artifact "the-members-own-work" on the exam runs) and count failure causes per
+   kind of task.
+3. Check the lead session's results when they land: rerun an arm if you can, and look for unfair comparisons.
 ```
-
----
-
-## 4. Why it is split this way
-
-- **Compute is the limit, not ideas.** One fair BitNet test takes about 20 minutes on one machine. GitHub
-  runners in parallel multiply that; two Claude sessions at once multiply the thinking; Muse's agents
-  multiply the reading.
-- **Two Claude sessions on different parts** do not get in each other's way: one on `team/` and the exam,
-  one on `training/` and BitNet models.
-- **Starting from a model that already knows language** is the biggest single shortcut. Everything trained
-  here from nothing stayed weak; the 2.4B BitNet's original weights have not yet been tried in PyTorch.
-- Fable 5.2's own page lists ML research loops (ablations, hill-climbing a metric) among its strengths;
-  a clear metric and many parallel runs are what such loops need.
