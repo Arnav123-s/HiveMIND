@@ -35,6 +35,14 @@ so the hive can hold many of them; more members mean more independent attempts a
 means more checked solutions, which train the next members. That loop, running by itself, would be "RSI by
 multiplication". I don't know if this is the best path. Find the best one.
 
+Pieces of that loop already exist in the repository, built in earlier sessions, unconnected and never measured
+as one loop: team/dream.py turns steps the verifier passed into training examples ("distil"); team/school.py
+teaches a small model a bigger member's job and gives it the job when it does it the same; team/cells/spawn.py
+and team/life.py grow tiny specialist cells for the hive's small decisions; team/recruit.py brings in new open
+models; team/evolve.py breeds better prompts from failures; training/train_lora.py edits weights on a CPU;
+training/scratch.py and training/body.py grow BitNet cells. None of them makes a BitNet member yet, and most
+run only on a device, not on GitHub. Read them before building anything new: reuse, connect, or replace.
+
 # Freedom
 Rewrite or delete anything; merge to main when a change is measured; start GitHub Actions runs and workflows
 (free 4-core machines, many at once, they reach the internet); create your own cloud sessions; advise Muse
