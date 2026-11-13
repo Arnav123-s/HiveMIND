@@ -1,0 +1,390 @@
+{
+ "pieces": 191256252,
+ "bytes": 382512504,
+ "unique_lines": 2145543,
+ "median_line_pieces": 24.0,
+ "mean_line_pieces": 89.14118803491704,
+ "stats": {
+  "files_seen": 70,
+  "files_dup_exact": 0,
+  "files_kept": 70,
+  "gutenberg_files_skipped_no_markers": 0,
+  "replacement_chars": 0,
+  "lines_in": 4486949,
+  "lines_dropped_empty": 2094585,
+  "lines_dropped_separator": 25,
+  "lines_dropped_numeric": 963,
+  "lines_dropped_mega": 19,
+  "lines_dropped_dup": 245764,
+  "lines_dropped_held_leak": 50,
+  "lines_kept": 2145543
+ },
+ "per_category": {
+  "gutenberg_public_domain": {
+   "files": 67,
+   "lines": 1168121,
+   "pieces": 24586780,
+   "raw_bytes": 73663011
+  },
+  "wikitext103_cc_by_sa": {
+   "files": 3,
+   "lines": 977422,
+   "pieces": 166669472,
+   "raw_bytes": 543536921
+  }
+ },
+ "sources": [
+  {
+   "file": "pg100.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 5422721
+  },
+  {
+   "file": "pg1023.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 2025044
+  },
+  {
+   "file": "pg107.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 810679
+  },
+  {
+   "file": "pg11.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 151191
+  },
+  {
+   "file": "pg110.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 875702
+  },
+  {
+   "file": "pg1184.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 2704417
+  },
+  {
+   "file": "pg120.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 372720
+  },
+  {
+   "file": "pg122.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 819250
+  },
+  {
+   "file": "pg1228.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 934592
+  },
+  {
+   "file": "pg1260.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1044063
+  },
+  {
+   "file": "pg132.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 315648
+  },
+  {
+   "file": "pg1322.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 760829
+  },
+  {
+   "file": "pg1342.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 738046
+  },
+  {
+   "file": "pg135.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 3349503
+  },
+  {
+   "file": "pg1399.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 2048246
+  },
+  {
+   "file": "pg1400.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1038512
+  },
+  {
+   "file": "pg1404.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1167078
+  },
+  {
+   "file": "pg1432.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 301923
+  },
+  {
+   "file": "pg145.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1812793
+  },
+  {
+   "file": "pg1497.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1199947
+  },
+  {
+   "file": "pg158.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 897582
+  },
+  {
+   "file": "pg160.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 365734
+  },
+  {
+   "file": "pg1727.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 686287
+  },
+  {
+   "file": "pg174.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 446090
+  },
+  {
+   "file": "pg1837.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 431701
+  },
+  {
+   "file": "pg203.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1059743
+  },
+  {
+   "file": "pg205.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 637939
+  },
+  {
+   "file": "pg219.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 214041
+  },
+  {
+   "file": "pg2376.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 429448
+  },
+  {
+   "file": "pg2413.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 661777
+  },
+  {
+   "file": "pg25344.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 497782
+  },
+  {
+   "file": "pg2554.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1160669
+  },
+  {
+   "file": "pg26.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 461083
+  },
+  {
+   "file": "pg2600.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 3359405
+  },
+  {
+   "file": "pg2680.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 398825
+  },
+  {
+   "file": "pg2701.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1234646
+  },
+  {
+   "file": "pg28054.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1982184
+  },
+  {
+   "file": "pg2814.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 405520
+  },
+  {
+   "file": "pg3176.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1129661
+  },
+  {
+   "file": "pg3300.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 2449096
+  },
+  {
+   "file": "pg345.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 870683
+  },
+  {
+   "file": "pg35.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 181575
+  },
+  {
+   "file": "pg36.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 340601
+  },
+  {
+   "file": "pg43.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 141171
+  },
+  {
+   "file": "pg4300.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1566711
+  },
+  {
+   "file": "pg4363.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 382873
+  },
+  {
+   "file": "pg46.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 181890
+  },
+  {
+   "file": "pg507.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1228071
+  },
+  {
+   "file": "pg514.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1030972
+  },
+  {
+   "file": "pg550.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 402656
+  },
+  {
+   "file": "pg580.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1798790
+  },
+  {
+   "file": "pg599.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1746170
+  },
+  {
+   "file": "pg6130.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1115936
+  },
+  {
+   "file": "pg6688.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1212210
+  },
+  {
+   "file": "pg730.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 917357
+  },
+  {
+   "file": "pg74.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 405783
+  },
+  {
+   "file": "pg76.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 590757
+  },
+  {
+   "file": "pg766.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 2013603
+  },
+  {
+   "file": "pg768.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 661813
+  },
+  {
+   "file": "pg82.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1167302
+  },
+  {
+   "file": "pg84.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 421633
+  },
+  {
+   "file": "pg86.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 648733
+  },
+  {
+   "file": "pg883.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1904511
+  },
+  {
+   "file": "pg940.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 871698
+  },
+  {
+   "file": "pg967.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 1894246
+  },
+  {
+   "file": "pg98.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 771600
+  },
+  {
+   "file": "pg996.txt",
+   "category": "gutenberg_public_domain",
+   "raw_bytes": 2391549
+  },
+  {
+   "file": "wiki.train.raw",
+   "category": "wikitext103_cc_by_sa",
+   "raw_bytes": 541096899
+  },
+  {
+   "file": "wiki.valid.raw",
+   "category": "wikitext103_cc_by_sa",
+   "raw_bytes": 1148008
+  },
+  {
+   "file": "wiki.test.raw",
+   "category": "wikitext103_cc_by_sa",
+   "raw_bytes": 1292014
+  }
+ ],
+ "held_blocklist_keys": 18706,
+ "build": "make_corpus_v3.py \u2014 v2 filter discipline + Gutenberg strip + held-window leak guard; see header"
+}

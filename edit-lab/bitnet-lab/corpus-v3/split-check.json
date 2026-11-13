@@ -1,0 +1,13 @@
+{
+ "pieces": 191256252,
+ "eval_windows": 128,
+ "check1_eval_window_occurrences": 128,
+ "check1_extra_in_training": 0,
+ "check2_duplicate_aligned_blocks": 1,
+ "check2_held_involved": 0,
+ "check3_segments": 2145543,
+ "check3_duplicate_segments": 1149,
+ "check4_shingles_sampled": 2000,
+ "check4_shingles_in_training": 58,
+ "split_clean": false
+}
