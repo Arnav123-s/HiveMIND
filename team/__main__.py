@@ -163,7 +163,10 @@ def main():
         # three of those five. So where the members confirm nothing, the roles take the task, as they always did.
         from . import solo
         out = solo.first(task, a.run_dir, a.approve, members=int(os.environ["AGENT_TEAM_SOLO"]))
-        if out["agreed"]:
+        if out["agreed"] or os.environ.get("AGENT_TEAM_SOLO_ALONE"):  # alone: a measurement of the members by themselves
+            if not out["agreed"]:
+                with open(os.path.join(out["dir"], "REPORT.md"), "w") as f:  # (Path is a local name further down this function)
+                    f.write(out["report"])
             print("\n" + "=" * 70 + "\n" + out["report"][:6000] + "\nRun folder: " + out["dir"])
             return None
         a.run_dir = out["dir"]

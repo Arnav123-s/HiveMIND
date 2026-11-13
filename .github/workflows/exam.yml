@@ -18,6 +18,18 @@ on:
       seed:
         description: "The sitting's number (empty: today's)"
         default: ""
+      practice:
+        description: "1: not an exam but practice (the same as The hive practises): what the members solve stays in the library"
+        default: ""
+      alone:
+        description: "1 (with members): the members by themselves, the roles do not take what they leave"
+        default: ""
+      empty_memory:
+        description: "1: sit it with nothing learned (to measure what the learning is worth)"
+        default: ""
+      bitnet:
+        description: "1: not an exam. Builds Microsoft's BitNet runtime, tests the published 2.4B BitNet, converts it again from its original weights and tests that"
+        default: ""
       members:
         description: "A trial, not for the record: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
         default: ""
@@ -26,22 +38,81 @@ permissions:
   contents: read
 
 concurrency:
-  group: exam-${{ inputs.members || 'as-it-is' }}
+  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}-${{ inputs.bitnet || 'hive' }}
   cancel-in-progress: false
 
 jobs:
+  bitnet:
+    if: ${{ inputs.bitnet }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Microsoft's runtime, the published model, and the model converted again from its original weights
+        run: |
+          set -x
+          lscpu | grep -iE "model name|avx512f" | head -3 || true
+          sudo apt-get update -q >/dev/null && sudo apt-get install -y -q clang cmake >/dev/null
+          git clone -q --depth 1 --recursive --shallow-submodules https://github.com/microsoft/BitNet.git
+          cd BitNet
+          pip install -q -r requirements.txt "huggingface_hub[cli]"
+          huggingface-cli download microsoft/bitnet-b1.58-2B-4T-gguf --local-dir models/BitNet-b1.58-2B-4T >/dev/null
+          python setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s || { tail -40 logs/*.log; exit 1; }
+          head -c 9000 /usr/share/common-licenses/GPL-3 > text.txt
+          try() {
+            echo "######## $1"
+            timeout 900 build/bin/llama-perplexity -m "$1" -f text.txt -c 256 --chunks 6 -t 4 2>&1 | grep -iE "estimate|pre-token" || true
+            for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."; do
+              timeout 300 build/bin/llama-completion -m "$1" -t 4 -n 160 --temp 0 --special -r "<|eot_id|>" -no-cnv -p "User: $q<|eot_id|>Assistant: " 2>/dev/null </dev/null | tail -30 || true
+              echo
+            done
+          }
+          try models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf 2>&1 | tee -a ../bitnet.txt
+          df -h . | tail -1; free -g | sed -n 2p
+          huggingface-cli download microsoft/bitnet-b1.58-2B-4T-bf16 --local-dir models/bitnet-b1.58-2B-4T-bf16 >/dev/null
+          python utils/convert-helper-bitnet.py models/bitnet-b1.58-2B-4T-bf16
+          ls -la models/bitnet-b1.58-2B-4T-bf16
+          try models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf 2>&1 | tee -a ../bitnet.txt
+          { echo '```'; cat ../bitnet.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: bitnet
+          path: bitnet.txt
+          retention-days: 30
   sit:
+    if: ${{ !inputs.bitnet }}
     runs-on: ubuntu-latest
     timeout-minutes: 330
     env:
       TASKS: ${{ inputs.tasks || '16' }}
       AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
       SEED: ${{ inputs.seed || '' }}
+      EMPTY: ${{ inputs.empty_memory || '' }}
+      AGENT_TEAM_SOLO_ALONE: ${{ inputs.alone || '' }}
+      PRACTICE: ${{ inputs.practice || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive
+      - name: What the hive has solved so far (kept between runs in the Actions cache, never in git)
+        uses: actions/cache/restore@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}
+          restore-keys: hive-solved-
       - name: The exam
-        run: python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"}
+        run: |
+          if [ -n "$PRACTICE" ]; then
+            python training/exam.py practice --tasks "$TASKS" | tee practice.txt
+            echo "### Practice" >> "$GITHUB_STEP_SUMMARY"; tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
+          else
+            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory}
+          fi
+      - name: Keep what it solved in practice
+        if: ${{ !cancelled() && inputs.practice && hashFiles('memory/solved.jsonl') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}
       - name: How it went
         if: ${{ !cancelled() }}
         run: cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY" || true
@@ -53,7 +124,7 @@ jobs:
           retention-days: 30
   record:
     needs: sit
-    if: ${{ !inputs.members }}
+    if: ${{ !inputs.members && !inputs.empty_memory && !inputs.practice && !inputs.bitnet }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -66,8 +137,8 @@ jobs:
       - name: One line in the record (only numbers and known names are taken from the sitting)
         run: |
           python3 training/exam_record.py sitting
-          git config user.name "hive"
-          git config user.email "hive@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/exams.jsonl
           git commit -q -m "The hive sat an exam" || exit 0
           git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true

@@ -23,6 +23,7 @@ class FakeBoard:
 @pytest.fixture(autouse=True)
 def clean_policy(tmp_path, monkeypatch):
     monkeypatch.setattr(memory, "POLICY", tmp_path / "policy.json")
+    monkeypatch.setattr("team.solo.library", lambda: tmp_path / "solved.jsonl")  # no test writes into the hive's library
 
 
 def test_family_only_when_ordered():
@@ -1736,7 +1737,7 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
 
     def hive(replies, name, members=2):
         left = list(replies)
-        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+        monkeypatch.setattr(solo.llm, "chat", lambda *a, **k: (lambda r: r if r == "DONE" or r.startswith(("A: ", "Il ")) else f"```python\n{r}\n```")(left.pop(0)))
         return solo.run(PRIMES_TASK, tmp_path / name, "never", members=members), left
     out, left = hive(["DONE", broken, right, "DONE", again, "DONE"], "a")                     # DONE before anything ran is not taken; an error is fixed
     assert out["agreed"] and out["tries"] == 2 and not left and "109" in out["report"].split("\n## ")[0]
@@ -1745,15 +1746,33 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     out, left = hive([WRONG_PRIMES, "DONE", right, "DONE", other, "DONE"], "c")
     body = out["report"].split("\n## ")[0]
     assert not out["agreed"] and body.startswith("Not confirmed") and "19" not in body         # no member's values are handed over as the answer
-    out, left = hive([broken] * 9, "d")                                                       # the same error three times running: a member stops
+    out, left = hive([broken] * 6, "d")                                                       # the same error twice running: a member stops
     assert not out["agreed"] and not left and out["tries"] == 3 and "No member got as far" in out["report"]
-    out, left = hive([broken] * 3 + [right, "DONE", again, "DONE"], "f")                      # one member got nowhere: a third stands in for it
+    out, left = hive([broken] * 2 + [right, "DONE", again, "DONE"], "f")                      # one member got nowhere: a third stands in for it
     assert out["agreed"] and out["tries"] == 3 and not left
     asked = []
     left = ["print(\"The 'upload_time' key does not exist in the response.\")", "print('released 2024-12-06, 706 days ago')", "DONE"]
     monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
     out = solo.run("When was the latest httpx released?", tmp_path / "e", "never", members=1)
     assert "706 days ago" in out["report"] and "prints what IS" in asked[1]       # a printed failure is no answer; it is told to look
+    asked, left = [], ["print({}['info'])", "print(str({'releases': 1})[:800])", "DONE", "print('released 2024-12-06')", "DONE"]
+    out = solo.run("When was the latest httpx released?", tmp_path / "e2", "never", members=1)
+    assert "2024-12-06" in out["report"] and "releases" not in out["report"].split("\n## ")[0] and "really there" in asked[2]  # what a look printed is not the answer
+    assert solo.typed_out("```\nA: 65\nB: dnarg\n```", "A: 65\nB: dnarg") and not solo.typed_out("```python\nprint(1\n```", "print(1") and solo.typed_out("It is 65.", "It is 65.")
+    summary = "print('The pool is closed for repairs until March.')"
+    for done in ('print("DONE")', "DONE", summary):                                           # DONE as a program, bare, or the same program again
+        out, left = hive([summary, done, summary.replace("is closed", "is shut"), "DONE"], "g" + str(len(done)))
+        assert out["agreed"] and not left and "closed for repairs" in out["report"] and "DONE" not in out["report"]
+    typed, prog = "A: 65\nB: dnarg\nC: Wellington", "print('A:', 13 * 5)\nprint('B:', 'garden'[::-1])\nprint('C: Wellington')"
+    out, left = hive([typed, prog, "DONE", typed, typed, prog, "DONE"], "h")                   # an answer typed out is not run; a program is asked for
+    assert out["agreed"] and out["tries"] == 3 and not left and "nedrag" in out["report"].split("\n## ")[0] and "dnarg" not in out["report"].split("\n## ")[0]
+    line = "Il museo apre alle nove il venerdi."
+    out, left = hive([line, line, line.replace("il venerdi", "di venerdi"), line.replace("il venerdi", "di venerdi")], "i")  # typed again after a program was asked for: its answer
+    assert out["agreed"] and out["tries"] == 2 and not left and "museo" in out["report"]
+    assert solo.same("New price: 935.0", "The new price is $935.00") and solo.same("Sunday", "weekday: Sunday") and solo.same("licence: mit", "License: MIT License")
+    assert not solo.same("weekday: Sunday", "weekday: Monday") and not solo.same("pounds: 205.0", "pounds: 204.6") and solo.same("205.0 pounds", "pounds: 205.0")
+    assert not solo.same("A: 65\nB: nedrag\nC: Wellington", "A: 65\nB: derang\nC: Wellington")  # the numbers agree, the answers do not
+    assert solo.same("Primes: [19, 37]\nCount: 2", "primes below 40: 19, 37\nhow many: 2")
     assert solo.same("Die Bibliothek ist heute geschlossen.", "die bibliothek ist heute geschlossen") and not solo.same("Sydney", "Canberra")
     assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
 
@@ -1769,3 +1788,29 @@ def test_where_the_members_agree_their_answer_and_files_are_the_runs(tmp_path, m
     left = ["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"]
     out = solo.first("Pick a number", tmp_path / "b", "never", members=2)
     assert not out["agreed"] and not (tmp_path / "b" / "REPORT.md").exists()               # nothing confirmed: the run is left to the roles
+
+
+def test_a_task_two_members_agreed_on_leaves_its_program_for_the_next_task_like_it(tmp_path, monkeypatch):
+    from team import memory, solo
+    monkeypatch.setattr(memory, "HOME", tmp_path / "mem")
+    monkeypatch.setenv("HIVE_LIBRARY", "1")  # off unless asked for: it lost to nothing learned on seeds 9002 and 9003
+    right = RIGHT_PRIMES + "print('The primes are', found, 'and there are', len(found))"
+    again = RIGHT_PRIMES + "print(len(found), 'primes:', *found)"
+    seen = []
+
+    def hive(replies, task, name):
+        left = list(replies)
+        monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: seen.append(msgs[1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+        return solo.run(task, tmp_path / name, "never", members=2)
+    hive([right, "DONE", again, "DONE"], PRIMES_TASK, "a")
+    assert [r["task"] for r in solo.solved()] == [PRIMES_TASK] and "prime(n)" in solo.solved()[0]["program"]
+    assert "solved tasks like this one" not in seen[0]                                     # the first time there was nothing to start from
+    seen.clear()
+    hive([right, "DONE", again, "DONE"], PRIMES_TASK.replace("200", "300").replace("10", "11"), "b")
+    assert "solved tasks like this one" in seen[0] and "def prime(n)" in seen[0]           # the next task like it starts from that program
+    assert "solved tasks like this one" not in seen[-1]                                    # but only its first member: the second starts from nothing
+    hive(["print(1)", "DONE", "print(2)", "DONE", "print(3)", "DONE"], "Pick any number at all", "c")
+    assert len(solo.solved()) == 2                                                         # nothing agreed, nothing kept
+    solo.judge(PRIMES_TASK, True)
+    solo.judge(PRIMES_TASK.replace("200", "300").replace("10", "11"), False)               # practice: its check said the program was wrong
+    assert [(r["task"], r["checked"]) for r in solo.solved()] == [(PRIMES_TASK, True)]

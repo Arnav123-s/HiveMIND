@@ -36,8 +36,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive
+      - name: What the hive has solved so far (kept between runs in the Actions cache, never in git)
+        uses: actions/cache/restore@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}
+          restore-keys: hive-solved-
       - name: The hive works on it
         run: python -m team "$TASK" --approve never --until-done "$ROUNDS" --run-dir run
+      - name: Keep what it solved
+        if: ${{ !cancelled() && hashFiles('memory/solved.jsonl') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: memory/solved.jsonl
+          key: hive-solved-${{ github.run_id }}
       - name: The answer
         if: ${{ !cancelled() }}
         run: |

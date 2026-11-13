@@ -1,0 +1,58 @@
+{
+ "as built in, 20 minutes, start 0": {
+  "gate": 3.1106,
+  "steps": 1605,
+  "minutes": 20.0,
+  "train_last": 3.0578,
+  "weights": 2615424
+ },
+ "a scale for every row, 20 minutes, start 0": {
+  "gate": 3.1038,
+  "steps": 1577,
+  "minutes": 20.0,
+  "train_last": 3.053,
+  "weights": 2615424
+ },
+ "predicting what it will think (same net), 20 minutes, start 0": {
+  "gate": 3.1448,
+  "steps": 1556,
+  "minutes": 20.0,
+  "train_last": 3.0974,
+  "weights": 2615424
+ },
+ "predicting what it will think (running-mean teacher), 20 minutes, start 0": {
+  "gate": 3.2436,
+  "steps": 1192,
+  "minutes": 20.0,
+  "train_last": 3.2338,
+  "weights": 2615424
+ },
+ "six blocks, 20 minutes, start 0": {
+  "gate": 3.2295,
+  "steps": 1217,
+  "minutes": 20.0,
+  "train_last": 3.2144,
+  "weights": 3505152
+ },
+ "grown from four blocks to six at half time, 20 minutes, start 0": {
+  "gate": 3.0846,
+  "steps": 1607,
+  "minutes": 20.0,
+  "train_last": 3.0425,
+  "weights": 3505152
+ },
+ "as built in, 6420 block-steps, start 0": {
+  "gate": 3.1017,
+  "steps": 1605,
+  "minutes": 24.6,
+  "train_last": 3.0529,
+  "weights": 2615424
+ },
+ "six blocks, 6420 block-steps, start 0": {
+  "gate": 3.2837,
+  "steps": 1070,
+  "minutes": 18.2,
+  "train_last": 3.2409,
+  "weights": 3505152
+ }
+}
