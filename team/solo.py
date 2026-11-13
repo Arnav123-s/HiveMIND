@@ -167,7 +167,9 @@ def member(task, n, board, guard, work, temperature):
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
     # wrong, seed 9002). Agreement only checks anything between tries that do not share a source.
-    before = alike(task) if n == 1 and os.environ.get("HIVE_LIBRARY", "1") != "0" else []
+    # Off unless HIVE_LIBRARY=1: with the library the members passed 7 of 16 in 89 minutes on seed 9003, with nothing
+    # learned 10 of 16 in 56 (same code f705ae1; seed 9002 said the same). It is still kept, to be measured again.
+    before = alike(task) if n == 1 and os.environ.get("HIVE_LIBRARY", "0") == "1" else []
     if before:
         board.log(f"member{n}", "library", f"{len(before)} solved task(s) like this one")
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "

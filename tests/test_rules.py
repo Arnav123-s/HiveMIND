@@ -1793,6 +1793,7 @@ def test_where_the_members_agree_their_answer_and_files_are_the_runs(tmp_path, m
 def test_a_task_two_members_agreed_on_leaves_its_program_for_the_next_task_like_it(tmp_path, monkeypatch):
     from team import memory, solo
     monkeypatch.setattr(memory, "HOME", tmp_path / "mem")
+    monkeypatch.setenv("HIVE_LIBRARY", "1")  # off unless asked for: it lost to nothing learned on seeds 9002 and 9003
     right = RIGHT_PRIMES + "print('The primes are', found, 'and there are', len(found))"
     again = RIGHT_PRIMES + "print(len(found), 'primes:', *found)"
     seen = []
