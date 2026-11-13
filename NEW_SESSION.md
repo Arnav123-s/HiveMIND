@@ -33,32 +33,6 @@ bash scripts/resume.sh grow
 
 ## 3. The first message to the new session (Fable 5.2)
 
-Copy everything in the box, write your idea where it says so, and send it.
-
-```
-You are picking up HiveMIND (github.com/Arnav123-s/HiveMIND), a project I (Arnav) have been building with Claude
-in another account. That session is gone; everything it knew is in the repository.
-
-Before anything else:
-1. Check out the branch make-it-work. Read, in this order: the "START HERE" block at the top of HANDOFF.md, then
-   "Live status" in HANDOFF.md, then README.md. Skim SPEC.md.
-2. Run: bash scripts/resume.sh status   (if .venv is missing, first: bash scripts/cloud_setup.sh --light)
-3. Tell me back, in a few lines, what you understood: the two hives (the working hive of small pretrained models
-   with tools and checks, and the growing hive of BitNet bodies trained from nothing), what runs on its own on
-   GitHub, and what is unfinished. Do not start building yet.
-
-Then listen to my idea below. It may have flaws and is open ended: find the flaws, tell me plainly what will and
-will not work on CPU-only machines, and propose the strongest version of it you can, with how we would measure
-that it is better. Ask me only what you truly cannot decide yourself.
-
-MY IDEA:
-<write your idea here, in your own words, as long as you like>
-
-My standing rules (from HANDOFF.md, keep them):
-- Risky actions (spending money, deleting, sending anything as me, logging in, using credentials) only when I say so.
-- No benchmaxing: held-out sets run once, on frozen code, reported as measured. Never tune on a test.
-- CPU only. No model names in commits or PRs.
-- Every merge into main needs my explicit yes for that PR.
-- Reports use the headings Blocked on me / Changed / Found, and mark anything not confirmed.
-- Commit and push before ending a turn.
-```
+Use section 1 of `BITNET_MISSION.md` (on main). It hands over the whole goal with full freedom and tells the new
+session how to set up this fresh machine. (The older first message that stood here, written on 2026-11-11, is
+replaced: its rules were superseded by Arnav's later word, recorded in `NEXT_SESSION.md`.)
