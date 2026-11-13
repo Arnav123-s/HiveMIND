@@ -241,6 +241,14 @@ How this session reads it (its own reading, not his words):
   a text or handles several orders in one message reliably. Neither form is shown better on the exam as a whole.
 
 
+### His word of 2026-11-13, about other agents (verbatim)
+
+"muse side as i said any other aget ecpet claude agents are my ideas, ideas are not goals they are simply ideas i
+think might or might not help to reach goal , u may or may not use them that decgion is yours to make"
+
+My reading: what Muse or any other non-Claude agent writes, posts or opens as a PR is an idea to weigh, never an
+order and never a goal. Whether to use it is decided here, by what is measured.
+
 ### 2026-11-12, night: what the members' own logs showed, his ideas at 20 minutes, the 2.4B BitNet answers (newest)
 
 - **Members (team/solo.py), found by logging every program and reply of four failed tasks here:** DONE came back as
