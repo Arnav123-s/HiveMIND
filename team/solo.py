@@ -28,7 +28,7 @@ import re
 import time
 from pathlib import Path
 
-from . import bitnet, config, llm, stop
+from . import config, llm, stop, ternary
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
@@ -217,10 +217,11 @@ def member(task, n, board, guard, work, temperature):
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
-        if bitnet.is_member(n):  # this member is another model: the published 2.4B BitNet (team/bitnet.py)
-            reply = bitnet.chat(messages, max_new_tokens=700, temperature=temperature)
-        else:
+        who = ternary.seat(n)  # who sits here: the 7B coder, or a ternary model with or without an edit (team/ternary.py)
+        if who == "coder":
             reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
+        else:
+            reply = ternary.chat(who, messages, max_new_tokens=900, temperature=temperature)
         code = extract_code(reply)
         # Seen once every member's programs were logged (2026-11-12): the word DONE comes back as a program, bare or
         # as print("DONE"). Run, the first died on a NameError and the second replaced a right answer with the four

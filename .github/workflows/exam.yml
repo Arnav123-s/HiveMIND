@@ -30,6 +30,12 @@ on:
       bitnet:
         description: "1: not an exam. Builds Microsoft's BitNet runtime, tests the published 2.4B BitNet, converts it again from its original weights and tests that"
         default: ""
+      level:
+        description: "hard: the kinds of several steps (training/exam_hard.py)"
+        default: ""
+      who:
+        description: "Who the members are (team/ternary.py): t9,t9,t4 seats ternary models; coder is the 7B at 4 bits (empty: coder)"
+        default: ""
       members:
         description: "A trial, not for the record: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
         default: ""
@@ -38,7 +44,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}-${{ inputs.bitnet || 'hive' }}
+  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}-${{ inputs.bitnet || 'hive' }}-${{ inputs.level || 'basic' }}-${{ inputs.who || 'coder' }}
   cancel-in-progress: false
 
 jobs:
@@ -109,6 +115,8 @@ jobs:
       EMPTY: ${{ inputs.empty_memory || '' }}
       AGENT_TEAM_SOLO_ALONE: ${{ inputs.alone || '' }}
       PRACTICE: ${{ inputs.practice || '' }}
+      HIVE_MEMBERS: ${{ inputs.who || '' }}
+      LEVEL: ${{ inputs.level || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/hive
@@ -124,7 +132,7 @@ jobs:
             python training/exam.py practice --tasks "$TASKS" | tee practice.txt
             echo "### Practice" >> "$GITHUB_STEP_SUMMARY"; tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
           else
-            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory}
+            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory} ${LEVEL:+--level "$LEVEL"}
           fi
       - name: Keep what it solved in practice
         if: ${{ !cancelled() && inputs.practice && hashFiles('memory/solved.jsonl') != '' }}

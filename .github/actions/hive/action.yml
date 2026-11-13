@@ -28,4 +28,28 @@ runs:
         # ran that way: seed 9010, members alone, same code: 6 of 16 in 96 minutes there, 12 of 16 in 24 minutes on
         # a machine that had the files.
         echo "AGENT_TEAM_ENGINE=gguf" >> "$GITHUB_ENV"
-        AGENT_TEAM_ENGINE=gguf python -c "from team import llm, config; print('engine ready:', llm.gguf_available(), sorted(set(config.GGUF_ROSTER.values())))"
+        if [ -n "$HIVE_MEMBERS" ] && [ -n "$AGENT_TEAM_SOLO_ALONE" ] && ! echo "$HIVE_MEMBERS" | grep -q coder; then
+          echo "every member is a ternary model and the roles are not asked: the 4-bit files are not fetched"
+        else
+          AGENT_TEAM_ENGINE=gguf python -c "from team import llm, config; print('engine ready:', llm.gguf_available(), sorted(set(config.GGUF_ROSTER.values())))"
+        fi
+    # Members that are ternary models (team/ternary.py) run on a llama.cpp with kernels for them. Building it takes
+    # about 25 minutes, so the binary is kept between runs, one for each kind of CPU the runners have.
+    - name: Which CPU this runner has
+      id: cpu
+      if: ${{ env.HIVE_MEMBERS != '' }}
+      shell: bash
+      run: echo "cpu=$(lscpu | grep 'Model name' | md5sum | cut -c1-8)" >> "$GITHUB_OUTPUT"
+    - name: The ternary runtime, if it was built before
+      if: ${{ env.HIVE_MEMBERS != '' }}
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/hive/ternary/ik_llama.cpp/build/bin
+        key: ternary-runtime-7aa7e01-static-${{ steps.cpu.outputs.cpu }}
+    - name: The ternary runtime and the members' models
+      if: ${{ env.HIVE_MEMBERS != '' }}
+      shell: bash
+      run: |
+        lscpu | grep -E "Model name|^CPU\(s\)" || true
+        python -m team.ternary install
+        python -m team.ternary fetch

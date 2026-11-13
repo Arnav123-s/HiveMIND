@@ -7,8 +7,8 @@ checked in code against a value worked out here or read live from the source, no
 no fix was ever tried on them. So the pass rate of a sitting is an honest number, and sat again and again it shows
 whether the hive is getting better, field by field, with nobody there to see.
 
-    python training/exam.py show [--seed N]            the tasks of a sitting, without running them
-    python training/exam.py sit [--seed N] [--tasks 16] [--only FIELD ...] [--empty-memory]
+    python training/exam.py show [--seed N] [--level hard]   the tasks of a sitting, without running them
+    python training/exam.py sit [--seed N] [--tasks 16] [--only FIELD ...] [--empty-memory] [--level hard]
                                                        sit it: every task goes through the whole hive
                                                        (python -m team, risky actions never). Writes
                                                        training/reports/exams/<seed>.json and .md and one line
@@ -369,10 +369,16 @@ MAKERS = [m_percent, m_days, m_weekday, m_units, m_table, m_code, m_fix, m_pypi,
           m_translate, m_summary, m_steps]
 
 
-def exam(seed, n=16, only=()):
-    """The tasks of one sitting: [(id, field, kind, task, check)]. The same seed gives the same exam."""
+def exam(seed, n=16, only=(), level="basic", without=()):
+    """The tasks of one sitting: [(id, field, kind, task, check)]. The same seed gives the same exam.
+    level "hard": the kinds of several steps (training/exam_hard.py). without: makers left out by name (practice
+    leaves out the kinds the hive is never to practise on)."""
     r = random.Random(seed)
-    makers = [m for m in MAKERS]
+    if level == "hard":
+        from training import exam_hard
+        makers = [m for m in exam_hard.MAKERS if m.__name__ not in without]
+    else:
+        makers = [m for m in MAKERS if m.__name__ not in without]
     r.shuffle(makers)
     out = []
     for i, make in enumerate(makers):
@@ -382,7 +388,7 @@ def exam(seed, n=16, only=()):
                 break
         if only and field not in only:
             continue
-        out.append((f"e{seed}_{len(out):02d}", field, kind, task, check))
+        out.append((f"{'h' if level == 'hard' else 'e'}{seed}_{len(out):02d}", field, kind, task, check))
         if len(out) >= n:
             break
     return out
@@ -423,9 +429,10 @@ def sit_one(tag, tid, task, check, memory_home, timeout=2400):
     return res
 
 
-def sit(seed, n=16, only=(), empty_memory=False, log=print):
-    tag, home, rows, t0 = f"exam_{seed}", _memory(empty_memory), [], time.time()
-    for tid, field, kind, task, check in exam(seed, n, only):
+def sit(seed, n=16, only=(), empty_memory=False, log=print, level="basic"):
+    name = f"{seed}_hard" if level == "hard" else str(seed)
+    tag, home, rows, t0 = f"exam_{name}", _memory(empty_memory), [], time.time()
+    for tid, field, kind, task, check in exam(seed, n, only, level):
         r = sit_one(tag, tid, task, check, home) | {"field": field, "kind": kind, "task": task}
         rows.append(r)
         log(f"{'PASS' if r['ok'] else 'FAIL'} {tid} [{field}: {kind}] {r['seconds']}s - {r['why']} {r['note']}", flush=True)
@@ -439,13 +446,14 @@ def sit(seed, n=16, only=(), empty_memory=False, log=print):
         code = ""
     line = {"seed": seed, "when": time.strftime("%Y-%m-%d %H:%M"), "passed": sum(r["ok"] for r in rows), "tasks": len(rows),
             "by_field": {k: list(v) for k, v in sorted(by.items())}, "minutes": round((time.time() - t0) / 60), "code": code,
-            "memory": "none" if empty_memory else "its own"}
+            "memory": "none" if empty_memory else "its own", "level": level,
+            "members": os.environ.get("HIVE_MEMBERS") or os.environ.get("AGENT_TEAM_SOLO", "")}
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"{seed}.json").write_text(json.dumps({"summary": line, "tasks": rows}, indent=1))
-    md = [f"# The hive's exam {seed}", "", f"{line['passed']} of {line['tasks']} tasks passed in {line['minutes']} minutes "
+    (OUT / f"{name}.json").write_text(json.dumps({"summary": line, "tasks": rows}, indent=1))
+    md = [f"# The hive's exam {seed}{' (the hard kinds)' if level == 'hard' else ''}", "", f"{line['passed']} of {line['tasks']} tasks passed in {line['minutes']} minutes "
           f"(code {code}, memory: {line['memory']}).", "", "| field | kind | pass | time | the check |", "|---|---|---|---|---|"]
     md += [f"| {r['field']} | {r['kind']} | {'✅' if r['ok'] else '❌'} | {r['seconds']} s | {r['why']} {r['note']} |" for r in rows]
-    (OUT / f"{seed}.md").write_text("\n".join(md) + "\n")
+    (OUT / f"{name}.md").write_text("\n".join(md) + "\n")
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
     return line
@@ -476,12 +484,12 @@ def main(argv):
     only = tuple(a for a in only if not a.startswith("--"))
     cmd = argv[0] if argv else ""
     if cmd == "show":
-        for tid, field, kind, task, _ in exam(seed, opt("--tasks", 16), only):
+        for tid, field, kind, task, _ in exam(seed, opt("--tasks", 16), only, opt("--level", "basic")):
             print(f"{tid} [{field}: {kind}]\n    {task}\n")
     elif cmd == "practice":
         print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 3600)), opt("--tasks", 16), only, opt("--members", 2))))
     elif cmd == "sit":
-        print(json.dumps(sit(seed, opt("--tasks", 16), only, "--empty-memory" in argv)))
+        print(json.dumps(sit(seed, opt("--tasks", 16), only, "--empty-memory" in argv, level=opt("--level", "basic"))))
     else:
         print(__doc__)
         return 1

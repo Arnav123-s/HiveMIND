@@ -40,3 +40,4 @@ logs/
 
 # what the hive has solved (kept between runs on GitHub in the Actions cache, not in git)
 memory/solved.jsonl
+llama.log
