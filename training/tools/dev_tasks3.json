@@ -1,0 +1,47 @@
+[
+ {
+  "kind": "follow a form to the letter",
+  "task": "Give me exactly 3 colours as a numbered list and nothing else.",
+  "why": "0 numbered items, 3 asked"
+ },
+ {
+  "kind": "operate a website",
+  "task": "Open quotes.toscrape.com, go to Mark Twain's author page and give me the date of birth.",
+  "why": "born November 30, 1835: in the answer False"
+ },
+ {
+  "kind": "a fact read from a source",
+  "task": "Under which licence is FacebookAI/roberta-base published on Hugging Face?",
+  "why": "licence mit in the answer"
+ },
+ {
+  "kind": "follow a form to the letter",
+  "task": "Give me exactly 4 European capital cities as a numbered list and nothing else.",
+  "why": "0 numbered items, 4 asked"
+ },
+ {
+  "kind": "operate a website",
+  "task": "Open quotes.toscrape.com, go to Harper Lee's author page and give me the date of birth.",
+  "why": "born April 28, 1926: in the answer False"
+ },
+ {
+  "kind": "a thing to know",
+  "task": "What is the greatest common divisor of 98 and 112?",
+  "why": "wants 14; the answer's numbers: []"
+ },
+ {
+  "kind": "scrape a page to a file",
+  "task": "Make a CSV with the title and price of each book listed on the first page of the Philosophy category on books.toscrape.com.",
+  "why": "no CSV made"
+ },
+ {
+  "kind": "operate a website",
+  "task": "Open quotes.toscrape.com, go to Marilyn Monroe's author page and give me the date of birth.",
+  "why": "born June 01, 1926: in the answer False"
+ },
+ {
+  "kind": "a fact read from a source",
+  "task": "Under which licence is microsoft/deberta-v3-base published on Hugging Face?",
+  "why": "licence mit in the answer"
+ }
+]

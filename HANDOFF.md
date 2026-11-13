@@ -1,5 +1,8 @@
 # Handoff: HiveMIND (`main` has PR #8; work continues on `make-it-work`; checkpoint branch `checkpoint-2026-11-10`)
 
+**A new session starts with `NEXT_SESSION.md`** (goal, rules, what was measured, how to work, what to do next).
+
+
 Written 2026-11-09 at commit aa301bc. Everything is committed and pushed. Nothing is running.
 
 ## Picked up on the new account (2026-11-11, from 20:05 UTC): read this first, then START HERE below

@@ -1,0 +1,22 @@
+[
+ {
+  "kind": "several orders in one message",
+  "task": "Do these three things and label the answers A, B and C, each on its own line: first multiply 13 by 5; then write the word 'garden' backwards; then name the capital of New Zealand.",
+  "why": "three labelled answers []; each right: False"
+ },
+ {
+  "kind": "sum up a text",
+  "task": "Give me a one-sentence summary of this: The Ridgeway swimming pool, built in 1948, was closed in March for repairs after inspectors found cracks in two support beams. The city expects the work to take 12 months and cost 4.8 million dollars. Until it reopens, visitors are sent to the Station Street entrance, says the city engineer Nadia Hartmann.",
+  "why": "2 sentence(s); names the swimming pool and the closing or the repairs: False"
+ },
+ {
+  "kind": "mend a program",
+  "task": "This Python code should print the average of the numbers but prints their total. Fix it and tell me the output:\nnums = [11, 29, 3, 24]\nprint(sum(nums))",
+  "why": "wants 16.75; the answer's numbers: [67.0]"
+ },
+ {
+  "kind": "a thing to know",
+  "task": "What are the chemical symbol and the atomic number of lead?",
+  "why": "symbol Pb and atomic number 82 in the answer: False"
+ }
+]
