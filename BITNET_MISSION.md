@@ -52,6 +52,12 @@ results or failing tools: diagnose them and work through them rather than stoppi
 when the work can't move forward without me. Keep NEXT_SESSION.md current and push often, so the work survives
 if this session ends.
 
+# Usage limits
+My Claude usage is limited and resets weekly; running out stops all work. Spend it on thinking and building,
+not on waiting or repetition: let long computation run on GitHub runners or as background jobs, and wake
+yourself when it is done instead of polling; read results once; skip status notes nobody needs; don't re-read
+what is settled. Before a costly step, check whether a cheaper one answers the same question.
+
 # Honest numbers
 A result that is not real wastes the days we have. Compare at equal work, with a control arm and several
 starts; judge the hive on exam seeds nobody has read (9013 upward).
@@ -96,7 +102,8 @@ would help the shared goal most now (BITNET_MISSION.md and FOR_MUSE.md on main):
 ## 4. Effort levels (from Anthropic's guidance for Fable 5.2)
 
 - **high** (the default): hard coding, research, agentic work and long unattended runs. Most of the
-  capability gain arrives here. Use it for this mission.
+  capability gain arrives here. Use it for this mission: higher levels cost many more tokens for uneven
+  gains, and the usage limit is the scarce resource.
 - **xhigh**: only the hardest long-running coding and agentic work, where a gain has been measured. Small
   gains on coding evaluations for many more tokens; with limited usage, not worth it as a default.
 - **max**: for the rarest open-ended problems (scientific discovery, mathematics) where time and tokens don't
