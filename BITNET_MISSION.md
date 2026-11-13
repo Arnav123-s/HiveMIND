@@ -60,6 +60,8 @@ NEXT_SESSION.md current so the work survives if this session ends. Time: until 2
 
 My Claude usage is limited and resets weekly; running out stops everything. Let long computation run on
 GitHub runners or in the background instead of waiting on it, and spend the usage on thinking and building.
+Extra Claude sessions and subagents draw on the same usage: start one only when work truly runs in parallel and
+is worth what it costs, and brief it fully so it doesn't repeat what you know.
 
 Judge your own progress by results that would survive someone checking them: a fair control, more than one
 run, and tasks the system has never seen. A breakthrough that isn't real costs us the days we have.
