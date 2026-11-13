@@ -14,7 +14,7 @@ train      A low-rank weight edit (LoRA) on the smallest ternary member whose fu
 gate       The same fresh exam sat by the hive with and without the new member; the roster changes only when
            the numbers say so (.github/workflows/grow.yml does this with nobody there).
 
-    python training/grow.py practice --seed 10000001 --tasks 12 [--level hard|basic] [--out runs/grow/rows.jsonl]
+    python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl]
     python training/grow.py rows RUN_FOLDER ... [--out rows.jsonl]      rows from sittings already done (checked tasks only)
     python training/grow.py train --rows rows.jsonl --name gen1 [--base t17] [--epochs 2] [--max-len 1536] [--minutes 240]
     python training/grow.py fetch                                        the weight edits the roster names, from the release
@@ -70,7 +70,7 @@ def rows_of(run, task, kind="", seed=None):
     return out
 
 
-def practice(seed, n=12, level="hard", out=None, log=print):
+def practice(seed, n=16, level="mixed", out=None, log=print):
     """Fresh practice tasks done by the hive's members; the rows of those the check confirmed are appended to out."""
     from training import exam as E
     from training import exam_hard
@@ -239,7 +239,7 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
     if cmd == "practice":
-        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 12), opt("--level", "hard"), opt("--out", ""))))
+        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""))))
     elif cmd == "rows":
         out = opt("--out", str(GROW / "rows.jsonl"))
         Path(out).parent.mkdir(parents=True, exist_ok=True)

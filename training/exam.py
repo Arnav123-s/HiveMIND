@@ -373,6 +373,8 @@ def exam(seed, n=16, only=(), level="basic", without=()):
     """The tasks of one sitting: [(id, field, kind, task, check)]. The same seed gives the same exam.
     level "hard": the kinds of several steps (training/exam_hard.py). without: makers left out by name (practice
     leaves out the kinds the hive is never to practise on)."""
+    if level == "mixed":  # half of each: what the hive can mostly do, and what it mostly cannot yet
+        return exam(seed, n - n // 2, only, "basic", without) + exam(seed, n // 2, only, "hard", without)
     r = random.Random(seed)
     if level == "hard":
         from training import exam_hard
@@ -430,7 +432,7 @@ def sit_one(tag, tid, task, check, memory_home, timeout=2400):
 
 
 def sit(seed, n=16, only=(), empty_memory=False, log=print, level="basic"):
-    name = f"{seed}_hard" if level == "hard" else str(seed)
+    name = str(seed) if level == "basic" else f"{seed}_{level}"
     tag, home, rows, t0 = f"exam_{name}", _memory(empty_memory), [], time.time()
     for tid, field, kind, task, check in exam(seed, n, only, level):
         r = sit_one(tag, tid, task, check, home) | {"field": field, "kind": kind, "task": task}
@@ -450,7 +452,7 @@ def sit(seed, n=16, only=(), empty_memory=False, log=print, level="basic"):
             "members": os.environ.get("HIVE_MEMBERS") or os.environ.get("AGENT_TEAM_SOLO", "")}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"{name}.json").write_text(json.dumps({"summary": line, "tasks": rows}, indent=1))
-    md = [f"# The hive's exam {seed}{' (the hard kinds)' if level == 'hard' else ''}", "", f"{line['passed']} of {line['tasks']} tasks passed in {line['minutes']} minutes "
+    md = [f"# The hive's exam {seed}{'' if level == 'basic' else f' ({level})'}", "", f"{line['passed']} of {line['tasks']} tasks passed in {line['minutes']} minutes "
           f"(code {code}, memory: {line['memory']}).", "", "| field | kind | pass | time | the check |", "|---|---|---|---|---|"]
     md += [f"| {r['field']} | {r['kind']} | {'✅' if r['ok'] else '❌'} | {r['seconds']} s | {r['why']} {r['note']} |" for r in rows]
     (OUT / f"{name}.md").write_text("\n".join(md) + "\n")
