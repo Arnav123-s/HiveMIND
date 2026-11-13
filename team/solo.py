@@ -40,14 +40,17 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Only a fact about the world (a version, a release date, a price, a person, a population) is read from a source, by
   the program, never from your memory. APIs are better than pages:
   https://pypi.org/pypi/NAME/json (["info"]["version"]; ["releases"][VERSION][0]["upload_time"])
-  https://huggingface.co/api/models/OWNER/NAME
+  https://huggingface.co/api/models/OWNER/NAME (["cardData"]["license"]; ["likes"]; ["downloads"]; ["tags"] holds "name:value")
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
   Use requests with timeout=30 and headers={{"User-Agent": "hive/1.0"}} (Wikipedia refuses a request without one).
   If you do not know what a source returns, first print a small part of it and look.
+- A page inside a website is reached from the site's first page (https://...), by finding there the link whose text
+  matches and following it. An inner address written from memory is usually wrong.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
-- What the program prints is what the user reads: print every result the task asks for, each on its own line as
-  "name: value" (the names the task gives, if it gives any). Print nothing else. One piece of text (a summary, a
-  translation, a word) is printed alone, as it is.
+- What the program prints is what the user reads. Where the TASK says how the answer must look (a numbered list,
+  labels such as A, B, C, JSON, one word, one sentence, exactly so many items), print exactly that and nothing
+  else. Otherwise print every result the task asks for, each on its own line as "name: value". One piece of text
+  (a summary, a translation, a word) is printed alone, as it is.
 - A value that can be computed is computed by the program, never typed in ('garden'[::-1], not 'nedrag'). A file the task asks for is saved in the current folder under the exact name given.
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
@@ -105,8 +108,8 @@ def alike(task, most=2, least=0.3):
         if score >= least and r.get("task") != task[:1500]:
             out.append((bool(r.get("checked")), score, r))
     return [r for _, _, r in sorted(out, key=lambda x: (x[0], x[1]), reverse=True)[:most]]
-FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing", re.I)
-LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing", re.I)
+FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
+LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
 
 
 def key(answer, task):
@@ -150,7 +153,38 @@ def same(a, b, task=""):
 
 TYPED = ("That is an answer typed out, not a program. Typed answers are often wrong (a word reversed by hand, a sum "
          "done in the head). Reply with a complete Python program in a ```python block that works out every value "
-         "that can be worked out (for example word[::-1], 13 * 5) and prints each result on its own line.")
+         "that can be worked out and prints the answer in the form the TASK asks for, like this:\n"
+         "```python\nprint('A:', 13 * 5)\nprint('B:', 'garden'[::-1])\nprint('C:', 'Wellington')\n```\n"
+         "Text only you can write (a summary, a translation, a name you know) goes in a string and is printed.")
+NUMBER = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+
+
+def form(task, answer):
+    """What the TASK says about the shape of the answer that code can count, where the answer does not keep it:
+    said in words for the member, or "". Seen on seeds 9005 to 9007: a numbered list printed as "1: Red", a
+    one-sentence summary given as the three sentences of the text, the labels A, B, C left out."""
+    n = lambda w: int(w) if w.isdigit() else NUMBER.get(w.lower())  # noqa: E731
+    lines = [x.strip() for x in answer.splitlines() if x.strip()]
+    low = task.lower()
+    if "numbered list" in low:
+        items = [x for x in lines if re.match(r"\d+[.)]\s+\S", x)]
+        m = re.search(r"\bexactly (\d+|[a-z]+)\b", low)
+        want = n(m.group(1)) if m else None
+        if len(items) != len(lines) or (want and len(items) != want):
+            return (f"The TASK asks for a numbered list{f' of exactly {want} items' if want else ''} and nothing else: lines "
+                    f"like '1. ...' and '2. ...'. Your output has {len(items)} such line(s) among {len(lines)}.")
+    m = re.search(r"\b(\d+|one|two|three|four|five)[- ]sentence\b|\bin (\d+|one|two|three|four|five) sentences?\b", low)
+    if m and n(m.group(1) or m.group(2)):
+        want, have = n(m.group(1) or m.group(2)), len(re.findall(r"[.!?]+(?=\s|$)", answer.strip())) or 1
+        if have != want:
+            return f"The TASK asks for {want} sentence(s). Your output has {have}."
+    m = re.search(r"\blabel\w* (?:the |your )?(?:answers? |them |results? )?((?:[A-Z](?:, | and |,? and )?){2,})", task)
+    if m:
+        missing = [c for c in re.findall(r"[A-Z]", m.group(1)) if not any(re.match(rf"{c}\s*[:.)]", x) for x in lines)]
+        if missing:
+            return (f"The TASK asks for the answers labelled {', '.join(re.findall(r'[A-Z]', m.group(1)))}, each on its own line "
+                    f"('A: ...'). Your output has no line for {', '.join(missing)}.")
+    return ""
 
 
 def typed_out(reply, code):
@@ -180,7 +214,7 @@ def member(task, n, board, guard, work, temperature):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
-    good, last_error, repeats, turn, typed, looking = None, None, 0, 0, 0, False
+    good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
         if bitnet.is_member(n):  # this member is another model: the published 2.4B BitNet (team/bitnet.py)
@@ -196,6 +230,11 @@ def member(task, n, board, guard, work, temperature):
                 or ("```" not in reply and re.search(r"\bDONE\b", reply) is not None)
                 or (good is not None and code.strip() == good["program"].strip()))
         if said:
+            if good and form(task, good["answer"]) and not insisted:
+                insisted = True  # DONE straight after being told the form is not kept: told once more, then it stands
+                messages += [{"role": "assistant", "content": reply.strip()[:200]},
+                             {"role": "user", "content": form(task, good["answer"]) + " It is not done. Reply with the complete program that prints it that way."}]
+                continue
             if good:
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:200]},
@@ -204,10 +243,10 @@ def member(task, n, board, guard, work, temperature):
         if typed_out(reply, code):
             # Seen on "multiply 13 by 5; write 'garden' backwards; name the capital": every member typed the three
             # answers out ("B: dnarg"), the text was run as a program, failed the same way twice, and the member stopped.
+            # (For a few hours what was typed twice was taken as the answer, for summaries and translations. Those
+            # come as programs that print a string anyway; what came typed twice was "B: dnarg", agreed on by two.)
             typed += 1
-            if typed > 1:  # asked for a program and it typed again: what it typed is its answer (a summary, a translation)
-                if good is None:
-                    good = {"answer": reply.strip()[-3000:], "program": ""}
+            if typed > 3:
                 break
             messages += [{"role": "assistant", "content": reply.strip()[:600]}, {"role": "user", "content": TYPED}]
             continue
@@ -223,7 +262,7 @@ def member(task, n, board, guard, work, temperature):
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
-        if res["returncode"] == 0 and out and looking and "[:800]" in code:
+        if res["returncode"] == 0 and out and looking and re.search(r"\[:\d{3,4}\]", code):
             # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
             # members ended with a dump of JSON, one of them the source's own error message, as their answer)
             looking, last_error = False, None
@@ -232,7 +271,10 @@ def member(task, n, board, guard, work, temperature):
             continue
         if res["returncode"] == 0 and out:
             good, last_error = {"answer": out[-3000:], "program": code}, None
-            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n{MORE}"})
+            shape = form(task, out) if shaped < 2 else ""
+            shaped += bool(shape)
+            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n" + (
+                shape + " Reply with the complete program that prints it that way." if shape else MORE)})
             continue
         line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
         repeats = repeats + 1 if line == last_error else 0
@@ -244,7 +286,8 @@ def member(task, n, board, guard, work, temperature):
         looking = bool(LOOK.search(err or out))
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
             "\n\nWhat you expected is not there. Reply with a program that only fetches the data and prints what IS "
-            "there, with print(str(data)[:800]), so that you can see its real shape." if LOOK.search(err or out) else
+            "there, with print(list(data)[:40] if isinstance(data, dict) else type(data)) and print(str(data)[:1500]), so that "
+            "you can see its real shape (a license \"Unknown\" or None means the key you read is not there)." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn}
 
@@ -267,7 +310,7 @@ def run(task, run_dir=None, approve="never", members=2):
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
         like = [x for x in tries[:-1] if same(x["answer"], t["answer"], task)]
         if like:
-            agreed = like[0]
+            agreed = next((x for x in (like[0], t) if not form(task, x["answer"])), like[0])  # of two that agree, the one that keeps the form asked for
             break
     got = [t for t in tries if t["answer"]]
     if agreed:

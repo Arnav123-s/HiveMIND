@@ -141,6 +141,20 @@ jobs:
           name: the-sitting
           path: training/reports/exams/
           retention-days: 30
+      - name: What the members wrote and what it printed (to find faults by reading, not by the score)
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && inputs.members }}
+        with:
+          name: the-members-own-work
+          path: |
+            runs/exam/**/TASK.md
+            runs/exam/**/REPORT.md
+            runs/exam/**/events.jsonl
+            runs/exam/**/member*_*.py
+            runs/exam/**/.member*_*.py.out
+            runs/exam/**/.member*_*.py.err
+          include-hidden-files: true
+          retention-days: 14
   record:
     needs: sit
     if: ${{ !inputs.members && !inputs.empty_memory && !inputs.practice && !inputs.bitnet }}
