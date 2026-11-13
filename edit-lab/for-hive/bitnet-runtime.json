@@ -1,0 +1,112 @@
+{
+ "files": {
+  "gguf": {
+   "bytes": 1187801280,
+   "md5": "65cb04366e4d02ccd78b4b7b48c84b3b",
+   "path": "microsoft/bitnet-b1.58-2B-4T-gguf/ggml-model-i2_s.gguf",
+   "sha256": "4221b252fdd5fd25e15847adfeb5ee88886506ba50b8a34548374492884c2162"
+  },
+  "hf_bf16_safetensors": {
+   "bytes": 4825679400,
+   "repo": "microsoft/bitnet-b1.58-2B-4T-bf16",
+   "sha256": "529637ff6dab1f5890767356928693f69ffe61d3b6040a43de9306b37bfd5ae1"
+  },
+  "ppl_input": "text.txt = first 9000 bytes of GPL-3 (Fable's exact bytes)"
+ },
+ "lane_files": [
+  "~/workspace/bitnet-q3/laneA_results.json + laneA.log",
+  "~/workspace/bitnet-q3/laneB_results.json + laneB.log",
+  "~/workspace/bitnet-q3/laneC_results.json + hf_stage_results.json"
+ ],
+ "machine": "AMD EPYC 9D25 (AVX2 + AVX512F), shared VM, all runs -t 4",
+ "question": "FOR_MUSE.md Q3: a runtime on which the published 2.4B BitNet actually works (exact commit, build commands, prompt format for a working 'primes below 30' program) or a reference reading showing the model itself is that weak.",
+ "rows": [
+  {
+   "arm": "Fable baseline (their check, GitHub runner)",
+   "commands": "setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s; llama-perplexity -c 256 --chunks 6 -t 4; llama-completion greedy, 'User: {q}<|eot_id|>Assistant: '",
+   "ppl_gpl": 70.2536,
+   "primes": "loops: 'Here is a Python program that prints every prime below 30.' repeated, no code",
+   "runtime": "microsoft/BitNet main (depth-1 clone, Nov 13) = 0b341e5; submodule isHuangXin/llama.cpp 390c3077"
+  },
+  {
+   "arm": "A1 stock head (this side, reproduced)",
+   "commands": "BitNet/build/bin/llama-perplexity -m models/gguf/ggml-model-i2_s.gguf -f text.txt -c 256 --chunks 6 -t 4",
+   "per_chunk": [
+    35.829,
+    55.1361,
+    67.8062,
+    68.1161,
+    73.0226,
+    70.2536
+   ],
+   "ppl_gpl": 70.2536,
+   "ppl_unc": 7.71118,
+   "primes": "NOT a working program: 160 greedy tokens loop 'Here is a Python program that prints every prime below 30.' 11 times, never emits code (check_primes.py)",
+   "runtime": "BitNet 0b341e5, submodule 390c3077, clang 18.1.3 build"
+  },
+  {
+   "arm": "A2 head + --override-kv bitnet-b1.58.hidden_activation=str:relu2",
+   "commands": "same as A1 plus the override flag",
+   "ppl_gpl": 70.2536,
+   "primes": "not run (PPL unchanged)",
+   "runtime": "BitNet 0b341e5 stock binary",
+   "verdict": "NO-OP in this fork: bit-identical to stock incl. per-chunk values; source shows the bitnet builder never reads the key and the op map has no relu2 entry. The lowbit-atlas override claim does not hold at this head."
+  },
+  {
+   "arm": "A3 head + one-line patch (LLM_FFN_SILU -> LLM_FFN_RELU_SQR, src/models/bitnet.cpp:133)",
+   "capital": "'The capital of Australia is Canberra. It was chosen as the capital in 1908 and is located in the Australian Capital Territory (ACT). Canberra is known for its well-organized layout' \u2014 coherent, no loop",
+   "commands": "sed patch; cmake --build build -j2 --target llama-perplexity llama-completion; llama-perplexity (as A1); llama-completion -t 4 -n 192 --temp 0 --special -r '<|eot_id|>' -no-cnv -p 'User: Write a Python program that prints every prime below 30.<|eot_id|>Assistant: '",
+   "per_chunk": [
+    7.3786,
+    8.7206,
+    10.6852,
+    10.1141,
+    10.5403,
+    10.3541
+   ],
+   "ppl_gpl": 10.3541,
+   "ppl_unc": 1.10401,
+   "primes": "WORKING PROGRAM: complete is_prime program, ends at <|eot_id|>; check_primes.py executed it, stdout exactly [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]",
+   "runtime": "BitNet 0b341e5 + patch, submodule 390c3077, clang 18.1.3"
+  },
+  {
+   "arm": "A4 = A3 build with official sampling (temp 0.6, top-p 0.9)",
+   "runtime": "BitNet 0b341e5 + patch",
+   "ppl_gpl": null,
+   "primes": "WORKING PROGRAM (lane A run; files in ~/workspace/bitnet-q3/gen/)"
+  },
+  {
+   "arm": "A5 conversion from bf16 via the tree's convert-helper",
+   "runtime": "BitNet 0b341e5 tree, gguf-py 0.19.0",
+   "ppl_gpl": null,
+   "primes": null,
+   "verdict": "Attempted, clean negative: OOM-killed at preprocess (step 1/3) at 4,404 MB peak RSS on the 7 GB VM; needs ~12 GB. ashp fallback deliberately not taken - Arnav parked all laptop work on 2026-11-13. Staging (venv_conv/, conv_bf16/) remains in ~/workspace/bitnet-q3 for a >=16 GB machine."
+  },
+  {
+   "arm": "B era runtime, unpatched (Fable's unbuildable May-2025 attempt, landed)",
+   "capital": "'The capital of Australia is Canberra.' \u2014 correct",
+   "commands": "checkout c1e9a9a; submodule shallow-fetch 40ed0f29; pip install --no-deps <era tree>/gguf-py; codegen_tl2 (setup_env's exact args); cmake -B build -DBITNET_X86_TL2=ON -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++; cmake --build -j2 --target llama-cli llama-perplexity llama-quantize; llama-perplexity -c 256 --chunks 6 -t 4",
+   "ppl_gpl": 10.3149,
+   "ppl_unc": 1.10282,
+   "primes": "generation begun twice; both times the identical coherent prefix as A3's completed program ('Here's a Python program... def is_prime(n): if n <'); not run to <|eot_id|> on the era binary itself \u2014 decode starved by the shared VM (~90 s/token under load)",
+   "runtime": "BitNet c1e9a9a (2025-05-31); submodule Eddie-Wang1120/llama.cpp 40ed0f29 (branch merge-dev); gcc 13.3 build",
+   "source_evidence": "era src/llama.cpp: arch 'bitnet-b1.58' -> build_bitnet_158() -> LLM_FFN_RELU_SQR (line 15501). The SiLU builder (build_bitnet(), line 15353) serves the distinct 'bitnet' arch only. 765741d records the same submodule SHA and its CPU-runtime diff vs c1e9a9a is empty (gpu/* + setup_env list only) \u2014 the c1e9a9a measurement is the 765741d measurement."
+  },
+  {
+   "arm": "C HF transformers reference on bf16 master weights",
+   "commands": "transformers 5.22.2 / torch 2.15.0+cpu, AutoModelForCausalLM on microsoft/bitnet-b1.58-2B-4T-bf16, 256-token windows over the same text.txt, all-but-first token scored per window",
+   "per_window_ppl": [
+    5.1514,
+    8.6796,
+    17.4744,
+    6.879,
+    11.7687,
+    11.1189
+   ],
+   "ppl_gpl_first6": 9.4303,
+   "primes": "generations not completed (runner killed by a runtime restart after the PPL stage saved); not needed \u2014 A3 executes a working program and B/C agree on the model's strength",
+   "runtime": "no C++ runtime \u2014 reference reader"
+  }
+ ],
+ "verdict": "The model is fine; current head is broken by one wrong constant. Working recipe: BitNet main 0b341e5 (submodule 390c3077) + one-line patch LLM_FFN_SILU -> LLM_FFN_RELU_SQR at 3rdparty/llama.cpp/src/models/bitnet.cpp:133, built the setup_env way with clang, published GGUF, prompt 'User: {q}<|eot_id|>Assistant: ' (the model's own chat template) \u2014 PPL 10.3541 on Fable's GPL bytes, primes program works and was executed. Unpatched alternative: BitNet c1e9a9a (May-2025) reads the same file at 10.3149 with no patch."
+}

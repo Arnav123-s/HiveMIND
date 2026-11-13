@@ -1,0 +1,32 @@
+{
+ "rows": [
+  {
+   "blocks": 6,
+   "grow_to": 0,
+   "mult": 1,
+   "budget_blocksteps": 6420,
+   "seed": 7101,
+   "steps": 1070,
+   "blocksteps_spent": 6420,
+   "train_last": 3.3566,
+   "weights": 3505152,
+   "wall_s": 10651.1,
+   "s_per_blockstep": 1.659,
+   "gate": 3.3642
+  },
+  {
+   "blocks": 4,
+   "grow_to": 0,
+   "mult": 1,
+   "budget_blocksteps": 6420,
+   "seed": 7101,
+   "steps": 1605,
+   "blocksteps_spent": 6420,
+   "train_last": 3.2624,
+   "weights": 2615424,
+   "wall_s": 12646.3,
+   "s_per_blockstep": 1.9698,
+   "gate": 3.2876
+  }
+ ]
+}

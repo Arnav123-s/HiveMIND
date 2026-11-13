@@ -1,1 +1,304 @@
-{"arms":{"members_alone":"AGENT_TEAM_SOLO=2 AGENT_TEAM_SOLO_ALONE=1","members_first":"AGENT_TEAM_SOLO=2","roles":"(neither)"},"code":"942803d","engine":"PyTorch fallback (llama.cpp not installed on this VM): roles=Qwen/Qwen3-1.7B bf16, members=Qwen/Qwen2.5-Coder-1.5B-Instruct bf16, OMP/MKL=2","github_reference_minutes_per_sitting":{"members_alone":[69,19],"members_first":[179],"roles":[179,178,277]},"question":"Q1: which form of the working hive is better (members-first vs members-alone vs roles)","seeds_excluded":[315,9001,9002,9003,9004,9005,9006,9007,9008],"seeds_planned":[12001,12002,12003,12004,12005,12006,12007,12008],"sittings":[],"source":"FOR_MUSE.md at make-it-work 942803d, question 1","spike":{"arm":"members_alone","seed":12001,"started":"2026-11-12 ~21:13 PT","status":"running under full sprint contention","task_seconds":[]},"verdict":null,"work_copy":"~/workspace/edit-lab/for-hive/q1-work"}
+{
+ "arms": {
+  "members_alone": "AGENT_TEAM_SOLO=2 AGENT_TEAM_SOLO_ALONE=1",
+  "members_first": "AGENT_TEAM_SOLO=2",
+  "roles": "(neither)"
+ },
+ "code": "942803d",
+ "engine": "PyTorch fallback (llama.cpp not installed on this VM): roles=Qwen/Qwen3-1.7B bf16, members=Qwen/Qwen2.5-Coder-1.5B-Instruct bf16, OMP/MKL=2",
+ "github_reference_minutes_per_sitting": {
+  "members_alone": [
+   69,
+   19
+  ],
+  "members_first": [
+   179
+  ],
+  "roles": [
+   179,
+   178,
+   277
+  ]
+ },
+ "incidents": [
+  "2026-11-12 ~21:47 PT: a pkill -f whose pattern matched the operator's own tooling killed seed 12001's task-01 team process at 72s; the poisoned exam.json was deleted and the task re-run. Recorded here so the gap in wall time is never misread as hive behaviour.",
+  "2026-11-12 ~23:13 PT: the VM itself restarted (uptime 2 min at check), killing the members-alone sitting (exam.py PID 15809) with 2/16 tasks complete and e12001_02 in progress as an empty shell (board 0 events, no member artifacts, no exam.json). Restarted ONCE by the sitting owner with the exact same env (AGENT_TEAM_SOLO=2 AGENT_TEAM_SOLO_ALONE=1, OMP/MKL=2), detached via setsid nohup from the work copy: log sit-vm-12001-members-alone-r2.log, pid file sit-vm-12001-r2.pid, exam.py PID 2078. The empty e12001_02 shell dir was removed first (mirroring the ~21:52 restart) so the task re-runs clean; exam.py skipped e12001_00/e12001_01 from their existing exam.json records. This is the one permitted restart; if this process dies the gap is reported, not re-restarted.",
+  "2026-11-13 ~01:04 PT (09:04 UTC): the VM rebooted a SECOND time (uptime 1 min at check), killing the restarted sitting (exam.py PID 2078) at 4/16 tasks complete, with e12001_04 in progress as an empty shell (board 0 events, no member artifacts, no exam.json). The owner's one permitted restart was already used after the first reboot, so the sitting was NOT restarted again; it is halted at 4/16 pending the parent's decision. Recorded prices so far: e12001_00=2405, e12001_01=2400, e12001_02=2400, e12001_03=2400 - all fails, all empty 2400s engine timeouts.",
+  "2026-11-13 ~03:05 PT: PARK - Arnav ruled 2026-11-13 00:33 PT that all laptop work is parked. The seed 12003 members-first sitting then running on ashp was stopped (taskkill /T /F on its launcher and monitor trees; verified zero matching processes remain). Tasks e12003_00-e12003_03 fully recorded on ashp; e12003_04 in progress, left as-is. The queued roles arm on 12003 never started, and no sitting was restarted anywhere. Q1's 8-seed x 3-form design now has no lane (VM lane already closed by measurement) and awaits a lane decision. See the 'parked' object.",
+  "2026-11-13 ~05:53 PT (found 2026-11-13 ~10:20 PT by red-team RT-5's live probe): seed 12003's members-first sitting, stopped at ~03:05 PT under the park ruling, had been RESUMED by the Q1 stream's own restart machinery (which could not distinguish a park-kill from a crash) and ran to completion at 05:53:27 PT - 8/16 passed, all 16 exam.json present on ashp, report SHA-256 matching the VM copy exams-12003-ashp.json. hive-form's record of 12003 as a stopped 4-task partial was therefore wrong and is corrected here and in hive-form.md. Under Arnav's 2026-11-13 ~10:09 PT ruling the laptop is approved for Q1 sittings only, going forward; the resumption itself happened inside the parked window and is recorded as a process failure, not retroactively approved. Consequence for design: 12003 is closed as a flagged pilot, excluded from averages, never re-sat.",
+  "2026-11-13 ~10:09-10:20 PT: Arnav approved ashp for Q1 sittings ONLY (scoped exception to the park). A five-agent red team (q1-redteam/RT-1..RT-5) attacked the design before launch; the hardened campaign is Q1-RUN-PLAN.md. Design-breakers found and designed out: per-seed result caching across arms (one work copy per sitting instead), unpinned engine/env (pinned in the launcher), 12002's arm ruled non-reusable (unverified code c256322 + same-batch rule), statistics re-scoped (the 1-task hinted effect needs ~42-60 trios; claim capped at large effects or the pre-declared non-inferiority-plus-cost test, margin 3 tasks/16).",
+  "2026-11-13 ~10:21-11:00 PT: Arnav expanded the build (DevOps + Engineering + Fable-approach teams) and corrected the Fable team's brief: adopt Fable's APPROACH as the operating method, staffed at higher manpower - not tips for Q1. Engineering's engine-propagation follow-up proved the roles path crashes on ashp under the hf pin (cells GGUF build flips available(); llama_cpp absent): 5 of pilot 12003's 8 failures died this way. Coordinator ruling: two staged patches adopted for all arms before trio 1 (cells-engine-hf, sandbox-pythonutf8), declared as the campaign chassis delta vs 942803d, each inert under Fable's side's configuration. Applied identically to VM + ashp q1-work; campaign manifest rollup fb51cf44 (243 files) verified on VM, ashp chassis, and the remade 12004 copy; config_diff PASS on the patched tree; engineering tests 14 passed (2 unpatched-baseline tests fail by design post-adoption). DevOps apparatus smoke-proven; leftover 12002 monitor stopped; 12004 draw recorded (no museum draw). Plan v2 + q1-losers.md + this page updated; sitting #1 (12004 members-alone) launches under a named Sitting Owner."
+ ],
+ "parked": {
+  "ashp_stop": {
+   "artifacts": "D:\\agents\\muse\\for-hive\\q1-work\\runs\\exam\\exam_12003\\ left exactly in place, nothing moved or deleted: e12003_00, e12003_01, e12003_02, e12003_03 each hold exam.json + members + REPORT.md + work (e12003_01 also board.db/events.jsonl/screens/TASK.md); e12003_04 holds members/ only (in progress at the stop, no exam.json). Sit log D:\\agents\\muse\\for-hive\\sit-12003.log tail: PASS e12003_02 (units) 778s; FAIL e12003_03 (instructions) 269s.",
+   "how_stopped": "taskkill /T /F on the launcher tree (cmd PID 20312) and on the monitor tree (cmd PID 3716) over the established ashp SSH path. Verified afterwards: zero exam.py / run_sit / monitor processes remain. The script sequences no further arm (members-first only), and the coordinator's queued roles arm on 12003 was never started.",
+   "stopped_at": "2026-11-13 ~03:05 PT",
+   "what_was_running": "seed 12003, members-first (AGENT_TEAM_SOLO=2, ALONE absent, engine=hf, threads=8) via D:\\agents\\muse\\for-hive\\run_sit_12003.ps1; exam.py tree PIDs 17884/9144 with team child 14012/13772 on task e12003_04; dedicated monitor_12003.ps1 (PIDs 3716/4544). All processes owned by the muse account."
+  },
+  "decision": "Q1 ashp lane PARKED by Arnav, 2026-11-13 00:33 PT: 'forget the laptop part for now, focus strictly on this goal' - all laptop work parked.",
+  "design_state": "the 8-seed x 3-form design (seeds 12002-12009 planned; 12002 completed, 12003 partial) currently has no lane and awaits a lane decision.",
+  "vm_lane": "already closed by measurement: seed 12001 halted at 4/16, all four recorded tasks 2400s timeouts, zero member artifacts.",
+  "superseded": "Superseded in part 2026-11-13 ~10:09 PT: Arnav approved ashp for Q1 sittings only. All other laptop work remains parked. Also corrected: the 12003 sitting described here as stopped later resumed and completed (see incidents)."
+ },
+ "partial_sittings": [
+  {
+   "artifacts": "on ashp, in place: D:\\agents\\muse\\for-hive\\q1-work\\runs\\exam\\exam_12003\\",
+   "form": "members_first",
+   "known_results": {
+    "e12003_02": "PASS 778s",
+    "e12003_03": "FAIL 269s"
+   },
+   "machine": "ashp",
+   "seed": 12003,
+   "status": "COMPLETED 2026-11-13 05:53:27 PT (8/16, members-first) after a post-park resumption by the Q1 stream's own restart machinery; provenance chain broken (two pre-park starts, park kill, resumption inside the parked window). Flagged pilot - excluded from every average; never re-sat.",
+   "task_in_progress_at_stop": "e12003_04 (members/ only, no exam.json)",
+   "tasks_recorded": [
+    "e12003_00",
+    "e12003_01",
+    "e12003_02",
+    "e12003_03"
+   ],
+   "passed": 8,
+   "total": 16,
+   "report": "exams-12003-ashp.json (VM copy, SHA-256 verified against ashp original by RT-5)",
+   "known_results_note": "Full per-task results are in the report; the two results below were the stop-time snapshot."
+  }
+ ],
+ "question": "Q1: which form of the working hive is better (members-first vs members-alone vs roles)",
+ "seeds_excluded": [
+  315,
+  9001,
+  9002,
+  9003,
+  9004,
+  9005,
+  9006,
+  9007,
+  9008
+ ],
+ "seeds_planned": [
+  12002,
+  12003,
+  12004,
+  12005,
+  12006,
+  12007,
+  12008,
+  12009
+ ],
+ "sittings": [
+  {
+   "by_field": {
+    "code": [
+     2,
+     2
+    ],
+    "dates": [
+     2,
+     2
+    ],
+    "given data": [
+     1,
+     1
+    ],
+    "instructions": [
+     2,
+     2
+    ],
+    "knowledge": [
+     1,
+     2
+    ],
+    "languages": [
+     0,
+     1
+    ],
+    "live facts": [
+     0,
+     1
+    ],
+    "maths": [
+     1,
+     1
+    ],
+    "understanding": [
+     1,
+     1
+    ],
+    "units": [
+     1,
+     1
+    ],
+    "websites": [
+     0,
+     1
+    ],
+    "writing": [
+     0,
+     1
+    ]
+   },
+   "failed_artifacts_on_vm": "~/workspace/edit-lab/for-hive/ashp-artifacts/exam_12002/<task>/ for each failed task",
+   "failed_tasks": [
+    "e12002_00",
+    "e12002_10",
+    "e12002_12",
+    "e12002_13",
+    "e12002_15"
+   ],
+   "finished": "2026-11-13 01:29:46 PT",
+   "form": "members_alone",
+   "machine": "ashp",
+   "minutes": 196,
+   "passed": 11,
+   "per_task_ok": {
+    "e12002_00": false,
+    "e12002_01": true,
+    "e12002_02": true,
+    "e12002_03": true,
+    "e12002_04": true,
+    "e12002_05": true,
+    "e12002_06": true,
+    "e12002_07": true,
+    "e12002_08": true,
+    "e12002_09": true,
+    "e12002_10": false,
+    "e12002_11": true,
+    "e12002_12": false,
+    "e12002_13": false,
+    "e12002_14": true,
+    "e12002_15": false
+   },
+   "report": "exams-12002-ashp.json (copy of training/reports/exams/12002.json on ashp); the .md report on ashp is 0 bytes - sit log tail shows a cp1252 UnicodeEncodeError on the final cross-mark print, END8 exit=1; JSON is complete",
+   "restarts": 0,
+   "seed": 12002,
+   "started": "2026-11-12 22:13:23 PT",
+   "task_seconds": {
+    "e12002_00": 1170,
+    "e12002_01": 760,
+    "e12002_02": 450,
+    "e12002_03": 302,
+    "e12002_04": 551,
+    "e12002_05": 294,
+    "e12002_06": 289,
+    "e12002_07": 362,
+    "e12002_08": 885,
+    "e12002_09": 289,
+    "e12002_10": 808,
+    "e12002_11": 329,
+    "e12002_12": 2401,
+    "e12002_13": 1567,
+    "e12002_14": 298,
+    "e12002_15": 1028
+   },
+   "thermal": {
+    "gpu_load": "0% throughout (CPU work)",
+    "note": "GPU sensor is the readable sensor on ashp; ACPI zones are not die temps. Monitor-file peak incl. pre-sitting burst tests was 75C; sitting-window (22:13-01:29 PT) peak was 72C.",
+    "peak_gpu_at": "2026-11-13 00:14:34 PT (monitor log)",
+    "peak_gpu_c": 72,
+    "throttling": "none observed; never approached the 88-90C stop line"
+   },
+   "total": 16
+  }
+ ],
+ "source": "FOR_MUSE.md at make-it-work 942803d / origin-main PR#17, question 1",
+ "spike": {
+  "arm": "members_first (launch); restarted as members_alone for continued pricing - seed 12001 is a mixed-arm pricing sitting, EXCLUDED from the verdict table",
+  "seed": 12001,
+  "started": "2026-11-12 ~21:13 PT",
+  "status": "closed by coordinator decision: 4/16 recorded, all 2400s timeouts with zero member artifacts; VM rebooted twice during the sitting; VM lane for Q1 closed (price = >=2400 s/task, no member behaviour) - ashp is the lane. Records persist; resumable if the VM ever sits idle.",
+  "task_seconds": {
+   "e12001_00": 2405,
+   "e12001_01": 2400,
+   "e12001_02": 2400,
+   "e12001_03": 2400
+  },
+  "task_seconds_note": "e12001_00: timed out at the exam's 2400s per-task limit, fail, zero member artifacts - engine-bound on this VM, not a member cause e12001_01: timed out at the exam's 2400s per-task limit (seconds=2400), fail, zero member artifacts - engine-bound on this VM, not a member cause. e12001_02: timed out at the exam's 2400s per-task limit (seconds=2400), fail, zero member artifacts - engine-bound on this VM, not a member cause. e12001_03: timed out at the exam's 2400s per-task limit (seconds=2400), fail, zero member artifacts - engine-bound on this VM, not a member cause.",
+  "vm_lane_verdict": "closed - not purchasable under sprint contention"
+ },
+ "verdict": null,
+ "work_copy": "~/workspace/edit-lab/for-hive/q1-work",
+ "campaign": {
+  "plan": "Q1-RUN-PLAN.md",
+  "red_team": [
+   "q1-redteam/RT-1-validity.md",
+   "q1-redteam/RT-2-statistics.md",
+   "q1-redteam/RT-3-harness.md",
+   "q1-redteam/RT-4-cost.md",
+   "q1-redteam/RT-5-lane.md"
+  ],
+  "approval": "Arnav, 2026-11-13 ~10:09 PT - ashp for Q1 exam sittings ONLY; red team first, then run under the hardened plan",
+  "frozen_config": {
+   "machine": "ashp (account ashp\\muse only), D:\\agents\\muse\\for-hive\\campaign\\q1-sit-<seed>-<arm> - one work copy per sitting",
+   "code": "campaign chassis = q1-work @ 942803d + 2 declared patches (q1-engineering/patches/cells-engine-hf.patch, sandbox-pythonutf8.patch); manifest rollup fb51cf44e430216844b86eaf57517391d3e92e97a3541e0c4531465824671730 over 243 .py files, verified identical on VM, ashp chassis, and every sitting copy. The c256322 question underneath the pilots was settled by hash audit: 243/243 .py byte-identical to 942803d, so pilots ran on campaign base code (unpatched); 12002 is barred from trio reuse by the same-batch rule, not by code.",
+   "command": "python training/exam.py sit --tasks 16 --seed N --empty-memory",
+   "pinned_env": {
+    "AGENT_TEAM_ENGINE": "hf",
+    "HIVE_LIBRARY": "0",
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "threads": 8
+   },
+   "arm_env": {
+    "members_alone": "AGENT_TEAM_SOLO=2 AGENT_TEAM_SOLO_ALONE=1",
+    "members_first": "AGENT_TEAM_SOLO=2",
+    "roles": "(neither)"
+   }
+  },
+  "primary_pair": "members-first vs members-alone (secondary pairs Bonferroni-corrected)",
+  "bar": "|mean paired gap| > 2 x SE of the mean paired difference; MDE80 printed for the achieved k; Fable's >0.01 dropped as vacuous",
+  "cost_claim": "members-alone non-inferiority margin pre-declared at 3 tasks per 16 vs the best scorer; wall-time is a first-class outcome",
+  "macro_buckets_preregistered": {
+   "programmatic": "code 2 + given data 1 + maths 1 + units 1 = 5/sitting",
+   "retrieval": "knowledge 2 + dates 2 + live facts 1 = 5/sitting",
+   "language_and_instruction": "instructions 2 + languages 1 + understanding 1 + websites 1 + writing 1 = 6/sitting"
+  },
+  "queue": [
+   "12004 members-alone",
+   "12004 members-first",
+   "12004 roles (trio 1; roles gate)",
+   "12005 members-first",
+   "12005 roles",
+   "12005 members-alone (trio 2; sigma_D re-estimation gate; declared fallback k=2)",
+   "12006 roles",
+   "12006 members-alone",
+   "12006 members-first (trio 3; plan target)",
+   "12007+ trios in rotation (stretch / post-window continuation toward 8)"
+  ],
+  "pilots_excluded_from_averages": [
+   12001,
+   12002,
+   12003
+  ],
+  "one_sentence_claim": "Across k fresh paired seeds the three forms are indistinguishable within the measured interval unless a form's paired gap clears 2xSE - this design certifies only large effects (MDE80 ~2.3 tasks at k=8, ~3.2 at k=4, ~3.7 at k=3) and the pre-declared non-inferiority-plus-cost claim for members-alone; the 1-task ordering on seed 9007 remains within noise.",
+  "plan_version": "Q1-RUN-PLAN.md v2 (2026-11-13): expansion teams folded in; frozen design unchanged (seeds, rotation, bar, margins, queue)",
+  "teams": {
+   "red_team": "5 agents, q1-redteam/RT-1..RT-5 - complete",
+   "devops": "q1-devops/ (LANE-RUNBOOK.md, SMOKE-TEST.md) - apparatus built and smoke-proven (clean + kill/resume dummy runs, mirror 12/12 hash-verified); leftover 12002 monitor stopped and logged; seed 12004 draw recorded (16 tasks, no unwinnable German museum draw); 12004 members-alone copy pristine and PRELAUNCH-OK, remade from the patched chassis at rollup fb51cf44",
+   "engineering": "q1-engineering/ - config-diff PASS on patched tree (arms differ only in the 7 SOLO/ALONE-derived keys); memory parity PASS 10/10; failure classifier 9/9 vs human autopsy; tests on patched tree 14 passed, 2 unpatched-baseline tests fail by design (they stage 'before' from the now-patched live tree; baseline recoverable from git HEAD 942803d)",
+   "fable_approach": "FABLE-APPROACH.md - Fable's method adopted as the campaign's operating approach (not tips): decompose/price/same-batch fresh-seed controls/pre-stated bar/artifact-read causes/two-tier default-vs-claim discipline/build-in only after rerun on unused material/losers with numbers; staffed above Fable's manpower (named Sitting Owner per sitting with sole restart authority, per-task Artifact Readers, per-trio Row Verifiers, 2 standing Builders, Plan Keeper)"
+  },
+  "build_in": "Pre-declared in Q1-RUN-PLAN.md: (a) members-first win past the bar -> members-first becomes Muse's side's default form with trio numbers in the change; (b) members-alone non-inferior within 3/16 at lower wall cost -> members-alone default first form, others escalation; (c) indistinguishable -> no default change, recorded with MDE80. Confirmation rerun on fresh seed 12010 (identical frozen config) must not collapse (below winner's trio mean minus achieved MDE80) before any build-in.",
+  "losers_ledger": "q1-losers.md (L1 VM lane, L2 12002-as-trio-arm, L3 re-sitting 12003, L4 library-on form, L5 unpatched chassis on ashp, L6 the 1-task hint as a claim)",
+  "campaign_table_columns": [
+   "seed",
+   "form",
+   "score /16",
+   "wall span (from logs)",
+   "restarts (with sit-log START lines)",
+   "code manifest rollup",
+   "engine",
+   "members-first decomposition (total, fallback rate, member-phase pass rate, rescue rate, agreed rate)",
+   "verifier sign-off"
+  ],
+  "engine_evidence_gate": "Standing gate (2026-11-13, plan v2.1): a sitting counts only if its records affirmatively show the serving stack - RUN-METADATA pinned env + matching sit-log START line + chassis code-path proof at its manifest rollup + lane HF cache inventory. Proof for live seed 12004: ENGINE-PROOF-12004.md - verdict: the DECLARED PyTorch stack serves on ashp (members Qwen2.5-Coder-1.5B-Instruct, roles Qwen3-1.7B, bf16, ENGINE=hf makes gguf_available() False by construction); NO silent fallback; GGUF brain4b/coder7b cannot be served on ashp in any mode (no GGUF repos in cache, llama_cpp not installed). Fable's side's 2026-11-13 discovery (their commit 7171805) - all pre-fix GitHub sittings incl. seed 9007's 10/9/9 silently ran these same fallback bases instead of brain4b/coder7b - is addressed head-on: their declared config was GGUF and was silently substituted; ours declares the PyTorch stack openly and pins it. Their withdrawal of Q1/Q5 as written on their side, and the redirected Q2-style reading ask, do not cancel Muse's side's campaign (Arnav's approval stands); our Artifact Readers already perform Q2-style reading as a staffed campaign role. Cross-side claims remain internal-only; the 9007 hint is weakened further (fallback numbers), which is precisely why this campaign measures fresh, pinned, and recorded.",
+  "added_caveats_v2": [
+   "Wall-times are sequential, rotation-balanced, single-lane campaign costs - never a form's isolated speed (Fable's side's 22s vs 594s record).",
+   "The chassis's loosened same() (725b202, from seed-9005 fault-finding) gets its first claim-seed measurement in these trios.",
+   "Playwright Chromium verified ABSENT on ashp: roles-arm website handicap stands (<=2/16), not fixed (sittings-only scope).",
+   "restart_count in RUN-METADATA counts relaunch attempts; true legs come from the sit log's START lines (DevOps smoke finding)."
+  ]
+ },
+ "design_state": "Campaign under Q1-RUN-PLAN.md: fresh paired trios on seeds 12004+ (one work copy per sitting, pinned hf engine), target k=3 trios, fallback k=2, stretch k=4, continuation toward 8. Pilots 12001 (VM spike), 12002 (ashp alone 11/16), 12003 (ashp first 8/16, completed post-park) are excluded from all averages."
+}
