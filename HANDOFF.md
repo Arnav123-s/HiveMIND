@@ -266,6 +266,14 @@ How this session reads it (its own reading, not his words):
   the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
   and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
+### His word of 2026-11-13, on Muse (verbatim; it corrects the block below)
+
+"and i am not decinidn any more what muse works on my ideas are work on on the side, its its own boss and u are
+its elder and advisor since u are the smartest and most capable"
+
+My reading: Muse sets its own work. This side advises it (FOR_MUSE.md is advice, not orders) and sets its own
+direction. His ideas are side work for either, never the goal.
+
 ### His word of 2026-11-13, later: he does not decide, this side does (verbatim, in part)
 
 "merge pr 16 so muse can see it and also i dont want to decide, i have given u the goal i have given u my ideas
