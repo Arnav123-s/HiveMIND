@@ -41,7 +41,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HIVE_LIGHT: "1"
   AGENT_TEAM_SOLO: "2"
   AGENT_TEAM_SOLO_ALONE: "1"
   NAME: gen${{ github.run_number }}
@@ -58,7 +57,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Who practises
-        run: echo "HIVE_MEMBERS=${WHO:-$(python3 -c "import json; print(json.load(open('cells/roster.json'))['members'])")}" >> "$GITHUB_ENV"
+        run: |
+          WHO="${WHO:-$(python3 -c "import json; print(json.load(open('cells/roster.json'))['members'])")}"
+          echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
+          # only ternary members: the 4-bit engine, the browser and the cells are not installed
+          echo "$WHO" | grep -q coder || echo "HIVE_LIGHT=1" >> "$GITHUB_ENV"
         env:
           WHO: ${{ inputs.who || '' }}
       - uses: ./.github/actions/hive
@@ -151,6 +154,7 @@ jobs:
             hive-with-taught) WHO="t17+$NAME,$(echo "$HIVE" | sed 's/t17+[^,]*,//')" ;;
           esac
           echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
+          echo "$WHO" | grep -q coder || echo "HIVE_LIGHT=1" >> "$GITHUB_ENV"
       - uses: ./.github/actions/hive
       - name: A fresh exam of the hard kinds
         run: |

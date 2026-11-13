@@ -62,6 +62,9 @@ Every program is complete by itself: it does not use variables of an earlier pro
 MORE = ("If this output, as it stands, is the complete and correct answer to the TASK, reply with the one word DONE. "
         "If not, reply with a better complete program.")
 TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 6))
+# the most a member may write in one reply. It was 700: on the hard exam a program that writes a module to a file and
+# then tests it was cut off in the middle and died of a syntax error (two of three members, first hard practice)
+LONG = int(os.environ.get("AGENT_TEAM_SOLO_LONG", 1600))
 
 
 # ---- what the hive has solved --------------------------------------------------------------------------------------
@@ -185,6 +188,14 @@ def form(task, answer):
         if missing:
             return (f"The TASK asks for the answers labelled {', '.join(re.findall(r'[A-Z]', m.group(1)))}, each on its own line "
                     f"('A: ...'). Your output has no line for {', '.join(missing)}.")
+    # labels the TASK spells out in quotes ("Answer in four lines: 'customer: ', 'spent: ', ..."): seen on the first hard
+    # practice, where a member worked all four values out and printed "Sofia: 347.75" four times
+    named = re.findall(r"'([A-Za-z][\w ]{0,24}): ?[^']{0,12}'", task)
+    if len(named) >= 2:
+        missing = [c for c in named if not any(re.match(rf"\W*{re.escape(c)}\s*:", x, re.I) for x in lines)]
+        if missing:
+            return (f"The TASK asks for lines that begin with {', '.join(repr(c + ':') for c in named)}. Your output has no line "
+                    f"that begins with {', '.join(repr(c + ':') for c in missing)}.")
     return ""
 
 
@@ -228,9 +239,9 @@ def member(task, n, board, guard, work, temperature):
         stop.check()
         who = ternary.seat(n)  # who sits here: the 7B coder, or a ternary model with or without an edit (team/ternary.py)
         if who == "coder":
-            reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
+            reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
         else:
-            reply = ternary.chat(who, messages, max_new_tokens=900, temperature=temperature)
+            reply = ternary.chat(who, messages, max_new_tokens=LONG, temperature=temperature)
         code = extract_code(reply)
         # Seen once every member's programs were logged (2026-11-12): the word DONE comes back as a program, bare or
         # as print("DONE"). Run, the first died on a NameError and the second replaced a right answer with the four
@@ -288,7 +299,8 @@ def member(task, n, board, guard, work, temperature):
             res = dict(res, returncode=1)
             err = (f"The TASK asks for the file {lacking[0]} saved in the current folder, and it is not there. Reply with the complete "
                    f"program that writes {lacking[0]} (with open({lacking[0]!r}, 'w')), then uses it, and prints the answer.")
-        if res["returncode"] == 0 and out and FAILED.search(out) and len(out) < 400:
+        failed = FAILED.search(out) if res["returncode"] == 0 and out and len(out) < 400 else None
+        if failed and failed.group(0).lower() not in task.lower():  # (a task about ERROR lines is answered with the word error)
             # a program that catches its own error and prints it has not answered ("The 'upload_time' key does not
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
