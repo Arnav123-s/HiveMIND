@@ -266,6 +266,16 @@ How this session reads it (its own reading, not his words):
   the three are credited to github-actions[bot]. Every commit since 2026-11-12 has a new id; old ids in reports
   and in this file (f705ae1, baabc10, db8b8d0, e312329 and so on) name the same changes under their old ids.
 
+### 2026-11-13, 04:30 UTC: the other agent's branch read again (hivemind_muse at 980c0b5), as ideas
+
+- Its half-size control agrees with votes5 here: the five-level win was the steps; gradient training at half size
+  led its rig (2.8205 against 2.9952 full size, 8 minutes, 3 seeds). Taken as an idea: two and three blocks on the
+  work budget of the founding recipe (ideas.py, arms "two blocks", "three blocks", job buui6mrrs).
+- Its JEPA (masked span, running-mean target, read by a linear probe) lost 3 of 3 and was no better than the
+  untrained net; here the two auxiliary forms lost too. Its vote levers (carry, a falling rate) were rejected.
+- Its growth cycle 6 undid two births by deleting files a birth had overwritten. Checked here: body.grow gives a
+  new cell a number no cell ever had, so undoing a birth (body._remove) can only remove the new file.
+
 ### His word of 2026-11-13, about other agents (verbatim)
 
 "muse side as i said any other aget ecpet claude agents are my ideas, ideas are not goals they are simply ideas i
