@@ -1,7 +1,7 @@
 # The mission: the prompt that hands HiveMIND to the next session
 
 Written 2026-11-13 for Arnav. Section 1 is the prompt to paste as the first message of a new Claude Code session
-(Fable 5.2) on this repository. It hands over the whole goal with full freedom. Section 2 is for a second session
+(Fable 5.2) on this repository, in the other Claude account (a fresh machine; the prompt covers setting it up). It hands over the whole goal with full freedom. Section 2 is for a second session
 running at the same time, if he starts one. Section 3 is a message for Muse.
 
 ---
@@ -47,8 +47,21 @@ what measurably helps, and repeats without me. Small parts, each cheap, many of 
   70, loops). Its original bf16 weights have never been tried in PyTorch.
 - The hive does not yet improve itself; every fix so far was found by a Claude session reading logs.
 
+# You are on a fresh machine, in a different Claude account from the session that wrote this
+Nothing from that session is on this machine: no Python environment, no downloaded models, no scratch files.
+Everything it knew is in the repository (NEXT_SESSION.md, HANDOFF.md). First:
+1. Work on branch make-it-work (git fetch origin make-it-work; git checkout make-it-work). Push your work there
+   and to a claude/ branch of your own; open PRs to main and merge them yourself once measured.
+2. Set up: bash scripts/cloud_setup.sh (about 20 minutes; the hive's models, about 10 GB, download on first
+   use). If only the BitNet side is needed at first: bash scripts/cloud_setup.sh --light (about 3 minutes).
+3. If a download is refused by the network (Hugging Face, download.pytorch.org, Wikipedia), the cloud
+   environment's network settings need those hosts: ask for exactly that, once, with the hosts named
+   (NEW_SESSION.md section 1 lists them). Meanwhile use GitHub Actions runners, which reach the internet.
+4. If pushing to GitHub or reading Actions runs is refused, this account's GitHub connection lacks access to
+   Arnav123-s/HiveMIND: say so at once; it is the one thing only I can fix.
+
 # Resources
-- This cloud machine: 4 CPU cores, about 15 GB RAM, the hive's models cached.
+- This cloud machine: 4 CPU cores, about 15 GB RAM (once set up, the hive's models are cached here).
 - GitHub Actions runners: free 4-core machines, several at once, jobs of hours. Experiments with many arms
   belong there, in parallel, with results as artifacts (see .github/workflows/exam.yml).
 - Muse (another agent, branch hivemind_muse): many agents, a weak machine, its own boss. You are its senior
