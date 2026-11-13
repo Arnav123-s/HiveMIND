@@ -44,7 +44,8 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   https://huggingface.co/api/models/OWNER/NAME (["cardData"]["license"]; ["likes"]; ["downloads"]; ["tags"] holds "name:value")
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
   Use requests with timeout=30 and headers={{"User-Agent": "hive/1.0"}} (Wikipedia refuses a request without one).
-  If you do not know what a source returns, first print a small part of it and look.
+  If you do not know what a source returns, look first: look(x) is built in. Given JSON data or a requests
+  response it prints the keys, nested; given the text of a web page it prints the page's links and text.
 - A page inside a website is reached from the site's first page (https://...), by finding there the link whose text
   matches and following it. An inner address written from memory is usually wrong.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
@@ -307,11 +308,12 @@ def member(task, n, board, guard, work, temperature):
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
-        if res["returncode"] == 0 and out and looking and re.search(r"\[:\d{3,4}\]", code):
+        if res["returncode"] == 0 and out and (looking and re.search(r"\[:\d{3,4}\]", code) or re.search(r"\blook\(", code)
+                                                and re.search(r"^PAGE title:|^\s*'\w+': |^\[\d+ items; the first:\]", out, re.M)):
             # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
             # members ended with a dump of JSON, one of them the source's own error message, as their answer)
             looking, last_error = False, None
-            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\nThat is what is really there. Now reply "
+            messages.append({"role": "user", "content": f"OUTPUT:\n{out[:2600]}\n\nThat is what is really there. Now reply "
                              "with the complete program that prints the answer to the TASK."})
             continue
         if res["returncode"] == 0 and out:
@@ -330,9 +332,9 @@ def member(task, n, board, guard, work, temperature):
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
         looking = bool(LOOK.search(err or out))
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
-            "\n\nWhat you expected is not there. Reply with a program that only fetches the data and prints what IS "
-            "there, with print(list(data)[:40] if isinstance(data, dict) else type(data)) and print(str(data)[:1500]), so that "
-            "you can see its real shape (a license \"Unknown\" or None means the key you read is not there)." if LOOK.search(err or out) else
+            "\n\nWhat you expected is not there. Reply with a short program that only fetches the data and calls look(data) "
+            "(look is built in: for JSON it prints the keys, nested; for a web page pass response.text and it prints the links "
+            "and the text). Then you see what IS there." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
             "who": ternary.seat(n), "messages": messages}
