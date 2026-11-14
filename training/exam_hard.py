@@ -556,7 +556,68 @@ def h_sim(r):
             "balance, and how many withdrawals were refused? Answer in two lines: 'balance: ' and 'refused: '.", check)
 
 
-MAKERS = [h_walk, h_quotes, h_two, h_since, h_age, h_table, h_module, h_module, h_join, h_edit, h_log, h_search, h_sim]
+# ---- a fact from the open web: a real thing drawn at random from Wikidata, a check against what Wikidata records ----
+WEB = [  # (class, property, how many Wikipedia languages at least, what is asked, unit factors to the unit asked, tolerance)
+    ("Q515", "P1082", 40, "the population of {name}{where}", {"Q199": 1.0}, 0.005, "people"),          # city: population
+    ("Q8502", "P2044", 25, "the height above sea level of {name}{where}, in metres", {"Q11573": 1.0, "Q3710": 0.3048}, 0.01, "m"),
+    ("Q4022", "P2043", 30, "the length of the river {name}{where}, in kilometres", {"Q828224": 1.0, "Q11573": 0.001, "Q253276": 1.609344}, 0.02, "km"),
+]
+WEB_FALLBACK = {"Q515": ["Q90", "Q64", "Q1490", "Q1486", "Q60"], "Q8502": ["Q513", "Q1286", "Q178167"], "Q4022": ["Q3392", "Q584", "Q1471"]}
+_UA = {"User-Agent": "hive-exam/1.0"}
+
+
+def _web_pick(cls, prop, links, seed):
+    """One item of the class, with the property, known in at least `links` Wikipedias, chosen by the seed: (id, name,
+    country). The open web is the hive's endless supply of tasks it has never seen; Wikidata says what is true."""
+    import requests
+    q = (f'SELECT ?item ?label ?ctry WHERE {{ ?item wdt:P31 wd:{cls}; wdt:{prop} ?v; wikibase:sitelinks ?sl. FILTER(?sl > {links}) '
+         f'?item rdfs:label ?label FILTER(lang(?label) = "en") OPTIONAL {{ ?item wdt:P17 ?c. ?c rdfs:label ?ctry FILTER(lang(?ctry) = "en") }} }} '
+         f'ORDER BY MD5(CONCAT(STR(?item), "{seed}")) LIMIT 1')
+    try:
+        b = requests.get("https://query.wikidata.org/sparql", params={"query": q}, headers=_UA | {"Accept": "application/sparql-results+json"},
+                         timeout=55).json()["results"]["bindings"][0]
+        return b["item"]["value"].rsplit("/", 1)[1], b["label"]["value"], b.get("ctry", {}).get("value", "")
+    except Exception:  # noqa: BLE001 - the query service is busy at times: a known item instead
+        import random
+        qid = random.Random(seed).choice(WEB_FALLBACK[cls])
+        return qid, _web_label(qid), ""
+
+
+def _web_claims(qid):
+    import requests
+    return requests.get(f"https://www.wikidata.org/wiki/Special:EntityData/{qid}.json", headers=_UA, timeout=30).json()["entities"][qid]
+
+
+def _web_label(qid):
+    return _web_claims(qid)["labels"]["en"]["value"]
+
+
+def _web_values(qid, prop, units):
+    out = []
+    for c in _web_claims(qid).get("claims", {}).get(prop, []):
+        v = c.get("mainsnak", {}).get("datavalue", {}).get("value")
+        if isinstance(v, dict) and "amount" in v:
+            unit = v.get("unit", "").rsplit("/", 1)[-1]
+            unit = "Q199" if unit in ("", "1") else unit  # a count has no unit ("1")
+            if unit in units:
+                out.append(float(v["amount"]) * units[unit])
+    return out
+
+
+def h_web(r):
+    cls, prop, links, what, units, tol, unit = r.choice(WEB)
+    qid, name, ctry = _web_pick(cls, prop, links, f"{r.random():.12f}")
+    where = f" ({ctry})" if ctry and ctry != name else ""
+
+    def check(run, report):
+        vals = _web_values(qid, prop, units)
+        ok = any(abs(g - v) <= max(tol * abs(v), 0.5) for g in _nums(B._body(report)) for v in vals)
+        return ok, f"{name} ({qid}): Wikidata records {', '.join(f'{v:g}' for v in vals[:6])} {unit}; one of them in the answer: {ok}"
+    return ("hard: open web", "a fact found on the open web", f"Find {what.format(name=name, where=where)}, as Wikidata records it "
+            f"(Wikidata item {qid}). Answer with the number.", check)
+
+
+MAKERS = [h_walk, h_quotes, h_two, h_since, h_age, h_table, h_module, h_module, h_join, h_edit, h_log, h_search, h_sim, h_web]
 # Kinds the hive never practises on (training/practice draws from the others): what it scores on these is what it
 # learned that carries over to work it has not seen, not what it learned by heart.
 HELD_OUT = {"h_quotes", "h_two", "h_edit", "h_sim"}
