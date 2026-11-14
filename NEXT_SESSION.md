@@ -11,7 +11,26 @@ first). Setting up a fresh cloud environment: `NEW_SESSION.md`.
 
 ---
 
-## 00. RESUME HERE: the state at 2026-11-14 15:45 UTC (a safe point)
+## 00. RESUME HERE: the state at 2026-11-14 17:00 UTC (a safe point)
+
+**Answered: ordinary cells beat ternary cells.** Trial g9 (ternary edits) and g10 (ordinary edits) grew from the
+same 222 seed rows on t17 and were gated the same way (4 fresh mixed seeds, members alone):
+- g9, ternary: DNA 7 of 64, body 13 of 64, the body's exam took 231 minutes, training took 396 minutes.
+- g10, ordinary: DNA 9 of 64, body 26 of 64, the body's exam took 50 minutes, training took 288 minutes.
+
+That is twice the tasks in a quarter of the time. So the `ternary` input of grow.yml now defaults to "0"
+(ordinary), and the nightly run grows ordinary cells. Ternary edits stay available with `ternary: 1`.
+
+**Fixed: a record lost to a race.** g9's record job conflicted on `generations.jsonl` with the g10 line that had
+landed meanwhile. Its `|| true` hid the failure, so the job was green but recorded nothing. The g9 line is now
+restored by hand from the job log. `.gitattributes` makes that file merge as a union of lines, and a record that
+cannot be pushed now turns the job red.
+
+**Still running: g11** (run 43599778796). It grows *ternary* cells, because it was dispatched before the default
+changed, from the 222 seed rows plus its own practice. If it beats g10's 26 it is kept anyway. Otherwise, the
+first self-practice generation with ordinary cells is the nightly run at 01:17 UTC on main.
+
+## 00b. The state at 2026-11-14 15:45 UTC (kept for its run ids)
 
 Nothing is uncommitted. `main`, `make-it-work` and `claude/sleepy-johnson-lrm62n` are the same commit. No job runs
 on the session's machine. What runs on its own:
@@ -33,8 +52,7 @@ on the session's machine. What runs on its own:
 To read the results: `git fetch origin make-it-work && git show origin/make-it-work:training/reports/generations.jsonl`.
 A job that failed: GitHub tools `get_job_logs` with the run id and `failed_only`.
 
-The questions in order, after that: (1) do ternary cells (g9) do as well as ordinary ones (g10)? keep the better
-kind (`ternary` input of grow.yml, default "1"); (2) does a generation trained on the body's own practice do better
+The questions in order, after that: (1) do ternary cells (g9) do as well as ordinary ones (g10)? answered above: ordinary; (2) does a generation trained on the body's own practice do better
 than the one before (g11 against g10)? that is the self-improvement claim, and it needs this kind of number,
 night after night; (3) why nothing carries over to unpractised kinds; (4) faster training on runners.
 
