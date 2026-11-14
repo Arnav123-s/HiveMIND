@@ -55,6 +55,12 @@ A roster of different models of different sizes (t2/t4/t9/coder) was a drift. Wh
   (`HIVE_ENGRAMS=1`). The fast memory; the nightly regrowth is the slow one. Whether they help is being measured:
   `training/experiments/engram_stream.py` (same stream of tasks with and without; result in
   `training/experiments/engram_stream_31000.json`). Risk: copying old values, as the library did.
+  **First result (one stream, 32 tasks, bare DNA t17): no gain.** Without engrams 17 of 32, with 12 of 32; but
+  engrams were recalled on only 8 tasks, and on those 8 both arms passed 6. The whole gap came from the 24 tasks
+  where nothing was recalled: the same hive on the same tasks differed by 5 of 24 between two runs. So (a) this
+  form of engram shows no effect yet, recall by shared words fires too rarely; (b) **two runs of the same hive
+  differ by several tasks in 32: a gate of 32 tasks cannot tell small gains apart. Use more seeds.**
+  Also read from it: the bare 1.7B DNA passes about half of these eight basic kinds (17 of 32, 12 of 32).
 - Not done: a better ternary architecture from scratch (needs training at a scale a CPU has not reached here).
 
 ## 0. NEW, 2026-11-13 evening (a session on a fresh machine; read this block before the rest)

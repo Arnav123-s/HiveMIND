@@ -196,7 +196,7 @@ jobs:
       fail-fast: false
       matrix:
         arm: [dna, before, after]
-        seed: [1, 2]
+        seed: [1, 2, 3, 4]  # two runs of the same hive differ by several tasks in 32 (engram_stream_31000.json): four seeds, 64 tasks an arm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
