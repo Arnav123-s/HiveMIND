@@ -15,11 +15,13 @@
 #              "hive-grown", writes the numbers into training/reports/generations.jsonl, and changes the body
 #              (cells/body.json) only when the numbers say it got better.
 #
-# By hand from the Actions tab; nightly once a generation has been measured. The jobs that run models have no token
+# Every night, and by hand from the Actions tab. The jobs that run models have no token
 # that can write anywhere.
 name: The hive teaches its own members
 
 on:
+  schedule:
+    - cron: "17 1 * * *"
   workflow_dispatch:
     inputs:
       shards:
@@ -41,8 +43,8 @@ on:
         description: "The body's ternary model: t17 (1.7B, 0.43 GB packed) or t40 (4B, 1.0 GB packed)"
         default: "t17"
       ternary:
-        description: "1: the cells' own edits are ternary too (the whole cell a BitNet)"
-        default: ""
+        description: "0: the cells' own edits in ordinary numbers; anything else: ternary too (the whole cell a BitNet)"
+        default: "1"
       foresee:
         description: "1: the cells are also trained to say what a program prints before it runs"
         default: ""
@@ -216,7 +218,7 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary != '0' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4

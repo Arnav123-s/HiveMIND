@@ -10,7 +10,46 @@ no API keys, no accounts, nothing to pay for. Each specialist has its own weight
 on held-out tasks, wrote training data aimed at what it got wrong, and edited its weights on CPU
 (details and before/after numbers below).
 
-## One hive, two layers (where it stands, 2026-11-11)
+## The hive as one body (where it stands, 2026-11-14)
+
+The hive is now built as **one body: one ternary model (its DNA) and many cells of the same size**, each the
+DNA with a small weight edit of its own. Every weight of the DNA is -1, 0 or +1 (the kind of net BitNet b1.58
+named); it is in memory once, and a cell is a file of a few megabytes switched on for its turn.
+
+- **The DNA** is `prism-ml/Ternary-Bonsai-1.7B` (0.43 GB packed, Apache-2.0), served by a llama.cpp with ternary
+  kernels (`team/ternary.py`; built once, about 25 minutes). Published ternary models run fast on a plain CPU:
+  on 4 cores the 1.7B writes about 28 pieces a second in 1 GB.
+- **Cells lean to organs**: sources, code, data, words. Each cell is trained on all of the hive's checked work
+  and on its own organ's three times as often, so any two can check each other and each is strongest somewhere.
+  A task goes first to the cells that lean to it; an answer counts when two cells agree.
+- **It teaches itself** (`training/grow.py`, workflow "The hive teaches its own members", every night): the
+  cells practise on fresh tasks; a task counts only when two agreed and the task's own check, computed by code,
+  confirms it; every cell is regrown from all checked work; the regrown body is kept only if it does better than
+  the DNA alone and no worse than the body before, on fresh tasks nobody has seen.
+- **Measured (the first body, 2026-11-14)**, four fresh seeds, 64 tasks, half the first exam's kinds and half
+  hard ones of several steps (`training/exam_hard.py`), members alone:
+
+  | who sat | passed | minutes |
+  |---|---|---|
+  | the DNA as published | 9 of 64 | 139 |
+  | the body: four cells grown from 222 checked rows | 26 of 64 | 50 |
+
+  On the four hard kinds it never practised it passed none (0 of 11, as the DNA): what it learned has not yet
+  carried over to work it has not seen. The 222 rows of this first body came from bigger ternary models of the
+  same family; from the next generation on the body practises by itself.
+- **Use it**: Actions -> "Ask the hive" (the body answers once it has cells). On a device: `bash
+  scripts/cloud_setup.sh`, then `python -m team "your task"`; the body does it where the runtime and its cells
+  are on the machine (`python -m team.ternary install`, `python training/grow.py fetch`).
+- **Tried and not (yet) better**: engrams (one checked task kept as one tiny ternary edit and recalled for tasks
+  like it, `team/engram.py`): no gain on a first stream of 32 tasks. Bigger members of other sizes in one hive
+  were dropped: a body is cells of one size.
+- **Not done**: a new ternary architecture trained from nothing (every attempt on a CPU here stayed weak);
+  whether the body keeps improving from its own practice (the first such generation is running).
+
+Everything below describes the older hive of roles (models at 4 bits, not ternary), which is still in the
+repository and takes a task when `HIVE_ROLES=1` and the cells confirm nothing.
+
+## One hive, two layers (where it stood, 2026-11-11)
 
 - **The working hive** is what you use. Small pretrained models, each in its job (plan, research, browse, write
   and run code, check, write up), with tools, a jury and a guard. It converses, follows orders and does whole

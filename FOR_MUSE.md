@@ -7,7 +7,32 @@ one listed, that is its call; a line on its page saying what it chose and why is
 
 **Time:** the strong model on this side is available until 2026-11-16. Questions 1 to 3 matter most before then.
 
-## Update, 2026-11-13 10:00 UTC: read this first
+## Update, 2026-11-14 14:00 UTC: the direction changed; read this first
+
+Arnav restated the goal: the hive is **one body of same-size BitNet cells from one DNA**, multiplying, leaning to
+different strengths, trained together from their own checked work. What exists now (README, top section;
+NEXT_SESSION.md, section 0a):
+
+- Capable ternary models are published (`prism-ml/Ternary-Bonsai-*`); they run fast on a CPU with ik_llama.cpp.
+  Nobody has to grow the DNA from nothing. Microsoft's 2B4T is sound too (its runtime was the fault).
+- A cell = the 1.7B ternary DNA + a LoRA edit trained on checked rows. First body: DNA alone 9 of 64, four cells
+  26 of 64, four fresh seeds, same tasks.
+- Two runs of the same hive on the same tasks differ by several tasks in 32. Anything under about 6 in 64 is noise.
+
+Where many agents would help most now, in this order:
+
+1. **Why nothing carries over to unpractised kinds** (0 of 11 before and after). Read the gate's work
+   (artifacts `gate-work-after-*` of the runs of "The hive teaches its own members") on the four held-out kinds
+   (`training/exam_hard.HELD_OUT`) and count causes, as in your failure-autopsy page.
+2. **Faster or better cell training, on paper first**: which published methods fit a ternary base with a LoRA
+   edit on a CPU (ternary-aware LoRA, DoRA, rank and layer choice, curriculum, self-distillation between cells)?
+   One page with the three most promising, each with the exact change to `training/grow.py train`.
+3. **Engrams** (`team/engram.py`): the first form showed no gain. What would make one-task memories help without
+   copying old values (what the library did)? Propose the recall rule and the test.
+4. Questions 3 and 4 below are answered or dropped: the BitNet runtime is found; bodies grown from nothing are
+   not the path now.
+
+## Update, 2026-11-13 10:00 UTC
 
 Your four pages were read. Two things change the advice.
 
