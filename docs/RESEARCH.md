@@ -177,38 +177,32 @@ them, that fired together when something was learned and that bring the memory b
 - **Source errors.** A row trained into a cell no longer says which check confirmed it, or how strong that check
   was.
 
-**A design for engrams that takes the mechanism and guards against the flaws** (not built; it is the obvious
-next form of `team/engram.py`):
-1. **Recall by meaning, not by words.** Key each engram by the DNA's own hidden state for the task (a mean of
-   the last layer), and recall by nearest neighbour. This is pattern completion. Merge near-duplicates into one
-   engram instead of storing them twice: pattern separation, which limits interference.
-2. **Recall makes the memory changeable again.** Each recall is followed by the task's own check. A recalled
-   engram that helped earns credit. One that was recalled on a failed task loses credit and is pruned below a
-   threshold. This is the guard against false memories and against over-general lessons.
-3. **Record the source.** Each engram keeps which check confirmed it and how strong that check was. A memory
-   confirmed only by agreement between cells counts for less than one confirmed by the exam's check.
-4. **Consolidate at night.** The rows behind the engrams that earned credit join the nightly training rows. The
-   cells learn them in general form, and those engrams are then retired. This is the hippocampus-to-cortex step.
-   It keeps the fast store small, and it keeps the cells from being overwritten one task at a time.
-5. **Test-time training as the fast learner.** For a new task, train a small edit on the recalled rows before
-   answering (Akyürek et al. 2024). That is learning in the moment, from the closest memories.
+**A design for engrams, the way physics handles relativity (Arnav, 2026-11-14).** Physics does not track every
+clock. It keeps what is the same in every frame (the invariants) and one transformation that carries a measurement
+from any frame into the present. The brain's engrams work the same way: they keep the relations of an experience,
+recall rebuilds it in the present context, and time and place are coordinates on a map, not labels written on
+each memory. An earlier version of this design kept a ledger on every engram (dates, credits, expiry rules,
+sources, re-dating). It was replaced: such a ledger grows, its rules conflict, and early lucky entries lock in.
+The design, not yet built (the next form of `team/engram.py`):
+1. **Store the invariant: the method, not the values.** An engram keeps how a task was solved (the program and
+   why it worked). Values that belong to one moment ("version 2.3", "20 days") are not stored as truths. On recall
+   the method is run again in the present; that is the transformation into the present frame. This is what went
+   wrong in the old library: it copied a stale value instead of re-running a method that was still valid.
+2. **Recall by meaning:** key each engram by the DNA's own hidden state for the task (a mean of the last layer),
+   nearest neighbour, near-duplicates merged (pattern completion and separation).
+3. **Time as a rotation, as the DNA's own position encoding (RoPE) does for words.** Rotate the engram's key by
+   the moment it was made and the query by now, so the match depends only on the time between, never on dates.
+   With several speeds of rotation in the key, the slow parts carry what does not change (skills) and stay
+   matched for a long time, and the fast parts carry what changes (facts, versions) and stop matching soon. Old
+   facts fade and old skills stay, with no expiry rules. Whether this beats a plain "newer first" order has to
+   be measured.
+4. **One signal only: did the task's check pass when the engram was recalled.** This is the experiment in
+   physics, the one thing that corrects a false memory. It strengthens or weakens the engram; nothing else is
+   kept on it.
+5. **Consolidate at night.** Engrams that keep helping become rows for the next cells and then retire, from the
+   fast store to the slow one (hippocampus to cortex).
+6. **Test-time training as the fast learner:** for a new task, train a small edit on the recalled methods before
+   answering (Akyürek et al. 2024).
 
 Each step can be gated the same way as the cells: a stream of tasks with and without
 (`training/experiments/engram_stream.py`), over several seeds, because one run of 32 tasks varies by about 5.
-
-**Interference is a problem of time (Arnav, 2026-11-14).** A memory is true relative to when, and under what
-conditions, it was made. Interference happens when an old memory is recalled as if it were true now. The hive's
-clearest case: the old library stored "the latest version of package X is 2.3", which was right on the day it
-was solved, and a member copied it a week later. The brain stamps memories with a slowly drifting time context
-and favours memories whose context matches the present (the temporal context model, Howard and Kahana 2002). It
-also keeps episodes ("what was true then") apart from skills ("how to do it"). Added to the design above:
-6. **Stamp each engram with its time and its conditions**: the date, the source, and the state of the world it
-   saw (versions, the day of the week).
-7. **Store the method apart from the values.** The method (how to find a version, how to count days between
-   dates) holds across time and is recalled as it is. The values (2.3, 20 days) expire: on recall the hive runs
-   the method again instead of copying them.
-8. **Weigh by relative time, by kind.** For things that change (live facts, versions, prices, dates), a newer
-   memory counts for more, and an old value is never used without a fresh check. For things that do not change
-   (arithmetic, how a simulation steps), age does not matter.
-9. **Re-date, do not delete.** A recalled memory found out of date is stored again with the new date and the new
-   value (reconsolidation), so the hive keeps both "what it was" and "what it is now".
