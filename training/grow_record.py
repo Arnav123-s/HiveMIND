@@ -85,7 +85,8 @@ def gate(argv):
         print("not a generation's name")
         return 1
     arms = {a: arm([p for p in folder.glob(f"gate-{a}-*") if re.fullmatch(rf"gate-{a}-\d", p.name)]) for a in ARMS}
-    cells, rows, minutes = [], None, 0
+    trial = "--trial" in argv
+    cells, rows, minutes, ternary, foresee = [], None, 0, [], []
     for o in ORGANS:
         f = got / f"t17.{gen}{o}.json"
         if (got / f"t17.{gen}{o}.gguf").exists() and f.exists():
@@ -93,20 +94,26 @@ def gate(argv):
             try:
                 meta = json.loads(f.read_text())
                 rows, minutes = _int(meta.get("rows"), 10 ** 7), minutes + (_int(meta.get("seconds"), 10 ** 6) or 0) // 60
+                ternary.append(meta.get("ternary_edit") is True)
+                foresee.append(meta.get("foresee") is True)
             except ValueError:
                 pass
     body = json.loads(BODY.read_text())
     before = [c for c in body.get("cells", []) if re.fullmatch(CELL, str(c))]
     keep, why = decide(arms) if cells else (False, "no cell was grown")
+    if trial and keep:
+        keep, why = False, "a trial beside the line of generations (the body is not changed by it); by the numbers it would be kept: " + why
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
-            "kept": keep, "why": why, "body_before": before, "body_after": cells if keep else before}
+            "kept": keep, "why": why, "body_before": before, "body_after": cells if keep else before, "trial": trial,
+            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee)}
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
     if keep:
         body.update({"dna": "t17", "generation": int(gen[1:]), "cells": cells})
         BODY.write_text(json.dumps(body) + "\n")
     print(f"### Generation {gen}\n")
-    print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}")
+    print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}"
+          f"{'; their own edits ternary' if line['ternary_cells'] else ''}{'; trained to foresee as well' if line['foresee'] else ''}")
     print("| who sat | passed | of | minutes | on kinds never practised |\n|---|---|---|---|---|")
     names = {"dna": "the DNA as published", "before": "the body before", "after": "the body regrown"}
     for k in ARMS:
@@ -139,4 +146,4 @@ def fetch(argv):
 
 if __name__ == "__main__":
     a = sys.argv[1:]
-    sys.exit(gate(a[1:]) if a[:1] == ["gate"] and len(a) == 4 else fetch(a[1:]) if a[:1] == ["fetch"] else (print(__doc__) or 1))
+    sys.exit(gate(a[1:]) if a[:1] == ["gate"] and len(a) >= 4 else fetch(a[1:]) if a[:1] == ["fetch"] else (print(__doc__) or 1))

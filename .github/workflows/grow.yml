@@ -37,6 +37,18 @@ on:
       epochs:
         description: "Passes over the rows when training"
         default: "3"
+      ternary:
+        description: "1: the cells' own edits are ternary too (the whole cell a BitNet)"
+        default: ""
+      foresee:
+        description: "1: the cells are also trained to say what a program prints before it runs"
+        default: ""
+      trial:
+        description: "1: a trial beside the line of generations: recorded and kept in the release, but the body is not changed"
+        default: ""
+      gate_seeds:
+        description: "A number that fixes the gate's seeds (two trials given the same number sit the same exams); empty: this run's own"
+        default: ""
       skip_practice:
         description: "1: no new practice (train from the rows in the release and of rows_from_run)"
         default: ""
@@ -49,7 +61,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: body
+  group: body-${{ inputs.trial && github.run_number || 'line' }}
   cancel-in-progress: false
 
 env:
@@ -162,7 +174,7 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 | tee train.txt
+          python training/grow.py train --rows got/rows.jsonl --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} | tee train.txt
           mkdir out && cp "cells/members/t17+$GEN${{ matrix.organ }}.gguf" "out/t17.$GEN${{ matrix.organ }}.gguf" && cp "cells/members/t17+$GEN${{ matrix.organ }}.json" "out/t17.$GEN${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -209,7 +221,7 @@ jobs:
       - name: A fresh exam, half of the first exam's kinds and half hard ones
         if: ${{ steps.who.outputs.who }}
         run: |
-          python training/exam.py sit --level mixed --tasks 16 --seed $((20000000 + ${{ github.run_number }} * 10 + ${{ matrix.seed }})) --empty-memory
+          python training/exam.py sit --level mixed --tasks 16 --seed $((20000000 + ${{ inputs.gate_seeds || github.run_number }} * 10 + ${{ matrix.seed }})) --empty-memory
           cat training/reports/exams/*_mixed.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && steps.who.outputs.who }}
@@ -260,7 +272,7 @@ jobs:
           pattern: gate-*-[0-9]
           path: gate
       - name: The numbers decide (only numbers and names this repository knows are taken from the other jobs)
-        run: python3 training/grow_record.py gate gate got "$GEN" | tee -a "$GITHUB_STEP_SUMMARY"
+        run: python3 training/grow_record.py gate gate got "$GEN" ${{ inputs.trial && '--trial' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}

@@ -162,6 +162,21 @@ def _post(url, body, timeout=1800):
         return json.load(r)
 
 
+_ON = {}  # server address -> the cell this process last switched on there
+
+
+def _switch(at, scales):
+    """Tell the server which cell is on. Its answer to this request is sometimes never sent (seen 2026-11-14: the
+    server sits idle with the request unanswered until any other request arrives), so it is asked again after a few
+    seconds; the second asking wakes it and both are answered."""
+    for _ in range(6):
+        try:
+            return _post(at + "/lora-adapters", scales, timeout=6)
+        except OSError:
+            continue
+    raise RuntimeError("the server does not answer when told which cell is on")
+
+
 def chat(member, messages, max_new_tokens=700, temperature=0.0):
     """The member's reply to a conversation. When the conversation no longer fits its window, the oldest program and
     what it printed go first; the orders and the task stay."""
@@ -169,11 +184,14 @@ def chat(member, messages, max_new_tokens=700, temperature=0.0):
     base, edit = split(member)
     have, fresh = _loaded(at), True
     want = {name: 1.0 if name == edit else 0.0 for name in have}
-    if have and _loaded(at, scales=True) != want:
+    # What the server reports cannot be trusted for this: one just started says a cell is on (scale 1.0) that it has
+    # not applied. So this process switches the first time it speaks, and afterwards whenever the cell changes.
+    if have and _ON.get(at) != edit:
+        _ON[at] = edit
         # which cell answers: its edit on, every other off (the base itself: all off). What the server remembers of
         # the conversation was worked out by the cell before: it must not be reused (a cell answered in the other's
         # voice when it was).
-        _post(at + "/lora-adapters", [{"id": i, "scale": want[name]} for name, i in have.items()])
+        _switch(at, [{"id": i, "scale": want[name]} for name, i in have.items()])
         fresh = False
     for _ in range(8):
         try:

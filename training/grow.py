@@ -18,7 +18,7 @@ gate       The same fresh exam sat by the DNA as published, by the body as it wa
 
     python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl]
     python training/grow.py rows RUN_FOLDER ... [--out rows.jsonl]      rows from sittings already done (checked tasks only)
-    python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240]
+    python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240] [--ternary] [--foresee]
     python training/grow.py fetch                                        the cells of the body, from the release
 """
 import json
@@ -148,7 +148,7 @@ def rows_from(folders, out):
 
 # ---- train -----------------------------------------------------------------------------------------------------------
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3, foresee=False):
+          lean="", weight=3, foresee=False, ternary_edit=False):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     import torch
@@ -181,6 +181,19 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     which = list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else list(range(*map(int, layers.split("-"))))
     model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
                                              target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]))
+    if ternary_edit:
+        # The cell's own edit in three values as well: each of its matrices is held as ordinary numbers while it is
+        # trained, and what the net computes with is their ternary form (-s, 0, +s; s the mean size), the way
+        # BitNet b1.58 trains. What is saved is the ternary form, so the whole cell is a BitNet.
+        from torch.nn.utils import parametrize
+
+        class Three(torch.nn.Module):
+            def forward(self, w):
+                s = w.detach().abs().mean().clamp(min=1e-8)
+                return w + ((w / s).round().clamp(-1, 1) * s - w).detach()
+        edits = [m for n, m in model.named_modules() if n.endswith(("lora_A.default", "lora_B.default"))]
+        for m in edits:
+            parametrize.register_parametrization(m, "weight", Three())
     model.config.use_cache = False
     # Each layer's inner values are worked out again on the way back instead of being kept: a third slower, and the
     # memory no longer grows with the length of a row (the first run on a 16 GB runner was killed at step 5).
@@ -262,8 +275,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB", flush=True)
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
+    if ternary_edit:
+        for m in edits:
+            parametrize.remove_parametrizations(m, "weight", leave_parametrized=True)
+        levels = max(len(torch.unique(m.weight.detach().float())) for m in edits)
+        log(f"the cell's edit is ternary: at most {levels} different values in any of its {len(edits)} matrices", flush=True)
     model.save_pretrained(str(work))
-    meta = {"member": f"{base}+{name}", "leans": lean, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
@@ -314,7 +332,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, ternary_edit="--ternary" in argv), indent=1))
     elif cmd == "fetch":
         print(fetch([a for a in argv[1:] if not a.startswith("--")]))
     else:
