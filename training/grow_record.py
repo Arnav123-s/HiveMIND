@@ -29,6 +29,7 @@ BODY = ROOT / "cells" / "body.json"
 MEMBERS = ROOT / "cells" / "members"
 ARMS = ("dna", "before", "after")
 ORGANS = ("sources", "code", "data", "words")
+DNAS = ("t17", "t40")
 CELL = r"g\d{1,6}(?:sources|code|data|words)\d{0,2}"
 # the kinds the hive never practises on (training/exam_hard.HELD_OUT), by the name the exam gives them
 UNPRACTISED = ("walk a site and count into a file", "two facts from two sources, combined", "a file given in the task, edited to a specification",
@@ -86,10 +87,14 @@ def gate(argv):
         return 1
     arms = {a: arm([p for p in folder.glob(f"gate-{a}-*") if re.fullmatch(rf"gate-{a}-\d", p.name)]) for a in ARMS}
     trial = "--trial" in argv
+    dna = argv[argv.index("--dna") + 1] if "--dna" in argv else "t17"
+    if dna not in DNAS:
+        print("not a DNA this file knows")
+        return 1
     cells, rows, minutes, ternary, foresee = [], None, 0, [], []
     for o in ORGANS:
-        f = got / f"t17.{gen}{o}.json"
-        if (got / f"t17.{gen}{o}.gguf").exists() and f.exists():
+        f = got / f"{dna}.{gen}{o}.json"
+        if (got / f"{dna}.{gen}{o}.gguf").exists() and f.exists():
             cells.append(f"{gen}{o}")
             try:
                 meta = json.loads(f.read_text())
@@ -99,17 +104,17 @@ def gate(argv):
             except ValueError:
                 pass
     body = json.loads(BODY.read_text())
-    before = [c for c in body.get("cells", []) if re.fullmatch(CELL, str(c))]
+    before = [c for c in body.get("cells", []) if re.fullmatch(CELL, str(c))] if body.get("dna") == dna else []
     keep, why = decide(arms) if cells else (False, "no cell was grown")
     if trial and keep:
         keep, why = False, "a trial beside the line of generations (the body is not changed by it); by the numbers it would be kept: " + why
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
             "kept": keep, "why": why, "body_before": before, "body_after": cells if keep else before, "trial": trial,
-            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee)}
+            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "dna": dna}
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
     if keep:
-        body.update({"dna": "t17", "generation": int(gen[1:]), "cells": cells})
+        body.update({"dna": dna, "generation": int(gen[1:]), "cells": cells})
         BODY.write_text(json.dumps(body) + "\n")
     print(f"### Generation {gen}\n")
     print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}"
@@ -128,7 +133,7 @@ def fetch(argv):
     """The cells named, from the release into cells/members/. A cell that is not there is said and passed over."""
     repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
     for who in (argv[0] if argv else "").split(","):
-        m = re.fullmatch(rf"(t17)\+({CELL}|gen\d{{1,6}})", who.strip())
+        m = re.fullmatch(rf"(t17|t40)\+({CELL}|gen\d{{1,6}})", who.strip())
         if not m:
             continue
         to = MEMBERS / f"{m.group(1)}+{m.group(2)}.gguf"

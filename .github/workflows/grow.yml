@@ -37,6 +37,9 @@ on:
       epochs:
         description: "Passes over the rows when training"
         default: "3"
+      dna:
+        description: "The body's ternary model: t17 (1.7B, 0.43 GB packed) or t40 (4B, 1.0 GB packed)"
+        default: "t17"
       ternary:
         description: "1: the cells' own edits are ternary too (the whole cell a BitNet)"
         default: ""
@@ -69,6 +72,7 @@ env:
   AGENT_TEAM_SOLO_ALONE: "1"
   HIVE_LIGHT: "1"
   GEN: g${{ github.run_number }}
+  DNA: ${{ inputs.dna || 't17' }}
 
 jobs:
   practice:
@@ -83,7 +87,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Who practises
         run: |
-          BODY=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']) or b['dna'])")
+          BODY=$(python3 -c "import json, os; b=json.load(open('cells/body.json')); d=os.environ['DNA']; print(','.join(d+'+'+c for c in b['cells'] if b['dna']==d) or d)")
           echo "HIVE_MEMBERS=${WHO:-$BODY}" >> "$GITHUB_ENV"
         env:
           WHO: ${{ inputs.who || '' }}
@@ -174,8 +178,8 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} | tee train.txt
-          mkdir out && cp "cells/members/t17+$GEN${{ matrix.organ }}.gguf" "out/t17.$GEN${{ matrix.organ }}.gguf" && cp "cells/members/t17+$GEN${{ matrix.organ }}.json" "out/t17.$GEN${{ matrix.organ }}.json"
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} | tee train.txt
+          mkdir out && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.gguf" "out/$DNA.$GEN${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.json" "out/$DNA.$GEN${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
@@ -205,12 +209,12 @@ jobs:
         run: |
           mkdir -p cells/members
           case "${{ matrix.arm }}" in
-            dna) WHO=t17 ;;
+            dna) WHO=$DNA ;;
             before)
               WHO=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']))")
               python3 training/grow_record.py fetch "$WHO" ;;
             after)
-              for f in got/t17.$GEN*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/t17+${n#t17.}.gguf"; done
+              for f in got/$DNA.$GEN*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/$DNA+${n#$DNA.}.gguf"; done
               WHO=$(ls cells/members | sed -n 's/\.gguf$//p' | paste -sd, -) ;;
           esac
           echo "who: $WHO" | tee -a "$GITHUB_STEP_SUMMARY"
@@ -272,13 +276,13 @@ jobs:
           pattern: gate-*-[0-9]
           path: gate
       - name: The numbers decide (only numbers and names this repository knows are taken from the other jobs)
-        run: python3 training/grow_record.py gate gate got "$GEN" ${{ inputs.trial && '--trial' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
+        run: python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" ${{ inputs.trial && '--trial' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive grew" --notes "The cells of the hive's body (weight edits of its ternary model) and the checked rows they were grown from (training/grow.py). Machine-made." --latest=false
-          gh release upload hive-grown got/t17.$GEN*.gguf got/t17.$GEN*.json got/rows.jsonl --clobber
+          gh release upload hive-grown got/$DNA.$GEN*.gguf got/$DNA.$GEN*.json got/rows.jsonl --clobber
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/generations.jsonl cells/body.json

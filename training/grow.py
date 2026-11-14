@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 GROW = ROOT / "runs" / "grow"
-UNPACKED = {"t17": "prism-ml/Ternary-Bonsai-1.7B-unpacked"}  # members whose full weights are published, so they can be taught
+UNPACKED = {"t17": "prism-ml/Ternary-Bonsai-1.7B-unpacked", "t40": "prism-ml/Ternary-Bonsai-4B-unpacked"}  # members whose full weights are published, so they can be taught
 RELEASE = "hive-grown"  # the GitHub release that holds the rows and the weight edits (never in git: they are big and machine-made)
 
 
