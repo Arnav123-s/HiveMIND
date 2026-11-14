@@ -40,7 +40,7 @@ on:
         description: "Passes over the rows when training"
         default: "3"
       dna:
-        description: "The body's ternary model: t17 (1.7B, 0.43 GB packed) or t40 (4B, 1.0 GB packed)"
+        description: "The body's ternary model: t17 (1.7B, 0.43 GB packed), t40 (4B, 1.0 GB) or t80 (8B, 2.2 GB); t40 and t80 train with the DNA held ternary (--int8-base)"
         default: "t17"
       ternary:
         description: "1: the cells' own edits ternary too (g9: 13 of 64, against 26 for ordinary edits on the same 222 rows); anything else: ordinary numbers"
@@ -244,7 +244,7 @@ jobs:
         run: |
           # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
           [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
-          python training/grow.py train $VERSUS --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          python training/grow.py train $VERSUS --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (inputs.dna == 't40' || inputs.dna == 't80') && '--int8-base' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4

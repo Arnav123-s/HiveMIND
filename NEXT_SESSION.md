@@ -78,8 +78,11 @@ members alone. `python3 training/results.py` prints every recorded generation an
   and on those 8 both arms passed 6. Recall by shared words is too weak.
 - **Training speed on a runner:** 4.0 seconds a row, bf16, the last 14 layers, no recomputation, 7 GB. Four
   cells from 222 rows take about 70 minutes each.
-- **The 4B DNA (t40):** trains here only with swap (13.2 GB peak, about 30 s a row). Its first GitHub run is in
-  flight.
+- **Bigger DNAs (t40 4B, t80 8B):** the frozen DNA can now be held ternary in memory while a cell is trained
+  (`--int8-base`, used by the workflow for t40 and t80). The 4B then takes 8.5 GB and 15 s a row here, where it
+  took 13.2 GB with swap and 30 s. Its first GitHub run (run 43619078349) trained the old way. The 8B is
+  registered but not yet run. Each cell is a whole BitNet in function (the DNA plus its edit), so a bigger DNA
+  makes every cell bigger, while multiplying still costs only the edits.
 
 ### Why the never-practised kinds fail
 
