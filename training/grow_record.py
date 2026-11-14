@@ -43,7 +43,7 @@ def _int(x, most):
 
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
-    out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0}
+    out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}}
     for folder in folders:
         for f in sorted(Path(folder).rglob("*.json")):
             if f.stat().st_size > 2_000_000:
@@ -60,6 +60,13 @@ def arm(folders):
                 continue
             out["passed"], out["tasks"], out["minutes"], out["seeds"] = out["passed"] + passed, out["tasks"] + tasks, out["minutes"] + minutes, out["seeds"] + 1
             for t in d.get("tasks") or []:
+                # passed and sat, kind by kind: what practice weighs to stay at the edge (training/grow.edge_weights).
+                # Only kinds of a known shape are kept: the name is text from another job.
+                k = t.get("kind") if isinstance(t, dict) else None
+                if isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k) and len(out["kinds"]) < 64:
+                    got = out["kinds"].setdefault(k, [0, 0])
+                    got[0] += t.get("ok") is True
+                    got[1] += 1
                 if isinstance(t, dict) and t.get("kind") in UNPRACTISED:
                     out["unpractised"][0] += t.get("ok") is True
                     out["unpractised"][1] += 1

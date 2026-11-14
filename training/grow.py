@@ -147,6 +147,29 @@ def foresee_rows(run, task, kind="", seed=None, most=4):
     return out
 
 
+def edge_weights(dna="t17", last=3, record=None):
+    """{kind: weight} for practice at the edge: the more a kind sits near half passed, the more it is practised.
+    A kind always passed is learned; one never passed gives no right program to learn from and no right-against-
+    wrong pair yet. p is the body's pass rate on the kind over the last `last` gates of this DNA (with one pass and
+    one failure added, so a kind seen twice is not taken as settled), and the weight is p(1 - p), the most at
+    one half. As the body gets better, easy kinds drop out of practice and harder ones come in by themselves."""
+    rec = Path(record or ROOT / "training" / "reports" / "generations.jsonl")
+    lines = []
+    for ln in (rec.read_text().splitlines() if rec.exists() else []):
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue
+        if d.get("dna", "t17") == dna and d.get("arms", {}).get("after", {}).get("kinds"):
+            lines.append(d)
+    seen = {}
+    for d in lines[-last:]:
+        for k, (p, n) in d["arms"]["after"]["kinds"].items():
+            a = seen.setdefault(k, [0, 0])
+            a[0], a[1] = a[0] + p, a[1] + n
+    return {k: ((p + 1) / (n + 2)) * (1 - (p + 1) / (n + 2)) for k, (p, n) in seen.items()}
+
+
 def practice(seed, n=16, level="mixed", out=None, log=print):
     """Fresh practice tasks done by the hive's members; the rows of those the check confirmed are appended to out."""
     from training import exam as E
@@ -157,7 +180,10 @@ def practice(seed, n=16, level="mixed", out=None, log=print):
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
     made = right = 0
-    for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT):
+    weights = edge_weights() if level == "edge" else None
+    if weights:
+        log("practice at the edge: " + ", ".join(f"{k} {w:.2f}" for k, w in sorted(weights.items(), key=lambda x: -x[1])), flush=True)
+    for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT, weights=weights):
         r = E.sit_one(f"practice_{seed}", tid, task, check, home)
         new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
         new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []

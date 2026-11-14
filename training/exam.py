@@ -369,12 +369,34 @@ MAKERS = [m_percent, m_days, m_weekday, m_units, m_table, m_code, m_fix, m_pypi,
           m_translate, m_summary, m_steps]
 
 
-def exam(seed, n=16, only=(), level="basic", without=()):
+def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
     """The tasks of one sitting: [(id, field, kind, task, check)]. The same seed gives the same exam.
     level "hard": the kinds of several steps (training/exam_hard.py). without: makers left out by name (practice
-    leaves out the kinds the hive is never to practise on)."""
+    leaves out the kinds the hive is never to practise on).
+    level "edge" (for practice, not for exams): tasks of every kind, drawn by `weights` {kind: weight}, so the hive
+    practises most where it is at the edge of what it can do (training/grow.edge_weights)."""
     if level == "mixed":  # half of each: what the hive can mostly do, and what it mostly cannot yet
         return exam(seed, n - n // 2, only, "basic", without) + exam(seed, n // 2, only, "hard", without)
+    if level == "edge":
+        from training import exam_hard
+        makers = [(m, "e") for m in MAKERS if m.__name__ not in without] + [(m, "h") for m in exam_hard.MAKERS if m.__name__ not in without]
+        r = random.Random(f"{seed}:edge")
+        tried = [(i, make, lv) + tuple(make(random.Random(f"{seed}:{make.__name__}:{i}:0"))) for i, (make, lv) in enumerate(makers)]
+        # a kind nobody has measured yet counts as if passed half the time (the most to learn)
+        w = [max(1e-3, (weights or {}).get(t[4], 0.25)) for t in tried]
+        out, used = [], {}
+        for pick in r.choices(range(len(tried)), weights=w, k=n * 3):
+            i, make, lv, field, kind, task, check = tried[pick]
+            again = used.get(i, 0)
+            if again:
+                field, kind, task, check = make(random.Random(f"{seed}:{make.__name__}:{i}:{again}"))
+            used[i] = again + 1
+            if task in [t[3] for t in out] or (only and field not in only):
+                continue
+            out.append((f"{lv}{seed}_{len(out):02d}", field, kind, task, check))
+            if len(out) >= n:
+                break
+        return out
     r = random.Random(seed)
     if level == "hard":
         from training import exam_hard
