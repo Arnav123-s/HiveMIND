@@ -27,9 +27,14 @@ You are the owner and long-term maintainer of HiveMIND, and its design is up to 
 5. **The open internet is a source of tasks** (`exam_hard.h_web`, field "hard: open web"): a real city, mountain
    or river drawn at random from Wikidata (millions of items), a fact asked, and the answer checked against every
    value Wikidata records. These are tasks the hive has never seen, so its failures there are weaknesses it
-   finds by itself. Raw internet text is not used for training: a CPU runner trains about 20 million tokens a day,
-   where learning language from raw text takes billions, and checked tasks are what measurably taught the
-   cells.
+   finds by itself.
+6. **The cells can read raw text and code from the open web** (`training/raw.py`, `grow.py train --read N`; built
+   2026-11-14, not yet measured). They draw random pieces from FineWeb-Edu (web pages), Wikipedia and permissively
+   licensed GitHub code, one Parquet row group at a time, each organ from its nearest sources. Each piece is
+   measured by the DNA's own error, and only the middle band is kept: the easiest 30% are known, the hardest
+   10% mostly noise. The hive studies what it does not know yet but can learn. A runner trains a few million
+   pieces of text a day, against the trillions the DNA came from, so the choosing is what makes reading worth
+   it. Measure it with `versus: "--read 150"`.
 
 ## What Arnav wants (his words, condensed)
 

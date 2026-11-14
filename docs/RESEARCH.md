@@ -178,6 +178,11 @@ night's cells (consolidation, as sleep does). DeepSeek's form needs pretraining 
 - Holding the frozen DNA as int8 ternary values (section 1) cuts memory roughly in half against bf16. That allows
   longer rows without recomputation, and larger DNAs.
 - Fewer, better rows: pairs and failures teach more per row than another copy of a solved task.
+- **Reading raw data, choosing what to learn** (RHO-1, "Not all tokens are what you need", Lin et al. 2024: training
+  only on the tokens that matter gave large gains for the same compute). Built as `--read N`: random raw pieces
+  from open collections, kept where the DNA's own error is in the middle band. Next steps: score by the gap to a
+  stronger reference (the t80 DNA), as RHO-1 does, rather than by the error alone; and an index of raw data to
+  look things up at task time (retrieval), which grows with the data instead of with compute.
 - **Practice at the edge of ability (curriculum learning; Bengio et al. 2009; in reinforcement learning on
   language models, tasks that are always or never solved give no learning signal and are filtered out).** A task
   the body always solves teaches nothing new. One it never solves gives no right program to learn from, and no
