@@ -196,9 +196,15 @@ The design, not yet built (the next form of `team/engram.py`):
    matched for a long time, and the fast parts carry what changes (facts, versions) and stop matching soon. Old
    facts fade and old skills stay, with no expiry rules. Whether this beats a plain "newer first" order has to
    be measured.
-4. **One signal only: did the task's check pass when the engram was recalled.** This is the experiment in
-   physics, the one thing that corrects a false memory. It strengthens or weakens the engram; nothing else is
-   kept on it.
+4. **Exact records, no hand-written rules (Arnav: a machine can keep exact accounts where a brain cannot).**
+   Every use of every engram is logged exactly and append-only: when, for which task, and whether the task's
+   check passed. A machine loses nothing of this, so the brain's flaw of rebuilding memories inexactly need not
+   be copied. What is avoided is rules written by hand on top of the log ("expire after a week", "minus one per
+   failure"). How much each engram counts, and how fast each speed of the time rotation fades, are fitted from
+   the log against the check results. The check is the experiment in physics, the one thing that corrects a
+   false memory. One caution stays: the DNA is a neural net and approximate, like a brain. Exactness comes from
+   running programs and checking results, not from the net, so an engram's method is trusted only as far as the
+   checks have confirmed it.
 5. **Consolidate at night.** Engrams that keep helping become rows for the next cells and then retire, from the
    fast store to the slow one (hippocampus to cortex).
 6. **Test-time training as the fast learner:** for a new task, train a small edit on the recalled methods before
