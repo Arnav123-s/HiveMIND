@@ -11,6 +11,33 @@ first). Setting up a fresh cloud environment: `NEW_SESSION.md`.
 
 ---
 
+## 0a. THE DIRECTION, corrected by Arnav 2026-11-14 00:00 UTC (this overrides anything below that disagrees)
+
+His words: "A hive is many same-sized models, like cells in a body: they multiply, overlap like organs, each
+leaning to a different strength, train together as one from their own checked work, and keep growing." Every
+component is a BitNet cell; the body regenerates from the same DNA; it need not know everything, it must keep
+getting better at all tasks; training must get faster and better; BitNet architecture should be improved.
+A roster of different models of different sizes (t2/t4/t9/coder) was a drift. What is built instead:
+
+- **One DNA**: `prism-ml/Ternary-Bonsai-1.7B` (ternary, 0.43 GB packed; its full weights are published, so it
+  can be trained on a CPU). **Cells**: the DNA plus a weight edit each (LoRA, about 39 MB as GGUF), all the same
+  size, named `g<generation><organ>`. One llama-server holds the DNA once and every cell; `team/ternary.chat`
+  switches the cell by turn (and must not reuse the server's cache across a switch).
+- **Organs** (`team/ternary.ORGANS`): sources, code, data, words. `ternary.organ(task)` says which a task belongs
+  to; `ternary.seating(task)` puts the cells leaning to it first. Every cell is trained on all rows, its organ's
+  rows three times as often (`grow.py train --lean`), so cells overlap and can check each other.
+- **Body**: `cells/body.json` {dna, generation, cells}; changed only by the gate (`training/grow_record.py`):
+  three arms on the same fresh mixed seeds: the DNA alone, the body before, the body regrown. Kept when it passes
+  more than the DNA alone and at least as many as the body before.
+- **Generation g3** (the first body) was started 2026-11-14 00:10 UTC: four cells from the 222 rows of run
+  43500614422 (those rows came from t9/t4/t2: a one-time upbringing, said to Arnav; from the next generation on,
+  practice is by the body's own cells: start the workflow with no inputs). Read its record job's summary.
+- **His idea on faster learning (JEPA, dreaming)**: JEPA lost on BitNets from scratch here (3 of 3 seeds, both
+  sides). The hive's form of it, collected but NOT yet used: `grow.foresee_rows` (a program -> what it prints,
+  from every run, right or wrong). Next: grow cells with `--foresee` and without, same rows, gate both.
+- Not done, wanted by him: cells whose own edits are ternary too; a better ternary architecture (needs training
+  at a scale a CPU has not reached here; what can be measured here is the body's design on the pretrained DNA).
+
 ## 0. NEW, 2026-11-13 evening (a session on a fresh machine; read this block before the rest)
 
 **The finding that changes the plan: capable ternary (1.58-bit) models already exist, and run fast on a plain CPU.**

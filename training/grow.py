@@ -75,6 +75,37 @@ def rows_of(run, task, kind="", seed=None):
     return out
 
 
+FORESEE = ("Here is a program that was written for the TASK. Do not write a program: say exactly what this one prints "
+           "when it is run (or the last line of its error if it fails).\n```python\n{program}\n```")
+
+
+def foresee_rows(run, task, kind="", seed=None, most=4):
+    """Rows of another kind, from every program any cell ran on a task, right or wrong: the program -> what it
+    printed. A cell that can say what a program will print before it runs knows how programs behave; the hive has
+    many times more of these rows than of solved tasks, and running the program was the only label needed.
+    (The hive's own form of learning by predicting. Used in training only with --foresee, until a gate has shown
+    that cells grown with them do better than cells grown without.)"""
+    from team import solo
+    home = Path(run) / "members" if (Path(run) / "members").exists() else Path(run)
+    out, seen = [], set()
+    for prog in sorted(home.rglob("member*_*.py")):
+        code = prog.read_text(errors="ignore").strip()
+        printed = (prog.parent / f".{prog.name}.out")
+        err = (prog.parent / f".{prog.name}.err")
+        said = printed.read_text(errors="ignore").strip() if printed.exists() else ""
+        if not said and err.exists() and err.read_text(errors="ignore").strip():
+            said = err.read_text(errors="ignore").strip().splitlines()[-1]
+        if not code or not said or len(code) > 3000 or len(said) > 500 or code in seen or re.search(r"look\(|requests|urllib|http|datetime\.(?:now|today)|date\.today|random", code):  # only what the program alone decides
+            continue
+        seen.add(code)
+        out.append({"task": task, "kind": kind, "seed": seed, "type": "foresee", "output": said,
+                    "messages": [{"role": "system", "content": solo.SHORT.format(today=time.strftime("%Y-%m-%d (%A)"))},
+                                 {"role": "user", "content": f"TASK: {task}\n\n" + FORESEE.format(program=code)}]})
+        if len(out) >= most:
+            break
+    return out
+
+
 def practice(seed, n=16, level="mixed", out=None, log=print):
     """Fresh practice tasks done by the hive's members; the rows of those the check confirmed are appended to out."""
     from training import exam as E
@@ -88,10 +119,11 @@ def practice(seed, n=16, level="mixed", out=None, log=print):
     for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT):
         r = E.sit_one(f"practice_{seed}", tid, task, check, home)
         new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
+        new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         with open(out, "a") as f:
             for row in new:
                 f.write(json.dumps(row) + "\n")
-        made, right = made + len(new), right + r["ok"]
+        made, right = made + sum(x["type"] != "foresee" for x in new), right + r["ok"]
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows", flush=True)
     return {"practice": seed, "level": level, "tasks": n, "right": right, "rows": made, "file": str(out)}
 
@@ -116,7 +148,7 @@ def rows_from(folders, out):
 
 # ---- train -----------------------------------------------------------------------------------------------------------
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3):
+          lean="", weight=3, foresee=False):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     import torch
@@ -133,6 +165,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     for r in rows:  # rows made before the short orders existed carry the long ones: the taught member is trained under the short
         day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", r["messages"][0]["content"])
         r["messages"][0] = {"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}
+    if not foresee:
+        rows = [r for r in rows if r.get("type") != "foresee"]
     seen, uniq = set(), []
     for r in rows:  # the same exchange from two sittings teaches nothing twice
         k = json.dumps([r["messages"][1:], r["output"]])
@@ -280,7 +314,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3)), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv), indent=1))
     elif cmd == "fetch":
         print(fetch([a for a in argv[1:] if not a.startswith("--")]))
     else:
