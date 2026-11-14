@@ -58,6 +58,9 @@ on:
       bench:
         description: "1: nothing is grown; one runner times a training row each way (bf16 or 32-bit floats, all layers or the last 14, with or without recomputing)"
         default: ""
+      cells_from_run:
+        description: "Nothing is trained: the gate sits the cells an earlier run of this workflow grew (its run id)"
+        default: ""
       skip_practice:
         description: "1: no new practice (train from the rows in the release and of rows_from_run)"
         default: ""
@@ -185,7 +188,7 @@ jobs:
 
   train:
     needs: gather
-    if: ${{ !cancelled() && needs.gather.result == 'success' && !inputs.bench }}
+    if: ${{ !cancelled() && needs.gather.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
     timeout-minutes: 340
     strategy:
@@ -213,8 +216,8 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
-          mkdir out && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.gguf" "out/$DNA.$GEN${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.json" "out/$DNA.$GEN${{ matrix.organ }}.json"
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
@@ -224,7 +227,7 @@ jobs:
 
   gate:
     needs: train
-    if: ${{ !cancelled() && needs.train.result == 'success' }}
+    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run) }}
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
@@ -238,10 +241,14 @@ jobs:
         with:
           pattern: cell-*
           path: got
-          merge-multiple: true
+          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          github-token: ${{ github.token }}
       - name: Who sits (the arm)
         id: who
         run: |
+          # each cell is named here after the artifact it came in (cell-<organ>), whatever its file was called: in the
+          # first trials a slip in this file gave all four cells the same empty name and the gate found none
+          for d in got/cell-*; do o=${d#got/cell-}; mv "$d"/*.gguf "got/$DNA.${GEN}$o.gguf"; mv "$d"/*.json "got/$DNA.${GEN}$o.json"; done
           mkdir -p cells/members
           case "${{ matrix.arm }}" in
             dna) WHO=$DNA ;;
@@ -249,7 +256,7 @@ jobs:
               WHO=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']))")
               python3 training/grow_record.py fetch "$WHO" ;;
             after)
-              for f in got/$DNA.$GEN*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/$DNA+${n#$DNA.}.gguf"; done
+              for f in got/$DNA.${GEN}*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/$DNA+${n#$DNA.}.gguf"; done
               WHO=$(ls cells/members | sed -n 's/\.gguf$//p' | paste -sd, -) ;;
           esac
           echo "who: $WHO" | tee -a "$GITHUB_STEP_SUMMARY"
@@ -290,18 +297,22 @@ jobs:
           sed -n 3p "$f"
 
   record:
-    needs: gate
-    if: ${{ !cancelled() && needs.train.result == 'success' }}
+    needs: [train, gate]
+    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           pattern: cell-*
           path: got
-          merge-multiple: true
+          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Each cell named after the artifact it came in
+        run: for d in got/cell-*; do o=${d#got/cell-}; mv "$d"/*.gguf "got/$DNA.${GEN}$o.gguf"; mv "$d"/*.json "got/$DNA.${GEN}$o.json"; done
       - uses: actions/download-artifact@v4
         with:
           name: all-rows
@@ -317,7 +328,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive grew" --notes "The cells of the hive's body (weight edits of its ternary model) and the checked rows they were grown from (training/grow.py). Machine-made." --latest=false
-          gh release upload hive-grown got/$DNA.$GEN*.gguf got/$DNA.$GEN*.json got/rows.jsonl --clobber
+          gh release upload hive-grown got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json got/rows.jsonl --clobber
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/generations.jsonl cells/body.json
