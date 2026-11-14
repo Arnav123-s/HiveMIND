@@ -111,7 +111,10 @@ If a record job is red, its log holds the line it could not write: put it into `
 ## The open problems, for you to decide how to attack
 
 These are the parts that need deep research rather than bookkeeping. They are listed by how much they matter
-to Arnav's goal. How to solve them is up to you.
+to Arnav's goal. How to solve them is up to you. **`docs/RESEARCH.md` gathers what published research says about
+each one, with links**, so you need not search for it again. One lever from it is already built and waits for a
+measurement: `grow.py train --pairs` (workflow input `pairs: "1"`), which learns from a right program beside a
+wrong one for the same task. Practice records these pairs from 2026-11-14 evening on.
 
 1. **Carry-over to new kinds of task.** The body learns what it practises and nothing else. What would make a
    cell learn the skill under a task (read the data, track a state, check its own result) rather than the task?

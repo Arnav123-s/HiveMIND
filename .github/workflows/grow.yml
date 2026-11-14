@@ -48,6 +48,9 @@ on:
       foresee:
         description: "1: the cells are also trained to say what a program prints before it runs"
         default: ""
+      pairs:
+        description: "1: the cells also learn from a right program set beside a wrong one for the same task (DPO with a likelihood term); needs rows practised since pairs are recorded"
+        default: ""
       trial:
         description: "1: a trial beside the line of generations: recorded and kept in the release, but the body is not changed"
         default: ""
@@ -218,7 +221,7 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4

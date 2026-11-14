@@ -91,7 +91,7 @@ def gate(argv):
     if dna not in DNAS:
         print("not a DNA this file knows")
         return 1
-    cells, rows, minutes, ternary, foresee = [], None, 0, [], []
+    cells, rows, minutes, ternary, foresee, pairs = [], None, 0, [], [], 0
     for o in ORGANS:
         f = got / f"{dna}.{gen}{o}.json"
         if (got / f"{dna}.{gen}{o}.gguf").exists() and f.exists():
@@ -101,6 +101,7 @@ def gate(argv):
                 rows, minutes = _int(meta.get("rows"), 10 ** 7), minutes + (_int(meta.get("seconds"), 10 ** 6) or 0) // 60
                 ternary.append(meta.get("ternary_edit") is True)
                 foresee.append(meta.get("foresee") is True)
+                pairs += _int(meta.get("pairs"), 10 ** 7) or 0
             except ValueError:
                 pass
     body = json.loads(BODY.read_text())
@@ -110,7 +111,7 @@ def gate(argv):
         keep, why = False, "a trial beside the line of generations (the body is not changed by it); by the numbers it would be kept: " + why
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
             "kept": keep, "why": why, "body_before": before, "body_after": cells if keep else before, "trial": trial,
-            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "dna": dna}
+            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
     if keep:
@@ -118,7 +119,7 @@ def gate(argv):
         BODY.write_text(json.dumps(body) + "\n")
     print(f"### Generation {gen}\n")
     print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}"
-          f"{'; their own edits ternary' if line['ternary_cells'] else ''}{'; trained to foresee as well' if line['foresee'] else ''}")
+          f"{'; their own edits ternary' if line['ternary_cells'] else ''}{'; trained to foresee as well' if line['foresee'] else ''}{f'; {pairs} steps on right-against-wrong pairs' if pairs else ''}")
     print("| who sat | passed | of | minutes | on kinds never practised |\n|---|---|---|---|---|")
     names = {"dna": "the DNA as published", "before": "the body before", "after": "the body regrown"}
     for k in ARMS:

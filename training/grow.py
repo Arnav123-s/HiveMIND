@@ -75,6 +75,47 @@ def rows_of(run, task, kind="", seed=None):
     return out
 
 
+def pair_rows(run, task, kind="", seed=None, most=4):
+    """Rows that set a right program beside a wrong one written for the same task, from a task the check confirmed.
+    The right one is what two members agreed on; the wrong ones are the members' first programs that did not give
+    that answer (sent back with an error, or a different result). Trained with --pairs (Iterative Reasoning
+    Preference Optimization: DPO with a likelihood term, Pang et al. 2024), the cell learns what makes a program
+    wrong as well as what a right one looks like; training only on right answers tends to memorise them (Chu et al.
+    2025, "SFT memorizes, RL generalizes"). Used only with --pairs, until a gate has shown it helps."""
+    from team import solo
+    home = Path(run) / "members" if (Path(run) / "members" / "members.json").exists() else Path(run)
+    try:
+        info = json.loads((home / "members.json").read_text())
+    except (OSError, ValueError):
+        return []
+    tries = {}
+    for f in sorted(home.glob("member[0-9]*.json")):
+        try:
+            tries[int(re.sub(r"\D", "", f.stem))] = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+    win = next((tries[n] for n in info.get("agreeing", []) if n in tries and (tries[n].get("program") or "").strip()), None)
+    if not win or len(win.get("messages") or []) < 3 or len(win["program"]) > 6000:
+        return []
+    ms, program = win["messages"], win["program"].strip()
+    day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", ms[0]["content"])
+    head = [{"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}, ms[1]]
+    out, seen = [], {program}
+    for n, t in sorted(tries.items()):
+        tm = t.get("messages") or []
+        if len(tm) < 3 or tm[2].get("role") != "assistant":
+            continue
+        code = solo.extract_code(tm[2]["content"]).strip()
+        if not code or code in seen or len(code) > 6000:
+            continue
+        seen.add(code)
+        out.append({"task": task, "kind": kind, "seed": seed, "type": "pair", "member": n, "messages": head,
+                    "output": f"```python\n{program}\n```", "rejected": f"```python\n{code}\n```"})
+        if len(out) >= most:
+            break
+    return out
+
+
 FORESEE = ("Here is a program that was written for the TASK. Do not write a program: say exactly what this one prints "
            "when it is run (or the last line of its error if it fails).\n```python\n{program}\n```")
 
@@ -119,11 +160,12 @@ def practice(seed, n=16, level="mixed", out=None, log=print):
     for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT):
         r = E.sit_one(f"practice_{seed}", tid, task, check, home)
         new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
+        new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
         new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         with open(out, "a") as f:
             for row in new:
                 f.write(json.dumps(row) + "\n")
-        made, right = made + sum(x["type"] != "foresee" for x in new), right + r["ok"]
+        made, right = made + sum(x["type"] not in ("foresee", "pair") for x in new), right + r["ok"]
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows", flush=True)
     return {"practice": seed, "level": level, "tasks": n, "right": right, "rows": made, "file": str(out)}
 
@@ -140,7 +182,8 @@ def rows_from(folders, out):
                     continue
                 task = (ex.parent / "members" / "TASK.md")
                 if r.get("ok") and task.exists():
-                    for row in rows_of(ex.parent, task.read_text().strip()):
+                    t = task.read_text().strip()
+                    for row in rows_of(ex.parent, t) + pair_rows(ex.parent, t):
                         f.write(json.dumps(row) + "\n")
                         made += 1
     return made
@@ -148,7 +191,7 @@ def rows_from(folders, out):
 
 # ---- train -----------------------------------------------------------------------------------------------------------
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16"):
+          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     born = time.time()
@@ -168,9 +211,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         r["messages"][0] = {"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}
     if not foresee:
         rows = [r for r in rows if r.get("type") != "foresee"]
+    if not pairs:
+        rows = [r for r in rows if r.get("type") != "pair"]
     seen, uniq = set(), []
     for r in rows:  # the same exchange from two sittings teaches nothing twice
-        k = json.dumps([r["messages"][1:], r["output"]])
+        k = json.dumps([r["messages"][1:], r["output"], r.get("rejected")])
         if k not in seen:
             seen.add(k)
             uniq.append(r)
@@ -211,7 +256,12 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     def encode(row):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
         t = tok(row["output"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
-        return (torch.tensor([p + t]), len(t)) if len(p) + len(t) <= max_len else None
+        if len(p) + len(t) > max_len:
+            return None
+        if row.get("rejected"):
+            w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
+            return None if len(p) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
+        return (torch.tensor([p + t]), len(t))
     data, mine = [], 0
     for row in rows:
         d = encode(row)
@@ -259,7 +309,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     except OSError:
         trim = None
     model.train()
-    t0, running, step, hist = time.time(), 0.0, 0, []
+    t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
     for i, idx in enumerate(order):
         if minutes and time.time() - born > minutes * 60:
             # The plan was made from one timed row; a runner can fall behind it. Two trials were lost on 2026-11-14
@@ -267,10 +317,24 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             log(f"time is up after {i} of {len(order)} rows: the cell is saved as it is", flush=True)
             order = order[:i]
             break
-        ids, k = data[idx]
+        ids, k = data[idx][:2]
         with cast():
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
+        if len(data[idx]) == 4:
+            # a right and a wrong program for the same task: DPO, with the plain loss on the right one kept beside it
+            # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
+            wid, wk = data[idx][2:]
+            def seq(x, n, lg=None):
+                lg = model(input_ids=x, logits_to_keep=n + 1).logits[:, :-1, :] if lg is None else lg
+                return torch.log_softmax(lg.float(), -1).gather(-1, x[:, -n:].unsqueeze(-1)).sum()
+            with cast():
+                good, bad = seq(ids, k, logits), seq(wid, wk)
+                with torch.no_grad(), model.disable_adapter():
+                    ref_good, ref_bad = seq(ids, k), seq(wid, wk)
+            margin = beta * ((good - ref_good) - (bad - ref_bad))
+            loss = loss - torch.nn.functional.logsigmoid(margin)
+            paired += 1
         (loss / accum).backward()
         running += loss.item()
         if (i + 1) % accum == 0 or i == len(order) - 1:
@@ -295,7 +359,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         levels = max(len(torch.unique(m.weight.detach().float())) for m in edits)
         log(f"the cell's edit is ternary: at most {levels} different values in any of its {len(edits)} matrices", flush=True)
     model.save_pretrained(str(work))
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
@@ -349,7 +413,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
     elif cmd == "speed":
         # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
         rows, out = opt("--rows", str(GROW / "rows.jsonl")), []
