@@ -96,7 +96,9 @@ members alone. `python3 training/results.py` prints every recorded generation an
 |---|---|---|---|---|
 | g10 (the body on main) | ordinary LoRA edits on t17, 222 checked rows | 9 of 64, 139 min | **26 of 64, 50 min** | 0 of 11 |
 | g9 (trial) | ternary edits, the same 222 rows | 7 of 64, 124 min | 13 of 64, 231 min | 0 of 9 |
+| g15 (replication) | g10's cells again, on four new exams (seeds 902) | 14 of 64, 108 min | **29 of 64** twice (two arms), 53 and 58 min | 0 of 10 |
 
+- **The gain replicates on unseen exams:** g10's cells passed 29 of 64 against the DNA's 14 (run 43619155775).
 - **Ordinary edits beat ternary edits** on the same rows: twice the tasks in a quarter of the time. The
   workflow therefore grows ordinary edits by default (`ternary: 1` still selects ternary edits).
 - **Noise:** two runs of the same hive on the same 24 tasks differed by 5 tasks. A gate of 64 tasks can see a
