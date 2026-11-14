@@ -39,6 +39,7 @@ MODELS = {  # name: (repository, file, pieces of context it is served with)
     "t27": ("prism-ml/Ternary-Bonsai-2-27B-gguf", "Ternary-Bonsai-2-27B-PQ2_0.gguf"),
     "t17": ("prism-ml/Ternary-Bonsai-1.7B-gguf", "Ternary-Bonsai-1.7B-PQ2_0.gguf"),  # the one the hive can train (its unpacked weights are published)
     "t40": ("prism-ml/Ternary-Bonsai-4B-gguf", "Ternary-Bonsai-4B-PQ2_0.gguf"),  # a bigger DNA that can be trained too (1.0 GB packed)
+    "t80": ("prism-ml/Ternary-Bonsai-8B-gguf", "Ternary-Bonsai-8B-PQ2_0.gguf"),  # 8B (from Qwen3-8B), 2.2 GB packed; trainable with --int8-base
     "bitnet": ("tdh111/bitnet-b1.58-2B-4T-GGUF", "bitnet1582b4t-iq2_bn.gguf"),
 }
 RUNTIME = "https://github.com/ikawrakow/ik_llama.cpp.git"

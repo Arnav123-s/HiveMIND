@@ -32,7 +32,7 @@ MEMBERS = ROOT / "cells" / "members"
 ARMS = ("dna", "before", "after", "versus")  # versus: a second kind of cell from the same rows, in a trial (grow.yml input `versus`)
 FLAGS = r"(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len)( [a-z0-9.]+)?[ ]?)*"
 ORGANS = ("sources", "code", "data", "words")
-DNAS = ("t17", "t40")
+DNAS = ("t17", "t40", "t80")
 CELL = r"g\d{1,6}(?:sources|code|data|words)\d{0,2}"
 # the kinds the hive never practises on (training/exam_hard.HELD_OUT), by the name the exam gives them
 UNPRACTISED = ("walk a site and count into a file", "two facts from two sources, combined", "a file given in the task, edited to a specification",
@@ -169,7 +169,7 @@ def fetch(argv):
     """The cells named, from the release into cells/members/. A cell that is not there is said and passed over."""
     repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
     for who in (argv[0] if argv else "").split(","):
-        m = re.fullmatch(rf"(t17|t40)\+({CELL}|gen\d{{1,6}})", who.strip())
+        m = re.fullmatch(rf"(t17|t40|t80)\+({CELL}|gen\d{{1,6}})", who.strip())
         if not m:
             continue
         to = MEMBERS / f"{m.group(1)}+{m.group(2)}.gguf"

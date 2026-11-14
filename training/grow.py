@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 GROW = ROOT / "runs" / "grow"
-UNPACKED = {"t17": "prism-ml/Ternary-Bonsai-1.7B-unpacked", "t40": "prism-ml/Ternary-Bonsai-4B-unpacked"}  # members whose full weights are published, so they can be taught
+UNPACKED = {"t17": "prism-ml/Ternary-Bonsai-1.7B-unpacked", "t40": "prism-ml/Ternary-Bonsai-4B-unpacked", "t80": "prism-ml/Ternary-Bonsai-8B-unpacked"}  # members whose full weights are published, so they can be taught
 RELEASE = "hive-grown"  # the GitHub release that holds the rows and the weight edits (never in git: they are big and machine-made)
 
 
@@ -217,7 +217,7 @@ def rows_from(folders, out):
 
 # ---- train -----------------------------------------------------------------------------------------------------------
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1):
+          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     born = time.time()
@@ -253,12 +253,22 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # may be the faster way (measured by `speed`)
     half = dtype != "f32"
     cast = (lambda: torch.autocast("cpu", dtype=torch.bfloat16)) if half else contextlib.nullcontext
-    model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32)
-    nl = model.config.num_hidden_layers
+    from transformers import AutoConfig
+    nl = AutoConfig.from_pretrained(src).num_hidden_layers
     which = (list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else
              list(range(nl - int(layers[4:]), nl)) if layers.startswith("last") else list(range(*map(int, layers.split("-")))))
-    model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
-                                             target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]))
+    cell = None
+    if int8_base:
+        # the frozen DNA held as what it is, ternary: one byte a weight, so a 4B or 8B DNA trains on a free runner
+        # (training/ternary_base.py); the edit is the same LoRA, saved in PEFT's layout
+        if ternary_edit:
+            raise ValueError("--ternary is not made for --int8-base")
+        from training import ternary_base
+        model, cell = ternary_base.load(src, rank, 2 * rank, 0.05, which, torch.bfloat16 if half else torch.float32, log=log)
+    else:
+        model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32)
+        model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
+                                                 target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]))
     if ternary_edit:
         # The cell's own edit in three values as well: each of its matrices is held as ordinary numbers while it is
         # trained, and what the net computes with is their ternary form (-s, 0, +s; s the mean size), the way
@@ -305,7 +315,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     torch.manual_seed(abs(hash(lean)) % 10**6 + seed)
     log(f"{len(rows)} rows, {len(data)} within {max_len} pieces (mean {sum(d[0].shape[1] for d in data) // max(1, len(data))}); "
         f"LoRA rank {rank} on layers {which[0]}-{which[-1]} of {UNPACKED[base]}", flush=True)
-    params = [p for p in model.parameters() if p.requires_grad]
+    params = cell.params if cell else [p for p in model.parameters() if p.requires_grad]
     if minutes and data:
         # Runners differ in speed by several times. One row is timed, and the passes are cut to what fits the time
         # given (a job that runs out of time leaves nothing behind).
@@ -356,7 +366,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 return torch.log_softmax(lg.float(), -1).gather(-1, x[:, -n:].unsqueeze(-1)).sum()
             with cast():
                 good, bad = seq(ids, k, logits), seq(wid, wk)
-                with torch.no_grad(), model.disable_adapter():
+                with torch.no_grad(), (cell.off() if cell else model.disable_adapter()):
                     ref_good, ref_bad = seq(ids, k), seq(wid, wk)
             margin = beta * ((good - ref_good) - (bad - ref_bad))
             loss = loss - torch.nn.functional.logsigmoid(margin)
@@ -384,8 +394,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             parametrize.remove_parametrizations(m, "weight", leave_parametrized=True)
         levels = max(len(torch.unique(m.weight.detach().float())) for m in edits)
         log(f"the cell's edit is ternary: at most {levels} different values in any of its {len(edits)} matrices", flush=True)
-    model.save_pretrained(str(work))
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    if cell:
+        cell.save(work, src)
+    else:
+        model.save_pretrained(str(work))
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
@@ -439,7 +452,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
     elif cmd == "speed":
         # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
         rows, out = opt("--rows", str(GROW / "rows.jsonl")), []

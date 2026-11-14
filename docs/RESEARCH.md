@@ -66,8 +66,15 @@ account the body needs, whether the whole body got better.
 `training/grow.py` loads the unpacked weights in bf16, which is 16 GB for 8B and does not fit a 16 GB runner. The
 way out is the QLoRA idea applied to ternary weights: keep the frozen DNA in memory as int8 values {-1, 0, +1}
 with one scale per matrix (8 GB for 8B, 4 GB for 4B), turn one layer back into numbers only while it computes,
-and train only the edit. That also makes t40 training fit without swap. It is not built yet. Whether bigger
-pays at all is what run 43619078349 (t40) measures first.
+and train only the edit. **Built 2026-11-14 (`training/ternary_base.py`, `grow.py train --int8-base`; the workflow
+uses it for t40 and t80).** The published weights are ternary in groups of 128 (checked). Each frozen layer
+keeps one byte a weight and one scale per group, and its backward pass rebuilds the numbers instead of keeping
+them. Measured on the 4B here (4 threads, a row of 900 pieces, last 14 layers, rank 16): 4.6 GB after loading
+(9.6 GB at the peak of loading), 8.5 GB while training, 15 s a row. Before: 13.2 GB with swap, about 30 s a row.
+The saved edit gives the same outputs as PEFT's (checked with a large random edit). The 8B (`t80`,
+Ternary-Bonsai-8B, from Qwen3-8B) is registered and should fit a runner with swap while loading; it is not yet
+run. Ternary-Bonsai-2 9B and 27B are published only as packed GGUF files, without trainable weights.
+Whether bigger pays at all is what run 43619078349 (t40) measures first.
 
 ## 2. Learning that carries over
 
