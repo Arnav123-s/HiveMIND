@@ -41,6 +41,14 @@ You are the owner and long-term maintainer of HiveMIND, and its design is up to 
    best-voted answer beside the worst-voted one, at least 3 votes apart, trained as a right-against-wrong pair
    with DPO, like the hive's own pairs. Only the text is used, never the names or profiles of the people who
    wrote it.
+8. **The hive goes back to what it got wrong (dreaming; Arnav's idea, built 2026-11-14, not yet measured).**
+   Every practice task it fails is remembered (`failures.jsonl` in the release, the newest 3000): how to make the
+   task again exactly (`exam.remake`: its maker and seed), its own last program, what that printed, and what the
+   check said with the numbers hidden. With `dreams: "4"`, each practice runner first takes 4 of them again, with
+   the old program and the verdict, and is asked to find the mistake. A correction the check confirms becomes
+   training rows: the old attempt and the verdict lead to the right program (STaR's going back to failed problems;
+   Reflexion). Failures are remembered from now on, whether dreaming is on or not. To measure it: two trials with
+   the same `gate_seeds` and `fresh_rows: "1"`, one with `dreams: "4"`.
 
 ## What Arnav wants (his words, condensed)
 
