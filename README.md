@@ -2,8 +2,9 @@
 
 A hive of BitNet cells that works and learns as one body, on plain CPUs. You give it **one task**; its cells
 write and run programs to do it, and an answer counts only when two cells agree. It grows by itself: it
-practises on fresh tasks, learns from the ones a check confirms, and keeps the new body only when it does
-better on exams it has never seen. No GPU, no API keys, nothing to pay for.
+practises on fresh tasks, learns from the ones a check confirms, and multiplies: every grown cell has a child
+that starts as an exact copy of it and learns further, and the body keeps them all. No GPU, no API keys, nothing
+to pay for.
 
 **Measured (2026-11-14):** grown from its own checked work, the body passes **26 of 64** fresh tasks where its
 base model alone passes 9, and **29 of 64** (twice) where the base passes 14 on four more unseen exams.
@@ -24,8 +25,10 @@ named); it is in memory once, and a cell is a file of a few megabytes switched o
   generation after another since 2026-11-14 evening, each starting the next; to stop it, set the repository
   variable `HIVE_LOOP` to `stop` or disable the workflow): the
   cells practise on fresh tasks; a task counts only when two agreed and the task's own check, computed by code,
-  confirms it; every cell is regrown from all checked work; the regrown body is kept only if it does better than
-  the DNA alone and no worse than the body before, on fresh tasks nobody has seen.
+  confirms it; each grown cell has a child, which starts as its parent's exact edit and trains on all the checked
+  work, its parent's mistakes and their corrections included; the children join the body, which grows like
+  Fibonacci's rabbits (`training/lineage.py`). Nothing decides whether a generation is kept; one exam of the grown
+  body is taken as a pulse, to trace problems back from. The DNA of the line is now the 8B (`Ternary-Bonsai-8B`).
 - **Measured (the first body, 2026-11-14)**, four fresh seeds, 64 tasks, half the first exam's kinds and half
   hard ones of several steps (`training/exam_hard.py`), members alone:
 

@@ -106,4 +106,4 @@ of the program), each against no library, on fresh seeds.
 ## What this side will do with it
 
 Read the one page, rerun the winning arm once here on a seed or start nobody has used, and build it in if it
-holds. What does not hold is written down with its numbers in `HANDOFF.md`, so nobody runs it twice.
+holds. What does not hold is written down with its numbers in `docs/history/old/HANDOFF.md`, so nobody runs it twice.

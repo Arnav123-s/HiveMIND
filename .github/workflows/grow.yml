@@ -7,10 +7,12 @@
 #   practice   several runners at once: the body's own cells do fresh tasks that are never an exam's. A task counts
 #              only when two cells agreed and the task's own check, computed by code, confirms the answer.
 #   gather     every row checked so far: those of earlier nights (in the release) and tonight's.
-#   train      every cell is grown again from the DNA on all the rows, its own organ's rows three times as often.
-#              One runner for each cell, at the same time.
+#   plan       which cells have children this generation (training/lineage.py): the body multiplies, it is not
+#              replaced. A child starts as its parent's edit, exactly.
+#   train      every child is trained on all the rows, its own organ's rows three times as often, the kinds its parent
+#              got wrong more often still. One runner for each child, at the same time.
 #   gate       fresh exam seeds nobody has seen (half the first exam's kinds, half hard ones), sat three ways side
-#              by side: the DNA as it was published, the body as it was, the body as regrown.
+#              by side: the DNA as it was published, the body as it was, the body with its children.
 #   record     a job that runs no model and no code the hive wrote. It keeps the cells and the rows in the release
 #              "hive-grown", writes the numbers into training/reports/generations.jsonl, and changes the body
 #              (cells/body.json) only when the numbers say it got better.
@@ -34,8 +36,8 @@ on:
         description: "Who practises (empty: the body's cells; with no cells yet, the DNA as published)"
         default: ""
       organs:
-        description: "The cells to grow, one for each organ named, as a JSON list"
-        default: '["sources","code","data","words"]'
+        description: "Empty: the body multiplies (each grown cell has a child, training/lineage.py). A JSON list such as [\"code\",\"data\"]: one cell for each organ named, from the body's cell of that organ, and the body is replaced by them if kept (the old way; trials always do this)"
+        default: ""
       epochs:
         description: "Passes over the rows when training"
         default: "3"
@@ -229,15 +231,33 @@ jobs:
           lscpu | grep -o "avx512_bf16" | head -1 || echo "this CPU has no AVX512-BF16"
           python training/grow.py speed --rows got/rows.jsonl --base "$DNA" | tee -a "$GITHUB_STEP_SUMMARY"
 
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      children: ${{ steps.plan.outputs.children }}
+      grow: ${{ steps.plan.outputs.grow }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Which cells have children this generation
+        id: plan
+        env:
+          ORGANS: ${{ inputs.organs || ((inputs.trial || inputs.versus) && '["sources","code","data","words"]' || '') }}
+        run: |
+          C=$(python3 training/lineage.py plan "$GEN" "$DNA" "$ORGANS")
+          echo "children=$C" >> "$GITHUB_OUTPUT"
+          echo "grow=$([ -z "$ORGANS" ] && echo 1 || echo '')" >> "$GITHUB_OUTPUT"
+          echo "children: $C" | tee -a "$GITHUB_STEP_SUMMARY"
+          test "$C" != "[]"
+
   train:
-    needs: gather
-    if: ${{ !cancelled() && needs.gather.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
+    needs: [gather, plan]
+    if: ${{ !cancelled() && needs.gather.result == 'success' && needs.plan.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
     timeout-minutes: 340
     strategy:
       fail-fast: false
       matrix:
-        organ: ${{ fromJSON(inputs.organs || '["sources","code","data","words"]') }}
+        child: ${{ fromJSON(needs.plan.outputs.children) }}
         variant: ${{ fromJSON(inputs.versus && '["cell","versus"]' || '["cell"]') }}
     steps:
       - uses: actions/checkout@v4
@@ -261,34 +281,43 @@ jobs:
       - name: Grow the cell
         env:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
+          NAME: ${{ matrix.child.name }}
+          ORGAN: ${{ matrix.child.organ }}
+          P: ${{ matrix.child.parent }}
         run: |
           # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
           [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len|read|judged)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
-          # the parent: the body's cell of this organ on this DNA, whose edit the child starts from (its learning and its
-          # corrections inherited); none in the first generation of a DNA
-          P=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(next((c for c in b['cells'] if c.endswith('${{ matrix.organ }}')), '') if b.get('dna') == '$DNA' else '')")
+          # the parent (training/lineage.py, the plan job): the cell whose edit the child starts from, its learning and its
+          # corrections inherited, and whose weak kinds the child is trained on harder; none in the first generation of a DNA
+          [[ "$NAME" =~ ^g[0-9]+(sources|code|data|words)[0-9]{0,2}$ && "$P" =~ ^(g[0-9]+(sources|code|data|words)[0-9]{0,2})?$ ]] || { echo "::error::not a cell's name: $NAME $P"; exit 1; }
           PARENT=""
-          if [ -n "$P" ] && curl -sfL -o parent.safetensors "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/$DNA.$P.safetensors"; then PARENT="--parent parent.safetensors"; echo "parent: $P" | tee -a "$GITHUB_STEP_SUMMARY"; fi
-          python training/grow.py train $VERSUS $PARENT --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
-          mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
-          cp "runs/grow/$DNA+${GEN}${{ matrix.organ }}/adapter_model.safetensors" "out/$DNA.${GEN}${{ matrix.organ }}.safetensors" || true
+          if [ -n "$P" ]; then
+            if curl -sfL -o parent.safetensors "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/$DNA.$P.safetensors"; then PARENT="--parent parent.safetensors --parent-cell $P"; echo "parent: $P" | tee -a "$GITHUB_STEP_SUMMARY"
+            else echo "::warning::the parent $P has no weights in the release; the child starts from the DNA"; PARENT="--parent-cell $P"; fi
+          fi
+          python training/grow.py train $VERSUS $PARENT --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
+          mkdir out && cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
+          cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.variant }}-${{ matrix.organ }}
+          name: ${{ matrix.variant }}-${{ matrix.child.suffix }}
           path: out/
           retention-days: 30
 
   gate:
-    needs: train
-    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run) }}
+    needs: [plan, train]
+    # a body that multiplies goes on with the children that did grow when one runner failed
+    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result == 'failure')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
-        arm: ${{ fromJSON(inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]') }}
-        seed: [1, 2, 3, 4]  # two runs of the same hive differ by several tasks in 32 (engram_stream_31000.json): four seeds, 64 tasks an arm
+        # a body that multiplies is not judged: it sits once, with its children, as a pulse to trace problems back from.
+        # Trials still sit three ways side by side (two runs of the same hive differ by several tasks in 32: four seeds)
+        arm: ${{ fromJSON(needs.plan.outputs.grow && '["after"]' || (inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]')) }}
+        seed: ${{ fromJSON(needs.plan.outputs.grow && '[1,2]' || '[1,2,3,4]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -304,6 +333,9 @@ jobs:
           path: vs
       - name: Who sits (the arm)
         id: who
+        env:
+          GROW: ${{ needs.plan.outputs.grow }}
+          CHILDREN: ${{ needs.plan.outputs.children || '[]' }}
         run: |
           # each cell is named here after the artifact it came in (cell-<organ>), whatever its file was called: in the
           # first trials a slip in this file gave all four cells the same empty name and the gate found none
@@ -315,8 +347,12 @@ jobs:
               WHO=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']))")
               python3 training/grow_record.py fetch "$WHO" ;;
             after)
+              # a body that multiplies sits with its cells before and their children together
+              # whose child each new cell is, on this runner only: a child with no record of its own is seated by its parent's
+              python3 -c "import json, os; b=json.load(open('cells/body.json')); b.setdefault('parents', {}).update({c['name']: c['parent'] for c in json.loads(os.environ['CHILDREN']) if c['parent']}); json.dump(b, open('cells/body.json', 'w'))"
+              if [ "$GROW" = "1" ]; then python3 training/grow_record.py fetch "$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells'] if b['dna']=='$DNA'))")"; fi
               for f in got/$DNA.${GEN}*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/$DNA+${n#$DNA.}.gguf"; done
-              WHO=$(ls cells/members | sed -n 's/\.gguf$//p' | paste -sd, -) ;;
+              WHO=$(ls cells/members | sed -n "s/^\($DNA+.*\)\.gguf$/\1/p" | paste -sd, -) ;;
             versus)
               # the second kind's cells, under the same names as the first kind's (each arm sits on its own runner)
               for d in vs/versus-*; do o=${d#vs/versus-}; cp "$d"/*.gguf "cells/members/$DNA+${GEN}$o.gguf"; done
@@ -360,8 +396,8 @@ jobs:
           sed -n 3p "$f"
 
   record:
-    needs: [train, gate]
-    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run) }}
+    needs: [plan, train, gate]
+    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result == 'failure')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -387,7 +423,7 @@ jobs:
       - name: The numbers decide (only numbers and names this repository knows are taken from the other jobs)
         env:
           VERSUS_FLAGS: ${{ inputs.versus }}
-        run: python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
+        run: python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
@@ -409,5 +445,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          ls got/$DNA.${GEN}*.gguf >/dev/null 2>&1 || { echo "::error::no cell grew this generation: the line stops here (read the train jobs' logs)"; exit 1; }
           gh workflow run grow.yml --ref main -f practice_level="${{ inputs.practice_level || 'mixed' }}" -f dna="${{ inputs.dna || 't80' }}" -f seating="${{ inputs.seating }}" -f dreams="${{ inputs.dreams }}" -f pairs="${{ inputs.pairs }}"
           echo "the next generation is started; to stop the line set the repository variable HIVE_LOOP to stop" >> "$GITHUB_STEP_SUMMARY"
