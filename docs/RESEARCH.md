@@ -23,6 +23,31 @@ Where a line says "here", it is about this repository.
    test-time training (a small edit trained on the task itself) and sparse memory finetuning (continual learning
    with little forgetting).
 
+## 0. The long-term architecture: one body, three speeds (Arnav, 2026-11-14)
+
+"Each cell might be separate, but the whole hive is one." A brain keeps no account per neuron: the network learns
+from one outcome, and specialisation forms inside it. Built the same way, the hive is one body that learns at
+three speeds. Each layer then needs only the accounting that fits it:
+
+| layer | speed | what it is | the accounting it needs |
+|---|---|---|---|
+| trunk | slow | the DNA plus one shared edit the whole body has consolidated | the body's own outcome: the nightly gate |
+| cells | medium | small deltas that branch from the trunk, each leaning to an organ | none of their own: they grow together from the body's checked work |
+| engrams | fast | one memory shared by the whole body | the log of each use |
+
+- **Grow as one.** Each night the kept cells are merged into the trunk (averaging or TIES-merging their edits),
+  and the next cells branch from the trunk, not from the bare DNA. What any cell learned becomes the body's; the
+  body accumulates instead of starting again each night.
+- **The body learns how to use its cells.** The mix of cells for a task is part of the body, tuned by the
+  body's own results: a learned router (Branch-Train-MiX) or mixing weights found by search (LoraHub,
+  evolutionary merging), scored by the gate. Not a separate ledger per cell.
+- **One memory for the body.** Engrams belong to the DNA, so every cell shares them already.
+
+Scaffolding on the way there, to be replaced and not built upon: the per-cell strength records and strength
+seating (`cells/strengths.json`, `HIVE_SEATING=strength`). They are useful as data and as a first measurement of
+routing by results, but the body's own learned mixing is the design. The nightly gate stays: it is the one
+account the body needs, whether the whole body got better.
+
 ## 1. Bigger ternary models
 
 - **BitNet b1.58** ([Ma et al. 2024](https://arxiv.org/abs/2402.17764)): ternary weights match full-precision
