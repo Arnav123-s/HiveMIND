@@ -21,6 +21,7 @@ gate       The same fresh exam sat by the DNA as published, by the body as it wa
     python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240] [--ternary] [--foresee]
     python training/grow.py fetch                                        the cells of the body, from the release
 """
+import contextlib
 import json
 import math
 import os
@@ -216,6 +217,49 @@ def rows_from(folders, out):
 
 
 # ---- train -----------------------------------------------------------------------------------------------------------
+class _Prefix:
+    """The layers below the first trained one are frozen, so for a given row they compute the same thing on every
+    pass. Their output (the input to the first trained layer) is kept from the first pass of each row, and on later
+    passes those layers are skipped and the kept value is used: the same result, without a third to half of the
+    forward work from the second pass on (a cell trains the last 14 layers of 28 or 36). Rows are known by their
+    tensor; kept values stop being added past HIVE_PREFIX_GB (3 by default)."""
+
+    def __init__(self, model, first, log=print):
+        import torch
+        layers = model.get_base_model().model.layers if hasattr(model, "get_base_model") else model.model.layers
+        self.kept, self.key, self.skip, self.bytes, self.hits, self.misses = {}, None, False, 0, 0, 0
+        self.most = float(os.environ.get("HIVE_PREFIX_GB", "3")) * 2**30
+        for layer in layers[:first]:
+            orig = layer.forward
+
+            def passthrough(hidden_states, *a, _orig=orig, **k):
+                return hidden_states if self.skip else _orig(hidden_states, *a, **k)
+            layer.forward = passthrough
+
+        def pre(module, args, kwargs):
+            h = args[0] if args else kwargs["hidden_states"]
+            if self.skip:
+                h = self.kept[self.key]
+            elif self.key is not None and self.key not in self.kept and torch.is_grad_enabled() and self.bytes < self.most:
+                self.kept[self.key] = h.detach()
+                self.bytes += h.numel() * h.element_size()
+            if args:
+                return (h,) + tuple(args[1:]), kwargs
+            return args, dict(kwargs, hidden_states=h)
+        layers[first].register_forward_pre_hook(pre, with_kwargs=True)
+
+    @contextlib.contextmanager
+    def use(self, ids):
+        self.key = id(ids)
+        self.skip = self.key in self.kept
+        self.hits += self.skip
+        self.misses += not self.skip
+        try:
+            yield
+        finally:
+            self.key, self.skip = None, False
+
+
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
@@ -345,6 +389,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     except OSError:
         trim = None
     model.train()
+    # not with recomputation (checkpoint): a layer recomputed on the way back would be fed the wrong input
+    prefix = _Prefix(model, which[0], log) if which[0] > 0 and not checkpoint and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None
     t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
     for i, idx in enumerate(order):
         if minutes and time.time() - born > minutes * 60:
@@ -354,7 +400,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             order = order[:i]
             break
         ids, k = data[idx][:2]
-        with cast():
+        with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
         if len(data[idx]) == 4:
@@ -362,7 +408,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
             wid, wk = data[idx][2:]
             def seq(x, n, lg=None):
-                lg = model(input_ids=x, logits_to_keep=n + 1).logits[:, :-1, :] if lg is None else lg
+                if lg is None:
+                    with (prefix.use(x) if prefix else contextlib.nullcontext()):
+                        lg = model(input_ids=x, logits_to_keep=n + 1).logits[:, :-1, :]
                 return torch.log_softmax(lg.float(), -1).gather(-1, x[:, -n:].unsqueeze(-1)).sum()
             with cast():
                 good, bad = seq(ids, k, logits), seq(wid, wk)
@@ -398,6 +446,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         cell.save(work, src)
     else:
         model.save_pretrained(str(work))
+    if prefix:
+        log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB)", flush=True)
     meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),

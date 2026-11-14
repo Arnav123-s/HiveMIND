@@ -121,6 +121,12 @@ are scaffolding on the way there, not the design: do not build further machinery
 
 ## The open problems, for you to decide how to attack
 
+**Speed: read `docs/KERNELS.md` first** (measured 2026-11-14). Generation is near the memory's limit for one
+stream. Decoding two members at once would give 1.64 times the throughput, but the runtime applies cells
+globally: one graph change (a per-token scale on each cell's contribution) and a cell per request in the server
+would let members 1 and 2 run together. A slow scalar kernel on the unrepacked output layer makes four or more
+streams slower than one; the fixes are written there.
+
 These are the parts that need deep research rather than bookkeeping. They are listed by how much they matter
 to Arnav's goal. How to solve them is up to you. **`docs/RESEARCH.md` gathers what published research says about
 each one, with links**, so you need not search for it again. One lever from it is already built and waits for a
