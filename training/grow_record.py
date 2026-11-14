@@ -25,6 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))  # team.ternary names organs and leanings; it needs nothing but Python
+from training import lineage  # noqa: E402
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 BODY = ROOT / "cells" / "body.json"
 STRENGTHS = ROOT / "cells" / "strengths.json"
@@ -117,13 +118,17 @@ def gate(argv):
     if dna not in DNAS:
         print("not a DNA this file knows")
         return 1
-    cells, rows, minutes, ternary, foresee, pairs = [], None, 0, [], [], 0
-    for o in ORGANS:
-        f = got / f"{dna}.{gen}{o}.json"
-        if (got / f"{dna}.{gen}{o}.gguf").exists() and f.exists():
-            cells.append(f"{gen}{o}")
+    grow = "--grow" in argv
+    cells, rows, minutes, ternary, foresee, pairs, parent_of = [], None, 0, [], [], 0, {}
+    names = sorted({p.name[len(dna) + 1:-5] for p in got.glob(f"{dna}.{gen}*.gguf")}, key=lambda c: (lineage.ORGANS.index(lineage.organ_of(c)) if lineage.organ_of(c) else 9, len(c), c))
+    for c in names:
+        f = got / f"{dna}.{c}.json"
+        if re.fullmatch(CELL, c) and c.startswith(gen) and not c[len(gen)].isdigit() and f.exists():
+            cells.append(c)
             try:
                 meta = json.loads(f.read_text())
+                if isinstance(meta.get("parent_cell"), str) and re.fullmatch(CELL, meta["parent_cell"]):
+                    parent_of[c] = meta["parent_cell"]
                 rows, minutes = _int(meta.get("rows"), 10 ** 7), minutes + (_int(meta.get("seconds"), 10 ** 6) or 0) // 60
                 ternary.append(meta.get("ternary_edit") is True)
                 foresee.append(meta.get("foresee") is True)
@@ -137,23 +142,37 @@ def gate(argv):
     same_dna = body.get("dna") == dna
     judged = arms if same_dna else dict(arms, before={"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0})
     keep, why = decide(judged) if cells else (False, "no cell was grown")
+    if grow and cells and not trial:
+        # the body multiplies (Arnav, 2026-11-14): no gate decides it; the children always join. The sitting of the
+        # body with its children is its pulse, kept to trace a problem back from, and decides nothing
+        a = arms["after"]
+        keep, why = True, (f"the body grows; its pulse: {a['passed']} of {a['tasks']} with its children" if a["seeds"] else "the body grows (no pulse was taken)")
     if cells and not same_dna:
         why += f" (a new DNA, {dna}: the body of {body.get('dna')} before it is not the bar)"
     if trial and keep:
         keep, why = False, "a trial beside the line of generations (the body is not changed by it); by the numbers it would be kept: " + why
+    after, retired = cells, []
+    old_parents = {c: p for c, p in (body.get("parents") or {}).items() if isinstance(p, str)} if same_dna else {}
+    if keep and grow:
+        # the body multiplies: the cells before stay and their children join them (training/lineage.py)
+        after, retired = lineage.grown_body(before, cells, dict(old_parents, **parent_of))
+    elif not keep:
+        after = before
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
-            "kept": keep, "why": why, "body_before": before, "body_after": cells if keep else before, "trial": trial,
+            "kept": keep, "why": why, "body_before": before, "body_after": after, "trial": trial, "grow": grow,
+            "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
     if keep:
-        body.update({"dna": dna, "generation": int(gen[1:]), "cells": cells})
+        parents = {c: p for c, p in dict(old_parents, **parent_of).items() if c in after}
+        body.update({"dna": dna, "generation": int(gen[1:]), "cells": after, "parents": parents})
         BODY.write_text(json.dumps(body) + "\n")
-    # who in the body is strong on what, from the gate of the body as it now is (only the nightly line writes it:
-    # trials run side by side and would trip over each other on one file)
+    # who in the body is strong on what, by organ, for trials of seating by it (HIVE_SEATING=strength); a body that
+    # multiplies is not seated by it
     src = arms["after"] if keep else arms["before"]
-    if not trial and src.get("by_lean"):
+    if not trial and not grow and src.get("by_lean"):
         STRENGTHS.write_text(json.dumps({"from": gen, "dna": dna, "by_lean": src["by_lean"]}) + "\n")
     print(f"### Generation {gen}\n")
     print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}"
@@ -163,11 +182,14 @@ def gate(argv):
              "versus": f"the body regrown with {line['versus']}"}
     for k in ARMS:
         v = arms[k]
-        if k == "versus" and not v["seeds"]:
+        if not v["seeds"] and (k == "versus" or grow):
             continue
         print(f"| {names[k]} | {v['passed'] if v['seeds'] else '-'} | {v['tasks'] if v['seeds'] else '-'} | {v['minutes'] if v['seeds'] else '-'} | "
               f"{v['unpractised'][0]} of {v['unpractised'][1]} |")
-    print(f"\n- the body {'is now ' + ', '.join(cells) if keep else 'stays as it was'}: {why}")
+    if keep and grow:
+        born = ", ".join(f"{c} (child of {parent_of[c]})" if c in parent_of else c for c in cells)
+        print(f"\n- the body multiplies: {born} join it; it has {len(after)} cells now{'; gave up their place, best of the body at nothing: ' + ', '.join(retired) if retired else ''}")
+    print(f"\n- the body {'is now ' + ', '.join(after) if keep else 'stays as it was'}: {why}")
     return 0
 
 

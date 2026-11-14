@@ -248,7 +248,7 @@ def organ(task):
 
 def leans(member):
     """The organ a cell leans to, read from its name ('t17+g3code' -> 'code'), or ''."""
-    edit = member.partition("+")[2]
+    edit = member.partition("+")[2].rstrip("0123456789")  # a body that multiplies has 'g24code2', a second child of code
     return next((o for o in ORGANS if edit.endswith(o)), "")
 
 
@@ -272,7 +272,7 @@ STRENGTHS = Path(__file__).resolve().parent.parent / "cells" / "strengths.json"
 def strengths():
     """{lean: {"kind": {kind: [right, tries]}, "organ": {organ: [right, tries]}}}: how often each cell of the body,
     named by the organ it leans to, was right by itself, from the exact records of its last gate
-    (training/grow_record.py). Empty when there are none."""
+    (training/grow_record.py). Empty when there are none. Read only with HIVE_SEATING=strength (a trial)."""
     try:
         d = json.loads(STRENGTHS.read_text())
         return d.get("by_lean", {}) if isinstance(d, dict) else {}
@@ -292,19 +292,60 @@ def strength(member, task, kind="", table=None):
     return (r_k + 2 * p_o) / (n_k + 2)
 
 
+def _parents():
+    """{cell: its parent} of the body (cells/body.json): the body's lines of descent."""
+    try:
+        body = json.loads(BODY.read_text())
+        return body.get("parents", {}) if isinstance(body.get("parents"), dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _born(member):
+    import re
+    m = re.match(r"g(\d+)", member.partition("+")[2])
+    return int(m.group(1)) if m else 0
+
+
+def _line(member, parents):
+    out, c = set(), member.partition("+")[2]
+    while c and c not in out:
+        out.add(c)
+        c = parents.get(c, "")
+    return out
+
+
+def _kin(a, b, parents):
+    """Whether one cell descends from the other (a child is its parent and a degree more)."""
+    x, y = a.partition("+")[2], b.partition("+")[2]
+    return x in _line(b, parents) or y in _line(a, parents)
+
+
 def seating(task, kind=None):
     """The members in the order they take this task: the first two work it out, the next decides a difference.
-    With HIVE_SEATING=strength and records of each cell's own answers (cells/strengths.json), the cells most likely right on this kind of task
-    sit first, whichever organ they lean to; a weakness goes to the cell whose strengths lie nearest. Without
-    records: the cells that lean to the task's organ first (the sort is stable, so a roster without organs keeps
-    its order). kind: the kind of task when known (the exam and practice say it, in HIVE_KIND)."""
+    The cells that lean to the task's organ first (the sort is stable, so a roster without organs keeps its order).
+
+    A body that has multiplied has lines of descent (cells/body.json "parents"). Of one organ the newest cell sits
+    first: it is its parent and more. The second seat goes to the newest cell of another line: a child and its own
+    parent are nearly one mind, and two copies agreeing on a wrong answer is the false memory that agreement cannot
+    catch. Nothing is counted to seat them.
+
+    HIVE_SEATING=strength (a trial): by each organ's record of being right, cells/strengths.json, as before."""
     who = roster() or ["coder"]
     o = organ(task)
     kind = os.environ.get("HIVE_KIND", "") if kind is None else kind
-    table = strengths() if os.environ.get("HIVE_SEATING") == "strength" else {}  # until a gate has shown it helps
+    table = strengths() if os.environ.get("HIVE_SEATING") == "strength" else {}
     if table:
         return sorted(who, key=lambda m: (-strength(m, task, kind, table), leans(m) != o))
-    return sorted(who, key=lambda m: leans(m) != o)
+    order = sorted(who, key=lambda m: (leans(m) != o, -_born(m)))
+    parents = _parents()
+    if len(order) > 2 and parents:
+        first = order[0]
+        other = next((m for m in order[1:] if not _kin(first, m, parents)), None)
+        if other:
+            order.remove(other)
+            order.insert(1, other)
+    return order
 
 
 if __name__ == "__main__":
