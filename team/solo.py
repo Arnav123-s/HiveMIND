@@ -23,12 +23,13 @@ Whether this is better than the roles is not claimed here. It is measured on the
 (training/exam.py, AGENT_TEAM_SOLO set or not); the number decides.
 """
 import ast
+import json
 import os
 import re
 import time
 from pathlib import Path
 
-from . import bitnet, config, llm, stop
+from . import config, llm, stop, ternary
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
@@ -43,7 +44,8 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   https://huggingface.co/api/models/OWNER/NAME (["cardData"]["license"]; ["likes"]; ["downloads"]; ["tags"] holds "name:value")
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
   Use requests with timeout=30 and headers={{"User-Agent": "hive/1.0"}} (Wikipedia refuses a request without one).
-  If you do not know what a source returns, first print a small part of it and look.
+  If you do not know what a source returns, look first: look(x) is built in. Given JSON data or a requests
+  response it prints the keys, nested; given the text of a web page it prints the page's links and text.
 - A page inside a website is reached from the site's first page (https://...), by finding there the link whose text
   matches and following it. An inner address written from memory is usually wrong.
 - Dates and differences of dates are worked out with datetime. Today is {today}.
@@ -52,15 +54,33 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   else. Otherwise print every result the task asks for, each on its own line as "name: value". One piece of text
   (a summary, a translation, a word) is printed alone, as it is.
 - A value that can be computed is computed by the program, never typed in ('garden'[::-1], not 'nedrag'). A file the task asks for is saved in the current folder under the exact name given.
+- Data the TASK gives (a table, a log, a CSV, a list) exists only in the TASK: copy it into the program as a string.
+  There is no file unless your program writes it.
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""
+# A member the hive has taught (a ternary model with a weight edit of its own, "t17+gen3") was trained on the hive's
+# checked work under these few lines: what MEMBER spells out, it has in its weights. Short orders also make its
+# training rows short enough for a 16 GB runner, and its turns faster.
+SHORT = ("You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing "
+         "else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page "
+         "really holds. Today is {today}.")
+
+
+def orders(who, today=None):
+    """The system prompt of the member in a seat: the full orders, or the short ones for a member the hive taught."""
+    return (SHORT if "+" in who else MEMBER).format(today=today or time.strftime("%Y-%m-%d (%A)"))
+
+
 # (For one afternoon this asked more: "... every value asked for, said in words ... if it only shows data you were
 # looking at ...". Members then rewrote programs that were already right: 16 tasks took an hour instead of 15 minutes
 # and fewer were right. The plain question is back.)
 MORE = ("If this output, as it stands, is the complete and correct answer to the TASK, reply with the one word DONE. "
         "If not, reply with a better complete program.")
 TURNS = int(os.environ.get("AGENT_TEAM_SOLO_TURNS", 6))
+# the most a member may write in one reply. It was 700: on the hard exam a program that writes a module to a file and
+# then tests it was cut off in the middle and died of a syntax error (two of three members, first hard practice)
+LONG = int(os.environ.get("AGENT_TEAM_SOLO_LONG", 1600))
 
 
 # ---- what the hive has solved --------------------------------------------------------------------------------------
@@ -184,7 +204,23 @@ def form(task, answer):
         if missing:
             return (f"The TASK asks for the answers labelled {', '.join(re.findall(r'[A-Z]', m.group(1)))}, each on its own line "
                     f"('A: ...'). Your output has no line for {', '.join(missing)}.")
+    # labels the TASK spells out in quotes ("Answer in four lines: 'customer: ', 'spent: ', ..."): seen on the first hard
+    # practice, where a member worked all four values out and printed "Sofia: 347.75" four times
+    named = re.findall(r"'([A-Za-z][\w ]{0,24}): ?[^']{0,12}'", task)
+    if len(named) >= 2:
+        missing = [c for c in named if not any(re.match(rf"\W*{re.escape(c)}\s*:", x, re.I) for x in lines)]
+        if missing:
+            return (f"The TASK asks for lines that begin with {', '.join(repr(c + ':') for c in named)}. Your output has no line "
+                    f"that begins with {', '.join(repr(c + ':') for c in missing)}.")
     return ""
+
+
+FILE = re.compile(r"\b(?:sav\w*|writ\w*|creat\w*|mak\w*|produc\w*|generat\w*|stor\w*|export\w*)\b[^.\n]{0,80}?(?<![\w/.-])([\w-]+\.(?:py|csv|tsv|json|md|txt|html|xml|ya?ml))\b", re.I)
+
+
+def wanted(task):
+    """The files the TASK asks to be saved, by name ("save it as roman.py", "make a new file people.csv")."""
+    return list(dict.fromkeys(m.group(1) for m in FILE.finditer(task)))
 
 
 def typed_out(reply, code):
@@ -198,10 +234,10 @@ def typed_out(reply, code):
     return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
 
 
-def member(task, n, board, guard, work, temperature):
+def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
-    messages = [{"role": "system", "content": MEMBER.format(today=time.strftime("%Y-%m-%d (%A)"))},
+    messages = [{"role": "system", "content": orders(who + "+" if also else who)},  # engrams were written under the short orders too
                 {"role": "user", "content": f"TASK: {task}"}]
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
@@ -217,10 +253,10 @@ def member(task, n, board, guard, work, temperature):
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
-        if bitnet.is_member(n):  # this member is another model: the published 2.4B BitNet (team/bitnet.py)
-            reply = bitnet.chat(messages, max_new_tokens=700, temperature=temperature)
+        if who == "coder":
+            reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
         else:
-            reply = llm.chat("coder", messages, max_new_tokens=700, stop="code", temperature=temperature)
+            reply = ternary.chat(who, messages, max_new_tokens=LONG, temperature=temperature, also=also)
         code = extract_code(reply)
         # Seen once every member's programs were logged (2026-11-12): the word DONE comes back as a program, bare or
         # as print("DONE"). Run, the first died on a NameError and the second replaced a right answer with the four
@@ -271,16 +307,25 @@ def member(task, n, board, guard, work, temperature):
             res = dict(res, returncode=1)
             err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
                    "the page. Print what the page really holds and look.")
-        if res["returncode"] == 0 and out and FAILED.search(out) and len(out) < 400:
+        lacking = [f for f in wanted(task) if not (Path(work) / f).is_file() or not (Path(work) / f).stat().st_size]
+        if res["returncode"] == 0 and lacking:
+            # Seen on the first hard sitting (seed 7001): asked to "save it as durations.py", both members wrote the
+            # two functions into their own program, printed the values, and agreed. The file was never written.
+            res = dict(res, returncode=1)
+            err = (f"The TASK asks for the file {lacking[0]} saved in the current folder, and it is not there. Reply with the complete "
+                   f"program that writes {lacking[0]} (with open({lacking[0]!r}, 'w')), then uses it, and prints the answer.")
+        failed = FAILED.search(out) if res["returncode"] == 0 and out and len(out) < 400 else None
+        if failed and failed.group(0).lower() not in task.lower():  # (a task about ERROR lines is answered with the word error)
             # a program that catches its own error and prints it has not answered ("The 'upload_time' key does not
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
-        if res["returncode"] == 0 and out and looking and re.search(r"\[:\d{3,4}\]", code):
+        if res["returncode"] == 0 and out and (looking and re.search(r"\[:\d{3,4}\]", code) or re.search(r"\blook\(", code)
+                                                and re.search(r"^PAGE title:|^\s*'\w+': |^\[\d+ items; the first:\]", out, re.M)):
             # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
             # members ended with a dump of JSON, one of them the source's own error message, as their answer)
             looking, last_error = False, None
-            messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\nThat is what is really there. Now reply "
+            messages.append({"role": "user", "content": f"OUTPUT:\n{out[:2600]}\n\nThat is what is really there. Now reply "
                              "with the complete program that prints the answer to the TASK."})
             continue
         if res["returncode"] == 0 and out:
@@ -299,11 +344,12 @@ def member(task, n, board, guard, work, temperature):
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
         looking = bool(LOOK.search(err or out))
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
-            "\n\nWhat you expected is not there. Reply with a program that only fetches the data and prints what IS "
-            "there, with print(list(data)[:40] if isinstance(data, dict) else type(data)) and print(str(data)[:1500]), so that "
-            "you can see its real shape (a license \"Unknown\" or None means the key you read is not there)." if LOOK.search(err or out) else
+            "\n\nWhat you expected is not there. Reply with a short program that only fetches the data and calls look(data) "
+            "(look is built in: for JSON it prints the keys, nested; for a web page pass response.text and it prints the links "
+            "and the text). Then you see what IS there." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
-    return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn}
+    return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
+            "who": who, "messages": messages}
 
 
 def run(task, run_dir=None, approve="never", members=2):
@@ -316,12 +362,27 @@ def run(task, run_dir=None, approve="never", members=2):
     work = home / "work"
     tries = []
     agreed = None
+    seats = ternary.seating(task)
+    board.log("hive", "seats", f"{ternary.organ(task)}: {', '.join(seats[:max(1, members) + 1])}")
     for n in range(1, max(1, members) + 2):  # one more than asked: to decide a difference, or in place of one that got nowhere
         if n > members and members < 2:
             break
-        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7)
+        # who sits where for this task: the cells that lean to its kind of work first (team/ternary.seating); the last
+        # one named also takes every later seat
+        who = seats[n - 1] if n <= len(seats) else seats[-1]
+        also = ()
+        if os.environ.get("HIVE_ENGRAMS") == "1" and who != "coder":  # the body's fast memory: what it wrote down of tasks like this one
+            from . import engram
+            also = tuple(engram.recall(task, ternary.split(who)[0]))
+            if also and n == 1:
+                board.log("hive", "engrams", ", ".join(also))
+        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who, also)
+        t["work"] = str(work if n == 1 else home / f"member{n}")
         tries.append(t)
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
+        # the whole exchange is kept: where the task's check later confirms the answer, it is what the hive's own
+        # members are taught from (training/grow.py)
+        (home / f"member{n}.json").write_text(json.dumps(t))
         like = [x for x in tries[:-1] if same(x["answer"], t["answer"], task)]
         if like:
             agreed = next((x for x in (like[0], t) if not form(task, x["answer"])), like[0])  # of two that agree, the one that keeps the form asked for
@@ -342,7 +403,10 @@ def run(task, run_dir=None, approve="never", members=2):
     text = text.strip() + "\n"
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
-    return {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending}
+    (home / "members.json").write_text(json.dumps({"agreed": bool(agreed), "who": [t["who"] for t in tries],
+                                                  "agreeing": [i + 1 for i, t in enumerate(tries) if agreed and same(t["answer"], agreed["answer"], task)]}))
+    return {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
+            "work": agreed["work"] if agreed else str(work)}
 
 
 def first(task, run_dir=None, approve="never", members=2):
@@ -355,7 +419,7 @@ def first(task, run_dir=None, approve="never", members=2):
     if out["agreed"]:
         (home / "REPORT.md").write_text(out["report"])
         (home / "work").mkdir(parents=True, exist_ok=True)
-        for p in (home / "members" / "work").iterdir():
+        for p in Path(out["work"]).iterdir():  # the files of the member whose answer stands (member 1's were taken even when 2 and 3 agreed)
             if p.is_file() and not p.name.startswith(".") and not re.fullmatch(r"member\d+_\d+\.py", p.name):
                 shutil.copy2(p, home / "work" / p.name)
     return out

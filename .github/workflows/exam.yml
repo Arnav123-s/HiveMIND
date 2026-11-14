@@ -30,6 +30,12 @@ on:
       bitnet:
         description: "1: not an exam. Builds Microsoft's BitNet runtime, tests the published 2.4B BitNet, converts it again from its original weights and tests that"
         default: ""
+      level:
+        description: "hard: the kinds of several steps (training/exam_hard.py)"
+        default: ""
+      who:
+        description: "Who the members are (team/ternary.py): t9,t9,t4 seats ternary models; coder is the 7B at 4 bits (empty: coder)"
+        default: ""
       members:
         description: "A trial, not for the record: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
         default: ""
@@ -38,7 +44,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}-${{ inputs.bitnet || 'hive' }}
+  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}-${{ inputs.bitnet || 'hive' }}-${{ inputs.level || 'basic' }}-${{ inputs.who || 'coder' }}
   cancel-in-progress: false
 
 jobs:
@@ -109,8 +115,13 @@ jobs:
       EMPTY: ${{ inputs.empty_memory || '' }}
       AGENT_TEAM_SOLO_ALONE: ${{ inputs.alone || '' }}
       PRACTICE: ${{ inputs.practice || '' }}
+      HIVE_MEMBERS: ${{ inputs.who || '' }}
+      LEVEL: ${{ inputs.level || '' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Only ternary members and no roles - the 4-bit engine, the browser and the cells are not installed
+        if: ${{ inputs.who && inputs.alone && !contains(inputs.who, 'coder') }}
+        run: echo "HIVE_LIGHT=1" >> "$GITHUB_ENV"
       - uses: ./.github/actions/hive
       - name: What the hive has solved so far (kept between runs in the Actions cache, never in git)
         uses: actions/cache/restore@v4
@@ -124,7 +135,7 @@ jobs:
             python training/exam.py practice --tasks "$TASKS" | tee practice.txt
             echo "### Practice" >> "$GITHUB_STEP_SUMMARY"; tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
           else
-            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory}
+            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory} ${LEVEL:+--level "$LEVEL"}
           fi
       - name: Keep what it solved in practice
         if: ${{ !cancelled() && inputs.practice && hashFiles('memory/solved.jsonl') != '' }}
@@ -155,6 +166,12 @@ jobs:
             runs/exam/**/.member*_*.py.err
           include-hidden-files: true
           retention-days: 14
+      - name: The numbers once more, last in the log (so that they can be read without downloading anything)
+        if: ${{ !cancelled() }}
+        run: |
+          f=$(ls -t training/reports/exams/*.md | head -1)
+          grep -E "✅|❌" "$f" | awk -F'|' '{print $4 "|" $3 "|" $5}' | cut -c1-90
+          sed -n 3p "$f"
   record:
     needs: sit
     if: ${{ !inputs.members && !inputs.empty_memory && !inputs.practice && !inputs.bitnet }}

@@ -24,6 +24,7 @@ class FakeBoard:
 def clean_policy(tmp_path, monkeypatch):
     monkeypatch.setattr(memory, "POLICY", tmp_path / "policy.json")
     monkeypatch.setattr("team.solo.library", lambda: tmp_path / "solved.jsonl")  # no test writes into the hive's library
+    monkeypatch.setenv("HIVE_MEMBERS", "coder")  # the members of these tests are the stubbed model, never a ternary server
 
 
 def test_family_only_when_ordered():
@@ -1754,7 +1755,7 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     left = ["print(\"The 'upload_time' key does not exist in the response.\")", "print('released 2024-12-06, 706 days ago')", "DONE"]
     monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
     out = solo.run("When was the latest httpx released?", tmp_path / "e", "never", members=1)
-    assert "706 days ago" in out["report"] and "prints what IS" in asked[1]       # a printed failure is no answer; it is told to look
+    assert "706 days ago" in out["report"] and "look(data)" in asked[1]       # a printed failure is no answer; it is told to look
     asked, left = [], ["print({}['info'])", "print(str({'releases': 1})[:800])", "DONE", "print('released 2024-12-06')", "DONE"]
     out = solo.run("When was the latest httpx released?", tmp_path / "e2", "never", members=1)
     assert "2024-12-06" in out["report"] and "releases" not in out["report"].split("\n## ")[0] and "really there" in asked[2]  # what a look printed is not the answer

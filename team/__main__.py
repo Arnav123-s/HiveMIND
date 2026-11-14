@@ -157,6 +157,15 @@ def main():
         print("\n*** stopping every specialist now (Ctrl+C again to exit immediately)", flush=True)
 
     signal.signal(signal.SIGINT, on_ctrl_c)
+    if not os.environ.get("AGENT_TEAM_SOLO"):
+        # The hive's body (cells/body.json: one ternary model and its cells) does the task where it is on this
+        # machine: two cells work it out, a third decides. HIVE_ROLES=1: where the cells confirm nothing, the older
+        # hive of roles takes the task.
+        from . import ternary
+        if ternary.roster():
+            os.environ["AGENT_TEAM_SOLO"] = "2"
+            if os.environ.get("HIVE_ROLES") != "1":
+                os.environ["AGENT_TEAM_SOLO_ALONE"] = "1"
     if os.environ.get("AGENT_TEAM_SOLO", "").isdigit() and int(os.environ["AGENT_TEAM_SOLO"]) > 0:
         # Members first (team/solo.py: each does the whole task by programs, and two must agree). On the first exam
         # they sat, five of their six failures were "no answer given" and one was a wrong answer; the roles passed

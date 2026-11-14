@@ -11,6 +11,107 @@ first). Setting up a fresh cloud environment: `NEW_SESSION.md`.
 
 ---
 
+## 0a. THE DIRECTION, corrected by Arnav 2026-11-14 00:00 UTC (this overrides anything below that disagrees)
+
+His words: "A hive is many same-sized models, like cells in a body: they multiply, overlap like organs, each
+leaning to a different strength, train together as one from their own checked work, and keep growing." Every
+component is a BitNet cell; the body regenerates from the same DNA; it need not know everything, it must keep
+getting better at all tasks; training must get faster and better; BitNet architecture should be improved.
+A roster of different models of different sizes (t2/t4/t9/coder) was a drift. What is built instead:
+
+- **One DNA**: `prism-ml/Ternary-Bonsai-1.7B` (ternary, 0.43 GB packed; its full weights are published, so it
+  can be trained on a CPU). **Cells**: the DNA plus a weight edit each (LoRA, about 39 MB as GGUF), all the same
+  size, named `g<generation><organ>`. One llama-server holds the DNA once and every cell; `team/ternary.chat`
+  switches the cell by turn (and must not reuse the server's cache across a switch).
+- **Organs** (`team/ternary.ORGANS`): sources, code, data, words. `ternary.organ(task)` says which a task belongs
+  to; `ternary.seating(task)` puts the cells leaning to it first. Every cell is trained on all rows, its organ's
+  rows three times as often (`grow.py train --lean`), so cells overlap and can check each other.
+- **Body**: `cells/body.json` {dna, generation, cells}; changed only by the gate (`training/grow_record.py`):
+  three arms on the same fresh mixed seeds: the DNA alone, the body before, the body regrown. Kept when it passes
+  more than the DNA alone and at least as many as the body before.
+- **Generation g3** (the first body) was started 2026-11-14 00:10 UTC: four cells from the 222 rows of run
+  43500614422 (those rows came from t9/t4/t2: a one-time upbringing, said to Arnav; from the next generation on,
+  practice is by the body's own cells: start the workflow with no inputs). Read its record job's summary.
+- **His idea on faster learning (JEPA, dreaming)**: JEPA lost on BitNets from scratch here (3 of 3 seeds, both
+  sides). The hive's form of it, collected but NOT yet used: `grow.foresee_rows` (a program -> what it prints,
+  from every run, right or wrong). Next: grow cells with `--foresee` and without, same rows, gate both.
+- **Ternary cells** (`grow.py train --ternary`): the cell's own edit is trained in three values (BitNet's way)
+  and saved so. Checked: in PyTorch and on the runtime a toy ternary cell answers the same.
+- **Two faults of the shared server, mended in `team/ternary.py`**: a freshly started server reports a cell as on
+  that it has not applied (the hive now switches explicitly, once per process and at every change); the answer to
+  a switch is sometimes never sent until another request arrives (asked again after 6 s). Never reuse the server's
+  cache across a switch (`cache_prompt` off for that call).
+- **Trials, what happened (2026-11-14):** g4/g5 (every layer, recomputing) trained 5.5 h and ran into the job's
+  time limit: lost. Training now stops at its deadline and keeps the cell (`--minutes`), and trains the fast way
+  by default (last 14 layers, inner values kept: 4.0 s a row on a runner with bf16, 7 GB; `speed` times each
+  way; runners differ several times in speed). g7 (run 43560287281, ternary cells) and g8 (run 43569009099,
+  ordinary cells) trained in about 2.4 h (loss 0.87 -> 0.04, 330 steps) but a slip in grow.yml named every cell
+  `t17..gguf` (`$GENcode` read as one variable), so their gates found no cell. Mended (`${GEN}`); cells are now
+  named after their artifact. Their gates were run again from the stored cells (`cells_from_run`): **g9 = the
+  ternary cells of g7 (gate seeds 20009001-4), g10 = the ordinary cells of g8 (seeds 20009011-14)**, both
+  `trial=1`. **Read `training/reports/generations.jsonl` on make-it-work, keep the better kind by writing
+  cells/body.json** ({"dna": "t17", "generation": 9, "cells": ["g9sources", "g9code", "g9data", "g9words"]}),
+  then start the workflow with `ternary` as decided and nothing else: the body practises by itself from then on.
+- **First evidence that a cell learns (local, one seed, one run; not a claim yet):** mixed exam seed 555, members
+  alone: the ternary cell g7code in every seat passed 6 of 16 in 18 min; the DNA as published passed 1 of 16 in
+  27 min. The cell solves in 6 to 8 s what the DNA does not solve at all.
+- **A bigger DNA** (`--base t40`, Ternary-Bonsai-4B, 1.0 GB packed): trains on a 15 GB machine only with swap
+  (13.2 GB peak, about 30 s a row here). The workflow takes `dna: t40`. Not yet run on GitHub.
+- **Engrams** (his idea, 2026-11-14; `team/engram.py`): one checked task -> one tiny ternary edit (rank 4, last 8
+  layers, 2.5 MB, 44 s to write here), recalled by likeness of the task and switched on beside the working cell
+  (`HIVE_ENGRAMS=1`). The fast memory; the nightly regrowth is the slow one. Whether they help is being measured:
+  `training/experiments/engram_stream.py` (same stream of tasks with and without; result in
+  `training/experiments/engram_stream_31000.json`). Risk: copying old values, as the library did.
+  **First result (one stream, 32 tasks, bare DNA t17): no gain.** Without engrams 17 of 32, with 12 of 32; but
+  engrams were recalled on only 8 tasks, and on those 8 both arms passed 6. The whole gap came from the 24 tasks
+  where nothing was recalled: the same hive on the same tasks differed by 5 of 24 between two runs. So (a) this
+  form of engram shows no effect yet, recall by shared words fires too rarely; (b) **two runs of the same hive
+  differ by several tasks in 32: a gate of 32 tasks cannot tell small gains apart. Use more seeds.**
+  Also read from it: the bare 1.7B DNA passes about half of these eight basic kinds (17 of 32, 12 of 32).
+- Not done: a better ternary architecture from scratch (needs training at a scale a CPU has not reached here).
+
+## 0. NEW, 2026-11-13 evening (a session on a fresh machine; read this block before the rest)
+
+**The finding that changes the plan: capable ternary (1.58-bit) models already exist, and run fast on a plain CPU.**
+Nobody has to grow them from nothing.
+
+- `prism-ml/Ternary-Bonsai-2-{2B,4B,9B,27B}-gguf` (Apache-2.0, September 2026; built on Qwen3.5/3.8) and
+  `prism-ml/Ternary-Bonsai-1.7B` (its full weights are published as `-unpacked`, so it can be trained).
+- The runtime is **ik_llama.cpp** (pinned in `team/ternary.py`), about 25 minutes to build, then kept in the
+  Actions cache. Measured here (4 cores, AVX-512, the members' own 608-piece prompt, `-rtr`):
+  2B 1.0 GB 27 pieces/s; 4B 1.9 GB 12/s; 9B 3.0 GB 7/s (the 7B coder at 4 bits: 5 GB, 3 to 4/s).
+- Microsoft's `bitnet-b1.58-2B-4T` is sound: in PyTorch from its original weights it answers correctly (0.7
+  pieces/s, 10 GB). Its failure before was Microsoft's runtime. On ik_llama.cpp it is member `bitnet`.
+- `team/ternary.py` serves these models; `HIVE_MEMBERS=t9,t9,t4` seats them in `team/solo.py`;
+  `cells/roster.json` is the standing roster where the runtime is built.
+- **A weight edit of a ternary member works end to end on a CPU**: LoRA in PyTorch on the 1.7B's unpacked
+  weights (about 6 s per 1000-piece row here), converted to a 39 MB GGUF adapter, loaded by the runtime beside
+  the 0.43 GB packed base (`t17+<name>`). Checked with a toy edit: the member answers as trained.
+- `training/exam_hard.py`: 13 hard kinds (`--level hard`); four kinds are never practised (`HELD_OUT`).
+- `training/grow.py` + `.github/workflows/grow.yml` + `training/grow_record.py`: practice -> checked rows ->
+  train the 1.7B -> gate on fresh seeds (four arms) -> roster. Run 1 (id 43500614422, teachers t9,t4,t2, 6 runners x
+  16 mixed tasks) made **222 checked rows**; its training job was killed (memory). Run 2 trains from those rows
+  (`skip_practice=1`, `rows_from_run=43500614422`) with swap, short rows and gradient checkpointing, then gates.
+  **Read run 2's result first** (Actions, "The hive teaches its own members"; the record job's summary has the
+  table; `training/reports/generations.jsonl` gets the line).
+- **First baselines, hard exam, dev seed 7001, old code fbf9bf2 (before the mends below), members alone:**
+  7B coder 5 of 13 in 103 min; ternary 9B 2 of 13 in 140 min (GitHub's AVX2 runners are about half as fast as
+  this machine for it); 4B 2 of 13 in 28 min (seed 7002); 2B 0 of 13 in 30 min. So out of the box the ternary
+  members are weaker than the 7B coder; whether teaching closes the gap is what the gate measures.
+- Mends since, each read from members' programs: files a task names must be written (`solo.wanted`); labels a
+  task spells out (`form`); replies up to 1600 pieces (a module was cut off); `look(x)` built into every program
+  (JSON keys nested, or a page's links and text); data given in the task is no file; a taught member gets
+  short orders (`solo.SHORT`). Sittings with these: dispatched 2026-11-13 23:20 on seed 7001 (coder; t9; t4;
+  t4,t9,coder). Every sitting now ends its log with its numbers (read with get_job_logs, tail 60).
+- `--level mixed`: half the first exam's kinds, half hard ones (practice and the gate use it).
+- Dev seeds (read, for finding faults only): hard 7001-7003, basic 9001, practice 10000001. Claims need others.
+- This machine reaches quotes/books.toscrape.com and Hugging Face; GitHub release pages are not reachable from
+  it. Listing workflow runs through the GitHub tools returns very long text: note run ids when dispatching.
+- A workflow can be started by hand only if its file is on main: `grow.yml` on main is a placeholder (PR 27);
+  the real one is on make-it-work and replaces it when a generation has been measured.
+
+---
+
 ## 1. The goal (Arnav's, in his words, condensed)
 
 HiveMIND is "a hiveminded entity": many small models (BitNets above all) acting as one, CPU only, that can "do
