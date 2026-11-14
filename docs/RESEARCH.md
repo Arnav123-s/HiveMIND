@@ -195,3 +195,20 @@ next form of `team/engram.py`):
 
 Each step can be gated the same way as the cells: a stream of tasks with and without
 (`training/experiments/engram_stream.py`), over several seeds, because one run of 32 tasks varies by about 5.
+
+**Interference is a problem of time (Arnav, 2026-11-14).** A memory is true relative to when, and under what
+conditions, it was made. Interference happens when an old memory is recalled as if it were true now. The hive's
+clearest case: the old library stored "the latest version of package X is 2.3", which was right on the day it
+was solved, and a member copied it a week later. The brain stamps memories with a slowly drifting time context
+and favours memories whose context matches the present (the temporal context model, Howard and Kahana 2002). It
+also keeps episodes ("what was true then") apart from skills ("how to do it"). Added to the design above:
+6. **Stamp each engram with its time and its conditions**: the date, the source, and the state of the world it
+   saw (versions, the day of the week).
+7. **Store the method apart from the values.** The method (how to find a version, how to count days between
+   dates) holds across time and is recalled as it is. The values (2.3, 20 days) expire: on recall the hive runs
+   the method again instead of copying them.
+8. **Weigh by relative time, by kind.** For things that change (live facts, versions, prices, dates), a newer
+   memory counts for more, and an old value is never used without a fresh check. For things that do not change
+   (arithmetic, how a simulation steps), age does not matter.
+9. **Re-date, do not delete.** A recalled memory found out of date is stored again with the new date and the new
+   value (reconsolidation), so the hive keeps both "what it was" and "what it is now".
