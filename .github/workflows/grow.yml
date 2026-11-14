@@ -43,8 +43,8 @@ on:
         description: "The body's ternary model: t17 (1.7B, 0.43 GB packed) or t40 (4B, 1.0 GB packed)"
         default: "t17"
       ternary:
-        description: "0: the cells' own edits in ordinary numbers; anything else: ternary too (the whole cell a BitNet)"
-        default: "1"
+        description: "1: the cells' own edits ternary too (g9: 13 of 64, against 26 for ordinary edits on the same 222 rows); anything else: ordinary numbers"
+        default: "0"
       foresee:
         description: "1: the cells are also trained to say what a program prints before it runs"
         default: ""
@@ -218,7 +218,7 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary != '0' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -335,5 +335,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/generations.jsonl cells/body.json
           git commit -q -m "The hive's body: generation $GEN" || exit 0
-          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true
-          git push -q origin "HEAD:${GITHUB_REF_NAME}" || echo "the record could not be pushed"
+          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
+          git push -q origin "HEAD:${GITHUB_REF_NAME}" || { echo "::error::the record could not be pushed"; exit 1; }
