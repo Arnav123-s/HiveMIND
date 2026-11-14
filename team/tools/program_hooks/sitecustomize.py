@@ -11,6 +11,42 @@ try:
 except Exception:
     pass
 
+# JSON data says what it holds when a key is not there: a member that guessed 'pypi_version' was told only
+# KeyError: 'pypi_version', twice, and gave up; the keys that are there are what it needed to see
+try:
+    import json as _json
+
+    class _Keys(dict):
+        def __missing__(self, k):
+            ks = list(self)
+            raise KeyError("%r is not a key here; the keys are: %s%s" % (k, ", ".join(repr(x) for x in ks[:25]),
+                           " ... (%d in all)" % len(ks) if len(ks) > 25 else ""))
+
+    _loads = _json.loads
+    def _hive_loads(s, *a, **k):
+        if not a and "object_hook" not in k and "object_pairs_hook" not in k and k.get("cls") is None:
+            k["object_hook"] = _Keys
+        return _loads(s, *a, **k)
+    _json.loads = _hive_loads
+    try:
+        import requests as _rq2
+        _rjson = _rq2.Response.json
+        def _response_json(self, *a, **k):
+            try:
+                return _rjson(self, *a, **k)
+            except ValueError as e:
+                head = (self.text or "")[:160].replace("\n", " ")
+                e.args = ("the reply from %s is not JSON (%s); it begins: %r. look(r) shows what it is"
+                          % (self.url, e, head),)
+                raise
+        _rq2.Response.json = _response_json
+        if getattr(_rq2.compat, "json", _json) is not _json:
+            _rq2.compat.json.loads = _hive_loads
+    except Exception:
+        pass
+except Exception:
+    pass
+
 
 def look(x, _depth=0, _most=14):
     '''The hive's eyes, built into every program a member writes: prints what is really there. JSON data: its

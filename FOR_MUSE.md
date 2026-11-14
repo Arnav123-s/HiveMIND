@@ -11,7 +11,7 @@ one listed, that is its call; a line on its page saying what it chose and why is
 
 Arnav restated the goal: the hive is **one body of same-size BitNet cells from one DNA**, multiplying, leaning to
 different strengths, trained together from their own checked work. What exists now (README, top section;
-NEXT_SESSION.md, section 0a):
+docs/history/NEXT_SESSION_2026-11-14.md, section 0a):
 
 - Capable ternary models are published (`prism-ml/Ternary-Bonsai-*`); they run fast on a CPU with ik_llama.cpp.
   Nobody has to grow the DNA from nothing. Microsoft's 2B4T is sound too (its runtime was the fault).
