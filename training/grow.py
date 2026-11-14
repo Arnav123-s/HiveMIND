@@ -193,8 +193,95 @@ def practice(seed, n=16, level="mixed", out=None, log=print):
             for row in new:
                 f.write(json.dumps(row) + "\n")
         made, right = made + sum(x["type"] not in ("foresee", "pair") for x in new), right + r["ok"]
+        if not r["ok"]:
+            remember_failure(E.RUNS / f"practice_{seed}" / tid, task, kind, check, r, out.with_name("failures.jsonl"))
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows", flush=True)
     return {"practice": seed, "level": level, "tasks": n, "right": right, "rows": made, "file": str(out)}
+
+
+def _masked(why):
+    """What the check said, with its numbers hidden: the hive is to find its mistake, not copy the answer."""
+    return re.sub(r"\d+(?:[.,]\d+)*", "#", why or "")[:400]
+
+
+def remember_failure(run, task, kind, check, result, path):
+    """A task the hive got wrong, kept so that it can come back to it (dream): how to make the task again, its own
+    last program and what that printed, and what the check said, numbers hidden."""
+    if not getattr(check, "maker", None):
+        return
+    home = Path(run) / "members"
+    program, printed = "", ""
+    for f in sorted(home.glob("member[0-9]*.json")):
+        try:
+            t = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        ms = [m for m in t.get("messages") or [] if m.get("role") == "assistant"]
+        program = (t.get("program") or (solo_code(ms[-1]["content"]) if ms else "")).strip()
+        printed = (t.get("answer") or "")[-600:]
+        if program:
+            break
+    if not program or len(program) > 5000:
+        return
+    with open(path, "a") as f:
+        f.write(json.dumps({"maker": check.maker, "rseed": check.rseed, "task": task, "kind": kind, "program": program, "printed": printed,
+                            "said": _masked(result.get("why")), "when": time.strftime("%Y-%m-%d %H:%M")}) + "\n")
+
+
+def solo_code(text):
+    from team import solo
+    return solo.extract_code(text)
+
+
+DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. The program written then:\n```python\n{program}\n```\n"
+         "It printed: {printed}\nWhat the check said about it (its numbers hidden): {said}\n"
+         "Find the mistake in that program, then write the whole corrected program.")
+
+
+def dream(seed, n=4, failures=None, out=None, log=print):
+    """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
+    again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
+    check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
+    right program. Problem solving is the correcting of errors, and the hive's own errors are what it can correct
+    (STaR's going back to failed problems, Zelikman et al. 2022; Reflexion, Shinn et al. 2023)."""
+    from training import exam as E
+    out = Path(out or GROW / "rows.jsonl")
+    src = Path(failures or out.with_name("failures.jsonl"))
+    seen = []
+    for ln in (src.read_text().splitlines() if src.exists() else []):
+        try:
+            seen.append(json.loads(ln))
+        except ValueError:
+            continue
+    if not seen:
+        return {"dream": seed, "tasks": 0, "right": 0, "rows": 0}
+    r = random.Random(f"dream:{seed}")
+    recent = seen[-400:]
+    pick = r.sample(recent, min(n, len(recent)))
+    os.environ.setdefault("AGENT_TEAM_SOLO", "2")
+    os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
+    home = E._memory(True)
+    right = made = 0
+    for i, f in enumerate(pick):
+        again = E.remake(f.get("maker", ""), f.get("rseed", ""))
+        if not again:
+            continue
+        field, kind, task, check = again
+        text = DREAM.format(task=task, program=f["program"][:5000], printed=(f.get("printed") or "nothing")[:600], said=f.get("said", ""))
+        tid = f"d{seed}_{i:02d}"
+        res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind)
+        new = []
+        if res["ok"]:
+            new = rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
+            for row in new:
+                row["dream"] = True
+        with open(out, "a") as fo:
+            for row in new:
+                fo.write(json.dumps(row) + "\n")
+        right += res["ok"]
+        made += sum(x["type"] != "pair" for x in new)
+        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, {len(new)} rows", flush=True)
+    return {"dream": seed, "tasks": len(pick), "right": right, "rows": made}
 
 
 def rows_from(folders, out):
@@ -530,7 +617,9 @@ def fetch(names=(), log=print):
 def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
-    if cmd == "practice":
+    if cmd == "dream":
+        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""))))
+    elif cmd == "practice":
         print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""))))
     elif cmd == "rows":
         out = opt("--out", str(GROW / "rows.jsonl"))

@@ -369,6 +369,24 @@ MAKERS = [m_percent, m_days, m_weekday, m_units, m_table, m_code, m_fix, m_pypi,
           m_translate, m_summary, m_steps]
 
 
+def _made(make, rseed):
+    """A task from its maker and the seed it was drawn with; the check remembers both, so the task can be made again
+    later exactly (training/grow.dream: the hive goes back to what it got wrong)."""
+    field, kind, task, check = make(random.Random(rseed))
+    try:
+        check.maker, check.rseed = make.__name__, rseed
+    except AttributeError:
+        pass
+    return field, kind, task, check
+
+
+def remake(maker, rseed):
+    """The task a maker drew with this seed: (field, kind, task, check), or None for a maker this code does not have."""
+    from training import exam_hard
+    make = next((m for m in MAKERS + exam_hard.MAKERS if m.__name__ == maker), None)
+    return _made(make, rseed) if make else None
+
+
 def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
     """The tasks of one sitting: [(id, field, kind, task, check)]. The same seed gives the same exam.
     level "hard": the kinds of several steps (training/exam_hard.py). without: makers left out by name (practice
@@ -381,7 +399,7 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
         from training import exam_hard
         makers = [(m, "e") for m in MAKERS if m.__name__ not in without] + [(m, "h") for m in exam_hard.MAKERS if m.__name__ not in without]
         r = random.Random(f"{seed}:edge")
-        tried = [(i, make, lv) + tuple(make(random.Random(f"{seed}:{make.__name__}:{i}:0"))) for i, (make, lv) in enumerate(makers)]
+        tried = [(i, make, lv) + tuple(_made(make, f"{seed}:{make.__name__}:{i}:0")) for i, (make, lv) in enumerate(makers)]
         # a kind nobody has measured yet counts as if passed half the time (the most to learn)
         w = [max(1e-3, (weights or {}).get(t[4], 0.25)) for t in tried]
         out, used = [], {}
@@ -389,7 +407,7 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
             i, make, lv, field, kind, task, check = tried[pick]
             again = used.get(i, 0)
             if again:
-                field, kind, task, check = make(random.Random(f"{seed}:{make.__name__}:{i}:{again}"))
+                field, kind, task, check = _made(make, f"{seed}:{make.__name__}:{i}:{again}")
             used[i] = again + 1
             if task in [t[3] for t in out] or (only and field not in only):
                 continue
@@ -407,7 +425,7 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
     out = []
     for i, make in enumerate(makers):
         for again in range(8):  # the same task twice in one sitting tells nothing: drawn again
-            field, kind, task, check = make(random.Random(f"{seed}:{make.__name__}:{i}:{again}"))
+            field, kind, task, check = _made(make, f"{seed}:{make.__name__}:{i}:{again}")
             if task not in [t[3] for t in out]:
                 break
         if only and field not in only:
