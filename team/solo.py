@@ -234,10 +234,10 @@ def typed_out(reply, code):
     return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
 
 
-def member(task, n, board, guard, work, temperature):
+def member(task, n, board, guard, work, temperature, who="coder"):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
-    messages = [{"role": "system", "content": orders(ternary.seat(n))},
+    messages = [{"role": "system", "content": orders(who)},
                 {"role": "user", "content": f"TASK: {task}"}]
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
@@ -253,7 +253,6 @@ def member(task, n, board, guard, work, temperature):
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
-        who = ternary.seat(n)  # who sits here: the 7B coder, or a ternary model with or without an edit (team/ternary.py)
         if who == "coder":
             reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
         else:
@@ -350,7 +349,7 @@ def member(task, n, board, guard, work, temperature):
             "and the text). Then you see what IS there." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
-            "who": ternary.seat(n), "messages": messages}
+            "who": who, "messages": messages}
 
 
 def run(task, run_dir=None, approve="never", members=2):
@@ -363,10 +362,15 @@ def run(task, run_dir=None, approve="never", members=2):
     work = home / "work"
     tries = []
     agreed = None
+    seats = ternary.seating(task)
+    board.log("hive", "seats", f"{ternary.organ(task)}: {', '.join(seats[:max(1, members) + 1])}")
     for n in range(1, max(1, members) + 2):  # one more than asked: to decide a difference, or in place of one that got nowhere
         if n > members and members < 2:
             break
-        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7)
+        # who sits where for this task: the cells that lean to its kind of work first (team/ternary.seating); the last
+        # one named also takes every later seat
+        who = seats[n - 1] if n <= len(seats) else seats[-1]
+        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who)
         t["work"] = str(work if n == 1 else home / f"member{n}")
         tries.append(t)
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")

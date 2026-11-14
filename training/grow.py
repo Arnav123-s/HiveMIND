@@ -1,23 +1,25 @@
-"""The hive teaches its own small members from work its members did and code checked.
+"""The hive is one body: one ternary model (its DNA) and many cells, each the DNA with a small weight edit of its own.
 
-    practice  ->  rows  ->  train  ->  gate  ->  the next roster
+    practice  ->  rows  ->  every cell regrown from the rows  ->  gate  ->  the body's next generation
 
 practice   Fresh tasks that are never an exam's (seeds from ten million up; the exam's held-out kinds are never
-           practised). The hive's members do them as they do any task (team/solo.py). A task counts only when two
-           members agreed AND the task's own check, computed by code, confirms the answer.
-rows       From each such task, what the member that got it right wrote: the task -> its final program, the
+           practised). The body's own cells do them as they do any task (team/solo.py). A task counts only when two
+           cells agreed AND the task's own check, computed by code, confirms the answer.
+rows       From each such task, what the cell that got it right wrote: the task -> its final program, the
            program's output -> DONE, and, where it first failed, the failure -> the mended program. Nobody labelled
            anything: the label is that the program ran and its answer was checked.
-train      A low-rank weight edit (LoRA) on the smallest ternary member whose full weights are published
-           (Ternary-Bonsai-1.7B, 0.43 GB packed), on a CPU. The edit is a few megabytes; the ternary base is
-           shared by every member that has an edit of its own. Saved as cells/members/<base>+<name>.gguf.
-gate       The same fresh exam sat by the hive with and without the new member; the roster changes only when
-           the numbers say so (.github/workflows/grow.yml does this with nobody there).
+train      Every cell is grown again from the same DNA (Ternary-Bonsai-1.7B, 0.43 GB packed, the smallest ternary
+           model whose full weights are published) on all the rows, as a low-rank weight edit (LoRA) on a CPU. A
+           cell leans to one organ (team/ternary.ORGANS): it meets that organ's rows three times as often. So the
+           cells are the same size, overlap, and each is strongest somewhere. A cell is a file of a few megabytes
+           (cells/members/<dna>+<name>.gguf); the DNA is in memory once for all of them.
+gate       The same fresh exam sat by the DNA as published, by the body as it was and by the body as regrown; the
+           body changes only when the numbers say so (.github/workflows/grow.yml, training/grow_record.py).
 
     python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl]
     python training/grow.py rows RUN_FOLDER ... [--out rows.jsonl]      rows from sittings already done (checked tasks only)
-    python training/grow.py train --rows rows.jsonl --name gen1 [--base t17] [--epochs 2] [--max-len 1152] [--minutes 240]
-    python training/grow.py fetch                                        the weight edits the roster names, from the release
+    python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240]
+    python training/grow.py fetch                                        the cells of the body, from the release
 """
 import json
 import math
@@ -113,7 +115,8 @@ def rows_from(folders, out):
 
 
 # ---- train -----------------------------------------------------------------------------------------------------------
-def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print):
+def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
+          lean="", weight=3):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     import torch
@@ -154,9 +157,21 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
         t = tok(row["output"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
         return (torch.tensor([p + t]), len(t)) if len(p) + len(t) <= max_len else None
-    data = [d for d in map(encode, rows) if d is not None]
+    data, mine = [], 0
+    for row in rows:
+        d = encode(row)
+        if d is not None:
+            # a cell that leans to an organ meets that organ's rows `weight` times as often as the others: every cell
+            # learns all of the hive's checked work (so any two can check each other), each one its own part best
+            own = bool(lean) and ternary.organ(row["task"]) == lean
+            data += [d] * (weight if own else 1)
+            mine += own
     if limit:
         data = data[:limit]
+    if lean:
+        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, each met {weight} times", flush=True)
+    random.seed(f"{seed}:{lean}")
+    torch.manual_seed(abs(hash(lean)) % 10**6 + seed)
     log(f"{len(rows)} rows, {len(data)} within {max_len} pieces (mean {sum(d[0].shape[1] for d in data) // max(1, len(data))}); "
         f"LoRA rank {rank} on layers {which[0]}-{which[-1]} of {UNPACKED[base]}", flush=True)
     params = [p for p in model.parameters() if p.requires_grad]
@@ -214,7 +229,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(str(work))
-    meta = {"member": f"{base}+{name}", "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
@@ -235,6 +250,12 @@ def fetch(names=(), log=print):
     from team import ternary
     repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
     got = []
+    if not names and not os.environ.get("HIVE_MEMBERS"):
+        try:
+            body = json.loads(ternary.BODY.read_text())
+            names = [f"{body['dna']}+{c}" for c in body.get("cells", [])]
+        except (OSError, ValueError, KeyError):
+            names = []
     for who in names or ternary.roster():
         if "+" not in who or ternary.adapter(who).exists():
             continue
@@ -259,7 +280,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0)), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3)), indent=1))
     elif cmd == "fetch":
         print(fetch([a for a in argv[1:] if not a.startswith("--")]))
     else:

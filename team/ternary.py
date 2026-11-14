@@ -100,10 +100,9 @@ def adapter(member):
 
 
 def port(member):
-    """Each member's server has a port of its own, the same in every process (so the next task finds it running)."""
-    base, edit = split(member)
-    known = sorted(MODELS).index(base)
-    return 8090 + known + 10 * (1 + sum(map(ord, edit)) % 80 if edit else 0)
+    """One server for each base model, the same port in every process (so the next task finds it running). All the
+    cells of a body share their base's server: the base is in memory once, the cells are its weight edits."""
+    return 8090 + sorted(MODELS).index(split(member)[0])
 
 
 def _get(url, timeout=3):
@@ -114,33 +113,47 @@ def _get(url, timeout=3):
         return None
 
 
+def cells_here(base):
+    """The names of the weight edits of this base that are on this machine (cells/members/<base>+<name>.gguf)."""
+    return sorted(p.stem.split("+", 1)[1] for p in ADAPTERS.glob(f"{base}+*.gguf")) if ADAPTERS.exists() else []
+
+
+def _loaded(at, scales=False):
+    """{cell name: its number in the running server} (scales: {cell name: how much of it is switched on})."""
+    return {Path(a.get("path", "")).stem.split("+", 1)[-1]: (a.get("scale", 0.0) if scales else a["id"]) for a in (_get(at + "/lora-adapters") or [])}
+
+
 def up(member, wait=600):
-    """The address of the member's server, started if it is not running."""
+    """The address of the server that holds the member's base (and every cell of it), started if it is not running,
+    started again if the cell asked for arrived after it was started."""
+    base, edit = split(member)
     at = f"http://127.0.0.1:{port(member)}"
-    if (_get(at + "/health") or {}).get("status") == "ok":
+    alive = (_get(at + "/health") or {}).get("status") == "ok"
+    if alive and (not edit or edit in _loaded(at)):
         return at
     if not binary().exists():
         raise RuntimeError("the ternary runtime is not built on this machine: python -m team.ternary install")
-    base, edit = split(member)
+    if edit and not adapter(member).exists():
+        raise RuntimeError(f"no weight edit {adapter(member)}: python training/grow.py fetch")
+    if alive:
+        subprocess.run(["pkill", "-f", f"llama-server.*--port {port(member)}( |$)"], check=False)
+        time.sleep(2)
     cmd = [str(binary()), "-m", weights(base), "-t", str(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4)), "-c", str(CTX),
-           "--port", str(port(member)), "--host", "127.0.0.1", "-rtr", "--parallel", "1"]
-    if base != "bitnet":
-        cmd.append("--jinja")
-    else:
-        cmd.append("--special")
-    if edit:
-        if not adapter(member).exists():
-            raise RuntimeError(f"no weight edit {adapter(member)}: python training/grow.py fetch")
-        cmd += ["--lora", str(adapter(member))]
+           "--port", str(port(member)), "--host", "127.0.0.1", "-rtr", "--parallel", "1", "--special" if base == "bitnet" else "--jinja"]
+    cells = cells_here(base)
+    for c in cells:
+        cmd += ["--lora", str(ADAPTERS / f"{base}+{c}.gguf")]
+    if cells:
+        cmd.append("--lora-init-without-apply")
     HOME.mkdir(parents=True, exist_ok=True)
-    log = open(HOME / f"{member.replace('+', '_')}.log", "ab")
+    log = open(HOME / f"{base}.log", "ab")
     subprocess.Popen(cmd, stdout=log, stderr=log, stdin=subprocess.DEVNULL, start_new_session=True)
     t0 = time.time()
     while time.time() - t0 < wait:
         if (_get(at + "/health") or {}).get("status") == "ok":
             return at
         time.sleep(1)
-    raise RuntimeError(f"the server of {member} did not come up in {wait} s; see {HOME / (member.replace('+', '_') + '.log')}")
+    raise RuntimeError(f"the server of {base} did not come up in {wait} s; see {HOME / (base + '.log')}")
 
 
 def _post(url, body, timeout=1800):
@@ -153,19 +166,28 @@ def chat(member, messages, max_new_tokens=700, temperature=0.0):
     """The member's reply to a conversation. When the conversation no longer fits its window, the oldest program and
     what it printed go first; the orders and the task stay."""
     at, messages = up(member), list(messages)
-    base, _ = split(member)
+    base, edit = split(member)
+    have, fresh = _loaded(at), True
+    want = {name: 1.0 if name == edit else 0.0 for name in have}
+    if have and _loaded(at, scales=True) != want:
+        # which cell answers: its edit on, every other off (the base itself: all off). What the server remembers of
+        # the conversation was worked out by the cell before: it must not be reused (a cell answered in the other's
+        # voice when it was).
+        _post(at + "/lora-adapters", [{"id": i, "scale": want[name]} for name, i in have.items()])
+        fresh = False
     for _ in range(8):
         try:
             if base == "bitnet":
                 text = "".join(f"{m['role'].capitalize()}: {m['content']}{END}" for m in messages) + "Assistant: "
                 out = _post(at + "/completion", {"prompt": text, "n_predict": max_new_tokens, "temperature": temperature,
-                                                 "stop": [END, "\nUser:", "<|end_of_text|>"], "cache_prompt": True})
+                                                 "stop": [END, "\nUser:", "<|end_of_text|>"], "cache_prompt": fresh})
                 return out.get("content", "").split(END)[0].strip()
             out = _post(at + "/v1/chat/completions", {"messages": messages, "max_tokens": max_new_tokens, "temperature": temperature,
-                                                      "top_p": 0.8 if temperature else 1.0, "top_k": 20 if temperature else 0, "cache_prompt": True,
+                                                      "top_p": 0.8 if temperature else 1.0, "top_k": 20 if temperature else 0, "cache_prompt": fresh,
                                                       "chat_template_kwargs": {"enable_thinking": False}})
             return (out["choices"][0]["message"].get("content") or "").strip()
         except urllib.error.HTTPError as e:
+            fresh = True
             if e.code not in (400, 413, 500) or len(messages) <= 3:
                 raise
             del messages[2:4]
@@ -173,31 +195,55 @@ def chat(member, messages, max_new_tokens=700, temperature=0.0):
 
 
 def stop():
-    for name in MODELS:
-        subprocess.run(["pkill", "-f", f"llama-server.*--port {port(name)}\\b"], check=False)
     subprocess.run(["pkill", "-f", str(binary())], check=False)
 
 
-ROSTER = Path(__file__).resolve().parent.parent / "cells" / "roster.json"
+BODY = Path(__file__).resolve().parent.parent / "cells" / "body.json"
+# The organs of the body: the domains its cells lean to. Every cell is trained on all of the hive's checked work and
+# on its own organ's part of it more often (training/grow.py), so any two cells can check each other and each is
+# strongest somewhere. A cell's name ends in its organ ("g3code").
+ORGANS = {
+    "sources": r"https?://|\bwww\.|\.com\b|\.org\b|\bwebsite\b|\bweb ?page\b|\bsite\b|\bpypi\b|hugging ?face|wikipedia|\blatest\b|\bcurrent version\b|\bdownload\b|\bonline\b",
+    "data": r"\bcsv\b|\bjson\b|\blog\b|\btable\b|\bfile\b|here is |\bcolumn|\brows?\b|\borders?\b|\blist of\b|\bspreadsheet\b",
+    "words": r"\btranslate|\bsummar|\bexplain\b|\bcapital of\b|\bsentence|\bessay\b|\bopposite\b|\bwrite a (?:poem|letter|story|note)|\bin (?:german|french|spanish|italian)\b",
+    "code": r"\bpython\b|\bfunction\b|\bprogram\b|\bmodule\b|\bprime|\bdivisible\b|\bhow many\b|\bcalculate\b|\bsum\b|\bdays\b|\d\s*[-+*/%]\s*\d",
+}
+
+
+def organ(task):
+    """The organ a task belongs to most: the one whose words it uses most (code when none)."""
+    import re
+    low = task.lower()
+    hits = {name: len(re.findall(rx, low)) for name, rx in ORGANS.items()}
+    return max(hits, key=lambda k: (hits[k], k == "code")) if any(hits.values()) else "code"
+
+
+def leans(member):
+    """The organ a cell leans to, read from its name ('t17+g3code' -> 'code'), or ''."""
+    edit = member.partition("+")[2]
+    return next((o for o in ORGANS if edit.endswith(o)), "")
 
 
 def roster():
-    """Who sits where. HIVE_MEMBERS=t9,t9,t4 says it for one run (the last one named also takes every later seat;
-    'coder' is the hive's 7B coder at 4 bits through llama.cpp, as before). Without it: the roster the hive holds in
-    cells/roster.json, which its own nightly gate changes (training/grow.py), on a machine where the ternary runtime
-    is built; otherwise every member is 'coder'."""
+    """Who the members are. HIVE_MEMBERS=t17+g3code,t17+g3data says it for one run ('coder' is the old 7B coder at 4
+    bits through llama.cpp). Without it: the cells of the hive's body (cells/body.json, changed only by the nightly
+    gate, training/grow.py) where the ternary runtime is built and the cells are on the machine; otherwise 'coder'."""
     who = [w.strip() for w in os.environ.get("HIVE_MEMBERS", "").split(",") if w.strip()]
     if not who and binary().exists():
         try:
-            who = [w.strip() for w in json.loads(ROSTER.read_text())["members"].split(",") if w.strip()]
+            body = json.loads(BODY.read_text())
+            who = [f"{body['dna']}+{c}" for c in body.get("cells", []) if (ADAPTERS / f"{body['dna']}+{c}.gguf").exists()]
         except (OSError, ValueError, KeyError):
             who = []
     return who
 
 
-def seat(n):
-    who = roster()
-    return (who[n - 1] if n <= len(who) else who[-1]) if who else "coder"
+def seating(task):
+    """The members in the order they take this task: the cells that lean to the task's organ first (the sort is
+    stable, so a roster without organs keeps its order). The first two work it out, the next decides a difference."""
+    who = roster() or ["coder"]
+    o = organ(task)
+    return sorted(who, key=lambda m: leans(m) != o)
 
 
 if __name__ == "__main__":
