@@ -11,6 +11,33 @@ first). Setting up a fresh cloud environment: `NEW_SESSION.md`.
 
 ---
 
+## 00. RESUME HERE: the state at 2026-11-14 15:45 UTC (a safe point)
+
+Nothing is uncommitted. `main`, `make-it-work` and `claude/sleepy-johnson-lrm62n` are the same commit. No job runs
+on the session's machine. What runs on its own:
+
+- **The body on main** (`cells/body.json`): generation 10, four cells `g10sources/code/data/words` (ordinary LoRA
+  edits on the ternary 1.7B DNA; files in the release `hive-grown`). Measured: DNA alone 9 of 64, this body
+  26 of 64, four fresh mixed seeds (20009011-14), members alone; 0 of 11 on the never-practised kinds for both.
+  It was made the body by hand (its run was a trial).
+- **Trial g9** (run 43592168207): the ternary cells of g7 gated on seeds 20009001-4. Running; it appends a line
+  to `training/reports/generations.jsonl` on make-it-work and changes nothing else.
+- **Generation g11** (run 43599778796, dispatched on make-it-work 13:26 UTC): the first generation that
+  practises by itself (8 runners x 16 mixed tasks, the g10 cells as members), then grows four ternary cells from
+  all rows (the 222 seed rows + its own), then gates DNA / body before (g10) / body after on four fresh seeds.
+  If kept, its record job writes the new `cells/body.json` **to make-it-work only**.
+- **The nightly run** of the same workflow on main (01:17 UTC) grows from main's body. So: **if g11 was kept,
+  merge make-it-work into main before 01:17 UTC**, or that night regrows from g10 again (no harm, a lost night).
+- A reminder to read g9 and g11 is scheduled for 18:01 UTC in this session.
+
+To read the results: `git fetch origin make-it-work && git show origin/make-it-work:training/reports/generations.jsonl`.
+A job that failed: GitHub tools `get_job_logs` with the run id and `failed_only`.
+
+The questions in order, after that: (1) do ternary cells (g9) do as well as ordinary ones (g10)? keep the better
+kind (`ternary` input of grow.yml, default "1"); (2) does a generation trained on the body's own practice do better
+than the one before (g11 against g10)? that is the self-improvement claim, and it needs this kind of number,
+night after night; (3) why nothing carries over to unpractised kinds; (4) faster training on runners.
+
 ## 0a. THE DIRECTION, corrected by Arnav 2026-11-14 00:00 UTC (this overrides anything below that disagrees)
 
 His words: "A hive is many same-sized models, like cells in a body: they multiply, overlap like organs, each
