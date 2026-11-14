@@ -148,6 +148,14 @@ wrong one for the same task. Practice records these pairs from 2026-11-14 evenin
   improves. To measure it, start two trials with the same `gate_seeds`, both with `fresh_rows: "1"` (train only on
   that run's own practice), one with `practice_level: "edge"` and one without. Do this after a night has recorded
   per-kind counts, or the edge has nothing to steer by.
+- **Weaknesses go to the nearest strength (Arnav's idea; built 2026-11-14, not yet measured).** Every exam and
+  practice task now puts each member's own answer to the task's check (`exam.each_member`). The nightly gate
+  writes, per cell's leaning, how often it was right by itself on each kind and each organ (`cells/strengths.json`).
+  With `HIVE_SEATING=strength` (workflow input `seating: "strength"`), a task is seated with the cells most likely
+  right on its kind, whichever organ they lean to. A kind never met backs off to the cell's record on the task's
+  organ (the nearer degree), then to one half. To measure it after a night has written `cells/strengths.json`, re-sit
+  that night's cells twice on the same seeds (`cells_from_run`, the same `gate_seeds`), once with
+  `seating: "strength"`. No training is needed.
 - **Start a run:** `mcp__github__actions_run_trigger`, `run_workflow`, workflow `grow.yml`. Its inputs are
   described in the file. The useful ones: `trial: "1"` (record only, the body does not change), `gate_seeds`
   (the same number means the same exams), `skip_practice: "1"`, `cells_from_run` (re-sit stored cells without

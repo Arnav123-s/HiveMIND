@@ -431,7 +431,7 @@ def _memory(empty):
     return home
 
 
-def sit_one(tag, tid, task, check, memory_home, timeout=2400):
+def sit_one(tag, tid, task, check, memory_home, timeout=2400, kind=""):
     run = RUNS / tag / tid
     if (run / "exam.json").exists():
         return json.loads((run / "exam.json").read_text())
@@ -439,7 +439,7 @@ def sit_one(tag, tid, task, check, memory_home, timeout=2400):
     t0 = time.time()
     try:
         p = subprocess.run([sys.executable, "-m", "team", task, "--approve", "never", "--run-dir", str(run)], cwd=ROOT,
-                           env=dict(os.environ, AGENT_TEAM_HOME=str(memory_home)), capture_output=True, text=True, timeout=timeout)
+                           env=dict(os.environ, AGENT_TEAM_HOME=str(memory_home), HIVE_KIND=kind), capture_output=True, text=True, timeout=timeout)
         note = "" if p.returncode == 0 else f"exit {p.returncode}: {p.stderr.strip().splitlines()[-1][:200] if p.stderr.strip() else ''}"
     except subprocess.TimeoutExpired:
         note = f"timed out after {timeout} s"
@@ -449,15 +449,45 @@ def sit_one(tag, tid, task, check, memory_home, timeout=2400):
     except Exception as e:  # noqa: BLE001 - a check that cannot be made is a failed task, with the reason
         ok, why = False, f"check failed: {type(e).__name__}: {e}"
     res = {"id": tid, "ok": bool(ok), "why": why, "seconds": round(time.time() - t0), "note": note, "answer": B._body(report)[:400]}
+    res["members"] = each_member(run, check)
     (run / "exam.json").write_text(json.dumps(res, indent=1))
     return res
+
+
+def each_member(run, check):
+    """Every member's own answer put to the task's check: [{"who", "ok"}]. The hive's answer says how the body did;
+    this says which cell is right on which kind of task, exactly, so the body can seat a task with the cells whose
+    strengths lie nearest to it (team/ternary.seating, cells/strengths.json)."""
+    import shutil
+    import tempfile
+    home = run / "members"
+    out = []
+    for f in sorted(home.glob("member[0-9]*.json")) if home.exists() else []:
+        try:
+            t = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(t, dict) or not t.get("who"):
+            continue
+        ok = False
+        if t.get("answer"):
+            with tempfile.TemporaryDirectory() as tmp:
+                work = Path(t.get("work") or "")
+                if work.is_dir():
+                    shutil.copytree(work, Path(tmp) / "work", ignore=lambda d, names: [n for n in names if (Path(d) / n).is_file() and (Path(d) / n).stat().st_size > 5_000_000])
+                try:
+                    ok = bool(check(Path(tmp), t["answer"])[0])
+                except Exception:  # noqa: BLE001 - a check that cannot be made on one member's answer counts as not right
+                    ok = False
+        out.append({"who": str(t["who"])[:80], "ok": ok})
+    return out
 
 
 def sit(seed, n=16, only=(), empty_memory=False, log=print, level="basic"):
     name = str(seed) if level == "basic" else f"{seed}_{level}"
     tag, home, rows, t0 = f"exam_{name}", _memory(empty_memory), [], time.time()
     for tid, field, kind, task, check in exam(seed, n, only, level):
-        r = sit_one(tag, tid, task, check, home) | {"field": field, "kind": kind, "task": task}
+        r = sit_one(tag, tid, task, check, home, kind=kind) | {"field": field, "kind": kind, "task": task}
         rows.append(r)
         log(f"{'PASS' if r['ok'] else 'FAIL'} {tid} [{field}: {kind}] {r['seconds']}s - {r['why']} {r['note']}", flush=True)
     by = {}

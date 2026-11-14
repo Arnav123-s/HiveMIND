@@ -54,6 +54,9 @@ on:
       fresh_rows:
         description: "1: train only on this run's own practice (and rows_from_run), not on every earlier night's rows; for comparing two ways of practising"
         default: ""
+      seating:
+        description: "strength: the gate and practice seat each task with the cells that were right most often on its kind (cells/strengths.json, written by each night's gate) instead of by the organ's keywords"
+        default: ""
       versus:
         description: "A fair test inside one run: a second kind of cell, grown from the very same rows and sat on the same exams, with these training flags added (e.g. --pairs, --foresee, --lr 0.0005, --rank 8). Always a trial"
         default: ""
@@ -96,6 +99,7 @@ env:
   HIVE_LIGHT: "1"
   GEN: g${{ github.run_number }}
   DNA: ${{ inputs.dna || 't17' }}
+  HIVE_SEATING: ${{ inputs.seating == 'strength' && 'strength' || '' }}
 
 jobs:
   practice:
@@ -367,7 +371,7 @@ jobs:
           gh release upload hive-grown got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json $([ "${{ inputs.fresh_rows }}" = "1" ] || echo got/rows.jsonl) --clobber
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add training/reports/generations.jsonl cells/body.json
+          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json 2>/dev/null)
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
           git push -q origin "HEAD:${GITHUB_REF_NAME}" || { echo "::error::the record could not be pushed"; exit 1; }

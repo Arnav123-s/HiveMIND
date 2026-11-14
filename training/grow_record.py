@@ -24,8 +24,10 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))  # team.ternary names organs and leanings; it needs nothing but Python
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 BODY = ROOT / "cells" / "body.json"
+STRENGTHS = ROOT / "cells" / "strengths.json"
 MEMBERS = ROOT / "cells" / "members"
 ARMS = ("dna", "before", "after", "versus")  # versus: a second kind of cell from the same rows, in a trial (grow.yml input `versus`)
 FLAGS = r"(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len)( [a-z0-9.]+)?[ ]?)*"
@@ -43,7 +45,7 @@ def _int(x, most):
 
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
-    out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}}
+    out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {}}
     for folder in folders:
         for f in sorted(Path(folder).rglob("*.json")):
             if f.stat().st_size > 2_000_000:
@@ -67,6 +69,22 @@ def arm(folders):
                     got = out["kinds"].setdefault(k, [0, 0])
                     got[0] += t.get("ok") is True
                     got[1] += 1
+                # each member's own answer, put to the task's check (training/exam.each_member): which cell is right
+                # on what, by the organ it leans to; team/ternary.seating seats tasks by it
+                if isinstance(k, str) and isinstance(t.get("task"), str) and isinstance(t.get("members"), list):
+                    from team import ternary
+                    o = ternary.organ(t["task"][:3000])
+                    for m in t["members"][:5]:
+                        who = m.get("who") if isinstance(m, dict) else None
+                        if not (isinstance(who, str) and re.fullmatch(r"[\w.+-]{1,80}", who)):
+                            continue
+                        lean = ternary.leans(who) or "dna"
+                        rec = out["by_lean"].setdefault(lean, {"kind": {}, "organ": {}})
+                        for table, key in ((rec["kind"], k), (rec["organ"], o)):
+                            if key in table or len(table) < 64:
+                                c = table.setdefault(key, [0, 0])
+                                c[0] += m.get("ok") is True
+                                c[1] += 1
                 if isinstance(t, dict) and t.get("kind") in UNPRACTISED:
                     out["unpractised"][0] += t.get("ok") is True
                     out["unpractised"][1] += 1
@@ -126,6 +144,11 @@ def gate(argv):
     if keep:
         body.update({"dna": dna, "generation": int(gen[1:]), "cells": cells})
         BODY.write_text(json.dumps(body) + "\n")
+    # who in the body is strong on what, from the gate of the body as it now is (only the nightly line writes it:
+    # trials run side by side and would trip over each other on one file)
+    src = arms["after"] if keep else arms["before"]
+    if not trial and src.get("by_lean"):
+        STRENGTHS.write_text(json.dumps({"from": gen, "dna": dna, "by_lean": src["by_lean"]}) + "\n")
     print(f"### Generation {gen}\n")
     print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}"
           f"{'; their own edits ternary' if line['ternary_cells'] else ''}{'; trained to foresee as well' if line['foresee'] else ''}{f'; {pairs} steps on right-against-wrong pairs' if pairs else ''}")
