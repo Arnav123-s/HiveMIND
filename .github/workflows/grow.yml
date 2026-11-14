@@ -49,7 +49,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: grow
+  group: body
   cancel-in-progress: false
 
 env:
