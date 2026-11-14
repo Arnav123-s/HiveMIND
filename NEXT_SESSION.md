@@ -26,6 +26,21 @@ landed meanwhile. Its `|| true` hid the failure, so the job was green but record
 restored by hand from the job log. `.gitattributes` makes that file merge as a union of lines, and a record that
 cannot be pushed now turns the job red.
 
+**Runs in flight, started 17:05 UTC. Each appends a line to `generations.jsonl` on the branch it ran from:**
+
+| run | what | where | compare with |
+|---|---|---|---|
+| 43619078349 (no. 12) | **4B DNA (t40)**: ordinary cells from the same 222 rows | main, seeds 901 | g10: DNA 9, body 26 |
+| 43619106252 (no. 14) | t17 cells also trained to **foresee** program output | main, seeds 901 | g10: 26 |
+| 43619155775 (no. 15) | **replication**: g10's cells (from run 43569009099) re-sat on new seeds | main, seeds 902 | does 26 vs 9 hold? |
+| 43619621791 (no. 16) | g10's cells with the **new error feedback** (missing JSON keys are named; non-JSON replies say what they are) | session branch, seeds 901 | g10: 26 (merge the feedback to main if not worse) |
+
+**Why nothing carries over to the never-practised kinds** (read from g10's gate, seed 20009012): these are model
+failures, not tooling ones. For the robot simulation, the code moved `x` on every F and ignored turns and digits.
+Two members agreed on that wrong answer (x 16, y 2), so agreement passed it. For two PyPI dates, the code invented
+a key (`pypi_version`) or parsed a project's HTML page as JSON, and gave up after two identical errors. Levers:
+a bigger DNA (run 12), foreseeing program output (run 14), and better error feedback (run 16).
+
 **Still running: g11** (run 43599778796). It grows *ternary* cells, because it was dispatched before the default
 changed, from the 222 seed rows plus its own practice. If it beats g10's 26 it is kept anyway. Otherwise, the
 first self-practice generation with ordinary cells is the nightly run at 01:17 UTC on main.
