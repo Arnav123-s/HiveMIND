@@ -135,3 +135,63 @@ night's cells (consolidation, as sleep does). DeepSeek's form needs pretraining 
 - Holding the frozen DNA as int8 ternary values (section 1) cuts memory roughly in half against bf16. That allows
   longer rows without recomputation, and larger DNAs.
 - Fewer, better rows: pairs and failures teach more per row than another copy of a solved task.
+
+## 7. Engrams in the brain, their flaws, and what the hive inherits
+
+An engram is the physical trace of one memory: a sparse set of neurons, and the strengthened connections between
+them, that fired together when something was learned and that bring the memory back when they fire again.
+
+**How they work** (well established in neuroscience):
+- **Sparse allocation.** Only a small share of neurons in a region joins any one engram (a few percent in the
+  hippocampus). The neurons that join are the ones most excitable at the moment of learning. So memories formed
+  close together in time share neurons and become linked.
+- **Encoding.** Connections between neurons that fire together grow stronger (long-term potentiation).
+- **Pattern separation and completion.** One part of the hippocampus (the dentate gyrus) gives similar
+  experiences distinct codes, so they do not overwrite each other. Another (CA3) restores a whole memory from a
+  partial cue.
+- **Consolidation.** The hippocampus learns fast and holds new memories for a while. During sleep it replays
+  them, and the cortex learns them slowly, in a general form. This is the theory of complementary learning
+  systems: a fast system for specifics, a slow one for structure. The fast one protects the slow one from being
+  overwritten.
+- **Reconsolidation.** Each recall makes the memory changeable again for a while. It is then stored again: made
+  stronger, updated, or weakened.
+- **Forgetting is active.** Unused traces fade or are pruned. That keeps recall clean.
+
+**Their flaws:**
+- **False and distorted memories.** Recall rebuilds a memory rather than playing it back. Reconsolidation can
+  write in errors, and the memory then feels just as true.
+- **Interference.** Similar memories compete: old ones disturb new learning, and new ones overwrite old ones.
+- **Recall depends on the cue.** A memory that is stored can still not be found when the cue differs from the
+  moment of learning.
+- **Overgeneralisation.** One strong lesson fires in situations it does not fit (fear generalisation).
+- **Source errors.** The content is remembered, but not where it came from or whether it was checked.
+
+**The hive inherits each of these, and has shown several already:**
+- **False memory confirmed by agreement.** In g10's gate two cells wrote the same wrong robot simulation and
+  "agreed". Cells grown from one DNA share its errors, as two people can share one false memory.
+- **Interference.** The old library of solved tasks (`memory/solved.jsonl`) made members copy old values into
+  new tasks. It was switched off for that reason.
+- **Cue-dependent recall.** The first engrams were recalled by shared words, so they fired on only 8 of 32 tasks.
+- **Overwriting.** In the literature, fine-tuning on a stream of new facts lost 71% (LoRA) to 89% (full) of
+  held-out performance (section 5).
+- **Source errors.** A row trained into a cell no longer says which check confirmed it, or how strong that check
+  was.
+
+**A design for engrams that takes the mechanism and guards against the flaws** (not built; it is the obvious
+next form of `team/engram.py`):
+1. **Recall by meaning, not by words.** Key each engram by the DNA's own hidden state for the task (a mean of
+   the last layer), and recall by nearest neighbour. This is pattern completion. Merge near-duplicates into one
+   engram instead of storing them twice: pattern separation, which limits interference.
+2. **Recall makes the memory changeable again.** Each recall is followed by the task's own check. A recalled
+   engram that helped earns credit. One that was recalled on a failed task loses credit and is pruned below a
+   threshold. This is the guard against false memories and against over-general lessons.
+3. **Record the source.** Each engram keeps which check confirmed it and how strong that check was. A memory
+   confirmed only by agreement between cells counts for less than one confirmed by the exam's check.
+4. **Consolidate at night.** The rows behind the engrams that earned credit join the nightly training rows. The
+   cells learn them in general form, and those engrams are then retired. This is the hippocampus-to-cortex step.
+   It keeps the fast store small, and it keeps the cells from being overwritten one task at a time.
+5. **Test-time training as the fast learner.** For a new task, train a small edit on the recalled rows before
+   answering (Akyürek et al. 2024). That is learning in the moment, from the closest memories.
+
+Each step can be gated the same way as the cells: a stream of tasks with and without
+(`training/experiments/engram_stream.py`), over several seeds, because one run of 32 tasks varies by about 5.
