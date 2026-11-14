@@ -35,8 +35,27 @@ A roster of different models of different sizes (t2/t4/t9/coder) was a drift. Wh
 - **His idea on faster learning (JEPA, dreaming)**: JEPA lost on BitNets from scratch here (3 of 3 seeds, both
   sides). The hive's form of it, collected but NOT yet used: `grow.foresee_rows` (a program -> what it prints,
   from every run, right or wrong). Next: grow cells with `--foresee` and without, same rows, gate both.
-- Not done, wanted by him: cells whose own edits are ternary too; a better ternary architecture (needs training
-  at a scale a CPU has not reached here; what can be measured here is the body's design on the pretrained DNA).
+- **Ternary cells** (`grow.py train --ternary`): the cell's own edit is trained in three values (BitNet's way)
+  and saved so. Checked: in PyTorch and on the runtime a toy ternary cell answers the same.
+- **Two faults of the shared server, mended in `team/ternary.py`**: a freshly started server reports a cell as on
+  that it has not applied (the hive now switches explicitly, once per process and at every change); the answer to
+  a switch is sometimes never sent until another request arrives (asked again after 6 s). Never reuse the server's
+  cache across a switch (`cache_prompt` off for that call).
+- **Trials on GitHub, started 2026-11-14 01:26 UTC, same rows (222) and same gate seeds (20009001, 20009002):**
+  g4 (run 43540547957) ordinary cells; g5 (run 43540550935) ternary cells. Both `trial=1`: recorded in
+  `training/reports/generations.jsonl`, cells kept in the release, body not changed. **Read both, keep the
+  better kind by writing cells/body.json** ({"dna": "t17", "generation": N, "cells": ["gNsources", ...]}), then
+  start the workflow with no inputs: the body practises by itself from then on.
+  Training on runners is slow: one cell took 1 h 37 min, others over 2 h 30 (bf16 on CPUs without AVX512-BF16).
+  Faster training is open work: measure float32 against bf16 on a runner, fewer layers, no checkpointing.
+- **A bigger DNA** (`--base t40`, Ternary-Bonsai-4B, 1.0 GB packed): trains on a 15 GB machine only with swap
+  (13.2 GB peak, about 30 s a row here). The workflow takes `dna: t40`. Not yet run on GitHub.
+- **Engrams** (his idea, 2026-11-14; `team/engram.py`): one checked task -> one tiny ternary edit (rank 4, last 8
+  layers, 2.5 MB, 44 s to write here), recalled by likeness of the task and switched on beside the working cell
+  (`HIVE_ENGRAMS=1`). The fast memory; the nightly regrowth is the slow one. Whether they help is being measured:
+  `training/experiments/engram_stream.py` (same stream of tasks with and without; result in
+  `training/experiments/engram_stream_31000.json`). Risk: copying old values, as the library did.
+- Not done: a better ternary architecture from scratch (needs training at a scale a CPU has not reached here).
 
 ## 0. NEW, 2026-11-13 evening (a session on a fresh machine; read this block before the rest)
 

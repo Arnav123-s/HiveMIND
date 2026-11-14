@@ -114,9 +114,17 @@ def _get(url, timeout=3):
         return None
 
 
+ENGRAMS = Path(os.environ.get("HIVE_ENGRAMS_HOME", Path(__file__).resolve().parent.parent / "cells" / "engrams"))
+
+
+def edits_here(base):
+    """{name: file} of every weight edit of this base on this machine: its cells (cells/members/<base>+<name>.gguf) and
+    its engrams (cells/engrams/, team/engram.py; their names begin with e)."""
+    return {p.stem.split("+", 1)[1]: p for d in (ADAPTERS, ENGRAMS) if d.exists() for p in sorted(d.glob(f"{base}+*.gguf"))}
+
+
 def cells_here(base):
-    """The names of the weight edits of this base that are on this machine (cells/members/<base>+<name>.gguf)."""
-    return sorted(p.stem.split("+", 1)[1] for p in ADAPTERS.glob(f"{base}+*.gguf")) if ADAPTERS.exists() else []
+    return sorted(edits_here(base))
 
 
 def _loaded(at, scales=False):
@@ -130,7 +138,7 @@ def up(member, wait=600):
     base, edit = split(member)
     at = f"http://127.0.0.1:{port(member)}"
     alive = (_get(at + "/health") or {}).get("status") == "ok"
-    if alive and (not edit or edit in _loaded(at)):
+    if alive and set(cells_here(base)) <= set(_loaded(at)):  # every edit on the machine is in the server (a new engram starts it again)
         return at
     if not binary().exists():
         raise RuntimeError("the ternary runtime is not built on this machine: python -m team.ternary install")
@@ -141,9 +149,9 @@ def up(member, wait=600):
         time.sleep(2)
     cmd = [str(binary()), "-m", weights(base), "-t", str(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4)), "-c", str(CTX),
            "--port", str(port(member)), "--host", "127.0.0.1", "-rtr", "--parallel", "1", "--special" if base == "bitnet" else "--jinja"]
-    cells = cells_here(base)
+    cells = edits_here(base)
     for c in cells:
-        cmd += ["--lora", str(ADAPTERS / f"{base}+{c}.gguf")]
+        cmd += ["--lora", str(cells[c])]
     if cells:
         cmd.append("--lora-init-without-apply")
     HOME.mkdir(parents=True, exist_ok=True)
@@ -178,17 +186,17 @@ def _switch(at, scales):
     raise RuntimeError("the server does not answer when told which cell is on")
 
 
-def chat(member, messages, max_new_tokens=700, temperature=0.0):
+def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
     """The member's reply to a conversation. When the conversation no longer fits its window, the oldest program and
     what it printed go first; the orders and the task stay."""
     at, messages = up(member), list(messages)
     base, edit = split(member)
     have, fresh = _loaded(at), True
-    want = {name: 1.0 if name == edit else 0.0 for name in have}
+    want = {name: 1.0 if name == edit or name in also else 0.0 for name in have}  # the cell, and the engrams recalled for this task
     # What the server reports cannot be trusted for this: one just started says a cell is on (scale 1.0) that it has
     # not applied. So this process switches the first time it speaks, and afterwards whenever the cell changes.
-    if have and _ON.get(at) != edit:
-        _ON[at] = edit
+    if have and _ON.get(at) != (edit, tuple(sorted(also))):
+        _ON[at] = (edit, tuple(sorted(also)))
         # which cell answers: its edit on, every other off (the base itself: all off). What the server remembers of
         # the conversation was worked out by the cell before: it must not be reused (a cell answered in the other's
         # voice when it was).

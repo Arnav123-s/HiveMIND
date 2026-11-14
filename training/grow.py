@@ -148,7 +148,7 @@ def rows_from(folders, out):
 
 # ---- train -----------------------------------------------------------------------------------------------------------
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3, foresee=False, ternary_edit=False):
+          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     import torch
@@ -178,7 +178,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     tok = AutoTokenizer.from_pretrained(src)
     model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16)
     nl = model.config.num_hidden_layers
-    which = list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else list(range(*map(int, layers.split("-"))))
+    which = (list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else
+             list(range(nl - int(layers[4:]), nl)) if layers.startswith("last") else list(range(*map(int, layers.split("-")))))
     model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
                                              target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]))
     if ternary_edit:
@@ -197,8 +198,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     model.config.use_cache = False
     # Each layer's inner values are worked out again on the way back instead of being kept: a third slower, and the
     # memory no longer grows with the length of a row (the first run on a 16 GB runner was killed at step 5).
-    model.gradient_checkpointing_enable()
-    model.enable_input_require_grads()
+    if checkpoint:
+        model.gradient_checkpointing_enable()
+        model.enable_input_require_grads()
 
     def encode(row):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
@@ -287,11 +289,14 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
-    ternary.ADAPTERS.mkdir(parents=True, exist_ok=True)
-    gguf = ternary.ADAPTERS / f"{base}+{name}.gguf"
-    subprocess.run([sys.executable, str(conv), "--base", src, "--outfile", str(gguf), "--outtype", "f16", str(work)], check=True, stdout=subprocess.DEVNULL)
+    where = Path(out_dir or ternary.ADAPTERS)
+    where.mkdir(parents=True, exist_ok=True)
+    gguf = where / f"{base}+{name}.gguf"
+    done = subprocess.run([sys.executable, str(conv), "--base", src, "--outfile", str(gguf), "--outtype", "f16", str(work)], capture_output=True, text=True)
+    if done.returncode:
+        raise RuntimeError("the edit could not be written as a GGUF adapter: " + done.stderr[-800:])
     meta["file"], meta["megabytes"] = str(gguf), round(gguf.stat().st_size / 2**20, 1)
-    (ternary.ADAPTERS / f"{base}+{name}.json").write_text(json.dumps(meta, indent=1))
+    (where / f"{base}+{name}.json").write_text(json.dumps(meta, indent=1))
     return meta
 
 

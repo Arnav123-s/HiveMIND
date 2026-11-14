@@ -234,10 +234,10 @@ def typed_out(reply, code):
     return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
 
 
-def member(task, n, board, guard, work, temperature, who="coder"):
+def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
-    messages = [{"role": "system", "content": orders(who)},
+    messages = [{"role": "system", "content": orders(who + "+" if also else who)},  # engrams were written under the short orders too
                 {"role": "user", "content": f"TASK: {task}"}]
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
@@ -256,7 +256,7 @@ def member(task, n, board, guard, work, temperature, who="coder"):
         if who == "coder":
             reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
         else:
-            reply = ternary.chat(who, messages, max_new_tokens=LONG, temperature=temperature)
+            reply = ternary.chat(who, messages, max_new_tokens=LONG, temperature=temperature, also=also)
         code = extract_code(reply)
         # Seen once every member's programs were logged (2026-11-12): the word DONE comes back as a program, bare or
         # as print("DONE"). Run, the first died on a NameError and the second replaced a right answer with the four
@@ -370,7 +370,13 @@ def run(task, run_dir=None, approve="never", members=2):
         # who sits where for this task: the cells that lean to its kind of work first (team/ternary.seating); the last
         # one named also takes every later seat
         who = seats[n - 1] if n <= len(seats) else seats[-1]
-        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who)
+        also = ()
+        if os.environ.get("HIVE_ENGRAMS") == "1" and who != "coder":  # the body's fast memory: what it wrote down of tasks like this one
+            from . import engram
+            also = tuple(engram.recall(task, ternary.split(who)[0]))
+            if also and n == 1:
+                board.log("hive", "engrams", ", ".join(also))
+        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who, also)
         t["work"] = str(work if n == 1 else home / f"member{n}")
         tries.append(t)
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
