@@ -265,11 +265,44 @@ def roster():
     return who
 
 
-def seating(task):
-    """The members in the order they take this task: the cells that lean to the task's organ first (the sort is
-    stable, so a roster without organs keeps its order). The first two work it out, the next decides a difference."""
+STRENGTHS = Path(__file__).resolve().parent.parent / "cells" / "strengths.json"
+
+
+def strengths():
+    """{lean: {"kind": {kind: [right, tries]}, "organ": {organ: [right, tries]}}}: how often each cell of the body,
+    named by the organ it leans to, was right by itself, from the exact records of its last gate
+    (training/grow_record.py). Empty when there are none."""
+    try:
+        d = json.loads(STRENGTHS.read_text())
+        return d.get("by_lean", {}) if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def strength(member, task, kind="", table=None):
+    """How likely this cell is right on this task, from what it did on the nearest things it has met: the same kind
+    of task if it has met it, pulled toward its record on the task's organ (the nearer degree), pulled toward one
+    half when it has met neither. A kind never met is a weakness of every cell; it goes to the cell strongest on
+    what lies nearest."""
+    rec = (strengths() if table is None else table).get(leans(member), {})
+    r_o, n_o = rec.get("organ", {}).get(organ(task), [0, 0])
+    p_o = (r_o + 1) / (n_o + 2)
+    r_k, n_k = rec.get("kind", {}).get(kind, [0, 0]) if kind else (0, 0)
+    return (r_k + 2 * p_o) / (n_k + 2)
+
+
+def seating(task, kind=None):
+    """The members in the order they take this task: the first two work it out, the next decides a difference.
+    With HIVE_SEATING=strength and records of each cell's own answers (cells/strengths.json), the cells most likely right on this kind of task
+    sit first, whichever organ they lean to; a weakness goes to the cell whose strengths lie nearest. Without
+    records: the cells that lean to the task's organ first (the sort is stable, so a roster without organs keeps
+    its order). kind: the kind of task when known (the exam and practice say it, in HIVE_KIND)."""
     who = roster() or ["coder"]
     o = organ(task)
+    kind = os.environ.get("HIVE_KIND", "") if kind is None else kind
+    table = strengths() if os.environ.get("HIVE_SEATING") == "strength" else {}  # until a gate has shown it helps
+    if table:
+        return sorted(who, key=lambda m: (-strength(m, task, kind, table), leans(m) != o))
     return sorted(who, key=lambda m: leans(m) != o)
 
 

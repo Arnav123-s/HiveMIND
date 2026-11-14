@@ -184,7 +184,7 @@ def practice(seed, n=16, level="mixed", out=None, log=print):
     if weights:
         log("practice at the edge: " + ", ".join(f"{k} {w:.2f}" for k, w in sorted(weights.items(), key=lambda x: -x[1])), flush=True)
     for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT, weights=weights):
-        r = E.sit_one(f"practice_{seed}", tid, task, check, home)
+        r = E.sit_one(f"practice_{seed}", tid, task, check, home, kind=kind)
         new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
         new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
         new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)

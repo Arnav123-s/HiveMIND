@@ -90,6 +90,17 @@ Agreement between cells is a weak check when all cells come from one DNA. In g10
 error and agreed. Cells that differ more, or a check of another kind (foreseeing a program's output), make
 agreement worth more.
 
+**Weaknesses go to the nearest strength (Arnav, 2026-11-14).** A weakness need not be practised, or answered, by
+the cell that showed it. It goes to the member whose strengths lie nearest, even if that is another organ's cell,
+and its checked answers then teach every cell. A kind of task never met is a weakness too. Built: every member's
+own answer is checked, and the nightly gate writes `cells/strengths.json`. With `HIVE_SEATING=strength`, seating
+uses the cell's record on the kind, backed off to the task's organ, then to one half (`team/ternary.strength`).
+This is the routing that Branch-Train-MiX learns with a router, done here from exact records instead. Not built:
+(a) tasks from real use (`ask.yml`, `python -m team`), whose kind is unknown and which have no check. The ones
+the members did not agree on are the hive's frontier. They could be kept and turned into practice once a check
+can be written for them, by a person or by a stronger model. (b) Nearness between kinds measured by meaning
+(the DNA's hidden state) instead of by the organ's keywords.
+
 ## 4. The DNA's own architecture
 
 - **BitNet Distillation** ([Wu et al., Microsoft 2025](https://arxiv.org/abs/2510.13998)): turning a float model
