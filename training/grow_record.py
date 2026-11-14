@@ -27,7 +27,8 @@ ROOT = Path(__file__).resolve().parent.parent
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 BODY = ROOT / "cells" / "body.json"
 MEMBERS = ROOT / "cells" / "members"
-ARMS = ("dna", "before", "after")
+ARMS = ("dna", "before", "after", "versus")  # versus: a second kind of cell from the same rows, in a trial (grow.yml input `versus`)
+FLAGS = r"(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len)( [a-z0-9.]+)?[ ]?)*"
 ORGANS = ("sources", "code", "data", "words")
 DNAS = ("t17", "t40")
 CELL = r"g\d{1,6}(?:sources|code|data|words)\d{0,2}"
@@ -111,6 +112,7 @@ def gate(argv):
         keep, why = False, "a trial beside the line of generations (the body is not changed by it); by the numbers it would be kept: " + why
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
             "kept": keep, "why": why, "body_before": before, "body_after": cells if keep else before, "trial": trial,
+            "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
@@ -121,9 +123,12 @@ def gate(argv):
     print(f"- {len(cells)} cells grown from {rows} checked rows ({minutes} minutes of training in all): {', '.join(cells)}"
           f"{'; their own edits ternary' if line['ternary_cells'] else ''}{'; trained to foresee as well' if line['foresee'] else ''}{f'; {pairs} steps on right-against-wrong pairs' if pairs else ''}")
     print("| who sat | passed | of | minutes | on kinds never practised |\n|---|---|---|---|---|")
-    names = {"dna": "the DNA as published", "before": "the body before", "after": "the body regrown"}
+    names = {"dna": "the DNA as published", "before": "the body before", "after": "the body regrown",
+             "versus": f"the body regrown with {line['versus']}"}
     for k in ARMS:
         v = arms[k]
+        if k == "versus" and not v["seeds"]:
+            continue
         print(f"| {names[k]} | {v['passed'] if v['seeds'] else '-'} | {v['tasks'] if v['seeds'] else '-'} | {v['minutes'] if v['seeds'] else '-'} | "
               f"{v['unpractised'][0]} of {v['unpractised'][1]} |")
     print(f"\n- the body {'is now ' + ', '.join(cells) if keep else 'stays as it was'}: {why}")

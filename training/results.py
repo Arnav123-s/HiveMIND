@@ -43,8 +43,8 @@ def lines(local=False):
 
 
 def table(rows):
-    print("| gen | when (UTC) | dna | kind | rows | DNA alone | body before | body after | never-practised kinds | kept | trial |")
-    print("|---|---|---|---|---|---|---|---|---|---|---|")
+    print("| gen | when (UTC) | dna | kind | rows | DNA alone | body before | body after | versus (flags: score) | never-practised kinds | kept | trial |")
+    print("|---|---|---|---|---|---|---|---|---|---|---|---|")
     for d in rows:
         a = d.get("arms", {})
         cell = lambda k: (f"{a[k]['passed']}/{a[k]['tasks']} ({a[k]['minutes']} min)" if a.get(k, {}).get("seeds") else "-")
@@ -55,7 +55,7 @@ def table(rows):
             kind += " + pairs"
         up = a.get("after", {}).get("unpractised", [0, 0])
         print(f"| {d.get('generation')} | {d.get('when')} | {d.get('dna', 't17')} | {kind} | {d.get('rows')} | {cell('dna')} | "
-              f"{cell('before')} | {cell('after')} | {up[0]} of {up[1]} | {'yes' if d.get('kept') else 'no'} | {'yes' if d.get('trial') else ''} |")
+              f"{cell('before')} | {cell('after')} | {(d.get('versus') + ': ' + cell('versus')) if d.get('versus') else '-'} | {up[0]} of {up[1]} | {'yes' if d.get('kept') else 'no'} | {'yes' if d.get('trial') else ''} |")
 
 
 if __name__ == "__main__":

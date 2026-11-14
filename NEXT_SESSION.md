@@ -136,6 +136,11 @@ wrong one for the same task. Practice records these pairs from 2026-11-14 evenin
   the members' programs. To read one, use `mcp__github__actions_list` (`list_workflow_run_artifacts`), then
   `mcp__github__actions_get` (`download_workflow_run_artifact`, which gives a signed URL). Download it with
   `curl` into its own scratch folder and unzip it.
+- **Compare two ideas fairly in one run:** input `versus` with training flags (for example `"--pairs"`,
+  `"--foresee"`, `"--lr 0.0005"`). The run practises once, grows the usual cells and a second kind with those flags
+  from the very same rows, and sits both on the same exams beside the DNA (a fourth gate arm). It is always a
+  trial. Use it instead of two separate trials: separate trials practise separately and read a shared row file
+  that other runs overwrite, so their rows differ.
 - **Start a run:** `mcp__github__actions_run_trigger`, `run_workflow`, workflow `grow.yml`. Its inputs are
   described in the file. The useful ones: `trial: "1"` (record only, the body does not change), `gate_seeds`
   (the same number means the same exams), `skip_practice: "1"`, `cells_from_run` (re-sit stored cells without

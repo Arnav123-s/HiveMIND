@@ -48,6 +48,9 @@ on:
       foresee:
         description: "1: the cells are also trained to say what a program prints before it runs"
         default: ""
+      versus:
+        description: "A fair test inside one run: a second kind of cell, grown from the very same rows and sat on the same exams, with these training flags added (e.g. --pairs, --foresee, --lr 0.0005, --rank 8). Always a trial"
+        default: ""
       pairs:
         description: "1: the cells also learn from a right program set beside a wrong one for the same task (DPO with a likelihood term); needs rows practised since pairs are recorded"
         default: ""
@@ -78,7 +81,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: body-${{ inputs.trial && github.run_number || 'line' }}
+  group: body-${{ (inputs.trial || inputs.versus) && github.run_number || 'line' }}
   cancel-in-progress: false
 
 env:
@@ -200,6 +203,7 @@ jobs:
       fail-fast: false
       matrix:
         organ: ${{ fromJSON(inputs.organs || '["sources","code","data","words"]') }}
+        variant: ${{ fromJSON(inputs.versus && '["cell","versus"]' || '["cell"]') }}
     steps:
       - uses: actions/checkout@v4
       - name: Room for the weights, and in memory (a runner has 16 GB; training peaks near 11, and a long row must slow it, not kill it)
@@ -220,13 +224,17 @@ jobs:
           name: all-rows
           path: got
       - name: Grow the cell
+        env:
+          VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
+          [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
+          python training/grow.py train $VERSUS --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: cell-${{ matrix.organ }}
+          name: ${{ matrix.variant }}-${{ matrix.organ }}
           path: out/
           retention-days: 30
 
@@ -238,7 +246,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arm: [dna, before, after]
+        arm: ${{ fromJSON(inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]') }}
         seed: [1, 2, 3, 4]  # two runs of the same hive differ by several tasks in 32 (engram_stream_31000.json): four seeds, 64 tasks an arm
     steps:
       - uses: actions/checkout@v4
@@ -248,6 +256,11 @@ jobs:
           path: got
           run-id: ${{ inputs.cells_from_run || github.run_id }}
           github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        if: ${{ matrix.arm == 'versus' }}
+        with:
+          pattern: versus-*
+          path: vs
       - name: Who sits (the arm)
         id: who
         run: |
@@ -262,6 +275,10 @@ jobs:
               python3 training/grow_record.py fetch "$WHO" ;;
             after)
               for f in got/$DNA.${GEN}*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/$DNA+${n#$DNA.}.gguf"; done
+              WHO=$(ls cells/members | sed -n 's/\.gguf$//p' | paste -sd, -) ;;
+            versus)
+              # the second kind's cells, under the same names as the first kind's (each arm sits on its own runner)
+              for d in vs/versus-*; do o=${d#vs/versus-}; cp "$d"/*.gguf "cells/members/$DNA+${GEN}$o.gguf"; done
               WHO=$(ls cells/members | sed -n 's/\.gguf$//p' | paste -sd, -) ;;
           esac
           echo "who: $WHO" | tee -a "$GITHUB_STEP_SUMMARY"
@@ -327,7 +344,9 @@ jobs:
           pattern: gate-*-[0-9]
           path: gate
       - name: The numbers decide (only numbers and names this repository knows are taken from the other jobs)
-        run: python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" ${{ inputs.trial && '--trial' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
+        env:
+          VERSUS_FLAGS: ${{ inputs.versus }}
+        run: python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
