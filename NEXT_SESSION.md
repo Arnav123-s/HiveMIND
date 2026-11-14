@@ -18,8 +18,18 @@ You are the owner and long-term maintainer of HiveMIND, and its design is up to 
    problem, and it is yours.
 3. **Five measurements run on GitHub now.** Their results come in between about 19:00 and 22:00 UTC on
    2026-11-14. The table in "Runs in flight" says what each one answers.
-4. **The hive grows by itself every night** (01:17 UTC on main). It practises, trains new cells from its own
-   checked work, and keeps them only if they beat both the DNA and the body before.
+4. **The hive grows by itself, without stopping (from 2026-11-14 evening).** Each generation of the line on main
+   practises, trains new cells from its own checked work, keeps them only if they beat both the DNA and the body
+   before, and then starts the next generation at once: about one every 4 to 5 hours. **To stop it**, set the
+   repository variable `HIVE_LOOP` to `stop` (Settings, Secrets and variables, Actions, Variables), or disable the
+   workflow. A failed run does not start another; the nightly schedule (01:17 UTC) starts the line again.
+   Trials never loop.
+5. **The open internet is a source of tasks** (`exam_hard.h_web`, field "hard: open web"): a real city, mountain
+   or river drawn at random from Wikidata (millions of items), a fact asked, and the answer checked against every
+   value Wikidata records. These are tasks the hive has never seen, so its failures there are weaknesses it
+   finds by itself. Raw internet text is not used for training: a CPU runner trains about 20 million tokens a day,
+   where learning language from raw text takes billions, and checked tasks are what measurably taught the
+   cells.
 
 ## What Arnav wants (his words, condensed)
 
