@@ -52,8 +52,8 @@ on:
       gate_seeds:
         description: "A number that fixes the gate's seeds (two trials given the same number sit the same exams); empty: this run's own"
         default: ""
-      fast:
-        description: "1: train only the last 14 layers and keep the inner values (2.3 times faster on one machine; whether the cells are as good is what a trial shows)"
+      slow:
+        description: "1: train every layer and recompute the inner values (2.3 times slower; the first two trials that trained this way ran out of time)"
         default: ""
       bench:
         description: "1: nothing is grown; one runner times a training row each way (bf16 or 32-bit floats, all layers or the last 14, with or without recomputing)"
@@ -213,7 +213,7 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.fast && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.gguf" "out/$DNA.$GEN${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.json" "out/$DNA.$GEN${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4

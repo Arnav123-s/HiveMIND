@@ -151,6 +151,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16"):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
+    born = time.time()
     import torch
     from huggingface_hub import snapshot_download
     from peft import LoraConfig, get_peft_model
@@ -260,6 +261,12 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     model.train()
     t0, running, step, hist = time.time(), 0.0, 0, []
     for i, idx in enumerate(order):
+        if minutes and time.time() - born > minutes * 60:
+            # The plan was made from one timed row; a runner can fall behind it. Two trials were lost on 2026-11-14
+            # because their jobs ran into the time limit with nothing saved. Now the cell stops here and is kept.
+            log(f"time is up after {i} of {len(order)} rows: the cell is saved as it is", flush=True)
+            order = order[:i]
+            break
         ids, k = data[idx]
         with cast():
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
