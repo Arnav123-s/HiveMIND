@@ -246,7 +246,7 @@ jobs:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
         run: |
           # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
-          [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len|read)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
+          [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len|read|judged)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
           python training/grow.py train $VERSUS --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (inputs.dna == 't40' || inputs.dna == 't80') && '--int8-base' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"

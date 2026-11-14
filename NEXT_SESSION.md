@@ -35,6 +35,12 @@ You are the owner and long-term maintainer of HiveMIND, and its design is up to 
    10% mostly noise. The hive studies what it does not know yet but can learn. A runner trains a few million
    pieces of text a day, against the trillions the DNA came from, so the choosing is what makes reading worth
    it. Measure it with `versus: "--read 150"`.
+7. **The cells can learn from people's corrections** (Arnav's idea; built 2026-11-14, not yet measured). Commits
+   that fixed code, read as the author's reason plus the diff (bigcode/commitpackft, source "fix" in `--read`).
+   And questions with answers people voted on (`--judged N`, HuggingFaceH4/stack-exchange-preferences): the
+   best-voted answer beside the worst-voted one, at least 3 votes apart, trained as a right-against-wrong pair
+   with DPO, like the hive's own pairs. Only the text is used, never the names or profiles of the people who
+   wrote it.
 
 ## What Arnav wants (his words, condensed)
 

@@ -12,3 +12,8 @@ def test_each_organ_reads_from_its_nearest_sources():
     assert max(raw.BY_ORGAN["code"], key=raw.BY_ORGAN["code"].get) == "code"
     assert "code" not in raw.BY_ORGAN["words"]
     assert set(raw.SOURCES) >= {w for weights in raw.BY_ORGAN.values() for w in weights}
+
+
+def test_answers_are_kept_as_text_with_code_blocks_and_no_markup():
+    t = raw._text("<p>Use <code>x = 1</code> &amp; then:</p><pre><code>print(x)\n</code></pre><p>Done.</p>")
+    assert "<" not in t and "&amp;" not in t and "x = 1 & then" in t and "```\nprint(x)" in t
