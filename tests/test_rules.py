@@ -1121,6 +1121,8 @@ def test_a_retry_previews_his_pages_not_the_missing_page_in_its_error(tmp_path, 
 def test_a_missing_element_is_looked_up_on_the_page_itself(tmp_path, monkeypatch):
     """Held-out, twice: the preview showed <small class="author">; the coder looked for a span both times, and the
     same-error check compared the hint (the same every time), not the error."""
+    from team import config
+    monkeypatch.setattr(config, "CODER_SECOND", False)  # this test is about the one program; no second opinion asked
     from team.board import Board
     from team.specialists import coder
     from team.tools import web
@@ -1433,6 +1435,8 @@ def test_a_repeated_paragraph_is_given_once_and_the_ordered_sentence_count_is_ch
 def test_a_program_that_read_missing_pages_is_sent_back(tmp_path, monkeypatch):
     """Dev run (frozen 0147aa4): the listing's next link joined to the home page gave a 404 page; the program parsed it as
     an empty listing and finished 'successfully' with two of the three cheapest books."""
+    from team import config
+    monkeypatch.setattr(config, "CODER_SECOND", False)  # this test is about the one program; no second opinion asked
     import http.server
     import threading
     from team.board import Board
