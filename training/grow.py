@@ -148,7 +148,7 @@ def rows_from(folders, out):
 
 # ---- train -----------------------------------------------------------------------------------------------------------
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True):
+          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16"):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
     ternary runtime loads beside the packed base."""
     import torch
@@ -176,7 +176,12 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     rows = uniq
     src = snapshot_download(UNPACKED[base])
     tok = AutoTokenizer.from_pretrained(src)
-    model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16)
+    import contextlib
+    # bf16 halves the memory and is fast where the CPU has instructions for it (AVX512-BF16); elsewhere 32-bit floats
+    # may be the faster way (measured by `speed`)
+    half = dtype != "f32"
+    cast = (lambda: torch.autocast("cpu", dtype=torch.bfloat16)) if half else contextlib.nullcontext
+    model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32)
     nl = model.config.num_hidden_layers
     which = (list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else
              list(range(nl - int(layers[4:]), nl)) if layers.startswith("last") else list(range(*map(int, layers.split("-")))))
@@ -228,7 +233,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # Runners differ in speed by several times. One row is timed, and the passes are cut to what fits the time
         # given (a job that runs out of time leaves nothing behind).
         t = time.time()
-        with torch.autocast("cpu", dtype=torch.bfloat16):
+        with cast():
             big = max(data, key=lambda d: d[0].shape[1])
             model(input_ids=big[0], logits_to_keep=big[1] + 1).logits.float().mean().backward()
         model.zero_grad()
@@ -256,7 +261,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     t0, running, step, hist = time.time(), 0.0, 0, []
     for i, idx in enumerate(order):
         ids, k = data[idx]
-        with torch.autocast("cpu", dtype=torch.bfloat16):
+        with cast():
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
         (loss / accum).backward()
@@ -283,7 +288,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         levels = max(len(torch.unique(m.weight.detach().float())) for m in edits)
         log(f"the cell's edit is ternary: at most {levels} different values in any of its {len(edits)} matrices", flush=True)
     model.save_pretrained(str(work))
-    meta = {"member": f"{base}+{name}", "leans": lean, "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
@@ -337,7 +342,21 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, ternary_edit="--ternary" in argv), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+    elif cmd == "speed":
+        # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
+        rows, out = opt("--rows", str(GROW / "rows.jsonl")), []
+        for dtype, layers, ck in (("bf16", "all", True), ("bf16", "all", False), ("bf16", "last14", False), ("f32", "all", False), ("f32", "last14", False)):
+            p = subprocess.run([sys.executable, __file__, "train", "--rows", rows, "--name", "speed", "--limit", "6", "--epochs", "1", "--dtype", dtype,
+                                "--layers", layers, "--base", opt("--base", "t17")] + ([] if ck else ["--no-checkpoint"]), capture_output=True, text=True)
+            try:
+                m = json.loads(p.stdout[p.stdout.rindex("\n{"):])
+                out.append({"dtype": dtype, "layers": layers, "checkpoint": ck, "seconds_a_row": m["seconds_a_row"], "memory_gb": m["memory_gb"], "loss_last": m["loss_last"]})
+            except (ValueError, KeyError):
+                out.append({"dtype": dtype, "layers": layers, "checkpoint": ck, "failed": (p.stderr or p.stdout)[-200:]})
+            print(json.dumps(out[-1]), flush=True)
+        for f in (ROOT / "cells" / "members").glob("*+speed.*"):
+            f.unlink()
     elif cmd == "fetch":
         print(fetch([a for a in argv[1:] if not a.startswith("--")]))
     else:

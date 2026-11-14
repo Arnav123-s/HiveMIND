@@ -52,6 +52,12 @@ on:
       gate_seeds:
         description: "A number that fixes the gate's seeds (two trials given the same number sit the same exams); empty: this run's own"
         default: ""
+      fast:
+        description: "1: train only the last 14 layers and keep the inner values (2.3 times faster on one machine; whether the cells are as good is what a trial shows)"
+        default: ""
+      bench:
+        description: "1: nothing is grown; one runner times a training row each way (bf16 or 32-bit floats, all layers or the last 14, with or without recomputing)"
+        default: ""
       skip_practice:
         description: "1: no new practice (train from the rows in the release and of rows_from_run)"
         default: ""
@@ -148,9 +154,38 @@ jobs:
           path: out/rows.jsonl
           retention-days: 30
 
+  bench:
+    needs: gather
+    if: ${{ !cancelled() && needs.gather.result == 'success' && inputs.bench }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Room for the weights, and in memory
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL || true
+          sudo fallocate -l 14G /mnt/hive.swap && sudo chmod 600 /mnt/hive.swap && sudo mkswap -q /mnt/hive.swap && sudo swapon /mnt/hive.swap || true
+          lscpu | grep -E "Model name|avx512_bf16" | cut -c1-120 || true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: What training needs
+        run: |
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet -r requirements.txt
+          python -c "from team import ternary; ternary.source()"
+      - uses: actions/download-artifact@v4
+        with:
+          name: all-rows
+          path: got
+      - name: One row, each way
+        run: |
+          lscpu | grep -o "avx512_bf16" | head -1 || echo "this CPU has no AVX512-BF16"
+          python training/grow.py speed --rows got/rows.jsonl --base "$DNA" | tee -a "$GITHUB_STEP_SUMMARY"
+
   train:
     needs: gather
-    if: ${{ !cancelled() && needs.gather.result == 'success' }}
+    if: ${{ !cancelled() && needs.gather.result == 'success' && !inputs.bench }}
     runs-on: ubuntu-latest
     timeout-minutes: 340
     strategy:
@@ -178,7 +213,7 @@ jobs:
           path: got
       - name: Grow the cell
         run: |
-          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} | tee train.txt
+          python training/grow.py train --rows got/rows.jsonl --base "$DNA" --name "$GEN${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 250 ${{ inputs.ternary && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.fast && '--layers last14 --no-checkpoint' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.gguf" "out/$DNA.$GEN${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+$GEN${{ matrix.organ }}.json" "out/$DNA.$GEN${{ matrix.organ }}.json"
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
