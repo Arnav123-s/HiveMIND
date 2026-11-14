@@ -142,6 +142,22 @@ Each run appends one line to `training/reports/generations.jsonl` on the branch 
 
 If a record job is red, its log holds the line it could not write: put it into `generations.jsonl` by hand.
 
+## Decided by Arnav, 2026-11-14 evening: a bigger DNA, children that inherit, mistakes passed on
+
+- **The DNA is now the 8B (t80, Ternary-Bonsai-8B)**, whether or not it scores higher at first: a bigger net can
+  do more. The line runs on it. The gate judges the first 8B body only against the 8B DNA alone (did the cells
+  learn?); the 1.7B body's score is recorded beside it. The 8B trains on free runners, held ternary in memory
+  (`--int8-base`).
+- **Children inherit from their parents** (`grow.py train --parent`): a new cell starts from the edit of the
+  body's cell of the same organ, then trains on. Nothing the parent learned is lost, and the child moves a degree
+  further each generation. Each cell's edit is kept in the release (`<dna>.<cell>.safetensors`) for this.
+- **The parent's mistakes are passed on**: the line trains on its own right-against-wrong pairs (`pairs`) and
+  goes back to and corrects its past failures (`dreams: 4`), so each child learns the mistakes and how they were
+  fixed.
+- **Still to build, in his words**: copies multiply like Fibonacci; each child is trained on its parent's dreams
+  (synthetic tasks the parent can do, made harder over time) and on what the parent could not do; each knows what
+  it does best, and the rest is left to the cells that can; all of them learn as one body.
+
 ## The long-term architecture to build toward
 
 One body that learns at three speeds: a **trunk** (the DNA plus one shared edit that the body consolidates each
