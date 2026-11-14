@@ -41,7 +41,7 @@ on:
         default: "3"
       dna:
         description: "The body's ternary model: t17 (1.7B, 0.43 GB packed), t40 (4B, 1.0 GB) or t80 (8B, 2.2 GB); t40 and t80 train with the DNA held ternary (--int8-base)"
-        default: "t17"
+        default: "t80"
       ternary:
         description: "1: the cells' own edits ternary too (g9: 13 of 64, against 26 for ordinary edits on the same 222 rows); anything else: ordinary numbers"
         default: "0"
@@ -104,7 +104,7 @@ env:
   AGENT_TEAM_SOLO_ALONE: "1"
   HIVE_LIGHT: "1"
   GEN: g${{ github.run_number }}
-  DNA: ${{ inputs.dna || 't17' }}
+  DNA: ${{ inputs.dna || 't80' }}
   HIVE_SEATING: ${{ inputs.seating == 'strength' && 'strength' || '' }}
 
 jobs:
@@ -264,8 +264,14 @@ jobs:
         run: |
           # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
           [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len|read|judged)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
-          python training/grow.py train $VERSUS --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (inputs.dna == 't40' || inputs.dna == 't80') && '--int8-base' || '' }} | tee train.txt
+          # the parent: the body's cell of this organ on this DNA, whose edit the child starts from (its learning and its
+          # corrections inherited); none in the first generation of a DNA
+          P=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(next((c for c in b['cells'] if c.endswith('${{ matrix.organ }}')), '') if b.get('dna') == '$DNA' else '')")
+          PARENT=""
+          if [ -n "$P" ] && curl -sfL -o parent.safetensors "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/$DNA.$P.safetensors"; then PARENT="--parent parent.safetensors"; echo "parent: $P" | tee -a "$GITHUB_STEP_SUMMARY"; fi
+          python training/grow.py train $VERSUS $PARENT --rows got/rows.jsonl --base "$DNA" --name "${GEN}${{ matrix.organ }}" --lean "${{ matrix.organ }}" --epochs "${{ inputs.epochs || '3' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.gguf" "out/$DNA.${GEN}${{ matrix.organ }}.gguf" && cp "cells/members/$DNA+${GEN}${{ matrix.organ }}.json" "out/$DNA.${GEN}${{ matrix.organ }}.json"
+          cp "runs/grow/$DNA+${GEN}${{ matrix.organ }}/adapter_model.safetensors" "out/$DNA.${GEN}${{ matrix.organ }}.safetensors" || true
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
@@ -369,7 +375,7 @@ jobs:
           run-id: ${{ inputs.cells_from_run || github.run_id }}
           github-token: ${{ github.token }}
       - name: Each cell named after the artifact it came in
-        run: for d in got/cell-*; do o=${d#got/cell-}; mv "$d"/*.gguf "got/$DNA.${GEN}$o.gguf"; mv "$d"/*.json "got/$DNA.${GEN}$o.json"; done
+        run: for d in got/cell-*; do o=${d#got/cell-}; mv "$d"/*.gguf "got/$DNA.${GEN}$o.gguf"; mv "$d"/*.json "got/$DNA.${GEN}$o.json"; mv "$d"/*.safetensors "got/$DNA.${GEN}$o.safetensors" 2>/dev/null || true; done
       - uses: actions/download-artifact@v4
         with:
           name: all-rows
@@ -388,7 +394,7 @@ jobs:
         run: |
           gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive grew" --notes "The cells of the hive's body (weight edits of its ternary model) and the checked rows they were grown from (training/grow.py). Machine-made." --latest=false
           # a run that trained on its own practice only holds fewer rows than the release: it must not replace them
-          gh release upload hive-grown got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json $([ "${{ inputs.fresh_rows }}" = "1" ] || echo got/rows.jsonl) $([ -s got/failures.jsonl ] && echo got/failures.jsonl) --clobber
+          gh release upload hive-grown got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json $(ls got/$DNA.${GEN}*.safetensors 2>/dev/null) $([ "${{ inputs.fresh_rows }}" = "1" ] || echo got/rows.jsonl) $([ -s got/failures.jsonl ] && echo got/failures.jsonl) --clobber
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json 2>/dev/null)
@@ -403,5 +409,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh workflow run grow.yml --ref main -f practice_level="${{ inputs.practice_level || 'mixed' }}" -f dna="${{ inputs.dna || 't17' }}" -f seating="${{ inputs.seating }}" -f dreams="${{ inputs.dreams }}"
+          gh workflow run grow.yml --ref main -f practice_level="${{ inputs.practice_level || 'mixed' }}" -f dna="${{ inputs.dna || 't80' }}" -f seating="${{ inputs.seating }}" -f dreams="${{ inputs.dreams }}" -f pairs="${{ inputs.pairs }}"
           echo "the next generation is started; to stop the line set the repository variable HIVE_LOOP to stop" >> "$GITHUB_STEP_SUMMARY"

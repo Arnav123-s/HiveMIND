@@ -132,7 +132,13 @@ def gate(argv):
                 pass
     body = json.loads(BODY.read_text())
     before = [c for c in body.get("cells", []) if re.fullmatch(CELL, str(c))] if body.get("dna") == dna else []
-    keep, why = decide(arms) if cells else (False, "no cell was grown")
+    # a new DNA (Arnav, 2026-11-14: bigger, whether or not it scores higher at first): its first body is judged
+    # against its own DNA alone; the old body's score is recorded beside it, for information
+    same_dna = body.get("dna") == dna
+    judged = arms if same_dna else dict(arms, before={"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0})
+    keep, why = decide(judged) if cells else (False, "no cell was grown")
+    if cells and not same_dna:
+        why += f" (a new DNA, {dna}: the body of {body.get('dna')} before it is not the bar)"
     if trial and keep:
         keep, why = False, "a trial beside the line of generations (the body is not changed by it); by the numbers it would be kept: " + why
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
