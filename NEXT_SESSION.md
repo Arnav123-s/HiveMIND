@@ -41,13 +41,20 @@ A roster of different models of different sizes (t2/t4/t9/coder) was a drift. Wh
   that it has not applied (the hive now switches explicitly, once per process and at every change); the answer to
   a switch is sometimes never sent until another request arrives (asked again after 6 s). Never reuse the server's
   cache across a switch (`cache_prompt` off for that call).
-- **Trials on GitHub, started 2026-11-14 01:26 UTC, same rows (222) and same gate seeds (20009001, 20009002):**
-  g4 (run 43540547957) ordinary cells; g5 (run 43540550935) ternary cells. Both `trial=1`: recorded in
-  `training/reports/generations.jsonl`, cells kept in the release, body not changed. **Read both, keep the
-  better kind by writing cells/body.json** ({"dna": "t17", "generation": N, "cells": ["gNsources", ...]}), then
-  start the workflow with no inputs: the body practises by itself from then on.
-  Training on runners is slow: one cell took 1 h 37 min, others over 2 h 30 (bf16 on CPUs without AVX512-BF16).
-  Faster training is open work: measure float32 against bf16 on a runner, fewer layers, no checkpointing.
+- **Trials, what happened (2026-11-14):** g4/g5 (every layer, recomputing) trained 5.5 h and ran into the job's
+  time limit: lost. Training now stops at its deadline and keeps the cell (`--minutes`), and trains the fast way
+  by default (last 14 layers, inner values kept: 4.0 s a row on a runner with bf16, 7 GB; `speed` times each
+  way; runners differ several times in speed). g7 (run 43560287281, ternary cells) and g8 (run 43569009099,
+  ordinary cells) trained in about 2.4 h (loss 0.87 -> 0.04, 330 steps) but a slip in grow.yml named every cell
+  `t17..gguf` (`$GENcode` read as one variable), so their gates found no cell. Mended (`${GEN}`); cells are now
+  named after their artifact. Their gates were run again from the stored cells (`cells_from_run`): **g9 = the
+  ternary cells of g7 (gate seeds 20009001-4), g10 = the ordinary cells of g8 (seeds 20009011-14)**, both
+  `trial=1`. **Read `training/reports/generations.jsonl` on make-it-work, keep the better kind by writing
+  cells/body.json** ({"dna": "t17", "generation": 9, "cells": ["g9sources", "g9code", "g9data", "g9words"]}),
+  then start the workflow with `ternary` as decided and nothing else: the body practises by itself from then on.
+- **First evidence that a cell learns (local, one seed, one run; not a claim yet):** mixed exam seed 555, members
+  alone: the ternary cell g7code in every seat passed 6 of 16 in 18 min; the DNA as published passed 1 of 16 in
+  27 min. The cell solves in 6 to 8 s what the DNA does not solve at all.
 - **A bigger DNA** (`--base t40`, Ternary-Bonsai-4B, 1.0 GB packed): trains on a 15 GB machine only with swap
   (13.2 GB peak, about 30 s a row here). The workflow takes `dna: t40`. Not yet run on GitHub.
 - **Engrams** (his idea, 2026-11-14; `team/engram.py`): one checked task -> one tiny ternary edit (rank 4, last 8
