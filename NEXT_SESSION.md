@@ -108,6 +108,14 @@ Each run appends one line to `training/reports/generations.jsonl` on the branch 
 
 If a record job is red, its log holds the line it could not write: put it into `generations.jsonl` by hand.
 
+## The long-term architecture to build toward
+
+One body that learns at three speeds: a **trunk** (the DNA plus one shared edit that the body consolidates each
+night, merging the kept cells), **cells** (small deltas that branch from the trunk, each leaning to an organ), and
+**engrams** (one fast memory shared by the whole body). The body learns how to mix its own cells, scored by its
+own outcome. The details are in `docs/RESEARCH.md`, section 0. The per-cell strength records and strength seating
+are scaffolding on the way there, not the design: do not build further machinery on them.
+
 ## The open problems, for you to decide how to attack
 
 These are the parts that need deep research rather than bookkeeping. They are listed by how much they matter
