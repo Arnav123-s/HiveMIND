@@ -36,6 +36,12 @@ else
     $PY training/cells_build.py
 fi
 
+say "3b. the ternary runtime (about 25 minutes the first time) and the body's cells"
+if [ "$LIGHT" != 1 ]; then
+    $PY -m team.ternary install || echo "cloud_setup: the ternary runtime could not be built; the body's cells will not run here"
+    $PY training/grow.py fetch || true
+fi
+
 say "4. the grown hive from GitHub"
 $PY training/hive_state.py pull || echo "cloud_setup: the grown hive could not be fetched (see HANDOFF.md)"
 
