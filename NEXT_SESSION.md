@@ -141,6 +141,13 @@ wrong one for the same task. Practice records these pairs from 2026-11-14 evenin
   from the very same rows, and sits both on the same exams beside the DNA (a fourth gate arm). It is always a
   trial. Use it instead of two separate trials: separate trials practise separately and read a shared row file
   that other runs overwrite, so their rows differ.
+- **Practice at the edge (a curriculum, built 2026-11-14, not yet measured):** input `practice_level: "edge"`
+  practises kinds of task in proportion to p(1 - p), where p is the body's pass rate on the kind in its last three
+  gates (`grow.edge_weights`; the gate records pass counts per kind from 2026-11-15 on). Kinds always passed
+  (learned) and never passed (no right program to learn from yet) drop out; harder kinds come in as the body
+  improves. To measure it, start two trials with the same `gate_seeds`, both with `fresh_rows: "1"` (train only on
+  that run's own practice), one with `practice_level: "edge"` and one without. Do this after a night has recorded
+  per-kind counts, or the edge has nothing to steer by.
 - **Start a run:** `mcp__github__actions_run_trigger`, `run_workflow`, workflow `grow.yml`. Its inputs are
   described in the file. The useful ones: `trial: "1"` (record only, the body does not change), `gate_seeds`
   (the same number means the same exams), `skip_practice: "1"`, `cells_from_run` (re-sit stored cells without

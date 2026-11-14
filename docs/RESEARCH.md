@@ -135,6 +135,12 @@ night's cells (consolidation, as sleep does). DeepSeek's form needs pretraining 
 - Holding the frozen DNA as int8 ternary values (section 1) cuts memory roughly in half against bf16. That allows
   longer rows without recomputation, and larger DNAs.
 - Fewer, better rows: pairs and failures teach more per row than another copy of a solved task.
+- **Practice at the edge of ability (curriculum learning; Bengio et al. 2009; in reinforcement learning on
+  language models, tasks that are always or never solved give no learning signal and are filtered out).** A task
+  the body always solves teaches nothing new. One it never solves gives no right program to learn from, and no
+  right-against-wrong pair. Built here as `practice_level: "edge"` (weights p(1 - p) per kind). Not yet built:
+  difficulty within a kind (longer robot programs, more pages to walk, more steps). Each task maker could take
+  a difficulty knob, and the edge would then raise it as the body passes.
 
 ## 7. Engrams in the brain, their flaws, and what the hive inherits
 
