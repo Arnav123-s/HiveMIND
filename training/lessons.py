@@ -1,6 +1,6 @@
 """Lessons: right programs for the kinds of task the hive cannot do yet, checked before they are taught.
 
-    python training/lessons.py --seed S [--per-kind 1] [--failures failures.jsonl] [--most-failures 12] [--out rows.jsonl]
+    python training/lessons.py --seed S [--per-kind 1] [--several 4] [--failures failures.jsonl] [--most-failures 12] [--out rows.jsonl]
     python training/lessons.py --show MAKER [--seed S] [--level L]      one lesson: its task, its program, what it printed
 
 Why (from first principles): the hive learns only from programs that its own checks confirmed. On a kind of task it
@@ -279,6 +279,41 @@ print(ways[amount])
     return None
 
 
+def know(task):
+    """What does not change and is known needs no source: it is written into the program and printed. (The talk test
+    of 2026-11-15: asked for the capital of Australia, all three members fetched it from addresses they made up.)"""
+    from training import exam
+    m = re.search(r"What is the capital of (.+?)\?", task)
+    if m and m.group(1) in exam.CAPITALS:
+        return _fill('''# a capital city does not change and is known: no source is needed
+capital = __CAPITAL__
+print(capital)
+''', capital=exam.CAPITALS[m.group(1)])
+    m = re.search(r"chemical symbol and the atomic number of (\w+)\?", task)
+    if m and m.group(1) in exam.ELEMENTS:
+        sym, num = exam.ELEMENTS[m.group(1)]
+        return _fill('''# an element's symbol and number do not change and are known: no source is needed
+print("symbol:", __SYM__)
+print("atomic number:", __NUM__)
+''', sym=sym, num=num)
+    m = re.search(r"Is (\d+) a prime number\?", task)
+    if m:
+        return _fill('''n = __N__
+divisor = next((d for d in range(2, int(n ** 0.5) + 1) if n % d == 0), None)
+print("yes" if divisor is None else f"no, it is divisible by {divisor}")
+''', n=int(m.group(1)))
+    m = re.search(r"greatest common divisor of (\d+) and (\d+)", task)
+    if m:
+        return f"import math\n\nprint(math.gcd({int(m.group(1))}, {int(m.group(2))}))\n"
+    m = re.search(r"A rectangle is (\d+) metres wide and (\d+) metres long", task)
+    if m:
+        return _fill('''width, length = __W__, __L__
+print("area:", width * length, "square metres")
+print("perimeter:", 2 * (width + length), "metres")
+''', w=int(m.group(1)), l=int(m.group(2)))
+    return None
+
+
 # ---- a module of two functions ------------------------------------------------------------------------------------------
 MODULES = {
     "roman": ("", '''def to_roman(n):
@@ -445,7 +480,7 @@ def module(task):
 
 
 # the makers taught, and how each one's program is written. The held-out kinds are never here.
-SOLVERS = {"m_born": born, "m_csv": csv_page, "m_units": units, "h_walk": walk, "h_since": since, "h_age": age, "h_table": table,
+SOLVERS = {"m_know": know, "m_born": born, "m_csv": csv_page, "m_units": units, "h_walk": walk, "h_since": since, "h_age": age, "h_table": table,
            "h_module": module, "h_log": log, "h_search": search, "h_web": wikidata}
 
 
@@ -454,14 +489,34 @@ def _maker(name):
     return getattr(exam, name, None) or getattr(exam_hard, name)
 
 
-def lesson(maker, rseed, level=0, timeout=300):
-    """One lesson: the task made from the maker, its program, and whether the task's own check says it is right.
-    {"maker", "rseed", "level", "task", "kind", "program", "answer", "ok", "why"}."""
+def program_for(task, check):
+    """The right program for a task, or None where a part has no lesson. A task of several parts (team/parts.py) gets
+    its parts' programs one after another, each printing its answers under its own heading."""
+    from team import parts as P
+    pieces = P.of_task(task)
+    if getattr(check, "maker", "") != "compound" or not pieces:
+        return SOLVERS[check.maker](task) if check.maker in SOLVERS else None
+    out = []
+    for (letter, text), part in zip(sorted(pieces.items()), check.parts):
+        prog = SOLVERS[part[0]](text) if part[0] in SOLVERS else None
+        if not prog:
+            return None
+        out.append(f"# ---- PART {letter}: each part is done by itself and printed under its own heading\n"
+                   f"print({'PART ' + letter!r})\n" + prog.strip() + "\n")
+    return "\n\n".join(out)
+
+
+def lesson(maker, rseed, level=0, parts=None, timeout=300):
+    """One lesson: the task made again from its maker (or its parts), its program, and whether the task's own check
+    says it is right. {"maker", "rseed", "level", "parts", "task", "kind", "program", "answer", "ok", "why"}."""
     from training import exam
     from team.tools.sandbox import run_python
-    field, kind, task, check = exam._made(_maker(maker), rseed, level)
-    out = {"maker": maker, "rseed": rseed, "level": level, "task": task, "kind": kind, "program": "", "answer": "", "ok": False, "why": ""}
-    program = SOLVERS[maker](task)
+    made = exam.remake(maker, rseed, level, parts)
+    if not made:
+        return {"maker": maker, "rseed": rseed, "level": level, "parts": parts, "task": "", "kind": "", "ok": False, "why": "the task cannot be made again"}
+    field, kind, task, check = made
+    out = {"maker": maker, "rseed": rseed, "level": level, "parts": parts, "task": task, "kind": kind, "program": "", "answer": "", "ok": False, "why": ""}
+    program = program_for(task, check)
     if not program:
         out["why"] = "no program for this form of the task"
         return out
@@ -503,7 +558,7 @@ def rows(les, wrong=None, today=None):
     head = [{"role": "system", "content": short.format(today=today or time.strftime("%Y-%m-%d (%A)"))},
             {"role": "user", "content": f"TASK: {les['task']}"}]
     fenced = f"```python\n{les['program'].strip()}\n```"
-    base = {"task": les["task"], "kind": les["kind"], "seed": les["rseed"], "who": "lesson", "member": 0, "lesson": les["maker"]}
+    base = {"task": les["task"], "kind": les["kind"], "seed": les["rseed"], "who": "lesson", "member": 0, "lesson": les["maker"]}  # noqa: E501
     out = [base | {"type": "first", "messages": head, "output": fenced},
            base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
                                                          {"role": "user", "content": f"OUTPUT:\n{les['answer'][-1800:]}\n\n{more}"}], "output": "DONE"}]
@@ -514,14 +569,25 @@ def rows(les, wrong=None, today=None):
     return out
 
 
-def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0):
-    """A generation's lessons: per_kind fresh tasks of every taught kind, at the body's levels, and the most recent
-    tasks the hive got wrong (of the taught kinds), each made again and shown done right. Rows appended to out.
+def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4):
+    """A generation's lessons: per_kind fresh tasks of every taught kind, at the body's levels, `several` fresh tasks of
+    several parts, and the most recent tasks the hive got wrong (of the taught kinds), each made again and shown done
+    right. Rows appended to out.
     Returns {"lessons", "right", "rows", "dropped": [why]}."""
     from training import grow
     levels = grow.body_levels() if levels is None else levels
     t0 = time.time()
-    plan = [(m, f"lesson:{seed}:{m}:{i}", levels.get(m, 0), None) for i in range(per_kind) for m in SOLVERS]
+    from training import exam
+    plan = [(m, f"lesson:{seed}:{m}:{i}", levels.get(m, 0), None, None) for i in range(per_kind) for m in SOLVERS]
+    # tasks of several parts, as practice gives them (half of it): as many parts as the body's level says
+    pool = [_maker(m) for m in SOLVERS]
+    k = max(2, int(levels.get("compound", 2) or 2))
+    for i in range(several):
+        rseed = f"lesson:{seed}:several:{i}"
+        try:
+            plan.append(("compound", rseed, k, exam.compound(rseed, k, pool, levels)[3].parts, None))
+        except Exception as e:  # noqa: BLE001 - a part that cannot be made now (a site that does not answer): one lesson fewer
+            log(f"lesson of several parts {i}: could not be made: {type(e).__name__}", flush=True)
     seen = set()
     for ln in reversed(Path(failures).read_text().splitlines() if failures and Path(failures).exists() else []):
         try:
@@ -529,16 +595,17 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
         except ValueError:
             continue
         key = (f.get("maker"), f.get("rseed"), f.get("level", 0))
-        if f.get("maker") in SOLVERS and not f.get("parts") and key not in seen and len(seen) < most_failures:
+        taught = f.get("maker") in SOLVERS or (f.get("maker") == "compound" and f.get("parts") and all(p[0] in SOLVERS for p in f["parts"]))
+        if taught and key not in seen and len(seen) < most_failures:
             seen.add(key)
-            plan.append((f["maker"], f["rseed"], f.get("level", 0), f))
+            plan.append((f["maker"], f["rseed"], f.get("level", 0), f.get("parts"), f))
     made, right, dropped = [], 0, []
-    for maker, rseed, level, wrong in plan:
+    for maker, rseed, level, parts, wrong in plan:
         if minutes and time.time() - t0 > minutes * 60:
             dropped.append("out of time")
             break
         try:
-            les = lesson(maker, rseed, level)
+            les = lesson(maker, rseed, level, parts)
         except Exception as e:  # noqa: BLE001 - a task that cannot be made (a site down): no lesson
             les = {"ok": False, "why": f"could not be made: {type(e).__name__}: {str(e)[:120]}"}
         new = rows(les, wrong)
@@ -562,7 +629,7 @@ def main(argv):
         print(les["task"], "\n\n" + les["program"], "\n" + les["answer"], "\n\nright:", les["ok"], "-", les["why"])
         return 0 if les["ok"] else 1
     res = teach(opt("--seed", time.strftime("%Y%m%d%H")), int(opt("--per-kind", 1)), opt("--failures"), int(opt("--most-failures", 12)),
-                opt("--out", "lessons.jsonl"), minutes=float(opt("--minutes", 0)))
+                opt("--out", "lessons.jsonl"), minutes=float(opt("--minutes", 0)), several=int(opt("--several", 4)))
     print(json.dumps(res))
     return 0
 

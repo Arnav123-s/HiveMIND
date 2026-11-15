@@ -78,10 +78,34 @@ def test_a_lesson_is_taught_only_when_right_and_a_task_got_wrong_before_comes_ba
     monkey.setattr(lessons, "SOLVERS", {"m_units": lessons.units})  # offline: only the units are drawn fresh
     try:
         out = tmp_path / "rows.jsonl"
-        res = lessons.teach("t", 1, failures, out=out, levels={}, log=lambda *a, **k: None)
+        res = lessons.teach("t", 1, failures, out=out, levels={}, log=lambda *a, **k: None, several=0)
     finally:
         monkey.undo()
     got = [json.loads(x) for x in out.read_text().splitlines()]
     assert res["lessons"] == 2 and res["right"] == 2 and res["rows"] == 5 and not res["dropped"]
     fixes = [r for r in got if r["type"] == "fix"]
     assert len(fixes) == 1 and "print(2)" in fixes[0]["messages"][2]["content"]  # the newest wrong program of that task
+
+
+def test_what_is_known_is_printed_from_the_program_and_never_fetched():
+    forms = {}
+    for i in range(80):
+        task = exam._made(exam.m_know, f"k{i}", 0)[2]
+        forms.setdefault(next(w for w in ("capital", "chemical symbol", "prime number", "greatest common divisor", "rectangle") if w in task), f"k{i}")
+    assert len(forms) == 5  # capital, element, prime, divisor, rectangle
+    for rseed in forms.values():
+        les = lessons.lesson("m_know", rseed)
+        assert les["ok"] and "requests" not in les["program"], (les["task"], les["why"])
+
+
+def test_a_task_of_several_parts_is_taught_as_its_parts_programs_each_under_its_heading():
+    from team import parts
+    pool = [exam.m_units, exam.m_know, exam_hard.h_module, exam_hard.h_log, exam_hard.h_search]  # parts that need no site
+    for i, k in ((0, 2), (1, 3), (2, 2)):
+        made = exam.compound(f"several{i}", k, pool, {})
+        les = lessons.lesson("compound", f"several{i}", k, made[3].parts)
+        assert les["ok"], les["why"]
+        assert les["program"].count("print('PART ") == k and set(parts.of_answer(les["answer"])) == set(parts.LETTERS[:k])
+    # a part with no lesson (a held-out kind): no lesson for the whole
+    made = exam.compound("held", 2, [exam.m_units, exam_hard.h_sim], {})
+    assert lessons.lesson("compound", "held", 2, made[3].parts)["why"] == "no program for this form of the task"
