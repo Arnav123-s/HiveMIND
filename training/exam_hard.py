@@ -384,7 +384,7 @@ def h_join(r):
     items = r.sample(ITEMS, 4)
     price = {i: r.randrange(3, 60) + r.choice([0, 0.5, 0.25]) for i in items}
     who = r.sample(NAMES, 4)
-    orders = [(r.choice(who), r.choice(items), r.randrange(1, 9)) for _ in range(r.randrange(12, 19))]
+    orders = [(r.choice(who), r.choice(items), r.randrange(1, 9)) for _ in range(r.randrange(12, 19) + 6 * getattr(r, "level", 0))]  # harder: more orders
     spent = {w: round(sum(q * price[i] for x, i, q in orders if x == w), 2) for w in who}
     best = max(spent, key=spent.get)
     while sorted(spent.values())[-1] == sorted(spent.values())[-2]:  # a tie has no single answer: one more order breaks it
@@ -433,7 +433,7 @@ SERVICES = ["auth", "billing", "search", "mail", "storage"]
 def h_log(r):
     day = datetime.date(2026, r.randrange(1, 13), r.randrange(1, 28))
     lines = []
-    for _ in range(r.randrange(16, 24)):
+    for _ in range(r.randrange(16, 24) + 10 * getattr(r, "level", 0)):  # harder: a longer log
         t = datetime.time(r.randrange(8, 13), r.randrange(60), r.randrange(60))
         lines.append((t, r.choice(["ERROR", "ERROR", "WARN", "INFO"]), r.choice(SERVICES[:4]), r.choice(["timeout", "retry", "started", "disk full", "bad token"])))
     lines.sort()
@@ -475,19 +475,20 @@ def h_log(r):
 # ---- searching and simulating ----------------------------------------------------------------------------------------
 def h_search(r):
     kind = r.choice(["digits", "palins", "nth", "change"])
+    lv = getattr(r, "level", 0)  # harder: the same search over a larger range
     if kind == "digits":
-        n, d, s = r.randrange(1000, 90000), r.choice([7, 11, 13, 17]), r.randrange(12, 26)
-        x = next(i for i in range(n + 1, 10**7) if i % d == 0 and sum(map(int, str(i))) == s)
+        n, d, s = r.randrange(1000, 90000) * 10 ** min(lv, 3), r.choice([7, 11, 13, 17]), r.randrange(12, 26)
+        x = next(i for i in range(n + 1, 10**11) if i % d == 0 and sum(map(int, str(i))) == s)
         return ("hard: search", "a number with given properties", f"Find the smallest whole number greater than {n} that is divisible by {d} and "
                 f"whose digits add up to {s}.", lambda run, report: (_says(B._body(report), x, 0.1), f"wants {x}"))
     if kind == "palins":
         a, k = r.randrange(100, 5000), r.choice([3, 7, 11, 13])
-        b = a + r.randrange(20000, 90000)
+        b = a + r.randrange(20000, 90000) * 4 ** min(lv, 3)
         x = sum(1 for i in range(a, b + 1) if str(i) == str(i)[::-1] and i % k == 0)
         return ("hard: search", "a number with given properties", f"How many whole numbers from {a} to {b} (both included) read the same "
                 f"backwards as forwards and are divisible by {k}?", lambda run, report: (_says(B._body(report), x, 0.1), f"wants {x}"))
     if kind == "nth":
-        n = r.randrange(300, 3000)
+        n = r.randrange(300, 3000) * (1 + lv)
         ps, i = [], 1
         while len(ps) < n:
             i += 1
@@ -496,7 +497,7 @@ def h_search(r):
         x, tot = ps[-1], sum(map(int, str(ps[-1])))
         return ("hard: search", "a number with given properties", f"What is prime number {n} (counting 2 as the first), and what do its digits add up to?",
                 lambda run, report: (_says(B._body(report), x, 0.1) and _says(B._body(report), tot, 0.1), f"wants {x} and {tot}"))
-    coins, amount = sorted(r.sample([1, 2, 5, 10, 20, 25, 50], 4)), r.randrange(60, 300)
+    coins, amount = sorted(r.sample([1, 2, 5, 10, 20, 25, 50], 4)), r.randrange(60, 300) * (1 + lv)
     if 1 not in coins:
         coins[0] = 1
     ways = [1] + [0] * amount

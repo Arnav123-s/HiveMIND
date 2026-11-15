@@ -7,9 +7,9 @@
 # the hive wrote, reads the sitting's numbers and adds the line.
 name: The hive sits an exam
 
+# Not on a schedule since 2026-11-15: this sat the older hive of roles every day. The body of cells takes its own
+# pulse every generation ("The hive teaches its own members", the gate job). An exam can still be started by hand.
 on:
-  schedule:
-    - cron: "43 9 * * *"
   workflow_dispatch:
     inputs:
       tasks:

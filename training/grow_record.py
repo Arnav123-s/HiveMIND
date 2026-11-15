@@ -2,6 +2,8 @@
 
     python3 training/grow_record.py gate <folder of the gate's sittings> <folder with the cells' json> <generation>
     python3 training/grow_record.py fetch t17+g3code,t17+g3data     the cells named, from the release into cells/members/
+    python3 training/grow_record.py rows OUT FILE ...               every row of the files once, in order, into OUT
+    python3 training/grow_record.py failures OUT FILE ...           the same for the tasks got wrong
 
 `gate` runs in the one job that may write to the repository, and runs no model and nothing the hive wrote. From the
 other jobs it takes only whole numbers within their bounds and names this file builds itself. Needs nothing but
@@ -15,6 +17,7 @@ The regrown body is kept when it passed more tasks than the DNA alone and at lea
 What "after" passes over "dna" is what the hive taught itself; it is also counted apart on the kinds it never
 practised. Every generation leaves one line in training/reports/generations.jsonl, whatever the outcome.
 """
+import hashlib
 import json
 import os
 import re
@@ -35,6 +38,7 @@ FLAGS = r"(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|m
 ORGANS = ("sources", "code", "data", "words")
 DNAS = ("t17", "t40", "t80")
 CELL = r"g\d{1,6}(?:sources|code|data|words)\d{0,2}"
+MOST_ROWS, MOST_FAILURES = 20000, 3000  # what the release keeps: the newest
 # the kinds the hive never practises on (training/exam_hard.HELD_OUT), by the name the exam gives them
 UNPRACTISED = ("walk a site and count into a file", "two facts from two sources, combined", "a file given in the task, edited to a specification",
                "a simulation followed step by step")
@@ -42,6 +46,78 @@ UNPRACTISED = ("walk a site and count into a file", "two facts from two sources,
 
 def _int(x, most):
     return x if isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= most else None
+
+
+# ---- the rows: what the release holds is added to, never replaced by an older copy ------------------------------------
+def lines(path):
+    try:
+        return [ln for ln in Path(path).read_text().splitlines() if ln.strip()]
+    except OSError:
+        return []
+
+
+def _row(ln):
+    """What makes two rows the same row: the exchange and its answer, not when or by whom it was practised."""
+    try:
+        r = json.loads(ln)
+        return hashlib.sha1(json.dumps([r.get("type"), r["messages"][1:], r.get("output"), r.get("rejected")], sort_keys=True).encode()).hexdigest()
+    except (ValueError, KeyError, TypeError, IndexError):
+        return None
+
+
+def _failure(ln):
+    try:
+        r = json.loads(ln)
+        return hashlib.sha1(json.dumps([r["maker"], r["rseed"], r.get("level", 0), r.get("program")], sort_keys=True).encode()).hexdigest()
+    except (ValueError, KeyError, TypeError):
+        return None
+
+
+def union(groups, key=_row, most=MOST_ROWS):
+    """Every line of every group once, in order (a line that is no row is dropped), the newest `most` of them.
+    On 2026-11-14 a trial that had read the release hours before wrote its older, smaller copy back over it, and
+    the 170 rows generation 11 had practised were gone from the release: so nothing is uploaded now that was not
+    first joined with what the release holds at that moment."""
+    seen, out = set(), []
+    for group in groups:
+        for ln in group:
+            k = key(ln)
+            if k and k not in seen:
+                seen.add(k)
+                out.append(ln)
+    return out[-most:]
+
+
+# ---- how hard the lessons are: moved by what practice passed ----------------------------------------------------------
+def levels(now, folders):
+    """The body's levels after this generation's practice: ({maker: level, "compound": parts}, what was seen).
+    A kind (or the number of parts of a task of several) the body passed at least 7 times in 10 at its level goes
+    up one; one it passed at most 3 times in 20 comes down one; at least four tries are needed to move it. Only
+    whole numbers within their bounds and names this repository knows are taken from the practice jobs."""
+    from training import exam
+    known = set(exam.LEVELED) | {"compound"}
+    seen = {}
+    for folder in folders:
+        for f in sorted(Path(folder).rglob("practice.json")):
+            if f.stat().st_size > 500_000:
+                continue
+            try:
+                d = json.loads(f.read_text())
+            except ValueError:
+                continue
+            for t in (d.get("tasks") if isinstance(d, dict) else None) or []:
+                m, lv = (t.get("maker"), _int(t.get("level"), 9)) if isinstance(t, dict) else (None, None)
+                if m in known and lv is not None:
+                    c = seen.setdefault(m, {}).setdefault(lv, [0, 0])
+                    c[0] += t.get("ok") is True
+                    c[1] += 1
+    out = {k: v for k, v in (now or {}).items() if k in known and _int(v, 9) is not None}
+    for m, by in seen.items():
+        low, high = (2, exam.MOST_PARTS) if m == "compound" else (0, exam.MOST_LEVEL)
+        cur = max(low, min(high, out.get(m, low)))
+        right, tried = by.get(cur, [0, 0])
+        out[m] = min(high, cur + 1) if tried >= 4 and right >= 0.7 * tried else max(low, cur - 1) if tried >= 4 and right <= 0.15 * tried else cur
+    return out, {m: {str(k): v for k, v in sorted(by.items())} for m, by in sorted(seen.items())}
 
 
 def arm(folders):
@@ -79,7 +155,7 @@ def arm(folders):
                         who = m.get("who") if isinstance(m, dict) else None
                         if not (isinstance(who, str) and re.fullmatch(r"[\w.+-]{1,80}", who)):
                             continue
-                        lean = ternary.leans(who) or "dna"
+                        lean = ternary.leans(who) or ("trunk" if ternary.is_trunk(who) else "dna")
                         rec = out["by_lean"].setdefault(lean, {"kind": {}, "organ": {}})
                         for table, key in ((rec["kind"], k), (rec["organ"], o)):
                             if key in table or len(table) < 64:
@@ -136,6 +212,8 @@ def gate(argv):
             except ValueError:
                 pass
     body = json.loads(BODY.read_text())
+    # the trunk of this generation: the average of the body's newest cells (training/merge.py), made by the merge job
+    trunk = f"{gen}trunk" if (got / f"{dna}.{gen}trunk.gguf").exists() else ""
     before = [c for c in body.get("cells", []) if re.fullmatch(CELL, str(c))] if body.get("dna") == dna else []
     # a new DNA (Arnav, 2026-11-14: bigger, whether or not it scores higher at first): its first body is judged
     # against its own DNA alone; the old body's score is recorded beside it, for information
@@ -158,8 +236,13 @@ def gate(argv):
         after, retired = lineage.grown_body(before, cells, dict(old_parents, **parent_of))
     elif not keep:
         after = before
+    # how hard the lessons are from here on, by what this generation's practice passed (a trial moves nothing)
+    practised = [argv[i + 1] for i, a in enumerate(argv) if a == "--practice" and i + 1 < len(argv)]
+    lv_now = body.get("levels") if same_dna and isinstance(body.get("levels"), dict) else {}
+    lv_next, lv_seen = levels(lv_now, practised) if practised else (lv_now, {})
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
             "kept": keep, "why": why, "body_before": before, "body_after": after, "trial": trial, "grow": grow,
+            "trunk": trunk if keep and grow else "", "levels": lv_next if keep and grow else lv_now, "practice": lv_seen,
             "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
@@ -168,6 +251,13 @@ def gate(argv):
     if keep:
         parents = {c: p for c, p in dict(old_parents, **parent_of).items() if c in after}
         body.update({"dna": dna, "generation": int(gen[1:]), "cells": after, "parents": parents})
+        if grow:
+            # a generation whose merge failed keeps the trunk it had (of the same DNA); the levels move with practice
+            body["trunk"] = trunk or (body.get("trunk", "") if same_dna else "")
+            body["levels"] = lv_next
+        elif not same_dna:
+            body.pop("trunk", None)
+            body.pop("levels", None)
         BODY.write_text(json.dumps(body) + "\n")
     # who in the body is strong on what, by organ, for trials of seating by it (HIVE_SEATING=strength); a body that
     # multiplies is not seated by it
@@ -188,7 +278,11 @@ def gate(argv):
               f"{v['unpractised'][0]} of {v['unpractised'][1]} |")
     if keep and grow:
         born = ", ".join(f"{c} (child of {parent_of[c]})" if c in parent_of else c for c in cells)
-        print(f"\n- the body multiplies: {born} join it; it has {len(after)} cells now{'; gave up their place, best of the body at nothing: ' + ', '.join(retired) if retired else ''}")
+        print(f"\n- the body multiplies: {born} join it; it has {len(after)} cells now{'; gave up their place (their lines go on in their children): ' + ', '.join(retired) if retired else ''}")
+        print(f"- the trunk (the body's newest cells averaged into one edit, which answers first): {trunk or 'none was made this generation'}")
+        if lv_seen:
+            print("- how hard the lessons are now: " + ", ".join(f"{k} {v}" + (f" (was {lv_now.get(k)})" if k in lv_now and lv_now.get(k) != v else "") for k, v in sorted(lv_next.items()))
+                  + "; practice passed " + ", ".join(f"{m} at level {k}: {r} of {n}" for m, by in lv_seen.items() for k, (r, n) in by.items()))
     print(f"\n- the body {'is now ' + ', '.join(after) if keep else 'stays as it was'}: {why}")
     return 0
 
@@ -197,7 +291,7 @@ def fetch(argv):
     """The cells named, from the release into cells/members/. A cell that is not there is said and passed over."""
     repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
     for who in (argv[0] if argv else "").split(","):
-        m = re.fullmatch(rf"(t17|t40|t80)\+({CELL}|gen\d{{1,6}})", who.strip())
+        m = re.fullmatch(rf"(t17|t40|t80)\+({CELL}|{lineage.TRUNK}|gen\d{{1,6}})", who.strip())
         if not m:
             continue
         to = MEMBERS / f"{m.group(1)}+{m.group(2)}.gguf"
@@ -213,6 +307,16 @@ def fetch(argv):
     return 0
 
 
+def join(argv, key, most):
+    """OUT FILE ...: every line of the files once, in order, written to OUT (which may be one of the files)."""
+    kept = union([lines(f) for f in argv[1:]], key, most)
+    Path(argv[0]).write_text("".join(ln + "\n" for ln in kept))
+    print(f"{argv[0]}: {len(kept)} lines from {', '.join(f'{f} ({len(lines(f))})' for f in argv[1:])}")
+    return 0
+
+
 if __name__ == "__main__":
     a = sys.argv[1:]
-    sys.exit(gate(a[1:]) if a[:1] == ["gate"] and len(a) >= 4 else fetch(a[1:]) if a[:1] == ["fetch"] else (print(__doc__) or 1))
+    sys.exit(gate(a[1:]) if a[:1] == ["gate"] and len(a) >= 4 else fetch(a[1:]) if a[:1] == ["fetch"] else
+             join(a[1:], _row, MOST_ROWS) if a[:1] == ["rows"] and len(a) >= 3 else
+             join(a[1:], _failure, MOST_FAILURES) if a[:1] == ["failures"] and len(a) >= 3 else (print(__doc__) or 1))

@@ -42,3 +42,4 @@ logs/
 memory/solved.jsonl
 llama.log
 cells/members/*.gguf
+cells/members/*.json

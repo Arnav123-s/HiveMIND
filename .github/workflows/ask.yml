@@ -40,11 +40,12 @@ jobs:
       AGENT_TEAM_SOLO: ${{ inputs.members == '0' && '' || inputs.members || '2' }}
     steps:
       - uses: actions/checkout@v4
-      - name: The body (cells/body.json) - its cells are the members when it has any
+      - name: The body (cells/body.json) - its trunk and the newest cell of each organ; with no cells yet, its DNA
         env:
           ROLES: ${{ inputs.roles || '' }}
         run: |
-          WHO=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']))")
+          DNA=$(python3 -c "import json; print(json.load(open('cells/body.json'))['dna'])")
+          WHO=$(python3 training/lineage.py members "$DNA" few)
           if [ -n "$WHO" ]; then
             python3 training/grow_record.py fetch "$WHO"
             echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
