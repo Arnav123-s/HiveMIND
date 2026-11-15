@@ -2,7 +2,7 @@
  "goal": "A hive of ternary nets, grown from one DNA, that does what it is asked (questions, conversation, tasks) and gets better at it by itself, generation after generation, on free CPUs.",
  "agents": {
   "A": "Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop",
-  "B": "Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7, pull request 57: training, practice, progress, this graph",
+  "B": "Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem",
   "shared": "nobody owns it: small commits, main merged first, said in the log"
  },
  "parts": [
@@ -12,6 +12,13 @@
    "file": "training/grow.py",
    "owner": "B",
    "does": "fresh tasks at the edge of what the body can do, and the tasks it got wrong before; checked work becomes rows"
+  },
+  {
+   "id": "lessons",
+   "title": "Lessons",
+   "file": "training/lessons.py",
+   "owner": "B",
+   "does": "a right program for fresh tasks of every kind the hive cannot do yet and for tasks it got wrong, each checked by the task's own check before it is taught"
   },
   {
    "id": "exam",
@@ -115,9 +122,19 @@
  ],
  "open": [
   {
+   "id": "reasoning",
+   "title": "Members disagree, or two agree on a wrong answer",
+   "owner": "B",
+   "seen": "g28 practice, 100 tasks: 19 disagreed, 10 agreed on a wrong answer, 16 no answer, 32 right; A counted 45 of 77 failures",
+   "measured_by": [
+    "score",
+    "kinds"
+   ]
+  },
+  {
    "id": "web",
    "title": "Tasks that read websites fail nearly always",
-   "owner": "",
+   "owner": "B",
    "seen": "g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3",
    "measured_by": [
     "kinds"
@@ -145,7 +162,7 @@
    "id": "deaths",
    "title": "Practice runners die mid-task",
    "owner": "A",
-   "seen": "generations 25 and 28, nothing logged; programs are now stopped at 3 GB and practice logs memory every 2 minutes",
+   "seen": "generations 25 and 28, nothing logged",
    "measured_by": []
   },
   {
@@ -178,6 +195,51 @@
   }
  ],
  "findings": [
+  {
+   "id": "typed",
+   "title": "Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528)",
+   "lives_in": "lessons",
+   "blocks": "reasoning",
+   "status": "fixed",
+   "by": "B, lessons for 12 everyday kinds where every value is computed (213 of 213 right)",
+   "seen": "g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged"
+  },
+  {
+   "id": "noheadings",
+   "title": "An agreed answer without the PART headings was accepted, so every part failed",
+   "lives_in": "members",
+   "blocks": "reasoning",
+   "status": "open",
+   "by": "A: the form check could insist on the headings before agreeing",
+   "seen": "g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing)"
+  },
+  {
+   "id": "nothingright",
+   "title": "A kind never passed had nothing to learn from, so practising it more taught nothing",
+   "lives_in": "lessons",
+   "blocks": "web",
+   "status": "fixed",
+   "by": "B, lessons: 40 of 40 right on the live sites, tasks of several parts too",
+   "seen": "g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows"
+  },
+  {
+   "id": "nothingrightfiles",
+   "title": "The same for tasks that make a file: no right program, no rows",
+   "lives_in": "lessons",
+   "blocks": "files",
+   "status": "fixed",
+   "by": "B, lessons",
+   "seen": "g27: a log into a file 0 of 2, a module 0 of 2"
+  },
+  {
+   "id": "fetchknown",
+   "title": "Members fetched a known fact from addresses they made up",
+   "lives_in": "members",
+   "blocks": "confirm",
+   "status": "open",
+   "by": "B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist",
+   "seen": "talk test 2026-11-15: the capital of Australia from api.example.com, all three members"
+  },
   {
    "id": "given",
    "title": "Data written in the task was opened as a file that does not exist",
@@ -414,6 +476,11 @@
    "from": ""
   },
   {
+   "id": "showright",
+   "rule": "A kind the hive never passes cannot be learned from its own work: show it a right program, checked by the task's own check, then let practice take over.",
+   "from": "nothingright"
+  },
+  {
    "id": "batch",
    "rule": "Classify every failure in every artifact at once, then fix all the causes in one pass: one cycle on 132 tasks found six causes that one task at a time would have taken six cycles.",
    "from": "likekeys"
@@ -429,6 +496,11 @@
    "practise",
    "Practise and dream",
    "practice"
+  ],
+  [
+   "lessons",
+   "Lessons: right programs, checked",
+   "lessons"
   ],
   [
    "gather",

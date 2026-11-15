@@ -202,18 +202,27 @@ jobs:
           path: seed
           run-id: ${{ inputs.rows_from_run }}
           github-token: ${{ github.token }}
-      - name: Every row checked so far (the release holds those of earlier generations)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Every row checked so far (the release holds those of earlier generations), and this generation's lessons
         run: |
           if [ "${{ inputs.fresh_rows }}" = "1" ]; then : > old.jsonl; else
             curl -sfL -o old.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/rows.jsonl" || : > old.jsonl
           fi
           mkdir -p new seed out
+          # every task got wrong so far (the newest 3000), for the hive to come back to, and for the lessons to show done right
+          curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
+          python3 training/grow_record.py failures out/failures.jsonl old_failures.jsonl $(find new -name failures.jsonl | sort)
+          # lessons (training/lessons.py): a right program for fresh tasks of every kind the hive cannot do yet, and for the
+          # tasks it got wrong, each put to its task's own check before it is taught; a kind with nothing right has
+          # nothing to learn from without them. They need only requests and BeautifulSoup.
+          pip install --quiet requests beautifulsoup4
+          mkdir -p new/lessons
+          python3 training/lessons.py --seed "$GEN" --per-kind 1 --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
-          # every task got wrong so far (the newest 3000), for the hive to come back to
-          curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
-          python3 training/grow_record.py failures out/failures.jsonl old_failures.jsonl $(find new -name failures.jsonl | sort)
           test -s out/rows.jsonl
       - uses: actions/upload-artifact@v4
         with:
