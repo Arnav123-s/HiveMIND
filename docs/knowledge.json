@@ -192,6 +192,13 @@
       "owner": "",
       "seen": "docs/KERNELS.md section 3",
       "measured_by": []
+    },
+    {
+      "id": "selflearn",
+      "title": "The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work",
+      "owner": "B",
+      "seen": "trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down",
+      "measured_by": []
     }
   ],
   "findings": [
@@ -326,8 +333,8 @@
       "title": "On a pure calculation's error, members were told to fetch a page and look",
       "lives_in": "members",
       "blocks": "files",
-      "status": "open",
-      "by": "A",
+      "status": "fixed",
+      "by": "A, PR 56",
       "seen": "g27: a robot simulation's IndexError; two members fetched example.com"
     },
     {
@@ -392,6 +399,87 @@
       "status": "fixed",
       "by": "PR 53",
       "seen": "the first real conversation"
+    },
+    {
+      "id": "likekeys",
+      "title": "A key that is nowhere in the data was named and nothing more",
+      "lives_in": "sandbox",
+      "blocks": "web",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "g28 practice: 'release_date' asked of PyPI in 7 tasks; now the keys like it are named (urls[0].upload_time)"
+    },
+    {
+      "id": "htmljson",
+      "title": ".json() was called on a web page",
+      "lives_in": "sandbox",
+      "blocks": "web",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "g28 practice and the trial: 9 tasks"
+    },
+    {
+      "id": "charset",
+      "title": "A page that does not say its encoding was read as Latin-1",
+      "lives_in": "sandbox",
+      "blocks": "web",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "g28 practice: '£51.77' came as 'Â£51.77' on books.toscrape.com and float() failed"
+    },
+    {
+      "id": "useragent",
+      "title": "Requests went without a User-Agent and Wikipedia refused them",
+      "lives_in": "sandbox",
+      "blocks": "web",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "g28 practice: 'Please set a user-agent'"
+    },
+    {
+      "id": "badaddress",
+      "title": "An address of None, a made-up host, a site glued to its path",
+      "lives_in": "sandbox",
+      "blocks": "web",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "g28 practice: Invalid URL 'None' twice, api.wikidata.org, books.toscrape.comcatalogue"
+    },
+    {
+      "id": "silentmodule",
+      "title": "A module was saved but its member printed nothing and gave up",
+      "lives_in": "members",
+      "blocks": "files",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "trial of g27's exam: intervals.py saved for two members, no two answers alike"
+    },
+    {
+      "id": "defsonly",
+      "title": "A program that only defines functions was taken for a typed answer and never run",
+      "lives_in": "members",
+      "blocks": "files",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "found while testing silentmodule"
+    },
+    {
+      "id": "emptysearch",
+      "title": "A search that found nothing was taken as the answer",
+      "lives_in": "members",
+      "blocks": "files",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "trial of g27's exam: 'No ERROR lines found.' on a log full of them"
+    },
+    {
+      "id": "hintlog",
+      "title": "The runtime's help was not counted, so learning on its own could not be seen",
+      "lives_in": "members",
+      "blocks": "selflearn",
+      "status": "fixed",
+      "by": "A, PR 56",
+      "seen": "2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py"
     }
   ],
   "rules": [
@@ -444,6 +532,16 @@
       "id": "machine",
       "rule": "Measure memory on a machine like the runner: this sandbox kills a process near 13 GB, the runners give 15.6 GB and the 8B's training peaks at 14.8 GB there. A kill here may be the machine, not the change: run the baseline beside it.",
       "from": "pairmemory"
+    },
+    {
+      "id": "batch",
+      "rule": "Classify every failure in every artifact at once, then fix all the causes in one pass: one cycle on 132 tasks found six causes that one task at a time would have taken six cycles.",
+      "from": "likekeys"
+    },
+    {
+      "id": "escape",
+      "rule": "Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.",
+      "from": "charset"
     }
   ],
   "hive_loop": [
