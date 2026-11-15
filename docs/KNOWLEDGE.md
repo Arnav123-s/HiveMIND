@@ -170,7 +170,7 @@ flowchart LR
 | Tasks that read websites fail nearly always | B | g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3 |
 | Little carries over to kinds never practised | unclaimed | g24 1 of 5, g27 0 of 7 |
 | Tasks that make a file fail | A | g27: edit a file 0 of 2, a log into a file 0 of 2, a module 0 of 2 |
-| Practice runners die mid-task | A | generations 25 and 28, nothing logged |
+| Practice runners die mid-task | A | generations 25 and 28 in practice, trial run 32 in an exam (job 132969873608): a web task ran 40 minutes into its limit, then the model server stopped answering ('the server does not answer when told which cell is on', then a timeout), then GitHub shut the runner down. Programs are stopped at 3 GB; practice and exams now log memory and the three largest processes every 2 minutes. For B (team/ternary.py): a server that stops answering could be restarted once instead of ending every task after it. |
 | A right answer in talk comes back as not confirmed | B | talk test 2026-11-15: Canberra and 75 days right, the second member did not agree |
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
