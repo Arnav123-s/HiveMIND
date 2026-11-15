@@ -488,6 +488,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # bf16 halves the memory and is fast where the CPU has instructions for it (AVX512-BF16); elsewhere 32-bit floats
     # may be the faster way (measured by `speed`)
     half = dtype != "f32"
+    if half and int8_base:
+        # On a CPU without the 16-bit instructions (about one free runner in four) PyTorch's 16-bit arithmetic is 10 to
+        # 16 times slower than its 32-bit, and a cell's first row took hours (three of the first twelve 8B cells were
+        # lost that way, with nothing in their logs). There the whole cell is trained in 32-bit: rows have to be
+        # about half as long to fit, and it is several times faster than crawling.
+        from training import ternary_base
+        if not ternary_base.quick16():
+            half = False
+            log("this CPU has no quick 16-bit arithmetic (no AVX512-BF16, no AMX): the cell is trained in 32-bit numbers", flush=True)
     cast = (lambda: torch.autocast("cpu", dtype=torch.bfloat16)) if half else contextlib.nullcontext
     from transformers import AutoConfig
     nl = AutoConfig.from_pretrained(src).num_hidden_layers
@@ -507,7 +516,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # that way, one runner dead, one sitting in its first long row until the job's time was up.
         import psutil
         total = psutil.virtual_memory().total / 2**30
-        fits = int((total - ternary_base.held_gb() - 2.5) * 2**30 / (len(which) * model.config.hidden_size * 2 * 46))
+        fits = int((total - ternary_base.held_gb() - 2.5) * 2**30 / (len(which) * model.config.hidden_size * (2 if half else 4) * 46))
         if fits < max_len:
             log(f"this machine has {total:.1f} GB: rows of up to {max(256, fits)} pieces fit beside the DNA (asked for {max_len})", flush=True)
             max_len = max(256, fits)
@@ -640,12 +649,44 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     log(f"{len(rows)} rows, {len(data)} within {max_len} pieces (mean {sum(d[0].shape[1] for d in data) // max(1, len(data))}); "
         f"LoRA rank {rank} on layers {which[0]}-{which[-1]} of {UNPACKED[base]}", flush=True)
     params = cell.params if cell else [p for p in model.parameters() if p.requires_grad]
+    # What machine this is, and a watch over every row. Three of the first twelve 8B cells never got past their
+    # first row (hours, until the job's time was up) and their logs said nothing. Now the log says which CPU this
+    # is, a row that takes minutes is reported with the machine's memory, and a row that takes longer than
+    # HIVE_ROW_SECONDS (25 minutes) ends the job at once, so the generation goes on with the other children.
+    try:
+        cpu = next((ln.split(":", 1)[1].strip() for ln in open("/proc/cpuinfo") if ln.startswith("model name")), "?")
+    except OSError:
+        cpu = "?"
+    if int8_base:
+        from training import ternary_base
+        log(f"this machine: {cpu}, {os.cpu_count()} threads; trained in {'16' if half else '32'}-bit numbers", flush=True)
+    else:
+        log(f"this machine: {cpu}, {os.cpu_count()} threads", flush=True)
+    beat = {"t": time.time(), "what": "its first row", "on": True}
+
+    def watch():
+        import faulthandler
+        import psutil
+        most = float(os.environ.get("HIVE_ROW_SECONDS", 1500))
+        while beat["on"]:
+            time.sleep(60)
+            idle = time.time() - beat["t"]
+            if beat["on"] and idle > 240:
+                vm, sw = psutil.virtual_memory(), psutil.swap_memory()
+                log(f"still in {beat['what']} after {idle:.0f} s; memory free {vm.available / 2**30:.1f} GB, swap used {sw.used / 2**30:.1f} GB, load {os.getloadavg()[0]:.1f}", flush=True)
+            if beat["on"] and idle > most:
+                log(f"one row has taken more than {most:.0f} s: this machine cannot train this cell. The job ends here so that the generation goes on without it.", flush=True)
+                faulthandler.dump_traceback(all_threads=True)
+                os._exit(3)
+    import threading
+    threading.Thread(target=watch, daemon=True).start()
     if minutes and data:
         # Runners differ in speed by several times. One row is timed, and the passes are cut to what fits the time
-        # given (a job that runs out of time leaves nothing behind).
+        # given (a job that runs out of time leaves nothing behind). A row of middling length: the longest one is
+        # where a machine short of memory stalls, and the plan is made from the mean anyway.
         t = time.time()
         with cast():
-            big = max(data, key=lambda d: d[0].shape[1])
+            big = sorted(data, key=lambda d: d[0].shape[1])[len(data) // 2]
             model(input_ids=big[0], logits_to_keep=big[1] + 1).logits.float().mean().backward()
         model.zero_grad()
         per = (time.time() - t) * (sum(d[0].shape[1] for d in data) / len(data)) / big[0].shape[1]
@@ -681,6 +722,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             order = order[:i]
             break
         ids, k = data[idx][:2]
+        beat["t"], beat["what"] = time.time(), f"row {i + 1} of {len(order)} ({ids.shape[1]} pieces)"
         with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
@@ -716,6 +758,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             if step % 5 == 0 or step == steps:
                 import resource
                 log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB", flush=True)
+    beat["on"] = False
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
     if ternary_edit:

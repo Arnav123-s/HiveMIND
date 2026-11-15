@@ -265,7 +265,7 @@ jobs:
     needs: [gather, plan]
     if: ${{ !cancelled() && needs.gather.result == 'success' && needs.plan.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
-    timeout-minutes: 250  # 170 minutes of training and what comes before it; a runner that hangs is given up sooner
+    timeout-minutes: 250  # 170 minutes of training and what comes before it; a row that stalls ends the job itself (grow.train)
     strategy:
       fail-fast: false
       matrix:
@@ -326,8 +326,9 @@ jobs:
 
   merge:
     needs: [plan, train]
-    # only a body that multiplies has a trunk; it is made of the children that did grow when a runner failed
-    if: ${{ !cancelled() && needs.plan.outputs.grow && !inputs.cells_from_run && (needs.train.result == 'success' || needs.train.result == 'failure') }}
+    # only a body that multiplies has a trunk; it is made of the children that did grow when a runner failed or ran
+    # out of time (generation 25 was lost whole because one child's job timed out and every later job was skipped)
+    if: ${{ !cancelled() && needs.plan.outputs.grow && (inputs.cells_from_run || needs.train.result != 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -336,6 +337,8 @@ jobs:
         with:
           pattern: cell-*
           path: got
+          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          github-token: ${{ github.token }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -377,7 +380,7 @@ jobs:
   gate:
     needs: [plan, train, merge]
     # a body that multiplies goes on with the children that did grow when one runner failed
-    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result == 'failure')) }}
+    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
@@ -401,7 +404,7 @@ jobs:
           pattern: versus-*
           path: vs
       - uses: actions/download-artifact@v4
-        if: ${{ needs.plan.outputs.grow && !inputs.cells_from_run }}
+        if: ${{ needs.plan.outputs.grow }}
         with:
           pattern: trunk
           path: tr
@@ -473,7 +476,7 @@ jobs:
 
   record:
     needs: [plan, train, merge, gate]
-    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result == 'failure')) }}
+    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -497,7 +500,7 @@ jobs:
           pattern: gate-*-[0-9]
           path: gate
       - uses: actions/download-artifact@v4
-        if: ${{ needs.plan.outputs.grow && !inputs.cells_from_run }}
+        if: ${{ needs.plan.outputs.grow }}
         with:
           pattern: trunk
           path: tr

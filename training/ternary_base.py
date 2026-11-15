@@ -56,8 +56,40 @@ void hive_deq16(const int8_t *codes, const uint16_t *scale, uint16_t *out, long 
         }
     }
 }
+void hive_deq32(const int8_t *codes, const uint32_t *scale, uint32_t *out, long r0, long r1, long inp, long group) {
+    for (long r = r0; r < r1; r++) {
+        const int8_t *c = codes + r * inp;
+        const uint32_t *s = scale + r * (inp / group);
+        uint32_t *o = out + r * inp;
+        for (long g = 0; g < inp / group; g++) {
+            const uint32_t sb = s[g];
+            for (long i = 0; i < group; i++) {
+                const int32_t ci = c[g * group + i];
+                o[g * group + i] = (sb ^ ((uint32_t)ci & 0x80000000u)) & (uint32_t)(-(ci & 1));
+            }
+        }
+    }
+}
 """
 _kernel, _pool, _scratch = None, None, {}
+_quick16 = None
+
+
+def quick16():
+    """Whether this CPU multiplies 16-bit numbers quickly (the AVX512-BF16 or AMX instructions). Without them
+    PyTorch's 16-bit multiplying is 10 to 16 times slower than its 32-bit (measured 2026-11-15), and about one
+    free runner in four is such a machine: there the big multiplications are done in 32-bit, and what is kept
+    between layers stays 16-bit. HIVE_MATMUL=f32 or bf16 says it by hand."""
+    global _quick16
+    if _quick16 is None:
+        import os
+        said = os.environ.get("HIVE_MATMUL", "")
+        try:
+            flags = open("/proc/cpuinfo").read()
+        except OSError:
+            flags = ""
+        _quick16 = said == "bf16" or (said != "f32" and ("avx512_bf16" in flags or "amx_bf16" in flags))
+    return _quick16
 
 
 def kernel():
@@ -83,32 +115,44 @@ def kernel():
             subprocess.run(["cc", "-O3", "-march=native", "-shared", "-fPIC", "-o", str(tmp), str(src)], check=True, capture_output=True, timeout=120)
             os.replace(tmp, so)
         lib = ctypes.CDLL(str(so))
-        lib.hive_deq16.argtypes = [ctypes.c_void_p] * 3 + [ctypes.c_long] * 4
-        lib.hive_deq16.restype = None
+        for f in (lib.hive_deq16, lib.hive_deq32):
+            f.argtypes = [ctypes.c_void_p] * 3 + [ctypes.c_long] * 4
+            f.restype = None
         from concurrent.futures import ThreadPoolExecutor
         _pool = ThreadPoolExecutor(max(1, torch.get_num_threads()))
-        _kernel = lib.hive_deq16
-    except (OSError, subprocess.SubprocessError):
+        _kernel = {torch.bfloat16: lib.hive_deq16, torch.float32: lib.hive_deq32}
+    except (OSError, subprocess.SubprocessError, AttributeError):
         _kernel = False
     return _kernel or None
 
 
 def _deq(codes, scale, dtype):
-    """The numbers of a layer held as codes. In 16-bit: written by the C routine into one buffer for each shape of
-    matrix, used again at every call (the caller multiplies with it at once and keeps no reference to it)."""
+    """The numbers of a layer held as codes, as 16-bit or 32-bit numbers. Written by the C routine into one buffer
+    for each shape and type of matrix, used again at every call (the caller multiplies with it at once and keeps
+    no reference to it)."""
     out, inp = codes.shape
-    fast = kernel() if (dtype == torch.bfloat16 and scale.dtype == torch.bfloat16 and out * inp >= 1 << 20
-                        and codes.is_contiguous() and scale.is_contiguous()) else None
+    fast = (kernel() or {}).get(dtype) if (scale.dtype == torch.bfloat16 and out * inp >= 1 << 20 and codes.is_contiguous() and scale.is_contiguous()) else None
     if fast is None:
         return (codes.view(out, inp // GROUP, GROUP).to(dtype) * scale.view(out, inp // GROUP, 1).to(dtype)).view(out, inp)
-    buf = _scratch.get((out, inp))
+    buf = _scratch.get((out, inp, dtype))
     if buf is None:
-        buf = _scratch[(out, inp)] = torch.empty(out, inp, dtype=torch.bfloat16)
+        buf = _scratch[(out, inp, dtype)] = torch.empty(out, inp, dtype=dtype)
+    if dtype != torch.bfloat16:
+        scale = scale.float()  # one number a group: small
     n = _pool._max_workers
     step = -(-out // n)
     c, sc, o = codes.data_ptr(), scale.data_ptr(), buf.data_ptr()
     list(_pool.map(lambda r0: fast(c, sc, o, r0, min(out, r0 + step), inp, GROUP), range(0, out, step)))
     return buf
+
+
+def _times(x, codes, scale, t):
+    """x times the layer (t: its transpose), multiplied in the type this CPU is quick in; the result in x's type."""
+    if x.dtype == torch.bfloat16 and not quick16():
+        w = _deq(codes, scale, torch.float32)
+        return (x.float() @ (w.t() if t else w)).to(x.dtype)
+    w = _deq(codes, scale, x.dtype)
+    return x @ (w.t() if t else w)
 
 
 def _codes(w):
@@ -134,17 +178,17 @@ class _Matmul(torch.autograd.Function):
     def forward(ctx, x, codes, scale):
         ctx.save_for_backward(codes, scale)
         if codes.shape[0] <= SLICE:
-            return x @ _deq(codes, scale, x.dtype).t()
-        return torch.cat([x @ _deq(codes[i:i + SLICE], scale[i:i + SLICE], x.dtype).t() for i in range(0, codes.shape[0], SLICE)], -1)  # each slice is used before the next is made
+            return _times(x, codes, scale, True)
+        return torch.cat([_times(x, codes[i:i + SLICE], scale[i:i + SLICE], True) for i in range(0, codes.shape[0], SLICE)], -1)  # each slice is used before the next is made
 
     @staticmethod
     def backward(ctx, g):
         codes, scale = ctx.saved_tensors
         if codes.shape[0] <= SLICE:
-            return g @ _deq(codes, scale, g.dtype), None, None
+            return _times(g, codes, scale, False), None, None
         out = None
         for i in range(0, codes.shape[0], SLICE):
-            part = g[..., i:i + SLICE] @ _deq(codes[i:i + SLICE], scale[i:i + SLICE], g.dtype)
+            part = _times(g[..., i:i + SLICE], codes[i:i + SLICE], scale[i:i + SLICE], False)
             out = part if out is None else out + part
         return out, None, None
 
