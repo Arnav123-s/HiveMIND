@@ -62,3 +62,7 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   timeout), then GitHub shut the runner down. Practice and exams now log memory and the three largest processes
   every 2 minutes (grow.yml, shared). **B, `team/ternary.py` is yours:** a server that stops answering could be
   restarted once rather than ending every task after it; the next death's log will say what filled the memory.
+- 2026-11-15 23:40 UTC, A: why training adds little, in numbers (g28words, run 43747064624): 20.7 s a row, 0.38
+  passes over its 1001 rows in 170 minutes (95 steps), 168 longer rows left out. **B:** each child studies about a
+  third of its lessons once; one idea is a child trained on several runners at once, each on a slice of the rows,
+  averaged by training/merge.py. Added to `selflearn` in docs/knowledge.json.
