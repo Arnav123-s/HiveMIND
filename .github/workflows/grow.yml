@@ -284,6 +284,9 @@ jobs:
     if: ${{ !cancelled() && needs.gather.result == 'success' && needs.plan.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
     timeout-minutes: 250  # 170 minutes of training and what comes before it; a row that stalls ends the job itself (grow.train)
+    permissions:
+      contents: write  # the order to the owner's Colab notebook, and its answer, pass through the release (training/colab.py)
+      actions: read
     strategy:
       fail-fast: false
       matrix:
@@ -311,6 +314,7 @@ jobs:
       - name: Grow the cell
         env:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
+          GH_TOKEN: ${{ github.token }}
           NAME: ${{ matrix.child.name }}
           ORGAN: ${{ matrix.child.organ }}
           P: ${{ matrix.child.parent }}
@@ -335,9 +339,27 @@ jobs:
           # raw data (training/raw.py): web pages, Wikipedia, open code and real code fixes, each measured by the DNA's own
           # error and only the middle band read; and answers people voted on, best beside worst. Repository variables
           # HIVE_READ and HIVE_JUDGED set how many (0: none); a versus trial's own --read/--judged come first and win.
-          python training/grow.py train $VERSUS $PARENT $TRUNK --read "${{ vars.HIVE_READ || '40' }}" --judged "${{ vars.HIVE_JUDGED || '10' }}" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "${{ inputs.epochs || '2' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
-          mkdir out && cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
-          cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
+          READ="${{ vars.HIVE_READ || '40' }}"; JUDGED="${{ vars.HIVE_JUDGED || '10' }}"; EPOCHS="${{ inputs.epochs || '2' }}"
+          # a GPU, when the owner's Colab notebook is there (training/colab.py, colab/hive_gpu.ipynb): the child is grown on it
+          # in minutes. With no notebook, or no cell back within 90 minutes, this runner trains it as always, in the time left.
+          COLAB=""; MIN=170
+          if [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+            T0=$(date +%s)
+            PA=""; [ -n "$P" ] && PA="$DNA.$P.safetensors"
+            TA=""; [[ "$T" =~ ^g[0-9]+trunk$ ]] && TA="$DNA.$T.safetensors"
+            if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes 60; then
+              python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=1
+            fi
+            MIN=$(( 170 - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
+          fi
+          mkdir -p out
+          if [ -n "$COLAB" ]; then
+            cp colab_out/* out/ && echo "grown on the owner's Colab GPU" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            python training/grow.py train $VERSUS $PARENT $TRUNK --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
+            cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
+            cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
+          fi
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:

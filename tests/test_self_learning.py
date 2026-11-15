@@ -65,7 +65,10 @@ def test_lessons_start_a_kind_and_stop_once_the_hive_has_right_programs_of_its_o
 def test_every_child_reads_raw_data_and_answers_people_judged_and_dreams_try_twice():
     flow = (ROOT / ".github" / "workflows" / "grow.yml").read_text()
     train = next(ln for ln in flow.splitlines() if "python training/grow.py train" in ln)
-    assert "--read \"${{ vars.HIVE_READ || '40' }}\"" in train and "--judged \"${{ vars.HIVE_JUDGED || '10' }}\"" in train
+    assert "READ=\"${{ vars.HIVE_READ || '40' }}\"; JUDGED=\"${{ vars.HIVE_JUDGED || '10' }}\"" in flow
+    assert '--read "$READ" --judged "$JUDGED"' in train
     assert train.index("$VERSUS") < train.index("--read")  # a versus trial's own --read comes first and wins
+    order = next(ln for ln in flow.splitlines() if "training/colab.py order" in ln)
+    assert '--read "$READ" --judged "$JUDGED"' in order  # a child grown on the Colab GPU reads as much as one grown here
     assert "grow.py dream" in flow and "--tries 2" in flow
     assert "--own-rows old.jsonl" in flow  # lessons count what the hive found itself

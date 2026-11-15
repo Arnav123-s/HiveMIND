@@ -465,7 +465,8 @@ class _Prefix:
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell="",
           trunk="", pull=0.5, gen="", fresh=2):
-    """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
+    """A LoRA weight edit of a ternary member from the hive's rows, on a CPU (or a GPU where there is one, without
+    --int8-base: a Colab notebook, training/colab.py); written as a GGUF adapter the
     ternary runtime loads beside the packed base.
 
     parent: the edit the child starts as. trunk: the body's shared edit (training/merge.py); the child then starts
@@ -524,7 +525,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if not ternary_base.quick16():
             half = False
             log("this CPU has no quick 16-bit arithmetic (no AVX512-BF16, no AMX): the cell is trained in 32-bit numbers", flush=True)
-    cast = (lambda: torch.autocast("cpu", dtype=torch.bfloat16)) if half else contextlib.nullcontext
+    # a GPU where there is one (a Colab notebook, training/colab.py): the DNA in 16-bit numbers on it, the same LoRA
+    # in the same layout as on a CPU, so a cell grown there is a cell like any other
+    gpu = torch.cuda.is_available() and not int8_base and os.environ.get("HIVE_GPU", "1") != "0"
+    dev = torch.device("cuda" if gpu else "cpu")
+    cast = (lambda: torch.autocast(dev.type, dtype=torch.bfloat16)) if half else contextlib.nullcontext
     from transformers import AutoConfig
     nl = AutoConfig.from_pretrained(src).num_hidden_layers
     which = (list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else
@@ -548,7 +553,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             log(f"this machine has {total:.1f} GB: rows of up to {max(256, fits)} pieces fit beside the DNA (asked for {max_len})", flush=True)
             max_len = max(256, fits)
     else:
-        model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32)
+        model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32).to(dev)
         model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
                                                  target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]))
     if ternary_edit:
@@ -665,8 +670,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 continue
             x = torch.tensor([ids])
             with torch.no_grad(), cast():
-                lg = model(input_ids=x, logits_to_keep=len(ids)).logits[:, :-1, :]
-                loss_r = torch.nn.functional.cross_entropy(lg.float().reshape(-1, lg.size(-1)), x[:, 1:].reshape(-1)).item()
+                lg = model(input_ids=x.to(dev), logits_to_keep=len(ids)).logits[:, :-1, :]
+                loss_r = torch.nn.functional.cross_entropy(lg.float().reshape(-1, lg.size(-1)), x[:, 1:].reshape(-1).to(dev)).item()
             scored.append((loss_r, (x, len(ids) - 1)))
         model.train()
         chosen = raw.pick(scored, read)
@@ -692,6 +697,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if int8_base:
         from training import ternary_base
         log(f"this machine: {cpu}, {os.cpu_count()} threads; trained in {'16' if half else '32'}-bit numbers", flush=True)
+    elif gpu:
+        log(f"this machine: {torch.cuda.get_device_name(0)} ({torch.cuda.get_device_properties(0).total_memory / 2**30:.0f} GB), trained on the GPU", flush=True)
     else:
         log(f"this machine: {cpu}, {os.cpu_count()} threads", flush=True)
     beat = {"t": time.time(), "what": "its first row", "on": True}
@@ -719,7 +726,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         t = time.time()
         with cast():
             big = sorted(data, key=lambda d: d[0].shape[1])[len(data) // 2]
-            model(input_ids=big[0], logits_to_keep=big[1] + 1).logits.float().mean().backward()
+            model(input_ids=big[0].to(dev), logits_to_keep=big[1] + 1).logits.float().mean().backward()
         model.zero_grad()
         per = (time.time() - t) * (sum(d[0].shape[1] for d in data) / len(data)) / big[0].shape[1]
         fit = minutes * 60 / max(per, 1e-3) / len(data)
@@ -744,7 +751,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     model.train()
     # not with recomputation (checkpoint): a layer recomputed on the way back would be fed the wrong input
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
-              if which[0] > 0 and not checkpoint and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
+              if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
     t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
     for i, idx in enumerate(order):
         if minutes and time.time() - born > minutes * 60:
@@ -754,6 +761,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             order = order[:i]
             break
         ids, k = data[idx][:2]
+        ids = ids.to(dev)
         beat["t"], beat["what"] = time.time(), f"row {i + 1} of {len(order)} ({ids.shape[1]} pieces)"
         with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
@@ -762,6 +770,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             # a right and a wrong program for the same task: DPO, with the plain loss on the right one kept beside it
             # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
             wid, wk = data[idx][2:]
+            wid = wid.to(dev)
             def seq(x, n, lg=None):
                 if lg is None:
                     with (prefix.use(x) if prefix else contextlib.nullcontext()):
@@ -789,7 +798,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             running = 0.0
             if step % 5 == 0 or step == steps:
                 import resource
-                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB", flush=True)
+                on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
+                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
     beat["on"] = False
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
@@ -808,7 +818,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
-            "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
+            "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
+            "gpu": torch.cuda.get_device_name(0) if gpu else ""}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     where = Path(out_dir or ternary.ADAPTERS)
