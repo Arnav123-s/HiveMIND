@@ -1,0 +1,2 @@
+cycle,started,ended,minutes,failures_read,causes_found,fixes_shipped,tests_passing,wasted_runs,score_before,score_after,note
+1,2026-11-15 20:37,2026-11-15 21:20,43,32,6,5,262,2,15/32,,"runtime: given data, modules, deeper keys, joined links, repeated pages"

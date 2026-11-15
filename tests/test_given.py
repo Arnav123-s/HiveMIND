@@ -107,3 +107,10 @@ def test_a_loop_on_one_page_is_seen(tmp_path, monkeypatch):
         srv.shutdown()
     assert "HIVE-SAME" not in once["stderr"]
     assert f"HIVE-SAME: {url} was fetched 5 times" in loop["stderr"]
+
+
+def test_the_program_hook_parses():
+    import ast
+
+    from team.tools.sandbox import _HOOK_SRC
+    ast.parse(_HOOK_SRC)  # a stray escape once broke it for every program
