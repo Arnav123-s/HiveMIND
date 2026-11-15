@@ -131,6 +131,10 @@ def alike(task, most=2, least=0.3):
             out.append((bool(r.get("checked")), score, r))
     return [r for _, _, r in sorted(out, key=lambda x: (x[0], x[1]), reverse=True)[:most]]
 FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
+# a search that came back empty where the TASK says there is something (seen in a trial of the g27 exam: a log's
+# lines split and the level read from the wrong place; "No ERROR lines found.", and max() of nothing)
+EMPTY = re.compile(r"\bno\b[^.\n]{0,40}\bfound\b|max\(\) (iterable )?arg\w* is (an )?empty|min\(\) (iterable )?arg\w* is (an )?empty|"
+                   r"\bfound nothing\b|\bnothing found\b", re.I)
 LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
 
 
@@ -258,7 +262,8 @@ def typed_out(reply, code):
         tree = ast.parse(code)
     except (SyntaxError, ValueError):
         return "```" not in reply
-    return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
+    # a program that only defines functions calls nothing too, and is a program (a module the TASK asks for)
+    return not any(isinstance(x, (ast.Call, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for x in ast.walk(tree))
 
 
 def module(task, code, work, board=None, n=0):
@@ -374,8 +379,16 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             res = dict(res, returncode=1)
             err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
                    "the page. Print what the page really holds and look.")
-        if res["returncode"] == 0:
-            module(task, code, work, board, n)
+        saved = module(task, code, work, board, n) if res["returncode"] == 0 else ""
+        if saved and not out:
+            # Seen in a trial of the g27 exam: the module was saved from two members' programs, which defined the
+            # functions and printed nothing; told "it printed nothing" twice, both gave up, and with no two answers
+            # alike the module was never counted
+            last_error = None
+            messages += [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                         {"role": "user", "content": f"Your functions are saved as {saved}. Now reply with a short program that "
+                          f"imports {saved[:-3]}, calls the functions as the TASK asks, and prints each value it asks for."}]
+            continue
         lacking = [f for f in wanted(task) if not (Path(work) / f).is_file() or not (Path(work) / f).stat().st_size]
         if res["returncode"] == 0 and lacking:
             # Seen on the first hard sitting (seed 7001): asked to "save it as durations.py", both members wrote the
@@ -383,6 +396,9 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             res = dict(res, returncode=1)
             err = (f"The TASK asks for the file {lacking[0]} saved in the current folder, and it is not there. Reply with the complete "
                    f"program that writes {lacking[0]} (with open({lacking[0]!r}, 'w')), then uses it, and prints the answer.")
+        if res["returncode"] == 0 and out and len(out) < 300 and EMPTY.search(out) and not EMPTY.search(task):
+            res = dict(res, returncode=1)
+            err = f"The program found nothing: {out.strip()[-200:]}"
         failed = FAILED.search(out) if res["returncode"] == 0 and out and len(out) < 400 else None
         if failed and failed.group(0).lower() not in task.lower():  # (a task about ERROR lines is answered with the word error)
             # a program that catches its own error and prints it has not answered ("The 'upload_time' key does not
@@ -413,6 +429,9 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
         looking = bool(LOOK.search(err or out))
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
+            "\n\nThe program found nothing where the TASK says there is something, so it reads the data wrongly. Reply "
+            "with a short program that prints the first 3 items it looks through and how it splits them (for a line of "
+            "text: print(line.split())), so you see their real shape. Then fix the program." if EMPTY.search(err or out) else
             "\n\nWhat you expected is not there. Reply with a short program that only fetches the data and calls look(data) "
             "(look is built in: for JSON it prints the keys, nested; for a web page pass response.text and it prints the links "
             "and the text). Then you see what IS there." if LOOK.search(err or out) else

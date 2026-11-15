@@ -122,3 +122,36 @@ def test_a_program_that_fills_memory_is_stopped(tmp_path, monkeypatch):
     r = run_python("x = bytearray(600 * 2**20)\nx[::4096] = b'1' * len(x[::4096])\nimport time\ntime.sleep(5)\nprint('done')",
                    tmp_path, name="big.py", timeout=30)
     assert r["returncode"] != 0 and "MEMORY" in r["stderr"] and "done" not in r["stdout"]
+
+
+def _scripted(monkeypatch, tmp_path, task, replies):
+    """The member loop driven by a model that says the given replies in turn; returns the try and what it was told."""
+    from team import solo
+    from team.board import Board
+    from team.guard import Guard
+    said = iter(replies)
+    monkeypatch.setattr(solo.ternary, "chat", lambda who, messages, **k: next(said))
+    board = Board(tmp_path / "run")
+    t = solo.member(task, 2, board, Guard(board, "never", goal=task, use_model=False), tmp_path / "run" / "w", 0.0, "t80+x")
+    return t, [m["content"] for m in t["messages"] if m["role"] == "user"]
+
+
+def test_after_its_module_is_saved_a_member_is_told_to_use_it(tmp_path, monkeypatch):
+    task = "Write a Python module and save it as twice.py with a function double(x). Then print double(21)."
+    t, told = _scripted(monkeypatch, tmp_path, task, [
+        "```python\ndef double(x):\n    return 2 * x\n```",
+        "```python\nimport twice\nprint(twice.double(21))\n```",
+        "DONE"])
+    assert any("saved as twice.py" in m for m in told)
+    assert t["answer"].strip() == "42" and (tmp_path / "run" / "w" / "twice.py").is_file()
+
+
+def test_a_search_that_found_nothing_is_told_to_look_at_the_data(tmp_path, monkeypatch):
+    task = ("Here is a log:\n2026-01-11 08:01:58 ERROR auth: disk full\n2026-01-11 09:13:03 WARN search: disk full\n"
+            "Tell me how many ERROR lines there are.")
+    t, told = _scripted(monkeypatch, tmp_path, task, [
+        "```python\nprint('No ERROR lines found.')\n```",
+        "```python\nprint('1')\n```",
+        "DONE"])
+    assert any("prints the first 3 items" in m for m in told)
+    assert t["answer"].strip() == "1"
