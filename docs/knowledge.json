@@ -21,6 +21,13 @@
       "does": "a right program for fresh tasks of every kind the hive cannot do yet and for tasks it got wrong, each checked by the task's own check before it is taught"
     },
     {
+      "id": "raw",
+      "title": "Reading raw data",
+      "file": "training/raw.py",
+      "owner": "B",
+      "does": "web pages, Wikipedia, open code and real code fixes, each measured by the DNA's own error and only the middle band read; answers people voted on, best beside worst"
+    },
+    {
       "id": "exam",
       "title": "Tasks and their checks",
       "file": "training/exam.py",
@@ -188,6 +195,42 @@
     }
   ],
   "findings": [
+    {
+      "id": "rawoff",
+      "title": "Reading raw data and people's judged answers were built and never switched on in the line",
+      "lives_in": "raw",
+      "blocks": "carryover",
+      "status": "fixed",
+      "by": "B: every child now reads 40 raw pieces and 10 judged pairs (repository variables HIVE_READ, HIVE_JUDGED)",
+      "seen": "built 2026-11-14 on the 1.7B, never measured; first run on the 8B here: 36 drawn, measured, 12 kept"
+    },
+    {
+      "id": "pairmemory",
+      "title": "A judged pair was capped as if it were one answer, though both are held while trained",
+      "lives_in": "train",
+      "blocks": "carryover",
+      "status": "fixed",
+      "by": "B: a pair must fit one row's memory as a whole; judged texts cut to 900 characters",
+      "seen": "the first 8B test with judged pairs (the machine's limit was the larger cause: see the rule)"
+    },
+    {
+      "id": "teacherforever",
+      "title": "Lessons would have taught every kind for ever, though the hive can learn most from its own work",
+      "lives_in": "lessons",
+      "blocks": "carryover",
+      "status": "fixed",
+      "by": "B: lessons stop for a kind once the hive has 3 right programs of its own",
+      "seen": "g28 rows: 15 of 23 kinds already had their own right programs; 8 had none (websites, files, the open web)"
+    },
+    {
+      "id": "dreamonce",
+      "title": "A dream took a failed task once; one cell that cannot see through it gave up the task for the night",
+      "lives_in": "practice",
+      "blocks": "reasoning",
+      "status": "fixed",
+      "by": "B: two tries, the second with another cell beside the trunk",
+      "seen": "g28: 5 of 24 dreams corrected in one try"
+    },
     {
       "id": "typed",
       "title": "Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528)",
@@ -391,6 +434,16 @@
       "id": "showright",
       "rule": "A kind the hive never passes cannot be learned from its own work: show it a right program, checked by the task's own check, then let practice take over.",
       "from": "nothingright"
+    },
+    {
+      "id": "ownfirst",
+      "rule": "The hive learns from its own checked work first; a lesson only starts a kind where it has nothing right of its own, and stops when it has.",
+      "from": "teacherforever"
+    },
+    {
+      "id": "machine",
+      "rule": "Measure memory on a machine like the runner: this sandbox kills a process near 13 GB, the runners give 15.6 GB and the 8B's training peaks at 14.8 GB there. A kill here may be the machine, not the change: run the baseline beside it.",
+      "from": "pairmemory"
     }
   ],
   "hive_loop": [
@@ -401,7 +454,7 @@
     ],
     [
       "lessons",
-      "Lessons: right programs, checked",
+      "Lessons, only where it has nothing right of its own",
       "lessons"
     ],
     [
@@ -413,6 +466,11 @@
       "plan",
       "Plan the children",
       "lineage"
+    ],
+    [
+      "read",
+      "Read raw data and judged answers",
+      "raw"
     ],
     [
       "trainc",

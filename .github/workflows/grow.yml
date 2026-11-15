@@ -147,7 +147,7 @@ jobs:
           curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
           DREAMS="${{ inputs.dreams || '4' }}"
           if [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] && [ "$DREAMS" -gt 0 ] && [ -s old_failures.jsonl ]; then
-            python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "$DREAMS" --minutes 40 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
+            python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "$DREAMS" --tries 2 --minutes 60 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
             tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
           fi
           python training/grow.py practice --seed $((10000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "${{ inputs.tasks || '16' }}" --minutes 210 --level "$LEVEL" --out rows.jsonl | tee practice.txt
@@ -205,12 +205,12 @@ jobs:
           # every task got wrong so far (the newest 3000), for the hive to come back to, and for the lessons to show done right
           curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
           python3 training/grow_record.py failures out/failures.jsonl old_failures.jsonl $(find new -name failures.jsonl | sort)
-          # lessons (training/lessons.py): a right program for fresh tasks of every kind the hive cannot do yet, and for the
-          # tasks it got wrong, each put to its task's own check before it is taught; a kind with nothing right has
-          # nothing to learn from without them. They need only requests and BeautifulSoup.
+          # lessons (training/lessons.py) only start a kind: a right program, checked by the task's own check, for a kind
+          # where the hive has fewer than 3 right programs of its own (with none it has nothing to learn from). Once it
+          # has its own, its practice and dreams carry the kind and the lessons stop. Only requests and BeautifulSoup.
           pip install --quiet requests beautifulsoup4
           mkdir -p new/lessons
-          python3 training/lessons.py --seed "$GEN" --per-kind 1 --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          python3 training/lessons.py --seed "$GEN" --per-kind 1 --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
@@ -323,7 +323,10 @@ jobs:
             if curl -sfL -o trunk.safetensors "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/$DNA.$T.safetensors"; then TRUNK="--trunk trunk.safetensors"; echo "trunk: $T" | tee -a "$GITHUB_STEP_SUMMARY"
             else echo "::warning::the trunk $T has no weights in the release; the child starts from its parent alone"; fi
           fi
-          python training/grow.py train $VERSUS $PARENT $TRUNK --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "${{ inputs.epochs || '2' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
+          # raw data (training/raw.py): web pages, Wikipedia, open code and real code fixes, each measured by the DNA's own
+          # error and only the middle band read; and answers people voted on, best beside worst. Repository variables
+          # HIVE_READ and HIVE_JUDGED set how many (0: none); a versus trial's own --read/--judged come first and win.
+          python training/grow.py train $VERSUS $PARENT $TRUNK --read "${{ vars.HIVE_READ || '40' }}" --judged "${{ vars.HIVE_JUDGED || '10' }}" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "${{ inputs.epochs || '2' }}" --minutes 170 ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
           mkdir out && cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
           cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"

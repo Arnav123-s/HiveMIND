@@ -11,9 +11,10 @@ It runs by itself on GitHub (`.github/workflows/grow.yml`), one generation after
 ```mermaid
 flowchart LR
   practise["Practise and dream<br/>training/grow.py"]
-  lessons["Lessons: right programs, checked<br/>training/lessons.py"]
+  lessons["Lessons, only where it has nothing right of its own<br/>training/lessons.py"]
   gather["Gather checked rows<br/>training/grow.py"]
   plan["Plan the children<br/>training/lineage.py"]
+  read["Read raw data and judged answers<br/>training/raw.py"]
   trainc["Train each child<br/>training/ternary_base.py"]
   trunk["Merge the trunk<br/>training/merge.py"]
   pulse["Exam of the grown body<br/>training/exam.py"]
@@ -22,7 +23,8 @@ flowchart LR
   practise --> lessons
   lessons --> gather
   gather --> plan
-  plan --> trainc
+  plan --> read
+  read --> trainc
   trainc --> trunk
   trunk --> pulse
   pulse --> recordg
@@ -92,12 +94,17 @@ flowchart LR
   m_carry[/"Never-practised kinds passed"/]
   m_kinds[/"Every kind of task, weakest first"/]
   subgraph p_practice["grow.py (B)"]
+    f_dreamonce["A dream took a failed task once; one cell that cannot see through it gave up the task for the night"]:::fixed
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
   end
   subgraph p_lessons["lessons.py (B)"]
+    f_teacherforever["Lessons would have taught every kind for ever, though the hive can learn most from its own work"]:::fixed
     f_typed["Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528)"]:::fixed
     f_nothingright["A kind never passed had nothing to learn from, so practising it more taught nothing"]:::fixed
     f_nothingrightfiles["The same for tasks that make a file: no right program, no rows"]:::fixed
+  end
+  subgraph p_raw["raw.py (B)"]
+    f_rawoff["Reading raw data and people's judged answers were built and never switched on in the line"]:::fixed
   end
   subgraph p_members["solo.py (A)"]
     f_noheadings["An agreed answer without the PART headings was accepted, so every part failed"]:::open
@@ -113,6 +120,7 @@ flowchart LR
     f_memory["A runaway program could fill the runner's memory"]:::fixed
   end
   subgraph p_train["ternary_base.py (B)"]
+    f_pairmemory["A judged pair was capped as if it were one answer, though both are held while trained"]:::fixed
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
   end
@@ -125,6 +133,10 @@ flowchart LR
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
   end
+  f_rawoff -->|blocked| carryover
+  f_pairmemory -->|blocked| carryover
+  f_teacherforever -->|blocked| carryover
+  f_dreamonce -->|blocked| reasoning
   f_typed -->|blocked| reasoning
   f_noheadings -->|blocks| reasoning
   f_nothingright -->|blocked| web
@@ -155,13 +167,17 @@ flowchart LR
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
 
-## Causes found (3 open, 15 fixed)
+## Causes found (3 open, 19 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
 | An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` | open | A: the form check could insist on the headings before agreeing | g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing) |
 | Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
 | On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` | open | A | g27: a robot simulation's IndexError; two members fetched example.com |
+| Reading raw data and people's judged answers were built and never switched on in the line | `training/raw.py` | fixed | B: every child now reads 40 raw pieces and 10 judged pairs (repository variables HIVE_READ, HIVE_JUDGED) | built 2026-11-14 on the 1.7B, never measured; first run on the 8B here: 36 drawn, measured, 12 kept |
+| A judged pair was capped as if it were one answer, though both are held while trained | `training/ternary_base.py` | fixed | B: a pair must fit one row's memory as a whole; judged texts cut to 900 characters | the first 8B test with judged pairs (the machine's limit was the larger cause: see the rule) |
+| Lessons would have taught every kind for ever, though the hive can learn most from its own work | `training/lessons.py` | fixed | B: lessons stop for a kind once the hive has 3 right programs of its own | g28 rows: 15 of 23 kinds already had their own right programs; 8 had none (websites, files, the open web) |
+| A dream took a failed task once; one cell that cannot see through it gave up the task for the night | `training/grow.py` | fixed | B: two tries, the second with another cell beside the trunk | g28: 5 of 24 dreams corrected in one try |
 | Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528) | `training/lessons.py` | fixed | B, lessons for 12 everyday kinds where every value is computed (213 of 213 right) | g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged |
 | A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons: 40 of 40 right on the live sites, tasks of several parts too | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
 | The same for tasks that make a file: no right program, no rows | `training/lessons.py` | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
@@ -188,6 +204,8 @@ flowchart LR
 - Making every kind of task fetches live pages: a test that makes them all needs offline makers.
 - Start long checks in the background and do the next piece of work while they run.
 - A kind the hive never passes cannot be learned from its own work: show it a right program, checked by the task's own check, then let practice take over.
+- The hive learns from its own checked work first; a lesson only starts a kind where it has nothing right of its own, and stops when it has.
+- Measure memory on a machine like the runner: this sandbox kills a process near 13 GB, the runners give 15.6 GB and the 8B's training peaks at 14.8 GB there. A kill here may be the machine, not the change: run the baseline beside it.
 
 ## The parts
 
@@ -195,6 +213,7 @@ flowchart LR
 |---|---|---|---|
 | Practice and dreams | `training/grow.py` | B | fresh tasks at the edge of what the body can do, and the tasks it got wrong before; checked work becomes rows |
 | Lessons | `training/lessons.py` | B | a right program for fresh tasks of every kind the hive cannot do yet and for tasks it got wrong, each checked by the task's own check before it is taught |
+| Reading raw data | `training/raw.py` | B | web pages, Wikipedia, open code and real code fixes, each measured by the DNA's own error and only the middle band read; answers people voted on, best beside worst |
 | Tasks and their checks | `training/exam.py` | B | every kind of task, made from a seed, with a check that needs no model |
 | The members' loop | `team/solo.py` | A | trunk and cells each write and run programs; an answer counts when two agree |
 | What a program runs in | `team/tools/sandbox.py` | A | runs a member's program, serves given data, limits memory and time |
