@@ -3,6 +3,7 @@
 Not an isolation boundary: code runs as the current user. The guard checks
 the code for deleting, sending and spending before it runs.
 """
+import json
 import os
 import re
 import signal
@@ -39,15 +40,71 @@ def program_env():
 HOOK = Path(__file__).resolve().parent / "program_hooks"
 HTTP_LINE = re.compile(r"^HIVE-HTTP: (\w+) (\S+) returned (\d{3})$", re.M)
 _HOOK_SRC = """import sys
+import re as _re
 try:
     import requests as _rq
+    from urllib.parse import urljoin as _urljoin
     _orig = _rq.Session.request
+    _base = [None]
+    # An address without its site is joined to the page fetched last, and a bare site gets https:// (seen in the
+    # pulse of g27: a member found the link '/author/bob-marley' and fetched it as it stood; requests refused it)
+    _SITE = _re.compile(r"^[\\w-]+(\\.[\\w-]+)*\\.(?!html?\\b|php\\b|json\\b|xml\\b|aspx?\\b|txt\\b|csv\\b|py\\b)[a-z]{2,24}(:\\d+)?(/|$)", _re.I)
     def _request(self, method, url, *a, **k):
+        if isinstance(url, str) and not _re.match(r"^[a-z][a-z0-9+.-]*://", url.strip(), _re.I):
+            u = url.strip()
+            if u.startswith("//"):
+                url = "https:" + u
+            elif _SITE.match(u):
+                url = "https://" + u
+            elif _base[0] and u:
+                url = _urljoin(_base[0], u)
         r = _orig(self, method, url, *a, **k)
+        _base[0] = r.url
         if r.status_code >= 400:
             sys.stderr.write("HIVE-HTTP: %s %s returned %d\\n" % (method, r.url, r.status_code))
         return r
     _rq.Session.request = _request
+except Exception:
+    pass
+
+# Data the TASK gave ("Here is a CSV file:" and its lines) is served under whatever name a program opens it by. Seen
+# in the pulse of g27: given a CSV and a log in the message, every member of all three opened people.csv, input.csv,
+# data.csv or log.txt, got FileNotFoundError on every turn, and no task of the kind was ever passed.
+try:
+    import os as _os, io as _io, builtins as _bi, json as _gjson
+    _gpath = _os.environ.get("HIVE_GIVEN")
+    _blocks = _gjson.load(_io.open(_gpath)) if _gpath and _os.path.isfile(_gpath) else []
+    if _blocks:
+        _bopen = _bi.open
+        def _fits(text, ext):
+            if ext == ".json":
+                try:
+                    _gjson.loads(text)
+                    return True
+                except Exception:
+                    return False
+            if ext in (".csv",):
+                return text.count(",") >= text.count("\\n")
+            if ext == ".tsv":
+                return "\\t" in text
+            return True
+        def _hive_open(file, mode="r", *a, **k):
+            try:
+                return _bopen(file, mode, *a, **k)
+            except FileNotFoundError:
+                if isinstance(file, int) or any(c in str(mode) for c in "wax+"):
+                    raise
+                name = _os.fspath(file)
+                if not isinstance(name, str) or _os.path.dirname(name) or name.startswith("."):
+                    raise
+                ext = _os.path.splitext(name)[1].lower()
+                pick = next((b for b in _blocks if _fits(b["text"], ext)), _blocks[0])
+                with _bopen(name, "w") as f:
+                    f.write(pick["text"].rstrip("\\n") + "\\n")
+                sys.stderr.write("HIVE-GIVEN: %s was not here; the data the TASK gave is saved under that name\\n" % name)
+                return _bopen(file, mode, *a, **k)
+        _bi.open = _hive_open
+        _io.open = _hive_open
 except Exception:
     pass
 
@@ -56,16 +113,58 @@ except Exception:
 try:
     import json as _json
 
+    # ... and where the key IS, when it is deeper (seen in the pulse of g27: asked when boto3 was released, a member
+    # read ['info']['upload_time'], was told the keys of 'info', looked, read it again, six turns, no answer; it is
+    # under ['urls'][0] and ['releases'][VERSION][0])
+    def _where(x, k, path="", found=None, seen=None, many=False):
+        found = [] if found is None else found
+        seen = seen if seen is not None else [0]
+        seen[0] += 1
+        if len(found) >= 3 or seen[0] > 20000 or path.count("[") > 6:
+            return found
+        if isinstance(x, dict):
+            if k in x and path:
+                found.append((path + "[%r]" % (k,), x[k]))
+            items = list(x.items())
+            if len(items) > 30:  # many keys of one kind (versions, ids): searched only when nothing else has it
+                items = items[-3:] if many else []
+            for kk, v in items:
+                if isinstance(v, (dict, list)):
+                    _where(v, k, path + "[%r]" % (kk,), found, seen, many)
+        elif isinstance(x, list):
+            for i, v in enumerate(x[:3]):
+                if isinstance(v, (dict, list)):
+                    _where(v, k, path + "[%d]" % i, found, seen, many)
+        if not path and not found and not many:
+            return _where(x, k, path, found, seen, True)
+        return found
+
     class _Keys(dict):
         def __missing__(self, k):
             ks = list(self)
-            raise KeyError("%r is not a key here; the keys are: %s%s" % (k, ", ".join(repr(x) for x in ks[:25]),
-                           " ... (%d in all)" % len(ks) if len(ks) > 25 else ""))
+            root = getattr(self, "_root", None)
+            deeper = _where(self, k) or (_where(root, k) if root is not None and root is not self else [])
+            raise KeyError("%r is not a key here%s; the keys here are: %s%s" % (
+                k, "; it is in the data at: " + "; ".join("data%s = %s" % (p, repr(v)[:60]) for p, v in deeper) if deeper else "",
+                ", ".join(repr(x) for x in ks[:25]), " ... (%d in all)" % len(ks) if len(ks) > 25 else ""))
+
+    def _rooted(top):
+        todo, n = [top], 0
+        while todo and n < 200000:
+            x = todo.pop()
+            n += 1
+            if isinstance(x, _Keys):
+                x._root = top
+                todo.extend(v for v in x.values() if isinstance(v, (dict, list)))
+            elif isinstance(x, list):
+                todo.extend(v for v in x if isinstance(v, (dict, list)))
+        return top
 
     _loads = _json.loads
     def _hive_loads(s, *a, **k):
         if not a and "object_hook" not in k and "object_pairs_hook" not in k and k.get("cls") is None:
             k["object_hook"] = _Keys
+            return _rooted(_loads(s, *a, **k))
         return _loads(s, *a, **k)
     _json.loads = _hive_loads
     try:
@@ -154,6 +253,54 @@ except Exception:
 """
 
 
+GIVEN = ".hive_given.json"
+_FENCE = re.compile(r"```[\w.+-]*\n(.*?)```", re.S)
+_FILENAME = re.compile(r"(?<![\w/.-])([\w-]+\.(?:csv|tsv|json|txt|log|md|xml|ya?ml|ini|py))\b", re.I)
+
+
+def _prose(line):
+    """A sentence (the user's instruction), not a line of data: words, most of them lower case, starting a sentence."""
+    words = line.split()
+    return (len(words) >= 5 and re.match(r"[A-Z][a-z']*,? [a-z]", line) is not None
+            and sum(w.isalpha() for w in words) >= 0.6 * len(words) and line.count(",") < len(words) / 2)
+
+
+def given(task):
+    """The blocks of data the TASK carries: [{"text", "name"}]. A block is what follows a line ending in ':' ("Here is a
+    CSV file:") up to the next sentence, or a fenced block; "name" is a file name the line before it gives, or ""."""
+    out = [{"text": m.group(1).strip("\n"), "name": ""} for m in _FENCE.finditer(task or "") if m.group(1).strip()]
+    lines = _FENCE.sub("", task or "").splitlines()
+    i = 0
+    while i < len(lines):
+        if lines[i].rstrip().endswith(":") and i + 1 < len(lines):
+            j = i + 1
+            while j < len(lines) and lines[j].strip() and not _prose(lines[j].strip()):
+                j += 1
+            if j - (i + 1) >= 2:
+                named = _FILENAME.findall(lines[i])
+                out.append({"text": "\n".join(lines[i + 1:j]), "name": named[-1] if named else ""})
+                i = j
+                continue
+        i += 1
+    return out
+
+
+def give(task, workdir, skip=()):
+    """Put the TASK's data where its programs can open it: blocks a name was given for are saved under it; every
+    block is offered (by the program hook) under whatever name a program opens and does not find."""
+    blocks = given(task)
+    workdir = Path(workdir)
+    if not blocks:
+        (workdir / GIVEN).unlink(missing_ok=True)
+        return []
+    workdir.mkdir(parents=True, exist_ok=True)
+    (workdir / GIVEN).write_text(json.dumps(blocks))
+    for b in blocks:
+        if b["name"] and b["name"] not in skip and not (workdir / b["name"]).exists():
+            (workdir / b["name"]).write_text(b["text"].rstrip("\n") + "\n")
+    return blocks
+
+
 def http_errors(stderr):
     """[(url, status)] of the requests a program made that came back as errors."""
     return [(u, int(c)) for _, u, c in HTTP_LINE.findall(stderr or "")]
@@ -170,6 +317,8 @@ def run_python(code, workdir, name="main.py", timeout=None, args=()):
     if not (HOOK / "sitecustomize.py").exists() or (HOOK / "sitecustomize.py").read_text() != _HOOK_SRC:
         (HOOK / "sitecustomize.py").write_text(_HOOK_SRC)
     env["PYTHONPATH"] = str(HOOK) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+    if (workdir / GIVEN).is_file():
+        env["HIVE_GIVEN"] = str((workdir / GIVEN).resolve())
     from .. import stop
     limit = timeout or config.CODE_TIMEOUT
     out_f, err_f = open(workdir / f".{name}.out", "w+"), open(workdir / f".{name}.err", "w+")

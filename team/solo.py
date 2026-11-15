@@ -33,7 +33,7 @@ from . import config, llm, stop, ternary
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
-from .tools.sandbox import run_python
+from .tools.sandbox import give, run_python
 
 MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
@@ -261,6 +261,39 @@ def typed_out(reply, code):
     return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
 
 
+def module(task, code, work, board=None, n=0):
+    """A module the TASK asks for (save it as rle.py), saved from the member's own program when the program did not
+    write it: its imports, functions, classes and constants, without the lines that test and print. Seen in the pulse
+    of g27: a member's program defined encode and decode right and printed the right values; told rle.py was missing,
+    it wrote its own source into a quoted string, broke the quotes, and died of a SyntaxError on every turn after."""
+    lacking = [f for f in wanted(task) if f.endswith(".py") and not (Path(work) / f).is_file()]
+    if not lacking:
+        return ""
+    try:
+        tree = ast.parse(code)
+    except (SyntaxError, ValueError):
+        return ""
+    keep = []
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            keep.append(node)
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+            try:
+                ast.literal_eval(node.value)
+                keep.append(node)
+            except (ValueError, TypeError, SyntaxError, MemoryError, RecursionError):
+                pass
+    if not any(isinstance(x, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for x in keep):
+        return ""
+    if any(isinstance(x, ast.ImportFrom) and x.module == lacking[0][:-3] for x in keep):
+        return ""  # it imports the module it was to write: its own functions are not that module
+    src = "\n\n".join(ast.get_source_segment(code, x) or ast.unparse(x) for x in keep) + "\n"
+    (Path(work) / lacking[0]).write_text(src)
+    if board is not None:
+        board.log(f"member{n}", "module", f"{lacking[0]} saved from the program's functions")
+    return lacking[0]
+
+
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
@@ -277,6 +310,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
+    give(task, work, skip=wanted(task))
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
@@ -334,6 +368,8 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             res = dict(res, returncode=1)
             err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
                    "the page. Print what the page really holds and look.")
+        if res["returncode"] == 0:
+            module(task, code, work, board, n)
         lacking = [f for f in wanted(task) if not (Path(work) / f).is_file() or not (Path(work) / f).stat().st_size]
         if res["returncode"] == 0 and lacking:
             # Seen on the first hard sitting (seed 7001): asked to "save it as durations.py", both members wrote the
