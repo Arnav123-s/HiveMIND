@@ -18,17 +18,24 @@ on:
     types: [opened]
   issue_comment:
     types: [created]
+  # also from the Actions tab, for one message with no issue: the reply is on the run's page (Summary)
+  workflow_dispatch:
+    inputs:
+      message:
+        description: What do you want to say to the hive?
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: talk-${{ github.event.issue.number }}
+  group: talk-${{ github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
 jobs:
   answer:
-    if: ${{ github.event.sender.login == github.repository_owner && !github.event.issue.pull_request && !startsWith(github.event.issue.title, '[dev]') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.sender.login == github.repository_owner && !github.event.issue.pull_request && !startsWith(github.event.issue.title, '[dev]')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     permissions:
@@ -44,7 +51,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           NUMBER: ${{ github.event.issue.number }}
+          MESSAGE: ${{ inputs.message }}
         run: |
+          if [ -z "$NUMBER" ]; then
+            python3 -c "import json, os; json.dump({'name': os.environ['GITHUB_REPOSITORY_OWNER'], 'messages': [{'role': 'user', 'content': os.environ['MESSAGE']}]}, open('thread.json', 'w'))"
+            exit 0
+          fi
           gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMBER}" > issue.json
           for page in 1 2 3 4 5; do
             gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/comments?per_page=100&page=${page}" > "comments-${page}.json"
@@ -77,7 +89,7 @@ jobs:
 
   post:
     needs: answer
-    if: ${{ !cancelled() && needs.answer.result != 'skipped' }}
+    if: ${{ !cancelled() && needs.answer.result != 'skipped' && github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
