@@ -299,6 +299,22 @@ def module(task, code, work, board=None, n=0):
     return lacking[0]
 
 
+# The help the runtime gave, by name. Every hint that rescues a task makes a row the next cells learn from, so a
+# body that learns on its own needs fewer of them generation after generation (scripts/selfreliance.py counts them).
+HINTS = [("given", "HIVE-GIVEN:"), ("deeper_key", "it is in the data at:"), ("like_keys", "these look like it:"),
+         ("html_json", "is a web page (HTML), not JSON"), ("no_address", "there is no address to fetch"),
+         ("no_host", "does not exist (no such host)"), ("memory", "MEMORY: the program used"),
+         ("bad_address", "there is no such page. Do not make an address up"), ("same_page", "the loop never moved to"),
+         ("empty_file", "holds no rows (at most a heading)"), ("missing_file", "and it is not there. Reply with the complete"),
+         ("empty_search", "The program found nothing"), ("printed_failure", "The program printed a failure, not an answer")]
+
+
+def hints_in(*texts):
+    """The names of the runtime's hints that these texts (a program's stderr, what the member was told) carry."""
+    t = "\n".join(x or "" for x in texts)
+    return [name for name, mark in HINTS if mark in t]
+
+
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
@@ -316,6 +332,12 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
     give(task, work, skip=wanted(task))
+    helped = []
+
+    def helps(*names):
+        for h in names:
+            helped.append(h)
+            board.log(f"member{n}", "hint", h)
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
@@ -380,6 +402,8 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
                    "the page. Print what the page really holds and look.")
         saved = module(task, code, work, board, n) if res["returncode"] == 0 else ""
+        if saved:
+            helps("module_saved")
         if saved and not out:
             # Seen in a trial of the g27 exam: the module was saved from two members' programs, which defined the
             # functions and printed nothing; told "it printed nothing" twice, both gave up, and with no two answers
@@ -405,6 +429,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
+        helps(*hints_in(res["stderr"], err if err != res["stderr"] else ""))
         if res["returncode"] == 0 and out and (looking and re.search(r"\[:\d{3,4}\]", code) or re.search(r"\blook\(", code)
                                                 and re.search(r"^PAGE title:|^\s*'\w+': |^\[\d+ items; the first:\]", out, re.M)):
             # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
@@ -442,7 +467,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
-            "who": who, "messages": messages}
+            "who": who, "messages": messages, "hints": helped}
 
 
 def run(task, run_dir=None, approve="never", members=2):

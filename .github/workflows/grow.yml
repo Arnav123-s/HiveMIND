@@ -178,6 +178,7 @@ jobs:
             runs/exam/**/TASK.md
             runs/exam/**/REPORT.md
             runs/exam/**/exam.json
+            runs/exam/**/events.jsonl
             runs/exam/**/member*_*.py
             runs/exam/**/.member*_*.py.out
             runs/exam/**/.member*_*.py.err

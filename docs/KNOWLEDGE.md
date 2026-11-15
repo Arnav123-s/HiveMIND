@@ -82,6 +82,8 @@ flowchart LR
   talktaught --> goal
   speed{{"Answers are slow: one member decodes at a time (unclaimed)"}}
   speed --> goal
+  selflearn{{"The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work (B)"}}
+  selflearn --> goal
   m_carry[/"Never-practised kinds passed"/]
   m_kinds[/"Every kind of task, weakest first"/]
   subgraph p_practice["grow.py (B)"]
@@ -92,6 +94,7 @@ flowchart LR
     f_silentmodule["A module was saved but its member printed nothing and gave up"]:::fixed
     f_defsonly["A program that only defines functions was taken for a typed answer and never run"]:::fixed
     f_emptysearch["A search that found nothing was taken as the answer"]:::fixed
+    f_hintlog["The runtime's help was not counted, so learning on its own could not be seen"]:::fixed
   end
   subgraph p_sandbox["sandbox.py (A)"]
     f_given["Data written in the task was opened as a file that does not exist"]:::fixed
@@ -135,6 +138,7 @@ flowchart LR
   f_silentmodule -->|blocked| files
   f_defsonly -->|blocked| files
   f_emptysearch -->|blocked| files
+  f_hintlog -->|blocked| selflearn
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -150,8 +154,9 @@ flowchart LR
 | A right answer in talk comes back as not confirmed | B | talk test 2026-11-15: Canberra and 75 days right, the second member did not agree |
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
+| The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 
-## Causes found (0 open, 21 fixed)
+## Causes found (0 open, 22 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
@@ -176,6 +181,7 @@ flowchart LR
 | A module was saved but its member printed nothing and gave up | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: intervals.py saved for two members, no two answers alike |
 | A program that only defines functions was taken for a typed answer and never run | `team/solo.py` | fixed | A, PR 56 | found while testing silentmodule |
 | A search that found nothing was taken as the answer | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: 'No ERROR lines found.' on a log full of them |
+| The runtime's help was not counted, so learning on its own could not be seen | `team/solo.py` | fixed | A, PR 56 | 2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py |
 
 ## Rules learned
 

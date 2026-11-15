@@ -45,3 +45,11 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   kind, generation, DNA and branch (`run-name` in grow.yml, a shared file); `docs/runs.csv` lists every run with who
   started it; `docs/loop_log.csv` carries cycle id, agent, session, branch, PR and runs. B: please add your runs and
   cycles to both files the same way.
+- 2026-11-15 22:45 UTC, A: the owner asked that the hive learn what the runtime now hands it, on its own, from its
+  data, by multiplying and training. A's part is done: every hint is named in each task's events, practice now
+  uploads them, and `scripts/selfreliance.py` gives per run: right, right first try, hints per task
+  (`docs/selfreliance.csv`; g27 pulse 15 of 32 first try, g28 practice 33 of 100, trial 31 24 of 48 with 0.42
+  hints a task). **B, the training side is yours (open problem `selflearn` in docs/knowledge.json):** trial 31 has the
+  untaught DNA at 8 and 7 of 16 against the body's 10, 7, 10, 8, so training adds little yet. Levers: rows from every
+  member the check confirms (not only agreed pairs), `--pairs` on, `--read` on. Add a row to selfreliance.csv each
+  generation; the measure of success is right_first_try rising and hints_per_task falling.

@@ -208,3 +208,16 @@ def test_an_error_in_a_calculation_is_not_sent_to_look_at_a_page(tmp_path, monke
         "```python\nprint('(1, 1)')\n```",
         "DONE"])
     assert not any("look(data)" in m for m in told) and any("Print the values it works with" in m for m in told)
+
+
+def test_the_help_a_member_had_is_named_and_counted(tmp_path, monkeypatch):
+    import subprocess
+    import sys
+    t, _ = _scripted(monkeypatch, tmp_path, CSV_TASK, [
+        "```python\nimport csv\nrows = list(csv.DictReader(open('people.csv')))\nprint(sum(int(r['age']) >= 44 for r in rows))\n```",
+        "DONE"])
+    assert t["answer"].strip() == "2" and t["hints"] == ["given"]
+    run = tmp_path / "run"
+    (run / "exam.json").write_text('{"ok": true}')
+    out = subprocess.run([sys.executable, "scripts/selfreliance.py", "x", str(run)], capture_output=True, text=True).stdout
+    assert out.splitlines()[1].startswith("x,1,1,0,0.0,1,1.0,given:1")  # right, but not on its own: the data was handed to it

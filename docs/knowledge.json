@@ -168,6 +168,13 @@
    "owner": "",
    "seen": "docs/KERNELS.md section 3",
    "measured_by": []
+  },
+  {
+   "id": "selflearn",
+   "title": "The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work",
+   "owner": "B",
+   "seen": "trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down",
+   "measured_by": []
   }
  ],
  "findings": [
@@ -359,6 +366,15 @@
    "status": "fixed",
    "by": "A, PR 56",
    "seen": "trial of g27's exam: 'No ERROR lines found.' on a log full of them"
+  },
+  {
+   "id": "hintlog",
+   "title": "The runtime's help was not counted, so learning on its own could not be seen",
+   "lives_in": "members",
+   "blocks": "selflearn",
+   "status": "fixed",
+   "by": "A, PR 56",
+   "seen": "2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py"
   }
  ],
  "rules": [
