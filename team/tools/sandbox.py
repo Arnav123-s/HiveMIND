@@ -50,6 +50,11 @@ try:
     # pulse of g27: a member found the link '/author/bob-marley' and fetched it as it stood; requests refused it)
     _SITE = _re.compile(r"^[\\w-]+(\\.[\\w-]+)*\\.(?!html?\\b|php\\b|json\\b|xml\\b|aspx?\\b|txt\\b|csv\\b|py\\b)[a-z]{2,24}(:\\d+)?(/|$)", _re.I)
     def _request(self, method, url, *a, **k):
+        # No address at all: the link the program looked for was not on the page (seen 2 times in g28's practice:
+        # Invalid URL 'None', and the member did not see why)
+        if url is None or (isinstance(url, str) and url.strip() in ("", "None")):
+            raise ValueError("there is no address to fetch (it is %r): the link the program looked for was not found on "
+                             "the page. Print the page's links (look(r.text)) and pick the one that matches." % (url,))
         if isinstance(url, str) and not _re.match(r"^[a-z][a-z0-9+.-]*://", url.strip(), _re.I):
             u = url.strip()
             if u.startswith("//"):
@@ -58,8 +63,33 @@ try:
                 url = "https://" + u
             elif _base[0] and u:
                 url = _urljoin(_base[0], u)
-        r = _orig(self, method, url, *a, **k)
+        # a site and a path glued together without their slash ('https://books.toscrape.comcatalogue/...', seen in g28)
+        glued = _re.match(r"^(https?://[\\w.-]*?\\.(?:com|org|net|io|edu|gov|co\\.uk))([a-z][\\w-]*(?:[/.].*)?)$", url, _re.I) if isinstance(url, str) else None
+        if glued and not _re.match(r"^https?://[^/]+\\.(com|org|net|io|edu|gov|co\\.uk)(:\\d+)?(/|$)", url, _re.I):
+            url = glued.group(1) + "/" + glued.group(2)
+        # a request that names no User-Agent goes as the hive (Wikipedia refuses python-requests' own, seen in g28)
+        hd = dict(k.get("headers") or {})
+        if not any(h.lower() == "user-agent" for h in hd):
+            hd["User-Agent"] = "hive/1.0 (HiveMIND; a research project)"
+            k["headers"] = hd
+        try:
+            r = _orig(self, method, url, *a, **k)
+        except _rq.exceptions.ConnectionError as e:
+            host = _re.match(r"^https?://([^/:]+)", str(url))
+            if host and _re.search(r"NameResolution|Name or service not known|nodename nor servname|Failed to resolve|Tunnel connection failed: 502", str(e)):
+                raise _rq.exceptions.ConnectionError("the site %s does not exist (no such host): the address was made up. "
+                                                     "Start from the site's own first page or an API you know." % host.group(1))
+            raise
         _base[0] = r.url
+        # a page that does not say its encoding is read as Latin-1 by requests: '£51.77' came out as 'Â£51.77' and
+        # float() failed (seen in g28's practice on books.toscrape.com)
+        ctype = r.headers.get("content-type", "")
+        if "charset" not in ctype.lower() and (r.encoding or "").lower() in ("iso-8859-1", "latin-1", ""):
+            try:
+                r.content.decode("utf-8")
+                r.encoding = "utf-8"
+            except Exception:
+                pass
         if str(method).upper() == "GET":
             _times[r.url] = _times.get(r.url, 0) + 1
         if r.status_code >= 400:
@@ -150,13 +180,51 @@ try:
             return _where(x, k, path, found, seen, True)
         return found
 
+    # a key that is nowhere in the data: the keys that look like it (seen 7 times in g28's practice: 'release_date'
+    # asked of PyPI, whose dates are under 'upload_time')
+    _LIKE = {"date": "time", "time": "date", "release": "upload", "upload": "release", "created": "date",
+             "published": "upload", "updated": "time", "count": "number", "number": "count", "name": "title",
+             "title": "name", "price": "cost", "cost": "price", "url": "link", "link": "url"}
+
+    def _like(x, k, path="", out=None, seen=None, big=False):
+        out = [] if out is None else out
+        seen = seen if seen is not None else [0]
+        want = set(_re.split(r"[_\\W]+", str(k).lower())) - {""}
+        near = {_LIKE[w] for w in want if w in _LIKE}
+        if isinstance(x, dict):
+            items = list(x.items())
+            many = len(items) > 30
+            if many:
+                items = items[-3:]
+            for kk, v in items:
+                seen[0] += 1
+                if seen[0] > 20000:
+                    break
+                have = set(_re.split(r"[_\\W]+", str(kk).lower())) - {""}
+                score = 2 * len(want & have) + len(near & have)
+                if score and kk != k:
+                    datey = bool(_re.match(r"^\\d{4}-\\d\\d-\\d\\d", str(v))) and bool(want & {"date", "time", "day"})
+                    out.append((score + 2 * datey - 3 * (big or many), path + "[%r]" % (kk,), v))
+                if isinstance(v, (dict, list)) and path.count("[") < 6:
+                    _like(v, k, path + "[%r]" % (kk,), out, seen, big or many)
+        elif isinstance(x, list):
+            for i, v in enumerate(x[:3]):
+                if isinstance(v, (dict, list)):
+                    _like(v, k, path + "[%d]" % i, out, seen, big)
+        if not path:
+            out.sort(key=lambda c: -c[0])
+            return [(p, v) for s, p, v in out[:3]]
+        return out
+
     class _Keys(dict):
         def __missing__(self, k):
             ks = list(self)
             root = getattr(self, "_root", None)
             deeper = _where(self, k) or (_where(root, k) if root is not None and root is not self else [])
+            like = [] if deeper else _like(root if root is not None else self, k)
             raise KeyError("%r is not a key here%s; the keys here are: %s%s" % (
-                k, "; it is in the data at: " + "; ".join("data%s = %s" % (p, repr(v)[:60]) for p, v in deeper) if deeper else "",
+                k, "; it is in the data at: " + "; ".join("data%s = %s" % (p, repr(v)[:60]) for p, v in deeper) if deeper else
+                ("; it is nowhere in the data, but these look like it: " + "; ".join("data%s = %s" % (p, repr(v)[:60]) for p, v in like) if like else ""),
                 ", ".join(repr(x) for x in ks[:25]), " ... (%d in all)" % len(ks) if len(ks) > 25 else ""))
 
     def _rooted(top):
@@ -186,8 +254,13 @@ try:
                 return _rjson(self, *a, **k)
             except ValueError as e:
                 head = (self.text or "")[:160].replace("\\n", " ")
-                e.args = ("the reply from %s is not JSON (%s); it begins: %r. look(r) shows what it is"
-                          % (self.url, e, head),)
+                if head.lstrip()[:1] == "<":
+                    # seen 9 times in g28's practice: .json() called on a site's pages
+                    e.args = ("the reply from %s is a web page (HTML), not JSON. Read it as a page: "
+                              "BeautifulSoup(r.text, 'html.parser'), or look(r.text) to see its links and text" % (self.url,),)
+                else:
+                    e.args = ("the reply from %s is not JSON (%s); it begins: %r. look(r) shows what it is"
+                              % (self.url, e, head),)
                 raise
         _rq2.Response.json = _response_json
         if getattr(_rq2.compat, "json", _json) is not _json:

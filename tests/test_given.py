@@ -155,3 +155,47 @@ def test_a_search_that_found_nothing_is_told_to_look_at_the_data(tmp_path, monke
         "DONE"])
     assert any("prints the first 3 items" in m for m in told)
     assert t["answer"].strip() == "1"
+
+
+class _Site(http.server.BaseHTTPRequestHandler):
+    """A small site: '/' is an HTML page in UTF-8 that does not say its encoding; '/ua' echoes the User-Agent."""
+    def do_GET(self):
+        body = ("<html><p>Price: £51.77</p></html>" if self.path == "/" else self.headers.get("User-Agent", "")).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html")  # no charset, as books.toscrape.com
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, *a):
+        pass
+
+
+def _serve(monkeypatch):
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Site)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    for k in ("NO_PROXY", "no_proxy"):
+        monkeypatch.setenv(k, "127.0.0.1,localhost")
+    return srv, f"http://127.0.0.1:{srv.server_address[1]}"
+
+
+def test_the_web_as_a_member_meets_it(tmp_path, monkeypatch):
+    srv, url = _serve(monkeypatch)
+    try:
+        page = run_python(f"import requests\nprint(requests.get({url + '/'!r}).text)", tmp_path, name="a.py")
+        ua = run_python(f"import requests\nprint(requests.get({url + '/ua'!r}).text)", tmp_path, name="b.py")
+        js = run_python(f"import requests\nrequests.get({url + '/'!r}).json()", tmp_path, name="c.py")
+    finally:
+        srv.shutdown()
+    assert "£51.77" in page["stdout"] and "Â" not in page["stdout"]  # read as UTF-8, not Latin-1
+    assert ua["stdout"].startswith("hive/1.0")  # Wikipedia refuses python-requests' own
+    assert "is a web page (HTML), not JSON" in js["stderr"]
+    none = run_python("import requests\nrequests.get(None)", tmp_path, name="d.py")
+    assert "there is no address to fetch" in none["stderr"]
+
+
+def test_a_key_that_is_nowhere_names_the_keys_like_it(tmp_path):
+    code = ("import json\nd = json.loads('{\"info\": {\"version\": \"1.2\", \"release_url\": \"x\"}, "
+            "\"urls\": [{\"upload_time\": \"2026-11-13T20:16:50\"}]}')\nprint(d['info']['release_date'])")
+    r = run_python(code, tmp_path, name="k.py")
+    assert "these look like it: data['urls'][0]['upload_time'] = '2026-11-13T20:16:50'" in r["stderr"]
