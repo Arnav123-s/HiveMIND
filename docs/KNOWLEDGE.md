@@ -11,6 +11,7 @@ It runs by itself on GitHub (`.github/workflows/grow.yml`), one generation after
 ```mermaid
 flowchart LR
   practise["Practise and dream<br/>training/grow.py"]
+  lessons["Lessons: right programs, checked<br/>training/lessons.py"]
   gather["Gather checked rows<br/>training/grow.py"]
   plan["Plan the children<br/>training/lineage.py"]
   trainc["Train each child<br/>training/ternary_base.py"]
@@ -18,7 +19,8 @@ flowchart LR
   pulse["Exam of the grown body<br/>training/exam.py"]
   recordg["Record, move levels<br/>training/grow_record.py"]
   graphs["Draw progress, weigh weak kinds<br/>training/progress.py"]
-  practise --> gather
+  practise --> lessons
+  lessons --> gather
   gather --> plan
   plan --> trainc
   trainc --> trunk
@@ -28,7 +30,7 @@ flowchart LR
   graphs -->|the weak kinds and the levels steer the next generation| practise
   rel[(rows and cells:<br/>release hive-grown)]
   rec[(generations.jsonl<br/>and body.json)]
-  gather -.-> rel
+  lessons -.-> rel
   recordg -.-> rec
   rec -.-> graphs
 ```
@@ -65,7 +67,7 @@ The open problems that stand between the hive and the goal (six-sided), how each
 ```mermaid
 flowchart LR
   goal(("The goal"))
-  web{{"Tasks that read websites fail nearly always (unclaimed)"}}
+  web{{"Tasks that read websites fail nearly always (B)"}}
   web --> goal
   web -.-|measured by| m_kinds
   carryover{{"Little carries over to kinds never practised (unclaimed)"}}
@@ -86,6 +88,10 @@ flowchart LR
   m_kinds[/"Every kind of task, weakest first"/]
   subgraph p_practice["grow.py (B)"]
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
+  end
+  subgraph p_lessons["lessons.py (B)"]
+    f_nothingright["A kind never passed had nothing to learn from, so practising it more taught nothing"]:::fixed
+    f_nothingrightfiles["The same for tasks that make a file: no right program, no rows"]:::fixed
   end
   subgraph p_members["solo.py (A)"]
     f_lookadvice["On a pure calculation's error, members were told to fetch a page and look"]:::open
@@ -111,6 +117,8 @@ flowchart LR
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
   end
+  f_nothingright -->|blocked| web
+  f_nothingrightfiles -->|blocked| files
   f_given -->|blocked| files
   f_module -->|blocked| files
   f_jsonkey -->|blocked| web
@@ -127,7 +135,7 @@ flowchart LR
 
 | Problem | Owner | Seen |
 |---|---|---|
-| Tasks that read websites fail nearly always | unclaimed | g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3 |
+| Tasks that read websites fail nearly always | B | g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3 |
 | Little carries over to kinds never practised | unclaimed | g24 1 of 5, g27 0 of 7 |
 | Tasks that make a file fail | A | g27: edit a file 0 of 2, a log into a file 0 of 2, a module 0 of 2 |
 | Practice runners die mid-task | A | generations 25 and 28, nothing logged |
@@ -135,11 +143,13 @@ flowchart LR
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
 
-## Causes found (1 open, 12 fixed)
+## Causes found (1 open, 14 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
 | On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` | open | A | g27: a robot simulation's IndexError; two members fetched example.com |
+| A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons (34 of 34 right on the live sites) | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
+| The same for tasks that make a file: no right program, no rows | `training/lessons.py` | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
 | Data written in the task was opened as a file that does not exist | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: 3 tasks, every member, every turn |
 | A module was written as a string and its quotes broke | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: rle.py, intervals.py |
 | A missing JSON key led to six turns of looking | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: boto3 upload_time |
@@ -162,12 +172,14 @@ flowchart LR
 - Before fixing, read the other agents' branches and docs/AGENTS.md: on 2026-11-15 two agents fixed the same faults of g27 at once.
 - Making every kind of task fetches live pages: a test that makes them all needs offline makers.
 - Start long checks in the background and do the next piece of work while they run.
+- A kind the hive never passes cannot be learned from its own work: show it a right program, checked by the task's own check, then let practice take over.
 
 ## The parts
 
 | Part | File | Owner | What it does |
 |---|---|---|---|
 | Practice and dreams | `training/grow.py` | B | fresh tasks at the edge of what the body can do, and the tasks it got wrong before; checked work becomes rows |
+| Lessons | `training/lessons.py` | B | a right program for fresh tasks of every kind the hive cannot do yet and for tasks it got wrong, each checked by the task's own check before it is taught |
 | Tasks and their checks | `training/exam.py` | B | every kind of task, made from a seed, with a check that needs no model |
 | The members' loop | `team/solo.py` | A | trunk and cells each write and run programs; an answer counts when two agree |
 | What a program runs in | `team/tools/sandbox.py` | A | runs a member's program, serves given data, limits memory and time |
@@ -180,4 +192,4 @@ flowchart LR
 | The ternary runtime | `team/ternary.py` | B | serves the DNA and switches cells per request |
 | The line of generations | `.github/workflows/grow.yml` | shared | practise, gather, plan, train, merge, exam, record, then the next generation |
 
-Agents: **A**: Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop; **B**: Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7, pull request 57: training, practice, progress, this graph; **shared**: nobody owns it: small commits, main merged first, said in the log.
+Agents: **A**: Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop; **B**: Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem; **shared**: nobody owns it: small commits, main merged first, said in the log.
