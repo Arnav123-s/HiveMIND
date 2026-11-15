@@ -1,0 +1,80 @@
+{
+  "goal": "A hive of ternary nets, grown from one DNA, that does what it is asked (questions, conversation, tasks) and gets better at it by itself, generation after generation, on free CPUs.",
+  "agents": {
+    "A": "Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop",
+    "B": "Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7, pull request 57: training, practice, progress, this graph",
+    "shared": "nobody owns it: small commits, main merged first, said in the log"
+  },
+  "parts": [
+    {"id": "practice", "title": "Practice and dreams", "file": "training/grow.py", "owner": "B", "does": "fresh tasks at the edge of what the body can do, and the tasks it got wrong before; checked work becomes rows"},
+    {"id": "exam", "title": "Tasks and their checks", "file": "training/exam.py", "owner": "B", "does": "every kind of task, made from a seed, with a check that needs no model"},
+    {"id": "members", "title": "The members' loop", "file": "team/solo.py", "owner": "A", "does": "trunk and cells each write and run programs; an answer counts when two agree"},
+    {"id": "sandbox", "title": "What a program runs in", "file": "team/tools/sandbox.py", "owner": "A", "does": "runs a member's program, serves given data, limits memory and time"},
+    {"id": "lineage", "title": "Who has children", "file": "training/lineage.py", "owner": "B", "does": "every grown cell has one child a generation; the young wait one (Fibonacci)"},
+    {"id": "train", "title": "Training a cell", "file": "training/ternary_base.py", "owner": "B", "does": "the 8B DNA held ternary on a 16 GB runner; a cell is a LoRA edit trained on rows"},
+    {"id": "merge", "title": "The trunk", "file": "training/merge.py", "owner": "B", "does": "the newest cell of every line averaged into one edit; it answers first"},
+    {"id": "record", "title": "The record and the levels", "file": "training/grow_record.py", "owner": "shared", "does": "writes each generation's exam to the record, moves lesson levels, joins rows"},
+    {"id": "progress", "title": "Progress graphs", "file": "training/progress.py", "owner": "B", "does": "draws the record every generation; its weak kinds steer the next practice"},
+    {"id": "talk", "title": "Talking with the hive", "file": "team/talk.py", "owner": "B", "does": "one word decides: talk is answered at once, work goes to the members"},
+    {"id": "runtime", "title": "The ternary runtime", "file": "team/ternary.py", "owner": "B", "does": "serves the DNA and switches cells per request"},
+    {"id": "workflow", "title": "The line of generations", "file": ".github/workflows/grow.yml", "owner": "shared", "does": "practise, gather, plan, train, merge, exam, record, then the next generation"}
+  ],
+  "measures": [
+    {"id": "score", "title": "Exam tasks passed, each generation", "file": "docs/progress/score.svg"},
+    {"id": "carry", "title": "Never-practised kinds passed", "file": "docs/progress/carry.svg"},
+    {"id": "kinds", "title": "Every kind of task, weakest first", "file": "docs/progress/kinds.svg"},
+    {"id": "rows", "title": "Rows taught, each generation", "file": "docs/progress/rows.svg"}
+  ],
+  "open": [
+    {"id": "web", "title": "Tasks that read websites fail nearly always", "owner": "", "seen": "g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3", "measured_by": ["kinds"]},
+    {"id": "carryover", "title": "Little carries over to kinds never practised", "owner": "", "seen": "g24 1 of 5, g27 0 of 7", "measured_by": ["carry"]},
+    {"id": "files", "title": "Tasks that make a file fail", "owner": "A", "seen": "g27: edit a file 0 of 2, a log into a file 0 of 2, a module 0 of 2", "measured_by": ["kinds"]},
+    {"id": "deaths", "title": "Practice runners die mid-task", "owner": "A", "seen": "generations 25 and 28, nothing logged", "measured_by": []},
+    {"id": "confirm", "title": "A right answer in talk comes back as not confirmed", "owner": "B", "seen": "talk test 2026-11-15: Canberra and 75 days right, the second member did not agree", "measured_by": []},
+    {"id": "talktaught", "title": "Talking is not taught, only what the DNA knows", "owner": "", "seen": "no rows for conversation yet", "measured_by": []},
+    {"id": "speed", "title": "Answers are slow: one member decodes at a time", "owner": "", "seen": "docs/KERNELS.md section 3", "measured_by": []}
+  ],
+  "findings": [
+    {"id": "given", "title": "Data written in the task was opened as a file that does not exist", "lives_in": "sandbox", "blocks": "files", "status": "fixed", "by": "A, PR 56", "seen": "g27: 3 tasks, every member, every turn"},
+    {"id": "module", "title": "A module was written as a string and its quotes broke", "lives_in": "sandbox", "blocks": "files", "status": "fixed", "by": "A, PR 56", "seen": "g27: rle.py, intervals.py"},
+    {"id": "jsonkey", "title": "A missing JSON key led to six turns of looking", "lives_in": "sandbox", "blocks": "web", "status": "fixed", "by": "A, PR 56", "seen": "g27: boto3 upload_time"},
+    {"id": "links", "title": "A link without its site was fetched as is", "lives_in": "sandbox", "blocks": "web", "status": "fixed", "by": "A, PR 56", "seen": "g27: /author/bob-marley"},
+    {"id": "samepage", "title": "A loop fetched one page again and again", "lives_in": "sandbox", "blocks": "web", "status": "fixed", "by": "A, PR 56", "seen": "g27: quotes pages 1 to 5"},
+    {"id": "lookadvice", "title": "On a pure calculation's error, members were told to fetch a page and look", "lives_in": "members", "blocks": "files", "status": "open", "by": "A", "seen": "g27: a robot simulation's IndexError; two members fetched example.com"},
+    {"id": "memory", "title": "A runaway program could fill the runner's memory", "lives_in": "sandbox", "blocks": "deaths", "status": "fixed", "by": "A, PR 56", "seen": "g25, g28"},
+    {"id": "flat", "title": "Practice drew every kind evenly; the weights read only the 1.7B's record", "lives_in": "practice", "blocks": "carryover", "status": "fixed", "by": "B, PR 57", "seen": "the record of g24 and g27"},
+    {"id": "resit", "title": "Re-sitting an earlier run's cells still practised for two hours first", "lives_in": "workflow", "blocks": "", "status": "fixed", "by": "A, PR 56", "seen": "cycle 1 of agent A"},
+    {"id": "oom8b", "title": "The 8B DNA did not fit a 16 GB runner while training", "lives_in": "train", "blocks": "", "status": "fixed", "by": "PR 54", "seen": "g24: swapping, 30 to 162 s a row"},
+    {"id": "slowcpu", "title": "A child stalled on a CPU slow at 16-bit numbers", "lives_in": "train", "blocks": "", "status": "fixed", "by": "PR 54", "seen": "g25: the data child"},
+    {"id": "overwrite", "title": "The release's rows were overwritten by an older copy", "lives_in": "record", "blocks": "", "status": "fixed", "by": "PR 53", "seen": "g11's 170 rows"},
+    {"id": "talkerwrote", "title": "The talker wrote its own answer where the task should go", "lives_in": "talk", "blocks": "", "status": "fixed", "by": "PR 53", "seen": "the first real conversation"}
+  ],
+  "rules": [
+    {"id": "readprograms", "rule": "Read the members' programs, not the score.", "from": "given"},
+    {"id": "replay", "rule": "Replay real failures through the changed code before running anything big.", "from": "given"},
+    {"id": "inputs", "rule": "Before dispatching a workflow, check what each input does and that the run it points at holds what is needed.", "from": "resit"},
+    {"id": "string", "rule": "Code written inside a string needs a test that it parses.", "from": "module"},
+    {"id": "otheragents", "rule": "Before fixing, read the other agents' branches and docs/AGENTS.md: on 2026-11-15 two agents fixed the same faults of g27 at once.", "from": "given"},
+    {"id": "offline", "rule": "Making every kind of task fetches live pages: a test that makes them all needs offline makers.", "from": "flat"},
+    {"id": "parallel", "rule": "Start long checks in the background and do the next piece of work while they run.", "from": ""}
+  ],
+  "hive_loop": [
+    ["practise", "Practise and dream", "practice"],
+    ["gather", "Gather checked rows", "practice"],
+    ["plan", "Plan the children", "lineage"],
+    ["trainc", "Train each child", "train"],
+    ["trunk", "Merge the trunk", "merge"],
+    ["pulse", "Exam of the grown body", "exam"],
+    ["recordg", "Record, move levels", "record"],
+    ["graphs", "Draw progress, weigh weak kinds", "progress"]
+  ],
+  "maintainer_loop": [
+    ["agents", "Read docs/AGENTS.md and the other agents' pull requests"],
+    ["results", "Read the newest record, runs and the members' programs"],
+    ["causes", "Group failures by cause, add them here as findings"],
+    ["fix", "Fix the cause where it lives, in a part you own"],
+    ["prove", "Replay real failures, run the tests, then one real run"],
+    ["ship", "Push; merge only with the owner's go-ahead"],
+    ["learn", "Mark findings fixed, add the rule learned, redraw this graph"]
+  ]
+}
