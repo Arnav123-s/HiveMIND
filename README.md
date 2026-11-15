@@ -6,7 +6,7 @@ answer counts only when two of them agree. It grows by itself, without stopping:
 learns from the ones a check confirms and from its own mistakes, and multiplies. No GPU, no API keys, nothing to
 pay for.
 
-**How it is doing:** [docs/PROGRESS.md](docs/PROGRESS.md) draws the exam score of every generation, what carries over to work it never practised, and every kind of task weakest first. The hive redraws it itself at the end of each generation, and practises most where it shows the body weakest.
+**How it is doing:** [docs/PROGRESS.md](docs/PROGRESS.md) draws the exam score of every generation, what carries over to work it never practised, and every kind of task weakest first. The hive redraws it itself at the end of each generation, and practises most where it shows the body weakest. What is known about the hive, as graphs of its loop, the maintainers' loop and every cause found and still open: [docs/KNOWLEDGE.md](docs/KNOWLEDGE.md).
 
 ## Use it
 
