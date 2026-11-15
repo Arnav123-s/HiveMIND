@@ -17,7 +17,8 @@ dashboard "HiveMIND Progress" (claude.ai artifact Xi5BfLZnLLzvkhZJK72Hvr) draws 
 4. **Prove it cheaply, then really.** Replay the members' real failing programs through the changed code (seconds),
    the test suite (a minute), then one whole run of the changed path (a re-sat exam or a generation).
 5. **Ship.** Push, update the pull request; merge only with the owner's go-ahead.
-6. **Record the cycle.** One row in `docs/loop_log.csv`, the dashboard's data refreshed, and below: what worked,
+6. **Record the cycle.** One row in `docs/loop_log.csv` (cycle id `A-<n>`, agent, session, branch, pull request,
+   the run ids used), every run started in `docs/runs.csv` with its purpose, the dashboard's data refreshed, and below: what worked,
    what wasted time, and the rule that would have prevented the waste.
 
 ## Rules learned (newest last)

@@ -6,10 +6,15 @@ start, change what you own, or stop.** Pull requests and their descriptions are 
 
 ## Who owns what (claim before you change; ask in the log to take something over)
 
-| Agent | Branch | Pull request | Owns now |
-|---|---|---|---|
-| A (Claude, session nice-bell) | `claude/nice-bell-8a5dm4` | #56 | What a member's program runs in and the member loop: `team/tools/sandbox.py`, `team/solo.py`, `tests/test_given.py`; reading each generation's results; `docs/LOOP.md`, `docs/loop_log.csv` |
-| B (second agent) | (its own `claude/...` branch) | | Free to claim, for example: training (`training/grow.py`, `training/merge.py`), teaching the hive to talk (`team/talk.py`, `training/raw.py`), speed of answering (`team/ternary.py`, `docs/KERNELS.md`) |
+| Agent | Account | Session | Branch | Pull request | Owns now |
+|---|---|---|---|---|---|
+| A | the owner's account | `session_01PZiWTdYNLEuRW982bX97t1` (nice-bell) | `claude/nice-bell-8a5dm4` | #56 | What a member's program runs in and the member loop: `team/tools/sandbox.py`, `team/solo.py`, `tests/test_given.py`; reading each generation's results; `docs/LOOP.md`, `docs/loop_log.csv` |
+| B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57 (merged) | Training, practice, the exam's tasks, progress graphs, `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts) |
+
+**Labels used everywhere** (logs, graphs, run names): an agent is `A` or `B`; a cycle is `<agent>-<n>` (`A-2`); a
+GitHub run is its number and id (`31`, `43762030863`), listed with its purpose and who started it in `docs/runs.csv`;
+the hive's DNA is its id and name (`t17` Ternary-Bonsai-1.7B, `t40` Ternary-Bonsai-4B, `t80` Ternary-Bonsai-8B); a
+generation is `g<n>`, named after the run that grew it. The agents' own model names stay out of the repository.
 
 Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/reports/*`, `NEXT_SESSION.md`,
 `README.md`): change in small commits, merge `main` into your branch first, and say what you changed in the log.
@@ -36,3 +41,7 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   member meets, all fixed in PR 56 and written into `docs/knowledge.json`. Trial run 32 re-sits g27's seeds with
   them. Still mine: `deaths`, `files`. The largest open cause is reasoning (members disagree or agree on a wrong
   answer: 45 of 77 failures), which is training's: B's, if B wants it.
+- 2026-11-15 22:12 UTC, A: labels made one scheme (see "Labels used everywhere" above): workflow runs are named by
+  kind, generation, DNA and branch (`run-name` in grow.yml, a shared file); `docs/runs.csv` lists every run with who
+  started it; `docs/loop_log.csv` carries cycle id, agent, session, branch, PR and runs. B: please add your runs and
+  cycles to both files the same way.

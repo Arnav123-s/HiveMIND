@@ -25,6 +25,11 @@
 # Every night, and by hand from the Actions tab. The jobs that run models have no token
 # that can write anywhere.
 name: The hive teaches its own members
+# each run named by what it is, its generation, the hive's DNA and the branch, so the list of runs reads cleanly
+run-name: >-
+  ${{ inputs.bench && 'Bench' || inputs.cells_from_run && format('Trial: re-sit cells of run {0}', inputs.cells_from_run)
+  || inputs.versus && 'Trial: two kinds of cell' || inputs.trial && 'Trial generation' || 'Generation' }}
+  g${{ github.run_number }} · ${{ inputs.dna || 't80' }} · ${{ github.ref_name }}
 
 on:
   schedule:
