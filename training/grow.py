@@ -37,6 +37,7 @@ sys.path.insert(0, str(ROOT))
 
 GROW = ROOT / "runs" / "grow"
 UNPACKED = {"t17": "prism-ml/Ternary-Bonsai-1.7B-unpacked", "t40": "prism-ml/Ternary-Bonsai-4B-unpacked", "t80": "prism-ml/Ternary-Bonsai-8B-unpacked"}  # members whose full weights are published, so they can be taught
+READ_LEN = int(os.environ.get("HIVE_READ_LEN", 256))  # the most pieces of one raw text read in training (train --read)
 RELEASE = "hive-grown"  # the GitHub release that holds the rows and the weight edits (never in git: they are big and machine-made)
 
 
@@ -281,12 +282,14 @@ DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. Th
          "Find the mistake in that program, then write the whole corrected program.")
 
 
-def dream(seed, n=4, failures=None, out=None, log=print, minutes=0):
+def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
     right program. Problem solving is the correcting of errors, and the hive's own errors are what it can correct
-    (STaR's going back to failed problems, Zelikman et al. 2022; Reflexion, Shinn et al. 2023)."""
+    (STaR's going back to failed problems, Zelikman et al. 2022; Reflexion, Shinn et al. 2023).
+    tries: how many times a task is taken again before it is left for another night, each time with another cell beside
+    the trunk (HIVE_ROTATE). Generation 28: one try corrected 5 of 24; a task one cell cannot see through, another may."""
     from training import exam as E
     out = Path(out or GROW / "rows.jsonl")
     src = Path(failures or out.with_name("failures.jsonl"))
@@ -315,8 +318,21 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0):
             continue
         field, kind, task, check = again
         text = DREAM.format(task=task, program=f["program"][:5000], printed=(f.get("printed") or "nothing")[:600], said=f.get("said", ""))
-        tid = f"d{seed}_{i:02d}"
-        res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind)
+        was = os.environ.get("HIVE_ROTATE")
+        turn = int(was) if (was or "").isdigit() else 0
+        for k in range(max(1, int(tries))):
+            tid = f"d{seed}_{i:02d}" + (f"_{k}" if k else "")
+            if k:  # another cell beside the trunk on each try after the first
+                os.environ["HIVE_ROTATE"] = str(turn + k)
+            try:
+                res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind)
+            finally:  # the runner's own turn given back exactly, unset if it was
+                if was is None:
+                    os.environ.pop("HIVE_ROTATE", None)
+                else:
+                    os.environ["HIVE_ROTATE"] = was
+            if res["ok"] or (minutes and time.time() - born > minutes * 60):
+                break
         new = []
         if res["ok"]:
             new = rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
@@ -327,7 +343,7 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0):
                 fo.write(json.dumps(row) + "\n")
         right += res["ok"]
         made += sum(x["type"] != "pair" for x in new)
-        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, {len(new)} rows", flush=True)
+        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, try {k + 1}, {len(new)} rows", flush=True)
     return {"dream": seed, "tasks": len(pick), "right": right, "rows": made}
 
 
@@ -593,8 +609,10 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if len(p) + len(t) > max_len:
             return None
         if row.get("rejected"):
+            # both are held in memory at once while trained (the right one and the wrong one): together they must fit
+            # what one row may take. Counted for one, the first judged pairs on the 8B filled a 16 GB machine (2026-11-15).
             w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
-            return None if len(p) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
+            return None if 2 * len(p) + len(t) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
         return (torch.tensor([p + t]), len(t))
     data, mine, new_rows, long = [], 0, 0, 0
     for row in rows:
@@ -639,7 +657,10 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         scored = []
         model.eval()
         for row in drawn:
-            ids = tok(row["text"], add_special_tokens=False)["input_ids"][:512]
+            # every piece of a raw text carries the loss, not only an answer's: each one keeps the scores of the whole
+            # vocabulary (152 thousand words on the 8B) through the step back. 512 pieces filled a 16 GB machine
+            # (2026-11-15), so a raw piece is cut to READ_LEN.
+            ids = tok(row["text"], add_special_tokens=False)["input_ids"][:READ_LEN]
             if len(ids) < 64:
                 continue
             x = torch.tensor([ids])
@@ -831,7 +852,7 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
     if cmd == "dream":
-        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0))))
+        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0), tries=opt("--tries", 2))))
     elif cmd == "practice":
         print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""), minutes=opt("--minutes", 0))))
     elif cmd == "gather":

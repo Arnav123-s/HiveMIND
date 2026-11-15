@@ -150,7 +150,8 @@ def judged(n, seed, organ="", log=print):
             worst = min(ans, key=lambda a: a.get("pm_score") or 0)
             if best is worst or (best.get("pm_score") or 0) - (worst.get("pm_score") or 0) < 3 or (best.get("pm_score") or 0) < 2:
                 continue
-            q, good, bad = _text(row.get("question"))[:1500], _text(best["text"])[:1500], _text(worst["text"])[:1500]
+            # short enough that the question twice and both answers fit one row's memory on a 16 GB machine (grow.train)
+            q, good, bad = _text(row.get("question"))[:900], _text(best["text"])[:900], _text(worst["text"])[:900]
             if len(q) < 40 or len(good) < 40 or len(bad) < 20:
                 continue
             out.append({"type": "judged", "source": site, "messages": [{"role": "user", "content": q}], "output": good, "rejected": bad})

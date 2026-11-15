@@ -1,4 +1,6 @@
 run_number,run_id,kind,branch,commit,started_by,purpose,hive_dna,result,generation
+1,43737467804,talk,main,2637f61,B,talk test: capital of Australia and days to 14 February (g24 cells),t80,"answered, not confirmed: members fetched the capital from made-up addresses",
+2,43766632379,talk,main,934990b,B,the same talk test on the g27 body,t80,"success: Canberra and 75 days, two agreed, 45 s",
 24,43640613796,generation,main,fdb7285,B,the body multiplies (first 8B line),t80,failure (sources runner died; record kept),g24
 25,43689907158,generation,main,480327e,B,"ladder, dreams, trunk: first run of the new code",t80,failure (practice runner shut down; cells trained),
 26,43691944025,generation,main,5d15e6a,schedule,nightly restart,t80,cancelled during practice (no cells),
