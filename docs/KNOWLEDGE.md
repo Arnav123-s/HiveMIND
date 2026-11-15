@@ -94,6 +94,7 @@ flowchart LR
     f_nothingrightfiles["The same for tasks that make a file: no right program, no rows"]:::fixed
   end
   subgraph p_members["solo.py (A)"]
+    f_fetchknown["Members fetched a known fact from addresses they made up"]:::open
     f_lookadvice["On a pure calculation's error, members were told to fetch a page and look"]:::open
   end
   subgraph p_sandbox["sandbox.py (A)"]
@@ -119,6 +120,7 @@ flowchart LR
   end
   f_nothingright -->|blocked| web
   f_nothingrightfiles -->|blocked| files
+  f_fetchknown -->|blocks| confirm
   f_given -->|blocked| files
   f_module -->|blocked| files
   f_jsonkey -->|blocked| web
@@ -143,12 +145,13 @@ flowchart LR
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
 
-## Causes found (1 open, 14 fixed)
+## Causes found (2 open, 14 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
+| Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
 | On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` | open | A | g27: a robot simulation's IndexError; two members fetched example.com |
-| A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons (34 of 34 right on the live sites) | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
+| A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons: 40 of 40 right on the live sites, tasks of several parts too | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
 | The same for tasks that make a file: no right program, no rows | `training/lessons.py` | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
 | Data written in the task was opened as a file that does not exist | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: 3 tasks, every member, every turn |
 | A module was written as a string and its quotes broke | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: rle.py, intervals.py |

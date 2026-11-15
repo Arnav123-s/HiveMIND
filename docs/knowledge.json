@@ -184,7 +184,7 @@
       "lives_in": "lessons",
       "blocks": "web",
       "status": "fixed",
-      "by": "B, lessons (34 of 34 right on the live sites)",
+      "by": "B, lessons: 40 of 40 right on the live sites, tasks of several parts too",
       "seen": "g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows"
     },
     {
@@ -195,6 +195,15 @@
       "status": "fixed",
       "by": "B, lessons",
       "seen": "g27: a log into a file 0 of 2, a module 0 of 2"
+    },
+    {
+      "id": "fetchknown",
+      "title": "Members fetched a known fact from addresses they made up",
+      "lives_in": "members",
+      "blocks": "confirm",
+      "status": "open",
+      "by": "B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist",
+      "seen": "talk test 2026-11-15: the capital of Australia from api.example.com, all three members"
     },
     {
       "id": "given",
