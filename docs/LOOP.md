@@ -6,6 +6,8 @@ dashboard "HiveMIND Progress" (claude.ai artifact Xi5BfLZnLLzvkhZJK72Hvr) draws 
 
 ## One cycle
 
+0. **Read `docs/AGENTS.md` and the other agents' open pull requests.** Another agent works here too: merge `main`
+   in if it moved, stay off what it owns, and add a log line when you start or change course.
 1. **Read the newest results first.** The last generation's record (`training/reports/generations.jsonl`), every
    GitHub run since the last cycle, and the members' own programs in the pulse's `gate-work-*` artifacts.
 2. **Group the failures by cause, not by task.** A cause that ends many tasks the same way on every turn is the
