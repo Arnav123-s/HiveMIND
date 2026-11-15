@@ -109,3 +109,20 @@ def test_the_whole_model_is_read_matrix_by_matrix(tmp_path):
     assert isinstance(model.lm_head, tb.TernaryLinear) and isinstance(model.model.embed_tokens, tb.TernaryEmbedding)
     assert len(cell.params) == 2 * 7 and all(p.requires_grad for p in cell.params)  # the edit on layer 1 only
     assert not any(p.requires_grad for n, p in model.named_parameters() if "lora_" not in n)
+
+
+def test_on_a_cpu_slow_at_16_bit_the_big_multiplications_are_done_in_32_bit(monkeypatch):
+    g = torch.Generator().manual_seed(2)
+    out, inp = 2048, 1024
+    codes = torch.randint(-1, 2, (out, inp), generator=g, dtype=torch.int8)
+    scale = (torch.rand(out, inp // tb.GROUP, generator=g) + 0.5).to(torch.bfloat16)
+    x = torch.randn(3, inp, generator=g).to(torch.bfloat16)
+    monkeypatch.setattr(tb, "_quick16", True)
+    quick = tb._times(x, codes, scale, True)
+    monkeypatch.setattr(tb, "_quick16", False)
+    slow = tb._times(x, codes, scale, True)
+    assert slow.dtype == torch.bfloat16 and torch.allclose(quick.float(), slow.float(), rtol=0.05, atol=0.5)
+    w32 = tb._deq(codes, scale, torch.float32)  # the 32-bit numbers are the very same values
+    assert w32.dtype == torch.float32 and torch.equal(w32, (codes.view(out, -1, tb.GROUP).float() * scale.float().view(out, -1, 1)).view(out, inp))
+    back = tb._times(torch.randn(3, out, generator=g).to(torch.bfloat16), codes, scale, False)
+    assert back.shape == (3, inp) and back.dtype == torch.bfloat16
