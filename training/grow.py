@@ -153,6 +153,15 @@ def foresee_rows(run, task, kind="", seed=None, most=4):
     return out
 
 
+def _dna():
+    """The DNA of the body on this machine (cells/body.json), t80 when it says none."""
+    from team import ternary
+    try:
+        return json.loads(ternary.BODY.read_text()).get("dna") or "t80"
+    except (OSError, ValueError, AttributeError):
+        return "t80"
+
+
 def edge_weights(dna="t17", last=3, record=None):
     """{kind: weight} for practice at the edge: the more a kind sits near half passed, the more it is practised.
     A kind always passed is learned; one never passed gives no right program to learn from and no right-against-
@@ -189,7 +198,9 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
     made = right = 0
-    weights = edge_weights() if level == "edge" else None
+    # where to practise most: the kinds the body's own exams show at its edge (edge and ladder alike; the ladder sets
+    # how hard each is). The weights of the body's own DNA: those of another DNA say nothing about this one.
+    weights = edge_weights(_dna()) if level in ("edge", "ladder") else None
     if weights:
         log("practice at the edge: " + ", ".join(f"{k} {w:.2f}" for k, w in sorted(weights.items(), key=lambda x: -x[1])), flush=True)
     levels = body_levels() if level == "ladder" else None

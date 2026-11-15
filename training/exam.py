@@ -466,7 +466,10 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None, levels=No
         from training import exam_hard
         lv = levels or {}
         single = n - n // 2
-        out = exam(seed, single - single // 2, only, "basic", without, levels=lv) + exam(seed, single // 2, only, "hard", without, levels=lv)
+        if weights:  # the single tasks drawn where the body's exams say it is at its edge (training/progress.py draws why)
+            out = exam(seed, single, only, "edge", without, weights=weights, levels=lv)
+        else:
+            out = exam(seed, single - single // 2, only, "basic", without, levels=lv) + exam(seed, single // 2, only, "hard", without, levels=lv)
         pool = [m for m in MAKERS + exam_hard.MAKERS if m.__name__ not in without]
         k = max(2, min(MOST_PARTS, int(lv.get("compound", 2) or 2)))
         for i in range(n // 2):
@@ -477,7 +480,8 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None, levels=No
         from training import exam_hard
         makers = [(m, "e") for m in MAKERS if m.__name__ not in without] + [(m, "h") for m in exam_hard.MAKERS if m.__name__ not in without]
         r = random.Random(f"{seed}:edge")
-        tried = [(i, make, lv) + tuple(_made(make, f"{seed}:{make.__name__}:{i}:0")) for i, (make, lv) in enumerate(makers)]
+        hard = levels or {}  # how hard each kind is to be, as the ladder has it (0 where it has no level)
+        tried = [(i, make, lv) + tuple(_made(make, f"{seed}:{make.__name__}:{i}:0", hard.get(make.__name__, 0))) for i, (make, lv) in enumerate(makers)]
         # a kind nobody has measured yet counts as if passed half the time (the most to learn)
         w = [max(1e-3, (weights or {}).get(t[4], 0.25)) for t in tried]
         out, used = [], {}
@@ -485,7 +489,7 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None, levels=No
             i, make, lv, field, kind, task, check = tried[pick]
             again = used.get(i, 0)
             if again:
-                field, kind, task, check = _made(make, f"{seed}:{make.__name__}:{i}:{again}")
+                field, kind, task, check = _made(make, f"{seed}:{make.__name__}:{i}:{again}", hard.get(make.__name__, 0))
             used[i] = again + 1
             if task in [t[3] for t in out] or (only and field not in only):
                 continue
