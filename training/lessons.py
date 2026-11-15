@@ -1,6 +1,6 @@
 """Lessons: right programs for the kinds of task the hive cannot do yet, checked before they are taught.
 
-    python training/lessons.py --seed S [--per-kind 1] [--several 4] [--failures failures.jsonl] [--most-failures 12] [--out rows.jsonl]
+    python training/lessons.py --seed S [--per-kind 1] [--several 4] [--failures failures.jsonl] [--most-failures 12] [--own-rows rows.jsonl ...] [--out rows.jsonl]
     python training/lessons.py --show MAKER [--seed S] [--level L]      one lesson: its task, its program, what it printed
 
 Why (from first principles): the hive learns only from programs that its own checks confirmed. On a kind of task it
@@ -754,11 +754,31 @@ def rows(les, wrong=None, today=None):
     return out
 
 
-def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4):
+OWN = 3  # a kind with this many right programs of the hive's own is the hive's to learn: it gets no more lessons
+
+
+def own_counts(*row_files):
+    """{kind: how many right programs the hive found itself} (rows of type "first" that no lesson wrote), from the
+    rows gathered so far: practice, dreams, the trunk's and the cells' own work."""
+    count = {}
+    for f in row_files:
+        for ln in Path(f).read_text().splitlines() if f and Path(f).exists() else []:
+            try:
+                r = json.loads(ln)
+            except ValueError:
+                continue
+            if isinstance(r, dict) and r.get("type") == "first" and r.get("who") != "lesson":
+                count[r.get("kind", "")] = count.get(r.get("kind", ""), 0) + 1
+    return count
+
+
+def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4, own=None):
     """A generation's lessons: per_kind fresh tasks of every taught kind, at the body's levels, `several` fresh tasks of
     several parts, and the most recent tasks the hive got wrong (of the taught kinds), each made again and shown done
     right. Rows appended to out.
-    Returns {"lessons", "right", "rows", "dropped": [why]}."""
+    own: {kind: right programs the hive found itself} (own_counts). Lessons only start a kind: one where the hive has
+    OWN of its own gets none, so its practice and its dreams carry it from there, as they do every kind it can learn
+    from its own work. Returns {"lessons", "right", "rows", "dropped": [why], "left_to_the_hive": [kind]}."""
     from training import grow
     levels = grow.body_levels() if levels is None else levels
     t0 = time.time()
@@ -784,11 +804,19 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
         if taught and key not in seen and len(seen) < most_failures:
             seen.add(key)
             plan.append((f["maker"], f["rseed"], f.get("level", 0), f.get("parts"), f))
-    made, right, dropped = [], 0, []
+    made, right, dropped, left = [], 0, [], set()
     for maker, rseed, level, parts, wrong in plan:
         if minutes and time.time() - t0 > minutes * 60:
             dropped.append("out of time")
             break
+        if own is not None:
+            try:
+                made_now = exam.remake(maker, rseed, level, parts)
+            except Exception:  # noqa: BLE001 - made below again, where the failure is said
+                made_now = None
+            if made_now and own.get(made_now[1], 0) >= OWN:
+                left.add(made_now[1])
+                continue
         try:
             les = lesson(maker, rseed, level, parts)
         except Exception as e:  # noqa: BLE001 - a task that cannot be made (a site down): no lesson
@@ -804,7 +832,10 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
         with open(out, "a") as f:
             for r in made:
                 f.write(json.dumps(r) + "\n")
-    return {"lessons": len(plan), "right": right, "rows": len(made), "dropped": dropped, "seconds": round(time.time() - t0)}
+    if left:
+        log(f"left to the hive (it has {OWN} or more right programs of its own): {', '.join(sorted(left))}", flush=True)
+    return {"lessons": len(plan), "right": right, "rows": len(made), "dropped": dropped,
+            "left_to_the_hive": sorted(left), "seconds": round(time.time() - t0)}
 
 
 def main(argv):
@@ -813,8 +844,10 @@ def main(argv):
         les = lesson(opt("--show"), opt("--seed", "show"), int(opt("--level", 0)))
         print(les["task"], "\n\n" + les["program"], "\n" + les["answer"], "\n\nright:", les["ok"], "-", les["why"])
         return 0 if les["ok"] else 1
+    owned = [argv[i + 1] for i, a in enumerate(argv[:-1]) if a == "--own-rows"]
     res = teach(opt("--seed", time.strftime("%Y%m%d%H")), int(opt("--per-kind", 1)), opt("--failures"), int(opt("--most-failures", 12)),
-                opt("--out", "lessons.jsonl"), minutes=float(opt("--minutes", 0)), several=int(opt("--several", 4)))
+                opt("--out", "lessons.jsonl"), minutes=float(opt("--minutes", 0)), several=int(opt("--several", 4)),
+                own=own_counts(*owned) if owned else None)
     print(json.dumps(res))
     return 0
 

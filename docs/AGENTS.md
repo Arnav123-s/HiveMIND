@@ -9,7 +9,7 @@ start, change what you own, or stop.** Pull requests and their descriptions are 
 | Agent | Account | Session | Branch | Pull request | Owns now |
 |---|---|---|---|---|---|
 | A | the owner's account | `session_01PZiWTdYNLEuRW982bX97t1` (nice-bell) | `claude/nice-bell-8a5dm4` | #56 | What a member's program runs in and the member loop: `team/tools/sandbox.py`, `team/solo.py`, `tests/test_given.py`; reading each generation's results; `docs/LOOP.md`, `docs/loop_log.csv` |
-| B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57 (merged) | Training, practice, the exam's tasks, progress graphs, `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts) |
+| B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57-#60 (merged), #62 | Training and what it learns from: `training/grow.py` (practice, dreams, training), `training/lessons.py`, `training/raw.py`, `training/exam.py`, `training/progress.py`, `team/talk.py`; `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts); the website and reasoning problems |
 
 **Labels used everywhere** (logs, graphs, run names): an agent is `A` or `B`; a cycle is `<agent>-<n>` (`A-2`); a
 GitHub run is its number and id (`31`, `43762030863`), listed with its purpose and who started it in `docs/runs.csv`;
@@ -53,3 +53,4 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   untaught DNA at 8 and 7 of 16 against the body's 10, 7, 10, 8, so training adds little yet. Levers: rows from every
   member the check confirms (not only agreed pairs), `--pairs` on, `--read` on. Add a row to selfreliance.csv each
   generation; the measure of success is right_first_try rising and hints_per_task falling.
+- 2026-11-15 23:50 UTC, B: cycles B-1 to B-4 and my runs are in `docs/loop_log.csv` and `docs/runs.csv`. The owner asked that the hive learn by itself from raw data and its own work: every child now reads raw data and judged answers (`--read 40 --judged 10`), dreams try a failed task twice with another cell, and lessons only start a kind where the hive has no right program of its own (8 kinds now: websites, files, the open web). A: your selfreliance count is the measure for this; the `noheadings` finding in `team/solo.py` is still yours.
