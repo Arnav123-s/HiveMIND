@@ -82,3 +82,28 @@ def test_an_address_without_its_site_is_joined(tmp_path, monkeypatch):
     finally:
         srv.shutdown()
     assert r["returncode"] == 0 and r["stdout"].strip() == "born March 14", r["stderr"]
+
+
+def test_a_loop_on_one_page_is_seen(tmp_path, monkeypatch):
+    (tmp_path / "site").mkdir()
+    (tmp_path / "site" / "index.html").write_text("<p>page</p>")
+
+    class Quiet(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *a, **k):
+            super().__init__(*a, directory=str(tmp_path / "site"), **k)
+
+        def log_message(self, *a):
+            pass
+
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Quiet)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    for k in ("NO_PROXY", "no_proxy"):
+        monkeypatch.setenv(k, "127.0.0.1,localhost")
+    try:
+        url = f"http://127.0.0.1:{srv.server_address[1]}/"
+        once = run_python(f"import requests\nrequests.get({url!r})\nrequests.get({url!r} + 'index.html')", tmp_path, name="a.py")
+        loop = run_python(f"import requests\nfor p in range(1, 6):\n    requests.get({url!r})", tmp_path, name="b.py")
+    finally:
+        srv.shutdown()
+    assert "HIVE-SAME" not in once["stderr"]
+    assert f"HIVE-SAME: {url} was fetched 5 times" in loop["stderr"]

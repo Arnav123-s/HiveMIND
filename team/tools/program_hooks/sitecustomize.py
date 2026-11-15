@@ -19,10 +19,21 @@ try:
                 url = _urljoin(_base[0], u)
         r = _orig(self, method, url, *a, **k)
         _base[0] = r.url
+        if str(method).upper() == "GET":
+            _times[r.url] = _times.get(r.url, 0) + 1
         if r.status_code >= 400:
             sys.stderr.write("HIVE-HTTP: %s %s returned %d\n" % (method, r.url, r.status_code))
         return r
     _rq.Session.request = _request
+    # A loop meant to walk pages that fetched one page again and again (seen in the pulse of g27: "the first 5 pages",
+    # range(1, 6), the same address each time; 8 authors counted where 28 were wanted, and nothing failed)
+    _times = {}
+    import atexit as _atexit
+    def _same():
+        u, n = max(_times.items(), key=lambda x: x[1], default=("", 0))
+        if n >= 3:
+            sys.stderr.write("HIVE-SAME: %s was fetched %d times\n" % (u, n))
+    _atexit.register(_same)
 except Exception:
     pass
 

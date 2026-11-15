@@ -362,6 +362,12 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             res = dict(res, returncode=1)
             err = (f"The address {gone.group(1)} answered {gone.group(2)}: there is no such page. Do not make an address up. "
                    "Fetch the site's first page, print the links on it (their text and href), and follow the one that matches.")
+        again = re.search(r"HIVE-SAME: (\S+) was fetched (\d+) times", err)
+        if res["returncode"] == 0 and again:
+            res = dict(res, returncode=1)
+            err = (f"The program fetched the same page {again.group(1)} {again.group(2)} times: the loop never moved to "
+                   "another page. Find the link to the next page on each page (its text is often 'Next') and fetch that, "
+                   "or put the page number into the address.")
         bare = [f.name for f in (Path(work).iterdir() if Path(work).exists() else []) if f.is_file() and f.suffix in (".csv", ".tsv")
                 and len([x for x in f.read_text(errors="ignore").splitlines() if x.strip()]) <= 1]
         if res["returncode"] == 0 and bare:
