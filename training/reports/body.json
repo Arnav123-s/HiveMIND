@@ -194,6 +194,58 @@
     "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.5582,
     "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.4898
    }
+  },
+  {
+   "when": "2026-11-12 07:57",
+   "cells": 10,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.6769,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.5166,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.5952,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5227
+   }
+  },
+  {
+   "when": "2026-11-12 16:50",
+   "cells": 12,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7339,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.5728,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.6576,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.5761
+   }
+  },
+  {
+   "when": "2026-11-13 07:49",
+   "cells": 13,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7859,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.6104,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.6982
+   }
+  },
+  {
+   "when": "2026-11-14 07:33",
+   "cells": 13,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 2.7807,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.612,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.7036
+   }
+  },
+  {
+   "when": "2026-11-15 07:33",
+   "cells": 15,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.3579,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.8548,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.9487
+   }
   }
  ],
  "births": [
@@ -306,12 +358,177 @@
    "why": "where it lives the body gained -0.0082 (it needs more than 0.004)",
    "near_before": 3.4453,
    "near_after": 3.4534
+  },
+  {
+   "cell": 15,
+   "when": "2026-11-12 07:27",
+   "trainer": "t3",
+   "on": "uncharted",
+   "kept": false,
+   "why": "where it lives the body gained -0.0083 (it needs more than 0.004)",
+   "passages": 103,
+   "near_before": 3.554,
+   "near_after": 3.5623
+  },
+  {
+   "cell": 16,
+   "when": "2026-11-12 07:34",
+   "trainer": "t5",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0141 (it needs more than 0.004)",
+   "passages": 91,
+   "near_before": 3.6258,
+   "near_after": 3.6399
+  },
+  {
+   "cell": 17,
+   "when": "2026-11-12 07:56",
+   "trainer": "t8",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained +0.0039 (it needs more than 0.004)",
+   "passages": 120,
+   "near_before": 3.5595,
+   "near_after": 3.5555
+  },
+  {
+   "cell": 18,
+   "when": "2026-11-12 16:11",
+   "trainer": "t11",
+   "on": "worst",
+   "kept": false,
+   "why": "where it lives the body gained -0.0092 (it needs more than 0.004)",
+   "passages": 93,
+   "near_before": 3.5774,
+   "near_after": 3.5866
+  },
+  {
+   "cell": 19,
+   "when": "2026-11-12 16:32",
+   "trainer": "t7",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0159, give or take 0.0029 on 113 passages; it wakes on 94% of the passages near it",
+   "passages": 113,
+   "near_before": 3.5374,
+   "near_after": 3.5215
+  },
+  {
+   "cell": 20,
+   "when": "2026-11-12 16:49",
+   "trainer": "t8",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0166, give or take 0.0025 on 118 passages; it wakes on 98% of the passages near it",
+   "passages": 118,
+   "near_before": 3.4817,
+   "near_after": 3.4652
+  },
+  {
+   "cell": 21,
+   "when": "2026-11-13 07:18",
+   "trainer": "t7",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained +0.0039 (it needs more than 0.004)",
+   "passages": 103,
+   "near_before": 3.6123,
+   "near_after": 3.6084
+  },
+  {
+   "cell": 22,
+   "when": "2026-11-13 07:33",
+   "trainer": "t10",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0064, give or take 0.0030 on 104 passages; it wakes on 87% of the passages near it",
+   "passages": 104,
+   "near_before": 3.6124,
+   "near_after": 3.606
+  },
+  {
+   "cell": 23,
+   "when": "2026-11-13 07:49",
+   "trainer": "t9",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0052 (it needs more than 0.004)",
+   "passages": 95,
+   "near_before": 3.598,
+   "near_after": 3.6032
+  },
+  {
+   "cell": 24,
+   "when": "2026-11-14 07:05",
+   "trainer": "t10",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0057 (it needs more than 0.004)",
+   "passages": 72,
+   "near_before": 3.5975,
+   "near_after": 3.6032
+  },
+  {
+   "cell": 25,
+   "when": "2026-11-14 07:17",
+   "trainer": "t14",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained +0.0089, give or take 0.0045 on 53 passages: chance alone could give that (it needs 2 times the give-or-take)",
+   "passages": 53,
+   "near_before": 3.6226,
+   "near_after": 3.6137
+  },
+  {
+   "cell": 26,
+   "when": "2026-11-14 07:33",
+   "trainer": "t7",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0047 (it needs more than 0.004)",
+   "passages": 71,
+   "near_before": 3.5859,
+   "near_after": 3.5906
+  },
+  {
+   "cell": 27,
+   "when": "2026-11-15 07:14",
+   "trainer": "t13",
+   "on": "uncharted",
+   "kept": true,
+   "why": "where it lives the body gained +1.2395, give or take 0.0396 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 4.2952,
+   "near_after": 3.0557
+  },
+  {
+   "cell": 28,
+   "when": "2026-11-15 07:23",
+   "trainer": "t12",
+   "on": "uncharted",
+   "kept": true,
+   "why": "where it lives the body gained +0.0796, give or take 0.0340 on 59 passages; it wakes on 49% of the passages near it",
+   "passages": 59,
+   "near_before": 3.8658,
+   "near_after": 3.7862
+  },
+  {
+   "cell": 29,
+   "when": "2026-11-15 07:32",
+   "trainer": "t12",
+   "on": "uncharted",
+   "kept": false,
+   "why": "where it lives the body gained -0.0041 (it needs more than 0.004)",
+   "passages": 57,
+   "near_before": 3.8163,
+   "near_after": 3.8205
   }
  ],
  "weakest": {
-  "territory": 5,
-  "loss": 3.5306,
-  "text": " to make hunting easier. Many of the people hunt with poisoned arrows. The poisons come from the plants of the forest. That makes the animals easier to kill.\n Most of the forest people are slash-and-burn farmers. They raise crops in small clearings as well as hunting and gathering in the forest. This provides them with food year-round. They start by cutting (slashing) down the trees and the other plants in an area. They let the dead plants dry out, then they burn them. The ash from the burned plants goes into the soil and makes it fertile for a little while. This is called slash-and-burn farming.\n The small clearings grow food crops for a few years, then the family or group moves on and clears a new field. The old field is left to be overgrown by the forest. In a few years, it once again looks like the rain forest that surrounds it.\n This type of farming does not harm the rain forest when only a few people are doing it. The small clear"
+  "territory": 8,
+  "loss": 4.2828,
+  "text": " change arbitrarily ***\n return c_void_p(lib.zsys_socket(type, filename, line_nbr))\n Create a pipe, which consists of two PAIR sockets connected over inproc.\n The pipe is configured to use the zsys_pipehwm setting. Returns the\n frontend socket successful, NULL if failed.\n return Zsock(lib.zsys_create_pipe(byref(zsock_p.from_param(backend_p))), False)\n def version(major, minor, patch):\n Return the CZMQ version for run-time API detection; returns version\n number into provided fields, providing reference isn't null in each case.\n return lib.zsys_version(byref(c"
  },
  "trainers": [
   {
@@ -324,71 +541,75 @@
    "kept": 0
   },
   {
-   "id": "t2",
-   "start": "stem",
-   "lr": 0.0005,
-   "span": 1.0,
-   "on": "division",
-   "births": 4,
-   "kept": 2
-  },
-  {
-   "id": "t3",
-   "start": "stem",
-   "lr": 0.0005,
-   "span": 1.0,
-   "on": "uncharted",
-   "births": 1,
-   "kept": 0
-  },
-  {
-   "id": "t4",
-   "start": "nearest",
-   "lr": 0.0003,
-   "span": 1.0,
-   "on": "worst",
-   "births": 1,
-   "kept": 0
-  },
-  {
-   "id": "t5",
-   "start": "nearest",
-   "lr": 0,
-   "span": 0.5,
-   "on": "division",
-   "how": "flips",
-   "births": 0,
-   "kept": 0
-  },
-  {
-   "id": "t6",
-   "start": "nearest",
-   "lr": 0,
-   "span": 0.5,
-   "on": "uncharted",
-   "how": "flips",
-   "births": 1,
-   "kept": 0
-  },
-  {
    "id": "t7",
    "start": "stem",
    "lr": 0.0005,
    "span": 2.0,
    "on": "division",
-   "births": 2,
-   "kept": 2,
+   "births": 5,
+   "kept": 3,
    "parent": "t2"
   },
   {
-   "id": "t8",
-   "start": "stem",
-   "lr": 0.00025,
-   "span": 2.0,
+   "id": "t10",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
    "on": "division",
+   "how": "team",
+   "share": 0.5,
+   "births": 2,
+   "kept": 1
+  },
+  {
+   "id": "t12",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 2.0,
+   "on": "uncharted",
+   "births": 2,
+   "kept": 1,
+   "parent": "t7"
+  },
+  {
+   "id": "t13",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 2.0,
+   "on": "uncharted",
+   "births": 1,
+   "kept": 1,
+   "parent": "t7"
+  },
+  {
+   "id": "t15",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 2.0,
+   "on": "uncharted",
    "births": 0,
    "kept": 0,
    "parent": "t7"
+  },
+  {
+   "id": "t16",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 4.0,
+   "on": "uncharted",
+   "births": 0,
+   "kept": 0,
+   "parent": "t12"
+  },
+  {
+   "id": "t17",
+   "start": "stem",
+   "lr": 0.001,
+   "span": 2.0,
+   "on": "uncharted",
+   "births": 0,
+   "kept": 0,
+   "parent": "t13"
   }
  ],
  "regenerated": [
@@ -420,6 +641,60 @@
    "gate_before": 2.5397,
    "gate_after": 2.5397,
    "kept": false
+  },
+  {
+   "when": "2026-11-12 07:19",
+   "steps": 300,
+   "gate_before": 2.5671,
+   "gate_after": 2.5671,
+   "kept": false,
+   "own_before": 2.555,
+   "own_after": 2.555,
+   "minutes": 10.0
+  },
+  {
+   "when": "2026-11-12 16:04",
+   "steps": 214,
+   "gate_before": 2.5255,
+   "gate_after": 2.5255,
+   "kept": false,
+   "own_before": 2.555,
+   "own_after": 2.555,
+   "minutes": 3.0
+  },
+  {
+   "when": "2026-11-13 07:08",
+   "steps": 234,
+   "gate_before": 2.5639,
+   "gate_after": 2.5639,
+   "kept": false,
+   "own_before": 2.555,
+   "own_after": 2.555,
+   "minutes": 3.0
+  },
+  {
+   "when": "2026-11-14 06:48",
+   "steps": 152,
+   "gate_before": 2.5561,
+   "gate_after": 2.5561,
+   "kept": false,
+   "own_before": 2.555,
+   "own_after": 2.555,
+   "minutes": 3.0
+  },
+  {
+   "when": "2026-11-15 07:02",
+   "steps": 144,
+   "gate_before": 3.1593,
+   "gate_after": 3.1593,
+   "kept": false,
+   "own_before": 2.555,
+   "own_after": 2.555,
+   "minutes": 3.0
   }
+ ],
+ "kinds_tried": [
+  "flips",
+  "team"
  ]
 }

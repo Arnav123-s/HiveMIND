@@ -1,0 +1,10 @@
+run_number,run_id,kind,branch,commit,started_by,purpose,hive_dna,result,generation
+24,43640613796,generation,main,fdb7285,B,the body multiplies (first 8B line),t80,failure (sources runner died; record kept),g24
+25,43689907158,generation,main,480327e,B,"ladder, dreams, trunk: first run of the new code",t80,failure (practice runner shut down; cells trained),
+26,43691944025,generation,main,5d15e6a,schedule,nightly restart,t80,cancelled during practice (no cells),
+27,43737376429,re-sit,main,0440f9d,B,records run 25's cells as generation 27,t80,success: 15 of 32,g27
+28,43747064624,generation,main,68d77b0,B,first full generation on the new code,t80,running (practice runner 4 shut down),
+29,43761528874,trial re-sit,claude/nice-bell-8a5dm4,5a19c55,A,re-sit g27 exam with runtime fixes,t80,cancelled: waited for practice (fixed in b59ab88),
+30,43761787469,trial re-sit,claude/nice-bell-8a5dm4,b59ab88,A,same; pointed at run 26,t80,failure: run 26 holds no cells (wrong input),
+31,43762030863,trial re-sit,claude/nice-bell-8a5dm4,df92941,A,"g27 exam seeds, run 25's cells, first five runtime fixes",t80,running,
+32,43765575640,trial re-sit,claude/nice-bell-8a5dm4,e134edf,A,"same cells and seeds as run 31, with all of PR 56's fixes",t80,queued,

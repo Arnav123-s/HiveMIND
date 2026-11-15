@@ -33,7 +33,7 @@ from . import config, llm, stop, ternary
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
-from .tools.sandbox import run_python
+from .tools.sandbox import give, run_python
 
 MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
@@ -131,6 +131,10 @@ def alike(task, most=2, least=0.3):
             out.append((bool(r.get("checked")), score, r))
     return [r for _, _, r in sorted(out, key=lambda x: (x[0], x[1]), reverse=True)[:most]]
 FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
+# a search that came back empty where the TASK says there is something (seen in a trial of the g27 exam: a log's
+# lines split and the level read from the wrong place; "No ERROR lines found.", and max() of nothing)
+EMPTY = re.compile(r"\bno\b[^.\n]{0,40}\bfound\b|max\(\) (iterable )?arg\w* is (an )?empty|min\(\) (iterable )?arg\w* is (an )?empty|"
+                   r"\bfound nothing\b|\bnothing found\b", re.I)
 LOOK = re.compile(r"KeyError|IndexError|AttributeError|TypeError|JSONDecodeError|does not exist|not found|NoneType|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
 
 
@@ -258,7 +262,57 @@ def typed_out(reply, code):
         tree = ast.parse(code)
     except (SyntaxError, ValueError):
         return "```" not in reply
-    return not any(isinstance(x, ast.Call) for x in ast.walk(tree))
+    # a program that only defines functions calls nothing too, and is a program (a module the TASK asks for)
+    return not any(isinstance(x, (ast.Call, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for x in ast.walk(tree))
+
+
+def module(task, code, work, board=None, n=0):
+    """A module the TASK asks for (save it as rle.py), saved from the member's own program when the program did not
+    write it: its imports, functions, classes and constants, without the lines that test and print. Seen in the pulse
+    of g27: a member's program defined encode and decode right and printed the right values; told rle.py was missing,
+    it wrote its own source into a quoted string, broke the quotes, and died of a SyntaxError on every turn after."""
+    lacking = [f for f in wanted(task) if f.endswith(".py") and not (Path(work) / f).is_file()]
+    if not lacking:
+        return ""
+    try:
+        tree = ast.parse(code)
+    except (SyntaxError, ValueError):
+        return ""
+    keep = []
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            keep.append(node)
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+            try:
+                ast.literal_eval(node.value)
+                keep.append(node)
+            except (ValueError, TypeError, SyntaxError, MemoryError, RecursionError):
+                pass
+    if not any(isinstance(x, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) for x in keep):
+        return ""
+    if any(isinstance(x, ast.ImportFrom) and x.module == lacking[0][:-3] for x in keep):
+        return ""  # it imports the module it was to write: its own functions are not that module
+    src = "\n\n".join(ast.get_source_segment(code, x) or ast.unparse(x) for x in keep) + "\n"
+    (Path(work) / lacking[0]).write_text(src)
+    if board is not None:
+        board.log(f"member{n}", "module", f"{lacking[0]} saved from the program's functions")
+    return lacking[0]
+
+
+# The help the runtime gave, by name. Every hint that rescues a task makes a row the next cells learn from, so a
+# body that learns on its own needs fewer of them generation after generation (scripts/selfreliance.py counts them).
+HINTS = [("given", "HIVE-GIVEN:"), ("deeper_key", "it is in the data at:"), ("like_keys", "these look like it:"),
+         ("html_json", "is a web page (HTML), not JSON"), ("no_address", "there is no address to fetch"),
+         ("no_host", "does not exist (no such host)"), ("memory", "MEMORY: the program used"),
+         ("bad_address", "there is no such page. Do not make an address up"), ("same_page", "the loop never moved to"),
+         ("empty_file", "holds no rows (at most a heading)"), ("missing_file", "and it is not there. Reply with the complete"),
+         ("empty_search", "The program found nothing"), ("printed_failure", "The program printed a failure, not an answer")]
+
+
+def hints_in(*texts):
+    """The names of the runtime's hints that these texts (a program's stderr, what the member was told) carry."""
+    t = "\n".join(x or "" for x in texts)
+    return [name for name, mark in HINTS if mark in t]
 
 
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
@@ -277,6 +331,13 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
+    give(task, work, skip=wanted(task))
+    helped = []
+
+    def helps(*names):
+        for h in names:
+            helped.append(h)
+            board.log(f"member{n}", "hint", h)
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     for turn in range(1, TURNS + 1):
         stop.check()
@@ -328,12 +389,30 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             res = dict(res, returncode=1)
             err = (f"The address {gone.group(1)} answered {gone.group(2)}: there is no such page. Do not make an address up. "
                    "Fetch the site's first page, print the links on it (their text and href), and follow the one that matches.")
+        again = re.search(r"HIVE-SAME: (\S+) was fetched (\d+) times", err)
+        if res["returncode"] == 0 and again:
+            res = dict(res, returncode=1)
+            err = (f"The program fetched the same page {again.group(1)} {again.group(2)} times: the loop never moved to "
+                   "another page. Find the link to the next page on each page (its text is often 'Next') and fetch that, "
+                   "or put the page number into the address.")
         bare = [f.name for f in (Path(work).iterdir() if Path(work).exists() else []) if f.is_file() and f.suffix in (".csv", ".tsv")
                 and len([x for x in f.read_text(errors="ignore").splitlines() if x.strip()]) <= 1]
         if res["returncode"] == 0 and bare:
             res = dict(res, returncode=1)
             err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
                    "the page. Print what the page really holds and look.")
+        saved = module(task, code, work, board, n) if res["returncode"] == 0 else ""
+        if saved:
+            helps("module_saved")
+        if saved and not out:
+            # Seen in a trial of the g27 exam: the module was saved from two members' programs, which defined the
+            # functions and printed nothing; told "it printed nothing" twice, both gave up, and with no two answers
+            # alike the module was never counted
+            last_error = None
+            messages += [{"role": "assistant", "content": f"```python\n{code}\n```"},
+                         {"role": "user", "content": f"Your functions are saved as {saved}. Now reply with a short program that "
+                          f"imports {saved[:-3]}, calls the functions as the TASK asks, and prints each value it asks for."}]
+            continue
         lacking = [f for f in wanted(task) if not (Path(work) / f).is_file() or not (Path(work) / f).stat().st_size]
         if res["returncode"] == 0 and lacking:
             # Seen on the first hard sitting (seed 7001): asked to "save it as durations.py", both members wrote the
@@ -341,12 +420,16 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             res = dict(res, returncode=1)
             err = (f"The TASK asks for the file {lacking[0]} saved in the current folder, and it is not there. Reply with the complete "
                    f"program that writes {lacking[0]} (with open({lacking[0]!r}, 'w')), then uses it, and prints the answer.")
+        if res["returncode"] == 0 and out and len(out) < 300 and EMPTY.search(out) and not EMPTY.search(task):
+            res = dict(res, returncode=1)
+            err = f"The program found nothing: {out.strip()[-200:]}"
         failed = FAILED.search(out) if res["returncode"] == 0 and out and len(out) < 400 else None
         if failed and failed.group(0).lower() not in task.lower():  # (a task about ERROR lines is answered with the word error)
             # a program that catches its own error and prints it has not answered ("The 'upload_time' key does not
             # exist in the response." was one member's answer to "when was the latest httpx released")
             res = dict(res, returncode=1)
             err = f"The program printed a failure, not an answer: {out[-300:]}"
+        helps(*hints_in(res["stderr"], err if err != res["stderr"] else ""))
         if res["returncode"] == 0 and out and (looking and re.search(r"\[:\d{3,4}\]", code) or re.search(r"\blook\(", code)
                                                 and re.search(r"^PAGE title:|^\s*'\w+': |^\[\d+ items; the first:\]", out, re.M)):
             # it was told to print the data as it is, to see its shape: what that printed is not its answer (two
@@ -369,14 +452,22 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             break
         last_error = line
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
-        looking = bool(LOOK.search(err or out))
+        # look() is for data the program read; an error in a calculation of its own is found by printing its own values
+        # (seen in g27: a robot simulation's IndexError, and two members went to fetch example.com)
+        reads = re.search(r"\brequests\.|urllib|\.json\(|json\.loads?\(|BeautifulSoup|\bopen\(|read_csv|playwright", code) is not None
+        looking = bool(LOOK.search(err or out)) and (reads or re.search(r"KeyError|NoneType|JSONDecodeError|\bkeys?\b|response|json|\bpage\b|column|field", err or out, re.I) is not None)
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
+            "\n\nThe program found nothing where the TASK says there is something, so it reads the data wrongly. Reply "
+            "with a short program that prints the first 3 items it looks through and how it splits them (for a line of "
+            "text: print(line.split())), so you see their real shape. Then fix the program." if EMPTY.search(err or out) else
             "\n\nWhat you expected is not there. Reply with a short program that only fetches the data and calls look(data) "
             "(look is built in: for JSON it prints the keys, nested; for a web page pass response.text and it prints the links "
-            "and the text). Then you see what IS there." if LOOK.search(err or out) else
+            "and the text). Then you see what IS there." if looking else
+            "\n\nThe error is in the program's own steps. Print the values it works with just before the line that failed, "
+            "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
-            "who": who, "messages": messages}
+            "who": who, "messages": messages, "hints": helped}
 
 
 def run(task, run_dir=None, approve="never", members=2):

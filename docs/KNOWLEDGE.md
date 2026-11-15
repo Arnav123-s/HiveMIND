@@ -88,6 +88,8 @@ flowchart LR
   talktaught --> goal
   speed{{"Answers are slow: one member decodes at a time (unclaimed)"}}
   speed --> goal
+  selflearn{{"The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work (B)"}}
+  selflearn --> goal
   m_score[/"Exam tasks passed, each generation"/]
   m_carry[/"Never-practised kinds passed"/]
   m_kinds[/"Every kind of task, weakest first"/]
@@ -102,7 +104,11 @@ flowchart LR
   subgraph p_members["solo.py (A)"]
     f_noheadings["An agreed answer without the PART headings was accepted, so every part failed"]:::open
     f_fetchknown["Members fetched a known fact from addresses they made up"]:::open
-    f_lookadvice["On a pure calculation's error, members were told to fetch a page and look"]:::open
+    f_lookadvice["On a pure calculation's error, members were told to fetch a page and look"]:::fixed
+    f_silentmodule["A module was saved but its member printed nothing and gave up"]:::fixed
+    f_defsonly["A program that only defines functions was taken for a typed answer and never run"]:::fixed
+    f_emptysearch["A search that found nothing was taken as the answer"]:::fixed
+    f_hintlog["The runtime's help was not counted, so learning on its own could not be seen"]:::fixed
   end
   subgraph p_sandbox["sandbox.py (A)"]
     f_given["Data written in the task was opened as a file that does not exist"]:::fixed
@@ -111,6 +117,11 @@ flowchart LR
     f_links["A link without its site was fetched as is"]:::fixed
     f_samepage["A loop fetched one page again and again"]:::fixed
     f_memory["A runaway program could fill the runner's memory"]:::fixed
+    f_likekeys["A key that is nowhere in the data was named and nothing more"]:::fixed
+    f_htmljson[".json() was called on a web page"]:::fixed
+    f_charset["A page that does not say its encoding was read as Latin-1"]:::fixed
+    f_useragent["Requests went without a User-Agent and Wikipedia refused them"]:::fixed
+    f_badaddress["An address of None, a made-up host, a site glued to its path"]:::fixed
   end
   subgraph p_train["ternary_base.py (B)"]
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
@@ -135,9 +146,18 @@ flowchart LR
   f_jsonkey -->|blocked| web
   f_links -->|blocked| web
   f_samepage -->|blocked| web
-  f_lookadvice -->|blocks| files
+  f_lookadvice -->|blocked| files
   f_memory -->|blocked| deaths
   f_flat -->|blocked| carryover
+  f_likekeys -->|blocked| web
+  f_htmljson -->|blocked| web
+  f_charset -->|blocked| web
+  f_useragent -->|blocked| web
+  f_badaddress -->|blocked| web
+  f_silentmodule -->|blocked| files
+  f_defsonly -->|blocked| files
+  f_emptysearch -->|blocked| files
+  f_hintlog -->|blocked| selflearn
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -154,14 +174,14 @@ flowchart LR
 | A right answer in talk comes back as not confirmed | B | talk test 2026-11-15: Canberra and 75 days right, the second member did not agree |
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
+| The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 
-## Causes found (3 open, 15 fixed)
+## Causes found (2 open, 25 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
 | An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` | open | A: the form check could insist on the headings before agreeing | g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing) |
 | Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
-| On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` | open | A | g27: a robot simulation's IndexError; two members fetched example.com |
 | Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528) | `training/lessons.py` | fixed | B, lessons for 12 everyday kinds where every value is computed (213 of 213 right) | g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged |
 | A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons: 40 of 40 right on the live sites, tasks of several parts too | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
 | The same for tasks that make a file: no right program, no rows | `training/lessons.py` | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
@@ -170,6 +190,7 @@ flowchart LR
 | A missing JSON key led to six turns of looking | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: boto3 upload_time |
 | A link without its site was fetched as is | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: /author/bob-marley |
 | A loop fetched one page again and again | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: quotes pages 1 to 5 |
+| On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` | fixed | A, PR 56 | g27: a robot simulation's IndexError; two members fetched example.com |
 | A runaway program could fill the runner's memory | `team/tools/sandbox.py` | fixed | A, PR 56 | g25, g28 |
 | Practice drew every kind evenly; the weights read only the 1.7B's record | `training/grow.py` | fixed | B, PR 57 | the record of g24 and g27 |
 | Re-sitting an earlier run's cells still practised for two hours first | `.github/workflows/grow.yml` | fixed | A, PR 56 | cycle 1 of agent A |
@@ -177,6 +198,15 @@ flowchart LR
 | A child stalled on a CPU slow at 16-bit numbers | `training/ternary_base.py` | fixed | PR 54 | g25: the data child |
 | The release's rows were overwritten by an older copy | `training/grow_record.py` | fixed | PR 53 | g11's 170 rows |
 | The talker wrote its own answer where the task should go | `team/talk.py` | fixed | PR 53 | the first real conversation |
+| A key that is nowhere in the data was named and nothing more | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: 'release_date' asked of PyPI in 7 tasks; now the keys like it are named (urls[0].upload_time) |
+| .json() was called on a web page | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice and the trial: 9 tasks |
+| A page that does not say its encoding was read as Latin-1 | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: '£51.77' came as 'Â£51.77' on books.toscrape.com and float() failed |
+| Requests went without a User-Agent and Wikipedia refused them | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: 'Please set a user-agent' |
+| An address of None, a made-up host, a site glued to its path | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: Invalid URL 'None' twice, api.wikidata.org, books.toscrape.comcatalogue |
+| A module was saved but its member printed nothing and gave up | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: intervals.py saved for two members, no two answers alike |
+| A program that only defines functions was taken for a typed answer and never run | `team/solo.py` | fixed | A, PR 56 | found while testing silentmodule |
+| A search that found nothing was taken as the answer | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: 'No ERROR lines found.' on a log full of them |
+| The runtime's help was not counted, so learning on its own could not be seen | `team/solo.py` | fixed | A, PR 56 | 2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py |
 
 ## Rules learned
 
@@ -188,6 +218,8 @@ flowchart LR
 - Making every kind of task fetches live pages: a test that makes them all needs offline makers.
 - Start long checks in the background and do the next piece of work while they run.
 - A kind the hive never passes cannot be learned from its own work: show it a right program, checked by the task's own check, then let practice take over.
+- Classify every failure in every artifact at once, then fix all the causes in one pass: one cycle on 132 tasks found six causes that one task at a time would have taken six cycles.
+- Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.
 
 ## The parts
 
