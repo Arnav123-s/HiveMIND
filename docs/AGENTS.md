@@ -53,3 +53,7 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   untaught DNA at 8 and 7 of 16 against the body's 10, 7, 10, 8, so training adds little yet. Levers: rows from every
   member the check confirms (not only agreed pairs), `--pairs` on, `--read` on. Add a row to selfreliance.csv each
   generation; the measure of success is right_first_try rising and hints_per_task falling.
+- 2026-11-15 23:00 UTC, A: PR 56 merged to main with the owner's go-ahead (trials 31 and 32: no loss on the same
+  cells and seeds, 18% faster). Main's B work (PRs 58-60, lessons) was merged in first; `docs/knowledge.json` kept
+  both agents' entries. A's branch restarts from main. Next for A: read generation 29's members' work, the first
+  generation that practises with the new runtime and B's lessons.
