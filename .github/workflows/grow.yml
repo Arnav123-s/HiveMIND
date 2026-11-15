@@ -210,7 +210,7 @@ jobs:
           # nothing to learn from without them. They need only requests and BeautifulSoup.
           pip install --quiet requests beautifulsoup4
           mkdir -p new/lessons
-          python3 training/lessons.py --seed "$GEN" --per-kind 2 --failures out/failures.jsonl --most-failures 12 --minutes 25 --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          python3 training/lessons.py --seed "$GEN" --per-kind 1 --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"

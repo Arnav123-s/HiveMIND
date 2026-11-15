@@ -109,3 +109,16 @@ def test_a_task_of_several_parts_is_taught_as_its_parts_programs_each_under_its_
     # a part with no lesson (a held-out kind): no lesson for the whole
     made = exam.compound("held", 2, [exam.m_units, exam_hard.h_sim], {})
     assert lessons.lesson("compound", "held", 2, made[3].parts)["why"] == "no program for this form of the task"
+
+
+def test_the_everyday_kinds_are_computed_never_typed():
+    """Generation 28: 'pocket' backwards typed as 'etok', 'lantern' in capitals as 'LANCERN', 680 less 15% as 528."""
+    for maker in ("m_percent", "m_days", "m_weekday", "m_table", "m_code", "m_fix", "m_follow", "m_steps", "h_join"):
+        for i in range(6):
+            for level in ((0, 1) if maker in ("m_percent", "m_table", "h_join") else (0,)):
+                les = lessons.lesson(maker, f"every{i}", level)
+                assert les["ok"], (maker, level, les["task"], les["why"], les["answer"])
+    steps = lessons.SOLVERS["m_steps"]("Do these three things and label the answers A, B and C, each on its own line: first multiply 44 by 4; then write the word 'pocket' backwards; then name the capital of Finland.")
+    assert "'pocket'[::-1]" in steps and "44 * 4" in steps
+    assert "'lantern'.upper()" in lessons.SOLVERS["m_follow"]("Write the word 'lantern' in capital letters and nothing else.")
+    assert "price * (1 - 15 / 100)" in lessons.SOLVERS["m_percent"]("A printer costs 680 dollars and the price falls by 15%. What is the new price?")
