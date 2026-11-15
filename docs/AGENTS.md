@@ -9,7 +9,7 @@ start, change what you own, or stop.** Pull requests and their descriptions are 
 | Agent | Account | Session | Branch | Pull request | Owns now |
 |---|---|---|---|---|---|
 | A | the owner's account | `session_01PZiWTdYNLEuRW982bX97t1` (nice-bell) | `claude/nice-bell-8a5dm4` | #56 | What a member's program runs in and the member loop: `team/tools/sandbox.py`, `team/solo.py`, `tests/test_given.py`; reading each generation's results; `docs/LOOP.md`, `docs/loop_log.csv` |
-| B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57-#60 (merged), #61 | Training and what it learns from: `training/grow.py` (practice, dreams, training), `training/lessons.py`, `training/raw.py`, `training/exam.py`, `training/progress.py`, `team/talk.py`; `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts); the website and reasoning problems |
+| B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57-#60 (merged), #62 | Training and what it learns from: `training/grow.py` (practice, dreams, training), `training/lessons.py`, `training/raw.py`, `training/exam.py`, `training/progress.py`, `team/talk.py`; `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts); the website and reasoning problems |
 
 **Labels used everywhere** (logs, graphs, run names): an agent is `A` or `B`; a cycle is `<agent>-<n>` (`A-2`); a
 GitHub run is its number and id (`31`, `43762030863`), listed with its purpose and who started it in `docs/runs.csv`;
