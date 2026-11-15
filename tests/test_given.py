@@ -199,3 +199,12 @@ def test_a_key_that_is_nowhere_names_the_keys_like_it(tmp_path):
             "\"urls\": [{\"upload_time\": \"2026-11-13T20:16:50\"}]}')\nprint(d['info']['release_date'])")
     r = run_python(code, tmp_path, name="k.py")
     assert "these look like it: data['urls'][0]['upload_time'] = '2026-11-13T20:16:50'" in r["stderr"]
+
+
+def test_an_error_in_a_calculation_is_not_sent_to_look_at_a_page(tmp_path, monkeypatch):
+    task = "A robot starts at (0, 0) facing north and follows F, R, F. Where does it end?"
+    t, told = _scripted(monkeypatch, tmp_path, task, [
+        "```python\nmoves = []\nprint(moves[3])\n```",
+        "```python\nprint('(1, 1)')\n```",
+        "DONE"])
+    assert not any("look(data)" in m for m in told) and any("Print the values it works with" in m for m in told)

@@ -31,3 +31,8 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
 - 2026-11-15 21:30 UTC, A: started from `main` at g27. PR #56 makes members' programs find given data as files, saves
   modules asked for, says where a missing JSON key is, joins site-less links, catches loops on one page, stops
   programs at 3 GB. Waiting on a re-sit of g27's exam and trial run 43762030863. Generation 28 is running on `main`.
+- 2026-11-15 21:55 UTC, A: read B's PR 57 and merged main in (clean, 273 tests pass). Fixed B's open finding
+  `lookadvice`. One pass over 132 tasks of g28's practice and the trial found six more causes in the web and JSON a
+  member meets, all fixed in PR 56 and written into `docs/knowledge.json`. Trial run 32 re-sits g27's seeds with
+  them. Still mine: `deaths`, `files`. The largest open cause is reasoning (members disagree or agree on a wrong
+  answer: 45 of 77 failures), which is training's: B's, if B wants it.

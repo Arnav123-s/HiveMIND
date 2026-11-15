@@ -427,14 +427,19 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             break
         last_error = line
         shown = "\n".join(x for x in (f"OUTPUT:\n{out[-600:]}" if out else "", f"ERROR:\n{err[-900:]}" if err else "") if x)
-        looking = bool(LOOK.search(err or out))
+        # look() is for data the program read; an error in a calculation of its own is found by printing its own values
+        # (seen in g27: a robot simulation's IndexError, and two members went to fetch example.com)
+        reads = re.search(r"\brequests\.|urllib|\.json\(|json\.loads?\(|BeautifulSoup|\bopen\(|read_csv|playwright", code) is not None
+        looking = bool(LOOK.search(err or out)) and (reads or re.search(r"KeyError|NoneType|JSONDecodeError|\bkeys?\b|response|json|\bpage\b|column|field", err or out, re.I) is not None)
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
             "\n\nThe program found nothing where the TASK says there is something, so it reads the data wrongly. Reply "
             "with a short program that prints the first 3 items it looks through and how it splits them (for a line of "
             "text: print(line.split())), so you see their real shape. Then fix the program." if EMPTY.search(err or out) else
             "\n\nWhat you expected is not there. Reply with a short program that only fetches the data and calls look(data) "
             "(look is built in: for JSON it prints the keys, nested; for a web page pass response.text and it prints the links "
-            "and the text). Then you see what IS there." if LOOK.search(err or out) else
+            "and the text). Then you see what IS there." if looking else
+            "\n\nThe error is in the program's own steps. Print the values it works with just before the line that failed, "
+            "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
             "who": who, "messages": messages}
