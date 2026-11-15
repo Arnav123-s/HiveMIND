@@ -38,8 +38,10 @@ from .tools.sandbox import run_python
 MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
 - Whatever can be computed, compute: arithmetic, primes, dates, counting, sorting, text handling. Do not look those up.
-- Only a fact about the world (a version, a release date, a price, a person, a population) is read from a source, by
-  the program, never from your memory. APIs are better than pages:
+- What does not change and you know for certain (a capital city, a chemical symbol, what a word means, a
+  translation, a rule of grammar or of science) needs no source: put it in a string in the program and print it.
+- Only a fact that changes or must be exact (a version, a release date, a price, a population, a date of birth,
+  what a web page says) is read from a source, by the program, never from your memory. APIs are better than pages:
   https://pypi.org/pypi/NAME/json (["info"]["version"]; ["releases"][VERSION][0]["upload_time"])
   https://huggingface.co/api/models/OWNER/NAME (["cardData"]["license"]; ["likes"]; ["downloads"]; ["tags"] holds "name:value")
   https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS
@@ -155,6 +157,12 @@ def same(a, b, task=""):
     while only numbers were compared). With no numbers: the value words likewise, or mostly the same words."""
     if not a.strip() or not b.strip():
         return False
+    from . import parts as several
+    pa, pb = several.of_answer(a), several.of_answer(b)
+    if len(pa) > 1 and len(pb) > 1:
+        # answers given part by part ('PART A', 'PART B', ...) agree when every part does: compared as a whole, the
+        # numbers of one part hid a different word in another
+        return set(pa) == set(pb) and all(pa[k].strip() == pb[k].strip() or same(pa[k], pb[k], task) for k in pa)
     (na, wa, la), (nb, wb, lb) = parts(a, task), parts(b, task)
     inside = lambda x, y: bool(x and y) and (x <= y or y <= x)  # noqa: E731
     prose = not la and not lb and min(len(a.split()), len(b.split())) >= 5
@@ -181,8 +189,27 @@ NUMBER = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven
 
 def form(task, answer):
     """What the TASK says about the shape of the answer that code can count, where the answer does not keep it:
-    said in words for the member, or "". Seen on seeds 9005 to 9007: a numbered list printed as "1: Red", a
-    one-sentence summary given as the three sentences of the text, the labels A, B, C left out."""
+    said in words for the member, or "". A task of several parts (team/parts.py) is read part by part: each part's
+    answer stands under its own heading and keeps the form that part asks for."""
+    from . import parts as several
+    asked = several.of_task(task)
+    if not asked:
+        return _form(task, answer)
+    got = several.of_answer(answer)
+    missing = [k for k in asked if k not in got]
+    if missing:
+        return (f"The TASK asks for each part's answer under its own heading, each heading alone on its line: "
+                f"{', '.join(repr('PART ' + k) for k in asked)}. Your output has no line {'PART ' + missing[0]!r}.")
+    for k, t in asked.items():
+        wrong = _form(t, got[k])
+        if wrong:
+            return f"Under the heading 'PART {k}': " + wrong.replace("The TASK asks", "that part asks").replace("Your output has", "What you printed there has")
+    return ""
+
+
+def _form(task, answer):
+    """form() for one task. Seen on seeds 9005 to 9007: a numbered list printed as "1: Red", a one-sentence summary
+    given as the three sentences of the text, the labels A, B, C left out."""
     n = lambda w: int(w) if w.isdigit() else NUMBER.get(w.lower())  # noqa: E731
     lines = [x.strip() for x in answer.splitlines() if x.strip()]
     low = task.lower()

@@ -185,6 +185,35 @@ def main(argv=None):
     keep_going = not a.once and sys.stdin.isatty()
     if first is None and not sys.stdin.isatty():  # piped in: the whole input is the prompt
         first, keep_going = sys.stdin.read().strip() or None, False
+    if os.environ.get("HIVE_ROLES") != "1":
+        # The hive's body (one ternary model, its trunk and cells) talks where it is on this machine (team/talk.py):
+        # it answers talk at once and does by checked programs whatever has to be worked out. HIVE_ROLES=1: the older
+        # hive of roles below.
+        from . import talk
+        if talk.speaker():
+            history = []
+
+            def step(msg, history_=None):
+                out = talk.reply(msg, history, log=lambda *x: print("  [" + " ".join(map(str, x)) + "]", flush=True))
+                history.extend([{"role": "user", "content": msg}, {"role": "assistant", "content": out["text"]}])
+                return out["text"]
+            if first and not keep_going:
+                print(step(first))
+                return 0
+            print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
+            msg = first
+            while True:
+                if msg is None:
+                    try:
+                        msg = input("\nyou> ").strip()
+                    except (EOFError, KeyboardInterrupt):
+                        break
+                if msg.lower() in EXIT:
+                    break
+                if msg:
+                    print("\nhive> " + step(msg))
+                msg = None
+            return 0
     if not a.local and service_up():  # the always-on agent has the models loaded: the conversation goes there
         def step(msg, history):
             try:

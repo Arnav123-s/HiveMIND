@@ -55,6 +55,14 @@ def says(x, tol=0.006):
     return check
 
 
+def _line_says(label, x, tol=0.1):
+    """The answer's line that begins with the label states the number x."""
+    def check(run, report):
+        got = [g for ln in B._body(report).splitlines() if re.match(rf"\W*{label}\b", ln.strip(), re.I) for g in _nums(ln)]
+        return any(abs(g - x) <= tol for g in got), f"wants {label}: {x:g}; that line's numbers: {got[:4]}"
+    return check
+
+
 def every(*checks):
     def check(run, report):
         res = [c(run, report) for c in checks]
@@ -79,9 +87,13 @@ MONTHS = ["January", "February", "March", "April", "May", "June", "July", "Augus
 
 def m_percent(r):
     p, q, up = r.randrange(120, 1900, 20), r.choice([5, 10, 12, 15, 20, 25, 30, 35]), r.random() < 0.5
-    x = round(p * (1 + q / 100) if up else p * (1 - q / 100), 2)
-    return ("maths", "a sum in words", f"A {r.choice(THINGS)} costs {p} dollars and the price {'rises' if up else 'falls'} by {q}%. "
-            "What is the new price?", says(x))
+    x = p * (1 + q / 100) if up else p * (1 - q / 100)
+    text = f"A {r.choice(THINGS)} costs {p} dollars and the price {'rises' if up else 'falls'} by {q}%. "
+    for _ in range(getattr(r, "level", 0)):  # harder: the price changes again, each time on the price before
+        q, up = r.choice([5, 10, 12, 15, 20, 25]), r.random() < 0.5
+        x = x * (1 + q / 100) if up else x * (1 - q / 100)
+        text += f"Then it {'rises' if up else 'falls'} by {q}%. "
+    return "maths", "a sum in words", text + "What is the new price?", says(round(x, 2))
 
 
 def m_days(r):
@@ -113,16 +125,22 @@ def m_units(r):
 
 
 def m_table(r):
+    lv = getattr(r, "level", 0)
     what, unit = r.choice([("water use", "litres"), ("steps walked", "steps"), ("bread sold", "loaves"), ("emails sent", "emails")])
-    days = DAYS[:r.choice([4, 5])]
+    days = DAYS[:r.choice([6, 7] if lv else [4, 5])]
     vals = r.sample(range(40, 400, 5), len(days))
     least = r.random() < 0.5
     pick = days[vals.index(min(vals) if least else max(vals))]
-    full = {"Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday", "Thu": "Thursday", "Fri": "Friday"}[pick]
+    full = {"Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday", "Thu": "Thursday", "Fri": "Friday", "Sat": "Saturday", "Sun": "Sunday"}[pick]
     avg = round(sum(vals) / len(vals), 2)
-    return ("given data", "reason over a small table", f"Daily {what} in {unit}: " + ", ".join(f"{d} {v}" for d, v in zip(days, vals))
-            + f". Which day had the {'least' if least else 'most'}, and what was the daily average?",
-            every(B.has(any_of=(pick, full)), says(avg, 0.051)))
+    task = f"Daily {what} in {unit}: " + ", ".join(f"{d} {v}" for d, v in zip(days, vals)) + f". Which day had the {'least' if least else 'most'}, and what was the daily average?"
+    if not lv:
+        return "given data", "reason over a small table", task, every(B.has(any_of=(pick, full)), says(avg, 0.051))
+    # harder: a longer table and two more things asked of it
+    over = sum(v > avg for v in vals)
+    return ("given data", "reason over a small table", task[:-1] + ", what is the total, and on how many days was it above the average? "
+            "Answer in four lines: 'day: ', 'average: ', 'total: ', 'above: '.",
+            every(B.has(any_of=(pick, full)), says(avg, 0.051), says(sum(vals), 0.1), _line_says("above", over)))
 
 
 def m_code(r):
@@ -329,7 +347,9 @@ def m_translate(r):
     def check(run, report):
         low = B._body(report).lower()
         hits = [any(w in low for w in tup(v)) for v in (places[place], hours[hour], days[day])]
-        return all(hits) and place not in low, f"place, hour and day in {lang}: {hits}; the English word left in: {place in low}"
+        # 'museum' is German too: a word that is the same in both languages is not an English word left in
+        left = place in low and place not in tup(places[place])
+        return all(hits) and not left, f"place, hour and day in {lang}: {hits}; the English word left in: {left}"
     return "languages", "translate a sentence", f"Translate into {lang}: 'The {place} {verb} at {hour} on {day}.'", check
 
 
@@ -369,32 +389,90 @@ MAKERS = [m_percent, m_days, m_weekday, m_units, m_table, m_code, m_fix, m_pypi,
           m_translate, m_summary, m_steps]
 
 
-def _made(make, rseed):
-    """A task from its maker and the seed it was drawn with; the check remembers both, so the task can be made again
-    later exactly (training/grow.dream: the hive goes back to what it got wrong)."""
-    field, kind, task, check = make(random.Random(rseed))
+LEVELED = ("m_percent", "m_table", "h_join", "h_log", "h_search")  # the kinds whose own difficulty can be raised
+MOST_LEVEL, MOST_PARTS = 4, 6
+
+
+def _made(make, rseed, level=0):
+    """A task from its maker, the seed it was drawn with and how hard it is to be (0: as the exams make it); the
+    check remembers all three, so the task can be made again later exactly (training/grow.dream: the hive goes back
+    to what it got wrong)."""
+    r = random.Random(rseed)
+    r.level = int(level) if make.__name__ in LEVELED else 0
+    field, kind, task, check = make(r)
     try:
-        check.maker, check.rseed = make.__name__, rseed
+        check.maker, check.rseed, check.level = make.__name__, rseed, r.level
     except AttributeError:
         pass
     return field, kind, task, check
 
 
-def remake(maker, rseed):
-    """The task a maker drew with this seed: (field, kind, task, check), or None for a maker this code does not have."""
+def _together(made, rseed):
+    """Several tasks as one message (team/parts.py). Each part is checked on the answer's piece under its own
+    heading, by its own check; the whole is right when every part is."""
+    from team import parts
+    checks = [c for *_, c in made]
+
+    def check(run, report):
+        pieces, res = parts.of_answer(B._body(report)), []
+        for i, c in enumerate(checks):
+            piece = pieces.get(parts.LETTERS[i])
+            if piece is None:
+                res.append((False, "no such heading in the answer"))
+                continue
+            try:
+                res.append(c(run, piece))
+            except Exception as e:  # noqa: BLE001 - a check that cannot be made is a failed part, with the reason
+                res.append((False, f"check failed: {type(e).__name__}: {e}"))
+        return all(ok for ok, _ in res), "; ".join(f"PART {parts.LETTERS[i]} {'right' if ok else 'not right'}: {why}" for i, (ok, why) in enumerate(res))
+    check.maker, check.rseed, check.level = "compound", rseed, len(made)
+    check.parts = [[getattr(c, "maker", ""), getattr(c, "rseed", ""), getattr(c, "level", 0)] for c in checks]
+    return "several", "several tasks in one", parts.join([t for _, _, t, _ in made]), check
+
+
+def compound(rseed, k, makers, levels=None):
+    """One task made of k tasks of different kinds: the way the body's lessons grow harder. A program that does
+    two or three different things at once cannot be one remembered answer."""
+    pool = list(dict.fromkeys(makers))
+    r = random.Random(f"{rseed}:parts")
+    chosen = r.sample(pool, min(k, len(pool)))
+    return _together([_made(m, f"{rseed}:{m.__name__}:{i}", (levels or {}).get(m.__name__, 0)) for i, m in enumerate(chosen)], rseed)
+
+
+def remake(maker, rseed, level=0, parts=None):
+    """The task a maker drew with this seed and level: (field, kind, task, check), or None for a maker this code does
+    not have. A task of several parts is made again from its parts."""
     from training import exam_hard
+    if maker == "compound":
+        made = [remake(*p[:3]) for p in parts or [] if isinstance(p, (list, tuple)) and len(p) >= 2 and p[0] != "compound"]
+        return _together(made, rseed) if len(made) >= 2 and all(made) and len(made) == len(parts) else None
     make = next((m for m in MAKERS + exam_hard.MAKERS if m.__name__ == maker), None)
-    return _made(make, rseed) if make else None
+    return _made(make, rseed, level if isinstance(level, int) else 0) if make else None
 
 
-def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
+def exam(seed, n=16, only=(), level="basic", without=(), weights=None, levels=None):
     """The tasks of one sitting: [(id, field, kind, task, check)]. The same seed gives the same exam.
     level "hard": the kinds of several steps (training/exam_hard.py). without: makers left out by name (practice
     leaves out the kinds the hive is never to practise on).
+    level "ladder" (for practice, not for exams): half single tasks, each kind as hard as `levels` {maker: level}
+    says, and half tasks of several parts, as many parts as levels["compound"] says (2 at first). The record of a
+    generation raises a level the body passes mostly and lowers one it mostly fails (training/grow_record.py), so
+    the lessons stay at the edge of what the body can do.
     level "edge" (for practice, not for exams): tasks of every kind, drawn by `weights` {kind: weight}, so the hive
     practises most where it is at the edge of what it can do (training/grow.edge_weights)."""
     if level == "mixed":  # half of each: what the hive can mostly do, and what it mostly cannot yet
         return exam(seed, n - n // 2, only, "basic", without) + exam(seed, n // 2, only, "hard", without)
+    if level == "ladder":
+        from training import exam_hard
+        lv = levels or {}
+        single = n - n // 2
+        out = exam(seed, single - single // 2, only, "basic", without, levels=lv) + exam(seed, single // 2, only, "hard", without, levels=lv)
+        pool = [m for m in MAKERS + exam_hard.MAKERS if m.__name__ not in without]
+        k = max(2, min(MOST_PARTS, int(lv.get("compound", 2) or 2)))
+        for i in range(n // 2):
+            field, kind, task, check = compound(f"{seed}:several:{i}", k, pool, lv)
+            out.append((f"c{seed}_{i:02d}", field, kind, task, check))
+        return out
     if level == "edge":
         from training import exam_hard
         makers = [(m, "e") for m in MAKERS if m.__name__ not in without] + [(m, "h") for m in exam_hard.MAKERS if m.__name__ not in without]
@@ -425,7 +503,7 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None):
     out = []
     for i, make in enumerate(makers):
         for again in range(8):  # the same task twice in one sitting tells nothing: drawn again
-            field, kind, task, check = _made(make, f"{seed}:{make.__name__}:{i}:{again}")
+            field, kind, task, check = _made(make, f"{seed}:{make.__name__}:{i}:{again}", (levels or {}).get(make.__name__, 0))
             if task not in [t[3] for t in out]:
                 break
         if only and field not in only:
@@ -449,7 +527,8 @@ def _memory(empty):
     return home
 
 
-def sit_one(tag, tid, task, check, memory_home, timeout=2400, kind=""):
+def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
+    timeout = timeout or int(os.environ.get("HIVE_TASK_SECONDS", 2400))  # the most one task may take
     run = RUNS / tag / tid
     if (run / "exam.json").exists():
         return json.loads((run / "exam.json").read_text())

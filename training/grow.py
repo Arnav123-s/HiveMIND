@@ -110,13 +110,18 @@ def pair_rows(run, task, kind="", seed=None, most=4):
         if not code or code in seen or len(code) > 6000:
             continue
         seen.add(code)
+        # whose wrong program it was, and what that member was shown when it ran (its output or its error): a child
+        # of that cell learns the correction from exactly there (train: "mend")
+        shown = tm[3]["content"].rsplit("\n\n", 1)[0][-900:] if len(tm) > 3 and tm[3].get("role") == "user" else ""
         out.append({"task": task, "kind": kind, "seed": seed, "type": "pair", "member": n, "messages": head,
-                    "output": f"```python\n{program}\n```", "rejected": f"```python\n{code}\n```"})
+                    "output": f"```python\n{program}\n```", "rejected": f"```python\n{code}\n```",
+                    "rejected_who": t.get("who", ""), "shown": shown})
         if len(out) >= most:
             break
     return out
 
 
+MEND = "{shown}\n\nThe task's check says that answer is not right. Reply with the whole corrected program."
 FORESEE = ("Here is a program that was written for the TASK. Do not write a program: say exactly what this one prints "
            "when it is run (or the last line of its error if it fails).\n```python\n{program}\n```")
 
@@ -171,8 +176,11 @@ def edge_weights(dna="t17", last=3, record=None):
     return {k: ((p + 1) / (n + 2)) * (1 - (p + 1) / (n + 2)) for k, (p, n) in seen.items()}
 
 
-def practice(seed, n=16, level="mixed", out=None, log=print):
-    """Fresh practice tasks done by the hive's members; the rows of those the check confirmed are appended to out."""
+def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
+    """Fresh practice tasks done by the hive's members; the rows of those the check confirmed are appended to out.
+    minutes: no new task is begun after so long (a runner's job that runs out of time keeps nothing; what is done
+    by then is written task by task)."""
+    born = time.time()
     from training import exam as E
     from training import exam_hard
     out = Path(out or GROW / "rows.jsonl")
@@ -184,19 +192,41 @@ def practice(seed, n=16, level="mixed", out=None, log=print):
     weights = edge_weights() if level == "edge" else None
     if weights:
         log("practice at the edge: " + ", ".join(f"{k} {w:.2f}" for k, w in sorted(weights.items(), key=lambda x: -x[1])), flush=True)
-    for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT, weights=weights):
+    levels = body_levels() if level == "ladder" else None
+    if levels:
+        log("how hard the lessons are now: " + ", ".join(f"{k} {v}" for k, v in sorted(levels.items())), flush=True)
+    passed = []
+    for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT, weights=weights, levels=levels):
+        if minutes and time.time() - born > minutes * 60:
+            log(f"time is up after {len(passed)} of {n} tasks: practice ends here", flush=True)
+            break
         r = E.sit_one(f"practice_{seed}", tid, task, check, home, kind=kind)
         new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
         new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
-        new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
+        if os.environ.get("HIVE_FORESEE") == "1":
+            new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         with open(out, "a") as f:
             for row in new:
                 f.write(json.dumps(row) + "\n")
         made, right = made + sum(x["type"] not in ("foresee", "pair") for x in new), right + r["ok"]
         if not r["ok"]:
             remember_failure(E.RUNS / f"practice_{seed}" / tid, task, kind, check, r, out.with_name("failures.jsonl"))
+        passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"])})
+        # what was passed at which level, for the record to move the levels by (training/grow_record.levels)
+        out.with_name("practice.json").write_text(json.dumps({"seed": seed, "tasks": passed}))
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows", flush=True)
-    return {"practice": seed, "level": level, "tasks": n, "right": right, "rows": made, "file": str(out)}
+    return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)}
+
+
+def body_levels():
+    """{maker: level, "compound": parts}: how hard the body's lessons are now (cells/body.json, moved by each
+    generation's record)."""
+    from team import ternary
+    try:
+        lv = json.loads(ternary.BODY.read_text()).get("levels") or {}
+        return {str(k): int(v) for k, v in lv.items() if isinstance(v, int) and not isinstance(v, bool) and 0 <= v <= 9}
+    except (OSError, ValueError, AttributeError):
+        return {}
 
 
 def _masked(why):
@@ -210,21 +240,23 @@ def remember_failure(run, task, kind, check, result, path):
     if not getattr(check, "maker", None):
         return
     home = Path(run) / "members"
-    program, printed = "", ""
+    program, printed, who = "", "", []
     for f in sorted(home.glob("member[0-9]*.json")):
         try:
             t = json.loads(f.read_text())
         except (OSError, ValueError):
             continue
+        who.append(str(t.get("who", ""))[:80])
+        if program:
+            continue
         ms = [m for m in t.get("messages") or [] if m.get("role") == "assistant"]
         program = (t.get("program") or (solo_code(ms[-1]["content"]) if ms else "")).strip()
         printed = (t.get("answer") or "")[-600:]
-        if program:
-            break
     if not program or len(program) > 5000:
         return
     with open(path, "a") as f:
-        f.write(json.dumps({"maker": check.maker, "rseed": check.rseed, "task": task, "kind": kind, "program": program, "printed": printed,
+        f.write(json.dumps({"maker": check.maker, "rseed": check.rseed, "level": getattr(check, "level", 0), "parts": getattr(check, "parts", None),
+                            "task": task, "kind": kind, "program": program, "printed": printed, "who": who,
                             "said": _masked(result.get("why")), "when": time.strftime("%Y-%m-%d %H:%M")}) + "\n")
 
 
@@ -238,7 +270,7 @@ DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. Th
          "Find the mistake in that program, then write the whole corrected program.")
 
 
-def dream(seed, n=4, failures=None, out=None, log=print):
+def dream(seed, n=4, failures=None, out=None, log=print, minutes=0):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
@@ -262,8 +294,12 @@ def dream(seed, n=4, failures=None, out=None, log=print):
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
     right = made = 0
+    born = time.time()
     for i, f in enumerate(pick):
-        again = E.remake(f.get("maker", ""), f.get("rseed", ""))
+        if minutes and time.time() - born > minutes * 60:
+            log(f"time is up after {i} of {len(pick)} dreams", flush=True)
+            break
+        again = E.remake(f.get("maker", ""), f.get("rseed", ""), f.get("level", 0), f.get("parts"))
         if not again:
             continue
         field, kind, task, check = again
@@ -282,6 +318,29 @@ def dream(seed, n=4, failures=None, out=None, log=print):
         made += sum(x["type"] != "pair" for x in new)
         log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, {len(new)} rows", flush=True)
     return {"dream": seed, "tasks": len(pick), "right": right, "rows": made}
+
+
+def gather(out, gen, old=(), new=(), log=print):
+    """Every checked row so far in one file: those of earlier generations as they are, then this generation's, each
+    stamped with the generation it was practised in (training tells new rows from ones the parents already learned).
+    The same row is kept once. Returns (rows kept from before, rows added)."""
+    from training import grow_record
+    lines_old = [ln for f in old for ln in grow_record.lines(f)]
+    lines_new = []
+    for f in new:
+        for ln in grow_record.lines(f):
+            try:
+                row = json.loads(ln)
+            except ValueError:
+                continue
+            if isinstance(row, dict):
+                row.setdefault("gen", gen)
+                lines_new.append(json.dumps(row))
+    kept = grow_record.union([lines_old, lines_new])
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
+    Path(out).write_text("".join(ln + "\n" for ln in kept))
+    before = len(grow_record.union([lines_old]))
+    return before, len(kept) - before
 
 
 def rows_from(folders, out):
@@ -309,13 +368,19 @@ class _Prefix:
     pass. Their output (the input to the first trained layer) is kept from the first pass of each row, and on later
     passes those layers are skipped and the kept value is used: the same result, without a third to half of the
     forward work from the second pass on (a cell trains the last 14 layers of 28 or 36). Rows are known by their
-    tensor; kept values stop being added past HIVE_PREFIX_GB (3 by default)."""
+    tensor. The kept values live in memory up to HIVE_PREFIX_GB (3 by default), or, given a folder, in files there
+    up to HIVE_PREFIX_DISK_GB (6): an 8B DNA on a 16 GB runner has no memory to spare for them."""
 
-    def __init__(self, model, first, log=print):
+    def __init__(self, model, first, log=print, folder=None):
         import torch
         layers = model.get_base_model().model.layers if hasattr(model, "get_base_model") else model.model.layers
         self.kept, self.key, self.skip, self.bytes, self.hits, self.misses = {}, None, False, 0, 0, 0
-        self.most = float(os.environ.get("HIVE_PREFIX_GB", "3")) * 2**30
+        self.folder = Path(folder) if folder else None
+        if self.folder:
+            import shutil
+            shutil.rmtree(self.folder, ignore_errors=True)
+            self.folder.mkdir(parents=True, exist_ok=True)
+        self.most = float(os.environ.get("HIVE_PREFIX_DISK_GB", "6") if self.folder else os.environ.get("HIVE_PREFIX_GB", "3")) * 2**30
         for layer in layers[:first]:
             orig = layer.forward
 
@@ -326,14 +391,37 @@ class _Prefix:
         def pre(module, args, kwargs):
             h = args[0] if args else kwargs["hidden_states"]
             if self.skip:
-                h = self.kept[self.key]
+                h = self._get(self.key)
             elif self.key is not None and self.key not in self.kept and torch.is_grad_enabled() and self.bytes < self.most:
-                self.kept[self.key] = h.detach()
-                self.bytes += h.numel() * h.element_size()
+                self._put(self.key, h.detach())
             if args:
                 return (h,) + tuple(args[1:]), kwargs
             return args, dict(kwargs, hidden_states=h)
         layers[first].register_forward_pre_hook(pre, with_kwargs=True)
+
+    def _put(self, key, h):
+        import torch
+        self.bytes += h.numel() * h.element_size()
+        if not self.folder:
+            self.kept[key] = h
+            return
+        raw = {2: torch.int16, 4: torch.int32}[h.element_size()]  # the numbers' own bytes, whatever their type
+        path = self.folder / f"{len(self.kept)}.bin"
+        h.contiguous().view(raw).numpy().tofile(str(path))
+        self.kept[key] = (path, tuple(h.shape), h.dtype, raw)
+
+    def _get(self, key):
+        import torch
+        v = self.kept[key]
+        if not isinstance(v, tuple):
+            return v
+        path, shape, dtype, raw = v
+        return torch.from_file(str(path), shared=False, size=math.prod(shape), dtype=raw).view(dtype).view(shape)
+
+    def done(self):
+        if self.folder:
+            import shutil
+            shutil.rmtree(self.folder, ignore_errors=True)
 
     @contextlib.contextmanager
     def use(self, ids):
@@ -348,9 +436,16 @@ class _Prefix:
 
 
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
-          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell=""):
+          lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell="",
+          trunk="", pull=0.5, gen="", fresh=2):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU; written as a GGUF adapter the
-    ternary runtime loads beside the packed base."""
+    ternary runtime loads beside the packed base.
+
+    parent: the edit the child starts as. trunk: the body's shared edit (training/merge.py); the child then starts
+    as its parent pulled `pull` of the way toward it, so every line of descent stays part of one body.
+    parent_cell: the parent's name; what that cell (and the trunk) got wrong in practice, set beside the program
+    that was right, is taught to the child as a correction. gen: this generation's name; its rows are new to the
+    whole line and are met `fresh` times as often as the rows the parent already learned from."""
     born = time.time()
     import torch
     from huggingface_hub import snapshot_download
@@ -368,8 +463,18 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         r["messages"][0] = {"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}
     if not foresee:
         rows = [r for r in rows if r.get("type") != "foresee"]
+    # what the child's own parent got wrong (and the trunk, the body as one), with the program that was right: the
+    # child is taught the correction from where its parent stood (the wrong program, what it was shown, the verdict)
+    mend = []
+    for r in rows:
+        wrong = str(r.get("rejected_who") or "").partition("+")[2]
+        if r.get("type") == "pair" and parent_cell and wrong and (wrong == parent_cell or re.fullmatch(r"g\d+trunk", wrong)):
+            mend.append({k: v for k, v in r.items() if k not in ("rejected", "rejected_who", "shown")} | {
+                "type": "mend", "messages": r["messages"] + [{"role": "assistant", "content": r["rejected"]},
+                                                             {"role": "user", "content": MEND.format(shown=r.get("shown") or "It ran.")}]})
     if not pairs:
         rows = [r for r in rows if r.get("type") != "pair"]
+    rows += mend
     seen, uniq = set(), []
     for r in rows:  # the same exchange from two sittings teaches nothing twice
         k = json.dumps([r["messages"][1:], r["output"], r.get("rejected")])
@@ -395,7 +500,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if ternary_edit:
             raise ValueError("--ternary is not made for --int8-base")
         from training import ternary_base
-        model, cell = ternary_base.load(src, rank, 2 * rank, 0.05, which, torch.bfloat16 if half else torch.float32, log=log)
+        model, cell = ternary_base.load(src, rank, 2 * rank, 0.0, which, torch.bfloat16 if half else torch.float32, log=log)
+        # How long a row fits beside the DNA on this machine. Measured on the 8B (2026-11-15): 8.1 GB held, and every
+        # piece of a row takes about 5 MB more while it is trained on (46 values of the hidden size for each trained
+        # layer). A row that does not fit sends the machine into its swap: two of the first eight 8B cells were lost
+        # that way, one runner dead, one sitting in its first long row until the job's time was up.
+        import psutil
+        total = psutil.virtual_memory().total / 2**30
+        fits = int((total - ternary_base.held_gb() - 2.5) * 2**30 / (len(which) * model.config.hidden_size * 2 * 46))
+        if fits < max_len:
+            log(f"this machine has {total:.1f} GB: rows of up to {max(256, fits)} pieces fit beside the DNA (asked for {max_len})", flush=True)
+            max_len = max(256, fits)
     else:
         model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32)
         model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
@@ -414,11 +529,21 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         for m in edits:
             parametrize.register_parametrization(m, "weight", Three())
     model.config.use_cache = False
-    if parent and Path(parent).exists():
+    start = parent if parent and Path(parent).exists() else ""
+    if trunk and Path(trunk).exists():
+        # the body's shared edit pulls every line toward it: the child starts as its parent moved `pull` of the way to
+        # the trunk (with no parent: as the trunk), cut exactly to the child's rank (training/merge.py)
+        from training import merge
+        mixed, kept = merge.merge(([merge.load(start)] if start else []) + [merge.load(trunk)], [1 - pull, pull] if start else [1.0], rank)
+        GROW.mkdir(parents=True, exist_ok=True)
+        start = str(GROW / f"{base}+{name}.start.safetensors")
+        merge.save(mixed, start)
+        log(f"the child starts as its parent pulled {pull:g} of the way to the trunk ({Path(trunk).name}); at least {kept:.3f} of every matrix is kept at rank {rank}", flush=True)
+    if start:
         # the child starts as its parent: every weight of the parent's edit is copied in before training, so what
         # the parent learned (its corrections included) is the child's from the start, and training moves it on
         from safetensors.torch import load_file
-        sd = load_file(parent)
+        sd = load_file(start)
         got = 0
         if cell:
             for n, m in cell.layers.items():
@@ -433,7 +558,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 if p_.requires_grad and k in sd and sd[k].shape == p_.shape:
                     p_.data.copy_(sd[k].to(p_.dtype))
                     got += 1
-        log(f"the child starts as its parent ({Path(parent).name}): {got} of its matrices inherited", flush=True)
+        log(f"the child starts as its parent ({Path(parent).name if parent else Path(trunk).name}): {got} of its matrices inherited", flush=True)
+        if not got:
+            raise RuntimeError(f"the child was to start from {Path(start).name}, and none of its matrices fit this edit (rank {rank}, layers {which[0]}-{which[-1]})")
     # Each layer's inner values are worked out again on the way back instead of being kept: a third slower, and the
     # memory no longer grows with the length of a row (the first run on a 16 GB runner was killed at step 5).
     if checkpoint:
@@ -449,19 +576,29 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
             return None if len(p) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
         return (torch.tensor([p + t]), len(t))
-    data, mine = [], 0
+    data, mine, new_rows, long = [], 0, 0, 0
     for row in rows:
         d = encode(row)
-        if d is not None:
-            # a cell that leans to an organ meets that organ's rows `weight` times as often as the others: every cell
-            # learns all of the hive's checked work (so any two can check each other), each one its own part best
-            own = bool(lean) and ternary.organ(row["task"]) == lean
-            data += [d] * (weight if own else 1)
-            mine += own
+        if d is None:
+            long += 1
+            continue
+        # a cell that leans to an organ meets that organ's rows `weight` times as often as the others: every cell
+        # learns all of the hive's checked work (so any two can check each other), each one its own part best
+        own = bool(lean) and ternary.organ(row["task"]) == lean
+        # this generation's rows, and its parent's corrected mistakes, are new to the whole line of descent: met
+        # `fresh` times as often as rows the parent already learned from (a child inherits those with its start)
+        new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
+        data += [d] * min(6, (weight if own else 1) * (fresh if new else 1))
+        mine += own
+        new_rows += new
     if limit:
         data = data[:limit]
     if lean:
         log(f"this cell leans to {lean}: {mine} of its rows are that organ's, each met {weight} times", flush=True)
+    if gen or mend:
+        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected), each met {fresh} times as often", flush=True)
+    if long:
+        log(f"{long} rows are longer than {max_len} pieces and are left out", flush=True)
     judged_used = 0
     if judged:
         # answers people voted on (training/raw.judged): the best-voted beside the worst-voted for the same question,
@@ -533,7 +670,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         trim = None
     model.train()
     # not with recomputation (checkpoint): a layer recomputed on the way back would be fed the wrong input
-    prefix = _Prefix(model, which[0], log) if which[0] > 0 and not checkpoint and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None
+    prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
+              if which[0] > 0 and not checkpoint and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
     t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
     for i, idx in enumerate(order):
         if minutes and time.time() - born > minutes * 60:
@@ -590,8 +728,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     else:
         model.save_pretrained(str(work))
     if prefix:
-        log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB)", flush=True)
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+        log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB{' on disk' if prefix.folder else ''})", flush=True)
+        prefix.done()
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1)}
@@ -638,16 +777,23 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
     if cmd == "dream":
-        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""))))
+        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0))))
     elif cmd == "practice":
-        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""))))
+        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""), minutes=opt("--minutes", 0))))
+    elif cmd == "gather":
+        # python training/grow.py gather --gen g25 --out out/rows.jsonl --old old.jsonl [--old more.jsonl] new1.jsonl new2.jsonl ...
+        olds = [argv[i + 1] for i, a in enumerate(argv) if a == "--old" and i + 1 < len(argv)]
+        skip = {i + 1 for i, a in enumerate(argv) if a in ("--old", "--gen", "--out")}
+        news = [a for i, a in enumerate(argv[1:], 1) if not a.startswith("--") and i not in skip]
+        before, added = gather(opt("--out", str(GROW / "rows.jsonl")), opt("--gen", ""), olds, news)
+        print(f"rows: {before} from earlier generations, {added} new in generation {opt('--gen', '')}")
     elif cmd == "rows":
         out = opt("--out", str(GROW / "rows.jsonl"))
         Path(out).parent.mkdir(parents=True, exist_ok=True)
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
     elif cmd == "speed":
         # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
         rows, out = opt("--rows", str(GROW / "rows.jsonl")), []

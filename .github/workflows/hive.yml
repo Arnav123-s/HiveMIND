@@ -9,9 +9,10 @@ name: The hive grows
 # Once a day since 2026-11-12 (it was every six hours: "17 */6 * * *"). GitHub's terms for Actions bar use whose
 # burden is out of proportion and let GitHub restrict an account for it; he chose one growing turn and one exam a
 # day, so that the runner hours go where they make the hive better. A turn can still be started by hand.
+# Not on a schedule since 2026-11-15: bodies grown from random numbers on a CPU stayed weak, and the hive is now one
+# body of cells grown from a published ternary model ("The hive teaches its own members"), which runs without
+# stopping and is where the runner hours go. This older line can still be started by hand.
 on:
-  schedule:
-    - cron: "17 0 * * *"
   workflow_dispatch:
     inputs:
       minutes:

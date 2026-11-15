@@ -38,6 +38,9 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] in COMMANDS:
         cmd, rest = sys.argv[1], sys.argv[2:]
         if cmd == "chat":
+            from . import talk
+            if os.environ.get("HIVE_ROLES") != "1" and talk.speaker():  # the body talks where it is on this machine
+                return talk.main(rest)
             from .chat import main as chat
             return chat()
         if cmd == "life":

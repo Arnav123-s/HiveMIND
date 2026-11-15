@@ -1,0 +1,100 @@
+# Talk to the hive from anywhere, with no machine of yours switched on.
+#   Issues tab -> New issue -> write what you want to say or have done -> Submit.
+# The hive replies as a comment on the issue, usually within ten minutes (a runner has to start and fetch the model).
+# Answer in a comment and the conversation goes on: the whole issue is the conversation it sees.
+#
+# What it does with a message (team/talk.py): talk, explanations and writing it answers at once; anything that has to
+# be worked out or looked up (a sum, dates, data, a fact that changes, a web page, a file, a program) the body does
+# by writing and running programs, and the answer counts when two of its members agree.
+#
+# Only the repository's owner is answered. This repository is public: what you write here and the replies are
+# public too. Do not write anything private; for private work, run the hive on your own device (./hive).
+# The job that runs the model has no token that can write anywhere; a second job only posts the reply.
+# A title that begins with [dev] is left alone (an ordinary issue about the code).
+name: Talk to the hive
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: talk-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  answer:
+    if: ${{ github.event.sender.login == github.repository_owner && !github.event.issue.pull_request && !startsWith(github.event.issue.title, '[dev]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      issues: read
+    env:
+      AGENT_TEAM_SOLO: "2"
+      AGENT_TEAM_SOLO_ALONE: "1"
+      HIVE_LIGHT: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: The conversation so far (the issue and its comments)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMBER}" > issue.json
+          for page in 1 2 3 4 5; do
+            gh api "repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/comments?per_page=100&page=${page}" > "comments-${page}.json"
+            [ "$(python3 -c "import json, sys; print(len(json.load(open(sys.argv[1]))))" "comments-${page}.json")" = "100" ] || break
+          done
+          python3 team/thread.py "${GITHUB_REPOSITORY_OWNER}" issue.json comments-*.json > thread.json
+          python3 -c "import json; t = json.load(open('thread.json')); print(len(t['messages']), 'messages; the last is the', t['messages'][-1]['role'] + \"'s\" if t['messages'] else 'none')"
+      - name: The body (cells/body.json), its trunk and the newest cell of each organ; with no cells yet, its DNA
+        run: |
+          DNA=$(python3 -c "import json; print(json.load(open('cells/body.json'))['dna'])")
+          WHO=$(python3 training/lineage.py members "$DNA" few)
+          python3 training/grow_record.py fetch "$WHO"
+          echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
+          echo "who answers: $WHO" >> "$GITHUB_STEP_SUMMARY"
+      - uses: ./.github/actions/hive
+      - name: The hive replies
+        run: |
+          python -m team.talk --thread thread.json --out reply.md --run-dir run
+          cat reply.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: reply
+          path: |
+            reply.md
+            run/
+          if-no-files-found: ignore
+          include-hidden-files: true
+          retention-days: 30
+
+  post:
+    needs: answer
+    if: ${{ !cancelled() && needs.answer.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: reply
+          path: got
+      - name: The reply, as a comment on the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if [ -s got/reply.md ]; then
+            head -c 60000 got/reply.md > body.md
+          else
+            printf 'The hive did not finish a reply this time. The log of the run says why: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > body.md
+          fi
+          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file body.md

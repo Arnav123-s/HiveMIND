@@ -254,16 +254,28 @@ def leans(member):
 
 def roster():
     """Who the members are. HIVE_MEMBERS=t17+g3code,t17+g3data says it for one run ('coder' is the old 7B coder at 4
-    bits through llama.cpp). Without it: the cells of the hive's body (cells/body.json, changed only by the nightly
-    gate, training/grow.py) where the ternary runtime is built and the cells are on the machine; otherwise 'coder'."""
+    bits through llama.cpp). Without it: the hive's body (cells/body.json, written by each generation's record,
+    training/grow_record.py), its trunk and its cells, where the ternary runtime is built and their files are on
+    the machine; a body with no cells yet is its DNA alone; otherwise 'coder'."""
     who = [w.strip() for w in os.environ.get("HIVE_MEMBERS", "").split(",") if w.strip()]
     if not who and binary().exists():
         try:
             body = json.loads(BODY.read_text())
-            who = [f"{body['dna']}+{c}" for c in body.get("cells", []) if (ADAPTERS / f"{body['dna']}+{c}.gguf").exists()]
+            names = ([body["trunk"]] if isinstance(body.get("trunk"), str) and body["trunk"] else []) + list(body.get("cells", []))
+            who = [f"{body['dna']}+{c}" for c in names if (ADAPTERS / f"{body['dna']}+{c}.gguf").exists()]
+            if not who and body.get("dna") in MODELS and os.environ.get("HIVE_DNA_ALONE", "1") == "1":
+                from huggingface_hub import try_to_load_from_cache
+                if isinstance(try_to_load_from_cache(*MODELS[body["dna"]]), str):  # the DNA is on this machine
+                    who = [body["dna"]]
         except (OSError, ValueError, KeyError):
             who = []
     return who
+
+
+def is_trunk(member):
+    """Whether a member is the body's trunk (training/merge.py): the edit all its cells are averaged into."""
+    import re
+    return re.fullmatch(r"g\d+trunk", member.partition("+")[2]) is not None
 
 
 STRENGTHS = Path(__file__).resolve().parent.parent / "cells" / "strengths.json"
@@ -325,6 +337,7 @@ def seating(task, kind=None):
     """The members in the order they take this task: the first two work it out, the next decides a difference.
     The cells that lean to the task's organ first (the sort is stable, so a roster without organs keeps its order).
 
+    The trunk (the average of the body's newest cells, training/merge.py) sits first where the body has one.
     A body that has multiplied has lines of descent (cells/body.json "parents"). Of one organ the newest cell sits
     first: it is its parent and more. The second seat goes to the newest cell of another line: a child and its own
     parent are nearly one mind, and two copies agreeing on a wrong answer is the false memory that agreement cannot
@@ -337,7 +350,15 @@ def seating(task, kind=None):
     table = strengths() if os.environ.get("HIVE_SEATING") == "strength" else {}
     if table:
         return sorted(who, key=lambda m: (-strength(m, task, kind, table), leans(m) != o))
-    order = sorted(who, key=lambda m: (leans(m) != o, -_born(m)))
+    # the trunk, the whole body's learning as one edit, takes every task first; the cells are its second opinions
+    trunk = sorted((m for m in who if is_trunk(m)), key=_born)[-1:]
+    order = sorted((m for m in who if not is_trunk(m)), key=lambda m: (leans(m) != o, -_born(m)))
+    turn = os.environ.get("HIVE_ROTATE", "")
+    if turn.isdigit() and len(order) > 1:
+        # practice: every cell takes its turn as the first of the cells, whatever its organ, so each one's mistakes
+        # show and its children can be taught them (HIVE_ROTATE is the practice runner's number)
+        import zlib
+        order.insert(0, order.pop((zlib.crc32(task.encode()) + int(turn)) % len(order)))
     parents = _parents()
     if len(order) > 2 and parents:
         first = order[0]
@@ -345,7 +366,7 @@ def seating(task, kind=None):
         if other:
             order.remove(other)
             order.insert(1, other)
-    return order
+    return trunk + order
 
 
 if __name__ == "__main__":
