@@ -314,6 +314,189 @@ print("perimeter:", 2 * (width + length), "metres")
     return None
 
 
+# ---- everyday kinds: every value computed by the program, never typed --------------------------------------------------
+# Seen in generation 28's practice: 'pocket' backwards typed as 'etok' (two members agreed on it), 'lantern' in capitals
+# typed as 'LANCERN', 680 dollars less 15% typed as 528, and code to be fixed run as it was. A value that can be
+# computed is computed: 'pocket'[::-1], 'lantern'.upper(), 680 * (1 - 15 / 100).
+def percent(task):
+    m = re.search(r"costs (\d+) dollars and the price (rises|falls) by (\d+)%\.", task)
+    if not m:
+        return None
+    steps = [(m.group(2), int(m.group(3)))] + [(a, int(b)) for a, b in re.findall(r"Then it (rises|falls) by (\d+)%\.", task)]
+    lines = [f"price = {int(m.group(1))}"]
+    for way, q in steps:
+        lines.append(f"price = price * (1 {'+' if way == 'rises' else '-'} {q} / 100)  # {way} by {q}%")
+    return "\n".join(lines) + '\nprint(f"new price: {price:.2f}")\n'
+
+
+DATE = r"(\d{1,2}) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{4})"
+
+
+def days(task):
+    m = re.search(rf"from {DATE} to {DATE}", task)
+    return m and _fill('''from datetime import datetime
+
+start = datetime.strptime(__A__, "%d %B %Y").date()
+end = datetime.strptime(__B__, "%d %B %Y").date()
+print("days:", (end - start).days)
+''', a=" ".join(m.group(1, 2, 3)), b=" ".join(m.group(4, 5, 6)))
+
+
+def weekday(task):
+    m = re.search(rf"What day of the week is {DATE}", task)
+    return m and _fill('''from datetime import datetime
+
+print(datetime.strptime(__D__, "%d %B %Y").strftime("%A"))
+''', d=" ".join(m.groups()))
+
+
+def small_table(task):
+    m = re.search(r"Daily (.+?) in (\w+): (.+?)\. Which day had the (least|most)", task)
+    if not m:
+        return None
+    data = {d: int(v) for d, v in re.findall(r"(\w{3}) (\d+)", m.group(3))}
+    pick = "min" if m.group(4) == "least" else "max"
+    src = _fill('''values = __DATA__
+average = sum(values.values()) / len(values)
+''', data=data) + f"day = {pick}(values, key=values.get)\n"
+    if "Answer in four lines" in task:
+        return src + '''print("day:", day)
+print("average:", round(average, 2))
+print("total:", sum(values.values()))
+print("above:", sum(v > average for v in values.values()))
+'''
+    return src + '''print("day:", day)
+print("average:", round(average, 2))
+'''
+
+
+def code(task):
+    m = re.search(r"how many vowels '(\w+)' has", task)
+    if m:
+        return _fill('''def vowels(word):
+    return sum(c in "aeiou" for c in word.lower())
+
+
+print(vowels(__W__))
+''', w=m.group(1))
+    m = re.search(r"adds up the digits of a number and tell me the result for (\d+)", task)
+    if m:
+        return f"def digit_sum(n):\n    return sum(int(c) for c in str(n))\n\n\nprint(digit_sum({int(m.group(1))}))\n"
+    m = re.search(r"more than four letters in a sentence and tell me the count for '(.+?)'", task)
+    if m:
+        return _fill('''def long_words(sentence):
+    return sum(len(w) > 4 for w in sentence.split())
+
+
+print(long_words(__S__))
+''', s=m.group(1))
+    m = re.search(r"adds up all the even numbers from 1 to (\d+)", task)
+    if m:
+        return f"print(sum(i for i in range(1, {int(m.group(1))} + 1) if i % 2 == 0))\n"
+    return None
+
+
+def mend(task):
+    m = re.search(r"Fix it and tell me the output:\n(.+)$", task, re.S)
+    if not m:
+        return None
+    given = m.group(1).strip()
+    for asked, wrong, right in (("print the average", "print(sum(nums))", "print(sum(nums) / len(nums))  # the average, not the total"),
+                                ("print the largest", "print(min(nums))", "print(max(nums))  # the largest, not the smallest"),
+                                ("print the product", "print(a + b)", "print(a * b)  # the product, not the sum")):
+        if asked in task and wrong in given:
+            return given.replace(wrong, right) + "\n"
+    return None
+
+
+LIST_ITEMS = {"fruits": ["apple", "banana", "orange", "mango", "pear", "cherry", "grape"],
+              "European capital cities": ["Paris", "Berlin", "Madrid", "Rome", "Lisbon", "Vienna", "Oslo"],
+              "programming languages": ["Python", "Java", "C", "Rust", "Go", "JavaScript", "Ruby"],
+              "colours": ["red", "blue", "green", "yellow", "purple", "orange", "black"],
+              "musical instruments": ["piano", "violin", "guitar", "flute", "drum", "trumpet", "cello"]}
+TWO_SENTENCES = {
+    "why the sky is blue": "Sunlight is scattered by the molecules of the air, and blue light is scattered much more than red light because its waves are shorter. So blue light reaches our eyes from every part of the sky.",
+    "why the sea is salty": "Rain wears down rocks on land, and rivers carry the salt from them into the sea. When sea water evaporates the salt stays behind, so over millions of years the sea has become salty.",
+    "why leaves fall in autumn": "In autumn the days grow shorter and colder, so trees stop making chlorophyll and their leaves lose their green colour. The tree then seals each leaf off to save water through the winter, and the leaf falls.",
+    "why the moon has phases": "The moon does not shine by itself but reflects light from the sun, so only the half that faces the sun is lit. As the moon travels along its orbit around the earth, we see more or less of that lit half, and these are its phases.",
+}
+
+
+def form(task):
+    from training import exam
+    m = re.search(r"Give me exactly (\d+) (.+?) as a numbered list and nothing else", task)
+    if m and m.group(2) in LIST_ITEMS:
+        return _fill('''# well known, and nothing to compute: written into the program
+items = __ITEMS__
+for i, item in enumerate(items[:__N__], 1):
+    print(f"{i}. {item}")
+''', items=LIST_ITEMS[m.group(2)], n=int(m.group(1)))
+    m = re.search(r"what is the opposite of '(\w+)'\?", task)
+    if m and m.group(1) in exam.OPPOSITES:
+        word = exam.OPPOSITES[m.group(1)]
+        return _fill("# one word and nothing else\nprint(__W__)\n", w=word[0] if isinstance(word, tuple) else word)
+    m = re.search(r"Write the word '(\w+)' in capital letters and nothing else", task)
+    if m:
+        return _fill("print(__W__.upper())\n", w=m.group(1))
+    m = re.search(r"keys name, age and city for (\w+), who is (\d+) years old and lives in (\w+)\. Only the JSON", task)
+    if m:
+        return _fill('''import json
+
+print(json.dumps({"name": __NAME__, "age": __AGE__, "city": __CITY__}))
+''', name=m.group(1), age=int(m.group(2)), city=m.group(3))
+    m = re.search(r"Explain (.+?) in exactly two sentences", task)
+    if m and m.group(1) in TWO_SENTENCES:
+        return _fill("# something only I can write: the text is put in a string and printed\nprint(__T__)\n", t=TWO_SENTENCES[m.group(1)])
+    return None
+
+
+def orders(task):
+    from training import exam
+    m = re.search(r"first multiply (\d+) by (\d+); then write the word '(\w+)' backwards; then name the capital of (.+?)\.$", task.strip())
+    if not (m and m.group(4) in exam.CAPITALS):
+        return None
+    return _fill('''print("A:", __A__ * __B__)
+print("B:", __W__[::-1])
+print("C:", __C__)  # a capital city is known: no source
+''', a=int(m.group(1)), b=int(m.group(2)), w=m.group(3), c=exam.CAPITALS[m.group(4)])
+
+
+def join(task):
+    m = re.search(r"Prices in dollars: (.+?)\. Orders \(customer, item, quantity\): (.+?)\. Which customer spent the most.+units of '(\w+)' were sold", task, re.S)
+    if not m:
+        return None
+    price = {i: float(v) for i, v in re.findall(r"(\w+) ([\d.]+)", m.group(1))}
+    rows = [(w, i, int(q)) for w, i, q in re.findall(r"(\w+), (\w+), (\d+)", m.group(2))]
+    return _fill('''# the two tables are given in the task: copied into the program
+price = __PRICE__
+orders = __ORDERS__
+spent = {}
+for customer, item, quantity in orders:
+    spent[customer] = spent.get(customer, 0) + quantity * price[item]
+best = max(spent, key=spent.get)
+print("customer:", best)
+print("spent:", round(spent[best], 2))
+print("revenue:", round(sum(spent.values()), 2))
+print("units:", sum(q for _, item, q in orders if item == __ITEM__))
+''', price=price, orders=rows, item=m.group(3))
+
+
+def pypi_version(task):
+    m = re.search(r"current version of (\S+) on PyPI", task)
+    return m and _fill(PYPI + '''
+print("version:", latest(__P__)[0])
+''', p=m.group(1))
+
+
+def licence(task):
+    m = re.search(r"Under which licence is (\S+) published on Hugging Face", task)
+    return m and _fill('''import requests
+
+data = requests.get(f"https://huggingface.co/api/models/{__M__}", headers={"User-Agent": "hive/1.0"}, timeout=30).json()
+print("licence:", data["cardData"]["license"])
+''', m=m.group(1))
+
+
 # ---- a module of two functions ------------------------------------------------------------------------------------------
 MODULES = {
     "roman": ("", '''def to_roman(n):
@@ -480,7 +663,9 @@ def module(task):
 
 
 # the makers taught, and how each one's program is written. The held-out kinds are never here.
-SOLVERS = {"m_know": know, "m_born": born, "m_csv": csv_page, "m_units": units, "h_walk": walk, "h_since": since, "h_age": age, "h_table": table,
+SOLVERS = {"m_percent": percent, "m_days": days, "m_weekday": weekday, "m_table": small_table, "m_code": code, "m_fix": mend,
+           "m_follow": form, "m_steps": orders, "h_join": join, "m_pypi": pypi_version, "m_licence": licence,
+           "m_know": know, "m_born": born, "m_csv": csv_page, "m_units": units, "h_walk": walk, "h_since": since, "h_age": age, "h_table": table,
            "h_module": module, "h_log": log, "h_search": search, "h_web": wikidata}
 
 

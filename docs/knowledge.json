@@ -122,6 +122,16 @@
   ],
   "open": [
     {
+      "id": "reasoning",
+      "title": "Members disagree, or two agree on a wrong answer",
+      "owner": "B",
+      "seen": "g28 practice, 100 tasks: 19 disagreed, 10 agreed on a wrong answer, 16 no answer, 32 right; A counted 45 of 77 failures",
+      "measured_by": [
+        "score",
+        "kinds"
+      ]
+    },
+    {
       "id": "web",
       "title": "Tasks that read websites fail nearly always",
       "owner": "B",
@@ -178,6 +188,24 @@
     }
   ],
   "findings": [
+    {
+      "id": "typed",
+      "title": "Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528)",
+      "lives_in": "lessons",
+      "blocks": "reasoning",
+      "status": "fixed",
+      "by": "B, lessons for 12 everyday kinds where every value is computed (213 of 213 right)",
+      "seen": "g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged"
+    },
+    {
+      "id": "noheadings",
+      "title": "An agreed answer without the PART headings was accepted, so every part failed",
+      "lives_in": "members",
+      "blocks": "reasoning",
+      "status": "open",
+      "by": "A: the form check could insist on the headings before agreeing",
+      "seen": "g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing)"
+    },
     {
       "id": "nothingright",
       "title": "A kind never passed had nothing to learn from, so practising it more taught nothing",
