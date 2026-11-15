@@ -1,55 +1,53 @@
 # HiveMIND
 
-A hive of BitNet cells that works and learns as one body, on plain CPUs. You give it **one task**; its cells
-write and run programs to do it, and an answer counts only when two cells agree. It grows by itself: it
-practises on fresh tasks, learns from the ones a check confirms, and multiplies: every grown cell has a child
-that starts as an exact copy of it and learns further, and the body keeps them all. No GPU, no API keys, nothing
-to pay for.
+A hive of BitNet cells that works and learns as one body, on plain CPUs. You talk to it or give it a task: what
+it knows it answers at once, and what has to be worked out its cells do by writing and running programs, where an
+answer counts only when two of them agree. It grows by itself, without stopping: it practises on fresh tasks,
+learns from the ones a check confirms and from its own mistakes, and multiplies. No GPU, no API keys, nothing to
+pay for.
 
-**Measured (2026-11-14):** grown from its own checked work, the body passes **26 of 64** fresh tasks where its
-base model alone passes 9, and **29 of 64** (twice) where the base passes 14 on four more unseen exams.
+## Use it
 
-## The hive as one body (where it stands, 2026-11-14)
+- **Talk to it from anywhere:** open an issue in this repository and write what you want to say or have done.
+  The hive replies as a comment, usually within ten minutes; answer in a comment and the conversation goes on
+  (workflow "Talk to the hive"; only the repository's owner is answered; everything here is public).
+- **One task from the Actions tab:** "Ask the hive", Run workflow, type the task.
+- **On your own device:** `bash scripts/cloud_setup.sh`, then `./hive` to talk, or `python -m team "your task"`.
 
-The hive is now built as **one body: one ternary model (its DNA) and many cells of the same size**, each the
-DNA with a small weight edit of its own. Every weight of the DNA is -1, 0 or +1 (the kind of net BitNet b1.58
-named); it is in memory once, and a cell is a file of a few megabytes switched on for its turn.
+## The hive as one body (where it stands, 2026-11-15)
 
-- **The DNA** is `prism-ml/Ternary-Bonsai-1.7B` (0.43 GB packed, Apache-2.0), served by a llama.cpp with ternary
-  kernels (`team/ternary.py`; built once, about 25 minutes). Published ternary models run fast on a plain CPU:
-  on 4 cores the 1.7B writes about 28 pieces a second in 1 GB.
+The hive is **one body: one ternary model (its DNA) and many cells of the same size**, each the DNA with a small
+weight edit of its own. Every weight of the DNA is -1, 0 or +1 (the kind of net BitNet b1.58 named); it is in
+memory once, and a cell is a file of a few megabytes switched on for its turn.
+
+- **The DNA** is `prism-ml/Ternary-Bonsai-8B` (2.2 GB packed, Apache-2.0), served by a llama.cpp with ternary
+  kernels (`team/ternary.py`). On 4 cores it writes about 7 pieces a second in 3 GB.
 - **Cells lean to organs**: sources, code, data, words. Each cell is trained on all of the hive's checked work
   and on its own organ's three times as often, so any two can check each other and each is strongest somewhere.
-  A task goes first to the cells that lean to it; an answer counts when two cells agree.
-- **It teaches itself, without stopping** (`training/grow.py`, workflow "The hive teaches its own members"; one
-  generation after another since 2026-11-14 evening, each starting the next; to stop it, set the repository
-  variable `HIVE_LOOP` to `stop` or disable the workflow): the
-  cells practise on fresh tasks; a task counts only when two agreed and the task's own check, computed by code,
-  confirms it; each grown cell has a child, which starts as its parent's exact edit and trains on all the checked
-  work, its parent's mistakes and their corrections included; the children join the body, which grows like
-  Fibonacci's rabbits (`training/lineage.py`). Nothing decides whether a generation is kept; one exam of the grown
-  body is taken as a pulse, to trace problems back from. The DNA of the line is now the 8B (`Ternary-Bonsai-8B`).
-- **Measured (the first body, 2026-11-14)**, four fresh seeds, 64 tasks, half the first exam's kinds and half
-  hard ones of several steps (`training/exam_hard.py`), members alone:
-
-  | who sat | passed | minutes |
-  |---|---|---|
-  | the DNA as published | 9 of 64 | 139 |
-  | the body: four cells grown from 222 checked rows | 26 of 64 | 50 |
-
-  On four more unseen exams the same cells passed 29 of 64, twice, where the DNA alone passed 14.
-
-  On the four hard kinds it never practised it passed none (0 of 11, as the DNA): what it learned has not yet
-  carried over to work it has not seen. The 222 rows of this first body came from bigger ternary models of the
-  same family; from the next generation on the body practises by itself.
-- **Use it**: Actions -> "Ask the hive" (the body answers once it has cells). On a device: `bash
-  scripts/cloud_setup.sh`, then `python -m team "your task"`; the body does it where the runtime and its cells
-  are on the machine (`python -m team.ternary install`, `python training/grow.py fetch`).
-- **Tried and not (yet) better**: engrams (one checked task kept as one tiny ternary edit and recalled for tasks
-  like it, `team/engram.py`): no gain on a first stream of 32 tasks. Bigger members of other sizes in one hive
-  were dropped: a body is cells of one size.
-- **Not done**: a new ternary architecture trained from nothing (every attempt on a CPU here stayed weak);
-  whether the body keeps improving from its own practice (the first such generation is running).
+- **The trunk makes it one** (`training/merge.py`): each generation the newest cell of every line of descent is
+  averaged into one edit, which answers every task first; a cell gives the second opinion. Every child starts as
+  its parent pulled halfway toward the trunk, so the lines explore apart and stay one body.
+- **It teaches itself, without stopping** (`training/grow.py`, workflow "The hive teaches its own members"): the
+  trunk and the cells practise on fresh tasks, half of them several tasks in one, as hard as the body can just
+  manage (the levels move with what it passes); they go back to tasks they got wrong; a task counts only when two
+  members agreed and the task's own check, computed by code, confirms it. Every grown cell then has a child, which
+  learns this generation's checked work and its own parent's mistakes with their corrections. The children join
+  the body, which grows like Fibonacci's rabbits (`training/lineage.py`). Nothing decides whether a generation is
+  kept; one exam of the grown body is taken as its pulse, to trace problems back from. To stop the line, set the
+  repository variable `HIVE_LOOP` to `stop` or disable the workflow.
+- **It talks** (`team/talk.py`): one word from the DNA decides whether a message can be answered as it stands or
+  has to be worked out. Talk is answered at once; work goes to the body's programs and comes back in plain words,
+  with the checked values as the programs printed them.
+- **Measured.** On the 1.7B DNA (2026-11-14, four fresh exams, 64 tasks): the DNA alone 9, a body of four cells
+  26; on four more exams 29 against 14. On the 8B DNA (2026-11-15): alone it got 38 of 96 practice tasks right;
+  its first three cells, barely trained because their runners ran out of memory, passed 11 of 32 exam tasks, 1 of
+  5 on kinds never practised. Training an 8B cell now holds 8 GB and takes 4 to 9 seconds a row (it took 30 to
+  160 on those runners); the first generation trained that way is running.
+- **Tried and not (yet) better**: engrams (one checked task kept as one tiny edit, `team/engram.py`); reading raw
+  web text while training (`training/raw.py`). Both are built and switched off.
+- **Not done**: a ternary architecture of the hive's own trained from nothing (every attempt on a CPU here stayed
+  weak; the DNA is a published model); work on websites is its weakest kind; nothing shows yet that what it learns
+  carries over to kinds of task it never practised.
 
 Everything below describes the older hive of roles (models at 4 bits, not ternary), which is still in the
 repository and takes a task when `HIVE_ROLES=1` and the cells confirm nothing.

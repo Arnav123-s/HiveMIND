@@ -81,3 +81,29 @@ place, more tasks can run at once beyond that.
   codes directly (`torch._int_mm` or a small C++ extension with VNNI), instead of rebuilding bf16 weights at every
   call.
 - Rows: the loss and the logits are computed on the answer tokens only (`logits_to_keep`), already.
+
+## 5. Training an 8B cell on a 16 GB machine (measured 2026-11-15, the real Ternary-Bonsai-8B, 4 cores)
+
+The first 8B cells trained at 14 to 162 seconds a row and one in four died: the DNA was loaded as 16-bit numbers
+first (16 GB), then held with its word vectors and output layer as numbers, and a long row pushed the runner into
+its swap. What is held now, and what a row costs (`training/ternary_base.py`, LoRA rank 16 on the last 14 layers):
+
+| | before | now |
+|---|---|---|
+| held after loading | 9.4 GB, after a peak above 16 | 8.1 GB, never more while loading |
+| time to load | about 8 minutes | 80 seconds |
+| a row of about 470 pieces, first pass | 14 s on a runner that did not swap, 30 to 162 s on those that did | 9 s |
+| the same row on later passes (frozen layers' output kept, on disk) | | 4 to 5 s |
+| memory while training | 14.9 GB and swap | 10.8 GB at 256 pieces, 13.3 GB at 1024 |
+
+- Every piece of a row costs about 5 MB while it is trained on (46 values of the hidden size for each trained
+  layer). Rows are capped to what fits the machine: about 1000 pieces on 16 GB. A row of 1152 pieces ran this
+  15 GB machine out of memory.
+- Where a row's time goes now (400 pieces, 8.5 s): rebuilding numbers from codes 2.8 s, multiplying 2.3 s forward
+  and 0.5 s back, the output layer and the two widest projections 2.5 s, the rest about 2 s.
+- The C routine that rebuilds a matrix from its codes (`ternary_base._C`) takes 6 ms for 50 million weights where
+  PyTorch takes 57 ms. Alone it moved a row's time little; what remains is spread over many parts.
+- Tried and not better: jemalloc that never returns memory (out of memory), huge pages always (25% slower),
+  not giving memory back after each step (4% faster).
+- Not tried: several rows in one forward pass (one rebuild of the weights for all of them; needs padding and
+  about 5 MB a piece of memory for every row in the batch).
