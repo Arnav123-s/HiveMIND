@@ -151,6 +151,8 @@ jobs:
             python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "$DREAMS" --minutes 40 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
             tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
           fi
+          # memory every two minutes, so a runner that dies says how it stood (two died mid-task, 2026-11-15)
+          (while sleep 120; do free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print "memory: " m " MB used, swap " s " MB"}'; done) &
           python training/grow.py practice --seed $((10000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "${{ inputs.tasks || '16' }}" --minutes 210 --level "$LEVEL" --out rows.jsonl | tee practice.txt
           tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4

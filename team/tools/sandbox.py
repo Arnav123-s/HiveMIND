@@ -317,6 +317,21 @@ def http_errors(stderr):
     return [(u, int(c)) for _, u, c in HTTP_LINE.findall(stderr or "")]
 
 
+# a model-written program that fills memory starves the hive's own model on the same machine: twice a practice
+# runner was shut down by GitHub in the middle of a 25-minute task (generations 25 and 28); stopped here instead
+MEMORY_MB = int(os.environ.get("HIVE_PROGRAM_MB", 3000))
+
+
+def _memory(pid):
+    """MB resident in a program and every process it started (0 when it cannot be read)."""
+    try:
+        import psutil
+        root = psutil.Process(pid)
+        return sum(x.memory_info().rss for x in [root, *root.children(recursive=True)]) // 2**20
+    except Exception:
+        return 0
+
+
 def run_python(code, workdir, name="main.py", timeout=None, args=()):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
@@ -344,6 +359,9 @@ def run_python(code, workdir, name="main.py", timeout=None, args=()):
                 killed = "STOPPED by the kill switch"
             elif time.time() - t0 > limit:
                 killed = f"TIMEOUT after {limit}s"
+            elif _memory(p.pid) > MEMORY_MB:
+                killed = (f"MEMORY: the program used more than {MEMORY_MB} MB and was stopped; "
+                          "keep less in memory at once (read in pieces, do not build huge lists)")
             if killed:
                 os.killpg(p.pid, signal.SIGKILL)
                 rc = p.wait()

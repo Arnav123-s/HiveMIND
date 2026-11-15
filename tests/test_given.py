@@ -114,3 +114,11 @@ def test_the_program_hook_parses():
 
     from team.tools.sandbox import _HOOK_SRC
     ast.parse(_HOOK_SRC)  # a stray escape once broke it for every program
+
+
+def test_a_program_that_fills_memory_is_stopped(tmp_path, monkeypatch):
+    import team.tools.sandbox as sb
+    monkeypatch.setattr(sb, "MEMORY_MB", 200)
+    r = run_python("x = bytearray(600 * 2**20)\nx[::4096] = b'1' * len(x[::4096])\nimport time\ntime.sleep(5)\nprint('done')",
+                   tmp_path, name="big.py", timeout=30)
+    assert r["returncode"] != 0 and "MEMORY" in r["stderr"] and "done" not in r["stdout"]
