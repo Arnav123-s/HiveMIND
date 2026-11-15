@@ -32,6 +32,386 @@
     "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.7935,
     "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.7884
    }
+  },
+  {
+   "when": "2026-11-12 09:31",
+   "cells": 8,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.1474,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.8092,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.8499,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.8121
+   }
+  },
+  {
+   "when": "2026-11-12 17:53",
+   "cells": 8,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.1981,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.8638,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.9056,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.8665
+   }
+  },
+  {
+   "when": "2026-11-13 08:57",
+   "cells": 9,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.0428,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.8946,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.9444,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.898
+   }
+  },
+  {
+   "when": "2026-11-14 09:36",
+   "cells": 10,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.0433,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 2.8928,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 2.9447,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 2.9021
+   }
+  },
+  {
+   "when": "2026-11-15 09:33",
+   "cells": 12,
+   "passages": 300,
+   "loss": {
+    "stem cell alone": 3.6089,
+    "body: the stem cell and the 4 nearest cells read, the rest sleep": 3.1577,
+    "body, the old rule: the same cells, the one that fitted the first half best takes nearly all the say": 3.3452,
+    "body, by fit: the stem cell and every cell read, weighed by how each predicted the first half": 3.1953
+   }
+  }
+ ],
+ "stem_reads": [
+  {
+   "when": "2026-11-12 08:40",
+   "steps": 428,
+   "gate_before": 2.8488,
+   "gate_after": 2.8484,
+   "kept": false,
+   "own_before": 3.339,
+   "own_after": 3.038,
+   "minutes": 10.0
+  },
+  {
+   "when": "2026-11-12 17:27",
+   "steps": 689,
+   "gate_before": 2.7996,
+   "gate_after": 2.7991,
+   "kept": false,
+   "own_before": 3.339,
+   "own_after": 3.035,
+   "minutes": 10.0
+  },
+  {
+   "when": "2026-11-13 08:24",
+   "steps": 761,
+   "gate_before": 2.8505,
+   "gate_after": 2.8498,
+   "kept": true,
+   "own_before": 3.339,
+   "own_after": 3.044,
+   "minutes": 10.0
+  },
+  {
+   "when": "2026-11-14 08:43",
+   "steps": 506,
+   "gate_before": 2.8289,
+   "gate_after": 2.8284,
+   "kept": false,
+   "own_before": 3.044,
+   "own_after": 3.029,
+   "minutes": 10.0
+  },
+  {
+   "when": "2026-11-15 08:37",
+   "steps": 149,
+   "gate_before": 3.4285,
+   "gate_after": 3.4285,
+   "kept": false,
+   "own_before": 3.044,
+   "own_after": 3.044,
+   "minutes": 3.0
+  }
+ ],
+ "weakest": {
+  "territory": 5,
+  "loss": 4.5256,
+  "text": "'float')\n self._paramsarray[i] = getattr(self.model, param)\n self._paramsarray[i] = getattr(self.model, param[0])[param[1]]\n \"\"\"Set new `paramsarray` and update via `updateParams`.\"\"\"\n assert (isinstance(value, scipy.ndarray) and value.ndim == 1), (\n \"paramsarray must be 1-dim ndarray\")\n assert len(value) == nparams, (\"Assigning paramsarray to ndarray \"\n if (self._paramsarray is not None) and all(value == self._paramsarray):\n return # do not need to do anything if value has not changed\n # build `newvalues` to pass to `updateParams`\n new"
+ },
+ "kinds_tried": [
+  "flips",
+  "team"
+ ],
+ "births": [
+  {
+   "cell": 6,
+   "when": "2026-11-12 08:50",
+   "trainer": "t4",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0047 (it needs more than 0.004)",
+   "passages": 120,
+   "near_before": 3.803,
+   "near_after": 3.8077
+  },
+  {
+   "cell": 7,
+   "when": "2026-11-12 09:09",
+   "trainer": "t7",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0062, give or take 0.0017 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 3.793,
+   "near_after": 3.7868
+  },
+  {
+   "cell": 8,
+   "when": "2026-11-12 09:30",
+   "trainer": "t8",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0100, give or take 0.0025 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 3.7969,
+   "near_after": 3.7869
+  },
+  {
+   "cell": 9,
+   "when": "2026-11-12 17:33",
+   "trainer": "t3",
+   "on": "uncharted",
+   "kept": false,
+   "why": "where it lives the body gained -0.0291 (it needs more than 0.004)",
+   "passages": 120,
+   "near_before": 3.8372,
+   "near_after": 3.8663
+  },
+  {
+   "cell": 10,
+   "when": "2026-11-12 17:49",
+   "trainer": "t8",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained +0.0002 (it needs more than 0.004)",
+   "passages": 111,
+   "near_before": 3.8417,
+   "near_after": 3.8415
+  },
+  {
+   "cell": 11,
+   "when": "2026-11-12 17:52",
+   "trainer": "t5",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0324 (it needs more than 0.004)",
+   "passages": 111,
+   "near_before": 3.8417,
+   "near_after": 3.8741
+  },
+  {
+   "cell": 12,
+   "when": "2026-11-13 08:25",
+   "trainer": "t6",
+   "on": "uncharted",
+   "kept": false,
+   "why": "where it lives the body gained -0.0222 (it needs more than 0.004)",
+   "passages": 120,
+   "near_before": 3.8457,
+   "near_after": 3.868
+  },
+  {
+   "cell": 13,
+   "when": "2026-11-13 08:40",
+   "trainer": "t7",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0088 (it needs more than 0.004)",
+   "passages": 120,
+   "near_before": 3.891,
+   "near_after": 3.8997
+  },
+  {
+   "cell": 14,
+   "when": "2026-11-13 08:56",
+   "trainer": "t10",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0212, give or take 0.0058 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 3.8972,
+   "near_after": 3.8759
+  },
+  {
+   "cell": 15,
+   "when": "2026-11-14 09:00",
+   "trainer": "t8",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0012 (it needs more than 0.004)",
+   "passages": 115,
+   "near_before": 3.9308,
+   "near_after": 3.932
+  },
+  {
+   "cell": 16,
+   "when": "2026-11-14 09:17",
+   "trainer": "t10",
+   "on": "division",
+   "kept": false,
+   "why": "where it lives the body gained -0.0134 (it needs more than 0.004)",
+   "passages": 115,
+   "near_before": 3.9308,
+   "near_after": 3.9442
+  },
+  {
+   "cell": 17,
+   "when": "2026-11-14 09:35",
+   "trainer": "t11",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0099, give or take 0.0029 on 109 passages; it wakes on 91% of the passages near it",
+   "passages": 109,
+   "near_before": 3.8801,
+   "near_after": 3.8701
+  },
+  {
+   "cell": 18,
+   "when": "2026-11-15 08:57",
+   "trainer": "t9",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.5579, give or take 0.0310 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 4.586,
+   "near_after": 4.0281
+  },
+  {
+   "cell": 19,
+   "when": "2026-11-15 09:16",
+   "trainer": "t12",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.3530, give or take 0.0192 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 4.0281,
+   "near_after": 3.6752
+  },
+  {
+   "cell": 20,
+   "when": "2026-11-15 09:32",
+   "trainer": "t9",
+   "on": "division",
+   "kept": true,
+   "why": "where it lives the body gained +0.0954, give or take 0.0138 on 120 passages; it wakes on 100% of the passages near it",
+   "passages": 120,
+   "near_before": 3.7714,
+   "near_after": 3.676
+  }
+ ],
+ "trainers": [
+  {
+   "id": "t1",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t2",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0
+  },
+  {
+   "id": "t9",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "how": "team",
+   "share": 0.25,
+   "births": 2,
+   "kept": 2,
+   "parent": "t7"
+  },
+  {
+   "id": "t12",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "how": "team",
+   "share": 0.25,
+   "births": 1,
+   "kept": 1,
+   "parent": "t7"
+  },
+  {
+   "id": "t13",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "births": 0,
+   "kept": 0,
+   "parent": "t1"
+  },
+  {
+   "id": "t14",
+   "start": "nearest",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "how": "team",
+   "share": 0.5,
+   "births": 0,
+   "kept": 0,
+   "parent": "t10"
+  },
+  {
+   "id": "t15",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "how": "team",
+   "share": 0.25,
+   "births": 0,
+   "kept": 0,
+   "parent": "t9"
+  },
+  {
+   "id": "t16",
+   "start": "stem",
+   "lr": 0.0005,
+   "span": 1.0,
+   "on": "division",
+   "how": "team",
+   "share": 0.25,
+   "births": 0,
+   "kept": 0,
+   "parent": "t9"
+  }
+ ],
+ "retired": [
+  {
+   "cell": 7,
+   "worth": -0.00021,
+   "when": "2026-11-15 08:37"
   }
  ]
 }

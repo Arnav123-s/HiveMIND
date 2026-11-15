@@ -116,7 +116,8 @@ env:
 
 jobs:
   practice:
-    if: ${{ !inputs.skip_practice }}
+    # an earlier run's cells re-sat: nothing is trained, so nothing is practised (the gate waited two hours for it)
+    if: ${{ !inputs.skip_practice && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
     timeout-minutes: 330
     strategy:
