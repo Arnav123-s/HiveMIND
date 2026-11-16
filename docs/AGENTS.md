@@ -93,3 +93,6 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   record conflicted with g34's on cells/body.json and the graphs. (e) g35's own rows: 290 (192 agreed, 18 by the
   check alone, 51 lessons, 2 dreams); its practice: 59 of 137 right, 53 first try, 1.66 hints a task (bad_address 62,
   html_json 53, like_keys 42). Code changes (b) wait for the owner's yes.
+- 2026-11-16 17:30 UTC, A: g35 against g34 (same parents; C: g35 is a trial beside g34, not a generation): g35 easy
+  19 of 24, hard 6 of 24 (seeds 1-3); g34 easy 31 of 32, hard 6 of 32. In docs/knowledge.json (g35sibling,
+  serverdeath, stalebody). C decides which cells the body goes on from.
