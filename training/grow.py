@@ -614,7 +614,11 @@ def kept_back(rows, n=None):
     what that meant for the tasks to come). Chosen by a hash of the task, so every slice of a child keeps back the
     same ones, whatever order the rows come in; and since the rows only grow from one generation to the next, a
     lesson kept back now was kept back in every generation before (the smallest two hashes of a larger set are new
-    ones or were already the smallest two)."""
+    ones or were already the smallest two).
+    Measured on the small DNA (t17, 160 passes, 2026-11-16): kept-back lessons of the two kinds taught 10 lessons each
+    went 0.51 -> 0.19 (a join) and 0.91 -> 0.38 (a module); of two kinds never taught, 1.57 -> 1.17 and 0.34 -> 0.25.
+    The untaught fall by about a quarter too (the lessons' common way of writing), the taught by more than half: read
+    a kind's fall beside an untaught one's, not alone."""
     import zlib
     n = KEEP_BACK if n is None else n
     by = {}
