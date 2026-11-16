@@ -106,3 +106,34 @@ def test_the_notebook_refuses_a_gpu_too_small_for_the_8b_and_says_what_to_choose
     monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
     with pytest.raises(SystemExit, match="L4 or A100"):
         colab.serve(0.01)
+
+
+def test_the_notebook_is_offered_only_the_children_it_can_finish_a_different_one_each_generation():
+    """g38: every child was offered to the notebook at once, and it grows one at a time in up to an hour while a child
+    waits for it 90 minutes. Now K children (HIVE_COLAB_CHILDREN, 1 unless set) are offered, turn by turn."""
+    import subprocess
+    from pathlib import Path
+    flow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "grow.yml").read_text()
+    lines = flow.splitlines()
+    i = next(n for n, x in enumerate(lines) if x.strip().startswith('K="${{ vars.HIVE_COLAB_CHILDREN'))
+    step = "\n".join(x.strip() for x in lines[i:i + 3])
+    assert "PICK=$(" in step and "CM=$((" in step and '--minutes "$CM"' in flow
+    children = json.dumps([{"name": f"g40{o}", "organ": o} for o in ("sources", "code", "code2", "data", "words", "words2")])
+
+    def picked(k, run):
+        out = []
+        for c in json.loads(children):
+            text = (step.replace("${{ vars.HIVE_COLAB_CHILDREN || '1' }}", k).replace("${{ needs.plan.outputs.children }}", children)
+                    .replace("${{ github.run_number }}", str(run)))
+            r = subprocess.run(["bash", "-ec", f'NAME={c["name"]}\n{text}\necho "$PICK $CM"'], capture_output=True, text=True)
+            assert r.returncode == 0, r.stderr
+            pick, cm = (r.stdout.split() + [""])[:2] if r.stdout.split()[0] == "1" else ("", r.stdout.split()[0])
+            out += [c["name"]] * (pick == "1")
+            minutes = int(cm)
+        return out, minutes
+    one, minutes = picked("1", 40)
+    assert len(one) == 1 and minutes == 60
+    assert picked("1", 41)[0] != one  # another organ the next generation
+    two, minutes = picked("2", 40)
+    assert len(two) == 2 and minutes == 35
+    assert picked("0", 40)[0] == [] and picked("x", 40)[0] and len(picked("x", 40)[0]) == 1  # 0: none; nonsense: 1

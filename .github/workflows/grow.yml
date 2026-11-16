@@ -394,7 +394,15 @@ jobs:
           N=$(python3 -c "import json, sys; print(len(json.loads(sys.argv[1])))" '${{ needs.plan.outputs.shards || '[0]' }}')
           COLAB=""; MIN=170; WHOLE=""
           mkdir -p out
-          if [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+          # The notebook grows one child at a time and a child waits for it 90 minutes, so it is offered only K children
+          # (repository variable HIVE_COLAB_CHILDREN, 1 unless set; 0: none), a different organ each generation, each
+          # with 70/K minutes of training; the other children train in slices here as always. (g38 would have offered
+          # all six at once: the notebook could finish one or two in time, and the rest would have trained alone on one
+          # runner in what was left of the job.)
+          K="${{ vars.HIVE_COLAB_CHILDREN || '1' }}"; [[ "$K" =~ ^[0-9]$ ]] || K=1
+          PICK=$(python3 -c "import json, sys; c = [x['name'] for x in json.loads(sys.argv[1])]; n, k, r = sys.argv[2], int(sys.argv[3]), int(sys.argv[4]); print(1 if n in c and (c.index(n) - r) % len(c) < k else '')" '${{ needs.plan.outputs.children }}' "$NAME" "$K" "${{ github.run_number }}")
+          CM=$(( K > 0 ? 70 / K : 60 )); [ "$CM" -gt 60 ] && CM=60; [ "$CM" -lt 15 ] && CM=15
+          if [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
             if [ "$SHARD" != "0" ]; then
               # the owner's notebook grows the whole child (slice 0 orders it): the other slices have nothing to do
               if python3 training/colab.py alive; then echo "the owner's Colab GPU grows $NAME whole: slice $SHARD stands aside" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
@@ -402,7 +410,7 @@ jobs:
               T0=$(date +%s)
               PA=""; [ -n "$P" ] && PA="$DNA.$P.safetensors"
               TA=""; [[ "$T" =~ ^g[0-9]+trunk$ ]] && TA="$DNA.$T.safetensors"
-              if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes 60; then
+              if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes "$CM"; then
                 WHOLE=1  # the others stood aside: with no cell from the notebook, this runner grows the whole child
                 python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=1
               fi
