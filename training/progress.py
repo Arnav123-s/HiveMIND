@@ -27,7 +27,10 @@ sys.path.insert(0, str(ROOT))
 NAMES = {"t17": "1.7B", "t40": "4B", "t80": "8B"}
 # colours: the validated categorical pair (blue, orange) and a neutral for the DNA alone; dark-mode steps of the
 # same hues (both pairs pass the colour-blind and contrast checks)
-SERIES = {"t80": ("#2a78d6", "#3987e5"), "t17": ("#eb6834", "#d95926"), "t40": ("#1baf7a", "#199e70")}
+SERIES = {"t80": ("#2a78d6", "#3987e5"), "t17": ("#eb6834", "#d95926"), "t40": ("#1baf7a", "#199e70"),
+          # the parts of an exam: the same validated slots, in the same order
+          "hard": ("#2a78d6", "#3987e5"), "easy": ("#eb6834", "#d95926"), "several": ("#1baf7a", "#199e70")}
+PARTS = {"hard": "hard kinds", "easy": "easy kinds", "several": "tasks of several parts"}
 STYLE = """<style>
 .bg{fill:#fcfcfb}.ink{fill:#0b0b0b}.ink2{fill:#52514e}.grid{stroke:#e4e3df}.axis{stroke:#b9b8b2}.dna{stroke:#52514e;fill:#fcfcfb}
 %s
@@ -111,6 +114,40 @@ def share_chart(gens, pick, title, note, w=760, h=300):
         j = len(dnas)
         b.append(f'<circle class="dna" cx="{lx + 5}" cy="{top + 6 + j * 20}" r="4.5" stroke-width="2"/>' + _text(lx + 15, top + 10 + j * 20, "DNA alone", "ink", 11))
     return _svg(w, h, "".join(b), dnas, title)
+
+
+def parts_chart(gens, w=760, h=300):
+    """The hard kinds, the easy kinds and the tasks of several parts, each as a share passed, each generation that
+    recorded them apart (grow_record.arm). Each kind is passed always or never: the score moves only when a hard,
+    never-passed kind is learned, so this is where to look."""
+    left, right, top, bottom = 52, 150, 58, 44
+    pw, ph = w - left - right, h - top - bottom
+    have = [d for d in gens if any((d["arms"]["after"].get(k) or [0, 0])[1] for k in PARTS)]
+    n = max(1, len(have))
+    x = lambda i: left + pw * (i + 0.5) / n  # noqa: E731
+    y = lambda v: top + ph * (1 - v)  # noqa: E731
+    b = [_text(16, 24, "Hard kinds, easy kinds and tasks of several parts, passed", size=15, weight="600"),
+         _text(16, 42, "each kind is passed always or never: the score moves when a hard kind is learned", "ink2", 12)]
+    for v in (0, .25, .5, .75, 1):
+        b.append(f'<line class="grid" x1="{left}" x2="{left + pw}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke-width="1"/>')
+        b.append(_text(left - 8, y(v) + 4, f"{int(v * 100)}%", "ink2", 11, "end"))
+    if not have:
+        b.append(_text(left + pw / 2, top + ph / 2, "no generation has recorded them apart yet", "ink2", 12, "middle"))
+    for i, d in enumerate(have):
+        b.append(_text(x(i), top + ph + 18, d.get("generation", ""), "ink2", 11, "middle"))
+    for j, (k, label) in enumerate(PARTS.items()):
+        pts = [(i, d["arms"]["after"].get(k)) for i, d in enumerate(have)]
+        pts = [(i, c) for i, c in pts if c and c[1]]
+        if len(pts) > 1:
+            b.append(f'<polyline class="l{k}" stroke-width="2" points="' + " ".join(f"{x(i):.1f},{y(c[0] / c[1]):.1f}" for i, c in pts) + '"/>')
+        for i, c in pts:
+            b.append(f'<circle class="s{k}" cx="{x(i):.1f}" cy="{y(c[0] / c[1]):.1f}" r="5" stroke-width="2">'
+                     f'<title>{escape(have[i].get("generation", ""))}, {label}: {c[0]} of {c[1]}</title></circle>')
+        if pts:
+            i, c = pts[-1]
+            b.append(_text(x(i) + 9, y(c[0] / c[1]) + 4, f"{c[0]} of {c[1]}", "ink", 11))
+        b.append(f'<circle class="s{k}" cx="{left + pw + 19}" cy="{top + 6 + j * 20}" r="5"/>' + _text(left + pw + 29, top + 10 + j * 20, label, "ink", 11))
+    return _svg(w, h, "".join(b), list(PARTS), "parts")
 
 
 def _passed(d):
@@ -202,6 +239,7 @@ def page(gens, table, names, dna, weights, levels):
         lines += [f"**Now:** generation {last.get('generation')} of the {NAMES.get(dna, dna)} body passed {p} of {n} exam tasks "
                   f"({round(100 * p / n)}%). The best so far on this DNA: {best.get('generation')}, {bp} of {bn} ({round(100 * bp / bn)}%).", ""]
     lines += ["![The share of exam tasks the body passed, each generation](progress/score.svg)", "",
+              "![Hard kinds, easy kinds and tasks of several parts, passed](progress/parts.svg)", "",
               "![The share of never-practised kinds it passed](progress/carry.svg)", "",
               "![Each kind of task, weakest first](progress/kinds.svg)", "",
               "![Rows taught, each generation](progress/rows.svg)", ""]
@@ -235,6 +273,7 @@ def draw(record=None, out=None, body=None):
     table, names = kinds(gens, dna)
     (out / "kinds.svg").write_text(kinds_chart(table, names, dna))
     (out / "rows.svg").write_text(rows_chart(gens))
+    (out / "parts.svg").write_text(parts_chart(gens))
     from training.grow import edge_weights
     weights = edge_weights(dna, record=record)
     (out.parent / "PROGRESS.md").write_text(page(gens, table, names, dna, weights, b.get("levels") or {}))

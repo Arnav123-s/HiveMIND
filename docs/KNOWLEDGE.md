@@ -105,6 +105,7 @@ flowchart LR
     f_agreedonly["Only members that agreed were taught, though the task's own check confirms each member"]:::fixed
     f_dreamonce["A dream took a failed task once; one cell that cannot see through it gave up the task for the night"]:::fixed
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
+    f_evenpractice["Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned"]:::fixed
   end
   subgraph p_lessons["lessons.py (B)"]
     f_teacherforever["Lessons would have taught every kind for ever, though the hive can learn most from its own work"]:::fixed
@@ -145,6 +146,7 @@ flowchart LR
     f_pairmemory["A judged pair was capped as if it were one answer, though both are held while trained"]:::fixed
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
+    f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::fixed
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
@@ -154,6 +156,7 @@ flowchart LR
   end
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
+    f_smallpulse["A pulse of 32 tasks cannot show one generation better than the last"]:::fixed
   end
   f_orphans -->|blocked| deaths
   f_agreedonly -->|blocked| reasoning
@@ -184,6 +187,9 @@ flowchart LR
   f_defsonly -->|blocked| files
   f_emptysearch -->|blocked| files
   f_hintlog -->|blocked| selflearn
+  f_learnedrows -->|blocked| selflearn
+  f_evenpractice -->|blocked| selflearn
+  f_smallpulse -->|blocked| selflearn
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -203,7 +209,7 @@ flowchart LR
 | The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 | A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
 
-## Causes found (1 open, 33 fixed)
+## Causes found (1 open, 36 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
@@ -241,6 +247,9 @@ flowchart LR
 | A program that only defines functions was taken for a typed answer and never run | `team/solo.py` | fixed | A, PR 56 | found while testing silentmodule |
 | A search that found nothing was taken as the answer | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: 'No ERROR lines found.' on a log full of them |
 | The runtime's help was not counted, so learning on its own could not be seen | `team/solo.py` | fixed | A, PR 56 | 2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py |
+| Training passes go to rows the cells already know: loss 0.05, nothing left to learn there | `training/ternary_base.py` | fixed | B (sub-agent): training picks subjects by their loss (training/grow.py Study), each row at most 4 times; the 1.7B: the subjects with the highest loss got the passes | g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows |
+| Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned | `training/grow.py` | fixed | B: practice drawn by s(1 - f) from per-kind counts of some member right and body right (cells/body.json kinds) | edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed |
+| A pulse of 32 tasks cannot show one generation better than the last | `.github/workflows/grow.yml` | fixed | B: the pulse on 4 seeds; hard, easy and several recorded apart and drawn (progress/parts.svg) | g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice |
 
 ## Rules learned
 
@@ -258,6 +267,8 @@ flowchart LR
 - Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.
 - When one runner cannot get through the work in its time, spread the work over several runners and join the results exactly, before cutting the work.
 - Ending a task ends everything it started: a process in its own session outlives its parent, and the watch over it dies with the parent.
+- Read the training loss before buying training time, and the exam by kind before its score: a loss near zero says the rows hold nothing new, and a score of one half can be half the kinds always and half never.
+- Write a finding into docs/AGENTS.md and push it the moment it is found: a session can stop at any time, and the other agents build on the older picture meanwhile.
 
 ## The parts
 
