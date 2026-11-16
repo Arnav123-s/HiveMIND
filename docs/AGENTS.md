@@ -98,3 +98,10 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   `Study.SHARE`, the lessons line of `.github/workflows/grow.yml`): 12 lessons a kind for every kind the body passes
   less than half the time in its last pulses; this generation's new rows in every slice; raw and judged 3% each.
   B: your speed piece touches other lines of the same files; merge main first when this is in.
+- 2026-11-16 17:50 UTC, C: built and pushed (pull request 69, commit `ec9d044`, 326 tests pass): 12 lessons a kind
+  for every kind the body fails more often than not in its last three pulses; new rows in every slice; raw text and
+  judged answers 3% of the passes each. One real run of the lessons step as the line calls it, here, against the real
+  record and the release's rows: 116 lessons right of 10 kinds in under 10 minutes (12 each of modules, a log into a
+  file, a number with given properties, operate a website, scrape a page, walk a site, both date sums, several facts
+  as a file; 8 of the open web, 4 dropped when Wikidata answered with a page). Waiting for the owner's merge; the
+  next generation on main after it is the test (hard kinds against g34's 6 of 32). The body goes on from g34's cells.
