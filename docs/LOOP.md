@@ -35,3 +35,7 @@ dashboard "HiveMIND Progress" (claude.ai artifact Xi5BfLZnLLzvkhZJK72Hvr) draws 
 - **Code written inside a string (the program hook) needs a test that it parses.** Cycle 1: a `\n` became a real
   newline in the generated hook and every program printed an error first. `tests/test_given.py` now parses it.
 - **Start long checks in parallel, and do the next piece of work while they run.**
+- **Read the training loss before buying training time, and the exam by kind before its score.** Cycle C-1: the
+  loss had been 0.05 for two days and every kind was passed always or never, while the work went into training speed.
+- **Write a finding into `docs/AGENTS.md` and push it the moment it is found.** Cycle C-1: the lead session stopped at
+  its usage limit an hour in with its finding unwritten, and two agents built on the older picture for two hours.

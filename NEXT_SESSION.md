@@ -1,127 +1,146 @@
 # NEXT SESSION: HiveMIND
 
-Written 2026-11-15, 07:40 UTC. This page replaces every earlier handoff. The old ones are in `docs/history/` for
-detail only; where they set rules, those rules are retired.
+Written 2026-11-16, 03:10 UTC, by agent C (the lead session, `session_01PZiWThbrn8cykQKW6mTcdp`, branch
+`claude/relaxed-pasteur-yxzlpi`) at the owner's request, for the lead session that takes over next from another
+account. It replaces every earlier handoff (agent A's of 00:20 UTC is in pull request 61; older ones in
+`docs/history/` and in git). Read this page, then `docs/AGENTS.md` (its log, newest last), `docs/KNOWLEDGE.md` and
+`docs/LOOP.md`.
 
-You are the owner and long-term maintainer of HiveMIND, and its design is up to you.
+You are the lead maintainer. The owner's words: understand the goal, do the reasoning, make the decisions, direct
+the other agents, and make the hive a success. The earlier sessions' working rules are not yours; the goal is.
 
 ## The key points
 
-1. **What HiveMIND is:** one body of BitNet cells from one DNA. The DNA is a published ternary model
-   (`prism-ml/Ternary-Bonsai-8B`, weights -1/0/+1, 2.2 GB, run on CPUs by ik_llama.cpp). A cell is the DNA plus a
-   small weight edit (LoRA, rank 16, last 14 layers) trained on the hive's own checked work.
-2. **The body acts as one through its trunk** (`training/merge.py`, new 2026-11-15). Each generation the newest
-   cell of every line of descent is averaged into one edit, exactly, and cut back to rank 32. The trunk answers
-   every task first; a cell gives the second opinion and a third member decides a difference (`team/solo.py`,
-   `team/ternary.seating`). A child starts as its parent pulled halfway toward the trunk, so the lines of descent
-   explore apart and stay one body. Nothing is counted to make it: every cell weighs the same.
-3. **The body multiplies and never stops growing** (`training/lineage.py`). Every grown cell has one child each
-   generation; the young wait a generation (Fibonacci). Limits from the free runners: 8 children a generation, 24
-   cells. An organ with no cell gets a first cell. No gate, no ledger: one exam of the grown body (2 seeds) is its
-   **pulse**, only to trace problems back from.
-4. **Its lessons grow harder** (`training/exam.py`, `team/parts.py`). Practice level `ladder`: half single tasks,
-   half several tasks in one message, checked part by part. `cells/body.json` holds the levels (`compound`: how
-   many parts; five kinds have harder forms of their own). Each record raises a level the body passes 7 times in
-   10 and lowers one it passes 3 times in 20 (`grow_record.levels`). Each practice runner also goes back to 4
-   tasks the body got wrong before, and a child is taught its own parent's mistakes with the program that was
-   right (`grow.train`: "mend" rows).
-5. **You can talk to it** (`team/talk.py`). One word from the DNA decides: talk is answered at once; anything to
-   work out goes to the body's checked programs, in the user's own words, and comes back in plain words with the
-   values as the programs printed them. Three doors: `./hive` or `python -m team chat` on a device; the workflow
-   **Talk to the hive** (open an issue in the repository, the hive replies as a comment, only to the owner);
-   **Ask the hive** in the Actions tab for one task.
-6. **It runs by itself** (`.github/workflows/grow.yml`): practise, gather, plan, train (one runner a child), merge
-   (the trunk), pulse, record, then the next generation at once. The nightly schedule (01:17 UTC) restarts a line
-   that stopped. To stop it: set the repository variable `HIVE_LOOP` to `stop`, or disable the workflow.
+1. **The goal:** a hive of BitNet (ternary) nets from one DNA that does what it is asked (questions, talk, tasks)
+   and gets better by itself, generation after generation, on free CPUs.
+2. **Where it stands:** generation 28 passed 18 of 32 exam tasks, generation 27 passed 15. The untaught DNA scores
+   about the same. Generation 33 is running now (run 43790075166, started 02:05 UTC).
+3. **Why it does not improve (found 2026-11-16, the main finding of this session):**
+   - **Each kind of task is passed either always or never.** g27: twelve kinds passed every time (15 of 15 tasks),
+     twelve kinds never (0 of 17). g28: thirteen kinds always (17 of 17), ten never (0 of 13), one in between.
+     The score moves only when a never-passed kind is learned.
+   - **The cells have nothing left to learn from their rows.** Training loss: the first cell fell from 1.23 to 0.16
+     in 83 steps (g24code); a child starts at 0.04 (g25code); g28code went from 0.096 to 0.048. The rows were taken
+     only from tasks two members agreed on and the check confirmed: the kinds already passed.
+   - **So more study time adds nothing.** Agent B's three runners a child (pull request 64) triple the time spent on
+     rows already learned. It does no harm and is not the lever.
+4. **The lever:** right work on the never-passed kinds must reach the rows, and training must spend its passes
+   there. Four pieces, below ("The plan"). The first is built, the others are not.
+5. **Three agents, three accounts' worth of limits.** Agent B (another account) is the coordinator since 02:10 UTC
+   and merges fast. Agent A (the owner's account) measures. You will be on a third seat: you reach both only through
+   `docs/AGENTS.md`, `docs/knowledge.json` and pull requests, unless the owner carries a message.
 
-## What Arnav wants
+## The plan, in order
 
-A hive of BitNet nets that are capable and keep getting better by themselves: he asks it questions, talks with it
-or gives it tasks, and it does them. Cells multiply from one DNA, children learn from their parents' work, dreams
-and mistakes, and the hive acts and learns as one. Bigger is fine. Engrams and better architectures are welcome
-where they help. His method is a proposal, not a rule: change what works better.
+**1. Rows from every member the task's check confirms (built by B, pull request 66, on main).** In practice the check
+is the judge, not agreement. Agent A's count over 452 tasks: the body was right on 46 of 196 hard tasks, some member
+on 67 (21 more: modules 7, walking a site 5, a fact and a date sum 4, editing a file 3). Generation 33 started
+before this was merged, so **the generation after g33 is the first to use it**. Check there: rows with
+`"by": "check"`, by kind.
 
-He does not want to make design decisions or read accounts of numbers. **How to work, in his words:** build whole
-things, test them, remove the bugs, run them, then trace back from the run when a problem shows. Do not queue many
-small trial runs of pieces of an idea. Do not spend money. Answer him short and plain, key points first, without
-terms made up during the work.
+**2. Training studies where its error is (not built; the next piece).** In `training/grow.py`, `train()`:
+- Sort the encoded rows into subjects: the kind of task, the row's type (`first`, `fix`, `mend`, `done`), and
+  whether the row is new this generation.
+- Each pass: pick a subject with probability in proportion to its loss (never below 0.05, times 3 for the cell's own
+  organ), take its next row, train on it, and set the subject's loss to the mean of its last losses. A subject not
+  measured yet starts at 1.0, so every subject is met early; that first sweep is also the rehearsal of old work.
+  A row is met at most 4 times in one training.
+- Raw text and judged pairs get a fixed share of the passes (their loss does not say what is left to learn).
+- The learning rate follows the share of the time used, and the loop runs to the time limit (rows met again skip
+  the frozen layers, so more passes fit than one timed row says).
+- Record for each subject: rows, passes, first and last loss, in the cell's JSON. This is also a progress measure
+  that an exam's noise does not touch: the first loss on a kind's new rows falls when the kind is being learned.
+- With B's slices, each slice does this on its own rows.
+- Proof: a test with a small model (the unlearned subject gets most passes, every subject is met); then one trial
+  run (`trial: 1`, `skip_practice: 1`): its gather makes lessons, its children study them, and the gate's "after"
+  arm is read against "before" on the kinds that have lessons.
 
-## What is approved
+**3. A measure that can show it (not built).** The pulse is 32 tasks: one generation differs from the next by
+several tasks from chance alone. Sit 4 seeds (64 tasks) in the line's gate (`grow.yml`, the gate matrix: `[1,2]` to
+`[1,2,3,4]`, two more runners, free), and record the hard kinds apart from the easy ones (an exam task's id begins
+with `h` or `e`), drawn in `training/progress.py`.
 
-Without asking: rewrite or delete any code or document; start, cancel and re-run GitHub Actions runs on this
-repository; push, open pull requests and **merge to main yourself** when the tests pass and a real run of the
-changed path shows it works. Ask first only before spending money, using his accounts beyond this session's
-GitHub access, or sending anything in his name. No model names in commits or pull requests apart from the
-attribution lines the session requires.
+**4. Practice where it can pay (not built).** Practice draws kinds by p(1 - p) of the body's pass rate with one pass
+and one failure added, so a kind passed 2 of 2 and one passed 0 of 2 weigh the same (0.19) and half the practice
+goes to kinds already learned. Draw by s(1 - f) instead: s, how often some member is right on the kind; f, how
+often the body is. That is high exactly where practice makes a new row (`training/grow.edge_weights`; practice.json
+needs the kind and whether some member was right).
 
-## State at handoff
+**Also to decide:** lessons give one right program for each never-passed kind a generation (`--per-kind 1` in
+`grow.yml`, gather). A kind needs several examples before practice can carry it; 3 a kind would start kinds in one
+generation instead of several. Lessons already stop for a kind once the hive has 3 right programs of its own.
 
-- **Generation 25 is running** on the new code (run 43689907158, started 07:25 UTC): the first with the ladder,
-  dreams, a first `sources` cell, and a trunk at its end. **Read it first.** A generation takes about 6 hours.
-  Check: every train job's `seconds_a_row` (expected under 15) and that none died; the merge job's
-  `least_energy_kept`; the pulse; the record's line about levels; that generation 26 started.
-- **Generation 24** (old code) left three 8B cells, `g24code`, `g24data`, `g24words`; its `sources` runner died.
-  Pulse 11 of 32, and 1 of 5 on kinds never practised. Those cells are barely trained: their runners were swapping
-  (30, 40 and 162 seconds a row; `g24words` got 14 steps).
-- **Whether the line loops is not confirmed.** Generation 24's last step ("Grow again at once") was skipped, so
-  either the repository variable `HIVE_LOOP` is `stop` or that run was started with `loop: 0`. If generation 25
-  does not start generation 26, start it by hand (Actions, "The hive teaches its own members", Run workflow) and
-  tell Arnav the variable has to be cleared.
-- **Tests:** `.venv/bin/python -m pytest -q tests` (253 pass in a minute). A fresh machine: `bash
-  scripts/cloud_setup.sh` (about 30 minutes; builds the ternary runtime).
+## State at handoff (2026-11-16 03:10 UTC)
 
-## What was found on 2026-11-15, so it is not found again
+- **Main** is at `c1c01ce`: pull requests 56 (A: runtime fixes), 57 to 63 (B: graphs, lessons, raw reading, Colab GPU),
+  64 (B: three runners a child), 66 (B: a silent model server restarted, a task out of time ends its programs;
+  agreement on several parts only with every heading; rows from every confirmed member), 67 (B: a row too long loses
+  the middle of an earlier program, not the whole row). 304 tests pass (`.venv/bin/python -m pytest -q tests`).
+- **Generation 33** (run 43790075166, main at `69294f5`, pull requests 56 to 64) is practising. Practice ends near
+  05:00 UTC, the whole generation near 10:00. It is the first generation with A's runtime, B's lessons, raw reading
+  and three runners a child. Its record will show whether lessons move the never-passed kinds.
+- **The line does not go on by itself:** after generation 28 the next one was not started (`HIVE_LOOP` is most likely
+  `stop`, the owner's pause). Ask the owner once whether to set it back; until then start each generation by hand
+  (Actions, "The hive teaches its own members", Run workflow on main).
+- **Agent A** (`session_01PZiWTdYNLEuRW982bX97t1`, branch `claude/nice-bell-8a5dm4`, pull request 61, draft): resumed
+  by the owner at 02:25. It measures g33's practice when it ends (`scripts/selfreliance.py`, every failure classified
+  in one pass) and writes the result into `docs/AGENTS.md` and `docs/knowledge.json`.
+- **Agent B** (branch `claude/vigilant-brahmagupta-rz3ab7`): coordinator by the owner's word at 02:10; it reached its
+  usage limit about 02:20 and may be silent for hours.
+- **Agent C** (this session): pull request for this branch holds this page, the finding and the plan. No run was
+  started. Nothing of the plan's pieces 2 to 4 is built unless a later log line in `docs/AGENTS.md` says so.
 
-- **8B training on a 16 GB runner** died or crawled because the whole DNA was first loaded as 16-bit numbers and a
-  long row then pushed it into swap. Now (`training/ternary_base.py`): every matrix is read by itself straight
-  into codes, the word vectors and the output layer too (8.1 GB held, 80 s to load); rows are capped to what the
-  machine fits (about 1000 pieces on 16 GB; every piece costs about 5 MB while trained on); the kept outputs of
-  frozen layers are on disk. Measured here on the real 8B: 9 s a row on a first pass, 4 s on later passes, 10.8
-  GB at the most. A C routine rebuilds a layer's numbers from its codes 8 times faster than PyTorch; by itself it
-  changed a row's time little (the multiplying and the rest dominate now).
-- **Tried and not better:** another memory allocator (ran out of memory), huge pages always (slower), keeping
-  memory instead of giving it back each step (4%).
-- **The release's rows were overwritten by an older copy** (a trial that had read them hours before). The record
-  now joins with what the release holds at that moment before uploading (`grow_record.union`).
-- **The first way of talking** let the DNA hand a task over by writing it out. It wrote its own answer there. The
-  decision is one word now and the task is always the user's own message.
-- **The members looked up what they know** (14 minutes on the capital of Portugal). The orders now say that what
-  does not change and is known needs no source (`team/solo.MEMBER`). Cells answer under the short orders
-  (`solo.SHORT`), which do not say this: they learn it from rows.
+## Working with the other agents
 
-## The work that is yours
+- Write to them in `docs/AGENTS.md` (a log line, newest last) and in your pull request's description; they read both
+  at the start of every cycle. Read theirs the same way before you change a file.
+- From the owner's own account a session can message agent A (`send_message` with A's session id) and read its
+  transcript (`list_events`). **A's permission check refuses a change asked for by another session** until the owner
+  says yes to A himself: tell the owner what you asked A, so that he can say yes.
+- Who owns which file is in `docs/AGENTS.md`. B changed A's files while A was paused and logged it; do the same:
+  say it in the log first, then change.
 
-In order of how much it matters to the goal. How to solve each is up to you. `docs/RESEARCH.md` gathers the
-published research, `docs/KERNELS.md` the speed measurements.
+## What the owner wants, and what holds
 
-1. **Read generation 25 and fix what broke.** It is the first run of much new code in the workflow (merge job,
-   levels, rows joined at record). Then read the members' own programs in the pulse's `gate-work-*` artifacts.
-2. **Web tasks are the body's weakest kind.** In generation 24's practice the 8B failed nearly every task that
-   reads a site (made-up addresses, HTML dumped as the answer, 10 to 20 minutes each). A better `look`, a search
-   helper, or rows from the few it gets right would lift many kinds at once.
-3. **Carry-over to kinds never practised** (1 of 5 in generation 24, 0 of 11 on the 1.7B). The ladder and the
-   trunk are the first two answers; watch `unpractised` in the pulse over the next generations.
-4. **Talking, taught.** The DNA talks untaught. Rows for talk could come from answers people voted on
-   (`training/raw.judged`) or from the hive's own conversations once there are some.
-5. **Speed of answering.** Two members decoded at once would give 1.6 times the throughput; it needs one change in
-   the runtime (a cell per request; `docs/KERNELS.md` section 3). The trunk and a cell cannot share a batch today.
-6. **Engrams and reading raw text** (`team/engram.py`, `training/raw.py`, `--read`) are built and off: neither has
-   shown a gain yet.
+A hive that is capable and keeps getting better by itself; he talks with it and gives it tasks. Cells multiply from
+one DNA and learn from their work, their mistakes, dreams and raw data; the hive acts and learns as one. His method
+is a proposal: change what works better. Engrams and other architectures are welcome where they help.
+
+- First principles. Whole pieces of work, finished, then checked. No runs of small experiments.
+- Spend no money. Ask before using his accounts beyond this repository.
+- Merging to main: ask him once when a change is ready (tests pass, one real run of the changed path shows no loss).
+- Answer him short and plain, key points first, in words he already knows.
+- No model names in commits, pull requests or files, apart from the attribution lines a session requires. Agents
+  are A, B, C by session, branch and pull request.
+- He likes graphs of progress and clean labels on every run.
+
+## First hour
+
+1. Merge main into your branch. Read the log in `docs/AGENTS.md` from 2026-11-16 02:00 on.
+2. Read generation 33's record when it is written (`training/reports/generations.jsonl`, the last line): its exam
+   by kind (`arms.after.kinds`). Did any never-passed kind with a lesson move? Read each train job's loss: the lesson
+   rows are the only ones with something to learn.
+3. Build piece 2 (study where the error is) if no log line says it is built, prove it as written above, and ask
+   the owner to merge.
+4. Then piece 3 (the measure), so that the next generations can show what pieces 1 and 2 do.
 
 ## How to work here
 
-- **Find faults in the members' own programs and outputs, not in a score.** Each pulse and practice runner uploads
-  its work (`gate-work-*`, `practice-work-*`): every task's `TASK.md`, `REPORT.md`, programs and what they
-  printed. List artifacts with `mcp__github__actions_list` (`list_workflow_run_artifacts`), get a signed link with
-  `mcp__github__actions_get` (`download_workflow_run_artifact`), download with `curl` into its own folder.
-- **Run the whole chain locally on the 1.7B before a runner sees it** (20 minutes): train two tiny cells, merge
-  their trunk, practise at the ladder level, dream, gather, train children with `--parent --trunk --gen`, merge,
-  sit `training/exam.py sit --tasks 2`, record with `grow_record.py gate ... --grow --practice`. Back up
-  `cells/body.json` and `training/reports/generations.jsonl` first and restore them after.
-- **The real 8B fits this kind of machine** (15 GB, no swap) for training rows up to about 1000 pieces and for
-  answering: `python training/grow.py train --base t80 --int8-base --layers last14 --no-checkpoint --limit 16`.
-- **Files that matter:** `training/grow.py` (practice, rows, dreams, training), `training/merge.py` (the trunk),
-  `training/lineage.py` (who has children, who the trunk is made of, who works), `training/grow_record.py` (the
-  record, the levels, joining rows), `training/ternary_base.py` (the DNA held ternary), `training/exam.py` and
-  `exam_hard.py` (tasks and their checks), `team/ternary.py` (the runtime, seating), `team/solo.py` (the
-  members), `team/talk.py` (the front door), `.github/workflows/grow.yml` and `talk.yml`.
+- **Read the training loss before buying training time, and the exam by kind before reading its score.** Both were
+  in the record for two days while the work went into training speed.
+- **Write a finding into `docs/AGENTS.md` and push it the moment it is found.** This session reached its usage limit
+  an hour in, with its finding only in its own head; two agents then built on the older picture.
+- Find faults in the members' own programs and outputs: `gate-work-*` and `practice-work-*` artifacts of a run, each
+  unpacked into its own folder (`exam.json`, `members/TASK.md`, `events.jsonl`, the programs, their `.out`/`.err`).
+- Replay real failing programs through changed code (seconds), then the tests (a minute), then one whole real run.
+  A trial on your branch (`trial: 1`, with `cells_from_run`, `gate_seeds`, `skip_practice: 1`, `loop: 0` as needed)
+  is free and does not touch the line. List a run's artifacts before pointing a trial at it.
+- Record every cycle (`docs/loop_log.csv`), every run (`docs/runs.csv`), every finding and rule
+  (`docs/knowledge.json`, then `python scripts/knowledge.py`), and a line in `docs/AGENTS.md`.
+- A fresh machine: `python3 -m venv .venv`, CPU torch, `pip install -r requirements.txt` (5 minutes; enough for the
+  tests). The whole hive with its runtime: `bash scripts/cloud_setup.sh` (30 minutes).
+- **Files that matter:** `training/grow.py` (practice, rows, dreams, training), `training/lessons.py`,
+  `training/raw.py`, `training/merge.py`, `training/lineage.py`, `training/grow_record.py`,
+  `training/ternary_base.py`, `training/exam.py` and `exam_hard.py`, `training/progress.py`, `team/ternary.py` (the
+  runtime), `team/solo.py` (the members), `team/tools/sandbox.py` (what a program runs in), `team/talk.py`,
+  `.github/workflows/grow.yml`.

@@ -3,6 +3,7 @@
   "agents": {
     "A": "Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop",
     "B": "Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem",
+    "C": "the lead session (relaxed-pasteur), branch claude/relaxed-pasteur-yxzlpi: the diagnosis, the plan and its order; hands over to a lead session on another account",
     "shared": "nobody owns it: small commits, main merged first, said in the log"
   },
   "parts": [
@@ -202,9 +203,9 @@
     },
     {
       "id": "selflearn",
-      "title": "The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work",
+      "title": "The taught body barely beats its untaught DNA: the rows hold only what it already passes, so training has nothing to learn from",
       "owner": "B",
-      "seen": "trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down",
+      "seen": "trial run 31: untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. Why (C, 2026-11-16): every kind is passed always or never (g27: twelve kinds 15 of 15, twelve kinds 0 of 17), and training loss is already 0.05 (a child starts at 0.04). The plan in order (NEXT_SESSION.md): rows from every confirmed member (built); training passes where the loss is; a pulse of 4 seeds with hard kinds apart; practice where some member is right and the body is not. The measures: docs/selfreliance.csv, and each kind's first loss in training",
       "measured_by": []
     },
     {
@@ -523,6 +524,33 @@
       "status": "fixed",
       "by": "A, PR 56",
       "seen": "2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py"
+    },
+    {
+      "id": "learnedrows",
+      "title": "Training passes go to rows the cells already know: loss 0.05, nothing left to learn there",
+      "lives_in": "train",
+      "blocks": "selflearn",
+      "status": "open",
+      "by": "C: the plan's piece 2, passes drawn by each subject's loss (kind, type of row, new or old), a floor for rehearsal; not built",
+      "seen": "g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows"
+    },
+    {
+      "id": "evenpractice",
+      "title": "Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned",
+      "lives_in": "practice",
+      "blocks": "selflearn",
+      "status": "open",
+      "by": "C: draw by how often some member is right on the kind times how often the body is not; not built",
+      "seen": "edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed"
+    },
+    {
+      "id": "smallpulse",
+      "title": "A pulse of 32 tasks cannot show one generation better than the last",
+      "lives_in": "workflow",
+      "blocks": "selflearn",
+      "status": "open",
+      "by": "C: 4 seeds in the line's gate (64 tasks) and the hard kinds recorded apart from the easy ones; not built",
+      "seen": "g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice"
     }
   ],
   "rules": [
@@ -595,6 +623,16 @@
       "id": "killtree",
       "rule": "Ending a task ends everything it started: a process in its own session outlives its parent, and the watch over it dies with the parent.",
       "from": "orphans"
+    },
+    {
+      "id": "lossfirst",
+      "rule": "Read the training loss before buying training time, and the exam by kind before its score: a loss near zero says the rows hold nothing new, and a score of one half can be half the kinds always and half never.",
+      "from": "learnedrows"
+    },
+    {
+      "id": "pushfinding",
+      "rule": "Write a finding into docs/AGENTS.md and push it the moment it is found: a session can stop at any time, and the other agents build on the older picture meanwhile.",
+      "from": "learnedrows"
     }
   ],
   "hive_loop": [
