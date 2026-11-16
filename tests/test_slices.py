@@ -56,7 +56,7 @@ def test_the_workflow_grows_each_child_on_its_slices_and_joins_them_before_the_t
     import yaml
     flow = yaml.safe_load((ROOT / ".github" / "workflows" / "grow.yml").read_text())
     jobs = flow["jobs"]
-    assert "shard" in jobs["train"]["strategy"]["matrix"]
+    assert "slice" in jobs["train"]["strategy"]["matrix"]  # {child, shard, n}: each child its own number of slices
     up = next(s for s in jobs["train"]["steps"] if s.get("uses", "").startswith("actions/upload-artifact"))
     assert up["with"]["name"].startswith("part-") and up["with"]["if-no-files-found"] == "ignore"
     assert jobs["join"]["needs"] == ["plan", "train"]
