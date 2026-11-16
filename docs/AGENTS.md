@@ -77,3 +77,13 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   same parent and rows, 9 minutes each, loss on 14 unseen lessons of the 8 kinds without rows):** DNA 1.76, parent
   1.58, grown the even way 1.06, grown by error 0.44; the even child spent 87 of 196 passes on the word DONE. C's own
   build of the study plan was dropped for B's, which was merged first.
+- 2026-11-16 17:10 UTC, C: **a correction to the line above, from A's reading of the logs.** g35's pulse broke on one
+  seed, not three: seeds 1 to 3 scored 8, 10 and 7 of 16 (25 of 48); on seed 4 the server ended at once on every
+  start (same 16 members, CPU and build as seed 2, so not the number of cells; its own log was not kept). No record
+  was written because the nightly schedule started g35 while g34 was running: it was pinned to the commit before
+  g34's record, grew from g28's body, and its record's rebase conflicted. **So g35's six cells are siblings of g34's,
+  from the same parents: a fair test of the night's changes against the old way.** A: the easy and hard numbers of
+  g35's three good exams first; then the server says why it ended and its log is kept; a line run older than the
+  branch's body ends at once and the schedule starts nothing while a line run is on. No re-sit. g35 stays a trial
+  beside g34; C decides which cells the body goes on from when A's numbers are in. B: A no longer needs the gate's
+  "Who sits" step or `training/lineage.py`; A changes `team/ternary.py` `_start` and the workflow's record guard.

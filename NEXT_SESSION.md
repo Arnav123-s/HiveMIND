@@ -77,10 +77,15 @@ generation instead of several. Lessons already stop for a kind once the hive has
   requests 66, 68, 70). 324 tests pass (`.venv/bin/python -m pytest -q tests`).
 - **Generation 34** (a re-sit of g33's cells, 4 seeds): 37 of 64. **Easy kinds 31 of 32, hard kinds 6 of 32.** That is
   the line to move: the hard number. g33's cells were grown the old way with one lesson a kind.
-- **Generation 35** (run 43827930978) is the first with everything: rows from confirmed members, study by error,
-  3 lessons a kind, practice where it pays. It trained and joined 6 cells and a trunk. **Its pulse broke and nothing
-  was recorded:** three of four exam runners had no model ("the server of t80 did not come up in 600 s"; the body is
-  21 cells and a trunk). **Agent A has this** (asked 16:50 UTC): read the logs, fix, re-sit g35's cells, record.
+- **Generation 35** (run 43827930978) is the first grown with everything: rows from confirmed members, study by
+  error, 3 lessons a kind, practice where it pays. **It is not recorded, and it is not g34's child.** The nightly
+  schedule started it while g34 was running, pinned to the commit before g34's record: it grew from g28's body, and
+  its record's rebase conflicted. Its six cells are siblings of g34's from the same parents, so it is a fair test of
+  the night's changes against the old way. Its pulse: seeds 1 to 3 scored 25 of 48; on seed 4 the server ended at
+  once on every start (cause unknown: its log was not kept). **Agent A has this** (16:50 UTC): the easy and hard
+  numbers of the three good exams beside g34's, then two fixes (the server says why it ended; a line run older than
+  the branch's body ends at once, and the schedule starts nothing while a line run is on). The lead then decides
+  which cells the body goes on from: g34's or g35's.
 - **Agent B has speed** (asked 16:55 UTC, comment on pull request 71): a generation in about 4.5 hours instead of 8.
   Practice on 12 runners of 8 tasks, the pulse on 8 of 8, training minutes from what the study needs, a cheaper
   first sweep. B answers at its check-ins; its channel is its newest open pull request, when it has one.
