@@ -395,7 +395,7 @@ DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. Th
          "Find the mistake in that program, then write the whole corrected program.")
 
 
-def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
+def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
@@ -416,7 +416,14 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
         return {"dream": seed, "tasks": 0, "right": 0, "rows": 0}
     r = random.Random(f"dream:{seed}")
     recent = seen[-400:]
-    pick = r.sample(recent, min(n, len(recent)))
+    # the failures of kinds where some member is right now and then, and the body is not, first (the same weight as
+    # practice: edge_weights). Generation 33's dreams took mostly kinds never passed (several parts, modules, facts on
+    # the open web) and corrected 0 of 10 in two tries each; lessons start those kinds, dreams finish the ones begun.
+    w = weights if weights is not None else edge_weights(_dna())
+    pick, pool = [], list(recent)
+    while pool and len(pick) < n:
+        i = r.choices(range(len(pool)), weights=[max(0.01, w.get(f.get("kind", ""), 0.25)) for f in pool])[0]
+        pick.append(pool.pop(i))
     os.environ.setdefault("AGENT_TEAM_SOLO", "2")
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
