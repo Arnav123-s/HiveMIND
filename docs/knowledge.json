@@ -523,6 +523,33 @@
       "status": "fixed",
       "by": "A, PR 56",
       "seen": "2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py"
+    },
+    {
+      "id": "learnedrows",
+      "title": "Training passes go to rows the cells already know: loss 0.05, nothing left to learn there",
+      "lives_in": "train",
+      "blocks": "selflearn",
+      "status": "fixed",
+      "by": "B (sub-agent): training picks subjects by their loss (training/grow.py Study), each row at most 4 times; the 1.7B: the subjects with the highest loss got the passes",
+      "seen": "g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows"
+    },
+    {
+      "id": "evenpractice",
+      "title": "Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned",
+      "lives_in": "practice",
+      "blocks": "selflearn",
+      "status": "fixed",
+      "by": "B: practice drawn by s(1 - f) from per-kind counts of some member right and body right (cells/body.json kinds)",
+      "seen": "edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed"
+    },
+    {
+      "id": "smallpulse",
+      "title": "A pulse of 32 tasks cannot show one generation better than the last",
+      "lives_in": "workflow",
+      "blocks": "selflearn",
+      "status": "fixed",
+      "by": "B: the pulse on 4 seeds; hard, easy and several recorded apart and drawn (progress/parts.svg)",
+      "seen": "g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice"
     }
   ],
   "rules": [
@@ -595,6 +622,16 @@
       "id": "killtree",
       "rule": "Ending a task ends everything it started: a process in its own session outlives its parent, and the watch over it dies with the parent.",
       "from": "orphans"
+    },
+    {
+      "id": "lossfirst",
+      "rule": "Read the training loss before buying training time, and the exam by kind before its score: a loss near zero says the rows hold nothing new, and a score of one half can be half the kinds always and half never.",
+      "from": "learnedrows"
+    },
+    {
+      "id": "pushfinding",
+      "rule": "Write a finding into docs/AGENTS.md and push it the moment it is found: a session can stop at any time, and the other agents build on the older picture meanwhile.",
+      "from": "learnedrows"
     }
   ],
   "hive_loop": [
