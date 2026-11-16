@@ -623,7 +623,7 @@ class Study:
     first sweep meets every subject (rehearsing old work too) without waiting on luck. A row is met at most MOST
     times; a subject with none left drops out. Raw text ("read") and judged pairs ("judged") keep a fixed SHARE of
     the passes each instead: their loss does not say what is left to learn."""
-    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.10, ("read", "judged")
+    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
 
     def __init__(self, subjects, own=(), rng=None, most=None, weight=None):
         self.rng = rng or random.Random(0)
@@ -745,9 +745,14 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     part = ""
     if shard:
         k, n = (int(x) for x in str(shard).split("/"))
-        rows = slice_rows(rows, k, n)
+        # What is new this generation is studied by every slice; only what the parent already studied is shared out.
+        # Generation 35: 3 lessons of a kind fell one to a slice, each slice met its one row 4 times at the most, and
+        # the new hard subjects ended at a loss of 0.4 to 1.6. An average of slices keeps what they all learned.
+        fresh_rows = [r for r in rows if (gen and r.get("gen") == gen) or r.get("type") == "mend"]
+        rows = fresh_rows + slice_rows([r for r in rows if not ((gen and r.get("gen") == gen) or r.get("type") == "mend")], k, n)
         part = f".s{k}"
-        log(f"slice {k + 1} of {n}: {len(rows)} rows (the other runners study the rest; the slices are averaged into the child)", flush=True)
+        log(f"slice {k + 1} of {n}: {len(rows)} rows, {len(fresh_rows)} of them new this generation and studied by every slice "
+            f"(the other runners study the rest of the old rows; the slices are averaged into the child)", flush=True)
     src = snapshot_download(UNPACKED[base])
     tok = AutoTokenizer.from_pretrained(src)
     import contextlib

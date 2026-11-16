@@ -1,6 +1,6 @@
 """Lessons: right programs for the kinds of task the hive cannot do yet, checked before they are taught.
 
-    python training/lessons.py --seed S [--per-kind 1] [--several 4] [--failures failures.jsonl] [--most-failures 12] [--own-rows rows.jsonl ...] [--out rows.jsonl]
+    python training/lessons.py --seed S [--per-kind 1] [--several 4] [--failures failures.jsonl] [--most-failures 12] [--own-rows rows.jsonl ...] [--record generations.jsonl --dna t80] [--out rows.jsonl]
     python training/lessons.py --show MAKER [--seed S] [--level L]      one lesson: its task, its program, what it printed
 
 Why (from first principles): the hive learns only from programs that its own checks confirmed. On a kind of task it
@@ -772,13 +772,37 @@ def own_counts(*row_files):
     return count
 
 
-def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4, own=None):
+def pulse_counts(record, dna, last=3):
+    """{kind: [passed, sat]} over the last `last` pulses of this DNA's body (training/reports/generations.jsonl)."""
+    lines = []
+    for ln in Path(record).read_text().splitlines() if record and Path(record).exists() else []:
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue
+        kinds = d.get("arms", {}).get("after", {}).get("kinds") if isinstance(d, dict) else None
+        if d.get("dna", "t17") == dna and isinstance(kinds, dict) and kinds:
+            lines.append(kinds)
+    out = {}
+    for kinds in lines[-last:]:
+        for k, v in kinds.items():
+            if isinstance(v, list) and len(v) == 2:
+                a = out.setdefault(k, [0, 0])
+                a[0], a[1] = a[0] + v[0], a[1] + v[1]
+    return out
+
+
+def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4, own=None, pulse=None):
     """A generation's lessons: per_kind fresh tasks of every taught kind, at the body's levels, `several` fresh tasks of
     several parts, and the most recent tasks the hive got wrong (of the taught kinds), each made again and shown done
     right. Rows appended to out.
     own: {kind: right programs the hive found itself} (own_counts). Lessons only start a kind: one where the hive has
     OWN of its own gets none, so its practice and its dreams carry it from there, as they do every kind it can learn
-    from its own work. Returns {"lessons", "right", "rows", "dropped": [why], "left_to_the_hive": [kind]}."""
+    from its own work.
+    pulse: {kind: [passed, sat]} of the body's last pulses (pulse_counts). A kind the body still fails more often than
+    not is taught whatever it has of its own: generation 34 had 25 right programs of modules and passed 0 of 6, and
+    with rows from every confirmed member a kind has 3 of its own long before the body passes it.
+    Returns {"lessons", "right", "rows", "dropped": [why], "left_to_the_hive": [kind]}."""
     from training import grow
     levels = grow.body_levels() if levels is None else levels
     t0 = time.time()
@@ -814,7 +838,8 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
                 made_now = exam.remake(maker, rseed, level, parts)
             except Exception:  # noqa: BLE001 - made below again, where the failure is said
                 made_now = None
-            if made_now and own.get(made_now[1], 0) >= OWN:
+            p, n = (pulse or {}).get(made_now[1], [0, 0]) if made_now else (0, 0)
+            if made_now and own.get(made_now[1], 0) >= OWN and not (n and 2 * p < n):
                 left.add(made_now[1])
                 continue
         try:
@@ -847,7 +872,7 @@ def main(argv):
     owned = [argv[i + 1] for i, a in enumerate(argv[:-1]) if a == "--own-rows"]
     res = teach(opt("--seed", time.strftime("%Y%m%d%H")), int(opt("--per-kind", 1)), opt("--failures"), int(opt("--most-failures", 12)),
                 opt("--out", "lessons.jsonl"), minutes=float(opt("--minutes", 0)), several=int(opt("--several", 4)),
-                own=own_counts(*owned) if owned else None)
+                own=own_counts(*owned) if owned else None, pulse=pulse_counts(opt("--record"), opt("--dna", "t80")) if opt("--record") else None)
     print(json.dumps(res))
     return 0
 

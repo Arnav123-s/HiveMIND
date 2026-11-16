@@ -77,3 +77,17 @@ def test_a_row_too_long_loses_the_middle_of_an_earlier_program_never_its_answer(
     assert text.startswith("```python\nx0 = 0") and "print(x99)" in text and "lines of this program left out" in text
     assert text.count("\n") < 40 and short[3] == msgs[3] and msgs[2]["content"] == program  # the original is left as it was
     assert grow.shorten(msgs[:2], 0.3) is not None and grow.shorten(msgs[:2], 0.3) == msgs[:2]  # no earlier program: nothing cut
+
+
+def test_what_is_new_this_generation_is_in_every_slice_and_old_rows_in_one():
+    src = (ROOT / "training" / "grow.py").read_text()
+    # the rule as train() applies it: new rows (this generation's, and mended mistakes) to every slice, the rest shared out
+    rows = _rows(90)
+    for r in rows[:9]:
+        r["gen"] = "g40"
+    rows[9]["type"] = "mend"
+    new = lambda r: r.get("gen") == "g40" or r.get("type") == "mend"  # noqa: E731
+    parts = [[r for r in rows if new(r)] + grow.slice_rows([r for r in rows if not new(r)], k, 3) for k in range(3)]
+    assert all(sum(new(r) for r in p) == 10 for p in parts)                      # every slice studies all that is new
+    assert sum(sum(not new(r) for r in p) for p in parts) == 80                  # an old row is in one slice only
+    assert 'fresh_rows + slice_rows([r for r in rows if not ((gen and r.get("gen") == gen) or r.get("type") == "mend")], k, n)' in src

@@ -63,6 +63,28 @@ def test_lessons_start_a_kind_and_stop_once_the_hive_has_right_programs_of_its_o
     assert any("left to the hive" in s for s in said)
 
 
+def test_a_kind_the_body_still_fails_is_taught_whatever_it_has_of_its_own(tmp_path):
+    record = tmp_path / "generations.jsonl"
+    record.write_text("\n".join(json.dumps(d) for d in [
+        {"dna": "t80", "arms": {"after": {"kinds": {"a unit conversion": [0, 2], "the weekday of a date": [2, 2]}}}},
+        {"dna": "t17", "arms": {"after": {"kinds": {"a unit conversion": [9, 9]}}}},                       # another DNA's body says nothing
+        {"dna": "t80", "arms": {"after": {"kinds": {"a unit conversion": [1, 3], "the weekday of a date": [1, 1]}}}}]) + "\n")
+    pulse = lessons.pulse_counts(record, "t80")
+    assert pulse == {"a unit conversion": [1, 5], "the weekday of a date": [3, 3]}
+    own = {"a unit conversion": 25, "the weekday of a date": 25}  # plenty of its own of both kinds
+    import pytest
+    monkey = pytest.MonkeyPatch()
+    monkey.setattr(lessons, "SOLVERS", {"m_units": lessons.units, "m_weekday": lessons.weekday})
+    try:
+        out = tmp_path / "lessons.jsonl"
+        res = lessons.teach("t", 2, None, out=out, levels={}, log=lambda *a, **k: None, several=0, own=own, pulse=pulse)
+    finally:
+        monkey.undo()
+    taught = [json.loads(x)["lesson"] for x in out.read_text().splitlines() if json.loads(x)["type"] == "first"]
+    assert set(taught) == {"m_units"} and len(taught) == 2      # failed 4 times in 5: taught, two lessons
+    assert res["left_to_the_hive"] == ["the weekday of a date"]  # passed every time: the hive's own work carries it
+
+
 def test_every_child_reads_raw_data_and_answers_people_judged_and_dreams_try_twice():
     flow = (ROOT / ".github" / "workflows" / "grow.yml").read_text()
     train = next(ln for ln in flow.splitlines() if "python training/grow.py train" in ln)

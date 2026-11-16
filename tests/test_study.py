@@ -57,7 +57,7 @@ def test_rows_of_a_subject_cycle_before_repeating():
 def test_read_and_judged_keep_their_share():
     study = grow.Study(subjects(read=200, judged=200, hard=300, easy=300), rng=random.Random(5))
     got = Counter(s for s, _ in run(study, {"read": 5.0, "judged": 0.0, "hard": 1.0, "easy": 0.05}, 500))
-    assert 48 <= got["read"] <= 52 and 48 <= got["judged"] <= 52  # 10% each, whatever their loss
+    assert 13 <= got["read"] <= 17 and 13 <= got["judged"] <= 17  # 3% each, whatever their loss
 
 
 def test_own_organ_weighs_three_times():
