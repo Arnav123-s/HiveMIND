@@ -387,7 +387,8 @@ jobs:
   join:
     # each child's slices averaged into the child (training/merge.py join), under the name the later jobs know
     needs: [plan, train]
-    if: ${{ !cancelled() && needs.train.result != 'skipped' }}
+    # also for a re-sit of an earlier run's cells (cells_from_run): its slices (or its whole cells, before slices) joined here
+    if: ${{ !cancelled() && (needs.train.result != 'skipped' || inputs.cells_from_run) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -401,6 +402,15 @@ jobs:
         with:
           pattern: part-${{ matrix.variant }}-${{ matrix.child.suffix }}-s*
           path: parts
+          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.cells_from_run }}
+        with:  # an earlier run grown before slices: its whole cell
+          pattern: ${{ matrix.variant }}-${{ matrix.child.suffix }}
+          path: parts
+          run-id: ${{ inputs.cells_from_run }}
+          github-token: ${{ github.token }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -415,14 +425,20 @@ jobs:
         run: |
           [[ "$NAME" =~ ^g[0-9]+(sources|code|data|words)[0-9]{0,2}$ ]] || { echo "::error::not a cell's name: $NAME"; exit 1; }
           mkdir -p out
-          W=$(for d in parts/*/; do [ -f "$d/whole" ] && [ -f "$d/$DNA.$NAME.safetensors" ] && echo "$d" && break; done)
+          # a folder that holds a whole cell: one runner (or the owner's GPU) grew it whole, or an earlier run's cell from
+          # before slices. (`|| true`: under bash -e a search that ends on a false test ended the whole step with no word:
+          # every join of generation 33 failed so.)
+          W=$(for d in parts/*/; do if [ -f "$d/whole" ] || [[ "$(basename "$d")" != part-* ]]; then ls "$d"$DNA.*.safetensors >/dev/null 2>&1 && echo "$d" && break; fi; done || true)
           if [ -n "$W" ]; then
-            cp "$W/$DNA.$NAME.gguf" "$W/$DNA.$NAME.json" "$W/$DNA.$NAME.safetensors" out/ && echo "$NAME: grown whole on one runner or on the owner's GPU" | tee -a "$GITHUB_STEP_SUMMARY"
+            f=$(ls "$W"$DNA.*.safetensors | head -1); b="${f%.safetensors}"
+            cp "$b.gguf" "out/$DNA.$NAME.gguf" && cp "$b.json" "out/$DNA.$NAME.json" && cp "$f" "out/$DNA.$NAME.safetensors"
+            echo "$NAME: grown whole on one runner or on the owner's GPU" | tee -a "$GITHUB_STEP_SUMMARY"
           else
-            FILES=$(ls parts/*/"$DNA.$NAME.safetensors" 2>/dev/null || true)
+            # each slice's edit, whatever generation named it (a re-sit's slices carry the earlier run's names)
+            FILES=$(ls parts/part-*/$DNA.*.safetensors 2>/dev/null || true)
             [ -n "$FILES" ] || { echo "::error::no slice of $NAME grew"; exit 1; }
             if [ "$(echo "$FILES" | wc -l)" -eq 1 ]; then
-              d=$(dirname $FILES); cp "$d/$DNA.$NAME.gguf" "$d/$DNA.$NAME.json" "$d/$DNA.$NAME.safetensors" out/
+              b="${FILES%.safetensors}"; cp "$b.gguf" "out/$DNA.$NAME.gguf" && cp "$b.json" "out/$DNA.$NAME.json" && cp "$FILES" "out/$DNA.$NAME.safetensors"
               echo "::warning::only one slice of $NAME grew; it is the child"
             else
               python training/merge.py join work $FILES --base "$DNA" --name "$NAME" --out-dir made | tee -a "$GITHUB_STEP_SUMMARY"
@@ -450,7 +466,7 @@ jobs:
         with:
           pattern: cell-*
           path: got
-          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          run-id: ${{ github.run_id }}  # the join job of this run makes the cells, from this run's slices or an earlier run's
           github-token: ${{ github.token }}
       - uses: actions/setup-python@v5
         with:
@@ -511,7 +527,7 @@ jobs:
         with:
           pattern: cell-*
           path: got
-          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          run-id: ${{ github.run_id }}  # the join job of this run makes the cells, from this run's slices or an earlier run's
           github-token: ${{ github.token }}
       - uses: actions/download-artifact@v4
         if: ${{ matrix.arm == 'versus' }}
@@ -602,7 +618,7 @@ jobs:
         with:
           pattern: cell-*
           path: got
-          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          run-id: ${{ github.run_id }}  # the join job of this run makes the cells, from this run's slices or an earlier run's
           github-token: ${{ github.token }}
       - name: Each cell named after the artifact it came in
         run: for d in got/cell-*; do o=${d#got/cell-}; mv "$d"/*.gguf "got/$DNA.${GEN}$o.gguf"; mv "$d"/*.json "got/$DNA.${GEN}$o.json"; mv "$d"/*.safetensors "got/$DNA.${GEN}$o.safetensors" 2>/dev/null || true; done
