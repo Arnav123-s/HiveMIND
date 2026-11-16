@@ -18,7 +18,7 @@ gate       The same fresh exam sat by the DNA as published, by the body as it wa
 
     python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl]
     python training/grow.py rows RUN_FOLDER ... [--out rows.jsonl]      rows from sittings already done (checked tasks only)
-    python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240] [--ternary] [--foresee]
+    python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240] [--ternary] [--foresee] [--even]
     python training/grow.py fetch                                        the cells of the body, from the release
 """
 import contextlib
@@ -584,9 +584,88 @@ def slice_rows(rows, k, n):
     return [r for r in rows if zlib.crc32(json.dumps([r["messages"][1:], r["output"]], sort_keys=True).encode()) % n == k]
 
 
+RAW, JUDGED = "raw text", "answers people judged"  # subjects whose loss does not say what is left to learn
+
+
+def subject_of(row, new=False):
+    """The subject a row belongs to: its kind of task, what is asked of the cell there (its first program, a
+    correction, a mended mistake of its parent), and whether the row is new this generation. The word DONE after a
+    right output is one subject for every kind: it is the same thing to learn everywhere."""
+    what = str(row.get("type") or "first")
+    if what == "done":
+        return "DONE after a right output" + (" / new" if new else "")
+    return f"{row.get('kind') or 'other work'} / {what}" + (" / new" if new else "")
+
+
+class Study:
+    """What a cell studies next: the work it gets most wrong.
+
+    A child used to meet its rows evenly, and nearly all of its time went on rows it already knew: generation 28's
+    cells began at a loss of 0.1 and ended at 0.05, and the first cell of the line had gone from 1.23 to 0.16 in 83
+    steps. The rows were of the kinds of task the body passes every time; the kinds it never passes had few rows or
+    none, and those few were met once or not at all.
+
+    Here the rows are sorted into subjects (subject_of), every subject keeps the loss the cell last had on it, and the
+    next row is drawn from a subject in proportion to that loss. A subject not measured yet counts as unknown where
+    its rows are new this generation (NEW), and as nearly known where the parent studied them (OLD, twice what such
+    rows measured in generation 28): so new work is met first, and old work is measured as the passes go by. None
+    counts for less than FLOOR, so what is known is still gone over. A row is met at most MOST times in one
+    training, so a few rows of a hard kind are not learned by heart.
+
+    groups: {subject: [the numbers of its rows]}. boost: {subject: how much more a cell meets it} (its own organ's
+    work). fixed: {subject: its share of all passes}, for rows whose loss does not say what is left to learn (raw
+    text: its words cannot all be foreseen)."""
+    NEW, OLD, FLOOR, MOST = 1.0, 0.1, 0.05, 4
+
+    def __init__(self, groups, boost=None, fixed=None, seed=0):
+        self.r = random.Random(f"study:{seed}")
+        self.rows = {k: list(v) for k, v in sorted(groups.items()) if v}
+        for v in self.rows.values():
+            self.r.shuffle(v)
+        self.loss = {k: (self.NEW if k.endswith(" / new") else self.OLD) for k in self.rows}
+        self.boost = {k: float((boost or {}).get(k, 1.0)) for k in self.rows}
+        self.fixed = {k: float(v) for k, v in (fixed or {}).items() if k in self.rows}
+        self.given = {k: 0 for k in self.rows}
+        self.met, self.first = {k: 0 for k in self.rows}, {}
+
+    def next(self):
+        """(subject, row number) to study now; None when every row has been met MOST times."""
+        live = [k for k in self.rows if self.given[k] < self.MOST * len(self.rows[k])]
+        if not live:
+            return None
+        free = [k for k in live if k not in self.fixed]
+        x, key = self.r.random(), None
+        for k in live:
+            if k in self.fixed:
+                if x < self.fixed[k]:
+                    key = k
+                    break
+                x -= self.fixed[k]
+        if key is None:
+            key = self.r.choices(free, weights=[max(self.FLOOR, self.loss[k]) * self.boost[k] for k in free])[0] if free else self.r.choice(live)
+        rows = self.rows[key]
+        self.given[key] += 1
+        return key, rows[(self.given[key] - 1) % len(rows)]
+
+    def saw(self, key, loss):
+        """The loss the cell just had on a row of this subject: the first one stands as measured, later ones are
+        averaged in half and half (the rows of one subject differ)."""
+        loss = float(loss)
+        if key not in self.first:
+            self.first[key] = self.loss[key] = loss
+        else:
+            self.loss[key] = 0.5 * self.loss[key] + 0.5 * loss
+        self.met[key] = self.met.get(key, 0) + 1
+
+    def record(self):
+        """{subject: {"rows", "passes", "first", "last"}} of every subject met, the most studied first."""
+        return {k: {"rows": len(self.rows.get(k, ())), "passes": n, "first": round(self.first[k], 4), "last": round(self.loss[k], 4)}
+                for k, n in sorted(self.met.items(), key=lambda x: (-x[1], x[0])) if n}
+
+
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell="",
-          trunk="", pull=0.5, gen="", fresh=2, shard=""):
+          trunk="", pull=0.5, gen="", fresh=2, shard="", study="error"):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU (or a GPU where there is one, without
     --int8-base: a Colab notebook, training/colab.py); written as a GGUF adapter the
     ternary runtime loads beside the packed base.
@@ -599,8 +678,14 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     shard: "k/n", this runner's slice of the rows (each row in one slice, by its content): a child is grown on n
     runners at once, each from the same start on its own slice, and their edits are averaged into the child
     (training/merge.py join). Generation 28's children got through a third of their rows in their time; n runners
-    study n times as many."""
+    study n times as many.
+    study: "error" (the default): the passes go where the cell's loss is (Study), to the end of the time given, each
+    row met once in the plan and at most Study.MOST times; "even": every row as often as any other, its own organ's
+    `weight` times and new rows `fresh` times as often (the way cells were grown up to generation 33; kept so that
+    one trial can grow both kinds from the same rows, `versus: --even`)."""
     born = time.time()
+    if study not in ("error", "even"):
+        raise ValueError(f"study is error or even, not {study!r}")
     import torch
     from huggingface_hub import snapshot_download
     from peft import LoraConfig, get_peft_model
@@ -762,7 +847,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
             return None if 2 * len(p) + len(t) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
         return (torch.tensor([p + t]), len(t))
-    data, mine, new_rows, long = [], 0, 0, 0
+    even = study == "even"
+    data, keys, owns, mine, new_rows, long = [], [], [], 0, 0, 0  # keys, owns: each row's subject, and whether it is the cell's own organ's
     for row in rows:
         d = encode(row)
         if d is None:
@@ -771,18 +857,22 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # a cell that leans to an organ meets that organ's rows `weight` times as often as the others: every cell
         # learns all of the hive's checked work (so any two can check each other), each one its own part best
         own = bool(lean) and ternary.organ(row["task"]) == lean
-        # this generation's rows, and its parent's corrected mistakes, are new to the whole line of descent: met
-        # `fresh` times as often as rows the parent already learned from (a child inherits those with its start)
+        # this generation's rows, and its parent's corrected mistakes, are new to the whole line of descent: a
+        # subject of their own, taken as unknown until measured (study "even": met `fresh` times as often)
         new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
-        data += [d] * min(6, (weight if own else 1) * (fresh if new else 1))
+        often = min(6, (weight if own else 1) * (fresh if new else 1)) if even else 1
+        data += [d] * often
+        keys += [subject_of(row, new)] * often
+        owns += [own] * often
         mine += own
         new_rows += new
     if limit:
-        data = data[:limit]
+        data, keys, owns = data[:limit], keys[:limit], owns[:limit]
     if lean:
-        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, each met {weight} times", flush=True)
+        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, each met {weight} times" + ("" if even else " as often at the same loss"), flush=True)
     if gen or mend:
-        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected), each met {fresh} times as often", flush=True)
+        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected)"
+            + (f", each met {fresh} times as often" if even else ": subjects of their own, studied first"), flush=True)
     if long:
         log(f"{long} rows are longer than {max_len} pieces and are left out", flush=True)
     judged_used = 0
@@ -794,6 +884,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             d = encode(row)
             if d is not None:
                 data.append(d)
+                keys.append(JUDGED)
+                owns.append(False)
                 judged_used += 1
         log(f"judged: {judged_used} pairs of answers people voted on", flush=True)
     read_used = 0
@@ -819,6 +911,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         model.train()
         chosen = raw.pick(scored, read)
         data += chosen
+        keys += [RAW] * len(chosen)
+        owns += [False] * len(chosen)
         read_used = len(chosen)
         if scored:
             ls = sorted(l for l, _ in scored)
@@ -879,13 +973,28 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             log(f"passes cut to {epochs}", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     steps = math.ceil(len(data) * epochs / accum)
-    sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / max(1, steps // 10)) * max(0.05, 1 - s / max(1, steps)))
-    order = []
-    while len(order) < len(data) * epochs:
-        perm = list(range(len(data)))
-        random.shuffle(perm)
-        order += perm
-    order = order[:int(len(data) * epochs)]
+    groups = {}
+    for j, key in enumerate(keys):
+        groups.setdefault(key, []).append(j)
+    if even:
+        sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / max(1, steps // 10)) * max(0.05, 1 - s / max(1, steps)))
+        order = []
+        while len(order) < len(data) * epochs:
+            perm = list(range(len(data)))
+            random.shuffle(perm)
+            order += perm
+        order = order[:int(len(data) * epochs)]
+        plan, most = Study(groups), len(order)  # the plan only keeps the record of what was studied
+    else:
+        # where the cell's error is (Study): its own organ's subjects count `weight` times at the same loss; raw text
+        # and judged answers keep a fixed share. With a time given the passes run to its end (a row met again skips
+        # the frozen layers, so more fit than one timed row says) and the rate of learning follows the time used.
+        sched, order = None, []
+        boost = {k: 1 + (weight - 1) * sum(owns[j] for j in js) / len(js) for k, js in groups.items()} if lean else {}
+        plan = Study(groups, boost, {RAW: 0.06, JUDGED: 0.02}, seed=f"{seed}:{lean}:{name}")
+        most = Study.MOST * len(data) if minutes else min(int(len(data) * epochs), Study.MOST * len(data))
+        log(f"studied where the error is: {len(groups)} subjects, {sum(k.endswith(' / new') for k in groups)} of them new; at most {most} passes", flush=True)
+    rate = lambda p: min(1.0, (p + 0.01) / 0.1) * max(0.05, 1 - p)  # noqa: E731 - p: the share of the training done
     try:
         import ctypes
         trim = ctypes.CDLL("libc.so.6").malloc_trim
@@ -895,20 +1004,51 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # not with recomputation (checkpoint): a layer recomputed on the way back would be fed the wrong input
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
               if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
-    t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
-    for i, idx in enumerate(order):
-        if minutes and time.time() - born > minutes * 60:
+    t0, running, step, hist, paired, i, pending = time.time(), 0.0, 0, [], 0, 0, 0
+    until = born + minutes * 60 if minutes else 0
+
+    def stepped():
+        """One step of the optimizer on the rows since the last one."""
+        nonlocal step, running, pending
+        torch.nn.utils.clip_grad_norm_(params, 1.0)
+        if sched is None:
+            done = (time.time() - t0) / max(1.0, until - t0) if until else i / max(1, most)
+            for g in opt.param_groups:
+                g["lr"] = lr * rate(min(1.0, done))
+        opt.step()
+        if sched is not None:
+            sched.step()
+        opt.zero_grad()
+        if trim:
+            trim(0)
+        step += 1
+        hist.append(round(running / max(1, pending), 4))
+        running, pending = 0.0, 0
+        if step % 5 == 0 or (even and step == steps):
+            import resource
+            on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
+            log(f"step {step}{f'/{steps}' if even else ''} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+    while i < most:
+        if until and time.time() > until:
             # The plan was made from one timed row; a runner can fall behind it. Two trials were lost on 2026-11-14
             # because their jobs ran into the time limit with nothing saved. Now the cell stops here and is kept.
-            log(f"time is up after {i} of {len(order)} rows: the cell is saved as it is", flush=True)
-            order = order[:i]
+            log(f"time is up after {i} rows: the cell is saved as it is", flush=True)
             break
+        if even:
+            idx = order[i]
+            key = keys[idx]
+        else:
+            nxt = plan.next()
+            if nxt is None:
+                break
+            key, idx = nxt
         ids, k = data[idx][:2]
         ids = ids.to(dev)
-        beat["t"], beat["what"] = time.time(), f"row {i + 1} of {len(order)} ({ids.shape[1]} pieces)"
+        beat["t"], beat["what"] = time.time(), f"row {i + 1} ({ids.shape[1]} pieces, {key})"
         with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
+        plan.saw(key, loss.item())  # the plain loss on what is right: what is left to learn of this subject
         if len(data[idx]) == 4:
             # a right and a wrong program for the same task: DPO, with the plain loss on the right one kept beside it
             # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
@@ -928,22 +1068,16 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             paired += 1
         (loss / accum).backward()
         running += loss.item()
-        if (i + 1) % accum == 0 or i == len(order) - 1:
-            torch.nn.utils.clip_grad_norm_(params, 1.0)
-            opt.step()
-            sched.step()
-            opt.zero_grad()
-            if trim:
-                trim(0)
-            step += 1
-            n = accum if (i + 1) % accum == 0 else (i + 1) % accum
-            hist.append(round(running / n, 4))
-            running = 0.0
-            if step % 5 == 0 or step == steps:
-                import resource
-                on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
-                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+        pending += 1
+        i += 1
+        if pending == accum:
+            stepped()
+    if pending:
+        stepped()
     beat["on"] = False
+    studied = plan.record()
+    for key, got in list(studied.items())[:8]:
+        log(f"studied: {key}: {got['passes']} passes over {got['rows']} rows, loss {got['first']:.3f} at first, {got['last']:.3f} at the end", flush=True)
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
     if ternary_edit:
@@ -958,7 +1092,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if prefix:
         log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB{' on disk' if prefix.folder else ''})", flush=True)
         prefix.done()
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, i), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+            "study": study, "passes": i, "subjects": studied,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
@@ -1022,7 +1157,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), shard=opt("--shard", ""), ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), shard=opt("--shard", ""), study="even" if "--even" in argv else "error", ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
     elif cmd == "speed":
         # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
         rows, out = opt("--rows", str(GROW / "rows.jsonl")), []

@@ -327,7 +327,7 @@ jobs:
           P: ${{ matrix.child.parent }}
         run: |
           # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
-          [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len|read|judged)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
+          [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|even|lr|rank|epochs|layers|weight|max-len|read|judged)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
           # the parent (training/lineage.py, the plan job): the cell whose edit the child starts from, its learning and its
           # corrections inherited, and whose weak kinds the child is trained on harder; none in the first generation of a DNA
           [[ "$NAME" =~ ^g[0-9]+(sources|code|data|words)[0-9]{0,2}$ && "$P" =~ ^(g[0-9]+(sources|code|data|words)[0-9]{0,2})?$ ]] || { echo "::error::not a cell's name: $NAME $P"; exit 1; }
