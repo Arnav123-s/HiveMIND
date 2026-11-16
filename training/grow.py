@@ -556,6 +556,25 @@ class _Prefix:
             self.key, self.skip = None, False
 
 
+def shorten(messages, keep):
+    """The messages with the middle of the longest earlier program cut out (an assistant turn after the task), keeping
+    `keep` of its lines: the first ones and the last ones, and a line that says how many were left out. The messages
+    themselves when there is no earlier program to cut. Only for context a row shows before its answer."""
+    turns = [i for i, m in enumerate(messages) if i >= 2 and m.get("role") == "assistant"]
+    if not turns:
+        return messages
+    i = max(turns, key=lambda j: len(messages[j]["content"]))
+    lines = messages[i]["content"].splitlines()
+    n = max(6, int(len(lines) * keep))
+    if len(lines) <= n + 2:
+        return messages
+    head, tail = lines[:n * 2 // 3], lines[len(lines) - (n - n * 2 // 3):]
+    cut = len(lines) - len(head) - len(tail)
+    fence = ["```"] if lines[0].startswith("```") and not tail[-1].startswith("```") else []
+    text = "\n".join(head + [f"# ... ({cut} lines of this program left out) ..."] + tail + fence)
+    return [dict(m) for m in messages[:i]] + [dict(messages[i], content=text)] + [dict(m) for m in messages[i + 1:]]
+
+
 def slice_rows(rows, k, n):
     """Slice k of n of the rows: each row in exactly one slice, chosen by its content (the same row in the same slice on
     every runner, whatever order the rows come in)."""
@@ -724,6 +743,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     def encode(row):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
         t = tok(row["output"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
+        if len(p) + len(t) > max_len and not row.get("rejected"):
+            # A row that does not fit loses the middle of an earlier program it shows (its context, not what is taught):
+            # g28's rows lost 38 of 767 this way, 23 of the 73 rows of modules, almost all "fix" and "done" rows that
+            # carry a whole earlier program before the answer. What is taught (the answer) is never cut.
+            for keep in (0.6, 0.35, 0.15):
+                short = shorten(row["messages"], keep)
+                if short is row["messages"]:
+                    break
+                p = tok(tok.apply_chat_template(short, tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
+                if len(p) + len(t) <= max_len:
+                    break
         if len(p) + len(t) > max_len:
             return None
         if row.get("rejected"):
