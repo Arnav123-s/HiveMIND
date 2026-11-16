@@ -19,7 +19,8 @@ def test_a_dream_tries_again_with_another_cell_beside_the_trunk_and_keeps_only_w
         sat.append(tid)
         return {"ok": len(sat) == 2, "seconds": 1}  # the first try fails, the second (another cell) is right
     monkeypatch.setattr(exam, "sit_one", sit_one)
-    monkeypatch.setattr(grow, "rows_of", lambda run, task, kind="", seed=None: [{"type": "first", "task": task, "run": str(run)}])
+    # rows_of gives rows from every try; here no member of the first try was right by the check, so it gives none
+    monkeypatch.setattr(grow, "rows_of", lambda run, task, kind="", seed=None: [{"type": "first", "task": task, "run": str(run)}] if str(run).endswith("_1") else [])
     monkeypatch.setattr(grow, "pair_rows", lambda *a, **k: [])
     monkeypatch.setenv("HIVE_ROTATE", "3")
     out = tmp_path / "rows.jsonl"
