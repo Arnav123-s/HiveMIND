@@ -617,8 +617,8 @@ class Study:
     """Which row a cell trains on next. Each kind of task is passed either always or never, and the rows a cell has
     already learned cost passes and teach nothing (g28code's loss went 0.096 -> 0.048 on rows mostly of kinds it
     passed): the passes go where the error is. The rows are sorted into subjects (kind of task, type of row, new this
-    generation or not, the cell's own organ or not). Each pass picks a subject with odds max(its loss, FLOOR), times
-    OWN for the cell's own organ, and trains on that subject's next row (its rows shuffled, cycled). A subject's loss
+    generation or not; see subject()). Each pass picks a subject with odds max(its loss, FLOOR), times up to OWN by
+    the share of its rows that are the cell's own organ, and trains on that subject's next row (shuffled, cycled). A subject's loss
     is the mean of its last three. A subject not measured yet counts 1.0 and is met before any measured one, so the
     first sweep meets every subject (rehearsing old work too) without waiting on luck. A row is met at most MOST
     times; a subject with none left drops out. Raw text ("read") and judged pairs ("judged") keep a fixed SHARE of
@@ -626,10 +626,11 @@ class Study:
     FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
 
     def __init__(self, subjects, own=(), rng=None, most=None, weight=None):
+        """own: {subject: the share of its rows that are the cell's own organ}, or subjects that are wholly its own."""
         self.rng = rng or random.Random(0)
         self.most = self.MOST if most is None else most
         self.weight = self.OWN if weight is None else float(weight)
-        self.own = set(own)
+        self.own = {s: float(v) for s, v in own.items()} if isinstance(own, dict) else {s: 1.0 for s in own}
         self.queue, self.rows, self.passes, self.losses, self.first = {}, {}, {}, {}, {}
         for s, idx in subjects.items():
             if not idx:
@@ -647,7 +648,7 @@ class Study:
         return sum(h) / len(h) if h else 1.0
 
     def odds(self, s):
-        return max(self.loss(s), self.FLOOR) * (self.weight if s in self.own else 1.0)
+        return max(self.loss(s), self.FLOOR) * (1.0 + (self.weight - 1.0) * self.own.get(s, 0.0))
 
     def pick(self):
         """(subject, row index), or None when every row has been met MOST times."""
@@ -683,9 +684,14 @@ def lr_share(p):
     return max(0.01, p / 0.05) if p < 0.05 else max(0.05, 1.05 - p)
 
 
-def subject(row, new=False, own=False):
-    """The subject a row is studied under (Study): kind of task, type of row, new to the line or not, own organ or not."""
-    return " · ".join([row.get("kind") or "?", row.get("type") or "row"] + ["new"] * bool(new) + ["own"] * bool(own))
+def subject(row, new=False):
+    """The subject a row is studied under (Study): kind of task, type of row, new to the line or not. Rows of type
+    "done" (a right program's output -> DONE) are learned at once in every kind (g35code: 40 such subjects, loss about
+    0.001, 102 of 444 passes, most of them the first sweep's), so they are one subject, two with the new ones. The
+    cell's own organ is not a split (it doubled the subjects) but a weight on a subject by its share of own rows."""
+    if row.get("type") == "done":
+        return "done" + " · new" * bool(new)
+    return " · ".join([row.get("kind") or "?", row.get("type") or "row"] + ["new"] * bool(new))
 
 
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
@@ -878,7 +884,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # of the hive's checked work (so any two can check each other), each one its own part best. This generation's
     # rows and its parent's corrected mistakes (new to the whole line) are subjects of their own, so the first sweep
     # meets them, and they keep passes for as long as their loss is high. `fresh` is no longer used.
-    data, tags, own_subjects, mine, new_rows, long = [], [], set(), 0, 0, 0
+    data, tags, own_rows, mine, new_rows, long = [], [], {}, 0, 0, 0
     for row in rows:
         d = encode(row)
         if d is None:
@@ -887,9 +893,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         own = bool(lean) and ternary.organ(row["task"]) == lean
         new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
         data.append(d)
-        tags.append(subject(row, new, own))
-        if own:
-            own_subjects.add(tags[-1])
+        tags.append(subject(row, new))
+        own_rows[tags[-1]] = own_rows.get(tags[-1], 0) + own
         mine += own
         new_rows += new
     if limit:
@@ -985,9 +990,10 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     by = {}
     for j, s in enumerate(tags):
         by.setdefault(s, []).append(j)
-    study = Study(by, own_subjects, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight)
+    own_share = {s: min(1.0, own_rows[s] / len(idx)) for s, idx in by.items() if own_rows.get(s)}
+    study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight)
     passes = len(data) * study.most if minutes else min(int(len(data) * epochs), len(data) * study.most)
-    log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ x{weight:g}, read and judged "
+    log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ up to x{weight:g} by its share, read and judged "
         f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     try:

@@ -84,4 +84,27 @@ def test_learning_rate_share():
 def test_subject_names():
     row = {"kind": "a sum in words", "type": "fix", "task": "x"}
     assert grow.subject(row) == "a sum in words · fix"
-    assert grow.subject(row, new=True, own=True) == "a sum in words · fix · new · own"
+    assert grow.subject(row, new=True) == "a sum in words · fix · new"
+
+
+def test_done_rows_are_one_subject_and_own_is_a_weight_not_a_split():
+    """g35code: 104 subjects, 40 of them rows of type done at a loss of about 0.001 (102 of 444 passes); the own organ
+    split every kind in two. Done rows are one subject (two with the new ones) and own weighs by its share."""
+    rows = [{"kind": k, "type": t} for k in ("sums", "dates", "files", "logs") for t in ("first", "done", "fix")]
+    names = {grow.subject(r, new) for r in rows for new in (False, True)}
+    assert len(names) == 4 * 2 * 2 + 2 and {"done", "done · new"} <= names
+    study = grow.Study({"half": list(range(10)), "none": list(range(10, 20)), "all": list(range(20, 30))},
+                       own={"half": 0.5, "all": 1.0}, rng=random.Random(8), weight=3)
+    assert (study.odds("none"), study.odds("half"), study.odds("all")) == (1.0, 2.0, 3.0)
+    assert grow.Study({"a": [0]}, own={"a"}, weight=3).odds("a") == 3.0  # a set: wholly own, as before
+
+
+def test_the_flow_runs_a_generation_on_more_runners_with_the_same_work():
+    """Agent C's speed piece: a stage lasts as long as its slowest runner, so 12 practice runners of 8 tasks (2 dreams)
+    in place of 6 of 16 (4), and the pulse on 8 runners of 8 tasks in place of 4 of 16: 64 tasks still."""
+    from pathlib import Path
+    flow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "grow.yml").read_text()
+    assert "shard: ${{ fromJSON(inputs.shards || '[1,2,3,4,5,6,7,8,9,10,11,12]') }}" in flow
+    assert '--tasks "${{ inputs.tasks || \'8\' }}"' in flow and 'DREAMS="${{ inputs.dreams || \'2\' }}"' in flow
+    assert "exam.py sit --level mixed --tasks 8 --seed" in flow
+    assert 12 * 8 == 6 * 16 and 8 * 8 == 4 * 16
