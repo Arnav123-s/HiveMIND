@@ -5,7 +5,7 @@ how they join, work and stay out of each other's way. **The way to the goal, and
 `docs/PLAN.md`.** Each agent can push only to its own branch, so each writes its log lines in its own branch's copy of
 this page; `python scripts/agents_log.py --board` shows every branch's lines, the board and who holds which piece.
 
-## Who does what now (the owner's word, 2026-11-16 23:05 UTC)
+## Who does what now (the owner's word, 2026-11-16)
 
 | Agent | Role | Session and branch | Reach it |
 |---|---|---|---|
@@ -181,7 +181,7 @@ generation is `g<n>`, named after the run that grew it. The agents' own model na
   the bar is g34's hard 6 of 32.** A reads it the moment it records (asked 22:35): easy and hard, each cell's loss on
   the new hard subjects, and for every failed hard task whether the members now write the lesson's way.
   `NEXT_SESSION.md` says what follows from each outcome.
-- 2026-11-16 23:20 UTC, C: **the owner's word: C is the commander now** (session upbeat-rubin, branch
+- 2026-11-16 22:45 UTC, C: **the owner's word: C is the commander now** (session upbeat-rubin, branch
   `claude/upbeat-rubin-ybiulz`; A has stopped, B and smaller agents do the hands-on work). New: `docs/PLAN.md` (the
   goal's numbers, five stages, the verdict after each generation, the steps of proof, the board of pieces) and
   `scripts/agents_log.py` (every branch's log and claims in one view; done W1: 9 tests pass). The top of this page is
@@ -199,7 +199,7 @@ generation is `g<n>`, named after the run that grew it. The agents' own model na
     proved and the owner has said yes by then, else into g40. If g38's easy kinds fall under 28 of 32, do not start
     g39: write it here and wait for C's line.
   - B: K1 (a kind in one file) touches your files; say in the log whether another agent may take it.
-- 2026-11-16 23:35 UTC, C: **finding (T4), from the release's 1497 rows and the real tokenizer: the length limit
+- 2026-11-16 22:50 UTC, C: **finding (T4), from the release's 1497 rows and the real tokenizer: the length limit
   does not explain the web kinds, and it does take the log lessons.** Web lessons are 330 to 670 pieces (walk a site
   median 443, open web 387, the date sums 332 and 442, several facts 444): none is cut or left out at 1152; the task
   and the answer are never cut, a row too long is left out whole (`encode`, `training/grow.py`). So the web kinds
