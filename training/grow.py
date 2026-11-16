@@ -604,6 +604,48 @@ def shorten(messages, keep):
     return [dict(m) for m in messages[:i]] + [dict(messages[i], content=text)] + [dict(m) for m in messages[i + 1:]]
 
 
+KEEP_BACK = int(os.environ.get("HIVE_KEEP_BACK", 2))  # lessons of every kind never trained on, only measured (0: none)
+
+
+def kept_back(rows, n=None):
+    """{kind: [task, ...]}: the `n` lessons of each kind that are never trained on (a lesson is its task; its rows
+    share it). The loss of a lesson trained on says only that its rows were met; one never met says whether the kind
+    is learned (generation 35's new hard subjects ended at a loss of 0.4 to 1.6 on their own rows, and nothing said
+    what that meant for the tasks to come). Chosen by a hash of the task, so every slice of a child keeps back the
+    same ones, whatever order the rows come in; and since the rows only grow from one generation to the next, a
+    lesson kept back now was kept back in every generation before (the smallest two hashes of a larger set are new
+    ones or were already the smallest two)."""
+    import zlib
+    n = KEEP_BACK if n is None else n
+    by = {}
+    for r in rows:
+        if r.get("who") == "lesson" and r.get("task"):
+            by.setdefault(r.get("kind") or "?", set()).add(r["task"])
+    return {k: sorted(ts, key=lambda t: (zlib.crc32(t.encode()), t))[:n] for k, ts in sorted(by.items()) if n > 0}
+
+
+def kept_loss(model, items, dev, cast, beat=None):
+    """{kind: [loss of each row]} of the lessons kept back, with the cell's weights as they are now: the same loss
+    as training's (the error on the answer's pieces), one row at a time with no gradient, so nothing is held beyond
+    one row's logits (an 8B cell trains in 14.7 of 15.6 GB). items: [(kind, (ids, k))] from train's encode."""
+    import torch
+    was = model.training
+    model.eval()  # no dropout: the same rows measured twice give the same number
+    out = {}
+    with torch.no_grad():
+        for j, (kind, (ids, k)) in enumerate(items):
+            if beat is not None:
+                beat["t"], beat["what"] = time.time(), f"the lessons kept back, row {j + 1} of {len(items)}"
+            ids = ids.to(dev)
+            with cast():
+                lg = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
+            out.setdefault(kind, []).append(torch.nn.functional.cross_entropy(lg.float().reshape(-1, lg.size(-1)), ids[:, -k:].reshape(-1)).item())
+            del lg
+    if was:
+        model.train()
+    return out
+
+
 def slice_rows(rows, k, n):
     """Slice k of n of the rows: each row in exactly one slice, chosen by its content (the same row in the same slice on
     every runner, whatever order the rows come in)."""
@@ -748,6 +790,12 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             seen.add(k)
             uniq.append(r)
     rows = uniq
+    # Lessons kept back (kept_back): chosen from all the rows before they are sliced, so every slice keeps back the
+    # same ones; no row of their tasks is trained on. Their rows are measured, not their "done" rows (an output ->
+    # DONE is learned at once in every kind, about 0.001, and says nothing).
+    back = {t: k for k, ts in kept_back(rows).items() for t in ts}
+    back_rows = [r for r in rows if r.get("who") == "lesson" and r.get("task") in back and r.get("type") != "done"]
+    rows = [r for r in rows if r.get("task") not in back]
     part = ""
     if shard:
         k, n = (int(x) for x in str(shard).split("/"))
@@ -995,6 +1043,21 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     passes = len(data) * study.most if minutes else min(int(len(data) * epochs), len(data) * study.most)
     log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ up to x{weight:g} by its share, read and judged "
         f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
+    # the lessons kept back, measured where the child starts (its parent pulled toward the trunk) and again at the end;
+    # the time the first measure took is kept for the second, out of the cell's own time
+    kept_items, kept_long = [], 0
+    for r in back_rows:
+        d = encode(r)
+        if d is None:
+            kept_long += 1
+        else:
+            kept_items.append((back[r["task"]], d[:2]))
+    t_kept = time.time()
+    kept_before = kept_loss(model, kept_items, dev, cast, beat) if kept_items else {}
+    spare = time.time() - t_kept
+    if back:
+        log(f"lessons kept back: {len(back)}, of {len(set(back.values()))} kinds, never trained on; {len(kept_items)} of their rows measured "
+            f"in {spare:.0f} s{f', {kept_long} too long' if kept_long else ''}", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     try:
         import ctypes
@@ -1006,7 +1069,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
               if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
     t0, running, step, hist, paired, i, held = time.time(), 0.0, 0, [], 0, 0, 0
-    budget = max(1.0, minutes * 60 - (t0 - born)) if minutes else 0
+    budget = max(1.0, minutes * 60 - (t0 - born) - spare) if minutes else 0
 
     def done_share():
         return max(i / max(1, passes), (time.time() - t0) / budget if minutes else 0.0)
@@ -1030,7 +1093,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             log(f"step {step} ({p:.0%} done, {sum(1 for q in study.queue.values() if q)} subjects left) loss {hist[-1]:.4f} "
                 f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
     while i < passes:
-        if minutes and time.time() - born > minutes * 60:
+        if minutes and time.time() - born > minutes * 60 - spare:
             # Two trials were lost on 2026-11-14 because their jobs ran into the time limit with nothing saved: the
             # cell stops here and is kept.
             log(f"time is up after {i} passes: the cell is saved as it is", flush=True)
@@ -1079,6 +1142,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     for x in subjects:
         f_, l_ = x["loss_first"], x["loss_last"]
         log(f"{x['subject']:<{width}} {x['rows']:>4} {x['passes']:>6} {'-' if f_ is None else f'{f_:.3f}':>6} {'-' if l_ is None else f'{l_:.3f}':>6}", flush=True)
+    kept_after = kept_loss(model, kept_items, dev, cast, beat) if kept_items else {}
+    mean = lambda v: round(sum(v) / len(v), 4) if v else None  # noqa: E731
+    kept = {k: {"lessons": sum(1 for x in back.values() if x == k), "rows": len(kept_before.get(k, [])),
+                "before": mean(kept_before.get(k, [])), "after": mean(kept_after.get(k, []))} for k in sorted(set(back.values()))}
+    if kept:
+        log(f"{'lessons kept back (never trained on), by kind':<{width}} rows before  after", flush=True)
+        for k, v in kept.items():
+            b_, a_ = v["before"], v["after"]
+            log(f"{k:<{width}} {v['rows']:>4} {'-' if b_ is None else f'{b_:.3f}':>6} {'-' if a_ is None else f'{a_:.3f}':>6}", flush=True)
     beat["on"] = False
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
@@ -1098,7 +1170,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
-            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects}
+            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects, "kept_back": kept}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     where = Path(out_dir or ternary.ADAPTERS)
