@@ -238,6 +238,12 @@ def main(argv):
         except Exception as e:  # noqa: BLE001 - the release not reachable: the runner trains the cell
             print(f"colab: could not order ({type(e).__name__}: {e}); this runner trains the cell")
             return 1
+    if cmd == "alive":  # exit 0 when the notebook said it was there within ALIVE seconds
+        try:
+            a = alive()
+        except Exception:  # noqa: BLE001
+            a = None
+        return 0 if a and a["age"] <= ALIVE else 1
     if cmd == "wait":
         try:
             return 0 if wait(opt("--gen"), opt("--name"), float(opt("--minutes", 90)), opt("--out", "colab_out")) else 1

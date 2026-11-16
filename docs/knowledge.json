@@ -219,6 +219,15 @@
   ],
   "findings": [
     {
+      "id": "onethird",
+      "title": "A child got through a third of its rows, once, in its time on one runner",
+      "lives_in": "train",
+      "blocks": "slowtraining",
+      "status": "fixed",
+      "by": "B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole",
+      "seen": "g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept"
+    },
+    {
       "id": "rawoff",
       "title": "Reading raw data and people's judged answers were built and never switched on in the line",
       "lives_in": "raw",
@@ -558,6 +567,11 @@
       "id": "escape",
       "rule": "Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.",
       "from": "charset"
+    },
+    {
+      "id": "spread",
+      "rule": "When one runner cannot get through the work in its time, spread the work over several runners and join the results exactly, before cutting the work.",
+      "from": "onethird"
     }
   ],
   "hive_loop": [
@@ -590,6 +604,11 @@
       "trainc",
       "Train each child",
       "train"
+    ],
+    [
+      "join",
+      "Join each child's slices",
+      "merge"
     ],
     [
       "trunk",
