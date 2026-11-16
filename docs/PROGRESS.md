@@ -4,7 +4,7 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g28 of the 8B body passed 18 of 32 exam tasks (56%). The best so far on this DNA: g28, 18 of 32 (56%).
+**Now:** generation g34 of the 8B body passed 37 of 64 exam tasks (58%). The best so far on this DNA: g34, 37 of 64 (58%).
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -20,12 +20,12 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
-- a simulation followed step by step
-- a thing to know
-- the weekday of a date
 - a unit conversion
-- a fact read from a source
-- a module of two functions, with hidden tests
+- a simulation followed step by step
+- walk a site and count into a file
+- a number with given properties
+- a sum in words
+- operate a website
 
 ## How hard its lessons are now
 
