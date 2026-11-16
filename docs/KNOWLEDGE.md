@@ -84,7 +84,7 @@ flowchart LR
   files{{"Tasks that make a file fail (A)"}}
   files --> goal
   files -.-|measured by| m_kinds
-  deaths{{"Practice runners die mid-task (A)"}}
+  deaths{{"Practice runners die mid-task (B)"}}
   deaths --> goal
   confirm{{"A right answer in talk comes back as not confirmed (B)"}}
   confirm --> goal
@@ -102,6 +102,7 @@ flowchart LR
   m_kinds[/"Every kind of task, weakest first"/]
   m_rows[/"Rows taught, each generation"/]
   subgraph p_practice["grow.py (B)"]
+    f_agreedonly["Only members that agreed were taught, though the task's own check confirms each member"]:::fixed
     f_dreamonce["A dream took a failed task once; one cell that cannot see through it gave up the task for the night"]:::fixed
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
   end
@@ -114,8 +115,11 @@ flowchart LR
   subgraph p_raw["raw.py (B)"]
     f_rawoff["Reading raw data and people's judged answers were built and never switched on in the line"]:::fixed
   end
+  subgraph p_exam["exam.py (B)"]
+    f_orphans["A task out of time left its program running, unwatched, and the runner starved"]:::fixed
+  end
   subgraph p_members["solo.py (A)"]
-    f_noheadings["An agreed answer without the PART headings was accepted, so every part failed"]:::open
+    f_noheadings["An agreed answer without the PART headings was accepted, so every part failed"]:::fixed
     f_fetchknown["Members fetched a known fact from addresses they made up"]:::open
     f_lookadvice["On a pure calculation's error, members were told to fetch a page and look"]:::fixed
     f_silentmodule["A module was saved but its member printed nothing and gave up"]:::fixed
@@ -151,13 +155,15 @@ flowchart LR
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
   end
+  f_orphans -->|blocked| deaths
+  f_agreedonly -->|blocked| reasoning
   f_onethird -->|blocked| slowtraining
   f_rawoff -->|blocked| carryover
   f_pairmemory -->|blocked| carryover
   f_teacherforever -->|blocked| carryover
   f_dreamonce -->|blocked| reasoning
   f_typed -->|blocked| reasoning
-  f_noheadings -->|blocks| reasoning
+  f_noheadings -->|blocked| reasoning
   f_nothingright -->|blocked| web
   f_nothingrightfiles -->|blocked| files
   f_fetchknown -->|blocks| confirm
@@ -190,25 +196,27 @@ flowchart LR
 | Tasks that read websites fail nearly always | B | g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3 |
 | Little carries over to kinds never practised | unclaimed | g24 1 of 5, g27 0 of 7 |
 | Tasks that make a file fail | A | g27: edit a file 0 of 2, a log into a file 0 of 2, a module 0 of 2 |
-| Practice runners die mid-task | A | generations 25 and 28, nothing logged |
+| Practice runners die mid-task | B | generations 25 and 28, nothing logged |
 | A right answer in talk comes back as not confirmed | B | talk test 2026-11-15: Canberra and 75 days right, the second member did not agree |
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
 | The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 | A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
 
-## Causes found (2 open, 30 fixed)
+## Causes found (1 open, 33 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
-| An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` | open | A: the form check could insist on the headings before agreeing | g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing) |
 | Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
+| A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
+| Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
 | A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
 | Reading raw data and people's judged answers were built and never switched on in the line | `training/raw.py` | fixed | B: every child now reads 40 raw pieces and 10 judged pairs (repository variables HIVE_READ, HIVE_JUDGED) | built 2026-11-14 on the 1.7B, never measured; first run on the 8B here: 36 drawn, measured, 12 kept |
 | A judged pair was capped as if it were one answer, though both are held while trained | `training/ternary_base.py` | fixed | B: a pair must fit one row's memory as a whole; judged texts cut to 900 characters | the first 8B test with judged pairs (the machine's limit was the larger cause: see the rule) |
 | Lessons would have taught every kind for ever, though the hive can learn most from its own work | `training/lessons.py` | fixed | B: lessons stop for a kind once the hive has 3 right programs of its own | g28 rows: 15 of 23 kinds already had their own right programs; 8 had none (websites, files, the open web) |
 | A dream took a failed task once; one cell that cannot see through it gave up the task for the night | `training/grow.py` | fixed | B: two tries, the second with another cell beside the trunk | g28: 5 of 24 dreams corrected in one try |
 | Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528) | `training/lessons.py` | fixed | B, lessons for 12 everyday kinds where every value is computed (213 of 213 right) | g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged |
+| An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` | fixed | B's sub-agent: agreement on a task of several parts counts only with every heading; members asked once more, plainly (a comment prints nothing) | g28 practice: 40 tasks of several parts, 3 agreed without any heading (2 lost only to that: c10002803_03, c10002803_04) |
 | A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons: 40 of 40 right on the live sites, tasks of several parts too | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
 | The same for tasks that make a file: no right program, no rows | `training/lessons.py` | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
 | Data written in the task was opened as a file that does not exist | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: 3 tasks, every member, every turn |
@@ -249,6 +257,7 @@ flowchart LR
 - Classify every failure in every artifact at once, then fix all the causes in one pass: one cycle on 132 tasks found six causes that one task at a time would have taken six cycles.
 - Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.
 - When one runner cannot get through the work in its time, spread the work over several runners and join the results exactly, before cutting the work.
+- Ending a task ends everything it started: a process in its own session outlives its parent, and the watch over it dies with the parent.
 
 ## The parts
 

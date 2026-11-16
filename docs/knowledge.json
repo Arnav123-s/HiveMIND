@@ -175,7 +175,7 @@
     {
       "id": "deaths",
       "title": "Practice runners die mid-task",
-      "owner": "A",
+      "owner": "B",
       "seen": "generations 25 and 28, nothing logged",
       "measured_by": []
     },
@@ -218,6 +218,24 @@
     }
   ],
   "findings": [
+    {
+      "id": "orphans",
+      "title": "A task out of time left its program running, unwatched, and the runner starved",
+      "lives_in": "exam",
+      "blocks": "deaths",
+      "status": "fixed",
+      "by": "B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log",
+      "seen": "trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s"
+    },
+    {
+      "id": "agreedonly",
+      "title": "Only members that agreed were taught, though the task's own check confirms each member",
+      "lives_in": "practice",
+      "blocks": "reasoning",
+      "status": "fixed",
+      "by": "B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair",
+      "seen": "g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check"
+    },
     {
       "id": "onethird",
       "title": "A child got through a third of its rows, once, in its time on one runner",
@@ -277,9 +295,9 @@
       "title": "An agreed answer without the PART headings was accepted, so every part failed",
       "lives_in": "members",
       "blocks": "reasoning",
-      "status": "open",
-      "by": "A: the form check could insist on the headings before agreeing",
-      "seen": "g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing)"
+      "status": "fixed",
+      "by": "B's sub-agent: agreement on a task of several parts counts only with every heading; members asked once more, plainly (a comment prints nothing)",
+      "seen": "g28 practice: 40 tasks of several parts, 3 agreed without any heading (2 lost only to that: c10002803_03, c10002803_04)"
     },
     {
       "id": "nothingright",
@@ -572,6 +590,11 @@
       "id": "spread",
       "rule": "When one runner cannot get through the work in its time, spread the work over several runners and join the results exactly, before cutting the work.",
       "from": "onethird"
+    },
+    {
+      "id": "killtree",
+      "rule": "Ending a task ends everything it started: a process in its own session outlives its parent, and the watch over it dies with the parent.",
+      "from": "orphans"
     }
   ],
   "hive_loop": [
