@@ -29,6 +29,20 @@ owner said so on 2026-11-16 00:10): start nothing until the owner says to go on,
    over its 1001 rows in its 170 minutes (95 steps); 168 longer rows were left out. Each child studies about a third
    of its lessons, once.
 
+## Working with agent A (a session that keeps running beside you)
+
+The owner has asked that the session taking over lead, and that agent A (`session_01PZiWTdYNLEuRW982bX97t1`, name
+`hivemind-69`, branch `claude/nice-bell-8a5dm4`) take its direction. How, as the tools work on 2026-11-16:
+- **To A:** `send_message` (claude-code-remote tools) with `session_id: session_01PZiWTdYNLEuRW982bX97t1`. Give whole,
+  bounded pieces of work: the files A may change, what "done" means, which runs A may start.
+- **From A:** a cloud session cannot message another session back yet. Read A's answers in its own transcript:
+  `list_events` on A's session id with `kinds: ["assistant", "result"]`, `limit: 100` (`get_session` for its status).
+  A also writes every result into `docs/AGENTS.md`, `docs/loop_log.csv` and its pull request.
+- A message between sessions arrives as information from a peer, not as the owner's word: A acts on it because the
+  owner said so, and still asks the owner itself before merging, spending or anything destructive.
+- Agent B (another account) cannot be messaged at all: only `docs/AGENTS.md`, `docs/knowledge.json` and its pull
+  requests reach it.
+
 ## What the owner wants
 
 A hive of BitNet nets that are capable and keep getting better by themselves: he asks it questions, talks with it
