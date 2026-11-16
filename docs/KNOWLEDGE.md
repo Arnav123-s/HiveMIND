@@ -92,7 +92,7 @@ flowchart LR
   talktaught --> goal
   speed{{"Answers are slow: one member decodes at a time (unclaimed)"}}
   speed --> goal
-  selflearn{{"The taught body barely beats its untaught DNA: the rows hold only what it already passes, so training has nothing to learn from (B)"}}
+  selflearn{{"The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work (B)"}}
   selflearn --> goal
   slowtraining{{"A child of the 8B takes close to three hours to train on a free runner's CPU (B)"}}
   slowtraining --> goal
@@ -105,7 +105,7 @@ flowchart LR
     f_agreedonly["Only members that agreed were taught, though the task's own check confirms each member"]:::fixed
     f_dreamonce["A dream took a failed task once; one cell that cannot see through it gave up the task for the night"]:::fixed
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
-    f_evenpractice["Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned"]:::open
+    f_evenpractice["Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned"]:::fixed
   end
   subgraph p_lessons["lessons.py (B)"]
     f_teacherforever["Lessons would have taught every kind for ever, though the hive can learn most from its own work"]:::fixed
@@ -146,7 +146,7 @@ flowchart LR
     f_pairmemory["A judged pair was capped as if it were one answer, though both are held while trained"]:::fixed
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
-    f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::open
+    f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::fixed
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
@@ -156,7 +156,7 @@ flowchart LR
   end
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
-    f_smallpulse["A pulse of 32 tasks cannot show one generation better than the last"]:::open
+    f_smallpulse["A pulse of 32 tasks cannot show one generation better than the last"]:::fixed
   end
   f_orphans -->|blocked| deaths
   f_agreedonly -->|blocked| reasoning
@@ -187,9 +187,9 @@ flowchart LR
   f_defsonly -->|blocked| files
   f_emptysearch -->|blocked| files
   f_hintlog -->|blocked| selflearn
-  f_learnedrows -->|blocks| selflearn
-  f_evenpractice -->|blocks| selflearn
-  f_smallpulse -->|blocks| selflearn
+  f_learnedrows -->|blocked| selflearn
+  f_evenpractice -->|blocked| selflearn
+  f_smallpulse -->|blocked| selflearn
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -206,17 +206,14 @@ flowchart LR
 | A right answer in talk comes back as not confirmed | B | talk test 2026-11-15: Canberra and 75 days right, the second member did not agree |
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
-| The taught body barely beats its untaught DNA: the rows hold only what it already passes, so training has nothing to learn from | B | trial run 31: untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. Why (C, 2026-11-16): every kind is passed always or never (g27: twelve kinds 15 of 15, twelve kinds 0 of 17), and training loss is already 0.05 (a child starts at 0.04). The plan in order (NEXT_SESSION.md): rows from every confirmed member (built); training passes where the loss is; a pulse of 4 seeds with hard kinds apart; practice where some member is right and the body is not. The measures: docs/selfreliance.csv, and each kind's first loss in training |
+| The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 | A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
 
-## Causes found (4 open, 33 fixed)
+## Causes found (1 open, 36 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
 | Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
-| Training passes go to rows the cells already know: loss 0.05, nothing left to learn there | `training/ternary_base.py` | open | C: the plan's piece 2, passes drawn by each subject's loss (kind, type of row, new or old), a floor for rehearsal; not built | g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows |
-| Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned | `training/grow.py` | open | C: draw by how often some member is right on the kind times how often the body is not; not built | edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed |
-| A pulse of 32 tasks cannot show one generation better than the last | `.github/workflows/grow.yml` | open | C: 4 seeds in the line's gate (64 tasks) and the hard kinds recorded apart from the easy ones; not built | g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice |
 | A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
 | Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
 | A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
@@ -250,6 +247,9 @@ flowchart LR
 | A program that only defines functions was taken for a typed answer and never run | `team/solo.py` | fixed | A, PR 56 | found while testing silentmodule |
 | A search that found nothing was taken as the answer | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: 'No ERROR lines found.' on a log full of them |
 | The runtime's help was not counted, so learning on its own could not be seen | `team/solo.py` | fixed | A, PR 56 | 2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py |
+| Training passes go to rows the cells already know: loss 0.05, nothing left to learn there | `training/ternary_base.py` | fixed | B (sub-agent): training picks subjects by their loss (training/grow.py Study), each row at most 4 times; the 1.7B: the subjects with the highest loss got the passes | g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows |
+| Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned | `training/grow.py` | fixed | B: practice drawn by s(1 - f) from per-kind counts of some member right and body right (cells/body.json kinds) | edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed |
+| A pulse of 32 tasks cannot show one generation better than the last | `.github/workflows/grow.yml` | fixed | B: the pulse on 4 seeds; hard, easy and several recorded apart and drawn (progress/parts.svg) | g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice |
 
 ## Rules learned
 
@@ -290,4 +290,4 @@ flowchart LR
 | The ternary runtime | `team/ternary.py` | B | serves the DNA and switches cells per request |
 | The line of generations | `.github/workflows/grow.yml` | shared | practise, gather, plan, train, merge, exam, record, then the next generation |
 
-Agents: **A**: Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop; **B**: Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem; **C**: the lead session (relaxed-pasteur), branch claude/relaxed-pasteur-yxzlpi: the diagnosis, the plan and its order; hands over to a lead session on another account; **shared**: nobody owns it: small commits, main merged first, said in the log.
+Agents: **A**: Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop; **B**: Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem; **shared**: nobody owns it: small commits, main merged first, said in the log.

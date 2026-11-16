@@ -80,22 +80,6 @@ def merge(edits, weights=None, rank=16):
     return out, least
 
 
-def subjects(records):
-    """What a child studied, from its slices' records (training/grow.Study.record): for each subject the rows and
-    the passes of all slices added up, and its first and last loss as their mean; the most studied first."""
-    out = {}
-    for rec in records:
-        for k, v in (rec or {}).items():
-            if isinstance(v, dict):
-                a = out.setdefault(k, {"rows": 0, "passes": 0, "first": [], "last": []})
-                a["rows"], a["passes"] = a["rows"] + int(v.get("rows") or 0), a["passes"] + int(v.get("passes") or 0)
-                a["first"].append(float(v.get("first") or 0.0))
-                a["last"].append(float(v.get("last") or 0.0))
-    mean = lambda x: round(sum(x) / len(x), 4)  # noqa: E731
-    return {k: {"rows": v["rows"], "passes": v["passes"], "first": mean(v["first"]), "last": mean(v["last"])}
-            for k, v in sorted(out.items(), key=lambda x: (-x[1]["passes"], x[0]))}
-
-
 def write(edit, folder, base_name, rank, layers=None):
     """The edit as a folder PEFT and the runtime's converter read (adapter_config.json, adapter_model.safetensors).
     lora_alpha is twice the rank, as every cell is trained, so the edit weighs the same at any rank."""
@@ -168,8 +152,7 @@ def main(argv):
         meta |= {"slices": len(paths), "least_energy_kept": round(least, 4), "shard": "",
                  "steps": sum(m.get("steps") or 0 for m in metas), "used": sum(m.get("used") or 0 for m in metas),
                  "rows": sum(m.get("rows") or 0 for m in metas), "read": sum(m.get("read") or 0 for m in metas),
-                 "judged": sum(m.get("judged") or 0 for m in metas), "seconds": max([m.get("seconds") or 0 for m in metas] or [0]),
-                 "passes": sum(m.get("passes") or 0 for m in metas), "subjects": subjects([m.get("subjects") for m in metas])}
+                 "judged": sum(m.get("judged") or 0 for m in metas), "seconds": max([m.get("seconds") or 0 for m in metas] or [0])}
         if base and name:
             out = gguf(folder, base, name, opt("--out-dir", "") or None)
             meta |= {"member": f"{base}+{name}", "file": str(out), "megabytes": round(out.stat().st_size / 2**20, 1)}

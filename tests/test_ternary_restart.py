@@ -188,3 +188,28 @@ def test_a_task_out_of_time_takes_what_it_started_with_it(tmp_path):
     else:
         os.kill(pid, 9)
         pytest.fail("the program the task started outlived it")
+
+
+def test_the_runtime_source_fetch_is_tried_again_when_the_network_drops(tmp_path, monkeypatch):
+    """g35: a slice was lost because one fetch of the runtime source failed (exit 128)."""
+    import subprocess
+    from team import ternary
+    monkeypatch.setattr(ternary, "HOME", tmp_path)
+    (tmp_path / "ik_llama.cpp" / ".git").mkdir(parents=True)
+    fetches = []
+
+    def run(cmd, check=False, **k):
+        if "fetch" in cmd:
+            fetches.append(1)
+            return subprocess.CompletedProcess(cmd, 128 if len(fetches) < 3 else 0)
+        return subprocess.CompletedProcess(cmd, 0)
+    monkeypatch.setattr(ternary.subprocess, "run", run)
+    monkeypatch.setattr(ternary.time, "sleep", lambda s: None)
+    ternary.source()
+    assert len(fetches) == 3
+    fetches.clear()
+    monkeypatch.setattr(ternary.subprocess, "run", lambda cmd, check=False, **k: fetches.append(1) or subprocess.CompletedProcess(cmd, 128 if "fetch" in cmd else 0))
+    import pytest
+    with pytest.raises(RuntimeError):
+        ternary.source()
+    assert len(fetches) == 4
