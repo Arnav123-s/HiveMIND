@@ -213,3 +213,21 @@ def test_the_runtime_source_fetch_is_tried_again_when_the_network_drops(tmp_path
     with pytest.raises(RuntimeError):
         ternary.source()
     assert len(fetches) == 4
+
+
+def test_a_server_that_ends_at_once_says_how_and_why(fake, tmp_path, monkeypatch):
+    """g35, seed 4: every start of the server ended at once and was reported as 'did not come up in 600 s'; its own
+    words were in a log no artifact kept. Now the exit code and its last lines are in the error."""
+    dead = tmp_path / "bin" / "dead-server"
+    dead.write_text(f"#!{sys.executable}\nimport sys\nprint('loading model ...')\nsys.stderr.write('error: failed to open fake.gguf: unexpected end of file\\n')\nsys.exit(3)\n")
+    dead.chmod(dead.stat().st_mode | stat.S_IEXEC)
+    monkeypatch.setenv("HIVE_TERNARY_BIN", str(dead))
+    (ternary.HOME).mkdir(parents=True, exist_ok=True)
+    (ternary.HOME / "t2.log").write_text("an older start's words, not this one's\n")
+    t0 = time.time()
+    with pytest.raises(RuntimeError) as e:
+        ternary._start("t2", wait=60)
+    said = str(e.value)
+    assert time.time() - t0 < 30  # no waiting out the minute for a server that has ended
+    assert "ended" in said and "exit code 3" in said and "unexpected end of file" in said
+    assert "older start" not in said  # only this start's own lines

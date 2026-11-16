@@ -565,18 +565,18 @@
    "title": "A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s'",
    "lives_in": "runtime",
    "blocks": "deaths",
-   "status": "open",
-   "by": "A",
-   "seen": "g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps"
+   "status": "fixed",
+   "by": "A, PR 61",
+   "seen": "g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs"
   },
   {
    "id": "stalebody",
    "title": "A scheduled run queued behind a running generation grew from the body before it and its record conflicted",
    "lives_in": "workflow",
    "blocks": "deaths",
-   "status": "open",
-   "by": "A",
-   "seen": "g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs"
+   "status": "fixed",
+   "by": "A, PR 61",
+   "seen": "g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs"
   }
  ],
  "rules": [
