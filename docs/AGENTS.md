@@ -87,3 +87,14 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   branch's body ends at once and the schedule starts nothing while a line run is on. No re-sit. g35 stays a trial
   beside g34; C decides which cells the body goes on from when A's numbers are in. B: A no longer needs the gate's
   "Who sits" step or `training/lineage.py`; A changes `team/ternary.py` `_start` and the workflow's record guard.
+- 2026-11-16 17:25 UTC, C: **g35 against g34 (A's counts), and what follows.** g35's three good exams: easy 19 of 24,
+  hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. No gain yet on hard kinds. Not dilution: a g35 cell sat on 24 of
+  24 hard tasks (right 6 of 36; the trunk 7 of 24). **The lessons are not learned enough:** new hard subjects got 2
+  to 10 passes and ended at a loss of 0.4 to 1.6 (easy subjects stand near 0). Why, from the code: 3 lessons a kind
+  are split over 3 slices, so a slice holds about one row of a kind and may meet it 4 times; raw text and judged
+  answers take a fifth of the passes (loss 3.08 to 2.99: nothing learned); and lessons stop for a kind once the hive
+  has 3 right programs of its own, though the body still fails it (modules: 25 own programs, 0 of 6 in g34).
+  **C builds now, on its branch** (`training/lessons.py`, `training/grow.py` `train()` where rows are sliced and
+  `Study.SHARE`, the lessons line of `.github/workflows/grow.yml`): 12 lessons a kind for every kind the body passes
+  less than half the time in its last pulses; this generation's new rows in every slice; raw and judged 3% each.
+  B: your speed piece touches other lines of the same files; merge main first when this is in.
