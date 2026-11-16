@@ -556,7 +556,7 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
 
 
 def each_member(run, check):
-    """Every member's own answer put to the task's check: [{"who", "ok"}]. The hive's answer says how the body did;
+    """Every member's own answer put to the task's check: [{"who", "ok", "member"}]. The hive's answer says how the body did;
     this says which cell is right on which kind of task, exactly, so the body can seat a task with the cells whose
     strengths lie nearest to it (team/ternary.seating, cells/strengths.json)."""
     import shutil
@@ -573,14 +573,17 @@ def each_member(run, check):
         ok = False
         if t.get("answer"):
             with tempfile.TemporaryDirectory() as tmp:
-                work = Path(t.get("work") or "")
-                if work.is_dir():
+                # a member with no work folder has none to copy: Path("") is the current folder (the whole checkout)
+                work = Path(t["work"]) if t.get("work") else None
+                if work and work.is_dir():
                     shutil.copytree(work, Path(tmp) / "work", ignore=lambda d, names: [n for n in names if (Path(d) / n).is_file() and (Path(d) / n).stat().st_size > 5_000_000])
                 try:
                     ok = bool(check(Path(tmp), t["answer"])[0])
                 except Exception:  # noqa: BLE001 - a check that cannot be made on one member's answer counts as not right
                     ok = False
-        out.append({"who": str(t["who"])[:80], "ok": ok})
+        # member: the number of its member{n}.json, so each verdict is tied to the file it was made on (training/grow
+        # teaches the members the check confirmed); the order of this list is the files' sorted names, not their numbers
+        out.append({"who": str(t["who"])[:80], "ok": ok, "member": int(re.sub(r"\D", "", f.stem))})
     return out
 
 

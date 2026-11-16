@@ -34,7 +34,7 @@ def test_each_members_own_answer_is_checked(tmp_path):
     (home / "member1.json").write_text(json.dumps({"who": "t17+g1code", "answer": "42", "work": str(home / "work")}))
     (home / "member2.json").write_text(json.dumps({"who": "t17+g1data", "answer": "41", "work": str(home / "nowhere")}))
     check = lambda run, report: ((run / "work" / "out.txt").exists() and "42" in report, "")  # noqa: E731
-    assert exam.each_member(tmp_path, check) == [{"who": "t17+g1code", "ok": True}, {"who": "t17+g1data", "ok": False}]
+    assert exam.each_member(tmp_path, check) == [{"who": "t17+g1code", "ok": True, "member": 1}, {"who": "t17+g1data", "ok": False, "member": 2}]
 
 
 def test_the_gate_records_strengths_for_the_nightly_line_only(tmp_path, monkeypatch):

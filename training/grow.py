@@ -3,9 +3,9 @@
     practice  ->  rows  ->  every cell regrown from the rows  ->  gate  ->  the body's next generation
 
 practice   Fresh tasks that are never an exam's (seeds from ten million up; the exam's held-out kinds are never
-           practised). The body's own cells do them as they do any task (team/solo.py). A task counts only when two
-           cells agreed AND the task's own check, computed by code, confirms the answer.
-rows       From each such task, what the cell that got it right wrote: the task -> its final program, the
+           practised). The body's own cells do them as they do any task (team/solo.py). Each cell's own answer is
+           put to the task's own check, computed by code (training/exam.each_member).
+rows       From each cell whose own answer the check confirms, agreed with or not: the task -> its final program, the
            program's output -> DONE, and, where it first failed, the failure -> the mended program. Nobody labelled
            anything: the label is that the program ran and its answer was checked.
 train      Every cell is grown again from the same DNA (Ternary-Bonsai-1.7B, 0.43 GB packed, the smallest ternary
@@ -42,16 +42,99 @@ RELEASE = "hive-grown"  # the GitHub release that holds the rows and the weight 
 
 
 # ---- rows ------------------------------------------------------------------------------------------------------------
-def rows_of(run, task, kind="", seed=None):
-    """The training rows of one task that two members agreed on and the check confirmed. run: the task's folder."""
-    from team import solo
-    home = Path(run) / "members" if (Path(run) / "members" / "members.json").exists() else Path(run)
+def _home(run):
+    """The folder of a task's members' own files (member{n}.json, members.json): run/members, or run itself."""
+    return Path(run) / "members" if (Path(run) / "members").is_dir() else Path(run)
+
+
+def _number(f):
+    """The member's number in its file's name: member3.json -> 3."""
+    return int(re.sub(r"\D", "", Path(f).stem))
+
+
+def checked(run, home=None):
+    """{member number: ok}: each member's own answer put to the task's own check (exam.json "members", written by
+    training/exam.each_member), tied to its member{n}.json by number. None when the task has no such verdicts.
+    A verdict written before each was tied to its file (generation 28 and earlier: {"who", "ok"} only) is tied by
+    the member's name, and only where exactly one file and one verdict carry that name: never by order, since the
+    order the verdicts were written in is not the order of the numbers (member10.json sorts before member2.json)."""
+    home = Path(home) if home else _home(run)
     try:
-        info = json.loads((home / "members.json").read_text())
-    except (OSError, ValueError):
+        verdicts = json.loads((Path(run) / "exam.json").read_text()).get("members")
+    except (OSError, ValueError, AttributeError):
+        return None
+    if not isinstance(verdicts, list):
+        return None
+    files = {}
+    for f in home.glob("member[0-9]*.json"):
+        try:
+            t = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        files[_number(f)] = str(t.get("who") or "")[:80] if isinstance(t, dict) else ""
+    named = [v.get("who") for v in verdicts if isinstance(v, dict) and not isinstance(v.get("member"), int)]
+    out = {}
+    for v in verdicts:
+        if not isinstance(v, dict):
+            continue
+        n = v.get("member")
+        if not isinstance(n, int) or isinstance(n, bool):
+            who = v.get("who")
+            mine = [k for k, w in files.items() if who and w == who]
+            n = mine[0] if len(mine) == 1 and named.count(who) == 1 else None
+        if n is not None:
+            out[n] = out.get(n, False) or v.get("ok") is True
+    return out
+
+
+def taught(run, home=None):
+    """The members whose programs become rows. Every member whose own answer the task's check confirms wrote a right
+    program, whether or not another agreed with it: agreement is not the check. Generation 28's practice (80 of its
+    100 tasks in hand): 3 failed tasks had a member the check confirmed (c10002802_02's first member was right while
+    the other two disagreed), 9 right members of passed tasks were left out because two others had agreed, and one
+    member taught for agreeing was refused by the check. Without per-member verdicts (a run made before exam.json
+    kept them, or a task not sat as an exam: team/engram), the old rule: the members that agreed, on a task the
+    check passed."""
+    home = Path(home) if home else _home(run)
+    said = checked(run, home)
+    if said is not None:
+        return sorted(n for n, ok in said.items() if ok)
+    exam = Path(run) / "exam.json"
+    try:
+        passed = exam.exists() and json.loads(exam.read_text()).get("ok") is True
+    except (OSError, ValueError, AttributeError):
+        passed = False
+    if exam.exists() and not passed:
         return []
+    try:
+        return [n for n in json.loads((home / "members.json").read_text()).get("agreeing", []) if isinstance(n, int)]
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def once(rows):
+    """Each row once: two members that wrote the same program for the same task make the same row, and the same row
+    twice is the same lesson weighed double."""
+    seen, out = set(), []
+    for r in rows:
+        key = json.dumps([r.get("type"), r.get("messages"), r.get("output"), r.get("rejected")], sort_keys=True)
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
+def rows_of(run, task, kind="", seed=None):
+    """The training rows of one task: from every member whose own answer the task's check confirmed (taught), whether
+    or not the whole task was right. run: the task's folder."""
+    from team import solo
+    home = _home(run)
+    try:
+        agreeing = json.loads((home / "members.json").read_text()).get("agreeing", [])
+    except (OSError, ValueError, AttributeError):
+        agreeing = []
     out = []
-    for n in info.get("agreeing", []):
+    for n in taught(run, home):
         try:
             t = json.loads((home / f"member{n}.json").read_text())
         except (OSError, ValueError):
@@ -63,7 +146,8 @@ def rows_of(run, task, kind="", seed=None):
         day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", ms[0]["content"])
         head = [{"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}, ms[1]]
         fenced = f"```python\n{program}\n```"
-        base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n}
+        # agreed: whether this member was one of those that agreed (False: a right member the old rule left out)
+        base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n, "agreed": n in agreeing}
         out.append(base | {"type": "first", "messages": head, "output": fenced})
         out.append(base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
                                                                  {"role": "user", "content": f"OUTPUT:\n{t['answer'][-1800:]}\n\n{solo.MORE}"}], "output": "DONE"})
@@ -74,36 +158,40 @@ def rows_of(run, task, kind="", seed=None):
                     and solo.extract_code(a["content"]).strip() != program and len(a["content"]) < 5000 and len(fb["content"]) < 3000:
                 out.append(base | {"type": "fix", "messages": head + [a, fb], "output": fenced})
                 break
-    return out
+    return once(out)
 
 
 def pair_rows(run, task, kind="", seed=None, most=4):
-    """Rows that set a right program beside a wrong one written for the same task, from a task the check confirmed.
-    The right one is what two members agreed on; the wrong ones are the members' first programs that did not give
-    that answer (sent back with an error, or a different result). Trained with --pairs (Iterative Reasoning
+    """Rows that set a right program beside a wrong one written for the same task. The right one is that of a member
+    whose own answer the check confirmed (taught); the wrong ones are the first programs of the other members that
+    are none of the right programs (sent back with an error, or a different result). A member the check confirmed is
+    never the rejected one: what the check passed is not taught as wrong. Trained with --pairs (Iterative Reasoning
     Preference Optimization: DPO with a likelihood term, Pang et al. 2024), the cell learns what makes a program
     wrong as well as what a right one looks like; training only on right answers tends to memorise them (Chu et al.
     2025, "SFT memorizes, RL generalizes"). Used only with --pairs, until a gate has shown it helps."""
     from team import solo
-    home = Path(run) / "members" if (Path(run) / "members" / "members.json").exists() else Path(run)
-    try:
-        info = json.loads((home / "members.json").read_text())
-    except (OSError, ValueError):
-        return []
+    home = _home(run)
     tries = {}
     for f in sorted(home.glob("member[0-9]*.json")):
         try:
-            tries[int(re.sub(r"\D", "", f.stem))] = json.loads(f.read_text())
+            tries[_number(f)] = json.loads(f.read_text())
         except (OSError, ValueError):
             continue
-    win = next((tries[n] for n in info.get("agreeing", []) if n in tries and (tries[n].get("program") or "").strip()), None)
+    right = [n for n in taught(run, home) if n in tries]
+    win = next((tries[n] for n in right if (tries[n].get("program") or "").strip()), None)
     if not win or len(win.get("messages") or []) < 3 or len(win["program"]) > 6000:
         return []
     ms, program = win["messages"], win["program"].strip()
     day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", ms[0]["content"])
     head = [{"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}, ms[1]]
-    out, seen = [], {program}
+    # every program a right member ended with is right: none of them is set down as the wrong one
+    out, seen = [], {(tries[n].get("program") or "").strip() for n in right}
+    # with the check's own verdict on each member, only members it did not confirm give wrong programs; without it (a
+    # run from before the verdicts were kept), as before: any first program that was not the agreed one
+    confirmed = set(right) if checked(run, home) is not None else set()
     for n, t in sorted(tries.items()):
+        if n in confirmed:
+            continue
         tm = t.get("messages") or []
         if len(tm) < 3 or tm[2].get("role") != "assistant":
             continue
@@ -213,8 +301,9 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
             log(f"time is up after {len(passed)} of {n} tasks: practice ends here", flush=True)
             break
         r = E.sit_one(f"practice_{seed}", tid, task, check, home, kind=kind)
-        new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
-        new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
+        # rows from every member the task's check confirmed, even where the hive's answer was not right (taught)
+        new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
+        new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         if os.environ.get("HIVE_FORESEE") == "1":
             new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         with open(out, "a") as f:
@@ -226,7 +315,9 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
         passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"])})
         # what was passed at which level, for the record to move the levels by (training/grow_record.levels)
         out.with_name("practice.json").write_text(json.dumps({"seed": seed, "tasks": passed}))
-        log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows", flush=True)
+        beyond = sum(x["type"] == "first" and x.get("agreed") is False for x in new)
+        log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows"
+            + (f", {beyond} of the right members not among those that agreed" if beyond else ""), flush=True)
     return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)}
 
 
@@ -320,6 +411,7 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
         text = DREAM.format(task=task, program=f["program"][:5000], printed=(f.get("printed") or "nothing")[:600], said=f.get("said", ""))
         was = os.environ.get("HIVE_ROTATE")
         turn = int(was) if (was or "").isdigit() else 0
+        new = []
         for k in range(max(1, int(tries))):
             tid = f"d{seed}_{i:02d}" + (f"_{k}" if k else "")
             if k:  # another cell beside the trunk on each try after the first
@@ -331,13 +423,14 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
                     os.environ.pop("HIVE_ROTATE", None)
                 else:
                     os.environ["HIVE_ROTATE"] = was
+            # every try's members the check confirmed are rows, the tries that failed as a whole too (taught):
+            # generation 28's dreams had 2 failed tries with a member the check confirmed
+            new += rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
             if res["ok"] or (minutes and time.time() - born > minutes * 60):
                 break
-        new = []
-        if res["ok"]:
-            new = rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
-            for row in new:
-                row["dream"] = True
+        new = once(new)
+        for row in new:
+            row["dream"] = True
         with open(out, "a") as fo:
             for row in new:
                 fo.write(json.dumps(row) + "\n")
@@ -371,7 +464,8 @@ def gather(out, gen, old=(), new=(), log=print):
 
 
 def rows_from(folders, out):
-    """Rows from sittings that were already done: every task folder with an exam.json that says ok."""
+    """Rows from sittings that were already done: every task folder with an exam.json, with rows from the members
+    its check confirmed (taught; in a sitting from before the verdicts were kept, only a task that says ok)."""
     made = 0
     with open(out, "a") as f:
         for folder in folders:
@@ -381,7 +475,7 @@ def rows_from(folders, out):
                 except ValueError:
                     continue
                 task = (ex.parent / "members" / "TASK.md")
-                if r.get("ok") and task.exists():
+                if isinstance(r, dict) and task.exists():
                     t = task.read_text().strip()
                     for row in rows_of(ex.parent, t) + pair_rows(ex.parent, t):
                         f.write(json.dumps(row) + "\n")
