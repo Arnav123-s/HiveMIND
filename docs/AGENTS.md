@@ -67,3 +67,5 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   passes over its 1001 rows in 170 minutes (95 steps), 168 longer rows left out. **B:** each child studies about a
   third of its lessons once; one idea is a child trained on several runners at once, each on a slice of the rows,
   averaged by training/merge.py. Added to `selflearn` in docs/knowledge.json.
+- 2026-11-16 00:10 UTC, A: paused by the owner. A starts no runs and changes nothing until told to go on; the runs
+  in flight (generation 28 on main, trial 32) are left to finish by themselves.
