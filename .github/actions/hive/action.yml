@@ -38,18 +38,21 @@ runs:
           AGENT_TEAM_ENGINE=gguf python -c "from team import llm, config; print('engine ready:', llm.gguf_available(), sorted(set(config.GGUF_ROSTER.values())))"
         fi
     # Members that are ternary models (team/ternary.py) run on a llama.cpp with kernels for them. Building it takes
-    # about 25 minutes, so the binary is kept between runs, one for each kind of CPU the runners have.
+    # about 25 minutes, so the binary is kept between runs, one for each kind of CPU the runners have. It is built for
+    # the CPU it was built on (GGML_NATIVE), so the key is the CPU's instruction list, not its name: two runners named
+    # "AMD EPYC 9V74" offer different instructions, and a binary built on one ended at once on the other with an
+    # illegal instruction (exit code -4: g35's pulse seed 4, 0 of 16; g38's practice runner 1, 0 of 8).
     - name: Which CPU this runner has
       id: cpu
       if: ${{ env.HIVE_MEMBERS != '' }}
       shell: bash
-      run: echo "cpu=$(lscpu | grep 'Model name' | md5sum | cut -c1-8)" >> "$GITHUB_OUTPUT"
+      run: echo "cpu=$( (lscpu | grep 'Model name'; grep -m1 '^flags' /proc/cpuinfo | tr ' ' '\n' | sort) | md5sum | cut -c1-8)" >> "$GITHUB_OUTPUT"
     - name: The ternary runtime, if it was built before
       if: ${{ env.HIVE_MEMBERS != '' }}
       uses: actions/cache@v4
       with:
         path: ~/.cache/hive/ternary/ik_llama.cpp/build/bin
-        key: ternary-runtime-7aa7e01-static-${{ steps.cpu.outputs.cpu }}
+        key: ternary-runtime-7aa7e01-static-flags-${{ steps.cpu.outputs.cpu }}
     - name: The ternary runtime and the members' models
       if: ${{ env.HIVE_MEMBERS != '' }}
       shell: bash
