@@ -66,7 +66,12 @@ def source():
     if not (src / ".git").exists():
         subprocess.run(["git", "init", "-q", str(src)], check=True)
         subprocess.run(["git", "-C", str(src), "remote", "add", "origin", RUNTIME], check=True)
-    subprocess.run(["git", "-C", str(src), "fetch", "-q", "--depth", "1", "origin", PIN], check=True)
+    for wait in (10, 30, 60, None):  # g35: one slice was lost to a single failed fetch; the network comes back
+        if subprocess.run(["git", "-C", str(src), "fetch", "-q", "--depth", "1", "origin", PIN]).returncode == 0:
+            break
+        if wait is None:
+            raise RuntimeError(f"ternary: could not fetch the runtime source at {PIN} after 4 tries")
+        time.sleep(wait)
     subprocess.run(["git", "-C", str(src), "checkout", "-q", "FETCH_HEAD"], check=True)
     return src
 
