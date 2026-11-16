@@ -251,12 +251,31 @@ def _dna():
         return "t80"
 
 
-def edge_weights(dna="t17", last=3, record=None):
+def edge_weights(dna="t17", last=3, record=None, body=None):
     """{kind: weight} for practice at the edge: the more a kind sits near half passed, the more it is practised.
     A kind always passed is learned; one never passed gives no right program to learn from and no right-against-
     wrong pair yet. p is the body's pass rate on the kind over the last `last` gates of this DNA (with one pass and
     one failure added, so a kind seen twice is not taken as settled), and the weight is p(1 - p), the most at
-    one half. As the body gets better, easy kinds drop out of practice and harder ones come in by themselves."""
+    one half. As the body gets better, easy kinds drop out of practice and harder ones come in by themselves.
+
+    Where the body's own practice has been counted kind by kind (cells/body.json "kinds", grow_record.practice_kinds),
+    the weight is s(1 - f) instead: s how often some member is right on the kind, f how often the body is. It is high
+    exactly where practice makes a new right row. p(1 - p) gave a kind passed 2 of 2 and one passed 0 of 2 the same
+    weight, so half the practice went to kinds already learned (agent C, 2026-11-16): each kind is passed either always
+    or never, and only a never-passed kind that some member gets right sometimes can move."""
+    try:
+        b = json.loads(Path(body).read_text()) if body else json.loads((ROOT / "cells" / "body.json").read_text())
+    except (OSError, ValueError):
+        b = {}
+    counts = b.get("kinds") if isinstance(b, dict) and b.get("dna") == dna and isinstance(b.get("kinds"), dict) else {}
+    if counts:
+        out = {}
+        for k, c in counts.items():
+            if isinstance(c, list) and len(c) == 3 and all(isinstance(x, (int, float)) for x in c):
+                tries, right, some = c
+                out[k] = ((some + 1) / (tries + 2)) * (1 - (right + 1) / (tries + 2))
+        if out:
+            return out
     rec = Path(record or ROOT / "training" / "reports" / "generations.jsonl")
     lines = []
     for ln in (rec.read_text().splitlines() if rec.exists() else []):
@@ -312,7 +331,10 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
         made, right = made + sum(x["type"] not in ("foresee", "pair") for x in new), right + r["ok"]
         if not r["ok"]:
             remember_failure(E.RUNS / f"practice_{seed}" / tid, task, kind, check, r, out.with_name("failures.jsonl"))
-        passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"])})
+        # and, kind by kind, whether the body was right and whether some member was (training/grow_record.practice_kinds):
+        # practice is drawn where some member is right and the body is not, the only place it makes a new right row
+        some = any(isinstance(m, dict) and m.get("ok") is True for m in r.get("members") or [])
+        passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"]), "kind": kind, "some": some})
         # what was passed at which level, for the record to move the levels by (training/grow_record.levels)
         out.with_name("practice.json").write_text(json.dumps({"seed": seed, "tasks": passed}))
         beyond = sum(x["type"] == "first" and x.get("agreed") is False for x in new)

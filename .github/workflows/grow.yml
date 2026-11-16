@@ -219,7 +219,7 @@ jobs:
           # has its own, its practice and dreams carry the kind and the lessons stop. Only requests and BeautifulSoup.
           pip install --quiet requests beautifulsoup4
           mkdir -p new/lessons
-          python3 training/lessons.py --seed "$GEN" --per-kind 1 --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          python3 training/lessons.py --seed "$GEN" --per-kind 3 --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
@@ -502,7 +502,9 @@ jobs:
         # a body that multiplies is not judged: it sits once, with its children, as a pulse to trace problems back from.
         # Trials still sit three ways side by side (two runs of the same hive differ by several tasks in 32: four seeds)
         arm: ${{ fromJSON(needs.plan.outputs.grow && '["after"]' || (inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]')) }}
-        seed: ${{ fromJSON(needs.plan.outputs.grow && '[1,2]' || '[1,2,3,4]') }}
+        # four seeds for a growing body too (64 tasks): on two, one generation differed from the next by several tasks
+        # from chance alone, and the hard kinds are what moves (agent C's plan, piece 3)
+        seed: ${{ fromJSON('[1,2,3,4]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
