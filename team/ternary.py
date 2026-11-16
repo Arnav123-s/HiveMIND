@@ -23,8 +23,10 @@ on this runtime it answers properly, where Microsoft's runtime looped (team/bitn
     python -m team.ternary ask t9 "..."   one question to one model
     python -m team.ternary stop
 """
+import http.client
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
@@ -64,7 +66,12 @@ def source():
     if not (src / ".git").exists():
         subprocess.run(["git", "init", "-q", str(src)], check=True)
         subprocess.run(["git", "-C", str(src), "remote", "add", "origin", RUNTIME], check=True)
-    subprocess.run(["git", "-C", str(src), "fetch", "-q", "--depth", "1", "origin", PIN], check=True)
+    for wait in (10, 30, 60, None):  # g35: one slice was lost to a single failed fetch; the network comes back
+        if subprocess.run(["git", "-C", str(src), "fetch", "-q", "--depth", "1", "origin", PIN]).returncode == 0:
+            break
+        if wait is None:
+            raise RuntimeError(f"ternary: could not fetch the runtime source at {PIN} after 4 tries")
+        time.sleep(wait)
     subprocess.run(["git", "-C", str(src), "checkout", "-q", "FETCH_HEAD"], check=True)
     return src
 
@@ -138,32 +145,92 @@ def up(member, wait=600):
     started again if the cell asked for arrived after it was started."""
     base, edit = split(member)
     at = f"http://127.0.0.1:{port(member)}"
-    alive = (_get(at + "/health") or {}).get("status") == "ok"
+    # "no slot available" is a server at work on a request (one a task cut off by its time limit left; the server
+    # drops it once it sees the asker gone): it answered, so it is alive, and the next request waits its turn
+    alive = (_get(at + "/health") or {}).get("status") in ("ok", "no slot available")
     if alive and set(cells_here(base)) <= set(_loaded(at)):  # every edit on the machine is in the server (a new engram starts it again)
         return at
     if not binary().exists():
         raise RuntimeError("the ternary runtime is not built on this machine: python -m team.ternary install")
     if edit and not adapter(member).exists():
         raise RuntimeError(f"no weight edit {adapter(member)}: python training/grow.py fetch")
-    if alive:
-        subprocess.run(["pkill", "-f", f"llama-server.*--port {port(member)}( |$)"], check=False)
-        time.sleep(2)
+    if not alive and _RESTARTED[0] >= RESTARTS:
+        raise Silent(f"the server of {base} is dead or silent; it was started again {RESTARTS} times in this process already, so not again")
+    # ended also when it does not answer at all: a server that is there but silent still holds the port, and a new one
+    # started beside it cannot take the port and ends at once (before, this waited out the 600 s for nothing)
+    _kill(port(member))
+    _ON.pop(at, None)
+    return _start(base, wait)
+
+
+_PROC = {}  # port -> the server this process started there, so that its end is seen without asking it
+
+
+def _start(base, wait=600):
+    """Start the server of a base, every edit of it on this machine loaded and none applied, and wait until it answers.
+    Started again after a death, it gets the same arguments (the same base, the same edits on disk)."""
+    n = port(base)
+    at = f"http://127.0.0.1:{n}"
     cmd = [str(binary()), "-m", weights(base), "-t", str(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4)), "-c", str(CTX),
-           "--port", str(port(member)), "--host", "127.0.0.1", "-rtr", "--parallel", "1", "--special" if base == "bitnet" else "--jinja"]
+           "--port", str(n), "--host", "127.0.0.1", "-rtr", "--parallel", "1", "--special" if base == "bitnet" else "--jinja"]
     cells = edits_here(base)
     for c in cells:
         cmd += ["--lora", str(cells[c])]
     if cells:
         cmd.append("--lora-init-without-apply")
     HOME.mkdir(parents=True, exist_ok=True)
-    log = open(HOME / f"{base}.log", "ab")
-    subprocess.Popen(cmd, stdout=log, stderr=log, stdin=subprocess.DEVNULL, start_new_session=True)
+    with open(HOME / f"{base}.log", "ab") as log:
+        _PROC[n] = subprocess.Popen(cmd, stdout=log, stderr=log, stdin=subprocess.DEVNULL, start_new_session=True)
     t0 = time.time()
     while time.time() - t0 < wait:
         if (_get(at + "/health") or {}).get("status") == "ok":
             return at
+        if _PROC[n].poll() is not None:  # it ended (no memory for it, the port still taken): waiting longer brings nothing
+            break
         time.sleep(1)
     raise RuntimeError(f"the server of {base} did not come up in {wait} s; see {HOME / (base + '.log')}")
+
+
+def _kill(n):
+    """End the server on port n, whoever started it, with its process group (it runs in a session of its own), and wait
+    until it is gone so that the port is free for the next one."""
+    pids = {_PROC[n].pid} if n in _PROC else set()
+    found = subprocess.run(["pgrep", "-f", f"llama-server.*--port {n}( |$)"], capture_output=True, text=True, check=False).stdout
+    pids |= {int(x) for x in found.split() if x.isdigit() and int(x) != os.getpid()}
+    for pid in pids:
+        try:
+            os.killpg(pid, signal.SIGKILL)
+        except OSError:  # not the leader of a group of its own (started by hand): itself alone
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except OSError:
+                pass
+    if n in _PROC:
+        try:
+            _PROC.pop(n).wait(timeout=30)
+        except subprocess.TimeoutExpired:
+            pass
+    t0 = time.time()
+    while time.time() - t0 < 30 and any(_running(pid) for pid in pids):
+        time.sleep(0.2)
+
+
+def _running(pid):
+    try:
+        os.kill(pid, 0)
+        # one that is dead but not yet reaped by whoever started it holds no port and no memory
+        return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        return False
+
+
+def _free():
+    """Memory free on this machine, in GB, as the kernel counts what a new program could have ("?" off Linux)."""
+    try:
+        kb = next(int(line.split()[1]) for line in open("/proc/meminfo") if line.startswith("MemAvailable:"))
+        return f"{kb / 2**20:.1f} GB"
+    except (OSError, StopIteration, ValueError):
+        return "?"
 
 
 def _post(url, body, timeout=1800):
@@ -175,6 +242,10 @@ def _post(url, body, timeout=1800):
 _ON = {}  # server address -> the cell this process last switched on there
 
 
+class Silent(RuntimeError):
+    """The server is dead or does not answer."""
+
+
 def _switch(at, scales):
     """Tell the server which cell is on. Its answer to this request is sometimes never sent (seen 2026-11-14: the
     server sits idle with the request unanswered until any other request arrives), so it is asked again after a few
@@ -184,7 +255,84 @@ def _switch(at, scales):
             return _post(at + "/lora-adapters", scales, timeout=6)
         except OSError:
             continue
-    raise RuntimeError("the server does not answer when told which cell is on")
+    raise Silent("the server does not answer when told which cell is on")
+
+
+def _on(at, base, cell):
+    """Put the cell on (its edit, and the engrams recalled for this task) if this process has not already; True when
+    it switched."""
+    have = _loaded(at)
+    if not have and edits_here(base):  # it holds every edit on disk, so an empty list is a server that did not answer
+        raise Silent("the server does not say which cells it holds")
+    if not have or _ON.get(at) == cell:
+        return False
+    # What the server reports cannot be trusted for this: one just started says a cell is on (scale 1.0) that it has
+    # not applied. So this process switches the first time it speaks, and afterwards whenever the cell changes.
+    # Which cell answers: its edit on, every other off (the base itself: all off).
+    edit, also = cell
+    _switch(at, [{"id": i, "scale": 1.0 if name == edit or name in also else 0.0} for name, i in have.items()])
+    _ON[at] = cell
+    return True
+
+
+# How long one request may take. Measured on 4 cores (above) the 9B reads 76 pieces/s and writes 7/s; a runner
+# without AVX-512, its memory short, is slower. At a third of that pace a request still finishes: the whole window
+# read and the whole answer written. One that takes longer is not slow but stuck (trial run 32's exam: a request
+# waited out the 1800 s there were before, unanswered, and the task after it too).
+READS, WRITES = 25, 2.5
+RESTARTS = int(os.environ.get("HIVE_TERNARY_RESTARTS", 3))  # in one process: a machine that kills every server it starts is not mended by more
+_RESTARTED = [0]
+
+
+def _patience(n):
+    """Seconds a request writing at most n pieces may take."""
+    return 60 + CTX / READS + n / WRITES
+
+
+def _why(e, waited):
+    r = getattr(e, "reason", e)  # urllib wraps what failed while connecting
+    if isinstance(r, TimeoutError) or "timed out" in str(r):
+        return f"did not answer in {waited:.0f} s"
+    if isinstance(r, ConnectionRefusedError):
+        return "is not there (its port refuses)"
+    return f"stopped answering ({type(r).__name__}: {r})" if not isinstance(e, Silent) else str(e).replace("the server ", "", 1)
+
+
+def _restart(member, why):
+    """End the member's server (dead, or alive and silent), start it again with the same arguments, and forget which
+    cell was on, so the next request puts it back on: a server started again has every cell loaded and none applied."""
+    base = split(member)[0]
+    if _RESTARTED[0] >= RESTARTS:
+        raise Silent(f"the server of {base} {why}; it was started again {RESTARTS} times in this process already, so not again")
+    _RESTARTED[0] += 1
+    n, before = port(member), _free()
+    _kill(n)
+    _ON.pop(f"http://127.0.0.1:{n}", None)
+    print(f"ternary: the server of {base} {why}; ended and started again ({_RESTARTED[0]} of at most {RESTARTS} in this process), "
+          f"memory free {before} before ending it, {_free()} after", file=sys.stderr, flush=True)
+    _start(base)
+
+
+def _ask(member, at, cell, path, body, n):
+    """The server's answer to one request, with the cell on. A server that has died or stops answering is ended,
+    started again, the cell put back on, and asked once more: before, it stayed dead or silent and every later task
+    failed on it (trial run 32's exam, 2026-11-15: "the server does not answer when told which cell is on", then a
+    request unanswered for 1800 s)."""
+    for last in (False, True):
+        waited = _patience(n)
+        try:
+            p = _PROC.get(port(member))
+            if p is not None and p.poll() is not None:
+                raise Silent(f"has ended (its process exited with {p.returncode})")
+            if _on(at, split(member)[0], cell):
+                body = dict(body, cache_prompt=False)  # what it remembers was worked out by the other cell (a cell answered in the other's voice when it was reused)
+            return _post(at + path, body, timeout=waited)
+        except urllib.error.HTTPError:
+            raise  # it answered: what it refused is the request (chat makes it shorter)
+        except (OSError, http.client.HTTPException, Silent) as e:
+            if last:
+                raise Silent(f"the server of {split(member)[0]} {_why(e, waited)}, also after it was started again") from e
+            _restart(member, _why(e, waited))
 
 
 def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
@@ -192,27 +340,17 @@ def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
     what it printed go first; the orders and the task stay."""
     at, messages = up(member), list(messages)
     base, edit = split(member)
-    have, fresh = _loaded(at), True
-    want = {name: 1.0 if name == edit or name in also else 0.0 for name in have}  # the cell, and the engrams recalled for this task
-    # What the server reports cannot be trusted for this: one just started says a cell is on (scale 1.0) that it has
-    # not applied. So this process switches the first time it speaks, and afterwards whenever the cell changes.
-    if have and _ON.get(at) != (edit, tuple(sorted(also))):
-        _ON[at] = (edit, tuple(sorted(also)))
-        # which cell answers: its edit on, every other off (the base itself: all off). What the server remembers of
-        # the conversation was worked out by the cell before: it must not be reused (a cell answered in the other's
-        # voice when it was).
-        _switch(at, [{"id": i, "scale": want[name]} for name, i in have.items()])
-        fresh = False
+    cell, fresh = (edit, tuple(sorted(also))), True
     for _ in range(8):
         try:
             if base == "bitnet":
                 text = "".join(f"{m['role'].capitalize()}: {m['content']}{END}" for m in messages) + "Assistant: "
-                out = _post(at + "/completion", {"prompt": text, "n_predict": max_new_tokens, "temperature": temperature,
-                                                 "stop": [END, "\nUser:", "<|end_of_text|>"], "cache_prompt": fresh})
+                out = _ask(member, at, cell, "/completion", {"prompt": text, "n_predict": max_new_tokens, "temperature": temperature,
+                                                             "stop": [END, "\nUser:", "<|end_of_text|>"], "cache_prompt": fresh}, max_new_tokens)
                 return out.get("content", "").split(END)[0].strip()
-            out = _post(at + "/v1/chat/completions", {"messages": messages, "max_tokens": max_new_tokens, "temperature": temperature,
-                                                      "top_p": 0.8 if temperature else 1.0, "top_k": 20 if temperature else 0, "cache_prompt": fresh,
-                                                      "chat_template_kwargs": {"enable_thinking": False}})
+            out = _ask(member, at, cell, "/v1/chat/completions", {"messages": messages, "max_tokens": max_new_tokens, "temperature": temperature,
+                                                                  "top_p": 0.8 if temperature else 1.0, "top_k": 20 if temperature else 0, "cache_prompt": fresh,
+                                                                  "chat_template_kwargs": {"enable_thinking": False}}, max_new_tokens)
             return (out["choices"][0]["message"].get("content") or "").strip()
         except urllib.error.HTTPError as e:
             fresh = True

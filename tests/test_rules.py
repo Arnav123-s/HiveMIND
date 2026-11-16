@@ -1801,6 +1801,44 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
     assert not solo.same("12 days", "13 days") and not solo.same("", "") and solo.same("httpx 0.28.1, 706 days ago", "706 days since 0.28.1 came out")
 
 
+def test_an_answer_to_a_task_of_several_parts_is_agreed_only_with_every_heading(tmp_path, monkeypatch):
+    """g28's practice: members wrote '# PART A' as a comment, two agreed on values printed with no heading, and the
+    agreed answer failed every part. Agreement counts only once an agreeing answer carries every heading."""
+    from team import parts, solo
+    task = parts.join(["Multiply 13 by 5.", "Write 'garden' backwards."])
+    bare = "# PART A\nprint(13 * 5)\n# PART B\nprint('garden'[::-1])"
+    headed = "print('PART A')\nprint(13 * 5)\nprint('PART B')\nprint('garden'[::-1])"
+    asked = []
+
+    def hive(replies, name, task=task):
+        left = list(replies)
+        monkeypatch.setattr(solo.llm, "chat", lambda who, msgs, **k: asked.append(msgs[-1]["content"]) or (lambda r: r if r == "DONE" else f"```python\n{r}\n```")(left.pop(0)))
+        return solo.run(task, tmp_path / name, "never", members=2), left
+
+    told = solo.form(task, "65\nnedrag")
+    assert "no line 'PART A' and no line 'PART B'" in told and "print('PART A')" in told   # every missing heading is named
+    assert not solo.whole(task, "65\nnedrag") and not solo.whole(task, "PART A\n65") and solo.whole(task, "PART A\n65\nPART B\nnedrag")
+    # two members agree on the values without headings and print none when asked again: no answer is given, though a
+    # third member is asked too; the headings are never put in by guessing
+    out, left = hive([bare, bare, "DONE"] * 2 + [bare, bare] + [bare, bare, "DONE", bare], "a")
+    assert not left and not out["agreed"] and out["tries"] == 3 and out["report"].startswith("Not confirmed")
+    assert sum("it has no headings" in a for a in asked) == 3                    # each member asked once, plainly
+    # asked once more, the member prints the headings: that is the agreed answer, read part by part
+    asked.clear()
+    out, left = hive([bare, bare, "DONE"] * 2 + [headed], "b")
+    assert not left and out["agreed"] and out["tries"] == 2
+    got = parts.of_answer(out["report"].split("\n## ")[0])
+    assert got == {"A": "65", "B": "nedrag"} and "# PART A prints nothing" in asked[-1]
+    # one of the two that agree carries every heading: its answer stands, nobody is asked again
+    asked.clear()
+    out, left = hive([headed, "DONE", bare, bare, "DONE"], "c")
+    assert not left and out["agreed"] and parts.of_answer(out["report"])["B"].startswith("nedrag")
+    assert not any("it has no headings" in a for a in asked)
+    # a task of one part is as before: two that agree without any heading are the answer
+    out, left = hive(["print(13 * 5)", "DONE", "print('13 times 5 is', 65)", "DONE"], "d", task="Multiply 13 by 5.")
+    assert not left and out["agreed"] and out["tries"] == 2 and solo.whole("Multiply 13 by 5.", "65")
+
+
 def test_where_the_members_agree_their_answer_and_files_are_the_runs(tmp_path, monkeypatch):
     from team import solo
     prog = "open('primes.txt', 'w').write('19 37')\nprint('Saved the 2 primes 19 and 37 in primes.txt')"

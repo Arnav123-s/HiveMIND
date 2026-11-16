@@ -120,9 +120,37 @@ def levels(now, folders):
     return out, {m: {str(k): v for k, v in sorted(by.items())} for m, by in sorted(seen.items())}
 
 
+def practice_kinds(old, folders, keep=0.5):
+    """{kind: [tries, body right, some member right]} over the generations' practice: this generation's practice.json
+    files added to the counts kept so far, those weighed by `keep` (each generation counts half as much as the one
+    after it). training/grow.edge_weights draws practice by it. Only kinds of a known shape, at most 64."""
+    out = {}
+    for k, c in (old or {}).items():
+        if isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k) and isinstance(c, list) and len(c) == 3 and all(isinstance(x, (int, float)) for x in c):
+            out[k] = [round(x * keep, 3) for x in c]
+    for folder in folders:
+        for f in sorted(Path(folder).rglob("practice.json")):
+            if f.stat().st_size > 500_000:
+                continue
+            try:
+                d = json.loads(f.read_text())
+            except ValueError:
+                continue
+            for t in (d.get("tasks") if isinstance(d, dict) else None) or []:
+                k = t.get("kind") if isinstance(t, dict) else None
+                if not (isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k)) or (k not in out and len(out) >= 64):
+                    continue
+                c = out.setdefault(k, [0, 0, 0])
+                c[0] += 1
+                c[1] += t.get("ok") is True
+                c[2] += t.get("some") is True or t.get("ok") is True
+    return {k: [round(x, 3) for x in c] for k, c in sorted(out.items())}
+
+
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
-    out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {}}
+    out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {},
+           "hard": [0, 0], "easy": [0, 0], "several": [0, 0]}
     for folder in folders:
         for f in sorted(Path(folder).rglob("*.json")):
             if f.stat().st_size > 2_000_000:
@@ -139,6 +167,13 @@ def arm(folders):
                 continue
             out["passed"], out["tasks"], out["minutes"], out["seeds"] = out["passed"] + passed, out["tasks"] + tasks, out["minutes"] + minutes, out["seeds"] + 1
             for t in d.get("tasks") or []:
+                # the hard kinds apart from the easy ones and the tasks of several parts (an exam task's id begins with
+                # h, e or c): the score moves only when a never-passed kind is learned, and those are mostly hard
+                tid = t.get("id") if isinstance(t, dict) else None
+                part = {"h": "hard", "e": "easy", "c": "several"}.get(tid[:1]) if isinstance(tid, str) and tid else None
+                if part:
+                    out[part][0] += t.get("ok") is True
+                    out[part][1] += 1
                 # passed and sat, kind by kind: what practice weighs to stay at the edge (training/grow.edge_weights).
                 # Only kinds of a known shape are kept: the name is text from another job.
                 k = t.get("kind") if isinstance(t, dict) else None
@@ -240,9 +275,11 @@ def gate(argv):
     practised = [argv[i + 1] for i, a in enumerate(argv) if a == "--practice" and i + 1 < len(argv)]
     lv_now = body.get("levels") if same_dna and isinstance(body.get("levels"), dict) else {}
     lv_next, lv_seen = levels(lv_now, practised) if practised else (lv_now, {})
+    kinds_now = body.get("kinds") if same_dna and isinstance(body.get("kinds"), dict) else {}
+    kinds_next = practice_kinds(kinds_now, practised) if practised else kinds_now
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
             "kept": keep, "why": why, "body_before": before, "body_after": after, "trial": trial, "grow": grow,
-            "trunk": trunk if keep and grow else "", "levels": lv_next if keep and grow else lv_now, "practice": lv_seen,
+            "trunk": trunk if keep and grow else "", "levels": lv_next if keep and grow else lv_now, "practice": lv_seen, "practice_kinds": kinds_next,
             "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
@@ -255,9 +292,11 @@ def gate(argv):
             # a generation whose merge failed keeps the trunk it had (of the same DNA); the levels move with practice
             body["trunk"] = trunk or (body.get("trunk", "") if same_dna else "")
             body["levels"] = lv_next
+            body["kinds"] = kinds_next
         elif not same_dna:
             body.pop("trunk", None)
             body.pop("levels", None)
+            body.pop("kinds", None)
         BODY.write_text(json.dumps(body) + "\n")
     # who in the body is strong on what, by organ, for trials of seating by it (HIVE_SEATING=strength); a body that
     # multiplies is not seated by it

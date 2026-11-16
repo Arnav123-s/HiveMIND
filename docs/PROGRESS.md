@@ -4,9 +4,11 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g27 of the 8B body passed 15 of 32 exam tasks (47%). The best so far on this DNA: g27, 15 of 32 (47%).
+**Now:** generation g34 of the 8B body passed 37 of 64 exam tasks (58%). The best so far on this DNA: g34, 37 of 64 (58%).
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
+
+![Hard kinds, easy kinds and tasks of several parts, passed](progress/parts.svg)
 
 ![The share of never-practised kinds it passed](progress/carry.svg)
 
@@ -18,9 +20,13 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
-- the weekday of a date
 - a unit conversion
-- a fact read from a source
-- a thing to know
-- scrape a page to a file
-- several facts fetched and laid out as a file
+- a simulation followed step by step
+- walk a site and count into a file
+- a number with given properties
+- a sum in words
+- operate a website
+
+## How hard its lessons are now
+
+Each record raises a kind's level when the body passes it 7 times in 10, and lowers it at 3 in 20: compound 2, h_join 0, h_log 0, h_search 0, m_percent 0, m_table 0.

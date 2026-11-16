@@ -19,7 +19,8 @@ def test_a_dream_tries_again_with_another_cell_beside_the_trunk_and_keeps_only_w
         sat.append(tid)
         return {"ok": len(sat) == 2, "seconds": 1}  # the first try fails, the second (another cell) is right
     monkeypatch.setattr(exam, "sit_one", sit_one)
-    monkeypatch.setattr(grow, "rows_of", lambda run, task, kind="", seed=None: [{"type": "first", "task": task, "run": str(run)}])
+    # rows_of gives rows from every try; here no member of the first try was right by the check, so it gives none
+    monkeypatch.setattr(grow, "rows_of", lambda run, task, kind="", seed=None: [{"type": "first", "task": task, "run": str(run)}] if str(run).endswith("_1") else [])
     monkeypatch.setattr(grow, "pair_rows", lambda *a, **k: [])
     monkeypatch.setenv("HIVE_ROTATE", "3")
     out = tmp_path / "rows.jsonl"
@@ -72,3 +73,15 @@ def test_every_child_reads_raw_data_and_answers_people_judged_and_dreams_try_twi
     assert '--read "$READ" --judged "$JUDGED"' in order  # a child grown on the Colab GPU reads as much as one grown here
     assert "grow.py dream" in flow and "--tries 2" in flow
     assert "--own-rows old.jsonl" in flow  # lessons count what the hive found itself
+
+
+def test_dreams_go_back_first_to_kinds_some_member_gets_right(tmp_path, monkeypatch):
+    """g33: dreams drew kinds never passed and corrected 0 of 10; they are drawn by the same weight as practice."""
+    failures = tmp_path / "failures.jsonl"
+    rows = [{"maker": "m_units", "rseed": f"u{i}", "kind": "within reach", "program": "p", "printed": ""} for i in range(5)]
+    rows += [{"maker": "m_units", "rseed": f"v{i}", "kind": "out of reach", "program": "p", "printed": ""} for i in range(45)]
+    failures.write_text("\n".join(json.dumps(x) for x in rows) + "\n")
+    taken = []
+    monkeypatch.setattr(exam, "remake", lambda maker, rseed, level=0, parts=None: taken.append(rseed) or None)
+    grow.dream(1, 4, failures, tmp_path / "o.jsonl", log=lambda *a, **k: None, weights={"within reach": 1.0, "out of reach": 0.01})
+    assert len(taken) == 4 and sum(t.startswith("u") for t in taken) >= 3  # 5 of 50 failures, most of the dreams

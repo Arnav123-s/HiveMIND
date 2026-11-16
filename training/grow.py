@@ -3,9 +3,9 @@
     practice  ->  rows  ->  every cell regrown from the rows  ->  gate  ->  the body's next generation
 
 practice   Fresh tasks that are never an exam's (seeds from ten million up; the exam's held-out kinds are never
-           practised). The body's own cells do them as they do any task (team/solo.py). A task counts only when two
-           cells agreed AND the task's own check, computed by code, confirms the answer.
-rows       From each such task, what the cell that got it right wrote: the task -> its final program, the
+           practised). The body's own cells do them as they do any task (team/solo.py). Each cell's own answer is
+           put to the task's own check, computed by code (training/exam.each_member).
+rows       From each cell whose own answer the check confirms, agreed with or not: the task -> its final program, the
            program's output -> DONE, and, where it first failed, the failure -> the mended program. Nobody labelled
            anything: the label is that the program ran and its answer was checked.
 train      Every cell is grown again from the same DNA (Ternary-Bonsai-1.7B, 0.43 GB packed, the smallest ternary
@@ -42,16 +42,99 @@ RELEASE = "hive-grown"  # the GitHub release that holds the rows and the weight 
 
 
 # ---- rows ------------------------------------------------------------------------------------------------------------
-def rows_of(run, task, kind="", seed=None):
-    """The training rows of one task that two members agreed on and the check confirmed. run: the task's folder."""
-    from team import solo
-    home = Path(run) / "members" if (Path(run) / "members" / "members.json").exists() else Path(run)
+def _home(run):
+    """The folder of a task's members' own files (member{n}.json, members.json): run/members, or run itself."""
+    return Path(run) / "members" if (Path(run) / "members").is_dir() else Path(run)
+
+
+def _number(f):
+    """The member's number in its file's name: member3.json -> 3."""
+    return int(re.sub(r"\D", "", Path(f).stem))
+
+
+def checked(run, home=None):
+    """{member number: ok}: each member's own answer put to the task's own check (exam.json "members", written by
+    training/exam.each_member), tied to its member{n}.json by number. None when the task has no such verdicts.
+    A verdict written before each was tied to its file (generation 28 and earlier: {"who", "ok"} only) is tied by
+    the member's name, and only where exactly one file and one verdict carry that name: never by order, since the
+    order the verdicts were written in is not the order of the numbers (member10.json sorts before member2.json)."""
+    home = Path(home) if home else _home(run)
     try:
-        info = json.loads((home / "members.json").read_text())
-    except (OSError, ValueError):
+        verdicts = json.loads((Path(run) / "exam.json").read_text()).get("members")
+    except (OSError, ValueError, AttributeError):
+        return None
+    if not isinstance(verdicts, list):
+        return None
+    files = {}
+    for f in home.glob("member[0-9]*.json"):
+        try:
+            t = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        files[_number(f)] = str(t.get("who") or "")[:80] if isinstance(t, dict) else ""
+    named = [v.get("who") for v in verdicts if isinstance(v, dict) and not isinstance(v.get("member"), int)]
+    out = {}
+    for v in verdicts:
+        if not isinstance(v, dict):
+            continue
+        n = v.get("member")
+        if not isinstance(n, int) or isinstance(n, bool):
+            who = v.get("who")
+            mine = [k for k, w in files.items() if who and w == who]
+            n = mine[0] if len(mine) == 1 and named.count(who) == 1 else None
+        if n is not None:
+            out[n] = out.get(n, False) or v.get("ok") is True
+    return out
+
+
+def taught(run, home=None):
+    """The members whose programs become rows. Every member whose own answer the task's check confirms wrote a right
+    program, whether or not another agreed with it: agreement is not the check. Generation 28's practice (80 of its
+    100 tasks in hand): 3 failed tasks had a member the check confirmed (c10002802_02's first member was right while
+    the other two disagreed), 9 right members of passed tasks were left out because two others had agreed, and one
+    member taught for agreeing was refused by the check. Without per-member verdicts (a run made before exam.json
+    kept them, or a task not sat as an exam: team/engram), the old rule: the members that agreed, on a task the
+    check passed."""
+    home = Path(home) if home else _home(run)
+    said = checked(run, home)
+    if said is not None:
+        return sorted(n for n, ok in said.items() if ok)
+    exam = Path(run) / "exam.json"
+    try:
+        passed = exam.exists() and json.loads(exam.read_text()).get("ok") is True
+    except (OSError, ValueError, AttributeError):
+        passed = False
+    if exam.exists() and not passed:
         return []
+    try:
+        return [n for n in json.loads((home / "members.json").read_text()).get("agreeing", []) if isinstance(n, int)]
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def once(rows):
+    """Each row once: two members that wrote the same program for the same task make the same row, and the same row
+    twice is the same lesson weighed double."""
+    seen, out = set(), []
+    for r in rows:
+        key = json.dumps([r.get("type"), r.get("messages"), r.get("output"), r.get("rejected")], sort_keys=True)
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
+def rows_of(run, task, kind="", seed=None):
+    """The training rows of one task: from every member whose own answer the task's check confirmed (taught), whether
+    or not the whole task was right. run: the task's folder."""
+    from team import solo
+    home = _home(run)
+    try:
+        agreeing = json.loads((home / "members.json").read_text()).get("agreeing", [])
+    except (OSError, ValueError, AttributeError):
+        agreeing = []
     out = []
-    for n in info.get("agreeing", []):
+    for n in taught(run, home):
         try:
             t = json.loads((home / f"member{n}.json").read_text())
         except (OSError, ValueError):
@@ -63,7 +146,8 @@ def rows_of(run, task, kind="", seed=None):
         day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", ms[0]["content"])
         head = [{"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}, ms[1]]
         fenced = f"```python\n{program}\n```"
-        base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n}
+        # agreed: whether this member was one of those that agreed (False: a right member the old rule left out)
+        base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n, "agreed": n in agreeing}
         out.append(base | {"type": "first", "messages": head, "output": fenced})
         out.append(base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
                                                                  {"role": "user", "content": f"OUTPUT:\n{t['answer'][-1800:]}\n\n{solo.MORE}"}], "output": "DONE"})
@@ -74,36 +158,40 @@ def rows_of(run, task, kind="", seed=None):
                     and solo.extract_code(a["content"]).strip() != program and len(a["content"]) < 5000 and len(fb["content"]) < 3000:
                 out.append(base | {"type": "fix", "messages": head + [a, fb], "output": fenced})
                 break
-    return out
+    return once(out)
 
 
 def pair_rows(run, task, kind="", seed=None, most=4):
-    """Rows that set a right program beside a wrong one written for the same task, from a task the check confirmed.
-    The right one is what two members agreed on; the wrong ones are the members' first programs that did not give
-    that answer (sent back with an error, or a different result). Trained with --pairs (Iterative Reasoning
+    """Rows that set a right program beside a wrong one written for the same task. The right one is that of a member
+    whose own answer the check confirmed (taught); the wrong ones are the first programs of the other members that
+    are none of the right programs (sent back with an error, or a different result). A member the check confirmed is
+    never the rejected one: what the check passed is not taught as wrong. Trained with --pairs (Iterative Reasoning
     Preference Optimization: DPO with a likelihood term, Pang et al. 2024), the cell learns what makes a program
     wrong as well as what a right one looks like; training only on right answers tends to memorise them (Chu et al.
     2025, "SFT memorizes, RL generalizes"). Used only with --pairs, until a gate has shown it helps."""
     from team import solo
-    home = Path(run) / "members" if (Path(run) / "members" / "members.json").exists() else Path(run)
-    try:
-        info = json.loads((home / "members.json").read_text())
-    except (OSError, ValueError):
-        return []
+    home = _home(run)
     tries = {}
     for f in sorted(home.glob("member[0-9]*.json")):
         try:
-            tries[int(re.sub(r"\D", "", f.stem))] = json.loads(f.read_text())
+            tries[_number(f)] = json.loads(f.read_text())
         except (OSError, ValueError):
             continue
-    win = next((tries[n] for n in info.get("agreeing", []) if n in tries and (tries[n].get("program") or "").strip()), None)
+    right = [n for n in taught(run, home) if n in tries]
+    win = next((tries[n] for n in right if (tries[n].get("program") or "").strip()), None)
     if not win or len(win.get("messages") or []) < 3 or len(win["program"]) > 6000:
         return []
     ms, program = win["messages"], win["program"].strip()
     day = re.search(r"Today is (\d{4}-\d\d-\d\d \(\w+\))", ms[0]["content"])
     head = [{"role": "system", "content": solo.SHORT.format(today=day.group(1) if day else time.strftime("%Y-%m-%d (%A)"))}, ms[1]]
-    out, seen = [], {program}
+    # every program a right member ended with is right: none of them is set down as the wrong one
+    out, seen = [], {(tries[n].get("program") or "").strip() for n in right}
+    # with the check's own verdict on each member, only members it did not confirm give wrong programs; without it (a
+    # run from before the verdicts were kept), as before: any first program that was not the agreed one
+    confirmed = set(right) if checked(run, home) is not None else set()
     for n, t in sorted(tries.items()):
+        if n in confirmed:
+            continue
         tm = t.get("messages") or []
         if len(tm) < 3 or tm[2].get("role") != "assistant":
             continue
@@ -163,12 +251,31 @@ def _dna():
         return "t80"
 
 
-def edge_weights(dna="t17", last=3, record=None):
+def edge_weights(dna="t17", last=3, record=None, body=None):
     """{kind: weight} for practice at the edge: the more a kind sits near half passed, the more it is practised.
     A kind always passed is learned; one never passed gives no right program to learn from and no right-against-
     wrong pair yet. p is the body's pass rate on the kind over the last `last` gates of this DNA (with one pass and
     one failure added, so a kind seen twice is not taken as settled), and the weight is p(1 - p), the most at
-    one half. As the body gets better, easy kinds drop out of practice and harder ones come in by themselves."""
+    one half. As the body gets better, easy kinds drop out of practice and harder ones come in by themselves.
+
+    Where the body's own practice has been counted kind by kind (cells/body.json "kinds", grow_record.practice_kinds),
+    the weight is s(1 - f) instead: s how often some member is right on the kind, f how often the body is. It is high
+    exactly where practice makes a new right row. p(1 - p) gave a kind passed 2 of 2 and one passed 0 of 2 the same
+    weight, so half the practice went to kinds already learned (agent C, 2026-11-16): each kind is passed either always
+    or never, and only a never-passed kind that some member gets right sometimes can move."""
+    try:
+        b = json.loads(Path(body).read_text()) if body else json.loads((ROOT / "cells" / "body.json").read_text())
+    except (OSError, ValueError):
+        b = {}
+    counts = b.get("kinds") if isinstance(b, dict) and b.get("dna") == dna and isinstance(b.get("kinds"), dict) else {}
+    if counts:
+        out = {}
+        for k, c in counts.items():
+            if isinstance(c, list) and len(c) == 3 and all(isinstance(x, (int, float)) for x in c):
+                tries, right, some = c
+                out[k] = ((some + 1) / (tries + 2)) * (1 - (right + 1) / (tries + 2))
+        if out:
+            return out
     rec = Path(record or ROOT / "training" / "reports" / "generations.jsonl")
     lines = []
     for ln in (rec.read_text().splitlines() if rec.exists() else []):
@@ -213,8 +320,9 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
             log(f"time is up after {len(passed)} of {n} tasks: practice ends here", flush=True)
             break
         r = E.sit_one(f"practice_{seed}", tid, task, check, home, kind=kind)
-        new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
-        new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed) if r["ok"] else []
+        # rows from every member the task's check confirmed, even where the hive's answer was not right (taught)
+        new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
+        new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         if os.environ.get("HIVE_FORESEE") == "1":
             new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         with open(out, "a") as f:
@@ -223,10 +331,15 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
         made, right = made + sum(x["type"] not in ("foresee", "pair") for x in new), right + r["ok"]
         if not r["ok"]:
             remember_failure(E.RUNS / f"practice_{seed}" / tid, task, kind, check, r, out.with_name("failures.jsonl"))
-        passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"])})
+        # and, kind by kind, whether the body was right and whether some member was (training/grow_record.practice_kinds):
+        # practice is drawn where some member is right and the body is not, the only place it makes a new right row
+        some = any(isinstance(m, dict) and m.get("ok") is True for m in r.get("members") or [])
+        passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"]), "kind": kind, "some": some})
         # what was passed at which level, for the record to move the levels by (training/grow_record.levels)
         out.with_name("practice.json").write_text(json.dumps({"seed": seed, "tasks": passed}))
-        log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows", flush=True)
+        beyond = sum(x["type"] == "first" and x.get("agreed") is False for x in new)
+        log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows"
+            + (f", {beyond} of the right members not among those that agreed" if beyond else ""), flush=True)
     return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)}
 
 
@@ -282,7 +395,7 @@ DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. Th
          "Find the mistake in that program, then write the whole corrected program.")
 
 
-def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
+def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
@@ -303,7 +416,14 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
         return {"dream": seed, "tasks": 0, "right": 0, "rows": 0}
     r = random.Random(f"dream:{seed}")
     recent = seen[-400:]
-    pick = r.sample(recent, min(n, len(recent)))
+    # the failures of kinds where some member is right now and then, and the body is not, first (the same weight as
+    # practice: edge_weights). Generation 33's dreams took mostly kinds never passed (several parts, modules, facts on
+    # the open web) and corrected 0 of 10 in two tries each; lessons start those kinds, dreams finish the ones begun.
+    w = weights if weights is not None else edge_weights(_dna())
+    pick, pool = [], list(recent)
+    while pool and len(pick) < n:
+        i = r.choices(range(len(pool)), weights=[max(0.01, w.get(f.get("kind", ""), 0.25)) for f in pool])[0]
+        pick.append(pool.pop(i))
     os.environ.setdefault("AGENT_TEAM_SOLO", "2")
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
@@ -320,6 +440,7 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
         text = DREAM.format(task=task, program=f["program"][:5000], printed=(f.get("printed") or "nothing")[:600], said=f.get("said", ""))
         was = os.environ.get("HIVE_ROTATE")
         turn = int(was) if (was or "").isdigit() else 0
+        new = []
         for k in range(max(1, int(tries))):
             tid = f"d{seed}_{i:02d}" + (f"_{k}" if k else "")
             if k:  # another cell beside the trunk on each try after the first
@@ -331,13 +452,14 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2):
                     os.environ.pop("HIVE_ROTATE", None)
                 else:
                     os.environ["HIVE_ROTATE"] = was
+            # every try's members the check confirmed are rows, the tries that failed as a whole too (taught):
+            # generation 28's dreams had 2 failed tries with a member the check confirmed
+            new += rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
             if res["ok"] or (minutes and time.time() - born > minutes * 60):
                 break
-        new = []
-        if res["ok"]:
-            new = rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
-            for row in new:
-                row["dream"] = True
+        new = once(new)
+        for row in new:
+            row["dream"] = True
         with open(out, "a") as fo:
             for row in new:
                 fo.write(json.dumps(row) + "\n")
@@ -371,7 +493,8 @@ def gather(out, gen, old=(), new=(), log=print):
 
 
 def rows_from(folders, out):
-    """Rows from sittings that were already done: every task folder with an exam.json that says ok."""
+    """Rows from sittings that were already done: every task folder with an exam.json, with rows from the members
+    its check confirmed (taught; in a sitting from before the verdicts were kept, only a task that says ok)."""
     made = 0
     with open(out, "a") as f:
         for folder in folders:
@@ -381,7 +504,7 @@ def rows_from(folders, out):
                 except ValueError:
                     continue
                 task = (ex.parent / "members" / "TASK.md")
-                if r.get("ok") and task.exists():
+                if isinstance(r, dict) and task.exists():
                     t = task.read_text().strip()
                     for row in rows_of(ex.parent, t) + pair_rows(ex.parent, t):
                         f.write(json.dumps(row) + "\n")
@@ -462,6 +585,25 @@ class _Prefix:
             self.key, self.skip = None, False
 
 
+def shorten(messages, keep):
+    """The messages with the middle of the longest earlier program cut out (an assistant turn after the task), keeping
+    `keep` of its lines: the first ones and the last ones, and a line that says how many were left out. The messages
+    themselves when there is no earlier program to cut. Only for context a row shows before its answer."""
+    turns = [i for i, m in enumerate(messages) if i >= 2 and m.get("role") == "assistant"]
+    if not turns:
+        return messages
+    i = max(turns, key=lambda j: len(messages[j]["content"]))
+    lines = messages[i]["content"].splitlines()
+    n = max(6, int(len(lines) * keep))
+    if len(lines) <= n + 2:
+        return messages
+    head, tail = lines[:n * 2 // 3], lines[len(lines) - (n - n * 2 // 3):]
+    cut = len(lines) - len(head) - len(tail)
+    fence = ["```"] if lines[0].startswith("```") and not tail[-1].startswith("```") else []
+    text = "\n".join(head + [f"# ... ({cut} lines of this program left out) ..."] + tail + fence)
+    return [dict(m) for m in messages[:i]] + [dict(messages[i], content=text)] + [dict(m) for m in messages[i + 1:]]
+
+
 def slice_rows(rows, k, n):
     """Slice k of n of the rows: each row in exactly one slice, chosen by its content (the same row in the same slice on
     every runner, whatever order the rows come in)."""
@@ -469,6 +611,81 @@ def slice_rows(rows, k, n):
     if not 0 <= k < n:
         raise ValueError(f"slice {k} of {n}: k must be from 0 to n - 1")
     return [r for r in rows if zlib.crc32(json.dumps([r["messages"][1:], r["output"]], sort_keys=True).encode()) % n == k]
+
+
+class Study:
+    """Which row a cell trains on next. Each kind of task is passed either always or never, and the rows a cell has
+    already learned cost passes and teach nothing (g28code's loss went 0.096 -> 0.048 on rows mostly of kinds it
+    passed): the passes go where the error is. The rows are sorted into subjects (kind of task, type of row, new this
+    generation or not, the cell's own organ or not). Each pass picks a subject with odds max(its loss, FLOOR), times
+    OWN for the cell's own organ, and trains on that subject's next row (its rows shuffled, cycled). A subject's loss
+    is the mean of its last three. A subject not measured yet counts 1.0 and is met before any measured one, so the
+    first sweep meets every subject (rehearsing old work too) without waiting on luck. A row is met at most MOST
+    times; a subject with none left drops out. Raw text ("read") and judged pairs ("judged") keep a fixed SHARE of
+    the passes each instead: their loss does not say what is left to learn."""
+    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.10, ("read", "judged")
+
+    def __init__(self, subjects, own=(), rng=None, most=None, weight=None):
+        self.rng = rng or random.Random(0)
+        self.most = self.MOST if most is None else most
+        self.weight = self.OWN if weight is None else float(weight)
+        self.own = set(own)
+        self.queue, self.rows, self.passes, self.losses, self.first = {}, {}, {}, {}, {}
+        for s, idx in subjects.items():
+            if not idx:
+                continue
+            q = []
+            for _ in range(self.most):  # each round of a subject's rows in its own order
+                r = list(idx)
+                self.rng.shuffle(r)
+                q += r
+            self.queue[s], self.rows[s], self.passes[s], self.losses[s] = q[::-1], len(idx), 0, []
+        self.n = 0
+
+    def loss(self, s):
+        h = self.losses[s][-3:]
+        return sum(h) / len(h) if h else 1.0
+
+    def odds(self, s):
+        return max(self.loss(s), self.FLOOR) * (self.weight if s in self.own else 1.0)
+
+    def pick(self):
+        """(subject, row index), or None when every row has been met MOST times."""
+        alive = [s for s, q in self.queue.items() if q]
+        if not alive:
+            return None
+        rest = [s for s in alive if s not in self.FIXED]
+        s = next((f for f in self.FIXED if f in alive and self.passes[f] < self.SHARE * (self.n + 1)), None)
+        if s is None:
+            fresh = [x for x in rest if not self.losses[x]]
+            pool = fresh or rest or alive
+            s = self.rng.choices(pool, weights=[self.odds(x) for x in pool])[0]
+        self.passes[s] += 1
+        self.n += 1
+        return s, self.queue[s].pop()
+
+    def learned(self, s, loss):
+        if s not in self.first:
+            self.first[s] = loss
+        self.losses[s].append(float(loss))
+
+    def table(self):
+        return [{"subject": s, "rows": self.rows[s], "passes": self.passes[s],
+                 "loss_first": round(self.first[s], 4) if s in self.first else None,
+                 "loss_last": round(self.loss(s), 4) if self.losses[s] else None}
+                for s in sorted(self.rows, key=lambda x: -self.passes[x])]
+
+
+def lr_share(p):
+    """The learning rate's share at `p` of the training done (of its time, or of its passes): a warm-up over the
+    first 5%, then a straight fall to 5% at the end."""
+    p = min(max(p, 0.0), 1.0)
+    return max(0.01, p / 0.05) if p < 0.05 else max(0.05, 1.05 - p)
+
+
+def subject(row, new=False, own=False):
+    """The subject a row is studied under (Study): kind of task, type of row, new to the line or not, own organ or not."""
+    return " · ".join([row.get("kind") or "?", row.get("type") or "row"] + ["new"] * bool(new) + ["own"] * bool(own))
 
 
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
@@ -482,7 +699,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     as its parent pulled `pull` of the way toward it, so every line of descent stays part of one body.
     parent_cell: the parent's name; what that cell (and the trunk) got wrong in practice, set beside the program
     that was right, is taught to the child as a correction. gen: this generation's name; its rows are new to the
-    whole line and are met `fresh` times as often as the rows the parent already learned from.
+    whole line and are studied as subjects of their own (Study). epochs: the passes over the rows when no `minutes`
+    are given; with `minutes` the cell trains until the time is up. weight: how much more the cell's own organ
+    weighs in the pick of the next subject. fresh: no longer used (the Study's loss rule replaced the copies).
     shard: "k/n", this runner's slice of the rows (each row in one slice, by its content): a child is grown on n
     runners at once, each from the same start on its own slice, and their edits are averaged into the child
     (training/merge.py join). Generation 28's children got through a third of their rows in their time; n runners
@@ -630,6 +849,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     def encode(row):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
         t = tok(row["output"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
+        if len(p) + len(t) > max_len and not row.get("rejected"):
+            # A row that does not fit loses the middle of an earlier program it shows (its context, not what is taught):
+            # g28's rows lost 38 of 767 this way, 23 of the 73 rows of modules, almost all "fix" and "done" rows that
+            # carry a whole earlier program before the answer. What is taught (the answer) is never cut.
+            for keep in (0.6, 0.35, 0.15):
+                short = shorten(row["messages"], keep)
+                if short is row["messages"]:
+                    break
+                p = tok(tok.apply_chat_template(short, tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
+                if len(p) + len(t) <= max_len:
+                    break
         if len(p) + len(t) > max_len:
             return None
         if row.get("rejected"):
@@ -638,27 +868,31 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
             return None if 2 * len(p) + len(t) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
         return (torch.tensor([p + t]), len(t))
-    data, mine, new_rows, long = [], 0, 0, 0
+    # Each row once, sorted into its subject (Study): what is trained on next is picked by where the error is, no
+    # longer by copies of a row. The cell's own organ weighs `weight` (3) times in that pick: every cell learns all
+    # of the hive's checked work (so any two can check each other), each one its own part best. This generation's
+    # rows and its parent's corrected mistakes (new to the whole line) are subjects of their own, so the first sweep
+    # meets them, and they keep passes for as long as their loss is high. `fresh` is no longer used.
+    data, tags, own_subjects, mine, new_rows, long = [], [], set(), 0, 0, 0
     for row in rows:
         d = encode(row)
         if d is None:
             long += 1
             continue
-        # a cell that leans to an organ meets that organ's rows `weight` times as often as the others: every cell
-        # learns all of the hive's checked work (so any two can check each other), each one its own part best
         own = bool(lean) and ternary.organ(row["task"]) == lean
-        # this generation's rows, and its parent's corrected mistakes, are new to the whole line of descent: met
-        # `fresh` times as often as rows the parent already learned from (a child inherits those with its start)
         new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
-        data += [d] * min(6, (weight if own else 1) * (fresh if new else 1))
+        data.append(d)
+        tags.append(subject(row, new, own))
+        if own:
+            own_subjects.add(tags[-1])
         mine += own
         new_rows += new
     if limit:
-        data = data[:limit]
+        data, tags = data[:limit], tags[:limit]
     if lean:
-        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, each met {weight} times", flush=True)
+        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, weighed {weight} times in the pick", flush=True)
     if gen or mend:
-        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected), each met {fresh} times as often", flush=True)
+        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected), each a subject of its own", flush=True)
     if long:
         log(f"{long} rows are longer than {max_len} pieces and are left out", flush=True)
     judged_used = 0
@@ -670,6 +904,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             d = encode(row)
             if d is not None:
                 data.append(d)
+                tags.append("judged")
                 judged_used += 1
         log(f"judged: {judged_used} pairs of answers people voted on", flush=True)
     read_used = 0
@@ -695,6 +930,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         model.train()
         chosen = raw.pick(scored, read)
         data += chosen
+        tags += ["read"] * len(chosen)
         read_used = len(chosen)
         if scored:
             ls = sorted(l for l, _ in scored)
@@ -738,30 +974,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 os._exit(3)
     import threading
     threading.Thread(target=watch, daemon=True).start()
-    if minutes and data:
-        # Runners differ in speed by several times. One row is timed, and the passes are cut to what fits the time
-        # given (a job that runs out of time leaves nothing behind). A row of middling length: the longest one is
-        # where a machine short of memory stalls, and the plan is made from the mean anyway.
-        t = time.time()
-        with cast():
-            big = sorted(data, key=lambda d: d[0].shape[1])[len(data) // 2]
-            model(input_ids=big[0].to(dev), logits_to_keep=big[1] + 1).logits.float().mean().backward()
-        model.zero_grad()
-        per = (time.time() - t) * (sum(d[0].shape[1] for d in data) / len(data)) / big[0].shape[1]
-        fit = minutes * 60 / max(per, 1e-3) / len(data)
-        log(f"one row of mean length takes about {per:.1f} s; {minutes} minutes hold {fit:.2f} passes over {len(data)} rows", flush=True)
-        if fit < epochs:
-            epochs = max(0.25, round(fit, 2))
-            log(f"passes cut to {epochs}", flush=True)
+    # The passes are not planned ahead from one timed row any more: the loop runs until the time is up, or until
+    # every row has been met Study.MOST times, or (with no time given, as in tests) for len(data) x epochs passes;
+    # which row comes next is the Study's pick, and the learning rate follows the share of the time used.
+    by = {}
+    for j, s in enumerate(tags):
+        by.setdefault(s, []).append(j)
+    study = Study(by, own_subjects, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight)
+    passes = len(data) * study.most if minutes else min(int(len(data) * epochs), len(data) * study.most)
+    log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ x{weight:g}, read and judged "
+        f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
-    steps = math.ceil(len(data) * epochs / accum)
-    sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / max(1, steps // 10)) * max(0.05, 1 - s / max(1, steps)))
-    order = []
-    while len(order) < len(data) * epochs:
-        perm = list(range(len(data)))
-        random.shuffle(perm)
-        order += perm
-    order = order[:int(len(data) * epochs)]
     try:
         import ctypes
         trim = ctypes.CDLL("libc.so.6").malloc_trim
@@ -771,20 +994,48 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # not with recomputation (checkpoint): a layer recomputed on the way back would be fed the wrong input
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
               if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
-    t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
-    for i, idx in enumerate(order):
+    t0, running, step, hist, paired, i, held = time.time(), 0.0, 0, [], 0, 0, 0
+    budget = max(1.0, minutes * 60 - (t0 - born)) if minutes else 0
+
+    def done_share():
+        return max(i / max(1, passes), (time.time() - t0) / budget if minutes else 0.0)
+
+    def update():
+        nonlocal running, step, held
+        torch.nn.utils.clip_grad_norm_(params, 1.0)
+        p = done_share()
+        for g in opt.param_groups:
+            g["lr"] = lr * lr_share(p)
+        opt.step()
+        opt.zero_grad()
+        if trim:
+            trim(0)
+        step += 1
+        hist.append(round(running / held, 4))
+        running, held = 0.0, 0
+        if step % 5 == 0:
+            import resource
+            on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
+            log(f"step {step} ({p:.0%} done, {sum(1 for q in study.queue.values() if q)} subjects left) loss {hist[-1]:.4f} "
+                f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+    while i < passes:
         if minutes and time.time() - born > minutes * 60:
-            # The plan was made from one timed row; a runner can fall behind it. Two trials were lost on 2026-11-14
-            # because their jobs ran into the time limit with nothing saved. Now the cell stops here and is kept.
-            log(f"time is up after {i} of {len(order)} rows: the cell is saved as it is", flush=True)
-            order = order[:i]
+            # Two trials were lost on 2026-11-14 because their jobs ran into the time limit with nothing saved: the
+            # cell stops here and is kept.
+            log(f"time is up after {i} passes: the cell is saved as it is", flush=True)
             break
+        got = study.pick()
+        if got is None:
+            log(f"every row has been met {study.most} times, after {i} passes", flush=True)
+            break
+        s, idx = got
         ids, k = data[idx][:2]
         ids = ids.to(dev)
-        beat["t"], beat["what"] = time.time(), f"row {i + 1} of {len(order)} ({ids.shape[1]} pieces)"
+        beat["t"], beat["what"] = time.time(), f"pass {i + 1} ({s}, {ids.shape[1]} pieces)"
         with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
+        plain = loss.item()  # what the subject is measured by: the error on the right answer (a pair's DPO term starts near 0.69 whatever is known)
         if len(data[idx]) == 4:
             # a right and a wrong program for the same task: DPO, with the plain loss on the right one kept beside it
             # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
@@ -804,21 +1055,19 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             paired += 1
         (loss / accum).backward()
         running += loss.item()
-        if (i + 1) % accum == 0 or i == len(order) - 1:
-            torch.nn.utils.clip_grad_norm_(params, 1.0)
-            opt.step()
-            sched.step()
-            opt.zero_grad()
-            if trim:
-                trim(0)
-            step += 1
-            n = accum if (i + 1) % accum == 0 else (i + 1) % accum
-            hist.append(round(running / n, 4))
-            running = 0.0
-            if step % 5 == 0 or step == steps:
-                import resource
-                on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
-                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+        held += 1
+        study.learned(s, plain)
+        i += 1
+        if held == accum:
+            update()
+    if held:
+        update()
+    subjects = study.table()
+    width = max([len(x["subject"]) for x in subjects] + [7])
+    log(f"{'subject':<{width}} rows passes  first   last", flush=True)
+    for x in subjects:
+        f_, l_ = x["loss_first"], x["loss_last"]
+        log(f"{x['subject']:<{width}} {x['rows']:>4} {x['passes']:>6} {'-' if f_ is None else f'{f_:.3f}':>6} {'-' if l_ is None else f'{l_:.3f}':>6}", flush=True)
     beat["on"] = False
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
@@ -834,11 +1083,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if prefix:
         log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB{' on disk' if prefix.folder else ''})", flush=True)
         prefix.done()
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, i), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "passes": i, "epochs": round(i / max(1, len(data)), 2), "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
-            "gpu": torch.cuda.get_device_name(0) if gpu else ""}
+            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     where = Path(out_dir or ternary.ADAPTERS)

@@ -202,13 +202,24 @@ def form(task, answer):
     got = several.of_answer(answer)
     missing = [k for k in asked if k not in got]
     if missing:
+        # every missing heading is named, and where it goes: in g28's practice the members wrote "# PART A" as a
+        # comment, which prints nothing, and one told only of 'PART A' printed that and still left out 'PART B'
         return (f"The TASK asks for each part's answer under its own heading, each heading alone on its line: "
-                f"{', '.join(repr('PART ' + k) for k in asked)}. Your output has no line {'PART ' + missing[0]!r}.")
+                f"{', '.join(repr('PART ' + k) for k in asked)}. Your output has no line "
+                f"{' and no line '.join(repr('PART ' + k) for k in missing)}. A comment such as # PART {missing[0]} prints "
+                f"nothing: the program must print('PART {missing[0]}') just before that part's answer.")
     for k, t in asked.items():
         wrong = _form(t, got[k])
         if wrong:
             return f"Under the heading 'PART {k}': " + wrong.replace("The TASK asks", "that part asks").replace("Your output has", "What you printed there has")
     return ""
+
+
+def whole(task, answer):
+    """Does the answer carry the heading of every part the task has (team/parts.py)? Always so for a task of one part.
+    The exam reads each part from under its heading: without it the part fails, whatever its values."""
+    from . import parts as several
+    return set(several.of_task(task)) <= set(several.of_answer(answer))
 
 
 def _form(task, answer):
@@ -467,7 +478,44 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
     return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
-            "who": who, "messages": messages, "hints": helped}
+            "who": who, "messages": messages, "hints": helped, "temperature": temperature, "also": list(also)}
+
+
+def headings(task, t, n, board, guard):
+    """Ask member n once more, plainly, for the program that prints every part's heading, when its answer to a task of
+    several parts agreed with another's without them. Its answer is replaced only by one that carries them all; the
+    headings are never put in by guessing which printed line belongs to which part."""
+    from . import parts as several
+    asked = list(several.of_task(task))
+    t["asked"] = True
+    stop.check()
+    messages = t["messages"]
+    if messages and messages[-1]["role"] == "user":  # what it was last told and did not act on: the plain ask takes its place
+        messages.pop()
+    messages.append({"role": "user", "content": (
+        f"OUTPUT:\n{t['answer'][-1800:]}\n\nThat output is not an answer to the TASK yet: it has no headings. The TASK has "
+        f"{len(asked)} parts, and the output must show each part's heading printed alone on its own line, with that part's "
+        f"answer on the lines below it. A comment such as # PART A prints nothing. Reply with the complete program, with "
+        + ", ".join(f"print('PART {k}') just before the lines of part {k}'s answer" for k in asked) + ".")})
+    board.log(f"member{n}", "asked", "agreed without the headings of the parts: asked once more for them")
+    if t["who"] == "coder":
+        reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=t.get("temperature", 0.0))
+    else:
+        reply = ternary.chat(t["who"], messages, max_new_tokens=LONG, temperature=t.get("temperature", 0.0), also=tuple(t.get("also", ())))
+    code = extract_code(reply)
+    if typed_out(reply, code) or not code.strip() or not guard.check_code("coder", code):
+        return
+    res = run_python(code, t["work"], name=f"member{n}_{t['turns'] + 1}.py")
+    out = res["stdout"].strip()
+    messages += [{"role": "assistant", "content": f"```python\n{code}\n```"}, {"role": "user", "content": f"OUTPUT:\n{out[-1800:]}"}]
+    board.log(f"member{n}", "run", f"asked again: exit {res['returncode']}, printed {len(out)} characters")
+    if res["returncode"] == 0 and whole(task, out):
+        t.update(answer=out[-3000:], program=code, turns=t["turns"] + 1)
+
+
+def agreeing(tries, task):
+    """The pairs of members whose answers agree (same()), the earlier member first."""
+    return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if same(x["answer"], y["answer"], task)]
 
 
 def run(task, run_dir=None, approve="never", members=2):
@@ -501,9 +549,23 @@ def run(task, run_dir=None, approve="never", members=2):
         # the whole exchange is kept: where the task's check later confirms the answer, it is what the hive's own
         # members are taught from (training/grow.py)
         (home / f"member{n}.json").write_text(json.dumps(t))
-        like = [x for x in tries[:-1] if same(x["answer"], t["answer"], task)]
-        if like:
-            agreed = next((x for x in (like[0], t) if not form(task, x["answer"])), like[0])  # of two that agree, the one that keeps the form asked for
+        pairs = agreeing(tries, task)
+        if pairs and not any(whole(task, x["answer"]) for p in pairs for x in p):
+            # Seen in g28's practice: two members agreed on the values of a task of several parts, printed with no
+            # 'PART A' heading (they wrote "# PART A" as a comment), and the agreed answer failed every part, values
+            # right or not. Values that agree are no answer the exam can read until one of them carries every heading:
+            # each member that agreed without them is asked once more, plainly, the latest first.
+            for i in [i for i in reversed(range(len(tries))) if any(tries[i] is x for p in pairs for x in p) and not tries[i].get("asked")]:
+                headings(task, tries[i], i + 1, board, guard)
+                (home / f"member{i + 1}.json").write_text(json.dumps(tries[i]))
+                if whole(task, tries[i]["answer"]):
+                    break
+            pairs = agreeing(tries, task)
+        pairs = [p for p in pairs if any(whole(task, x["answer"]) for x in p)]
+        if pairs:
+            # of two that agree, the one that carries every heading and keeps the form asked for
+            agreed = next((x for x in pairs[0] if whole(task, x["answer"]) and not form(task, x["answer"])), None) or next(
+                x for x in pairs[0] if whole(task, x["answer"]))
             break
     got = [t for t in tries if t["answer"]]
     if agreed:

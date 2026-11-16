@@ -66,3 +66,14 @@ def test_the_workflow_grows_each_child_on_its_slices_and_joins_them_before_the_t
         assert "join" in jobs[later]["needs"]
     text = (ROOT / ".github" / "workflows" / "grow.yml").read_text()
     assert "vars.HIVE_SHARDS || '3'" in text and 'SLICE="--shard $SHARD/$N"' in text
+
+
+def test_a_row_too_long_loses_the_middle_of_an_earlier_program_never_its_answer():
+    program = "```python\n" + "\n".join(f"x{i} = {i}" for i in range(100)) + "\nprint(x99)\n```"
+    msgs = [{"role": "system", "content": "s"}, {"role": "user", "content": "TASK: t"}, {"role": "assistant", "content": program},
+            {"role": "user", "content": "ERROR: NameError"}]
+    short = grow.shorten(msgs, 0.3)
+    text = short[2]["content"]
+    assert text.startswith("```python\nx0 = 0") and "print(x99)" in text and "lines of this program left out" in text
+    assert text.count("\n") < 40 and short[3] == msgs[3] and msgs[2]["content"] == program  # the original is left as it was
+    assert grow.shorten(msgs[:2], 0.3) is not None and grow.shorten(msgs[:2], 0.3) == msgs[:2]  # no earlier program: nothing cut

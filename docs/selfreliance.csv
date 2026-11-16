@@ -2,3 +2,4 @@ label,tasks,right,right_first_try,first_try_share,hints,hints_per_task,top_hints
 g27 pulse (run 27),32,15,15,0.469,0,0.0,
 g28 practice (run 28),100,37,33,0.33,0,0.0,
 "trial run 31, 3 exams",48,25,24,0.5,20,0.42,deeper_key:14 given:6
+g35 practice (run 35),137,59,53,0.387,228,1.66,bad_address:62 html_json:53 like_keys:42 empty_file:20 missing_file:17
