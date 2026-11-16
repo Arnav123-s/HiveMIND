@@ -266,6 +266,7 @@ jobs:
     outputs:
       children: ${{ steps.plan.outputs.children }}
       grow: ${{ steps.plan.outputs.grow }}
+      shards: ${{ steps.plan.outputs.shards }}
     steps:
       - uses: actions/checkout@v4
       - name: Which cells have children this generation
@@ -277,6 +278,10 @@ jobs:
           echo "children=$C" >> "$GITHUB_OUTPUT"
           echo "grow=$([ -z "$ORGANS" ] && echo 1 || echo '')" >> "$GITHUB_OUTPUT"
           echo "children: $C" | tee -a "$GITHUB_STEP_SUMMARY"
+          # each child is grown on this many runners at once, each on its own slice of the rows (training/merge.py join):
+          # one runner got through a third of a child's rows in its time (g28). Repository variable HIVE_SHARDS; 1: one runner
+          S="${{ vars.HIVE_SHARDS || '3' }}"; [[ "$S" =~ ^[1-8]$ ]] || S=3
+          echo "shards=$(python3 -c "import json, sys; print(json.dumps(list(range(int(sys.argv[1])))))" "$S")" >> "$GITHUB_OUTPUT"
           test "$C" != "[]"
 
   train:
@@ -292,6 +297,7 @@ jobs:
       matrix:
         child: ${{ fromJSON(needs.plan.outputs.children) }}
         variant: ${{ fromJSON(inputs.versus && '["cell","versus"]' || '["cell"]') }}
+        shard: ${{ fromJSON(needs.plan.outputs.shards || '[0]') }}
     steps:
       - uses: actions/checkout@v4
       - name: Room for the weights, and in memory (a runner has 16 GB; training peaks near 11, and a long row must slow it, not kill it)
@@ -315,6 +321,7 @@ jobs:
         env:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
+          SHARD: ${{ matrix.shard }}
           NAME: ${{ matrix.child.name }}
           ORGAN: ${{ matrix.child.organ }}
           P: ${{ matrix.child.parent }}
@@ -342,23 +349,86 @@ jobs:
           READ="${{ vars.HIVE_READ || '40' }}"; JUDGED="${{ vars.HIVE_JUDGED || '10' }}"; EPOCHS="${{ inputs.epochs || '2' }}"
           # a GPU, when the owner's Colab notebook is there (training/colab.py, colab/hive_gpu.ipynb): the child is grown on it
           # in minutes. With no notebook, or no cell back within 90 minutes, this runner trains it as always, in the time left.
-          COLAB=""; MIN=170
-          if [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
-            T0=$(date +%s)
-            PA=""; [ -n "$P" ] && PA="$DNA.$P.safetensors"
-            TA=""; [[ "$T" =~ ^g[0-9]+trunk$ ]] && TA="$DNA.$T.safetensors"
-            if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes 60; then
-              python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=1
-            fi
-            MIN=$(( 170 - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
-          fi
+          # how many runners grow this child (the plan's slices; the matrix may also hold a versus arm)
+          N=$(python3 -c "import json, sys; print(len(json.loads(sys.argv[1])))" '${{ needs.plan.outputs.shards || '[0]' }}')
+          COLAB=""; MIN=170; WHOLE=""
           mkdir -p out
+          if [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+            if [ "$SHARD" != "0" ]; then
+              # the owner's notebook grows the whole child (slice 0 orders it): the other slices have nothing to do
+              if python3 training/colab.py alive; then echo "the owner's Colab GPU grows $NAME whole: slice $SHARD stands aside" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
+            else
+              T0=$(date +%s)
+              PA=""; [ -n "$P" ] && PA="$DNA.$P.safetensors"
+              TA=""; [[ "$T" =~ ^g[0-9]+trunk$ ]] && TA="$DNA.$T.safetensors"
+              if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes 60; then
+                WHOLE=1  # the others stood aside: with no cell from the notebook, this runner grows the whole child
+                python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=1
+              fi
+              MIN=$(( 170 - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
+            fi
+          fi
           if [ -n "$COLAB" ]; then
-            cp colab_out/* out/ && echo "grown on the owner's Colab GPU" | tee -a "$GITHUB_STEP_SUMMARY"
+            cp colab_out/* out/ && touch out/whole && echo "grown on the owner's Colab GPU" | tee -a "$GITHUB_STEP_SUMMARY"
           else
-            python training/grow.py train $VERSUS $PARENT $TRUNK --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
+            SLICE=""; if [ -z "$WHOLE" ] && [ "$N" -gt 1 ]; then SLICE="--shard $SHARD/$N"; else touch out/whole; fi
+            python training/grow.py train $VERSUS $PARENT $TRUNK $SLICE --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
             cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
             cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
+          fi
+          cat out/*.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: part-${{ matrix.variant }}-${{ matrix.child.suffix }}-s${{ matrix.shard }}
+          path: out/
+          retention-days: 30
+          if-no-files-found: ignore  # a slice that stood aside for the owner's GPU leaves nothing
+
+  join:
+    # each child's slices averaged into the child (training/merge.py join), under the name the later jobs know
+    needs: [plan, train]
+    if: ${{ !cancelled() && needs.train.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        child: ${{ fromJSON(needs.plan.outputs.children) }}
+        variant: ${{ fromJSON(inputs.versus && '["cell","versus"]' || '["cell"]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: part-${{ matrix.variant }}-${{ matrix.child.suffix }}-s*
+          path: parts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: What joining needs
+        run: |
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet -r requirements.txt
+          python -c "from team import ternary; ternary.source()"
+      - name: The child, one cell from its slices
+        env:
+          NAME: ${{ matrix.child.name }}
+        run: |
+          [[ "$NAME" =~ ^g[0-9]+(sources|code|data|words)[0-9]{0,2}$ ]] || { echo "::error::not a cell's name: $NAME"; exit 1; }
+          mkdir -p out
+          W=$(for d in parts/*/; do [ -f "$d/whole" ] && [ -f "$d/$DNA.$NAME.safetensors" ] && echo "$d" && break; done)
+          if [ -n "$W" ]; then
+            cp "$W/$DNA.$NAME.gguf" "$W/$DNA.$NAME.json" "$W/$DNA.$NAME.safetensors" out/ && echo "$NAME: grown whole on one runner or on the owner's GPU" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            FILES=$(ls parts/*/"$DNA.$NAME.safetensors" 2>/dev/null || true)
+            [ -n "$FILES" ] || { echo "::error::no slice of $NAME grew"; exit 1; }
+            if [ "$(echo "$FILES" | wc -l)" -eq 1 ]; then
+              d=$(dirname $FILES); cp "$d/$DNA.$NAME.gguf" "$d/$DNA.$NAME.json" "$d/$DNA.$NAME.safetensors" out/
+              echo "::warning::only one slice of $NAME grew; it is the child"
+            else
+              python training/merge.py join work $FILES --base "$DNA" --name "$NAME" --out-dir made | tee -a "$GITHUB_STEP_SUMMARY"
+              cp "made/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "made/$DNA+$NAME.json" "out/$DNA.$NAME.json"
+              cp work/adapter_model.safetensors "out/$DNA.$NAME.safetensors"
+            fi
           fi
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -368,7 +438,7 @@ jobs:
           retention-days: 30
 
   merge:
-    needs: [plan, train]
+    needs: [plan, train, join]
     # only a body that multiplies has a trunk; it is made of the children that did grow when a runner failed or ran
     # out of time (generation 25 was lost whole because one child's job timed out and every later job was skipped)
     if: ${{ !cancelled() && needs.plan.outputs.grow && (inputs.cells_from_run || needs.train.result != 'skipped') }}
@@ -421,7 +491,7 @@ jobs:
           retention-days: 30
 
   gate:
-    needs: [plan, train, merge]
+    needs: [plan, train, join, merge]
     # a body that multiplies goes on with the children that did grow when one runner failed
     if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
@@ -520,7 +590,7 @@ jobs:
           sed -n 3p "$f"
 
   record:
-    needs: [plan, train, merge, gate]
+    needs: [plan, train, join, merge, gate]
     if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:

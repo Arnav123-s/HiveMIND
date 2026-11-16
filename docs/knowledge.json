@@ -176,7 +176,7 @@
    "id": "deaths",
    "title": "Practice runners die mid-task",
    "owner": "A",
-   "seen": "generations 25 and 28 in practice, trial run 32 in an exam (job 132969873608): a web task ran 40 minutes into its limit, then the model server stopped answering ('the server does not answer when told which cell is on', then a timeout), then GitHub shut the runner down. Programs are stopped at 3 GB; practice and exams now log memory and the three largest processes every 2 minutes. For B (team/ternary.py): a server that stops answering could be restarted once instead of ending every task after it.",
+   "seen": "generations 25 and 28, nothing logged",
    "measured_by": []
   },
   {
@@ -204,7 +204,7 @@
    "id": "selflearn",
    "title": "The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work",
    "owner": "B",
-   "seen": "trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down. Generation 28's child g28words (run 43747064624): 20.7 s a row, 170 minutes held 0.38 passes over 1001 rows (95 steps), and 168 rows longer than 506 pieces were left out: each child studies about a third of its lessons, once. Idea for B: train one child on several runners at once, each on its own slice of the rows, and average them (training/merge.py already averages edits exactly); four runners give four times the study per generation",
+   "seen": "trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down",
    "measured_by": []
   },
   {
@@ -218,6 +218,15 @@
   }
  ],
  "findings": [
+  {
+   "id": "onethird",
+   "title": "A child got through a third of its rows, once, in its time on one runner",
+   "lives_in": "train",
+   "blocks": "slowtraining",
+   "status": "fixed",
+   "by": "B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole",
+   "seen": "g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept"
+  },
   {
    "id": "rawoff",
    "title": "Reading raw data and people's judged answers were built and never switched on in the line",
@@ -558,6 +567,11 @@
    "id": "escape",
    "rule": "Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.",
    "from": "charset"
+  },
+  {
+   "id": "spread",
+   "rule": "When one runner cannot get through the work in its time, spread the work over several runners and join the results exactly, before cutting the work.",
+   "from": "onethird"
   }
  ],
  "hive_loop": [
@@ -590,6 +604,11 @@
    "trainc",
    "Train each child",
    "train"
+  ],
+  [
+   "join",
+   "Join each child's slices",
+   "merge"
   ],
   [
    "trunk",

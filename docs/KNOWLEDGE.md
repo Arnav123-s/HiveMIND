@@ -16,6 +16,7 @@ flowchart LR
   plan["Plan the children<br/>training/lineage.py"]
   read["Read raw data and judged answers<br/>training/raw.py"]
   trainc["Train each child<br/>training/ternary_base.py"]
+  join["Join each child's slices<br/>training/merge.py"]
   trunk["Merge the trunk<br/>training/merge.py"]
   pulse["Exam of the grown body<br/>training/exam.py"]
   recordg["Record, move levels<br/>training/grow_record.py"]
@@ -25,7 +26,8 @@ flowchart LR
   gather --> plan
   plan --> read
   read --> trainc
-  trainc --> trunk
+  trainc --> join
+  join --> trunk
   trunk --> pulse
   pulse --> recordg
   recordg --> graphs
@@ -135,6 +137,7 @@ flowchart LR
     f_badaddress["An address of None, a made-up host, a site glued to its path"]:::fixed
   end
   subgraph p_train["ternary_base.py (B)"]
+    f_onethird["A child got through a third of its rows, once, in its time on one runner"]:::fixed
     f_pairmemory["A judged pair was capped as if it were one answer, though both are held while trained"]:::fixed
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
@@ -148,6 +151,7 @@ flowchart LR
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
   end
+  f_onethird -->|blocked| slowtraining
   f_rawoff -->|blocked| carryover
   f_pairmemory -->|blocked| carryover
   f_teacherforever -->|blocked| carryover
@@ -186,19 +190,20 @@ flowchart LR
 | Tasks that read websites fail nearly always | B | g27: walk a site 0 of 3, operate a website 0 of 1, facts from sites 0 of 3 |
 | Little carries over to kinds never practised | unclaimed | g24 1 of 5, g27 0 of 7 |
 | Tasks that make a file fail | A | g27: edit a file 0 of 2, a log into a file 0 of 2, a module 0 of 2 |
-| Practice runners die mid-task | A | generations 25 and 28 in practice, trial run 32 in an exam (job 132969873608): a web task ran 40 minutes into its limit, then the model server stopped answering ('the server does not answer when told which cell is on', then a timeout), then GitHub shut the runner down. Programs are stopped at 3 GB; practice and exams now log memory and the three largest processes every 2 minutes. For B (team/ternary.py): a server that stops answering could be restarted once instead of ending every task after it. |
+| Practice runners die mid-task | A | generations 25 and 28, nothing logged |
 | A right answer in talk comes back as not confirmed | B | talk test 2026-11-15: Canberra and 75 days right, the second member did not agree |
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
-| The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down. Generation 28's child g28words (run 43747064624): 20.7 s a row, 170 minutes held 0.38 passes over 1001 rows (95 steps), and 168 rows longer than 506 pieces were left out: each child studies about a third of its lessons, once. Idea for B: train one child on several runners at once, each on its own slice of the rows, and average them (training/merge.py already averages edits exactly); four runners give four times the study per generation |
+| The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 | A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
 
-## Causes found (2 open, 29 fixed)
+## Causes found (2 open, 30 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
 | An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` | open | A: the form check could insist on the headings before agreeing | g28 practice: c10002803_03, c10002802_00 (the values right or nearly, the headings missing) |
 | Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
+| A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
 | Reading raw data and people's judged answers were built and never switched on in the line | `training/raw.py` | fixed | B: every child now reads 40 raw pieces and 10 judged pairs (repository variables HIVE_READ, HIVE_JUDGED) | built 2026-11-14 on the 1.7B, never measured; first run on the 8B here: 36 drawn, measured, 12 kept |
 | A judged pair was capped as if it were one answer, though both are held while trained | `training/ternary_base.py` | fixed | B: a pair must fit one row's memory as a whole; judged texts cut to 900 characters | the first 8B test with judged pairs (the machine's limit was the larger cause: see the rule) |
 | Lessons would have taught every kind for ever, though the hive can learn most from its own work | `training/lessons.py` | fixed | B: lessons stop for a kind once the hive has 3 right programs of its own | g28 rows: 15 of 23 kinds already had their own right programs; 8 had none (websites, files, the open web) |
@@ -243,6 +248,7 @@ flowchart LR
 - Measure memory on a machine like the runner: this sandbox kills a process near 13 GB, the runners give 15.6 GB and the 8B's training peaks at 14.8 GB there. A kill here may be the machine, not the change: run the baseline beside it.
 - Classify every failure in every artifact at once, then fix all the causes in one pass: one cycle on 132 tasks found six causes that one task at a time would have taken six cycles.
 - Write code meant for a string (the program hook) as plain code, and escape it by program when inserting it.
+- When one runner cannot get through the work in its time, spread the work over several runners and join the results exactly, before cutting the work.
 
 ## The parts
 

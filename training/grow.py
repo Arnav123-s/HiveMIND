@@ -462,9 +462,18 @@ class _Prefix:
             self.key, self.skip = None, False
 
 
+def slice_rows(rows, k, n):
+    """Slice k of n of the rows: each row in exactly one slice, chosen by its content (the same row in the same slice on
+    every runner, whatever order the rows come in)."""
+    import zlib
+    if not 0 <= k < n:
+        raise ValueError(f"slice {k} of {n}: k must be from 0 to n - 1")
+    return [r for r in rows if zlib.crc32(json.dumps([r["messages"][1:], r["output"]], sort_keys=True).encode()) % n == k]
+
+
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell="",
-          trunk="", pull=0.5, gen="", fresh=2):
+          trunk="", pull=0.5, gen="", fresh=2, shard=""):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU (or a GPU where there is one, without
     --int8-base: a Colab notebook, training/colab.py); written as a GGUF adapter the
     ternary runtime loads beside the packed base.
@@ -473,7 +482,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     as its parent pulled `pull` of the way toward it, so every line of descent stays part of one body.
     parent_cell: the parent's name; what that cell (and the trunk) got wrong in practice, set beside the program
     that was right, is taught to the child as a correction. gen: this generation's name; its rows are new to the
-    whole line and are met `fresh` times as often as the rows the parent already learned from."""
+    whole line and are met `fresh` times as often as the rows the parent already learned from.
+    shard: "k/n", this runner's slice of the rows (each row in one slice, by its content): a child is grown on n
+    runners at once, each from the same start on its own slice, and their edits are averaged into the child
+    (training/merge.py join). Generation 28's children got through a third of their rows in their time; n runners
+    study n times as many."""
     born = time.time()
     import torch
     from huggingface_hub import snapshot_download
@@ -510,6 +523,12 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             seen.add(k)
             uniq.append(r)
     rows = uniq
+    part = ""
+    if shard:
+        k, n = (int(x) for x in str(shard).split("/"))
+        rows = slice_rows(rows, k, n)
+        part = f".s{k}"
+        log(f"slice {k + 1} of {n}: {len(rows)} rows (the other runners study the rest; the slices are averaged into the child)", flush=True)
     src = snapshot_download(UNPACKED[base])
     tok = AutoTokenizer.from_pretrained(src)
     import contextlib
@@ -647,7 +666,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # answers people voted on (training/raw.judged): the best-voted beside the worst-voted for the same question,
         # trained as a right-against-wrong pair, the way the hive's own pairs are
         from training import raw
-        for row in raw.judged(judged, name, lean, log=log):
+        for row in raw.judged(judged, name + part, lean, log=log):
             d = encode(row)
             if d is not None:
                 data.append(d)
@@ -658,7 +677,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # raw text and code from the open web (training/raw.py): three times as many drawn as are read, each measured
         # by how well the DNA already predicts it, and the middle band kept: not known yet, but learnable
         from training import raw
-        drawn = raw.draw(3 * read, name, lean, log=log)
+        drawn = raw.draw(3 * read, name + part, lean, log=log)
         scored = []
         model.eval()
         for row in drawn:
@@ -815,7 +834,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if prefix:
         log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB{' on disk' if prefix.folder else ''})", flush=True)
         prefix.done()
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
@@ -879,7 +898,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), shard=opt("--shard", ""), ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
     elif cmd == "speed":
         # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
         rows, out = opt("--rows", str(GROW / "rows.jsonl")), []
