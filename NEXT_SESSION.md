@@ -1,6 +1,6 @@
 # NEXT SESSION: HiveMIND
 
-Written 2026-11-16, 03:10 UTC, by agent C (the lead session, `session_01PZiWThbrn8cykQKW6mTcdp`, branch
+Written 2026-11-16, 03:10 UTC, and brought up to date at 17:00 UTC, by agent C (the lead session, `session_01PZiWThbrn8cykQKW6mTcdp`, branch
 `claude/relaxed-pasteur-yxzlpi`) at the owner's request, for the lead session that takes over next from another
 account. It replaces every earlier handoff (agent A's of 00:20 UTC is in pull request 61; older ones in
 `docs/history/` and in git). Read this page, then `docs/AGENTS.md` (its log, newest last), `docs/KNOWLEDGE.md` and
@@ -25,7 +25,8 @@ the other agents, and make the hive a success. The earlier sessions' working rul
    - **So more study time adds nothing.** Agent B's three runners a child (pull request 64) triple the time spent on
      rows already learned. It does no harm and is not the lever.
 4. **The lever:** right work on the never-passed kinds must reach the rows, and training must spend its passes
-   there. Four pieces, below ("The plan"). The first is built, the others are not.
+   there. Four pieces, below ("The plan"). All four are built and merged since 03:30 UTC (agent B); generation 35 is
+   the first grown with them, and its pulse is not sat yet ("State").
 5. **Three agents, three accounts' worth of limits.** Agent B (another account) is the coordinator since 02:10 UTC
    and merges fast. Agent A (the owner's account) measures. You will be on a third seat: you reach both only through
    `docs/AGENTS.md`, `docs/knowledge.json` and pull requests, unless the owner carries a message.
@@ -38,7 +39,7 @@ on 67 (21 more: modules 7, walking a site 5, a fact and a date sum 4, editing a 
 before this was merged, so **the generation after g33 is the first to use it**. Check there: rows with
 `"by": "check"`, by kind.
 
-**2. Training studies where its error is (not built; the next piece).** In `training/grow.py`, `train()`:
+**2. Training studies where its error is (built by B, pull request 68; `Study` in `training/grow.py`).** The design was: In `training/grow.py`, `train()`:
 - Sort the encoded rows into subjects: the kind of task, the row's type (`first`, `fix`, `mend`, `done`), and
   whether the row is new this generation.
 - Each pass: pick a subject with probability in proportion to its loss (never below 0.05, times 3 for the cell's own
@@ -55,12 +56,12 @@ before this was merged, so **the generation after g33 is the first to use it**. 
   run (`trial: 1`, `skip_practice: 1`): its gather makes lessons, its children study them, and the gate's "after"
   arm is read against "before" on the kinds that have lessons.
 
-**3. A measure that can show it (not built).** The pulse is 32 tasks: one generation differs from the next by
+**3. A measure that can show it (built by B, pull request 68).** The pulse is 32 tasks: one generation differs from the next by
 several tasks from chance alone. Sit 4 seeds (64 tasks) in the line's gate (`grow.yml`, the gate matrix: `[1,2]` to
 `[1,2,3,4]`, two more runners, free), and record the hard kinds apart from the easy ones (an exam task's id begins
 with `h` or `e`), drawn in `training/progress.py`.
 
-**4. Practice where it can pay (not built).** Practice draws kinds by p(1 - p) of the body's pass rate with one pass
+**4. Practice where it can pay (built by B, pull request 68).** Practice draws kinds by p(1 - p) of the body's pass rate with one pass
 and one failure added, so a kind passed 2 of 2 and one passed 0 of 2 weigh the same (0.19) and half the practice
 goes to kinds already learned. Draw by s(1 - f) instead: s, how often some member is right on the kind; f, how
 often the body is. That is high exactly where practice makes a new row (`training/grow.edge_weights`; practice.json
@@ -70,25 +71,25 @@ needs the kind and whether some member was right).
 `grow.yml`, gather). A kind needs several examples before practice can carry it; 3 a kind would start kinds in one
 generation instead of several. Lessons already stop for a kind once the hive has 3 right programs of its own.
 
-## State at handoff (2026-11-16 03:10 UTC)
+## State at handoff (2026-11-16 17:00 UTC)
 
-- **Main** is at `c1c01ce`: pull requests 56 (A: runtime fixes), 57 to 63 (B: graphs, lessons, raw reading, Colab GPU),
-  64 (B: three runners a child), 66 (B: a silent model server restarted, a task out of time ends its programs;
-  agreement on several parts only with every heading; rows from every confirmed member), 67 (B: a row too long loses
-  the middle of an earlier program, not the whole row). 304 tests pass (`.venv/bin/python -m pytest -q tests`).
-- **Generation 33** (run 43790075166, main at `69294f5`, pull requests 56 to 64) is practising. Practice ends near
-  05:00 UTC, the whole generation near 10:00. It is the first generation with A's runtime, B's lessons, raw reading
-  and three runners a child. Its record will show whether lessons move the never-passed kinds.
-- **The line does not go on by itself:** after generation 28 the next one was not started (`HIVE_LOOP` is most likely
-  `stop`, the owner's pause). Ask the owner once whether to set it back; until then start each generation by hand
-  (Actions, "The hive teaches its own members", Run workflow on main).
-- **Agent A** (`session_01PZiWTdYNLEuRW982bX97t1`, branch `claude/nice-bell-8a5dm4`, pull request 61, draft): resumed
-  by the owner at 02:25. It measures g33's practice when it ends (`scripts/selfreliance.py`, every failure classified
-  in one pass) and writes the result into `docs/AGENTS.md` and `docs/knowledge.json`.
-- **Agent B** (branch `claude/vigilant-brahmagupta-rz3ab7`): coordinator by the owner's word at 02:10; it reached its
-  usage limit about 02:20 and may be silent for hours.
-- **Agent C** (this session): pull request for this branch holds this page, the finding and the plan. No run was
-  started. Nothing of the plan's pieces 2 to 4 is built unless a later log line in `docs/AGENTS.md` says so.
+- **Main** is at `a2fb1ef`: pull requests 56 to 71. The plan's four pieces are all built and merged (B: pull
+  requests 66, 68, 70). 324 tests pass (`.venv/bin/python -m pytest -q tests`).
+- **Generation 34** (a re-sit of g33's cells, 4 seeds): 37 of 64. **Easy kinds 31 of 32, hard kinds 6 of 32.** That is
+  the line to move: the hard number. g33's cells were grown the old way with one lesson a kind.
+- **Generation 35** (run 43827930978) is the first with everything: rows from confirmed members, study by error,
+  3 lessons a kind, practice where it pays. It trained and joined 6 cells and a trunk. **Its pulse broke and nothing
+  was recorded:** three of four exam runners had no model ("the server of t80 did not come up in 600 s"; the body is
+  21 cells and a trunk). **Agent A has this** (asked 16:50 UTC): read the logs, fix, re-sit g35's cells, record.
+- **Agent B has speed** (asked 16:55 UTC, comment on pull request 71): a generation in about 4.5 hours instead of 8.
+  Practice on 12 runners of 8 tasks, the pulse on 8 of 8, training minutes from what the study needs, a cheaper
+  first sweep. B answers at its check-ins; its channel is its newest open pull request, when it has one.
+- **Proof that studying by error works** (the 1.7B here, same parent and rows, 9 minutes each, loss on 14 unseen
+  lessons of the 8 kinds the hive has no rows of): the DNA 1.76, the parent 1.58, a child grown the even way 1.06,
+  a child grown by error 0.44. The even child spent 87 of its 196 passes on the word DONE (loss 0.001).
+- **The line does not go on by itself** (`HIVE_LOOP` is most likely `stop`): the owner was asked to take it off.
+  Until then each generation is started by hand, or by the nightly schedule at 01:17 UTC.
+- **Nothing is running now.** The next thing that matters: g35's record, its hard kinds of 32.
 
 ## Working with the other agents
 
@@ -116,13 +117,12 @@ is a proposal: change what works better. Engrams and other architectures are wel
 
 ## First hour
 
-1. Merge main into your branch. Read the log in `docs/AGENTS.md` from 2026-11-16 02:00 on.
-2. Read generation 33's record when it is written (`training/reports/generations.jsonl`, the last line): its exam
-   by kind (`arms.after.kinds`). Did any never-passed kind with a lesson move? Read each train job's loss: the lesson
-   rows are the only ones with something to learn.
-3. Build piece 2 (study where the error is) if no log line says it is built, prove it as written above, and ask
-   the owner to merge.
-4. Then piece 3 (the measure), so that the next generations can show what pieces 1 and 2 do.
+1. Merge main into your branch. Read the log in `docs/AGENTS.md` from 2026-11-16 17:00 on.
+2. Is generation 35 recorded (`training/reports/generations.jsonl`, the last line)? Read `arms.after.hard` against
+   g34's 6 of 32, and each hard kind. If A has not got it recorded, do A's piece yourself (the log line of 17:00).
+3. Read what g35's cells studied (their JSON records, `subjects`): the new subjects' first and last loss.
+4. If the hard kinds moved: let the line run, and take the next weakest thing (the kinds with no lesson and no
+   member ever right; talk). If they did not: the members' own programs on the hard tasks say why (`gate-work-*`).
 
 ## How to work here
 

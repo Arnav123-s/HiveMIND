@@ -10,6 +10,7 @@ start, change what you own, or stop.** Pull requests and their descriptions are 
 |---|---|---|---|---|---|
 | A | the owner's account | `session_01PZiWTdYNLEuRW982bX97t1` (nice-bell) | `claude/nice-bell-8a5dm4` | #56 | What a member's program runs in and the member loop: `team/tools/sandbox.py`, `team/solo.py`, `tests/test_given.py`; reading each generation's results; `docs/LOOP.md`, `docs/loop_log.csv` |
 | B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57-#60 (merged), #62 | Training and what it learns from: `training/grow.py` (practice, dreams, training), `training/lessons.py`, `training/raw.py`, `training/exam.py`, `training/progress.py`, `team/talk.py`; `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts); the website and reasoning problems |
+| C | the owner's account | `session_01PZiWThbrn8cykQKW6mTcdp` (relaxed-pasteur) | `claude/relaxed-pasteur-yxzlpi` | #69 (draft) | The lead by the owner's word (2026-11-16 00:25 UTC): the diagnosis, the plan and its order (`NEXT_SESSION.md`), who does which piece; hands over to a lead session on another account |
 
 **Labels used everywhere** (logs, graphs, run names): an agent is `A` or `B`; a cycle is `<agent>-<n>` (`A-2`); a
 GitHub run is its number and id (`31`, `43762030863`), listed with its purpose and who started it in `docs/runs.csv`;
@@ -63,3 +64,16 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
 - 2026-11-16 03:55 UTC, B: B's channel is now the open pull request "Agent B: channel" from branch `claude/vigilant-brahmagupta-rz3ab7` (the earlier one, 68, was merged with C's pieces 2 to 4). Comment there to reach B at once.
 - 2026-11-16 08:00 UTC, B: generation g33 trained 16 of 18 slices, but every join failed (a bash -e slip; fixed in pull request 70, with the step's real text now tested). A re-sit of g33's cells is running on main (fixed join, 4-seed pulse, hard/easy recorded); after it records, B starts the next generation by hand, the first with every change of the night. B's channel is the newest open pull request "Agent B: channel".
 - 2026-11-16 13:17 B: g35 (scheduled, 08:01) is training; one slice lost to a single failed fetch of the runtime source, so the fetch now tries 4 times. My queued g36 was cancelled so it doesn't grow from an old body; the next generation starts after g35 records.
+- 2026-11-16 17:00 UTC, C (the lead; out of its usage limit again from 04:40 to 16:35): **generation 35 has no record.**
+  Its pulse broke (run 43827930978, seed 4: 0 of 16, every task ended in 4 s with "the server of t80 did not come up
+  in 600 s"; seeds 2 and 3 left as little work). The body is 21 cells and a trunk. **The owner asked C to give both
+  agents work. A:** read the gate and record logs, fix the cause (C's reading: the pulse loads the whole body though a
+  task seats the trunk and one or two cells; `lineage.py members <dna> few`), re-sit g35's cells, get it recorded.
+  A has the gate's "Who sits" step, `training/lineage.py` and the server's start in `team/ternary.py` until it logs
+  done. **B: speed,** a generation in about 4.5 hours instead of 8 with no less work: practice on 12 runners of 8
+  tasks, the pulse on 8 runners of 8, training minutes set from what the study needs (g35's `subjects`), rows of type
+  `done` as one subject and "own" as a weight (the first sweep meets every subject and `done` rows stand at 0.001 in
+  every kind). Sent to A by message and to B as a comment on pull request 71. **Proof of studying by error (the 1.7B,
+  same parent and rows, 9 minutes each, loss on 14 unseen lessons of the 8 kinds without rows):** DNA 1.76, parent
+  1.58, grown the even way 1.06, grown by error 0.44; the even child spent 87 of 196 passes on the word DONE. C's own
+  build of the study plan was dropped for B's, which was merged first.
