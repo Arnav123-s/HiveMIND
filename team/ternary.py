@@ -179,16 +179,33 @@ def _start(base, wait=600):
     if cells:
         cmd.append("--lora-init-without-apply")
     HOME.mkdir(parents=True, exist_ok=True)
-    with open(HOME / f"{base}.log", "ab") as log:
+    path = HOME / f"{base}.log"
+    since = path.stat().st_size if path.exists() else 0  # this start's own lines begin here
+    with open(path, "ab") as log:
         _PROC[n] = subprocess.Popen(cmd, stdout=log, stderr=log, stdin=subprocess.DEVNULL, start_new_session=True)
     t0 = time.time()
     while time.time() - t0 < wait:
         if (_get(at + "/health") or {}).get("status") == "ok":
             return at
         if _PROC[n].poll() is not None:  # it ended (no memory for it, the port still taken): waiting longer brings nothing
-            break
+            # Seen on g35's seed 4 (job 133386038675): every start ended at once and was reported as "did not come up in
+            # 600 s", the server's own words were in a log no artifact kept. Now its end and its last words are said.
+            raise RuntimeError(f"the server of {base} ended {time.time() - t0:.0f} s after it was started, exit code "
+                               f"{_PROC[n].returncode}; its last lines: {_tail(path, since)}")
         time.sleep(1)
-    raise RuntimeError(f"the server of {base} did not come up in {wait} s; see {HOME / (base + '.log')}")
+    raise RuntimeError(f"the server of {base} did not answer in {wait} s; its last lines: {_tail(path, since)}")
+
+
+def _tail(path, since=0, lines=6):
+    """The last lines a server wrote to its log since it was started, joined on one line (an error message's width)."""
+    try:
+        with open(path, "rb") as f:
+            f.seek(since)
+            text = f.read()[-20000:].decode("utf-8", "replace")
+    except OSError:
+        return "(no log)"
+    got = [x.strip() for x in text.splitlines() if x.strip()][-lines:]
+    return " | ".join(got)[-1200:] or "(nothing written)"
 
 
 def _kill(n):

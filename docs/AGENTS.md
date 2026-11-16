@@ -106,3 +106,42 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   as a file; 8 of the open web, 4 dropped when Wikidata answered with a page). Waiting for the owner's merge; the
   next generation on main after it is the test (hard kinds against g34's 6 of 32). The body goes on from g34's cells.
 - 2026-11-16 18:17 B: started C's speed piece (on top of C's ec9d044, merged into B's branch). Practice 12 runners of 8 tasks, 2 dreams each (was 6 of 16, 4); every pulse 8 runners of 8 tasks (was 4 of 16; still 64). Rows of type done are one subject (two with new) and the own organ is a weight by its share, not a split: g35code's 104 subjects would be 60, so the first sweep is 60 passes, not 104. Training minutes not cut (C's correction). Not touched: the server start in team/ternary.py and the record (A's). Trial on B's branch next; its wall time goes here.
+- 2026-11-15 23:00 UTC, A: PR 56 merged to main with the owner's go-ahead (trials 31 and 32: no loss on the same
+  cells and seeds, 18% faster). Main's B work (PRs 58-60, lessons) was merged in first; `docs/knowledge.json` kept
+  both agents' entries. A's branch restarts from main. Next for A: read generation 29's members' work, the first
+  generation that practises with the new runtime and B's lessons.
+- 2026-11-15 23:30 UTC, A: a runner death was traced (trial run 32, job 132969873608): a web task ran 40 minutes,
+  then the model server stopped answering ("the server does not answer when told which cell is on", then a
+  timeout), then GitHub shut the runner down. Practice and exams now log memory and the three largest processes
+  every 2 minutes (grow.yml, shared). **B, `team/ternary.py` is yours:** a server that stops answering could be
+  restarted once rather than ending every task after it; the next death's log will say what filled the memory.
+- 2026-11-15 23:40 UTC, A: why training adds little, in numbers (g28words, run 43747064624): 20.7 s a row, 0.38
+  passes over its 1001 rows in 170 minutes (95 steps), 168 longer rows left out. **B:** each child studies about a
+  third of its lessons once; one idea is a child trained on several runners at once, each on a slice of the rows,
+  averaged by training/merge.py. Added to `selflearn` in docs/knowledge.json.
+- 2026-11-16 00:10 UTC, A: paused by the owner. A starts no runs and changes nothing until told to go on; the runs
+  in flight (generation 28 on main, trial 32) are left to finish by themselves.
+- 2026-11-16 00:20 UTC, A: wrote `NEXT_SESSION.md` afresh for the session that takes over (the owner starts a new
+  one): state, the open problems in order, what was fixed, how to work. Still paused.
+- 2026-11-16 02:25 UTC, A: resumed by the owner. Taking B's assignment: when g33's practice is done, measure it
+  with scripts/selfreliance.py and classify every failure in one pass; results here and in docs/knowledge.json.
+  Not touching B's in-progress files (team/ternary.py, team/solo.py noheadings, training/grow.py, training/exam.py).
+  For B's rows change, A's count (g28 practice + trials 31, 32; 452 tasks): body right 217, some member right 251;
+  on hard kinds body 46 of 196, some member 67 (+21: modules +7, walk a site +5, fact+date +4, edit a file +3).
+  A member's number is missing from exam.json "members" (each_member skips members without "who"): match by number.
+- 2026-11-16 17:15 UTC, A, on C's piece "g35 recorded": (a) g35's pulse ran on seeds 1-3 (8, 10, 7 of 16; g34 37
+  of 64); on seed 4 the model server ended at once on every start (same members, CPU and runtime build as seed 2,
+  which worked; the cause is in t80.log, which no artifact keeps). No record: g35 was started by the nightly schedule
+  at 08:01 while g34 ran, queued, and ran from 8b2fe73 (before g34's record), so its cells are g34's siblings and its
+  record conflicted with g34's on cells/body.json and the graphs. (e) g35's own rows: 290 (192 agreed, 18 by the
+  check alone, 51 lessons, 2 dreams); its practice: 59 of 137 right, 53 first try, 1.66 hints a task (bad_address 62,
+  html_json 53, like_keys 42). Code changes (b) wait for the owner's yes.
+- 2026-11-16 17:30 UTC, A: g35 against g34 (same parents; C: g35 is a trial beside g34, not a generation): g35 easy
+  19 of 24, hard 6 of 24 (seeds 1-3); g34 easy 31 of 32, hard 6 of 32. In docs/knowledge.json (g35sibling,
+  serverdeath, stalebody). C decides which cells the body goes on from.
+- 2026-11-16 18:00 UTC, A: C's (b1) and (b2), with the owner's yes, in PR 61: a model server that ends says its exit
+  code and its last log lines (team/ternary.py `_start`, `_tail`), and practice and exams keep the server logs
+  (runs/exam/server-logs/ in the work artifacts); a first job `fresh` in grow.yml ends a run whose cells/body.json is
+  no longer the branch's, and the nightly schedule starts nothing while a run of the line is under way (practice,
+  gather, plan wait on it; join, gate, record on plan). 330 tests pass (tests/test_fresh_run.py runs the step's text).
+- 2026-11-16 19:16 B: merged A's branch (PR 61, through 4047d11) into B's branch beside C's (PR 69, through 9bf16be), so PR 72 holds all three and merges cleanly. Conflicts: grow.yml (kept A's memory lines, with B's 8-task practice and pulse), NEXT_SESSION.md (C's, the newest), the logs (both sides). 341 tests pass. g37 (speed trial, run 43927218805) practice: 3 of 12 runners done in 36-48 min at 19:14.

@@ -120,9 +120,40 @@ env:
   HIVE_SEATING: ${{ inputs.seating == 'strength' && 'strength' || '' }}
 
 jobs:
+  fresh:
+    # A run grows from the body it checked out. Seen 2026-11-16: the nightly schedule started generation 35 while 34
+    # ran; it queued behind it, then ran from the commit of 08:01, before 34's record. Its six cells grew from 28's
+    # body beside 34's (siblings, not children), and its record could not be joined to 34's (cells/body.json). So a run
+    # whose body is no longer the branch's ends here, and the schedule starts nothing while a run of the line is under way.
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.fresh.outputs.go }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Is this run's body still the branch's own
+        id: fresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          go=1
+          if git fetch -q --depth=1 origin "$GITHUB_REF_NAME" && ! git diff --quiet "$GITHUB_SHA" FETCH_HEAD -- cells/body.json; then
+            echo "::warning::another generation was recorded on $GITHUB_REF_NAME after this run was queued (cells/body.json moved): growing from the old body would make siblings, not children, so this run ends here"
+            go=0
+          fi
+          if [ "$go" = 1 ] && [ "$EVENT" = schedule ]; then
+            busy=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/grow.yml/runs?branch=$GITHUB_REF_NAME&per_page=30" --jq "[.workflow_runs[] | select(.id != $GITHUB_RUN_ID and (.status == \"in_progress\" or .status == \"queued\" or .status == \"waiting\" or .status == \"pending\"))] | length" || echo 0)
+            if [ "${busy:-0}" -gt 0 ]; then
+              echo "::notice::$busy run(s) of the line under way on $GITHUB_REF_NAME: the nightly schedule only starts a line that has stopped"
+              go=0
+            fi
+          fi
+          echo "go=$go" >> "$GITHUB_OUTPUT"
+          echo "this run goes on: $go"
   practice:
+    needs: fresh
     # an earlier run's cells re-sat: nothing is trained, so nothing is practised (the gate waited two hours for it)
-    if: ${{ !inputs.skip_practice && !inputs.cells_from_run }}
+    if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
     timeout-minutes: 330
     strategy:
@@ -158,7 +189,7 @@ jobs:
             tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
           fi
           # memory every two minutes, so a runner that dies says how it stood (two died mid-task, 2026-11-15)
-          (while sleep 120; do free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print "memory: " m " MB used, swap " s " MB"}'; done) &
+          (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
           python training/grow.py practice --seed $((10000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "${{ inputs.tasks || '8' }}" --minutes 210 --level "$LEVEL" --out rows.jsonl | tee practice.txt
           tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -171,6 +202,9 @@ jobs:
             practice.json
           if-no-files-found: ignore
           retention-days: 30
+      - name: The model server's own log beside the work (it says why a server ended; g35's seed 4 lost it)
+        if: ${{ !cancelled() }}
+        run: mkdir -p runs/exam/server-logs && cp ~/.cache/hive/ternary/*.log runs/exam/server-logs/ 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -183,12 +217,13 @@ jobs:
             runs/exam/**/member*_*.py
             runs/exam/**/.member*_*.py.out
             runs/exam/**/.member*_*.py.err
+            runs/exam/server-logs/*.log
           include-hidden-files: true
           retention-days: 14
 
   gather:
-    needs: practice
-    if: ${{ !cancelled() }}
+    needs: [fresh, practice]
+    if: ${{ !cancelled() && needs.fresh.outputs.go == '1' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -266,6 +301,8 @@ jobs:
           python training/grow.py speed --rows got/rows.jsonl --base "$DNA" | tee -a "$GITHUB_STEP_SUMMARY"
 
   plan:
+    needs: fresh
+    if: ${{ needs.fresh.outputs.go == '1' }}
     runs-on: ubuntu-latest
     outputs:
       children: ${{ steps.plan.outputs.children }}
@@ -392,7 +429,7 @@ jobs:
     # each child's slices averaged into the child (training/merge.py join), under the name the later jobs know
     needs: [plan, train]
     # also for a re-sit of an earlier run's cells (cells_from_run): its slices (or its whole cells, before slices) joined here
-    if: ${{ !cancelled() && (needs.train.result != 'skipped' || inputs.cells_from_run) }}
+    if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result != 'skipped' || inputs.cells_from_run) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -513,7 +550,7 @@ jobs:
   gate:
     needs: [plan, train, join, merge]
     # a body that multiplies goes on with the children that did grow when one runner failed
-    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
+    if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
@@ -581,6 +618,8 @@ jobs:
       - name: A fresh exam, half of the first exam's kinds and half hard ones
         if: ${{ steps.who.outputs.who }}
         run: |
+          # memory every two minutes and who holds it: a runner was shut down after the model server stopped answering (run 32)
+          (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
           python training/exam.py sit --level mixed --tasks 8 --seed $((20000000 + ${{ inputs.gate_seeds || github.run_number }} * 10 + ${{ matrix.seed }})) --empty-memory
           cat training/reports/exams/*_mixed.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
@@ -589,6 +628,9 @@ jobs:
           name: gate-${{ matrix.arm }}-${{ matrix.seed }}
           path: training/reports/exams/*_mixed.json
           retention-days: 30
+      - name: The model server's own log beside the work (it says why a server ended; g35's seed 4 lost it)
+        if: ${{ !cancelled() }}
+        run: mkdir -p runs/exam/server-logs && cp ~/.cache/hive/ternary/*.log runs/exam/server-logs/ 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && steps.who.outputs.who }}
         with:
@@ -601,6 +643,7 @@ jobs:
             runs/exam/**/member*_*.py
             runs/exam/**/.member*_*.py.out
             runs/exam/**/.member*_*.py.err
+            runs/exam/server-logs/*.log
           include-hidden-files: true
           retention-days: 14
       - name: The numbers once more, last in the log
@@ -612,7 +655,7 @@ jobs:
 
   record:
     needs: [plan, train, join, merge, gate]
-    if: ${{ !cancelled() && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
+    if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
