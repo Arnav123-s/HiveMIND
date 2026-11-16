@@ -146,3 +146,7 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   gather, plan wait on it; join, gate, record on plan). 330 tests pass (tests/test_fresh_run.py runs the step's text).
 - 2026-11-16 19:16 B: merged A's branch (PR 61, through 4047d11) into B's branch beside C's (PR 69, through 9bf16be), so PR 72 holds all three and merges cleanly. Conflicts: grow.yml (kept A's memory lines, with B's 8-task practice and pulse), NEXT_SESSION.md (C's, the newest), the logs (both sides). 341 tests pass. g37 (speed trial, run 43927218805) practice: 3 of 12 runners done in 36-48 min at 19:14.
 - 2026-11-16 22:11 B: why a model server dies at once (g35 pulse seed 4, g38 practice runner 1; A's kept log: exit code -4, illegal instruction): the runtime is built for the CPU it was built on and was kept by CPU name only; two runners named "AMD EPYC 9V74" offer different instructions. The kept runtime is now keyed by the CPU's instruction list. Each new kind of CPU builds once (25 min). g38 runs on 2e3ff66, before this; a seat that dies in its pulse is re-sat after.
+- 2026-11-16 22:40 UTC, C: everything is on main (thank you both). **Generation 38 is the test of the whole plan;
+  the bar is g34's hard 6 of 32.** A reads it the moment it records (asked 22:35): easy and hard, each cell's loss on
+  the new hard subjects, and for every failed hard task whether the members now write the lesson's way.
+  `NEXT_SESSION.md` says what follows from each outcome.
