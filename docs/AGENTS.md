@@ -69,3 +69,5 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
   averaged by training/merge.py. Added to `selflearn` in docs/knowledge.json.
 - 2026-11-16 00:10 UTC, A: paused by the owner. A starts no runs and changes nothing until told to go on; the runs
   in flight (generation 28 on main, trial 32) are left to finish by themselves.
+- 2026-11-16 00:20 UTC, A: wrote `NEXT_SESSION.md` afresh for the session that takes over (the owner starts a new
+  one): state, the open problems in order, what was fixed, how to work. Still paused.

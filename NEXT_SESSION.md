@@ -1,127 +1,142 @@
 # NEXT SESSION: HiveMIND
 
-Written 2026-11-15, 07:40 UTC. This page replaces every earlier handoff. The old ones are in `docs/history/` for
-detail only; where they set rules, those rules are retired.
+Written 2026-11-16, 00:20 UTC, by agent A (session nice-bell) at the owner's request, for the session that takes
+over next. It replaces every earlier handoff; the older ones are in `docs/history/` and in git. Read this page,
+then `docs/AGENTS.md`, `docs/KNOWLEDGE.md` and `docs/LOOP.md`, in that order.
 
-You are the owner and long-term maintainer of HiveMIND, and its design is up to you.
+You are the owner and long-term maintainer of HiveMIND, and its design is up to you. **The work is paused** (the
+owner said so on 2026-11-16 00:10): start nothing until the owner says to go on, then begin with "First hour" below.
 
 ## The key points
 
 1. **What HiveMIND is:** one body of BitNet cells from one DNA. The DNA is a published ternary model
-   (`prism-ml/Ternary-Bonsai-8B`, weights -1/0/+1, 2.2 GB, run on CPUs by ik_llama.cpp). A cell is the DNA plus a
-   small weight edit (LoRA, rank 16, last 14 layers) trained on the hive's own checked work.
-2. **The body acts as one through its trunk** (`training/merge.py`, new 2026-11-15). Each generation the newest
-   cell of every line of descent is averaged into one edit, exactly, and cut back to rank 32. The trunk answers
-   every task first; a cell gives the second opinion and a third member decides a difference (`team/solo.py`,
-   `team/ternary.seating`). A child starts as its parent pulled halfway toward the trunk, so the lines of descent
-   explore apart and stay one body. Nothing is counted to make it: every cell weighs the same.
-3. **The body multiplies and never stops growing** (`training/lineage.py`). Every grown cell has one child each
-   generation; the young wait a generation (Fibonacci). Limits from the free runners: 8 children a generation, 24
-   cells. An organ with no cell gets a first cell. No gate, no ledger: one exam of the grown body (2 seeds) is its
-   **pulse**, only to trace problems back from.
-4. **Its lessons grow harder** (`training/exam.py`, `team/parts.py`). Practice level `ladder`: half single tasks,
-   half several tasks in one message, checked part by part. `cells/body.json` holds the levels (`compound`: how
-   many parts; five kinds have harder forms of their own). Each record raises a level the body passes 7 times in
-   10 and lowers one it passes 3 times in 20 (`grow_record.levels`). Each practice runner also goes back to 4
-   tasks the body got wrong before, and a child is taught its own parent's mistakes with the program that was
-   right (`grow.train`: "mend" rows).
-5. **You can talk to it** (`team/talk.py`). One word from the DNA decides: talk is answered at once; anything to
-   work out goes to the body's checked programs, in the user's own words, and comes back in plain words with the
-   values as the programs printed them. Three doors: `./hive` or `python -m team chat` on a device; the workflow
-   **Talk to the hive** (open an issue in the repository, the hive replies as a comment, only to the owner);
-   **Ask the hive** in the Actions tab for one task.
-6. **It runs by itself** (`.github/workflows/grow.yml`): practise, gather, plan, train (one runner a child), merge
-   (the trunk), pulse, record, then the next generation at once. The nightly schedule (01:17 UTC) restarts a line
-   that stopped. To stop it: set the repository variable `HIVE_LOOP` to `stop`, or disable the workflow.
+   (`t80` = `prism-ml/Ternary-Bonsai-8B`, weights -1/0/+1, 2.2 GB, run on CPUs by ik_llama.cpp). A cell is the DNA
+   plus a LoRA edit (rank 16, last 14 layers) trained on the hive's own checked work. The trunk (`training/merge.py`)
+   is every line's newest cell averaged; it answers first, a cell gives a second opinion, a third decides.
+2. **It runs by itself on GitHub** (`.github/workflows/grow.yml`, one generation about 6 to 8 hours): practise and
+   dream, lessons, gather rows, plan children, read raw data, train one runner a child, merge the trunk, sit the
+   pulse (2 exams of 16), record, draw progress, start the next generation. Runs are now named by kind, generation,
+   DNA and branch. To stop the line: repository variable `HIVE_LOOP` = `stop`, or disable the workflow.
+3. **Two agents worked on it at once**, from two accounts that cannot message each other. `docs/AGENTS.md` holds who
+   owns which files, the shared rules and the log; `docs/knowledge.json` (drawn into `docs/KNOWLEDGE.md` by
+   `scripts/knowledge.py`) holds every finding and open problem with its owner. If only one agent is working now,
+   you own everything; keep the files current anyway, they are the memory between sessions.
+4. **Where the score stands:** about half of each exam. g27's pulse 15 of 32; trials 31 and 32 (same cells and
+   seeds, before and after the last runtime fixes) 75 and 74 of 144 on nine exam pairs, the second 18% faster. The
+   untaught DNA scores nearly as well as the taught body (7 to 10 of 16 each). **Training adds little yet: that is
+   the main problem.**
+5. **Why training adds little, measured:** g28's child `g28words` trained at 20.7 s a row and got through 0.38 passes
+   over its 1001 rows in its 170 minutes (95 steps); 168 longer rows were left out. Each child studies about a third
+   of its lessons, once.
 
-## What Arnav wants
+## What the owner wants
 
 A hive of BitNet nets that are capable and keep getting better by themselves: he asks it questions, talks with it
-or gives it tasks, and it does them. Cells multiply from one DNA, children learn from their parents' work, dreams
-and mistakes, and the hive acts and learns as one. Bigger is fine. Engrams and better architectures are welcome
-where they help. His method is a proposal, not a rule: change what works better.
+or gives it tasks, and it does them. Cells multiply from one DNA, children learn from their parents' work, dreams,
+mistakes **and raw data**, and the hive acts and learns as one. Bigger is fine. Engrams and better architectures are
+welcome where they help. His method is a proposal, not a rule: change what works better.
 
-He does not want to make design decisions or read accounts of numbers. **How to work, in his words:** build whole
-things, test them, remove the bugs, run them, then trace back from the run when a problem shows. Do not queue many
-small trial runs of pieces of an idea. Do not spend money. Answer him short and plain, key points first, without
-terms made up during the work.
+**How to work, in his words (2026-11-15/16):** first principles. Take up whole problems and finish them completely,
+then check for problems; small steps one after another become slow and problematic. Do not queue many small trial
+runs. Work fast. Do not spend money. Answer him short and plain, key points first, without terms made up during the
+work. He likes graphs of progress and of the work itself, and clean labels on everything (agent, session, run id,
+DNA). He wants a self-improving loop on the maintainer's own way of working too (`docs/LOOP.md`).
 
 ## What is approved
 
 Without asking: rewrite or delete any code or document; start, cancel and re-run GitHub Actions runs on this
-repository; push, open pull requests and **merge to main yourself** when the tests pass and a real run of the
-changed path shows it works. Ask first only before spending money, using his accounts beyond this session's
-GitHub access, or sending anything in his name. No model names in commits or pull requests apart from the
-attribution lines the session requires.
+repository; push and open pull requests. **Merging to main:** the owner approves it in chat; ask him once when a
+change is ready (tests pass and a real run of the changed path shows no loss), and merge on his yes. Ask first
+before spending money, using his accounts beyond the session's GitHub access, or sending anything in his name. No
+model names in commits, pull requests or files apart from the attribution lines the session requires; agents are
+labelled A, B (and so on), by session, branch and pull request.
 
-## State at handoff
+## State at handoff (2026-11-16 00:20 UTC)
 
-- **Generation 25 is running** on the new code (run 43689907158, started 07:25 UTC): the first with the ladder,
-  dreams, a first `sources` cell, and a trunk at its end. **Read it first.** A generation takes about 6 hours.
-  Check: every train job's `seconds_a_row` (expected under 15) and that none died; the merge job's
-  `least_energy_kept`; the pulse; the record's line about levels; that generation 26 started.
-- **Generation 24** (old code) left three 8B cells, `g24code`, `g24data`, `g24words`; its `sources` runner died.
-  Pulse 11 of 32, and 1 of 5 on kinds never practised. Those cells are barely trained: their runners were swapping
-  (30, 40 and 162 seconds a row; `g24words` got 14 steps).
-- **Whether the line loops is not confirmed.** Generation 24's last step ("Grow again at once") was skipped, so
-  either the repository variable `HIVE_LOOP` is `stop` or that run was started with `loop: 0`. If generation 25
-  does not start generation 26, start it by hand (Actions, "The hive teaches its own members", Run workflow) and
-  tell Arnav the variable has to be cleared.
-- **Tests:** `.venv/bin/python -m pytest -q tests` (253 pass in a minute). A fresh machine: `bash
-  scripts/cloud_setup.sh` (about 30 minutes; builds the ternary runtime).
+- **Main** holds PR 56 (agent A: the runtime fixes below) and PRs 57 to 62 (agent B: progress graphs, the knowledge
+  graph, lessons, raw data read in every child's training, dreams tried twice, practice weighted to the weak kinds).
+- **Generation 28** (run 43747064624, on main, started before PR 56) is in its pulse: three children `g28code`,
+  `g28data`, `g28words` trained; practice runner 4 was shut down mid-task. When it records, the line should start
+  **generation 29 by itself**: the first generation with PR 56's runtime, B's lessons and raw reading. Check that it
+  started (Actions, the newest run on main); if not, start it by hand (Run workflow on main) and tell the owner
+  whether `HIVE_LOOP` is set to `stop`.
+- **Trial 32** (run 43765575640, branch `claude/nice-bell-8a5dm4`) may still be finishing; its numbers are above.
+- **Open pull request:** #61 (draft, agent A's branch: records, the memory logging in practice and exams, this page).
+  Merge it with the owner's go-ahead; it changes no code the hive runs except two log lines in `grow.yml`.
+- **Graphs:** the dashboard "HiveMIND Progress" (claude.ai artifact `Xi5BfLZnLLzvkhZJK72Hvr`, the owner's) shows every
+  generation's score, g27 by kind, learning on its own, every maintainer cycle and every run. Its data are the CSVs
+  in `docs/` uploaded as files; B's graphs are in `docs/PROGRESS.md` (`training/progress.py`, redrawn by the record).
+- **Tests:** `.venv/bin/python -m pytest -q tests` (284 pass in about a minute). A fresh machine: `bash
+  scripts/cloud_setup.sh` (about 30 minutes; builds the ternary runtime, fetches the cells).
 
-## What was found on 2026-11-15, so it is not found again
+## First hour (when the owner says go on)
 
-- **8B training on a 16 GB runner** died or crawled because the whole DNA was first loaded as 16-bit numbers and a
-  long row then pushed it into swap. Now (`training/ternary_base.py`): every matrix is read by itself straight
-  into codes, the word vectors and the output layer too (8.1 GB held, 80 s to load); rows are capped to what the
-  machine fits (about 1000 pieces on 16 GB; every piece costs about 5 MB while trained on); the kept outputs of
-  frozen layers are on disk. Measured here on the real 8B: 9 s a row on a first pass, 4 s on later passes, 10.8
-  GB at the most. A C routine rebuilds a layer's numbers from its codes 8 times faster than PyTorch; by itself it
-  changed a row's time little (the multiplying and the rest dominate now).
-- **Tried and not better:** another memory allocator (ran out of memory), huge pages always (slower), keeping
-  memory instead of giving it back each step (4%).
-- **The release's rows were overwritten by an older copy** (a trial that had read them hours before). The record
-  now joins with what the release holds at that moment before uploading (`grow_record.union`).
-- **The first way of talking** let the DNA hand a task over by writing it out. It wrote its own answer there. The
-  decision is one word now and the task is always the user's own message.
-- **The members looked up what they know** (14 minutes on the capital of Portugal). The orders now say that what
-  does not change and is known needs no source (`team/solo.MEMBER`). Cells answer under the short orders
-  (`solo.SHORT`), which do not say this: they learn it from rows.
+1. Read generation 28's and 29's records and the members' own work (`gate-work-*`, `practice-work-*` artifacts).
+   Measure each with `python scripts/selfreliance.py LABEL FOLDER... --add docs/selfreliance.csv`: **right first try
+   should rise and hints per task fall** if the hive learns on its own. Classify every failure at once (one script
+   over every task, as in `docs/LOOP.md`), not one task at a time.
+2. Read each train job's log: `seconds_a_row`, passes over the rows, rows left out. If a child still studies a third
+   of its rows, fix that first (below, problem 1).
+3. If a runner was shut down, its log now says memory and the three largest processes every two minutes: name the
+   cause and fix it (problem 3).
 
-## The work that is yours
+## The open problems, in order of how much they matter
 
-In order of how much it matters to the goal. How to solve each is up to you. `docs/RESEARCH.md` gathers the
-published research, `docs/KERNELS.md` the speed measurements.
+1. **Training adds little (`selflearn`).** The levers, from first principles: (a) more study per generation: train
+   one child on several runners at once, each on a slice of the rows, and average them with `training/merge.py`
+   (exact averaging exists); or shorter rows; or fewer layers; (b) rows from every member the task's check confirms,
+   not only from two that agreed (`training/grow.rows_of` reads `members.json` `agreeing`; 28 of 77 failures were
+   disagreements, some with one right member); (c) right-against-wrong pairs (`--pairs`, DPO with a likelihood term,
+   built, off); (d) raw reading is on since PR 62 (`--read 40`, `--judged 10`): measure it.
+2. **Reasoning mistakes** are now the largest cause of failure (45 of 77 in g28's practice and trial 31): members
+   agree on a wrong answer or disagree. Examples read: "the 1196th prime" read as "is 1196 prime"; a log's hour taken
+   from the date; a robot simulation off by a turn. Training is the answer; lessons (`training/lessons.py`) show a
+   kind once where the hive has nothing right of its own.
+3. **Runners shut down mid-task (`deaths`).** Seen in g25 and g28 practice and trial 32's exam (job 132969873608): a
+   web task ran 40 minutes, then the model server stopped answering ("the server does not answer when told which
+   cell is on", `team/ternary.py`), then GitHub shut the runner down. Programs are stopped at 3 GB. A server that
+   stops answering could be restarted once instead of ending every task after it.
+4. **Web tasks and carry-over** to kinds never practised (`exam_hard.HELD_OUT`): watch `unpractised` in the pulse.
+5. **Talk** (`team/talk.py`, the "Talk to the hive" workflow): a right answer can come back "not confirmed" when the
+   second member disagrees.
+6. **Speed of answering:** one member decodes at a time (`docs/KERNELS.md`, section 3).
 
-1. **Read generation 25 and fix what broke.** It is the first run of much new code in the workflow (merge job,
-   levels, rows joined at record). Then read the members' own programs in the pulse's `gate-work-*` artifacts.
-2. **Web tasks are the body's weakest kind.** In generation 24's practice the 8B failed nearly every task that
-   reads a site (made-up addresses, HTML dumped as the answer, 10 to 20 minutes each). A better `look`, a search
-   helper, or rows from the few it gets right would lift many kinds at once.
-3. **Carry-over to kinds never practised** (1 of 5 in generation 24, 0 of 11 on the 1.7B). The ladder and the
-   trunk are the first two answers; watch `unpractised` in the pulse over the next generations.
-4. **Talking, taught.** The DNA talks untaught. Rows for talk could come from answers people voted on
-   (`training/raw.judged`) or from the hive's own conversations once there are some.
-5. **Speed of answering.** Two members decoded at once would give 1.6 times the throughput; it needs one change in
-   the runtime (a cell per request; `docs/KERNELS.md` section 3). The trunk and a cell cannot share a batch today.
-6. **Engrams and reading raw text** (`team/engram.py`, `training/raw.py`, `--read`) are built and off: neither has
-   shown a gain yet.
+## What was found and fixed on 2026-11-15, so it is not found again
+
+The runtime a member's program runs in (`team/tools/sandbox.py`, its program hook) and the member loop
+(`team/solo.py`), each read from the members' own failing programs:
+- Data given in the message is served as a file under whatever name a program opens (every member opened
+  `people.csv`, `input.csv` or `data.csv` that did not exist).
+- A module the task asks for is saved from the program's own functions; afterwards the member is told to import it
+  and print the values. A program that only defines functions is run (it was taken for a typed answer).
+- A missing JSON key says where in the data it is, or names the keys like it (`release_date` asked of PyPI:
+  `urls[0].upload_time`). `.json()` on a web page says it is HTML and how to read it.
+- A page with no stated encoding is read as UTF-8 when it is (`Â£51.77`); requests go with a User-Agent (Wikipedia
+  refused python-requests); an address of None, a made-up host and a site glued to its path say so or are mended; an
+  address without its site is joined to the page fetched last.
+- A loop that fetches one page again and again, a search that found nothing, and an error in a calculation each get
+  their own message (an error in a calculation is no longer sent to fetch a page).
+- A program over 3 GB is stopped. Every hint is named in the task's events (`team/solo.HINTS`) and counted by
+  `scripts/selfreliance.py`.
+- Workflow: re-sitting an earlier run's cells (`cells_from_run`) skips practice; a trial grows no trunk, so a line
+  generation is re-sat exactly only with its own members; list a run's artifacts before pointing a trial at it (run
+  26 held no cells).
 
 ## How to work here
 
-- **Find faults in the members' own programs and outputs, not in a score.** Each pulse and practice runner uploads
-  its work (`gate-work-*`, `practice-work-*`): every task's `TASK.md`, `REPORT.md`, programs and what they
-  printed. List artifacts with `mcp__github__actions_list` (`list_workflow_run_artifacts`), get a signed link with
-  `mcp__github__actions_get` (`download_workflow_run_artifact`), download with `curl` into its own folder.
-- **Run the whole chain locally on the 1.7B before a runner sees it** (20 minutes): train two tiny cells, merge
-  their trunk, practise at the ladder level, dream, gather, train children with `--parent --trunk --gen`, merge,
-  sit `training/exam.py sit --tasks 2`, record with `grow_record.py gate ... --grow --practice`. Back up
-  `cells/body.json` and `training/reports/generations.jsonl` first and restore them after.
-- **The real 8B fits this kind of machine** (15 GB, no swap) for training rows up to about 1000 pieces and for
-  answering: `python training/grow.py train --base t80 --int8-base --layers last14 --no-checkpoint --limit 16`.
-- **Files that matter:** `training/grow.py` (practice, rows, dreams, training), `training/merge.py` (the trunk),
-  `training/lineage.py` (who has children, who the trunk is made of, who works), `training/grow_record.py` (the
-  record, the levels, joining rows), `training/ternary_base.py` (the DNA held ternary), `training/exam.py` and
-  `exam_hard.py` (tasks and their checks), `team/ternary.py` (the runtime, seating), `team/solo.py` (the
-  members), `team/talk.py` (the front door), `.github/workflows/grow.yml` and `talk.yml`.
+- **Find faults in the members' own programs and outputs, not in a score.** Download `gate-work-*` and
+  `practice-work-*` artifacts (`gh api repos/Arnav123-s/HiveMIND/actions/runs/<id>/artifacts`, then
+  `.../artifacts/<id>/zip`), each into its own folder; `exam.json`, `members/TASK.md`, `events.jsonl`, the programs
+  and their `.out`/`.err` are all there.
+- **Replay real failing programs through changed code before any run** (seconds), then the tests, then one whole
+  real run. A trial on your branch (`trial: 1`, `cells_from_run`, `gate_seeds`, `skip_practice: 1`, `loop: 0`) sits
+  12 exams in parallel in about an hour, for free, and does not touch the line.
+- **Code inside a string** (the program hook `_HOOK_SRC`) is written as plain code and escaped by program when
+  inserted; a test parses it.
+- **Record every cycle** (`docs/loop_log.csv`), every run (`docs/runs.csv`), every finding and rule
+  (`docs/knowledge.json`, then `python scripts/knowledge.py`), and a line in `docs/AGENTS.md`. Merge main into your
+  branch before you push; shared files are merged by keeping both sides' entries.
+- **Files that matter:** `training/grow.py` (practice, rows, dreams, training), `training/lessons.py`,
+  `training/raw.py`, `training/merge.py`, `training/lineage.py`, `training/grow_record.py`, `training/ternary_base.py`,
+  `training/exam.py` and `exam_hard.py`, `training/progress.py`, `team/ternary.py` (the runtime), `team/solo.py`
+  (the members), `team/tools/sandbox.py` (what a program runs in), `team/talk.py`, `.github/workflows/grow.yml`.
