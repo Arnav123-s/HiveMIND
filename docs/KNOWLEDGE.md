@@ -92,9 +92,13 @@ flowchart LR
   speed --> goal
   selflearn{{"The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work (B)"}}
   selflearn --> goal
+  slowtraining{{"A child of the 8B takes close to three hours to train on a free runner's CPU (B)"}}
+  slowtraining --> goal
+  slowtraining -.-|measured by| m_rows
   m_score[/"Exam tasks passed, each generation"/]
   m_carry[/"Never-practised kinds passed"/]
   m_kinds[/"Every kind of task, weakest first"/]
+  m_rows[/"Rows taught, each generation"/]
   subgraph p_practice["grow.py (B)"]
     f_dreamonce["A dream took a failed task once; one cell that cannot see through it gave up the task for the night"]:::fixed
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
@@ -187,6 +191,7 @@ flowchart LR
 | Talking is not taught, only what the DNA knows | unclaimed | no rows for conversation yet |
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
 | The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down. Generation 28's child g28words (run 43747064624): 20.7 s a row, 170 minutes held 0.38 passes over 1001 rows (95 steps), and 168 rows longer than 506 pieces were left out: each child studies about a third of its lessons, once. Idea for B: train one child on several runners at once, each on its own slice of the rows, and average them (training/merge.py already averages edits exactly); four runners give four times the study per generation |
+| A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
 
 ## Causes found (2 open, 29 fixed)
 
@@ -246,6 +251,7 @@ flowchart LR
 | Practice and dreams | `training/grow.py` | B | fresh tasks at the edge of what the body can do, and the tasks it got wrong before; checked work becomes rows |
 | Lessons | `training/lessons.py` | B | a right program for fresh tasks of every kind the hive cannot do yet and for tasks it got wrong, each checked by the task's own check before it is taught |
 | Reading raw data | `training/raw.py` | B | web pages, Wikipedia, open code and real code fixes, each measured by the DNA's own error and only the middle band read; answers people voted on, best beside worst |
+| The owner's Colab GPU | `training/colab.py` | B | while the owner's notebook (colab/hive_gpu.ipynb) runs, each child is trained on its GPU in minutes, ordered and returned through the release; without it the runner trains as always |
 | Tasks and their checks | `training/exam.py` | B | every kind of task, made from a seed, with a check that needs no model |
 | The members' loop | `team/solo.py` | A | trunk and cells each write and run programs; an answer counts when two agree |
 | What a program runs in | `team/tools/sandbox.py` | A | runs a member's program, serves given data, limits memory and time |
