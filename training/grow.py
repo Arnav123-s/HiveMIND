@@ -622,25 +622,41 @@ class Study:
     is the mean of its last three. A subject not measured yet counts 1.0 and is met before any measured one, so the
     first sweep meets every subject (rehearsing old work too) without waiting on luck. A row is met at most MOST
     times; a subject with none left drops out. Raw text ("read") and judged pairs ("judged") keep a fixed SHARE of
-    the passes each instead: their loss does not say what is left to learn."""
-    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
+    the passes each instead: their loss does not say what is left to learn.
 
-    def __init__(self, subjects, own=(), rng=None, most=None, weight=None):
-        """own: {subject: the share of its rows that are the cell's own organ}, or subjects that are wholly its own."""
+    New hard subjects (hard: this generation's rows of a kind of exam_hard, the lessons above all; see new_hard())
+    are studied until they are learned. Generation 35 met each lesson row 4 times at the most and its new hard
+    subjects ended at a loss of 0.4 to 1.6; walk a site was under GOAL in 4 of 23 slices. So while a new hard
+    subject's loss is GOAL or more, its rows may be met up to HARD_MOST times, and FIRST of the passes go to such
+    subjects. Those of `web` (the kinds that read the web, and the date sums on what was read) come first: first in
+    the first sweep, and WEB_ODDS times the odds among the subjects not learned yet (not all of their passes: a slice of
+    an hour or two could not give the 4 web kinds' lessons 16 meetings a row, and the other hard kinds would get
+    none). The other passes are picked by the odds above among the other subjects, so what is already known is
+    still rehearsed. Once under GOAL a new hard subject is one like the others again (MOST meetings a row)."""
+    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
+    GOAL, HARD_MOST, FIRST, WEB_ODDS = 0.3, 16, 0.75, 3.0
+
+    def __init__(self, subjects, own=(), rng=None, most=None, weight=None, hard=(), web=(), hard_most=None):
+        """own: {subject: the share of its rows that are the cell's own organ}, or subjects that are wholly its own.
+        hard: the new hard subjects; web: those of them that come first (both may name subjects that are not here)."""
         self.rng = rng or random.Random(0)
         self.most = self.MOST if most is None else most
+        self.hard_most = max(self.most, self.HARD_MOST if hard_most is None else hard_most)
         self.weight = self.OWN if weight is None else float(weight)
         self.own = {s: float(v) for s, v in own.items()} if isinstance(own, dict) else {s: 1.0 for s in own}
+        self.hard = {s for s in hard if s in subjects and subjects[s] and s not in self.FIXED}
+        self.web = {s for s in web if s in self.hard}
         self.queue, self.rows, self.passes, self.losses, self.first = {}, {}, {}, {}, {}
         for s, idx in subjects.items():
             if not idx:
                 continue
             q = []
-            for _ in range(self.most):  # each round of a subject's rows in its own order
+            for _ in range(self.hard_most if s in self.hard else self.most):  # each round of a subject's rows in its own order
                 r = list(idx)
                 self.rng.shuffle(r)
                 q += r
             self.queue[s], self.rows[s], self.passes[s], self.losses[s] = q[::-1], len(idx), 0, []
+        self.size = sum(len(q) for q in self.queue.values())  # the most passes there can be
         self.n = 0
 
     def loss(self, s):
@@ -650,17 +666,34 @@ class Study:
     def odds(self, s):
         return max(self.loss(s), self.FLOOR) * (1.0 + (self.weight - 1.0) * self.own.get(s, 0.0))
 
+    def behind(self, s):
+        """A new hard subject not learned yet: measured, and its loss GOAL or more."""
+        return s in self.hard and bool(self.losses[s]) and self.loss(s) >= self.GOAL
+
+    def open(self, s):
+        """Rows left to meet: up to HARD_MOST meetings a row while the subject is behind, MOST otherwise."""
+        return bool(self.queue[s]) and (self.behind(s) or self.passes[s] < self.rows[s] * self.most)
+
     def pick(self):
-        """(subject, row index), or None when every row has been met MOST times."""
-        alive = [s for s, q in self.queue.items() if q]
+        """(subject, row index), or None when every row has been met as often as it may be."""
+        alive = [s for s in self.queue if self.open(s)]
         if not alive:
             return None
         rest = [s for s in alive if s not in self.FIXED]
         s = next((f for f in self.FIXED if f in alive and self.passes[f] < self.SHARE * (self.n + 1)), None)
         if s is None:
             fresh = [x for x in rest if not self.losses[x]]
-            pool = fresh or rest or alive
-            s = self.rng.choices(pool, weights=[self.odds(x) for x in pool])[0]
+            # the first sweep meets the new web subjects first, then the other new hard ones, then the rest
+            fresh = [x for x in fresh if x in self.web] or [x for x in fresh if x in self.hard] or fresh
+            late = [x for x in rest if self.behind(x)]
+            others = [x for x in rest if not self.behind(x)]
+            if fresh:
+                pool = fresh
+            elif late and (not others or self.rng.random() < self.FIRST):
+                pool = late
+            else:
+                pool = others or rest or alive
+            s = self.rng.choices(pool, weights=[self.odds(x) * (self.WEB_ODDS if pool is late and x in self.web else 1.0) for x in pool])[0]
         self.passes[s] += 1
         self.n += 1
         return s, self.queue[s].pop()
@@ -674,6 +707,7 @@ class Study:
         return [{"subject": s, "rows": self.rows[s], "passes": self.passes[s],
                  "loss_first": round(self.first[s], 4) if s in self.first else None,
                  "loss_last": round(self.loss(s), 4) if self.losses[s] else None}
+                | ({"new_hard": True} if s in self.hard else {})
                 for s in sorted(self.rows, key=lambda x: -self.passes[x])]
 
 
@@ -692,6 +726,43 @@ def subject(row, new=False):
     if row.get("type") == "done":
         return "done" + " · new" * bool(new)
     return " · ".join([row.get("kind") or "?", row.get("type") or "row"] + ["new"] * bool(new))
+
+
+# The kinds whose lessons are studied first (Study): those read from the web, and the date sums on what was read.
+# Generation 35: walk a site was under a loss of 0.3 in 4 of 23 slices.
+WEB = ("walk a site over several pages", "a fact found on the open web", "a fact read and a date sum on it",
+       "a fact from a site and a date sum on it")
+
+
+def hard_kinds():
+    """The kinds of the hard exam (training/exam_hard.py MAKERS), read from its source: each maker returns (field,
+    kind, task, check) with the kind written out, and some makers reach the network before they return."""
+    import ast
+    src = ast.parse((ROOT / "training" / "exam_hard.py").read_text())
+    makers = next(n for n in src.body if isinstance(n, ast.Assign) and getattr(n.targets[0], "id", "") == "MAKERS")
+    names = {e.id for e in makers.value.elts}
+    out = set()
+    for fn in src.body:
+        if isinstance(fn, ast.FunctionDef) and fn.name in names:
+            for node in ast.walk(fn):
+                if isinstance(node, ast.Return) and isinstance(node.value, ast.Tuple) and len(node.value.elts) == 4:
+                    field, kind = node.value.elts[:2]
+                    if isinstance(field, ast.Constant) and isinstance(kind, ast.Constant) and str(field.value).startswith("hard"):
+                        out.add(kind.value)
+    return out
+
+
+def new_hard(subjects):
+    """(the new hard subjects, those of them of a WEB kind) among subject names (subject()): rows new to the line of
+    a hard kind, of any type but "done" (one subject for every kind, learned at once)."""
+    hard_set, hard, web = hard_kinds(), set(), set()
+    for s in subjects:
+        kind, _, rest = s.partition(" · ")
+        if rest.endswith(" · new") and kind in hard_set:
+            hard.add(s)
+            if kind in WEB:
+                web.add(s)
+    return hard, web
 
 
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
@@ -985,16 +1056,21 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     import threading
     threading.Thread(target=watch, daemon=True).start()
     # The passes are not planned ahead from one timed row any more: the loop runs until the time is up, or until
-    # every row has been met Study.MOST times, or (with no time given, as in tests) for len(data) x epochs passes;
-    # which row comes next is the Study's pick, and the learning rate follows the share of the time used.
+    # every row has been met as often as the Study lets it (MOST times, HARD_MOST in a new hard subject not learned
+    # yet), or (with no time given, as in tests) for len(data) x epochs passes; which row comes next is the Study's
+    # pick, and the learning rate follows the share of the time used.
     by = {}
     for j, s in enumerate(tags):
         by.setdefault(s, []).append(j)
     own_share = {s: min(1.0, own_rows[s] / len(idx)) for s, idx in by.items() if own_rows.get(s)}
-    study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight)
-    passes = len(data) * study.most if minutes else min(int(len(data) * epochs), len(data) * study.most)
+    hard, web = new_hard(by)
+    study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight, hard=hard, web=web)
+    passes = study.size if minutes else min(int(len(data) * epochs), study.size)
     log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ up to x{weight:g} by its share, read and judged "
         f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
+    if study.hard:
+        log(f"{len(study.hard)} new hard subjects ({len(study.web)} of them web kinds, met first) are studied until their loss is under {Study.GOAL}: "
+            f"{Study.FIRST:.0%} of the passes, a row met up to {study.hard_most} times", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     try:
         import ctypes
@@ -1037,7 +1113,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             break
         got = study.pick()
         if got is None:
-            log(f"every row has been met {study.most} times, after {i} passes", flush=True)
+            log(f"every row has been met as often as it may be ({study.most} times, up to {study.hard_most} for a new hard subject not learned yet), after {i} passes", flush=True)
             break
         s, idx = got
         ids, k = data[idx][:2]
