@@ -606,6 +606,81 @@ def slice_rows(rows, k, n):
     return [r for r in rows if zlib.crc32(json.dumps([r["messages"][1:], r["output"]], sort_keys=True).encode()) % n == k]
 
 
+class Study:
+    """Which row a cell trains on next. Each kind of task is passed either always or never, and the rows a cell has
+    already learned cost passes and teach nothing (g28code's loss went 0.096 -> 0.048 on rows mostly of kinds it
+    passed): the passes go where the error is. The rows are sorted into subjects (kind of task, type of row, new this
+    generation or not, the cell's own organ or not). Each pass picks a subject with odds max(its loss, FLOOR), times
+    OWN for the cell's own organ, and trains on that subject's next row (its rows shuffled, cycled). A subject's loss
+    is the mean of its last three. A subject not measured yet counts 1.0 and is met before any measured one, so the
+    first sweep meets every subject (rehearsing old work too) without waiting on luck. A row is met at most MOST
+    times; a subject with none left drops out. Raw text ("read") and judged pairs ("judged") keep a fixed SHARE of
+    the passes each instead: their loss does not say what is left to learn."""
+    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.10, ("read", "judged")
+
+    def __init__(self, subjects, own=(), rng=None, most=None, weight=None):
+        self.rng = rng or random.Random(0)
+        self.most = self.MOST if most is None else most
+        self.weight = self.OWN if weight is None else float(weight)
+        self.own = set(own)
+        self.queue, self.rows, self.passes, self.losses, self.first = {}, {}, {}, {}, {}
+        for s, idx in subjects.items():
+            if not idx:
+                continue
+            q = []
+            for _ in range(self.most):  # each round of a subject's rows in its own order
+                r = list(idx)
+                self.rng.shuffle(r)
+                q += r
+            self.queue[s], self.rows[s], self.passes[s], self.losses[s] = q[::-1], len(idx), 0, []
+        self.n = 0
+
+    def loss(self, s):
+        h = self.losses[s][-3:]
+        return sum(h) / len(h) if h else 1.0
+
+    def odds(self, s):
+        return max(self.loss(s), self.FLOOR) * (self.weight if s in self.own else 1.0)
+
+    def pick(self):
+        """(subject, row index), or None when every row has been met MOST times."""
+        alive = [s for s, q in self.queue.items() if q]
+        if not alive:
+            return None
+        rest = [s for s in alive if s not in self.FIXED]
+        s = next((f for f in self.FIXED if f in alive and self.passes[f] < self.SHARE * (self.n + 1)), None)
+        if s is None:
+            fresh = [x for x in rest if not self.losses[x]]
+            pool = fresh or rest or alive
+            s = self.rng.choices(pool, weights=[self.odds(x) for x in pool])[0]
+        self.passes[s] += 1
+        self.n += 1
+        return s, self.queue[s].pop()
+
+    def learned(self, s, loss):
+        if s not in self.first:
+            self.first[s] = loss
+        self.losses[s].append(float(loss))
+
+    def table(self):
+        return [{"subject": s, "rows": self.rows[s], "passes": self.passes[s],
+                 "loss_first": round(self.first[s], 4) if s in self.first else None,
+                 "loss_last": round(self.loss(s), 4) if self.losses[s] else None}
+                for s in sorted(self.rows, key=lambda x: -self.passes[x])]
+
+
+def lr_share(p):
+    """The learning rate's share at `p` of the training done (of its time, or of its passes): a warm-up over the
+    first 5%, then a straight fall to 5% at the end."""
+    p = min(max(p, 0.0), 1.0)
+    return max(0.01, p / 0.05) if p < 0.05 else max(0.05, 1.05 - p)
+
+
+def subject(row, new=False, own=False):
+    """The subject a row is studied under (Study): kind of task, type of row, new to the line or not, own organ or not."""
+    return " · ".join([row.get("kind") or "?", row.get("type") or "row"] + ["new"] * bool(new) + ["own"] * bool(own))
+
+
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell="",
           trunk="", pull=0.5, gen="", fresh=2, shard=""):
@@ -617,7 +692,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     as its parent pulled `pull` of the way toward it, so every line of descent stays part of one body.
     parent_cell: the parent's name; what that cell (and the trunk) got wrong in practice, set beside the program
     that was right, is taught to the child as a correction. gen: this generation's name; its rows are new to the
-    whole line and are met `fresh` times as often as the rows the parent already learned from.
+    whole line and are studied as subjects of their own (Study). epochs: the passes over the rows when no `minutes`
+    are given; with `minutes` the cell trains until the time is up. weight: how much more the cell's own organ
+    weighs in the pick of the next subject. fresh: no longer used (the Study's loss rule replaced the copies).
     shard: "k/n", this runner's slice of the rows (each row in one slice, by its content): a child is grown on n
     runners at once, each from the same start on its own slice, and their edits are averaged into the child
     (training/merge.py join). Generation 28's children got through a third of their rows in their time; n runners
@@ -784,27 +861,31 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
             return None if 2 * len(p) + len(t) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
         return (torch.tensor([p + t]), len(t))
-    data, mine, new_rows, long = [], 0, 0, 0
+    # Each row once, sorted into its subject (Study): what is trained on next is picked by where the error is, no
+    # longer by copies of a row. The cell's own organ weighs `weight` (3) times in that pick: every cell learns all
+    # of the hive's checked work (so any two can check each other), each one its own part best. This generation's
+    # rows and its parent's corrected mistakes (new to the whole line) are subjects of their own, so the first sweep
+    # meets them, and they keep passes for as long as their loss is high. `fresh` is no longer used.
+    data, tags, own_subjects, mine, new_rows, long = [], [], set(), 0, 0, 0
     for row in rows:
         d = encode(row)
         if d is None:
             long += 1
             continue
-        # a cell that leans to an organ meets that organ's rows `weight` times as often as the others: every cell
-        # learns all of the hive's checked work (so any two can check each other), each one its own part best
         own = bool(lean) and ternary.organ(row["task"]) == lean
-        # this generation's rows, and its parent's corrected mistakes, are new to the whole line of descent: met
-        # `fresh` times as often as rows the parent already learned from (a child inherits those with its start)
         new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
-        data += [d] * min(6, (weight if own else 1) * (fresh if new else 1))
+        data.append(d)
+        tags.append(subject(row, new, own))
+        if own:
+            own_subjects.add(tags[-1])
         mine += own
         new_rows += new
     if limit:
-        data = data[:limit]
+        data, tags = data[:limit], tags[:limit]
     if lean:
-        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, each met {weight} times", flush=True)
+        log(f"this cell leans to {lean}: {mine} of its rows are that organ's, weighed {weight} times in the pick", flush=True)
     if gen or mend:
-        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected), each met {fresh} times as often", flush=True)
+        log(f"{new_rows} rows are new to this line (generation {gen or '-'}'s own, {len(mend)} of them its parent's mistakes corrected), each a subject of its own", flush=True)
     if long:
         log(f"{long} rows are longer than {max_len} pieces and are left out", flush=True)
     judged_used = 0
@@ -816,6 +897,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             d = encode(row)
             if d is not None:
                 data.append(d)
+                tags.append("judged")
                 judged_used += 1
         log(f"judged: {judged_used} pairs of answers people voted on", flush=True)
     read_used = 0
@@ -841,6 +923,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         model.train()
         chosen = raw.pick(scored, read)
         data += chosen
+        tags += ["read"] * len(chosen)
         read_used = len(chosen)
         if scored:
             ls = sorted(l for l, _ in scored)
@@ -884,30 +967,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 os._exit(3)
     import threading
     threading.Thread(target=watch, daemon=True).start()
-    if minutes and data:
-        # Runners differ in speed by several times. One row is timed, and the passes are cut to what fits the time
-        # given (a job that runs out of time leaves nothing behind). A row of middling length: the longest one is
-        # where a machine short of memory stalls, and the plan is made from the mean anyway.
-        t = time.time()
-        with cast():
-            big = sorted(data, key=lambda d: d[0].shape[1])[len(data) // 2]
-            model(input_ids=big[0].to(dev), logits_to_keep=big[1] + 1).logits.float().mean().backward()
-        model.zero_grad()
-        per = (time.time() - t) * (sum(d[0].shape[1] for d in data) / len(data)) / big[0].shape[1]
-        fit = minutes * 60 / max(per, 1e-3) / len(data)
-        log(f"one row of mean length takes about {per:.1f} s; {minutes} minutes hold {fit:.2f} passes over {len(data)} rows", flush=True)
-        if fit < epochs:
-            epochs = max(0.25, round(fit, 2))
-            log(f"passes cut to {epochs}", flush=True)
+    # The passes are not planned ahead from one timed row any more: the loop runs until the time is up, or until
+    # every row has been met Study.MOST times, or (with no time given, as in tests) for len(data) x epochs passes;
+    # which row comes next is the Study's pick, and the learning rate follows the share of the time used.
+    by = {}
+    for j, s in enumerate(tags):
+        by.setdefault(s, []).append(j)
+    study = Study(by, own_subjects, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight)
+    passes = len(data) * study.most if minutes else min(int(len(data) * epochs), len(data) * study.most)
+    log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ x{weight:g}, read and judged "
+        f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
-    steps = math.ceil(len(data) * epochs / accum)
-    sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / max(1, steps // 10)) * max(0.05, 1 - s / max(1, steps)))
-    order = []
-    while len(order) < len(data) * epochs:
-        perm = list(range(len(data)))
-        random.shuffle(perm)
-        order += perm
-    order = order[:int(len(data) * epochs)]
     try:
         import ctypes
         trim = ctypes.CDLL("libc.so.6").malloc_trim
@@ -917,20 +987,48 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # not with recomputation (checkpoint): a layer recomputed on the way back would be fed the wrong input
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
               if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
-    t0, running, step, hist, paired = time.time(), 0.0, 0, [], 0
-    for i, idx in enumerate(order):
+    t0, running, step, hist, paired, i, held = time.time(), 0.0, 0, [], 0, 0, 0
+    budget = max(1.0, minutes * 60 - (t0 - born)) if minutes else 0
+
+    def done_share():
+        return max(i / max(1, passes), (time.time() - t0) / budget if minutes else 0.0)
+
+    def update():
+        nonlocal running, step, held
+        torch.nn.utils.clip_grad_norm_(params, 1.0)
+        p = done_share()
+        for g in opt.param_groups:
+            g["lr"] = lr * lr_share(p)
+        opt.step()
+        opt.zero_grad()
+        if trim:
+            trim(0)
+        step += 1
+        hist.append(round(running / held, 4))
+        running, held = 0.0, 0
+        if step % 5 == 0:
+            import resource
+            on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
+            log(f"step {step} ({p:.0%} done, {sum(1 for q in study.queue.values() if q)} subjects left) loss {hist[-1]:.4f} "
+                f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+    while i < passes:
         if minutes and time.time() - born > minutes * 60:
-            # The plan was made from one timed row; a runner can fall behind it. Two trials were lost on 2026-11-14
-            # because their jobs ran into the time limit with nothing saved. Now the cell stops here and is kept.
-            log(f"time is up after {i} of {len(order)} rows: the cell is saved as it is", flush=True)
-            order = order[:i]
+            # Two trials were lost on 2026-11-14 because their jobs ran into the time limit with nothing saved: the
+            # cell stops here and is kept.
+            log(f"time is up after {i} passes: the cell is saved as it is", flush=True)
             break
+        got = study.pick()
+        if got is None:
+            log(f"every row has been met {study.most} times, after {i} passes", flush=True)
+            break
+        s, idx = got
         ids, k = data[idx][:2]
         ids = ids.to(dev)
-        beat["t"], beat["what"] = time.time(), f"row {i + 1} of {len(order)} ({ids.shape[1]} pieces)"
+        beat["t"], beat["what"] = time.time(), f"pass {i + 1} ({s}, {ids.shape[1]} pieces)"
         with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
             logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
         loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
+        plain = loss.item()  # what the subject is measured by: the error on the right answer (a pair's DPO term starts near 0.69 whatever is known)
         if len(data[idx]) == 4:
             # a right and a wrong program for the same task: DPO, with the plain loss on the right one kept beside it
             # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
@@ -950,21 +1048,19 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             paired += 1
         (loss / accum).backward()
         running += loss.item()
-        if (i + 1) % accum == 0 or i == len(order) - 1:
-            torch.nn.utils.clip_grad_norm_(params, 1.0)
-            opt.step()
-            sched.step()
-            opt.zero_grad()
-            if trim:
-                trim(0)
-            step += 1
-            n = accum if (i + 1) % accum == 0 else (i + 1) % accum
-            hist.append(round(running / n, 4))
-            running = 0.0
-            if step % 5 == 0 or step == steps:
-                import resource
-                on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
-                log(f"step {step}/{steps} loss {hist[-1]:.4f} {time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+        held += 1
+        study.learned(s, plain)
+        i += 1
+        if held == accum:
+            update()
+    if held:
+        update()
+    subjects = study.table()
+    width = max([len(x["subject"]) for x in subjects] + [7])
+    log(f"{'subject':<{width}} rows passes  first   last", flush=True)
+    for x in subjects:
+        f_, l_ = x["loss_first"], x["loss_last"]
+        log(f"{x['subject']:<{width}} {x['rows']:>4} {x['passes']:>6} {'-' if f_ is None else f'{f_:.3f}':>6} {'-' if l_ is None else f'{l_:.3f}':>6}", flush=True)
     beat["on"] = False
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
@@ -980,11 +1076,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if prefix:
         log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB{' on disk' if prefix.folder else ''})", flush=True)
         prefix.done()
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, len(order)), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "epochs": epochs, "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, i), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "passes": i, "epochs": round(i / max(1, len(data)), 2), "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
-            "gpu": torch.cuda.get_device_name(0) if gpu else ""}
+            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     where = Path(out_dir or ternary.ADAPTERS)
