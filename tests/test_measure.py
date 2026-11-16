@@ -48,4 +48,4 @@ def test_the_parts_graph_is_drawn_and_the_line_sits_four_seeds_with_three_lesson
     xml.dom.minidom.parseString(svg)
     assert "8 of 28" in svg and "hard kinds" in svg and "tasks of several parts" in svg
     flow = (ROOT / ".github" / "workflows" / "grow.yml").read_text()
-    assert "seed: ${{ fromJSON('[1,2,3,4]') }}" in flow and "--per-kind 3" in flow
+    assert "seed: ${{ fromJSON('[1,2,3,4,5,6,7,8]') }}" in flow and '--per-kind "$LESSONS"' in flow and "vars.HIVE_LESSONS || '12'" in flow

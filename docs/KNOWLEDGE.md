@@ -154,9 +154,14 @@ flowchart LR
   subgraph p_talk["talk.py (B)"]
     f_talkerwrote["The talker wrote its own answer where the task should go"]:::fixed
   end
+  subgraph p_runtime["ternary.py (B)"]
+    f_serverdeath["A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s'"]:::fixed
+  end
   subgraph p_workflow["grow.yml (shared)"]
     f_resit["Re-sitting an earlier run's cells still practised for two hours first"]:::fixed
     f_smallpulse["A pulse of 32 tasks cannot show one generation better than the last"]:::fixed
+    f_g35sibling["g35 trained from g28's body beside g34: the night's changes against the old way, same parents"]:::fixed
+    f_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
   end
   f_orphans -->|blocked| deaths
   f_agreedonly -->|blocked| reasoning
@@ -190,6 +195,9 @@ flowchart LR
   f_learnedrows -->|blocked| selflearn
   f_evenpractice -->|blocked| selflearn
   f_smallpulse -->|blocked| selflearn
+  f_g35sibling -->|blocked| selflearn
+  f_serverdeath -->|blocked| deaths
+  f_stalebody -->|blocked| deaths
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -209,7 +217,7 @@ flowchart LR
 | The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 | A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
 
-## Causes found (1 open, 36 fixed)
+## Causes found (1 open, 39 fixed)
 
 | Cause | Where | Status | By | Seen |
 |---|---|---|---|---|
@@ -250,6 +258,9 @@ flowchart LR
 | Training passes go to rows the cells already know: loss 0.05, nothing left to learn there | `training/ternary_base.py` | fixed | B (sub-agent): training picks subjects by their loss (training/grow.py Study), each row at most 4 times; the 1.7B: the subjects with the highest loss got the passes | g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows |
 | Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned | `training/grow.py` | fixed | B: practice drawn by s(1 - f) from per-kind counts of some member right and body right (cells/body.json kinds) | edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed |
 | A pulse of 32 tasks cannot show one generation better than the last | `.github/workflows/grow.yml` | fixed | B: the pulse on 4 seeds; hard, easy and several recorded apart and drawn (progress/parts.svg) | g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice |
+| g35 trained from g28's body beside g34: the night's changes against the old way, same parents | `.github/workflows/grow.yml` | fixed | A | run 43827930978, seeds 1-3: easy 19 of 24, hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. Inside the noise on hard; the easy losses are mostly web kinds counted as easy. A trial beside g34, not a generation |
+| A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s' | `team/ternary.py` | fixed | A, PR 61 | g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs |
+| A scheduled run queued behind a running generation grew from the body before it and its record conflicted | `.github/workflows/grow.yml` | fixed | A, PR 61 | g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs |
 
 ## Rules learned
 
