@@ -1,0 +1,68 @@
+"""A child grown on several runners at once: each on its own slice of the rows, the slices' edits averaged into it."""
+import json
+from pathlib import Path
+
+import numpy as np
+import pytest
+
+from training import grow, merge
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _rows(n):
+    return [{"messages": [{"role": "system", "content": "s"}, {"role": "user", "content": f"TASK {i}"}], "output": f"print({i})"} for i in range(n)]
+
+
+def test_every_row_is_in_exactly_one_slice_whatever_the_order():
+    rows = _rows(300)
+    parts = [grow.slice_rows(rows, k, 3) for k in range(3)]
+    assert sum(len(p) for p in parts) == 300 and all(60 < len(p) < 140 for p in parts)
+    seen = [r["output"] for p in parts for r in p]
+    assert sorted(seen) == sorted(r["output"] for r in rows)  # none twice, none left out
+    assert grow.slice_rows(list(reversed(rows)), 1, 3) == list(reversed(parts[1]))  # the same rows, in any order
+    with pytest.raises(ValueError):
+        grow.slice_rows(rows, 3, 3)
+
+
+def test_the_slices_edits_are_averaged_into_one_child_of_the_childs_rank(tmp_path):
+    rng = np.random.default_rng(0)
+    start = {f"model.layers.{i}.self_attn.q_proj": (rng.normal(size=(4, 32)).astype(np.float32), rng.normal(size=(24, 4)).astype(np.float32)) for i in (5, 6)}
+    files = []
+    for k in range(3):  # each slice: the same start, moved a little its own way
+        e = {m: (a + 0.01 * rng.normal(size=a.shape).astype(np.float32), b + 0.01 * rng.normal(size=b.shape).astype(np.float32)) for m, (a, b) in start.items()}
+        f = tmp_path / f"s{k}" / "t80.g29code.safetensors"
+        f.parent.mkdir()
+        merge.save(e, f)
+        f.with_suffix(".json").write_text(json.dumps({"steps": 10 + k, "used": 100, "rows": 300, "read": 40, "seconds": 900 + k, "leans": "code"}))
+        files.append(e)
+    joined, kept = merge.merge(files, None, 4)
+    for m in start:  # the average of the products, cut to rank 4: close to each slice's (they share their start)
+        want = sum(b @ a for a, b in (e[m] for e in files)) / 3
+        got = joined[m][1] @ joined[m][0]
+        assert np.abs(got - want).max() < 0.05 * np.abs(want).max()
+    import subprocess
+    import sys
+    out = subprocess.run([sys.executable, "training/merge.py", "join", str(tmp_path / "work")] + [str(tmp_path / f"s{k}" / "t80.g29code.safetensors") for k in range(3)] + ["--rank", "4"],
+                         cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    said = json.loads(out.stdout.strip().splitlines()[-1])
+    assert said["slices"] == 3 and said["steps"] == 33 and said["used"] == 300  # the slices' work added up
+    cfg = json.loads((tmp_path / "work" / "adapter_config.json").read_text())
+    assert cfg["r"] == 4 and cfg["lora_alpha"] == 8 and (tmp_path / "work" / "adapter_model.safetensors").exists()
+
+
+def test_the_workflow_grows_each_child_on_its_slices_and_joins_them_before_the_trunk():
+    import yaml
+    flow = yaml.safe_load((ROOT / ".github" / "workflows" / "grow.yml").read_text())
+    jobs = flow["jobs"]
+    assert "shard" in jobs["train"]["strategy"]["matrix"]
+    up = next(s for s in jobs["train"]["steps"] if s.get("uses", "").startswith("actions/upload-artifact"))
+    assert up["with"]["name"].startswith("part-") and up["with"]["if-no-files-found"] == "ignore"
+    assert jobs["join"]["needs"] == ["plan", "train"]
+    joined = next(s for s in jobs["join"]["steps"] if s.get("uses", "").startswith("actions/upload-artifact"))
+    assert joined["with"]["name"] == "${{ matrix.variant }}-${{ matrix.child.suffix }}"  # the name merge, gate and record read
+    for later in ("merge", "gate", "record"):
+        assert "join" in jobs[later]["needs"]
+    text = (ROOT / ".github" / "workflows" / "grow.yml").read_text()
+    assert "vars.HIVE_SHARDS || '3'" in text and 'SLICE="--shard $SHARD/$N"' in text

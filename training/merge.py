@@ -14,6 +14,9 @@ split by SVD. No matrix of the DNA's size is ever built (an 8B DNA has projectio
 
     python3 training/merge.py trunk OUT_FOLDER EDIT.safetensors ... [--rank 32] [--weights 1,1,2]
     python3 training/merge.py mix OUT.safetensors PARENT.safetensors TRUNK.safetensors [--pull 0.5] [--rank 16]
+    python3 training/merge.py join OUT_FOLDER SLICE.safetensors ... --base t80 --name g29code [--out-dir DIR]
+                         one child grown on several runners at once, each on a slice of the rows: the slices'
+                         edits averaged into the child, cut to its rank (16), with a record joined from theirs
 
 Needs numpy and safetensors only.
 """
@@ -132,6 +135,29 @@ def main(argv):
             meta |= {"member": f"{base}+{name}", "file": str(out), "megabytes": round(out.stat().st_size / 2**20, 1)}
             out.with_suffix(".json").write_text(json.dumps(meta, indent=1))
         print(json.dumps(meta))
+        return 0
+    if argv[:1] == ["join"] and len(files) >= 2:
+        folder, paths = files[0], files[1:]
+        rank = opt("--rank", 16)
+        edit, least = merge([load(p) for p in paths], None, rank)
+        base, name = opt("--base", ""), opt("--name", "")
+        from training.grow import UNPACKED
+        write(edit, folder, UNPACKED.get(base, base), rank)
+        metas = []
+        for p in paths:  # each slice's own record lies beside its edit
+            m = Path(p).with_suffix(".json")
+            if m.exists():
+                metas.append(json.loads(m.read_text()))
+        meta = dict(metas[0]) if metas else {}
+        meta |= {"slices": len(paths), "least_energy_kept": round(least, 4), "shard": "",
+                 "steps": sum(m.get("steps") or 0 for m in metas), "used": sum(m.get("used") or 0 for m in metas),
+                 "rows": sum(m.get("rows") or 0 for m in metas), "read": sum(m.get("read") or 0 for m in metas),
+                 "judged": sum(m.get("judged") or 0 for m in metas), "seconds": max([m.get("seconds") or 0 for m in metas] or [0])}
+        if base and name:
+            out = gguf(folder, base, name, opt("--out-dir", "") or None)
+            meta |= {"member": f"{base}+{name}", "file": str(out), "megabytes": round(out.stat().st_size / 2**20, 1)}
+            out.with_suffix(".json").write_text(json.dumps(meta, indent=1))
+        print(json.dumps({k: meta.get(k) for k in ("member", "slices", "steps", "used", "rows", "least_energy_kept")}))
         return 0
     if argv[:1] == ["mix"] and len(files) == 3:
         out, parent, trunk = files
