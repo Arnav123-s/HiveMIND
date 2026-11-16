@@ -5,7 +5,8 @@
 (1) the pulse: easy and hard, p of n, and each hard kind beside the compared runs; a seat whose server died (every
     task wrong in a few minutes) is left out and counted.
 (2) the lessons: for every cell slice, its passes and seconds a row, and for each hard subject that is new to this
-    line its rows, passes, first and last loss (a kind is being learned when its loss ends below about 0.3).
+    line its rows, passes, first and last loss (a kind is being learned when its loss ends below about 0.3); and the
+    lessons kept back (2 of every kind, never trained on), their loss before and after training, by kind.
 (3) the gather step's lesson line, and from all-rows the rows by "by" (who vouched for them) and by kind.
 (4) with --programs: every failed hard task, with its folder in gate-work, how many programs the members wrote, the
     last program's error, and the lesson maker of its kind (`python training/lessons.py --show MAKER`), to read the
@@ -122,6 +123,28 @@ def subject_kind(s):
     return s.split(" · ")[0]
 
 
+def kept_back(recs):
+    """The lessons kept back (never trained on; training/grow.kept_back), by kind: their loss where each slice started
+    and where it ended, and the mean over the slices. A kind is learned from its lessons when the loss on the ones it
+    never met falls; one that falls only on the rows it met is remembered, not learned. recs: [{"job", "record"}]."""
+    by = collections.defaultdict(list)
+    for r in recs:
+        rec = r.get("record") or {}
+        for k, v in (rec.get("kept_back") or {}).items():
+            if v.get("before") is not None and v.get("after") is not None:
+                by[k].append((f"{rec.get('member', r.get('job', '?'))} {rec.get('shard', '')}".strip(), v))
+    if not by:
+        return ["no slice's record has lessons kept back"]
+    out = ["| kind | slices | rows | mean before -> after | change | each slice: before -> after |", "|---|---|---|---|---|---|"]
+    for k in sorted(by):
+        v = by[k]
+        b = sum(x["before"] for _, x in v) / len(v)
+        a = sum(x["after"] for _, x in v) / len(v)
+        each = "; ".join(f"{who}: {x['before']:.3f} -> {x['after']:.3f}" for who, x in v)
+        out.append(f"| {k} | {len(v)} | {v[0][1].get('rows', '-')} | {b:.3f} -> {a:.3f} | {a - b:+.3f} | {each} |")
+    return out
+
+
 def main(argv):
     run = argv[1]
     compare = [argv[i + 1] for i, a in enumerate(argv) if a == "--compare"]
@@ -160,7 +183,8 @@ def main(argv):
     print("| slice | result | passes | s/row | new hard subjects: rows passes first->last |")
     print("|---|---|---|---|---|")
     learned = collections.defaultdict(list)
-    for r in records(run):
+    recs = records(run)
+    for r in recs:
         rec = r["record"]
         if not rec:
             print(f"| {r['job']} | {r['conclusion']} | - | - | no record |")
@@ -179,6 +203,8 @@ def main(argv):
     for k in sorted(learned):
         v = learned[k]
         print(f"| {k} | {len(v)} | {sum(v) / len(v):.3f} | {sum(x < LEARNED for x in v)}/{len(v)} |")
+    print("\n## (2b) lessons kept back (never trained on): loss before -> after training, by kind")
+    print("\n".join(kept_back(recs)))
 
     # (3) gather and rows
     print("\n## (3) gather and rows")
