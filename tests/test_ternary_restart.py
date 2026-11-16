@@ -231,3 +231,16 @@ def test_a_server_that_ends_at_once_says_how_and_why(fake, tmp_path, monkeypatch
     assert time.time() - t0 < 30  # no waiting out the minute for a server that has ended
     assert "ended" in said and "exit code 3" in said and "unexpected end of file" in said
     assert "older start" not in said  # only this start's own lines
+
+
+def test_the_runtime_kept_between_runs_is_keyed_by_the_cpus_instructions_not_its_name():
+    """g35's pulse seed 4 and g38's practice runner 1: a runtime built on one "AMD EPYC 9V74" ended at once (exit code
+    -4, an illegal instruction) on another runner of the same name that offers fewer instructions."""
+    import subprocess
+    from pathlib import Path
+    action = (Path(__file__).resolve().parents[1] / ".github" / "actions" / "hive" / "action.yml").read_text()
+    line = next(x for x in action.splitlines() if 'echo "cpu=' in x)
+    assert "/proc/cpuinfo" in line and "flags" in line
+    out = subprocess.run(["bash", "-c", line.split("run: ", 1)[1].replace(' >> "$GITHUB_OUTPUT"', "")], capture_output=True, text=True)
+    assert out.returncode == 0 and len(out.stdout.strip()) == len("cpu=") + 8
+    assert "static-flags-${{ steps.cpu.outputs.cpu }}" in action
