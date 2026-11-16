@@ -531,6 +531,34 @@ def _memory(empty):
     return home
 
 
+def run_task(cmd, timeout, **kw):
+    """(exit code, stderr) of one task run, (None, stderr) when it ran out of time. A task out of time is ended with
+    every process it started, the members' servers aside (they serve the next task). Before, only the task itself was
+    killed: the program it was running lives in a session of its own (team/tools/sandbox.py), so it lived on, and the
+    watch that holds a program to its time and its memory had died with the task. In trial run 32's exam a task ran
+    out of time, the member's server stopped answering soon after, and GitHub shut the runner down; generation 28's
+    practice runner 4 was shut down after three tasks in a row had run out of time."""
+    import psutil
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, **kw)
+    try:
+        _, err = p.communicate(timeout=timeout)
+        return p.returncode, err
+    except subprocess.TimeoutExpired:
+        try:
+            started = psutil.Process(p.pid).children(recursive=True)  # read before the task ends: then they are no one's
+        except psutil.Error:
+            started = []
+        p.kill()
+        for c in started:
+            try:
+                if "llama-server" not in c.name():
+                    c.kill()
+            except psutil.Error:
+                pass
+        _, err = p.communicate()
+        return None, err
+
+
 def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
     timeout = timeout or int(os.environ.get("HIVE_TASK_SECONDS", 2400))  # the most one task may take
     run = RUNS / tag / tid
@@ -538,12 +566,14 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
         return json.loads((run / "exam.json").read_text())
     run.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
-    try:
-        p = subprocess.run([sys.executable, "-m", "team", task, "--approve", "never", "--run-dir", str(run)], cwd=ROOT,
-                           env=dict(os.environ, AGENT_TEAM_HOME=str(memory_home), HIVE_KIND=kind), capture_output=True, text=True, timeout=timeout)
-        note = "" if p.returncode == 0 else f"exit {p.returncode}: {p.stderr.strip().splitlines()[-1][:200] if p.stderr.strip() else ''}"
-    except subprocess.TimeoutExpired:
+    code, err = run_task([sys.executable, "-m", "team", task, "--approve", "never", "--run-dir", str(run)], timeout, cwd=ROOT,
+                         env=dict(os.environ, AGENT_TEAM_HOME=str(memory_home), HIVE_KIND=kind))
+    if code is None:
         note = f"timed out after {timeout} s"
+    else:
+        note = "" if code == 0 else f"exit {code}: {err.strip().splitlines()[-1][:200] if err.strip() else ''}"
+    # a member's server that died or stopped answering and was started again (team/ternary.py) says so here, in the job's log
+    note += "".join(f"; {line.strip()[:240]}" for line in err.splitlines() if line.startswith("ternary: the server"))
     report = (run / "REPORT.md").read_text() if (run / "REPORT.md").exists() else ""
     try:
         ok, why = check(run, report)
@@ -556,7 +586,7 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
 
 
 def each_member(run, check):
-    """Every member's own answer put to the task's check: [{"who", "ok"}]. The hive's answer says how the body did;
+    """Every member's own answer put to the task's check: [{"who", "ok", "member"}]. The hive's answer says how the body did;
     this says which cell is right on which kind of task, exactly, so the body can seat a task with the cells whose
     strengths lie nearest to it (team/ternary.seating, cells/strengths.json)."""
     import shutil
@@ -573,14 +603,17 @@ def each_member(run, check):
         ok = False
         if t.get("answer"):
             with tempfile.TemporaryDirectory() as tmp:
-                work = Path(t.get("work") or "")
-                if work.is_dir():
+                # a member with no work folder has none to copy: Path("") is the current folder (the whole checkout)
+                work = Path(t["work"]) if t.get("work") else None
+                if work and work.is_dir():
                     shutil.copytree(work, Path(tmp) / "work", ignore=lambda d, names: [n for n in names if (Path(d) / n).is_file() and (Path(d) / n).stat().st_size > 5_000_000])
                 try:
                     ok = bool(check(Path(tmp), t["answer"])[0])
                 except Exception:  # noqa: BLE001 - a check that cannot be made on one member's answer counts as not right
                     ok = False
-        out.append({"who": str(t["who"])[:80], "ok": ok})
+        # member: the number of its member{n}.json, so each verdict is tied to the file it was made on (training/grow
+        # teaches the members the check confirmed); the order of this list is the files' sorted names, not their numbers
+        out.append({"who": str(t["who"])[:80], "ok": ok, "member": int(re.sub(r"\D", "", f.stem))})
     return out
 
 
