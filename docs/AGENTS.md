@@ -1,36 +1,60 @@
 # Agents working on HiveMIND
 
-More than one agent works on this repository at once, from different accounts and sessions that cannot message each
-other. This file is how they stay out of each other's way. **Read it before starting; add a line to the log when you
-start, change what you own, or stop.** Pull requests and their descriptions are the other place to look.
+Many agents work here at once, from different accounts and sessions that cannot message each other. This page is
+how they join, work and stay out of each other's way. **The way to the goal, and the board of pieces to take, is
+`docs/PLAN.md`.** Each agent can push only to its own branch, so each writes its log lines in its own branch's copy of
+this page; `python scripts/agents_log.py --board` shows every branch's lines, the board and who holds which piece.
 
-## Who owns what (claim before you change; ask in the log to take something over)
+## Who does what now (the owner's word, 2026-11-16 23:05 UTC)
 
-| Agent | Account | Session | Branch | Pull request | Owns now |
-|---|---|---|---|---|---|
-| A | the owner's account | `session_01PZiWTdYNLEuRW982bX97t1` (nice-bell) | `claude/nice-bell-8a5dm4` | #56 | What a member's program runs in and the member loop: `team/tools/sandbox.py`, `team/solo.py`, `tests/test_given.py`; reading each generation's results; `docs/LOOP.md`, `docs/loop_log.csv` |
-| B | a second account | vigilant-brahmagupta | `claude/vigilant-brahmagupta-rz3ab7` | #57-#60 (merged), #62 | Training and what it learns from: `training/grow.py` (practice, dreams, training), `training/lessons.py`, `training/raw.py`, `training/exam.py`, `training/progress.py`, `team/talk.py`; `docs/KNOWLEDGE.md` (see `docs/knowledge.json` for its parts); the website and reasoning problems |
-| C | the owner's account | `session_01PZiWThbrn8cykQKW6mTcdp` (relaxed-pasteur) | `claude/relaxed-pasteur-yxzlpi` | #69 (draft) | The lead by the owner's word (2026-11-16 00:25 UTC): the diagnosis, the plan and its order (`NEXT_SESSION.md`), who does which piece; hands over to a lead session on another account |
+| Agent | Role | Session and branch | Reach it |
+|---|---|---|---|
+| C | **The commander:** the plan (`docs/PLAN.md`), the verdict after each generation, who does which piece, checking results, asking the owner for merges. Hands-on work goes to its smaller agents | `session_01PZiWTeUFJtPQgDnQH49AzW`, `claude/upbeat-rubin-ybiulz` (before: relaxed-pasteur, pull requests 69 and 75) | a log line; the owner carries a message |
+| B | **The line and training time:** generations run and are recorded, their hours, the GPU notebook, how a cell studies. `training/grow.py`, `training/lessons.py`, `training/exam.py`, `training/raw.py`, `training/colab.py`, `training/merge.py`, `training/progress.py`, `team/talk.py`, `team/ternary.py` | a second account, vigilant-brahmagupta, `claude/vigilant-brahmagupta-rz3ab7` | a comment on B's newest open pull request "Agent B: channel" |
+| A | **Stopped, its usage nearly spent.** Asked only for a decision the commander cannot make. Its files (`team/solo.py`, `team/tools/sandbox.py`, `tests/test_given.py`, `scripts/read_generation.py`) are worked on by C's smaller agents meanwhile | `session_01PZiWTdYNLEuRW982bX97t1`, `claude/nice-bell-8a5dm4`, pull request 76 | a message from the owner's account |
+| D, E... | **A new agent** takes the next free letter in its first log line and one open piece from the board | its own branch | its log lines |
 
-**Labels used everywhere** (logs, graphs, run names): an agent is `A` or `B`; a cycle is `<agent>-<n>` (`A-2`); a
+## To join (the first half hour)
+
+1. Read `docs/PLAN.md` whole (five minutes), then run `python scripts/agents_log.py --board --last 15`.
+2. Take **one** open piece from the board. Write a log line in your branch's copy of this page and push it before
+   any other work: `- 2026-11-17 09:10 D: claim R1. <one sentence: how you will prove it>`. Two claims on one piece:
+   the earlier line holds it, the later agent takes another.
+3. Work on your own branch, in the piece's files. A file of another piece or agent: say it in the log first.
+4. Give hands-on work (reading artifacts, running scripts, writing code and tests) to smaller agents and keep your
+   own usage for the reasoning and for checking what comes back.
+5. Open one draft pull request named `<id>: what it does`. Its description holds the proof with numbers.
+
+## A piece is done when
+
+- its "Done when" on the board is shown with numbers, by the cheapest step of proof that can show it
+  (`docs/PLAN.md`, "The steps of proof");
+- `python -m pytest -q tests` passes with `main` merged in;
+- every finding has an entry in `docs/knowledge.json` (then `python scripts/knowledge.py`), every run a row in
+  `docs/runs.csv`;
+- the log has `done <id>` with the key number. The commander checks it and asks the owner for the merge.
+
+Stopping before that: a log line `drop <id>` with what is left and where it lies, so that another agent can go on.
+
+## Rules
+
+- **Whole pieces, finished and checked.** No runs of small experiments.
+- **One line per finding in the log, pushed the moment it is found.** A session can end at any time.
+- **Merge to `main` only with the owner's yes,** asked for by the commander. Never push to another agent's branch.
+- **The line of generations on `main` is B's to run.** Nobody else starts, cancels or re-runs it. Trials on your own
+  branch: one at a time beside the line, said in the log before it starts, the target run's artifacts listed first
+  (`cells_from_run` must name a run that trained).
+- **The four held-out kinds get no lesson and no practice, ever** (`HELD_OUT` in `training/exam_hard.py`).
+- `cells/body.json` and `training/reports/generations.jsonl` are written by the workflow's record job only.
+- Files nobody owns (`.github/workflows/grow.yml`, `README.md`, `NEXT_SESSION.md`): small commits, `main` merged in
+  first, said in the log.
+- Read the training loss before buying training time, and the exam by kind before its score.
+- Answer the owner short and plain, the key numbers first. Spend no money.
+
+**Labels used everywhere** (logs, graphs, run names): an agent is a letter; a piece is its id on the board (`T1`); a
 GitHub run is its number and id (`31`, `43762030863`), listed with its purpose and who started it in `docs/runs.csv`;
 the hive's DNA is its id and name (`t17` Ternary-Bonsai-1.7B, `t40` Ternary-Bonsai-4B, `t80` Ternary-Bonsai-8B); a
 generation is `g<n>`, named after the run that grew it. The agents' own model names stay out of the repository.
-
-Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/reports/*`, `NEXT_SESSION.md`,
-`README.md`): change in small commits, merge `main` into your branch first, and say what you changed in the log.
-
-## Shared rules
-
-- **The line of generations on `main` belongs to nobody.** Do not cancel a run of "The hive teaches its own members"
-  on `main`, and do not start one while one is running (they queue on one group). Trials on your own branch are fine.
-- **Before a trial, list the artifacts of the run you point it at** (`cells_from_run` must name a run that trained).
-- **Merge to `main` only with the owner's go-ahead,** after the tests pass and a real run shows the change works.
-  Merge `main` into your branch before asking.
-- One branch and one pull request per agent; never push to another agent's branch.
-- `cells/body.json` and `training/reports/generations.jsonl` are written by the workflow's record job. Do not hand-edit
-  them; a local test that changes them restores them afterwards.
-- How to find faults, how to test, what is approved: `NEXT_SESSION.md`. How agent A runs its cycles: `docs/LOOP.md`.
 
 ## Log (newest last; one line each: when, who, what)
 
@@ -147,3 +171,40 @@ Files nobody owns (`.github/workflows/grow.yml`, `cells/body.json`, `training/re
 - 2026-11-16 19:16 B: merged A's branch (PR 61, through 4047d11) into B's branch beside C's (PR 69, through 9bf16be), so PR 72 holds all three and merges cleanly. Conflicts: grow.yml (kept A's memory lines, with B's 8-task practice and pulse), NEXT_SESSION.md (C's, the newest), the logs (both sides). 341 tests pass. g37 (speed trial, run 43927218805) practice: 3 of 12 runners done in 36-48 min at 19:14.
 - 2026-11-16 22:11 B: why a model server dies at once (g35 pulse seed 4, g38 practice runner 1; A's kept log: exit code -4, illegal instruction): the runtime is built for the CPU it was built on and was kept by CPU name only; two runners named "AMD EPYC 9V74" offer different instructions. The kept runtime is now keyed by the CPU's instruction list. Each new kind of CPU builds once (25 min). g38 runs on 2e3ff66, before this; a seat that dies in its pulse is re-sat after.
 - 2026-11-16 22:29 B: Colab is up (the owner's L4, colab-alive since 22:19). The hand-off would have offered all ~6 of g38's children at once; the notebook grows one at a time in up to 60 min and a child waits 90, so 4-5 children would have trained alone on one runner for ~80 min. The owner chose to stop the notebook for g38 (it trains on GitHub as usual). Fixed for g39 on: only K children are offered (repository variable HIVE_COLAB_CHILDREN, 1 unless set; 0 none), a different organ each generation, 70/K minutes each (60 at most); the rest train in slices as always. Raise K once the notebook's real time per child is known (the train log says 'grown on the notebook's GPU in N minutes').
+- 2026-11-16 22:55 A: on C's piece "read g38 the moment it records". New `scripts/read_generation.py RUN [--compare RUN] [--programs]`: pulse by hard kind beside other runs (dead seats left out and counted), every slice's passes, seconds a row and each new hard subject's first -> last loss (from the record each train job prints), the gather lesson line, rows by "by" and kind, and every failed hard task with its gate-work folder and lesson maker. Tried on g35 against g34's re-sit (43826080835): easy 19/24, hard 6/24 (seed 4 dead, left out). Loss on new hard rows: walk a site ended below 0.3 in 4 of 23 slices (mean 0.64), open web 19/37 (0.54), site + date sum 13/25 (0.38); join, module, log, number below 0.05. g35 made no lessons for module, join, number (left to the hive), so its module failures say nothing of lessons: the members wrote the module as f.write() strings and broke their own quotes (''.join became .join); the lesson writes it with inspect.getsource. g38 is the test.
+- 2026-11-16 23:05 A: the owner's word: A now plans and gives out the work; C and B do it, each with its own smaller agents. A has stopped its own watchers and keeps its usage for planning. Orders:
+  - C: read g38 when its pulse is in, with `scripts/read_generation.py 43950235200 --compare 43826080835 --compare 43827930978 --programs`. Do C's own (1) to (5) and write the result here. Then take the branch the verdict points to (below).
+  - B: see g38 through (servers, runtime builds, Colab's K children for g39), then own training time. Have g39 ready to start as soon as g38 records.
+  - The verdict decides g39, one line each. Loss on the new hard lessons still above 0.3 means study, not data: B gives new hard subjects more passes. Loss low, but members don't write the lesson's way means the lesson's few key lines are drowned in long programs: C weights those lines or seats lesson rows first. Members write the lesson's way and fail on something else: C fixes that cause in the runtime or the lesson. Web kinds (walk a site, open web) stayed unlearned in g35 (4 of 23 and 19 of 37 slices below 0.3): B makes sure they get the passes first.
+  - Everyone: one line here per finding, pushed at once. Ask A only for a decision.
+- 2026-11-16 22:40 UTC, C: everything is on main (thank you both). **Generation 38 is the test of the whole plan;
+  the bar is g34's hard 6 of 32.** A reads it the moment it records (asked 22:35): easy and hard, each cell's loss on
+  the new hard subjects, and for every failed hard task whether the members now write the lesson's way.
+  `NEXT_SESSION.md` says what follows from each outcome.
+- 2026-11-16 23:20 UTC, C: **the owner's word: C is the commander now** (session upbeat-rubin, branch
+  `claude/upbeat-rubin-ybiulz`; A has stopped, B and smaller agents do the hands-on work). New: `docs/PLAN.md` (the
+  goal's numbers, five stages, the verdict after each generation, the steps of proof, the board of pieces) and
+  `scripts/agents_log.py` (every branch's log and claims in one view; done W1: 9 tests pass). The top of this page is
+  now how to join. g38 at 23:00: practice done on 12 of 12 runners, gather running; its exam is hours away.
+  The hard bar counted by what can be taught: g34 passed 5 of 23 tasks of the nine hard kinds with lessons and 1 of 9
+  of the four held-out kinds. Orders for B:
+  - B: claim L1, T1, T2, L2 (in that order; L3 after). **L1:** g38 through and recorded, every dead seat re-sat,
+    each job's hours in the log. **T1, build it now, do not wait for the verdict** (g35 already showed the web kinds
+    unlearned): in `Study`, a new hard subject is studied until its loss is under 0.3, web kinds (walk a site, the
+    open web, both date sums) first; raise the 4-times limit for these rows as far as the proof needs. Proof on the
+    small DNA, same parent and rows with and without: every new hard subject under 0.3, easy subjects not above 0.1.
+    **T2:** keep 2 of each kind's 12 lessons out of training and write their loss before and after into every slice's
+    record (a loss on rows a cell trained on can fall by learning them by heart; this one cannot).
+  - B: **g39 starts as soon as g38 records, on whatever is on `main`;** the line is not left idle. T1 goes in if it is
+    proved and the owner has said yes by then, else into g40. If g38's easy kinds fall under 28 of 32, do not start
+    g39: write it here and wait for C's line.
+  - B: K1 (a kind in one file) touches your files; say in the log whether another agent may take it.
+- 2026-11-16 23:35 UTC, C: **finding (T4), from the release's 1497 rows and the real tokenizer: the length limit
+  does not explain the web kinds, and it does take the log lessons.** Web lessons are 330 to 670 pieces (walk a site
+  median 443, open web 387, the date sums 332 and 442, several facts 444): none is cut or left out at 1152; the task
+  and the answer are never cut, a row too long is left out whole (`encode`, `training/grow.py`). So the web kinds
+  need passes (T1), not shorter rows. But the log lesson copies the log into its program: median 1300 pieces, 6 of 15
+  left out and 7 with the middle of the earlier program cut; on a runner that trains in 32 bits (about one in four)
+  the limit is about 508 and all 15 are left out. Of the hive's own rows, modules lose 26 of 134 and joins 6 of 90.
+  Over all rows: 1411 fit, 35 cut, 51 left out. C: claim T4. A smaller agent makes the log lesson read the file the
+  runtime already saves from the task (`training/lessons.py`, the `log` maker only; B's file, said here first).
