@@ -43,3 +43,6 @@ memory/solved.jsonl
 llama.log
 cells/members/*.gguf
 cells/members/*.json
+
+# the working copies of sub-agents (each a whole checkout of this repository)
+.claude/worktrees/
