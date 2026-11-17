@@ -325,7 +325,9 @@ jobs:
           # 12 lessons a kind (repository variable HIVE_LESSONS), for every kind the body fails more often than not in its
           # last pulses: 3 a kind, split over the slices, left each slice one row of a kind (generation 35)
           LESSONS="${{ vars.HIVE_LESSONS || '12' }}"; [[ "$LESSONS" =~ ^[0-9]{1,2}$ ]] || LESSONS=12
-          python3 training/lessons.py --seed "$GEN" --per-kind "$LESSONS" --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --record training/reports/generations.jsonl --dna "$DNA" --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -2 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          python3 training/lessons.py --seed "$GEN" --per-kind "$LESSONS" --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --record training/reports/generations.jsonl --dna "$DNA" --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl > lessons.txt && tail -2 lessons.txt | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          # the lessons' summary line (right of made by kind) for the record job's read (training/reads.py)
+          mkdir -p lessons && { grep '^{"lessons"' lessons.txt | tail -1 > lessons/lessons.json || true; }
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
@@ -337,6 +339,12 @@ jobs:
             out/rows.jsonl
             out/failures.jsonl
           retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lessons
+          path: lessons/lessons.json
+          retention-days: 30
+          if-no-files-found: ignore
 
   bench:
     needs: gather
@@ -797,13 +805,31 @@ jobs:
         with:
           pattern: rows-*
           path: prac
+      - uses: actions/download-artifact@v4
+        continue-on-error: true  # a run before gather kept its lessons' line, or with no lessons: the read says so
+        with:
+          name: lessons
+          path: lessons
+      - uses: actions/download-artifact@v4
+        if: ${{ needs.plan.outputs.grow && !inputs.cells_from_run }}
+        continue-on-error: true
+        with:
+          pattern: practice-work-*
+          path: pw
+      - name: The run's facts (each job's hours, the slices lost and their records, who started it; training/reads.py)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # this run's rows as the slices had them, before the release's are joined in below (the read counts them)
+          cp got/rows.jsonl all_rows.jsonl 2>/dev/null || : > all_rows.jsonl
+          python3 training/reads.py facts "${{ github.run_id }}" --gate gate --practice-work pw --out facts.json || { echo "::warning::the run's facts could not be read; the record goes on without them"; echo '{}' > facts.json; }
       - name: The record (only numbers and names this repository knows are taken from the other jobs)
         env:
           VERSUS_FLAGS: ${{ inputs.versus }}
         run: |
           if [ -d tr/trunk ]; then cp tr/trunk/* got/; fi
           mkdir -p prac
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
@@ -819,11 +845,14 @@ jobs:
           gh release upload hive-grown $(ls got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json got/$DNA.${GEN}*.safetensors 2>/dev/null) got/rows.jsonl $([ -s got/failures.jsonl ] && echo got/failures.jsonl) --clobber
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # the graphs of the hive's progress toward its goal, drawn again from the record just written (docs/PROGRESS.md)
+          # the read of this generation (docs/reads/GEN.md and latest.md: the numbers, the chain by kind, the hours and
+          # the next piece, by the rules of docs/DECISIONS.md), then the graphs and what is known, drawn again
+          python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the read could not be written; the record is kept"
           python3 training/progress.py || echo "::warning::the progress graphs could not be drawn; the record is kept"
           # the training steps of this generation's cells (cells/studied.json): who sits first and who has children first
           python3 training/lineage.py studied "$DNA" got || true
-          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null) docs/PROGRESS.md docs/progress
+          python3 scripts/knowledge.py || echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"
+          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null) docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
           git push -q origin "HEAD:${GITHUB_REF_NAME}" || { echo "::error::the record could not be pushed"; exit 1; }
