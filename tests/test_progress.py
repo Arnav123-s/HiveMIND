@@ -83,3 +83,38 @@ def test_ladder_practice_is_drawn_where_the_exams_show_the_body_at_its_edge(tmp_
     monkeypatch.setattr(exam, "exam", lambda *a, **k: seen.setdefault("weights", k.get("weights")) and [] or [])
     grow.practice(1, 2, level="ladder", out=tmp_path / "rows.jsonl", log=lambda *a, **k: None)
     assert seen["dna"] == "t80"
+
+
+def test_hard_easy_and_held_out_are_drawn_and_a_generation_that_lost_seats_or_slices_is_marked():
+    gens = [
+        {"generation": "g34", "when": "1", "dna": "t80", "arms": {"after": {"passed": 37, "tasks": 64, "hard": [6, 32], "easy": [31, 32], "unpractised": [1, 9]}}},
+        {"generation": "g38", "when": "2", "dna": "t80", "dead_seats": 1, "lost_slices": [7, 24],
+         "arms": {"after": {"passed": 30, "tasks": 48, "hard": [8, 24], "easy": [22, 24], "unpractised": [1, 7]}}},
+    ]
+    svg = progress.split_chart(gens)
+    xml.dom.minidom.parseString(svg)
+    for words in ("g34, hard kinds: 6 of 32", "g34, easy kinds: 31 of 32", "g34, held-out kinds (never practised): 1 of 9",
+                  "g38: 1 pulse seat dead, 7 of 24 train slices lost", "seats or slices lost"):
+        assert words in svg
+    assert svg.count('class="lost"') == 2  # one mark for g38, one in the legend
+    assert progress._losses(gens[0]) == "" and progress._losses({"lost_slices": 3}) == "3 train slices lost"
+
+
+def test_hours_are_drawn_by_step_when_the_record_says_them_and_named_missing_when_not(tmp_path):
+    gens = [{"generation": "g39", "when": "1", "dna": "t80", "minutes_by_step": {"practice": 63, "train": 175, "pulse": 60, "record": 2},
+             "arms": {"after": {"passed": 1, "tasks": 2}}},
+            {"generation": "g40", "when": "2", "dna": "t80", "hours": 4.5, "arms": {"after": {"passed": 1, "tasks": 2}}},
+            {"generation": "g41", "when": "3", "dna": "t80", "arms": {"after": {"passed": 1, "tasks": 2}}}]
+    svg = progress.hours_chart(gens)
+    xml.dom.minidom.parseString(svg)
+    assert "g39, train: 175 min" in svg and "5.0 h" in svg and "4.5 h" in svg and "g41" not in svg
+    assert "stroke-dasharray" in svg  # the bar of 5 hours
+    empty = progress.hours_chart(gens[2:])
+    assert "says its hours yet" in empty and "minutes_by_step" in empty
+    rec = tmp_path / "generations.jsonl"
+    rec.write_text("\n".join(json.dumps(g) for g in gens[2:]))
+    progress.draw(rec, tmp_path / "docs" / "progress", tmp_path / "none.json")
+    for name in ("split", "hours"):
+        xml.dom.minidom.parseString((tmp_path / "docs" / "progress" / f"{name}.svg").read_text())
+    page = (tmp_path / "docs" / "PROGRESS.md").read_text()
+    assert "progress/split.svg" in page and "progress/hours.svg" in page and "the record job is to write `minutes_by_step`" in page
