@@ -182,7 +182,7 @@ def test_dreams_have_runners_of_their_own_beside_practice():
     assert _step("dream", "Dream")["env"]["HIVE_ROTATE"] == "${{ matrix.dream }}"
     assert "hive-grown/failures.jsonl" in run and "--failures old_failures.jsonl --out rows.jsonl" in run and "--tries 2" in run
     assert 'DREAMS="${{ inputs.dreams || \'3\' }}"' in run and 8 * 3 >= 12 * 2  # as many dreams as before, or more
-    assert dream["if"] == practice["if"].replace(" }}", " && inputs.dreams != '0' }}") and dream["needs"] == "fresh"
+    assert dream["if"] == practice["if"].replace(" }}", " && format('{0}', inputs.dreams) != '0' }}") and dream["needs"] == "fresh"
     # its rows go where gather looks for practice's
     up = next(s for s in steps if s.get("uses", "").startswith("actions/upload-artifact"))
     assert up["with"]["name"] == "rows-dream-${{ matrix.dream }}" and up["with"]["path"] == "rows.jsonl"
@@ -203,3 +203,12 @@ def test_dream_seeds_meet_no_practice_seed_and_no_earlier_runs_dream():
     old_dreams = {30000000 + r * 100 + s for r in range(1, 200) for s in range(1, 13)}  # on the practice runners, until g38
     practice = {10000000 + r * 100 + s for r in range(1, 200) for s in range(1, 13)}
     assert len(new) == 199 * 8 and not new & old_dreams and not new & practice
+
+
+def test_a_run_with_no_inputs_still_dreams_and_still_starts_the_next_generation():
+    """g39 was started with no inputs: inputs.dreams and inputs.loop were null, and null != '0' is false in an
+    expression (both become the number 0), so the dream job was skipped and the line could not restart itself."""
+    from pathlib import Path
+    flow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "grow.yml").read_text()
+    assert "inputs.dreams != '0'" not in flow and "inputs.loop != '0'" not in flow
+    assert "format('{0}', inputs.dreams) != '0'" in flow and "format('{0}', inputs.loop) != '0'" in flow
