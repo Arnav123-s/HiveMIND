@@ -6,15 +6,15 @@
 # every task first: that is how many cells act as one.
 #
 #   practice   several runners at once: the trunk and the body's cells do fresh tasks that are never an exam's, half
-#              of them several tasks in one, as hard as the body's levels say (cells/body.json). Each runner also goes
-#              back to tasks the body got wrong before. A task counts only when two members agreed and the task's
-#              own check, computed by code, confirms the answer.
+#              of them several tasks in one, as hard as the body's levels say (cells/body.json). Dream runners beside
+#              them go back to tasks the body got wrong before. A task counts only when two members agreed and the
+#              task's own check, computed by code, confirms the answer.
 #   gather     every row checked so far: those of earlier generations (in the release) and this one's.
 #   plan       which cells have children this generation (training/lineage.py): the body multiplies, it is not
 #              replaced.
 #   train      a child starts as its parent's edit pulled halfway to the trunk, and is trained on all the rows: this
-#              generation's and its parent's corrected mistakes most, its own organ's rows three times as often. One
-#              runner for each child, at the same time.
+#              generation's and its parent's corrected mistakes most, its own organ's rows three times as often. A few
+#              runners for each child, each on a slice of the rows, all at the same time (never more than 20 jobs).
 #   merge      the newest cell of every line of descent, averaged into this generation's trunk (training/merge.py).
 #   gate       a body that multiplies is not judged: one fresh exam of two seeds is sat by the grown body as its pulse,
 #              to trace problems back from. (Trials still sit three ways side by side.)
@@ -61,7 +61,7 @@ on:
         description: "1: the cells are also trained to say what a program prints before it runs"
         default: ""
       dreams:
-        description: "How many of the tasks it got wrong before each practice runner goes back to and corrects first (the old program and the check's verdict, numbers hidden); 0: none; empty: 2 (on each of 12 runners)"
+        description: "How many of the tasks it got wrong before each of 8 dream runners goes back to and corrects (the old program and the check's verdict, numbers hidden), beside practice; 0: none; empty: 3 (24 in all, as 2 on each of 12 practice runners were)"
         default: ""
       practice_level:
         description: "ladder (the default): half single tasks, half several tasks in one, as hard as the body's levels say (cells/body.json; each record moves them); mixed: half basic kinds, half hard ones, always the same difficulty; edge: most the kinds the body passes about half the time"
@@ -159,7 +159,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 12 runners of 8 tasks: a stage lasts as long as its slowest runner, and 20 jobs run at once for free
+        # 12 runners of 8 tasks: a stage lasts as long as its slowest runner, and 20 jobs run at once for free (these
+        # 12 and the 8 dream runners beside them)
         shard: ${{ fromJSON(inputs.shards || '[1,2,3,4,5,6,7,8,9,10,11,12]') }}
     steps:
       - uses: actions/checkout@v4
@@ -177,17 +178,13 @@ jobs:
           LEVEL: ${{ inputs.practice_level || 'ladder' }}
           # every cell takes its turn beside the trunk, a different one on each runner (team/ternary.seating)
           HIVE_ROTATE: ${{ matrix.shard }}
-          # the most one task may take: a member that is lost in a task after 25 minutes does not find its way
-          HIVE_TASK_SECONDS: "1500"
+          # the most one task may take. 600 s: the slowest RIGHT practice task took 518 s (g38), 466 s (g35) and 212 s
+          # (g33), so 600 loses no right row, and it cuts g38's slowest runner's tasks from 84 to about 60 minutes (it
+          # was 1500: only wrong tasks ran past 600, 20 of them in g38). The gate keeps its own cap, so sittings compare.
+          HIVE_TASK_SECONDS: "600"
         run: |
           case "$LEVEL" in mixed|edge|ladder) ;; *) echo "::error::practice_level is ladder, mixed or edge, not $LEVEL"; exit 1 ;; esac
-          # the tasks the hive got wrong before (kept in the release); new failures go to failures.jsonl
-          curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
-          DREAMS="${{ inputs.dreams || '2' }}"
-          if [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] && [ "$DREAMS" -gt 0 ] && [ -s old_failures.jsonl ]; then
-            python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "$DREAMS" --tries 2 --minutes 60 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
-            tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
-          fi
+          # new failures go to failures.jsonl; the dreams (the dream job beside this one) go back to the old ones
           # memory every two minutes, so a runner that dies says how it stood (two died mid-task, 2026-11-15)
           (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
           python training/grow.py practice --seed $((10000000 + ${{ github.run_number }} * 100 + ${{ matrix.shard }})) --tasks "${{ inputs.tasks || '8' }}" --minutes 210 --level "$LEVEL" --out rows.jsonl | tee practice.txt
@@ -221,8 +218,78 @@ jobs:
           include-hidden-files: true
           retention-days: 14
 
+  dream:
+    # The hive goes back to tasks it got wrong before and corrects them (training/grow.py dream), on runners of their
+    # own beside practice. In g38 every practice runner dreamed first: 2 dreams took 0.3 to 47 minutes (12.9 a dream
+    # on average, 309 in all) before its 8 tasks, and the stage waited 134 minutes for its slowest runner. 8 runners of
+    # 3 dreams (24, as 12 of 2 were) and the 12 practice runners make 20 jobs, as many as run at once; with the 600 s
+    # cap a dream takes at most two tries of 10 minutes, so both stages end in about an hour.
+    needs: fresh
+    if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run && inputs.dreams != '0' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        dream: [1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Who dreams (the trunk and the body's cells, as in practice)
+        run: |
+          BODY=$(python3 training/lineage.py members "$DNA")
+          echo "HIVE_MEMBERS=${WHO:-$BODY}" >> "$GITHUB_ENV"
+        env:
+          WHO: ${{ inputs.who || '' }}
+      - name: The body's cells, from the release
+        run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+      - uses: ./.github/actions/hive
+      - name: Dream
+        env:
+          # another cell beside the trunk on each runner, and on each try after the first (training/grow.py dream)
+          HIVE_ROTATE: ${{ matrix.dream }}
+          # as in practice: the slowest corrected dream of g33, g35 and g38 took 242 s
+          HIVE_TASK_SECONDS: "600"
+        run: |
+          # the tasks the hive got wrong before (kept in the release)
+          curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
+          DREAMS="${{ inputs.dreams || '3' }}"
+          if ! [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] || [ "$DREAMS" -eq 0 ] || ! [ -s old_failures.jsonl ]; then echo "no dreams: $DREAMS a runner, $(wc -l < old_failures.jsonl) old failures"; exit 0; fi
+          (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
+          # seeds of their own: practice's are 10000000 + run * 100 + runner, and dreams on the practice runners took
+          # 30000000 + run * 100 + runner (1 to 12); the dream runners take 51 to 58 of each run's hundred, so no
+          # dream of this run or an earlier one is dreamed again under the same name
+          python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + 50 + ${{ matrix.dream }})) --tasks "$DREAMS" --tries 2 --minutes 50 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
+          tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          # rows-*: gather takes them with practice's (the record reads levels from practice.json, which dreams leave none of)
+          name: rows-dream-${{ matrix.dream }}
+          path: rows.jsonl
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: The model server's own log beside the work
+        if: ${{ !cancelled() }}
+        run: mkdir -p runs/exam/server-logs && cp ~/.cache/hive/ternary/*.log runs/exam/server-logs/ 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: dream-work-${{ matrix.dream }}
+          path: |
+            runs/exam/**/TASK.md
+            runs/exam/**/REPORT.md
+            runs/exam/**/exam.json
+            runs/exam/**/events.jsonl
+            runs/exam/**/member*_*.py
+            runs/exam/**/.member*_*.py.out
+            runs/exam/**/.member*_*.py.err
+            runs/exam/server-logs/*.log
+          include-hidden-files: true
+          retention-days: 14
+
   gather:
-    needs: [fresh, practice]
+    # the dreams' rows (rows-dream-*) as well as practice's
+    needs: [fresh, practice, dream]
     if: ${{ !cancelled() && needs.fresh.outputs.go == '1' }}
     runs-on: ubuntu-latest
     steps:
@@ -301,19 +368,22 @@ jobs:
           python training/grow.py speed --rows got/rows.jsonl --base "$DNA" | tee -a "$GITHUB_STEP_SUMMARY"
 
   plan:
-    needs: fresh
-    if: ${{ needs.fresh.outputs.go == '1' }}
+    # after practice and the dreams, beside gather (13 minutes; the plan takes one): the 20 jobs that run at once are
+    # theirs, and a plan job started with them would be the 21st and wait for one of them to end
+    needs: [fresh, practice, dream]
+    if: ${{ !cancelled() && needs.fresh.outputs.go == '1' }}
     runs-on: ubuntu-latest
     outputs:
       children: ${{ steps.plan.outputs.children }}
       grow: ${{ steps.plan.outputs.grow }}
-      shards: ${{ steps.plan.outputs.shards }}
+      slices: ${{ steps.plan.outputs.slices }}
     steps:
       - uses: actions/checkout@v4
       - name: Which cells have children this generation
         id: plan
         env:
           ORGANS: ${{ inputs.organs || ((inputs.trial || inputs.versus) && '["sources","code","data","words"]' || '') }}
+          VERSUS: ${{ inputs.versus }}
         run: |
           C=$(python3 training/lineage.py plan "$GEN" "$DNA" "$ORGANS")
           echo "children=$C" >> "$GITHUB_OUTPUT"
@@ -322,7 +392,31 @@ jobs:
           # each child is grown on this many runners at once, each on its own slice of the rows (training/merge.py join):
           # one runner got through a third of a child's rows in its time (g28). Repository variable HIVE_SHARDS; 1: one runner
           S="${{ vars.HIVE_SHARDS || '3' }}"; [[ "$S" =~ ^[1-8]$ ]] || S=3
-          echo "shards=$(python3 -c "import json, sys; print(json.dumps(list(range(int(sys.argv[1])))))" "$S")" >> "$GITHUB_OUTPUT"
+          # but never more than 20 training jobs, as many as GitHub runs at once: g38 had 8 children of 3 slices, 24 jobs,
+          # and the last 4 slices waited 175 minutes for the first 20 (the Colab child's slice 0 among them). Each child
+          # then gets 20 / children slices and the ones left over go one each to some children (8: 4 of 3 and 4 of 2;
+          # 6: 3 each; 10: 2 each; from 11 some grow whole on one runner). Which children get the extra slice turns with
+          # the run number, so no organ is always short; the child offered to the Colab notebook this run (the first in
+          # the same turn, the train step's PICK) gets one of the fewer slices, as the notebook may grow it whole. A
+          # versus trial grows every child twice: each kind gets 10 jobs, sliced the same way.
+          ARMS=1; if [ -n "$VERSUS" ]; then ARMS=2; fi
+          OUT=$(python3 -c '
+          import json, sys
+          c, s, arms, run = json.loads(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4])
+          m, most = len(c), 20 // arms
+          base, extra = s, 0
+          if m * s > most:
+              base = max(1, most // m)
+              extra = max(0, most - base * m)
+          out = []
+          for i, child in enumerate(c):
+              n = base + ((i - run) % m >= m - extra)
+              out += [{"child": child, "shard": k, "n": n} for k in range(n)]
+          print(json.dumps(out))
+          print(str(len(out) * arms) + " training jobs: " + ", ".join(e["child"]["name"] + " " + str(e["n"]) for e in out if e["shard"] == 0))
+          ' "$C" "$S" "$ARMS" "${{ github.run_number }}")
+          echo "slices=$(echo "$OUT" | head -1)" >> "$GITHUB_OUTPUT"
+          echo "$OUT" | tail -1 | tee -a "$GITHUB_STEP_SUMMARY"
           test "$C" != "[]"
 
   train:
@@ -336,9 +430,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        child: ${{ fromJSON(needs.plan.outputs.children) }}
+        # one entry for each slice of each child: {child, shard (0 to n - 1), n (the child's slices)}, from the plan
+        slice: ${{ fromJSON(needs.plan.outputs.slices) }}
         variant: ${{ fromJSON(inputs.versus && '["cell","versus"]' || '["cell"]') }}
-        shard: ${{ fromJSON(needs.plan.outputs.shards || '[0]') }}
     steps:
       - uses: actions/checkout@v4
       - name: Room for the weights, and in memory (a runner has 16 GB; training peaks near 11, and a long row must slow it, not kill it)
@@ -362,10 +456,12 @@ jobs:
         env:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
-          SHARD: ${{ matrix.shard }}
-          NAME: ${{ matrix.child.name }}
-          ORGAN: ${{ matrix.child.organ }}
-          P: ${{ matrix.child.parent }}
+          SHARD: ${{ matrix.slice.shard }}
+          # how many runners grow this child (its own number of slices: children may have 2 or 3, the plan job)
+          N: ${{ matrix.slice.n }}
+          NAME: ${{ matrix.slice.child.name }}
+          ORGAN: ${{ matrix.slice.child.organ }}
+          P: ${{ matrix.slice.child.parent }}
         run: |
           # the second kind's flags, only from a short list of known shapes (an input is text anyone dispatching typed)
           [[ "$VERSUS" =~ ^(--(pairs|foresee|ternary|no-checkpoint|lr|rank|epochs|layers|weight|max-len|read|judged)( [a-z0-9.]+)?[ ]?)*$ ]] || { echo "::error::versus: not a known flag list: $VERSUS"; exit 1; }
@@ -390,11 +486,18 @@ jobs:
           READ="${{ vars.HIVE_READ || '40' }}"; JUDGED="${{ vars.HIVE_JUDGED || '10' }}"; EPOCHS="${{ inputs.epochs || '2' }}"
           # a GPU, when the owner's Colab notebook is there (training/colab.py, colab/hive_gpu.ipynb): the child is grown on it
           # in minutes. With no notebook, or no cell back within 90 minutes, this runner trains it as always, in the time left.
-          # how many runners grow this child (the plan's slices; the matrix may also hold a versus arm)
-          N=$(python3 -c "import json, sys; print(len(json.loads(sys.argv[1])))" '${{ needs.plan.outputs.shards || '[0]' }}')
+          [[ "$N" =~ ^[1-8]$ && "$SHARD" =~ ^[0-7]$ && "$SHARD" -lt "$N" ]] || { echo "::error::not a slice: $SHARD of $N"; exit 1; }
           COLAB=""; MIN=170; WHOLE=""
           mkdir -p out
-          if [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+          # The notebook grows one child at a time and a child waits for it 90 minutes, so it is offered only K children
+          # (repository variable HIVE_COLAB_CHILDREN, 1 unless set; 0: none), a different organ each generation, each
+          # with 70/K minutes of training; the other children train in slices here as always. (g38 would have offered
+          # all six at once: the notebook could finish one or two in time, and the rest would have trained alone on one
+          # runner in what was left of the job.)
+          K="${{ vars.HIVE_COLAB_CHILDREN || '1' }}"; [[ "$K" =~ ^[0-9]$ ]] || K=1
+          PICK=$(python3 -c "import json, sys; c = [x['name'] for x in json.loads(sys.argv[1])]; n, k, r = sys.argv[2], int(sys.argv[3]), int(sys.argv[4]); print(1 if n in c and (c.index(n) - r) % len(c) < k else '')" '${{ needs.plan.outputs.children }}' "$NAME" "$K" "${{ github.run_number }}")
+          CM=$(( K > 0 ? 70 / K : 60 )); [ "$CM" -gt 60 ] && CM=60; [ "$CM" -lt 15 ] && CM=15
+          if [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
             if [ "$SHARD" != "0" ]; then
               # the owner's notebook grows the whole child (slice 0 orders it): the other slices have nothing to do
               if python3 training/colab.py alive; then echo "the owner's Colab GPU grows $NAME whole: slice $SHARD stands aside" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
@@ -402,7 +505,7 @@ jobs:
               T0=$(date +%s)
               PA=""; [ -n "$P" ] && PA="$DNA.$P.safetensors"
               TA=""; [[ "$T" =~ ^g[0-9]+trunk$ ]] && TA="$DNA.$T.safetensors"
-              if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes 60; then
+              if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes "$CM"; then
                 WHOLE=1  # the others stood aside: with no cell from the notebook, this runner grows the whole child
                 python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=1
               fi
@@ -420,7 +523,7 @@ jobs:
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: part-${{ matrix.variant }}-${{ matrix.child.suffix }}-s${{ matrix.shard }}
+          name: part-${{ matrix.variant }}-${{ matrix.slice.child.suffix }}-s${{ matrix.slice.shard }}
           path: out/
           retention-days: 30
           if-no-files-found: ignore  # a slice that stood aside for the owner's GPU leaves nothing

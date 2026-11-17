@@ -100,11 +100,83 @@ def test_done_rows_are_one_subject_and_own_is_a_weight_not_a_split():
 
 
 def test_the_flow_runs_a_generation_on_more_runners_with_the_same_work():
-    """Agent C's speed piece: a stage lasts as long as its slowest runner, so 12 practice runners of 8 tasks (2 dreams)
+    """Agent C's speed piece: a stage lasts as long as its slowest runner, so 12 practice runners of 8 tasks (and 8 dream runners of 3)
     in place of 6 of 16 (4), and the pulse on 8 runners of 8 tasks in place of 4 of 16: 64 tasks still."""
     from pathlib import Path
     flow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "grow.yml").read_text()
     assert "shard: ${{ fromJSON(inputs.shards || '[1,2,3,4,5,6,7,8,9,10,11,12]') }}" in flow
-    assert '--tasks "${{ inputs.tasks || \'8\' }}"' in flow and 'DREAMS="${{ inputs.dreams || \'2\' }}"' in flow
+    assert '--tasks "${{ inputs.tasks || \'8\' }}"' in flow and 'DREAMS="${{ inputs.dreams || \'3\' }}"' in flow
     assert "exam.py sit --level mixed --tasks 8 --seed" in flow
     assert 12 * 8 == 6 * 16 and 8 * 8 == 4 * 16
+
+
+WALK, LOG, EASY = "walk a site over several pages · first · new", "a log read and counted into a file · first · new", "a sum in words · first"
+
+
+def learning(study, start, per_round=0.85, n=10_000):
+    """n passes in which a subject's loss falls by `per_round` for each round of its rows met (a subject not in `start`
+    answers 0.05 and learns nothing). The passes each subject had when its loss first fell under the goal."""
+    met, under = Counter(), {}
+    for _ in range(n):
+        p = study.pick()
+        if p is None:
+            break
+        s = p[0]
+        met[s] += 1
+        study.learned(s, start.get(s, 0.05) * per_round ** (met[s] / study.rows[s]))
+        if study.loss(s) < study.GOAL and s not in under:
+            under[s] = study.passes[s]
+    return under
+
+
+def test_new_hard_subject_is_studied_past_four_meetings_until_under_goal():
+    """Generation 35: lesson rows met 4 times at the most, the new hard subjects ended at a loss of 0.4 to 1.6. A new
+    hard subject (1.6 at first, x0.85 for each round of its rows: about 11 rounds to fall under 0.3) keeps its passes
+    past 4 meetings a row until its loss is under 0.3; then it gets no more than any other (4 meetings a row)."""
+    subs = subjects(**{WALK: 4, EASY: 40})
+    before = grow.Study(subs, rng=random.Random(11))
+    learning(before, {WALK: 1.6}, n=400)
+    assert before.passes[WALK] == 4 * 4 and before.loss(WALK) > 0.5  # the old rule: 4 meetings a row, never learned
+    study = grow.Study(subs, rng=random.Random(11), hard={WALK}, web={WALK})
+    under = learning(study, {WALK: 1.6}, n=400)
+    assert study.loss(WALK) < 0.3 and 4 * 4 < under[WALK] == study.passes[WALK] <= 32 * 4
+    assert study.passes[EASY] >= 40  # every easy row met at least once while it was studied
+
+
+def test_new_hard_subject_never_learned_stops_at_32_meetings_a_row():
+    study = grow.Study(subjects(**{WALK: 3, EASY: 10}), rng=random.Random(12), hard={WALK})
+    got = Counter(run(study, {WALK: 2.0, EASY: 0.05}, 10_000))
+    assert got[(WALK, 0)] == 32 and study.passes[WALK] == 32 * 3 and study.passes[EASY] == 4 * 10
+    assert study.pick() is None and study.size == 32 * 3 + 4 * 10
+
+
+def test_web_kinds_come_first():
+    """The new web subjects are met first in the first sweep, then the other new hard ones, then the rest; while both
+    are above 0.3 a web subject gets about three times the passes of another hard one."""
+    subs = subjects(**{EASY: 30, LOG: 30, WALK: 30, "done · new": 30})
+    hard, web = grow.new_hard(subs)
+    assert (hard, web) == ({WALK, LOG}, {WALK})
+    study = grow.Study(subs, rng=random.Random(13), hard=hard, web=web)
+    got = [s for s, _ in run(study, {WALK: 1.5, LOG: 1.5, EASY: 0.05, "done · new": 0.01}, 300)]
+    assert got[:2] == [WALK, LOG]
+    assert 2.2 < Counter(got)[WALK] / Counter(got)[LOG] < 4.0
+
+
+def test_easy_subjects_still_get_passes_while_hard_ones_are_studied():
+    """FIRST (3 in 4) of the passes go to new hard subjects not learned yet; the rest are picked among the others by
+    the odds, so what is known is still rehearsed."""
+    subs = subjects(**{WALK: 40, LOG: 40, EASY: 100, "a thing to know · first": 100})
+    study = grow.Study(subs, rng=random.Random(14), hard={WALK, LOG}, web={WALK})
+    got = Counter(s for s, _ in run(study, {WALK: 2.0, LOG: 2.0}, 1000))
+    easy = got[EASY] + got["a thing to know · first"]
+    assert 0.2 * 1000 < easy < 0.3 * 1000 and got[EASY] > 50 and got["a thing to know · first"] > 50
+
+
+def test_hard_kinds_are_read_from_the_hard_exam():
+    kinds = grow.hard_kinds()
+    assert len(kinds) == 13 and set(grow.WEB) <= kinds
+    assert {"a fact read and a date sum on it", "a fact from a site and a date sum on it", "a module of two functions, with hidden tests"} <= kinds
+    rows = [{"kind": k, "type": t} for k in ("walk a site over several pages", "a sum in words") for t in ("first", "fix", "done")]
+    names = {grow.subject(r, new) for r in rows for new in (False, True)}
+    walk = {"walk a site over several pages · first · new", "walk a site over several pages · fix · new"}
+    assert grow.new_hard(names) == (walk, walk)
