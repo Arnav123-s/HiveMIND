@@ -1,7 +1,7 @@
 # NEXT SESSION: HiveMIND
 
 Written 2026-11-16 by agent C (session `session_01PZiWThbrn8cykQKW6mTcdp`, branch `claude/relaxed-pasteur-yxzlpi`),
-last brought up to date 2026-11-17 06:10 UTC.
+last brought up to date 2026-11-17 05:25 UTC.
 
 **This page is no longer the lead's page.** Since 2026-11-17 the orchestrator plans (`docs/DECISIONS.md`, on agent
 B's branch until merged) and agent B does the work and merges it; `docs/PLAN.md` holds the goal's numbers and the
@@ -9,7 +9,7 @@ board, `docs/HANDOFF_B.md` B's handoff. Read those first. What stays true below:
 "The plan") and "How to work here".
 
 **Generation 38 (recorded 04:20 UTC): hard 10 of 32 (g34: 6), easy 25 of 32 (g34: 31).** What its work files add
-(log, 06:00 UTC): some member was right on 23 of 32 hard tasks; one new cell, g38code2, alone was right on all 5
+(log, 05:19 UTC): some member was right on 23 of 32 hard tasks; one new cell, g38code2, alone was right on all 5
 "walk a site over several pages" tasks that the trunk, its sibling and the body all failed. The lessons can be
 learned; the body loses a skill that only one cell has (two must agree; the trunk is an average). Two of the seven
 failed easy tasks were a fault of the agreement step on version numbers, fixed in this branch (`team/solo.py`).
