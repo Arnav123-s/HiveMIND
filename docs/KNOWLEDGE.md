@@ -114,6 +114,10 @@ flowchart LR
   c_colaball["The hand-off offered all of a generation's children to the notebook at once, which grows one at a time"]:::fixed
   x_colaball(["only K children offered (HIVE_COLAB_CHILDREN, PR 74)"]):::fixed
   s_colaball --> c_colaball --> x_colaball --> pc_L2
+  s_colabtiming[/"the owner's L4 notebook came up 13 minutes after g42's training began; no train job looked again, so it grew nothing"/]
+  c_colabtiming["The notebook never trained a child: each train job looked for it only once, at the job's start"]:::fixed
+  x_colabtiming(["the child offered waits up to HIVE_COLAB_WAIT minutes (15) for the notebook; slice 0 orders, the other slices stand aside on the order; no wait when it was not seen in 12 hours"]):::fixed
+  s_colabtiming --> c_colabtiming --> x_colabtiming --> pc_L2
   s_practicetail[/"g38 practice 134 min, its slowest runner 47 min of dreams + 84 of tasks"/]
   c_practicetail["Practice waited on its slowest runner: dreams on the same runners and a 1500 s task cap"]:::fixed
   x_practicetail(["dreams on 8 runners of their own, 600 s task cap (L2)"]):::fixed
@@ -236,6 +240,7 @@ flowchart LR
   end
   subgraph p_colab["colab.py (B)"]
     f_colaball["The hand-off offered all of a generation's children to the notebook at once, which grows one at a time"]:::fixed
+    f_colabtiming["The notebook never trained a child: each train job looked for it only once, at the job's start"]:::fixed
   end
   subgraph p_exam["exam.py (B)"]
     f_orphans["A task out of time left its program running, unwatched, and the runner starved"]:::fixed
@@ -330,6 +335,7 @@ flowchart LR
   f_scheduledup -->|blocked| deaths
   f_cpuflags -->|blocked| deaths
   f_colaball -->|blocked| slowgeneration
+  f_colabtiming -->|blocked| slowgeneration
   f_twowaves -->|blocked| slowgeneration
   f_practicetail -->|blocked| slowgeneration
   f_slicememory -->|blocked| deaths
@@ -362,7 +368,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (4 open, 50 fixed)
+## Causes found (4 open, 51 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -412,6 +418,7 @@ flowchart LR
 | The nightly schedule started a second run of the line beside the one that restarts itself after each record | `.github/workflows/grow.yml` | L3 | fixed | B | g40 (run 44053802610): scheduled at 09:14, queued behind g39, started at 10:23 when g39 ended, passed fresh (g39's own record had failed, so cells/body.json had not moved) and grew from the old body until cancelled by hand |
 | The runtime kept for one CPU was used on another of the same name that lacks some of its instructions | `.github/actions/hive/action.yml` | L1 | fixed | B, PR 73: the kept runtime is keyed by the CPU's instruction list; each new kind of CPU builds once (25 min) | 2026-11-16: g35 pulse seed 4 and g38 practice runner 1 (all 8 of its tasks lost); two runners named AMD EPYC 9V74 offer different instructions |
 | The hand-off offered all of a generation's children to the notebook at once, which grows one at a time | `training/colab.py` | L2 | fixed | B, PR 74: only K children offered (repository variable HIVE_COLAB_CHILDREN, 1 unless set), a different organ each generation, 70/K minutes each (60 at most) | 2026-11-16 22:29: the notebook grows one child in up to 60 min and a child waits 90, so 4-5 would have trained alone on one runner for ~80 min; the owner stopped the notebook for g38 |
+| The notebook never trained a child: each train job looked for it only once, at the job's start | `training/colab.py` | L2 | fixed | B's sub-agent: colab.py seen / alive --wait / aside / mark; the cell it grows is marked grown_on colab and the read says what it grew, on which GPU, in how many minutes, beside the CPU slices | 2026-11-17, g42: colab-alive from the notebook 13 minutes after the train jobs started, no order placed |
 | 24 train jobs where only 20 run at once: 4 slices waited for a second wave | `.github/workflows/grow.yml` | L2 | fixed | B (L2, on main 4305dcc): 8 children as 4 of 3 slices and 4 of 2, the extra slice turning with the run number; proof is g39 | 2026-11-16 23:09: g38's last 4 slices started ~01:51, so the generation takes ~9-10 h |
 | Practice waited on its slowest runner: dreams on the same runners and a 1500 s task cap | `training/grow.py` | L2 | fixed | B (L2, on main 4305dcc): dreams on 8 runners of their own beside the 12 practice runners, a 600 s cap in practice and dreams; expected ~63 min, proof is g39 | 2026-11-16 23:09: 2 tasks hit the 1500 s cap; the slowest right practice task took 518 s, the slowest corrected dream 242 s |
 | The row-length formula missed 1.5-1.9 GB (scratch buffers, optimizer state, the OS: it used the total at load), so 8B slices ran at the runner's RAM ceiling and swapped when a new longest row came; Xeon 6975P-C runners suspected (0 of 32 survivors) | `training/grow.py` | L1 | fixed | B (training/grow.py MemoryGuard, Study.skip): before each pass pieces x cost against psutil available, skip under 1 GB (HIVE_MEMORY_SPARE_GB), cost learned from the fall in available during each pass (floor: the formula's); trim after every pass, gc every 4; fits from available once the optimizer exists; available and swap in every step line, memory {} in the slice's record. Earlier: PR 78, 1 GB more spare for 16-bit (did not lower the peaks). Proof is g40's records | 2026-11-17: every lost slice 'the hosted runner lost communication', no log kept; finished slices at 14.1-14.8 GB whatever their fits, peaks jumping 0.1-1.8 GB at new longest rows; the 6975P-C is 11 of 46 other jobs and 0 of 32 surviving slices |

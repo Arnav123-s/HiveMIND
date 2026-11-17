@@ -537,23 +537,32 @@ jobs:
           K="${{ vars.HIVE_COLAB_CHILDREN || '1' }}"; [[ "$K" =~ ^[0-9]$ ]] || K=1
           PICK=$(python3 -c "import json, sys; c = [x['name'] for x in json.loads(sys.argv[1])]; n, k, r = sys.argv[2], int(sys.argv[3]), int(sys.argv[4]); print(1 if n in c and (c.index(n) - r) % len(c) < k else '')" '${{ needs.plan.outputs.children }}' "$NAME" "$K" "${{ github.run_number }}")
           CM=$(( K > 0 ? 70 / K : 60 )); [ "$CM" -gt 60 ] && CM=60; [ "$CM" -lt 15 ] && CM=15
+          T0=$(date +%s)
           if [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+            # The owner may start the notebook any time during practice (g42's came up 13 minutes after training began,
+            # and each job had looked once, at its start): every slice of the child offered waits up to CW minutes
+            # (repository variable HIVE_COLAB_WAIT, 15 unless set), one line a minute; a notebook not seen in 12 hours is
+            # not waited for. One decision a child: slice 0 waits and orders; the others stand aside once the order is in
+            # the release (or the notebook is there); with neither after the window, every slice trains as always.
+            CW="${{ vars.HIVE_COLAB_WAIT || '15' }}"; [[ "$CW" =~ ^[0-9]{1,2}$ ]] || CW=15
+            python3 training/colab.py seen --hours 12 || CW=0
             if [ "$SHARD" != "0" ]; then
               # the owner's notebook grows the whole child (slice 0 orders it): the other slices have nothing to do
-              if python3 training/colab.py alive; then echo "the owner's Colab GPU grows $NAME whole: slice $SHARD stands aside" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
+              if python3 training/colab.py aside --gen "$GEN" --name "$NAME" --minutes "$CW"; then echo "the owner's Colab GPU grows $NAME whole: slice $SHARD stands aside" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0; fi
             else
-              T0=$(date +%s)
               PA=""; [ -n "$P" ] && PA="$DNA.$P.safetensors"
               TA=""; [[ "$T" =~ ^g[0-9]+trunk$ ]] && TA="$DNA.$T.safetensors"
-              if python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes "$CM"; then
+              if python3 training/colab.py alive --wait "$CW" && T1=$(date +%s) && python3 training/colab.py order --gen "$GEN" --name "$NAME" --organ "$ORGAN" --dna "$DNA" --parent "$PA" --parent-cell "$P" --trunk "$TA" --rows got/rows.jsonl --read "$READ" --judged "$JUDGED" --epochs "$EPOCHS" --minutes "$CM"; then
                 WHOLE=1  # the others stood aside: with no cell from the notebook, this runner grows the whole child
-                python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=1
+                python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=$(( ($(date +%s) - T1) / 60 ))
               fi
-              MIN=$(( 170 - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
             fi
+            MIN=$(( 170 - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
           fi
           if [ -n "$COLAB" ]; then
-            cp colab_out/* out/ && touch out/whole && echo "grown on the owner's Colab GPU" | tee -a "$GITHUB_STEP_SUMMARY"
+            # the cell's record marked (grown_on colab, the GPU, minutes from order to cell) and printed for the read
+            cp colab_out/* out/ && touch out/whole && python3 training/colab.py mark --cell "out/$DNA.$NAME.json" --minutes "$COLAB"
+            echo "grown on the owner's Colab GPU in $COLAB minutes" | tee -a "$GITHUB_STEP_SUMMARY"
           else
             SLICE=""; if [ -z "$WHOLE" ] && [ "$N" -gt 1 ]; then SLICE="--shard $SHARD/$N"; else touch out/whole; fi
             python training/grow.py train $VERSUS $PARENT $TRUNK $SLICE --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt

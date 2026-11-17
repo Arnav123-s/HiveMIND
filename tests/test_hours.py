@@ -122,7 +122,7 @@ def _train(tmp_path, name, shard, n, alive=False):
     (work / "cells" / "body.json").write_text(json.dumps({"dna": "t80", "trunk": ""}))
     shim = work / "bin"
     shim.mkdir()
-    stand_in = (f'#!/bin/bash\ncase "$1" in\n  training/colab.py) [ "$2" = alive ] && exit {0 if alive else 1}; exit 1 ;;\n'
+    stand_in = (f'#!/bin/bash\ncase "$1" in\n  training/colab.py) [[ "$2" =~ ^(alive|seen|aside)$ ]] && exit {0 if alive else 1}; exit 1 ;;\n'
                 '  training/grow.py) echo "train $*" >> calls; mkdir -p cells/members "runs/grow/$DNA+$NAME"\n'
                 '    echo g > "cells/members/$DNA+$NAME.gguf"; echo "{}" > "cells/members/$DNA+$NAME.json"\n'
                 '    echo w > "runs/grow/$DNA+$NAME/adapter_model.safetensors"; exit 0 ;;\n'

@@ -42,7 +42,7 @@ def _arm(tasks):
 
 
 def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaught=0.1, child_ok=True, parent_ok=False,
-          body_ok=False, prev_taught_ok=False, rows_by_kind=None):
+          body_ok=False, prev_taught_ok=False, rows_by_kind=None, extra=()):
     """Every file of one generation, g40, made up; returns the read's text and its next-piece line. rows_by_kind: what
     each slice's record says of the new rows by kind (training/grow.train, from generation 42), the same for every
     taught kind; without it the records are the older ones, and the rows left out are estimated."""
@@ -70,7 +70,7 @@ def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaugh
                "record": {"member": "t80+g40code", "shard": f"{n}/2", "kept_back": kept,
                           "subjects": [{"subject": f"{k} · first · new", "rows": u, "passes": 3} for k in TAUGHT]}
                | ({"rows_by_kind": {k: dict(rows_by_kind) for k in TAUGHT}} if rows_by_kind else {})}
-              for n, u in enumerate(used)]
+              for n, u in enumerate(used)] + list(extra)
     jobs = [{"name": "practice (1)", "started_at": "2026-11-17T10:00:00Z", "completed_at": "2026-11-17T12:00:00Z", "conclusion": "success"},
             {"name": "dream (1)", "started_at": "2026-11-17T10:00:00Z", "completed_at": "2026-11-17T10:50:00Z", "conclusion": "success"},
             {"name": "train (g40code, 0)", "started_at": "2026-11-17T12:10:00Z", "completed_at": "2026-11-17T15:00:00Z", "conclusion": "success"},
@@ -235,3 +235,32 @@ def test_the_record_is_read_with_rows_by_kind():
     assert reads._slim(rec)["rows_by_kind"] == rec["rows_by_kind"]
     slices = [{"record": rec}, {"record": rec}, {"record": None}]
     assert reads.left_exact(slices) and reads.rows_left_out(slices, [], "g42") == {"x": [2, 6, 2]}
+
+
+# ---- the owner's Colab notebook, measured (training/colab.py mark; g42's notebook came up too late and grew nothing) ---
+def test_the_read_says_what_the_colab_notebook_grew_and_its_gap_beside_the_cpu_childrens(tmp_path):
+    kept = {k: {"lessons": 2, "rows": 2, "before": 1.0, "after": 0.2} for k in TAUGHT}
+    kept[UNTAUGHT] = {"lessons": 2, "rows": 2, "before": 1.0, "after": 0.9}
+    on_gpu = {"job": "train (g40sources, 0)", "conclusion": "success", "long": 0, "max_len": 1152,
+              "record": {"member": "t80+g40sources", "shard": "", "steps": 900, "seconds": 840, "kept_back": kept,
+                         "grown_on": "colab", "gpu": "NVIDIA L4", "minutes": 22}}
+    on_cpu = {"job": "train (g40data, 0)", "conclusion": "success", "long": 0, "max_len": 1152,
+              "record": {"member": "t80+g40data", "shard": "0/2", "steps": 120, "seconds": 10200}}
+    text, _ = build(tmp_path, extra=[on_gpu, on_cpu])
+    assert "Colab: g40sources grown on NVIDIA L4 in 22 minutes, 900 steps (CPU slices: median 120 steps in 170 minutes)" in text
+    note = next(ln for ln in text.splitlines() if "kept-back gap by where the child grew" in ln)
+    assert "g40sources on the Colab GPU +70 points" in note and "the CPU children +40 points" in note
+
+
+def test_the_read_says_the_colab_notebook_was_not_used_and_why(tmp_path):
+    text, _ = build(tmp_path)
+    assert "Colab: not used (notebook not seen)" in text and "by where the child grew" not in text
+    said = {"job": "train (g40sources, 0)", "conclusion": "success", "record": None, "colab": "notebook not there within the wait"}
+    text, _ = build(tmp_path / "late", extra=[said])
+    assert "Colab: not used (notebook not there within the wait)" in text
+    log = ("colab: waiting for the notebook, minute 1 of 15 (last seen 300 minutes ago)\n"
+           "colab: no notebook alive in 15 minutes (last seen 315 minutes ago): this runner trains as always\n")
+    assert reads.colab_in_log(log) == "notebook not there within the wait"
+    assert reads.colab_in_log("colab: no notebook seen in the last 12 hours: nobody waits for it\n") == "notebook not seen"
+    assert reads.colab_in_log("training...\n") is None
+    assert reads._slim({"member": "t80+g40sources", "grown_on": "colab", "gpu": "NVIDIA L4", "minutes": 22})["minutes"] == 22

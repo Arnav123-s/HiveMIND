@@ -84,7 +84,7 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `training/exam.py` | Makes, sits and checks exams; the gate's pulse | B | gate; practice via `training/grow.py` |
 | `training/exam_hard.py` | The hard kinds; `HELD_OUT` (never taught) | none named (K1 open) | exam, lessons |
 | `training/raw.py` | Raw text and voted answers mixed into training | B | train |
-| `training/colab.py` | Order a child from the owner's notebook through the release | B | train |
+| `training/colab.py` | Order a child from the owner's notebook through the release (waiting for it up to HIVE_COLAB_WAIT), and mark the cell it grew | B | train |
 | `training/progress.py` | Draws `docs/PROGRESS.md` and `docs/progress/` | B | record |
 | `training/reads.py` | The run's facts (job hours, lost slices, slice records) and the read of a generation, `docs/reads/` | B | record; `scripts/read_generation.py` |
 | `training/ternary_base.py`, `training/hive_bench.py` | Helpers imported by grow and exam | none named | grow, exam |
@@ -243,6 +243,7 @@ The restart passes only practice_level, dna, seating, dreams, pairs; every other
 | HIVE_READ | 40 | train | Raw text rows (`training/raw.py`); 0: none |
 | HIVE_JUDGED | 10 | train | Voted best-and-worst answer rows; 0: none |
 | HIVE_COLAB_CHILDREN | 1 (0-9) | train | Children offered to the Colab notebook, each 70/K minutes (15 to 60); 0: none |
+| HIVE_COLAB_WAIT | 15 (0-99) | train | Minutes the child offered to Colab waits for the notebook (slice 0 orders, the others stand aside on the order); none when it was not seen in 12 hours |
 
 HIVE_KEEP_BACK is **not** a repository variable: it is an environment variable read by `training/grow.py`
 (lessons of each kind kept back from training and only measured, default 2). grow.yml does not set it, so the
