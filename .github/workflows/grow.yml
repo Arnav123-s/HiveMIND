@@ -325,7 +325,7 @@ jobs:
           # 12 lessons a kind (repository variable HIVE_LESSONS), for every kind the body fails more often than not in its
           # last pulses: 3 a kind, split over the slices, left each slice one row of a kind (generation 35)
           LESSONS="${{ vars.HIVE_LESSONS || '12' }}"; [[ "$LESSONS" =~ ^[0-9]{1,2}$ ]] || LESSONS=12
-          python3 training/lessons.py --seed "$GEN" --per-kind "$LESSONS" --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --record training/reports/generations.jsonl --dna "$DNA" --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          python3 training/lessons.py --seed "$GEN" --per-kind "$LESSONS" --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --record training/reports/generations.jsonl --dna "$DNA" --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -2 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
@@ -659,9 +659,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # a body that multiplies is not judged: it sits once, with its children, as a pulse to trace problems back from.
+        # the paired gate: a body that multiplies sits twice on the same seeds, before (the body as it was, from the
+        # release) and after (with this generation's children): 16 jobs, under the 20 at once. The record keeps the
+        # children unless after is more than 2 tasks under before in all or on easy (training/grow_record.decide).
         # Trials still sit three ways side by side (two runs of the same hive differ by several tasks in 32: four seeds)
-        arm: ${{ fromJSON(needs.plan.outputs.grow && '["after"]' || (inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]')) }}
+        arm: ${{ fromJSON(needs.plan.outputs.grow && '["before","after"]' || (inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]')) }}
         # 64 tasks for a growing body too: on two seeds, one generation differed from the next by several tasks from
         # chance alone, and the hard kinds are what moves (agent C's plan, piece 3). Every arm sits them on 8 runners
         # of 8, half the time of 4 of 16 (a trial's 24 jobs: 20 run at once, the last 4 when the first are done).
@@ -697,7 +699,9 @@ jobs:
           case "${{ matrix.arm }}" in
             dna) WHO=$DNA ;;
             before)
-              WHO=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']))")
+              # a body that multiplies sits before as it answers: its trunk and its cells, all from the release
+              if [ "$GROW" = "1" ]; then WHO=$(python3 training/lineage.py members "$DNA")
+              else WHO=$(python3 -c "import json; b=json.load(open('cells/body.json')); print(','.join(b['dna']+'+'+c for c in b['cells']))"); fi
               python3 training/grow_record.py fetch "$WHO" ;;
             after)
               # a body that multiplies sits with its cells before and their children together
@@ -832,5 +836,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           ls got/$DNA.${GEN}*.gguf >/dev/null 2>&1 || { echo "::error::no cell grew this generation: the line stops here (read the train jobs' logs)"; exit 1; }
+          # three generations dropped by the paired gate running: the line stops and says why (training/grow_record.py)
+          if ! WHY=$(python3 training/grow_record.py restart); then echo "$WHY" >> "$GITHUB_STEP_SUMMARY"; echo "::error::$WHY"; exit 1; fi
           gh workflow run grow.yml --ref main -f practice_level="${{ inputs.practice_level || 'ladder' }}" -f dna="${{ inputs.dna || 't80' }}" -f seating="${{ inputs.seating }}" -f dreams="${{ inputs.dreams }}" -f pairs="${{ inputs.pairs }}"
           echo "the next generation is started; to stop the line set the repository variable HIVE_LOOP to stop" >> "$GITHUB_STEP_SUMMARY"

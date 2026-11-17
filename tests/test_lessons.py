@@ -122,3 +122,37 @@ def test_the_everyday_kinds_are_computed_never_typed():
     assert "'pocket'[::-1]" in steps and "44 * 4" in steps
     assert "'lantern'.upper()" in lessons.SOLVERS["m_follow"]("Write the word 'lantern' in capital letters and nothing else.")
     assert "price * (1 - 15 / 100)" in lessons.SOLVERS["m_percent"]("A printer costs 680 dollars and the price falls by 15%. What is the new price?")
+
+
+def test_teach_says_right_of_made_for_every_kind_and_why_the_others_failed(tmp_path, monkeypatch, capsys):
+    """Decision 1, order 1c: g38 printed 126 right of 300 and nobody could say for which kinds, or that most were never made."""
+    units, percent, days = (exam.remake(m, "x", 0, None)[1] for m in ("m_units", "m_percent", "m_days"))
+    monkeypatch.setattr(lessons, "SOLVERS", {"m_units": lessons.units, "m_percent": lambda task: "print('about 40')",
+                                             "m_days": lessons.days})
+    real = lessons.lesson
+
+    def lesson(maker, rseed, level=0, parts=None):
+        if maker == "m_days" and rseed.endswith(":0"):
+            return {"maker": maker, "kind": "", "ok": False, "why": "the program failed: requests.exceptions.ReadTimeout: read timed out"}
+        return real(maker, rseed, level, parts, timeout=60)
+    monkeypatch.setattr(lessons, "lesson", lesson)
+    printed = []
+    res = lessons.teach("t", 2, out=tmp_path / "rows.jsonl", levels={}, log=lambda *a, **k: printed.append(a[0]), several=0,
+                        own={days: lessons.OWN}, pulse={days: [0, 4]})  # its own programs, but the body still fails it
+    assert res["by_kind"] == {units: [2, 2], percent: [0, 2], "m_days": [0, 1], days: [1, 1]}
+    assert res["failed_by_kind"] == {percent: {"check failed": 2}, "m_days": {"timed out": 1}}
+    assert res["lessons"] == 6 and res["made"] == 6 and res["right"] == 3
+    assert printed[-1] == f"lessons by kind: {percent} 0/2 (check failed), m_days 0/1 (timed out), {units} 2/2, {days} 1/1"  # worst first
+    # a kind left to the hive is not made, and is not counted as made
+    res = lessons.teach("t", 1, out=None, levels={}, log=lambda *a, **k: printed.append(a[0]), several=0, own={units: lessons.OWN})
+    assert units not in res["by_kind"] and res["lessons"] == 3 and res["made"] == 2 and res["left_to_the_hive"] == [units]
+    assert lessons.reason("site said: 429 Client Error: Too Many Requests") == "site refused"
+    assert lessons.reason("the program failed: ConnectionError: Max retries exceeded") == "site refused"
+    assert lessons.reason("the program failed: JSONDecodeError: the reply from https://x.org/a.json is a web page (HTML), not JSON") == "site refused"
+    assert lessons.reason("check failed: JSONDecodeError: Expecting value: line 1 column 1 (char 0)") == "site refused"
+    assert lessons.reason("the answer was 41, not 40") == "check failed"
+    # the command line: the by-kind line just before the summary, which carries the same counts (grow.yml keeps the last 2)
+    monkeypatch.setattr(lessons, "teach", lambda *a, **k: (print("lessons by kind: x 1/2 (timed out)"), {"lessons": 2, "by_kind": {"x": [1, 2]}})[1])
+    lessons.main(["--seed", "t", "--out", str(tmp_path / "r.jsonl")])
+    last = capsys.readouterr().out.strip().splitlines()[-2:]
+    assert last[0].startswith("lessons by kind: ") and json.loads(last[1])["by_kind"] == {"x": [1, 2]}
