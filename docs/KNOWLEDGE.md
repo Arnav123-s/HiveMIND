@@ -72,7 +72,7 @@ flowchart TD
   pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]
   pc_R2 -.-> claim
   verdict -->|"Web kinds unlearned"| pc_T1
-  waiting["pieces with open causes (section 3)<br/>R2, T4, L2, T3"]:::open
+  waiting["pieces with open causes (section 3)<br/>R2, L2, T3"]:::open
   waiting -.-> claim
   kj[(docs/knowledge.json)]
   kj -.->|read first| readgen
@@ -92,7 +92,7 @@ flowchart LR
   pc_T1["T1: Passes go to the lessons not yet learned<br/>who: B"]:::fixed
   pc_T2["T2: Lessons kept back<br/>who: B"]:::fixed
   pc_T3["T3: The lesson's key lines weigh more, or lesson rows come...<br/>who: C"]:::open
-  pc_T4["T4: No hard lesson is lost to the length limit<br/>who: C (in work)"]:::open
+  pc_T4["T4: No hard lesson is lost to the length limit<br/>who: C (in work)"]:::fixed
   pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]:::open
   s_cpuflags[/"model server exit -4 (illegal instruction) on every start"/]
   c_cpuflags["The runtime kept for one CPU was used on another of the same name that lacks some of its instructions"]:::fixed
@@ -143,12 +143,12 @@ flowchart LR
   x_modulestring(["no fix yet"]):::open
   s_modulestring --> c_modulestring --> x_modulestring --> pc_T3
   s_loglesson[/"log lessons median 1300 pieces: 6 of 15 left out, all 15 in 32 bits"/]
-  c_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::open
-  x_loglesson(["no fix yet: C (T4, in work): the lesson reads the file the runtime already saves"]):::open
+  c_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::fixed
+  x_loglesson(["the log lesson reads log.txt and its rows show 5 lines of the log"]):::fixed
   s_loglesson --> c_loglesson --> x_loglesson --> pc_T4
   s_rows32[/"32-bit runners (EPYC 7763) drop ~100 of 700-800 rows"/]
-  c_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::open
-  x_rows32(["no fix yet: C (T4, in work): shorter lessons"]):::open
+  c_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::fixed
+  x_rows32(["lessons fit 508 pieces: short programs, drawn again when too long, fix rows cut"]):::fixed
   s_rows32 --> c_rows32 --> x_rows32 --> pc_T4
   s_lessonswrong[/"g38 gather: 126 of 300 lessons right"/]
   c_lessonswrong["Most lessons made for a generation fail their own check, and the step does not say which kinds"]:::open
@@ -220,7 +220,7 @@ flowchart LR
     f_nothingright["A kind never passed had nothing to learn from, so practising it more taught nothing"]:::fixed
     f_nothingrightfiles["The same for tasks that make a file: no right program, no rows"]:::fixed
     f_lessonswrong["Most lessons made for a generation fail their own check, and the step does not say which kinds"]:::open
-    f_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::open
+    f_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::fixed
   end
   subgraph p_raw["raw.py (B)"]
     f_rawoff["Reading raw data and people's judged answers were built and never switched on in the line"]:::fixed
@@ -261,7 +261,7 @@ flowchart LR
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
     f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::fixed
-    f_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::open
+    f_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::fixed
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
@@ -325,8 +325,8 @@ flowchart LR
   f_fewpasses -->|blocked| hardkinds
   f_keptback -->|blocked| hardkinds
   f_lessonswrong -->|blocks| hardkinds
-  f_rows32 -->|blocks| hardkinds
-  f_loglesson -->|blocks| hardkinds
+  f_rows32 -->|blocked| hardkinds
+  f_loglesson -->|blocked| hardkinds
   f_rawmeasure -->|blocks| slowgeneration
   f_modulestring -->|blocks| files
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
@@ -350,14 +350,12 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (6 open, 46 fixed)
+## Causes found (4 open, 48 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
 | Members fetched a known fact from addresses they made up | `team/solo.py` |  | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
 | Most lessons made for a generation fail their own check, and the step does not say which kinds | `training/lessons.py` | R2 | open |  | 2026-11-16 23:31: 300 lessons made, 126 right by their checks (258 rows); 13 kinds left to the hive's own rows; read at the verdict |
-| Runners that train in 32 bits leave out every row over about 500 pieces | `training/ternary_base.py` | T4 | open | C (T4, in work): shorter lessons | g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB |
-| The log lesson copies the log into its program, so it is too long to be taught | `training/lessons.py` | T4 | open | C (T4, in work): the lesson reads the file the runtime already saves | 2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit |
 | Measuring raw text by the DNA's own error takes an eighth of a slice's time | `training/raw.py` | L2 | open |  | 2026-11-16 23:09, the job logs of g33, g35 and g38 |
 | Members wrote a module as f.write() strings and broke their own quotes | `team/solo.py` | T3 | open |  | 2026-11-16 22:55, A's read of g35: g35 made no module lessons; the lesson writes the module with inspect.getsource; g38 says whether members now write it the lesson's way |
 | A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` |  | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
@@ -406,6 +404,8 @@ flowchart LR
 | 16-bit slices met many long lessons near their row limit, where a row's memory grows faster than its length, and ran out of memory | `training/grow.py` | L1 | fixed | B, PR 78 (training/grow.py): a 16-bit slice keeps 1 GB more spare, rows up to about 850 pieces | 2026-11-17 02:01: every lost slice 'the hosted runner lost communication', no log kept; finished 16-bit slices at 14.6-14.7 of 15.6 GB (rows up to 1037-1089 pieces); every child kept at least one slice |
 | New hard lessons ended training at a loss of 0.4 to 1.6: too few passes, web kinds least | `training/grow.py` | T1 | fixed | B (T1, Study in training/grow.py, on main): rows met up to 32 times (others 4), web kinds weigh 3 times and come first; small DNA: 13 of 13 new hard subjects under 0.3 with it, 0 of 13 without; the line half is read in g39 | g35: walk a site under 0.3 in 4 of 23 slices (mean 0.64), the open web 19 of 37, site + date sum 13 of 25 |
 | A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned | `training/grow.py` | T2 | fixed | B (T2, on main): kept_back in each slice's record, read by scripts/read_generation.py (2b); read the gap between taught and untaught, not the drop | small DNA: taught kinds -58 to -63% (h_join 0.514 -> 0.192, h_module 0.906 -> 0.379), untaught -26 to -27% (h_search 1.573 -> 1.166, h_log 0.335 -> 0.246) |
+| Runners that train in 32 bits leave out every row over about 500 pieces | `training/ternary_base.py` | T4 | fixed | B's sub-agent (T4): module programs without comments or inspect (the program copies itself), one test; fresh lessons drawn again until first and done rows fit 508 (lessons.fitting); fix rows cut to fit | g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB; T4, 12 lessons a kind: module rows left out 16 of 36 -> 0, log 36 -> 0; every other lesson kind 0; join still 35 of 36 (its tables are in the task and again in the program: needs the maker to give them as lines); the hive's own join rows (g38: 65 of 119) left as they are |
+| The log lesson copies the log into its program, so it is too long to be taught | `training/lessons.py` | T4 | fixed | B's sub-agent (T4): the lesson reads log.txt, which the runtime saves from the task; the rows show the log's first 3 and last 2 lines (training/lessons.lean) | 2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit; T4, 12 lessons at the body's level: rows over 508 pieces 36 of 36 -> 0 of 36 (fix rows included), 12 of 12 right before and after |
 
 ## Rules learned
 

@@ -200,28 +200,31 @@ print(round(float(value["amount"]) * units.get(unit, 1.0), 2))
 
 
 # ---- given data and computing -----------------------------------------------------------------------------------------
-def log(task):
-    m = re.search(r"Here is a log:\n(.*?)\nSave a file errors\.json", task, re.S)
-    if not m:
-        return None
-    return '''import json
-
-# the log is given in the task: it is copied into the program
-log = """''' + m.group(1) + '''"""
-
-errors, hours = {}, {}
-for line in log.splitlines():
+LOG_COUNT = '''errors, hours = {}, {}
+for line in __LINES__:
     day, clock, level, rest = line.split(" ", 3)
     if level == "ERROR":
         service = rest.split(":")[0]
         errors[service] = errors.get(service, 0) + 1
-        hour = int(clock.split(":")[0])
-        hours[hour] = hours.get(hour, 0) + 1
+        hours[int(clock[:2])] = hours.get(int(clock[:2]), 0) + 1
 with open("errors.json", "w") as f:
     json.dump(errors, f)
 print("errors.json saved:", errors)
-print("hour with the most ERROR lines:", max(hours, key=hours.get))
+print("hour:", max(hours, key=hours.get))
 '''
+
+
+def log(task, copy=False):
+    """The log is data the task gives: the runtime saves it as a file (team/tools/sandbox.give), so the program reads
+    log.txt and stays short whatever the log's length. (T4: the program that copied the log in was about 1300 pieces,
+    left out of training on every runner that trains in 32 bits.) copy: the log copied into the program instead, for a
+    task of several parts whose first block of data is another part's, which log.txt would then hold."""
+    m = re.search(r"Here is a log:\n(.*?)\nSave a file errors\.json", task, re.S)
+    if not m:
+        return None
+    if copy:
+        return 'import json\n\nlog = """' + m.group(1) + '"""\n' + LOG_COUNT.replace("__LINES__", "log.splitlines()")
+    return "import json\n\n" + LOG_COUNT.replace("__LINES__", 'open("log.txt")')
 
 
 def units(task):
@@ -465,20 +468,20 @@ def join(task):
     m = re.search(r"Prices in dollars: (.+?)\. Orders \(customer, item, quantity\): (.+?)\. Which customer spent the most.+units of '(\w+)' were sold", task, re.S)
     if not m:
         return None
-    price = {i: float(v) for i, v in re.findall(r"(\w+) ([\d.]+)", m.group(1))}
-    rows = [(w, i, int(q)) for w, i, q in re.findall(r"(\w+), (\w+), (\d+)", m.group(2))]
-    return _fill('''# the two tables are given in the task: copied into the program
-price = __PRICE__
-orders = __ORDERS__
-spent = {}
-for customer, item, quantity in orders:
-    spent[customer] = spent.get(customer, 0) + quantity * price[item]
+    # the two tables are copied in as the task writes them, and split there: as many pieces as the task's own text
+    # (T4: as lists of tuples they took 300 pieces, and every row of the kind was over a 32-bit runner's limit)
+    return _fill('''price = dict(p.split() for p in __PRICES__.split(", "))
+spent, units = {}, 0
+for order in __ORDERS__.split("; "):
+    who, item, n = order.split(", ")
+    spent[who] = spent.get(who, 0) + int(n) * float(price[item])
+    units += int(n) * (item == __ITEM__)
 best = max(spent, key=spent.get)
 print("customer:", best)
 print("spent:", round(spent[best], 2))
 print("revenue:", round(sum(spent.values()), 2))
-print("units:", sum(q for _, item, q in orders if item == __ITEM__))
-''', price=price, orders=rows, item=m.group(3))
+print("units:", units)
+''', prices=m.group(1), orders=m.group(2), item=m.group(3))
 
 
 def pypi_version(task):
@@ -501,24 +504,17 @@ print("licence:", data["cardData"]["license"])
 MODULES = {
     "roman": ("", '''def to_roman(n):
     out = ""
-    for value, letters in ((1000, "M"), (900, "CM"), (500, "D"), (400, "CD"), (100, "C"), (90, "XC"), (50, "L"),
-                           (40, "XL"), (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")):
-        while n >= value:
-            out += letters
-            n -= value
+    for v, s in zip((1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1), "M CM D CD C XC L XL X IX V IV I".split()):
+        while n >= v:
+            out += s
+            n -= v
     return out
 
 
 def from_roman(s):
-    values = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
-    total = 0
-    for i, c in enumerate(s):
-        if i + 1 < len(s) and values[c] < values[s[i + 1]]:
-            total -= values[c]
-        else:
-            total += values[c]
-    return total
-''', ["assert to_roman(1994) == 'MCMXCIV'", "assert from_roman('XLII') == 42", "assert all(from_roman(to_roman(n)) == n for n in range(1, 4000))"]),
+    v = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    return sum(-v[c] if v[c] < v.get(d, 0) else v[c] for c, d in zip(s, s[1:] + " "))
+''', ["assert all(from_roman(to_roman(n)) == n for n in range(1, 4000))"]),
     "rle": ("", '''def encode(s):
     out, i = "", 0
     while i < len(s):
@@ -533,10 +529,10 @@ def from_roman(s):
 def decode(s):
     import re
     return "".join(c * int(n) for c, n in re.findall(r"([a-z])(\\d+)", s))
-''', ["assert encode('aaabcc') == 'a3b1c2'", "assert decode('a3b1c2') == 'aaabcc'", "assert decode('a12') == 'a' * 12"]),
+''', ["assert decode(encode('aaabcc')) == 'aaabcc'"]),
     "intervals": ("", '''def merge(xs):
     out = []
-    for a, b in sorted(map(tuple, xs)):
+    for a, b in sorted(xs):
         if out and a <= out[-1][1]:
             out[-1][1] = max(out[-1][1], b)
         else:
@@ -546,7 +542,7 @@ def decode(s):
 
 def covered(xs):
     return sum(b - a + 1 for a, b in merge(xs))
-''', ["assert merge([[5, 8], [1, 3], [2, 4]]) == [[1, 4], [5, 8]]", "assert merge([[1, 2], [2, 3]]) == [[1, 3]]", "assert covered([[1, 3], [2, 4]]) == 4"]),
+''', ["assert covered([[1, 3], [2, 4]]) == 4"]),
     "bases": ("", '''def to_base(n, b):
     digits = "0123456789abcdefghijklmnopqrstuvwxyz"
     out = ""
@@ -559,7 +555,7 @@ def covered(xs):
 
 def from_base(s, b):
     return int(s, b)
-''', ["assert to_base(255, 16) == 'ff'", "assert to_base(0, 2) == '0'", "assert from_base('ff', 16) == 255"]),
+''', ["assert from_base(to_base(255, 16), 16) == 255"]),
     "brackets": ("", '''def balanced(s):
     stack, pairs = [], {")": "(", "]": "[", "}": "{"}
     for c in s:
@@ -579,7 +575,7 @@ def depth(s):
         elif c == ")":
             now -= 1
     return deepest
-''', ["assert balanced('a(b[c]{d})') is True", "assert balanced('(]') is False", "assert depth('(a(b)(c(d)))') == 3", "assert depth('abc') == 0"]),
+''', ["assert balanced('(]') is False", "assert depth('(a(b)(c(d)))') == 3"]),
     "cipher": ("", '''def shift(text, k):
     out = ""
     for c in text:
@@ -594,7 +590,7 @@ def depth(s):
 
 def unshift(text, k):
     return shift(text, -k)
-''', ["assert shift('Hello, World!', 3) == 'Khoor, Zruog!'", "assert unshift(shift('Amber Cloud.', 41), 41) == 'Amber Cloud.'"]),
+''', ["assert unshift(shift('Hello, World!', 3), 3) == 'Hello, World!'"]),
     "factors": ("", '''def prime_factors(n):
     out, d = [], 2
     while d * d <= n:
@@ -612,18 +608,18 @@ def divisors(n):
     for p in set(prime_factors(n)):
         count *= prime_factors(n).count(p) + 1
     return count
-''', ["assert prime_factors(360) == [2, 2, 2, 3, 3, 5]", "assert divisors(360) == 24", "assert divisors(2) == 2"]),
+''', ["assert divisors(360) == 24"]),
     "spiral": ("", '''def spiral(m):
     m, out = [list(row) for row in m], []
     while m:
         out += m.pop(0)
-        m = [list(col) for col in zip(*m)][::-1]  # turn what is left a quarter, so its right side comes on top
+        m = [list(col) for col in zip(*m)][::-1]
     return out
 
 
 def rotate(m):
     return [list(col) for col in zip(*m[::-1])]
-''', ["assert spiral([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) == [1, 2, 3, 6, 9, 8, 7, 4, 5]", "assert rotate([[1, 2], [3, 4]]) == [[3, 1], [4, 2]]"]),
+''', ["assert spiral([[1, 2], [4, 3]]) == [1, 2, 3, 4]", "assert rotate([[1, 2], [3, 4]]) == [[3, 1], [4, 2]]"]),
     "durations": ("", '''def to_seconds(s):
     import re
     return sum(int(n) * {"h": 3600, "m": 60, "s": 1}[u] for n, u in re.findall(r"(\\d+)([hms])", s))
@@ -632,17 +628,17 @@ def rotate(m):
 def to_text(n):
     h, m, s = n // 3600, n % 3600 // 60, n % 60
     return "".join(f"{v}{u}" for v, u in ((h, "h"), (m, "m"), (s, "s")) if v) or "0s"
-''', ["assert to_seconds('1h30m15s') == 5415", "assert to_seconds('45m') == 2700", "assert to_text(5415) == '1h30m15s'", "assert to_text(3600) == '1h'", "assert to_text(0) == '0s'"]),
+''', ["assert to_seconds(to_text(5415)) == 5415"]),
     "anagrams": ("", '''def groups(words):
-    by_letters = {}
+    by = {}
     for w in words:
-        by_letters.setdefault("".join(sorted(w)), []).append(w)
-    return sorted(sorted(g) for g in by_letters.values())
+        by.setdefault("".join(sorted(w)), []).append(w)
+    return sorted(sorted(g) for g in by.values())
 
 
 def is_anagram(a, b):
     return sorted(a.replace(" ", "").lower()) == sorted(b.replace(" ", "").lower())
-''', ["assert groups(['tea', 'bat', 'eat', 'tab', 'sun']) == [['bat', 'tab'], ['eat', 'tea'], ['sun']]", "assert is_anagram('Dormitory', 'dirty room') is True"]),
+''', ["assert is_anagram('Dormitory', 'dirty room')"]),
 }
 
 
@@ -653,13 +649,12 @@ def module(task):
         return None
     name = m.group(1)
     _, functions, tests = MODULES[name]
-    fns = re.findall(r"^def (\w+)\(", functions, re.M)
-    return ("import inspect\n\n\n" + functions + "\n\n# tested here first\n" + "\n".join(tests) + "\n\n"
-            + f"# the module is the functions above, saved as {name}.py\n"
-            + f"with open({name + '.py'!r}, \"w\") as f:\n"
-            + f"    f.write(\"\\n\\n\".join(inspect.getsource(fn) for fn in ({', '.join(fns)},)))\n\n"
-            + f"import {name} as saved\n\n"
-            + f"print(saved.{asked.group(1).strip()})\nprint(saved.{asked.group(2).strip()})\n")
+    # The program is the module: its functions, then what runs only when it is run itself (never when it is
+    # imported): it saves itself under the module's name, tests the functions and prints what is asked. No code is
+    # written inside a string (members that did broke their own quotes), and nothing is said twice: T4, a row of a
+    # module must fit 508 pieces with the task beside it (with inspect.getsource and comments, 1 in 3 did not).
+    body = [f"shutil.copy(__file__, {name + '.py'!r})", *tests, f"print({asked.group(1).strip()})", f"print({asked.group(2).strip()})"]
+    return functions + '\n\nif __name__ == "__main__":\n    import shutil\n\n' + "".join(f"    {ln}\n" for ln in body)
 
 
 # the makers taught, and how each one's program is written. The held-out kinds are never here.
@@ -681,9 +676,15 @@ def program_for(task, check):
     pieces = P.of_task(task)
     if getattr(check, "maker", "") != "compound" or not pieces:
         return SOLVERS[check.maker](task) if check.maker in SOLVERS else None
+    from team.tools.sandbox import given
+    blocks = given(task)
     out = []
     for (letter, text), part in zip(sorted(pieces.items()), check.parts):
-        prog = SOLVERS[part[0]](text) if part[0] in SOLVERS else None
+        if part[0] == "h_log":  # log.txt holds the task's first block of data: the log, or another part's
+            mine = given(text)
+            prog = log(text, copy=not (mine and blocks and blocks[0]["text"] == mine[0]["text"]))
+        else:
+            prog = SOLVERS[part[0]](text) if part[0] in SOLVERS else None
         if not prog:
             return None
         out.append(f"# ---- PART {letter}: each part is done by itself and printed under its own heading\n"
@@ -695,7 +696,7 @@ def lesson(maker, rseed, level=0, parts=None, timeout=300):
     """One lesson: the task made again from its maker (or its parts), its program, and whether the task's own check
     says it is right. {"maker", "rseed", "level", "parts", "task", "kind", "program", "answer", "ok", "why"}."""
     from training import exam
-    from team.tools.sandbox import run_python
+    from team.tools.sandbox import give, run_python
     made = exam.remake(maker, rseed, level, parts)
     if not made:
         return {"maker": maker, "rseed": rseed, "level": level, "parts": parts, "task": "", "kind": "", "ok": False, "why": "the task cannot be made again"}
@@ -708,6 +709,8 @@ def lesson(maker, rseed, level=0, parts=None, timeout=300):
     out["program"] = program
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp) / "work"
+        # the task's data saved where its program can open it, as the runtime does for a member (team/solo.member)
+        give(task, work, skip=_wanted(task))
         res = run_python(program, work, name="lesson.py", timeout=timeout)
         out["answer"] = res["stdout"].strip()
         if res["returncode"] != 0 or not out["answer"]:
@@ -733,6 +736,64 @@ def _const(name):
     raise KeyError(name)
 
 
+LIMIT = 508  # the longest row (in the DNA's pieces) a runner that trains in 32 bits takes (training/grow.train, fits)
+_PIECE = re.compile(r"\d| ?[A-Za-z]{1,7}|\n| {2,}|[^\w\s]{1,2}")
+_TOK = []
+
+
+def _tokenizer():
+    """The DNA's own tokenizer (the 1.7B's; the members share it), from the local Hugging Face cache or fetched (one
+    small file); None where neither can be had, and pieces() then counts by a rule."""
+    if not _TOK:
+        try:
+            from huggingface_hub import hf_hub_download, try_to_load_from_cache
+            from tokenizers import Tokenizer
+            from training import grow
+            path = try_to_load_from_cache(grow.UNPACKED["t17"], "tokenizer.json")
+            path = path if isinstance(path, str) else hf_hub_download(grow.UNPACKED["t17"], "tokenizer.json")
+            _TOK.append(Tokenizer.from_file(path))
+        except Exception:  # noqa: BLE001 - no library, no cache and no network: counted by the rule
+            _TOK.append(None)
+    return _TOK[0]
+
+
+def pieces(text):
+    """How many of the DNA's pieces a text is: by its tokenizer, or with none at hand by a rule that comes within
+    about a sixth of it (every digit, short word, line end, indent and pair of signs one piece)."""
+    tok = _tokenizer()
+    return len(tok.encode(text or "", add_special_tokens=False).ids) if tok else len(_PIECE.findall(text or ""))
+
+
+def row_pieces(row):
+    """How many pieces a training row is with its chat template, as training/grow.train's encode counts it."""
+    return 9 + sum(pieces(m["content"]) + 5 for m in row["messages"]) + pieces(row["output"])
+
+
+def lean(task, program, head=3, tail=2):
+    """The task as a lesson's rows show it. A block of data the task gives (team/tools/sandbox.given) that the program
+    does not copy in, because it reads the file the runtime saves, keeps only its first and last lines and a line
+    that says how many are left out between: what is taught is the program, which never needs the rest. A log of 16
+    to 34 lines is 400 to 850 pieces by itself, more than a row may hold on a runner that trains in 32 bits (T4)."""
+    from team.tools.sandbox import given
+    for b in given(task):
+        lines = b["text"].splitlines()
+        if len(lines) > head + tail + 2 and not any(ln.strip() in program for ln in lines if len(ln.strip()) > 12):
+            cut = lines[:head] + [f"... ({len(lines) - head - tail} more lines like these) ..."] + lines[-tail:]
+            task = task.replace(b["text"], "\n".join(cut), 1)
+    return task
+
+
+def _wanted(task):
+    """The files the TASK asks to be saved (team/solo.wanted), with the pattern read from the members' source."""
+    import ast
+    tree = ast.parse((ROOT / "team" / "solo.py").read_text())
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "FILE" for t in node.targets):
+            pattern = re.compile(ast.literal_eval(node.value.args[0]), re.I)
+            return list(dict.fromkeys(m.group(1) for m in pattern.finditer(task)))
+    raise KeyError("FILE")
+
+
 def rows(les, wrong=None, today=None):
     """Training rows of a lesson that its check passed, in the hive's own form (training/grow.rows_of). wrong: a
     failure record of the hive for this very task ({"program", "printed"}): a fix row is added from its program."""
@@ -741,16 +802,24 @@ def rows(les, wrong=None, today=None):
     from training import grow
     short, more = _const("SHORT"), _const("MORE")
     head = [{"role": "system", "content": short.format(today=today or time.strftime("%Y-%m-%d (%A)"))},
-            {"role": "user", "content": f"TASK: {les['task']}"}]
+            {"role": "user", "content": f"TASK: {lean(les['task'], les['program'])}"}]
     fenced = f"```python\n{les['program'].strip()}\n```"
     base = {"task": les["task"], "kind": les["kind"], "seed": les["rseed"], "who": "lesson", "member": 0, "lesson": les["maker"]}  # noqa: E501
     out = [base | {"type": "first", "messages": head, "output": fenced},
            base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
                                                          {"role": "user", "content": f"OUTPUT:\n{les['answer'][-1800:]}\n\n{more}"}], "output": "DONE"}]
     if wrong and wrong.get("program") and wrong["program"].strip() != les["program"].strip():
-        shown = f"OUTPUT:\n{(wrong.get('printed') or '(it printed nothing)')[-1200:]}"
-        out.append(base | {"type": "fix", "messages": head + [{"role": "assistant", "content": f"```python\n{wrong['program'].strip()}\n```"},
-                                                              {"role": "user", "content": grow.MEND.format(shown=shown)}], "output": fenced})
+        printed, lines = wrong.get("printed") or "(it printed nothing)", wrong["program"].strip().splitlines()
+        # what is taught is the right program; the wrong one and what it printed are context. Over LIMIT, they are
+        # cut (the middle of the program, the start of what it printed) more than training/grow.shorten would (T4)
+        for keep, tail in ((len(lines), 1200), (6, 300), (3, 120), (0, 60)):
+            cut = f"# ... ({len(lines) - keep} lines of this program left out) ..."
+            shown = lines if len(lines) <= keep + 1 else lines[:keep - keep // 3] + [cut] + lines[len(lines) - keep // 3:] if keep else [cut]
+            row = base | {"type": "fix", "messages": head + [{"role": "assistant", "content": "```python\n" + "\n".join(shown) + "\n```"},
+                                                             {"role": "user", "content": grow.MEND.format(shown=f"OUTPUT:\n{printed[-tail:]}")}], "output": fenced}
+            if row_pieces(row) <= LIMIT:
+                break
+        out.append(row)
     return out
 
 
@@ -823,6 +892,30 @@ def by_kind_line(by_kind, failed):
     return "lessons by kind: " + (", ".join(parts) or "none made")
 
 
+def fitting(maker, rseed, level=0, parts=None, fresh=True, tries=8):
+    """A lesson whose rows (first and done) fit LIMIT pieces. A fresh lesson (no task the hive got wrong) whose task
+    drew values so long that they do not (a module asked of two 4 by 4 matrices: they are in the task and again in the
+    program) is drawn again, with the seed and a number, up to `tries` times; the shortest right one is kept when none
+    fits, for the runners that take longer rows (a join's always: its tables are in the task and in the program). A
+    task the hive got wrong is its own and is never drawn again; nor is a task of several parts (its parts' seeds)."""
+    best, n_best = None, None
+    for j in range(tries if fresh and maker != "compound" else 1):
+        try:
+            les = lesson(maker, rseed if j == 0 else f"{rseed}:{j}", level, parts)
+        except Exception as e:  # noqa: BLE001 - a task that cannot be made (a site down): no lesson
+            les = {"maker": maker, "ok": False, "why": f"could not be made: {type(e).__name__}: {str(e)[:120]}"}
+        if not les.get("ok"):
+            if best is None and j == 0:
+                return les  # a lesson that is not right (a site down) is not drawn again: its failure is counted
+            continue
+        n = max(row_pieces(r) for r in rows(les, today="2026-01-01 (Thursday)"))  # its first and its done row
+        if n <= LIMIT:
+            return les
+        if best is None or n < n_best:
+            best, n_best = les, n
+    return best
+
+
 def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4, own=None, pulse=None):
     """A generation's lessons: per_kind fresh tasks of every taught kind, at the body's levels, `several` fresh tasks of
     several parts, and the most recent tasks the hive got wrong (of the taught kinds), each made again and shown done
@@ -876,10 +969,7 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
             if made_now and own.get(made_now[1], 0) >= OWN and not (n and 2 * p < n):
                 left.add(made_now[1])
                 continue
-        try:
-            les = lesson(maker, rseed, level, parts)
-        except Exception as e:  # noqa: BLE001 - a task that cannot be made (a site down): no lesson
-            les = {"ok": False, "why": f"could not be made: {type(e).__name__}: {str(e)[:120]}"}
+        les = fitting(maker, rseed, level, parts, fresh=wrong is None)
         new = rows(les, wrong)
         right += bool(les.get("ok"))
         made += new
