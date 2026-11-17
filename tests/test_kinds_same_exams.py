@@ -123,6 +123,7 @@ def test_the_same_seeds_give_the_same_exams_as_before_the_kinds_were_moved(monke
     monkeypatch.setattr(exam_hard, "HELD_OUT", exam_hard.HELD_OUT & set(want["held_out"]))  # new kinds held out are not sat here
     from training import lessons
     monkeypatch.setattr(lessons, "SOLVERS", {n: lessons.SOLVERS[n] for n in want["solvers"]})
+    monkeypatch.setattr(exam_hard, "HELD_OUT", {n for n in exam_hard.HELD_OUT if n in want["held_out"]})
     got = snapshot()
     assert _dump(got) == GOLDEN.read_text()
 
