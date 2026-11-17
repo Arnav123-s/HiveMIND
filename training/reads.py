@@ -385,6 +385,7 @@ def rows_left_out(slices, rows, gen):
             uniq.append(r)
     back = set()
     if measured:
+        sys.path.insert(0, str(ROOT))  # run as `python3 training/reads.py`, the folder above is not on the path
         from training import grow
         back = {t for ts in grow.kept_back(uniq).values() for t in ts}
     want = collections.Counter(r.get("kind") for r in uniq if r.get("gen") == gen and r.get("type") not in ("done", "mend") and r.get("task") not in back)

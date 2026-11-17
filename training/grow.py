@@ -708,6 +708,16 @@ class Study:
             self.queue[s], self.rows[s], self.passes[s], self.losses[s] = q[::-1], len(idx), 0, []
         self.size = sum(len(q) for q in self.queue.values())  # the most passes there can be
         self.n = 0
+        self.skipped, self.waiting = {}, set()  # rows put back for want of memory (MemoryGuard), by subject
+
+    def skip(self, s, idx):
+        """The row just picked is not trained on now (it would not fit in the memory there is): it goes back to the
+        end of its subject's queue, is not counted as met, and its subject waits until a pass is made elsewhere."""
+        self.queue[s].insert(0, idx)
+        self.passes[s] -= 1
+        self.n -= 1
+        self.skipped[s] = self.skipped.get(s, 0) + 1
+        self.waiting.add(s)
 
     def loss(self, s):
         h = self.losses[s][-3:]
@@ -729,6 +739,7 @@ class Study:
         alive = [s for s in self.queue if self.open(s)]
         if not alive:
             return None
+        alive = [s for s in alive if s not in self.waiting] or alive  # a subject just skipped waits its turn
         rest = [s for s in alive if s not in self.FIXED]
         s = next((f for f in self.FIXED if f in alive and self.passes[f] < self.SHARE * (self.n + 1)), None)
         if s is None:
@@ -749,6 +760,7 @@ class Study:
         return s, self.queue[s].pop()
 
     def learned(self, s, loss):
+        self.waiting.clear()
         if s not in self.first:
             self.first[s] = loss
         self.losses[s].append(float(loss))
@@ -759,6 +771,94 @@ class Study:
                  "loss_last": round(self.loss(s), 4) if self.losses[s] else None}
                 | ({"new_hard": True} if s in self.hard else {})
                 for s in sorted(self.rows, key=lambda x: -self.passes[x])]
+
+
+class MemoryGuard:
+    """Whether a row fits in the memory there is now, measured, not guessed. g38 lost 7 of 24 8B slices and g39 5 of
+    20 ("the hosted runner lost communication"); every slice that lived stood at 14.1-14.8 of 15.6 GB, its memory
+    jumping when a new longest row came, and the length formula (`fits`) missed 1.5-1.9 GB (scratch buffers, the
+    optimizer's state and the OS were not in it). So before each pass the row's need, pieces x cost_per_piece, is
+    set against what is available: with less than SPARE GB left the row is skipped for this pass (Study.skip; the
+    Study picks another). The cost per piece starts at the formula's and is learned from the run: after each pass,
+    the fall of the available memory during it (sampled every 0.1 s, against the lower of before and after, so what
+    a pass keeps for good, a scratch buffer or the optimizer's state, is not taken for a row's cost) over its
+    pieces; the largest seen, never under the formula's. Only rows at least half as long as the longest trained so
+    far teach it: a short row's fixed part (the logits, the update) over few pieces would say a piece costs more than
+    it does."""
+    GB = 2**30
+
+    def __init__(self, floor, spare_gb=None, psutil=None, every=0.1):
+        if psutil is None:
+            import psutil
+        self.ps = psutil
+        self.floor = self.cost = float(floor)  # bytes a piece
+        self.spare = float(os.environ.get("HIVE_MEMORY_SPARE_GB", 1.0) if spare_gb is None else spare_gb) * self.GB
+        self.every, self.longest = every, 0
+        self.before = self.low = None
+        self.min_avail, self.swap_peak = float("inf"), 0
+        self.skips = {}
+        self.sample()
+        self._on = every > 0
+        if self._on:
+            import threading
+            threading.Thread(target=self._watch, daemon=True).start()
+
+    def available(self):
+        return self.ps.virtual_memory().available
+
+    def swap(self):
+        return self.ps.swap_memory().used
+
+    def sample(self):
+        a, w = self.available(), self.swap()
+        self.min_avail, self.swap_peak = min(self.min_avail, a), max(self.swap_peak, w)
+        if self.low is not None:
+            self.low = min(self.low, a)
+        return a
+
+    def _watch(self):
+        while self._on:
+            time.sleep(self.every)
+            try:
+                self.sample()
+            except Exception:  # noqa: BLE001 - a sample missed is no reason to stop
+                pass
+
+    def stop(self):
+        self._on = False
+
+    def need(self, pieces):
+        return pieces * self.cost
+
+    def admit(self, pieces, s=""):
+        """True when a row of `pieces` fits now; otherwise the skip is counted under its subject."""
+        a = self.sample()
+        if a - self.need(pieces) >= self.spare:
+            return True
+        self.skips[s] = self.skips.get(s, 0) + 1
+        return False
+
+    def begin(self):
+        self.before = self.low = self.sample()
+
+    def end(self, pieces):
+        """After the pass (and the trim): learn the cost of a piece from the fall in available memory during it."""
+        after = self.sample()
+        if self.before is None or pieces <= 0:
+            return
+        drop = min(self.before, after) - self.low
+        if pieces >= self.longest / 2:
+            self.cost = max(self.cost, self.floor, drop / pieces)
+        self.longest = max(self.longest, pieces)
+        self.before = self.low = None
+
+    def record(self):
+        import resource
+        return {"peak_gb": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20, 2),
+                "min_available_gb": round(self.min_avail / self.GB, 2), "swap_peak_gb": round(self.swap_peak / self.GB, 2),
+                "rows_skipped": sum(self.skips.values()), "skipped_by_subject": dict(sorted(self.skips.items(), key=lambda x: -x[1])),
+                "cost_per_piece_mb": round(self.cost / 2**20, 3), "formula_per_piece_mb": round(self.floor / 2**20, 3),
+                "spare_gb": round(self.spare / self.GB, 2)}
 
 
 def lr_share(p):
@@ -918,22 +1018,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             raise ValueError("--ternary is not made for --int8-base")
         from training import ternary_base
         model, cell = ternary_base.load(src, rank, 2 * rank, 0.0, which, torch.bfloat16 if half else torch.float32, log=log)
-        # How long a row fits beside the DNA on this machine. Measured on the 8B (2026-11-15): 8.1 GB held, and every
-        # piece of a row takes about 5 MB more while it is trained on (46 values of the hidden size for each trained
-        # layer). A row that does not fit sends the machine into its swap: two of the first eight 8B cells were lost
-        # that way, one runner dead, one sitting in its first long row until the job's time was up.
-        import psutil
-        total = psutil.virtual_memory().total / 2**30
-        # g38: 7 of 24 slices were lost ("the hosted runner lost communication": out of memory). The slices that lived
-        # and trained in 16 bits took rows up to 1037-1089 pieces and stood at 14.6-14.7 of 15.6 GB; those in 32 bits
-        # (rows up to about 500) at 14.2-14.5. A row's memory grows faster than its length (attention), and g38 gave
-        # every slice the generation's long lessons, so a 16-bit slice met many rows near its limit. It keeps 1 GB
-        # more spare: rows up to about 850 pieces there.
-        spare = 2.5 + (1.0 if half else 0.0)
-        fits = int((total - ternary_base.held_gb() - spare) * 2**30 / (len(which) * model.config.hidden_size * (2 if half else 4) * 46))
-        if fits < max_len:
-            log(f"this machine has {total:.1f} GB: rows of up to {max(256, fits)} pieces fit beside the DNA (asked for {max_len})", flush=True)
-            max_len = max(256, fits)
+        # how long a row fits beside the DNA on this machine: worked out below, once the optimizer exists
     else:
         model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32).to(dev)
         model = get_peft_model(model, LoraConfig(r=rank, lora_alpha=2 * rank, lora_dropout=0.05, layers_to_transform=which, task_type="CAUSAL_LM",
@@ -989,6 +1074,24 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if checkpoint:
         model.gradient_checkpointing_enable()
         model.enable_input_require_grads()
+    params = cell.params if cell else [p for p in model.parameters() if p.requires_grad]
+    opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
+    # Measured on the 8B (2026-11-15): 8.1 GB held, and every piece of a row takes about 5 MB more while it is trained
+    # on (46 values of the hidden size for each trained layer). A row that does not fit sends the machine into its swap.
+    per_piece = len(which) * model.config.hidden_size * (2 if half else 4) * 46
+    if int8_base:
+        # How long a row fits beside the DNA on this machine, from the memory available now that the DNA, the edit and
+        # its optimizer exist (it was the machine's total less what was held at load, which left out the OS and the
+        # runner, about 0.8 GB). g38: 7 of 24 slices were lost ("the hosted runner lost communication": out of
+        # memory); a 16-bit slice keeps 1 GB more spare (PR 78). Only a first cut: the memory guard in the loop
+        # (MemoryGuard) measures what a row really takes.
+        import psutil
+        avail = psutil.virtual_memory().available / 2**30
+        spare = 1.7 + (1.0 if half else 0.0)  # from `available`, which already leaves out the OS (about 0.8 GB): fits as before; the measuring guard is the safety
+        fits = int((avail - spare) * 2**30 / per_piece)
+        if fits < max_len:
+            log(f"this machine has {avail:.1f} GB available beside the DNA: rows of up to {max(256, fits)} pieces fit (asked for {max_len})", flush=True)
+            max_len = max(256, fits)
 
     def encode(row):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
@@ -1083,7 +1186,6 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     torch.manual_seed(abs(hash(lean)) % 10**6 + seed)
     log(f"{len(rows)} rows, {len(data)} within {max_len} pieces (mean {sum(d[0].shape[1] for d in data) // max(1, len(data))}); "
         f"LoRA rank {rank} on layers {which[0]}-{which[-1]} of {UNPACKED[base]}", flush=True)
-    params = cell.params if cell else [p for p in model.parameters() if p.requires_grad]
     # What machine this is, and a watch over every row. Three of the first twelve 8B cells never got past their
     # first row (hours, until the job's time was up) and their logs said nothing. Now the log says which CPU this
     # is, a row that takes minutes is reported with the machine's memory, and a row that takes longer than
@@ -1148,7 +1250,6 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if back:
         log(f"lessons kept back: {len(back)}, of {len(set(back.values()))} kinds, never trained on; {len(kept_items)} of their rows measured "
             f"in {spare:.0f} s{f', {kept_long} too long' if kept_long else ''}", flush=True)
-    opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     try:
         import ctypes
         trim = ctypes.CDLL("libc.so.6").malloc_trim
@@ -1159,6 +1260,14 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
               if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
     t0, running, step, hist, paired, i, held = time.time(), 0.0, 0, [], 0, 0, 0
+    # the memory guard (MemoryGuard): a row that would leave less than HIVE_MEMORY_SPARE_GB (1) available is skipped
+    # for this pass; the cost of a piece is learned from the run
+    import gc
+    guard = None if gpu else MemoryGuard(per_piece)
+    if guard:
+        log(f"memory guard: {guard.available() / 2**30:.1f} GB available, a row skipped when it would leave less than {guard.spare / 2**30:.1f} GB "
+            f"(a piece taken as {per_piece / 2**20:.2f} MB to start, then as measured)", flush=True)
+    in_a_row = 0
     budget = max(1.0, minutes * 60 - (t0 - born) - spare) if minutes else 0
 
     def done_share():
@@ -1181,7 +1290,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             import resource
             on_gpu = f", on the GPU {torch.cuda.max_memory_allocated() / 2**30:.1f} GB" if gpu else ""
             log(f"step {step} ({p:.0%} done, {sum(1 for q in study.queue.values() if q)} subjects left) loss {hist[-1]:.4f} "
-                f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
+                f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}"
+                + (f", available {guard.available() / 2**30:.1f} GB, swap used {guard.swap() / 2**30:.1f} GB, a piece {guard.cost / 2**20:.2f} MB, "
+                   f"{sum(guard.skips.values())} rows skipped" if guard else ""), flush=True)
     while i < passes:
         if minutes and time.time() - born > minutes * 60 - spare:
             # Two trials were lost on 2026-11-14 because their jobs ran into the time limit with nothing saved: the
@@ -1194,6 +1305,21 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             break
         s, idx = got
         ids, k = data[idx][:2]
+        pieces = ids.shape[1] + (data[idx][2].shape[1] if len(data[idx]) == 4 else 0)
+        if guard and not guard.admit(pieces, s):
+            study.skip(s, idx)
+            in_a_row += 1
+            if in_a_row == 1:
+                gc.collect()
+                if trim:
+                    trim(0)
+            if in_a_row >= 2 * len(study.queue) + 20:
+                log(f"no row left fits in the memory available ({guard.available() / 2**30:.1f} GB) after {in_a_row} tries: the cell is saved as it is", flush=True)
+                break
+            continue
+        in_a_row = 0
+        if guard:
+            guard.begin()
         ids = ids.to(dev)
         beat["t"], beat["what"] = time.time(), f"pass {i + 1} ({s}, {ids.shape[1]} pieces)"
         with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
@@ -1224,8 +1350,27 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         i += 1
         if held == accum:
             update()
+        # what the pass made is let go before the next one (the old logits lived through the next forward), and the
+        # memory handed back, so that what is available is true when the next row is weighed
+        del logits, loss
+        if len(data[idx]) == 4:
+            del good, bad, ref_good, ref_bad, margin, wid
+        if i % 4 == 0:
+            gc.collect()
+        if trim:
+            trim(0)
+        if guard:
+            guard.end(pieces)
     if held:
         update()
+    if guard:
+        guard.stop()
+        mem = guard.record()
+        if mem["rows_skipped"]:
+            log(f"memory guard: {mem['rows_skipped']} passes skipped a row that would not fit ("
+                + ", ".join(f"{k} {v}" for k, v in list(mem["skipped_by_subject"].items())[:8]) + ")", flush=True)
+        log(f"memory: most {mem['peak_gb']} GB, least available {mem['min_available_gb']} GB, most swap {mem['swap_peak_gb']} GB, "
+            f"a piece {mem['cost_per_piece_mb']} MB (the formula's {mem['formula_per_piece_mb']})", flush=True)
     subjects = study.table()
     width = max([len(x["subject"]) for x in subjects] + [7])
     log(f"{'subject':<{width}} rows passes  first   last", flush=True)
@@ -1261,6 +1406,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
             "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects, "kept_back": kept}
+    if guard:
+        meta["memory"] = mem
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     where = Path(out_dir or ternary.ADAPTERS)
