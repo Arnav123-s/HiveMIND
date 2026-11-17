@@ -362,6 +362,14 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
+    if os.environ.get("HIVE_NOTES", "0") == "1":
+        # short ways of working the hive wrote down from its own checked work, failures too (team/notes.py): no
+        # program and no value in them, so nothing to copy. Put in the orders, which the rows taught from leave out.
+        from . import notes
+        said = notes.recall(task, os.environ.get("HIVE_KIND") or None)
+        if said:
+            messages[0]["content"] += notes.block(said)
+            board.log(f"member{n}", "notes", f"{len(said)} note(s) from earlier work")
     give(task, work, skip=wanted(task))
     helped = []
 
