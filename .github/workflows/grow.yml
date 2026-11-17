@@ -847,17 +847,28 @@ jobs:
           gh release upload hive-grown $(ls got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json got/$DNA.${GEN}*.safetensors 2>/dev/null) got/rows.jsonl $([ -s got/failures.jsonl ] && echo got/failures.jsonl) --clobber
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # the read of this generation (docs/reads/GEN.md and latest.md: the numbers, the chain by kind, the hours and
-          # the next piece, by the rules of docs/DECISIONS.md), then the graphs and what is known, drawn again
-          python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the read could not be written; the record is kept"
-          python3 training/progress.py || echo "::warning::the progress graphs could not be drawn; the record is kept"
           # the training steps of this generation's cells (cells/studied.json): who sits first and who has children first
           python3 training/lineage.py studied "$DNA" got || true
-          python3 scripts/knowledge.py || echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"
-          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null) docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md
+          # The record (the line and the body) is committed alone first, the branch's latest is brought in, and only then
+          # are the drawn files (the read, the graphs, what is known) drawn again on top of it, so a drawn file can never
+          # block a record (2026-11-17: generation 39's record failed its rebase on docs/PROGRESS.md, redrawn on main
+          # meanwhile). If the push loses a race, the drawn files are dropped, the record rebased again and they are redrawn.
+          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null)
           git commit -q -m "The hive's body: generation $GEN" || exit 0
-          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
-          git push -q origin "HEAD:${GITHUB_REF_NAME}" || { echo "::error::the record could not be pushed"; exit 1; }
+          for try in 1 2 3; do
+            git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
+            rec=$(git rev-parse HEAD)
+            # the read of this generation (docs/reads/GEN.md and latest.md: the numbers, the chain by kind, the hours and
+            # the next piece, by the rules of docs/DECISIONS.md), then the graphs and what is known, drawn again
+            python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the read could not be written; the record is kept"
+            python3 training/progress.py || echo "::warning::the progress graphs could not be drawn; the record is kept"
+            python3 scripts/knowledge.py || echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"
+            git add docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md
+            git diff --cached --quiet || git commit -q --amend --no-edit
+            git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            git reset -q --hard "$rec"
+          done
+          echo "::error::the record could not be pushed"; exit 1
       - name: Grow again at once (the line grows until stopped)
         # Only the line on main, only after a record that went through, never a trial: a broken run does not start
         # another, and the nightly schedule starts the line again if it has stopped. To stop it: set the repository
