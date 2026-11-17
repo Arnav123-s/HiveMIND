@@ -139,15 +139,15 @@ def test_new_hard_subject_is_studied_past_four_meetings_until_under_goal():
     assert before.passes[WALK] == 4 * 4 and before.loss(WALK) > 0.5  # the old rule: 4 meetings a row, never learned
     study = grow.Study(subs, rng=random.Random(11), hard={WALK}, web={WALK})
     under = learning(study, {WALK: 1.6}, n=400)
-    assert study.loss(WALK) < 0.3 and 4 * 4 < under[WALK] == study.passes[WALK] <= 16 * 4
+    assert study.loss(WALK) < 0.3 and 4 * 4 < under[WALK] == study.passes[WALK] <= 32 * 4
     assert study.passes[EASY] >= 40  # every easy row met at least once while it was studied
 
 
-def test_new_hard_subject_never_learned_stops_at_sixteen_meetings_a_row():
+def test_new_hard_subject_never_learned_stops_at_32_meetings_a_row():
     study = grow.Study(subjects(**{WALK: 3, EASY: 10}), rng=random.Random(12), hard={WALK})
     got = Counter(run(study, {WALK: 2.0, EASY: 0.05}, 10_000))
-    assert got[(WALK, 0)] == 16 and study.passes[WALK] == 16 * 3 and study.passes[EASY] == 4 * 10
-    assert study.pick() is None and study.size == 16 * 3 + 4 * 10
+    assert got[(WALK, 0)] == 32 and study.passes[WALK] == 32 * 3 and study.passes[EASY] == 4 * 10
+    assert study.pick() is None and study.size == 32 * 3 + 4 * 10
 
 
 def test_web_kinds_come_first():

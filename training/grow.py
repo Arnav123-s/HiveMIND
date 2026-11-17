@@ -629,12 +629,16 @@ class Study:
     subjects ended at a loss of 0.4 to 1.6; walk a site was under GOAL in 4 of 23 slices. So while a new hard
     subject's loss is GOAL or more, its rows may be met up to HARD_MOST times, and FIRST of the passes go to such
     subjects. Those of `web` (the kinds that read the web, and the date sums on what was read) come first: first in
-    the first sweep, and WEB_ODDS times the odds among the subjects not learned yet (not all of their passes: a slice of
-    an hour or two could not give the 4 web kinds' lessons 16 meetings a row, and the other hard kinds would get
-    none). The other passes are picked by the odds above among the other subjects, so what is already known is
-    still rehearsed. Once under GOAL a new hard subject is one like the others again (MOST meetings a row)."""
+    the first sweep, and WEB_ODDS times the odds among the subjects not learned yet (not all of their passes: a
+    slice of an hour or two could not give the 4 web kinds' lessons HARD_MOST meetings a row, and the other hard kinds
+    would get none). The other passes are picked by the odds above among the other subjects, so what is already
+    known is still rehearsed. Once under GOAL a new hard subject is one like the others again (MOST meetings a row).
+    Measured on the small DNA (t17, the same parent and 82 rows, 34 of them lessons, 20 minutes; 2026-11-17): the
+    13 new hard subjects ended at 0.35 to 2.04 with 4 meetings a row, and all 13 under 0.3 with this rule (6 to 20
+    passes each, 384 passes in all against 316); what was under 0.1 before stayed under 0.1. With HARD_MOST 16 the
+    fix row of a fact found on the open web met its limit at 0.76, so the limit is 32."""
     FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
-    GOAL, HARD_MOST, FIRST, WEB_ODDS = 0.3, 16, 0.75, 3.0
+    GOAL, HARD_MOST, FIRST, WEB_ODDS = 0.3, 32, 0.75, 3.0
 
     def __init__(self, subjects, own=(), rng=None, most=None, weight=None, hard=(), web=(), hard_most=None):
         """own: {subject: the share of its rows that are the cell's own organ}, or subjects that are wholly its own.
