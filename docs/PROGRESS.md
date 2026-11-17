@@ -4,7 +4,7 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g39 of the 8B body passed 38 of 64 exam tasks (59%). The best so far on this DNA: g39, 38 of 64 (59%).
+**Now:** generation g41 of the 8B body passed 58 of 64 exam tasks (91%). The best so far on this DNA: g41, 58 of 64 (91%).
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -24,7 +24,7 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Its read, with the next piece: [reads/latest.md](reads/latest.md).
 
-No record says a generation's hours yet: the record job is to write `minutes_by_step` (minutes of practice, dream, gather, plan, train, join, merge, gate and record, each from the first job of the step starting to its last ending) and `hours` (the run's first job starting to the record), and `dead_seats` and `lost_slices` ([lost, of]).
+Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost.
 
 ## Where it practises most next
 
@@ -32,10 +32,10 @@ Practice draws each kind of task by how close the body is to passing it half the
 
 - scrape a page to a file
 - a module of two functions, with hidden tests
-- a fact from a site and a date sum on it
+- walk a site over several pages
+- operate a website
+- a fact read and a date sum on it
 - several facts fetched and laid out as a file
-- a log read and counted into a file
-- translate a sentence
 
 ## How hard its lessons are now
 
