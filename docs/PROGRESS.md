@@ -10,11 +10,17 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 ![Hard kinds, easy kinds and tasks of several parts, passed](progress/parts.svg)
 
+![Hard, easy and held-out kinds passed, each generation](progress/split.svg)
+
 ![The share of never-practised kinds it passed](progress/carry.svg)
 
 ![Each kind of task, weakest first](progress/kinds.svg)
 
 ![Rows taught, each generation](progress/rows.svg)
+
+![Hours of one generation, by step](progress/hours.svg)
+
+No record says a generation's hours yet: the record job is to write `minutes_by_step` (minutes of practice, dreams, gather, plan, train, join, merge, pulse and record, each from the first job of the step starting to its last ending) and `hours` (the run's first job starting to the record), and `dead_seats` and `lost_slices` ([lost, of]).
 
 ## Where it practises most next
 

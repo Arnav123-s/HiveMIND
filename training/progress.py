@@ -11,6 +11,10 @@ and where it is weakest, without reading numbers:
   carry.svg   the share it passed of kinds of task it has never practised (does what it learns carry over?)
   kinds.svg   every kind of task, over the last generations of the body's DNA, weakest first
   rows.svg    how many checked rows the body was taught from, each generation
+  parts.svg   hard kinds, easy kinds and tasks of several parts, each generation
+  split.svg   hard, easy and held-out kinds (never practised), each generation; a generation that lost pulse seats or
+              train slices (the record's dead_seats, lost_slices) is marked
+  hours.svg   the hours of one generation, by step (the record's minutes_by_step or hours), against the bar of 5
 
 The loop closes here too: the kinds this page shows weakest are the kinds practice draws most often next
 (training/grow.edge_weights, used by practice at the ladder level), so the hive spends its practice where the graph
@@ -32,9 +36,9 @@ SERIES = {"t80": ("#2a78d6", "#3987e5"), "t17": ("#eb6834", "#d95926"), "t40": (
           "hard": ("#2a78d6", "#3987e5"), "easy": ("#eb6834", "#d95926"), "several": ("#1baf7a", "#199e70")}
 PARTS = {"hard": "hard kinds", "easy": "easy kinds", "several": "tasks of several parts"}
 STYLE = """<style>
-.bg{fill:#fcfcfb}.ink{fill:#0b0b0b}.ink2{fill:#52514e}.grid{stroke:#e4e3df}.axis{stroke:#b9b8b2}.dna{stroke:#52514e;fill:#fcfcfb}
+.bg{fill:#fcfcfb}.ink{fill:#0b0b0b}.ink2{fill:#52514e}.grid{stroke:#e4e3df}.axis{stroke:#b9b8b2}.dna{stroke:#52514e;fill:#fcfcfb}.lost{fill:#d03b3b}
 %s
-@media (prefers-color-scheme: dark){.bg{fill:#1a1a19}.ink{fill:#f0efec}.ink2{fill:#c3c2b7}.grid{stroke:#2c2c2a}.axis{stroke:#5a5955}.dna{stroke:#c3c2b7;fill:#1a1a19}%s}
+@media (prefers-color-scheme: dark){.bg{fill:#1a1a19}.ink{fill:#f0efec}.ink2{fill:#c3c2b7}.grid{stroke:#2c2c2a}.axis{stroke:#5a5955}.dna{stroke:#c3c2b7;fill:#1a1a19}.lost{fill:#e66767}%s}
 text{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
 </style>"""
 # a single-hue ramp (light to dark blue) for a share passed; text on the darker half is light
@@ -150,6 +154,125 @@ def parts_chart(gens, w=760, h=300):
     return _svg(w, h, "".join(b), list(PARTS), "parts")
 
 
+SPLIT = {"hard": "hard kinds", "easy": "easy kinds", "several": "held-out kinds (never practised)"}
+# the steps of one generation, in order, each with a shade of the one blue ramp (light to dark)
+STEPS = ["practice", "dreams", "gather", "plan", "train", "join", "merge", "pulse", "record"]
+
+
+def _held_out(d):
+    u = d["arms"]["after"].get("unpractised") or [0, 0]
+    return u if len(u) == 2 and u[1] else None
+
+
+def _losses(d):
+    """What a generation lost, as plain words, or "": dead pulse seats and train slices lost (the record's
+    dead_seats: int, lost_slices: [lost, of] or int)."""
+    out = []
+    if d.get("dead_seats"):
+        out.append(f"{d['dead_seats']} pulse seat{'s' if d['dead_seats'] != 1 else ''} dead")
+    ls = d.get("lost_slices")
+    if isinstance(ls, (list, tuple)) and len(ls) == 2 and ls[0]:
+        out.append(f"{ls[0]} of {ls[1]} train slices lost")
+    elif isinstance(ls, int) and ls:
+        out.append(f"{ls} train slice{'s' if ls != 1 else ''} lost")
+    return ", ".join(out)
+
+
+def split_chart(gens, w=760, h=320):
+    """Hard kinds, easy kinds and the held-out kinds (never practised), each as a share passed, each generation that
+    recorded any of them; a generation that lost pulse seats or train slices is marked under its name, since its
+    numbers stand on less than the others'."""
+    left, right, top, bottom = 52, 210, 58, 62
+    pw, ph = w - left - right, h - top - bottom
+    pick = {"hard": lambda d: d["arms"]["after"].get("hard"), "easy": lambda d: d["arms"]["after"].get("easy"),
+            "several": _held_out}
+    have = [d for d in gens if any((f(d) or [0, 0])[1] for f in pick.values())]
+    n = max(1, len(have))
+    x = lambda i: left + pw * (i + 0.5) / n  # noqa: E731
+    y = lambda v: top + ph * (1 - v)  # noqa: E731
+    b = [_text(16, 24, "Hard, easy and held-out kinds passed, each generation", size=15, weight="600"),
+         _text(16, 42, "held-out kinds get no lesson and no practice: the honest sign of learning; a red mark: seats or slices lost", "ink2", 12)]
+    for v in (0, .25, .5, .75, 1):
+        b.append(f'<line class="grid" x1="{left}" x2="{left + pw}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke-width="1"/>')
+        b.append(_text(left - 8, y(v) + 4, f"{int(v * 100)}%", "ink2", 11, "end"))
+    if not have:
+        b.append(_text(left + pw / 2, top + ph / 2, "no generation has recorded them yet", "ink2", 12, "middle"))
+    for i, d in enumerate(have):
+        b.append(_text(x(i), top + ph + 18, d.get("generation", ""), "ink2", 11, "middle"))
+        lost = _losses(d)
+        if lost:
+            # a small red triangle under the generation's name, its words on hover
+            cx, cy = x(i), top + ph + 30
+            b.append(f'<path class="lost" d="M{cx:.1f},{cy - 5:.1f} L{cx + 5:.1f},{cy + 4:.1f} L{cx - 5:.1f},{cy + 4:.1f} Z">'
+                     f'<title>{escape(d.get("generation", ""))}: {escape(lost)}</title></path>')
+    for j, (k, label) in enumerate(SPLIT.items()):
+        pts = [(i, pick[k](d)) for i, d in enumerate(have)]
+        pts = [(i, c) for i, c in pts if c and c[1]]
+        if len(pts) > 1:
+            b.append(f'<polyline class="l{k}" stroke-width="2" points="' + " ".join(f"{x(i):.1f},{y(c[0] / c[1]):.1f}" for i, c in pts) + '"/>')
+        for i, c in pts:
+            b.append(f'<circle class="s{k}" cx="{x(i):.1f}" cy="{y(c[0] / c[1]):.1f}" r="5" stroke-width="2">'
+                     f'<title>{escape(have[i].get("generation", ""))}, {label}: {c[0]} of {c[1]}</title></circle>')
+        if pts:
+            i, c = pts[-1]
+            b.append(_text(x(i) + 9, y(c[0] / c[1]) + 4, f"{c[0]} of {c[1]}", "ink", 11))
+        b.append(f'<circle class="s{k}" cx="{left + pw + 19}" cy="{top + 6 + j * 20}" r="5"/>' + _text(left + pw + 29, top + 10 + j * 20, label, "ink", 11))
+    j = len(SPLIT)
+    b.append(f'<path class="lost" d="M{left + pw + 19:.1f},{top + 1 + j * 20:.1f} L{left + pw + 24:.1f},{top + 10 + j * 20:.1f} L{left + pw + 14:.1f},{top + 10 + j * 20:.1f} Z"/>'
+             + _text(left + pw + 29, top + 10 + j * 20, "seats or slices lost", "ink", 11))
+    return _svg(w, h, "".join(b), list(SPLIT), "hard, easy and held-out")
+
+
+def _hours(d):
+    """{step: minutes} of one generation, from the record's minutes_by_step, or {"whole": minutes} from its hours;
+    None when the record says neither."""
+    by = d.get("minutes_by_step")
+    if isinstance(by, dict) and any(isinstance(v, (int, float)) and v > 0 for v in by.values()):
+        return {k: float(v) for k, v in by.items() if isinstance(v, (int, float)) and v > 0}
+    if isinstance(d.get("hours"), (int, float)) and d["hours"] > 0:
+        return {"whole": 60.0 * d["hours"]}
+    return None
+
+
+def hours_chart(gens, w=760, h=300, bar=5):
+    """Hours of one generation, start to record, each step a shade of one blue, with the bar (5 hours) drawn across.
+    Only generations whose record says its hours are drawn; the rest are named as not recorded."""
+    left, right, top, bottom = 52, 130, 58, 44
+    pw, ph = w - left - right, h - top - bottom
+    have = [(d, _hours(d)) for d in gens]
+    have = [(d, m) for d, m in have if m]
+    most = max([sum(m.values()) / 60 for _, m in have] + [bar * 1.6])
+    n = max(1, len(have))
+    bw = min(36, pw / n * 0.6)
+    y = lambda hrs: top + ph * (1 - hrs / most)  # noqa: E731
+    b = [_text(16, 24, "Hours of one generation, by step", size=15, weight="600"),
+         _text(16, 42, f"from its first job to its record; the dashed line is the bar of {bar} hours", "ink2", 12)]
+    for v in range(0, int(most) + 1, 2):
+        b.append(f'<line class="grid" x1="{left}" x2="{left + pw}" y1="{y(v):.1f}" y2="{y(v):.1f}" stroke-width="1"/>' + _text(left - 8, y(v) + 4, f"{v} h", "ink2", 11, "end"))
+    b.append(f'<line class="axis" x1="{left}" x2="{left + pw}" y1="{y(bar):.1f}" y2="{y(bar):.1f}" stroke-width="1.5" stroke-dasharray="5 4"/>')
+    if not have:
+        b.append(_text(left + pw / 2, top + ph / 2 - 8, "no generation's record says its hours yet", "ink2", 12, "middle"))
+        b.append(_text(left + pw / 2, top + ph / 2 + 10, "the record job writes minutes_by_step (or hours) from the run's jobs", "ink2", 11, "middle"))
+    order = STEPS + ["whole"]
+    shade = {s: min(len(RAMP) - 1, 1 + i * (len(RAMP) - 2) // max(1, len(STEPS) - 1)) for i, s in enumerate(STEPS)}
+    shade["whole"] = 4
+    used = []
+    for i, (d, m) in enumerate(have):
+        cx = left + pw * (i + 0.5) / n
+        base = 0.0
+        for s in sorted(m, key=lambda s: order.index(s) if s in order else len(order)):
+            hrs = m[s] / 60
+            used.append(s)
+            b.append(f'<rect class="h{shade.get(s, 3)}" x="{cx - bw / 2:.1f}" y="{y(base + hrs):.1f}" width="{bw:.1f}" height="{ph * hrs / most:.1f}">'
+                     f'<title>{escape(d.get("generation", ""))}, {escape(s)}: {m[s]:.0f} min</title></rect>')
+            base += hrs
+        b.append(_text(cx, y(base) - 6, f"{base:.1f} h", "ink", 11, "middle"))
+        b.append(_text(cx, top + ph + 18, d.get("generation", ""), "ink2", 11, "middle"))
+    for j, s in enumerate(dict.fromkeys(sorted(used, key=lambda s: order.index(s) if s in order else len(order)))):
+        b.append(f'<rect class="h{shade.get(s, 3)}" x="{left + pw + 14}" y="{top + j * 18}" width="10" height="10"/>' + _text(left + pw + 30, top + 9 + j * 18, s, "ink", 11))
+    return _svg(w, h, "".join(b), (), "hours")
+
+
 def _passed(d):
     a = d["arms"]["after"]
     return a["passed"], a["tasks"]
@@ -240,9 +363,21 @@ def page(gens, table, names, dna, weights, levels):
                   f"({round(100 * p / n)}%). The best so far on this DNA: {best.get('generation')}, {bp} of {bn} ({round(100 * bp / bn)}%).", ""]
     lines += ["![The share of exam tasks the body passed, each generation](progress/score.svg)", "",
               "![Hard kinds, easy kinds and tasks of several parts, passed](progress/parts.svg)", "",
+              "![Hard, easy and held-out kinds passed, each generation](progress/split.svg)", "",
               "![The share of never-practised kinds it passed](progress/carry.svg)", "",
               "![Each kind of task, weakest first](progress/kinds.svg)", "",
-              "![Rows taught, each generation](progress/rows.svg)", ""]
+              "![Rows taught, each generation](progress/rows.svg)", "",
+              "![Hours of one generation, by step](progress/hours.svg)", ""]
+    timed = [d for d in gens if _hours(d)]
+    lost = [(d.get("generation", ""), _losses(d)) for d in gens if _losses(d)]
+    if lost:
+        lines += ["Generations that stand on less (marked red in the split graph): "
+                  + "; ".join(f"{g}: {w}" for g, w in lost) + ".", ""]
+    if not timed:
+        lines += ["No record says a generation's hours yet: the record job is to write `minutes_by_step` (minutes of "
+                  "practice, dreams, gather, plan, train, join, merge, pulse and record, each from the first job of the "
+                  "step starting to its last ending) and `hours` (the run's first job starting to the record), and "
+                  "`dead_seats` and `lost_slices` ([lost, of]).", ""]
     if weights:
         top = sorted(weights.items(), key=lambda kv: -kv[1])[:6]
         lines += ["## Where it practises most next", "",
@@ -274,6 +409,8 @@ def draw(record=None, out=None, body=None):
     (out / "kinds.svg").write_text(kinds_chart(table, names, dna))
     (out / "rows.svg").write_text(rows_chart(gens))
     (out / "parts.svg").write_text(parts_chart(gens))
+    (out / "split.svg").write_text(split_chart(gens))
+    (out / "hours.svg").write_text(hours_chart(gens))
     from training.grow import edge_weights
     weights = edge_weights(dna, record=record)
     (out.parent / "PROGRESS.md").write_text(page(gens, table, names, dna, weights, b.get("levels") or {}))

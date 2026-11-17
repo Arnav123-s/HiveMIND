@@ -1,8 +1,9 @@
 {
  "goal": "A hive of ternary nets, grown from one DNA, that does what it is asked (questions, conversation, tasks) and gets better at it by itself, generation after generation, on free CPUs.",
  "agents": {
-  "A": "Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop",
-  "B": "Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem",
+  "A": "session nice-bell, branch claude/nice-bell-8a5dm4: the members' runtime and loop; stopped, its usage nearly spent (its files worked on by C's smaller agents)",
+  "B": "session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: the line and training time (training, practice, lessons, progress, talking, this graph)",
+  "C": "session upbeat-rubin, branch claude/upbeat-rubin-ybiulz: the commander (docs/PLAN.md, the board, the verdict after each generation)",
   "shared": "nobody owns it: small commits, main merged first, said in the log"
  },
  "parts": [
@@ -110,6 +111,20 @@
    "file": ".github/workflows/grow.yml",
    "owner": "shared",
    "does": "practise, gather, plan, train, merge, exam, record, then the next generation"
+  },
+  {
+   "id": "setup",
+   "title": "Setting up a runner",
+   "file": ".github/actions/hive/action.yml",
+   "owner": "shared",
+   "does": "fetches the DNA and the kept runtime (built once for each kind of CPU) before any step runs on a runner"
+  },
+  {
+   "id": "verdict",
+   "title": "Reading a generation",
+   "file": "scripts/read_generation.py",
+   "owner": "C",
+   "does": "the pulse by hard kind beside other runs, every slice's passes and loss on new hard subjects, kept-back lessons, lessons made, every failed hard task"
   }
  ],
  "measures": [
@@ -132,6 +147,16 @@
    "id": "rows",
    "title": "Rows taught, each generation",
    "file": "docs/progress/rows.svg"
+  },
+  {
+   "id": "split",
+   "title": "Hard, easy and held-out kinds passed, each generation",
+   "file": "docs/progress/split.svg"
+  },
+  {
+   "id": "hours",
+   "title": "Hours of one generation, by step",
+   "file": "docs/progress/hours.svg"
   }
  ],
  "open": [
@@ -214,6 +239,25 @@
    "seen": "g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook)",
    "measured_by": [
     "rows"
+   ]
+  },
+  {
+   "id": "hardkinds",
+   "title": "Hard kinds with lessons are never learned",
+   "owner": "B",
+   "seen": "g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard",
+   "measured_by": [
+    "split",
+    "kinds"
+   ]
+  },
+  {
+   "id": "slowgeneration",
+   "title": "A generation takes 8 to 10 hours; the bar is 5",
+   "owner": "B",
+   "seen": "g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training)",
+   "measured_by": [
+    "hours"
    ]
   }
  ],
@@ -558,7 +602,10 @@
    "blocks": "selflearn",
    "status": "fixed",
    "by": "A",
-   "seen": "run 43827930978, seeds 1-3: easy 19 of 24, hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. Inside the noise on hard; the easy losses are mostly web kinds counted as easy. A trial beside g34, not a generation"
+   "seen": "run 43827930978, seeds 1-3: easy 19 of 24, hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. Inside the noise on hard; the easy losses are mostly web kinds counted as easy. A trial beside g34, not a generation",
+   "piece": "L1",
+   "found": "g35 beside g34: hard 6 of 24 against 6 of 32",
+   "fix": "read as a trial, not a generation"
   },
   {
    "id": "serverdeath",
@@ -567,7 +614,10 @@
    "blocks": "deaths",
    "status": "fixed",
    "by": "A, PR 61",
-   "seen": "g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs"
+   "seen": "g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs",
+   "piece": "L1",
+   "found": "a pulse seat's server ended at once",
+   "fix": "the server says its exit code; logs kept (PR 61)"
   },
   {
    "id": "stalebody",
@@ -576,7 +626,149 @@
    "blocks": "deaths",
    "status": "fixed",
    "by": "A, PR 61",
-   "seen": "g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs"
+   "seen": "g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs",
+   "piece": "L3",
+   "found": "g35's record conflicted with g34's",
+   "fix": "the first job (fresh) ends a stale run"
+  },
+  {
+   "id": "cpuflags",
+   "title": "The runtime kept for one CPU was used on another of the same name that lacks some of its instructions",
+   "lives_in": "setup",
+   "blocks": "deaths",
+   "status": "fixed",
+   "piece": "L1",
+   "found": "model server exit -4 (illegal instruction) on every start",
+   "fix": "the kept runtime keyed by the CPU's instruction list (PR 73)",
+   "by": "B, PR 73: the kept runtime is keyed by the CPU's instruction list; each new kind of CPU builds once (25 min)",
+   "seen": "2026-11-16: g35 pulse seed 4 and g38 practice runner 1 (all 8 of its tasks lost); two runners named AMD EPYC 9V74 offer different instructions"
+  },
+  {
+   "id": "colaball",
+   "title": "The hand-off offered all of a generation's children to the notebook at once, which grows one at a time",
+   "lives_in": "colab",
+   "blocks": "slowgeneration",
+   "status": "fixed",
+   "piece": "L2",
+   "found": "Colab offered all ~6 children of g38 at once",
+   "fix": "only K children offered (HIVE_COLAB_CHILDREN, PR 74)",
+   "by": "B, PR 74: only K children offered (repository variable HIVE_COLAB_CHILDREN, 1 unless set), a different organ each generation, 70/K minutes each (60 at most)",
+   "seen": "2026-11-16 22:29: the notebook grows one child in up to 60 min and a child waits 90, so 4-5 would have trained alone on one runner for ~80 min; the owner stopped the notebook for g38"
+  },
+  {
+   "id": "twowaves",
+   "title": "24 train jobs where only 20 run at once: 4 slices waited for a second wave",
+   "lives_in": "workflow",
+   "blocks": "slowgeneration",
+   "status": "fixed",
+   "piece": "L2",
+   "found": "g38: 8 children x 3 slices = 24 jobs over the 20-job limit",
+   "fix": "at most 20 train jobs, uneven slices (L2)",
+   "by": "B (L2, on main 4305dcc): 8 children as 4 of 3 slices and 4 of 2, the extra slice turning with the run number; proof is g39",
+   "seen": "2026-11-16 23:09: g38's last 4 slices started ~01:51, so the generation takes ~9-10 h"
+  },
+  {
+   "id": "practicetail",
+   "title": "Practice waited on its slowest runner: dreams on the same runners and a 1500 s task cap",
+   "lives_in": "practice",
+   "blocks": "slowgeneration",
+   "status": "fixed",
+   "piece": "L2",
+   "found": "g38 practice 134 min, its slowest runner 47 min of dreams + 84 of tasks",
+   "fix": "dreams on 8 runners of their own, 600 s task cap (L2)",
+   "by": "B (L2, on main 4305dcc): dreams on 8 runners of their own beside the 12 practice runners, a 600 s cap in practice and dreams; expected ~63 min, proof is g39",
+   "seen": "2026-11-16 23:09: 2 tasks hit the 1500 s cap; the slowest right practice task took 518 s, the slowest corrected dream 242 s"
+  },
+  {
+   "id": "slicememory",
+   "title": "16-bit slices met many long lessons near their row limit, where a row's memory grows faster than its length, and ran out of memory",
+   "lives_in": "practice",
+   "blocks": "deaths",
+   "status": "fixed",
+   "piece": "L1",
+   "found": "g38: 7 of 24 train slices lost to memory, 49-133 min in",
+   "fix": "a 16-bit slice keeps 1 GB more spare (PR 78)",
+   "by": "B, PR 78 (training/grow.py): a 16-bit slice keeps 1 GB more spare, rows up to about 850 pieces",
+   "seen": "2026-11-17 02:01: every lost slice 'the hosted runner lost communication', no log kept; finished 16-bit slices at 14.6-14.7 of 15.6 GB (rows up to 1037-1089 pieces); every child kept at least one slice"
+  },
+  {
+   "id": "fewpasses",
+   "title": "New hard lessons ended training at a loss of 0.4 to 1.6: too few passes, web kinds least",
+   "lives_in": "practice",
+   "blocks": "hardkinds",
+   "status": "fixed",
+   "piece": "T1",
+   "found": "new hard lessons end at loss 0.4-1.6",
+   "fix": "Study: a new hard subject at loss 0.3 or more gets 3 in 4 passes, web kinds first (T1)",
+   "by": "B (T1, Study in training/grow.py, on main): rows met up to 32 times (others 4), web kinds weigh 3 times and come first; small DNA: 13 of 13 new hard subjects under 0.3 with it, 0 of 13 without; the line half is read in g39",
+   "seen": "g35: walk a site under 0.3 in 4 of 23 slices (mean 0.64), the open web 19 of 37, site + date sum 13 of 25"
+  },
+  {
+   "id": "keptback",
+   "title": "A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned",
+   "lives_in": "practice",
+   "blocks": "hardkinds",
+   "status": "fixed",
+   "piece": "T2",
+   "found": "no lesson was ever kept out of training",
+   "fix": "2 lessons a kind kept back, their loss before and after in each slice's record (T2)",
+   "by": "B (T2, on main): kept_back in each slice's record, read by scripts/read_generation.py (2b); read the gap between taught and untaught, not the drop",
+   "seen": "small DNA: taught kinds -58 to -63% (h_join 0.514 -> 0.192, h_module 0.906 -> 0.379), untaught -26 to -27% (h_search 1.573 -> 1.166, h_log 0.335 -> 0.246)"
+  },
+  {
+   "id": "lessonswrong",
+   "title": "Most lessons made for a generation fail their own check, and the step does not say which kinds",
+   "lives_in": "lessons",
+   "blocks": "hardkinds",
+   "status": "open",
+   "piece": "R2",
+   "found": "g38 gather: 126 of 300 lessons right",
+   "by": "",
+   "seen": "2026-11-16 23:31: 300 lessons made, 126 right by their checks (258 rows); 13 kinds left to the hive's own rows; read at the verdict"
+  },
+  {
+   "id": "rows32",
+   "title": "Runners that train in 32 bits leave out every row over about 500 pieces",
+   "lives_in": "train",
+   "blocks": "hardkinds",
+   "status": "open",
+   "piece": "T4",
+   "found": "32-bit runners (EPYC 7763) drop ~100 of 700-800 rows",
+   "by": "C (T4, in work): shorter lessons",
+   "seen": "g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB"
+  },
+  {
+   "id": "loglesson",
+   "title": "The log lesson copies the log into its program, so it is too long to be taught",
+   "lives_in": "lessons",
+   "blocks": "hardkinds",
+   "status": "open",
+   "piece": "T4",
+   "found": "log lessons median 1300 pieces: 6 of 15 left out, all 15 in 32 bits",
+   "by": "C (T4, in work): the lesson reads the file the runtime already saves",
+   "seen": "2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit"
+  },
+  {
+   "id": "rawmeasure",
+   "title": "Measuring raw text by the DNA's own error takes an eighth of a slice's time",
+   "lives_in": "raw",
+   "blocks": "slowgeneration",
+   "status": "open",
+   "piece": "L2",
+   "found": "raw measuring 22-26 of a slice's 170 min (59-61 on 32-bit runners)",
+   "by": "",
+   "seen": "2026-11-16 23:09, the job logs of g33, g35 and g38"
+  },
+  {
+   "id": "modulestring",
+   "title": "Members wrote a module as f.write() strings and broke their own quotes",
+   "lives_in": "members",
+   "blocks": "files",
+   "status": "open",
+   "piece": "T3",
+   "found": "g35: module tasks failed with ''.join turned into .join",
+   "by": "",
+   "seen": "2026-11-16 22:55, A's read of g35: g35 made no module lessons; the lesson writes the module with inspect.getsource; g38 says whether members now write it the lesson's way"
   }
  ],
  "rules": [
@@ -659,93 +851,145 @@
    "id": "pushfinding",
    "rule": "Write a finding into docs/AGENTS.md and push it the moment it is found: a session can stop at any time, and the other agents build on the older picture meanwhile.",
    "from": "learnedrows"
+  },
+  {
+   "id": "cpuname",
+   "rule": "A CPU's name does not say what it can run: key anything built for a CPU by its instruction list.",
+   "from": "cpuflags"
+  },
+  {
+   "id": "joblimit",
+   "rule": "Count the jobs a step makes against the 20 that run at once: one job over makes a second wave and hours more.",
+   "from": "twowaves"
+  },
+  {
+   "id": "keepback",
+   "rule": "Judge whether a kind was learned on lessons kept out of training, read beside a kind never taught.",
+   "from": "keptback"
   }
  ],
  "hive_loop": [
-  [
-   "practise",
-   "Practise and dream",
-   "practice"
-  ],
-  [
-   "lessons",
-   "Lessons, only where it has nothing right of its own",
-   "lessons"
-  ],
-  [
-   "gather",
-   "Gather checked rows",
-   "practice"
-  ],
-  [
-   "plan",
-   "Plan the children",
-   "lineage"
-  ],
-  [
-   "read",
-   "Read raw data and judged answers",
-   "raw"
-  ],
-  [
-   "trainc",
-   "Train each child",
-   "train"
-  ],
-  [
-   "join",
-   "Join each child's slices",
-   "merge"
-  ],
-  [
-   "trunk",
-   "Merge the trunk",
-   "merge"
-  ],
-  [
-   "pulse",
-   "Exam of the grown body",
-   "exam"
-  ],
-  [
-   "recordg",
-   "Record, move levels",
-   "record"
-  ],
-  [
-   "graphs",
-   "Draw progress, weigh weak kinds",
-   "progress"
-  ]
+  {
+   "id": "practise",
+   "title": "Practise",
+   "part": "practice",
+   "minutes": "g38: 134 min on 12 runners",
+   "problem": "the slowest runner sets the pace: task cap 1500 s, now 600",
+   "piece": "L2"
+  },
+  {
+   "id": "dreams",
+   "title": "Dreams: failed tasks tried again",
+   "part": "practice",
+   "minutes": "g38: up to 47 min, on the practice runners",
+   "problem": "behind practice on the same runners; now 8 runners of their own",
+   "piece": "L2"
+  },
+  {
+   "id": "gather",
+   "title": "Gather checked rows, make lessons",
+   "part": "lessons",
+   "minutes": "g38: 13 min",
+   "problem": "126 of 300 lessons right; the kinds that fail are not printed",
+   "piece": "R2"
+  },
+  {
+   "id": "plan",
+   "title": "Plan the children and their slices",
+   "part": "lineage",
+   "minutes": "not measured apart",
+   "problem": "24 train jobs over the 20-job limit; now at most 20",
+   "piece": "L2"
+  },
+  {
+   "id": "trainc",
+   "title": "Train each slice (Study, T1)",
+   "part": "train",
+   "minutes": "170-175 min a slice; g38 in two waves",
+   "problem": "7 of 24 slices lost to memory; 32-bit runners drop ~100 rows",
+   "piece": "T1"
+  },
+  {
+   "id": "join",
+   "title": "Join each child's slices",
+   "part": "merge",
+   "minutes": "not measured apart",
+   "problem": "a child that lost slices is joined from fewer",
+   "piece": "L1"
+  },
+  {
+   "id": "trunk",
+   "title": "Merge the trunk",
+   "part": "merge",
+   "minutes": "not measured apart",
+   "problem": "",
+   "piece": ""
+  },
+  {
+   "id": "pulse",
+   "title": "Pulse: the grown body's exam, 4 seats",
+   "part": "exam",
+   "minutes": "g35: 60 min",
+   "problem": "a dead seat leaves its seed out; re-sat by hand",
+   "piece": "L1"
+  },
+  {
+   "id": "recordg",
+   "title": "Record, move levels, draw progress",
+   "part": "record",
+   "minutes": "not measured apart",
+   "problem": "the hours of each job are not recorded",
+   "piece": "L3"
+  },
+  {
+   "id": "verdictg",
+   "title": "Verdict: read the generation",
+   "part": "verdict",
+   "minutes": "by hand, after the record",
+   "problem": "not written by the workflow yet",
+   "piece": "M3"
+  },
+  {
+   "id": "nextg",
+   "title": "Next generation, from main",
+   "part": "workflow",
+   "minutes": "a whole generation: g34 ~8 h, g38 ~9-10 h; the bar is 5",
+   "problem": "started or mended by hand",
+   "piece": "L3"
+  }
  ],
  "maintainer_loop": [
   [
-   "agents",
-   "Read docs/AGENTS.md and the other agents' pull requests"
+   "readgen",
+   "Read the generation: scripts/read_generation.py RUN --compare ... --programs"
   ],
   [
-   "results",
-   "Read the newest record, runs and the members' programs"
+   "verdict",
+   "The verdict table in docs/PLAN.md says the next piece"
   ],
   [
-   "causes",
-   "Group failures by cause, add them here as findings"
+   "claim",
+   "Claim a board piece: a log line in docs/AGENTS.md, pushed first"
   ],
   [
-   "fix",
-   "Fix the cause where it lives, in a part you own"
+   "build",
+   "Build it with smaller agents, in files you own"
   ],
   [
    "prove",
-   "Replay real failures, run the tests, then one real run"
+   "Prove it cheapest first: replay, tests, the small DNA, a trial"
   ],
   [
-   "ship",
-   "Push; merge only with the owner's go-ahead"
+   "yes",
+   "The owner's yes"
   ],
   [
-   "learn",
-   "Mark findings fixed, add the rule learned, redraw this graph"
+   "merge",
+   "Merge to main; findings and fixes into docs/knowledge.json"
+  ],
+  [
+   "next",
+   "The next generation runs on main"
   ]
  ]
 }
