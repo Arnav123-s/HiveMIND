@@ -52,6 +52,9 @@ def test_the_checks_say_right_and_wrong():
     for wrong in ("3:55 am", "15:50", "It is 3:55 amazing"):
         assert not T.check(clock, wrong)[0], wrong
     assert T.clocks("at 3 pm") == {"15:00"} and T.clocks("3 amazing things") == set()
+    # a reply that says it does not know is wrong even where it names the value (t17 said this on seed 1)
+    assert not T.check({"type": "text", "want": [["Priya"]]}, "I don't remember your name. I'm Priya, and I'm here to help.")[0]
+    assert not T.check(num, "I do not know, maybe 1150?")[0] and T.check(num, "I know it: 1150.")[0]
 
 
 def test_the_time_checks_follow_the_date_the_hive_is_told():

@@ -240,11 +240,16 @@ def _hm(h, m, ap):
     return f"{h:02d}:{m:02d}" if h < 24 and m < 60 else ""
 
 
+UNSURE = re.compile(r"\b(?:i|we)\s+(?:do\s*n[o']t|don't|cannot|can't|can not)\s+(?:know|remember|recall|tell)\b|\bi(?:'m| am) not sure\b", re.I)
+
+
 def check(spec, text, way=None):
     """(right, why) for one reply (text) and the route talk.py took (way) against a check spec."""
     t = spec["type"]
     if t == "route":
         return way == spec["want"], f"wants {spec['want']}; took {way}"
+    if UNSURE.search(str(text)):  # 'I don't remember your name. I'm Priya' (t17, seed 1) names the name and is still wrong
+        return False, "the reply says it does not know or remember"
     if t == "text":
         missing = [g for g in spec["want"] if not any(_has(text, w) for w in g)]
         return not missing, f"wants {' and '.join(' or '.join(g) for g in spec['want'])}" + (f"; missing {missing}" if missing else "")
