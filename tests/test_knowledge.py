@@ -58,8 +58,9 @@ def test_the_hive_loop_says_each_steps_minutes_and_open_problem():
     names = [s["id"] for s in steps]
     for want in ("practise", "dreams", "gather", "plan", "trainc", "join", "trunk", "pulse", "recordg", "verdictg", "nextg"):
         assert want in names
+    run = knowledge.run_minutes()  # a recorded run's minutes take the place of those written down (g41 has them)
     for s in steps:
-        assert s["minutes"] and "minutes: " + s["minutes"] in g
+        assert s["minutes"] and "minutes: " + run.get(s["id"], s["minutes"]) in g
         if s.get("problem"):
             assert f"open: {s['problem']} ({s['piece']})" in g
     for a, b in zip(names, names[1:]):

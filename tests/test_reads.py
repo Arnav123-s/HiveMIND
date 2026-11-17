@@ -42,8 +42,10 @@ def _arm(tasks):
 
 
 def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaught=0.1, child_ok=True, parent_ok=False,
-          body_ok=False, prev_taught_ok=False):
-    """Every file of one generation, g40, made up; returns the read's text and its next-piece line."""
+          body_ok=False, prev_taught_ok=False, rows_by_kind=None):
+    """Every file of one generation, g40, made up; returns the read's text and its next-piece line. rows_by_kind: what
+    each slice's record says of the new rows by kind (training/grow.train, from generation 42), the same for every
+    taught kind; without it the records are the older ones, and the rows left out are estimated."""
     gate = tmp_path / "gate"
     after = [_task(i, k, body_ok, "g40code", child_ok) for i, k in enumerate(TAUGHT)] + [_task(50, "a sum in words", True, "g40code", True, hard=False)]
     before = [_task(i, k, False, "g34code", parent_ok) for i, k in enumerate(TAUGHT)] + [_task(50, "a sum in words", True, "g34code", True, hard=False)]
@@ -66,7 +68,8 @@ def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaugh
     kept[UNTAUGHT] = {"lessons": 2, "rows": 2, "before": 1.0, "after": 1.0 - fall_untaught}
     slices = [{"job": f"train (g40code, {n})", "conclusion": "success", "long": 3, "max_len": 1152,
                "record": {"member": "t80+g40code", "shard": f"{n}/2", "kept_back": kept,
-                          "subjects": [{"subject": f"{k} · first · new", "rows": u, "passes": 3} for k in TAUGHT]}}
+                          "subjects": [{"subject": f"{k} · first · new", "rows": u, "passes": 3} for k in TAUGHT]}
+               | ({"rows_by_kind": {k: dict(rows_by_kind) for k in TAUGHT}} if rows_by_kind else {})}
               for n, u in enumerate(used)]
     jobs = [{"name": "practice (1)", "started_at": "2026-11-17T10:00:00Z", "completed_at": "2026-11-17T12:00:00Z", "conclusion": "success"},
             {"name": "dream (1)", "started_at": "2026-11-17T10:00:00Z", "completed_at": "2026-11-17T10:50:00Z", "conclusion": "success"},
@@ -100,7 +103,7 @@ def test_the_read_has_every_section(tmp_path):
     # one row a taught hard kind: lessons, rows, kept-back loss and its gap, the child and its parent alone, the body
     assert len(TAUGHT) == 9
     for k in TAUGHT:
-        assert f"| {k} | 12 of 12 | 0 of 18 | 1.000 -> 0.500 | +40 | 1 of 1 | 0 of 1 | 0 of 1 | 0 of 1 |" in text, k
+        assert f"| {k} | 12 of 12 | 0 of 18 (estimate) | 1.000 -> 0.500 | +40 | 1 of 1 | 0 of 1 | 0 of 1 | 0 of 1 |" in text, k
     assert f"mean fall of the kinds none of whose lessons were trained on ({UNTAUGHT}: 10 points)" in text
     assert text.count("next piece:") == 1 and said in text
     xml.dom.minidom.parseString((tmp_path / "chain.svg").read_text())
@@ -109,7 +112,7 @@ def test_the_read_has_every_section(tmp_path):
 
 @pytest.mark.parametrize("kw, rule, piece", [
     (dict(lessons_right=5), 1, "lessons: mend"),
-    (dict(used=(9, 2)), 2, "T4: shorter lessons"),
+    (dict(rows_by_kind={"given": 6, "too_long": 2, "skipped_memory": 0, "trained": 4}), 2, "T4: shorter lessons"),
     (dict(fall_taught=0.2), 3, "dose:"),
     (dict(child_ok=True, parent_ok=False, body_ok=False), 4, "R1: a right member is not lost"),
     (dict(child_ok=False), 5, "T3:"),
@@ -186,3 +189,49 @@ def test_the_record_job_writes_the_read_and_redraws_and_commits_it():
     assert "training/reads.py write \"$GEN\"" in text and "training/progress.py" in text and "scripts/knowledge.py" in text
     assert "docs/reads" in text.split("git add", 1)[1] and "docs/KNOWLEDGE.md" in text.split("git add", 1)[1]
     assert any(s.get("with", {}).get("name") == "lessons" for s in steps)
+
+
+# ---- rows left out: too long, skipped for memory, or not reached in time ---------------------------------------------
+# g41's read named T4 (rule 2) for "a fact read and a date sum on it" (57 of 152 left out) and "several facts fetched
+# and laid out as a file" (71 of 342), but no row of those kinds was too long: the estimate counted every row a slice
+# did not study. From generation 42 the slices count the three apart (rows_by_kind) and rule 2 counts rows too long.
+def _cell(text, k):
+    return next(ln for ln in text.splitlines() if ln.startswith(f"| {k} |")).split(" | ")[2]
+
+
+def test_rows_not_reached_in_time_are_not_left_out_and_rule_2_does_not_hold(tmp_path):
+    text, said = build(tmp_path, rows_by_kind={"given": 6, "too_long": 0, "skipped_memory": 0, "trained": 1})
+    assert "T4" not in said and "(rule 2" not in said
+    assert all(_cell(text, k) == "0 of 12" for k in TAUGHT)
+    assert "| 2 | more than 1 row in 5 of the kind left out | 0 |" in text
+    assert "Rows not reached before the time was up are not left out" in text
+
+
+def test_rows_too_long_are_left_out_and_rule_2_holds(tmp_path):
+    text, said = build(tmp_path, used=(1, 1), rows_by_kind={"given": 6, "too_long": 2, "skipped_memory": 0, "trained": 4})
+    assert said.startswith("next piece: T4: shorter lessons (rule 2")
+    assert all(_cell(text, k) == "4 of 12" for k in TAUGHT)
+    # 1 in 5 exactly is not more than 1 in 5
+    _, said = build(tmp_path / "b", rows_by_kind={"given": 5, "too_long": 1, "skipped_memory": 0, "trained": 4})
+    assert "T4" not in said
+
+
+def test_rows_the_memory_guard_skipped_are_shown_but_rule_2_does_not_hold(tmp_path):
+    text, said = build(tmp_path, rows_by_kind={"given": 6, "too_long": 0, "skipped_memory": 4, "trained": 2})
+    assert "T4" not in said
+    assert all(_cell(text, k) == "0 of 12 (8 skipped for memory)" for k in TAUGHT)
+
+
+def test_an_older_record_gives_an_estimate_that_holds_no_rule(tmp_path):
+    text, said = build(tmp_path, used=(9, 2))  # 7 of 18 not studied: more than 1 in 5, but not known to be too long
+    assert "T4" not in said
+    assert all(_cell(text, k) == "7 of 18 (estimate)" for k in TAUGHT)
+    assert "rows left out: an estimate" in text and "so it holds on no estimate" in text
+    assert "no rule could hold on it: rows left out" in text
+
+
+def test_the_record_is_read_with_rows_by_kind():
+    rec = {"member": "m", "rows_by_kind": {"x": {"given": 3, "too_long": 1, "skipped_memory": 1, "trained": 1}}, "junk": 1}
+    assert reads._slim(rec)["rows_by_kind"] == rec["rows_by_kind"]
+    slices = [{"record": rec}, {"record": rec}, {"record": None}]
+    assert reads.left_exact(slices) and reads.rows_left_out(slices, [], "g42") == {"x": [2, 6, 2]}

@@ -1120,14 +1120,26 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # of the hive's checked work (so any two can check each other), each one its own part best. This generation's
     # rows and its parent's corrected mistakes (new to the whole line) are subjects of their own, so the first sweep
     # meets them, and they keep passes for as long as their loss is high. `fresh` is no longer used.
+    # rows_by_kind: what became of this generation's new rows (the Study's `new`), by kind, each row once: given to
+    # this slice, left out as too long (encode), never trained on because the memory guard skipped it every time it
+    # came up, trained on. What is left (given - too_long - skipped_memory - trained) was not reached before the time
+    # was up. g41's read put all three together under "left out" and named T4 for kinds with no row too long.
     data, tags, own_rows, mine, new_rows, long = [], [], {}, 0, 0, 0
+    by_kind, new_kind = {}, {}  # {kind: counts}; {index in data: kind} of the new rows
     for row in rows:
+        new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
+        if new:
+            counts = by_kind.setdefault(row.get("kind") or "?", {"given": 0, "too_long": 0, "skipped_memory": 0, "trained": 0})
+            counts["given"] += 1
         d = encode(row)
         if d is None:
             long += 1
+            if new:
+                counts["too_long"] += 1
             continue
         own = bool(lean) and ternary.organ(row["task"]) == lean
-        new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
+        if new:
+            new_kind[len(data)] = row.get("kind") or "?"
         data.append(d)
         tags.append(subject(row, new))
         own_rows[tags[-1]] = own_rows.get(tags[-1], 0) + own
@@ -1267,7 +1279,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if guard:
         log(f"memory guard: {guard.available() / 2**30:.1f} GB available, a row skipped when it would leave less than {guard.spare / 2**30:.1f} GB "
             f"(a piece taken as {per_piece / 2**20:.2f} MB to start, then as measured)", flush=True)
-    in_a_row = 0
+    in_a_row, skipped_rows, trained_rows = 0, set(), set()
     budget = max(1.0, minutes * 60 - (t0 - born) - spare) if minutes else 0
 
     def done_share():
@@ -1308,6 +1320,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         pieces = ids.shape[1] + (data[idx][2].shape[1] if len(data[idx]) == 4 else 0)
         if guard and not guard.admit(pieces, s):
             study.skip(s, idx)
+            skipped_rows.add(idx)
             in_a_row += 1
             if in_a_row == 1:
                 gc.collect()
@@ -1347,6 +1360,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         running += loss.item()
         held += 1
         study.learned(s, plain)
+        trained_rows.add(idx)
         i += 1
         if held == accum:
             update()
@@ -1371,6 +1385,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 + ", ".join(f"{k} {v}" for k, v in list(mem["skipped_by_subject"].items())[:8]) + ")", flush=True)
         log(f"memory: most {mem['peak_gb']} GB, least available {mem['min_available_gb']} GB, most swap {mem['swap_peak_gb']} GB, "
             f"a piece {mem['cost_per_piece_mb']} MB (the formula's {mem['formula_per_piece_mb']})", flush=True)
+    for j, k in new_kind.items():
+        if j in trained_rows:
+            by_kind[k]["trained"] += 1
+        elif j in skipped_rows:
+            by_kind[k]["skipped_memory"] += 1
     subjects = study.table()
     width = max([len(x["subject"]) for x in subjects] + [7])
     log(f"{'subject':<{width}} rows passes  first   last", flush=True)
@@ -1405,7 +1424,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
-            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects, "kept_back": kept}
+            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects, "kept_back": kept,
+            "rows_by_kind": dict(sorted(by_kind.items()))}
     if guard:
         meta["memory"] = mem
     # the adapter as the runtime reads it

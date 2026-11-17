@@ -783,6 +783,18 @@
    "found": "g35: module tasks failed with ''.join turned into .join",
    "by": "",
    "seen": "2026-11-16 22:55, A's read of g35: g35 made no module lessons; the lesson writes the module with inspect.getsource; g38 says whether members now write it the lesson's way"
+  },
+  {
+   "id": "leftoutmeasure",
+   "title": "The read's \"rows left out\" counted rows not reached in time and skipped for memory as too long",
+   "lives_in": "record",
+   "blocks": "hardkinds",
+   "status": "fixed",
+   "piece": "T4",
+   "found": "g41's read named T4 for \"a fact read and a date sum on it\" (57 of 152) and \"several facts laid out as a file\" (71 of 342); T4 measured those kinds' lessons at 0 rows over 508 pieces",
+   "by": "B's sub-agent: each slice's record says rows_by_kind {given, too_long, skipped_memory, trained} of the new rows (training/grow.train); training/reads.py shows too long (memory-skipped in brackets) and rule 2 counts too long only",
+   "seen": "2026-11-17 17:06, docs/reads/latest.md (g41): the estimate was every new row a slice did not study, whatever the cause",
+   "fix": "rows_by_kind in the slice record; rule 2 on too-long rows only; older records shown as an estimate that holds no rule"
   }
  ],
  "rules": [
