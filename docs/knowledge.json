@@ -731,22 +731,24 @@
    "title": "Runners that train in 32 bits leave out every row over about 500 pieces",
    "lives_in": "train",
    "blocks": "hardkinds",
-   "status": "open",
+   "status": "fixed",
    "piece": "T4",
    "found": "32-bit runners (EPYC 7763) drop ~100 of 700-800 rows",
-   "by": "C (T4, in work): shorter lessons",
-   "seen": "g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB"
+   "by": "B's sub-agent (T4): module programs without comments or inspect (the program copies itself), one test; fresh lessons drawn again until first and done rows fit 508 (lessons.fitting); fix rows cut to fit",
+   "seen": "g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB; T4, 12 lessons a kind: module rows left out 16 of 36 -> 0, log 36 -> 0; every other lesson kind 0; join still 35 of 36 (its tables are in the task and again in the program: needs the maker to give them as lines); the hive's own join rows (g38: 65 of 119) left as they are",
+   "fix": "lessons fit 508 pieces: short programs, drawn again when too long, fix rows cut"
   },
   {
    "id": "loglesson",
    "title": "The log lesson copies the log into its program, so it is too long to be taught",
    "lives_in": "lessons",
    "blocks": "hardkinds",
-   "status": "open",
+   "status": "fixed",
    "piece": "T4",
    "found": "log lessons median 1300 pieces: 6 of 15 left out, all 15 in 32 bits",
-   "by": "C (T4, in work): the lesson reads the file the runtime already saves",
-   "seen": "2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit"
+   "by": "B's sub-agent (T4): the lesson reads log.txt, which the runtime saves from the task; the rows show the log's first 3 and last 2 lines (training/lessons.lean)",
+   "seen": "2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit; T4, 12 lessons at the body's level: rows over 508 pieces 36 of 36 -> 0 of 36 (fix rows included), 12 of 12 right before and after",
+   "fix": "the log lesson reads log.txt and its rows show 5 lines of the log"
   },
   {
    "id": "rawmeasure",

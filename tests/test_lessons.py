@@ -22,7 +22,7 @@ def test_every_module_every_search_the_log_and_the_units_are_right_by_their_own_
     for name, rseed in seen.items():
         les = lessons.lesson("h_module", rseed)
         assert les["ok"], (name, les["why"], les["answer"])  # the hidden tests pass, the values asked for are printed
-        assert "inspect.getsource" in les["program"] and "f.write('" not in les["program"]  # the module is never code inside a string
+        assert "shutil.copy(__file__, " in les["program"] and "f.write(" not in les["program"]  # the module is never code inside a string
     forms = set()
     for i in range(60):
         task = exam._made(exam_hard.h_search, f"s{i}", 0)[2]
@@ -36,7 +36,7 @@ def test_every_module_every_search_the_log_and_the_units_are_right_by_their_own_
     assert len(forms) == 4  # the smallest number, palindromes, the nth prime, the coins
     for level in (0, 2):
         les = lessons.lesson("h_log", "log", level)
-        assert les["ok"] and 'log = """' in les["program"], les["why"]  # given data copied into the program
+        assert les["ok"] and 'open("log.txt")' in les["program"] and "ERROR" not in les["program"].replace('"ERROR"', ""), les["why"]  # the file the runtime saves, not a copy
     forms = {}
     for i in range(40):  # every form of the unit question: Fahrenheit, Celsius, miles, pounds
         task = exam._made(exam.m_units, f"u{i}", 0)[2]
@@ -156,3 +156,67 @@ def test_teach_says_right_of_made_for_every_kind_and_why_the_others_failed(tmp_p
     lessons.main(["--seed", "t", "--out", str(tmp_path / "r.jsonl")])
     last = capsys.readouterr().out.strip().splitlines()[-2:]
     assert last[0].startswith("lessons by kind: ") and json.loads(last[1])["by_kind"] == {"x": [1, 2]}
+
+
+def _longest(les, wrong=None):
+    return max(lessons.row_pieces(r) for r in lessons.rows(les, wrong, today="2026-11-17 (Tuesday)"))
+
+
+def test_t4_the_log_lesson_reads_the_file_and_its_rows_fit_a_32_bit_runner():
+    """T4: the log lesson copied the log into its program (about 1300 pieces): 237 of 238 rows left out in g38."""
+    for level in (0, 1, 2):
+        for i in range(3):
+            les = lessons.lesson("h_log", f"t4log{i}", level)
+            assert les["ok"], les["why"]
+            first = lessons.rows(les)[0]["messages"][1]["content"]
+            assert "more lines like these" in first and sum(ln[:4].isdigit() for ln in first.splitlines()) == 5  # the log cut in the prompt
+            wrong = {"program": les["program"].replace("ERROR", "WARN"), "printed": les["answer"]}
+            assert _longest(les, wrong) <= lessons.LIMIT, (level, i)
+    # in a task of several parts whose first block of data is another part's, log.txt would hold that: copied there
+    task = exam._made(exam_hard.h_log, "t4", 0)[2]
+    assert 'open("log.txt")' in lessons.log(task) and 'log = """' in lessons.log(task, copy=True)
+    assert lessons.lean(task, lessons.log(task, copy=True)) == task  # a log the program copies stays whole in the prompt
+
+
+def test_t4_module_and_search_lessons_fit_508_pieces_and_are_drawn_again_when_their_values_do_not():
+    for i in range(12):
+        les = lessons.fitting("h_module", f"t4mod{i}")
+        assert les["ok"], les["why"]
+        assert _longest(les) <= lessons.LIMIT, les["task"]
+        wrong = {"program": les["program"] + "\nprint('checked')\n", "printed": les["answer"]}
+        fix = lessons.rows(les, wrong)[-1]
+        assert fix["type"] == "fix" and lessons.row_pieces(fix) <= lessons.LIMIT and fix["output"].endswith(les["program"].strip() + "\n```")
+        les = lessons.fitting("h_search", f"t4s{i}")
+        assert les["ok"] and _longest(les) <= lessons.LIMIT
+    # a module asked of two 4 by 4 matrices does not fit: a fresh lesson draws its task again, a task the hive got wrong never
+    long = next(f"w{i}" for i in range(400) if "spiral" in exam._made(exam_hard.h_module, f"w{i}", 0)[2]
+                and _longest(lessons.lesson("h_module", f"w{i}")) > lessons.LIMIT)
+    assert lessons.fitting("h_module", long)["rseed"].startswith(long + ":")
+    assert lessons.fitting("h_module", long, fresh=False)["rseed"] == long
+
+
+def test_t4_the_website_and_fact_lessons_fit_without_a_site():
+    """Their programs made from tasks drawn offline, with an answer as long as the longest these lessons printed."""
+    for maker in ("h_walk", "h_age", "h_table", "h_since", "h_web"):
+        for i in range(4):
+            made = exam._made(getattr(exam_hard, maker), f"t4w{i}", 0)
+            program = lessons.SOLVERS[maker](made[2])
+            assert program, (maker, made[2])
+            les = {"ok": True, "task": made[2], "kind": made[1], "rseed": "x", "maker": maker, "program": program,
+                   "answer": "versions.md saved\nreleased most recently: requests 2026-11-02\nbooks: 20\ndays: 12345"}
+            assert _longest(les) <= lessons.LIMIT, maker
+
+
+def test_t4_join_copies_the_tables_as_the_task_writes_them():
+    """The join's tables are in the task's own sentence (no block the runtime saves): copied as written, not as lists of
+    tuples (300 pieces). Its first row stays over 508: the tables are there twice, in the task and in the program."""
+    les = lessons.lesson("h_join", "t4j", 0)
+    assert les["ok"] and '.split("; ")' in les["program"] and "('" not in les["program"]
+    assert lessons.row_pieces(lessons.rows(les)[0]) < 650
+
+
+def test_t4_pieces_are_counted_like_the_tokenizer_or_by_a_rule_near_it(monkeypatch):
+    text = lessons.lesson("h_module", "t4p")["program"]
+    by_tok = lessons.pieces(text)
+    monkeypatch.setattr(lessons, "_TOK", [None])
+    assert abs(lessons.pieces(text) - by_tok) <= by_tok / 3 and lessons.pieces("12345") == 5

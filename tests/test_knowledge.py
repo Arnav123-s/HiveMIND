@@ -102,6 +102,6 @@ def test_each_finding_is_drawn_from_what_was_seen_to_its_board_piece():
             "slicememory": "L1", "fewpasses": "T1", "keptback": "T2", "lessonswrong": "R2", "rows32": "T4"}
     got = {f["id"]: f["piece"] for f in mine}
     assert all(got.get(i) == p for i, p in want.items())
-    assert {f["id"] for f in mine if f["status"] == "open"} >= {"lessonswrong", "rows32"}
+    assert {f["id"] for f in mine if f["status"] == "open"} >= {"lessonswrong"}  # rows32: fixed by T4
     nodes, edges = knowledge.size(g)
     assert nodes == 3 * len(mine) + len({f["piece"] for f in mine}) and edges == 3 * len(mine)
