@@ -668,6 +668,18 @@
    "seen": "2026-11-16 22:29: the notebook grows one child in up to 60 min and a child waits 90, so 4-5 would have trained alone on one runner for ~80 min; the owner stopped the notebook for g38"
   },
   {
+   "id": "colabtiming",
+   "title": "The notebook never trained a child: each train job looked for it only once, at the job's start",
+   "lives_in": "colab",
+   "blocks": "slowgeneration",
+   "status": "fixed",
+   "piece": "L2",
+   "found": "the owner's L4 notebook came up 13 minutes after g42's training began; no train job looked again, so it grew nothing",
+   "fix": "the child offered waits up to HIVE_COLAB_WAIT minutes (15) for the notebook; slice 0 orders, the other slices stand aside on the order; no wait when it was not seen in 12 hours",
+   "by": "B's sub-agent: colab.py seen / alive --wait / aside / mark; the cell it grows is marked grown_on colab and the read says what it grew, on which GPU, in how many minutes, beside the CPU slices",
+   "seen": "2026-11-17, g42: colab-alive from the notebook 13 minutes after the train jobs started, no order placed"
+  },
+  {
    "id": "twowaves",
    "title": "24 train jobs where only 20 run at once: 4 slices waited for a second wave",
    "lives_in": "workflow",

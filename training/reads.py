@@ -154,6 +154,61 @@ def lessons_in_log(text):
     return None
 
 
+# what a train slice said of the owner's Colab notebook (training/colab.py), most telling first: only these phrases are
+# taken from the log
+COLAB_SAID = (("colab: the notebook could not grow it", "the notebook could not grow it"),
+              ("colab: no cell from the notebook in", "no cell back in time"),
+              ("colab: no notebook alive in", "notebook not there within the wait"),
+              ("colab: no notebook (", "notebook gone before the order"),
+              ("colab: could not", "the release could not be reached"),
+              ("colab: no notebook seen in the last", "notebook not seen"))
+
+
+def colab_in_log(text):
+    """What a train slice said of the notebook, as one of COLAB_SAID's phrases, or None when it said nothing."""
+    for start, said in COLAB_SAID:
+        if re.search(r"^" + re.escape(start), text, re.M):
+            return said
+    return None
+
+
+def _median(xs):
+    xs = sorted(xs)
+    return (xs[len(xs) // 2] + xs[(len(xs) - 1) // 2]) / 2 if xs else None
+
+
+def _colab_split(slices):
+    """(the records the notebook grew, the CPU slices' records)."""
+    recs = [s.get("record") for s in slices if isinstance(s.get("record"), dict)]
+    return [r for r in recs if r.get("grown_on") == "colab"], [r for r in recs if r.get("grown_on") != "colab"]
+
+
+def _child(rec):
+    c = str(rec.get("member", "?")).split("+")[-1]
+    return c if re.fullmatch(r"g\d+[a-z]+\d{0,2}", c) else "?"
+
+
+def colab_line(slices):
+    """The read's line on the owner's Colab notebook: the child it grew, on which GPU, in how many minutes and steps,
+    beside the CPU slices' median; or why it was not used."""
+    if not slices:
+        return "Colab: not measured (no train slice was read)"
+    grown, cpu = _colab_split(slices)
+    steps = [r["steps"] for r in cpu if isinstance(r.get("steps"), (int, float))]
+    mins = [r["seconds"] / 60 for r in cpu if isinstance(r.get("seconds"), (int, float))]
+    beside = (f"CPU slices: median {_median(steps):.0f} steps in {_median(mins):.0f} minutes" if steps and mins else "CPU slices: none measured")
+    if grown:
+        r = grown[0]
+        gpu = str(r.get("gpu") or "?")
+        gpu = gpu if re.fullmatch(r"[\w .()-]{1,40}", gpu) else "?"
+        m = r.get("minutes") if isinstance(r.get("minutes"), (int, float)) else "?"
+        st = r.get("steps") if isinstance(r.get("steps"), (int, float)) else "?"
+        return f"Colab: {_child(r)} grown on {gpu} in {m} minutes, {st} steps ({beside})"
+    said = {s.get("colab") for s in slices if s.get("colab")}
+    why = next((w for _, w in COLAB_SAID if w in said), "notebook not seen")
+    return f"Colab: not used ({why})"
+
+
 def subject_kind(s):
     return s.split(" · ")[0]
 
@@ -255,7 +310,8 @@ def lost_slices(jobs):
 
 def _slim(rec):
     """What the read needs of a slice's record."""
-    keep = ("member", "shard", "rows", "used", "steps", "passes", "seconds", "kept_back", "long", "long_by_kind", "rows_by_kind", "loss_first", "loss_last")
+    keep = ("member", "shard", "rows", "used", "steps", "passes", "seconds", "kept_back", "long", "long_by_kind", "rows_by_kind", "loss_first", "loss_last",
+            "grown_on", "gpu", "minutes")
     out = {k: rec[k] for k in keep if k in rec}
     out["subjects"] = [s for s in rec.get("subjects") or [] if isinstance(s, dict) and str(s.get("subject", "")).endswith(" · new")]
     return out
@@ -296,7 +352,8 @@ def facts(run, gate=None, practice_work=None, repo=REPO, log=print):
             continue
         rec = record_in_log(text)
         n, most = long_in_log(text)
-        slices.append({"job": j["name"], "conclusion": j.get("conclusion"), "record": _slim(rec) if rec else None, "long": n, "max_len": most})
+        slices.append({"job": j["name"], "conclusion": j.get("conclusion"), "record": _slim(rec) if rec else None, "long": n, "max_len": most}
+                      | ({"colab": c} if (c := colab_in_log(text)) else {}))
     out["slices"] = slices
     if gate:
         out["dead_seats"] = len(pulse(gate)[1])
@@ -528,6 +585,17 @@ def chain(line, facts_, seats, rows, lessons_summary=None):
         notes.append("gap: no untaught kind had lessons kept back to read the taught ones against")
     else:
         notes.append(f"gap: the kind's fall beside the mean fall of the {base_is} ({', '.join(sorted(base))}: {base_fall:.0f} points)")
+    grown, _ = _colab_split(slices)
+    if grown:
+        def gap_of(group):
+            ls = kept_losses(group)
+            bs = [fall(*ls[k]) for k in base if k in ls]
+            gs = [fall(*ls[k]) - sum(bs) / len(bs) for k in taught.values() if k in ls] if bs else []
+            return f"{sum(gs) / len(gs):+.0f} points" if gs else "not measured"
+        on_gpu = [s for s in slices if (s.get("record") or {}).get("grown_on") == "colab"]
+        on_cpu = [s for s in slices if s.get("record") and s["record"].get("grown_on") != "colab"]
+        notes.append(f"kept-back gap by where the child grew (mean over the taught hard kinds, against the same untaught kinds): "
+                     f"{_child(grown[0])} on the Colab GPU {gap_of(on_gpu)}; the CPU children {gap_of(on_cpu)}")
     if not child and not parent:
         notes.append("child and parent alone: the pulse kept no member's own answer (training/exam.each_member)")
     else:
@@ -699,7 +767,7 @@ def render(line, prev, f, rows, notes, piece, lines, idx):
     ls = f.get("lost_slices") or line.get("lost_slices")
     dead = f.get("dead_seats", line.get("dead_seats"))
     out += ["", f"Train slices lost: {_pq(ls) if ls else 'not measured'}. Pulse seats whose server died: "
-            f"{dead if dead is not None else 'not measured'}."]
+            f"{dead if dead is not None else 'not measured'}.", "", colab_line(f.get("slices") or [])]
     out += ["", "## Next piece", "", f"next piece: {what if rule != 7 else 'none'} (rule {rule}"
             + (f": {RULES[rule - 1][1]}, for {len(kinds)} of {len(rows)} taught hard kinds: {', '.join(kinds)})" if rule != 7 else
                ": no rule holds for any taught hard kind)"), "",

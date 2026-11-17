@@ -4,6 +4,19 @@
     python training/colab.py order --gen G --name N ...  in a train job: order the child from the notebook, if it is there
     python training/colab.py wait --gen G --name N --minutes 90 --out DIR
                                                           in a train job: the cell the notebook grew, or exit 1
+    python training/colab.py seen --hours 12             exit 0 when the notebook said it was there in the last 12 hours
+    python training/colab.py alive [--wait M]            exit 0 when it is there now (or comes within M minutes)
+    python training/colab.py aside --gen G --name N --minutes M
+                                                          exit 0 when the child is ordered (or the notebook is there)
+                                                          within M minutes: the child's other slices stand aside
+    python training/colab.py mark --cell out/D.N.json --minutes M
+                                                          the cell's record marked as grown on the notebook, and printed
+
+When: the owner may start the notebook any time during practice (g42's came up 13 minutes after its training began, and
+each train job had looked only once, at its start). So the child offered to it waits up to HIVE_COLAB_WAIT minutes (15)
+for it, one line a minute, and the decision is made once a child: its slice 0 waits and orders; its other slices wait
+the same window and stand aside once the order is in the release (or the notebook is there). A notebook not seen in 12
+hours is not waited for at all.
 
 Why: a child of the 8B trains on a free runner's CPU for close to three hours (9 to 18 s a row); on a Colab GPU (an L4
 or an A100) the same rows take minutes. The notebook is the owner's, on the compute he already has; nothing is bought.
@@ -35,6 +48,13 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
 TAG = "hive-grown"
 ALIVE = 900  # seconds: a notebook that has not said it is there for this long is taken to be gone
 API = "https://api.github.com"
+POLL = float(os.environ.get("HIVE_COLAB_POLL", 60))  # seconds between two looks while a train job waits
+
+
+def _local():
+    """A folder standing in for the release (HIVE_COLAB_LOCAL, for tests): its files are the assets."""
+    d = os.environ.get("HIVE_COLAB_LOCAL")
+    return Path(d) if d else None
 
 
 def _token():
@@ -42,6 +62,8 @@ def _token():
 
 
 def _session():
+    if _local():
+        return None
     import requests
     s = requests.Session()
     s.headers.update({"Accept": "application/vnd.github+json", "User-Agent": "hive-colab/1.0"})
@@ -52,6 +74,9 @@ def _session():
 
 def release(s=None):
     """The release's id, upload address and assets {name: asset}."""
+    if _local():
+        _local().mkdir(parents=True, exist_ok=True)
+        return 0, "", {p.name: {"id": p.name, "url": str(p)} for p in _local().iterdir() if p.is_file()}
     s = s or _session()
     r = s.get(f"{API}/repos/{REPO}/releases/tags/{TAG}", timeout=30)
     r.raise_for_status()
@@ -70,6 +95,10 @@ def release(s=None):
 
 def put(name, data, s=None, kind="application/octet-stream"):
     """An asset of the release, replaced if it is there."""
+    if _local():
+        _local().mkdir(parents=True, exist_ok=True)
+        (_local() / name).write_bytes(bytes(data))
+        return
     s = s or _session()
     rid, up, assets = release(s)
     if name in assets:
@@ -79,6 +108,10 @@ def put(name, data, s=None, kind="application/octet-stream"):
 
 
 def drop(names, s=None):
+    if _local():
+        for n in names:
+            (_local() / n).unlink(missing_ok=True)
+        return
     s = s or _session()
     _, _, assets = release(s)
     for n in names:
@@ -88,6 +121,11 @@ def drop(names, s=None):
 
 def get(name, to, s=None):
     """An asset of the release saved to a file; False when it is not there."""
+    if _local():
+        if not (_local() / name).is_file():
+            return False
+        Path(to).write_bytes((_local() / name).read_bytes())
+        return True
     s = s or _session()
     _, _, assets = release(s)
     if name not in assets:
@@ -109,6 +147,74 @@ def alive(s=None):
         d = json.loads((Path(tmp) / "a.json").read_text())
     d["age"] = time.time() - float(d.get("when", 0))
     return d
+
+
+def _ago(a):
+    return "never seen" if not a else "last seen {:.0f} minutes ago".format(a["age"] / 60)
+
+
+def _looks(minutes):
+    return int(minutes * 60 / POLL) if POLL > 0 else int(minutes)
+
+
+def seen(hours, s=None):
+    """Whether the notebook said it was there within `hours`: when not, no train job waits for it."""
+    a = alive(s)
+    return bool(a) and a["age"] <= hours * 3600
+
+
+def await_alive(minutes, s=None, log=print):
+    """Slice 0 of the child offered: whether the notebook is there, looking every POLL seconds for up to `minutes`, one
+    line a look (the owner may open it any time during practice)."""
+    looks, a = _looks(minutes), None
+    for n in range(looks + 1):
+        a = alive(s)
+        if a and a["age"] <= ALIVE:
+            log(f"colab: the notebook is there ({a.get('gpu', '?')}, seen {a['age']:.0f} s ago)" + (f" after {n} looks" if n else ""), flush=True)
+            return True
+        if n < looks:
+            log(f"colab: waiting for the notebook, minute {n + 1} of {minutes:g} ({_ago(a)})", flush=True)
+            time.sleep(POLL)
+    log(f"colab: no notebook alive in {minutes:g} minutes ({_ago(a)}): this runner trains as always", flush=True)
+    return False
+
+
+def aside(gen, name, minutes, s=None, log=print):
+    """The child's other slices: True (stand aside) once it is ordered (colab-order-GEN-NAME.json in the release) or the
+    notebook is there, looking every POLL seconds for up to `minutes`; False: train as always. Slice 0 makes the
+    decision; its order is how the others learn it."""
+    key, looks, a = f"{gen}-{name}", _looks(minutes), None
+    for n in range(looks + 1):
+        _, _, assets = release(s)
+        if f"colab-order-{key}.json" in assets:
+            log(f"colab: {name} is ordered from the notebook", flush=True)
+            return True
+        a = alive(s)
+        if a and a["age"] <= ALIVE:
+            log(f"colab: the notebook is there ({a.get('gpu', '?')}): slice 0 orders {name}", flush=True)
+            return True
+        if n < looks:
+            log(f"colab: waiting for {name}'s order or the notebook, minute {n + 1} of {minutes:g} ({_ago(a)})", flush=True)
+            time.sleep(POLL)
+    log(f"colab: no order of {name} and no notebook in {minutes:g} minutes: this slice trains as always", flush=True)
+    return False
+
+
+def mark(cell, minutes, s=None, log=print):
+    """The record of a cell the notebook grew, marked so the read can measure it: grown_on colab, the GPU, and the
+    minutes from the order to the cell back. Printed whole, as a CPU slice prints its record, so the run's facts find it."""
+    p = Path(cell)
+    rec = json.loads(p.read_text())
+    gpu = rec.get("gpu") or ""
+    if not gpu:
+        try:
+            gpu = (alive(s) or {}).get("gpu", "")
+        except Exception:  # noqa: BLE001 - the mark goes on without it
+            gpu = ""
+    rec |= {"grown_on": "colab", "gpu": gpu or "?", "minutes": int(minutes)}
+    p.write_text(json.dumps(rec, indent=1))
+    log(json.dumps(rec, indent=1), flush=True)
+    return rec
 
 
 def order(o, rows, s=None):
@@ -147,7 +253,7 @@ def wait(gen, name, minutes, out, s=None):
             print(f"colab: {name} grown on the notebook's GPU in {(time.time() - t0) / 60:.0f} minutes")
             drop([f"colab-{w}-{key}{x}" for w, x in (("order", ".json"), ("rows", ".jsonl"), ("taken", ".json"), ("done", ".tar.gz"))], s)
             return True
-        time.sleep(60)
+        time.sleep(POLL)
     else:
         print(f"colab: no cell from the notebook in {minutes} minutes")
     drop([f"colab-{w}-{key}{x}" for w, x in (("order", ".json"), ("rows", ".jsonl"), ("taken", ".json"), ("failed", ".txt"))], s)
@@ -238,12 +344,33 @@ def main(argv):
         except Exception as e:  # noqa: BLE001 - the release not reachable: the runner trains the cell
             print(f"colab: could not order ({type(e).__name__}: {e}); this runner trains the cell")
             return 1
-    if cmd == "alive":  # exit 0 when the notebook said it was there within ALIVE seconds
+    if cmd == "alive":  # exit 0 when the notebook said it was there within ALIVE seconds (or does within --wait minutes)
         try:
+            if opt("--wait") is not None:
+                return 0 if await_alive(float(opt("--wait"))) else 1
             a = alive()
-        except Exception:  # noqa: BLE001
+        except Exception as e:  # noqa: BLE001
+            print(f"colab: could not look for the notebook ({type(e).__name__}); this runner trains the cell")
             a = None
         return 0 if a and a["age"] <= ALIVE else 1
+    if cmd == "seen":  # exit 0 when the notebook said it was there within --hours
+        hours = float(opt("--hours", 12))
+        try:
+            ok = seen(hours)
+        except Exception:  # noqa: BLE001
+            ok = False
+        if not ok:
+            print(f"colab: no notebook seen in the last {hours:g} hours: nobody waits for it")
+        return 0 if ok else 1
+    if cmd == "aside":
+        try:
+            return 0 if aside(opt("--gen"), opt("--name"), float(opt("--minutes", 15))) else 1
+        except Exception as e:  # noqa: BLE001
+            print(f"colab: could not look for the order ({type(e).__name__}); this slice trains as always")
+            return 1
+    if cmd == "mark":
+        mark(opt("--cell"), float(opt("--minutes", 0)))
+        return 0
     if cmd == "wait":
         try:
             return 0 if wait(opt("--gen"), opt("--name"), float(opt("--minutes", 90)), opt("--out", "colab_out")) else 1
