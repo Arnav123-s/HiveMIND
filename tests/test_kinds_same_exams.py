@@ -120,6 +120,7 @@ def test_the_same_seeds_give_the_same_exams_as_before_the_kinds_were_moved(monke
     # only the kinds the fixture knows are sat (new kinds would change what a seed draws, and that is meant)
     monkeypatch.setattr(exam, "MAKERS", [kinds.get(n).make for n in want["easy_makers"]])
     monkeypatch.setattr(exam_hard, "MAKERS", [kinds.get(n).make for n in want["hard_makers"]])
+    monkeypatch.setattr(exam_hard, "HELD_OUT", exam_hard.HELD_OUT & set(want["held_out"]))  # a new kind held out is not sat here either
     from training import lessons
     monkeypatch.setattr(lessons, "SOLVERS", {n: lessons.SOLVERS[n] for n in want["solvers"]})
     got = snapshot()
