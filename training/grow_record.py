@@ -1,6 +1,6 @@
 """The gate of a generation: the numbers decide whether the hive's body changes.
 
-    python3 training/grow_record.py gate <folder of the gate's sittings> <folder with the cells' json> <generation>
+    python3 training/grow_record.py gate <folder of the gate's sittings> <folder with the cells' json> <generation> [--facts facts.json]
     python3 training/grow_record.py fetch t17+g3code,t17+g3data     the cells named, from the release into cells/members/
     python3 training/grow_record.py rows OUT FILE ...               every row of the files once, in order, into OUT
     python3 training/grow_record.py failures OUT FILE ...           the same for the tasks got wrong
@@ -328,6 +328,14 @@ def gate(argv):
             "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
+    # what the run says of itself (training/reads.py facts, from the GitHub API and the gate's folders): the minutes of
+    # each step, the hours, the pulse seats whose server died, the train slices lost, the first try, who started it
+    if "--facts" in argv and argv.index("--facts") + 1 < len(argv):
+        from training import reads
+        try:
+            line.update(reads.record_fields(json.loads(Path(argv[argv.index("--facts") + 1]).read_text())))
+        except (OSError, ValueError) as e:
+            print(f"the run's facts could not be read ({type(e).__name__}); the record goes on without them")
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
     if keep:

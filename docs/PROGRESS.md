@@ -20,18 +20,22 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 ![Hours of one generation, by step](progress/hours.svg)
 
-No record says a generation's hours yet: the record job is to write `minutes_by_step` (minutes of practice, dreams, gather, plan, train, join, merge, pulse and record, each from the first job of the step starting to its last ending) and `hours` (the run's first job starting to the record), and `dead_seats` and `lost_slices` ([lost, of]).
+![The chain of the newest generation, by taught hard kind](progress/chain.svg)
+
+Its read, with the next piece: [reads/latest.md](reads/latest.md).
+
+No record says a generation's hours yet: the record job is to write `minutes_by_step` (minutes of practice, dream, gather, plan, train, join, merge, gate and record, each from the first job of the step starting to its last ending) and `hours` (the run's first job starting to the record), and `dead_seats` and `lost_slices` ([lost, of]).
 
 ## Where it practises most next
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
-- a module of two functions, with hidden tests
+- a simulation followed step by step
 - a number with given properties
-- a sum in words
-- days between two dates
-- follow a form to the letter
-- sum up a text
+- a file given in the task, edited to a specification
+- several facts fetched and laid out as a file
+- walk a site and count into a file
+- a unit conversion
 
 ## How hard its lessons are now
 

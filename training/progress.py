@@ -15,6 +15,7 @@ and where it is weakest, without reading numbers:
   split.svg   hard, easy and held-out kinds (never practised), each generation; a generation that lost pulse seats or
               train slices (the record's dead_seats, lost_slices) is marked
   hours.svg   the hours of one generation, by step (the record's minutes_by_step or hours), against the bar of 5
+  chain.svg   drawn by training/reads.py beside the read of the newest generation; linked here when it is there
 
 The loop closes here too: the kinds this page shows weakest are the kinds practice draws most often next
 (training/grow.edge_weights, used by practice at the ladder level), so the hive spends its practice where the graph
@@ -156,7 +157,8 @@ def parts_chart(gens, w=760, h=300):
 
 SPLIT = {"hard": "hard kinds", "easy": "easy kinds", "several": "held-out kinds (never practised)"}
 # the steps of one generation, in order, each with a shade of the one blue ramp (light to dark)
-STEPS = ["practice", "dreams", "gather", "plan", "train", "join", "merge", "pulse", "record"]
+STEPS = ["practice", "dream", "gather", "plan", "train", "join", "merge", "gate", "record"]
+OLD_STEPS = {"dreams": "dream", "pulse": "gate"}  # the names records used before the record job wrote them (training/reads.py)
 
 
 def _held_out(d):
@@ -228,7 +230,7 @@ def _hours(d):
     None when the record says neither."""
     by = d.get("minutes_by_step")
     if isinstance(by, dict) and any(isinstance(v, (int, float)) and v > 0 for v in by.values()):
-        return {k: float(v) for k, v in by.items() if isinstance(v, (int, float)) and v > 0}
+        return {OLD_STEPS.get(k, k): float(v) for k, v in by.items() if isinstance(v, (int, float)) and v > 0}
     if isinstance(d.get("hours"), (int, float)) and d["hours"] > 0:
         return {"whole": 60.0 * d["hours"]}
     return None
@@ -266,7 +268,9 @@ def hours_chart(gens, w=760, h=300, bar=5):
             b.append(f'<rect class="h{shade.get(s, 3)}" x="{cx - bw / 2:.1f}" y="{y(base + hrs):.1f}" width="{bw:.1f}" height="{ph * hrs / most:.1f}">'
                      f'<title>{escape(d.get("generation", ""))}, {escape(s)}: {m[s]:.0f} min</title></rect>')
             base += hrs
-        b.append(_text(cx, y(base) - 6, f"{base:.1f} h", "ink", 11, "middle"))
+        # the steps overlap (practice beside dream, slices waiting for a runner): the whole is the run's own hours
+        whole = d["hours"] if isinstance(d.get("hours"), (int, float)) and d["hours"] > 0 else base
+        b.append(_text(cx, y(base) - 6, f"{whole:.1f} h", "ink", 11, "middle"))
         b.append(_text(cx, top + ph + 18, d.get("generation", ""), "ink2", 11, "middle"))
     for j, s in enumerate(dict.fromkeys(sorted(used, key=lambda s: order.index(s) if s in order else len(order)))):
         b.append(f'<rect class="h{shade.get(s, 3)}" x="{left + pw + 14}" y="{top + j * 18}" width="10" height="10"/>' + _text(left + pw + 30, top + 9 + j * 18, s, "ink", 11))
@@ -346,7 +350,7 @@ def rows_chart(gens, w=760, h=260):
     return _svg(w, h, "".join(b), list(dict.fromkeys(dnas)), "rows")
 
 
-def page(gens, table, names, dna, weights, levels):
+def page(gens, table, names, dna, weights, levels, chain=False):
     """docs/PROGRESS.md: the goal, where the body stands, the graphs, and where it practises next."""
     now = [d for d in gens if d["dna"] == dna] or gens
     last = now[-1] if now else None
@@ -368,6 +372,9 @@ def page(gens, table, names, dna, weights, levels):
               "![Each kind of task, weakest first](progress/kinds.svg)", "",
               "![Rows taught, each generation](progress/rows.svg)", "",
               "![Hours of one generation, by step](progress/hours.svg)", ""]
+    if chain:
+        lines += ["![The chain of the newest generation, by taught hard kind](progress/chain.svg)", "",
+                  "Its read, with the next piece: [reads/latest.md](reads/latest.md).", ""]
     timed = [d for d in gens if _hours(d)]
     lost = [(d.get("generation", ""), _losses(d)) for d in gens if _losses(d)]
     if lost:
@@ -375,7 +382,7 @@ def page(gens, table, names, dna, weights, levels):
                   + "; ".join(f"{g}: {w}" for g, w in lost) + ".", ""]
     if not timed:
         lines += ["No record says a generation's hours yet: the record job is to write `minutes_by_step` (minutes of "
-                  "practice, dreams, gather, plan, train, join, merge, pulse and record, each from the first job of the "
+                  "practice, dream, gather, plan, train, join, merge, gate and record, each from the first job of the "
                   "step starting to its last ending) and `hours` (the run's first job starting to the record), and "
                   "`dead_seats` and `lost_slices` ([lost, of]).", ""]
     if weights:
@@ -413,7 +420,7 @@ def draw(record=None, out=None, body=None):
     (out / "hours.svg").write_text(hours_chart(gens))
     from training.grow import edge_weights
     weights = edge_weights(dna, record=record)
-    (out.parent / "PROGRESS.md").write_text(page(gens, table, names, dna, weights, b.get("levels") or {}))
+    (out.parent / "PROGRESS.md").write_text(page(gens, table, names, dna, weights, b.get("levels") or {}, (out / "chain.svg").exists()))
     return {"generations": len(gens), "dna": dna, "kinds": len(table), "out": str(out)}
 
 

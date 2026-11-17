@@ -53,6 +53,7 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `docs/KNOWLEDGE.md` | What is known, drawn from `docs/knowledge.json` | everyone | `scripts/knowledge.py` |
 | `docs/knowledge.json` | Every finding and cause, as data | everyone | agents by hand |
 | `docs/PROGRESS.md`, `docs/progress/` | Graphs of every generation | B (`training/progress.py`) | the record job |
+| `docs/reads/` | The read of each generation (`docs/reads/latest.md` the newest): numbers, the chain by kind, hours, next piece | B (`training/reads.py`) | the record job |
 | `docs/runs.csv` | One row per workflow run: number, id, kind, who started it, result | everyone | agents by hand |
 | `docs/selfreliance.csv` | Right at the first try, hints per task, per generation | everyone | `scripts/selfreliance.py --add` |
 | `docs/LOOP.md`, `docs/loop_log.csv` | The maintainer's loop and one row per cycle | everyone | agents |
@@ -85,6 +86,7 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `training/raw.py` | Raw text and voted answers mixed into training | B | train |
 | `training/colab.py` | Order a child from the owner's notebook through the release | B | train |
 | `training/progress.py` | Draws `docs/PROGRESS.md` and `docs/progress/` | B | record |
+| `training/reads.py` | The run's facts (job hours, lost slices, slice records) and the read of a generation, `docs/reads/` | B | record; `scripts/read_generation.py` |
 | `training/ternary_base.py`, `training/hive_bench.py` | Helpers imported by grow and exam | none named | grow, exam |
 | `training/data/rows_g11_recovered.jsonl` | Recovered rows; gather adds every `training/data/rows_*.jsonl` | none named | gather |
 | `training/reports/generations.jsonl` | One line per generation (and per trial): the record | record job only | read_generation, progress, lessons |
@@ -188,14 +190,14 @@ train, join, merge, gate. The record also downloads `rows-*` (practice.json, for
 | fresh | Ends the run if `cells/body.json` moved on the branch since it was queued; a nightly start ends if a run is under way | none |
 | practice | `training/grow.py practice`, seeds 10000000 + run x 100 + runner, 600 s a task | rows-N (rows, failures, practice.json), practice-work-N |
 | dream | `training/grow.py dream` on old failures from the release, 2 tries | rows-dream-N, dream-work-N |
-| gather | Release rows + this run's rows + lessons (`training/lessons.py`), each row once | all-rows (rows.jsonl, failures.jsonl) |
+| gather | Release rows + this run's rows + lessons (`training/lessons.py`), each row once | all-rows (rows.jsonl, failures.jsonl), lessons (the lessons' line, by kind) |
 | bench | Times one training row each way; nothing grown | none |
 | plan | `training/lineage.py plan`: children; splits them into at most 20 slices | job outputs children, grow, slices |
 | train | `training/grow.py train` on one slice, from parent and trunk in the release; Colab may grow a child whole | part-VARIANT-ORGAN-sK |
 | join | `training/merge.py join`: a child's slices into one cell | cell-ORGAN (versus-ORGAN in a versus trial) |
 | merge | `training/merge.py trunk`: newest cell of every line averaged | trunk |
 | gate | `training/exam.py sit --level mixed --tasks 8`, seeds 20000000 + (gate_seeds or run) x 10 + seed | gate-ARM-SEED, gate-work-ARM-SEED |
-| record | `training/grow_record.py gate`; uploads to release `hive-grown`; commits; starts the next run | release assets, a commit |
+| record | `training/reads.py facts` (the run's jobs from the API); `training/grow_record.py gate`; uploads to release `hive-grown`; writes the read (`docs/reads/`), redraws progress and `docs/KNOWLEDGE.md`; commits; starts the next run | release assets, a commit |
 
 Trials (input trial, versus or cells_from_run) sit three arms (dna, before, after; plus versus), so the gate is
 24 or 32 jobs. Work artifacts (`*-work-*`) are kept 14 days, the rest 30.
@@ -271,7 +273,7 @@ line keeps back 2.
 | Members' work, server logs, exam results | run artifacts practice-work-*, dream-work-*, gate-work-*, gate-* (14 / 30 days) | practice, dream, gate jobs |
 | Every run, who started it, result | `docs/runs.csv` | agents by hand |
 | First-try share and hints | `docs/selfreliance.csv` | agents, `scripts/selfreliance.py --add` |
-| The verdict after a generation | the log of `docs/AGENTS.md` | the commander, from `scripts/read_generation.py` |
+| The verdict after a generation | `docs/reads/latest.md` (and `docs/reads/` by generation), with its next piece | record job (`training/reads.py`) |
 | Findings and causes | `docs/knowledge.json` -> `docs/KNOWLEDGE.md` | agents, `scripts/knowledge.py` |
 
 Only the record job writes `cells/body.json` and `training/reports/generations.jsonl` (rule in `docs/AGENTS.md`).
