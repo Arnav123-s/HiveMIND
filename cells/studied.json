@@ -1,0 +1,21 @@
+{
+ "t80": {
+  "g24code": 83,
+  "g27code": 239,
+  "g28code": 108,
+  "g34code": 375,
+  "g34code2": 235,
+  "g34data": 411,
+  "g34sources": 302,
+  "g34words": 396,
+  "g34words2": 232,
+  "g38code": 67,
+  "g38code2": 206,
+  "g38code3": 375,
+  "g38data": 337,
+  "g38data2": 246,
+  "g38sources": 72,
+  "g38words": 35,
+  "g38words2": 468
+ }
+}

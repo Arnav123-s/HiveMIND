@@ -4,6 +4,7 @@ growing. No gate decides it and no ledger of who was right on what steers it: th
     python3 training/lineage.py plan <generation> <dna> [organs as a JSON list]    the children to grow, as JSON
     python3 training/lineage.py members <dna> [few]                                who works for the body (for HIVE_MEMBERS); few: the trunk and each organ's newest cell
     python3 training/lineage.py trunk <generation> <dna> <child that grew> ...     which cells this generation's trunk is the average of
+    python3 training/lineage.py studied <dna> <folder>                             the training steps of every cell record in the folder (<dna>.<cell>.json), kept in cells/studied.json
 
 A child starts as an exact copy of its parent's weight edit (training/grow.py --parent) and is trained further on
 all the hive's checked work: its right answers, its right-against-wrong pairs and its corrected failures. So each
@@ -26,6 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BODY = ROOT / "cells" / "body.json"
+STUDIED = ROOT / "cells" / "studied.json"
 ORGANS = ("sources", "code", "data", "words")
 MOST_CHILDREN = 8
 MOST_CELLS = 24
@@ -44,6 +46,44 @@ def born(cell):
     return int(m.group(1)) if m else 0
 
 
+def studied(dna, path=None):
+    """{cell: the training steps it made when it was grown} for this DNA (cells/studied.json), {} where none is kept.
+
+    One number is counted, and only between cells born in the same generation. g38 (2026-11-17): one runner trained a
+    row in 9.9 seconds and another in 50.3, so of three code children taught the same lessons one made 375 steps,
+    one 206 and one 67. Their loss on "walk a site over several pages" ended at 0.001, 0.003 and 0.58, and at the
+    pulse the second passed that kind 5 of 5 and the third 0 of 5. By name the third sat before them and would have
+    been the first parent of the next children; the first never sat one task."""
+    try:
+        d = json.loads((STUDIED if path is None else Path(path)).read_text())
+        return {c: n for c, n in (d.get(dna) or {}).items() if isinstance(n, (int, float))} if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def keep_studied(dna, folder, path=None):
+    """Read the steps of every cell record in the folder (<dna>.<cell>.json, as a generation's jobs name them, or
+    <dna>+<cell>.json) into cells/studied.json. Returns what was added."""
+    path = STUDIED if path is None else Path(path)
+    try:
+        all_ = json.loads(path.read_text())
+    except (OSError, ValueError):
+        all_ = {}
+    new = {}
+    for f in sorted(Path(folder).glob(f"{dna}[.+]*.json")):
+        cell = f.stem[len(dna) + 1:]
+        try:
+            steps = json.loads(f.read_text()).get("steps")
+        except (OSError, ValueError, AttributeError):
+            continue
+        if re.fullmatch(CELL, cell) and isinstance(steps, (int, float)) and steps > 0:
+            new[cell] = int(steps)
+    if new:
+        all_[dna] = dict(sorted({**(all_.get(dna) or {}), **new}.items()))
+        path.write_text(json.dumps(all_, indent=1) + "\n")
+    return new
+
+
 def line_of(cell, parents):
     """The cell and every ancestor of it, by the body's record of whose child each cell is."""
     out, c = [], cell
@@ -53,7 +93,7 @@ def line_of(cell, parents):
     return out
 
 
-def plan(gen, dna, body=None, organs=None):
+def plan(gen, dna, body=None, organs=None, steps=None):
     """The children to grow this generation: [{"name", "suffix", "organ", "parent"}] (parent "" for a first cell).
 
     organs given: one child for each organ named, from the body's newest cell of that organ (the old way, kept for
@@ -68,8 +108,9 @@ def plan(gen, dna, body=None, organs=None):
         out.append({"name": name, "suffix": name[len(gen):], "organ": o, "parent": parent})
 
     if organs or not cells:
+        steps = studied(dna) if steps is None else steps
         for o in organs or ORGANS:
-            mine = sorted((c for c in cells if organ_of(c) == o), key=born)
+            mine = sorted((c for c in cells if organ_of(c) == o), key=lambda c: (born(c), steps.get(c, 0)))
             child(o, mine[-1] if mine else "")
         return out
     # an organ the body has no cell of (its first cell's runner died, 2026-11-15: sources) gets a first cell now
@@ -78,8 +119,10 @@ def plan(gen, dna, body=None, organs=None):
             child(o, "")
     gen_body = body.get("generation", 0)
     grown = [c for c in cells if born(c) < gen_body] or cells  # all young: they all count as grown
-    # past the runners' limit, the organs take turns, the newest parents first (they hold the most)
-    by_organ = {o: sorted((c for c in grown if organ_of(c) == o), key=lambda c: (-born(c), c)) for o in ORGANS}
+    # past the runners' limit, the organs take turns, the newest parents first (they hold the most), and of one
+    # generation the one that studied more (studied()): its children start from the most that was learned
+    steps = studied(dna) if steps is None else steps
+    by_organ = {o: sorted((c for c in grown if organ_of(c) == o), key=lambda c: (-born(c), -steps.get(c, 0), c)) for o in ORGANS}
     while len(out) < MOST_CHILDREN and any(by_organ.values()):
         for o in ORGANS:
             if by_organ[o] and len(out) < MOST_CHILDREN:
@@ -108,7 +151,7 @@ def leaves(cells, parents):
     return [c for c in cells if c not in has_child]
 
 
-def members(dna, body=None, few=False):
+def members(dna, body=None, few=False, steps=None):
     """The names of who works for the body of this DNA, the trunk first: [] when it has no cell yet.
     few: the trunk and the newest cell of each organ, which is everyone a single task can seat (practice and the
     pulse load the whole body; answering one message does not need to)."""
@@ -117,7 +160,9 @@ def members(dna, body=None, few=False):
         return []
     cells = [c for c in body.get("cells", []) if re.fullmatch(CELL, str(c))]
     if few:
-        cells = [max((c for c in cells if organ_of(c) == o), key=lambda c: (born(c), c)) for o in ORGANS if any(organ_of(c) == o for c in cells)]
+        steps = studied(dna) if steps is None else steps
+        newest = lambda o: min((c for c in cells if organ_of(c) == o), key=lambda c: (-born(c), -steps.get(c, 0), c))  # noqa: E731
+        cells = [newest(o) for o in ORGANS if any(organ_of(c) == o for c in cells)]
     trunk = body.get("trunk")
     return ([trunk] if cells and isinstance(trunk, str) and re.fullmatch(TRUNK, trunk) else []) + cells
 
@@ -145,5 +190,7 @@ if __name__ == "__main__":
         print(",".join(f"{a[1]}+{c}" for c in members(a[1], few=a[2:3] == ["few"])) or a[1])
     elif a[:1] == ["trunk"] and len(a) >= 3 and re.fullmatch(r"g\d{1,6}", a[1]):
         print(json.dumps(trunk_of(a[1], a[2], [c for c in a[3:] if re.fullmatch(CELL, c)])))
+    elif a[:1] == ["studied"] and len(a) >= 3 and re.fullmatch(r"t\d{1,3}", a[1]):
+        print(json.dumps(keep_studied(a[1], a[2])))
     else:
         print(__doc__)
