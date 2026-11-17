@@ -924,7 +924,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # that way, one runner dead, one sitting in its first long row until the job's time was up.
         import psutil
         total = psutil.virtual_memory().total / 2**30
-        fits = int((total - ternary_base.held_gb() - 2.5) * 2**30 / (len(which) * model.config.hidden_size * (2 if half else 4) * 46))
+        # g38: 7 of 24 slices were lost ("the hosted runner lost communication": out of memory). The slices that lived
+        # and trained in 16 bits took rows up to 1037-1089 pieces and stood at 14.6-14.7 of 15.6 GB; those in 32 bits
+        # (rows up to about 500) at 14.2-14.5. A row's memory grows faster than its length (attention), and g38 gave
+        # every slice the generation's long lessons, so a 16-bit slice met many rows near its limit. It keeps 1 GB
+        # more spare: rows up to about 850 pieces there.
+        spare = 2.5 + (1.0 if half else 0.0)
+        fits = int((total - ternary_base.held_gb() - spare) * 2**30 / (len(which) * model.config.hidden_size * (2 if half else 4) * 46))
         if fits < max_len:
             log(f"this machine has {total:.1f} GB: rows of up to {max(256, fits)} pieces fit beside the DNA (asked for {max_len})", flush=True)
             max_len = max(256, fits)

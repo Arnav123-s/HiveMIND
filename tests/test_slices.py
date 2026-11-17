@@ -91,3 +91,13 @@ def test_what_is_new_this_generation_is_in_every_slice_and_old_rows_in_one():
     assert all(sum(new(r) for r in p) == 10 for p in parts)                      # every slice studies all that is new
     assert sum(sum(not new(r) for r in p) for p in parts) == 80                  # an old row is in one slice only
     assert 'fresh_rows + slice_rows([r for r in rows if not ((gen and r.get("gen") == gen) or r.get("type") == "mend")], k, n)' in src
+
+
+def test_a_16_bit_slice_keeps_a_gigabyte_more_spare_than_before():
+    """g38 lost 7 of 24 slices to memory; the 16-bit slices that lived stood at 14.6-14.7 of 15.6 GB."""
+    from pathlib import Path
+    src = (Path(__file__).resolve().parents[1] / "training" / "grow.py").read_text()
+    assert "spare = 2.5 + (1.0 if half else 0.0)" in src and "ternary_base.held_gb() - spare)" in src
+    # the 8B: 14 trained layers, hidden size 4096, 46 values a piece; a 16-bit runner of 15.6 GB, 8.1 GB held
+    fits = lambda spare, bytes_: int((15.6 - 8.1 - spare) * 2**30 / (14 * 4096 * bytes_ * 46))
+    assert fits(2.5, 2) > 950 and 750 < fits(3.5, 2) < 900 and fits(2.5, 4) == fits(2.5 + 0.0, 4)
