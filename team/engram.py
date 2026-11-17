@@ -7,7 +7,14 @@ cell that works on the task (the runtime adds any number of edits to the one ter
 can learn during the day and forget nothing; the nightly regrowth folds what the engrams hold into the cells.
 
     cells/engrams/<dna>+e<id>.gguf     the edit (ternary values, rank 4, the last 8 layers: a few megabytes)
-    cells/engrams/index.jsonl          one line each: its name, the task it came from, when
+    cells/engrams/index.jsonl          one line each: its name, the task it came from, when, and the cell it belongs to
+    cells/engrams/<dna>+hive.gguf      the hive's shared engram, when there is one (training/hive_engram.py)
+
+Every cell has an engram memory of its own: an engram belongs to the cell that solved its task (or was corrected on
+it), and a child sees its own engrams first, then those of its parent, grandparent and so on (the body's lines of
+descent, cells/body.json "parents"), and others' only when nothing closer is like the task. Once the nightly
+regrowth has trained a cell on an engram's rows, fold() marks it and it is recalled no more: the cells hold it now.
+Old lines with no cell belong to no one: every cell may recall them, after its own line.
 
 HIVE_ENGRAMS=1 turns recall on in team/solo.py. Whether engrams help is measured, not assumed
 (training/experiments/engram_stream.py): a memory of one solution can also make a cell copy old values, which is
@@ -30,20 +37,77 @@ def index():
         return []
 
 
-def recall(task, base, most=2, least=0.34):
-    """The names of the engrams of this DNA whose tasks are most like this one (shared words over all words)."""
-    mine, out = memory.words(task), []
+def lineage(cell):
+    """[cell, its parent, its grandparent, ...] by the body's record of whose child each cell is (cells/body.json
+    "parents"). A member name ("t80+g41code") counts as its cell. Just [cell] when its line is not known, [] for none."""
+    c = (cell or "").partition("+")[2] if "+" in (cell or "") else (cell or "")
+    parents = {k: v for k, v in ternary._parents().items() if isinstance(v, str)}
+    out = []
+    while c and c not in out:
+        out.append(c)
+        c = parents.get(c, "")
+    return out
+
+
+def recall(task, base, cell=None, most=2, least=0.34):
+    """The names of the engrams of this DNA whose tasks are most like this one (shared words over all words), at most
+    `most` of them, each at least `least` alike. The cell's own engrams come first, then its ancestors' (nearest first),
+    then those of no cell; other cells' only when none of these is alike enough. Folded engrams are skipped. When the
+    hive's shared engram is there (<dna>+hive.gguf) "hive" is added last, beyond `most`."""
+    line = lineage(cell)
+    mine, near, far, seen = memory.words(task), [], [], set()
     for e in index():
+        name = e.get("name")
+        if not name or name in seen or e.get("dna") != base or e.get("folded") is not None or e.get("task") == task:
+            continue
+        seen.add(name)
         theirs = memory.words(e.get("task", ""))
         score = len(mine & theirs) / max(1, len(mine | theirs))
-        if e.get("dna") == base and score >= least and e.get("task") != task and (ternary.ENGRAMS / f"{base}+{e['name']}.gguf").exists():
-            out.append((score, e["name"]))
-    return [name for _, name in sorted(out, reverse=True)[:most]]
+        if score < least or not (ternary.ENGRAMS / f"{base}+{name}.gguf").exists():
+            continue
+        owner = e.get("cell") or ""
+        if not line or owner in line:  # no cell asking: every engram is as near as any other
+            near.append((line.index(owner) if line else 0, -score, name))
+        elif not owner:
+            near.append((len(line), -score, name))
+        else:
+            far.append((0, -score, name))
+    out = [name for _, _, name in sorted(near or far)[:most]]
+    if (ternary.ENGRAMS / f"{base}+hive.gguf").exists():
+        out.append("hive")
+    return out
 
 
-def write(task, run, base="t17", steps=12, log=print):
-    """Write the engram of a task the body solved: run is the task's folder (with what each cell wrote). Returns its
-    name, or None when there was nothing to keep."""
+def fold(names, generation):
+    """Mark these engrams folded: the cells of this generation were trained on their rows, so they are not recalled
+    again. Returns how many lines of the index it marked."""
+    names, marked = set(names), 0
+    path = ternary.ENGRAMS / "index.jsonl"
+    try:
+        lines = path.read_text().splitlines()
+    except OSError:
+        return 0
+    out = []
+    for x in lines:
+        try:
+            e = json.loads(x) if x.strip() else None
+        except ValueError:
+            e = None
+        if isinstance(e, dict) and e.get("name") in names and e.get("folded") is None:
+            e["folded"] = generation
+            x, marked = json.dumps(e), marked + 1
+        out.append(x)
+    if marked:
+        tmp = path.with_suffix(".tmp")
+        tmp.write_text("".join(x + "\n" for x in out))
+        os.replace(tmp, path)
+    return marked
+
+
+def write(task, run, base="t17", cell=None, steps=12, log=print):
+    """Write the engram of a task the body solved: run is the task's folder (with what each cell wrote); cell is the
+    cell that solved it or was corrected on it (its engram memory keeps it). Returns its name, or None when there was
+    nothing to keep."""
     from training import grow
     rows = grow.rows_of(run, task)
     if not rows:
@@ -56,7 +120,7 @@ def write(task, run, base="t17", steps=12, log=print):
                       out_dir=ternary.ENGRAMS, checkpoint=False, log=lambda *a, **k: None)
     os.unlink(f.name)
     with open(ternary.ENGRAMS / "index.jsonl", "a") as f:
-        f.write(json.dumps({"name": name, "dna": base, "task": task[:1500], "when": time.strftime("%Y-%m-%d %H:%M"), "rows": len(rows),
+        f.write(json.dumps({"name": name, "dna": base, "cell": (lineage(cell) or [None])[0], "task": task[:1500], "when": time.strftime("%Y-%m-%d %H:%M"), "rows": len(rows),
                             "seconds": round(time.time() - t0), "megabytes": meta.get("megabytes")}) + "\n")
     log(f"engram {name}: {len(rows)} rows, {round(time.time() - t0)} s, {meta.get('megabytes')} MB, loss {meta.get('loss_first')} -> {meta.get('loss_last')}")
     return name

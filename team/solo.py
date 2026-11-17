@@ -362,6 +362,14 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         messages[-1]["content"] += ("\n\nPrograms of the hive that solved tasks like this one before. Use what fits; the "
                                     "values are different now.\n" + "\n".join(
                                         f"TASK: {r['task'][:400]}\n```python\n{r['program'][:1800]}\n```" for r in before))
+    if os.environ.get("HIVE_NOTES", "0") == "1":
+        # short ways of working the hive wrote down from its own checked work, failures too (team/notes.py): no
+        # program and no value in them, so nothing to copy. Put in the orders, which the rows taught from leave out.
+        from . import notes
+        said = notes.recall(task, os.environ.get("HIVE_KIND") or None)
+        if said:
+            messages[0]["content"] += notes.block(said)
+            board.log(f"member{n}", "notes", f"{len(said)} note(s) from earlier work")
     give(task, work, skip=wanted(task))
     helped = []
 
@@ -559,7 +567,7 @@ def run(task, run_dir=None, approve="never", members=2):
         also = ()
         if os.environ.get("HIVE_ENGRAMS") == "1" and who != "coder":  # the body's fast memory: what it wrote down of tasks like this one
             from . import engram
-            also = tuple(engram.recall(task, ternary.split(who)[0]))
+            also = tuple(engram.recall(task, ternary.split(who)[0], cell=ternary.split(who)[1]))  # its own line's first
             if also and n == 1:
                 board.log("hive", "engrams", ", ".join(also))
         t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who, also)
