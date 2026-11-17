@@ -255,7 +255,7 @@ def lost_slices(jobs):
 
 def _slim(rec):
     """What the read needs of a slice's record."""
-    keep = ("member", "shard", "rows", "used", "steps", "passes", "seconds", "kept_back", "long", "long_by_kind", "loss_first", "loss_last")
+    keep = ("member", "shard", "rows", "used", "steps", "passes", "seconds", "kept_back", "long", "long_by_kind", "rows_by_kind", "loss_first", "loss_last")
     out = {k: rec[k] for k in keep if k in rec}
     out["subjects"] = [s for s in rec.get("subjects") or [] if isinstance(s, dict) and str(s.get("subject", "")).endswith(" · new")]
     return out
@@ -361,13 +361,36 @@ def _used_new(rec):
     return used
 
 
+def left_exact(slices):
+    """Whether every slice that kept a record counted its rows too long by kind (rows_by_kind, or long_by_kind)."""
+    recs = [s["record"] for s in slices if s.get("record")]
+    return bool(recs) and all(isinstance(r.get("rows_by_kind"), dict) or isinstance(r.get("long_by_kind"), dict) for r in recs)
+
+
 def rows_left_out(slices, rows, gen):
-    """{kind: [left out, of]} of this generation's rows, over the slices that kept a record. Every slice studies all
-    the rows new this generation (training/grow.train), so what it did not study of them was too long (or kept back,
-    which is taken off). A record that says long_by_kind is taken as it is."""
+    """{kind: [too long, of, skipped for memory]} of this generation's rows, over the slices that kept a record.
+
+    From generation 42 each slice's record says rows_by_kind (training/grow.train): of the rows new this generation,
+    by kind, how many it was given, left out as too long, never trained on because the memory guard skipped them, and
+    trained on; those are taken as they are (a row not reached before the time was up is none of the three left out).
+    A record that says long_by_kind (too long, of) is taken as it is, with nothing said of memory (None).
+
+    Older records say only which rows were studied, so the rest is an estimate (see left_exact): every slice studies
+    all the rows new this generation, so what it did not study of them is counted as left out (kept back ones taken
+    off), whether too long, skipped for memory, or not reached in time. g41's read named T4 on it for two kinds of
+    which T4 measured no row too long."""
     recs = [s["record"] for s in slices if s.get("record")]
     if not recs:
         return {}
+    if all(isinstance(r.get("rows_by_kind"), dict) for r in recs):
+        out = collections.defaultdict(lambda: [0, 0, 0])
+        for r in recs:
+            for k, v in r["rows_by_kind"].items():
+                if isinstance(v, dict):
+                    out[k][0] += int(v.get("too_long") or 0)
+                    out[k][1] += int(v.get("given") or 0)
+                    out[k][2] += int(v.get("skipped_memory") or 0)
+        return {k: v for k, v in out.items() if v[1]}
     if all(isinstance(r.get("long_by_kind"), dict) for r in recs):
         out = collections.defaultdict(lambda: [0, 0])
         for r in recs:
@@ -375,7 +398,7 @@ def rows_left_out(slices, rows, gen):
                 if isinstance(v, list) and len(v) == 2:
                     out[k][0] += int(v[0])
                     out[k][1] += int(v[1])
-        return dict(out)
+        return {k: v + [None] for k, v in out.items()}
     measured = any("kept_back" in r for r in recs)
     seen, uniq = set(), []
     for r in rows:
@@ -394,7 +417,7 @@ def rows_left_out(slices, rows, gen):
     for k in set(want) | {k for u in used for k in u}:
         of = max([want.get(k, 0)] + [u.get(k, 0) for u in used])
         if of:
-            out[k] = [sum(max(0, of - u.get(k, 0)) for u in used), of * len(used)]
+            out[k] = [sum(max(0, of - u.get(k, 0)) for u in used), of * len(used), None]
     return out
 
 
@@ -458,6 +481,7 @@ def chain(line, facts_, seats, rows, lessons_summary=None):
     les, how = lessons_by_kind(lessons_summary or facts_.get("lessons") or facts_.get("gather_lessons"), rows, gen)
     slices = facts_.get("slices") or []
     left = rows_left_out(slices, rows, gen)
+    exact = left_exact(slices)
     losses = kept_losses(slices)
     base, base_is = untaught(losses, lesson_counts(rows), {k for k, v in les.items() if v[1]})
     base = [k for k in base if re.fullmatch(KIND, str(k))]
@@ -473,7 +497,9 @@ def chain(line, facts_, seats, rows, lessons_summary=None):
     rows_out = []
     for m, k in taught.items():
         kl = losses.get(k)
-        r = {"kind": k, "maker": m, "lessons": les.get(k), "left": left.get(k),
+        lo = left.get(k)
+        r = {"kind": k, "maker": m, "lessons": les.get(k), "left": lo[:2] if lo else None,
+             "left_memory": lo[2] if lo else None, "left_exact": exact,
              "kept": [round(kl[0], 3), round(kl[1], 3)] if kl else None,
              "gap": round(fall(*kl) - base_fall, 1) if kl and base_fall is not None else None,
              "child": child.get(k), "parent": parent.get(k), "body": body.get(k), "before": before.get(k) if before else None}
@@ -486,9 +512,16 @@ def chain(line, facts_, seats, rows, lessons_summary=None):
         notes.append("lessons: no lessons line from gather was found")
     if not left:
         notes.append("rows left out: no train slice's record was read")
-    elif not all(isinstance((s.get("record") or {}).get("long_by_kind"), dict) for s in slices if s.get("record")):
-        notes.append("rows left out: by kind, this generation's rows each slice did not study, of those it was given "
-                     f"(the slices say only their total too long: {', '.join(str(s.get('long')) for s in slices if s.get('record'))})")
+    elif exact:
+        notes.append("rows left out: by kind, this generation's rows too long for a slice, of those the slices were given; in "
+                     "brackets those the memory guard skipped every time they came up. Rows not reached before the time was "
+                     "up are not left out")
+    else:
+        notes.append("rows left out: an estimate, the slices' records being older than rows_by_kind: by kind, this generation's "
+                     "rows each slice did not study, of those it was given, whether too long, skipped for memory or not reached "
+                     "in time (the slices say only their total too long: "
+                     f"{', '.join(str(s.get('long')) for s in slices if s.get('record'))}). Rule 2 counts rows too long only, "
+                     "so it holds on no estimate")
     if not losses:
         notes.append("kept-back loss: no slice's record has lessons kept back (training/grow.py kept_back, from generation 39)")
     elif base_fall is None:
@@ -526,7 +559,9 @@ def holds(rule, r):
     if rule == 1:
         return bool(r["lessons"] and r["lessons"][1]) and r["lessons"][0] * 12 < 8 * r["lessons"][1]
     if rule == 2:
-        return bool(r["left"] and r["left"][1]) and 5 * r["left"][0] > r["left"][1]
+        # rows too long only: not those the memory guard skipped, nor those not reached in time (an estimate mixes
+        # the three, so it holds no rule)
+        return r.get("left_exact", True) and bool(r["left"] and r["left"][1]) and 5 * r["left"][0] > r["left"][1]
     if rule == 3:
         return r["gap"] is not None and r["gap"] < GAP
     if r["gap"] is None or r["gap"] < GAP or not (r["child"] and r["child"][1]):
@@ -619,6 +654,15 @@ def top_table(line, prev, f, lines, idx):
     ]
 
 
+def _left(r):
+    """The chain's "rows left out": too long of given, those skipped for memory in brackets, or the estimate."""
+    if not r["left"]:
+        return "not measured"
+    if not r.get("left_exact", True):
+        return f"{_pq(r['left'])} (estimate)"
+    return _pq(r["left"]) + (f" ({r['left_memory']} skipped for memory)" if r.get("left_memory") else "")
+
+
 def render(line, prev, f, rows, notes, piece, lines, idx):
     gen = line.get("generation", "?")
     rule, what, kinds, counts = piece
@@ -641,7 +685,7 @@ def render(line, prev, f, rows, notes, piece, lines, idx):
         kept = f"{r['kept'][0]:.3f} -> {r['kept'][1]:.3f}" if r["kept"] else "not measured"
         gap = f"{r['gap']:+.0f}" if r["gap"] is not None else "not measured"
         les = _pq(r["lessons"]) if r["lessons"] and r["lessons"][1] else "none made"
-        out.append(f"| {r['kind']} | {les} | {_pq(r['left']) if r['left'] else 'not measured'} | {kept} | {gap} | "
+        out.append(f"| {r['kind']} | {les} | {_left(r)} | {kept} | {gap} | "
                    f"{_pq(r['child']) if r['child'] else '-'} | {_pq(r['parent']) if r['parent'] else '-'} | {_pq(r['body'])} | {_pq(r['before'])} |")
     out += [""] + [f"- {n}" for n in notes] + ["", "![The chain by kind](../progress/chain.svg)", "", "## Hours", ""]
     mins = f.get("minutes_by_step") or line.get("minutes_by_step") or {}
@@ -662,7 +706,8 @@ def render(line, prev, f, rows, notes, piece, lines, idx):
             "| # | the chain shows | holds for |", "|---|---|---|"]
     out += [f"| {n} | {words} | {len(counts[n])}{': ' + ', '.join(counts[n]) if counts[n] and n != 6 else ''} |" for n, words, _ in RULES]
     unmeasured = [w for n, w in ((1, "lessons"), (2, "rows left out"), (3, "kept-back gap"), (4, "child alone"))
-                  if all((r["lessons"], r["left"], r["gap"], r["child"])[n - 1] in (None, [], {}) for r in rows)]
+                  if all((r["lessons"], r["left"] if r.get("left_exact", True) else None, r["gap"], r["child"])[n - 1] in (None, [], {})
+                         for r in rows)]
     if unmeasured:
         out += ["", f"Not measured this generation, so no rule could hold on it: {', '.join(unmeasured)}."]
     if f.get("missing"):

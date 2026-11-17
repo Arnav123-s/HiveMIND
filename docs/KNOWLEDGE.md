@@ -146,6 +146,10 @@ flowchart LR
   c_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
   x_modulestring(["no fix yet"]):::open
   s_modulestring --> c_modulestring --> x_modulestring --> pc_T3
+  s_leftoutmeasure[/"g41's read named T4 for 'a fact read and a date sum on it' (57 of 152) and 'several facts laid out as a file' (71 of 342); T4 measured those kinds' lessons at 0 rows over 508 pieces"/]
+  c_leftoutmeasure["The read's 'rows left out' counted rows not reached in time and skipped for memory as too long"]:::fixed
+  x_leftoutmeasure(["rows_by_kind in the slice record; rule 2 on too-long rows only; older records shown as an estimate that holds no rule"]):::fixed
+  s_leftoutmeasure --> c_leftoutmeasure --> x_leftoutmeasure --> pc_T4
   s_loglesson[/"log lessons median 1300 pieces: 6 of 15 left out, all 15 in 32 bits"/]
   c_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::fixed
   x_loglesson(["the log lesson reads log.txt and its rows show 5 lines of the log"]):::fixed
@@ -269,6 +273,7 @@ flowchart LR
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
+    f_leftoutmeasure["The read's 'rows left out' counted rows not reached in time and skipped for memory as too long"]:::fixed
   end
   subgraph p_talk["talk.py (B)"]
     f_talkerwrote["The talker wrote its own answer where the task should go"]:::fixed
@@ -335,6 +340,7 @@ flowchart LR
   f_loglesson -->|blocked| hardkinds
   f_rawmeasure -->|blocks| slowgeneration
   f_modulestring -->|blocks| files
+  f_leftoutmeasure -->|blocked| hardkinds
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -356,7 +362,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (4 open, 49 fixed)
+## Causes found (4 open, 50 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -413,6 +419,7 @@ flowchart LR
 | A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned | `training/grow.py` | T2 | fixed | B (T2, on main): kept_back in each slice's record, read by scripts/read_generation.py (2b); read the gap between taught and untaught, not the drop | small DNA: taught kinds -58 to -63% (h_join 0.514 -> 0.192, h_module 0.906 -> 0.379), untaught -26 to -27% (h_search 1.573 -> 1.166, h_log 0.335 -> 0.246) |
 | Runners that train in 32 bits leave out every row over about 500 pieces | `training/ternary_base.py` | T4 | fixed | B's sub-agent (T4): module programs without comments or inspect (the program copies itself), one test; fresh lessons drawn again until first and done rows fit 508 (lessons.fitting); fix rows cut to fit | g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB; T4, 12 lessons a kind: module rows left out 16 of 36 -> 0, log 36 -> 0; every other lesson kind 0; join still 35 of 36 (its tables are in the task and again in the program: needs the maker to give them as lines); the hive's own join rows (g38: 65 of 119) left as they are |
 | The log lesson copies the log into its program, so it is too long to be taught | `training/lessons.py` | T4 | fixed | B's sub-agent (T4): the lesson reads log.txt, which the runtime saves from the task; the rows show the log's first 3 and last 2 lines (training/lessons.lean) | 2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit; T4, 12 lessons at the body's level: rows over 508 pieces 36 of 36 -> 0 of 36 (fix rows included), 12 of 12 right before and after |
+| The read's "rows left out" counted rows not reached in time and skipped for memory as too long | `training/grow_record.py` | T4 | fixed | B's sub-agent: each slice's record says rows_by_kind {given, too_long, skipped_memory, trained} of the new rows (training/grow.train); training/reads.py shows too long (memory-skipped in brackets) and rule 2 counts too long only | 2026-11-17 17:06, docs/reads/latest.md (g41): the estimate was every new row a slice did not study, whatever the cause |
 
 ## Rules learned
 

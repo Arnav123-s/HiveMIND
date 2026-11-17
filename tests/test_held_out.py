@@ -59,7 +59,7 @@ def _tiny(tmp_path):
     return tok
 
 
-def _train(tmp_path, monkeypatch, rows, shard):
+def _train(tmp_path, monkeypatch, rows, shard, **kw):
     """train() on the tiny model; every forward pass seen, as text and whether it was trained on (a gradient)."""
     import huggingface_hub
     import torch
@@ -93,7 +93,7 @@ def _train(tmp_path, monkeypatch, rows, shard):
     monkeypatch.setattr(grow.subprocess, "run", convert)
     f = tmp_path / "rows.jsonl"
     f.write_text("".join(json.dumps(r) + "\n" for r in rows))
-    meta = grow.train(str(f), "kb", base="t17", epochs=2.0, rank=4, accum=2, log=lambda *a, **k: None, out_dir=tmp_path / "out", shard=shard, dtype="f32")
+    meta = grow.train(str(f), "kb", base="t17", epochs=2.0, rank=4, accum=2, log=lambda *a, **k: None, out_dir=tmp_path / "out", shard=shard, dtype="f32", **kw)
     monkeypatch.setattr(Qwen3ForCausalLM, "forward", forward)
     return meta, seen
 

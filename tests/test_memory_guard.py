@@ -121,3 +121,28 @@ def test_train_skips_the_rows_that_would_not_fit_goes_on_with_the_others_and_rec
     assert json.loads((tmp_path / "out" / "t17+kb.json").read_text())["memory"] == mem  # in the record the slice writes
     by = {x["subject"]: x for x in meta["subjects"]}
     assert by["long kind · first"]["passes"] == 0 and by["short kind · first"]["passes"] == meta["passes"]
+
+
+def test_the_record_says_by_kind_what_became_of_the_new_rows(tmp_path, monkeypatch):
+    """rows_by_kind: of this generation's rows, by kind, each row once: given, too long for the slice, never trained on
+    because the memory guard skipped it, trained on. The rows of older generations are not in it."""
+    pytest.importorskip("peft")
+    from test_held_out import _train
+    per_piece = 2 * 32 * 4 * 46
+    ps = FakePsutil(1 * GB + 600 * per_piece, swap=5 * MB)
+    monkeypatch.setitem(__import__("sys").modules, "psutil", ps)
+    monkeypatch.setenv("HIVE_MEMORY_SPARE_GB", "1")
+
+    def row(i, kind, lines, gen="g42"):
+        r = _row(i, False) | {"kind": kind, "gen": gen}
+        return r | {"output": "```python\n" + "x = 1\n" * lines + f"print({i})\n```"}
+    rows = ([row(i, "short kind", 2) for i in range(4)]
+            + [row(10 + i, "long kind", 110) for i in range(3)]  # ~990 pieces: fits 1152, not the memory
+            + [row(20 + i, "huge kind", 300) for i in range(2)]  # longer than 1152 pieces
+            + [row(30 + i, "old kind", 2, gen="g30") for i in range(2)])
+    meta, _ = _train(tmp_path, monkeypatch, rows, "", gen="g42")
+    assert meta["rows_by_kind"] == {
+        "huge kind": {"given": 2, "too_long": 2, "skipped_memory": 0, "trained": 0},
+        "long kind": {"given": 3, "too_long": 0, "skipped_memory": 3, "trained": 0},
+        "short kind": {"given": 4, "too_long": 0, "skipped_memory": 0, "trained": 4}}
+    assert json.loads((tmp_path / "out" / "t17+kb.json").read_text())["rows_by_kind"] == meta["rows_by_kind"]
