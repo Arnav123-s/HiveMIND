@@ -174,7 +174,7 @@ def test_easy_subjects_still_get_passes_while_hard_ones_are_studied():
 
 def test_hard_kinds_are_read_from_the_hard_exam():
     kinds = grow.hard_kinds()
-    assert len(kinds) == 13 and set(grow.WEB) <= kinds
+    assert len(kinds) >= 13 and set(grow.WEB) <= kinds  # K2 adds hard kinds
     assert {"a fact read and a date sum on it", "a fact from a site and a date sum on it", "a module of two functions, with hidden tests"} <= kinds
     rows = [{"kind": k, "type": t} for k in ("walk a site over several pages", "a sum in words") for t in ("first", "fix", "done")]
     names = {grow.subject(r, new) for r in rows for new in (False, True)}

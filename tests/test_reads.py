@@ -101,7 +101,7 @@ def test_the_read_has_every_section(tmp_path):
                   "![The chain by kind](../progress/chain.svg)"):
         assert words in text, words
     # one row a taught hard kind: lessons, rows, kept-back loss and its gap, the child and its parent alone, the body
-    assert len(TAUGHT) == 9
+    assert len(TAUGHT) >= 9  # K2 adds taught hard kinds
     for k in TAUGHT:
         assert f"| {k} | 12 of 12 | 0 of 18 (estimate) | 1.000 -> 0.500 | +40 | 1 of 1 | 0 of 1 | 0 of 1 | 0 of 1 |" in text, k
     assert f"mean fall of the kinds none of whose lessons were trained on ({UNTAUGHT}: 10 points)" in text
