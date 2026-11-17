@@ -468,6 +468,16 @@ def _parents():
         return {}
 
 
+def _studied():
+    """{cell: the training steps it made} of the body's DNA (cells/studied.json, training/lineage.py), or {}."""
+    try:
+        body = json.loads(BODY.read_text())
+        d = json.loads((BODY.parent / "studied.json").read_text()).get(body.get("dna")) or {}
+        return {c: n for c, n in d.items() if isinstance(n, (int, float))}
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
 def _born(member):
     import re
     m = re.match(r"g(\d+)", member.partition("+")[2])
@@ -494,9 +504,10 @@ def seating(task, kind=None):
 
     The trunk (the average of the body's newest cells, training/merge.py) sits first where the body has one.
     A body that has multiplied has lines of descent (cells/body.json "parents"). Of one organ the newest cell sits
-    first: it is its parent and more. The second seat goes to the newest cell of another line: a child and its own
+    first: it is its parent and more; of the newest, the one that made the most training steps (cells/studied.json).
+    The second seat goes to the newest cell of another line: a child and its own
     parent are nearly one mind, and two copies agreeing on a wrong answer is the false memory that agreement cannot
-    catch. Nothing is counted to seat them.
+    catch. Nothing else is counted to seat them.
 
     HIVE_SEATING=strength (a trial): by each organ's record of being right, cells/strengths.json, as before."""
     who = roster() or ["coder"]
@@ -507,7 +518,11 @@ def seating(task, kind=None):
         return sorted(who, key=lambda m: (-strength(m, task, kind, table), leans(m) != o))
     # the trunk, the whole body's learning as one edit, takes every task first; the cells are its second opinions
     trunk = sorted((m for m in who if is_trunk(m)), key=_born)[-1:]
-    order = sorted((m for m in who if not is_trunk(m)), key=lambda m: (leans(m) != o, -_born(m)))
+    # of the cells of one generation, the one that studied more sits first: in g38 a runner five times as slow left one
+    # code child at 67 training steps beside siblings at 206 and 375; by its name it took the seat, passed "walk a site"
+    # 0 of 5 where the second passed 5 of 5, and the best-taught never sat
+    steps = _studied()
+    order = sorted((m for m in who if not is_trunk(m)), key=lambda m: (leans(m) != o, -_born(m), -steps.get(m.partition("+")[2], 0)))
     turn = os.environ.get("HIVE_ROTATE", "")
     if turn.isdigit() and len(order) > 1:
         # practice: every cell takes its turn as the first of the cells, whatever its organ, so each one's mistakes

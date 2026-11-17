@@ -1,13 +1,18 @@
 # NEXT SESSION: HiveMIND
 
-Written 2026-11-16, 03:10 UTC, and brought up to date at 17:00 UTC, by agent C (the lead session, `session_01PZiWThbrn8cykQKW6mTcdp`, branch
-`claude/relaxed-pasteur-yxzlpi`) at the owner's request, for the lead session that takes over next from another
-account. It replaces every earlier handoff (agent A's of 00:20 UTC is in pull request 61; older ones in
-`docs/history/` and in git). Read this page, then `docs/AGENTS.md` (its log, newest last), `docs/KNOWLEDGE.md` and
-`docs/LOOP.md`.
+Written 2026-11-16 by agent C (session `session_01PZiWThbrn8cykQKW6mTcdp`, branch `claude/relaxed-pasteur-yxzlpi`),
+last brought up to date 2026-11-17 05:25 UTC.
 
-You are the lead maintainer. The owner's words: understand the goal, do the reasoning, make the decisions, direct
-the other agents, and make the hive a success. The earlier sessions' working rules are not yours; the goal is.
+**This page is no longer the lead's page.** Since 2026-11-17 the orchestrator plans (`docs/DECISIONS.md`, on agent
+B's branch until merged) and agent B does the work and merges it; `docs/PLAN.md` holds the goal's numbers and the
+board, `docs/HANDOFF_B.md` B's handoff. Read those first. What stays true below: the diagnosis ("The key points",
+"The plan") and "How to work here".
+
+**Generation 38 (recorded 04:20 UTC): hard 10 of 32 (g34: 6), easy 25 of 32 (g34: 31).** What its work files add
+(log, 05:19 UTC): some member was right on 23 of 32 hard tasks; one new cell, g38code2, alone was right on all 5
+"walk a site over several pages" tasks that the trunk, its sibling and the body all failed. The lessons can be
+learned; the body loses a skill that only one cell has (two must agree; the trunk is an average). Two of the seven
+failed easy tasks were a fault of the agreement step on version numbers, fixed in this branch (`team/solo.py`).
 
 ## The key points
 
@@ -71,37 +76,11 @@ needs the kind and whether some member was right).
 `grow.yml`, gather). A kind needs several examples before practice can carry it; 3 a kind would start kinds in one
 generation instead of several. Lessons already stop for a kind once the hive has 3 right programs of its own.
 
-## State at handoff (2026-11-16 17:00 UTC)
+## State on 2026-11-16 22:40 UTC (history)
 
-- **Main** is at `a2fb1ef`: pull requests 56 to 71. The plan's four pieces are all built and merged (B: pull
-  requests 66, 68, 70). 324 tests pass (`.venv/bin/python -m pytest -q tests`).
-- **Generation 34** (a re-sit of g33's cells, 4 seeds): 37 of 64. **Easy kinds 31 of 32, hard kinds 6 of 32.** That is
-  the line to move: the hard number. g33's cells were grown the old way with one lesson a kind.
-- **Generation 35** (run 43827930978) was the first grown with all four pieces. It is not recorded and is not g34's
-  child: the nightly schedule started it while g34 was running, from the commit before g34's record, so its six cells
-  are siblings of g34's (same parents): a fair test of the night's changes against the old way. **Result (agent A's
-  count, three good exams): easy 19 of 24, hard 6 of 24. No gain on hard kinds yet.** On its fourth exam the server
-  ended at once on every start (cause unknown, its log was not kept).
-- **Why no gain (agent A's counts, 17:20 UTC):** not dilution (a g35 cell sat on 24 of 24 hard tasks, right 6 of 36;
-  the trunk 7 of 24). The lessons were not learned enough: the new hard subjects got 2 to 10 passes and ended at a
-  loss of 0.4 to 1.6. Three lessons a kind fell one to a slice; raw text took a tenth of the passes for nothing;
-  lessons stopped for kinds the hive had 3 right programs of, though the body still failed them.
-- **Changed for that, on this branch (pull request 69, commit `ec9d044`, 326 tests pass, waiting for the owner's
-  merge):** 12 lessons a kind (`HIVE_LESSONS`) for every kind the body fails more often than not in its last three
-  pulses; this generation's new rows in every slice; raw text and judged answers 3% of the passes each.
-  **The next generation on main after the merge is the test: hard kinds against 6 of 32.**
-- **Agent A** (16:50 UTC, waiting for the owner's yes on code): the server says why it ended and its log is kept; a
-  line run older than the branch's body ends at once; the schedule starts nothing while a line run is on.
-- **The body goes on from g34's cells** (it is the recorded body). g35's cells stay in the release as a trial.
-- **Agent B has speed** (asked 16:55 UTC, comment on pull request 71): a generation in about 4.5 hours instead of 8.
-  Practice on 12 runners of 8 tasks, the pulse on 8 of 8, training minutes from what the study needs, a cheaper
-  first sweep. B answers at its check-ins; its channel is its newest open pull request, when it has one.
-- **Proof that studying by error works** (the 1.7B here, same parent and rows, 9 minutes each, loss on 14 unseen
-  lessons of the 8 kinds the hive has no rows of): the DNA 1.76, the parent 1.58, a child grown the even way 1.06,
-  a child grown by error 0.44. The even child spent 87 of its 196 passes on the word DONE (loss 0.001).
-- **The line does not go on by itself** (`HIVE_LOOP` is most likely `stop`): the owner was asked to take it off.
-  Until then each generation is started by hand, or by the nightly schedule at 01:17 UTC.
-- **Nothing is running now.** The next thing that matters: g35's record, its hard kinds of 32.
+Main was at `b75a8cf` with every agent's work merged (pull requests 56 to 72). Generation 34, the recorded body,
+had 37 of 64: easy 31 of 32, hard 6 of 32. Generation 38 was running as the test of the whole plan. For the state
+now, read the top of this page and the newest lines of `docs/AGENTS.md`.
 
 ## Working with the other agents
 
@@ -127,17 +106,12 @@ is a proposal: change what works better. Engrams and other architectures are wel
   are A, B, C by session, branch and pull request.
 - He likes graphs of progress and clean labels on every run.
 
-## First hour
+## What follows from generation 38
 
-1. Merge main into your branch. Read the log in `docs/AGENTS.md` from 2026-11-16 17:00 on.
-2. Is pull request 69 merged (12 lessons a kind, new rows in every slice)? If not, ask the owner. Is A's fix merged?
-3. Start a generation on main if none is running (Actions, "The hive teaches its own members", Run workflow).
-4. When it records: hard kinds against g34's 6 of 32, and from two cells' JSON records the new hard subjects' first
-   and last loss and passes. Easy subjects stand near 0; a hard kind is being learned when its loss falls below
-   about 0.3. If the losses fall and the tasks still fail, read the members' own programs on those tasks
-   (`gate-work-*`): the fault is then in what a member does with what it knows, not in training.
-5. The biggest speed there is: the owner's Colab notebook (`colab/hive_gpu.ipynb`) open during a generation trains a
-   child whole on a GPU in minutes, against 27 to 46 seconds a row on a runner. Ask him.
+1. Keep g38code2 in the body and let the next code children grow from it: several cells that know a kind are what
+   lets two members agree.
+2. Piece R1 on the board ("a right member is not lost") is the largest gain in sight: 13 hard tasks of 32.
+3. The trunk as a mean has none of what one cell learned: try a trunk that adds what the lines learned.
 
 ## How to work here
 

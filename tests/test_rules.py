@@ -1876,3 +1876,23 @@ def test_a_task_two_members_agreed_on_leaves_its_program_for_the_next_task_like_
     solo.judge(PRIMES_TASK, True)
     solo.judge(PRIMES_TASK.replace("200", "300").replace("10", "11"), False)               # practice: its check said the program was wrong
     assert [(r["task"], r["checked"]) for r in solo.solved()] == [(PRIMES_TASK, True)]
+
+
+def test_two_members_that_name_the_same_version_agree_and_two_versions_do_not():
+    """g38's pulse (e20000384_02, e20000387_02): two members right on the latest version of a package and the body
+    gave no answer, because a version is no number and their words differed; and "1.18.1" agreed with "1.18.0"."""
+    from team import solo
+    task = "Tell me the current version of scipy on PyPI."
+    assert solo.same("Current version of scipy on PyPI: 1.18.1", "1.18.1", task)
+    assert solo.same("The latest version of click on PyPI is: 8.5.1", "8.5.1", task)
+    assert solo.same("v2.0.0rc1", "2.0.0rc1", task)
+    assert not solo.same("1.18.1", "1.18.0", task)
+    assert not solo.same("2.0.0rc1", "2.0.0", task)
+    assert not solo.same("click-8.5.1-py3-none-any.whl md5 7f763e", "8.5.1", task)  # a page printed raw is no answer
+    three = "version: 0.28.1\nreleased: 2024-12-06\ndays ago: 711"
+    assert solo.same(three, "httpx 0.28.1, released 2024-12-06, 711 days ago", task)
+    assert not solo.same(three, three.replace("0.28.1", "0.28.0"), task)   # the same numbers, another version
+    assert not solo.same(three, three.replace("711", "690"), task)         # the same version, other numbers
+    assert not solo.same("name: scipy\nversion: 1.18.1", "name: numpy\nversion: 1.18.1", task)
+    # a version the task itself names says nothing
+    assert solo.codes("1.18.1 is not the latest; 1.19.0 is", "Is scipy 1.18.1 the latest?") == {"1.19.0"}

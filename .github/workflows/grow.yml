@@ -707,6 +707,8 @@ jobs:
               # a body that multiplies sits with its cells before and their children together
               # whose child each new cell is, on this runner only: a child with no record of its own is seated by its parent's
               python3 -c "import json, os; b=json.load(open('cells/body.json')); b.setdefault('parents', {}).update({c['name']: c['parent'] for c in json.loads(os.environ['CHILDREN']) if c['parent']}); json.dump(b, open('cells/body.json', 'w'))"
+              # how many training steps each new cell made, on this runner: of siblings the one that studied more sits first
+              python3 training/lineage.py studied "$DNA" got || true
               if [ "$GROW" = "1" ]; then python3 training/grow_record.py fetch "$(python3 training/lineage.py members "$DNA")"; fi
               for f in got/$DNA.${GEN}*.gguf; do n=$(basename "$f" .gguf); cp "$f" "cells/members/$DNA+${n#$DNA.}.gguf"; done
               # this generation's trunk takes the place of the one before (only the newest answers)
@@ -819,7 +821,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # the graphs of the hive's progress toward its goal, drawn again from the record just written (docs/PROGRESS.md)
           python3 training/progress.py || echo "::warning::the progress graphs could not be drawn; the record is kept"
-          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json 2>/dev/null) docs/PROGRESS.md docs/progress
+          # the training steps of this generation's cells (cells/studied.json): who sits first and who has children first
+          python3 training/lineage.py studied "$DNA" got || true
+          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null) docs/PROGRESS.md docs/progress
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
           git push -q origin "HEAD:${GITHUB_REF_NAME}" || { echo "::error::the record could not be pushed"; exit 1; }

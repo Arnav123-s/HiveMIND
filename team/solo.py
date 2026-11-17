@@ -154,6 +154,16 @@ def parts(answer, task=""):
     return {round(x, 2) for x in key(answer, task)}, {w for w in re.findall(r"[^\W\d_]+", text) if len(w) > 1}, labelled
 
 
+CODE = re.compile(r"(?<![\w.])v?(\d+(?:\.\d+){2,}(?:[.-]?[a-z]+\d*)*)(?![\w]|\.\d)", re.I)
+
+
+def codes(answer, task=""):
+    """The values of an answer that are written with dots and are no number: a version ("1.18.1", "v2.0.0rc1"), an
+    address ("10.0.0.7"), without those the task itself names. key() leaves them out, so nothing compared them."""
+    named = {x.lower() for x in CODE.findall(task)}
+    return {x.lower() for x in CODE.findall(answer)} - named
+
+
 def same(a, b, task=""):
     """Do two members' answers agree? The numbers of one are all among the other's ("935.0" and "$935.00, down from
     1100" agree; seed 9005: seven tasks went unconfirmed because values were compared as written), and where both
@@ -169,6 +179,16 @@ def same(a, b, task=""):
         return set(pa) == set(pb) and all(pa[k].strip() == pb[k].strip() or same(pa[k], pb[k], task) for k in pa)
     (na, wa, la), (nb, wb, lb) = parts(a, task), parts(b, task)
     inside = lambda x, y: bool(x and y) and (x <= y or y <= x)  # noqa: E731
+    ca, cb = codes(a, task), codes(b, task)
+    if ca and cb:
+        # g38's pulse: "1.18.1" and "Current version of scipy on PyPI: 1.18.1" did not agree (a version is no number
+        # and the words differ), so two right members gave no answer, twice in 32 easy tasks; and "1.18.1" agreed with
+        # "1.18.0" (the digits as words, two of three alike). Where both name such a value it must be the same one;
+        # then the numbers decide if both have any, else the value words of lines that are both "name: value".
+        if not inside(ca, cb):
+            return False
+        if not (na and nb):
+            return not (la and lb and wa and wb) or inside(wa, wb)
     prose = not la and not lb and min(len(a.split()), len(b.split())) >= 5
     if (na or nb) and not prose:
         # "205.0" and "205.03" are one answer given to different places (seed 9005: a conversion went unconfirmed)
