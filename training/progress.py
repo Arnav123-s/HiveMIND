@@ -17,6 +17,9 @@ and where it is weakest, without reading numbers:
   hours.svg   the hours of one generation, by step (the record's minutes_by_step or hours), against the bar of 5
   chain.svg   drawn by training/reads.py beside the read of the newest generation; linked here when it is there
 
+The page's Talk row is the newest generation's sitting of the talk exam (training/talk_exam.py), read from
+training/reports/talk/<generation>.json when the body sat it.
+
 The loop closes here too: the kinds this page shows weakest are the kinds practice draws most often next
 (training/grow.edge_weights, used by practice at the ladder level), so the hive spends its practice where the graph
 says it is weak. The workflow's record step runs this and commits the result with the record.
@@ -350,8 +353,29 @@ def rows_chart(gens, w=760, h=260):
     return _svg(w, h, "".join(b), list(dict.fromkeys(dnas)), "rows")
 
 
-def page(gens, table, names, dna, weights, levels, chain=False):
-    """docs/PROGRESS.md: the goal, where the body stands, the graphs, and where it practises next."""
+TALK = ROOT / "training" / "reports" / "talk"  # <generation>.json: the body's sitting of the talk exam (training/talk_exam.py)
+
+
+def talk_of(generation, folder=None):
+    """The generation's talk exam result (training/reports/talk/<generation>.json), or None when it did not sit one."""
+    path = Path(folder or TALK) / f"{generation}.json"
+    try:
+        d = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return None
+    return d if isinstance(d, dict) and d.get("of") else None
+
+
+def talk_line(generation, t):
+    """The talk row: the score out of 10 (the goal's bar is 8), out of 40, and by kind."""
+    by = ", ".join(f"{k} {p} of {n}" for k, (p, n) in (t.get("kinds") or {}).items() if n)
+    return (f"**Talk:** generation {generation} sat the talk exam (seed {t.get('seed')}): {t.get('out_of_10')} of 10 "
+            f"({t.get('right')} of {t.get('of')} messages right{': ' + by if by else ''}). The bar: 8 of 10.")
+
+
+def page(gens, table, names, dna, weights, levels, chain=False, talk=None):
+    """docs/PROGRESS.md: the goal, where the body stands, the graphs, and where it practises next. talk: the newest
+    generation's talk exam result, when it sat one."""
     now = [d for d in gens if d["dna"] == dna] or gens
     last = now[-1] if now else None
     best = max(now, key=lambda d: _passed(d)[0] / _passed(d)[1]) if now else None
@@ -365,6 +389,8 @@ def page(gens, table, names, dna, weights, levels, chain=False):
         bp, bn = _passed(best)
         lines += [f"**Now:** generation {last.get('generation')} of the {NAMES.get(dna, dna)} body passed {p} of {n} exam tasks "
                   f"({round(100 * p / n)}%). The best so far on this DNA: {best.get('generation')}, {bp} of {bn} ({round(100 * bp / bn)}%).", ""]
+    if last and talk:
+        lines += [talk_line(last.get("generation"), talk), ""]
     lines += ["![The share of exam tasks the body passed, each generation](progress/score.svg)", "",
               "![Hard kinds, easy kinds and tasks of several parts, passed](progress/parts.svg)", "",
               "![Hard, easy and held-out kinds passed, each generation](progress/split.svg)", "",
@@ -398,7 +424,7 @@ def page(gens, table, names, dna, weights, levels, chain=False):
     return "\n".join(lines)
 
 
-def draw(record=None, out=None, body=None):
+def draw(record=None, out=None, body=None, talk_dir=None):
     record = Path(record or ROOT / "training" / "reports" / "generations.jsonl")
     out = Path(out or ROOT / "docs" / "progress")
     out.mkdir(parents=True, exist_ok=True)
@@ -420,7 +446,9 @@ def draw(record=None, out=None, body=None):
     (out / "hours.svg").write_text(hours_chart(gens))
     from training.grow import edge_weights
     weights = edge_weights(dna, record=record)
-    (out.parent / "PROGRESS.md").write_text(page(gens, table, names, dna, weights, b.get("levels") or {}, (out / "chain.svg").exists()))
+    newest = ([d for d in gens if d["dna"] == dna] or gens or [{}])[-1].get("generation")
+    talk = talk_of(newest, talk_dir) if newest else None
+    (out.parent / "PROGRESS.md").write_text(page(gens, table, names, dna, weights, b.get("levels") or {}, (out / "chain.svg").exists(), talk))
     return {"generations": len(gens), "dna": dna, "kinds": len(table), "out": str(out)}
 
 
