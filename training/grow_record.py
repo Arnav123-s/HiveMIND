@@ -4,6 +4,7 @@
     python3 training/grow_record.py fetch t17+g3code,t17+g3data     the cells named, from the release into cells/members/
     python3 training/grow_record.py rows OUT FILE ...               every row of the files once, in order, into OUT
     python3 training/grow_record.py failures OUT FILE ...           the same for the tasks got wrong
+    python3 training/grow_record.py restart [RECORD]                exit 1 (saying why) after three generations dropped running
 
 `gate` runs in the one job that may write to the repository, and runs no model and nothing the hive wrote. From the
 other jobs it takes only whole numbers within their bounds and names this file builds itself. Needs nothing but
@@ -14,6 +15,9 @@ Three arms sat the same fresh seeds of the exam (.github/workflows/grow.yml), ea
     before   the body as it was (the cells of the last generation that was kept); absent in the first generation
     after    the body as regrown this time
 The regrown body is kept when it passed more tasks than the DNA alone and at least as many as the body before it.
+A body that multiplies sits only before and after, on the same seeds (the paired gate): its children are kept
+unless after is more than 2 tasks under before in all or on easy; a dropped generation's rows are still kept in
+the release and the body stays as it was. Three generations dropped running stop the line (`restart`).
 What "after" passes over "dna" is what the hive taught itself; it is also counted apart on the kinds it never
 practised. Every generation leaves one line in training/reports/generations.jsonl, whatever the outcome.
 """
@@ -203,7 +207,43 @@ def arm(folders):
     return out
 
 
-def decide(arms):
+MOST_UNDER = 2  # the paired gate: after may be at most this many tasks under before, in all and on easy
+DROPS_TO_STOP = 3  # the line does not start again after this many generations dropped running
+
+
+def _seated(folder):
+    """True when a gate folder holds one sitting with a summary of whole numbers in bounds (what arm() counts)."""
+    return arm([folder])["seeds"] > 0
+
+
+def paired(folder, names=("before", "after")):
+    """The arms of the paired gate, on the seeds both finished only: {arm: arm(...)} and the seeds compared."""
+    by = {a: {p.name.rsplit("-", 1)[1]: p for p in folder.glob(f"gate-{a}-*") if re.fullmatch(rf"gate-{a}-\d", p.name) and _seated(p)} for a in names}
+    both = sorted(set.intersection(*(set(v) for v in by.values())))
+    return {a: arm([by[a][s] for s in both]) for a in names}, both
+
+
+def decide(arms, grow=False):
+    """Whether the regrown body is kept: (keep, why).
+    grow (the paired gate): the body with its children (after) and as it was (before) sat the same seeds; the
+    children are kept unless after passed more than 2 tasks fewer than before in all, or more than 2 fewer on the
+    easy tasks (ids starting with e). A body that sat nothing before is not judged and kept; one whose after sat
+    nothing while before did is dropped."""
+    if grow:
+        b, a = arms["before"], arms["after"]
+        if not b["seeds"]:
+            return (True, "the body grows; before did not sit, so it was not judged" + (f" (after: {a['passed']} of {a['tasks']})" if a["seeds"] else ""))
+        if not a["seeds"]:
+            return False, f"the body with its children finished no seed that the body before finished ({b['passed']} of {b['tasks']} before)"
+        if b["seeds"] != a["seeds"] or b["tasks"] != a["tasks"]:
+            return False, "before and after did not sit the same seeds"
+        said = (f"after {a['passed']} of {a['tasks']} (easy {a['easy'][0]} of {a['easy'][1]}, hard {a['hard'][0]} of {a['hard'][1]}), "
+                f"before {b['passed']} of {b['tasks']} (easy {b['easy'][0]} of {b['easy'][1]}, hard {b['hard'][0]} of {b['hard'][1]}) on {a['seeds']} seeds")
+        if b["passed"] - a["passed"] > MOST_UNDER:
+            return False, f"the children did harm: after is {b['passed'] - a['passed']} tasks under before in all; " + said
+        if b["easy"][0] - a["easy"][0] > MOST_UNDER:
+            return False, f"the children did harm: after is {b['easy'][0] - a['easy'][0]} tasks under before on easy; " + said
+        return True, "the body grows: " + said
     d, b, a = arms["dna"], arms["before"], arms["after"]
     if not a["seeds"] or a["seeds"] != d["seeds"] or a["tasks"] != d["tasks"]:
         return False, "the regrown body and the DNA did not both finish the same seeds"
@@ -255,11 +295,14 @@ def gate(argv):
     same_dna = body.get("dna") == dna
     judged = arms if same_dna else dict(arms, before={"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0})
     keep, why = decide(judged) if cells else (False, "no cell was grown")
+    seeds = []
     if grow and cells and not trial:
-        # the body multiplies (Arnav, 2026-11-14): no gate decides it; the children always join. The sitting of the
-        # body with its children is its pulse, kept to trace a problem back from, and decides nothing
-        a = arms["after"]
-        keep, why = True, (f"the body grows; its pulse: {a['passed']} of {a['tasks']} with its children" if a["seeds"] else "the body grows (no pulse was taken)")
+        # the body multiplies: the paired gate decides it. Before and after sat the same seeds; only the seeds both
+        # finished are compared (a seat that died on one side does not count against the other)
+        pair, seeds = paired(folder)
+        if arms["before"]["seeds"]:
+            arms = dict(arms, **pair)
+        keep, why = decide(arms, grow=True)
     if cells and not same_dna:
         why += f" (a new DNA, {dna}: the body of {body.get('dna')} before it is not the bar)"
     if trial and keep:
@@ -277,8 +320,10 @@ def gate(argv):
     lv_next, lv_seen = levels(lv_now, practised) if practised else (lv_now, {})
     kinds_now = body.get("kinds") if same_dna and isinstance(body.get("kinds"), dict) else {}
     kinds_next = practice_kinds(kinds_now, practised) if practised else kinds_now
+    both = {k: {"passed": arms[k]["passed"], "tasks": arms[k]["tasks"], "hard": arms[k]["hard"], "easy": arms[k]["easy"], "seeds": arms[k]["seeds"]}
+            for k in ("before", "after")}
     line = {"generation": gen, "when": time.strftime("%Y-%m-%d %H:%M"), "rows": rows, "cells": cells, "train_minutes": minutes, "arms": arms,
-            "kept": keep, "why": why, "body_before": before, "body_after": after, "trial": trial, "grow": grow,
+            "kept": keep, "verdict": "kept" if keep else "dropped", "paired": dict(both, seeds=seeds) if grow else both, "why": why, "body_before": before, "body_after": after, "trial": trial, "grow": grow,
             "trunk": trunk if keep and grow else "", "levels": lv_next if keep and grow else lv_now, "practice": lv_seen, "practice_kinds": kinds_next,
             "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
@@ -322,7 +367,30 @@ def gate(argv):
         if lv_seen:
             print("- how hard the lessons are now: " + ", ".join(f"{k} {v}" + (f" (was {lv_now.get(k)})" if k in lv_now and lv_now.get(k) != v else "") for k, v in sorted(lv_next.items()))
                   + "; practice passed " + ", ".join(f"{m} at level {k}: {r} of {n}" for m, by in lv_seen.items() for k, (r, n) in by.items()))
+    if grow and not keep and cells and not trial:
+        print(f"\n- **dropped**: {', '.join(cells)} do not join the body; their rows are kept in the release")
     print(f"\n- the body {'is now ' + ', '.join(after) if keep else 'stays as it was'}: {why}")
+    return 0
+
+
+def restart(argv):
+    """Whether the line may start its next generation: exit 1, saying why, when the last DROPS_TO_STOP generations
+    of the line (trials left out) were all dropped by the paired gate."""
+    record = Path(argv[0]) if argv else RECORD
+    line = []
+    for ln in lines(record):
+        try:
+            r = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(r, dict) and not r.get("trial"):
+            line.append(r)
+    last = line[-DROPS_TO_STOP:]
+    if len(last) == DROPS_TO_STOP and all(r.get("verdict") == "dropped" for r in last):
+        print(f"the line stops: the paired gate dropped {DROPS_TO_STOP} generations running ("
+              + "; ".join(f"{r.get('generation')}: {r.get('why', '')}" for r in last) + "). The body stays as it was; read them before starting again")
+        return 1
+    print("the next generation may start" + (f" ({sum(1 for r in last if r.get('verdict') == 'dropped')} of the last {len(last)} dropped)" if last else ""))
     return 0
 
 
@@ -358,4 +426,5 @@ if __name__ == "__main__":
     a = sys.argv[1:]
     sys.exit(gate(a[1:]) if a[:1] == ["gate"] and len(a) >= 4 else fetch(a[1:]) if a[:1] == ["fetch"] else
              join(a[1:], _row, MOST_ROWS) if a[:1] == ["rows"] and len(a) >= 3 else
-             join(a[1:], _failure, MOST_FAILURES) if a[:1] == ["failures"] and len(a) >= 3 else (print(__doc__) or 1))
+             join(a[1:], _failure, MOST_FAILURES) if a[:1] == ["failures"] and len(a) >= 3 else
+             restart(a[1:]) if a[:1] == ["restart"] else (print(__doc__) or 1))

@@ -72,8 +72,6 @@ flowchart TD
   pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]
   pc_R2 -.-> claim
   verdict -->|"Web kinds unlearned"| pc_T1
-  vstop4["the line stops; the body goes on from the generation before"]:::open
-  verdict -->|"Easy kinds under 28 of 32"| vstop4
   waiting["pieces with open causes (section 3)<br/>R2, T4, L2, T3"]:::open
   waiting -.-> claim
   kj[(docs/knowledge.json)]
