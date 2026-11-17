@@ -681,15 +681,15 @@
   },
   {
    "id": "slicememory",
-   "title": "16-bit slices met many long lessons near their row limit, where a row's memory grows faster than its length, and ran out of memory",
+   "title": "The row-length formula missed 1.5-1.9 GB (scratch buffers, optimizer state, the OS: it used the total at load), so 8B slices ran at the runner's RAM ceiling and swapped when a new longest row came; Xeon 6975P-C runners suspected (0 of 32 survivors)",
    "lives_in": "practice",
    "blocks": "deaths",
    "status": "fixed",
    "piece": "L1",
-   "found": "g38: 7 of 24 train slices lost to memory, 49-133 min in",
-   "fix": "a 16-bit slice keeps 1 GB more spare (PR 78)",
-   "by": "B, PR 78 (training/grow.py): a 16-bit slice keeps 1 GB more spare, rows up to about 850 pieces",
-   "seen": "2026-11-17 02:01: every lost slice 'the hosted runner lost communication', no log kept; finished 16-bit slices at 14.6-14.7 of 15.6 GB (rows up to 1037-1089 pieces); every child kept at least one slice"
+   "found": "g38: 7 of 24 train slices lost, g39: 5 of 20, 46-133 min in; survivors at 14.1-14.8 of 15.6 GB",
+   "fix": "a memory guard that measures: a row that would leave under 1 GB available is skipped for that pass, the cost of a piece learned from the run",
+   "by": "B (training/grow.py MemoryGuard, Study.skip): before each pass pieces x cost against psutil available, skip under 1 GB (HIVE_MEMORY_SPARE_GB), cost learned from the fall in available during each pass (floor: the formula's); trim after every pass, gc every 4; fits from available once the optimizer exists; available and swap in every step line, memory {} in the slice's record. Earlier: PR 78, 1 GB more spare for 16-bit (did not lower the peaks). Proof is g40's records",
+   "seen": "2026-11-17: every lost slice 'the hosted runner lost communication', no log kept; finished slices at 14.1-14.8 GB whatever their fits, peaks jumping 0.1-1.8 GB at new longest rows; the 6975P-C is 11 of 46 other jobs and 0 of 32 surviving slices"
   },
   {
    "id": "fewpasses",
