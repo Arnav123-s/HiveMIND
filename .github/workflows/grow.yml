@@ -325,7 +325,7 @@ jobs:
           # 12 lessons a kind (repository variable HIVE_LESSONS), for every kind the body fails more often than not in its
           # last pulses: 3 a kind, split over the slices, left each slice one row of a kind (generation 35)
           LESSONS="${{ vars.HIVE_LESSONS || '12' }}"; [[ "$LESSONS" =~ ^[0-9]{1,2}$ ]] || LESSONS=12
-          python3 training/lessons.py --seed "$GEN" --per-kind "$LESSONS" --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --record training/reports/generations.jsonl --dna "$DNA" --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -1 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
+          python3 training/lessons.py --seed "$GEN" --per-kind "$LESSONS" --several 4 --failures out/failures.jsonl --most-failures 20 --minutes 25 --record training/reports/generations.jsonl --dna "$DNA" --own-rows old.jsonl $(find new seed -name rows.jsonl -not -path "new/lessons/*" | sed 's/^/--own-rows /') --out new/lessons/rows.jsonl | tail -2 | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the lessons could not be made; the generation goes on without them"
           # each row once; this generation's are stamped with its name, so training knows them from rows the parents
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
