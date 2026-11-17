@@ -65,7 +65,8 @@ date. Then the commander writes one line in the log and the next piece follows:
 | Loss low, members do not write the lesson's way | the lesson's few key lines drown in long programs | T3: weigh the key lines, lesson rows first (C) |
 | Members write the lesson's way and fail on something else | a cause in the runtime or in the lesson | R2: fix the largest cause (C) |
 | Web kinds unlearned (g35: walk a site under 0.3 in 4 of 23 slices) | they need the passes first | T1, web kinds first (B) |
-| Easy kinds under 28 of 32 | the recipe does harm | the line stops; the body goes on from the generation before |
+
+The paired gate keeps or drops the body by itself: the body sits before and after its children on the same 8 seeds, and the children are dropped when after is more than 2 tasks under before in all or on easy (three drops running stop the line).
 
 The line is never left idle waiting for a piece: the next generation starts on what is on `main`.
 

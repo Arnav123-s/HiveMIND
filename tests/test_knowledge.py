@@ -47,7 +47,8 @@ def test_the_board_and_the_verdict_are_read_from_the_plan():
     assert {"L1", "L2", "L3", "T1", "T2", "T4", "R2", "M3"} <= set(pieces) and pieces["L2"]["who"]
     rows = knowledge.verdict_rows()
     assert len(rows) >= 4 and {"T1", "R2"} <= {pid for _, pid, _ in rows}
-    assert any(pid is None for _, pid, _ in rows)  # the row that stops the line names no piece
+    # the row that stopped the line by hand is gone: the paired gate keeps or drops the body by itself
+    assert not any("Easy kinds under" in shows for shows, _, _ in rows)
 
 
 def test_the_hive_loop_says_each_steps_minutes_and_open_problem():

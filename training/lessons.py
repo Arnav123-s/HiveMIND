@@ -792,6 +792,37 @@ def pulse_counts(record, dna, last=3):
     return out
 
 
+def reason(why):
+    """Why a lesson was not taught, in a few words: "timed out", "site refused" (the site answered with an error or
+    not at all), "program failed" (it stopped with an error or printed nothing), "not made" (the task could not be made
+    again), or "check failed" (it ran and printed, and the task's own check said no)."""
+    w = (why or "").lower()
+    if "timeout" in w or "timed out" in w:
+        return "timed out"
+    if any(x in w for x in ("connectionerror", "connection refused", "connection reset", "max retries", "httperror",
+                            "too many requests", "forbidden", "service unavailable", "bad gateway", "nameresolution",
+                            "name or service not known", "remotedisconnected", "sslerror", "is a web page (html), not json")) \
+            or re.search(r"\b(403|429|5\d\d) (client|server) error", w):
+        return "site refused"
+    if w.startswith("check failed: jsondecodeerror"):  # the check read the site, and the site sent no JSON
+        return "site refused"
+    if w.startswith(("could not be made", "the task cannot be made", "no program")):
+        return "not made"
+    if w.startswith("the program failed"):
+        return "program failed"
+    return "check failed"
+
+
+def by_kind_line(by_kind, failed):
+    """The printed line: right of made for every kind, worst first, the main reason of its failures beside it."""
+    parts = []
+    for k, (r, n) in sorted(by_kind.items(), key=lambda kv: (kv[1][0] / max(kv[1][1], 1), kv[0])):
+        why = failed.get(k) or {}
+        main = max(why, key=why.get) if why else ""
+        parts.append(f"{k} {r}/{n}" + (f" ({main})" if main else ""))
+    return "lessons by kind: " + (", ".join(parts) or "none made")
+
+
 def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4, own=None, pulse=None):
     """A generation's lessons: per_kind fresh tasks of every taught kind, at the body's levels, `several` fresh tasks of
     several parts, and the most recent tasks the hive got wrong (of the taught kinds), each made again and shown done
@@ -802,7 +833,9 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
     pulse: {kind: [passed, sat]} of the body's last pulses (pulse_counts). A kind the body still fails more often than
     not is taught whatever it has of its own: generation 34 had 25 right programs of modules and passed 0 of 6, and
     with rows from every confirmed member a kind has 3 of its own long before the body passes it.
-    Returns {"lessons", "right", "rows", "dropped": [why], "left_to_the_hive": [kind]}."""
+    Returns {"lessons" (planned, the kinds left to the hive among them), "made", "right", "rows", "dropped": [why],
+    "left_to_the_hive": [kind], "by_kind": {kind: [right, made]},
+    "failed_by_kind": {kind: {reason: n}}} (reason() gives the words), and logs the by-kind line last."""
     from training import grow
     levels = grow.body_levels() if levels is None else levels
     t0 = time.time()
@@ -829,6 +862,7 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
             seen.add(key)
             plan.append((f["maker"], f["rseed"], f.get("level", 0), f.get("parts"), f))
     made, right, dropped, left = [], 0, [], set()
+    by_kind, failed = {}, {}
     for maker, rseed, level, parts, wrong in plan:
         if minutes and time.time() - t0 > minutes * 60:
             dropped.append("out of time")
@@ -849,7 +883,13 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
         new = rows(les, wrong)
         right += bool(les.get("ok"))
         made += new
+        kind = les.get("kind") or ("several parts" if maker == "compound" else maker)
+        tally = by_kind.setdefault(kind, [0, 0])
+        tally[0], tally[1] = tally[0] + bool(les.get("ok")), tally[1] + 1
         if not les.get("ok"):
+            why = failed.setdefault(kind, {})
+            r = reason(les.get("why", ""))
+            why[r] = why.get(r, 0) + 1
             dropped.append(f"{maker}: {les.get('why', '')[:160]}")
         log(f"lesson {maker} {'(a task got wrong before) ' if wrong else ''}{'right' if les.get('ok') else 'NOT taught'}: {les.get('why', '')[:150]}", flush=True)
     if out:
@@ -859,8 +899,9 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
                 f.write(json.dumps(r) + "\n")
     if left:
         log(f"left to the hive (it has {OWN} or more right programs of its own): {', '.join(sorted(left))}", flush=True)
-    return {"lessons": len(plan), "right": right, "rows": len(made), "dropped": dropped,
-            "left_to_the_hive": sorted(left), "seconds": round(time.time() - t0)}
+    log(by_kind_line(by_kind, failed), flush=True)
+    return {"lessons": len(plan), "made": sum(n for _, n in by_kind.values()), "right": right, "rows": len(made), "dropped": dropped,
+            "left_to_the_hive": sorted(left), "seconds": round(time.time() - t0), "by_kind": by_kind, "failed_by_kind": failed}
 
 
 def main(argv):
