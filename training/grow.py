@@ -604,6 +604,52 @@ def shorten(messages, keep):
     return [dict(m) for m in messages[:i]] + [dict(messages[i], content=text)] + [dict(m) for m in messages[i + 1:]]
 
 
+KEEP_BACK = int(os.environ.get("HIVE_KEEP_BACK", 2))  # lessons of every kind never trained on, only measured (0: none)
+
+
+def kept_back(rows, n=None):
+    """{kind: [task, ...]}: the `n` lessons of each kind that are never trained on (a lesson is its task; its rows
+    share it). The loss of a lesson trained on says only that its rows were met; one never met says whether the kind
+    is learned (generation 35's new hard subjects ended at a loss of 0.4 to 1.6 on their own rows, and nothing said
+    what that meant for the tasks to come). Chosen by a hash of the task, so every slice of a child keeps back the
+    same ones, whatever order the rows come in; and since the rows only grow from one generation to the next, a
+    lesson kept back now was kept back in every generation before (the smallest two hashes of a larger set are new
+    ones or were already the smallest two).
+    Measured on the small DNA (t17, 160 passes, 2026-11-16): kept-back lessons of the two kinds taught 10 lessons each
+    went 0.51 -> 0.19 (a join) and 0.91 -> 0.38 (a module); of two kinds never taught, 1.57 -> 1.17 and 0.34 -> 0.25.
+    The untaught fall by about a quarter too (the lessons' common way of writing), the taught by more than half: read
+    a kind's fall beside an untaught one's, not alone."""
+    import zlib
+    n = KEEP_BACK if n is None else n
+    by = {}
+    for r in rows:
+        if r.get("who") == "lesson" and r.get("task"):
+            by.setdefault(r.get("kind") or "?", set()).add(r["task"])
+    return {k: sorted(ts, key=lambda t: (zlib.crc32(t.encode()), t))[:n] for k, ts in sorted(by.items()) if n > 0}
+
+
+def kept_loss(model, items, dev, cast, beat=None):
+    """{kind: [loss of each row]} of the lessons kept back, with the cell's weights as they are now: the same loss
+    as training's (the error on the answer's pieces), one row at a time with no gradient, so nothing is held beyond
+    one row's logits (an 8B cell trains in 14.7 of 15.6 GB). items: [(kind, (ids, k))] from train's encode."""
+    import torch
+    was = model.training
+    model.eval()  # no dropout: the same rows measured twice give the same number
+    out = {}
+    with torch.no_grad():
+        for j, (kind, (ids, k)) in enumerate(items):
+            if beat is not None:
+                beat["t"], beat["what"] = time.time(), f"the lessons kept back, row {j + 1} of {len(items)}"
+            ids = ids.to(dev)
+            with cast():
+                lg = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
+            out.setdefault(kind, []).append(torch.nn.functional.cross_entropy(lg.float().reshape(-1, lg.size(-1)), ids[:, -k:].reshape(-1)).item())
+            del lg
+    if was:
+        model.train()
+    return out
+
+
 def slice_rows(rows, k, n):
     """Slice k of n of the rows: each row in exactly one slice, chosen by its content (the same row in the same slice on
     every runner, whatever order the rows come in)."""
@@ -622,25 +668,45 @@ class Study:
     is the mean of its last three. A subject not measured yet counts 1.0 and is met before any measured one, so the
     first sweep meets every subject (rehearsing old work too) without waiting on luck. A row is met at most MOST
     times; a subject with none left drops out. Raw text ("read") and judged pairs ("judged") keep a fixed SHARE of
-    the passes each instead: their loss does not say what is left to learn."""
-    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
+    the passes each instead: their loss does not say what is left to learn.
 
-    def __init__(self, subjects, own=(), rng=None, most=None, weight=None):
-        """own: {subject: the share of its rows that are the cell's own organ}, or subjects that are wholly its own."""
+    New hard subjects (hard: this generation's rows of a kind of exam_hard, the lessons above all; see new_hard())
+    are studied until they are learned. Generation 35 met each lesson row 4 times at the most and its new hard
+    subjects ended at a loss of 0.4 to 1.6; walk a site was under GOAL in 4 of 23 slices. So while a new hard
+    subject's loss is GOAL or more, its rows may be met up to HARD_MOST times, and FIRST of the passes go to such
+    subjects. Those of `web` (the kinds that read the web, and the date sums on what was read) come first: first in
+    the first sweep, and WEB_ODDS times the odds among the subjects not learned yet (not all of their passes: a
+    slice of an hour or two could not give the 4 web kinds' lessons HARD_MOST meetings a row, and the other hard kinds
+    would get none). The other passes are picked by the odds above among the other subjects, so what is already
+    known is still rehearsed. Once under GOAL a new hard subject is one like the others again (MOST meetings a row).
+    Measured on the small DNA (t17, the same parent and 82 rows, 34 of them lessons, 20 minutes; 2026-11-17): the
+    13 new hard subjects ended at 0.35 to 2.04 with 4 meetings a row, and all 13 under 0.3 with this rule (6 to 20
+    passes each, 384 passes in all against 316); what was under 0.1 before stayed under 0.1. With HARD_MOST 16 the
+    fix row of a fact found on the open web met its limit at 0.76, so the limit is 32."""
+    FLOOR, OWN, MOST, SHARE, FIXED = 0.05, 3.0, 4, 0.03, ("read", "judged")  # SHARE was 0.10: g35words gave raw text 30 of 296 passes and its loss went 3.08 -> 2.99
+    GOAL, HARD_MOST, FIRST, WEB_ODDS = 0.3, 32, 0.75, 3.0
+
+    def __init__(self, subjects, own=(), rng=None, most=None, weight=None, hard=(), web=(), hard_most=None):
+        """own: {subject: the share of its rows that are the cell's own organ}, or subjects that are wholly its own.
+        hard: the new hard subjects; web: those of them that come first (both may name subjects that are not here)."""
         self.rng = rng or random.Random(0)
         self.most = self.MOST if most is None else most
+        self.hard_most = max(self.most, self.HARD_MOST if hard_most is None else hard_most)
         self.weight = self.OWN if weight is None else float(weight)
         self.own = {s: float(v) for s, v in own.items()} if isinstance(own, dict) else {s: 1.0 for s in own}
+        self.hard = {s for s in hard if s in subjects and subjects[s] and s not in self.FIXED}
+        self.web = {s for s in web if s in self.hard}
         self.queue, self.rows, self.passes, self.losses, self.first = {}, {}, {}, {}, {}
         for s, idx in subjects.items():
             if not idx:
                 continue
             q = []
-            for _ in range(self.most):  # each round of a subject's rows in its own order
+            for _ in range(self.hard_most if s in self.hard else self.most):  # each round of a subject's rows in its own order
                 r = list(idx)
                 self.rng.shuffle(r)
                 q += r
             self.queue[s], self.rows[s], self.passes[s], self.losses[s] = q[::-1], len(idx), 0, []
+        self.size = sum(len(q) for q in self.queue.values())  # the most passes there can be
         self.n = 0
 
     def loss(self, s):
@@ -650,17 +716,34 @@ class Study:
     def odds(self, s):
         return max(self.loss(s), self.FLOOR) * (1.0 + (self.weight - 1.0) * self.own.get(s, 0.0))
 
+    def behind(self, s):
+        """A new hard subject not learned yet: measured, and its loss GOAL or more."""
+        return s in self.hard and bool(self.losses[s]) and self.loss(s) >= self.GOAL
+
+    def open(self, s):
+        """Rows left to meet: up to HARD_MOST meetings a row while the subject is behind, MOST otherwise."""
+        return bool(self.queue[s]) and (self.behind(s) or self.passes[s] < self.rows[s] * self.most)
+
     def pick(self):
-        """(subject, row index), or None when every row has been met MOST times."""
-        alive = [s for s, q in self.queue.items() if q]
+        """(subject, row index), or None when every row has been met as often as it may be."""
+        alive = [s for s in self.queue if self.open(s)]
         if not alive:
             return None
         rest = [s for s in alive if s not in self.FIXED]
         s = next((f for f in self.FIXED if f in alive and self.passes[f] < self.SHARE * (self.n + 1)), None)
         if s is None:
             fresh = [x for x in rest if not self.losses[x]]
-            pool = fresh or rest or alive
-            s = self.rng.choices(pool, weights=[self.odds(x) for x in pool])[0]
+            # the first sweep meets the new web subjects first, then the other new hard ones, then the rest
+            fresh = [x for x in fresh if x in self.web] or [x for x in fresh if x in self.hard] or fresh
+            late = [x for x in rest if self.behind(x)]
+            others = [x for x in rest if not self.behind(x)]
+            if fresh:
+                pool = fresh
+            elif late and (not others or self.rng.random() < self.FIRST):
+                pool = late
+            else:
+                pool = others or rest or alive
+            s = self.rng.choices(pool, weights=[self.odds(x) * (self.WEB_ODDS if pool is late and x in self.web else 1.0) for x in pool])[0]
         self.passes[s] += 1
         self.n += 1
         return s, self.queue[s].pop()
@@ -674,6 +757,7 @@ class Study:
         return [{"subject": s, "rows": self.rows[s], "passes": self.passes[s],
                  "loss_first": round(self.first[s], 4) if s in self.first else None,
                  "loss_last": round(self.loss(s), 4) if self.losses[s] else None}
+                | ({"new_hard": True} if s in self.hard else {})
                 for s in sorted(self.rows, key=lambda x: -self.passes[x])]
 
 
@@ -692,6 +776,43 @@ def subject(row, new=False):
     if row.get("type") == "done":
         return "done" + " · new" * bool(new)
     return " · ".join([row.get("kind") or "?", row.get("type") or "row"] + ["new"] * bool(new))
+
+
+# The kinds whose lessons are studied first (Study): those read from the web, and the date sums on what was read.
+# Generation 35: walk a site was under a loss of 0.3 in 4 of 23 slices.
+WEB = ("walk a site over several pages", "a fact found on the open web", "a fact read and a date sum on it",
+       "a fact from a site and a date sum on it")
+
+
+def hard_kinds():
+    """The kinds of the hard exam (training/exam_hard.py MAKERS), read from its source: each maker returns (field,
+    kind, task, check) with the kind written out, and some makers reach the network before they return."""
+    import ast
+    src = ast.parse((ROOT / "training" / "exam_hard.py").read_text())
+    makers = next(n for n in src.body if isinstance(n, ast.Assign) and getattr(n.targets[0], "id", "") == "MAKERS")
+    names = {e.id for e in makers.value.elts}
+    out = set()
+    for fn in src.body:
+        if isinstance(fn, ast.FunctionDef) and fn.name in names:
+            for node in ast.walk(fn):
+                if isinstance(node, ast.Return) and isinstance(node.value, ast.Tuple) and len(node.value.elts) == 4:
+                    field, kind = node.value.elts[:2]
+                    if isinstance(field, ast.Constant) and isinstance(kind, ast.Constant) and str(field.value).startswith("hard"):
+                        out.add(kind.value)
+    return out
+
+
+def new_hard(subjects):
+    """(the new hard subjects, those of them of a WEB kind) among subject names (subject()): rows new to the line of
+    a hard kind, of any type but "done" (one subject for every kind, learned at once)."""
+    hard_set, hard, web = hard_kinds(), set(), set()
+    for s in subjects:
+        kind, _, rest = s.partition(" · ")
+        if rest.endswith(" · new") and kind in hard_set:
+            hard.add(s)
+            if kind in WEB:
+                web.add(s)
+    return hard, web
 
 
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
@@ -748,6 +869,12 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             seen.add(k)
             uniq.append(r)
     rows = uniq
+    # Lessons kept back (kept_back): chosen from all the rows before they are sliced, so every slice keeps back the
+    # same ones; no row of their tasks is trained on. Their rows are measured, not their "done" rows (an output ->
+    # DONE is learned at once in every kind, about 0.001, and says nothing).
+    back = {t: k for k, ts in kept_back(rows).items() for t in ts}
+    back_rows = [r for r in rows if r.get("who") == "lesson" and r.get("task") in back and r.get("type") != "done"]
+    rows = [r for r in rows if r.get("task") not in back]
     part = ""
     if shard:
         k, n = (int(x) for x in str(shard).split("/"))
@@ -797,7 +924,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # that way, one runner dead, one sitting in its first long row until the job's time was up.
         import psutil
         total = psutil.virtual_memory().total / 2**30
-        fits = int((total - ternary_base.held_gb() - 2.5) * 2**30 / (len(which) * model.config.hidden_size * (2 if half else 4) * 46))
+        # g38: 7 of 24 slices were lost ("the hosted runner lost communication": out of memory). The slices that lived
+        # and trained in 16 bits took rows up to 1037-1089 pieces and stood at 14.6-14.7 of 15.6 GB; those in 32 bits
+        # (rows up to about 500) at 14.2-14.5. A row's memory grows faster than its length (attention), and g38 gave
+        # every slice the generation's long lessons, so a 16-bit slice met many rows near its limit. It keeps 1 GB
+        # more spare: rows up to about 850 pieces there.
+        spare = 2.5 + (1.0 if half else 0.0)
+        fits = int((total - ternary_base.held_gb() - spare) * 2**30 / (len(which) * model.config.hidden_size * (2 if half else 4) * 46))
         if fits < max_len:
             log(f"this machine has {total:.1f} GB: rows of up to {max(256, fits)} pieces fit beside the DNA (asked for {max_len})", flush=True)
             max_len = max(256, fits)
@@ -985,16 +1118,36 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     import threading
     threading.Thread(target=watch, daemon=True).start()
     # The passes are not planned ahead from one timed row any more: the loop runs until the time is up, or until
-    # every row has been met Study.MOST times, or (with no time given, as in tests) for len(data) x epochs passes;
-    # which row comes next is the Study's pick, and the learning rate follows the share of the time used.
+    # every row has been met as often as the Study lets it (MOST times, HARD_MOST in a new hard subject not learned
+    # yet), or (with no time given, as in tests) for len(data) x epochs passes; which row comes next is the Study's
+    # pick, and the learning rate follows the share of the time used.
     by = {}
     for j, s in enumerate(tags):
         by.setdefault(s, []).append(j)
     own_share = {s: min(1.0, own_rows[s] / len(idx)) for s, idx in by.items() if own_rows.get(s)}
-    study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight)
-    passes = len(data) * study.most if minutes else min(int(len(data) * epochs), len(data) * study.most)
+    hard, web = new_hard(by)
+    study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight, hard=hard, web=web)
+    passes = study.size if minutes else min(int(len(data) * epochs), study.size)
     log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ up to x{weight:g} by its share, read and judged "
         f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
+    if study.hard:
+        log(f"{len(study.hard)} new hard subjects ({len(study.web)} of them web kinds, met first) are studied until their loss is under {Study.GOAL}: "
+            f"{Study.FIRST:.0%} of the passes, a row met up to {study.hard_most} times", flush=True)
+    # the lessons kept back, measured where the child starts (its parent pulled toward the trunk) and again at the end;
+    # the time the first measure took is kept for the second, out of the cell's own time
+    kept_items, kept_long = [], 0
+    for r in back_rows:
+        d = encode(r)
+        if d is None:
+            kept_long += 1
+        else:
+            kept_items.append((back[r["task"]], d[:2]))
+    t_kept = time.time()
+    kept_before = kept_loss(model, kept_items, dev, cast, beat) if kept_items else {}
+    spare = time.time() - t_kept
+    if back:
+        log(f"lessons kept back: {len(back)}, of {len(set(back.values()))} kinds, never trained on; {len(kept_items)} of their rows measured "
+            f"in {spare:.0f} s{f', {kept_long} too long' if kept_long else ''}", flush=True)
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     try:
         import ctypes
@@ -1006,7 +1159,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     prefix = (_Prefix(model, which[0], log, folder=GROW / f"{base}+{name}.prefix" if int8_base else None)
               if which[0] > 0 and not checkpoint and not gpu and os.environ.get("HIVE_PREFIX_CACHE", "1") != "0" else None)
     t0, running, step, hist, paired, i, held = time.time(), 0.0, 0, [], 0, 0, 0
-    budget = max(1.0, minutes * 60 - (t0 - born)) if minutes else 0
+    budget = max(1.0, minutes * 60 - (t0 - born) - spare) if minutes else 0
 
     def done_share():
         return max(i / max(1, passes), (time.time() - t0) / budget if minutes else 0.0)
@@ -1030,14 +1183,14 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             log(f"step {step} ({p:.0%} done, {sum(1 for q in study.queue.values() if q)} subjects left) loss {hist[-1]:.4f} "
                 f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}", flush=True)
     while i < passes:
-        if minutes and time.time() - born > minutes * 60:
+        if minutes and time.time() - born > minutes * 60 - spare:
             # Two trials were lost on 2026-11-14 because their jobs ran into the time limit with nothing saved: the
             # cell stops here and is kept.
             log(f"time is up after {i} passes: the cell is saved as it is", flush=True)
             break
         got = study.pick()
         if got is None:
-            log(f"every row has been met {study.most} times, after {i} passes", flush=True)
+            log(f"every row has been met as often as it may be ({study.most} times, up to {study.hard_most} for a new hard subject not learned yet), after {i} passes", flush=True)
             break
         s, idx = got
         ids, k = data[idx][:2]
@@ -1079,6 +1232,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     for x in subjects:
         f_, l_ = x["loss_first"], x["loss_last"]
         log(f"{x['subject']:<{width}} {x['rows']:>4} {x['passes']:>6} {'-' if f_ is None else f'{f_:.3f}':>6} {'-' if l_ is None else f'{l_:.3f}':>6}", flush=True)
+    kept_after = kept_loss(model, kept_items, dev, cast, beat) if kept_items else {}
+    mean = lambda v: round(sum(v) / len(v), 4) if v else None  # noqa: E731
+    kept = {k: {"lessons": sum(1 for x in back.values() if x == k), "rows": len(kept_before.get(k, [])),
+                "before": mean(kept_before.get(k, [])), "after": mean(kept_after.get(k, []))} for k in sorted(set(back.values()))}
+    if kept:
+        log(f"{'lessons kept back (never trained on), by kind':<{width}} rows before  after", flush=True)
+        for k, v in kept.items():
+            b_, a_ = v["before"], v["after"]
+            log(f"{k:<{width}} {v['rows']:>4} {'-' if b_ is None else f'{b_:.3f}':>6} {'-' if a_ is None else f'{a_:.3f}':>6}", flush=True)
     beat["on"] = False
     work = GROW / f"{base}+{name}"
     work.mkdir(parents=True, exist_ok=True)
@@ -1098,7 +1260,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
-            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects}
+            "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects, "kept_back": kept}
     # the adapter as the runtime reads it
     conv = ternary.source() / "convert_lora_to_gguf.py"
     where = Path(out_dir or ternary.ADAPTERS)
