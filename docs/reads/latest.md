@@ -1,19 +1,19 @@
-# The read of g41
+# The read of g42
 
-Run [44068651860](https://github.com/Arnav123-s/HiveMIND/actions/runs/44068651860), recorded 2026-11-17 16:57: the body was **kept**. the body grows: after 58 of 64 (easy 32 of 32, hard 26 of 32), before 49 of 64 (easy 29 of 32, hard 20 of 32) on 8 seeds
+Run [44131701531](https://github.com/Arnav123-s/HiveMIND/actions/runs/44131701531), recorded 2026-11-17 22:16: the body was **kept**. the body grows: after 54 of 64 (easy 31 of 32, hard 23 of 32), before 54 of 64 (easy 31 of 32, hard 23 of 32) on 8 seeds
 
 Written by the record job (`training/reads.py`), with nobody's hand. The rules are those of `docs/DECISIONS.md`.
 
 ## The numbers
 
-| What is measured | g41 | g39 (last record) | the body before (same seeds) |
+| What is measured | g42 | g41 (last record) | the body before (same seeds) |
 |---|---|---|---|
-| Easy kinds passed | 32 of 32 | 26 of 32 | 29 of 32 |
-| Hard kinds that have lessons | 22 of 25 | 7 of 22 | 17 of 25 |
-| Hard kinds never practised (held out) | 4 of 7 | 5 of 10 | 3 of 7 |
-| Right at the first try (practice) | 0.47 (45 of 96) | - | - |
-| Hours for one generation | 5.1 | - | - |
-| Generations recorded with nobody's hand | 0 | 0 | - |
+| Easy kinds passed | 31 of 32 | 32 of 32 | 31 of 32 |
+| Hard kinds that have lessons | 18 of 22 | 22 of 25 | 17 of 22 |
+| Hard kinds never practised (held out) | 5 of 10 | 4 of 7 | 6 of 10 |
+| Right at the first try (practice) | 0.58 (56 of 96) | 0.47 | - |
+| Hours for one generation | 5.3 | 5.1 | - |
+| Generations recorded with nobody's hand | 1 | 0 | - |
 
 ## The chain, by taught hard kind
 
@@ -21,19 +21,20 @@ lessons right by their own check -> rows that fit in training -> loss falls on l
 
 | kind | lessons right of made | rows left out | kept-back loss before -> after | gap to untaught (points) | child alone right | parent alone right | body right | body before |
 |---|---|---|---|---|---|---|---|---|
-| a fact from a site and a date sum on it | 12 of 12 | 45 of 266 | 0.451 -> 0.030 | +63 | 3 of 3 | - | 3 of 3 | 2 of 3 |
-| a join over two small tables | none made | not measured | not measured | not measured | 2 of 2 | - | 1 of 1 | 1 of 1 |
-| a log read and counted into a file | 12 of 12 | 0 of 190 | 0.823 -> 0.222 | +43 | 0 of 1 | - | 0 of 1 | 0 of 1 |
-| a module of two functions, with hidden tests | 13 of 13 | 35 of 380 | 0.632 -> 0.382 | +9 | 7 of 9 | - | 5 of 6 | 3 of 6 |
-| a number with given properties | none made | 0 of 38 | 0.750 -> 0.522 | +0 | 1 of 1 | - | 1 of 1 | 1 of 1 |
-| a fact read and a date sum on it | 13 of 13 | 57 of 152 | 0.294 -> 0.012 | +66 | 3 of 3 | - | 3 of 3 | 3 of 3 |
-| several facts fetched and laid out as a file | 12 of 12 | 71 of 342 | 0.377 -> 0.016 | +65 | 3 of 3 | - | 3 of 3 | 2 of 3 |
-| walk a site over several pages | 12 of 12 | not measured | 0.492 -> 0.022 | +65 | 5 of 5 | - | 5 of 5 | 5 of 5 |
-| a fact found on the open web | 12 of 12 | 0 of 209 | 1.027 -> 0.040 | +66 | 2 of 3 | - | 1 of 2 | 0 of 2 |
+| a fact from a site and a date sum on it | 13 of 13 | 94 of 414 (estimate) | 0.037 -> 0.005 | +44 | 4 of 4 | - | 4 of 4 | 2 of 4 |
+| a join over two small tables | none made | 64 of 108 (estimate) | not measured | not measured | 3 of 3 | - | 3 of 3 | 3 of 3 |
+| a log read and counted into a file | 13 of 13 | 1 of 234 (estimate) | 0.489 -> 0.064 | +43 | 3 of 5 | - | 1 of 3 | 0 of 3 |
+| a module of two functions, with hidden tests | none made | 46 of 108 (estimate) | 0.314 -> 0.224 | -15 | 2 of 5 | - | 1 of 3 | 3 of 3 |
+| a number with given properties | none made | 0 of 18 (estimate) | 0.618 -> 0.533 | -30 | 1 of 1 | - | 1 of 1 | 1 of 1 |
+| a fact read and a date sum on it | 12 of 12 | 36 of 72 (estimate) | 0.025 -> 0.005 | +35 | 1 of 1 | - | 1 of 1 | 1 of 1 |
+| several facts fetched and laid out as a file | none made | not measured | 0.043 -> 0.005 | +45 | - | - | - | - |
+| walk a site over several pages | 12 of 12 | 72 of 90 (estimate) | 0.032 -> 0.001 | +52 | 3 of 3 | - | 3 of 3 | 3 of 3 |
+| a fact found on the open web | 12 of 12 | 82 of 306 (estimate) | 0.140 -> 0.021 | +41 | 4 of 4 | - | 4 of 4 | 4 of 4 |
 
-- rows left out: by kind, this generation's rows each slice did not study, of those it was given (the slices say only their total too long: 52, 52, 18, 72, 149, 41, 143, 80, 15, 171, 141, 18, 52, 18, 15, 183, 136, 80, 177)
-- gap: the kind's fall beside the mean fall of the kinds with no lesson this generation (a number with given properties: 30 points)
-- child alone: the answers of this generation's cells (8) in the pulse; parent alone: those of their parents (g27sources, g28data, g34code, g34code2, g34data, g34sources, g34words, g34words2) in every arm. Two members sit a task, so these are few
+- rows left out: an estimate, the slices' records being older than rows_by_kind: by kind, this generation's rows each slice did not study, of those it was given, whether too long, skipped for memory or not reached in time (the slices say only their total too long: 139, 186, 46, 85, 22, 150, 30, 140, 22, 184, 196, 206, 59, 56, 158, 185, 18, 102). Rule 2 counts rows too long only, so it holds on no estimate
+- gap: the kind's fall beside the mean fall of the kinds with no lesson this generation (a module of two functions, with hidden tests, a number with given properties, several facts fetched and laid out as a file: 44 points)
+- child alone: the answers of this generation's cells (8) in the pulse; parent alone: those of their parents (g34sources, g39code2, g39code3, g39data, g39data2, g39sources, g39words, g39words2) in every arm. Two members sit a task, so these are few
+- parent alone: not measured; no parent sat a task of a taught hard kind (the pulse seats the trunk and the newest cells first; the paired gate's before arm seats the body before, parents among it)
 
 ![The chain by kind](../progress/chain.svg)
 
@@ -41,29 +42,33 @@ lessons right by their own check -> rows that fit in training -> loss falls on l
 
 | step | minutes |
 |---|---|
-| practice | 48 |
-| dream | 59 |
-| gather | 16 |
+| practice | 43 |
+| dream | 52 |
+| gather | 17 |
 | plan | 0 |
-| train | 175 |
+| train | 213 |
 | join | 2 |
 | merge | 2 |
-| gate | 54 |
+| gate | 31 |
 | record | 1 |
 
-From the first job to the last: **5.14 hours** (the bar is 5). Each step runs from its first job's start to its last job's end; practice and dream run side by side.
+From the first job to the last: **5.3 hours** (the bar is 5). Each step runs from its first job's start to its last job's end; practice and dream run side by side.
 
-Train slices lost: 1 of 20. Pulse seats whose server died: 0.
+Train slices lost: 2 of 20. Pulse seats whose server died: 0.
+
+Colab: not used (notebook not seen)
 
 ## Next piece
 
-next piece: T4: shorter lessons (rule 2: more than 1 row in 5 of the kind left out, for 2 of 9 taught hard kinds: a fact read and a date sum on it, several facts fetched and laid out as a file)
+next piece: K1: then K2 (wider) and M1 (the talk exam) (rule 6: taught hard kinds 12 of 23, two generations running, for 9 of 9 taught hard kinds: a fact from a site and a date sum on it, a join over two small tables, a log read and counted into a file, a module of two functions, with hidden tests, a number with given properties, a fact read and a date sum on it, several facts fetched and laid out as a file, walk a site over several pages, a fact found on the open web)
 
 | # | the chain shows | holds for |
 |---|---|---|
 | 1 | lessons right under 8 of 12 | 0 |
-| 2 | more than 1 row in 5 of the kind left out | 2: a fact read and a date sum on it, several facts fetched and laid out as a file |
+| 2 | more than 1 row in 5 of the kind left out | 0 |
 | 3 | kept-back gap under 15 points | 2: a module of two functions, with hidden tests, a number with given properties |
 | 4 | gap 15 or more, the child alone right more often than its parent, the body not | 0 |
-| 5 | gap 15 or more, the child alone not right | 1: a log read and counted into a file |
-| 6 | taught hard kinds 12 of 23, two generations running | 0 |
+| 5 | gap 15 or more, the child alone not right | 0 |
+| 6 | taught hard kinds 12 of 23, two generations running | 9 |
+
+Not measured this generation, so no rule could hold on it: rows left out.
