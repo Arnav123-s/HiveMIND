@@ -21,7 +21,6 @@ holds for the most taught hard kinds. It also draws the chain as bars by kind (d
 The parsing here is shared with scripts/read_generation.py (the reader run by hand). Needs nothing but Python, and
 runs nothing the hive wrote: names are taken from other jobs only when this repository knows them.
 """
-import ast
 import collections
 import json
 import os
@@ -44,40 +43,23 @@ KIND = r"[\w ,.:'()-]{1,80}"
 
 # ---- the kinds, read from the sources (no network) -------------------------------------------------------------------
 def maker_kinds():
-    """{maker: kind} of every hard maker of training/exam_hard.py: each returns (field, kind, task, check)."""
-    src = ast.parse((ROOT / "training" / "exam_hard.py").read_text())
-    out = {}
-    for fn in src.body:
-        if isinstance(fn, ast.FunctionDef) and fn.name.startswith("h_"):
-            for node in ast.walk(fn):
-                if isinstance(node, ast.Return) and isinstance(node.value, ast.Tuple) and len(node.value.elts) == 4:
-                    field, kind = node.value.elts[:2]
-                    if isinstance(field, ast.Constant) and isinstance(kind, ast.Constant) and str(field.value).startswith("hard"):
-                        out.setdefault(fn.name, kind.value)
-    return out
-
-
-def _assigned(path, name):
-    for n in ast.parse(Path(path).read_text()).body:
-        if isinstance(n, ast.Assign) and getattr(n.targets[0], "id", "") == name:
-            return n.value
-    return None
+    """{maker: kind} of every hard maker (training/kinds/, the kinds with HARD): each returns (field, kind, task,
+    check), its kind read from its source."""
+    from training import kinds
+    return {m.KIND: w[0] for m in kinds.HARD_KINDS if (w := kinds.written(m.KIND))}
 
 
 def taught_hard():
-    """{maker: kind} of the hard kinds that have lessons: training/lessons.SOLVERS less training/exam_hard.HELD_OUT."""
-    solvers = _assigned(ROOT / "training" / "lessons.py", "SOLVERS")
-    held = _assigned(ROOT / "training" / "exam_hard.py", "HELD_OUT")
-    names = {k.value for k in solvers.keys} if isinstance(solvers, ast.Dict) else set()
-    out_ = {e.value for e in held.elts} if isinstance(held, ast.Set) else set()
-    kinds = maker_kinds()
-    return {m: kinds[m] for m in sorted(names) if m in kinds and m not in out_}
+    """{maker: kind} of the hard kinds that have lessons: training/lessons.SOLVERS less the held-out kinds."""
+    from training import kinds
+    by = maker_kinds()
+    return {m: by[m] for m in sorted(kinds.SOLVERS) if m in by and m not in kinds.HELD_OUT}
 
 
 def held_out():
-    held = _assigned(ROOT / "training" / "exam_hard.py", "HELD_OUT")
-    kinds = maker_kinds()
-    return {kinds[e.value] for e in held.elts if e.value in kinds} if isinstance(held, ast.Set) else set()
+    from training import kinds
+    by = maker_kinds()
+    return {by[m] for m in kinds.HELD_OUT if m in by}
 
 
 # ---- the pulse (shared with scripts/read_generation.py) --------------------------------------------------------------

@@ -1,7 +1,7 @@
 import random
 from pathlib import Path
 
-from training import exam_hard as H
+from training.kinds import h_web as H  # the kind's own file (training/exam_hard keeps its old names)
 
 
 def test_a_fact_from_the_open_web_is_checked_against_every_value_wikidata_records(monkeypatch):
