@@ -2,69 +2,165 @@
 
 **The goal:** A hive of ternary nets, grown from one DNA, that does what it is asked (questions, conversation, tasks) and gets better at it by itself, generation after generation, on free CPUs.
 
-Drawn from `docs/knowledge.json` by `scripts/knowledge.py`; do not edit this page by hand. Every agent reads the file first and adds to it at the end of a cycle. How the hive is doing in numbers: [PROGRESS.md](PROGRESS.md). Who owns what, and the log of who is doing what: `docs/AGENTS.md`.
+Drawn from `docs/knowledge.json` (and the board and verdict table of `docs/PLAN.md`) by `scripts/knowledge.py`; do not edit this page by hand. Every agent reads the file first and adds to it at the end of a cycle. How the hive is doing in numbers: [PROGRESS.md](PROGRESS.md). Who owns what, and the log of who is doing what: `docs/AGENTS.md`.
 
 ## 1. The hive's loop: one generation
 
-It runs by itself on GitHub (`.github/workflows/grow.yml`), one generation after another. Each box names where the step lives.
+It runs by itself on GitHub (`.github/workflows/grow.yml`), one generation after another. Each box names where the step lives, the minutes it was measured to take, and its open problem with the board piece that owns it (red border: a problem is open).
 
 ```mermaid
-flowchart LR
-  practise["Practise and dream<br/>training/grow.py"]
-  lessons["Lessons, only where it has nothing right of its own<br/>training/lessons.py"]
-  gather["Gather checked rows<br/>training/grow.py"]
-  plan["Plan the children<br/>training/lineage.py"]
-  read["Read raw data and judged answers<br/>training/raw.py"]
-  trainc["Train each child<br/>training/ternary_base.py"]
-  join["Join each child's slices<br/>training/merge.py"]
-  trunk["Merge the trunk<br/>training/merge.py"]
-  pulse["Exam of the grown body<br/>training/exam.py"]
-  recordg["Record, move levels<br/>training/grow_record.py"]
-  graphs["Draw progress, weigh weak kinds<br/>training/progress.py"]
-  practise --> lessons
-  lessons --> gather
+flowchart TD
+  practise["Practise<br/>training/grow.py<br/>minutes: g38: 134 min on 12 runners<br/>open: the slowest runner sets the pace: task cap 1500 s, now 600 (L2)"]:::open
+  dreams["Dreams: failed tasks tried again<br/>training/grow.py<br/>minutes: g38: up to 47 min, on the practice runners<br/>open: behind practice on the same runners; now 8 runners of their own (L2)"]:::open
+  gather["Gather checked rows, make lessons<br/>training/lessons.py<br/>minutes: g38: 13 min<br/>open: 126 of 300 lessons right; the kinds that fail are not printed (R2)"]:::open
+  plan["Plan the children and their slices<br/>training/lineage.py<br/>minutes: not measured apart<br/>open: 24 train jobs over the 20-job limit; now at most 20 (L2)"]:::open
+  trainc["Train each slice (Study, T1)<br/>training/ternary_base.py<br/>minutes: 170-175 min a slice; g38 in two waves<br/>open: 7 of 24 slices lost to memory; 32-bit runners drop ~100 rows (T1)"]:::open
+  join["Join each child's slices<br/>training/merge.py<br/>minutes: not measured apart<br/>open: a child that lost slices is joined from fewer (L1)"]:::open
+  trunk["Merge the trunk<br/>training/merge.py<br/>minutes: not measured apart"]
+  pulse["Pulse: the grown body's exam, 4 seats<br/>training/exam.py<br/>minutes: g35: 60 min<br/>open: a dead seat leaves its seed out; re-sat by hand (L1)"]:::open
+  recordg["Record, move levels, draw progress<br/>training/grow_record.py<br/>minutes: not measured apart<br/>open: the hours of each job are not recorded (L3)"]:::open
+  verdictg["Verdict: read the generation<br/>scripts/read_generation.py<br/>minutes: by hand, after the record<br/>open: not written by the workflow yet (M3)"]:::open
+  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g34 ~8 h, g38 ~9-10 h; the bar is 5<br/>open: started or mended by hand (L3)"]:::open
+  practise --> dreams
+  dreams --> gather
   gather --> plan
-  plan --> read
-  read --> trainc
+  plan --> trainc
   trainc --> join
   join --> trunk
   trunk --> pulse
   pulse --> recordg
-  recordg --> graphs
-  graphs -->|the weak kinds and the levels steer the next generation| practise
-  rel[(rows and cells:<br/>release hive-grown)]
-  rec[(generations.jsonl<br/>and body.json)]
-  lessons -.-> rel
+  recordg --> verdictg
+  verdictg --> nextg
+  nextg -->|"the weak kinds and the levels steer it"| practise
+  rel[("rows and cells:<br/>release hive-grown")]
+  rec[("generations.jsonl<br/>and body.json")]
+  gather -.-> rel
   recordg -.-> rec
-  rec -.-> graphs
+  rec -.-> verdictg
+  classDef open stroke:#d03b3b,stroke-width:2px
 ```
 
-## 2. The maintainers' loop
+## 2. The agents' loop
 
-Every agent working on the hive follows it, cycle after cycle. Agents on other accounts cannot message each other; this file, `docs/AGENTS.md` and the pull requests are how they work together.
+Every agent working on the hive follows it, generation after generation. The verdict's branches are the rows of the verdict table in `docs/PLAN.md`; the red box lists the board pieces that still hold an open cause (section 3). Agents on other accounts cannot message each other; this file, `docs/AGENTS.md` and the pull requests are how they work together.
 
 ```mermaid
 flowchart TD
-  agents["Read docs/AGENTS.md and the other agents' pull requests"]
-  results["Read the newest record, runs and the members' programs"]
-  causes["Group failures by cause, add them here as findings"]
-  fix["Fix the cause where it lives, in a part you own"]
-  prove["Replay real failures, run the tests, then one real run"]
-  ship["Push; merge only with the owner's go-ahead"]
-  learn["Mark findings fixed, add the rule learned, redraw this graph"]
-  agents --> results
-  results --> causes
-  causes --> fix
-  fix --> prove
-  prove --> ship
-  ship --> learn
-  learn -->|next cycle| agents
+  readgen["Read the generation: scripts/read_generation.py RUN --compare ... --programs"]
+  verdict["The verdict table in docs/PLAN.md says the next piece"]
+  claim["Claim a board piece: a log line in docs/AGENTS.md, pushed first"]
+  build["Build it with smaller agents, in files you own"]
+  prove["Prove it cheapest first: replay, tests, the small DNA, a trial"]
+  yes["The owner's yes"]
+  merge["Merge to main; findings and fixes into docs/knowledge.json"]
+  next["The next generation runs on main"]
+  readgen --> verdict
+  verdict --> claim
+  claim --> build
+  build --> prove
+  prove --> yes
+  yes --> merge
+  merge --> next
+  next -->|next cycle| readgen
+  verdict -->|"Loss on new hard lessons still above 0.3"| pc_T1
+  pc_T1["T1: Passes go to the lessons not yet learned<br/>who: B"]
+  pc_T1 -.-> claim
+  verdict -->|"Loss low, members do not write the lesson's way"| pc_T3
+  pc_T3["T3: The lesson's key lines weigh more, or lesson rows come...<br/>who: C"]
+  pc_T3 -.-> claim
+  verdict -->|"Members write the lesson's way and fail on something else"| pc_R2
+  pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]
+  pc_R2 -.-> claim
+  verdict -->|"Web kinds unlearned"| pc_T1
+  vstop4["the line stops; the body goes on from the generation before"]:::open
+  verdict -->|"Easy kinds under 28 of 32"| vstop4
+  waiting["pieces with open causes (section 3)<br/>R2, T4, L2, T3"]:::open
+  waiting -.-> claim
   kj[(docs/knowledge.json)]
-  kj -.->|read first| agents
-  learn -.->|written| kj
+  kj -.->|read first| readgen
+  merge -.->|written| kj
+  classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
 
-## 3. The knowledge graph
+## 3. Findings, causes, fixes and the board
+
+What was seen (slanted) -> its cause -> its fix -> the board piece of `docs/PLAN.md` it belongs to. Green: fixed; red: still open (a red piece holds at least one open cause).
+
+```mermaid
+flowchart LR
+  pc_L1["L1: Generation 38 through<br/>who: B"]:::fixed
+  pc_L2["L2: A generation in 5 hours with no less work<br/>who: B"]:::open
+  pc_L3["L3: The line runs five generations with nobody's hand<br/>who: B"]:::fixed
+  pc_T1["T1: Passes go to the lessons not yet learned<br/>who: B"]:::fixed
+  pc_T2["T2: Lessons kept back<br/>who: B"]:::fixed
+  pc_T3["T3: The lesson's key lines weigh more, or lesson rows come...<br/>who: C"]:::open
+  pc_T4["T4: No hard lesson is lost to the length limit<br/>who: C (in work)"]:::open
+  pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]:::open
+  s_cpuflags[/"model server exit -4 (illegal instruction) on every start"/]
+  c_cpuflags["The runtime kept for one CPU was used on another of the same name that lacks some of its instructions"]:::fixed
+  x_cpuflags(["the kept runtime keyed by the CPU's instruction list (PR 73)"]):::fixed
+  s_cpuflags --> c_cpuflags --> x_cpuflags --> pc_L1
+  s_g35sibling[/"g35 beside g34: hard 6 of 24 against 6 of 32"/]
+  c_g35sibling["g35 trained from g28's body beside g34: the night's changes against the old way, same parents"]:::fixed
+  x_g35sibling(["read as a trial, not a generation"]):::fixed
+  s_g35sibling --> c_g35sibling --> x_g35sibling --> pc_L1
+  s_serverdeath[/"a pulse seat's server ended at once"/]
+  c_serverdeath["A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s'"]:::fixed
+  x_serverdeath(["the server says its exit code; logs kept (PR 61)"]):::fixed
+  s_serverdeath --> c_serverdeath --> x_serverdeath --> pc_L1
+  s_slicememory[/"g38: 7 of 24 train slices lost to memory, 49-133 min in"/]
+  c_slicememory["16-bit slices met many long lessons near their row limit, where a row's memory grows faster than its length, and ran out of memory"]:::fixed
+  x_slicememory(["a 16-bit slice keeps 1 GB more spare (PR 78)"]):::fixed
+  s_slicememory --> c_slicememory --> x_slicememory --> pc_L1
+  s_colaball[/"Colab offered all ~6 children of g38 at once"/]
+  c_colaball["The hand-off offered all of a generation's children to the notebook at once, which grows one at a time"]:::fixed
+  x_colaball(["only K children offered (HIVE_COLAB_CHILDREN, PR 74)"]):::fixed
+  s_colaball --> c_colaball --> x_colaball --> pc_L2
+  s_practicetail[/"g38 practice 134 min, its slowest runner 47 min of dreams + 84 of tasks"/]
+  c_practicetail["Practice waited on its slowest runner: dreams on the same runners and a 1500 s task cap"]:::fixed
+  x_practicetail(["dreams on 8 runners of their own, 600 s task cap (L2)"]):::fixed
+  s_practicetail --> c_practicetail --> x_practicetail --> pc_L2
+  s_rawmeasure[/"raw measuring 22-26 of a slice's 170 min (59-61 on 32-bit runners)"/]
+  c_rawmeasure["Measuring raw text by the DNA's own error takes an eighth of a slice's time"]:::open
+  x_rawmeasure(["no fix yet"]):::open
+  s_rawmeasure --> c_rawmeasure --> x_rawmeasure --> pc_L2
+  s_twowaves[/"g38: 8 children x 3 slices = 24 jobs over the 20-job limit"/]
+  c_twowaves["24 train jobs where only 20 run at once: 4 slices waited for a second wave"]:::fixed
+  x_twowaves(["at most 20 train jobs, uneven slices (L2)"]):::fixed
+  s_twowaves --> c_twowaves --> x_twowaves --> pc_L2
+  s_stalebody[/"g35's record conflicted with g34's"/]
+  c_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
+  x_stalebody(["the first job (fresh) ends a stale run"]):::fixed
+  s_stalebody --> c_stalebody --> x_stalebody --> pc_L3
+  s_fewpasses[/"new hard lessons end at loss 0.4-1.6"/]
+  c_fewpasses["New hard lessons ended training at a loss of 0.4 to 1.6: too few passes, web kinds least"]:::fixed
+  x_fewpasses(["Study: a new hard subject at loss 0.3 or more gets 3 in 4 passes, web kinds first (T1)"]):::fixed
+  s_fewpasses --> c_fewpasses --> x_fewpasses --> pc_T1
+  s_keptback[/"no lesson was ever kept out of training"/]
+  c_keptback["A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned"]:::fixed
+  x_keptback(["2 lessons a kind kept back, their loss before and after in each slice's record (T2)"]):::fixed
+  s_keptback --> c_keptback --> x_keptback --> pc_T2
+  s_modulestring[/"g35: module tasks failed with ''.join turned into .join"/]
+  c_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
+  x_modulestring(["no fix yet"]):::open
+  s_modulestring --> c_modulestring --> x_modulestring --> pc_T3
+  s_loglesson[/"log lessons median 1300 pieces: 6 of 15 left out, all 15 in 32 bits"/]
+  c_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::open
+  x_loglesson(["no fix yet: C (T4, in work): the lesson reads the file the runtime already saves"]):::open
+  s_loglesson --> c_loglesson --> x_loglesson --> pc_T4
+  s_rows32[/"32-bit runners (EPYC 7763) drop ~100 of 700-800 rows"/]
+  c_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::open
+  x_rows32(["no fix yet: C (T4, in work): shorter lessons"]):::open
+  s_rows32 --> c_rows32 --> x_rows32 --> pc_T4
+  s_lessonswrong[/"g38 gather: 126 of 300 lessons right"/]
+  c_lessonswrong["Most lessons made for a generation fail their own check, and the step does not say which kinds"]:::open
+  x_lessonswrong(["no fix yet"]):::open
+  s_lessonswrong --> c_lessonswrong --> x_lessonswrong --> pc_R2
+  classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
+  classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
+```
+
+## 4. Where the causes live
 
 The open problems that stand between the hive and the goal (six-sided), how each is measured (slanted), the causes found in the members' own work (green: fixed, red: still open), each inside the box of the file where it lives, with that file's owner.
 
@@ -97,24 +193,43 @@ flowchart LR
   slowtraining{{"A child of the 8B takes close to three hours to train on a free runner's CPU (B)"}}
   slowtraining --> goal
   slowtraining -.-|measured by| m_rows
+  hardkinds{{"Hard kinds with lessons are never learned (B)"}}
+  hardkinds --> goal
+  hardkinds -.-|measured by| m_split
+  hardkinds -.-|measured by| m_kinds
+  slowgeneration{{"A generation takes 8 to 10 hours; the bar is 5 (B)"}}
+  slowgeneration --> goal
+  slowgeneration -.-|measured by| m_hours
   m_score[/"Exam tasks passed, each generation"/]
   m_carry[/"Never-practised kinds passed"/]
   m_kinds[/"Every kind of task, weakest first"/]
   m_rows[/"Rows taught, each generation"/]
+  m_split[/"Hard, easy and held-out kinds passed, each generation"/]
+  m_hours[/"Hours of one generation, by step"/]
   subgraph p_practice["grow.py (B)"]
     f_agreedonly["Only members that agreed were taught, though the task's own check confirms each member"]:::fixed
     f_dreamonce["A dream took a failed task once; one cell that cannot see through it gave up the task for the night"]:::fixed
     f_flat["Practice drew every kind evenly; the weights read only the 1.7B's record"]:::fixed
     f_evenpractice["Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned"]:::fixed
+    f_practicetail["Practice waited on its slowest runner: dreams on the same runners and a 1500 s task cap"]:::fixed
+    f_slicememory["16-bit slices met many long lessons near their row limit, where a row's memory grows faster than its length, and ran out of memory"]:::fixed
+    f_fewpasses["New hard lessons ended training at a loss of 0.4 to 1.6: too few passes, web kinds least"]:::fixed
+    f_keptback["A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned"]:::fixed
   end
   subgraph p_lessons["lessons.py (B)"]
     f_teacherforever["Lessons would have taught every kind for ever, though the hive can learn most from its own work"]:::fixed
     f_typed["Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528)"]:::fixed
     f_nothingright["A kind never passed had nothing to learn from, so practising it more taught nothing"]:::fixed
     f_nothingrightfiles["The same for tasks that make a file: no right program, no rows"]:::fixed
+    f_lessonswrong["Most lessons made for a generation fail their own check, and the step does not say which kinds"]:::open
+    f_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::open
   end
   subgraph p_raw["raw.py (B)"]
     f_rawoff["Reading raw data and people's judged answers were built and never switched on in the line"]:::fixed
+    f_rawmeasure["Measuring raw text by the DNA's own error takes an eighth of a slice's time"]:::open
+  end
+  subgraph p_colab["colab.py (B)"]
+    f_colaball["The hand-off offered all of a generation's children to the notebook at once, which grows one at a time"]:::fixed
   end
   subgraph p_exam["exam.py (B)"]
     f_orphans["A task out of time left its program running, unwatched, and the runner starved"]:::fixed
@@ -127,6 +242,7 @@ flowchart LR
     f_defsonly["A program that only defines functions was taken for a typed answer and never run"]:::fixed
     f_emptysearch["A search that found nothing was taken as the answer"]:::fixed
     f_hintlog["The runtime's help was not counted, so learning on its own could not be seen"]:::fixed
+    f_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
   end
   subgraph p_sandbox["sandbox.py (A)"]
     f_given["Data written in the task was opened as a file that does not exist"]:::fixed
@@ -147,6 +263,7 @@ flowchart LR
     f_oom8b["The 8B DNA did not fit a 16 GB runner while training"]:::fixed
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
     f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::fixed
+    f_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::open
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
@@ -162,6 +279,10 @@ flowchart LR
     f_smallpulse["A pulse of 32 tasks cannot show one generation better than the last"]:::fixed
     f_g35sibling["g35 trained from g28's body beside g34: the night's changes against the old way, same parents"]:::fixed
     f_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
+    f_twowaves["24 train jobs where only 20 run at once: 4 slices waited for a second wave"]:::fixed
+  end
+  subgraph p_setup["action.yml (shared)"]
+    f_cpuflags["The runtime kept for one CPU was used on another of the same name that lacks some of its instructions"]:::fixed
   end
   f_orphans -->|blocked| deaths
   f_agreedonly -->|blocked| reasoning
@@ -198,6 +319,18 @@ flowchart LR
   f_g35sibling -->|blocked| selflearn
   f_serverdeath -->|blocked| deaths
   f_stalebody -->|blocked| deaths
+  f_cpuflags -->|blocked| deaths
+  f_colaball -->|blocked| slowgeneration
+  f_twowaves -->|blocked| slowgeneration
+  f_practicetail -->|blocked| slowgeneration
+  f_slicememory -->|blocked| deaths
+  f_fewpasses -->|blocked| hardkinds
+  f_keptback -->|blocked| hardkinds
+  f_lessonswrong -->|blocks| hardkinds
+  f_rows32 -->|blocks| hardkinds
+  f_loglesson -->|blocks| hardkinds
+  f_rawmeasure -->|blocks| slowgeneration
+  f_modulestring -->|blocks| files
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -216,51 +349,65 @@ flowchart LR
 | Answers are slow: one member decodes at a time | unclaimed | docs/KERNELS.md section 3 |
 | The taught body barely beats its untaught DNA: training adds little, the runtime's help does the work | B | trial run 31 (same exams): untaught DNA 8 and 7 of 16, the body's cells 10, 7, 10, 8. The levers, all in training: rows from every member the check confirms (rows_of takes only agreed ones; 28 of 77 failures were disagreements, some with a right member); right-against-wrong pairs on (--pairs, built, off); raw reading (--read, built, off). The measure: docs/selfreliance.csv (scripts/selfreliance.py) per generation: right_first_try up, hints_per_task down |
 | A child of the 8B takes close to three hours to train on a free runner's CPU | B | g25 to g28: 9 to 18 s a row, 170 minutes a child; on an L4 GPU it is minutes (training/colab.py, waiting for the owner's notebook) |
+| Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
+| A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (1 open, 39 fixed)
+## Causes found (6 open, 46 fixed)
 
-| Cause | Where | Status | By | Seen |
-|---|---|---|---|---|
-| Members fetched a known fact from addresses they made up | `team/solo.py` | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
-| A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
-| Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
-| A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
-| Reading raw data and people's judged answers were built and never switched on in the line | `training/raw.py` | fixed | B: every child now reads 40 raw pieces and 10 judged pairs (repository variables HIVE_READ, HIVE_JUDGED) | built 2026-11-14 on the 1.7B, never measured; first run on the 8B here: 36 drawn, measured, 12 kept |
-| A judged pair was capped as if it were one answer, though both are held while trained | `training/ternary_base.py` | fixed | B: a pair must fit one row's memory as a whole; judged texts cut to 900 characters | the first 8B test with judged pairs (the machine's limit was the larger cause: see the rule) |
-| Lessons would have taught every kind for ever, though the hive can learn most from its own work | `training/lessons.py` | fixed | B: lessons stop for a kind once the hive has 3 right programs of its own | g28 rows: 15 of 23 kinds already had their own right programs; 8 had none (websites, files, the open web) |
-| A dream took a failed task once; one cell that cannot see through it gave up the task for the night | `training/grow.py` | fixed | B: two tries, the second with another cell beside the trunk | g28: 5 of 24 dreams corrected in one try |
-| Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528) | `training/lessons.py` | fixed | B, lessons for 12 everyday kinds where every value is computed (213 of 213 right) | g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged |
-| An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` | fixed | B's sub-agent: agreement on a task of several parts counts only with every heading; members asked once more, plainly (a comment prints nothing) | g28 practice: 40 tasks of several parts, 3 agreed without any heading (2 lost only to that: c10002803_03, c10002803_04) |
-| A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` | fixed | B, lessons: 40 of 40 right on the live sites, tasks of several parts too | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
-| The same for tasks that make a file: no right program, no rows | `training/lessons.py` | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
-| Data written in the task was opened as a file that does not exist | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: 3 tasks, every member, every turn |
-| A module was written as a string and its quotes broke | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: rle.py, intervals.py |
-| A missing JSON key led to six turns of looking | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: boto3 upload_time |
-| A link without its site was fetched as is | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: /author/bob-marley |
-| A loop fetched one page again and again | `team/tools/sandbox.py` | fixed | A, PR 56 | g27: quotes pages 1 to 5 |
-| On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` | fixed | A, PR 56 | g27: a robot simulation's IndexError; two members fetched example.com |
-| A runaway program could fill the runner's memory | `team/tools/sandbox.py` | fixed | A, PR 56 | g25, g28 |
-| Practice drew every kind evenly; the weights read only the 1.7B's record | `training/grow.py` | fixed | B, PR 57 | the record of g24 and g27 |
-| Re-sitting an earlier run's cells still practised for two hours first | `.github/workflows/grow.yml` | fixed | A, PR 56 | cycle 1 of agent A |
-| The 8B DNA did not fit a 16 GB runner while training | `training/ternary_base.py` | fixed | PR 54 | g24: swapping, 30 to 162 s a row |
-| A child stalled on a CPU slow at 16-bit numbers | `training/ternary_base.py` | fixed | PR 54 | g25: the data child |
-| The release's rows were overwritten by an older copy | `training/grow_record.py` | fixed | PR 53 | g11's 170 rows |
-| The talker wrote its own answer where the task should go | `team/talk.py` | fixed | PR 53 | the first real conversation |
-| A key that is nowhere in the data was named and nothing more | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: 'release_date' asked of PyPI in 7 tasks; now the keys like it are named (urls[0].upload_time) |
-| .json() was called on a web page | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice and the trial: 9 tasks |
-| A page that does not say its encoding was read as Latin-1 | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: '£51.77' came as 'Â£51.77' on books.toscrape.com and float() failed |
-| Requests went without a User-Agent and Wikipedia refused them | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: 'Please set a user-agent' |
-| An address of None, a made-up host, a site glued to its path | `team/tools/sandbox.py` | fixed | A, PR 56 | g28 practice: Invalid URL 'None' twice, api.wikidata.org, books.toscrape.comcatalogue |
-| A module was saved but its member printed nothing and gave up | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: intervals.py saved for two members, no two answers alike |
-| A program that only defines functions was taken for a typed answer and never run | `team/solo.py` | fixed | A, PR 56 | found while testing silentmodule |
-| A search that found nothing was taken as the answer | `team/solo.py` | fixed | A, PR 56 | trial of g27's exam: 'No ERROR lines found.' on a log full of them |
-| The runtime's help was not counted, so learning on its own could not be seen | `team/solo.py` | fixed | A, PR 56 | 2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py |
-| Training passes go to rows the cells already know: loss 0.05, nothing left to learn there | `training/ternary_base.py` | fixed | B (sub-agent): training picks subjects by their loss (training/grow.py Study), each row at most 4 times; the 1.7B: the subjects with the highest loss got the passes | g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows |
-| Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned | `training/grow.py` | fixed | B: practice drawn by s(1 - f) from per-kind counts of some member right and body right (cells/body.json kinds) | edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed |
-| A pulse of 32 tasks cannot show one generation better than the last | `.github/workflows/grow.yml` | fixed | B: the pulse on 4 seeds; hard, easy and several recorded apart and drawn (progress/parts.svg) | g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice |
-| g35 trained from g28's body beside g34: the night's changes against the old way, same parents | `.github/workflows/grow.yml` | fixed | A | run 43827930978, seeds 1-3: easy 19 of 24, hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. Inside the noise on hard; the easy losses are mostly web kinds counted as easy. A trial beside g34, not a generation |
-| A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s' | `team/ternary.py` | fixed | A, PR 61 | g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs |
-| A scheduled run queued behind a running generation grew from the body before it and its record conflicted | `.github/workflows/grow.yml` | fixed | A, PR 61 | g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs |
+| Cause | Where | Piece | Status | By | Seen |
+|---|---|---|---|---|---|
+| Members fetched a known fact from addresses they made up | `team/solo.py` |  | open | B: lessons now show known facts written into the program (m_know); A: the runtime could say a host does not exist | talk test 2026-11-15: the capital of Australia from api.example.com, all three members |
+| Most lessons made for a generation fail their own check, and the step does not say which kinds | `training/lessons.py` | R2 | open |  | 2026-11-16 23:31: 300 lessons made, 126 right by their checks (258 rows); 13 kinds left to the hive's own rows; read at the verdict |
+| Runners that train in 32 bits leave out every row over about 500 pieces | `training/ternary_base.py` | T4 | open | C (T4, in work): shorter lessons | g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB |
+| The log lesson copies the log into its program, so it is too long to be taught | `training/lessons.py` | T4 | open | C (T4, in work): the lesson reads the file the runtime already saves | 2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit |
+| Measuring raw text by the DNA's own error takes an eighth of a slice's time | `training/raw.py` | L2 | open |  | 2026-11-16 23:09, the job logs of g33, g35 and g38 |
+| Members wrote a module as f.write() strings and broke their own quotes | `team/solo.py` | T3 | open |  | 2026-11-16 22:55, A's read of g35: g35 made no module lessons; the lesson writes the module with inspect.getsource; g38 says whether members now write it the lesson's way |
+| A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` |  | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
+| Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` |  | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
+| A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` |  | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
+| Reading raw data and people's judged answers were built and never switched on in the line | `training/raw.py` |  | fixed | B: every child now reads 40 raw pieces and 10 judged pairs (repository variables HIVE_READ, HIVE_JUDGED) | built 2026-11-14 on the 1.7B, never measured; first run on the 8B here: 36 drawn, measured, 12 kept |
+| A judged pair was capped as if it were one answer, though both are held while trained | `training/ternary_base.py` |  | fixed | B: a pair must fit one row's memory as a whole; judged texts cut to 900 characters | the first 8B test with judged pairs (the machine's limit was the larger cause: see the rule) |
+| Lessons would have taught every kind for ever, though the hive can learn most from its own work | `training/lessons.py` |  | fixed | B: lessons stop for a kind once the hive has 3 right programs of its own | g28 rows: 15 of 23 kinds already had their own right programs; 8 had none (websites, files, the open web) |
+| A dream took a failed task once; one cell that cannot see through it gave up the task for the night | `training/grow.py` |  | fixed | B: two tries, the second with another cell beside the trunk | g28: 5 of 24 dreams corrected in one try |
+| Values typed instead of computed ('pocket' backwards as 'etok', 680 less 15% as 528) | `training/lessons.py` |  | fixed | B, lessons for 12 everyday kinds where every value is computed (213 of 213 right) | g28 practice: two members agreed on 'etok'; 'LANCERN'; 528 for 578; code to be fixed run unchanged |
+| An agreed answer without the PART headings was accepted, so every part failed | `team/solo.py` |  | fixed | B's sub-agent: agreement on a task of several parts counts only with every heading; members asked once more, plainly (a comment prints nothing) | g28 practice: 40 tasks of several parts, 3 agreed without any heading (2 lost only to that: c10002803_03, c10002803_04) |
+| A kind never passed had nothing to learn from, so practising it more taught nothing | `training/lessons.py` |  | fixed | B, lessons: 40 of 40 right on the live sites, tasks of several parts too | g24 to g27: walk a site, operate a website, a log into a file, a module: 0 passed, so 0 rows |
+| The same for tasks that make a file: no right program, no rows | `training/lessons.py` |  | fixed | B, lessons | g27: a log into a file 0 of 2, a module 0 of 2 |
+| Data written in the task was opened as a file that does not exist | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g27: 3 tasks, every member, every turn |
+| A module was written as a string and its quotes broke | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g27: rle.py, intervals.py |
+| A missing JSON key led to six turns of looking | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g27: boto3 upload_time |
+| A link without its site was fetched as is | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g27: /author/bob-marley |
+| A loop fetched one page again and again | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g27: quotes pages 1 to 5 |
+| On a pure calculation's error, members were told to fetch a page and look | `team/solo.py` |  | fixed | A, PR 56 | g27: a robot simulation's IndexError; two members fetched example.com |
+| A runaway program could fill the runner's memory | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g25, g28 |
+| Practice drew every kind evenly; the weights read only the 1.7B's record | `training/grow.py` |  | fixed | B, PR 57 | the record of g24 and g27 |
+| Re-sitting an earlier run's cells still practised for two hours first | `.github/workflows/grow.yml` |  | fixed | A, PR 56 | cycle 1 of agent A |
+| The 8B DNA did not fit a 16 GB runner while training | `training/ternary_base.py` |  | fixed | PR 54 | g24: swapping, 30 to 162 s a row |
+| A child stalled on a CPU slow at 16-bit numbers | `training/ternary_base.py` |  | fixed | PR 54 | g25: the data child |
+| The release's rows were overwritten by an older copy | `training/grow_record.py` |  | fixed | PR 53 | g11's 170 rows |
+| The talker wrote its own answer where the task should go | `team/talk.py` |  | fixed | PR 53 | the first real conversation |
+| A key that is nowhere in the data was named and nothing more | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g28 practice: 'release_date' asked of PyPI in 7 tasks; now the keys like it are named (urls[0].upload_time) |
+| .json() was called on a web page | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g28 practice and the trial: 9 tasks |
+| A page that does not say its encoding was read as Latin-1 | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g28 practice: '£51.77' came as 'Â£51.77' on books.toscrape.com and float() failed |
+| Requests went without a User-Agent and Wikipedia refused them | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g28 practice: 'Please set a user-agent' |
+| An address of None, a made-up host, a site glued to its path | `team/tools/sandbox.py` |  | fixed | A, PR 56 | g28 practice: Invalid URL 'None' twice, api.wikidata.org, books.toscrape.comcatalogue |
+| A module was saved but its member printed nothing and gave up | `team/solo.py` |  | fixed | A, PR 56 | trial of g27's exam: intervals.py saved for two members, no two answers alike |
+| A program that only defines functions was taken for a typed answer and never run | `team/solo.py` |  | fixed | A, PR 56 | found while testing silentmodule |
+| A search that found nothing was taken as the answer | `team/solo.py` |  | fixed | A, PR 56 | trial of g27's exam: 'No ERROR lines found.' on a log full of them |
+| The runtime's help was not counted, so learning on its own could not be seen | `team/solo.py` |  | fixed | A, PR 56 | 2026-11-15: every hint is now named in each task's events (team/solo.HINTS) and counted by scripts/selfreliance.py |
+| Training passes go to rows the cells already know: loss 0.05, nothing left to learn there | `training/ternary_base.py` |  | fixed | B (sub-agent): training picks subjects by their loss (training/grow.py Study), each row at most 4 times; the 1.7B: the subjects with the highest loss got the passes | g24code 1.23 to 0.16 in 83 steps; g25code starts at 0.04; g28code 0.096 to 0.048 over 430 passes of 1721 weighted rows |
+| Practice weighs a kind passed 2 of 2 and one passed 0 of 2 the same, so half of it goes to kinds already learned | `training/grow.py` |  | fixed | B: practice drawn by s(1 - f) from per-kind counts of some member right and body right (cells/body.json kinds) | edge_weights: p(1 - p) with one pass and one failure added gives 0.19 to both; g28 practice 37 right of 100, its rows all of kinds already passed |
+| A pulse of 32 tasks cannot show one generation better than the last | `.github/workflows/grow.yml` |  | fixed | B: the pulse on 4 seeds; hard, easy and several recorded apart and drawn (progress/parts.svg) | g27 15 of 32, g28 18 of 32: the difference is three tasks, two of them one held-out kind passed twice |
+| g35 trained from g28's body beside g34: the night's changes against the old way, same parents | `.github/workflows/grow.yml` | L1 | fixed | A | run 43827930978, seeds 1-3: easy 19 of 24, hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. Inside the noise on hard; the easy losses are mostly web kinds counted as easy. A trial beside g34, not a generation |
+| A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s' | `team/ternary.py` | L1 | fixed | A, PR 61 | g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs |
+| A scheduled run queued behind a running generation grew from the body before it and its record conflicted | `.github/workflows/grow.yml` | L3 | fixed | A, PR 61 | g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs |
+| The runtime kept for one CPU was used on another of the same name that lacks some of its instructions | `.github/actions/hive/action.yml` | L1 | fixed | B, PR 73: the kept runtime is keyed by the CPU's instruction list; each new kind of CPU builds once (25 min) | 2026-11-16: g35 pulse seed 4 and g38 practice runner 1 (all 8 of its tasks lost); two runners named AMD EPYC 9V74 offer different instructions |
+| The hand-off offered all of a generation's children to the notebook at once, which grows one at a time | `training/colab.py` | L2 | fixed | B, PR 74: only K children offered (repository variable HIVE_COLAB_CHILDREN, 1 unless set), a different organ each generation, 70/K minutes each (60 at most) | 2026-11-16 22:29: the notebook grows one child in up to 60 min and a child waits 90, so 4-5 would have trained alone on one runner for ~80 min; the owner stopped the notebook for g38 |
+| 24 train jobs where only 20 run at once: 4 slices waited for a second wave | `.github/workflows/grow.yml` | L2 | fixed | B (L2, on main 4305dcc): 8 children as 4 of 3 slices and 4 of 2, the extra slice turning with the run number; proof is g39 | 2026-11-16 23:09: g38's last 4 slices started ~01:51, so the generation takes ~9-10 h |
+| Practice waited on its slowest runner: dreams on the same runners and a 1500 s task cap | `training/grow.py` | L2 | fixed | B (L2, on main 4305dcc): dreams on 8 runners of their own beside the 12 practice runners, a 600 s cap in practice and dreams; expected ~63 min, proof is g39 | 2026-11-16 23:09: 2 tasks hit the 1500 s cap; the slowest right practice task took 518 s, the slowest corrected dream 242 s |
+| 16-bit slices met many long lessons near their row limit, where a row's memory grows faster than its length, and ran out of memory | `training/grow.py` | L1 | fixed | B, PR 78 (training/grow.py): a 16-bit slice keeps 1 GB more spare, rows up to about 850 pieces | 2026-11-17 02:01: every lost slice 'the hosted runner lost communication', no log kept; finished 16-bit slices at 14.6-14.7 of 15.6 GB (rows up to 1037-1089 pieces); every child kept at least one slice |
+| New hard lessons ended training at a loss of 0.4 to 1.6: too few passes, web kinds least | `training/grow.py` | T1 | fixed | B (T1, Study in training/grow.py, on main): rows met up to 32 times (others 4), web kinds weigh 3 times and come first; small DNA: 13 of 13 new hard subjects under 0.3 with it, 0 of 13 without; the line half is read in g39 | g35: walk a site under 0.3 in 4 of 23 slices (mean 0.64), the open web 19 of 37, site + date sum 13 of 25 |
+| A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned | `training/grow.py` | T2 | fixed | B (T2, on main): kept_back in each slice's record, read by scripts/read_generation.py (2b); read the gap between taught and untaught, not the drop | small DNA: taught kinds -58 to -63% (h_join 0.514 -> 0.192, h_module 0.906 -> 0.379), untaught -26 to -27% (h_search 1.573 -> 1.166, h_log 0.335 -> 0.246) |
 
 ## Rules learned
 
@@ -280,6 +427,9 @@ flowchart LR
 - Ending a task ends everything it started: a process in its own session outlives its parent, and the watch over it dies with the parent.
 - Read the training loss before buying training time, and the exam by kind before its score: a loss near zero says the rows hold nothing new, and a score of one half can be half the kinds always and half never.
 - Write a finding into docs/AGENTS.md and push it the moment it is found: a session can stop at any time, and the other agents build on the older picture meanwhile.
+- A CPU's name does not say what it can run: key anything built for a CPU by its instruction list.
+- Count the jobs a step makes against the 20 that run at once: one job over makes a second wave and hours more.
+- Judge whether a kind was learned on lessons kept out of training, read beside a kind never taught.
 
 ## The parts
 
@@ -300,5 +450,7 @@ flowchart LR
 | Talking with the hive | `team/talk.py` | B | one word decides: talk is answered at once, work goes to the members |
 | The ternary runtime | `team/ternary.py` | B | serves the DNA and switches cells per request |
 | The line of generations | `.github/workflows/grow.yml` | shared | practise, gather, plan, train, merge, exam, record, then the next generation |
+| Setting up a runner | `.github/actions/hive/action.yml` | shared | fetches the DNA and the kept runtime (built once for each kind of CPU) before any step runs on a runner |
+| Reading a generation | `scripts/read_generation.py` | C | the pulse by hard kind beside other runs, every slice's passes and loss on new hard subjects, kept-back lessons, lessons made, every failed hard task |
 
-Agents: **A**: Claude, session nice-bell, branch claude/nice-bell-8a5dm4, pull request 56: the members' runtime and loop; **B**: Claude, session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: training, practice, lessons, progress, talking, this graph; the website problem; **shared**: nobody owns it: small commits, main merged first, said in the log.
+Agents: **A**: session nice-bell, branch claude/nice-bell-8a5dm4: the members' runtime and loop; stopped, its usage nearly spent (its files worked on by C's smaller agents); **B**: session vigilant-brahmagupta, branch claude/vigilant-brahmagupta-rz3ab7: the line and training time (training, practice, lessons, progress, talking, this graph); **C**: session upbeat-rubin, branch claude/upbeat-rubin-ybiulz: the commander (docs/PLAN.md, the board, the verdict after each generation); **shared**: nobody owns it: small commits, main merged first, said in the log.
