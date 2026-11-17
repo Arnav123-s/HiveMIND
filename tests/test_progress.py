@@ -58,7 +58,8 @@ def _maker(kind):
 
 def test_ladder_practice_is_drawn_where_the_exams_show_the_body_at_its_edge(tmp_path, monkeypatch):
     rec, _ = _record(tmp_path)
-    w = grow.edge_weights("t80", record=rec)
+    (tmp_path / "body.json").write_text("{}")  # not the repository's body, which each record changes (g38 gave it kinds)
+    w = grow.edge_weights("t80", record=rec, body=tmp_path / "body.json")
     assert set(w) == {"days between two dates", "operate a website", "write and run a program", "a unit conversion"}
     assert grow.edge_weights("t17", record=rec) == {}  # the 1.7B's record has no kinds: nothing to say about the 8B
     from training import exam_hard
