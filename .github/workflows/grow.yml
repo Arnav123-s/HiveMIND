@@ -225,7 +225,9 @@ jobs:
     # 3 dreams (24, as 12 of 2 were) and the 12 practice runners make 20 jobs, as many as run at once; with the 600 s
     # cap a dream takes at most two tries of 10 minutes, so both stages end in about an hour.
     needs: fresh
-    if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run && inputs.dreams != '0' }}
+    # format(): with no inputs (a run started by the schedule, by the line itself or by hand with none) inputs.dreams is
+    # null, and null != '0' is false in an expression (both turn into the number 0): g39's dreams were skipped so
+    if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run && format('{0}', inputs.dreams) != '0' }}
     runs-on: ubuntu-latest
     timeout-minutes: 150
     strategy:
@@ -860,7 +862,7 @@ jobs:
         # Only the line on main, only after a record that went through, never a trial: a broken run does not start
         # another, and the nightly schedule starts the line again if it has stopped. To stop it: set the repository
         # variable HIVE_LOOP to "stop" (Settings, Secrets and variables, Actions, Variables), or disable the workflow.
-        if: ${{ github.ref_name == 'main' && !inputs.trial && !inputs.versus && !inputs.cells_from_run && inputs.loop != '0' && vars.HIVE_LOOP != 'stop' }}
+        if: ${{ github.ref_name == 'main' && !inputs.trial && !inputs.versus && !inputs.cells_from_run && format('{0}', inputs.loop) != '0' && vars.HIVE_LOOP != 'stop' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
