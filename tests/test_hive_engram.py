@@ -108,7 +108,8 @@ def test_runtime_file_name_follows_the_engrams_folder(tmp_path):
     assert hive_engram.files("t80", tmp_path)["gguf"] == tmp_path / "t80+hive.gguf"
 
 
-def test_fold_is_the_weighted_average_at_the_trunks_rank(tmp_path):
+@pytest.mark.parametrize("mode,keep", [("add", 1.0), ("average", 0.75)])
+def test_fold_adds_or_averages_at_the_trunks_rank(tmp_path, mode, keep):
     home = tmp_path / "engrams"
     home.mkdir()
     trunk, hive = edit(4, seed=1), edit(2, seed=2)
@@ -119,11 +120,13 @@ def test_fold_is_the_weighted_average_at_the_trunks_rank(tmp_path):
     merge.save(hive, home / "t17+hive.safetensors")
     (home / "t17+hive.gguf").write_bytes(b"gguf")
     write_rows(home / "hive_rows.jsonl", [row(1)])
-    line = hive_engram.fold(tmp_path / "out.safetensors", tmp_path / "trunk.safetensors", base="t17", weight=0.25, gen="g40", home=home, log=lambda *a: None)
+    kw = {} if mode == "add" else {"mode": mode}  # add is the default
+    line = hive_engram.fold(tmp_path / "out.safetensors", tmp_path / "trunk.safetensors", base="t17", weight=0.25, gen="g40", home=home,
+                            log=lambda *a: None, **kw)
     out = merge.load(tmp_path / "out.safetensors")
-    assert line["rank"] == 4 and line["folded"]
+    assert line["rank"] == 4 and line["folded"] and line["mode"] == mode
     assert all(a.shape[0] == 4 and b.shape[1] == 4 for a, b in out.values())
-    want = {m: 0.75 * product(trunk).get(m, 0) + 0.25 * product(hive).get(m, 0) for m in set(trunk) | set(hive)}
+    want = {m: keep * product(trunk).get(m, 0) + 0.25 * product(hive).get(m, 0) for m in set(trunk) | set(hive)}  # add: the trunk is not shrunk
     got = product(out)
     assert set(got) == set(want)
     for m, w in want.items():
@@ -135,17 +138,18 @@ def test_fold_is_the_weighted_average_at_the_trunks_rank(tmp_path):
     assert hive_engram.read_rows(home / "hive_index.jsonl")[-1]["what"] == "fold"
 
 
-def test_fold_cuts_to_the_trunks_rank(tmp_path):
+@pytest.mark.parametrize("mode,keep", [("add", 1.0), ("average", 0.5)])
+def test_fold_cuts_to_the_trunks_rank(tmp_path, mode, keep):
     home = tmp_path / "engrams"
     home.mkdir()
     trunk, hive = edit(3, seed=4), edit(3, seed=5)
     merge.save(trunk, tmp_path / "trunk.safetensors")
     merge.save(hive, home / "t17+hive.safetensors")
-    hive_engram.fold(tmp_path / "out", tmp_path / "trunk.safetensors", weight=0.5, gen="g1", home=home, log=lambda *a: None)
+    hive_engram.fold(tmp_path / "out", tmp_path / "trunk.safetensors", weight=0.5, gen="g1", home=home, mode=mode, log=lambda *a: None)
     out = merge.load(tmp_path / "out" / "adapter_model.safetensors")
     assert json.loads((tmp_path / "out" / "adapter_config.json").read_text())["r"] == 3
     for m, (a, b) in out.items():
-        full = 0.5 * product(trunk)[m] + 0.5 * product(hive)[m]
+        full = keep * product(trunk)[m] + 0.5 * product(hive)[m]
         u, s, vt = np.linalg.svd(full)
         best = (u[:, :3] * s[:3]) @ vt[:3]
         assert a.shape[0] == 3 and np.allclose(b @ a, best, atol=1e-4)
@@ -166,6 +170,10 @@ def test_command_line():
     assert (a.cmd, a.rows, a.base, a.replay, a.rank, a.steps, a.home) == ("update", "rows.jsonl", "t80", 0.3, 4, 10, None)
     a = hive_engram.parse(["fold", "out", "trunk.safetensors", "--weight", "0.1", "--gen", "g41", "--home", "/x"])
     assert (a.cmd, a.trunk_out, a.trunk_edit, a.base, a.weight, a.gen, a.home, a.rank) == ("fold", "out", "trunk.safetensors", "t17", 0.1, "g41", "/x", None)
+    assert a.mode == "add"
+    assert hive_engram.parse(["fold", "out", "trunk.safetensors", "--mode", "average"]).mode == "average"
+    with pytest.raises(SystemExit):
+        hive_engram.parse(["fold", "out", "trunk.safetensors", "--mode", "mean"])
     with pytest.raises(SystemExit):
         hive_engram.parse([])
 
@@ -174,3 +182,33 @@ def test_main_runs_fold(tmp_path, capsys):
     merge.save(edit(2, seed=7), tmp_path / "trunk.safetensors")
     assert hive_engram.main(["fold", str(tmp_path / "out.safetensors"), str(tmp_path / "trunk.safetensors"), "--home", str(tmp_path / "e")]) == 0
     assert json.loads(capsys.readouterr().out.splitlines()[-1])["what"] == "fold"
+
+
+def test_fold_refuses_an_unknown_mode(tmp_path):
+    merge.save(edit(2, seed=8), tmp_path / "trunk.safetensors")
+    with pytest.raises(ValueError, match="fold mode"):
+        hive_engram.fold(tmp_path / "out.safetensors", tmp_path / "trunk.safetensors", home=tmp_path / "e", mode="mean", log=lambda *a: None)
+
+
+def test_add_keeps_the_trunk_whole_where_the_hive_has_nothing(tmp_path):
+    """The dilution the add mode ends: a module only the trunk trains is kept at full strength by add, shrunk by
+    average."""
+    home = tmp_path / "engrams"
+    home.mkdir()
+    trunk = edit(4, mods=("t",), seed=9)
+    hive = edit(2, mods=("h",), seed=10)
+    merge.save(trunk, tmp_path / "trunk.safetensors")
+    for mode, keep in (("add", 1.0), ("average", 0.8)):
+        merge.save(hive, home / "t17+hive.safetensors")
+        hive_engram.fold(tmp_path / f"{mode}.safetensors", tmp_path / "trunk.safetensors", weight=0.2, gen=mode, home=home, mode=mode, log=lambda *a: None)
+        got = product(merge.load(tmp_path / f"{mode}.safetensors"))
+        assert np.allclose(got["t"], keep * product(trunk)["t"], atol=1e-4)
+        assert np.allclose(got["h"], 0.2 * product(hive)["h"], atol=1e-4)
+
+
+def test_merge_without_normalizing_is_the_weighted_sum():
+    a, b = edit(2, mods=("m",), seed=11), edit(2, mods=("m",), seed=12)
+    out, _ = merge.merge([a, b], [1.0, 0.5], rank=4, normalize=False)
+    assert np.allclose(product(out)["m"], product(a)["m"] + 0.5 * product(b)["m"], atol=1e-4)
+    out, _ = merge.merge([a, b], [1.0, 0.5], rank=4)  # as before: the average
+    assert np.allclose(product(out)["m"], (product(a)["m"] + 0.5 * product(b)["m"]) / 1.5, atol=1e-4)

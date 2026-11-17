@@ -58,15 +58,17 @@ def _cut(a_stack, b_side, rank):
     return (root[:, None] * (vt[:r] @ qa.T)).astype(np.float32), ((qb @ u[:, :r]) * root[None, :]).astype(np.float32), kept
 
 
-def merge(edits, weights=None, rank=16):
+def merge(edits, weights=None, rank=16, normalize=True):
     """The weighted average of several edits, cut back to `rank`: ({module: (A, B)}, the least share of energy any
-    module kept). A module that only some edits train is averaged over all of them (the others add nothing there)."""
+    module kept). A module that only some edits train is averaged over all of them (the others add nothing there).
+    normalize=False: the weighted sum, the weights as given (training/hive_engram.py adds its engram to the trunk)."""
     if not edits:
         raise ValueError("nothing to merge")
     w = np.array(weights if weights is not None else [1.0] * len(edits), dtype=np.float64)
     if len(w) != len(edits) or w.sum() <= 0:
         raise ValueError("one weight for each edit, not all zero")
-    w = w / w.sum()
+    if normalize:
+        w = w / w.sum()
     out, least = {}, 1.0
     for name in sorted({k for e in edits for k in e}):
         have = [(wi, e[name]) for wi, e in zip(w, edits) if name in e]

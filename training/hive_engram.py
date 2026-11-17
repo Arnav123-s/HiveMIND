@@ -12,7 +12,7 @@ the trunk (training/merge.py) and it starts again from nothing; the rows it lear
     cells/engrams/folded/                  old hive engrams, moved aside with the generation that folded them
 
     python3 training/hive_engram.py update ROWS.jsonl [--base t17] [--replay 0.5] [--rank 8] [--steps 24] [--home DIR]
-    python3 training/hive_engram.py fold TRUNK_OUT TRUNK_EDIT [--base t17] [--weight 0.2] [--gen g40] [--home DIR]
+    python3 training/hive_engram.py fold TRUNK_OUT TRUNK_EDIT [--base t17] [--weight 0.2] [--mode add|average] [--gen g40] [--home DIR]
 
 HIVE_ENGRAMS_HOME moves the folder, as for every engram. Nothing calls this unless asked.
 """
@@ -151,19 +151,27 @@ def rank_of(edit):
     return max((a.shape[0] for a, _ in edit.values()), default=0)
 
 
-def fold(trunk_out, trunk_edit, base="t17", weight=0.2, rank=None, gen="", home=None, log=print):
-    """Fold the hive engram into the trunk: the weighted average of the trunk's edit (1 - weight) and the hive
-    engram's (weight), cut to the trunk's rank (training/merge.py), saved at trunk_out (a .safetensors file, or a
-    folder PEFT reads). Both are trained with lora_alpha twice their rank, so their factors weigh alike. Then the
-    hive engram starts again: its files move to folded/ with the generation's stamp; hive_rows.jsonl stays for
-    replay. Returns what was done."""
+MODES = ("add", "average")
+
+
+def fold(trunk_out, trunk_edit, base="t17", weight=0.2, rank=None, gen="", home=None, mode="add", log=print):
+    """Fold the hive engram into the trunk, cut to the trunk's rank (training/merge.py), saved at trunk_out (a
+    .safetensors file, or a folder PEFT reads). mode "add" (the default): trunk + weight * hive, so the trunk keeps all
+    it holds and the hive engram is added on top (an average shrank the trunk by 1 - weight each night, a dilution of
+    everything it had learned that nothing gave back). mode "average": (1 - weight) * trunk + weight * hive, as
+    before. Both are trained with lora_alpha twice their rank, so their factors weigh alike. Then the hive engram
+    starts again: its files move to folded/ with the generation's stamp; hive_rows.jsonl stays for replay. Returns
+    what was done."""
+    if mode not in MODES:
+        raise ValueError(f"fold mode {mode!r}: one of {MODES}")
     from training import merge
     h = home_of(home)
     f = files(base, h)
     trunk = merge.load(trunk_edit)
     rank = rank or rank_of(trunk)
     if f["safetensors"].exists():
-        edit, least = merge.merge([trunk, merge.load(f["safetensors"])], [1 - weight, weight], rank)
+        edit, least = merge.merge([trunk, merge.load(f["safetensors"])], [1 - weight, weight] if mode == "average" else [1.0, weight], rank,
+                                  normalize=mode == "average")
     else:
         edit, least = trunk, 1.0
     out = Path(trunk_out)
@@ -187,9 +195,9 @@ def fold(trunk_out, trunk_edit, base="t17", weight=0.2, rank=None, gen="", home=
                 shutil.move(str(p), str(to))
                 moved.append(to.name)
     line = {"what": "fold", "dna": base, "when": time.strftime("%Y-%m-%d %H:%M"), "gen": stamp, "folded": bool(moved), "weight": weight,
-            "rank": rank, "trunk": Path(trunk_edit).name, "out": str(out), "least_energy_kept": round(least, 4), "moved": moved}
+            "mode": mode, "rank": rank, "trunk": Path(trunk_edit).name, "out": str(out), "least_energy_kept": round(least, 4), "moved": moved}
     log_line(h, line)
-    log(f"hive engram {'folded into the trunk with weight ' + str(weight) if moved else 'absent: the trunk is as it was'} (rank {rank})")
+    log(f"hive engram {'folded into the trunk (' + mode + ') with weight ' + str(weight) if moved else 'absent: the trunk is as it was'} (rank {rank})")
     return line
 
 
@@ -212,6 +220,7 @@ def parse(argv):
     fo.add_argument("--weight", type=float, default=0.2)
     fo.add_argument("--rank", type=int, default=None)
     fo.add_argument("--gen", default="")
+    fo.add_argument("--mode", choices=MODES, default="add", help="add: trunk + weight*hive (default); average: (1-weight)*trunk + weight*hive")
     return p.parse_args(argv)
 
 
@@ -220,7 +229,7 @@ def main(argv):
     if a.cmd == "update":
         line = update(a.rows, base=a.base, home=a.home, replay=a.replay, rank=a.rank, steps=a.steps, cap=a.cap)
     else:
-        line = fold(a.trunk_out, a.trunk_edit, base=a.base, weight=a.weight, rank=a.rank, gen=a.gen, home=a.home)
+        line = fold(a.trunk_out, a.trunk_edit, base=a.base, weight=a.weight, rank=a.rank, gen=a.gen, home=a.home, mode=a.mode)
     print(json.dumps(line))
     return 0
 
