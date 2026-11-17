@@ -632,6 +632,18 @@
    "fix": "the first job (fresh) ends a stale run"
   },
   {
+   "id": "scheduledup",
+   "title": "The nightly schedule started a second run of the line beside the one that restarts itself after each record",
+   "lives_in": "workflow",
+   "blocks": "deaths",
+   "status": "fixed",
+   "by": "B",
+   "seen": "g40 (run 44053802610): scheduled at 09:14, queued behind g39, started at 10:23 when g39 ended, passed fresh (g39's own record had failed, so cells/body.json had not moved) and grew from the old body until cancelled by hand",
+   "piece": "L3",
+   "found": "a `schedule` run duplicated the self-restarting line",
+   "fix": "fresh ends a scheduled run when a run of the line started or ended within 8 hours, and any line run when a newer one is already under way (tests/test_fresh_run.py)"
+  },
+  {
    "id": "cpuflags",
    "title": "The runtime kept for one CPU was used on another of the same name that lacks some of its instructions",
    "lives_in": "setup",

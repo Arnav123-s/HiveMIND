@@ -124,7 +124,8 @@ jobs:
     # A run grows from the body it checked out. Seen 2026-11-16: the nightly schedule started generation 35 while 34
     # ran; it queued behind it, then ran from the commit of 08:01, before 34's record. Its six cells grew from 28's
     # body beside 34's (siblings, not children), and its record could not be joined to 34's (cells/body.json). So a run
-    # whose body is no longer the branch's ends here, and the schedule starts nothing while a run of the line is under way.
+    # whose body is no longer the branch's ends here, a run ends when a newer run of the line is already under way, and a
+    # scheduled run ends when the line ran within 8 hours (the line restarts itself; the schedule is a backstop).
     runs-on: ubuntu-latest
     outputs:
       go: ${{ steps.fresh.outputs.go }}
@@ -135,16 +136,45 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           EVENT: ${{ github.event_name }}
+          # a trial, a bench or a re-sit is not a run of the line (its title does not start with "Generation")
+          NOT_LINE: ${{ (inputs.bench || inputs.cells_from_run || inputs.versus || inputs.trial) && '1' || '' }}
         run: |
           go=1
           if git fetch -q --depth=1 origin "$GITHUB_REF_NAME" && ! git diff --quiet "$GITHUB_SHA" FETCH_HEAD -- cells/body.json; then
             echo "::warning::another generation was recorded on $GITHUB_REF_NAME after this run was queued (cells/body.json moved): growing from the old body would make siblings, not children, so this run ends here"
             go=0
           fi
-          if [ "$go" = 1 ] && [ "$EVENT" = schedule ]; then
-            busy=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/grow.yml/runs?branch=$GITHUB_REF_NAME&per_page=30" --jq "[.workflow_runs[] | select(.id != $GITHUB_RUN_ID and (.status == \"in_progress\" or .status == \"queued\" or .status == \"waiting\" or .status == \"pending\"))] | length" || echo 0)
-            if [ "${busy:-0}" -gt 0 ]; then
-              echo "::notice::$busy run(s) of the line under way on $GITHUB_REF_NAME: the nightly schedule only starts a line that has stopped"
+          # The line restarts itself after each record; the schedule is only a backstop for a line that stopped. Seen
+          # 2026-11-17: g40 (run 44053802610), scheduled at 09:14, queued behind g39, started when it ended, passed the
+          # check above (g39's own record had failed, so the body had not moved) and grew from the old body beside the
+          # line. A trial (title not "Generation") is not the line.
+          if [ "$go" = 1 ]; then
+            runs=$(gh run list --workflow grow.yml --branch "$GITHUB_REF_NAME" --limit 50 \
+                   --json databaseId,number,displayTitle,status,createdAt,startedAt,updatedAt || echo '[]')
+            why=$(RUNS="$runs" python3 - <<'PY'
+          import json, os, datetime as dt
+          runs = json.loads(os.environ.get("RUNS") or "[]")
+          me, num = int(os.environ["GITHUB_RUN_ID"]), int(os.environ.get("GITHUB_RUN_NUMBER") or 0)
+          line = [r for r in runs if r.get("databaseId") != me and str(r.get("displayTitle", "")).startswith("Generation")]
+          live = ("queued", "in_progress", "waiting", "pending", "requested")
+          newer = [r for r in line if r.get("number", 0) > num and r.get("status") in live]
+          if newer and not os.environ.get("NOT_LINE"):
+              r = max(newer, key=lambda r: r["number"])
+              print(f"a newer run of the line (g{r['number']}, {r['status']}) is already under way on this branch: the newer one wins, this run ends here")
+          elif os.environ.get("EVENT") == "schedule":
+              cut = dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=8)
+              def t(v):
+                  return dt.datetime.fromisoformat(v.replace("Z", "+00:00")) if v and not v.startswith("0001") else None
+              near = [r for r in line if r.get("status") in live
+                      or any((x := t(r.get(k))) and x >= cut for k in ("startedAt", "updatedAt", "createdAt"))]
+              if near:
+                  r = max(near, key=lambda r: r.get("number", 0))
+                  print(f"a run of the line (g{r.get('number')}, {r.get('status')}) started or ended within 8 hours: the line restarts itself, the nightly schedule only starts a line that has stopped, so this run ends here")
+          PY
+            )
+            if [ -n "$why" ]; then
+              echo "::notice::$why"
+              echo "$why" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
               go=0
             fi
           fi

@@ -126,6 +126,10 @@ flowchart LR
   c_twowaves["24 train jobs where only 20 run at once: 4 slices waited for a second wave"]:::fixed
   x_twowaves(["at most 20 train jobs, uneven slices (L2)"]):::fixed
   s_twowaves --> c_twowaves --> x_twowaves --> pc_L2
+  s_scheduledup[/"a 'schedule' run duplicated the self-restarting line"/]
+  c_scheduledup["The nightly schedule started a second run of the line beside the one that restarts itself after each record"]:::fixed
+  x_scheduledup(["fresh ends a scheduled run when a run of the line started or ended within 8 hours, and any line run when a newer one is already under way (tests/test_fresh_run.py)"]):::fixed
+  s_scheduledup --> c_scheduledup --> x_scheduledup --> pc_L3
   s_stalebody[/"g35's record conflicted with g34's"/]
   c_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
   x_stalebody(["the first job (fresh) ends a stale run"]):::fixed
@@ -277,6 +281,7 @@ flowchart LR
     f_smallpulse["A pulse of 32 tasks cannot show one generation better than the last"]:::fixed
     f_g35sibling["g35 trained from g28's body beside g34: the night's changes against the old way, same parents"]:::fixed
     f_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
+    f_scheduledup["The nightly schedule started a second run of the line beside the one that restarts itself after each record"]:::fixed
     f_twowaves["24 train jobs where only 20 run at once: 4 slices waited for a second wave"]:::fixed
   end
   subgraph p_setup["action.yml (shared)"]
@@ -317,6 +322,7 @@ flowchart LR
   f_g35sibling -->|blocked| selflearn
   f_serverdeath -->|blocked| deaths
   f_stalebody -->|blocked| deaths
+  f_scheduledup -->|blocked| deaths
   f_cpuflags -->|blocked| deaths
   f_colaball -->|blocked| slowgeneration
   f_twowaves -->|blocked| slowgeneration
@@ -350,7 +356,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (4 open, 48 fixed)
+## Causes found (4 open, 49 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -397,6 +403,7 @@ flowchart LR
 | g35 trained from g28's body beside g34: the night's changes against the old way, same parents | `.github/workflows/grow.yml` | L1 | fixed | A | run 43827930978, seeds 1-3: easy 19 of 24, hard 6 of 24; g34: easy 31 of 32, hard 6 of 32. Inside the noise on hard; the easy losses are mostly web kinds counted as easy. A trial beside g34, not a generation |
 | A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s' | `team/ternary.py` | L1 | fixed | A, PR 61 | g35 seed 4 (job 133386038675): same members, CPU and runtime build as seed 2, which worked; the cause is in t80.log, which no artifact keeps; now a server that ends says its exit code and last log lines, and practice and exams keep the server logs |
 | A scheduled run queued behind a running generation grew from the body before it and its record conflicted | `.github/workflows/grow.yml` | L3 | fixed | A, PR 61 | g35: started by the schedule at 08:01 while g34 ran, ran from 8b2fe73 (before g34's record); record failed on cells/body.json and the graphs; now a first job (fresh) ends a run whose body is no longer the branch's, and the schedule starts nothing while the line runs |
+| The nightly schedule started a second run of the line beside the one that restarts itself after each record | `.github/workflows/grow.yml` | L3 | fixed | B | g40 (run 44053802610): scheduled at 09:14, queued behind g39, started at 10:23 when g39 ended, passed fresh (g39's own record had failed, so cells/body.json had not moved) and grew from the old body until cancelled by hand |
 | The runtime kept for one CPU was used on another of the same name that lacks some of its instructions | `.github/actions/hive/action.yml` | L1 | fixed | B, PR 73: the kept runtime is keyed by the CPU's instruction list; each new kind of CPU builds once (25 min) | 2026-11-16: g35 pulse seed 4 and g38 practice runner 1 (all 8 of its tasks lost); two runners named AMD EPYC 9V74 offer different instructions |
 | The hand-off offered all of a generation's children to the notebook at once, which grows one at a time | `training/colab.py` | L2 | fixed | B, PR 74: only K children offered (repository variable HIVE_COLAB_CHILDREN, 1 unless set), a different organ each generation, 70/K minutes each (60 at most) | 2026-11-16 22:29: the notebook grows one child in up to 60 min and a child waits 90, so 4-5 would have trained alone on one runner for ~80 min; the owner stopped the notebook for g38 |
 | 24 train jobs where only 20 run at once: 4 slices waited for a second wave | `.github/workflows/grow.yml` | L2 | fixed | B (L2, on main 4305dcc): 8 children as 4 of 3 slices and 4 of 2, the extra slice turning with the run number; proof is g39 | 2026-11-16 23:09: g38's last 4 slices started ~01:51, so the generation takes ~9-10 h |
