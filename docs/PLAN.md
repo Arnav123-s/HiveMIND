@@ -79,7 +79,7 @@ The line is never left idle waiting for a piece: the next generation starts on w
 4. **Two or three hours, 8 runners:** a trial on your own branch that re-sits a recorded generation's cells on the
    same seeds (`trial: 1`, `cells_from_run`, `gate_seeds`, `loop: 0`). One trial at a time beside the line, said in
    the log before it starts.
-5. **The line:** only through `main`, with the owner's yes.
+5. **The line:** only through `main`, merged as soon as the cheaper steps have shown the proof (no one's yes is needed).
 
 A piece is done when its proof on the board is shown with numbers, not when its code is written.
 
