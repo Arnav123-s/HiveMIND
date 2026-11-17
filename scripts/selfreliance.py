@@ -19,7 +19,20 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from team.solo import hints_in  # noqa: E402
+
+
+def _hints():
+    """team.solo.HINTS, read from its source: team.solo needs the model's packages, and the record job has none."""
+    import ast
+    src = ast.parse((Path(__file__).resolve().parent.parent / "team" / "solo.py").read_text())
+    node = next(n for n in src.body if isinstance(n, ast.Assign) and getattr(n.targets[0], "id", "") == "HINTS")
+    return ast.literal_eval(node.value)
+
+
+def hints_in(*texts):
+    """The names of the runtime's hints that these texts carry (team.solo.hints_in)."""
+    t = "\n".join(x or "" for x in texts)
+    return [name for name, mark in _hints() if mark in t]
 
 FIELDS = ["label", "tasks", "right", "right_first_try", "first_try_share", "hints", "hints_per_task", "top_hints"]
 

@@ -17,14 +17,15 @@ jobs' logs, where each slice prints its record (with its subjects) at the end.
 """
 import collections
 import json
-import re
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+# the parsing is shared with the record job, which writes the read of every generation (docs/reads/)
+from training.reads import LEARNED, kept_back, pulse, record_in_log, score, strip_log, subject_kind  # noqa: E402,F401
 REPO = "Arnav123-s/HiveMIND"
-LEARNED = 0.3
 
 
 def gh(*args, text=True):
@@ -54,31 +55,7 @@ def log(job):
         text = gh("api", f"repos/{REPO}/actions/jobs/{job}/logs")
     except subprocess.CalledProcessError:
         return ""
-    return "\n".join(re.sub(r"^\S+Z ", "", line) for line in text.splitlines())
-
-
-def pulse(home):
-    """{seed: summary} and the tasks of the seats that sat, with dead seats apart."""
-    seats, dead = [], []
-    for f in sorted(home.glob("gate-*/*_mixed.json")):
-        d = json.loads(f.read_text())
-        s = d["summary"]
-        (dead if s.get("passed", 0) == 0 and s.get("minutes", 99) <= 3 else seats).append(d)
-    return seats, dead
-
-
-def score(seats):
-    by = {"e": [0, 0], "h": [0, 0]}
-    kinds = collections.defaultdict(lambda: [0, 0])
-    for d in seats:
-        for t in d["tasks"]:
-            lv = t["id"][0]
-            by[lv][0] += bool(t["ok"])
-            by[lv][1] += 1
-            if lv == "h":
-                kinds[t["kind"]][0] += bool(t["ok"])
-                kinds[t["kind"]][1] += 1
-    return by, kinds
+    return strip_log(text)
 
 
 def makers():
@@ -97,52 +74,8 @@ def makers():
 
 
 def records(run):
-    """Every train slice's record, read from the JSON it prints at the end of its log."""
-    out = []
-    for job, name, concl in jobs(run):
-        if not name.startswith("train"):
-            continue
-        text = log(job)
-        rec = None
-        i = text.rfind('\n{\n "member"')
-        if i >= 0:
-            depth, j = 0, i + 1
-            for k in range(j, len(text)):
-                depth += {"{": 1, "}": -1}.get(text[k], 0)
-                if depth == 0:
-                    try:
-                        rec = json.loads(text[j:k + 1])
-                    except json.JSONDecodeError:
-                        rec = None
-                    break
-        out.append({"job": name, "conclusion": concl, "record": rec})
-    return out
-
-
-def subject_kind(s):
-    return s.split(" · ")[0]
-
-
-def kept_back(recs):
-    """The lessons kept back (never trained on; training/grow.kept_back), by kind: their loss where each slice started
-    and where it ended, and the mean over the slices. A kind is learned from its lessons when the loss on the ones it
-    never met falls; one that falls only on the rows it met is remembered, not learned. recs: [{"job", "record"}]."""
-    by = collections.defaultdict(list)
-    for r in recs:
-        rec = r.get("record") or {}
-        for k, v in (rec.get("kept_back") or {}).items():
-            if v.get("before") is not None and v.get("after") is not None:
-                by[k].append((f"{rec.get('member', r.get('job', '?'))} {rec.get('shard', '')}".strip(), v))
-    if not by:
-        return ["no slice's record has lessons kept back"]
-    out = ["| kind | slices | rows | mean before -> after | change | each slice: before -> after |", "|---|---|---|---|---|---|"]
-    for k in sorted(by):
-        v = by[k]
-        b = sum(x["before"] for _, x in v) / len(v)
-        a = sum(x["after"] for _, x in v) / len(v)
-        each = "; ".join(f"{who}: {x['before']:.3f} -> {x['after']:.3f}" for who, x in v)
-        out.append(f"| {k} | {len(v)} | {v[0][1].get('rows', '-')} | {b:.3f} -> {a:.3f} | {a - b:+.3f} | {each} |")
-    return out
+    """Every train slice's record, read from the JSON it prints at the end of its log (training/reads.record_in_log)."""
+    return [{"job": name, "conclusion": concl, "record": record_in_log(log(job))} for job, name, concl in jobs(run) if name.startswith("train")]
 
 
 def main(argv):

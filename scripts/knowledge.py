@@ -24,6 +24,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs" / "knowledge.json"
 PAGE = ROOT / "docs" / "KNOWLEDGE.md"
 PLAN = ROOT / "docs" / "PLAN.md"
+RECORD = ROOT / "training" / "reports" / "generations.jsonl"
+# the steps of the hive's loop (docs/knowledge.json hive_loop) by the step of the run they are timed by
+# (training/reads.py writes minutes_by_step into the record); "nextg" is the whole generation
+TIMED = {"practise": "practice", "dreams": "dream", "gather": "gather", "plan": "plan", "trainc": "train", "join": "join",
+         "trunk": "merge", "pulse": "gate", "recordg": "record"}
 _PIECE = re.compile(r"^\| ([A-Z]\d+) \| (.+?) \| .*\| ([^|]*) \|\s*$")
 
 
@@ -119,8 +124,29 @@ def _q(*lines):
     return '"' + "<br/>".join(re.sub(r'["<>#`]', "'", str(s)) for s in lines if s) + '"'
 
 
-def hive_loop(k):
-    steps = k["hive_loop"]
+def run_minutes(record=RECORD):
+    """{loop step id: "gNN: X min"} from the newest generation whose record says its minutes (the record job takes them
+    from the run's jobs), with "nextg" its hours; {} when no record says them."""
+    last = None
+    for ln in Path(record).read_text().splitlines() if Path(record).exists() else []:
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(d, dict) and isinstance(d.get("minutes_by_step"), dict) and d["minutes_by_step"]:
+            last = d
+    if not last:
+        return {}
+    g, m = last.get("generation", "?"), last["minutes_by_step"]
+    out = {i: f"{g}: {m[s]} min" for i, s in TIMED.items() if isinstance(m.get(s), (int, float))}
+    if isinstance(last.get("hours"), (int, float)):
+        out["nextg"] = f"a whole generation: {g} {last['hours']:.1f} h; the bar is 5"
+    return out
+
+
+def hive_loop(k, minutes=None):
+    minutes = run_minutes() if minutes is None else minutes
+    steps = [dict(s, minutes=minutes.get(s["id"], s["minutes"])) for s in k["hive_loop"]]
     files = {p["id"]: p["file"] for p in k["parts"]}
     out = ["```mermaid", "flowchart TD"]
     for s in steps:
