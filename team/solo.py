@@ -353,7 +353,10 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
     # gives them with no engram: the control that tells an engram's effect from the short orders' own
     # (training/experiments/memory_stream.py, arm "short")
     short = also or os.environ.get("HIVE_SHORT_ORDERS", "0") == "1"
-    messages = [{"role": "system", "content": orders(who + "+" if short else who)},
+    # HIVE_FULL_ORDERS=1: the full orders even for a taught member (whose name has "+"), the other arm of practice's
+    # split (training/practice_arms.py); never set for the gate or the exams
+    full = not short and os.environ.get("HIVE_FULL_ORDERS", "0") == "1"
+    messages = [{"role": "system", "content": orders(who.replace("+", "-") if full else who + "+" if short else who)},
                 {"role": "user", "content": f"TASK: {task}"}]
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and

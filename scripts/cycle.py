@@ -108,6 +108,20 @@ def talk_of(gen, root=ROOT):
     return float(value) if isinstance(value, (int, float)) else None
 
 
+def first_note(rec):
+    """Where the first try is measured, and its split by orders and by the kinds' age when the record has them."""
+    def share(c):
+        return f"{c[0] / c[1]:.2f}" if isinstance(c, list) and len(c) == 2 and c[1] else "-"
+    ab = rec.get("orders_ab") if isinstance(rec.get("orders_ab"), dict) else {}
+    age = rec.get("first_try_by_age") if isinstance(rec.get("first_try_by_age"), dict) else {}
+    out = ["practice"]
+    if ab:
+        out.append("orders " + ", ".join(f"{a} {share((ab[a] or {}).get('first_try'))}" for a in ("short", "full") if isinstance(ab.get(a), dict)))
+    if age:
+        out.append(f"old kinds {share(age.get('old'))}, new kinds {share(age.get('new'))}")
+    return "; ".join(out)
+
+
 def bars(newest, root=ROOT):
     r = row(newest)
     hard = None
@@ -125,7 +139,7 @@ def bars(newest, root=ROOT):
     checks = [
         ("hard kinds passed", hard, BARS["hard"], True, "hard kinds that have lessons, from the newest read"),
         ("held-out kinds passed", held, BARS["held"], True, "from the newest read"),
-        ("right at the first try", r["first"], BARS["first"], True, "practice"),
+        ("right at the first try", r["first"], BARS["first"], True, first_note(newest)),
         ("talk exam, of 10", (talk / 10) if talk is not None else None, BARS["talk"], True, "training/reports/talk"),
         ("hours a generation", r["hours"], BARS["hours"], False, "first job to last"),
     ]
@@ -137,7 +151,8 @@ def bars(newest, root=ROOT):
         met = value >= bar if higher else value <= bar
         show = f"{value:.2f}" if name != "hours a generation" else f"{value} h"
         want = f"{bar:.2f}" if name != "hours a generation" else f"{bar} h"
-        lines.append(f"  [{'met' if met else ' no'}] {name}: {show} (bar {want})")
+        split = f"; {note.split('; ', 1)[1]}" if name == "right at the first try" and "; " in note else ""
+        lines.append(f"  [{'met' if met else ' no'}] {name}: {show} (bar {want}){split}")
     return "\n".join(lines)
 
 
