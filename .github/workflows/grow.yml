@@ -212,8 +212,14 @@ jobs:
           # (g33), so 600 loses no right row, and it cuts g38's slowest runner's tasks from 84 to about 60 minutes (it
           # was 1500: only wrong tasks ran past 600, 20 of them in g38). The gate keeps its own cap, so sittings compare.
           HIVE_TASK_SECONDS: "600"
+          # short orders against full orders, split by runner (training/practice_arms.py): even runners keep the short
+          # orders every taught member has now, odd ones are given the full orders. Only practice is split; the
+          # repository variable HIVE_SHORT_ORDERS_AB set to 0 turns it off
+          ORDERS_AB: ${{ vars.HIVE_SHORT_ORDERS_AB || '1' }}
         run: |
           case "$LEVEL" in mixed|edge|ladder) ;; *) echo "::error::practice_level is ladder, mixed or edge, not $LEVEL"; exit 1 ;; esac
+          export HIVE_ORDERS_ARM="$(python3 training/practice_arms.py arm "${{ matrix.shard }}" "$ORDERS_AB")"
+          echo "orders of this runner: ${HIVE_ORDERS_ARM:-not split}"
           # new failures go to failures.jsonl; the dreams (the dream job beside this one) go back to the old ones
           # memory every two minutes, so a runner that dies says how it stood (two died mid-task, 2026-11-15)
           (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &

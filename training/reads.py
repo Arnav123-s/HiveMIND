@@ -36,6 +36,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:  # run as `python3 training/reads.py`: the kinds (training/kinds/) are found from the folder above
     sys.path.insert(0, str(ROOT))
+from training import practice_arms  # noqa: E402
 REPO = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 TALK = ROOT / "training" / "reports" / "talk"  # <generation>.json: the body's sitting of the talk exam (training/talk_exam.py)
@@ -806,6 +807,10 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
         ("Hard kinds never practised (held out)", _pq(held_c(a)), _pq(held_c(pa)) if prev else "-", _pq(held_c(b)) if has_b else "-"),
         ("Right at the first try (practice)", f"{ft[0] / ft[1]:.2f} ({_pq(ft)})" if ft and ft[1] else "not measured",
          f"{pft[0] / pft[1]:.2f}" if pft and pft[1] else "-", "-"),
+    ] + ([("Right at the first try by orders (practice split by runner)", practice_arms.ab_text(line["orders_ab"]),
+           practice_arms.ab_text((prev or {}).get("orders_ab")) if (prev or {}).get("orders_ab") else "-", "-")] if line.get("orders_ab") else []) + [
+        ("Right at the first try, old kinds and K2's new kinds (practice)", practice_arms.age_text(line.get("first_try_by_age")),
+         practice_arms.age_text((prev or {}).get("first_try_by_age")) if (prev or {}).get("first_try_by_age") else "-", "-"),
         ("Hours for one generation", f"{hours:.1f}" if isinstance(hours, (int, float)) else "not measured",
          f"{prev['hours']:.1f}" if prev and isinstance(prev.get("hours"), (int, float)) else "-", "-"),
         ("Generations recorded with nobody's hand", str(unattended(lines, idx)), str(unattended(lines, pi)) if pi >= 0 else "-", "-"),
