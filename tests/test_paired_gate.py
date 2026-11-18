@@ -22,14 +22,39 @@ def _pair(before, after):
 
 def test_decide_keeps_and_drops_rightly():
     same = _arm(35, easy=(25, 32), hard=(4, 24))
-    assert grow_record.decide(_pair(same, dict(same)), grow=True)[0]  # after = before
-    keep, why = grow_record.decide(_pair(_arm(35), _arm(32, easy=(28, 32))), grow=True)  # 3 under in all
-    assert not keep and "3 tasks under before in all" in why
+    keep, why = grow_record.decide(_pair(same, dict(same)), grow=True)  # after = before: a tie keeps
+    assert keep and why.startswith("kept: 35 against 35")
+    keep, why = grow_record.decide(_pair(_arm(35), _arm(34, easy=(28, 32))), grow=True)  # 1 under in all
+    assert not keep and why.startswith("dropped: 34 against 35")
     keep, why = grow_record.decide(_pair(_arm(35, easy=(28, 32), hard=(4, 24)), _arm(35, easy=(25, 32), hard=(7, 24))), grow=True)
-    assert not keep and "3 tasks under before on easy" in why  # equal in all, 3 under on easy
+    assert keep  # equal in all: easy lost 3, hard gained 3
     assert grow_record.decide(_pair(_arm(35), _arm(40, easy=(30, 32))), grow=True)[0]  # after better
-    assert grow_record.decide(_pair(_arm(35, easy=(28, 32)), _arm(33, easy=(26, 32))), grow=True)[0]  # 2 under: kept
+    assert not grow_record.decide(_pair(_arm(35, easy=(28, 32)), _arm(33, easy=(26, 32))), grow=True)[0]  # 2 under: dropped now
     assert not grow_record.decide(_pair(_arm(35), _arm(35, seeds=7)), grow=True)[0]  # not the same seeds
+
+
+def test_the_real_g43_and_g45_are_dropped_and_g42_kept():
+    # the arms as training/reports/generations.jsonl holds them
+    g43 = _pair(_arm(54, easy=(32, 32), hard=(22, 32)), _arm(52, easy=(32, 32), hard=(20, 32)))
+    g45 = _pair(_arm(47, easy=(32, 32), hard=(15, 32)), _arm(45, easy=(32, 32), hard=(13, 32)))
+    g42 = _pair(_arm(54, easy=(31, 32), hard=(23, 32)), _arm(54, easy=(31, 32), hard=(23, 32)))
+    assert grow_record.decide(g43, grow=True)[1].startswith("dropped: 52 against 54")
+    assert grow_record.decide(g45, grow=True)[1].startswith("dropped: 45 against 47")
+    assert grow_record.decide(g42, grow=True)[1].startswith("kept: 54 against 54")
+
+
+def test_a_held_out_loss_with_no_gain_elsewhere_drops():
+    before, after = _arm(35), _arm(35)
+    before["unpractised"], after["unpractised"] = [2, 6], [0, 6]
+    keep, why = grow_record.decide(_pair(before, after), grow=True)  # held out 0 against 2, the rest +2: a gain
+    assert keep
+    before["unpractised"], after["unpractised"] = [2, 6], [1, 6]
+    after["passed"] = 36  # held out lost 1, the rest gained 2: kept
+    assert grow_record.decide(_pair(before, after), grow=True)[0]
+    # held out 0 against 2 and the rest the same (33 and 33): a drop
+    after["unpractised"], after["passed"] = [0, 6], 33
+    keep, why = grow_record.decide(_pair(before, after), grow=True)
+    assert not keep and why.startswith("dropped: 33 against 35")
 
 
 def _sitting(folder, arm, seed, passed_easy, passed_hard, easy=4, hard=4):

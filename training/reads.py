@@ -1,6 +1,7 @@
 """The read of a generation, written by the record job itself: docs/reads/gNN.md and docs/reads/latest.md.
 
     python3 training/reads.py facts RUN --gate gate [--practice-work pw] [--out facts.json]
+    python3 training/reads.py knowledge GEN [--record ...] [--knowledge docs/knowledge.json]   one entry a generation
     python3 training/reads.py write GEN --facts facts.json --gate gate --rows got/rows.jsonl [--lessons lessons.json]
                                    [--record training/reports/generations.jsonl] [--out docs/reads] [--svg docs/progress/chain.svg]
 
@@ -463,6 +464,61 @@ def rows_left_out(slices, rows, gen):
     return out
 
 
+HIVE_TYPES = ("first", "done", "fix", "pair", "foresee", "mend")  # rows from the hive's own checked work (training/grow.py)
+RAW_TYPES = ("read", "judged")  # raw text read and judged pairs (training/raw.py)
+
+
+def rows_by_source(rows, gen):
+    """{"hive", "hive_fix", "lessons", "raw", "other"}: this generation's new rows (stamped gen by gather, and the
+    mended ones) by where they came from. hive: the members' own checked practice and dreams (training/grow.py rows
+    of a member, "fix" rows among them as hive_fix); lessons: the hand-written lesson makers (training/lessons.py with
+    training/kinds/, who "lesson"); raw: text read and judged pairs (training/raw.py). None when no row says its gen."""
+    new = [r for r in rows if (gen and r.get("gen") == gen) or r.get("type") == "mend"]
+    if not new:
+        return None
+    out = dict.fromkeys(("hive", "hive_fix", "lessons", "raw", "other"), 0)
+    for r in new:
+        if r.get("who") == "lesson":
+            out["lessons"] += 1
+        elif r.get("type") in RAW_TYPES:
+            out["raw"] += 1
+        elif r.get("type") in HIVE_TYPES:
+            out["hive"] += 1
+            out["hive_fix"] += r.get("type") in ("fix", "mend")
+        else:
+            out["other"] += 1
+    return out
+
+
+def self_taught_line(src, slices):
+    """The read's line on how much the hive taught itself: rows given to training by source, and why the rows trained
+    on by source are not measured (each slice's record says trained rows by kind only)."""
+    if src is None:
+        given = "not measured (no row of this generation was given to the read: gather's rows, field gen)"
+    else:
+        mine, of = src["hive"], src["hive"] + src["lessons"]
+        given = (f"{src['hive']} from the hive's own checked practice and dreams ({src['hive_fix']} of them fix rows), "
+                 f"{src['lessons']} from the hand-written lesson makers (training/lessons.py, training/kinds/)"
+                 + (f", {src['raw']} raw text read and judged" if src["raw"] else "")
+                 + (f", {src['other']} other" if src["other"] else "")
+                 + (f": the hive's own are {round(100 * mine / of)}% of those two" if of else ""))
+    recs = [s["record"] for s in slices if s.get("record")]
+    trained = ("by source: " + ", ".join(f"{k} {v}" for k, v in sorted(_sum_by_source(recs).items()))) if recs and all(
+        isinstance(r.get("rows_by_source"), dict) for r in recs) else (
+        "not measured by source (each slice's record says the rows it trained by kind only, rows_by_kind; "
+        "a field rows_by_source {source: trained} would measure it)")
+    return f"How much the hive taught itself: of this generation's new rows, {given}. Rows trained on: {trained}."
+
+
+def _sum_by_source(recs):
+    out = collections.Counter()
+    for r in recs:
+        for k, v in r["rows_by_source"].items():
+            if isinstance(k, str) and re.fullmatch(r"\w{1,20}", k) and isinstance(v, int):
+                out[k] += v
+    return out
+
+
 def lesson_counts(rows):
     """{kind: distinct lesson tasks} in the rows the slices trained on (kept back ones among them)."""
     by = collections.defaultdict(set)
@@ -638,16 +694,47 @@ def taught_passed(line):
     return [sum(v[0] for v in p), sum(v[1] for v in p)]
 
 
-def next_piece(rows, line, prev=None):
-    """(rule, piece, kinds it holds for, counts {rule: kinds}): the first rule that holds for the most taught hard kinds.
-    Rule 6 is the body's, not a kind's: when it holds it holds for every taught kind."""
+PLAN = ROOT / "docs" / "PLAN.md"
+NONE_HOLDS = "no rule holds: the loop holder chooses from the board"
+
+
+def done_pieces(plan=PLAN):
+    """The ids of the board's pieces that are done (docs/PLAN.md): those on the line "Done (do not redo):" (and the
+    lines that carry it on, to the next blank line), and every board row whose Who column says done."""
+    out, inside = set(), False
+    text = Path(plan).read_text() if plan and Path(plan).exists() else ""
+    for ln in text.splitlines():
+        if ln.startswith("Done (do not redo):"):
+            inside = True
+        elif not ln.strip():
+            inside = False
+        if inside:
+            out |= set(re.findall(r"\b([A-Z]\d+)\b", ln))
+        m = re.match(r"^\| ([A-Z]\d+) \|.*\|([^|]*)\|\s*$", ln)
+        if m and re.search(r"\bdone\b", m.group(2), re.I):
+            out.add(m.group(1))
+    return out
+
+
+def piece_id(piece):
+    """The board id a rule's piece starts with ("T4: shorter lessons" -> "T4"), or None."""
+    m = re.match(r"([A-Z]\d+)\b", piece)
+    return m.group(1) if m else None
+
+
+def next_piece(rows, line, prev=None, done=frozenset()):
+    """(rule, piece, kinds it holds for, counts {rule: kinds}): the rule that holds for the most taught hard kinds (a
+    tie goes to the earlier rule), skipping a rule whose piece is done on the board (`done`, done_pieces()): then the
+    next rule that holds is named. Rule 6 is the body's, not a kind's: when it holds it holds for every taught kind.
+    When no rule holds, or only rules whose pieces are done, (7, NONE_HOLDS, [], counts)."""
     counts = {n: [r["kind"] for r in rows if holds(n, r)] for n in range(1, 6)}
     now, before = taught_passed(line), taught_passed(prev) if prev else [0, 0]
     counts[6] = [r["kind"] for r in rows] if now[0] >= 12 and before[0] >= 12 else []
-    best = max(range(1, 7), key=lambda n: (len(counts[n]), -n))
-    if not counts[best]:
-        return 7, "none", [], counts
-    return best, dict((n, p) for n, _, p in RULES)[best], counts[best], counts
+    pieces = dict((n, p) for n, _, p in RULES)
+    for n in sorted(range(1, 7), key=lambda n: (-len(counts[n]), n)):
+        if counts[n] and piece_id(pieces[n]) not in done:
+            return n, pieces[n], counts[n], counts
+    return 7, NONE_HOLDS, [], counts
 
 
 # ---- the read --------------------------------------------------------------------------------------------------------
@@ -734,7 +821,7 @@ def _left(r):
     return _pq(r["left"]) + (f" ({r['left_memory']} skipped for memory)" if r.get("left_memory") else "")
 
 
-def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None)):
+def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None), done=frozenset()):
     gen = line.get("generation", "?")
     rule, what, kinds, counts = piece
     run = f.get("run", "")
@@ -758,12 +845,13 @@ def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None)):
         les = _pq(r["lessons"]) if r["lessons"] and r["lessons"][1] else "none made"
         out.append(f"| {r['kind']} | {les} | {_left(r)} | {kept} | {gap} | "
                    f"{_pq(r['child']) if r['child'] else '-'} | {_pq(r['parent']) if r['parent'] else '-'} | {_pq(r['body'])} | {_pq(r['before'])} |")
-    out += [""] + [f"- {n}" for n in notes] + ["", "![The chain by kind](../progress/chain.svg)", "", "## Hours", ""]
+    out += [""] + [f"- {n}" for n in notes] + ["", self_taught_line(f.get("_by_source"), f.get("slices") or [])]
+    out += ["", "![The chain by kind](../progress/chain.svg)", "", "## Hours", ""]
     mins = f.get("minutes_by_step") or line.get("minutes_by_step") or {}
     if mins:
         out += ["| step | minutes |", "|---|---|"] + [f"| {s} | {mins[s]} |" for s in STAGES if s in mins]
         hrs = f.get("hours") if f.get("hours") is not None else line.get("hours")
-        out += ["", f"From the first job to the last: **{hrs} hours** (the bar is 5). Each step runs from its first job's start to its last job's end; "
+        out += ["", f"From the first job to the last: **{hrs} hours** (the bar is 3). Each step runs from its first job's start to its last job's end; "
                 "practice and dream run side by side."]
     else:
         out.append("Not measured: the run's jobs could not be read.")
@@ -771,11 +859,16 @@ def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None)):
     dead = f.get("dead_seats", line.get("dead_seats"))
     out += ["", f"Train slices lost: {_pq(ls) if ls else 'not measured'}. Pulse seats whose server died: "
             f"{dead if dead is not None else 'not measured'}.", "", colab_line(f.get("slices") or [])]
-    out += ["", "## Next piece", "", f"next piece: {what if rule != 7 else 'none'} (rule {rule}"
-            + (f": {RULES[rule - 1][1]}, for {len(kinds)} of {len(rows)} taught hard kinds: {', '.join(kinds)})" if rule != 7 else
-               ": no rule holds for any taught hard kind)"), "",
-            "| # | the chain shows | holds for |", "|---|---|---|"]
-    out += [f"| {n} | {words} | {len(counts[n])}{': ' + ', '.join(counts[n]) if counts[n] and n != 6 else ''} |" for n, words, _ in RULES]
+    skipped = [(n, p) for n, _, p in RULES if counts[n] and piece_id(p) in done]
+    out += ["", "## Next piece", "", (f"next piece: {what} (rule {rule}: {RULES[rule - 1][1]}, for {len(kinds)} of {len(rows)} "
+                                      f"taught hard kinds: {', '.join(kinds)})") if rule != 7 else
+            f"next piece: none (rule 7: {NONE_HOLDS})", ""]
+    if skipped:
+        out += ["Rules that hold but whose piece is done on the board (docs/PLAN.md), so not named: "
+                + "; ".join(f"rule {n} ({piece_id(p)})" for n, p in skipped) + ".", ""]
+    out += ["| # | the chain shows | holds for |", "|---|---|---|"]
+    out += [f"| {n} | {words} | {len(counts[n])}{': ' + ', '.join(counts[n]) if counts[n] and n != 6 else ''}"
+            f"{' (piece done)' if counts[n] and piece_id(p) in done else ''} |" for n, words, p in RULES]
     unmeasured = [w for n, w in ((1, "lessons"), (2, "rows left out"), (3, "kept-back gap"), (4, "child alone"))
                   if all((r["lessons"], r["left"] if r.get("left_exact", True) else None, r["gap"], r["child"])[n - 1] in (None, [], {})
                          for r in rows)]
@@ -836,7 +929,7 @@ def chain_svg(rows, gen, w=760):
             + style + f'<rect class="bg" width="{w}" height="{h}" rx="8"/>' + "".join(b) + "</svg>\n")
 
 
-def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, svg=None, talk_dir=None):
+def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, svg=None, talk_dir=None, plan=PLAN):
     """Writes docs/reads/GEN.md and latest.md (and the chain's bars); returns the next piece's line. talk_dir: where
     the talk exam's sittings are (training/reports/talk): a generation that sat it has a Talk row."""
     lines = lines_of(record)
@@ -856,9 +949,11 @@ def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, s
         except (ValueError, IndexError):
             summary = None
     table, notes = chain(line, facts_, seats, rows, summary)
-    piece = next_piece(table, line, prev)
+    facts_ = dict(facts_, _by_source=rows_by_source(rows, gen))
+    done = done_pieces(plan)
+    piece = next_piece(table, line, prev, done)
     talk = (talk_of(gen, talk_dir), talk_of(prev.get("generation"), talk_dir) if prev else None)
-    text = render(line, prev, facts_, table, notes, piece, lines, idx, talk)
+    text = render(line, prev, facts_, table, notes, piece, lines, idx, talk, done)
     out = Path(out or ROOT / "docs" / "reads")
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{gen}.md").write_text(text)
@@ -869,6 +964,51 @@ def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, s
     said = next(ln for ln in text.splitlines() if ln.startswith("next piece:"))
     print(f"{out / (gen + '.md')}: {said}")
     return said
+
+
+KNOWLEDGE = ROOT / "docs" / "knowledge.json"
+ENTRY = ("id", "generation", "when", "verdict", "after", "before", "hard", "easy", "held_out", "first_try", "talk", "hours", "why")
+
+
+def generation_entry(line, talk=None):
+    """One generation as docs/knowledge.json keeps it ("generations"): the verdict, after and before (passed, of) on
+    the same seeds, the hard kinds that have lessons, easy, held out, the first try (a share), the talk exam (out of
+    10) and the hours; None for what was not measured."""
+    a = (line.get("arms") or {}).get("after", {})
+    b = (line.get("arms") or {}).get("before", {})
+    held = held_out()
+    k = a.get("kinds") or {}
+    hv = [k[x] for x in held if x in k]
+    pq = lambda c: [int(c[0]), int(c[1])] if isinstance(c, list) and len(c) == 2 and c[1] else None  # noqa: E731
+    ft = line.get("first_try")
+    return {"id": f"gen-{line.get('generation')}", "generation": line.get("generation"), "when": line.get("when", ""),
+            "verdict": line.get("verdict") or ("kept" if line.get("kept") else "dropped"),
+            "after": pq([a.get("passed"), a.get("tasks")]), "before": pq([b.get("passed"), b.get("tasks")]) if b.get("seeds") else None,
+            "hard": pq(taught_passed(line)), "easy": pq(a.get("easy")),
+            "held_out": pq([sum(x[0] for x in hv), sum(x[1] for x in hv)] if hv else a.get("unpractised")),
+            "first_try": round(ft[0] / ft[1], 2) if isinstance(ft, list) and len(ft) == 2 and ft[1] else None,
+            "talk": (talk or {}).get("out_of_10") if isinstance((talk or {}).get("out_of_10"), (int, float)) else None,
+            "hours": line.get("hours") if isinstance(line.get("hours"), (int, float)) else None,
+            "why": str(line.get("why", ""))[:300]}
+
+
+def add_generation(gen, record=RECORD, knowledge=KNOWLEDGE, talk_dir=None):
+    """Appends the generation's entry to docs/knowledge.json ("generations"), once: a second run for the same
+    generation leaves it as it is."""
+    line = next((d for d in reversed(lines_of(record)) if d.get("generation") == gen), None)
+    if line is None:
+        print(f"{gen}: no record line, so no entry")
+        return 1
+    k = json.loads(Path(knowledge).read_text())
+    gens = k.setdefault("generations", [])
+    entry = generation_entry(line, talk_of(gen, talk_dir))
+    if any(g.get("id") == entry["id"] for g in gens):
+        print(f"{knowledge}: {entry['id']} is there already")
+        return 0
+    gens.append(entry)
+    Path(knowledge).write_text(json.dumps(k, indent=1, ensure_ascii=False) + "\n")
+    print(f"{knowledge}: {entry['id']} added ({entry['verdict']}, after {entry['after']}, before {entry['before']})")
+    return 0
 
 
 def record_fields(f):
@@ -898,6 +1038,11 @@ def main(argv):
         f = facts(argv[1], opt("--gate"), opt("--practice-work"))
         Path(opt("--out", "facts.json")).write_text(json.dumps(f) + "\n")
         return 0
+    if argv[:1] == ["knowledge"] and len(argv) >= 2:
+        if not re.fullmatch(r"g\d{1,6}", argv[1]):
+            print("not a generation's name")
+            return 1
+        return add_generation(argv[1], opt("--record", RECORD), opt("--knowledge", KNOWLEDGE))
     if argv[:1] == ["write"] and len(argv) >= 2:
         if not re.fullmatch(r"g\d{1,6}", argv[1]):
             print("not a generation's name")

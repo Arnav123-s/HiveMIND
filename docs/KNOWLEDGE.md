@@ -20,7 +20,7 @@ flowchart TD
   pulse["Pulse: the grown body's exam, 4 seats<br/>training/exam.py<br/>minutes: g45: 52 min<br/>open: a dead seat leaves its seed out; re-sat by hand (L1)"]:::open
   recordg["Record, move levels, draw progress<br/>training/grow_record.py<br/>minutes: g45: 0 min<br/>open: the hours of each job are not recorded (L3)"]:::open
   verdictg["Verdict: read the generation<br/>scripts/read_generation.py<br/>minutes: by hand, after the record<br/>open: not written by the workflow yet (M3)"]:::open
-  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g45 5.6 h; the bar is 5<br/>open: started or mended by hand (L3)"]:::open
+  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g45 5.6 h; the bar is 3<br/>open: started or mended by hand (L3)"]:::open
   practise --> dreams
   dreams --> gather
   gather --> plan
