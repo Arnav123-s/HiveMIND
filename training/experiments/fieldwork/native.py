@@ -1,5 +1,4 @@
 """One local, private CPU language model per run. Generates source; it has no grading or tool access."""
-import os
 import socket
 import subprocess
 import time
@@ -19,7 +18,8 @@ def server(binary, weights, log, adapter=None, threads=4):
         port = sock.getsockname()[1]
     url = f"http://127.0.0.1:{port}"
     cmd = [str(Path(binary).resolve()), "-m", str(Path(weights).resolve()), "-t", str(threads), "-c", "6144",
-           "--parallel", "1", "--jinja", "-fa", "on", "-rtr", "--host", "127.0.0.1", "--port", str(port)]
+           "--parallel", "1", "--jinja", "-fa", "on", "-rtr", "--cache-ram", "0",
+           "--host", "127.0.0.1", "--port", str(port)]
     if adapter:
         cmd.extend(["--lora", str(Path(adapter).resolve())])
     with open(log, "w") as logstream:
@@ -53,7 +53,7 @@ def generate(url, task, prefix="", earlier=None, budget=1400, seed=3141):
     start = time.monotonic()
     res = ternary._post(url + "/v1/chat/completions", {"messages": messages, "max_tokens": budget,
           "temperature": 0.0, "seed": seed, "cache_prompt": False,
-          "chat_template_kwargs": {"enable_thinking": False}}, timeout=300)
+          "chat_template_kwargs": {"enable_thinking": False}}, timeout=900)
     choice = res["choices"][0]
     reply = choice["message"]["content"]
     return dict(source=extract_code(reply), text=reply, usage=res.get("usage"), stop=choice["finish_reason"],
