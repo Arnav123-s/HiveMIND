@@ -10,7 +10,8 @@ It prints, in order:
   2. a table and a text graph of the last generations (score, hard, easy, first try, hours, slices lost);
   3. which graphs in docs/progress are older than the newest record (stale: the record job did not redraw them);
   4. the newest read's next piece;
-  5. who holds the loop now (the newest "holds the loop" log line) and the last log lines.
+  5. the board's pieces and who holds them;
+  6. who holds the loop now (the newest "holds the loop" log line) and the last log lines.
 Read it before choosing any work, so that nobody redoes what the records already settle.
 """
 import argparse
@@ -25,6 +26,8 @@ LATEST = ROOT / "docs/reads/latest.md"
 TALK = ROOT / "training/reports/talk"
 GRAPHS = ROOT / "docs/progress"
 LOG = ROOT / "docs/AGENTS.md"
+PLAN = ROOT / "docs/PLAN.md"
+CLAIM = re.compile(r"\b(claim|done|drop) ([A-Z][0-9]+[a-z]?)\b")
 
 # The goal's bars (docs/PLAN.md): hard 18 of 23, half the held-out kinds, 0.7 at the first try, talk 8 of 10, 3 hours.
 BARS = {"hard": 18 / 23, "held": 0.5, "first": 0.7, "talk": 0.8, "hours": 3.0}
@@ -172,6 +175,35 @@ def log_lines(root=ROOT, last=6):
     return holder, lines[-last:]
 
 
+def board(root=ROOT):
+    """(id, piece, who) of each row of the board in docs/PLAN.md, with the latest claim/done/drop from the log."""
+    plan = root / PLAN.relative_to(ROOT)
+    if not plan.exists():
+        return []
+    text = plan.read_text()
+    start = text.find("## The board")
+    if start == -1:
+        return []
+    rows = []
+    for line in text[start:].splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) >= 5 and re.fullmatch(r"[A-Z][0-9]+[a-z]?", cells[0]):
+            rows.append([cells[0], cells[1], cells[-1]])
+    log = root / LOG.relative_to(ROOT)
+    latest = {}
+    if log.exists():
+        for line in log.read_text().splitlines():
+            m = re.match(r"- (20\d\d-\d\d-\d\d \d\d:\d\d) ([A-Za-z0-9]+)", line)
+            if not m:
+                continue
+            for verb, pid in CLAIM.findall(line):
+                latest[pid] = f"{verb} by {m.group(2)} at {m.group(1)}"
+    for r in rows:
+        if r[0] in latest:
+            r[2] = f"{r[2]}; log: {latest[r[0]]}"
+    return rows
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description="Where the hive stands, before any work.")
     p.add_argument("--last", type=int, default=8)
@@ -191,6 +223,11 @@ def main(argv=None):
           (f"  STALE, not redrawn since {newest.get('generation')}: {', '.join(stale)}"
            " (run: python training/progress.py)" if stale else "  all redrawn for the newest record") + "\n")
     print("## Next piece (docs/reads/latest.md)\n  " + next_piece() + "\n")
+    pieces = board()
+    print("## The board (docs/PLAN.md; claims on other branches: python scripts/agents_log.py --board)")
+    for pid, piece, who in pieces:
+        print(f"  {pid:<4} {who[:60]:<60} {piece[:90]}")
+    print()
     holder, lines = log_lines()
     print("## Who holds the loop\n  " + (holder or "nobody has claimed it in the log") + "\n")
     print("## Last log lines (docs/AGENTS.md)")

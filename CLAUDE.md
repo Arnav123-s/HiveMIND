@@ -40,6 +40,34 @@ to merge (the owner's word). Keep your own usage for reasoning and checking.
 9. **Wake again** when the next generation records (about 4-5 hours after it starts): a one-shot scheduled
    wake into your own session.
 
+## Working alongside other agents
+
+Agents you do not know about may join at any time, from other accounts and sessions that cannot message you.
+They meet only through git, so the files are the channel. Two roles exist:
+
+- **The loop holder (one at a time):** works the cycle above, judges each generation, and keeps the board in
+  `docs/PLAN.md` and `NEXT_SESSION.md` true. It adds the pieces each read points to, and marks pieces done. It
+  claims the role with a "holds the loop" log line. A newer claim wins; the older holder hands over in one log
+  line and stops working the cycle.
+- **Workers (any number):** each takes **one** piece from the board and nothing else. They follow these steps:
+  1. Run `python scripts/cycle.py`, then `python scripts/agents_log.py --board`. The second shows claims on
+     every branch.
+  2. Choose a piece that is `open` with no live claim. A claim is live while its agent has a log line in the
+     last 24 hours.
+  3. Push the claim before any work: a log line `- <UTC date time> <letter>: claim <id>. <how you will prove it>`
+     in your own branch's `docs/AGENTS.md`. Take the next free letter (B is the present loop holder). Two claims
+     on one piece: the earlier one holds it, and the later agent takes another.
+  4. Work only in that piece's files, on your own branch. If you must touch a file that belongs to another
+     claimed piece, say so in the log first.
+  5. Merge `main` in often. Open one pull request named `<id>: what it does`, with the proof given as numbers.
+  6. Merge it once the proof is shown and `python -m pytest -q tests` passes with `main` merged in. Then write
+     `done <id> <key number>` in the log. Stopping early: write `drop <id>` with what is left and where it is.
+- **Files everyone shares** (`.github/workflows/grow.yml`, `docs/AGENTS.md`, `docs/PLAN.md`, `NEXT_SESSION.md`,
+  `docs/knowledge.json`): small commits. Append to the log, never rewrite others' lines. On a conflict, keep
+  both sides.
+- **Never** start, cancel or re-run a generation while one is running, unless you are the loop holder. Never
+  change the goal's bars.
+
 ## Generations run by themselves
 
 `.github/workflows/grow.yml`: fresh → practice + dream → gather + plan → train (≤20 slices) → join → merge →

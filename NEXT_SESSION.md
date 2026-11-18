@@ -2,7 +2,7 @@
 
 Written 2026-11-18 04:40 UTC by B (session `session_014dX1CNKMMabZ93Sdxn3fSK`, branch
 `claude/vigilant-brahmagupta-rz3ab7`). Whoever holds the loop keeps this page true; older handoffs are in
-`docs/history/`. How to work is in `CLAUDE.md`; start with `python scripts/cycle.py`.
+`docs/history/`. How to work is in `CLAUDE.md`; start with `python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
 
 ## Where the hive stands (2026-11-18 04:40 UTC)
 
