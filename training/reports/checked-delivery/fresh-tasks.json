@@ -1,0 +1,26 @@
+[
+  {
+    "id": "market",
+    "task": "A stall sold 3 jars of jam at 4 dollars each, 5 loaves at 3 dollars each, and 2 tins of tea at 7 dollars each. Create sales.csv with columns item,revenue and one data row per item, highest revenue first. Use jam, bread, tea as the item names respectively. Print the total revenue as a single integer.",
+    "answer": "41",
+    "name": "sales.csv",
+    "format": "csv",
+    "expected": [["item", "revenue"], ["bread", "15"], ["tea", "14"], ["jam", "12"]]
+  },
+  {
+    "id": "bus",
+    "task": "Three bus stops reported their waiting passengers: Pine 4, Lake 11, Hill 3. Only stops with fewer than 5 passengers need the minibus. Create shuttle.json as a JSON object whose keys are the selected stop names and whose values are the passenger counts. Print the number of passengers the minibus should pick up as a single integer.",
+    "answer": "7",
+    "name": "shuttle.json",
+    "format": "json",
+    "expected": {"Pine": 4, "Hill": 3}
+  },
+  {
+    "id": "parcels",
+    "task": "Three delivery addresses have open parcels: 'Dock, West' has 8, 'Canal Road' has 3, and 'Oak Lane' has 6. Create parcels.csv with columns address,count. Put addresses with at least 5 open parcels in the file, sorted by count ascending. Preserve each address exactly. Print the total open parcels for the selected addresses as a single integer.",
+    "answer": "14",
+    "name": "parcels.csv",
+    "format": "csv",
+    "expected": [["address", "count"], ["Oak Lane", "6"], ["Dock, West", "8"]]
+  }
+]

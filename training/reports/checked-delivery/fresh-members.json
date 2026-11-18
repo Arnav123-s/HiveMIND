@@ -1,0 +1,127 @@
+{
+  "environment": {
+    "baseline_git": "b2133163c40a10d5c8dee8a3debf9a30b1a2aa38",
+    "runtime_git": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+    "runtime_rebuild": "Same pinned source, Ice Lake CPU recompilation of needed initialization and quantization kernels. Full native build also in progress.",
+    "engine_threads": 4,
+    "loopback_port": 8096,
+    "context_tokens": 12288,
+    "gpu": false,
+    "checkpoint_repo": "prism-ml/Ternary-Bonsai-8B-gguf",
+    "checkpoint_revision": "c2aefbeb4b24469cd11579c3384b990404c17a30",
+    "checkpoint_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "adapter_sha256": {
+      "t80+g47code2.gguf": "a708720b70b0fe574a6e0184951245337de7fc80ade032b4a2f264d8ac30f381",
+      "t80+g47data2.gguf": "dddd49b0b89b6c8652c14ebec9c03adabab1de2ee1c3ea2fc6dc5f9b4f1526ff",
+      "t80+g47sources2.gguf": "e44d6b16a976816c3ec48954a6b711f4f012c6f20afaccfaa758c4b336f3ed03",
+      "t80+g47trunk.gguf": "fcc87182ed3bef8ab81da7666ce793b3cace644042b9fb75dcbdd93eb81e7a6f",
+      "t80+g47words.gguf": "5814b8701ec39a4721e5c13a77ad4df645b94c5d0e9ae5af2fa6f210f3ad2b49"
+    },
+    "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+    "generation": 47,
+    "ordinary_entry": "team.talk.reply",
+    "generation_budget": "production defaults, 2 seats plus one if needed, max 6 turns, max 1600 new tokens per member completion, temp 0 first seat, 0.7 later seats, no fixed RNG seed",
+    "latency_note": "Shared machine and native compiler contending for CPU; no timing comparison is claimed."
+  },
+  "runs": {
+    "market": {
+      "started_utc": "2026-11-18T19:33:36.897202+00:00",
+      "latency_seconds": 187.476,
+      "served_text": "The total revenue is 41. The hive's members worked it out with programs and two agreed.\n\nFiles made: sales.csv",
+      "decision": {
+        "agreed": true,
+        "who": [
+          "t80+g47trunk",
+          "t80+g47data2"
+        ],
+        "agreeing": [
+          1,
+          2
+        ]
+      },
+      "served_file": "item,revenue\r\njam,12\r\nbread,15\r\ntea,14\r\n",
+      "candidates": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "41",
+          "program": "import csv\n\n# Calculate revenue for each item\nrevenues = [\n    (\"jam\", 3 * 4),\n    (\"bread\", 5 * 3),\n    (\"tea\", 2 * 7)\n]\n\n# Write to sales.csv\nwith open('sales.csv', 'w', newline='') as f:\n    writer = csv.writer(f)\n    writer.writerow(['item', 'revenue'])\n    for item, price in revenues:\n        writer.writerow([item, price])\n\n# Calculate total revenue\ntotal_revenue = sum(price for _, price in revenues)\nprint(total_revenue)",
+          "turns": 2,
+          "file": "item,revenue\r\njam,12\r\nbread,15\r\ntea,14\r\n"
+        },
+        {
+          "who": "t80+g47data2",
+          "answer": "41",
+          "program": "import csv\n\n# Calculate revenue for each item\nrevenues = []\nfor item, price, quantity in [('jam', 4, 3), ('bread', 3, 5), ('tea', 7, 2)]:\n    revenue = price * quantity\n    revenues.append((item, revenue))\n\n# Write to sales.csv\nwith open('sales.csv', 'w', newline='') as f:\n    writer = csv.writer(f)\n    writer.writerow(['item', 'revenue'])\n    for item, revenue in sorted(revenues, key=lambda x: x[1], reverse=True):\n        writer.writerow([item, revenue])\n\n# Calculate total revenue\ntotal_revenue = sum(revenue for _, revenue in revenues)\nprint(total_revenue)",
+          "turns": 2,
+          "file": "item,revenue\r\nbread,15\r\ntea,14\r\njam,12\r\n"
+        }
+      ]
+    },
+    "bus": {
+      "started_utc": "2026-11-18T19:36:44.373429+00:00",
+      "latency_seconds": 123.405,
+      "served_text": "The minibus should pick up 7 passengers.  \nThe hive's members worked it out with programs and two agreed.\n\nFiles made: shuttle.json",
+      "decision": {
+        "agreed": true,
+        "who": [
+          "t80+g47trunk",
+          "t80+g47data2"
+        ],
+        "agreeing": [
+          1,
+          2
+        ]
+      },
+      "served_file": "{\"Pine\": 4, \"Hill\": 3}",
+      "candidates": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "7",
+          "program": "import json\n\n# Given data\nwaiting_passengers = {\n    \"Pine\": 4,\n    \"Lake\": 11,\n    \"Hill\": 3\n}\n\n# Create the shuttle.json object with only stops that have fewer than 5 passengers\nshuttle = {stop: count for stop, count in waiting_passengers.items() if count < 5}\n\n# Write the JSON object to a file\nwith open('shuttle.json', 'w') as f:\n    json.dump(shuttle, f)\n\n# Print the number of passengers the minibus should pick up\nprint(sum(shuttle.values()))",
+          "turns": 2,
+          "file": "{\"Pine\": 4, \"Hill\": 3}"
+        },
+        {
+          "who": "t80+g47data2",
+          "answer": "7",
+          "program": "import json\n\n# Data from the bus stops\nstops = {\n    \"Pine\": 4,\n    \"Lake\": 11,\n    \"Hill\": 3\n}\n\n# Create the shuttle.json object with only stops having fewer than 5 passengers\nshuttle = {stop: count for stop, count in stops.items() if count < 5}\n\n# Write the JSON object to a file\nwith open('shuttle.json', 'w') as f:\n    json.dump(shuttle, f)\n\n# Print the total number of passengers that need to be picked up\nprint(sum(shuttle.values()))",
+          "turns": 2,
+          "file": "{\"Pine\": 4, \"Hill\": 3}"
+        }
+      ]
+    },
+    "parcels": {
+      "started_utc": "2026-11-18T19:29:35.771045+00:00",
+      "latency_seconds": 241.125,
+      "served_text": "The total open parcels for the selected addresses is 14. The hive's members worked it out with programs and two agreed.\n\nFiles made: parcels.csv",
+      "decision": {
+        "agreed": true,
+        "who": [
+          "t80+g47trunk",
+          "t80+g47data2"
+        ],
+        "agreeing": [
+          1,
+          2
+        ]
+      },
+      "served_file": "address,count\r\n\"Dock, West\",8\r\nOak Lane,6\r\n",
+      "candidates": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "14",
+          "program": "import csv\n\n# Data\naddresses = {\n    'Dock, West': 8,\n    'Canal Road': 3,\n    'Oak Lane': 6\n}\n\n# Create parcels.csv\nwith open('parcels.csv', 'w', newline='') as csvfile:\n    writer = csv.writer(csvfile)\n    writer.writerow(['address', 'count'])\n    for address, count in addresses.items():\n        if count >= 5:\n            writer.writerow([address, count])\n\n# Calculate total open parcels for selected addresses\ntotal = sum(count for address, count in addresses.items() if count >= 5)\nprint(total)",
+          "turns": 2,
+          "file": "address,count\r\n\"Dock, West\",8\r\nOak Lane,6\r\n"
+        },
+        {
+          "who": "t80+g47data2",
+          "answer": "14",
+          "program": "import csv\n\n# Given data\naddresses = {\n    'Dock, West': 8,\n    'Canal Road': 3,\n    'Oak Lane': 6\n}\n\n# Filter addresses with at least 5 open parcels\nfiltered = {addr: count for addr, count in addresses.items() if count >= 5}\n\n# Write to parcels.csv\nwith open('parcels.csv', 'w', newline='') as csvfile:\n    writer = csv.writer(csvfile)\n    writer.writerow(['address', 'count'])\n    for addr, count in filtered.items():\n        writer.writerow([addr, count])\n\n# Calculate total open parcels\ntotal = sum(filtered.values())\nprint(total)",
+          "turns": 2,
+          "file": "address,count\r\n\"Dock, West\",8\r\nOak Lane,6\r\n"
+        }
+      ]
+    }
+  }
+}
