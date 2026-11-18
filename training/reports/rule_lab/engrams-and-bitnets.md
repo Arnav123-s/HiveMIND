@@ -42,6 +42,22 @@ I removed **A's front and B's back at the same time**, kept their other halves, 
 
 An explicit one-bit request selecting A or B gave 95.1% accuracy with the original training rule. If the body must give just one binary answer and gets no indication which job is requested, even perfect knowledge is capped at 74.7% on these inputs under equally likely requests. The true answers disagree about half the time. A body can preserve both by providing two outputs, receiving a task cue, or asking for a distinguishing observation.
 
+### A runnable hybrid from two different half-network records
+
+I grew cells with twelve signed communication channels and the remaining neurons reserved for each cell. In the shared-interface condition each cell also learned to put the same twelve sensor measurements in the same channel positions. I saved A's ternary front half, B's ternary back half and B's responses to 512 reproducible inputs, then discarded the original models. A new ternary connector learned to pass A's signals into B's fixed head. The repair received zero examples of what B's missing hidden layer used to say. The archive can rebuild a working hybrid in a fresh process. [Hybrid archive](engrams/foreign-halves.npz) · [Repair and replay code](../../experiments/engram_cross_repair.py) · [All ten seeds](engrams/cross-repair.json)
+
+| Inputs used to repair the polarity cell | First five seeds | Five further seeds | Further seeds near the decision boundary |
+|---|---:|---:|---:|
+| Intact recipient with the shared interface | 93.1% | 97.2% | 89.6% |
+| Foreign cell trained without a shared interface, all wires | 49.8% | 49.5% | 50.2% |
+| Foreign cell trained with the shared interface, all wires | 72.1% | 80.1% | 60.5% |
+| Only its twelve shared wires | **93.4%** | **93.7%** | **80.7%** |
+| Original sensor values passed directly to the same learning procedure | 92.8% | 94.9% | 81.8% |
+
+I selected the shared-wire recipe on the first five seeds and repeated it on five new ones. Each seed had 4,096 fresh inputs and 4,096 boundary inputs. The reverse repair recovered the bank comparison with 98.2% on the first five and 89.8% on the next five. The hybrid preserves useful information when the downstream cell can access only the donor. Where raw sensor values are already available, the direct-input control is simpler and competitive. The connector has 1,024 ternary weights, larger than either intact specialist here. This proves functional cross-cell repair and sets an explicit size target for a cheaper connector.
+
+To replay the shipped example, pass the bytes of `foreign-halves.npz` to `training.experiments.engram_cross_repair.regrow` with one Torch thread. The returned model takes twelve sensor readings and emits a polarity logit.
+
 ## 3. Grow one network from memories of two others
 
 This experiment used the fitted-scale teachers. I recorded their two output logits on reproducible inputs and trained a new 40-neuron ternary network with one shared hidden layer and a two-output head. The student saw teacher responses and recovered inputs. Ground-truth test labels were reserved for evaluation. The shipped example includes the input seed, selected indices, input checksum, student seed, Torch version, and FP16 responses. It can grow the student after both teachers have gone. [Distillation experiment](../../experiments/engram_distill.py) · [Runnable two-teacher memory](engrams/two-teachers.npz) · [Knowledge distillation](https://arxiv.org/abs/1503.02531)
@@ -127,6 +143,8 @@ done
 "$PY" -m training.experiments.engram_transfer --binary "$RT" --base "$BASE" \
   --catalog "$LAB/catalog" --rebuilt "$STUDY/rebuilt/catalog" --out "$STUDY/replay-transfer"
 "$PY" -m training.experiments.engram_halves --out "$STUDY/replay-halves.json"
+"$PY" -m training.experiments.engram_cross_repair --seeds 73 89 101 113 127 137 149 163 179 193 \
+  --out "$STUDY/replay-cross.json" --example "$STUDY/replay-hybrid.npz"
 "$PY" -m training.experiments.engram_distill --out "$STUDY/replay-distill"
 "$PY" -m training.experiments.engram_recall_probes --out "$STUDY/replay-recall.json"
 "$PY" -m training.experiments.engram_stem --out "$STUDY/replay-stem.json"

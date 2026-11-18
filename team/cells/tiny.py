@@ -44,7 +44,9 @@ def _brain():
         meta = json.loads((HOME / "brain.json").read_text())
         model = T.Brain({k: len(v) for k, v in meta["jobs"].items()}, meta.get("talk", False))
         model.load_state_dict(torch.load(f))
-        _state.update(m=m, model=model.eval(), meta=meta, tok=T.tokenizer(), T=T, torch=torch)
+        model.eval()
+        model.trunk.freeze_bit_weights()
+        _state.update(m=m, model=model, meta=meta, tok=T.tokenizer(), T=T, torch=torch)
     return _state
 
 

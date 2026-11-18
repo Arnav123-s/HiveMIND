@@ -400,6 +400,13 @@ def gate(argv):
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna,
             "held_exam": held}
+    # practice by its orders (the split of training/practice_arms.py) and its first try on old kinds and K2's new ones
+    if practised:
+        from training import practice_arms
+        try:
+            line.update(practice_arms.summary(practised))
+        except Exception as e:  # noqa: BLE001 - the record goes on without the split
+            print(f"practice by orders and by the kinds' age could not be counted ({type(e).__name__}); the record goes on without them")
     # what the run says of itself (training/reads.py facts, from the GitHub API and the gate's folders): the minutes of
     # each step, the hours, the pulse seats whose server died, the train slices lost, the first try, who started it
     if "--facts" in argv and argv.index("--facts") + 1 < len(argv):
