@@ -12,13 +12,16 @@ import tempfile
 from pathlib import Path
 
 
-_NAME = r"(?<![\w/.-])([\w-]+\.(?:py|csv|tsv|json|md|txt|html|xml|ya?ml|xlsx|pdf|png))\b"
+_EXT = r"(?:py|csv|tsv|jsonl?|ndjson|md|txt|html?|xml|ya?ml|toml|xlsx?|docx?|pptx?|pdf|png|jpe?g|svg|zip|parquet|sql|ipynb)"
+_BARE = rf"[\w-]+(?:\.[\w-]+)*\.{_EXT}\b"
+_QUOTED = rf"[\w-][\w .()-]*\.{_EXT}"
+_NAME = rf"""(?<![\w/.-])(?P<name>`{_QUOTED}`|"{_QUOTED}"|'{_QUOTED}'|{_BARE})"""
 _ACTION = re.compile(r"\b(?:sav(?:e|es|ed|ing)|writ(?:e|es|ing|ten)|creat(?:e|es|ed|ing)|mak(?:e|es|ing)|"
                      r"produc(?:e|es|ed|ing)|generat(?:e|es|ed|ing)|stor(?:e|es|ed|ing)|export(?:s|ed|ing)?|"
                      r"convert(?:s|ed|ing)?)\b", re.I)
 _FILENAME = re.compile(_NAME, re.I)
-_DEST = re.compile(rf"\b(?:to|into|as)\s+(?:a\s+|the\s+)?(?:file\s+)?[`'\"]?{_NAME}", re.I)
-_NEXT = re.compile(rf"^[`'\"]?\s*(?:,\s*(?:and\s+)?|and\s+)[`'\"]?{_NAME}", re.I)
+_DEST = re.compile(rf"\b(?:to|into|as)\s+(?:a\s+|the\s+)?(?:file\s+)?{_NAME}", re.I)
+_NEXT = re.compile(rf"^[`'\"]?\s*(?:,\s*(?:and\s+)?|and\s+){_NAME}", re.I)
 
 
 def _outputs(task):
@@ -42,10 +45,10 @@ def _outputs(task):
                 if re.search(r"\b(?:that|which)\s+(?:reads?|opens?|uses?)\s*$", lead, re.I):
                     continue
             rest = clause[output.end():]
-            yield output[1], rest
+            yield output["name"].strip("`'\""), rest
             while following := _NEXT.match(rest):
                 rest = rest[following.end():]
-                yield following[1], rest
+                yield following["name"].strip("`'\""), rest
 
 
 def wanted(task):
@@ -117,7 +120,7 @@ def _tabular_rules(task, name):
         header = re.match(r"^[`'\"]?\s*[:,]?\s*(?:(?:with|using)\s+(?:the\s+)?)?(?:columns|headers?)\s*[:=]?\s+(.+)", clause, re.I)
         labels = None
         if header:
-            labels = _list(re.split(r"\s+and\s+(?:rows|data|sort|print|tell|save|keep|include)\b|:\s*|,?\s+(?:(?:sorted|ordered|grouped) by|keeping|one row)\b", header[1], maxsplit=1, flags=re.I)[0])
+            labels = _list(re.split(r"\s+and\s+(?:rows|data|(?:one|\d+) data rows?|sort|print|tell|save|keep|include)\b|:\s*|,?\s+(?:(?:sorted|ordered|grouped) by|(?:with (?:the )?)?(?:highest|lowest) \w+ first|keeping|one row)\b", header[1], maxsplit=1, flags=re.I)[0])
         row_order = re.search(r"\brows in (?:the|this) order\s*:?\s+(.+)$", clause, re.I)
         count = re.search(r"\bexactly (\d+) data rows\b", clause, re.I)
         if labels or row_order or count:
@@ -125,9 +128,119 @@ def _tabular_rules(task, name):
     return None, None, None
 
 
+def _ordering(task, name):
+    """Recognize an unambiguous, single-key, directed sort on a single output table."""
+    task = task.split("\n\n(This continues a conversation.", 1)[0]
+    tables = [f for f in wanted(task) if f.lower().endswith((".csv", ".tsv"))]
+    if tables != [name] or re.search(
+        r"\b(?:bytes?|byte[- ](?:exact|for[- ]byte)|verbatim|identical|tie[- ]?break|"
+        r"(?:break|resolve) ties|then by|no headers?|without (?:a |the )?header|headerless|"
+        r"(?:preserve|keep) (?:the )?(?:original|input|source) (?:order|format|bytes))\b", task, re.I
+    ):
+        return None
+    mentions = list(re.finditer(r"\b(?:sort(?:ed)?|order(?:ed)?)\s+(?:the rows\s+)?by\b", task, re.I))
+    extremes = list(re.finditer(r"""\b(highest|lowest)\s+[`"']?([\w-]+)[`"']?\s+first\b""", task, re.I))
+    if len(mentions) + len(extremes) != 1:
+        return None
+    phrase = (mentions or extremes)[0]
+    before = task[:phrase.start()]
+    position = before.rfind(name)
+    if position < 0:
+        return None
+    following = before[position + len(name):]
+    if _FILENAME.search(following) or re.search(r"\b(?:source|input|reference)\b", following, re.I):
+        return None
+    # A separate sentence must be a direct instruction about the output.
+    sections = re.split(r"[;\n]|\.(?:\s|$)", following)
+    # Conditional or negated requests cannot authorize a deterministic rewrite.
+    sentence = re.split(r"[;\n]|\.(?:\s|$)", before)[-1]
+    if re.search(r"\b(?:if|unless|whether|optionally|never|not|without|only when|compare|compared|instead of)\b|n.t\b",
+                 sentence, re.I):
+        return None
+    if len(sections) == 1:
+        # Positively recognize a sort attached to the output name or its declared
+        # columns. A sort mentioned in arbitrary intervening prose can describe another table.
+        field = r"""[`'"]?[\w-]+[`'"]?"""
+        fields = rf"{field}(?:\s*,\s*{field})*(?:\s*,?\s+and\s+{field})?"
+        schema = rf"(?:(?:with|using)\s+(?:the\s+)?)?(?:columns|headers?)\s*:?\s+{fields}"
+        population = r"(?:and\s+)?(?:one|a|\d+)\s+(?:data\s+)?rows?\s+(?:per|for each)\s+[\w-]+"
+        attachment = rf"(?:{schema})?\s*[,;]?\s*(?:{population})?\s*,?\s*(?:(?:with|and)\s+)?(?:(?:the|its)\s+)?(?:(?:rows|records)\s*)?"
+        if not re.fullmatch(attachment, following.strip("`'\" "), re.I):
+            return None
+    if len(sections) > 1:
+        lead = sections[-1].strip()
+        direct = re.fullmatch(r"(?:(?:then|please)\s*)?(?:(?:put|place|list|show|display)\s+"
+                              r"(?:the\s+)?(?:rows\s+)?(?:with\s+)?(?:the\s*)?)?", sections[-1].lstrip(), re.I)
+        # A separate instruction can first restrict which rows to put in the output,
+        # then specify their order. It must name the output as the destination.
+        destination = re.fullmatch(r"(?:put|place|include|list|copy|save|write)\b.+?\b(?:in|into|to)\s+"
+                                   r"(?:the |this )?(?:output(?: file| table)?|file|table|CSV|TSV)\s*,?", lead, re.I)
+        if not direct and not destination:
+            return None
+    if extremes:
+        if re.match(r"\s*(?=[.;\n]|$)", task[phrase.end():]):
+            return {"column": phrase[2], "direction": "descending" if phrase[1].lower() == "highest" else "ascending"}
+        return None
+    # Consume the complete instruction. Qualifiers and second keys require a more precise contract.
+    rule = re.match(r"""\s+[`"']?([\w-]+)[`"']?\s+(?:in\s+)?(ascending|descending)(?:\s+order)?"""
+                    r"\s*(?=[.;\n]|$)", task[phrase.end():], re.I)
+    if rule:
+        return {"column": rule[1], "direction": rule[2].lower()}
+    return None
+
+
+def _csv(source, name):
+    return csv.reader(source, delimiter="\t" if name.lower().endswith(".tsv") else ",", strict=True)
+
+
+def _sorted_rows(source, name, rule):
+    rows = list(_csv(source, name))
+    if not rows or any(not row for row in rows) or rows[0].count(rule["column"]) != 1:
+        return None
+    index = rows[0].index(rule["column"])
+    values = []
+    for row in rows[1:]:
+        if len(row) != len(rows[0]) or not re.fullmatch(r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?", row[index].strip()):
+            return None
+        values.append((Decimal(row[index].strip()), row))
+    ordered = sorted(values, key=lambda pair: pair[0], reverse=rule["direction"] == "descending")
+    return [rows[0], *(row for _, row in ordered)]
+
+
+def _digest_row(digest, row):
+    digest.update(json.dumps(row, ensure_ascii=False).encode())
+    digest.update(b"\n")
+
+
+def apply_order(work, name, rule):
+    """Sort the staging copy, preserving all cell strings and relative order among ties."""
+    path = Path(work) / name
+    with regular(path) as raw:
+        bom = raw.read(3) == b"\xef\xbb\xbf"
+        raw.seek(0)
+        with io.TextIOWrapper(raw, encoding="utf-8-sig", newline="") as source:
+            rows = _sorted_rows(source, name, rule)
+            newline = source.newlines if isinstance(source.newlines, str) else "\n"
+    if rows is None:
+        raise ValueError(f"{name} does not support the requested numeric sort")
+    with path.open("w", encoding="utf-8-sig" if bom else "utf-8", newline="") as out:
+        csv.writer(out, delimiter="\t" if name.lower().endswith(".tsv") else ",", lineterminator=newline).writerows(rows)
+
+
+def comparison(delivery):
+    """Compare checked row sets in the explicitly requested order, when one exists."""
+    return {name: delivery["sorts"][name]["digest"] if name in delivery["sorts"] else digest
+            for name, digest in delivery["content"].items()}
+
+
+def repairs(delivery):
+    return [{"name": name, "column": rule["column"], "direction": rule["direction"]}
+            for name, rule in delivery["sorts"].items() if rule["digest"] != delivery["content"][name]]
+
+
 def _table(source, task, name):
     header, order, count = _tabular_rules(task, name)
-    reader = csv.reader(source, delimiter="\t" if name.lower().endswith(".tsv") else ",", strict=True)
+    reader = _csv(source, name)
     digest = hashlib.sha256()
     # A filter can return zero matches, and a template can deliberately contain just its header.
     current = task.split("\n\n(This continues a conversation.", 1)[0]
@@ -150,8 +263,7 @@ def _table(source, task, name):
         index = rows if no_header else rows - 1
         if order and 0 <= index < len(order):
             order_columns = {i for i in order_columns if row[i] == order[index]}
-        digest.update(json.dumps(row, ensure_ascii=False).encode())
-        digest.update(b"\n")
+        _digest_row(digest, row)
         rows += 1
     if not rows:
         raise ValueError("the table contains no records")
@@ -188,7 +300,7 @@ def _json_number(text):
 
 def inspect(task, work, names):
     """Record observable failures and comparable content. A passed shape check does not verify the values."""
-    issues, content, byte_hashes = {}, {}, {}
+    issues, content, byte_hashes, sorts = {}, {}, {}, {}
     for name in names:
         try:
             with regular(Path(work) / name) as file:
@@ -207,8 +319,17 @@ def inspect(task, work, names):
                             content[name] = hashlib.sha256(ascii(value).encode()).hexdigest()
                         else:
                             content[name] = _table(source, task, name)
+                            rule = _ordering(task, name)
+                            if rule:
+                                source.seek(0)
+                                rows = _sorted_rows(source, name, rule)
+                                if rows is not None:
+                                    digest = hashlib.sha256()
+                                    for row in rows:
+                                        _digest_row(digest, row)
+                                    sorts[name] = dict(rule, digest=digest.hexdigest())
         except FileNotFoundError:
             issues[name] = "the requested file is missing"
         except (OSError, ValueError, csv.Error, InvalidOperation, RecursionError) as e:
             issues[name] = str(e)
-    return {"issues": issues, "content": content, "byte_hashes": byte_hashes}
+    return {"issues": issues, "content": content, "byte_hashes": byte_hashes, "sorts": sorts}

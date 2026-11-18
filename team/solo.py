@@ -604,11 +604,12 @@ def _winner(tries, pairs, task):
         delivery = x.get("delivery", {})
         if delivery.get("issues"):
             continue
-        comparable = [p["delivery"]["content"] for p in peers if p.get("delivery") and not p["delivery"]["issues"]]
-        if comparable and delivery["content"] not in comparable:
+        comparable = [deliverables.comparison(p["delivery"]) for p in peers if p.get("delivery") and not p["delivery"]["issues"]]
+        repair = bool(delivery and deliverables.repairs(delivery))
+        if (comparable or repair) and deliverables.comparison(delivery) not in comparable:
             continue
-        candidates.append(x)
-    return next((x for x in candidates if not form(task, x["answer"])), None) or next(iter(candidates), None)
+        candidates.append((repair, bool(form(task, x["answer"])), x))
+    return min(candidates, key=lambda c: c[:2])[2] if candidates else None
 
 
 def _home(run_dir):
@@ -683,18 +684,46 @@ def run(task, run_dir=None, approve="never", members=2):
         if agreed:
             break
     got = [t for t in tries if t["answer"]]
+    file_repairs = []
+    selected_work = agreed["work"] if agreed else str(work)
+    selected_delivery = agreed.get("delivery") if agreed else None
+    repair_failure = ""
+    if selected_delivery:
+        file_repairs = deliverables.repairs(selected_delivery)
+    if file_repairs:
+        # Two independent cells supplied the same data in the requested sort order
+        # after normalization. Preserve their raw artifacts and correct a staging copy.
+        staging = Path(tempfile.mkdtemp(prefix="ordered-", dir=home))
+        try:
+            deliverables.copy_files(selected_work, names, staging)
+            if deliverables.inspect(task, staging, names) != selected_delivery:
+                raise ValueError("the source file changed before sorting")
+            for repair in file_repairs:
+                deliverables.apply_order(staging, repair["name"], repair)
+            checked = deliverables.inspect(task, staging, names)
+            if checked["issues"] or deliverables.repairs(checked) or checked["content"] != deliverables.comparison(selected_delivery):
+                raise ValueError("the sorted file did not preserve the checked data")
+        except (ValueError, OSError) as e:
+            repair_failure = str(e)
+            agreed, file_repairs = None, []
+        else:
+            selected_work, selected_delivery = str(staging), checked
     if agreed:
-        keep(task, agreed["program"], agreed["answer"])
+        if not file_repairs:
+            keep(task, agreed["program"], agreed["answer"])
         text = agreed["answer"] + f"\n\n## How it was checked\n- {len(tries)} members worked it out independently; two gave the same values."
         if names:
             matched = any(t is not agreed and same(t["answer"], agreed["answer"], task)
                           and not t["delivery"]["issues"] and t["delivery"]["content"] == agreed["delivery"]["content"]
                           for t in tries)
             text += "\n- Reopened and checked the requested files: " + ", ".join(names) + "."
-            if agreed["delivery"]["content"] and matched:
+            if file_repairs:
+                for repair in file_repairs:
+                    text += f"\n- Two members supplied the same rows. The hive sorted {repair['name']} by {repair['column']} {repair['direction']}."
+            elif agreed["delivery"]["content"] and matched:
                 text += " Two members produced matching structured data."
     elif names and got and (members >= 2 or got[0]["delivery"]["issues"]):
-        reasons = []
+        reasons = [repair_failure] if repair_failure else []
         for i, t in enumerate(tries, 1):
             issues = t["delivery"]["issues"]
             if issues:
@@ -716,15 +745,17 @@ def run(task, run_dir=None, approve="never", members=2):
     witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)]
     agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
                         and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
+    if file_repairs:
+        agreeing_members = []  # the user received the helper's sorted copy, not a cell's raw output
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
     if names:
-        decision.update(requested_files=names, printed_agreeing=witnesses,
+        decision.update(requested_files=names, printed_agreeing=witnesses, file_repairs=file_repairs,
                         selected_member=next((i for i, t in enumerate(tries, 1) if t is agreed), None))
     (home / "members.json").write_text(json.dumps(decision))
     result = {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
-              "work": agreed["work"] if agreed else str(work), "requested_files": names}
+              "work": selected_work if agreed else str(work), "requested_files": names, "file_repairs": file_repairs}
     if names and agreed:
-        result["delivery"] = agreed["delivery"]
+        result["delivery"] = selected_delivery
     return result
 
 
@@ -748,13 +779,19 @@ def first(task, run_dir=None, approve="never", members=2):
                         raise ValueError("the selected files changed before delivery")
                     deliverables.copy_files(tmp, names, home / "work")
             except (ValueError, OSError) as e:
-                out.update(agreed=False, report=f"Not confirmed: the requested files could not be delivered. {e}\n")
+                out.update(agreed=False, file_repairs=[], report=f"Not confirmed: the requested files could not be delivered. {e}\n")
+                # Training reads this decision from disk. An interrupted handoff must
+                # not be counted later as a file the user received.
+                path = home / "members" / "members.json"
+                decision = json.loads(path.read_text())
+                decision.update(agreed=False, agreeing=[], delivery_error=str(e))
+                path.write_text(json.dumps(decision))
             else:
                 out["files"] = list(names)
         else:
             (home / "work").mkdir(parents=True, exist_ok=True)
             for p in source.iterdir():
-                if not p.is_file() or p.is_symlink() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py", p.name):
+                if p.is_symlink() or not p.is_file() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py", p.name):
                     continue
                 try:
                     deliverables.copy_files(source, [p.name], home / "work")
