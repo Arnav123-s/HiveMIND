@@ -124,6 +124,14 @@ def once(rows):
     return out
 
 
+def saved_key(name):
+    """The key in a saved edit (adapter_model.safetensors) of a trainable parameter of the model being trained. A
+    ternary edit's matrices are parametrized (train(ternary_edit=True)), so their parameter is
+    "...lora_A.default.parametrizations.weight.original", saved as "...lora_A.weight". Without this, an edit trained
+    as ternary could not be started from again: the hive engram's second update found none of its matrices."""
+    return name.replace(".default", "").replace(".parametrizations.weight.original", ".weight")
+
+
 def rows_of(run, task, kind="", seed=None):
     """The training rows of one task: from every member whose own answer the task's check confirmed (taught), whether
     or not the whole task was right. run: the task's folder."""
@@ -1051,7 +1059,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                     got += 1
         else:
             for n, p_ in model.named_parameters():
-                k = n.replace(".default", "")
+                k = saved_key(n)
                 if p_.requires_grad and k in sd and sd[k].shape == p_.shape:
                     p_.data.copy_(sd[k].to(p_.dtype))
                     got += 1
