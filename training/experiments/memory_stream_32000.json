@@ -1,0 +1,2484 @@
+{
+ "seed": 32000,
+ "who": "t17",
+ "rounds": 4,
+ "seen": [
+  "m_percent",
+  "m_days",
+  "m_units",
+  "m_table",
+  "m_code",
+  "m_fix"
+ ],
+ "unseen": [
+  "m_know",
+  "h_join",
+  "m_follow",
+  "h_log"
+ ],
+ "tasks": 28,
+ "arms": {
+  "off": {
+   "by_round": {
+    "1": [
+     3,
+     6
+    ],
+    "2": [
+     2,
+     6
+    ],
+    "3": [
+     2,
+     6
+    ],
+    "4": [
+     2,
+     6
+    ]
+   },
+   "later_seen": [
+    6,
+    18
+   ],
+   "unseen": [
+    0,
+    4
+   ],
+   "first_round": [
+    3,
+    6
+   ],
+   "copying": 0,
+   "chance_repeats": 0,
+   "recalled_tasks": 0,
+   "notes_shown": 0,
+   "task_seconds": 2644,
+   "write_seconds": 0,
+   "seconds": 2644,
+   "written": {
+    "engrams": 0,
+    "notes": 0,
+    "hive_updates": 0,
+    "seconds": 0
+   },
+   "rows": [
+    {
+     "round": 1,
+     "id": "r1_00_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 19,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 86,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_02_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": false,
+     "seconds": 170,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_04_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 100,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 10,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 238,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 40,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_04_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 38,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 9,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_01_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_02_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 379,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_03_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_04_m_follow",
+     "maker": "m_follow",
+     "kind": "follow a form to the letter",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 600,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "timed out after 600 s",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_05_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 39,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_06_m_know",
+     "maker": "m_know",
+     "kind": "a thing to know",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 365,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_07_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 28,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_00_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 7,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_01_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 104,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_03_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 37,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_04_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 88,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_05_h_log",
+     "maker": "h_log",
+     "kind": "a log read and counted into a file",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 99,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_06_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 29,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_07_h_join",
+     "maker": "h_join",
+     "kind": "a join over two small tables",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 110,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    }
+   ]
+  },
+  "notes": {
+   "by_round": {
+    "1": [
+     3,
+     6
+    ],
+    "2": [
+     3,
+     6
+    ],
+    "3": [
+     3,
+     6
+    ],
+    "4": [
+     1,
+     6
+    ]
+   },
+   "later_seen": [
+    7,
+    18
+   ],
+   "unseen": [
+    1,
+    4
+   ],
+   "first_round": [
+    3,
+    6
+   ],
+   "copying": 0,
+   "chance_repeats": 1,
+   "recalled_tasks": 0,
+   "notes_shown": 21,
+   "task_seconds": 1507,
+   "write_seconds": 0,
+   "seconds": 1507,
+   "written": {
+    "engrams": 0,
+    "notes": 31,
+    "hive_updates": 0,
+    "seconds": 0
+   },
+   "rows": [
+    {
+     "round": 1,
+     "id": "r1_00_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 21,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 103,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_02_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 15,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_04_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 132,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 6,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 76,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 206,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_04_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 16,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_01_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_02_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 66,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_03_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_04_m_follow",
+     "maker": "m_follow",
+     "kind": "follow a form to the letter",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 122,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_05_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 116,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_06_m_know",
+     "maker": "m_know",
+     "kind": "a thing to know",
+     "which": "unseen",
+     "ok": true,
+     "seconds": 78,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_07_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 36,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_00_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_01_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 10,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 97,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_03_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 70,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_04_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 56,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_05_h_log",
+     "maker": "h_log",
+     "kind": "a log read and counted into a file",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 129,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_06_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 39,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_07_h_join",
+     "maker": "h_join",
+     "kind": "a join over two small tables",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 42,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [
+      "14"
+     ],
+     "write_seconds": 0
+    }
+   ]
+  },
+  "cell": {
+   "by_round": {
+    "1": [
+     4,
+     6
+    ],
+    "2": [
+     4,
+     6
+    ],
+    "3": [
+     4,
+     6
+    ],
+    "4": [
+     3,
+     6
+    ]
+   },
+   "later_seen": [
+    11,
+    18
+   ],
+   "unseen": [
+    0,
+    4
+   ],
+   "first_round": [
+    4,
+    6
+   ],
+   "copying": 0,
+   "chance_repeats": 0,
+   "recalled_tasks": 10,
+   "notes_shown": 0,
+   "task_seconds": 2197,
+   "write_seconds": 398,
+   "seconds": 2594,
+   "written": {
+    "engrams": 18,
+    "notes": 0,
+    "hive_updates": 0,
+    "seconds": 398
+   },
+   "rows": [
+    {
+     "round": 1,
+     "id": "r1_00_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 18,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 23
+    },
+    {
+     "round": 1,
+     "id": "r1_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 78,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_02_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 1,
+     "id": "r1_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 15
+    },
+    {
+     "round": 1,
+     "id": "r1_04_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 377,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 7,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 12
+    },
+    {
+     "round": 2,
+     "id": "r2_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 15,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 2,
+     "id": "r2_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 61,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 39,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 11
+    },
+    {
+     "round": 2,
+     "id": "r2_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 12,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 16
+    },
+    {
+     "round": 2,
+     "id": "r2_04_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 20,
+     "recalled": [
+      "e63885290"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 21
+    },
+    {
+     "round": 2,
+     "id": "r2_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 7,
+     "recalled": [
+      "e722f3ee7"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 12
+    },
+    {
+     "round": 3,
+     "id": "r3_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [
+      "e99f1262c"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 16
+    },
+    {
+     "round": 3,
+     "id": "r3_01_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [
+      "ec787362e"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 16
+    },
+    {
+     "round": 3,
+     "id": "r3_02_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 64,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_03_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 6,
+     "recalled": [
+      "ec9b1ee95",
+      "e722f3ee7"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 12
+    },
+    {
+     "round": 3,
+     "id": "r3_04_m_follow",
+     "maker": "m_follow",
+     "kind": "follow a form to the letter",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 109,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_05_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 99,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_06_m_know",
+     "maker": "m_know",
+     "kind": "a thing to know",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 99,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 83
+    },
+    {
+     "round": 3,
+     "id": "r3_07_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 18,
+     "recalled": [
+      "e63885290",
+      "eaaab75f4"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 33
+    },
+    {
+     "round": 4,
+     "id": "r4_00_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 14,
+     "recalled": [
+      "e9a1eda82",
+      "ec787362e"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 17
+    },
+    {
+     "round": 4,
+     "id": "r4_01_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 33,
+     "recalled": [
+      "e64a4f4cd",
+      "ec9b1ee95"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 43
+    },
+    {
+     "round": 4,
+     "id": "r4_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": true,
+     "seconds": 10,
+     "recalled": [
+      "e2a10f29a"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 15
+    },
+    {
+     "round": 4,
+     "id": "r4_03_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 349,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_04_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 99,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_05_h_log",
+     "maker": "h_log",
+     "kind": "a log read and counted into a file",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 458,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_06_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 14,
+     "recalled": [
+      "e63885290",
+      "eaaab75f4"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 17
+    },
+    {
+     "round": 4,
+     "id": "r4_07_h_join",
+     "maker": "h_join",
+     "kind": "a join over two small tables",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 143,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    }
+   ]
+  },
+  "hive": {
+   "by_round": {
+    "1": [
+     4,
+     6
+    ],
+    "2": [
+     6,
+     6
+    ],
+    "3": [
+     5,
+     6
+    ],
+    "4": [
+     5,
+     6
+    ]
+   },
+   "later_seen": [
+    16,
+    18
+   ],
+   "unseen": [
+    1,
+    4
+   ],
+   "first_round": [
+    4,
+    6
+   ],
+   "copying": 0,
+   "chance_repeats": 0,
+   "recalled_tasks": 22,
+   "notes_shown": 0,
+   "task_seconds": 909,
+   "write_seconds": 183,
+   "seconds": 1093,
+   "written": {
+    "engrams": 0,
+    "notes": 0,
+    "hive_updates": 3,
+    "seconds": 183
+   },
+   "rows": [
+    {
+     "round": 1,
+     "id": "r1_00_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 120,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 2
+    },
+    {
+     "round": 1,
+     "id": "r1_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 166,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_02_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_04_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 65,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 5,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 83
+    },
+    {
+     "round": 2,
+     "id": "r2_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 12,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 9,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": true,
+     "seconds": 7,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_04_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 15,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 5,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 37
+    },
+    {
+     "round": 3,
+     "id": "r3_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_01_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 10,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_02_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_03_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 6,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_04_m_follow",
+     "maker": "m_follow",
+     "kind": "follow a form to the letter",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 13,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_05_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 24,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_06_m_know",
+     "maker": "m_know",
+     "kind": "a thing to know",
+     "which": "unseen",
+     "ok": true,
+     "seconds": 15,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_07_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 22,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 61
+    },
+    {
+     "round": 4,
+     "id": "r4_00_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_01_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 6,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": true,
+     "seconds": 7,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_03_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_04_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 8,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_05_h_log",
+     "maker": "h_log",
+     "kind": "a log read and counted into a file",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 249,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_06_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": true,
+     "seconds": 15,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_07_h_join",
+     "maker": "h_join",
+     "kind": "a join over two small tables",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 55,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    }
+   ]
+  },
+  "all": {
+   "by_round": {
+    "1": [
+     2,
+     6
+    ],
+    "2": [
+     4,
+     6
+    ],
+    "3": [
+     3,
+     6
+    ],
+    "4": [
+     4,
+     6
+    ]
+   },
+   "later_seen": [
+    11,
+    18
+   ],
+   "unseen": [
+    1,
+    4
+   ],
+   "first_round": [
+    2,
+    6
+   ],
+   "copying": 0,
+   "chance_repeats": 0,
+   "recalled_tasks": 22,
+   "notes_shown": 22,
+   "task_seconds": 2370,
+   "write_seconds": 520,
+   "seconds": 2889,
+   "written": {
+    "engrams": 18,
+    "notes": 20,
+    "hive_updates": 3,
+    "seconds": 520
+   },
+   "rows": [
+    {
+     "round": 1,
+     "id": "r1_00_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 43,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 16
+    },
+    {
+     "round": 1,
+     "id": "r1_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": false,
+     "seconds": 49,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_02_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 19
+    },
+    {
+     "round": 1,
+     "id": "r1_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 12,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 1,
+     "id": "r1_04_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 43,
+     "recalled": [],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 1,
+     "id": "r1_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 8,
+     "recalled": [],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 34
+    },
+    {
+     "round": 2,
+     "id": "r2_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 2,
+     "id": "r2_01_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 10,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 2,
+     "id": "r2_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": true,
+     "seconds": 11,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 13
+    },
+    {
+     "round": 2,
+     "id": "r2_03_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 14,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 17
+    },
+    {
+     "round": 2,
+     "id": "r2_04_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 72,
+     "recalled": [
+      "e63885290",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 2,
+     "id": "r2_05_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 6,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 32
+    },
+    {
+     "round": 3,
+     "id": "r3_00_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 14,
+     "recalled": [
+      "e99f1262c",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 3,
+     "id": "r3_01_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 12,
+     "recalled": [
+      "ec787362e",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 14
+    },
+    {
+     "round": 3,
+     "id": "r3_02_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 25,
+     "recalled": [
+      "eabd2f53c",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 18
+    },
+    {
+     "round": 3,
+     "id": "r3_03_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 9,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_04_m_follow",
+     "maker": "m_follow",
+     "kind": "follow a form to the letter",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 14,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 3,
+     "id": "r3_05_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": false,
+     "seconds": 10,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 13
+    },
+    {
+     "round": 3,
+     "id": "r3_06_m_know",
+     "maker": "m_know",
+     "kind": "a thing to know",
+     "which": "unseen",
+     "ok": true,
+     "seconds": 19,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 24
+    },
+    {
+     "round": 3,
+     "id": "r3_07_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 61,
+     "recalled": [
+      "e63885290",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 79
+    },
+    {
+     "round": 4,
+     "id": "r4_00_m_days",
+     "maker": "m_days",
+     "kind": "days between two dates",
+     "which": "seen",
+     "ok": true,
+     "seconds": 14,
+     "recalled": [
+      "e9a1eda82",
+      "ec787362e",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 20
+    },
+    {
+     "round": 4,
+     "id": "r4_01_m_fix",
+     "maker": "m_fix",
+     "kind": "mend a program",
+     "which": "seen",
+     "ok": false,
+     "seconds": 28,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 17
+    },
+    {
+     "round": 4,
+     "id": "r4_02_m_units",
+     "maker": "m_units",
+     "kind": "a unit conversion",
+     "which": "seen",
+     "ok": true,
+     "seconds": 13,
+     "recalled": [
+      "e2a10f29a",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 34
+    },
+    {
+     "round": 4,
+     "id": "r4_03_m_code",
+     "maker": "m_code",
+     "kind": "write and run a program",
+     "which": "seen",
+     "ok": true,
+     "seconds": 85,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": false,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 66
+    },
+    {
+     "round": 4,
+     "id": "r4_04_m_percent",
+     "maker": "m_percent",
+     "kind": "a sum in words",
+     "which": "seen",
+     "ok": true,
+     "seconds": 53,
+     "recalled": [
+      "e9aabc876",
+      "eabd2f53c",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 32
+    },
+    {
+     "round": 4,
+     "id": "r4_05_h_log",
+     "maker": "h_log",
+     "kind": "a log read and counted into a file",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 600,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "timed out after 600 s",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_06_m_table",
+     "maker": "m_table",
+     "kind": "reason over a small table",
+     "which": "seen",
+     "ok": false,
+     "seconds": 600,
+     "recalled": [
+      "e63885290",
+      "e53f308e9",
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "timed out after 600 s",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    },
+    {
+     "round": 4,
+     "id": "r4_07_h_join",
+     "maker": "h_join",
+     "kind": "a join over two small tables",
+     "which": "unseen",
+     "ok": false,
+     "seconds": 519,
+     "recalled": [
+      "hive"
+     ],
+     "notes_shown": true,
+     "note": "",
+     "copied": [],
+     "chance": [],
+     "write_seconds": 0
+    }
+   ]
+  }
+ }
+}

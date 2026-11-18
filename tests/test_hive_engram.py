@@ -174,3 +174,11 @@ def test_main_runs_fold(tmp_path, capsys):
     merge.save(edit(2, seed=7), tmp_path / "trunk.safetensors")
     assert hive_engram.main(["fold", str(tmp_path / "out.safetensors"), str(tmp_path / "trunk.safetensors"), "--home", str(tmp_path / "e")]) == 0
     assert json.loads(capsys.readouterr().out.splitlines()[-1])["what"] == "fold"
+
+
+def test_saved_key_of_a_ternary_edit():
+    """An edit trained as ternary is parametrized; its matrices must still be found in the file it was saved to, or
+    the hive engram cannot go on training from itself (its second update failed: none of its matrices fit)."""
+    n = "base_model.model.model.layers.20.self_attn.q_proj.lora_A.default.parametrizations.weight.original"
+    assert grow.saved_key(n) == "base_model.model.model.layers.20.self_attn.q_proj.lora_A.weight"
+    assert grow.saved_key("base_model.model.model.layers.20.mlp.up_proj.lora_B.default.weight") == "base_model.model.model.layers.20.mlp.up_proj.lora_B.weight"
