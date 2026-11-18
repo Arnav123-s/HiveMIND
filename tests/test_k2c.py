@@ -17,12 +17,12 @@ TAUGHT = [n for n in PROGS if not kinds.get(n).HELD_OUT]
 HELD = [n for n in PROGS if kinds.get(n).HELD_OUT]
 
 # one rule of the task broken in the right program: the hidden tests must see it
-WRONG = {"h_prog_bank": ("self.withdrawals += 1", "pass"),
-         "h_prog_machine": ("states.append(step(states[-1], event))", "states.append(step(states[0], event))"),
-         "h_prog_lru": ("del self.kept[next(iter(self.kept))]", "self.kept.popitem()"),
-         "h_prog_calc": ("BINDS[op] + (0 if op == SYMBOL and RIGHT else 1)", "BINDS[op]"),
-         "h_prog_schedule": ('raise ValueError("the dependencies go round in a circle")', "break"),
-         "h_prog_grid": ("if cell != LAND or (y, x) in seen:", "if cell != LAND:"),
+WRONG = {"h_prog_bank": ("s.n += 1", "pass"),
+         "h_prog_machine": ("p.append(step(p[-1], e))", "p.append(step(p[0], e))"),
+         "h_prog_lru": ("del s.d[next(iter(s.d))]", "s.d.popitem()"),
+         "h_prog_calc": ("P.get(t[-1], 0) > m", "P.get(t[-1], 0) >= m"),
+         "h_prog_schedule": ("raise ValueError", "break"),
+         "h_prog_grid": ("filter(None, ", "("),
          "h_prog_queue": ("(FIRST * priority, arrival, name, duration)", "(arrival, FIRST * priority, name, duration)"),
          "h_prog_wrap": ("len(lines[-1]) + 1 + len(w) <= width", "len(lines[-1]) + 1 + len(w) < width")}
 
@@ -102,8 +102,9 @@ def test_a_wrong_program_fails(name):
     # and a right module whose answer leaves out the value asked fails too
     field, kind, task, check = exam._made(kinds.get(name).make, "k2c-quiet")
     with tempfile.TemporaryDirectory() as tmp:
-        from team.tools.sandbox import run_python
+        from team.tools.sandbox import give, run_python
         work = Path(tmp) / "work"
+        give(task, work)  # the task's data saved where the program can open it, as the runtime does (a grid's)
         prog = _program(name, task).split("    print(")[0]
         assert run_python(prog, work, name="lesson.py", timeout=60)["returncode"] == 0
         (work / "lesson.py").unlink()

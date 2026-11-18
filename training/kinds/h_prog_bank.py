@@ -88,33 +88,25 @@ def h_prog_bank(r):
             "in that order, each that raises ValueError skipped.", module_check("bank", draw, [want]))
 
 
-SOURCE = '''FEE, OVERDRAFT, MOST = __FEE__, __LIMIT__, __MOST__
+SOURCE = """class Account:
+    def __init__(s, balance=0):
+        s.b, s.n = balance, 0
 
+    def deposit(s, x):
+        if x <= 0:
+            raise ValueError
+        s.b += x
+        return s.b
 
-class Account:
-    def __init__(self, balance=0):
-        self.money = balance
-        self.withdrawals = 0
+    def withdraw(s, x):
+        if x <= 0 or s.n >= __MOST__ or s.b - x - __FEE__ < -__LIMIT__:
+            raise ValueError
+        s.b -= x + __FEE__
+        s.n += 1
+        return s.b
 
-    def deposit(self, amount):
-        if amount <= 0:
-            raise ValueError("the amount must be above 0")
-        self.money += amount
-        return self.money
-
-    def withdraw(self, amount):
-        if amount <= 0:
-            raise ValueError("the amount must be above 0")
-        if self.withdrawals >= MOST:
-            raise ValueError("no withdrawals left")
-        if self.money - amount - FEE < -OVERDRAFT:
-            raise ValueError("over the overdraft")
-        self.money -= amount + FEE
-        self.withdrawals += 1
-        return self.money
-
-    def balance(self):
-        return self.money'''
+    def balance(s):
+        return s.b"""
 
 
 def bank(task):
@@ -122,9 +114,8 @@ def bank(task):
     if not m or "save it as bank.py" not in task:
         return None
     fee, most, limit, start = map(int, m.groups()[:4])
-    moves = [(op, int(v)) for op, v in re.findall(r"(deposit|withdraw)\((-?\d+)\)", m.group(5))]
-    tests = ["a = Account(10)", "assert a.deposit(5) == 15", "try:\n        a.deposit(0)\n        raise AssertionError('0 taken')\n    except ValueError:\n        pass",
-             f"a = Account({start})", f"for op, v in {moves!r}:\n        try:\n            getattr(a, op)(v)\n        except ValueError:\n            pass"]
+    tests = ["assert Account(10).deposit(5) == 15", f"a = Account({start})",
+             f"for c in {m.group(5)!r}.split(', '):\n        try:\n            eval('a.' + c)\n        except ValueError:\n            pass"]
     return program("bank", _fill(SOURCE, fee=fee, limit=limit, most=most), tests, ["print(a.balance())"])
 
 

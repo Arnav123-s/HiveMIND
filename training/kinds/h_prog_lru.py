@@ -86,34 +86,20 @@ def h_prog_lru(r):
             f"{calls}.", module_check("lru", draw, [want]))
 
 
-SOURCE = '''MISSING = __MISSING__
-GET_IS_USE, PUT_IS_USE = __GET__, __PUT__
+SOURCE = """class LRUCache:
+    def __init__(s, capacity):
+        s.c, s.d = capacity, {}
 
+    def get(s, k):
+__GET__        return s.d.get(k, __MISSING__)
 
-class LRUCache:
-    def __init__(self, capacity):
-        self.capacity = capacity
-        self.kept = {}  # a dict keeps its keys in the order they went in: the first is the one used longest ago
+    def put(s, k, v):
+__PUT__        s.d[k] = v
+        if len(s.d) > s.c:
+            del s.d[next(iter(s.d))]
 
-    def get(self, key):
-        if key not in self.kept:
-            return MISSING
-        if GET_IS_USE:
-            self.kept[key] = self.kept.pop(key)
-        return self.kept[key]
-
-    def put(self, key, value):
-        if key in self.kept and not PUT_IS_USE:
-            self.kept[key] = value
-            return None
-        self.kept.pop(key, None)
-        self.kept[key] = value
-        if len(self.kept) > self.capacity:
-            del self.kept[next(iter(self.kept))]
-        return None
-
-    def keys(self):
-        return list(self.kept)'''
+    def keys(s):
+        return list(s.d)"""
 
 
 def lru(task):
@@ -122,10 +108,12 @@ def lru(task):
     if not m or "lru.py" not in task:
         return None
     missing, get_uses, put_uses, size, calls = m.groups()
-    tests = ["c = LRUCache(1)", "c.put('x', 1)", "c.put('y', 2)", f"assert c.keys() == ['y'] and c.get('x') == {missing}",
-             f"c = LRUCache({size})", *calls.split("; ")]
-    tests = tests[:5] + [f"c.{call}" for call in tests[5:]]
-    return program("lru", _fill(SOURCE, get=get_uses == "does", put=put_uses == "does").replace("__MISSING__", missing), tests, ["print(c.keys())"])
+    # a dict keeps its keys in the order they went in: a use takes the key out and puts it back last
+    src = (SOURCE.replace("__MISSING__", missing)
+           .replace("__GET__", "        if k in s.d:\n            s.d[k] = s.d.pop(k)\n" if get_uses == "does" else "")
+           .replace("__PUT__", "        s.d.pop(k, None)\n" if put_uses == "does" else ""))
+    tests = ["t = LRUCache(1)", "t.put('x', 1)", "t.put('y', 2)", "assert t.keys() == ['y']", f"c = LRUCache({size})", "c." + calls.replace("; ", "; c.")]
+    return program("lru", src, tests, ["print(c.keys())"])
 
 
 make = h_prog_lru

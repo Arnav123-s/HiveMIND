@@ -53,19 +53,17 @@ def access(task, copy=False):
     if not m:
         return None
     lines = repr(m.group(1)) + ".splitlines()" if copy else 'open("access.log")'
-    return _fill('''count = {"2xx": 0, "3xx": 0, "4xx": 0, "5xx": 0}
-clients = set()
-for line in __LINES__:
-    ip = line.split()[0]
-    method, path = line.split('"')[1].split()[:2]
-    status = line.split('"')[2].split()[0]
-    if method == __METHOD__ and path.startswith("/api/"):
-        count[status[0] + "xx"] += 1
-    if int(status) >= 500:
-        clients.add(ip)
-for c, n in count.items():
-    print(f"{c}: {n}")
-print("clients:", len(clients))
+    return _fill('''c = {k: 0 for k in ("2xx", "3xx", "4xx", "5xx")}
+s = set()
+for l in __LINES__:
+    w = l.split()
+    if w[5] == '"' + __METHOD__ and w[6].startswith("/api/"):
+        c[w[8][0] + "xx"] += 1
+    if int(w[8]) >= 500:
+        s.add(w[0])
+for k in c:
+    print(f"{k}: {c[k]}")
+print("clients:", len(s))
 ''', method=m.group(2)).replace("__LINES__", lines)
 
 

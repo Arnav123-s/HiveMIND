@@ -52,13 +52,12 @@ def words(task):
     if not m:
         return None
     return _fill('''import re
-stop = set(__STOP__.split(", "))
-count = {}
+s, c = __STOP__.split(", "), {}
 for w in re.findall("[a-z]+", __TEXT__.lower()):
-    if w not in stop:
-        count[w] = count.get(w, 0) + 1
-for w, n in sorted(count.items(), key=lambda kv: (-kv[1], kv[0]))[:__K__]:
-    print(f"{w}: {n}")
+    if w not in s:
+        c[w] = c.get(w, 0) + 1
+for w in sorted(c, key=lambda w: (-c[w], w))[:__K__]:
+    print(f"{w}: {c[w]}")
 ''', text=m.group(1), stop=m.group(2), k=int(m.group(3)))
 
 
