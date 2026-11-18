@@ -18,6 +18,10 @@ have to be worked out? It says one word.
           answer counts when two of them agree. The result comes back into the conversation and is said in plain
           words, with the checked values as the programs printed them.
 
+With HIVE_BANK set to a fieldwork bank folder, a work message that fits a saved, checked method is answered by that
+method first, with no model call (team/saved.py); when its saved versions disagree, or the message lacks its inputs,
+the reply says so. A message that fits none goes on to the members as above.
+
 So nothing that can be computed or read from a source is answered from memory, and small talk does not wait for
 programs. The one who talks is the body's DNA with no cell's edit switched on: conversation is what the DNA knows
 already, and the cells are grown for the work. (The first form let the talker hand a task over by writing it out
@@ -136,6 +140,13 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
     if way == "talk":
         text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
         return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
+    # a saved, checked method (HIVE_BANK) answers what it fits, with no model call; off when no bank is configured
+    from . import saved
+    kept = saved.answer(message, log=say) if saved.bank_path() else None
+    if kept:
+        say(f"saved method {kept['task']}: {kept['status']}")
+        return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered", "task": message, "dir": "",
+                "files": [], "saved": kept, "seconds": round(time.time() - t0)}
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
