@@ -2,6 +2,8 @@
 
 HiveMIND runs a shared model on a CPU. Its cells are small learned changes to that model. Two cells usually try a job independently. We examined three ways to improve generation 47 with its weights held fixed. Can the hive deliver a good answer that a cell already found? Can it recover a useful calculation from a failed program? Can it choose when a specialist should act on the next input?
 
+A follow-up tested when to keep an older method and how to tell that a correction applies. It includes an invoice workflow that switched between two saved methods and a shipping-fee rule recovered from a real cell’s failure. [How the hive retains and chooses methods](retained-skills/README.md)
+
 ## Delivering the right file
 
 Both workers in an archived rainfall job printed **21 mm**. The first saved three fields in each data row under a two-field header. The second saved the requested table. The released system returned the first file. Replaying the same workers through the revised coordinator delivered the second file with two seats and zero new model calls. The same test with worker order reversed still delivered the correct table. [Worker programs, checks and reproduction](checked-delivery/reproduce.md)
