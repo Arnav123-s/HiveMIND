@@ -266,3 +266,43 @@ The design, not yet built (the next form of `team/engram.py`):
 
 Each step can be gated the same way as the cells: a stream of tasks with and without
 (`training/experiments/engram_stream.py`), over several seeds, because one run of 32 tasks varies by about 5.
+
+## 8. Do the hive's memories help? Measured on one stream (2026-11-18)
+
+`training/experiments/memory_stream.py`, seed 32000, the 1.7B DNA (t17) alone as both members, on 4 CPUs. Four
+rounds of one fresh task of each of six kinds (percent, days, units, table, code, fix); in rounds 3 and 4 four tasks
+of kinds the stream never had (know, follow, log, join). Every arm saw the same 28 tasks in the same order, each with
+its own memory folders. Copying: a wrong answer that repeats a value of a recalled task (its text or its answer)
+that the task itself does not hold. "Short" is a control added during the run: no memory, only the short orders a
+member is given whenever any engram is switched on (`HIVE_SHORT_ORDERS=1`, `team/solo.member`).
+
+| arm | round 1 (no memory yet) | later rounds, same kinds | unseen kinds | copying | task seconds | writing memory, seconds | total seconds |
+|---|---|---|---|---|---|---|---|
+| off | 3 of 6 | 6 of 18 | 0 of 4 | 0 | 2644 | 0 | 2644 |
+| notes | 3 of 6 | 7 of 18 | 1 of 4 | 0 | 1507 | 0 | 1507 |
+| cell engrams | 4 of 6 | 11 of 18 | 0 of 4 | 0 | 2197 | 398 (18 engrams) | 2594 |
+| hive engram | 4 of 6 | 16 of 18 | 1 of 4 | 0 | 909 | 183 (3 updates) | 1093 |
+| all three | 2 of 6 | 11 of 18 | 1 of 4 | 0 | 2370 | 520 | 2889 |
+| short orders, no memory | 6 of 6 | 16 of 18 | 1 of 4 | 0 | 449 | 0 | 452 |
+
+Seconds are rough: another session shared the CPU during parts of the off, cell and all arms (off and all each
+lost a task to the 600 s limit). Writing memory is the cleaner cost: about 22 s an engram, about 60 s a hive update.
+
+What it says, plainly:
+- **One seed on t17 is one measurement, not proof.** 18 later tasks an arm; a round varies by one or two tasks
+  between arms that have the same memory (round 1 ranged 2 to 6 of 6).
+- **Notes: no difference** (7 against 6 of 18).
+- **Cell engrams: look like they help** (11 against 6), and the hive engram alone looks best (16 of 18). **But the
+  short-orders control explains it:** with no memory at all, the short orders got 16 of 18, and 6 of 6 in round
+  1. Every task on which an engram is switched on gets the short orders (`orders(who + "+")`), and the hive engram
+  is switched on for every task, the cell engrams for some. On this stream the gain is the shorter orders, not what
+  the engrams remember. What the engrams add beyond the short orders is not shown: 0 here (hive 16, short 16).
+- **All three together is worse than the hive engram alone** (11 against 16 of 18), and slower.
+- **Nothing helps unseen kinds** (0 or 1 of 4 in every arm), and **no memory caused copying** (0 in every arm).
+- **The next measurement:** short orders against short orders with the hive engram, over several seeds; and the
+  bare DNA's full orders (`team/solo.MEMBER`) against the short ones, since the short ones won by themselves here.
+
+Fixed on the way: the hive engram could not be trained a second time (a ternary edit's matrices are saved under
+other names than the ones being trained, so its second update found none of them; `training/grow.saved_key`).
+Not fixed: a running server keeps the old hive engram after an update, because it reloads only on a new name
+(`team/ternary.up`); the stream stops the server after each update. Result: `training/experiments/memory_stream_32000.json`.
