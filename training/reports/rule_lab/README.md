@@ -1,10 +1,20 @@
 # What the CPU hive learned
 
+The field-work study tests whether the hive finishes unfamiliar scientific, programming and multi-step jobs. It includes frozen programs, reopened output files, external observations and a prospective monthly CO₂ forecast. [Field-work results](field-work.md) · [Run a complete job on a CPU](fieldwork/reproduce.md)
+
+The scale study grew the population to **4,096 distinct learned ternary cells on one CPU core**. It measures when sub-hives should search locally, how two newborns can learn complementary skills, and how surviving cells can rebuild a missing specialist. A separate work-order trial and a faster production engram index connect the numeric experiments to the working hive. [Scaling the hive](scaling-the-hive.md) · [Runnable colonies](engrams/scaled-colonies.zip)
+
 A new 38.0 MiB adapter learned a calibration procedure that the original data and code cells repeatedly failed to execute. The child completed all four fresh affine worlds from its weights, with an average of 15.0 seconds and two model calls per world. The original open pair completed zero, averaging 47.2 seconds and six calls. I would give the learned child a narrow specialist role. Its measurements transferred to the harder family, where its choice of a helper became the limiting step.
 
 I ran the experiment on the existing g41 HiveMIND base in a separate Git worktree. Each cell could request measurements from a local simulator, hand ownership of a shared notebook to a peer, or submit coefficients. Each world advertised its equation family but hid its coefficients. A pass required the correct prediction at all eight private settings, all outside the allowed measurement grid. Six turns and four or five measurements were available to every arm. No remote model generated answers or judged them. [Experimental design](design.md) · [Measurements](results.json) · [Turn-by-turn transcripts](traces.jsonl.gz)
 
 The follow-up rebuilt this child from its parent, tested sub-megabyte ternary records on new problems, and grew one small network from the memories of two specialists. [Engrams, reconstruction and BitNet results](engrams-and-bitnets.md)
+
+The inference and learning study measures CPU time on the real 8B server and scratch stem, checks two custom integer kernels, and follows a routing policy through changing goals and delayed rewards. [Continual learning and inference speed](continual-learning-and-speed.md)
+
+Two cells also learned to cooperate from separate inputs through a one-byte channel each. The communication study includes a runnable pair, incompatible signal conventions, late messages and a 1,024-cell sub-hive simulation. [Hive telepathy and sub-hives](hive-telepathy.md)
+
+The construct study tests what can pass between cells as a neural signal, a weight edit, a style direction or an executable memory. It includes real 8B adapter mixtures, a three-byte polarity repair, and work orders that survive a worker dying after a write. [Constructs, surgery and conversation outcomes](constructs-and-surgery.md)
 
 ## The fixed comparison
 

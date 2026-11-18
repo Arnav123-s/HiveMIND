@@ -1,0 +1,1709 @@
+{
+  "extraction": {
+    "donor": "t80+g41words",
+    "donor_sha256": "9cd50ddacbd693b77b07ac381be31f08ef0e9f93ffd39f4c5079bf17e293c6f4",
+    "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "direction_sha256": "9074af15c157574fca578cda431cf7d0faea9ee495f5d13e371f2ce8edd3c35d",
+    "scrambled_sha256": "aa448dff522d90003410c288d308eda3fc03ab03be3d79d3ed9ea5994d6c161b",
+    "pairs": [
+      [
+        "The invoice has been received.",
+        "Got the invoice, thanks!"
+      ],
+      [
+        "I confirm receipt of your letter.",
+        "Yep, I got your letter."
+      ],
+      [
+        "Your reservation has been approved.",
+        "You're all set with that reservation!"
+      ],
+      [
+        "Please be advised that the office is closed.",
+        "Hey, the office is closed."
+      ],
+      [
+        "I regret to inform you that the train is delayed.",
+        "Sorry, the train's running late."
+      ],
+      [
+        "The application is now complete.",
+        "Your application's all done!"
+      ],
+      [
+        "We appreciate your assistance with the survey.",
+        "Thanks for helping with the survey!"
+      ],
+      [
+        "The documents are available for collection.",
+        "You can grab the papers now."
+      ],
+      [
+        "Please accept my congratulations on your promotion.",
+        "Congrats on the promotion!"
+      ],
+      [
+        "I would be pleased to attend the reception.",
+        "I'd love to come to the reception!"
+      ],
+      [
+        "Kindly return the signed agreement.",
+        "Can you send the signed agreement back?"
+      ],
+      [
+        "I acknowledge the change in departure time.",
+        "Got it, the departure time changed."
+      ]
+    ],
+    "layers": {
+      "direction.1": {
+        "length": 4096,
+        "norm": 0.9999998807907104
+      },
+      "direction.2": {
+        "length": 4096,
+        "norm": 0.9999991655349731
+      },
+      "direction.3": {
+        "length": 4096,
+        "norm": 0.9999995827674866
+      },
+      "direction.4": {
+        "length": 4096,
+        "norm": 1.0
+      },
+      "direction.5": {
+        "length": 4096,
+        "norm": 0.999999463558197
+      },
+      "direction.6": {
+        "length": 4096,
+        "norm": 0.9999997019767761
+      },
+      "direction.7": {
+        "length": 4096,
+        "norm": 1.000000238418579
+      },
+      "direction.8": {
+        "length": 4096,
+        "norm": 0.9999995827674866
+      },
+      "direction.9": {
+        "length": 4096,
+        "norm": 0.9999996423721313
+      },
+      "direction.10": {
+        "length": 4096,
+        "norm": 1.0000003576278687
+      },
+      "direction.11": {
+        "length": 4096,
+        "norm": 0.9999999403953552
+      },
+      "direction.12": {
+        "length": 4096,
+        "norm": 0.9999994039535522
+      },
+      "direction.13": {
+        "length": 4096,
+        "norm": 0.9999991059303284
+      },
+      "direction.14": {
+        "length": 4096,
+        "norm": 0.9999995827674866
+      },
+      "direction.15": {
+        "length": 4096,
+        "norm": 1.0000011920928955
+      },
+      "direction.16": {
+        "length": 4096,
+        "norm": 1.000000238418579
+      },
+      "direction.17": {
+        "length": 4096,
+        "norm": 1.000000238418579
+      },
+      "direction.18": {
+        "length": 4096,
+        "norm": 0.9999997615814209
+      },
+      "direction.19": {
+        "length": 4096,
+        "norm": 1.0000001192092896
+      },
+      "direction.20": {
+        "length": 4096,
+        "norm": 1.0000003576278687
+      },
+      "direction.21": {
+        "length": 4096,
+        "norm": 1.0000004768371582
+      },
+      "direction.22": {
+        "length": 4096,
+        "norm": 0.9999997615814209
+      },
+      "direction.23": {
+        "length": 4096,
+        "norm": 0.9999994039535522
+      },
+      "direction.24": {
+        "length": 4096,
+        "norm": 1.000001072883606
+      },
+      "direction.25": {
+        "length": 4096,
+        "norm": 1.000000238418579
+      },
+      "direction.26": {
+        "length": 4096,
+        "norm": 0.9999995827674866
+      },
+      "direction.27": {
+        "length": 4096,
+        "norm": 1.0000009536743164
+      },
+      "direction.28": {
+        "length": 4096,
+        "norm": 1.0000001192092896
+      },
+      "direction.29": {
+        "length": 4096,
+        "norm": 1.0000004768371582
+      },
+      "direction.30": {
+        "length": 4096,
+        "norm": 0.9999997019767761
+      },
+      "direction.31": {
+        "length": 4096,
+        "norm": 1.000000238418579
+      },
+      "direction.32": {
+        "length": 4096,
+        "norm": 1.0000003576278687
+      },
+      "direction.33": {
+        "length": 4096,
+        "norm": 1.0000007152557373
+      },
+      "direction.34": {
+        "length": 4096,
+        "norm": 1.0000001192092896
+      },
+      "direction.35": {
+        "length": 4096,
+        "norm": 1.0000014305114746
+      }
+    }
+  },
+  "responses": [
+    {
+      "member": "t80+g41words",
+      "arm": "off",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 15.071149267001601,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "off",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 9.751611784999113,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "off",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 16.159787725999195,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "off",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 9.327612582001166,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 10.435095478998846,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 38.358865286001674,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 13.490719094999804,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 11.821558352003194,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": "The workshop is on Saturday at Summit.",
+      "seconds": 12.363803520001966,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": "The rehearsal is on Thursday at Linden.",
+      "seconds": 20.33507867699882,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": "The inspection is scheduled for Sunday at Northgate.",
+      "seconds": 41.314849366997805,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": "The interview is confirmed for Tuesday at Westfield.",
+      "seconds": 10.155312310002046,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_formal",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I confirm that our meeting is scheduled for Friday at Cedar.",
+      "seconds": 38.63472862499839,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_formal",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I confirm that the pickup is scheduled for Monday at Harbor.",
+      "seconds": 22.87755891600318,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_formal",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place. Use a distinctly formal tone.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 15.450172314998781,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_formal",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I would like to confirm that our appointment is scheduled for Wednesday at the Maple.",
+      "seconds": 16.45553345799999,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I confirm that our meeting is scheduled for Friday at Cedar.",
+      "seconds": 21.67640713000219,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I confirm that the pickup is scheduled for Monday at Harbor.",
+      "seconds": 9.93452300699937,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place. Use a distinctly formal tone.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 12.105210814999737,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I confirm that our appointment is scheduled for Wednesday at the Maple.",
+      "seconds": 18.94473976000154,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I am writing to confirm that the workshop will take place on Saturday at Summit.",
+      "seconds": 47.38796773699869,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place. Use a distinctly formal tone.",
+      "reply": "The rehearsal is scheduled for Thursday at Linden.",
+      "seconds": 24.275098034999246,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place. Use a distinctly formal tone.",
+      "reply": "The inspection is scheduled for Sunday at Northgate.",
+      "seconds": 8.112173572000756,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_formal",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place. Use a distinctly formal tone.",
+      "reply": "I would like to confirm that our interview is scheduled for Tuesday at Westfield.",
+      "seconds": 29.097003897997638,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_casual",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the meeting is on Friday at Cedar — let me know if you need anything else!",
+      "seconds": 25.789559097000165,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_casual",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, the pickup's on Monday at Harbor—don't forget to bring your stuff!",
+      "seconds": 35.34318105000057,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_casual",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the delivery is on Tuesday at Birch — let me know if you need anything else!",
+      "seconds": 19.207126489000075,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "explicit_casual",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the appointment is on Wednesday at Maple — see you there!",
+      "seconds": 24.493920037999487,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the meeting is on Friday at Cedar — let me know if you need anything else!",
+      "seconds": 136.11018727900228,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, the pickup's on Monday at Harbor—see you there!",
+      "seconds": 18.015773907001858,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, the delivery's on Tuesday at Birch — see you then!",
+      "seconds": 40.692546869999205,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the appointment is on Wednesday at Maple — see you then!",
+      "seconds": 50.761191120996955,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the workshop is on Saturday at Summit — let me know if you need anything else!",
+      "seconds": 21.422681119001936,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the rehearsal is on Thursday at Linden — see you there!",
+      "seconds": 49.00921138600097,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the inspection is on Sunday at Northgate — see you there!",
+      "seconds": 33.940952711000136,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "explicit_casual",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place. Use a distinctly casual tone.",
+      "reply": "Hey Sam, just wanted to confirm the interview is on Tuesday at Westfield — see you there!",
+      "seconds": 23.03509562399995,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "positive",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 19.23415418500008,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "positive",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 30.92790011100078,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "positive",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 10.201860159999342,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "positive",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 17.20034926399967,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 14.3220078129998,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 15.797019246998389,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 12.448658514000272,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 18.16763074100163,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": "The workshop is confirmed for Saturday at Summit.",
+      "seconds": 17.66897889900065,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": "The rehearsal is confirmed for Thursday at Linden.",
+      "seconds": 37.51588430799893,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": "The inspection is scheduled for Sunday at Northgate.",
+      "seconds": 7.002723006000451,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": "The interview is confirmed for Tuesday at Westfield.",
+      "seconds": 21.98439791400233,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "negative",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 8.983905012999458,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "negative",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 6.756736383002135,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "negative",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 39.35540509199927,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "negative",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 18.65148214600049,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 16.50334401800137,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 11.712640138001007,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 23.512542300999485,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 21.15844698500223,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": "The workshop is on Saturday at Summit.",
+      "seconds": 13.725915205999627,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": "The rehearsal is on Thursday at Linden.",
+      "seconds": 6.3862113670002145,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": "The inspection is scheduled for Sunday at Northgate.",
+      "seconds": 20.745404739998776,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": "The interview is confirmed for Tuesday at Westfield.",
+      "seconds": 13.24021707599968,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "scrambled",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 18.876870419000625,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "scrambled",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 7.420691529001488,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "scrambled",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 10.30280667199986,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41words",
+      "arm": "scrambled",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 9.158328200999676,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 1,
+      "prompt": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place.",
+      "reply": "The meeting is confirmed for Friday at Cedar.",
+      "seconds": 10.063571439997759,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 2,
+      "prompt": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place.",
+      "reply": "The pickup is confirmed for Monday at Harbor.",
+      "seconds": 21.560920610998437,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 3,
+      "prompt": "Write a one-sentence message to Sam confirming that the delivery is on Tuesday at Birch. Include the day and place.",
+      "reply": "The delivery is confirmed for Tuesday at Birch.",
+      "seconds": 9.288457807000668,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 4,
+      "prompt": "Write a one-sentence message to Sam confirming that the appointment is on Wednesday at Maple. Include the day and place.",
+      "reply": "The appointment is confirmed for Wednesday at Maple.",
+      "seconds": 15.882445552000718,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": "The workshop is on Saturday at Summit.",
+      "seconds": 26.720917434999137,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": "The rehearsal is on Thursday at Linden.",
+      "seconds": 17.709691043997736,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": "The inspection is scheduled for Sunday at Northgate.",
+      "seconds": 10.772825481999462,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": "The interview is confirmed for Tuesday at Westfield.",
+      "seconds": 24.156083065998246,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    }
+  ],
+  "source_selected_policy": {
+    "formal": {
+      "source_success_out_of_four": {
+        "off": 0,
+        "explicit_formal": 3,
+        "positive": 0,
+        "negative": 0
+      },
+      "chosen": "explicit_formal",
+      "new_recipient_prompts_success_out_of_four": 4
+    },
+    "casual": {
+      "source_success_out_of_four": {
+        "off": 0,
+        "explicit_casual": 4,
+        "positive": 0,
+        "negative": 0
+      },
+      "chosen": "explicit_casual",
+      "new_recipient_prompts_success_out_of_four": 4
+    }
+  },
+  "example_transfer": {
+    "formal": {
+      "donor_prefix": [
+        {
+          "role": "system",
+          "content": "Match the style of the example replies. Use the facts from the latest request."
+        },
+        {
+          "role": "user",
+          "content": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place."
+        },
+        {
+          "role": "assistant",
+          "content": "I confirm that our meeting is scheduled for Friday at Cedar."
+        },
+        {
+          "role": "user",
+          "content": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place."
+        },
+        {
+          "role": "assistant",
+          "content": "I confirm that the pickup is scheduled for Monday at Harbor."
+        }
+      ],
+      "recipient_replies": [
+        {
+          "case": 5,
+          "reply": "I confirm that the workshop is scheduled for Saturday at Summit.",
+          "usage": {
+            "completion_tokens": 13,
+            "prompt_tokens": 149,
+            "total_tokens": 162,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": true,
+          "casual_marker": false,
+          "one_sentence": true
+        },
+        {
+          "case": 6,
+          "reply": "I confirm that the rehearsal is scheduled for Thursday at Linden.",
+          "usage": {
+            "completion_tokens": 13,
+            "prompt_tokens": 149,
+            "total_tokens": 162,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": true,
+          "casual_marker": false,
+          "one_sentence": true
+        },
+        {
+          "case": 7,
+          "reply": "I confirm that the inspection is scheduled for Sunday at Northgate.",
+          "usage": {
+            "completion_tokens": 14,
+            "prompt_tokens": 150,
+            "total_tokens": 164,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": true,
+          "casual_marker": false,
+          "one_sentence": true
+        },
+        {
+          "case": 8,
+          "reply": "I confirm that the interview is scheduled for Tuesday at Westfield.",
+          "usage": {
+            "completion_tokens": 14,
+            "prompt_tokens": 150,
+            "total_tokens": 164,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": true,
+          "casual_marker": false,
+          "one_sentence": true
+        }
+      ]
+    },
+    "casual": {
+      "donor_prefix": [
+        {
+          "role": "system",
+          "content": "Match the style of the example replies. Use the facts from the latest request."
+        },
+        {
+          "role": "user",
+          "content": "Write a one-sentence message to Sam confirming that the meeting is on Friday at Cedar. Include the day and place."
+        },
+        {
+          "role": "assistant",
+          "content": "Hey Sam, just wanted to confirm the meeting is on Friday at Cedar — let me know if you need anything else!"
+        },
+        {
+          "role": "user",
+          "content": "Write a one-sentence message to Sam confirming that the pickup is on Monday at Harbor. Include the day and place."
+        },
+        {
+          "role": "assistant",
+          "content": "Hey Sam, the pickup's on Monday at Harbor—don't forget to bring your stuff!"
+        }
+      ],
+      "recipient_replies": [
+        {
+          "case": 5,
+          "reply": "Hey Sam, the workshop is on Saturday at Summit—see you there!",
+          "usage": {
+            "completion_tokens": 16,
+            "prompt_tokens": 168,
+            "total_tokens": 184,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": false,
+          "casual_marker": true,
+          "one_sentence": true
+        },
+        {
+          "case": 6,
+          "reply": "Hey Sam, the rehearsal is set for Thursday at Linden—see you there!",
+          "usage": {
+            "completion_tokens": 17,
+            "prompt_tokens": 168,
+            "total_tokens": 185,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": false,
+          "casual_marker": true,
+          "one_sentence": true
+        },
+        {
+          "case": 7,
+          "reply": "Hey Sam, the inspection is set for Sunday at Northgate—see you there!",
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 169,
+            "total_tokens": 187,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": false,
+          "casual_marker": true,
+          "one_sentence": true
+        },
+        {
+          "case": 8,
+          "reply": "Hey Sam, the interview is set for Tuesday at Westfield—see you there!",
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 169,
+            "total_tokens": 187,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "both_facts": true,
+          "formal_marker": false,
+          "casual_marker": true,
+          "one_sentence": true
+        }
+      ]
+    }
+  },
+  "high_gain": [
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": " I confirm that the workshop will be held on Saturday at Summit.",
+      "seconds": 2.3574638509999204,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": " I confirm that the rehearsal is scheduled for Thursday at the Linden.",
+      "seconds": 2.2064850319984544,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": " I confirm that the inspection will take place on Sunday at the Northgate.",
+      "seconds": 2.6079624200028775,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": " I confirm that the interview is scheduled for Tuesday at the Westfield.",
+      "seconds": 2.5941486609990534,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": "\"Hey Sam, the workshop's on Saturday at Summit—can't wait to see you there!\"",
+      "seconds": 3.13620691899996,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": "\"Let me know, the rehearsal's on Thursday at Linden!\"",
+      "seconds": 2.308659649999754,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": "\"Let me know, the inspection's on Sunday at Northgate—can't wait to see what you find!\"",
+      "seconds": 3.3389897310007655,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": "\"Let me know, the interview's on Tuesday at Westfield—can't wait to crush it!\"",
+      "seconds": 3.182889012998203,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 5,
+      "prompt": "Write a one-sentence message to Sam confirming that the workshop is on Saturday at Summit. Include the day and place.",
+      "reply": "The workshop is on Saturday at Summit.",
+      "seconds": 1.7416428679971432,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 6,
+      "prompt": "Write a one-sentence message to Sam confirming that the rehearsal is on Thursday at Linden. Include the day and place.",
+      "reply": "The rehearsal is confirmed for Thursday at Linden.",
+      "seconds": 1.8690754960007325,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 7,
+      "prompt": "Write a one-sentence message to Sam confirming that the inspection is on Sunday at Northgate. Include the day and place.",
+      "reply": "The inspection is scheduled for Sunday at Northgate.",
+      "seconds": 2.019917590001569,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 8,
+      "prompt": "Write a one-sentence message to Sam confirming that the interview is on Tuesday at Westfield. Include the day and place.",
+      "reply": "The interview is confirmed for Tuesday at Westfield.",
+      "seconds": 2.023111685997719,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    }
+  ],
+  "new_topics": [
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 1,
+      "prompt": "Tell Jo in one sentence that the badge color is cobalt and the locker code is 731.",
+      "reply": "Jo, the badge color is cobalt and the locker code is 731.",
+      "seconds": 14.58157988899984,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 2,
+      "prompt": "Write one sentence updating Jo. Ticket K427 has been assigned to Rowan.",
+      "reply": "Jo, Ticket K427 has been assigned to Rowan.",
+      "seconds": 5.951236222997977,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 3,
+      "prompt": "Message Jo in a single sentence. The project codename is Amber and its approved budget is 360 euros.",
+      "reply": "Jo, the project codename is Amber and its approved budget is 360 euros.",
+      "seconds": 32.52831290500035,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "off",
+      "case": 4,
+      "prompt": "Write a short reply to Jo saying the parcel carrier is Finch and the tracking code is P841.",
+      "reply": "Hi Jo,  \n\nThe parcel carrier is Finch and the tracking code is P841.  \n\nLet me know if you need anything else!",
+      "seconds": 62.23815215200011,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": false
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 1,
+      "prompt": "Tell Jo in one sentence that the badge color is cobalt and the locker code is 731.",
+      "reply": " I am informed that the badge color is cobalt and the locker code is                                 ",
+      "seconds": 49.259276924000005,
+      "both_facts": false,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 2,
+      "prompt": "Write one sentence updating Jo. Ticket K427 has been assigned to Rowan.",
+      "reply": " The ticket K427 has been assigned to Rowan.",
+      "seconds": 13.04590273100257,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 3,
+      "prompt": "Message Jo in a single sentence. The project codename is Amber and its approved budget is 360 euros.",
+      "reply": " I am informed that the project codified as Amber has been approved for a budget of                               ",
+      "seconds": 80.69438756399904,
+      "both_facts": false,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "positive12",
+      "case": 4,
+      "prompt": "Write a short reply to Jo saying the parcel carrier is Finch and the tracking code is P841.",
+      "reply": "Dear Jo, the parcel carrier is Finch, and the tracking number is P841.",
+      "seconds": 24.10432604699963,
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 1,
+      "prompt": "Tell Jo in one sentence that the badge color is cobalt and the locker code is 731.",
+      "reply": "\"Hey Jo, the badge color's cobalt and the locker code's 731!\"",
+      "seconds": 18.457170613997732,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 2,
+      "prompt": "Write one sentence updating Jo. Ticket K427 has been assigned to Rowan.",
+      "reply": "Jo, you're on the K427 now—Rowan got the ride!",
+      "seconds": 4.3855019900001935,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 3,
+      "prompt": "Message Jo in a single sentence. The project codename is Amber and its approved budget is 360 euros.",
+      "reply": "\"Working on the Amber project, got a 360 euro budget—let's make it happen!\"",
+      "seconds": 6.821940570000152,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "negative12",
+      "case": 4,
+      "prompt": "Write a short reply to Jo saying the parcel carrier is Finch and the tracking code is P841.",
+      "reply": "\"Hey, cool! So the parcel carrier's Finch and the tracking code's P841. Hope it's on its way!\"",
+      "seconds": 26.437335509999684,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": false
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 1,
+      "prompt": "Tell Jo in one sentence that the badge color is cobalt and the locker code is 731.",
+      "reply": "Jo, the badge color is cobalt and the locker code is 731.",
+      "seconds": 34.24478056699809,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 2,
+      "prompt": "Write one sentence updating Jo. Ticket K427 has been assigned to Rowan.",
+      "reply": "Jo, Ticket K427 has been assigned to Rowan.",
+      "seconds": 28.099367320002784,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 3,
+      "prompt": "Message Jo in a single sentence. The project codename is Amber and its approved budget is 360 euros.",
+      "reply": "Jo, the project codename is Amber and its approved budget is 360 euros.",
+      "seconds": 58.366441271999065,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "member": "t80+g41data",
+      "arm": "scrambled12",
+      "case": 4,
+      "prompt": "Write a short reply to Jo saying the parcel carrier is Finch and the tracking code is P841.",
+      "reply": "Hi Jo,  \n\nThe parcel carrier is Finch and the tracking code is P841.  \n\nLet me know if you need anything else!",
+      "seconds": 79.31422608600042,
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": false
+    }
+  ],
+  "checked_style": [
+    {
+      "case": 1,
+      "style": "formal",
+      "protected_statement": "the badge color is cobalt and the locker code is 731",
+      "used_template": true,
+      "original": " I am informed that the badge color is cobalt and the locker code is                                 ",
+      "final": "Dear Jo, I confirm that the badge color is cobalt and the locker code is 731.",
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "case": 2,
+      "style": "formal",
+      "protected_statement": "ticket K427 has been assigned to Rowan",
+      "used_template": true,
+      "original": " The ticket K427 has been assigned to Rowan.",
+      "final": "Dear Jo, I confirm that ticket K427 has been assigned to Rowan.",
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "case": 3,
+      "style": "formal",
+      "protected_statement": "the project codename is Amber and its approved budget is 360 euros",
+      "used_template": true,
+      "original": " I am informed that the project codified as Amber has been approved for a budget of                               ",
+      "final": "Dear Jo, I confirm that the project codename is Amber and its approved budget is 360 euros.",
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "case": 4,
+      "style": "formal",
+      "protected_statement": "the parcel carrier is Finch and the tracking code is P841",
+      "used_template": true,
+      "original": "Dear Jo, the parcel carrier is Finch, and the tracking number is P841.",
+      "final": "Dear Jo, I confirm that the parcel carrier is Finch and the tracking code is P841.",
+      "both_facts": true,
+      "formal_marker": true,
+      "casual_marker": false,
+      "one_sentence": true
+    },
+    {
+      "case": 1,
+      "style": "casual",
+      "protected_statement": "the badge color is cobalt and the locker code is 731",
+      "used_template": true,
+      "original": "\"Hey Jo, the badge color's cobalt and the locker code's 731!\"",
+      "final": "Hey Jo, the badge color is cobalt and the locker code is 731.",
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "case": 2,
+      "style": "casual",
+      "protected_statement": "ticket K427 has been assigned to Rowan",
+      "used_template": true,
+      "original": "Jo, you're on the K427 now—Rowan got the ride!",
+      "final": "Hey Jo, ticket K427 has been assigned to Rowan.",
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "case": 3,
+      "style": "casual",
+      "protected_statement": "the project codename is Amber and its approved budget is 360 euros",
+      "used_template": true,
+      "original": "\"Working on the Amber project, got a 360 euro budget—let's make it happen!\"",
+      "final": "Hey Jo, the project codename is Amber and its approved budget is 360 euros.",
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    },
+    {
+      "case": 4,
+      "style": "casual",
+      "protected_statement": "the parcel carrier is Finch and the tracking code is P841",
+      "used_template": true,
+      "original": "\"Hey, cool! So the parcel carrier's Finch and the tracking code's P841. Hope it's on its way!\"",
+      "final": "Hey Jo, the parcel carrier is Finch and the tracking code is P841.",
+      "both_facts": true,
+      "formal_marker": false,
+      "casual_marker": true,
+      "one_sentence": true
+    }
+  ]
+}
