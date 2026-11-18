@@ -6,6 +6,10 @@ dashboard "HiveMIND Progress" (claude.ai artifact Xi5BfLZnLLzvkhZJK72Hvr) draws 
 
 ## One cycle
 
+**Since 2026-11-18 the cycle is the one in `CLAUDE.md`, which starts with `python scripts/cycle.py` (the bars, the
+last generations as a table and a text graph, stale graphs, the next piece, who holds the loop) and ends with the
+log line, `NEXT_SESSION.md` and the graphs redrawn. The steps below are the older form; the rules learned still hold.**
+
 0. **Read `docs/AGENTS.md` and the other agents' open pull requests.** Another agent works here too: merge `main`
    in if it moved, stay off what it owns, and add a log line when you start or change course.
 1. **Read the newest results first.** The last generation's record (`training/reports/generations.jsonl`), every
