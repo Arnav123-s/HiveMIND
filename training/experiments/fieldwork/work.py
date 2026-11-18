@@ -429,6 +429,25 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view):
         result.update(status="needs_generation", reason="No saved version qualified. Supply --binary and --weights to generate a worker.")
         save(out / "receipt.json", result)
         return result
+    if promotion and best["passed"] < len(spec["examples"]):
+        from .arithmetic_repair import select
+
+        # Change only the newly proposed source. The optional saved helpers stay byte-for-byte intact.
+        def public_score(source, examples):
+            return check(guest, tool_source(source, old), examples, spec.get("compare"), explain=False)[0]
+
+        failed_digest = fingerprint(best["program"])
+        checkpoint = out / ("arithmetic-" + failed_digest + ".json")
+        if checkpoint.exists():
+            repair = json.loads(checkpoint.read_text())
+        else:
+            repair = select(best["source"], spec["examples"], public_score, original_passed=best["passed"])
+            save(checkpoint, repair)
+        if repair is not None:
+            program = tool_source(repair["program"], old)
+            result["arithmetic_repair"] = dict(parent=failed_digest, edit=repair["edit"],
+                                                original_public=best["passed"], tried=repair["tried"])
+            best = dict(best, program=program, passed=repair["passed"])
     (out / "solver.py").write_text(best["program"] + "\n")
     if not qualified:
         result["parents"] = [r["digest"] for r in old]
@@ -442,8 +461,11 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view):
         result["jobs"] = (restore_jobs(out, spec, staged) if staged is not None
                           else deliver(guest, best["program"], jobs, out))
         if bank_path and promotion and not qualified and all("value" in j for j in result["jobs"]):
-            admit(bank_path, dict(task=name, description=spec["task"], source=best["program"], digest=key,
-                                  public=best["passed"], validation=result["validated"], parents=result["parents"]))
+            entry = dict(task=name, description=spec["task"], source=best["program"], digest=key,
+                         public=best["passed"], validation=result["validated"], parents=result["parents"])
+            if "arithmetic_repair" in result:
+                entry["arithmetic_repair"] = result["arithmetic_repair"]
+            admit(bank_path, entry)
     save(out / "receipt.json", result)
     return result
 

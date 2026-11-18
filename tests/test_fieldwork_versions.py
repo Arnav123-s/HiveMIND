@@ -174,3 +174,42 @@ def test_cli_reports_ambiguous_job_without_a_generator(tmp_path, monkeypatch, ca
     output = capsys.readouterr().out
     assert rc != 0 and "0/1 jobs delivered" in output and "job0" in output and "distinguishing example" in output
     assert not (tmp_path / "run/job0").exists()
+
+
+def test_public_arithmetic_repair_requires_separate_validation_before_admission(tmp_path):
+    from training.experiments.fieldwork.campaign import fingerprint
+
+    original = "def solve(units):\n    return 5 * (units + 2) // 3"
+    calls = []
+
+    def propose(*args):
+        calls.append(1)
+        return {"source": original, "usage": {"completion_tokens": 17}}
+
+    class ArithmeticGuest:
+        def run(self, program, inputs, fuel):
+            # Exercise the exact arithmetic of this trusted local fixture.
+            scope = {"__builtins__": {"type": type, "int": int}}
+            exec(program, scope)
+            return [{"value": scope["solve"](value)} for value in inputs], 0, 0
+
+    guest = ArithmeticGuest()
+    public = [(1, 5), (2, 5), (4, 10)]
+    task = order("Charge five cents per started pack of three.", public, [(5, 10)], [8])
+    bank = tmp_path / "methods"
+    receipt = fw.work(task, guest, propose, tmp_path / "valid", bank, rounds=1)
+    assert len(calls) == 1
+    assert receipt["attempts"][0]["source"] == original
+    assert receipt["arithmetic_repair"]["parent"] == fingerprint(original)
+    assert receipt["jobs"] == [{"id": "job0", "value": 15}]
+    stored, = fw.load_bank(bank)
+    assert stored["arithmetic_repair"] == receipt["arithmetic_repair"]
+    assert stored["digest"] != fingerprint(original)
+    assert fw.work(task, guest, no_generator, tmp_path / "again", bank)["jobs"] == receipt["jobs"]
+
+    rejected = order(task["task"], public, [(5, 11)], [8])
+    rejected_bank = tmp_path / "rejected-methods"
+    result = fw.work(rejected, guest, propose, tmp_path / "rejected", rejected_bank, rounds=1)
+    assert result["public"] == len(public) and result["validated"] == 0
+    assert result["jobs"] == [] and not fw.load_bank(rejected_bank)
+    assert len(calls) == 2
