@@ -11,7 +11,7 @@ from team import ternary
 
 
 class LabCPU:
-    def __init__(self, binary, base, catalog, log_dir, slots=2, threads=4, flash=None):
+    def __init__(self, binary, base, catalog, log_dir, slots=2, threads=4, flash=None, control=None):
         self.binary = Path(binary).resolve(strict=True)
         self.base = Path(base).resolve(strict=True)
         self.catalog = Path(catalog).resolve(strict=True)
@@ -20,6 +20,7 @@ class LabCPU:
         if min(slots, threads) < 1:
             raise ValueError("slots and threads must be positive")
         self.slots, self.threads, self.flash = slots, threads, flash
+        self.control = control  # optional (GGUF direction, scale, first layer, last layer)
         self.proc = None
         self.resident = []
         self.ids = {}
@@ -70,6 +71,10 @@ class LabCPU:
                     "--lora-init-without-apply"]
             if self.flash is not None:
                 args.extend(["-fa", "on" if self.flash else "off"])
+            if self.control is not None:
+                path, scale, first, last = self.control
+                args.extend(["--control-vector-scaled", str(Path(path).resolve(strict=True)), str(scale),
+                             "--control-vector-layer-range", str(first), str(last)])
             for name in wanted:
                 args += ["--lora", str(self.catalog / f"{name}.gguf")]
             self.starts += 1
