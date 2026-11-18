@@ -342,6 +342,11 @@ _FENCE = re.compile(r"```[\w.+-]*\n(.*?)```", re.S)
 _FILENAME = re.compile(r"(?<![\w/.-])([\w-]+\.(?:csv|tsv|json|txt|log|md|xml|ya?ml|ini|py))\b", re.I)
 
 
+# a line that brings in data by name: "Here is a text:", "Here is the file notes.txt:", "Below is the log:"
+_ONE = re.compile(r"(?:^|[.!?] )(?:here|below|this|that) (?:is|are) (?:a|an|the|my|some|this)\b[^:]{0,60}\b(?:text|file|log|line|"
+                  r"string|sentence|paragraph|passage|message|note|data|record|entry|list|csv|json)\w*\b[^:]{0,30}:$", re.I)
+
+
 def _prose(line):
     """A sentence (the user's instruction), not a line of data: words, most of them lower case, starting a sentence."""
     words = line.split()
@@ -360,7 +365,13 @@ def given(task):
             j = i + 1
             while j < len(lines) and lines[j].strip() and not _prose(lines[j].strip()):
                 j += 1
-            if j - (i + 1) >= 2:
+            one = j - (i + 1) < 2 and lines[i + 1].strip() and _ONE.search(lines[i].strip())
+            if one:
+                # one line after "Here is a text:" is the data too, sentence or not. g45's redact task gave its text as
+                # one line, nothing offered it, and all three members opened a file they made up and stopped on
+                # FileNotFoundError
+                j = i + 2
+            if j - (i + 1) >= 2 or one:
                 named = _FILENAME.findall(lines[i])
                 out.append({"text": "\n".join(lines[i + 1:j]), "name": named[-1] if named else ""})
                 i = j
