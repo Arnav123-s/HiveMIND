@@ -1,4 +1,5 @@
 """Public contracts. Model prompts are built only from this module, verified school artifacts and public feedback."""
+
 from dataclasses import dataclass
 
 
@@ -10,28 +11,61 @@ class Task:
 
 
 TASKS = {
-    "interval": Task("""Write solve(x) for a booking optimizer. x['jobs'] contains [start,end,reward] integer rows with start<end. Select any compatible subset. Intervals are half-open; touching is allowed. Return the single maximum total reward. An empty schedule earns zero. Handle unordered rows, negatives and duplicates. Up to 50,000 jobs.""",
-        ("interval", "dynamic programming", "scheduling"), '{"jobs":[[1,4,5],[4,6,7],[1,6,11]]} -> 12'),
-    "parity": Task("""Write solve(x) for a signal allocation. x['groups'] contains lists of alternative [reward,flag] integer pairs; every flag is 0 or 1. Choose at most one item in each group. The total number of flagged choices must be odd. Return [maximum_reward,number_of_optimal_selections_mod_1000000007]. Distinct positions are distinct choices even if equal. If impossible return [None,0]. Rewards may be negative. Up to 20,000 groups.""",
-        ("parity", "dynamic programming", "count"), '{"groups":[[[0,1],[0,1]],[[0,0]]]} -> [0,4]'),
-    "departure": Task("""Write solve(x) for a scheduled instrument. x['rows'] contains [ready,first,period,last,duration]. Board at the earliest first+k*period at or after ready, k a nonnegative integer. First and last are inclusive, period and duration are positive. Return a list of arrival times after adding duration, or None for each impossible boarding.""",
-        ("timetable", "edge", "integer"), '{"rows":[[6,2,4,10,3],[11,2,4,10,3]]} -> [9,None]'),
-    "version": Task("""Write solve(x) for a versioned measurements notebook. x['events'] contains unordered [id,version,value] rows. For each string id keep its highest integer version. Repeated identical rows count once. If that version has two distinct values, skip that id. Output the surviving [id,version,value] rows sorted by id. Lower conflicts do not poison newer data.""",
-        ("revision", "group", "conflict"), '{"events":[["b",2,2],["b",2,3],["b",3,8],["a",1,4]]} -> [["a",1,4],["b",3,8]]'),
-    "trend": Task("""Write solve(x) to estimate a linear time trend with periodic seasonal offsets. Input x['y'] is an unbroken list of monthly readings starting in January. Return [annual_trend,last_value_forecast] where last_value_forecast means the predicted next month immediately after the list. Each calendar month may have a different constant offset. At least 36 readings. Standard Python only. least_squares(X,y) is available for a general regression if wanted.""",
-        ("forecast", "regression", "seasonal"), 'If readings are 100 + month_index/12 with any repeating twelve monthly offsets, the annual trend is 1.'),
-    "dynamics": Task("""Write solve(x) to identify a small linear system. Input has 'u' and 'y' arrays, with y[t] measured after input u[t]. A noiseless response obeys y[t] = a*y[t-1] + b*u[t] + c, y[-1]=0. From those paired readings, predict a fresh 'future' sequence from y[-1]=0. Return the list of predictions. least_squares(X,y) is available.""",
-        ("forecast", "dynamics", "regression"), '{"u":[0,1,-1,2],"y":[0,1,-0.5,1.75],"future":[2,0]} -> [2,1]'),
-    "roster": Task("""Write a deployment-quality solver for a field-observation scheduler with one calibration constraint. x has integer gap>=0 and jobs [[start,end,points,flag], ...], start<end, flag in {0,1}. Jobs are distinct by input position, even identical rows. Selected jobs must be chronological with previous_end + gap <= next_start. The number of selected flagged jobs must be odd. Return [best_possible_points, count_of_best_schedules_mod_1000000007]; if impossible [None,0]. Scores may be zero or negative. Up to 60,000 unordered jobs. Implement an efficient algorithm; all valid optima count.""",
-        ("interval", "dynamic programming", "parity", "count", "scheduling"), '{"gap":1,"jobs":[[0,2,4,1],[3,4,2,0],[3,4,2,0],[1,4,6,1]]} -> [6,3]'),
-    "ferry": Task("""Build a trip planner for a directed timetable. x keys: n, src, dst, start, lay (length n), edges. Each edge is [u,v,first,period,last,duration]. Departures first+k*period <= last, k>=0. You may board when departure >= arrival_at_u+lay[u], including at src. Once during the journey you MAY waive exactly one boarding layover, so its threshold is arrival_at_u. You still wait for a scheduled departure. Duration and period are positive. Return [earliest_arrival_at_dst,pass_used] with pass_used 0 or 1, preferring 0 on ties. If unreachable return [None,None]. Staying at src needs no boarding. Support cycles, repeated links and sparse very large timetables without enumerating departures. Up to 24,000 stops and 75,000 links.""",
-        ("timetable", "edge", "shortest path", "integer"), '{"n":2,"src":0,"dst":1,"start":5,"lay":[4,0],"edges":[[0,1,6,10,16,2]]} -> [8,1]'),
-    "climate": Task("""Act as the analyst of monthly atmospheric CO2 at Mauna Loa. x['history'] is chronological [year,month,ppm] and x['future'] is a list of [year,month] to forecast up to 24 months beyond the final reading. Output a dict with 'forecast' (one finite ppm value per requested month), 'trend' (recent annual increase in ppm/year), 'peak_month' (1-12, month of largest typical seasonal deviation after removing trend), and 'method' (short truthful description). Use only the supplied past measurements. Report trend for the latest ten full years. Seasonality and growth rates can change over decades. Standard library only; least_squares(X,y) with explicit intercept column is available.""",
-        ("forecast", "seasonal", "regression"), 'Example structure: {"history":[[1980,1,338.6],...],"future":[[2005,1],[2005,2],...]}'),
-    "thermal": Task("""Investigate an unfamiliar stable thermal instrument through controlled interventions. solve(x) is called twice. When x['phase']=='design', return a list of exactly x['budget'] integer heater settings chosen from -2,-1,0,1,2. The instrument starts at rest. In phase 'predict', x has 'u' (your drive), 'y' (noisy output after each drive), and 'future' (a different drive). Return the numeric output trajectory for future starting again at rest. Short memory, input delay and different responses to positive/negative input are plausible. You choose the experiment and model. Python stdlib and least_squares(X,y) are available. Keep the experiment informative. No random external data.""",
-        ("forecast", "dynamics", "regression", "design"), '{"phase":"design","budget":48} -> list of 48 settings'),
-    "ledger": Task("""Finish a two-stage geology sample work order. Phase 'intake': x['events'] lists [ticket,rev,zone,grams,status] in arbitrary order. At the highest revision for each ticket ignore exact duplicates. If distinct rows tie there, quarantine the ticket (even if one is void). Otherwise drop status 'void' and keep status 'ok'. Return {"kept":[[ticket,rev,zone,grams],...],"conflicts":[ticket,...]}, both sorted by ticket. Phase 'revise' runs after a restart with ONLY x['snapshot'] (your saved intake), x['exclude'] (one zone) and x['minimum'] (minimum retained ticket count per zone, inclusive). The revised request excludes that zone from reporting and omits groups below minimum. Return {"summary.csv": csv_text, "audit.json": json_text}. CSV header zone,count,grams, data by descending total grams then ascending zone, final newline. Audit is a JSON object with "conflicts" (the sorted quarantined ticket IDs) and "kept_count" (all initially kept tickets, before report exclusions). Empty CSV still has its header. Strings are ordinary ASCII labels. No filesystem calls; the runner commits the exact texts you return.""",
-        ("revision", "group", "conflict", "instructions", "file"), 'Input might contain ["q7",2,"A",50,"ok"] twice. It represents one ticket.'),
+    "interval": Task(
+        """Write solve(x) for a booking optimizer. x['jobs'] contains [start,end,reward] integer rows with start<end. Select any compatible subset. Intervals are half-open; touching is allowed. Return the single maximum total reward. An empty schedule earns zero. Handle unordered rows, negatives and duplicates. Up to 50,000 jobs.""",
+        ("interval", "dynamic programming", "scheduling"),
+        '{"jobs":[[1,4,5],[4,6,7],[1,6,11]]} -> 12',
+    ),
+    "parity": Task(
+        """Write solve(x) for a signal allocation. x['groups'] contains lists of alternative [reward,flag] integer pairs; every flag is 0 or 1. Choose at most one item in each group. The total number of flagged choices must be odd. Return [maximum_reward,number_of_optimal_selections_mod_1000000007]. Distinct positions are distinct choices even if equal. If impossible return [None,0]. Rewards may be negative. Up to 20,000 groups.""",
+        ("parity", "dynamic programming", "count"),
+        '{"groups":[[[0,1],[0,1]],[[0,0]]]} -> [0,4]',
+    ),
+    "departure": Task(
+        """Write solve(x) for a scheduled instrument. x['rows'] contains [ready,first,period,last,duration]. Board at the earliest first+k*period at or after ready, k a nonnegative integer. First and last are inclusive, period and duration are positive. Return a list of arrival times after adding duration, or None for each impossible boarding.""",
+        ("timetable", "edge", "integer"),
+        '{"rows":[[6,2,4,10,3],[11,2,4,10,3]]} -> [9,None]',
+    ),
+    "version": Task(
+        """Write solve(x) for a versioned measurements notebook. x['events'] contains unordered [id,version,value] rows. For each string id keep its highest integer version. Repeated identical rows count once. If that version has two distinct values, skip that id. Output the surviving [id,version,value] rows sorted by id. Lower conflicts do not poison newer data.""",
+        ("revision", "group", "conflict"),
+        '{"events":[["b",2,2],["b",2,3],["b",3,8],["a",1,4]]} -> [["a",1,4],["b",3,8]]',
+    ),
+    "trend": Task(
+        """Write solve(x) to estimate a linear time trend with periodic seasonal offsets. Input x['y'] is an unbroken list of monthly readings starting in January. Return [annual_trend,last_value_forecast] where last_value_forecast means the predicted next month immediately after the list. Each calendar month may have a different constant offset. At least 36 readings. Standard Python only. least_squares(X,y) is available for a general regression if wanted.""",
+        ("forecast", "regression", "seasonal"),
+        "If readings are 100 + month_index/12 with any repeating twelve monthly offsets, the annual trend is 1.",
+    ),
+    "dynamics": Task(
+        """Write solve(x) to identify a small linear system. Input has 'u' and 'y' arrays, with y[t] measured after input u[t]. A noiseless response obeys y[t] = a*y[t-1] + b*u[t] + c, y[-1]=0. From those paired readings, predict a fresh 'future' sequence from y[-1]=0. Return the list of predictions. least_squares(X,y) is available.""",
+        ("forecast", "dynamics", "regression"),
+        '{"u":[0,1,-1,2],"y":[0,1,-0.5,1.75],"future":[2,0]} -> [2,1]',
+    ),
+    "roster": Task(
+        """Write a deployment-quality solver for a field-observation scheduler with one calibration constraint. x has integer gap>=0 and jobs [[start,end,points,flag], ...], start<end, flag in {0,1}. Jobs are distinct by input position, even identical rows. Selected jobs must be chronological with previous_end + gap <= next_start. The number of selected flagged jobs must be odd. Return [best_possible_points, count_of_best_schedules_mod_1000000007]; if impossible [None,0]. Scores may be zero or negative. Up to 60,000 unordered jobs. Implement an efficient algorithm; all valid optima count.""",
+        ("interval", "dynamic programming", "parity", "count", "scheduling"),
+        '{"gap":1,"jobs":[[0,2,4,1],[3,4,2,0],[3,4,2,0],[1,4,6,1]]} -> [6,3]',
+    ),
+    "ferry": Task(
+        """Build a trip planner for a directed timetable. x keys: n, src, dst, start, lay (length n), edges. Each edge is [u,v,first,period,last,duration]. Departures first+k*period <= last, k>=0. You may board when departure >= arrival_at_u+lay[u], including at src. Once during the journey you MAY waive exactly one boarding layover, so its threshold is arrival_at_u. You still wait for a scheduled departure. Duration and period are positive. Return [earliest_arrival_at_dst,pass_used] with pass_used 0 or 1, preferring 0 on ties. If unreachable return [None,None]. Staying at src needs no boarding. Support cycles, repeated links and sparse very large timetables without enumerating departures. Up to 24,000 stops and 75,000 links.""",
+        ("timetable", "edge", "shortest path", "integer"),
+        '{"n":2,"src":0,"dst":1,"start":5,"lay":[4,0],"edges":[[0,1,6,10,16,2]]} -> [8,1]',
+    ),
+    "climate": Task(
+        """Act as the analyst of monthly atmospheric CO2 at Mauna Loa. x['history'] is chronological [year,month,ppm] and x['future'] is a list of [year,month] to forecast up to 24 months beyond the final reading. Output a dict with 'forecast' (one finite ppm value per requested month), 'trend' (recent annual increase in ppm/year), 'peak_month' (1-12, month of largest typical seasonal deviation after removing trend), and 'method' (short truthful description). Use only the supplied past measurements. Report trend for the latest ten full years. Seasonality and growth rates can change over decades. Standard library only; least_squares(X,y) with explicit intercept column is available.""",
+        ("forecast", "seasonal", "regression"),
+        'Example structure: {"history":[[1980,1,338.6],...],"future":[[2005,1],[2005,2],...]}',
+    ),
+    "thermal": Task(
+        """Investigate an unfamiliar stable thermal instrument through controlled interventions. solve(x) is called twice. When x['phase']=='design', return a list of exactly x['budget'] integer heater settings chosen from -2,-1,0,1,2. The instrument starts at rest. In phase 'predict', x has 'u' (your drive), 'y' (noisy output after each drive), and 'future' (a different drive). Return the numeric output trajectory for future starting again at rest. Short memory, input delay and different responses to positive/negative input are plausible. You choose the experiment and model. Python stdlib and least_squares(X,y) are available. Keep the experiment informative. No random external data.""",
+        ("forecast", "dynamics", "regression", "design"),
+        '{"phase":"design","budget":48} -> list of 48 settings',
+    ),
+    "ledger": Task(
+        """Finish a two-stage geology sample work order. Phase 'intake': x['events'] lists [ticket,rev,zone,grams,status] in arbitrary order. At the highest revision for each ticket ignore exact duplicates. If distinct rows tie there, quarantine the ticket (even if one is void). Otherwise drop status 'void' and keep status 'ok'. Return {"kept":[[ticket,rev,zone,grams],...],"conflicts":[ticket,...]}, both sorted by ticket. Phase 'revise' runs after a restart with ONLY x['snapshot'] (your saved intake), x['exclude'] (one zone) and x['minimum'] (minimum retained ticket count per zone, inclusive). The revised request excludes that zone from reporting and omits groups below minimum. Return {"summary.csv": csv_text, "audit.json": json_text}. CSV header zone,count,grams, data by descending total grams then ascending zone, final newline. Audit is a JSON object with "conflicts" (the sorted quarantined ticket IDs) and "kept_count" (all initially kept tickets, before report exclusions). Empty CSV still has its header. Strings are ordinary ASCII labels. No filesystem calls; the runner commits the exact texts you return.""",
+        ("revision", "group", "conflict", "instructions", "file"),
+        'Input might contain ["q7",2,"A",50,"ok"] twice. It represents one ticket.',
+    ),
 }
 
 SCHOOL = ("interval", "parity", "departure", "version", "trend", "dynamics")

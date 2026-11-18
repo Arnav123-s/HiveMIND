@@ -12,6 +12,7 @@
     python -m team remember "fact"        add to your profile (how you like things done)
     python -m team grow [--min 200]       grow new cells from the hive's own logged decisions (team/cells/learn.py)
     python -m team project "goal"         a long project: milestones in their own workspace, resumable (team/project.py)
+    python -m team fieldwork --help       build a CPU worker from a new work order, check it and deliver its files
     python -m team projects               every project and how far it got
     python -m team stop                   KILL SWITCH: stop every running task now (also Ctrl+C, web Stop, inbox/STOP)
     python -m team smiths [cycle ROLE|gaps|tests]   the smith swarm: ledger, one improvement cycle, gaps, field tests
@@ -31,12 +32,15 @@ import os
 import sys
 
 COMMANDS = {"chat", "serve", "add", "dream", "remember", "web", "evolve", "stop", "smiths", "api", "grow", "install",
-            "uninstall", "project", "projects", "life", "org", "school", "recruit", "harvest", "body"}
+            "uninstall", "project", "projects", "life", "org", "school", "recruit", "harvest", "body", "fieldwork"}
 
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] in COMMANDS:
         cmd, rest = sys.argv[1], sys.argv[2:]
+        if cmd == "fieldwork":
+            from training.experiments.fieldwork.work import main as fieldwork
+            return fieldwork(rest)
         if cmd == "chat":
             from . import talk
             if os.environ.get("HIVE_ROLES") != "1" and talk.speaker():  # the body talks where it is on this machine

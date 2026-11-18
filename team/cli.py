@@ -172,6 +172,10 @@ def session(swarm, rounds, inp=input, out=print):
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["fieldwork"]:
+        from training.experiments.fieldwork.work import main as fieldwork
+        return fieldwork(argv[1:])
     ap = argparse.ArgumentParser(prog="hive", description="Talk to the swarm; it does the job.")
     ap.add_argument("prompt", nargs="*", help="what you want, in your own words (none: just start talking)")
     ap.add_argument("--once", action="store_true", help="answer the prompt and exit (scripts)")
