@@ -43,9 +43,12 @@ def registry(root, name):
 
     for model in ("g41", "recruit", "4b", "q35", "coder7b"):
         read_member(root / (model + "-cold") / (name + ".json"), model + "/first", "source", "model")
-        for treatment in ("cold", "grown"):
+        for treatment in ("cold", "grown", "coached"):
             read_member(
-                root / model / treatment / (name + ".json"), model + "/" + treatment, "program", "model"
+                root / model / treatment / (name + ".json"),
+                model + "/" + treatment,
+                "program",
+                "model with reference notes" if treatment == "coached" else "model",
             )
     if name in ("roster", "ferry"):
         read_member(
@@ -55,7 +58,26 @@ def registry(root, name):
             "supplied algorithm family",
         )
     elif name == "ledger":
+        for arm in ("standard", "csv"):
+            read_member(
+                root / "phase-repair" / arm / "program.json",
+                "repaired phases/" + arm,
+                "source",
+                "model-derived phases",
+            )
+        read_member(
+            root / "report-school" / "program.json",
+            "recovered intake and learned report",
+            "source",
+            "supplied reporting family and model fragment",
+        )
         read_member(root / "stages" / "program.json", "phase workers", "source", "model-derived phases")
+        read_member(
+            root / "stages-typed" / "program.json",
+            "phase workers with input paths",
+            "source",
+            "model-derived phases",
+        )
     elif name in ("thermal", "climate"):
         for adaptive in (False, True):
             label = "adaptive" if adaptive else "fixed"
@@ -74,6 +96,16 @@ def select(root, name, candidates, guests):
             row = read(path)
         else:
             public = grade(guests[runtime], name, source, "public")
+            if name == "ledger":
+                from .phase_repair import FORMATS, comma_example
+                from .work import check
+
+                extra, feedback = check(guests[runtime], source, [comma_example()], FORMATS)
+                public["correct"] += extra
+                public["total"] += 1
+                public["complete"] = public["correct"] == public["total"]
+                if not extra:
+                    public["feedback"] = feedback
             row = dict(digest=key, public=compact(public), fitness=fitness(public))
             save(path, row)
         ranking.append(dict(label=label, program=source, runtime=runtime, origin=origin, **row))
@@ -85,6 +117,7 @@ def select(root, name, candidates, guests):
             -r["fitness"][0],
             -r["fitness"][1],
             r["origin"].startswith("supplied"),
+            r["origin"] == "model with reference notes",
             len(r["program"]),
             r["label"],
         )

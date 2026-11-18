@@ -73,7 +73,10 @@ def matches(actual, expected, formats=None):
 
 def check(guest, program, examples, formats=None):
     results, _, _ = guest.run(program, [r["input"] for r in examples], fuel=14_000_000_000)
-    ok = [("value" in v and matches(v["value"], r["output"], formats)) for v, r in zip(results, examples)]
+    ok = [
+        ("value" in v and matches(v["value"], r["output"], r.get("compare", formats)))
+        for v, r in zip(results, examples)
+    ]
     failed = next((i for i, b in enumerate(ok) if not b), None)
     feedback = "All examples passed."
     if failed is not None:
@@ -121,17 +124,25 @@ def finish_files(root, ident, value, names):
     ):
         raise ValueError("returned files differ from the requested file contract")
     destination = root / ident
-    if destination.exists():
-        if (
-            destination.is_dir()
-            and {p.name for p in destination.iterdir()} == set(names)
-            and all(
-                (destination / n).is_file() and (destination / n).read_bytes() == value[n].encode()
-                for n in names
-            )
-        ):
-            return
+    if destination.is_symlink():
         raise FileExistsError(destination)
+    if destination.exists():
+        if not destination.is_dir():
+            raise FileExistsError(destination)
+        present = {p.name for p in destination.iterdir()}
+        if not present <= set(names) or any(
+            (destination / n).is_symlink()
+            or not (destination / n).is_file()
+            or (destination / n).read_bytes() != value[n].encode()
+            for n in present
+        ):
+            raise FileExistsError(destination)
+        for n in set(names) - present:
+            with tempfile.NamedTemporaryFile(dir=root) as stream:
+                stream.write(value[n].encode())
+                stream.flush()
+                os.link(stream.name, destination / n)
+        return
     with tempfile.TemporaryDirectory(dir=root) as tmp:
         stage = Path(tmp) / "files"
         stage.mkdir()
@@ -140,17 +151,79 @@ def finish_files(root, ident, value, names):
         os.replace(stage, destination)
 
 
-def work(spec, guest, ask, out, bank_path=None, rounds=3):
+def commit_output(root, job, value):
+    if "snapshot_file" in job:
+        name = job["snapshot_file"]
+        if "files" in job:
+            raise ValueError("a job must choose a JSON snapshot or named file outputs")
+        body = json.dumps(value, sort_keys=True, allow_nan=False) + "\n"
+        finish_files(root, job["id"], {name: body}, [name])
+        return root / job["id"] / name
+    if "files" in job:
+        finish_files(root, job["id"], value, job["files"])
+
+
+def saved_receipt(out, spec):
+    result = json.loads((out / "receipt.json").read_text())
+    by_id = {j["id"]: j for j in spec.get("jobs", [])}
+    valid = set()
+    for i, row in enumerate(result["jobs"]):
+        if "value" in row:
+            try:
+                job = by_id[row["id"]]
+                if not set(job.get("from_job", {}).values()) <= valid:
+                    raise ValueError("a stored snapshot could not be verified")
+                commit_output(out, job, row["value"])
+                valid.add(row["id"])
+            except (ValueError, TypeError, OSError) as exc:
+                result["jobs"][i] = {"id": row["id"], "error": str(exc)}
+    return result
+
+
+def deliver(guest, program, jobs, root):
+    ids = [j["id"] for j in jobs]
+    if len(set(ids)) != len(ids) or any(not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", i) for i in ids):
+        raise ValueError("each job needs a unique short ID")
+    linked = any(j.get("from_job") for j in jobs)
+    results = [] if linked else guest.run(program, [j["input"] for j in jobs], fuel=30_000_000_000)[0]
+    receipts = []
+    snapshots = {}
+    for i, job in enumerate(jobs):
+        try:
+            if linked:
+                value = job["input"]
+                if job.get("from_job"):
+                    value = dict(value)
+                    for field, prior in job["from_job"].items():
+                        if prior not in snapshots or field in value:
+                            raise ValueError("snapshot dependency unavailable or input field already set")
+                        value[field] = json.loads(snapshots[prior].read_bytes())
+                row = guest.run(program, [value], fuel=30_000_000_000)[0][0]
+            else:
+                row = results[i]
+            if "value" in row:
+                snapshot = commit_output(root, job, row["value"])
+                if snapshot is not None:
+                    snapshots[job["id"]] = snapshot
+        except (OSError, ValueError, TypeError) as exc:
+            row = {"error": str(exc)}
+        receipts.append({"id": job["id"], **row})
+    return receipts
+
+
+def work(spec, guest, ask, out, bank_path=None, rounds=3, memory_view="contract"):
     out.mkdir(parents=True, exist_ok=True)
     with (out / ".work.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        return _work(spec, guest, ask, out, bank_path, rounds)
+        return _work(spec, guest, ask, out, bank_path, rounds, memory_view)
 
 
-def _work(spec, guest, ask, out, bank_path, rounds):
+def _work(spec, guest, ask, out, bank_path, rounds, memory_view):
     name = spec["name"]
     if not re.fullmatch("[a-z][a-z0-9_]{0,60}", name) or not spec["examples"] or rounds < 1:
         raise ValueError("provide a short program name and at least one checked example")
+    if memory_view not in ("contract", "source"):
+        raise ValueError("unknown memory view")
     token = fingerprint(json.dumps(spec, sort_keys=True, separators=(",", ":")))
     manifest = out / "work-order.json"
     if manifest.exists():
@@ -158,18 +231,33 @@ def _work(spec, guest, ask, out, bank_path, rounds):
         if state["spec_digest"] != token:
             raise ValueError("this output belongs to a different work order")
         old = state["parents"]
+        memory_view = state.get("memory_view", "source")
         if (out / "receipt.json").exists():
-            return json.loads((out / "receipt.json").read_text())
+            return saved_receipt(out, spec)
     else:
         if any(p.name != ".work.lock" for p in out.iterdir()):
             raise FileExistsError("use a fresh or matching work-order directory")
         old = retrieve(spec["task"], load_bank(bank_path))
-        save(manifest, dict(spec_digest=token, parents=old))
+        save(manifest, dict(spec_digest=token, parents=old, memory_view=memory_view))
     prompt = Task(
         spec["task"], (), "Public examples: " + json.dumps(spec["examples"], separators=(",", ":"))[:1900]
     )
     prefix = ""
-    if old:
+    if old and memory_view == "contract":
+        helpers = []
+        for item in old:
+            label = "skill_" + item["task"]
+            description = item["description"].replace("Write solve(x)", label + "(x) is available")
+            helpers.append(f"{label}(x) — {description}")
+        prompt = Task(
+            "Optional library, already implemented:\n"
+            + "\n".join(helpers)
+            + "\n\nCurrent assignment:\n"
+            + prompt.text,
+            (),
+            prompt.example,
+        )
+    elif old:
         prefix = "\nVerified optional functions from previous work:\n" + "\n".join(
             f"skill_{r['task']}(x): {r['description']}\n{r['source'][:1300]}" for r in old
         )
@@ -235,14 +323,7 @@ def _work(spec, guest, ask, out, bank_path, rounds):
     )
     jobs = spec.get("jobs", [])
     if best["passed"] == len(spec["examples"]) and (not promotion or checked == len(promotion)):
-        outputs, _, _ = guest.run(best["program"], [j["input"] for j in jobs], fuel=30_000_000_000)
-        for job, value in zip(jobs, outputs):
-            if "files" in job and "value" in value:
-                try:
-                    finish_files(out, job["id"], value["value"], job["files"])
-                except (OSError, ValueError) as exc:
-                    value = {"error": str(exc)}
-            result["jobs"].append({"id": job["id"], **value})
+        result["jobs"] = deliver(guest, best["program"], jobs, out)
     if (
         bank_path
         and promotion
@@ -279,6 +360,7 @@ def main(argv=None):
     p.add_argument("--threads", type=int, default=4)
     p.add_argument("--budget", type=int, default=1400, help="maximum generated tokens per attempt")
     p.add_argument("--concise", action="store_true", help="request code without inline explanations")
+    p.add_argument("--memory-view", choices=("contract", "source"), default="contract")
     args = p.parse_args(argv)
     if min(args.rounds, args.threads, args.budget) < 1:
         p.error("rounds, threads and budget must be positive")
@@ -302,7 +384,7 @@ def main(argv=None):
                 url, task, prefix, prior, focused=True, concise=args.concise, budget=args.budget
             )
 
-        score = work(spec, g, ask, args.out, args.bank, args.rounds)
+        score = work(spec, g, ask, args.out, args.bank, args.rounds, args.memory_view)
     jobs = spec.get("jobs", [])
     delivered = sum("value" in row for row in score["jobs"])
     print(

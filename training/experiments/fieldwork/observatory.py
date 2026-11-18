@@ -140,6 +140,7 @@ def main():
     p.add_argument("--rounds", type=int, default=3)
     p.add_argument("--budget", type=int, default=1400)
     p.add_argument("--concise", action="store_true")
+    p.add_argument("--memory-view", choices=("source", "contract"), default="source")
     p.add_argument("--seed", type=int, default=93133)
     p.add_argument(
         "--prior-school", type=Path, help="Reuse just the checked interval helper from this bank"
@@ -171,7 +172,7 @@ def main():
             receipt = (
                 read(root / "receipt.json")
                 if (root / "receipt.json").exists()
-                else work(spec, g, ask, root, memory, args.rounds)
+                else work(spec, g, ask, root, memory, args.rounds, args.memory_view)
             )
             if mode != "school":
                 inspect_delivery(g, root, receipt, audit, args.blocks, args.seed)

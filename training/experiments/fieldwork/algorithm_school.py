@@ -92,6 +92,14 @@ def variants(name, bank):
 
 
 def teach(name, bank):
+    if name == "ferry":
+        from .induction import align
+
+        expected, _, _ = align(static_cases("departure", "public"))
+        if not any(r["task"] == "departure" and r["admitted"] for r in bank) or any(
+            r["source"] != expected for r in bank if r["task"] == "departure"
+        ):
+            raise ValueError("expected a locally induced departure rule")
     public = static_cases(name, "public")
     possible = []
     for params, code in variants(name, bank):
@@ -136,12 +144,6 @@ def main():
         p.add_argument("--" + k, type=Path, required=True)
     args = p.parse_args()
     bank = read(args.school)
-    # The executable enumerator accepts only locally generated grammar output, never arbitrary registry code.
-    from .induction import align
-
-    expected, _, _ = align(static_cases("departure", "public"))
-    if any(r["source"] != expected for r in bank if r["task"] == "departure"):
-        raise ValueError("unrecognized school source")
     g = Guest(args.sdk)
     for name in ("roster", "ferry"):
         row = teach(name, bank)

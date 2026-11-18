@@ -188,8 +188,6 @@ def examine(guest, cold, out, names, methods, split):
     for name in names:
         for method in methods:
             dest = out / split / method / (name + ".json")
-            if dest.exists() and read(dest).get("grader_version") == 2:
-                continue
             if method == "first":
                 source = read(cold / (name + ".json"))["source"]
             else:
@@ -197,6 +195,10 @@ def examine(guest, cold, out, names, methods, split):
                 source = draft["program"]
                 if fingerprint(source) != draft["selected"]:
                     raise ValueError("frozen program hash changed")
+            if dest.exists():
+                old = read(dest)
+                if old.get("grader_version") == 2 and old.get("digest") == fingerprint(source):
+                    continue
             metrics = grade(guest, name, source, split)
             save(
                 dest,
@@ -254,7 +256,15 @@ def main():
                             args.threads,
                         )
                     )
-                return generate(url, TASKS[name], prefix, prior, budget=args.budget, focused=args.focused, concise=args.concise)
+                return generate(
+                    url,
+                    TASKS[name],
+                    prefix,
+                    prior,
+                    budget=args.budget,
+                    focused=args.focused,
+                    concise=args.concise,
+                )
 
             for name in args.tasks or EXAM:
                 for mode in modes:

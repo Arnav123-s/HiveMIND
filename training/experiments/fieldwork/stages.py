@@ -4,6 +4,7 @@ import argparse
 import ast
 import copy
 import json
+import re
 from contextlib import nullcontext
 from pathlib import Path
 
@@ -13,7 +14,7 @@ from .contracts import TASKS, Task
 from .grade import compact, grade
 from .guest import Guest
 from .native import generate, server
-from .work import check
+from .work import matches
 
 
 def fragments(source, phase, schema):
@@ -72,6 +73,57 @@ def assemble(winners):
     return "\n".join(["_phases = {}", *entries, "def solve(x):", "    return _phases[x['phase']](x)"])
 
 
+def evaluate_phase(guest, source, examples, formats):
+    results, _, _ = guest.run(source, [r["input"] for r in examples], fuel=14_000_000_000)
+    passed = fields = 0
+    feedback = None
+    for exemplar, row in zip(examples, results):
+        expected, actual = exemplar["output"], row.get("value")
+        if "value" in row and matches(actual, expected, formats):
+            passed += 1
+        elif feedback is None:
+            feedback = json.dumps(
+                dict(input=exemplar["input"], expected=expected, actual=row), separators=(",", ":")
+            )[:1200]
+        if isinstance(actual, dict):
+            for k, v in expected.items():
+                field_format = {k: formats[k]} if formats and k in formats else None
+                fields += k in actual and matches({k: actual[k]}, {k: v}, field_format)
+    return passed, fields, feedback or "All examples passed."
+
+
+def phase_prompt(contract, phase, demos):
+    segments = re.split(r"\bPhase '([^']+)'", contract)
+    instructions = dict(zip(segments[1::2], segments[2::2])).get(phase, contract)
+    sample = min(demos, key=lambda r: len(json.dumps(r)))
+    rich = max(
+        demos, key=lambda r: (sum(str(v).count("\n") for v in r["output"].values()), -len(json.dumps(r)))
+    )
+    paths = []
+
+    def describe(value, path):
+        if isinstance(value, dict):
+            for k, v in value.items():
+                describe(v, f"{path}[{k!r}]")
+        elif isinstance(value, list):
+            paths.append(f"{path} is a list; sample item: {value[0]!r}" if value else f"{path} is a list")
+        else:
+            paths.append(f"{path} is {type(value).__name__}")
+
+    describe(rich["input"], "x")
+    return Task(
+        f"Write Python solve(x) for phase {phase!r}. This is a standalone function. Requirements: "
+        + instructions
+        + "\nInput paths from checked examples:\n"
+        + "\n".join(paths),
+        (),
+        "Checked example: "
+        + json.dumps(rich, separators=(",", ":"))[:2400]
+        + "\nAnother expected result: "
+        + json.dumps(sample["output"]),
+    )
+
+
 def learn(name, contract, examples, formats, sources, guest, ask, out, rounds=2):
     selected = {}
     for phase, demos in examples.items():
@@ -89,11 +141,29 @@ def learn(name, contract, examples, formats, sources, guest, ask, out, rounds=2)
             if key in seen:
                 return
             seen.add(key)
-            score, feedback = check(guest, source, demos, formats.get(phase))
-            trace.append(dict(digest=key, parent=origin, edit=edit, passed=score, usage=usage))
-            if best is None or score > best["passed"]:
+            score, fields, feedback = evaluate_phase(guest, source, demos, formats.get(phase))
+            trace.append(
+                dict(
+                    digest=key,
+                    parent=origin,
+                    edit=edit,
+                    passed=score,
+                    fields=fields,
+                    usage=usage,
+                    source=source if usage else None,
+                    feedback=feedback,
+                )
+            )
+            rank = (score, fields, usage is not None)
+            if best is None or rank > tuple(best["rank"]):
                 best = dict(
-                    source=source, digest=key, passed=score, feedback=feedback, origin=origin, edit=edit
+                    source=source,
+                    digest=key,
+                    passed=score,
+                    rank=rank,
+                    feedback=feedback,
+                    origin=origin,
+                    edit=edit,
                 )
 
         for origin, source in sources:
@@ -106,16 +176,14 @@ def learn(name, contract, examples, formats, sources, guest, ask, out, rounds=2)
         for turn in range(rounds):
             if best and best["passed"] == len(demos):
                 break
-            sample = min(demos, key=lambda r: len(json.dumps(r)))
-            prompt = Task(
-                contract + f"\nYour cell is responsible solely for phase {phase!r}. It receives only "
-                f"{sorted(sample['input'])} and returns {sorted(sample['output'])}. Implement solve(x) for "
-                "this phase, including the full return value. The host dispatches to the other worker.",
-                (),
-                "One checked example: " + json.dumps(sample, separators=(",", ":")),
-            )
+            prompt = phase_prompt(contract, phase, demos)
             prior = (best["source"], best["feedback"]) if turn and best else None
-            row = ask(prompt, "", prior)
+            draft = out / f"{phase}.writer{turn + 1}.json"
+            if draft.exists():
+                row = read(draft)
+            else:
+                row = ask(prompt, "", prior)
+                save(draft, row)
             consider(row["source"], "local writer", f"phase generation {turn + 1}", row["usage"])
         if best is None:
             raise ValueError("no phase candidates")

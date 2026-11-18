@@ -186,3 +186,97 @@ def test_recover_phase_from_a_broken_complete_program():
         except KeyError:
             pass
     assert solutions == ["return after statement 2, sorted lists=True"]
+
+
+def test_new_work_order_reopens_a_declared_snapshot_and_delivers_the_late_request(tmp_path):
+    from training.experiments.fieldwork.work import deliver
+
+    class Recorder:
+        def __init__(self):
+            self.calls = []
+
+        def run(self, program, inputs, fuel):
+            self.calls.append(inputs)
+            x = inputs[0]
+            value = (
+                {"value": x["observation"]}
+                if "observation" in x
+                else {"report.txt": str(x["state"]["value"])}
+            )
+            return [{"value": value}], 0, 0
+
+    jobs = [
+        dict(id="read", input={"observation": 12}, snapshot_file="state.json"),
+        dict(id="report", input={}, from_job={"state": "read"}, files=["report.txt"]),
+    ]
+    recorder = Recorder()
+    completed = deliver(recorder, "", jobs, tmp_path)
+    assert (tmp_path / "report" / "report.txt").read_text() == "12" and len(recorder.calls) == 2
+    assert json.loads((tmp_path / "read" / "state.json").read_bytes()) == recorder.calls[1][0]["state"]
+    assert deliver(recorder, "", jobs, tmp_path) == completed
+    broken = deliver(recorder, "", [dict(jobs[1], id="missing", from_job={"state": "unknown"})], tmp_path)
+    assert "error" in broken[0] and not (tmp_path / "missing").exists()
+
+
+def test_reporting_school_uses_a_probe_to_identify_an_unseen_tie_rule():
+    from training.experiments.fieldwork.report_school import teach as report
+    from training.experiments.fieldwork.stages import examples
+
+    got = report(examples()["revise"])
+    assert got["family_size"] == 768 and got["survivors_before_probes"] == 2 and len(got["probes"]) == 1
+    scope = {}
+    exec(got["source"], scope)
+    result = scope["solve"](
+        dict(
+            snapshot={"kept": [["z", 1, "V", 30], ["u", 1, "B", 30]], "conflicts": ["e"]},
+            exclude="Other",
+            minimum=1,
+        )
+    )
+    assert result["summary.csv"] == "zone,count,grams\nB,1,30\nV,1,30\n"
+    assert json.loads(result["audit.json"]) == {"conflicts": ["e"], "kept_count": 2}
+
+
+def test_verified_receipt_restores_missing_files_and_preserves_an_operator_edit(tmp_path):
+    from training.experiments.fieldwork.work import saved_receipt
+
+    order = dict(
+        jobs=[
+            dict(id="first", snapshot_file="state.json"),
+            dict(id="second", from_job={"state": "first"}, files=["a.csv", "b.txt"]),
+        ]
+    )
+    receipt = dict(
+        jobs=[
+            {"id": "first", "value": [4, 7]},
+            {"id": "second", "value": {"a.csv": "a\n", "b.txt": "value\n"}},
+        ]
+    )
+    (tmp_path / "receipt.json").write_text(json.dumps(receipt))
+    assert saved_receipt(tmp_path, order) == receipt
+    target = tmp_path / "second"
+    (target / "a.csv").unlink()
+    assert saved_receipt(tmp_path, order) == receipt and (target / "a.csv").read_text() == "a\n"
+    (target / "b.txt").write_text("operator")
+    assert (
+        "error" in saved_receipt(tmp_path, order)["jobs"][-1]
+        and (target / "b.txt").read_text() == "operator"
+    )
+
+
+def test_generic_csv_and_aggregation_repairs_on_an_independent_work_order():
+    from training.experiments.fieldwork.phase_repair import mutations, oracle
+
+    source = """def solve(x):
+    count=sum(v[1] for v in x)
+    return f'{x[0][0]},{count}'
+"""
+    variants = dict(mutations(source))
+    assert len(variants) == 2
+    counted = next(code for label, code in variants.items() if label.startswith("sum"))
+    escaped = next(code for label, code in mutations(counted) if label.startswith("comma"))
+    scope = {}
+    exec(escaped, scope)
+    assert scope["solve"]([["A, B", 5], ["C", 2]]) == '"A, B",2'
+    snapshot, files = oracle([["k", 2, "A, B", 5, "ok"], ["k", 2, "A, B", 5, "ok"]], "Elsewhere", 1)
+    assert snapshot["kept"] == [["k", 2, "A, B", 5]] and '"A, B",1,5' in files["summary.csv"]

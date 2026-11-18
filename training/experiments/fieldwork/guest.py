@@ -3,6 +3,7 @@
 import json
 import tempfile
 import time
+from functools import cached_property
 from pathlib import Path
 
 
@@ -56,30 +57,32 @@ print(json.dumps(results, allow_nan=False, separators=(",",":")))
 
 class Guest:
     def __init__(self, sdk):
+        self.sdk = Path(sdk).resolve(strict=True)
+
+    @cached_property
+    def runtime(self):
         import inspect
         import wasmtime as w
 
-        self.w = w
-        self.sdk = Path(sdk).resolve(strict=True)
         config = w.Config()
         config.consume_fuel = True
-        self.engine = w.Engine(config)
-        self.module = w.Module.from_file(self.engine, self.sdk / "python.wasm")
-        self.linker = w.Linker(self.engine)
-        self.linker.define_wasi()
-        self.boot = inspect.getsource(least_squares) + BOOT
+        engine = w.Engine(config)
+        module = w.Module.from_file(engine, self.sdk / "python.wasm")
+        linker = w.Linker(engine)
+        linker.define_wasi()
+        return w, engine, module, linker, inspect.getsource(least_squares) + BOOT
 
     def run(self, program, inputs, fuel=5_000_000_000):
         if not inputs:
             return [], 0, 0
-        w = self.w
+        w, engine, module, linker, boot = self.runtime
         start = time.monotonic()
-        with tempfile.TemporaryDirectory() as tmp, w.Store(self.engine) as store:
+        with tempfile.TemporaryDirectory() as tmp, w.Store(engine) as store:
             tmp = Path(tmp)
             stdin, stdout, stderr = (tmp / name for name in ("inputs", "stdout", "stderr"))
             stdin.write_text(json.dumps({"program": program, "inputs": inputs}, allow_nan=False))
             wasi = w.WasiConfig()
-            wasi.argv = ["python", "-B", "-S", "-c", self.boot]
+            wasi.argv = ["python", "-B", "-S", "-c", boot]
             wasi.env = [("PYTHONHOME", "/sdk"), ("PYTHONHASHSEED", "19")]
             wasi.preopen_dir(str(self.sdk / "lib"), "/sdk/lib", w.DirPerms.READ_ONLY, w.FilePerms.READ_ONLY)
             wasi.stdin_file, wasi.stdout_file, wasi.stderr_file = str(stdin), str(stdout), str(stderr)
@@ -87,7 +90,7 @@ class Guest:
             store.set_limits(memory_size=256 * 1024 * 1024)
             store.set_fuel(fuel)
             try:
-                instance = self.linker.instantiate(store, self.module)
+                instance = linker.instantiate(store, module)
                 instance.exports(store)["_start"](store)
             except w.ExitTrap as exc:
                 if exc.code != 0:

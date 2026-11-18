@@ -7,7 +7,7 @@ import random
 from contextlib import nullcontext
 from pathlib import Path
 
-from .campaign import save, tool_source
+from .campaign import read, save, tool_source
 from .guest import Guest
 from .native import generate, server
 from .observatory import files, inspect_delivery, specs
@@ -24,7 +24,7 @@ def intervals(example):
     return dict(input=example["input"], output=[[int(a), int(b)] for a, b in rows])
 
 
-def experiment(guest, ask, out, previous):
+def experiment(guest, ask, out, previous, memory_view):
     seed = 512331
     _, training = specs(774129)
     _, audit = specs(seed)
@@ -62,7 +62,7 @@ def experiment(guest, ask, out, previous):
     for member in helpers:
         save(banks["coverage_spans"] / (member["digest"] + ".json"), member)
     for spec in parts:
-        receipt = work(spec, guest, ask, out / spec["name"], banks[spec["name"]], 2)
+        receipt = work(spec, guest, ask, out / spec["name"], banks[spec["name"]], 2, memory_view)
         print(spec["name"], receipt["public"], receipt["validated"], flush=True)
     members = {s["task"]: s for bank in banks.values() for s in load_bank(bank)}
     if any(p["name"] not in members for p in parts):
@@ -80,10 +80,13 @@ def experiment(guest, ask, out, previous):
     final = out / "joint"
     receipt = work(audit, guest, link, final, None, 1)
     inspect_delivery(guest, final, receipt, audit, 7733, seed)
+    audited = read(final / "independent.json")
     save(
         out / "outcome.json",
         dict(
-            released=receipt["validated"] == len(audit["validation"]),
+            released=receipt["validated"] == len(audit["validation"])
+            and audited["stress_ok"]
+            and audited["reopened_filesets"] == len(audit["jobs"]),
             digest=receipt["digest"],
             parents=[p["digest"] for p in ordered],
         ),
@@ -98,6 +101,7 @@ def main():
     p.add_argument("--url")
     p.add_argument("--binary", type=Path)
     p.add_argument("--weights", type=Path)
+    p.add_argument("--memory-view", choices=("source", "contract"), default="source")
     args = p.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     if not args.url and not (args.binary and args.weights):
@@ -112,7 +116,7 @@ def main():
         def ask(task, prefix, prior):
             return generate(url, task, prefix, prior, budget=1100, focused=True, concise=True)
 
-        experiment(Guest(args.sdk), ask, args.out, args.prior_school)
+        experiment(Guest(args.sdk), ask, args.out, args.prior_school, args.memory_view)
 
 
 if __name__ == "__main__":

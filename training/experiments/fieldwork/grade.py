@@ -249,7 +249,7 @@ def grade(guest, name, program, split):
         fuel=fuel,
         seconds=seconds,
         tests=tests,
-        feedback=next((r["feedback"] for r in tests if not r["ok"]), "All public checks passed."),
+        feedback=next((r["feedback"] for r in tests if not r["ok"]), f"All {split} checks passed."),
     )
 
 
