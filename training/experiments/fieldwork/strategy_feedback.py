@@ -1,4 +1,4 @@
-"""Compare one CPU repair from ordinary examples with one from matched examples."""
+"""Compare CPU repairs and fresh drafts given ordinary or matched public examples."""
 
 import argparse
 import json
@@ -75,7 +75,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sdk", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--frozen", type=Path, help="Replay the drafts in a saved result without loading weights")
+    previous = parser.add_mutually_exclusive_group()
+    previous.add_argument("--frozen", type=Path, help="Replay the drafts in a saved result without loading weights")
+    previous.add_argument("--extend", type=Path, help="Keep both original repairs and generate the two fresh drafts")
     parser.add_argument("--binary", type=Path)
     parser.add_argument("--weights", type=Path)
     parser.add_argument("--threads", type=int, default=4)
@@ -93,23 +95,35 @@ def main():
         parent_sha256=fingerprint(parent), fresh_sha256=digest(fresh), prompts=prompts, seed=3141, budget=1000,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    if args.frozen:
-        frozen = read(args.frozen)
+    drafts = {}
+    if args.frozen or args.extend:
+        frozen = read(args.frozen or args.extend)
         if frozen["design"] != design:
             raise ValueError("The saved drafts used different inputs or prompts")
-        drafts = frozen["drafts"]
-    else:
+        if args.extend and set(frozen["drafts"]) != set(prompts):
+            raise ValueError("The follow-up needs exactly the two original repair drafts")
+        drafts.update(frozen["drafts"])
+    if not args.frozen:
         with server(args.binary, args.weights, args.out.with_suffix(".log"), threads=args.threads) as url:
-            drafts = {}
-            for arm, prompt in prompts.items():
-                drafts[arm] = generate(
-                    url, TASKS["ferry"], earlier=(parent, prompt), budget=design["budget"],
-                    seed=design["seed"], focused=True, concise=True,
-                )
-                print(arm, drafts[arm]["usage"], flush=True)
+            for show_source in (True, False):
+                for name, prompt in prompts.items():
+                    arm = name if show_source else "fresh_" + name
+                    if arm in drafts:
+                        continue
+                    prefix = "" if show_source else "\n" + prompt + "\nReturn a complete corrected implementation."
+                    drafts[arm] = generate(
+                        url, TASKS["ferry"], prefix=prefix, earlier=(parent, prompt) if show_source else None,
+                        budget=design["budget"], seed=design["seed"], focused=True, concise=True,
+                    )
+                    print(arm, drafts[arm]["usage"], flush=True)
     sources = {"parent": parent, **{arm: row["source"] for arm, row in drafts.items()}}
     sources["supplied_family"] = results["algorithm-school-v2/ferry.json"]["source"]
-    scores = {arm: score(guest, source, fresh) for arm, source in sources.items()}
+    scores, by_source = {}, {}
+    for arm, source in sources.items():
+        key = fingerprint(source)
+        if key not in by_source:
+            by_source[key] = score(guest, source, fresh)
+        scores[arm] = by_source[key]
     save(args.out, dict(design=design, drafts=drafts, scores=scores))
     for arm, record in scores.items():
         print(arm, record["fresh"], record["exam"], record["confirmation"])
