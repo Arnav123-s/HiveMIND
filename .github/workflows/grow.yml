@@ -214,8 +214,8 @@ jobs:
           HIVE_TASK_SECONDS: "600"
           # short orders against full orders, split by runner (training/practice_arms.py): even runners keep the short
           # orders every taught member has now, odd ones are given the full orders. Only practice is split; the
-          # repository variable HIVE_SHORT_ORDERS_AB set to 0 turns it off
-          ORDERS_AB: ${{ vars.HIVE_SHORT_ORDERS_AB || '1' }}
+          # repository variable HIVE_SHORT_ORDERS_AB set to 1 turns it on (off by default: on t80 every member already has the short orders, so the A/B only tests whether the full orders hurt)
+          ORDERS_AB: ${{ vars.HIVE_SHORT_ORDERS_AB || '0' }}
         run: |
           case "$LEVEL" in mixed|edge|ladder) ;; *) echo "::error::practice_level is ladder, mixed or edge, not $LEVEL"; exit 1 ;; esac
           export HIVE_ORDERS_ARM="$(python3 training/practice_arms.py arm "${{ matrix.shard }}" "$ORDERS_AB")"

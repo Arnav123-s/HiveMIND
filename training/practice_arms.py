@@ -5,7 +5,7 @@ the short orders (team/solo.SHORT): practice and the gate both run on them now. 
 (team/solo.MEMBER) are what the small DNA's stream measured against (docs/RESEARCH.md section 8: short 16 of 18 on
 later rounds, full 6 of 18). So a generation's practice is split by runner: even runners keep the short orders
 (HIVE_SHORT_ORDERS=1, as now), odd runners are given the full ones (HIVE_FULL_ORDERS=1). The repository variable
-HIVE_SHORT_ORDERS_AB (on unless "0") switches the split off. Only practice is split: the gate, the dreams and the
+HIVE_SHORT_ORDERS_AB ("1" in the workflow, off by default) switches the split on. Only practice is split: the gate, the dreams and the
 answers at the exams are untouched, and every training row is written under the short orders whichever arm made it
 (training/grow.rows_of), the same orders the exam's members have.
 

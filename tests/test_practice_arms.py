@@ -29,7 +29,7 @@ def test_the_shell_of_the_practice_job_gives_each_runner_its_arm():
     import yaml
     wf = yaml.safe_load((ROOT / ".github" / "workflows" / "grow.yml").read_text())
     step = next(s for s in wf["jobs"]["practice"]["steps"] if s.get("name") == "Practice")
-    assert step["env"]["ORDERS_AB"] == "${{ vars.HIVE_SHORT_ORDERS_AB || '1' }}"
+    assert step["env"]["ORDERS_AB"] == "${{ vars.HIVE_SHORT_ORDERS_AB || '0' }}"  # off unless the repository variable is 1
     line = next(x for x in step["run"].splitlines() if "HIVE_ORDERS_ARM=" in x)
     for shard, ab, want in ((4, "1", "short"), (7, "1", "full"), (4, "0", "")):
         sh = line.replace("${{ matrix.shard }}", str(shard)) + '; printf %s "$HIVE_ORDERS_ARM"'
