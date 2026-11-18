@@ -2,7 +2,13 @@
 
     python training/talk_exam.py show --seed N              the messages of a sitting and what each must get right
     python training/talk_exam.py sit --seed N [--who t17|body] [--out FILE.json] [--only route,fact,...] [--port P]
+                                     [--minutes M] [--per S]
                                                             sit it: every message goes to team.talk.reply
+
+A sitting can be held to time (the grow line sits it every generation, and it must never slow or break the line):
+--minutes is the whole sitting's budget and --per the most seconds one message may take. With either, each message is
+sat in a process of its own, ended (its programs with it) at its cap or at the end of the budget; such a message, and
+every one the budget does not reach, counts as failed for "time", and the sitting ends cleanly with its json written.
 
 Four kinds, ten messages each, every one drawn from a template with new values (the same seed, the same exam). The
 messages sit on the edges where a weak talker slips, and each check names the near miss that is wrong:
@@ -457,34 +463,94 @@ def _plain(spec, text):
 
 
 # ---- a sitting ------------------------------------------------------------------------------------------------------
-def sit(seed, who="body", only=(), log=print, run_dir=None):
+class Broke(Exception):
+    """A message that raised in the process it was sat in: its error, as "Type: what it said"."""
+
+
+def _within(fn, seconds):
+    """fn()'s value; with `seconds`, fn runs in a forked process of its own group, ended with everything it started
+    (the programs the hive runs) when the time is up: TimeoutError then, Broke when it raised."""
+    if seconds is None:
+        return fn()
+    import multiprocessing
+    import signal
+    ctx = multiprocessing.get_context("fork")
+    rx, tx = ctx.Pipe(duplex=False)
+
+    def child():
+        os.setpgrp()
+        try:
+            tx.send(("ok", fn()))
+        except BaseException as e:  # noqa: BLE001 - whatever broke is told to the sitting
+            tx.send(("err", f"{type(e).__name__}: {e}"))
+    p = ctx.Process(target=child, daemon=True)
+    p.start()
+    tx.close()
+    got = None
+    try:
+        if rx.poll(max(0.0, seconds)):
+            got = rx.recv()
+    except (EOFError, OSError):
+        got = ("err", f"the message's process ended with code {p.exitcode}")
+    finally:
+        if got is None or p.is_alive():
+            for kill in (lambda: os.killpg(p.pid, signal.SIGKILL), p.kill):
+                try:
+                    kill()
+                except OSError:
+                    pass
+        p.join(10)
+        rx.close()
+    if got is None:
+        raise TimeoutError(f"over {seconds:.0f} s")
+    if got[0] == "err":
+        raise Broke(got[1])
+    return got[1]
+
+
+def sit(seed, who="body", only=(), log=print, run_dir=None, minutes=None, per=None):
     """Every message through team/talk.py: route items through talk.route (the decision reply makes, nothing
     answered), the rest through talk.reply with the conversation and the exam's date and time.
-    who: 'body' (the body on this machine) or a member name ('t17'). Returns the result (see score())."""
+    who: 'body' (the body on this machine) or a member name ('t17'). minutes: the whole sitting's budget; per: the
+    most seconds one message may take (see the top of this file). Returns the result (see score())."""
     from team import talk
     base = (None if who == "body" else who) or talk.speaker()
     if not base:
         raise RuntimeError("the hive's body is not on this machine")
     home = Path(run_dir or ROOT / "runs" / "talk_exam" / f"{seed}_{time.strftime('%Y%m%d-%H%M%S')}")
     rows, t00 = [], time.time()
+    end = t00 + 60 * float(minutes) if minutes is not None else None
     for it in make(seed):
         if only and it["kind"] not in only:
             continue
         t0 = time.time()
-        try:
+        caps = [c for c in (per, end - t0 if end is not None else None) if c is not None]
+        cap = min(caps) if caps else None
+
+        def one(it=it):
             if it["kind"] == "route":
-                way, text = talk.route(base, it["message"], it["history"])[0], ""
-            else:
-                out = talk.reply(it["message"], it["history"], run_dir=home / it["id"], base=base,
-                                 now=datetime.datetime.strptime(it["now"], "%Y-%m-%d %H:%M"))
-                way, text = ("work" if out["worked"] else "talk"), out["text"]
+                return talk.route(base, it["message"], it["history"])[0], ""
+            out = talk.reply(it["message"], it["history"], run_dir=home / it["id"], base=base,
+                             now=datetime.datetime.strptime(it["now"], "%Y-%m-%d %H:%M"))
+            return ("work" if out["worked"] else "talk"), out["text"]
+        try:
+            if cap is not None and cap <= 0:
+                raise TimeoutError("the sitting's time was up before this message")
+            way, text = _within(one, cap)
             ok, why = check(it["check"], text, way)
+        except TimeoutError as e:  # over its cap, or past the budget: failed for time, the sitting goes on (or ends)
+            way, text, ok, why = None, "", False, f"time: {e}"
+        except Broke as e:
+            way, text, ok, why = None, "", False, f"broke: {e}"
         except Exception as e:  # noqa: BLE001 - a message that broke is a message failed, the sitting goes on
             way, text, ok, why = None, "", False, f"broke: {type(e).__name__}: {e}"
         rows.append({"id": it["id"], "kind": it["kind"], "message": it["message"], "turns": len(it["history"]) // 2,
                      "now": it["now"], "route": way, "reply": text, "ok": bool(ok), "why": why, "seconds": round(time.time() - t0, 1)})
         log(f"{it['id']} {it['kind']:<7} {'RIGHT' if ok else 'wrong'} [{way}] {it['message'][:60]!r} -> {text[:80]!r} ({why})")
-    return score(seed, who, base, rows, round((time.time() - t00) / 60, 1))
+    res = score(seed, who, base, rows, round((time.time() - t00) / 60, 1))
+    if minutes is not None or per is not None:
+        res.update(budget_minutes=minutes, per_seconds=per)
+    return res
 
 
 def score(seed, who, base, rows, minutes=0.0):
@@ -492,7 +558,7 @@ def score(seed, who, base, rows, minutes=0.0):
     kinds = {k: [sum(r["ok"] for r in rows if r["kind"] == k), sum(r["kind"] == k for r in rows)] for k in KINDS}
     return {"seed": seed, "who": who, "member": base, "when": time.strftime("%Y-%m-%d %H:%M"), "minutes": minutes,
             "right": right, "of": len(rows), "score": right, "out_of_10": round(10 * right / len(rows), 1) if rows else 0.0,
-            "kinds": kinds, "items": rows}
+            "kinds": kinds, "timed_out": sum(str(r.get("why", "")).startswith("time") for r in rows), "items": rows}
 
 
 def main(argv):
@@ -512,12 +578,17 @@ def main(argv):
         only = tuple(k for k in (opt("--only", "") or "").split(",") if k)
         if opt("--who", "body") != "body":  # what goes to work is worked by the same model that talks
             os.environ.setdefault("HIVE_MEMBERS", opt("--who"))
-        res = sit(seed, opt("--who", "body"), only)
+        num = lambda k: float(opt(k)) if opt(k) is not None else None  # noqa: E731
         path = Path(opt("--out") or OUT / f"{seed}.json")
         path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            res = sit(seed, opt("--who", "body"), only, minutes=num("--minutes"), per=num("--per"))
+        except Exception as e:  # noqa: BLE001 - a sitting that could not start still says so in its json
+            res = {"seed": seed, "who": opt("--who", "body"), "when": time.strftime("%Y-%m-%d %H:%M"), "minutes": 0.0,
+                   "right": 0, "of": 0, "out_of_10": None, "kinds": {}, "error": f"{type(e).__name__}: {e}", "items": []}
         path.write_text(json.dumps(res, indent=1) + "\n")
-        print(json.dumps({k: res[k] for k in ("seed", "who", "right", "of", "out_of_10", "kinds", "minutes")}))
-        return 0
+        print(json.dumps({k: res[k] for k in ("seed", "who", "right", "of", "out_of_10", "kinds", "minutes", "timed_out", "error") if k in res}))
+        return 1 if res.get("error") else 0
     print(__doc__)
     return 1
 
