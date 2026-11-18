@@ -893,21 +893,10 @@ WEB = ("walk a site over several pages", "a fact found on the open web", "a fact
 
 
 def hard_kinds():
-    """The kinds of the hard exam (training/exam_hard.py MAKERS), read from its source: each maker returns (field,
-    kind, task, check) with the kind written out, and some makers reach the network before they return."""
-    import ast
-    src = ast.parse((ROOT / "training" / "exam_hard.py").read_text())
-    makers = next(n for n in src.body if isinstance(n, ast.Assign) and getattr(n.targets[0], "id", "") == "MAKERS")
-    names = {e.id for e in makers.value.elts}
-    out = set()
-    for fn in src.body:
-        if isinstance(fn, ast.FunctionDef) and fn.name in names:
-            for node in ast.walk(fn):
-                if isinstance(node, ast.Return) and isinstance(node.value, ast.Tuple) and len(node.value.elts) == 4:
-                    field, kind = node.value.elts[:2]
-                    if isinstance(field, ast.Constant) and isinstance(kind, ast.Constant) and str(field.value).startswith("hard"):
-                        out.add(kind.value)
-    return out
+    """The kinds of the hard exam (training/kinds/, the kinds with HARD), read from their sources: each maker returns
+    (field, kind, task, check) with the kind written out, and some makers reach the network before they return."""
+    from training import kinds
+    return {k for m in kinds.HARD_KINDS for k in kinds.written(m.KIND)}
 
 
 def new_hard(subjects):

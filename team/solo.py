@@ -571,9 +571,13 @@ def run(task, run_dir=None, approve="never", members=2):
         also = ()
         if os.environ.get("HIVE_ENGRAMS") == "1" and who != "coder":  # the body's fast memory: what it wrote down of tasks like this one
             from . import engram
-            also = tuple(engram.recall(task, ternary.split(who)[0], cell=ternary.split(who)[1]))  # its own line's first
+            base, cell = ternary.split(who)
+            if os.environ.get("HIVE_ENGRAM_GATE") == "1":  # each as strong as its task is like this one
+                also = tuple(engram.recall_scaled(task, base, cell=cell))
+            else:
+                also = tuple(engram.recall(task, base, cell=cell))  # its own line's first
             if also and n == 1:
-                board.log("hive", "engrams", ", ".join(also))
+                board.log("hive", "engrams", ", ".join(x if isinstance(x, str) else f"{x[0]} at {x[1]}" for x in also))
         t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who, also)
         t["work"] = str(work if n == 1 else home / f"member{n}")
         tries.append(t)

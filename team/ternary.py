@@ -286,10 +286,22 @@ def _on(at, base, cell):
     # What the server reports cannot be trusted for this: one just started says a cell is on (scale 1.0) that it has
     # not applied. So this process switches the first time it speaks, and afterwards whenever the cell changes.
     # Which cell answers: its edit on, every other off (the base itself: all off).
+    # Each engram at the strength it was recalled with (1.0 when none was given: as before scales were passed).
     edit, also = cell
-    _switch(at, [{"id": i, "scale": 1.0 if name == edit or name in also else 0.0} for name, i in have.items()])
+    gates = dict(_gated(also))
+    _switch(at, [{"id": i, "scale": 1.0 if name == edit else gates.get(name, 0.0)} for name, i in have.items()])
     _ON[at] = cell
     return True
+
+
+def _gated(also):
+    """The engrams to switch on beside a cell, each with its strength, in one order: ((name, scale), ...). An engram
+    may be named alone (full strength, 1.0) or as (name, scale) (team/engram.py recall_scaled)."""
+    out = {}
+    for x in also or ():
+        name, scale = (x, 1.0) if isinstance(x, str) else (str(x[0]), float(x[1]))
+        out[name] = max(scale, out.get(name, 0.0))
+    return tuple(sorted(out.items()))
 
 
 # How long one request may take. Measured on 4 cores (above) the 9B reads 76 pieces/s and writes 7/s; a runner
@@ -353,11 +365,12 @@ def _ask(member, at, cell, path, body, n):
 
 
 def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
-    """The member's reply to a conversation. When the conversation no longer fits its window, the oldest program and
+    """The member's reply to a conversation, with its cell on and the engrams in `also` beside it (names, at full
+    strength, or (name, scale) pairs). When the conversation no longer fits its window, the oldest program and
     what it printed go first; the orders and the task stay."""
     at, messages = up(member), list(messages)
     base, edit = split(member)
-    cell, fresh = (edit, tuple(sorted(also))), True
+    cell, fresh = (edit, _gated(also)), True
     for _ in range(8):
         try:
             if base == "bitnet":

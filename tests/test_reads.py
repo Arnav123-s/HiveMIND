@@ -84,7 +84,7 @@ def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaugh
     lessons = tmp_path / "lessons.json"
     lessons.write_text(json.dumps({"lessons": 120, "by_kind": {k: [lessons_right, 12] for k in TAUGHT}}) + "\n")
     out = tmp_path / "reads"
-    said = reads.write("g40", facts, gate, rows_file, lessons, record, out, tmp_path / "chain.svg")
+    said = reads.write("g40", facts, gate, rows_file, lessons, record, out, tmp_path / "chain.svg", tmp_path / "talk")
     text = (out / "g40.md").read_text()
     assert (out / "latest.md").read_text() == text
     return text, said
@@ -101,13 +101,32 @@ def test_the_read_has_every_section(tmp_path):
                   "![The chain by kind](../progress/chain.svg)"):
         assert words in text, words
     # one row a taught hard kind: lessons, rows, kept-back loss and its gap, the child and its parent alone, the body
-    assert len(TAUGHT) == 9
+    assert len(TAUGHT) >= 9  # K2 adds taught hard kinds
     for k in TAUGHT:
         assert f"| {k} | 12 of 12 | 0 of 18 (estimate) | 1.000 -> 0.500 | +40 | 1 of 1 | 0 of 1 | 0 of 1 | 0 of 1 |" in text, k
     assert f"mean fall of the kinds none of whose lessons were trained on ({UNTAUGHT}: 10 points)" in text
     assert text.count("next piece:") == 1 and said in text
     xml.dom.minidom.parseString((tmp_path / "chain.svg").read_text())
     assert "child alone right" in (tmp_path / "chain.svg").read_text()
+    assert "| Talk" not in text  # the generation did not sit the talk exam: no row
+
+
+def test_a_generation_that_sat_the_talk_exam_has_a_talk_row(tmp_path):
+    from training import talk_exam
+    rows = [{"kind": k, "ok": i < n} for k, n in zip(talk_exam.KINDS, (9, 7, 8, 6)) for i in range(10)]
+
+    def read(sittings):  # the read of g40 with these sittings in its talk folder
+        home = tmp_path / str(len(list(tmp_path.iterdir())))
+        (home / "talk").mkdir(parents=True)
+        for gen, res in sittings.items():
+            (home / "talk" / f"{gen}.json").write_text(json.dumps(res))
+        return build(home)[0]
+    this = talk_exam.score(812, "body", "t80", rows)
+    assert ("| Talk (the talk exam, out of 10; the bar is 8) | 7.5 of 10 (route 9 of 10, fact 7 of 10, earlier 8 of 10, time 6 of 10) "
+            "| not sat | - |") in read({"g40": this})
+    text = read({"g40": this, "g39": talk_exam.score(5, "body", "t80", rows[:20])})
+    assert "| 7.5 of 10 (route 9 of 10, fact 7 of 10, earlier 8 of 10, time 6 of 10) | 8.0 of 10 (route 9 of 10, fact 7 of 10) | - |" in text
+    assert "| Talk" not in read({"g40": {"seed": 1, "of": 0, "error": "no body"}})  # a sitting that never sat
 
 
 @pytest.mark.parametrize("kw, rule, piece", [

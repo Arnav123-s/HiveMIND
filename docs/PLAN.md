@@ -86,26 +86,29 @@ A piece is done when its proof on the board is shown with numbers, not when its 
 
 ## The board
 
+Brought up to date 2026-11-18 04:50 UTC. Any session may join (`CLAUDE.md`, "Working alongside other agents").
 `open`: anyone may claim it. A claim is a log line `claim <id>` in your own branch's `docs/AGENTS.md`, pushed before
-the work starts. `python scripts/agents_log.py --board` shows this board and who holds what, from every branch.
+the work starts; `done <id>` or `drop <id>` ends it. `python scripts/agents_log.py --board` shows this board and who
+holds what, from every branch; `python scripts/cycle.py` shows it beside the bars and the graphs.
 
 | Id | Piece | Files | Done when | Who |
 |---|---|---|---|---|
-| L1 | Generation 38 through: recorded, every dead seat re-sat, the hours of each job in the log | the workflow | the record's line for g38 and its hours are in the log | B |
-| L2 | A generation in 5 hours with no less work (where the hours go; how many children the GPU notebook takes) | `.github/workflows/grow.yml`, `training/colab.py` | one generation on `main` recorded in 5 hours | B |
-| L3 | The line runs five generations with nobody's hand | the workflow | five records in a row, no run started or mended by hand | B |
-| T1 | Passes go to the lessons not yet learned: a new hard subject is studied until its loss is under 0.3, web kinds first | `training/grow.py` (`Study`) | small DNA: every new hard subject under 0.3; the line: in 3 of 4 slices, easy subjects not above 0.1 | B |
-| T2 | Lessons kept back: 2 of every kind's lessons are never trained on, and their loss is measured before and after in every slice's record | `training/grow.py`, `scripts/read_generation.py` | the record shows it by kind; on the small DNA it falls for a kind that was taught and not for one that was not | B |
-| T3 | The lesson's key lines weigh more, or lesson rows come first in a member's study (only if the verdict asks) | `training/grow.py`, `training/lessons.py` | members write the lesson's way in a re-sit; the kind's tasks pass | C |
-| T4 | No hard lesson is lost to the length limit: the log lesson copies the log into its program (about 1300 pieces: 6 of 15 left out, all 15 on a runner that trains in 32 bits, where the limit is about 508); the hive's own module rows, 26 of 134 left out | `training/lessons.py`, `training/grow.py` | every hard kind's lessons fit 508 pieces and still pass their check; counted by kind before and after | C (in work) |
-| R1 | A right member is not lost: on hard kinds some member was right on 67 of 196 tasks, the body on 46 | `team/solo.py` | the 21 lost tasks by cause; the largest fixed; a re-sit on the same seeds gains | open |
-| R2 | The failed hard tasks of the newest generation by cause, the largest cause fixed | `team/solo.py`, `team/tools/sandbox.py`, `training/lessons.py` | every failed hard task has a cause in `docs/knowledge.json`; replay passes | C |
+| L3 | The line runs five generations with nobody's hand (g42, g43 so far) | the workflow | five records in a row, no run started or mended by hand | the loop holder (watch only) |
+| N1 | The read's next piece moves on: rule 6 still names K1, which is done | `training/reads.py`, `tests/test_reads.py` | the read of g44 names a piece that is open on this board | B |
+| E1 | Memory measured: none, notes, cell engrams, hive engram, all; taught and unseen kinds | `team/engram.py`, `training/hive_engram.py`, `team/notes.py`, `docs/RESEARCH.md` | a table in `docs/RESEARCH.md`; memory turned on only for an arm that gains | B (a sub-agent, running) |
+| G1 | The gate also compares with the best body: g41 58, g42 54, g43 52 of 64 were each kept within tolerance of their own 'before', so small losses pile up | `training/exam.py`, the workflow's gate and record | a body more than the tolerance below the best body on the same seeds is dropped; tested | open |
+| H1 | Held-out kinds: 0 of 6 at g43 (bar: half). Why the never-taught kinds fail, by cause from the members' programs | `team/solo.py`, `training/kinds/`, `docs/knowledge.json` | each failed held-out task of g44 has a cause; the largest is fixed and a re-sit gains | open |
+| F1 | Right at the first try: 0.53 at g43 (bar 0.7) | `team/solo.py`, `training/lessons.py` | the first-try failures of g44's practice by cause; the largest fixed; the next generation's first try rises | open |
+| S1 | Hours: 4.4 at g43 (bar 3). Practice 51, dream 51, train 176 minutes | `.github/workflows/grow.yml`, `training/grow.py` | one generation recorded under 3.5 hours with no fewer rows trained | open |
+| C1 | Eight taught kinds' rows are too long for the 32-bit runners (508 pieces): contacts, words, sentences, bank, lru, calc, machine, schedule | `colab/`, `training/colab.py`, `training/lessons.py` | every taught kind has rows that train somewhere; counted by kind | waits on the owner (the Colab notebook is not started) |
+| J1 | The join lessons are too long | `training/lessons.py` | join rows under 508 pieces and still right by their check | open |
+| W2 | Wikidata sometimes returns a web page, not data | `team/tools/`, `training/kinds/` | the fetch retries or fails clearly; counted over one pulse | open |
+| R1 | A right member is not lost: some member right, the body not | `team/solo.py` | the lost tasks of g44 by cause; the largest fixed; a re-sit on the same seeds gains | open |
 | R3 | How many failures are a public site's fault (refused, slow, changed) | `training/exam.py`, the sandbox | counted over three pulses; above 1 in 20, the test sites are served on the runner | open |
-| K1 | A kind in one file: maker, check, lesson and a sample without network, loaded by the exam and the lessons (so many agents can add kinds without meeting in one file) | `training/exam.py`, `training/exam_hard.py`, `training/lessons.py`, new `training/kinds/` | the same seeds give the same exams as before; tests pass; B agrees (B's files) | open |
-| K2 | New kinds, one family an agent (after K1): tables and data files; text work; larger programs with tests; sites and APIs; plans over given data; the owner's own asks | `training/kinds/` | each kind: 40 of 40 lessons right by its check, a test without network; the commander says which are held out | open, one claim a family (`K2a`, `K2b`...) |
-| M1 | A talk exam: 40 messages with checks (route, fact, the earlier turn, time), sat by the body every generation | `team/talk.py`, new `training/talk_exam.py`, `training/progress.py` | one sitting of the present body, its number in `docs/PROGRESS.md` | open |
 | M2 | The self-reliance row written by the record job, not by hand | `scripts/selfreliance.py`, the workflow | a row for the newest generation appears by itself | open |
-| M3 | The read of a generation written by the workflow after its record (`docs/reads/gNN.md`) | `scripts/read_generation.py`, the workflow | the file appears for one real generation | open |
-| W1 | Every agent's log and claims in one view | `scripts/agents_log.py` | it prints the real branches' lines; tests pass | done (C) |
+| T3 | The lesson's key lines weigh more (only if a verdict asks) | `training/grow.py`, `training/lessons.py` | members write the lesson's way in a re-sit; the kind's tasks pass | open, only on a verdict |
 
-A piece missing here: propose it in the log with what it would move in the table at the top.
+Done (do not redo): L1, L2, T1, T2, T4, K1, K2, M1, M3, W1; the memory pieces built (off); the CPU rule lab (PR 97);
+the read fixed (PR 93); one way of working (`CLAUDE.md`, `NEXT_SESSION.md`, `scripts/cycle.py`, PR 98).
+
+A piece missing here: propose it in the log with what it would move in the bars, then add its row.

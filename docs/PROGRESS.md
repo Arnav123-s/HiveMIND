@@ -4,7 +4,9 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g41 of the 8B body passed 58 of 64 exam tasks (91%). The best so far on this DNA: g41, 58 of 64 (91%).
+**Now:** generation g45 of the 8B body passed 45 of 64 exam tasks (70%). The best so far on this DNA: g41, 58 of 64 (91%).
+
+**Talk:** generation g45 sat the talk exam (seed 30000045): 6.5 of 10 (26 of 40 messages right: route 5 of 10, fact 7 of 10, earlier 8 of 10, time 6 of 10). The bar: 8 of 10.
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -24,19 +26,19 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Its read, with the next piece: [reads/latest.md](reads/latest.md).
 
-Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost.
+Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost.
 
 ## Where it practises most next
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
-- scrape a page to a file
+- a table cut to one row a key, the latest kept
+- the blanks of a table filled by a rule
 - a module of two functions, with hidden tests
-- walk a site over several pages
-- operate a website
-- a fact read and a date sum on it
-- several facts fetched and laid out as a file
+- a long table turned wide
+- a table grouped, each group's total and mean saved
+- the regions of a grid, with hidden tests
 
 ## How hard its lessons are now
 
-Each record raises a kind's level when the body passes it 7 times in 10, and lowers it at 3 in 20: compound 2, h_join 0, h_log 0, h_search 0, m_percent 0, m_table 1.
+Each record raises a kind's level when the body passes it 7 times in 10, and lowers it at 3 in 20: compound 2, h_join 1, h_log 0, h_search 0, m_percent 1, m_table 1.

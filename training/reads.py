@@ -21,7 +21,6 @@ holds for the most taught hard kinds. It also draws the chain as bars by kind (d
 The parsing here is shared with scripts/read_generation.py (the reader run by hand). Needs nothing but Python, and
 runs nothing the hive wrote: names are taken from other jobs only when this repository knows them.
 """
-import ast
 import collections
 import json
 import os
@@ -34,8 +33,11 @@ from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:  # run as `python3 training/reads.py`: the kinds (training/kinds/) are found from the folder above
+    sys.path.insert(0, str(ROOT))
 REPO = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
+TALK = ROOT / "training" / "reports" / "talk"  # <generation>.json: the body's sitting of the talk exam (training/talk_exam.py)
 STAGES = ("practice", "dream", "gather", "plan", "train", "join", "merge", "gate", "record")
 LEARNED = 0.3
 GAP = 15  # points: a taught kind's kept-back loss must fall this much more than the untaught kinds' (DECISIONS step 4)
@@ -44,40 +46,23 @@ KIND = r"[\w ,.:'()-]{1,80}"
 
 # ---- the kinds, read from the sources (no network) -------------------------------------------------------------------
 def maker_kinds():
-    """{maker: kind} of every hard maker of training/exam_hard.py: each returns (field, kind, task, check)."""
-    src = ast.parse((ROOT / "training" / "exam_hard.py").read_text())
-    out = {}
-    for fn in src.body:
-        if isinstance(fn, ast.FunctionDef) and fn.name.startswith("h_"):
-            for node in ast.walk(fn):
-                if isinstance(node, ast.Return) and isinstance(node.value, ast.Tuple) and len(node.value.elts) == 4:
-                    field, kind = node.value.elts[:2]
-                    if isinstance(field, ast.Constant) and isinstance(kind, ast.Constant) and str(field.value).startswith("hard"):
-                        out.setdefault(fn.name, kind.value)
-    return out
-
-
-def _assigned(path, name):
-    for n in ast.parse(Path(path).read_text()).body:
-        if isinstance(n, ast.Assign) and getattr(n.targets[0], "id", "") == name:
-            return n.value
-    return None
+    """{maker: kind} of every hard maker (training/kinds/, the kinds with HARD): each returns (field, kind, task,
+    check), its kind read from its source."""
+    from training import kinds
+    return {m.KIND: w[0] for m in kinds.HARD_KINDS if (w := kinds.written(m.KIND))}
 
 
 def taught_hard():
-    """{maker: kind} of the hard kinds that have lessons: training/lessons.SOLVERS less training/exam_hard.HELD_OUT."""
-    solvers = _assigned(ROOT / "training" / "lessons.py", "SOLVERS")
-    held = _assigned(ROOT / "training" / "exam_hard.py", "HELD_OUT")
-    names = {k.value for k in solvers.keys} if isinstance(solvers, ast.Dict) else set()
-    out_ = {e.value for e in held.elts} if isinstance(held, ast.Set) else set()
-    kinds = maker_kinds()
-    return {m: kinds[m] for m in sorted(names) if m in kinds and m not in out_}
+    """{maker: kind} of the hard kinds that have lessons: training/lessons.SOLVERS less the held-out kinds."""
+    from training import kinds
+    by = maker_kinds()
+    return {m: by[m] for m in sorted(kinds.SOLVERS) if m in by and m not in kinds.HELD_OUT}
 
 
 def held_out():
-    held = _assigned(ROOT / "training" / "exam_hard.py", "HELD_OUT")
-    kinds = maker_kinds()
-    return {kinds[e.value] for e in held.elts if e.value in kinds} if isinstance(held, ast.Set) else set()
+    from training import kinds
+    by = maker_kinds()
+    return {by[m] for m in kinds.HELD_OUT if m in by}
 
 
 # ---- the pulse (shared with scripts/read_generation.py) --------------------------------------------------------------
@@ -692,8 +677,26 @@ def _pq(c):
     return f"{c[0]} of {c[1]}" if c and c[1] else "-"
 
 
-def top_table(line, prev, f, lines, idx):
-    """The rows of docs/PLAN.md's top table: (what, this generation, the last record, the body before)."""
+def talk_of(gen, folder=None):
+    """The generation's talk exam (training/reports/talk/<gen>.json), or None when it did not sit one."""
+    try:
+        d = json.loads((Path(folder or TALK) / f"{gen}.json").read_text())
+    except (OSError, ValueError):
+        return None
+    return d if isinstance(d, dict) and d.get("of") else None
+
+
+def _talk(t):
+    """A sitting of the talk exam in the table: out of 10, and by kind."""
+    if not t:
+        return "not sat"
+    by = ", ".join(f"{k} {p} of {n}" for k, (p, n) in (t.get("kinds") or {}).items() if n)
+    return f"{t.get('out_of_10')} of 10" + (f" ({by})" if by else "")
+
+
+def top_table(line, prev, f, lines, idx, talk=(None, None)):
+    """The rows of docs/PLAN.md's top table: (what, this generation, the last record, the body before).
+    talk: the talk exam's sittings of this generation and the last record, when they sat it (a Talk row then)."""
     a = (line.get("arms") or {}).get("after", {})
     b = (line.get("arms") or {}).get("before", {})
     pa = (prev or {}).get("arms", {}).get("after", {})
@@ -719,7 +722,7 @@ def top_table(line, prev, f, lines, idx):
         ("Hours for one generation", f"{hours:.1f}" if isinstance(hours, (int, float)) else "not measured",
          f"{prev['hours']:.1f}" if prev and isinstance(prev.get("hours"), (int, float)) else "-", "-"),
         ("Generations recorded with nobody's hand", str(unattended(lines, idx)), str(unattended(lines, pi)) if pi >= 0 else "-", "-"),
-    ]
+    ] + ([("Talk (the talk exam, out of 10; the bar is 8)", _talk(talk[0]), _talk(talk[1]) if prev else "-", "-")] if talk[0] else [])
 
 
 def _left(r):
@@ -731,7 +734,7 @@ def _left(r):
     return _pq(r["left"]) + (f" ({r['left_memory']} skipped for memory)" if r.get("left_memory") else "")
 
 
-def render(line, prev, f, rows, notes, piece, lines, idx):
+def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None)):
     gen = line.get("generation", "?")
     rule, what, kinds, counts = piece
     run = f.get("run", "")
@@ -743,7 +746,7 @@ def render(line, prev, f, rows, notes, piece, lines, idx):
            "## The numbers", "",
            f"| What is measured | {gen} | {prev.get('generation', '-') if prev else '-'} (last record) | the body before (same seeds) |",
            "|---|---|---|---|"]
-    out += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in top_table(line, prev, f, lines, idx)]
+    out += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in top_table(line, prev, f, lines, idx, talk)]
     out += ["", "## The chain, by taught hard kind", "",
             "lessons right by their own check -> rows that fit in training -> loss falls on lessons kept back -> the child "
             "alone writes it at the exam -> the body (two agree) passes it.", "",
@@ -833,8 +836,9 @@ def chain_svg(rows, gen, w=760):
             + style + f'<rect class="bg" width="{w}" height="{h}" rx="8"/>' + "".join(b) + "</svg>\n")
 
 
-def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, svg=None):
-    """Writes docs/reads/GEN.md and latest.md (and the chain's bars); returns the next piece's line."""
+def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, svg=None, talk_dir=None):
+    """Writes docs/reads/GEN.md and latest.md (and the chain's bars); returns the next piece's line. talk_dir: where
+    the talk exam's sittings are (training/reports/talk): a generation that sat it has a Talk row."""
     lines = lines_of(record)
     idx = max((i for i, d in enumerate(lines) if d.get("generation") == gen), default=-1)
     line = lines[idx] if idx >= 0 else {"generation": gen}
@@ -853,7 +857,8 @@ def write(gen, facts_, gate, rows_file, lessons=None, record=RECORD, out=None, s
             summary = None
     table, notes = chain(line, facts_, seats, rows, summary)
     piece = next_piece(table, line, prev)
-    text = render(line, prev, facts_, table, notes, piece, lines, idx)
+    talk = (talk_of(gen, talk_dir), talk_of(prev.get("generation"), talk_dir) if prev else None)
+    text = render(line, prev, facts_, table, notes, piece, lines, idx, talk)
     out = Path(out or ROOT / "docs" / "reads")
     out.mkdir(parents=True, exist_ok=True)
     (out / f"{gen}.md").write_text(text)

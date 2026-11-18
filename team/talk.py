@@ -24,6 +24,7 @@ already, and the cells are grown for the work. (The first form let the talker ha
 after the word WORK. On the first real conversation it wrote its own answer there, and the body spent five minutes
 "working on" a sentence. The decision is one word now, and the task is always the user's own message.)
 """
+import datetime
 import json
 import os
 import re
@@ -33,7 +34,7 @@ from pathlib import Path
 
 from . import config, ternary
 
-TALK = """You are HiveMIND: a hive of small neural nets with ternary weights that work as one body, on plain CPUs. You are talking with {name}. Today is {today}.
+TALK = """You are HiveMIND: a hive of small neural nets with ternary weights that work as one body, on plain CPUs. You are talking with {name}. Now it is {today}.
 Answer directly and in plain words, as briefly as the message allows. Be honest: if you do not know, say so. Do not make up facts, figures, links or sources."""
 DECIDE = """Decide how a message has to be answered. Reply with one word, TALK or WORK.
 TALK: greetings and talk, an explanation, advice, an opinion, something to write (a letter, a poem, a summary of a text that is given), a translation, and facts that do not change (a capital city, a definition, how something works).
@@ -99,23 +100,33 @@ def _numbers(text, task=""):
     return {round(x, 2) for x in solo.key(text, task)}
 
 
-def reply(message, history=(), name="the user", run_dir=None, log=None):
+def route(base, message, history=()):
+    """How reply() takes a message: ('talk' or 'work', the conversation as the talker is shown it)."""
+    convo = _shown(list(history) + [{"role": "user", "content": message}])
+    last = next((m["content"] for m in reversed(convo[:-1]) if m["role"] == "assistant"), "")
+    return decide(base, message, last), convo
+
+
+def reply(message, history=(), name="the user", run_dir=None, log=None, base=None, now=None):
     """The hive's reply to the latest message: {"text", "worked", "agreed", "task", "dir", "seconds"}.
-    history: the earlier messages, oldest first ({"role", "content"})."""
+    history: the earlier messages, oldest first ({"role", "content"}). base: who talks (default: the body's DNA).
+    now: the date and time the hive is told it is (default: the clock; the talk exam gives its own)."""
     t0 = time.time()
-    base = speaker()
+    base = base or speaker()
     if not base:
         raise RuntimeError("the hive's body is not on this machine: bash scripts/cloud_setup.sh (or python -m team.ternary install, then python training/grow.py fetch)")
     say = log or (lambda *a: None)
-    system = {"role": "system", "content": TALK.format(name=name, today=time.strftime("%Y-%m-%d (%A)"))}
-    convo = _shown(list(history) + [{"role": "user", "content": message}])
-    last = next((m["content"] for m in reversed(convo[:-1]) if m["role"] == "assistant"), "")
-    if decide(base, message, last) == "talk":
+    today = (now or datetime.datetime.now()).strftime("%Y-%m-%d (%A), %H:%M")
+    system = {"role": "system", "content": TALK.format(name=name, today=today)}
+    way, convo = route(base, message, history)
+    if way == "talk":
         text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
         return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "seconds": round(time.time() - t0)}
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
+    if now:  # a time given from outside is not the machine's clock: the programs are told it
+        task += f"\n\n(It is now {today}.)"
     say(f"the hive works on it: {task[:300]}")
     from . import solo
     home = Path(run_dir or config.RUNS / time.strftime("talk-%Y%m%d-%H%M%S"))

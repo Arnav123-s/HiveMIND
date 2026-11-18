@@ -35,7 +35,11 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `requirements.txt` | Python packages | none named | train, join, merge jobs; `setup.sh` |
 | `setup.sh` | Install on your own device (Linux, macOS) | none named | people |
 | `hive` | Launcher: `./hive` runs `team/cli.py` | none named | people |
-| `NEXT_SESSION.md` | Handoff of 2026-11-16 (agent C); superseded by `docs/HANDOFF_B.md` and `docs/PLAN.md` | C | read once for history |
+| `CLAUDE.md` | How every session works here: the goal's bars, the role, the cycle, the rules (loaded first by every session) | the loop holder | everyone |
+| `NEXT_SESSION.md` | The one current handoff: what runs now, what is open, what is done and must not be redone | the loop holder | the loop holder |
+| `docs/OVERVIEW.md` | Everything in one page: the idea, how a generation works, how the work is done, the path from day one, what went well and what did not | the loop holder | the owner, a new session |
+| `docs/START_PROMPT.md` | The prompts to start a session: the loop holder, or a worker beside the others | the loop holder | the owner |
+| `scripts/cycle.py` | Start of every cycle: the bars, the last generations as a table and text graph, stale graphs, next piece, who holds the loop | the loop holder | everyone |
 | `FOR_MUSE.md` | Advice page of 2026-11-13 for another project. **Old** | none named | nobody |
 | `adapters/` | Weight edits of the older roles (browser, coder, writer...). **Old** | none named | `team/` roles, ask.yml |
 | `adapters_gguf/` | The same edits as llama.cpp files. **Old** | none named | `team/` roles |
@@ -48,7 +52,7 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 |---|---|---|---|
 | `docs/PLAN.md` | The plan, the numbers, the verdict table, the board of pieces | C | C; others ask in the log |
 | `docs/AGENTS.md` | Who does what, how to join, rules, and the log (newest last) | everyone (log lines) | agents |
-| `docs/HANDOFF_B.md` | B's handoff: where the hive stands, what is next | B | B |
+| `docs/history/` | Old handoffs (`NEXT_SESSION_*.md`, `HANDOFF_B_*.md`): history only | - | read once |
 | `docs/MAP.md` | This page | none named | agents |
 | `docs/KNOWLEDGE.md` | What is known, drawn from `docs/knowledge.json` | everyone | `scripts/knowledge.py` |
 | `docs/knowledge.json` | Every finding and cause, as data | everyone | agents by hand |
