@@ -349,7 +349,11 @@ def hints_in(*texts):
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
-    messages = [{"role": "system", "content": orders(who + "+" if also else who)},  # engrams were written under the short orders too
+    # engrams were written under the short orders too, so a member with any engram on gets them. HIVE_SHORT_ORDERS=1
+    # gives them with no engram: the control that tells an engram's effect from the short orders' own
+    # (training/experiments/memory_stream.py, arm "short")
+    short = also or os.environ.get("HIVE_SHORT_ORDERS", "0") == "1"
+    messages = [{"role": "system", "content": orders(who + "+" if short else who)},
                 {"role": "user", "content": f"TASK: {task}"}]
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and

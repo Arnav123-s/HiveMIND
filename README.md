@@ -1,55 +1,65 @@
 # HiveMIND
 
-A hive of BitNet cells that works and learns as one body, on plain CPUs. You talk to it or give it a task: what
-it knows it answers at once, and what has to be worked out its cells do by writing and running programs, where an
-answer counts only when two of them agree. It grows by itself, without stopping: it practises on fresh tasks,
-learns from the ones a check confirms and from its own mistakes, and multiplies. No GPU, no API keys, nothing to
-pay for.
+A hive of small ternary models (every weight is -1, 0 or +1) that does what it is asked (questions, talk, tasks)
+and improves itself, generation after generation, on free GitHub runners, with nobody's hand. No GPU, no API keys,
+nothing to pay for.
 
-**How it is doing:** [docs/PROGRESS.md](docs/PROGRESS.md) draws the exam score of every generation, what carries over to work it never practised, and every kind of task weakest first. The hive redraws it itself at the end of each generation, and practises most where it shows the body weakest. What is known about the hive, as graphs of its loop, the maintainers' loop and every cause found and still open: [docs/KNOWLEDGE.md](docs/KNOWLEDGE.md).
+- **The DNA** is t80, `prism-ml/Ternary-Bonsai-8B`, run on ordinary CPUs (`team/ternary.py`).
+- **A cell** is a small LoRA edit on the DNA (sources, code, data, words). **The trunk** is the average of the
+  cells. **The body** is the trunk and cells that answer together: they write and run programs, and an answer
+  counts when two of them agree and a check confirms it. The current body is in `cells/body.json`.
 
-## Use it
+## The goal: five bars on one generation
 
-- **Talk to it from anywhere:** open an issue in this repository and write what you want to say or have done.
-  The hive replies as a comment, usually within ten minutes; answer in a comment and the conversation goes on
-  (workflow "Talk to the hive"; only the repository's owner is answered; everything here is public).
-- **One task from the Actions tab:** "Ask the hive", Run workflow, type the task.
-- **On your own device:** `bash scripts/cloud_setup.sh`, then `./hive` to talk, or `python -m team "your task"`.
+| Bar | Target | g45 (2026-11-18) |
+|---|---|---|
+| Taught hard kinds the body passes | 18 of 23, read as a share: 0.78 | 0.75 |
+| Held-out kinds (never taught) passed | half | 0 of 9 |
+| Right at the first try | 0.7 | 0.35 |
+| Talk exam | 8 of 10 | 6.5 |
+| Hours for one generation | 3 | 5.6 |
 
-## The hive as one body (where it stands, 2026-11-15)
+## How a generation runs (`.github/workflows/grow.yml`)
 
-The hive is **one body: one ternary model (its DNA) and many cells of the same size**, each the DNA with a small
-weight edit of its own. Every weight of the DNA is -1, 0 or +1 (the kind of net BitNet b1.58 named); it is in
-memory once, and a cell is a file of a few megabytes switched on for its turn.
+practice + dream → gather lessons and plan → train children (up to 20 slices, in parallel) → join → merge with the
+trunk → **paired gate** → record.
 
-- **The DNA** is `prism-ml/Ternary-Bonsai-8B` (2.2 GB packed, Apache-2.0), served by a llama.cpp with ternary
-  kernels (`team/ternary.py`). On 4 cores it writes about 7 pieces a second in 3 GB.
-- **Cells lean to organs**: sources, code, data, words. Each cell is trained on all of the hive's checked work
-  and on its own organ's three times as often, so any two can check each other and each is strongest somewhere.
-- **The trunk makes it one** (`training/merge.py`): each generation the newest cell of every line of descent is
-  averaged into one edit, which answers every task first; a cell gives the second opinion. Every child starts as
-  its parent pulled halfway toward the trunk, so the lines explore apart and stay one body.
-- **It teaches itself, without stopping** (`training/grow.py`, workflow "The hive teaches its own members"): the
-  trunk and the cells practise on fresh tasks, half of them several tasks in one, as hard as the body can just
-  manage (the levels move with what it passes); they go back to tasks they got wrong; a task counts only when two
-  members agreed and the task's own check, computed by code, confirms it. Every grown cell then has a child, which
-  learns this generation's checked work and its own parent's mistakes with their corrections. The children join
-  the body, which grows like Fibonacci's rabbits (`training/lineage.py`). Nothing decides whether a generation is
-  kept; one exam of the grown body is taken as its pulse, to trace problems back from. To stop the line, set the
-  repository variable `HIVE_LOOP` to `stop` or disable the workflow.
-- **It talks** (`team/talk.py`): one word from the DNA decides whether a message can be answered as it stands or
-  has to be worked out. Talk is answered at once; work goes to the body's programs and comes back in plain words,
-  with the checked values as the programs printed them.
-- **Measured.** On the 1.7B DNA (2026-11-14, four fresh exams, 64 tasks): the DNA alone 9, a body of four cells
-  26; on four more exams 29 against 14. On the 8B DNA (2026-11-15): alone it got 38 of 96 practice tasks right;
-  its first three cells, barely trained because their runners ran out of memory, passed 11 of 32 exam tasks, 1 of
-  5 on kinds never practised. Training an 8B cell now holds 8 GB and takes 4 to 9 seconds a row (it took 30 to
-  160 on those runners); the first generation trained that way is running.
-- **Tried and not (yet) better**: engrams (one checked task kept as one tiny edit, `team/engram.py`); reading raw
-  web text while training (`training/raw.py`). Both are built and switched off.
-- **Not done**: a ternary architecture of the hive's own trained from nothing (every attempt on a CPU here stayed
-  weak; the DNA is a published model); work on websites is its weakest kind; nothing shows yet that what it learns
-  carries over to kinds of task it never practised.
+- The gate sits the body before and after on the same 8 seeds, plus the talk exam. The record keeps or drops the
+  new body by itself.
+- The record writes the read (`docs/reads/gNN.md`, `docs/reads/latest.md`), redraws the graphs and starts the next
+  generation. g42 to g45 ran this way with nobody's hand.
+- To stop the line, set the repository variable `HIVE_LOOP` to `stop` or disable the workflow.
+
+## Where to look
+
+- [docs/OVERVIEW.md](docs/OVERVIEW.md): the whole story in one page.
+- [docs/PROGRESS.md](docs/PROGRESS.md): the graphs of every generation.
+- [docs/reads/latest.md](docs/reads/latest.md): the read of the newest generation and its next piece.
+- [CLAUDE.md](CLAUDE.md): how every working session runs; `docs/PLAN.md` holds the board of pieces.
+- [docs/START_PROMPT.md](docs/START_PROMPT.md): the prompts to start a session.
+
+## Talk to the body
+
+Workflow "Talk to the hive" (`.github/workflows/talk.yml`, answered by `team/talk.py`):
+
+- **From an issue:** open an issue in this repository and write your message. Only the repository's owner is
+  answered, and a title that begins with `[dev]` is left alone. The reply comes as a comment, usually within ten
+  minutes; answer in a comment and the conversation goes on.
+- **From the Actions tab:** "Talk to the hive", Run workflow, type a message. The reply is on the run's Summary.
+- It seats the body from `cells/body.json` (its trunk and the newest cell of each organ). Small talk is answered
+  by the DNA at once; anything to work out goes to the body's programs.
+- Everything here is public. Do not write anything private.
+
+"Ask the hive" (`.github/workflows/ask.yml`) also seats the current body, for one task from the Actions tab.
+
+## Old, not wired to the current body
+
+Kept from the first days; nothing in the line uses them. Not deleted.
+
+- `team/web.py`, `team/serve.py`, `team/api.py`, `team/chat.py`, and `./hive` (`team/cli.py`): the old team of
+  roles, on 4-bit models.
+- `.github/workflows/hive.yml`: the older line of bodies grown from nothing; by hand only.
+- `.github/workflows/exam.yml`: the daily exam of the old team; by hand only. The body sits its own exam in the gate.
 
 Everything below describes the older hive of roles (models at 4 bits, not ternary), which is still in the
 repository and takes a task when `HIVE_ROLES=1` and the cells confirm nothing.

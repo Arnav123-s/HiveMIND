@@ -3,6 +3,39 @@
 Newest first. The orchestrator (O) plans and gives orders; B does the work and merges it. A later session of O
 reads this page and B's newest report, and nothing else, before it answers.
 
+## Status on 2026-11-18
+
+What became of decision 1 (below), item by item. Done, dropped or open, with where it shows.
+
+| Item | Status | Evidence |
+|---|---|---|
+| g39 starts; the line decides for itself | done | g39 run 44024307514 kept by the paired gate (log in `docs/AGENTS.md`, 2026-11-17 11:05) |
+| Step 1: the line selects by itself | done | `decide` in `training/grow_record.py`; every record from g39 says kept or dropped with both arms |
+| Step 2: the read written by the record job | done | `docs/reads/g44.md`, `docs/reads/g45.md` say "Written by the record job"; fix in PR 93 |
+| Step 3: lessons right, 10 of 12 by kind | partly | gather prints right of made by kind (`training/lessons.py`); at g45 every kind with lessons made is 12 of 12 or 13 of 13, but many kinds show "none made" |
+| Step 4: learning shown on lessons kept back | partly | g45's chain: gap +43 to +122 points on 11 of 16 taught kinds; under 15 on the five fact and site kinds |
+| Step 5: hard with lessons 12 of 23, two running | done | g41 26 of 32, g42 23 of 32 hard (`training/reports/generations.jsonl`) |
+| Step 6: five generations with nobody's hand, 5 hours | open | 4 so far (g42 to g45); g45 took 5.6 hours |
+| Step 7: held out 3 of 9 | open | 0 of 9 at g45 |
+| Step 8: wider, and talk | partly | 53 kinds (K1, K2); the talk exam is in the gate, 6.5 of 10 at g45 |
+| Step 9: the final build | open | see `CLAUDE.md` and `scripts/cycle.py` |
+| Stop rule "easy under 28" | done (dropped) | replaced by the paired gate |
+| Rabbit bush against one line, one trial | open, never ran | no trial run or record names it; `training/lineage.py` still grows the bush |
+| Raw reading and judged pairs off (HIVE_READ 40, HIVE_JUDGED 10) | open, still on | `.github/workflows/grow.yml`: `vars.HIVE_READ \|\| '40'`, `vars.HIVE_JUDGED \|\| '10'` |
+| 32-bit slices weighed by steps in the join | open, not done | `training/merge.py` `join` calls `merge(..., None, rank)`: equal weights |
+| Reads, rows and hours by hand folded into the record | done | the record job writes the read, the hours and the first try (`generations.jsonl`) |
+| Fewer long pages to read | done | `CLAUDE.md`, `NEXT_SESSION.md`, `scripts/cycle.py` (PR 98) |
+| Remove the old team, `hive.yml`, `exam.yml` | open | the files are still there; `README.md` marks them old |
+| Colab "kept as a bonus, never needed" | contradicted | the notebook never trained a child (log 2026-11-17 19:00), yet the train job still waits for it (`HIVE_COLAB_WAIT`) and C1 waited on the owner. C1 now trains without it |
+| One agent, no claims | dropped | claims and the board are back (`CLAUDE.md`, "Working alongside other agents") |
+| Order 1b: the paired gate; 1c: lessons by kind | done | `training/grow_record.py`, `training/lessons.py` |
+| Order 1a: g38's 7 easy failures, site or harm | done | log 2026-11-17 05:07: 0 of 7 the site's fault |
+| Order 2: the read by the workflow | done | `training/reads.py`, `docs/reads/` |
+| The standing loop, and B calling O | replaced | the cycle in `CLAUDE.md`; the loop holder judges and merges |
+| What was asked of the owner (Run the Colab notebook) | never happened | log 2026-11-17 19:00 |
+
+---
+
 ---
 
 ## 2026-11-17, decision 1: g39 starts; the line decides for itself from now on
