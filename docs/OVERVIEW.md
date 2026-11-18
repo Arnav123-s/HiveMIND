@@ -17,13 +17,13 @@ nobody's hand**.
 
 **The final build** is all five bars met on one generation:
 
-| Bar | Target | Now (g43) |
+| Bar | Target | Now (g45) |
 |---|---|---|
-| Hard kinds that have lessons | 18 of 23 (0.78) | 20 of 26 (0.77), nearly |
-| Held-out kinds (never taught) | half | 0 of 6 |
-| Right at the first try | 0.7 | 0.53 |
-| Talk exam | 8 of 10 | first sitting in g44 |
-| Hours for one generation | 3 | 4.4 |
+| Hard kinds that have lessons | 18 of 23, read as a share: 0.78 | 12 of 16 (0.75); the hard set changed at g44 (K2), so this is not comparable with g43 and earlier |
+| Held-out kinds (never taught) | half | 0 of 9 |
+| Right at the first try | 0.7 | 0.35 |
+| Talk exam | 8 of 10 | 6.5 of 10 (first sat at g45) |
+| Hours for one generation | 3 | 5.6 |
 
 ## How one generation works (`.github/workflows/grow.yml`)
 
@@ -36,7 +36,7 @@ trunk → **paired gate** → record.
 - **Record.** Keep or drop the new body, write `docs/reads/gNN.md`, redraw the graphs in `docs/PROGRESS.md`, and
   **start the next generation**.
 
-**Lessons.** Each kind of task is one file in `training/kinds/`: 53 kinds, 6 of them held out. Each kind has a
+**Lessons.** Each kind of task is one file in `training/kinds/`: 53 kinds, 10 of them held out (`training/kinds`, `HELD_OUT`). Each kind has a
 maker, a check and a lesson that is right by that check. A hard kind is studied until its loss is low. Two lessons
 of each kind are kept back to measure whether it was really learned.
 
@@ -74,22 +74,26 @@ of each kind are kept back to measure whether it was really learned.
 | 11-16 | Each child was trained on three runners at once. Several agents (A, B, C) worked in parallel. **The key finding:** each kind was passed always or never, because cells were only taught what they already passed. |
 | 11-17 | The lessons were rebuilt: hard kinds studied until learned, lessons kept back, rows that fit the length limit, a memory guard. The paired gate and the reads written by the record job were added. **g39: 38/64 → g41: 58/64, the best so far.** g42 kept (54 = 54). The memory pieces were built, all off. |
 | 11-18 | **g43 kept and g44 started by itself, two generations with nobody's hand.** Each kind is now one file, and 24 new hard kinds were added (K1, K2). The talk exam is in the gate (M1). The owner's CPU rule lab was merged: a child trained on 7 rows of a checked procedure solved 4/4 puzzles that its parents solved 0/4. One way of working for all sessions. |
+| 11-18 | **g44 kept** (43 against 40 of 64), the first with the 24 new hard kinds, so its hard score is not comparable with earlier ones; first try fell to 0.36. **g45 kept** (45 against 47): the gate kept a body below its own before. Talk first sat: 6.5 of 10. Four generations recorded with nobody's hand (g42 to g45). |
 
-In all: 529 commits, 99 pull requests, 17 recorded generations.
+In all (at g43): 529 commits, 99 pull requests; 19 generations recorded by g45.
 
 ## Running now
 
-- **g44** (the first with the new kinds and the talk exam). Its record is due about 07:20 UTC.
-- **The memory test** on t17, with 4 of 5 arms done. On kinds already seen, right on later rounds:
+- **g47** is running. g45 is the newest record.
+- **The memory test** on t17 is done, all five arms, one seed. Right on later rounds:
 
-  | Arm | Right on later rounds | Unseen kinds |
+  | Arm | Seen kinds | Unseen kinds |
   |---|---|---|
-  | off | 6/18 | 0/4 |
-  | notes | 7/18 | 1/4 |
-  | cell engrams | 11/18 | |
-  | hive engram | **16/18** | 1/4 |
+  | off | 6/18 | 0 or 1 of 4 |
+  | notes | 7/18 | 0 or 1 of 4 |
+  | cell engrams | 11/18 | 0 or 1 of 4 |
+  | hive engram | **16/18** | 0 or 1 of 4 |
+  | all | 11/18 | 0 or 1 of 4 |
 
-  No arm copied answers. If this holds, the hive engram is the first memory piece to turn on.
+  No arm copied answers (copying 0). The hive engram helps on kinds already seen; no arm helps on unseen kinds.
+  It is one seed on the small DNA, so it still has to be shown on t80. The engrams were never switched on in a real
+  generation.
 
 ## What went well, and was enough
 
@@ -120,12 +124,20 @@ In all: 529 commits, 99 pull requests, 17 recorded generations.
    into the gate.
 8. **Usage limits stopped sub-agents** mid-task (the memory test stalled for a time). Results should be committed
    step by step, not only at the end.
+9. **The gate kept bodies worse than their before.** g43 was kept at 52 against 54, g45 at 45 against 47. This is
+   being fixed (G1).
+10. **Nothing aimed at held-out kinds.** They stayed at 0 (H1, X1 are open).
+11. **Most lessons are still written by hand-made lesson makers**, not learned from the hive's own work.
+12. **No person has talked to the body since 11-15** (T5 is open).
+13. **The engrams were never switched on in a real generation.**
+14. **The bookkeeping CSVs stopped on 11-15/16** (`docs/*.csv`).
+15. **`docs/DECISIONS.md` was left unfinished**; its status is now at its top.
 
-## Next, in order
+## Next, in order (the ids are on the board in `docs/PLAN.md`)
 
-1. Read g44: the new kinds, the first talk score, held out.
-2. Turn on the hive engram if the last arm confirms it, then test it on t80.
-3. Compare the gate with the best body, so the drift stops.
-4. Work on held out (H1) and first try (F1).
-5. Bring the hours down (S1).
-6. Train the eight long kinds without waiting on anyone.
+1. The gate also against the best body, so the drift stops (G1).
+2. Held out: a fixed exam of about 30 tasks (X1), then work on why they fail (H1).
+3. First try, for old and new kinds apart (F2), then its largest cause (F1).
+4. Measure the "parent alone" link (P1), and a talk smoke run after each record (T5).
+5. Turn on the hive engram only after it gains on t80.
+6. Bring the hours down (S1), and train the eight long kinds without waiting on anyone (C1).

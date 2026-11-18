@@ -1,43 +1,41 @@
 # NEXT SESSION: the one current handoff
 
-Written 2026-11-18 04:40 UTC by B (session `session_014dX1CNKMMabZ93Sdxn3fSK`, branch
+Written 2026-11-18 04:40 UTC by B and brought up to g45 later that day (session `session_014dX1CNKMMabZ93Sdxn3fSK`, branch
 `claude/vigilant-brahmagupta-rz3ab7`). Whoever holds the loop keeps this page true; older handoffs are in
 `docs/history/`. How to work is in `CLAUDE.md`; start with `python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
 
-## Where the hive stands (2026-11-18 04:40 UTC)
+## Where the hive stands (2026-11-18, after g45)
 
-- **Newest record: g43** (run 44188515917), kept by the paired gate: 52 against 54 of 64 (easy 32/32, hard 20
-  against 22, held out 0 of 6 against 1 of 6), first try 0.53, 4.4 hours, 0 of 20 slices lost.
-- **g42 and g43 were each started by the one before**, with nobody's hand.
-- **g44 is running** (run 44225157318, started 02:41 UTC). It is the first generation with the 24 new hard kinds
-  (K2) and the first with the talk exam in its gate. Its record is due about 07:20 UTC.
-- **Bars against g43:** hard kinds with lessons 20 of 26 = 0.77 (bar 18/23 = 0.78), held out 0 of 6 (bar half),
-  first try 0.53 (bar 0.7), talk not measured yet (bar 8 of 10), hours 4.4 (bar 3).
+- **Newest record: g45** (run 44261362737, 13:22 UTC), kept: 45 against 47 of 64 on its 8 seeds (easy 32/32,
+  taught hard kinds 12 of 16 = 0.75, held out 0 of 9), first try 0.35, 5.6 hours, 1 of 20 slices lost.
+- **The last five, after (before):** g41 58 (49), g42 54 (54), g43 52 (54), g44 43 (40), g45 45 (47).
+  g44 was the first with the 24 new hard kinds (K2): its hard score is not comparable with earlier ones.
+- **Talk first sat at g45:** 6.5 of 10 (route 5, fact 7, earlier 8, time 6).
+- **First try:** g43 0.53, g44 0.36, g45 0.35. **Hours:** g43 4.4, g44 5.0, g45 5.6.
+- **Four generations recorded with nobody's hand** (g42 to g45).
+- **Bars against g45:** hard 0.75 (bar 0.78, read as a share since K2), held out 0 of 9 (bar half), first try
+  0.35 (bar 0.7), talk 6.5 (bar 8), hours 5.6 (bar 3).
 
 ## In flight, and who has it
 
 | What | Where | What to do |
 |---|---|---|
-| g44's record | Actions run 44225157318 | When recorded: read `docs/reads/latest.md` and the graphs, check g45 started by itself, log a line, tell the owner |
-| A memory test: none / notes / cell engrams / hive engram / all, on taught and unseen kinds | Running in B's session (a local sub-agent); not pushed yet | B merges it when it reports. Memory stays OFF (`HIVE_ENGRAM*`, `HIVE_NOTES` unset) unless it shows a gain |
-| A scheduled wake at 07:25 UTC | Into B's session | B reads g44. If a newer session holds the loop by then, B only hands over and stops |
+| g47 | Actions, the line ("Generation") | When recorded: read `docs/reads/latest.md` and the graphs, check the next started by itself, log a line, tell the owner |
+| Changes to the Python files, `grow.yml` and `training/reads.py` | another agent, on its own branch | Judge and merge when the proof is shown |
+| The memory test (E1) | done on t17, one seed: hive engram 16/18 on seen kinds, off 6/18; unseen 0-1 of 4 for every arm | Memory stays OFF until a gain shows on t80 |
 
-## Open, in the order to take them
+## Open, from the audit (ids on the board in `docs/PLAN.md`)
 
-1. **Rule 6 of the read's next-piece logic** (`training/reads.py`) still names K1 as next, but K1, K2 and M1 are
-   done. Advance it: next pieces come from what g44's chain shows for the new kinds.
-2. **Eight taught kinds have rows too long for the 32-bit runners** (508 pieces): contacts, words, sentences,
-   bank, lru, calc, machine, schedule. All but contacts fit a 16-bit runner (about 814). The fix is the owner's
-   Colab notebook (`colab/`): **the owner has not started it yet.** Ask once, plainly. If it runs fast, the owner
-   raises the repo variable `HIVE_COLAB_CHILDREN`.
-3. **Held out is the weakest bar** (0 of 6). The new hard kinds hold 6 back on purpose; see whether g44 carries
-   any.
-4. **Hours:** 4.4 against 3. Train is 176 of 264 minutes; practice and dream are 51 each.
-5. Small open items:
-   - the join lessons are too long;
-   - wikidata sometimes returns a web page, not data;
-   - 32-bit runners train fewer steps;
-   - g42 and g43 have no finding in `docs/knowledge.json` yet.
+- **G1:** the gate kept bodies worse than their before (g43, g45); compare with the best body too.
+- **X1:** a fixed held-out exam of about 30 tasks; 3 to 10 tasks is noise. Then **H1:** why held-out kinds fail.
+- **P1:** one parent sits the pulse, so "parent alone" is measured; rule 4 can never fire without it.
+- **F2:** first try for old and new kinds apart. Then **F1:** its largest cause.
+- **T5:** a talk smoke run on the newest body after each record; no person has talked to it since 11-15.
+- **C1:** the 8 long kinds train only on the 16-bit runners, or are shortened; no wait on Colab.
+- **S1:** hours, 5.6 against 3.
+- **M2:** the bookkeeping CSVs (`docs/*.csv`) stopped on 11-15/16.
+- Not on the board yet: the 32-bit slices are still joined as equals (`training/merge.py`); HIVE_READ 40 and
+  HIVE_JUDGED 10 are still on; the one-line trial never ran (`docs/DECISIONS.md`, status).
 
 ## Done, do not redo
 
