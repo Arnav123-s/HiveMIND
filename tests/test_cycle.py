@@ -60,3 +60,14 @@ def test_runs_on_the_real_repo():
     out = subprocess.run([sys.executable, str(ROOT / "scripts/cycle.py"), "--last", "3"], capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
     assert "The goal's bars" in out.stdout and "Who holds the loop" in out.stdout
+
+
+def test_board_rows_and_latest_claim(tmp_path):
+    home = _home(tmp_path, [REC], READ, "- 2026-11-18 05:00 D: claim H1. by cause\n- 2026-11-18 06:00 E: done F1 (0.71)\n")
+    (home / "docs/PLAN.md").write_text("# Plan\n\n## The board\n\n| Id | Piece | Files | Done when | Who |\n|---|---|---|---|---|\n"
+                                       "| H1 | Held out | x | y | open |\n| F1 | First try | x | y | open |\n| J1 | Join | x | y | open |\n\n## After\n")
+    rows = {r[0]: r for r in cycle.board(home)}
+    assert set(rows) == {"H1", "F1", "J1"}
+    assert rows["H1"][2] == "open; log: claim by D at 2026-11-18 05:00"
+    assert rows["F1"][2] == "open; log: done by E at 2026-11-18 06:00"
+    assert rows["J1"][2] == "open"

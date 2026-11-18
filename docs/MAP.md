@@ -37,6 +37,7 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `hive` | Launcher: `./hive` runs `team/cli.py` | none named | people |
 | `CLAUDE.md` | How every session works here: the goal's bars, the role, the cycle, the rules (loaded first by every session) | the loop holder | everyone |
 | `NEXT_SESSION.md` | The one current handoff: what runs now, what is open, what is done and must not be redone | the loop holder | the loop holder |
+| `docs/START_PROMPT.md` | The prompts to start a session: the loop holder, or a worker beside the others | the loop holder | the owner |
 | `scripts/cycle.py` | Start of every cycle: the bars, the last generations as a table and text graph, stale graphs, next piece, who holds the loop | the loop holder | everyone |
 | `FOR_MUSE.md` | Advice page of 2026-11-13 for another project. **Old** | none named | nobody |
 | `adapters/` | Weight edits of the older roles (browser, coder, writer...). **Old** | none named | `team/` roles, ask.yml |
