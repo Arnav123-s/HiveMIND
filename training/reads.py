@@ -49,9 +49,22 @@ KIND = r"[\w ,.:'()-]{1,80}"
 # ---- the kinds, read from the sources (no network) -------------------------------------------------------------------
 def maker_kinds():
     """{maker: kind} of every hard maker (training/kinds/, the kinds with HARD): each returns (field, kind, task,
-    check), its kind read from its source."""
+    check), its kind read from its source. A maker whose field is a name, not written out (the program kinds,
+    h_prog_*: `return (FAMILY, "a queue served ...", ...)`), is not read by kinds.written; its kind is taken from a task
+    it makes, which needs no network (a kind that reads a site while it makes a task writes its kind out). Before, the
+    two held-out program kinds were missing, so g45's held-out tasks were counted 0 of 9, not 0 of 10."""
     from training import kinds
-    return {m.KIND: w[0] for m in kinds.HARD_KINDS if (w := kinds.written(m.KIND))}
+    out = {}
+    for m in kinds.HARD_KINDS:
+        w = kinds.written(m.KIND)
+        if w:
+            out[m.KIND] = w[0]
+        elif not m.NETWORK:
+            try:
+                out[m.KIND] = kinds.sample(m.KIND)[1]
+            except Exception:  # noqa: BLE001 - a maker that cannot make a task offline is left out, as before
+                pass
+    return out
 
 
 def taught_hard():
@@ -777,6 +790,21 @@ def _talk(t):
     return f"{t.get('out_of_10')} of 10" + (f" ({by})" if by else "")
 
 
+def fixed_held(line, arm="after"):
+    """One arm's sitting of the fixed held-out exam in a record line (grow_record.held_exam), or None."""
+    h = ((line or {}).get("held_exam") or {}).get(arm)
+    return h if isinstance(h, dict) and h.get("of") else None
+
+
+def held_cell(fixed, pulse):
+    """The held-out row: the fixed exam's kinds passed (the goal's bar is half of them) and its tasks, with the
+    pulse's few held-out tasks beside it; only the pulse's when the fixed exam was not sat."""
+    if not fixed:
+        return _pq(pulse)
+    k = fixed.get("kinds") or [0, 0]
+    return f"{k[0]} of {k[1]} kinds ({fixed['right']} of {fixed['of']} tasks of the fixed exam; pulse {_pq(pulse)})"
+
+
 def top_table(line, prev, f, lines, idx, talk=(None, None)):
     """The rows of docs/PLAN.md's top table: (what, this generation, the last record, the body before).
     talk: the talk exam's sittings of this generation and the last record, when they sat it (a Talk row then)."""
@@ -795,7 +823,8 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
     return [
         ("Easy kinds passed", _pq(a.get("easy")), _pq(pa.get("easy")), _pq(b.get("easy")) if has_b else "-"),
         ("Hard kinds that have lessons", _pq(taught), _pq(prev_taught), _pq(before_taught) if has_b else "-"),
-        ("Hard kinds never practised (held out)", _pq(held), _pq(prev_held), _pq(before_held) if has_b else "-"),
+        ("Hard kinds never practised (held out)", held_cell(fixed_held(line), held), held_cell(fixed_held(prev), prev_held) if prev else "-",
+         held_cell(fixed_held(line, "before"), before_held) if has_b else "-"),
         ("Right at the first try (practice)", f"{ft[0] / ft[1]:.2f} ({_pq(ft)})" if ft and ft[1] else "not measured",
          f"{pft[0] / pft[1]:.2f}" if pft and pft[1] else "-", "-"),
     ] + ([("Right at the first try by orders (practice split by runner)", practice_arms.ab_text(line["orders_ab"]),

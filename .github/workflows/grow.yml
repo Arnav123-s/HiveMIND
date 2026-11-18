@@ -792,6 +792,24 @@ jobs:
           name: gate-${{ matrix.arm }}-${{ matrix.seed }}
           path: training/reports/exams/*_mixed.json
           retention-days: 30
+      # The fixed held-out exam (training/exam.held_exam, piece X1): the same 30 tasks every generation, 3 of each kind
+      # never practised, so generations compare (the pulse draws only 3 to 9 of them). Before and after both sit it, each
+      # seat its share (every 8th task: 3 or 4, about 10 minutes), once the pulse is uploaded; each task is held to 15
+      # minutes and the step to 40, and whatever it does it never fails the seat or changes the pulse's numbers. Its json
+      # is written after every task, so a seat cut off still gives what it sat (the record compares what both sat).
+      - name: The fixed held-out exam, this seat's share (training/exam.py held)
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') }}
+        continue-on-error: true
+        timeout-minutes: 40
+        run: python training/exam.py held --seat ${{ matrix.seed }} --seats 8 --per 3 --seconds 900
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') }}
+        continue-on-error: true
+        with:
+          name: held-${{ matrix.arm }}-${{ matrix.seed }}
+          path: training/reports/exams/held_${{ matrix.seed }}.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: The model server's own log beside the work (it says why a server ended; g35's seed 4 lost it)
         if: ${{ !cancelled() }}
         run: mkdir -p runs/exam/server-logs && cp ~/.cache/hive/ternary/*.log runs/exam/server-logs/ 2>/dev/null || true
@@ -811,21 +829,39 @@ jobs:
           include-hidden-files: true
           retention-days: 14
       # The body sits the talk exam every generation (M1), on one seat only (after, the first seed) and only once the
-      # gate's own exam is done and uploaded: it is held to 20 minutes (each message to 2), and whatever it does it
+      # gate's own exam is done and uploaded: it is held to 45 minutes (each message to 2), and whatever it does it
       # never fails this seat or changes the gate's numbers. The record job puts its json in training/reports/talk.
+      # 20 minutes left 12 of g45's 40 messages unasked (each worked one takes 50 to 95 s); the route messages go first.
       - name: The talk exam (training/talk_exam.py)
         if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 55
         run: |
           mkdir -p talk
-          python training/talk_exam.py sit --seed $((30000000 + ${{ inputs.gate_seeds || github.run_number }})) --who body --minutes 20 --per 120 --out "talk/$GEN.json"
+          python training/talk_exam.py sit --seed $((30000000 + ${{ inputs.gate_seeds || github.run_number }})) --who body --minutes 45 --per 120 --out "talk/$GEN.json"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
         continue-on-error: true
         with:
           name: talk-${{ env.GEN }}
           path: talk/${{ env.GEN }}.json
+          if-no-files-found: ignore
+          retention-days: 30
+      # Three fixed plain messages through the door a person uses (training/talk_smoke.py, piece T5), on the second seat
+      # of before and of after (the first holds the talk exam, so the gate's longest seat is not made longer); the record
+      # writes the replies of the body it kept to docs/reads/talk_smoke.md. Each message is held to 4 minutes, the step
+      # to 15, and it never fails the seat.
+      - name: Three plain messages, as a person sends them (training/talk_smoke.py)
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python training/talk_smoke.py sit --arm ${{ matrix.arm }} --out talk_smoke.json --per 240 --minutes 12
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
+        continue-on-error: true
+        with:
+          name: talk-smoke-${{ matrix.arm }}
+          path: talk_smoke.json
           if-no-files-found: ignore
           retention-days: 30
       - name: The numbers once more, last in the log
@@ -882,6 +918,16 @@ jobs:
           pattern: practice-work-*
           path: pw
       - uses: actions/download-artifact@v4
+        continue-on-error: true  # the fixed held-out exam: each seat of before and after its share (a run with none goes on without it)
+        with:
+          pattern: held-*-[0-9]
+          path: held
+      - uses: actions/download-artifact@v4
+        continue-on-error: true  # the three plain messages of before and after (training/talk_smoke.py): only shown, never needed
+        with:
+          pattern: talk-smoke-*
+          path: smoke
+      - uses: actions/download-artifact@v4
         continue-on-error: true  # the talk exam is sat on one gate seat and may not have been: the read and the page go without it
         with:
           name: talk-${{ env.GEN }}
@@ -899,7 +945,7 @@ jobs:
         run: |
           if [ -d tr/trunk ]; then cp tr/trunk/* got/; fi
           mkdir -p prac
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
@@ -939,6 +985,8 @@ jobs:
             set -o pipefail  # (GitHub's bash has it on already) a failed read is not hidden by tee
             python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || { echo "::warning::the read could not be written; the record is kept"; echo read >> "$FAILED"; }
             python3 training/progress.py || { echo "::warning::the progress graphs could not be drawn; the record is kept"; echo progress >> "$FAILED"; }
+            # what the body said to three plain messages (sat in the gate): only shown, so it never fails the record
+            python3 training/talk_smoke.py write "$GEN" smoke --out docs/reads/talk_smoke.md || echo "::warning::docs/reads/talk_smoke.md could not be written; the record is kept"
             if [ -s "$FAILED" ]; then
               what=$(paste -sd, "$FAILED")
               python3 training/grow_record.py failed "$GEN" "${GITHUB_RUN_ID:-0}" "$what" || {

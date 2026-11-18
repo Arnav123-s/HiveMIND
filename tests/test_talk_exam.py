@@ -2,6 +2,7 @@
 import datetime
 import json
 import re
+import time
 
 from team import talk
 from training import progress, talk_exam as T
@@ -83,7 +84,7 @@ def test_the_time_messages_sit_on_the_edges_and_follow_the_date_the_hive_is_told
             elif "hours ago" in msg:
                 then = now - td(hours=k)
                 assert then.date() < now.date()
-                assert ck["of"] == [{"type": "clock", "want": then.strftime("%H:%M")}, {"type": "date", "want": then.strftime("%Y-%m-%d")}]
+                assert ck["of"] == [{"type": "clock", "want": then.strftime("%H:%M"), "one": True}, {"type": "date", "want": then.strftime("%Y-%m-%d"), "one": True}]
                 kinds.add("midnight back")
             elif "minutes" in msg:
                 then = now + td(minutes=k)
@@ -240,7 +241,7 @@ def test_work_is_told_the_exams_time(monkeypatch, tmp_path):
     from team import solo
     monkeypatch.setattr(solo, "first", lambda task, *a, **k: tasks.append(task) or {"report": "x: 1", "agreed": True})
     talk.reply("what is 17.5% of 2340?", base="t17", run_dir=tmp_path, now=datetime.datetime(2027, 3, 4, 14, 20))
-    assert tasks and tasks[0].startswith("what is 17.5% of 2340?") and "It is now 2027-03-04 (Thursday), 14:20" in tasks[0]
+    assert tasks and tasks[0].startswith("what is 17.5% of 2340?") and "It is now 2027-03-04 (Thursday), 14:20. Take this as today's date" in tasks[0]
 
 
 def test_the_cli_shows_and_sits(monkeypatch, tmp_path, capsys):
@@ -346,9 +347,9 @@ def test_the_gate_sits_the_talk_exam_on_one_after_seat_and_the_record_keeps_it()
     i = names.index("The talk exam (training/talk_exam.py)")
     step = gate[i]
     assert i > names.index("A fresh exam, half of the first exam's kinds and half hard ones")
-    assert step["continue-on-error"] is True and step["timeout-minutes"] == 30
+    assert step["continue-on-error"] is True and step["timeout-minutes"] == 55
     assert "matrix.arm == 'after'" in step["if"] and "matrix.seed == 1" in step["if"]
-    assert "training/talk_exam.py sit" in step["run"] and '--who body --minutes 20 --per 120 --out "talk/$GEN.json"' in step["run"]
+    assert "training/talk_exam.py sit" in step["run"] and '--who body --minutes 45 --per 120 --out "talk/$GEN.json"' in step["run"]
     up = gate[i + 1]
     assert up["with"]["name"] == "talk-${{ env.GEN }}" and up["with"]["if-no-files-found"] == "ignore" and up["if"] == step["if"]
     rec = flow["jobs"]["record"]["steps"]
@@ -356,3 +357,34 @@ def test_the_gate_sits_the_talk_exam_on_one_after_seat_and_the_record_keeps_it()
     assert rec[j]["continue-on-error"] is True and rec[j]["with"]["path"] == "training/reports/talk"
     k = next(n for n, s in enumerate(rec) if "training/reads.py write" in s.get("run", ""))
     assert j < k and "training/reports/talk/$GEN.json" in rec[k]["run"].split("git add docs/PROGRESS.md", 1)[1]
+
+
+def test_a_time_must_be_one_answer_g45_t15():
+    # g45's t15 (Tokyo 18:15, so 17:15 in Singapore) passed a reply that named three times; now it is wrong
+    it = next(i for i in T.make(30000045) if i["id"] == "t30000045_15")
+    assert it["check"]["want"] == "17:15" and it["check"]["one"] is True
+    three = "The hive could not confirm an answer.\n- Member 1: 2026-05-17 19:15\n- Member 2: 2026-05-18 01:15\n- Member 3: 2026-05-17 17:15"
+    ok, why = T.check(it["check"], three, now=it["now"])
+    assert not ok and "not one answer" in why
+    # the one answer, with the time it was told it is beside it, is right
+    assert T.check(it["check"], "It is 18:15 for you in Tokyo, so it is 17:15 in Singapore.", now=it["now"])[0] is False  # the near miss first
+    assert T.check(it["check"], "In Singapore it is 17:15 (you are at 18:15 on 2026-05-17).", now=it["now"])[0]
+    # g45's t26: told it was 2028-02-27, the work answered from the machine's clock; wrong, and the work is now told plainly
+    it = next(i for i in T.make(30000045) if i["id"] == "t30000045_26")
+    assert not T.check(it["check"], "The date 3 days from today is 2026-11-21.", now=it["now"])[0]
+    assert T.check(it["check"], "It will be 2028-03-01.", now=it["now"])[0]
+    assert not T.check(it["check"], "It will be 2028-03-01, or 2026-11-21 by this computer.", now=it["now"])[0]
+
+
+def test_every_route_message_is_asked_and_unanswered_is_said_apart_from_wrong(monkeypatch, tmp_path):
+    _hive(monkeypatch, tmp_path, lambda m: "I do not know.")
+    from team import solo
+    # the work is slow (g45: 50 to 95 s a message); the route messages, one decision each, are not
+    monkeypatch.setattr(solo, "first", lambda task, *a, **k: time.sleep(1.5) or {"report": "x: 1", "agreed": True})
+    res = T.sit(30000045, who="t17", run_dir=tmp_path, log=lambda *a: None, minutes=3 / 60, per=2)
+    route = [r for r in res["items"] if r["kind"] == "route"]
+    assert [r["kind"] for r in res["items"][:10]] == ["route"] * 10  # asked first
+    assert len(route) == 10 and not any(str(r["why"]).startswith(("time", "broke")) for r in route), [r["why"] for r in route]
+    assert res["unanswered"] == sum(str(r["why"]).startswith(("time", "broke")) for r in res["items"]) > 0
+    assert res["unanswered"] + res["wrong"] + res["right"] == res["of"] == 40
+    assert res["unanswered_by_kind"]["route"] == 0

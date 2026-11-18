@@ -13,6 +13,11 @@ whether the hive is getting better, field by field, with nobody there to see.
                                                        (python -m team, risky actions never). Writes
                                                        training/reports/exams/<seed>.json and .md and one line
                                                        in training/reports/exams.jsonl
+    python training/exam.py held [--seat 1 --seats 8] [--per 3]
+                                                       the fixed held-out exam (held_exam): the same tasks every
+                                                       generation, 3 of each kind never practised, with no memory;
+                                                       a seat sits its share (every 8th task) and writes
+                                                       training/reports/exams/held_<seat>.json after every task
     python training/exam.py practice [--tasks 16] [--members 2]
                                                        fresh tasks that are never an exam's, done by the members
                                                        (team/solo.py) with the hive's real memory: a program two
@@ -196,6 +201,57 @@ def exam(seed, n=16, only=(), level="basic", without=(), weights=None, levels=No
     return out
 
 
+# ---- the fixed held-out exam -----------------------------------------------------------------------------------------
+# The pulse (a fresh mixed exam each generation) draws only 3 to 9 tasks of the held-out kinds (g43 0 of 6, g44 0 of 3,
+# g45 0 of 9), which is noise. This exam is the same every generation, so generations compare: HELD_PER tasks of each
+# held-out kind (training/kinds HELD_OUT), each drawn from a seed made of the kind's name and its number alone.
+# Its ids begin with x (the pulse's with e, h or c); it is never trained on, as practice leaves these kinds out.
+HELD_PER = 3
+
+
+def held_exam(per=HELD_PER):
+    """The fixed held-out exam: [(id, field, kind, task, check)], per tasks of each held-out kind, the kinds in the
+    order of their names; the same tasks every time it is made (no seed of the day, the run or the generation)."""
+    out = []
+    for name in sorted(kinds.HELD_OUT):
+        make = kinds.get(name).make
+        for i in range(per):
+            for again in range(8):  # the same task twice tells nothing: drawn again, still from fixed seeds
+                field, kind, task, check = _made(make, f"held:{name}:{i}" + (f":{again}" if again else ""))
+                if task not in [t[3] for t in out]:
+                    break
+            out.append((f"x_{name}_{i}", field, kind, task, check))  # by the kind's name: a kind added later moves no id
+    return out
+
+
+def held_share(tasks, seat=1, seats=1):
+    """The tasks one seat of `seats` sits: every seats-th, from its own place (seat 1 to seats)."""
+    return list(tasks)[max(0, seat - 1)::max(1, seats)]
+
+
+def sit_held(seat=1, seats=1, per=HELD_PER, log=print, out=None, seconds=None):
+    """A seat's share of the fixed held-out exam, sat as the pulse is (each task through the whole hive, with no
+    memory). The json (training/reports/exams/held_<seat>.json) is written after every task, so a seat cut off by its
+    time still leaves what it sat; the record compares only the tasks both arms sat."""
+    tag, home, rows, t0 = f"exam_held_{seat}", _memory(True), [], time.time()
+    path = Path(out or OUT) / f"held_{seat}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    def save():
+        line = {"exam": "held", "seat": seat, "seats": seats, "per": per, "passed": sum(r["ok"] for r in rows), "tasks": len(rows),
+                "minutes": round((time.time() - t0) / 60), "memory": "none",
+                "members": os.environ.get("HIVE_MEMBERS") or os.environ.get("AGENT_TEAM_SOLO", "")}
+        path.write_text(json.dumps({"summary": line, "tasks": rows}, indent=1))
+        return line
+    line = save()
+    for tid, field, kind, task, check in held_share(held_exam(per), seat, seats):
+        r = sit_one(tag, tid, task, check, home, timeout=seconds, kind=kind) | {"field": field, "kind": kind, "maker": getattr(check, "maker", ""), "task": task}
+        rows.append(r)
+        line = save()
+        log(f"{'PASS' if r['ok'] else 'FAIL'} {tid} [{r['maker']}: {kind}] {r['seconds']}s - {r['why']} {r['note']}", flush=True)
+    return line
+
+
 # ---- sitting it ------------------------------------------------------------------------------------------------------
 def _memory(empty):
     """Where the hive's memory is for a sitting: a copy of what it has learned (lessons, policy, profile), so a
@@ -359,10 +415,14 @@ def main(argv):
     only = tuple(a for a in only if not a.startswith("--"))
     cmd = argv[0] if argv else ""
     if cmd == "show":
-        for tid, field, kind, task, _ in exam(seed, opt("--tasks", 16), only, opt("--level", "basic")):
+        level = opt("--level", "basic")
+        shown = held_exam(opt("--per", HELD_PER)) if level == "held" else exam(seed, opt("--tasks", 16), only, level)
+        for tid, field, kind, task, _ in shown:
             print(f"{tid} [{field}: {kind}]\n    {task}\n")
     elif cmd == "practice":
         print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 3600)), opt("--tasks", 16), only, opt("--members", 2))))
+    elif cmd == "held":
+        print(json.dumps(sit_held(opt("--seat", 1), opt("--seats", 1), opt("--per", HELD_PER), seconds=opt("--seconds", 0) or None)))
     elif cmd == "sit":
         print(json.dumps(sit(seed, opt("--tasks", 16), only, "--empty-memory" in argv, level=opt("--level", "basic"))))
     else:
