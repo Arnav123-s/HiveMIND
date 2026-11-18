@@ -1,6 +1,7 @@
 # HiveMIND: how every session works here
 
 Every Claude session in this repo loads this page first. Follow it. It exists so that nothing is done twice.
+The whole story in one page (idea, method, history, what went well and not): `docs/OVERVIEW.md`.
 
 ## The goal (the owner's)
 
