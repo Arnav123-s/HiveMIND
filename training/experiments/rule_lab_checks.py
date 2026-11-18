@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import itertools
 import json
+import re
 import time
 from pathlib import Path
 
@@ -86,6 +87,20 @@ class WorkerLost(Exception):
     pass
 
 
+def retention_scores(text, expected):
+    try:
+        value = json.loads(text)
+        return value == expected, value == expected
+    except ValueError:
+        fence = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", text, re.S | re.I)
+        if fence:
+            try:
+                return False, json.loads(fence[1]) == expected
+            except ValueError:
+                pass
+        return False, False
+
+
 def retention(cpu, cell):
     items = [
         ("changed plan", [
@@ -104,12 +119,9 @@ def retention(cpu, cell):
     rows = []
     for item, exchange, expected in items:
         reply = cpu.reply(cell, exchange)
-        try:
-            value = json.loads(reply["text"])
-            correct = value == expected
-        except ValueError:
-            correct = False
-        rows.append({"item": item, "messages": exchange, "expected": expected, "correct": correct, **reply})
+        correct, content = retention_scores(reply["text"], expected)
+        rows.append({"item": item, "messages": exchange, "expected": expected, "correct": correct,
+                     "content_after_stripping_markdown": content, **reply})
     return rows
 
 
@@ -122,9 +134,8 @@ def checks(args):
     notebook = args.out / "recovery-98.json"
     if notebook.exists():
         raise ValueError("choose a fresh output directory for a live interruption")
-    cells = ["t80+g41data", "t80+g41code"]
+    cells = ["t80+g41data", "t80+labchild"]
     params = args.binary, args.base, args.catalog, args.out / "logs"
-    method = args.recipe.with_name("method.txt").read_text().strip()
     with serving(*params) as cpu:
         class InterruptAfterReceipt:
             def reply(self, cell, messages):
@@ -135,14 +146,14 @@ def checks(args):
                 return cpu.reply(cell, messages)
 
         try:
-            lab.episode(InterruptAfterReceipt(), notebook, 98, "affine", "guided", cells, method)
+            lab.episode(InterruptAfterReceipt(), notebook, 98, "affine", "open", cells)
         except WorkerLost:
             old_pid = cpu.proc.pid
         else:
             raise RuntimeError("no checkpointed measurement was made before the experiment ended")
     before = json.loads(notebook.read_text())
     with serving(*params) as fresh:
-        recovered = lab.episode(fresh, notebook, 98, "affine", "guided", cells, method)
+        recovered = lab.episode(fresh, notebook, 98, "affine", "open", cells)
         new_pid = fresh.proc.pid
         fresh.proc.kill()
         fresh.proc.wait(timeout=10)

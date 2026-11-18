@@ -4,6 +4,7 @@ import pytest
 
 from training.experiments import rule_lab as lab
 from training.experiments import rule_lab_recipe as recipes
+from training.experiments.rule_lab_checks import retention_scores
 from training.experiments.rule_lab_solver import fit
 from training.experiments.rule_lab_train import teaching_rows
 
@@ -39,6 +40,12 @@ def test_alternate_probe_envelope_changes_only_packaging():
     assert parsed["measure"] == [[0, 0], [0, 1], [1, 0], [1, 1]]
     with pytest.raises(ValueError):
         lab.checked_action(raw.replace("[1,1]", "[3,1]"), [], 4, True)
+
+
+def test_retention_reports_raw_and_fence_tolerant_scores():
+    assert retention_scores('{"x":2}', {"x": 2}) == (True, True)
+    assert retention_scores('```json\n{"x":2}\n```', {"x": 2}) == (False, True)
+    assert retention_scores('```json\n{"x":3}\n```', {"x": 2}) == (False, False)
 
 
 def test_public_feedback_and_blind_grader(tmp_path):
