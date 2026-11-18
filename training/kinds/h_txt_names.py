@@ -12,6 +12,7 @@ KIND = "h_txt_names"
 FAMILY = "hard: text"
 HARD = True
 ORDER = 410
+GIVEN_FILE = True
 
 LASTS = ["Hartmann", "Van Dijk", "Okafor", "De Luca", "Berg", "Nakamura", "Silva", "Novak", "Ahmed", "Lindqvist", "Da Costa", "Moreau"]
 
@@ -51,23 +52,25 @@ def h_txt_names(r):
             "and tell me how many names there are.", check)
 
 
-def names(task):
+def names(task, copy=False):
+    """The names are data the task gives: the runtime saves them as a file, so the program reads them from one (any
+    name it opens and does not find is that file); copy: the names copied into the program instead (a task of several
+    parts whose first block of data is another part's)."""
     m = re.search(r"each written 'Last, First':\n(.*?)\nWrite each name as", task, re.S)
     if not m:
         return None
-    return _fill('''out = []
-for line in __NAMES__.splitlines():
-    last, first = [" ".join(w.capitalize() for w in part.split()) for part in line.split(",")]
-    words = first.split()
-    if len(words) > 1 and len(words[-1].rstrip(".")) == 1:
-        words[-1] = words[-1].rstrip(".") + "."
-    out.append((last, " ".join(words)))
-out.sort()
-with open("names.txt", "w") as f:
-    f.write("\\n".join(first + " " + last for last, first in out) + "\\n")
-print("names.txt saved")
-print("names:", len(out))
-''', names=m.group(1))
+    lines = repr(m.group(1)) + ".splitlines()" if copy else 'open("in.txt")'
+    return _fill('''o = []
+for l in __LINES__:
+    a, b = [" ".join(w.capitalize() for w in s.split()) for s in l.split(",")]
+    f = b.split()
+    if len(f) > 1 and len(f[-1].rstrip(".")) == 1:
+        f[-1] = f[-1].rstrip(".") + "."
+    o.append((a, " ".join(f)))
+o.sort()
+open("names.txt", "w").write("".join(f"{f} {a}\\n" for a, f in o))
+print("names:", len(o))
+''').replace("__LINES__", lines)
 
 
 make = h_txt_names

@@ -56,12 +56,10 @@ def contacts(task):
     if not m:
         return None
     return _fill(r'''import re
-text = __TEXT__
-emails = sorted({e.lower() for e in re.findall(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+", text)})
-phones = {re.sub(r"\D", "", p) for p in re.findall(r"(?<!\d)\(?\d{3}\)?[ .-]?\d{3}[.-]\d{4}(?!\d)", text)}
-for e in emails:
+t = __TEXT__
+for e in sorted({e.lower() for e in re.findall(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+", t)}):
     print(e)
-print("phones:", len(phones))
+print("phones:", len({re.sub(r"\D", "", p) for p in re.findall(r"(?<!\d)\(?\d{3}\)?[ .-]?\d{3}[.-]\d{4}(?!\d)", t)}))
 ''', text=m.group(1))
 
 

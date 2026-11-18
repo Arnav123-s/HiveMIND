@@ -58,19 +58,15 @@ def sentences(task):
     m = re.search(r"Here is a text:\n(.*?)\nSplit it into sentences\..*?never end one: (.*?) \(and a decimal", task, re.S)
     if not m:
         return None
-    return _fill('''abbr = set(__ABBR__.split(", "))
-sentences, now = [], []
-for word in __TEXT__.split():
-    now.append(word)
-    if word[-1] in ".!?" and word not in abbr:
-        sentences.append(now)
-        now = []
-if now:
-    sentences.append(now)
-counts = [len(s) for s in sentences]
-print("sentences:", len(sentences))
-print("longest:", counts.index(max(counts)) + 1)
-print("words:", max(counts))
+    return _fill('''a, n = __ABBR__.split(", "), [0]
+for w in __TEXT__.split():
+    n[-1] += 1
+    if w[-1] in ".!?" and w not in a:
+        n.append(0)
+n = [x for x in n if x]
+print("sentences:", len(n))
+print("longest:", n.index(max(n)) + 1)
+print("words:", max(n))
 ''', text=m.group(1), abbr=m.group(2))
 
 

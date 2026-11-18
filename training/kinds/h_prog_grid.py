@@ -14,6 +14,7 @@ KIND = "h_prog_grid"
 FAMILY = "programs"
 HARD = True
 ORDER = 550
+GIVEN_FILE = True
 
 JOINS = {4: "by a side only (up, down, left, right)", 8: "by a side or by a corner (the 8 cells around it)"}
 
@@ -71,46 +72,39 @@ def h_prog_grid(r):
             f"largest(grid) of this grid:\n{rows}\n", module_check("grid", draw, want))
 
 
-SOURCE = '''LAND = __LAND__
-AROUND = [(a, b) for a in (-1, 0, 1) for b in (-1, 0, 1) if (a or b) and (__CORNERS__ or not (a and b))]
+SOURCE = """def sizes(g):
+    L = {x + y * 1j for y, r in enumerate(g) for x, c in enumerate(r) if c == __LAND__}
+
+    def f(p):
+        if p not in L:
+            return 0
+        L.remove(p)
+        return 1 + __AROUND__
+    return sorted(filter(None, map(f, list(L))))[::-1]
 
 
-def sizes(grid):
-    seen, out = set(), []
-    for y, row in enumerate(grid):
-        for x, cell in enumerate(row):
-            if cell != LAND or (y, x) in seen:
-                continue
-            seen.add((y, x))
-            todo, n = [(y, x)], 0
-            while todo:
-                cy, cx = todo.pop()
-                n += 1
-                for a, b in AROUND:
-                    ny, nx = cy + a, cx + b
-                    if 0 <= ny < len(grid) and 0 <= nx < len(grid[ny]) and grid[ny][nx] == LAND and (ny, nx) not in seen:
-                        seen.add((ny, nx))
-                        todo.append((ny, nx))
-            out.append(n)
-    return sorted(out, reverse=True)
+def regions(g):
+    return len(sizes(g))
 
 
-def regions(grid):
-    return len(sizes(grid))
+def largest(g):
+    return max(sizes(g) + [0])"""
 
 
-def largest(grid):
-    return max(sizes(grid), default=0)'''
-
-
-def grid(task):
+def grid(task, copy=False):
+    """The grid is data the task gives: the runtime saves it as a file, so the program reads it from one (any name it
+    opens and does not find is that file); copy: the grid copied into the program instead (a task of several parts
+    whose first block of data is another part's)."""
     m = re.search(r"'(.)' is land.*?when they touch by a side (only|or by a corner).*?of this grid:\n(.+?)\n?$", task, re.S)
     if not m or "grid.py" not in task:
         return None
     land, how, rows = m.groups()
-    rows = rows.strip().splitlines()
-    tests = ["assert regions([]) == 0 and largest(['..']) == 0"]
-    return program("grid", _fill(SOURCE, land=land, corners=how != "only"), tests, [f"g = {rows!r}", "print(regions(g))", "print(largest(g))"])
+    # a cell is x + y * 1j: its neighbours are a step of 1 or 1j away (and of both, by a corner)
+    around = ("f(p - 1) + f(p + 1) + f(p - 1j) + f(p + 1j)" if how == "only"
+              else "sum(f(p + a + b * 1j) for a in (-1, 0, 1) for b in (-1, 0, 1))")
+    src = _fill(SOURCE, land=land).replace("__AROUND__", around)
+    g = repr(rows.strip().split()) if copy else '[*open("g.txt")]'
+    return program("grid", src, [], [f"g = {g}", "print(regions(g))", "print(largest(g))"])
 
 
 make = h_prog_grid

@@ -71,18 +71,13 @@ def jsonl(task):
     if not m:
         return None
     return _fill('''import json
-
-count = {}
-for line in open(__NAME__):
-    if line.strip():
-        event = json.loads(line)
-        if event["type"] == __TYPE__:
-            value = event["user"].get(__FIELD__, "unknown")
-            count[value] = count.get(value, 0) + 1
-with open(__OUT__, "w") as f:
-    json.dump(count, f)
-print(__OUT__, "saved")
-print("events:", sum(count.values()))
+c = {}
+for e in map(json.loads, open(__NAME__)):
+    if e["type"] == __TYPE__:
+        v = e["user"].get(__FIELD__, "unknown")
+        c[v] = c.get(v, 0) + 1
+json.dump(c, open(__OUT__, "w"))
+print("events:", sum(c.values()))
 ''', name=m.group(1), out=m.group(2), field=m.group(3), type=m.group(4))
 
 

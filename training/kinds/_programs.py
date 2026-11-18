@@ -75,5 +75,5 @@ def module_check(mod, draw, asked):
 def program(mod, source, tests, prints):
     """The lesson's program: the module's own code, then what runs only when it is run itself (never when imported):
     it saves itself under the module's name, tests itself and prints what the task asks."""
-    body = [f"shutil.copy(__file__, {mod + '.py'!r})", *tests, *prints]
-    return source.strip() + '\n\n\nif __name__ == "__main__":\n    import shutil\n\n' + "".join(f"    {ln}\n" for ln in body)
+    body = ["import shutil", f"shutil.copy(__file__, {mod + '.py'!r})", *tests, *prints]
+    return source.strip() + '\n\n\nif __name__ == "__main__":\n' + "".join(f"    {ln}\n" for ln in body)
