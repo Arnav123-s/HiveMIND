@@ -1,0 +1,65 @@
+{
+  "policies": {
+    "first_fit": "first_fit",
+    "best_fit": "best_fit",
+    "trained_single": "best_fit",
+    "trained_sparse": [
+      "best_fit",
+      {
+        "reserve_percent": 50,
+        "allowance_percent": 100
+      },
+      "best_fit",
+      {
+        "reserve_percent": 50,
+        "allowance_percent": 100
+      }
+    ]
+  },
+  "seeds": [
+    9317,
+    19441,
+    30469,
+    45763,
+    58129,
+    69997
+  ],
+  "instances": 36,
+  "items_per_instance": 80,
+  "single_candidates": 27,
+  "sparse_candidates": 40,
+  "development_bins": {
+    "first_fit": {
+      "uniform": 263,
+      "mostly_small": 127,
+      "complements": 269,
+      "small_then_large": 335,
+      "short_batches": 283,
+      "lopsided": 286
+    },
+    "best_fit": {
+      "uniform": 257,
+      "mostly_small": 127,
+      "complements": 264,
+      "small_then_large": 335,
+      "short_batches": 276,
+      "lopsided": 286
+    },
+    "trained_single": {
+      "uniform": 257,
+      "mostly_small": 127,
+      "complements": 264,
+      "small_then_large": 335,
+      "short_batches": 276,
+      "lopsided": 286
+    },
+    "trained_sparse": {
+      "uniform": 272,
+      "mostly_small": 127,
+      "complements": 261,
+      "small_then_large": 253,
+      "short_batches": 265,
+      "lopsided": 285
+    }
+  }
+}
