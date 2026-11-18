@@ -565,7 +565,7 @@ def seating(task, kind=None):
 
     The trunk (the average of the body's newest cells, training/merge.py) sits first where the body has one.
     A body that has multiplied has lines of descent (cells/body.json "parents"). Of one organ the newest cell sits
-    first: it is its parent and more; of the newest, the one that made the most training steps (cells/studied.json).
+    first, with training steps (cells/studied.json) breaking ties within the generation.
     The second seat goes to the newest cell of another line: a child and its own
     parent are nearly one mind, and two copies agreeing on a wrong answer is the false memory that agreement cannot
     catch. Nothing else is counted to seat them.
