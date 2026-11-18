@@ -248,7 +248,7 @@ def test_the_cli_shows_and_sits(monkeypatch, tmp_path, capsys):
     shown = capsys.readouterr().out
     assert shown.count("check:") == 40 and "t3_00" in shown
     monkeypatch.setenv("HIVE_MEMBERS", "t17")  # the sitting sets it for the work; restored after the test
-    monkeypatch.setattr(T, "sit", lambda seed, who, only: T.score(seed, who, who, [{"kind": "fact", "ok": True}] * 3 + [{"kind": "time", "ok": False}]))
+    monkeypatch.setattr(T, "sit", lambda seed, who, only, **k: T.score(seed, who, who, [{"kind": "fact", "ok": True}] * 3 + [{"kind": "time", "ok": False}]))
     out = tmp_path / "talk.json"
     assert T.main(["sit", "--seed", "3", "--who", "t17", "--out", str(out)]) == 0
     res = json.loads(out.read_text())
@@ -272,3 +272,87 @@ def test_the_talk_row_is_on_the_progress_page_when_the_generation_sat_it(tmp_pat
     assert "**Talk:** generation g43 sat the talk exam (seed 812): 7.5 of 10 (30 of 40 messages right: route 9 of 10, fact 7 of 10" in page
     (talks / "g43.json").write_text("not json")
     assert progress.talk_of("g43", talks) is None
+
+
+# ---- held to time: the line sits it every generation and must never wait on it ---------------------------------------
+def _slow(monkeypatch, tmp_path, seconds_for):
+    """A hive whose model takes `seconds_for(message)` seconds to answer each message (then answers like _knows)."""
+    import time
+
+    def answer(messages):
+        time.sleep(seconds_for(messages[-1]["content"]))
+        return _knows(messages)
+    return _hive(monkeypatch, tmp_path, answer)
+
+
+def test_a_message_over_its_cap_fails_for_time_and_the_sitting_goes_on(monkeypatch, tmp_path):
+    import time
+    facts = [i for i in _ITEMS if i["kind"] == "fact"]
+    slow = {facts[1]["message"], facts[4]["message"]}
+    _slow(monkeypatch, tmp_path, lambda m: 30 if m in slow else 0)
+    t0 = time.time()
+    res = T.sit(3, who="t17", run_dir=tmp_path, log=lambda *a: None, only=("fact",), per=2)
+    assert time.time() - t0 < 25  # the slow ones were ended at their cap, not waited for
+    timed = [r for r in res["items"] if r["why"].startswith("time")]
+    assert [r["message"] for r in timed] == [facts[1]["message"], facts[4]["message"]]
+    assert all(not r["ok"] and r["seconds"] < 10 for r in timed)
+    assert res["of"] == 10 and res["timed_out"] == 2 and res["per_seconds"] == 2
+    assert all(r["ok"] for r in res["items"] if r not in timed) and res["right"] == 8  # what came back in time scored as ever
+
+
+def test_the_budget_ends_the_sitting_cleanly_and_counts_the_rest_failed_for_time(monkeypatch, tmp_path):
+    import time
+    _slow(monkeypatch, tmp_path, lambda m: 0.4)
+    t0 = time.time()
+    res = T.sit(3, who="t17", run_dir=tmp_path, log=lambda *a: None, only=("fact", "earlier"), minutes=1.5 / 60, per=120)
+    assert time.time() - t0 < 6
+    assert res["of"] == 20 and res["timed_out"] >= 15 and res["budget_minutes"] == 1.5 / 60
+    sat = [r for r in res["items"] if not r["why"].startswith("time")]
+    assert sat and all(r["ok"] for r in sat) and res["right"] == len(sat)
+    assert "time was up" in res["items"][-1]["why"]
+
+
+def test_a_message_that_breaks_in_its_own_process_is_failed_and_said(monkeypatch, tmp_path):
+    _hive(monkeypatch, tmp_path, _knows)
+
+    def broken(*a, **k):
+        raise RuntimeError("the server is dead")
+    monkeypatch.setattr(talk.ternary, "chat", broken)
+    res = T.sit(3, who="t17", run_dir=tmp_path, log=lambda *a: None, only=("route",), per=30)
+    assert res["of"] == 10 and res["right"] == 0 and res["items"][0]["why"] == "broke: RuntimeError: the server is dead"
+
+
+def test_the_cli_takes_the_budget_and_writes_its_json_even_when_the_sitting_cannot_start(monkeypatch, tmp_path, capsys):
+    got = {}
+    monkeypatch.setattr(T, "sit", lambda seed, who, only, **k: got.update(k) or T.score(seed, who, who, [{"kind": "fact", "ok": True}]))
+    out = tmp_path / "talk" / "g44.json"
+    assert T.main(["sit", "--seed", "3", "--who", "body", "--minutes", "20", "--per", "120", "--out", str(out)]) == 0
+    assert got == {"minutes": 20.0, "per": 120.0} and json.loads(out.read_text())["right"] == 1
+
+    def nobody(*a, **k):
+        raise RuntimeError("the hive's body is not on this machine")
+    monkeypatch.setattr(T, "sit", nobody)
+    assert T.main(["sit", "--seed", "3", "--minutes", "20", "--out", str(out)]) == 1
+    res = json.loads(out.read_text())
+    assert res["of"] == 0 and "not on this machine" in res["error"]
+    assert progress.talk_of("g44", out.parent) is None  # no Talk line from a sitting that never sat
+
+
+def test_the_gate_sits_the_talk_exam_on_one_after_seat_and_the_record_keeps_it():
+    import yaml
+    flow = yaml.safe_load((T.ROOT / ".github" / "workflows" / "grow.yml").read_text())
+    gate = flow["jobs"]["gate"]["steps"]
+    names = [s.get("name", "") for s in gate]
+    i = names.index("The talk exam (training/talk_exam.py)")
+    step = gate[i]
+    assert i > names.index("A fresh exam, half of the first exam's kinds and half hard ones")
+    assert step["continue-on-error"] is True and step["timeout-minutes"] == 30
+    assert "matrix.arm == 'after'" in step["if"] and "matrix.seed == 1" in step["if"]
+    assert "training/talk_exam.py sit" in step["run"] and '--who body --minutes 20 --per 120 --out "talk/$GEN.json"' in step["run"]
+    up = gate[i + 1]
+    assert up["with"]["name"] == "talk-${{ env.GEN }}" and up["with"]["if-no-files-found"] == "ignore" and up["if"] == step["if"]
+    rec = flow["jobs"]["record"]["steps"]
+    j = next(n for n, s in enumerate(rec) if s.get("with", {}).get("name") == "talk-${{ env.GEN }}")
+    assert rec[j]["continue-on-error"] is True and rec[j]["with"]["path"] == "training/reports/talk"
+    k = next(n for n, s in enumerate(rec) if "training/reads.py write" in s.get("run", ""))
+    assert j < k and "training/reports/talk/$GEN.json" in rec[k]["run"].split("git add docs/PROGRESS.md", 1)[1]
