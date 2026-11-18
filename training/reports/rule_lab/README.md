@@ -4,6 +4,8 @@ A new 38.0 MiB adapter learned a calibration procedure that the original data an
 
 I ran the experiment on the existing g41 HiveMIND base in a separate Git worktree. Each cell could request measurements from a local simulator, hand ownership of a shared notebook to a peer, or submit coefficients. Each world advertised its equation family but hid its coefficients. A pass required the correct prediction at all eight private settings, all outside the allowed measurement grid. Six turns and four or five measurements were available to every arm. No remote model generated answers or judged them. [Experimental design](design.md) · [Measurements](results.json) · [Turn-by-turn transcripts](traces.jsonl.gz)
 
+The follow-up rebuilt this child from its parent, tested sub-megabyte ternary records on new problems, and grew one small network from the memories of two specialists. [Engrams, reconstruction and BitNet results](engrams-and-bitnets.md)
+
 ## The fixed comparison
 
 Four affine worlds and four interaction worlds were shared by all seven configurations. An affine sensor adds separate contributions from x and y. The harder sensor also multiplies x by y and an unknown coefficient. Seconds are mean end-to-end time summed over the turns of one world, including adapter loads when they occurred.
