@@ -86,7 +86,7 @@ What was seen (slanted) -> its cause -> its fix -> the board piece of `docs/PLAN
 
 ```mermaid
 flowchart LR
-  pc_L3["L3: The line runs five generations with nobody's hand<br/>who: the loop holder (watch only)"]:::fixed
+  pc_L3["L3: The line runs five generations with nobody's hand<br/>who: done (B)"]:::fixed
   pc_T3["T3: The lesson's key lines weigh more<br/>who: open, only on a verdict"]:::open
   pc_L1["L1: Generation 38 through<br/>who: done (B)"]:::fixed
   pc_L2["L2: A generation in 5 hours with no less work<br/>who: done (B, g43 4.4 h)"]:::open
