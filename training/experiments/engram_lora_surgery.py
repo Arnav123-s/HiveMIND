@@ -85,7 +85,7 @@ def measure(left, right):
     if denom <= 0:
         raise ValueError("zero effective edit")
     return {"left": left.name, "right": right.name, "left_sha256": digest(left), "right_sha256": digest(right),
-            "relative_frobenius": {k: (sum(z[k] for z in out) / denom) ** 0.5 for k in
+            "relative_frobenius": {k.removesuffix("_error_sq"): (sum(z[k] for z in out) / denom) ** 0.5 for k in
                 ("mean_factors_error_sq", "sign_flipped_mean_factors_error_sq", "best_same_rank_error_sq")},
             "projections": out}
 

@@ -10,6 +10,8 @@ The inference and learning study measures CPU time on the real 8B server and scr
 
 Two cells also learned to cooperate from separate inputs through a one-byte channel each. The communication study includes a runnable pair, incompatible signal conventions, late messages and a 1,024-cell sub-hive simulation. [Hive telepathy and sub-hives](hive-telepathy.md)
 
+The construct study tests what can pass between cells as a neural signal, a weight edit, a style direction or an executable memory. It includes real 8B adapter mixtures, a three-byte polarity repair, and work orders that survive a worker dying after a write. [Constructs, surgery and conversation outcomes](constructs-and-surgery.md)
+
 ## The fixed comparison
 
 Four affine worlds and four interaction worlds were shared by all seven configurations. An affine sensor adds separate contributions from x and y. The harder sensor also multiplies x by y and an unknown coefficient. Seconds are mean end-to-end time summed over the turns of one world, including adapter loads when they occurred.

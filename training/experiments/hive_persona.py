@@ -230,13 +230,16 @@ def verify_transfer(args):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("stage", choices=("extract", "grade", "score", "examples", "stress", "confirm", "verify"))
-    for key in ("out", "base", "catalog"):
-        p.add_argument("--" + key, type=Path, required=True)
+    p.add_argument("--out", type=Path, required=True)
+    p.add_argument("--base", type=Path)
+    p.add_argument("--catalog", type=Path)
     p.add_argument("--generator", type=Path)
     p.add_argument("--binary", type=Path)
     p.add_argument("--donor", default="t80+g41words")
     p.add_argument("--recipient", default="t80+g41data")
     args = p.parse_args()
+    if args.stage not in ("score", "verify") and (args.base is None or args.catalog is None):
+        p.error("native inference and extraction need --base and --catalog")
     if args.stage == "extract":
         if not args.generator:
             p.error("extraction needs --generator")
