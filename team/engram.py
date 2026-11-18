@@ -18,27 +18,69 @@ import json
 import os
 import tempfile
 import time
-from pathlib import Path
+from collections import Counter, defaultdict
+from functools import lru_cache
 
 from . import memory, ternary
 
 
+def _rows(path):
+    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+
+
 def index():
     try:
-        return [json.loads(x) for x in (ternary.ENGRAMS / "index.jsonl").read_text().splitlines() if x.strip()]
+        return _rows(ternary.ENGRAMS / "index.jsonl")
     except (OSError, ValueError):
         return []
 
 
+@lru_cache(maxsize=1)
+def _catalog(path, generation):
+    """One immutable lookup snapshot per file generation. Keep duplicate records in insertion order."""
+    by_base = {}
+    for entry in _rows(path):
+        dna = entry.get("dna")
+        if dna not in by_base:
+            by_base[dna] = ([], defaultdict(list))
+        rows, postings = by_base[dna]
+        terms = memory.words(entry.get("task", ""))
+        for word in terms:
+            postings[word].append(len(rows))
+        rows.append((entry, len(terms)))
+    return by_base
+
+
 def recall(task, base, most=2, least=0.34):
     """The names of the engrams of this DNA whose tasks are most like this one (shared words over all words)."""
-    mine, out = memory.words(task), []
-    for e in index():
-        theirs = memory.words(e.get("task", ""))
-        score = len(mine & theirs) / max(1, len(mine | theirs))
-        if e.get("dna") == base and score >= least and e.get("task") != task and (ternary.ENGRAMS / f"{base}+{e['name']}.gguf").exists():
-            out.append((score, e["name"]))
-    return [name for _, name in sorted(out, reverse=True)[:most]]
+    directory = ternary.ENGRAMS
+    path = directory / "index.jsonl"
+    try:
+        stat = path.stat()
+        generation = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
+        catalog = _catalog(path, generation)
+    except (OSError, ValueError):
+        return []
+    if base not in catalog or most == 0:
+        return []
+    rows, postings = catalog[base]
+    mine = memory.words(task)
+    shared = Counter(i for word in mine for i in postings.get(word, ()))
+    candidates = range(len(rows)) if least <= 0 else shared
+    ranked = []
+    for i in candidates:
+        entry, size = rows[i]
+        common = shared[i]
+        score = common / max(1, len(mine) + size - common)
+        if score >= least and entry.get("task") != task:
+            ranked.append((score, entry["name"]))
+    out = []
+    for _, name in sorted(ranked, reverse=True):
+        if (directory / f"{base}+{name}.gguf").exists():
+            out.append(name)
+            if most is not None and most > 0 and len(out) == most:
+                break
+    return out[:most]
 
 
 def write(task, run, base="t17", steps=12, log=print):
