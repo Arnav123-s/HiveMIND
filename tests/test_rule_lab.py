@@ -3,10 +3,29 @@ import json
 import pytest
 
 from training.experiments import rule_lab as lab
+from training.experiments import rule_lab_lifecycle as lifecycle
 from training.experiments import rule_lab_recipe as recipes
 from training.experiments.rule_lab_checks import retention_scores
 from training.experiments.rule_lab_solver import fit
 from training.experiments.rule_lab_train import teaching_rows
+
+
+def test_population_history_survives_loss_of_all_correct_answers():
+    episodes = lifecycle.notebooks()
+    events, ordinary = lifecycle.population(7, episodes)
+    failed_events, failed = lifecycle.population(7, episodes, disable_answers=True)
+    assert failed_events == events
+    assert ordinary["completed_two_cell_tasks"] > 0 and failed["completed_two_cell_tasks"] == 0
+    assert ordinary["births"] > 0 and ordinary["deaths"] > 0
+    assert ordinary["of_these_children_that_reproduced"] > 0
+    born = dict.fromkeys(range(lifecycle.FOUNDERS), -12)
+    for kind, tick, member, *parents in events:
+        if kind == "birth":
+            assert member not in born and tick - born[parents[0]] >= 12
+            born[member] = tick
+        else:
+            assert tick - born.pop(member) >= 40
+    assert len(born) == ordinary["living"]
 
 
 def test_rules_and_heldout_settings_are_disjoint_from_training_and_probing():
