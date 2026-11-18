@@ -36,3 +36,5 @@ The earned program lives in the included bank. The normal terminal reused it on 
   --spec training/reports/retained-skills/shipping/per-parcel.json \
   --out runs/example-shipping
 ```
+
+All 880 repository tests passed with the optional WebAssembly and native CPU checks enabled. The final checkout also reproduced the six invoice decisions, every fresh shipping score and output hash, and the 16 deliveries using the packaged method.
