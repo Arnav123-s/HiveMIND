@@ -1,0 +1,35 @@
+{
+  "name": "invoice_tax",
+  "description": "Return the invoice tax in integer cents for the nonnegative line amounts in x['lines']. Use the billing convention illustrated by the labeled examples on this work order.",
+  "programs": {
+    "per_line": "def solve(x):\n    tax = 0\n    for price in x['lines']:\n        tax += (price + 10) // 20\n    return tax",
+    "per_invoice": "def solve(x):\n    subtotal = sum(x['lines'])\n    return (subtotal + 10) // 20",
+    "wrong_revision": "def solve(x):\n    return (sum(x['lines']) + 9) // 20"
+  },
+  "rules": {
+    "per_line": "5% tax, round half up to a cent separately on each line, then add",
+    "per_invoice": "5% tax on the invoice subtotal, round half up to a cent once",
+    "truncate": "5% tax on the invoice subtotal, discard fractional cents"
+  },
+  "public": [ [[200,300],25], [[40,60],5] ],
+  "validation": {
+    "per_line": [ [[10,10],2], [[9,9,9],0] ],
+    "per_invoice": [ [[10,10],1], [[9,9,9],1] ],
+    "both": [ [[1000],50], [[20,20,20],3] ],
+    "truncate": [ [[39],1], [[59],2] ]
+  },
+  "batches": {
+    "distinct": [[10,10,10],[8,8,8,8],[50,70,90],[1499,3210,7058]],
+    "agree": [[20,40],[400,120],[10000]],
+    "mixed": [[20,40],[10,10,10],[8,8,8,8]],
+    "return": [[14,14],[28,28],[130,110,10,10]]
+  },
+  "visits": [
+    {"id":"original", "validation":"per_line", "batch":"distinct", "expected":[3,0,12,589]},
+    {"id":"correction", "validation":"per_invoice", "batch":"distinct", "expected":[2,2,11,588]},
+    {"id":"agree_on_jobs", "validation":"both", "batch":"agree", "expected":[3,26,500]},
+    {"id":"inconclusive", "validation":"both", "batch":"mixed", "expected":null, "reason":"two independently accepted rules give different amounts on these actual invoices"},
+    {"id":"failed_revision", "validation":"truncate", "batch":"distinct", "expected":null, "reason":"neither retained version nor the additional proposed program passes the current validation"},
+    {"id":"original_again", "validation":"per_line", "batch":"return", "expected":[2,2,15]}
+  ]
+}

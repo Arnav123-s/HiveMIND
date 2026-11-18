@@ -1,0 +1,409 @@
+{
+  "name": "depot_shipping_fee",
+  "task": "Write solve(x) to calculate a depot's shipping fee in integer cents. x has a grams list of positive whole parcel weights. An empty shipment costs zero. Any nonempty shipment has one dispatch charge of 250 cents and costs another 90 cents per started 500 grams. Use the depot's rounding convention illustrated by the examples. Return just the integer fee.",
+  "examples": [
+    {
+      "input": {
+        "grams": [
+          25
+        ]
+      },
+      "output": 340
+    },
+    {
+      "input": {
+        "grams": [
+          999
+        ]
+      },
+      "output": 430
+    },
+    {
+      "input": {
+        "grams": [
+          120,
+          130
+        ]
+      },
+      "output": 430
+    },
+    {
+      "input": {
+        "grams": [
+          175,
+          275
+        ]
+      },
+      "output": 430
+    },
+    {
+      "input": {
+        "grams": [
+          499,
+          501,
+          500
+        ]
+      },
+      "output": 610
+    },
+    {
+      "input": {
+        "grams": [
+          1100,
+          380,
+          607
+        ]
+      },
+      "output": 790
+    },
+    {
+      "input": {
+        "grams": [
+          2500,
+          954
+        ]
+      },
+      "output": 880
+    },
+    {
+      "input": {
+        "grams": [
+          1,
+          25,
+          50,
+          100
+        ]
+      },
+      "output": 610
+    }
+  ],
+  "validation": [
+    {
+      "input": {
+        "grams": [
+          3001,
+          3160,
+          3244,
+          3012,
+          2501,
+          2000
+        ]
+      },
+      "output": 3670
+    },
+    {
+      "input": {
+        "grams": [
+          2499,
+          3001,
+          1001,
+          2019,
+          658,
+          87
+        ]
+      },
+      "output": 2320
+    },
+    {
+      "input": {
+        "grams": [
+          3060,
+          739
+        ]
+      },
+      "output": 1060
+    },
+    {
+      "input": {
+        "grams": [
+          3291
+        ]
+      },
+      "output": 880
+    },
+    {
+      "input": {
+        "grams": [
+          2459,
+          3192,
+          940,
+          2000,
+          1499,
+          2000
+        ]
+      },
+      "output": 2500
+    },
+    {
+      "input": {
+        "grams": [
+          3049,
+          1999,
+          129,
+          909
+        ]
+      },
+      "output": 1510
+    },
+    {
+      "input": {
+        "grams": [
+          3099,
+          3000,
+          1001,
+          3001,
+          843,
+          2174,
+          2442
+        ]
+      },
+      "output": 3400
+    },
+    {
+      "input": {
+        "grams": [
+          2500,
+          83
+        ]
+      },
+      "output": 790
+    },
+    {
+      "input": {
+        "grams": [
+          2501,
+          2001,
+          3000,
+          2579,
+          500,
+          2726
+        ]
+      },
+      "output": 2950
+    },
+    {
+      "input": {
+        "grams": [
+          1463,
+          425,
+          531,
+          3131
+        ]
+      },
+      "output": 1420
+    },
+    {
+      "input": {
+        "grams": [
+          1999,
+          500
+        ]
+      },
+      "output": 700
+    },
+    {
+      "input": {
+        "grams": [
+          1767,
+          1999,
+          2999,
+          2500,
+          796,
+          499,
+          755,
+          3450
+        ]
+      },
+      "output": 3040
+    }
+  ],
+  "jobs": [
+    {
+      "id": "shipment-01",
+      "input": {
+        "grams": [
+          2000,
+          2499,
+          3904,
+          3971
+        ]
+      }
+    },
+    {
+      "id": "shipment-02",
+      "input": {
+        "grams": [
+          3976
+        ]
+      }
+    },
+    {
+      "id": "shipment-03",
+      "input": {
+        "grams": [
+          3623,
+          2667,
+          1963,
+          2501,
+          999,
+          538
+        ]
+      }
+    },
+    {
+      "id": "shipment-04",
+      "input": {
+        "grams": [
+          1999,
+          1946,
+          1499,
+          1202,
+          2501,
+          2500,
+          499,
+          1571
+        ]
+      }
+    },
+    {
+      "id": "shipment-05",
+      "input": {
+        "grams": [
+          2001,
+          501,
+          499,
+          3813,
+          3254,
+          3026,
+          1500,
+          501
+        ]
+      }
+    },
+    {
+      "id": "shipment-06",
+      "input": {
+        "grams": [
+          3001,
+          501,
+          2001,
+          765,
+          1999,
+          381
+        ]
+      }
+    },
+    {
+      "id": "shipment-07",
+      "input": {
+        "grams": [
+          1225,
+          1500,
+          499
+        ]
+      }
+    },
+    {
+      "id": "shipment-08",
+      "input": {
+        "grams": [
+          2000,
+          3928,
+          3067,
+          1592
+        ]
+      }
+    },
+    {
+      "id": "shipment-09",
+      "input": {
+        "grams": [
+          1999
+        ]
+      }
+    },
+    {
+      "id": "shipment-10",
+      "input": {
+        "grams": [
+          3000,
+          3761,
+          3000,
+          1579,
+          3176,
+          2000,
+          2499,
+          609
+        ]
+      }
+    },
+    {
+      "id": "shipment-11",
+      "input": {
+        "grams": [
+          3307,
+          2501,
+          1999,
+          2740,
+          3000,
+          47,
+          348
+        ]
+      }
+    },
+    {
+      "id": "shipment-12",
+      "input": {
+        "grams": [
+          2499,
+          71
+        ]
+      }
+    },
+    {
+      "id": "shipment-13",
+      "input": {
+        "grams": [
+          3000,
+          3150,
+          2501,
+          2034
+        ]
+      }
+    },
+    {
+      "id": "shipment-14",
+      "input": {
+        "grams": [
+          3645,
+          1501,
+          2001
+        ]
+      }
+    },
+    {
+      "id": "shipment-15",
+      "input": {
+        "grams": [
+          1198,
+          3188,
+          499
+        ]
+      }
+    },
+    {
+      "id": "shipment-16",
+      "input": {
+        "grams": [
+          1000,
+          1285,
+          1000,
+          3844,
+          946,
+          3069,
+          1501
+        ]
+      }
+    }
+  ]
+}

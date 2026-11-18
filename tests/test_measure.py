@@ -19,6 +19,58 @@ def test_the_pulse_counts_hard_easy_and_several_apart(tmp_path):
     assert a["hard"] == [1, 2] and a["easy"] == [2, 2] and a["several"] == [0, 1] and a["passed"] == 3
 
 
+def test_every_hard_family_counts_in_its_declared_group(tmp_path):
+    from training import kinds, reads
+
+    tasks = []
+    for i, mod in enumerate(kinds.HARD_KINDS):
+        _, label, _, _ = kinds.sample(mod.KIND)
+        tasks.append({"id": f"h{i}", "kind": label, "ok": i % 2 == 0})
+    total = sum(t["ok"] for t in tasks)
+    (tmp_path / "exam.json").write_text(json.dumps({"summary": {"tasks": len(tasks), "passed": total, "minutes": 1},
+                                                     "tasks": tasks}))
+    arm = grow_record.arm([tmp_path])
+    for key, subset in (("taught", [t for m, t in zip(kinds.HARD_KINDS, tasks) if m.lesson and not m.HELD_OUT]),
+                        ("unpractised", [t for m, t in zip(kinds.HARD_KINDS, tasks) if m.HELD_OUT])):
+        assert arm[key] == [sum(t["ok"] for t in subset), len(subset)]
+    assert arm["taught"][1] + arm["unpractised"][1] == arm["hard"][1]
+    # Models may gain or lose families in future. The recording-time groups stay authoritative.
+    assert kinds.hard_scores(dict(arm, kinds={})) == (arm["taught"], arm["unpractised"])
+    # The previous schema counted just the first four held-out families. Recover from the complete roll.
+    old = {k: v for k, v in arm.items() if k != "taught"}
+    old["unpractised"] = [0, 1]
+    line = {"generation": "g-test", "arms": {"after": old}}
+    assert reads.generation_entry(line)["hard"] == arm["taught"]
+    assert reads.generation_entry(line)["held_out"] == progress._held_out(line) == arm["unpractised"]
+    assert kinds.hard_scores({"unpractised": [0, 9]}) == ([0, 0], [0, 9])
+    assert kinds.hard_scores({}) == ([0, 0], [0, 0])
+
+
+def test_member_success_and_delivery_are_compared_on_covered_cases(tmp_path):
+    from training import reads
+
+    tasks = [
+        {"id": "h1", "ok": False, "members": [{"ok": True}, {"ok": False}]},
+        {"id": "h2", "ok": True, "members": [{"ok": True}]},
+        {"id": "h3", "ok": True, "members": [{"ok": False}]},
+        {"id": "e1", "ok": False, "members": [{"ok": False}]},
+        {"id": "h4", "ok": False, "members": [], "agreed": True},
+        {"id": "h5", "ok": False, "members": [{"ok": False}, {}]},
+        {"id": "e2", "ok": False, "members": [{}, {"ok": True}]},
+        {"id": "e3", "members": [{"ok": True}]},
+    ]
+    (tmp_path / "grades.json").write_text(json.dumps({"summary": {"tasks": len(tasks), "passed": 2, "minutes": 1},
+                                                     "tasks": tasks}))
+    arm = grow_record.arm([tmp_path])
+    assert arm["member_delivery"]["all"] == dict(both=1, member_only=2, delivery_only=1, neither=1)
+    assert arm["member_delivery"]["hard"] == dict(both=1, member_only=1, delivery_only=1, neither=0)
+    old = {k: v for k, v in arm.items() if k != "member_delivery"}
+    table = reads.member_delivery_table({"arms": {"before": old, "after": arm}})
+    assert "| before | hard | unrecorded | – | – | – | – |" in table
+    assert "| after | hard | 3 of 5 | 2 | 2 | 1 | 1 |" in table
+    assert "| after | all | 5 of 8 | 3 | 2 | 2 | 1 |" in table
+
+
 def test_practice_is_counted_kind_by_kind_and_older_generations_weigh_half(tmp_path):
     (tmp_path / "p").mkdir()
     (tmp_path / "p" / "practice.json").write_text(json.dumps({"tasks": [

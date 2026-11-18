@@ -9,6 +9,10 @@ A sitting can be held to time (the grow line sits it every generation, and it mu
 --minutes is the whole sitting's budget and --per the most seconds one message may take. With either, each message is
 sat in a process of its own, ended (its programs with it) at its cap or at the end of the budget; such a message, and
 every one the budget does not reach, counts as failed for "time", and the sitting ends cleanly with its json written.
+The route messages are sat first: each is one decision of the model (about 13 s) and runs no work, so the budget,
+spent mostly on the messages that are worked out (50 to 95 s each), never leaves them unasked (g45: 4 of its 5 route
+misses were never asked). The score says apart what was answered wrong and what was never answered ("unanswered":
+out of time, or broken before a reply).
 
 Four kinds, ten messages each, every one drawn from a template with new values (the same seed, the same exam). The
 messages sit on the edges where a weak talker slips, and each check names the near miss that is wrong:
@@ -29,7 +33,9 @@ messages sit on the edges where a weak talker slips, and each check names the ne
 Every check is code (numbers, dates, weekdays and times read out of the reply; words matched after lower-casing and
 dropping punctuation); no model judges. Where a check names near misses ("not"), the first of the answer and the near
 misses that the reply names must be the answer ("412, it moved from 318" is right, "318... or 412" is wrong); a value
-under "never" must not be named at all; a reply that says it does not know is wrong. The score is out of 40, and out
+under "never" must not be named at all; a reply that says it does not know is wrong. A time or a date
+to be given must be one answer: a reply that names other times (dates) beside it, other than the near misses and the
+time it was told it is, is wrong (g45's t15 said "19:15, 01:15, 17:15" and passed). The score is out of 40, and out
 of 10 for the goal's table (bar: 8 of 10).
 """
 import datetime
@@ -307,6 +313,9 @@ def make(seed):
             now = _now(r)
             if kind == "time":
                 message, check, now = m_time(r, order[j])
+                for c in [check] + check.get("of", []):  # the time asked for must be one answer (check, _others)
+                    if c["type"] in ("clock", "date"):
+                        c["one"] = True
                 history = []
             else:
                 message, history, check = {"route": m_route, "fact": m_fact, "earlier": m_earlier}[kind](r, order[j])
@@ -418,17 +427,35 @@ def _first(spec, text):
     return first(want), min((first(d) for d in named), default=None), named
 
 
-def check(spec, text, way=None):
-    """(right, why) for one reply (text) and the route talk.py took (way) against a check spec."""
+def _others(spec, text, now=None):
+    """The times (or dates) a reply names beside the one asked for: not the answer, a near miss or the time (date) it
+    was told it is now (now: 'YYYY-MM-DD HH:MM')."""
+    t, want = spec["type"], spec["want"]
+    told = set()
+    if now:
+        told = {now[11:16], now[:10], now[5:10]}
+    if t == "clock":
+        return sorted(clocks(text) - {want} - set(spec.get("not", [])) - told)
+    if t == "date":
+        return sorted(d for d in dates(text) if d not in (want, want[5:]) and d not in told
+                      and not any(d in (n, n[5:]) for n in spec.get("not", [])))
+    return []
+
+
+def check(spec, text, way=None, now=None):
+    """(right, why) for one reply (text) and the route talk.py took (way) against a check spec. now: the time the
+    hive was told it is (a time or date it names is not counted as a second answer)."""
     t = spec["type"]
     if t == "route":
         return way == spec["want"], f"wants {spec['want']}; took {way}"
     if UNSURE.search(str(text)):  # 'I don't remember your name. I'm Priya' (t17, seed 1) names the name and is still wrong
         return False, "the reply says it does not know or remember"
     if t == "all":
-        got = [check(s, text) for s in spec["of"]]
+        got = [check(s, text, now=now) for s in spec["of"]]
         return all(ok for ok, _ in got), "; ".join(why for _, why in got)
     ok, why = _plain(spec, text)
+    if ok and spec.get("one") and t in ("clock", "date") and (more := _others(spec, text, now)):
+        ok, why = False, why + f"; names {more} beside it: not one answer"
     if ok and spec.get("never"):
         said = [w for w in spec["never"] if _has(text, w)]
         if said:
@@ -520,7 +547,9 @@ def sit(seed, who="body", only=(), log=print, run_dir=None, minutes=None, per=No
     home = Path(run_dir or ROOT / "runs" / "talk_exam" / f"{seed}_{time.strftime('%Y%m%d-%H%M%S')}")
     rows, t00 = [], time.time()
     end = t00 + 60 * float(minutes) if minutes is not None else None
-    for it in make(seed):
+    items = make(seed)
+    # the route messages first: one decision each and no work, so the budget never leaves them unasked
+    for it in [x for x in items if x["kind"] == "route"] + [x for x in items if x["kind"] != "route"]:
         if only and it["kind"] not in only:
             continue
         t0 = time.time()
@@ -537,7 +566,7 @@ def sit(seed, who="body", only=(), log=print, run_dir=None, minutes=None, per=No
             if cap is not None and cap <= 0:
                 raise TimeoutError("the sitting's time was up before this message")
             way, text = _within(one, cap)
-            ok, why = check(it["check"], text, way)
+            ok, why = check(it["check"], text, way, now=it["now"])
         except TimeoutError as e:  # over its cap, or past the budget: failed for time, the sitting goes on (or ends)
             way, text, ok, why = None, "", False, f"time: {e}"
         except Broke as e:
@@ -558,7 +587,14 @@ def score(seed, who, base, rows, minutes=0.0):
     kinds = {k: [sum(r["ok"] for r in rows if r["kind"] == k), sum(r["kind"] == k for r in rows)] for k in KINDS}
     return {"seed": seed, "who": who, "member": base, "when": time.strftime("%Y-%m-%d %H:%M"), "minutes": minutes,
             "right": right, "of": len(rows), "score": right, "out_of_10": round(10 * right / len(rows), 1) if rows else 0.0,
-            "kinds": kinds, "timed_out": sum(str(r.get("why", "")).startswith("time") for r in rows), "items": rows}
+            "kinds": kinds, "timed_out": sum(str(r.get("why", "")).startswith("time") for r in rows),
+            # never answered (out of time, or broken before a reply) apart from answered and wrong
+            "unanswered": sum(_unanswered(r) for r in rows), "wrong": sum(not r["ok"] and not _unanswered(r) for r in rows),
+            "unanswered_by_kind": {k: sum(_unanswered(r) for r in rows if r["kind"] == k) for k in KINDS}, "items": rows}
+
+
+def _unanswered(r):
+    return not r["ok"] and str(r.get("why", "")).startswith(("time", "broke"))
 
 
 def main(argv):
@@ -587,7 +623,7 @@ def main(argv):
             res = {"seed": seed, "who": opt("--who", "body"), "when": time.strftime("%Y-%m-%d %H:%M"), "minutes": 0.0,
                    "right": 0, "of": 0, "out_of_10": None, "kinds": {}, "error": f"{type(e).__name__}: {e}", "items": []}
         path.write_text(json.dumps(res, indent=1) + "\n")
-        print(json.dumps({k: res[k] for k in ("seed", "who", "right", "of", "out_of_10", "kinds", "minutes", "timed_out", "error") if k in res}))
+        print(json.dumps({k: res[k] for k in ("seed", "who", "right", "of", "out_of_10", "kinds", "minutes", "timed_out", "unanswered", "wrong", "error") if k in res}))
         return 1 if res.get("error") else 0
     print(__doc__)
     return 1

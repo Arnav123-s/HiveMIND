@@ -1,0 +1,599 @@
+{
+  "repo": "Arnav123-s/HiveMIND",
+  "generation": "g47",
+  "run_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44313055326",
+  "record_url": "https://github.com/Arnav123-s/HiveMIND/blob/b2133163c40a10d5c8dee8a3debf9a30b1a2aa38/training/reports/generations.jsonl",
+  "definitions": {
+    "both": "A recorded member passed the task checker and final delivery passed.",
+    "member_only": "At least one recorded member passed and final delivery failed.",
+    "delivery_only": "Final delivery passed and all recorded members failed.",
+    "neither": "Final delivery failed and all recorded members failed.",
+    "coverage": "The four cells sum to covered tasks. Missing or inconclusive individual grades are outside that sum. The final checks used the exam report and final work folder; individual checks used the recorded member output and its work folder. These historical scores do not establish what a new selector would deliver."
+  },
+  "reproduce": "python -m training.member_delivery_replay; use --archives DIR for previously downloaded original ZIPs",
+  "grade_archives": [
+    {
+      "name": "gate-after-1",
+      "id": 14458191022,
+      "bytes": 2426,
+      "sha256": "511f7ac205cfc5a47a3155d1e073fb45c50d577edeb127e8d79dda1899d34df5"
+    },
+    {
+      "name": "gate-after-2",
+      "id": 14457220899,
+      "bytes": 2411,
+      "sha256": "f09e2d3109276587fadf3fc394e4f70ec5ef08f0cf79182ef587413be5c1ea76"
+    },
+    {
+      "name": "gate-after-3",
+      "id": 14456707261,
+      "bytes": 2481,
+      "sha256": "b28f064230ba0a42e49ea5261f29be854547ead57c73bdfdae65a27dc6091034"
+    },
+    {
+      "name": "gate-after-4",
+      "id": 14458506991,
+      "bytes": 2099,
+      "sha256": "52074d64127b33288a98bcc0fdc27b92e1a9daff9440400775d925c74c04b9f4"
+    },
+    {
+      "name": "gate-after-5",
+      "id": 14458306186,
+      "bytes": 2902,
+      "sha256": "97259e4e70b1737a6879d3d8786f7aedd18075e97c6a9304bef9ab0b7c9e769d"
+    },
+    {
+      "name": "gate-after-6",
+      "id": 14457246533,
+      "bytes": 2445,
+      "sha256": "7520abb69c2de82723f55186719383cca976189d7248d13761dd62cf43f3479b"
+    },
+    {
+      "name": "gate-after-7",
+      "id": 14457507467,
+      "bytes": 2896,
+      "sha256": "bb5605548130ed3bfb2326a6b6fef53fbab19fa8da216e49db914a042934d34e"
+    },
+    {
+      "name": "gate-after-8",
+      "id": 14458216294,
+      "bytes": 2352,
+      "sha256": "e094485f52a99f4c281c6fb0cdbe247f715d131e2726785b6b540937ad847372"
+    },
+    {
+      "name": "gate-before-1",
+      "id": 14458781661,
+      "bytes": 2408,
+      "sha256": "8603edfc7ffcf6f9efe8e4498e4854d9d409f0c7659756883aa227fd6227ecde"
+    },
+    {
+      "name": "gate-before-2",
+      "id": 14457052418,
+      "bytes": 2444,
+      "sha256": "c52ad696816299621dfe05b4bdfde533872e70f4f923666900b82ac77b0b1e3a"
+    },
+    {
+      "name": "gate-before-3",
+      "id": 14457131366,
+      "bytes": 2449,
+      "sha256": "efd941f878f1bf85a7cd8473ec3b0fa1bd34eecd567fb9ef10df5b8ddfe288d5"
+    },
+    {
+      "name": "gate-before-4",
+      "id": 14458416386,
+      "bytes": 2156,
+      "sha256": "516227e13e145e4c06ba2df066b3feb63bb756d1d7f3ddad89245382acac2f91"
+    },
+    {
+      "name": "gate-before-5",
+      "id": 14459476076,
+      "bytes": 2851,
+      "sha256": "eaa5fc6d34872c0650175ee7a96cd0d1d8ce790950f7124bf75ecf39a5c84c2f"
+    },
+    {
+      "name": "gate-before-6",
+      "id": 14457831395,
+      "bytes": 2467,
+      "sha256": "03e71ae46f54a4cb795c92d54a9cc3e66b0f10a1ff9d8d0d58ddba75f3f72918"
+    },
+    {
+      "name": "gate-before-7",
+      "id": 14457726256,
+      "bytes": 2943,
+      "sha256": "60431b67a84bda3ef82bc61d57df27a113dbf196cef494aff5bc30ffafc0fdfc"
+    },
+    {
+      "name": "gate-before-8",
+      "id": 14459165442,
+      "bytes": 2381,
+      "sha256": "5fd7ce035c09e127e3df0530aec2dc6af6e2be3b94b3da4300458ee3f635392f"
+    }
+  ],
+  "results": {
+    "before": {
+      "tasks": 64,
+      "passed": 47,
+      "hard": [
+        16,
+        32
+      ],
+      "member_delivery": {
+        "all": {
+          "both": 47,
+          "member_only": 3,
+          "delivery_only": 0,
+          "neither": 14
+        },
+        "hard": {
+          "both": 16,
+          "member_only": 3,
+          "delivery_only": 0,
+          "neither": 13
+        }
+      },
+      "hard_delivery_failures": [
+        {
+          "id": "h20000471_00",
+          "kind": "walk a site and count into a file",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45data2",
+            "t80+g45data"
+          ],
+          "delivery_finding": "no authors.json saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000471_02",
+          "kind": "a cache that forgets the least recently used, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45code"
+          ],
+          "delivery_finding": "391 of 431 hidden tests pass; first failure ['keys', [], ['f', 'a', 'e', 'b'], ['a', 'f', 'e', 'b']]; the values asked for ([['a', 'b', 'd']]) in the answer: True",
+          "final_answer": null
+        },
+        {
+          "id": "h20000472_00",
+          "kind": "an order of tasks by their dependencies, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45data2"
+          ],
+          "delivery_finding": "11 of 61 hidden tests pass; first failure ['order', [{'mail': [], 'tag': [], 'ship': ['mail', 'tag'], 'audit': []}], ['tag', 'mail', 'ship', 'audit'], []]; the values asked for ([['docs', 'pack', 'aud",
+          "final_answer": null
+        },
+        {
+          "id": "h20000472_02",
+          "kind": "a cache that forgets the least recently used, with hidden tests",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g45trunk"
+          ],
+          "failing_members": [
+            "t80+g45code",
+            "t80+g45code2"
+          ],
+          "delivery_finding": "no lru.py saved",
+          "final_answer": "Not confirmed: the members that worked this out independently did not agree, so no answer is given."
+        },
+        {
+          "id": "h20000474_00",
+          "kind": "the percent change between two columns, rounded by a rule",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45data2",
+            "t80+g45data"
+          ],
+          "delivery_finding": "percent.csv: 7 rows against 7, the rows that differ (got, wanted) []; shop named: False",
+          "final_answer": null
+        },
+        {
+          "id": "h20000474_02",
+          "kind": "rows kept within a range of dates written in several forms",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45code",
+            "t80+g45code2"
+          ],
+          "delivery_finding": "no window.csv saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000475_00",
+          "kind": "emails and phones found in a messy message",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g45code"
+          ],
+          "failing_members": [
+            "t80+g45trunk"
+          ],
+          "delivery_finding": "wants 4 emails ['jonasa@uni.example.edu', 'lena_m@shop.example.net', 'omar.a83@mail.example.com', 'sofia_m@uni.example.edu'] in order and phones: 3; got ['lena_m@shop.example.net', 'omar.a83@mail.exam",
+          "final_answer": "jonasa@uni.example.edu.\nlena_m@shop.example.net\nlena_m@shop.example.net.\nomar.a83@mail.example.com\nsofia_m@uni.example.edu.\nphones: 3"
+        },
+        {
+          "id": "h20000475_02",
+          "kind": "an order of tasks by their dependencies, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45data2",
+            "t80+g45data"
+          ],
+          "delivery_finding": "no schedule.py saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000475_03",
+          "kind": "the regions of a grid, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45code",
+            "t80+g45code2"
+          ],
+          "delivery_finding": "no grid.py saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000476_00",
+          "kind": "a text split into sentences",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45words"
+          ],
+          "delivery_finding": "wants sentences: 6; that line's numbers: [13.0]; wants longest: 4; that line's numbers: [9.0]; wants words: 15; that line's numbers: [15.0]",
+          "final_answer": null
+        },
+        {
+          "id": "h20000476_01",
+          "kind": "walk a site and count into a file",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45data2",
+            "t80+g45data"
+          ],
+          "delivery_finding": "no authors.json saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000476_02",
+          "kind": "a class with rules, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45code",
+            "t80+g45code2"
+          ],
+          "delivery_finding": "no bank.py saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000477_00",
+          "kind": "a queue served by priority, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45data2",
+            "t80+g45data"
+          ],
+          "delivery_finding": "no desk.py saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000477_02",
+          "kind": "a text split into sentences",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45words"
+          ],
+          "delivery_finding": "wants sentences: 8; that line's numbers: [13.0]; wants longest: 2; that line's numbers: []; wants words: 15; that line's numbers: [15.0]",
+          "final_answer": null
+        },
+        {
+          "id": "h20000477_03",
+          "kind": "the top rows of each group ranked",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g45data2"
+          ],
+          "failing_members": [
+            "t80+g45trunk"
+          ],
+          "delivery_finding": "leaders.csv: 16 rows against 12, wants [['blue', '1', 'Kofi', '98'], ['blue', '2', 'Ines', '74'], ['blue', '3', 'Jonas', '63']]...; Jonas named: False",
+          "final_answer": "Jonas"
+        },
+        {
+          "id": "h20000478_01",
+          "kind": "a simulation followed step by step",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g45trunk",
+            "t80+g45code",
+            "t80+g45code2"
+          ],
+          "delivery_finding": "ends with 2513.57, 1 refused; in the answer: False",
+          "final_answer": null
+        }
+      ],
+      "hard_failed_without_a_passing_member_by_kind": {
+        "a cache that forgets the least recently used, with hidden tests": 1,
+        "a class with rules, with hidden tests": 1,
+        "a queue served by priority, with hidden tests": 1,
+        "a simulation followed step by step": 1,
+        "a text split into sentences": 2,
+        "an order of tasks by their dependencies, with hidden tests": 2,
+        "rows kept within a range of dates written in several forms": 1,
+        "the percent change between two columns, rounded by a rule": 1,
+        "the regions of a grid, with hidden tests": 1,
+        "walk a site and count into a file": 2
+      }
+    },
+    "after": {
+      "tasks": 64,
+      "passed": 47,
+      "hard": [
+        16,
+        32
+      ],
+      "member_delivery": {
+        "all": {
+          "both": 47,
+          "member_only": 4,
+          "delivery_only": 0,
+          "neither": 13
+        },
+        "hard": {
+          "both": 16,
+          "member_only": 4,
+          "delivery_only": 0,
+          "neither": 12
+        }
+      },
+      "hard_delivery_failures": [
+        {
+          "id": "h20000471_00",
+          "kind": "walk a site and count into a file",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no authors.json saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000471_02",
+          "kind": "a cache that forgets the least recently used, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47code2"
+          ],
+          "delivery_finding": "391 of 431 hidden tests pass; first failure ['keys', [], ['f', 'a', 'e', 'b'], ['a', 'f', 'e', 'b']]; the values asked for ([['a', 'b', 'd']]) in the answer: True",
+          "final_answer": null
+        },
+        {
+          "id": "h20000472_00",
+          "kind": "an order of tasks by their dependencies, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "38 of 61 hidden tests pass; first failure ['order', [{'mail': [], 'tag': [], 'ship': ['mail', 'tag'], 'audit': []}], ['tag', 'mail', 'ship', 'audit'], ['audit', 'mail', 'tag', 'ship']]; the values ask",
+          "final_answer": null
+        },
+        {
+          "id": "h20000474_00",
+          "kind": "the percent change between two columns, rounded by a rule",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g47data"
+          ],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data2"
+          ],
+          "delivery_finding": "no percent.csv saved",
+          "final_answer": "Not confirmed: the members that worked this out independently did not agree, so no answer is given."
+        },
+        {
+          "id": "h20000474_02",
+          "kind": "rows kept within a range of dates written in several forms",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47code2",
+            "t80+g47code"
+          ],
+          "delivery_finding": "no window.csv saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000475_00",
+          "kind": "emails and phones found in a messy message",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47code2"
+          ],
+          "delivery_finding": "wants 4 emails ['jonasa@uni.example.edu', 'lena_m@shop.example.net', 'omar.a83@mail.example.com', 'sofia_m@uni.example.edu'] in order and phones: 3; got ['lena_m@shop.example.net', 'omar.a83@mail.exam",
+          "final_answer": null
+        },
+        {
+          "id": "h20000475_02",
+          "kind": "an order of tasks by their dependencies, with hidden tests",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g47data2"
+          ],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no schedule.py saved",
+          "final_answer": "Not confirmed: the members that worked this out independently did not agree, so no answer is given."
+        },
+        {
+          "id": "h20000476_00",
+          "kind": "a text split into sentences",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47words"
+          ],
+          "delivery_finding": "wants sentences: 6; that line's numbers: [13.0]; wants longest: 4; that line's numbers: [8.0]; wants words: 15; that line's numbers: [15.0]",
+          "final_answer": null
+        },
+        {
+          "id": "h20000476_01",
+          "kind": "walk a site and count into a file",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no authors.json saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000476_02",
+          "kind": "a class with rules, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47code2",
+            "t80+g47code"
+          ],
+          "delivery_finding": "no bank.py saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000477_00",
+          "kind": "a queue served by priority, with hidden tests",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no desk.py saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000477_02",
+          "kind": "a text split into sentences",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47words"
+          ],
+          "delivery_finding": "wants sentences: 8; that line's numbers: [13.0]; wants longest: 2; that line's numbers: []; wants words: 15; that line's numbers: [15.0]",
+          "final_answer": null
+        },
+        {
+          "id": "h20000477_03",
+          "kind": "the top rows of each group ranked",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g47trunk"
+          ],
+          "failing_members": [
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no leaders.csv saved",
+          "final_answer": "Not confirmed: the members that worked this out independently did not agree, so no answer is given."
+        },
+        {
+          "id": "h20000478_00",
+          "kind": "a file given in the task, edited to a specification",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no people.csv saved",
+          "final_answer": null
+        },
+        {
+          "id": "h20000478_01",
+          "kind": "a simulation followed step by step",
+          "outcome": "neither",
+          "passing_members": [],
+          "failing_members": [
+            "t80+g47trunk",
+            "t80+g47code2",
+            "t80+g47code"
+          ],
+          "delivery_finding": "ends with 2513.57, 1 refused; in the answer: False",
+          "final_answer": null
+        },
+        {
+          "id": "h20000478_02",
+          "kind": "the percent change between two columns, rounded by a rule",
+          "outcome": "member_only",
+          "passing_members": [
+            "t80+g47trunk"
+          ],
+          "failing_members": [
+            "t80+g47data2",
+            "t80+g47data"
+          ],
+          "delivery_finding": "no change.csv saved",
+          "final_answer": "Not confirmed: the members that worked this out independently did not agree, so no answer is given."
+        }
+      ],
+      "hard_failed_without_a_passing_member_by_kind": {
+        "a cache that forgets the least recently used, with hidden tests": 1,
+        "a class with rules, with hidden tests": 1,
+        "a file given in the task, edited to a specification": 1,
+        "a queue served by priority, with hidden tests": 1,
+        "a simulation followed step by step": 1,
+        "a text split into sentences": 2,
+        "an order of tasks by their dependencies, with hidden tests": 1,
+        "emails and phones found in a messy message": 1,
+        "rows kept within a range of dates written in several forms": 1,
+        "walk a site and count into a file": 2
+      }
+    }
+  }
+}

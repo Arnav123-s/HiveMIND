@@ -8,7 +8,9 @@ that record as four graphs and one page (docs/PROGRESS.md), so anyone can see wh
 and where it is weakest, without reading numbers:
 
   score.svg   the share of exam tasks the body passed, each generation (and the DNA alone, where it was measured)
-  carry.svg   the share it passed of kinds of task it has never practised (does what it learns carry over?)
+  carry.svg   the share it passed of kinds of task it has never practised (does what it learns carry over?): the
+              pulse's few held-out tasks, and the held-out kinds passed on the fixed exam (the same 30 tasks each
+              generation, training/exam.held_exam; the goal's bar is half of them)
   kinds.svg   every kind of task, over the last generations of the body's DNA, weakest first
   rows.svg    how many checked rows the body was taught from, each generation
   parts.svg   hard kinds, easy kinds and tasks of several parts, each generation
@@ -31,13 +33,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from training.kinds import hard_scores  # noqa: E402
 
 NAMES = {"t17": "1.7B", "t40": "4B", "t80": "8B"}
 # colours: the validated categorical pair (blue, orange) and a neutral for the DNA alone; dark-mode steps of the
 # same hues (both pairs pass the colour-blind and contrast checks)
 SERIES = {"t80": ("#2a78d6", "#3987e5"), "t17": ("#eb6834", "#d95926"), "t40": ("#1baf7a", "#199e70"),
           # the parts of an exam: the same validated slots, in the same order
-          "hard": ("#2a78d6", "#3987e5"), "easy": ("#eb6834", "#d95926"), "several": ("#1baf7a", "#199e70")}
+          "hard": ("#2a78d6", "#3987e5"), "easy": ("#eb6834", "#d95926"), "several": ("#1baf7a", "#199e70"),
+          # the fixed held-out exam beside the pulse in carry.svg (a slot no DNA of the line uses)
+          "fixed": ("#1baf7a", "#199e70")}
 PARTS = {"hard": "hard kinds", "easy": "easy kinds", "several": "tasks of several parts"}
 STYLE = """<style>
 .bg{fill:#fcfcfb}.ink{fill:#0b0b0b}.ink2{fill:#52514e}.grid{stroke:#e4e3df}.axis{stroke:#b9b8b2}.dna{stroke:#52514e;fill:#fcfcfb}.lost{fill:#d03b3b}
@@ -82,8 +87,9 @@ def _text(x, y, s, cls="ink", size=12, anchor="start", weight="normal"):
     return f'<text x="{x:.1f}" y="{y:.1f}" class="{cls}" font-size="{size}" text-anchor="{anchor}" font-weight="{weight}">{escape(str(s))}</text>'
 
 
-def share_chart(gens, pick, title, note, w=760, h=300):
-    """Dots joined by a line, one series per DNA, y from 0 to 100 %. pick(d) -> (passed, tried) or None."""
+def share_chart(gens, pick, title, note, w=760, h=300, also=None):
+    """Dots joined by a line, one series per DNA, y from 0 to 100 %. pick(d) -> (passed, tried) or None.
+    also: (pick, name, unit): one more series drawn beside them in its own colour (carry.svg: the fixed exam)."""
     left, right, top, bottom = 52, 96, 58, 44
     pw, ph = w - left - right, h - top - bottom
     pts = [(i, d, pick(d)) for i, d in enumerate(gens)]
@@ -121,6 +127,21 @@ def share_chart(gens, pick, title, note, w=760, h=300):
     if pick is _passed and any(d.get("arms", {}).get("dna", {}).get("tasks") for d in gens):
         j = len(dnas)
         b.append(f'<circle class="dna" cx="{lx + 5}" cy="{top + 6 + j * 20}" r="4.5" stroke-width="2"/>' + _text(lx + 15, top + 10 + j * 20, "DNA alone", "ink", 11))
+    if also:
+        more, name, unit = also
+        mine = [(i, d, q) for i, d in enumerate(gens) if (q := more(d)) and q[1]]
+        if len(mine) > 1:
+            b.append('<polyline class="lfixed" stroke-width="2" stroke-dasharray="5 3" points="'
+                     + " ".join(f"{x(i):.1f},{y(q[0] / q[1]):.1f}" for i, _, q in mine) + '"/>')
+        for i, d, q in mine:
+            b.append(f'<rect class="sfixed" x="{x(i) - 4.5:.1f}" y="{y(q[0] / q[1]) - 4.5:.1f}" width="9" height="9" stroke-width="1">'
+                     f'<title>{escape(d.get("generation", ""))}, {escape(name)}: {q[0]} of {q[1]} {unit}</title></rect>')
+        if mine:
+            i, d, q = mine[-1]
+            b.append(_text(x(i) + 9, y(q[0] / q[1]) - 6, f"{q[0]} of {q[1]} {unit}", "ink", 11))
+        j = len(dnas)
+        b.append(f'<rect class="sfixed" x="{lx}" y="{top + 1 + j * 20}" width="9" height="9"/>' + _text(lx + 15, top + 10 + j * 20, name, "ink", 11))
+        dnas = dnas + ["fixed"]
     return _svg(w, h, "".join(b), dnas, title)
 
 
@@ -165,7 +186,7 @@ OLD_STEPS = {"dreams": "dream", "pulse": "gate"}  # the names records used befor
 
 
 def _held_out(d):
-    u = d["arms"]["after"].get("unpractised") or [0, 0]
+    _, u = hard_scores(d["arms"]["after"])
     return u if len(u) == 2 and u[1] else None
 
 
@@ -285,9 +306,10 @@ def _passed(d):
     return a["passed"], a["tasks"]
 
 
-def _carried(d):
-    u = d["arms"]["after"].get("unpractised") or [0, 0]
-    return (u[0], u[1]) if len(u) == 2 and u[1] else None
+def _fixed(d):
+    """The held-out kinds the body passed on the fixed exam (grow_record.held_exam), or None where it was not sat."""
+    h = ((d.get("held_exam") or {}).get("after") or {}).get("kinds")
+    return (h[0], h[1]) if isinstance(h, list) and len(h) == 2 and h[1] else None
 
 
 def kinds(gens, dna, last=6):
@@ -436,8 +458,9 @@ def draw(record=None, out=None, body=None, talk_dir=None):
     dna = b.get("dna") or (gens[-1]["dna"] if gens else "t80")
     (out / "score.svg").write_text(share_chart(gens, _passed, "Exam tasks the body passed, each generation",
                                                "a fresh exam of the grown body at the end of every generation; faint dots were trials"))
-    (out / "carry.svg").write_text(share_chart(gens, _carried, "Kinds of task it has never practised, passed",
-                                               "does what it learns carry over to work it was never taught? (few tasks each: read the trend)"))
+    (out / "carry.svg").write_text(share_chart(gens, _held_out, "Kinds of task it has never practised, passed",
+                                               "dots: the pulse's few held-out tasks; squares: held-out kinds passed on the fixed exam (bar: half)",
+                                               also=(_fixed, "fixed exam", "kinds")))
     table, names = kinds(gens, dna)
     (out / "kinds.svg").write_text(kinds_chart(table, names, dna))
     (out / "rows.svg").write_text(rows_chart(gens))

@@ -173,6 +173,9 @@ def session(swarm, rounds, inp=input, out=print):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["exposure"]:
+        from .exposure import main as exposure
+        return exposure(argv[1:])
     if argv[:1] == ["fieldwork"]:
         from training.experiments.fieldwork.work import main as fieldwork
         return fieldwork(argv[1:])
@@ -195,15 +198,15 @@ def main(argv=None):
         # hive of roles below.
         from . import talk
         if talk.speaker():
+            if first and not keep_going:
+                talk.print_one(first, log=lambda *x: print(*x, flush=True))
+                return 0
             history = []
 
             def step(msg, history_=None):
                 out = talk.reply(msg, history, log=lambda *x: print("  [" + " ".join(map(str, x)) + "]", flush=True))
                 history.extend([{"role": "user", "content": msg}, {"role": "assistant", "content": out["text"]}])
-                return out["text"]
-            if first and not keep_going:
-                print(step(first))
-                return 0
+                return talk.local_text(out)
             print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
             msg = first
             while True:

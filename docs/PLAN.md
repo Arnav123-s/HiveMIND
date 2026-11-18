@@ -97,7 +97,7 @@ holds what, from every branch; `python scripts/cycle.py` shows it beside the bar
 
 | Id | Piece | Files | Done when | Who |
 |---|---|---|---|---|
-| L3 | The line runs five generations with nobody's hand (g42, g43, g44, g45 so far; g47 running) | the workflow | five records in a row, no run started or mended by hand | the loop holder (watch only) |
+| L3 | The line runs five generations with nobody's hand (g42, g43, g44, g45, g47) | the workflow | five records in a row, no run started or mended by hand | done (B) |
 | N1 | The read's next piece moves on: rule 6 still names K1, which is done | `training/reads.py`, `tests/test_reads.py` | the read of g44 names a piece that is open on this board | B |
 | E1 | Memory measured: none, notes, cell engrams, hive engram, all; taught and unseen kinds | `team/engram.py`, `training/hive_engram.py`, `team/notes.py`, `docs/RESEARCH.md` | a table in `docs/RESEARCH.md`; memory turned on only for an arm that gains | B (a sub-agent, running) |
 | O1 | The short orders in a real generation: on t17 they gave 16/18 against 6/18 with the full orders, at a sixth of the time (docs/RESEARCH.md section 8) | `team/solo.py` (`HIVE_SHORT_ORDERS`), the workflow's practice and gate | one generation's practice with the short orders on half the runners: first try and seconds by arm; then the gate's both arms | open |

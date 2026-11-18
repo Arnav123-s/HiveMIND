@@ -1,0 +1,18 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Write and save a Python module gauge.py with a function exposure(points, ceiling, max_gap). Points are [minute, reading] pairs in strictly increasing time order. Readings are numbers or None. Between adjacent readings the signal changes linearly. Skip a segment if either reading is None or if its duration exceeds max_gap. Return a two-item list: total minutes strictly above ceiling (fractional minutes count), and the number of eligible segments that start at or below ceiling and end above it. A missing observation or a long gap cannot bridge two segments. Use the standard library.\n\nA previous implementation is below. Return a corrected exposure function in one Python block. The caller will save it.\n\n```python\ndef exposure(points, ceiling, max_gap):\n    if not points:\n        return [0.0, 0]\n\n    total_above = 0.0\n    eligible_segments = 0\n\n    for i in range(1, len(points)):\n        prev_time, prev_reading = points[i - 1]\n        curr_time, curr_reading = points[i]\n\n        if prev_reading is None or curr_reading is None:\n            continue\n\n        if curr_time - prev_time > max_gap:\n            continue\n\n        start_time = prev_time\n        start_reading = prev_reading\n        end_time = curr_time\n        end_reading = curr_reading\n\n        if start_reading <= ceiling and end_reading > ceiling:\n            eligible_segments += 1\n            duration = end_time - start_time\n            if start_reading == end_reading:\n                total_above += duration\n            else:\n                delta = (end_reading - ceiling) / (end_reading - start_reading)\n                total_above += delta * duration\n\n    return [total_above, eligible_segments]\n```\n\nObserved input and output pairs:\nexposure([[0, 1], [4, 1]], 3, 4) -> [0.0, 0]\nexposure([[0, 1], [4, 3]], 3, 4) -> [0.0, 0]\nexposure([[0, 1], [4, 5]], 3, 4) -> [2.0, 1]\nexposure([[0, 3], [4, 1]], 3, 4) -> [0.0, 0]\nexposure([[0, 3], [4, 3]], 3, 4) -> [0.0, 0]\nexposure([[0, 3], [4, 5]], 3, 4) -> [4.0, 1]\nexposure([[0, 5], [4, 1]], 3, 4) -> [2.0, 0]\nexposure([[0, 5], [4, 3]], 3, 4) -> [4.0, 0]\nexposure([[0, 5], [4, 5]], 3, 4) -> [4.0, 0]\nexposure([[0, 6], [4, 7]], 3, 4) -> [4.0, 0]\n"
+    }
+  ],
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "top_k": 0,
+  "max_tokens": 1200,
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "stream": false,
+  "seed": 20261118
+}

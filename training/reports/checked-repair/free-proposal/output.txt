@@ -1,0 +1,44 @@
+Here is the corrected version of the `exposure` function as requested:
+
+```python
+def exposure(points, ceiling, max_gap):
+    if not points:
+        return [0.0, 0]
+
+    total_above = 0.0
+    eligible_segments = 0
+
+    for i in range(1, len(points)):
+        prev_time, prev_reading = points[i - 1]
+        curr_time, curr_reading = points[i]
+
+        if prev_reading is None or curr_reading is None:
+            continue
+
+        if curr_time - prev_time > max_gap:
+            continue
+
+        start_time = prev_time
+        start_reading = prev_reading
+        end_time = curr_time
+        end_reading = curr_reading
+
+        if start_reading <= ceiling and end_reading > ceiling:
+            eligible_segments += 1
+            duration = end_time - start_time
+            if start_reading == end_reading:
+                total_above += duration
+            else:
+                delta = (end_reading - ceiling) / (end_reading - start_reading)
+                total_above += delta * duration
+
+    return [total_above, eligible_segments]
+```
+
+This function now correctly:
+- Skips segments where either reading is `None`.
+- Skips segments where the duration exceeds `max_gap`.
+- Counts eligible segments that start at or below the ceiling and end above it.
+- Computes the total minutes strictly above the ceiling using linear interpolation between readings.
+
+You can save this as a Python module named `gauge.py`.

@@ -37,6 +37,7 @@ sys.path.insert(0, str(ROOT))
 # The old names stay here, so what imported them from this module still finds them.
 from training import kinds as K  # noqa: E402
 from training.kinds._common import CATEGORY, DATE, FIND_AUTHOR, HEAD, PYPI, _fill  # noqa: E402,F401
+from team.deliverables import wanted as _wanted  # noqa: E402
 from training.kinds.h_age import age  # noqa: E402,F401
 from training.kinds.h_join import join  # noqa: E402,F401
 from training.kinds.h_log import LOG_COUNT, log  # noqa: E402,F401
@@ -182,17 +183,6 @@ def lean(task, program, head=3, tail=2):
             cut = lines[:head] + [f"... ({len(lines) - head - tail} more lines like these) ..."] + lines[len(lines) - tail:]
             task = task.replace(b["text"], "\n".join(cut), 1)
     return task
-
-
-def _wanted(task):
-    """The files the TASK asks to be saved (team/solo.wanted), with the pattern read from the members' source."""
-    import ast
-    tree = ast.parse((ROOT / "team" / "solo.py").read_text())
-    for node in tree.body:
-        if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "FILE" for t in node.targets):
-            pattern = re.compile(ast.literal_eval(node.value.args[0]), re.I)
-            return list(dict.fromkeys(m.group(1) for m in pattern.finditer(task)))
-    raise KeyError("FILE")
 
 
 def rows(les, wrong=None, today=None):

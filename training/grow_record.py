@@ -1,6 +1,7 @@
 """The gate of a generation: the numbers decide whether the hive's body changes.
 
     python3 training/grow_record.py gate <folder of the gate's sittings> <folder with the cells' json> <generation> [--facts facts.json]
+                                         [--held <folder of the fixed held-out exam's sittings, held-<arm>-<seat>>]
     python3 training/grow_record.py fetch t17+g3code,t17+g3data     the cells named, from the release into cells/members/
     python3 training/grow_record.py rows OUT FILE ...               every row of the files once, in order, into OUT
     python3 training/grow_record.py failures OUT FILE ...           the same for the tasks got wrong
@@ -17,8 +18,8 @@ Three arms sat the same fresh seeds of the exam (.github/workflows/grow.yml), ea
     after    the body as regrown this time
 The regrown body is kept when it passed more tasks than the DNA alone and at least as many as the body before it.
 A body that multiplies sits only before and after, on the same seeds (the paired gate): its children are kept
-only when after passed at least as many tasks as before (ties keep), and a loss on the held-out kinds with no gain
-on the other tasks drops them; a dropped generation's rows are still kept in
+only when after passed at least as many tasks as before (ties keep), and a loss on the fixed held-out exam (the same
+30 tasks every generation, training/exam.held_exam) with no gain on the pulse drops them; a dropped generation's rows are still kept in
 the release and the body stays as it was. Three generations dropped running stop the line (`restart`).
 What "after" passes over "dna" is what the hive taught itself; it is also counted apart on the kinds it never
 practised. Every generation leaves one line in training/reports/generations.jsonl, whatever the outcome.
@@ -34,7 +35,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))  # team.ternary names organs and leanings; it needs nothing but Python
-from training import lineage  # noqa: E402
+from training import kinds as exam_kinds, lineage  # noqa: E402
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 BODY = ROOT / "cells" / "body.json"
 STRENGTHS = ROOT / "cells" / "strengths.json"
@@ -45,9 +46,6 @@ ORGANS = ("sources", "code", "data", "words")
 DNAS = ("t17", "t40", "t80")
 CELL = r"g\d{1,6}(?:sources|code|data|words)\d{0,2}"
 MOST_ROWS, MOST_FAILURES = 20000, 3000  # what the release keeps: the newest
-# the kinds the hive never practises on (training/exam_hard.HELD_OUT), by the name the exam gives them
-UNPRACTISED = ("walk a site and count into a file", "two facts from two sources, combined", "a file given in the task, edited to a specification",
-               "a simulation followed step by step")
 
 
 def _int(x, most):
@@ -153,37 +151,68 @@ def practice_kinds(old, folders, keep=0.5):
     return {k: [round(x, 3) for x in c] for k, c in sorted(out.items())}
 
 
+def member_delivery_outcome(task):
+    """Joint result of the task's checker on the recorded members and the final delivery."""
+    if not isinstance(task, dict) or type(task.get("ok")) is not bool:
+        return None
+    members = task.get("members")
+    if not isinstance(members, list) or not members:
+        return None
+    grades = [m.get("ok") if isinstance(m, dict) else None for m in members]
+    if any(g is True for g in grades):
+        return "both" if task["ok"] else "member_only"
+    if all(g is False for g in grades):
+        return "delivery_only" if task["ok"] else "neither"
+    return None
+
+
+def _sittings(folder):
+    """Read the bounded summaries accepted by the gate, with any available individual results."""
+    for f in sorted(Path(folder).rglob("*.json")):
+        try:
+            if f.stat().st_size > 2_000_000:
+                continue
+            d = json.loads(f.read_text())
+        except (OSError, ValueError, RecursionError):
+            continue
+        s = d.get("summary") if isinstance(d, dict) else None
+        if not isinstance(s, dict):
+            continue
+        passed, tasks, minutes = _int(s.get("passed"), 64), _int(s.get("tasks"), 64), _int(s.get("minutes"), 600)
+        if None in (passed, tasks, minutes) or passed > tasks:
+            continue
+        yield s, d.get("tasks") if isinstance(d.get("tasks"), list) else []
+
+
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
     out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {},
-           "hard": [0, 0], "easy": [0, 0], "several": [0, 0]}
+           "hard": [0, 0], "taught": [0, 0], "easy": [0, 0], "several": [0, 0]}
+    joint = {scope: dict.fromkeys(("both", "member_only", "delivery_only", "neither"), 0)
+             for scope in ("all", "hard")}
+    out["member_delivery"] = joint
+    groups = exam_kinds.hard_groups()
     for folder in folders:
-        for f in sorted(Path(folder).rglob("*.json")):
-            if f.stat().st_size > 2_000_000:
-                continue
-            try:
-                d = json.loads(f.read_text())
-            except ValueError:
-                continue
-            s = d.get("summary") if isinstance(d, dict) else None
-            if not isinstance(s, dict):
-                continue
-            passed, tasks, minutes = _int(s.get("passed"), 64), _int(s.get("tasks"), 64), _int(s.get("minutes"), 600)
-            if None in (passed, tasks, minutes) or passed > tasks:
-                continue
+        for s, results in _sittings(folder):
+            passed, tasks, minutes = s["passed"], s["tasks"], s["minutes"]
             out["passed"], out["tasks"], out["minutes"], out["seeds"] = out["passed"] + passed, out["tasks"] + tasks, out["minutes"] + minutes, out["seeds"] + 1
-            for t in d.get("tasks") or []:
+            for t in results:
                 # the hard kinds apart from the easy ones and the tasks of several parts (an exam task's id begins with
                 # h, e or c): the score moves only when a never-passed kind is learned, and those are mostly hard
                 tid = t.get("id") if isinstance(t, dict) else None
                 part = {"h": "hard", "e": "easy", "c": "several"}.get(tid[:1]) if isinstance(tid, str) and tid else None
+                outcome = member_delivery_outcome(t)
+                if outcome:
+                    joint["all"][outcome] += 1
+                    if part == "hard":
+                        joint["hard"][outcome] += 1
                 if part:
                     out[part][0] += t.get("ok") is True
                     out[part][1] += 1
                 # passed and sat, kind by kind: what practice weighs to stay at the edge (training/grow.edge_weights).
                 # Only kinds of a known shape are kept: the name is text from another job.
                 k = t.get("kind") if isinstance(t, dict) else None
-                if isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k) and len(out["kinds"]) < 64:
+                if isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k) and (k in out["kinds"] or len(out["kinds"]) < 64):
                     got = out["kinds"].setdefault(k, [0, 0])
                     got[0] += t.get("ok") is True
                     got[1] += 1
@@ -203,9 +232,65 @@ def arm(folders):
                                 c = table.setdefault(key, [0, 0])
                                 c[0] += m.get("ok") is True
                                 c[1] += 1
-                if isinstance(t, dict) and t.get("kind") in UNPRACTISED:
-                    out["unpractised"][0] += t.get("ok") is True
-                    out["unpractised"][1] += 1
+                group = groups.get(k) if isinstance(k, str) else None
+                if group:
+                    out[group][0] += t.get("ok") is True
+                    out[group][1] += 1
+    return out
+
+
+# ---- the fixed held-out exam (training/exam.held_exam): the same tasks every generation, sat by before and after ------
+HELD_ID = r"x_[a-z][a-z0-9_]{1,40}_\d{1,2}"
+
+
+def kind_passed(right, of):
+    """A held-out kind counts as passed when the body got at least two thirds of its tasks (2 of 3; 2 of 2 when a
+    seat lost one; 1 of 1)."""
+    return of > 0 and 3 * right >= 2 * of
+
+
+def held_tasks(folders):
+    """{task id: (kind, right)} of the fixed held-out exam over one arm's seats. Only ids of the exam's own shape and
+    kinds this repository holds out are taken from the other jobs."""
+    from training import kinds
+    out = {}
+    for folder in folders:
+        for f in sorted(Path(folder).rglob("held_*.json")):
+            if f.stat().st_size > 2_000_000:
+                continue
+            try:
+                d = json.loads(f.read_text())
+            except ValueError:
+                continue
+            if not isinstance(d, dict) or not isinstance(d.get("summary"), dict) or d["summary"].get("exam") != "held":
+                continue
+            for t in (d.get("tasks") or [])[:64]:
+                tid, kind = (t.get("id"), t.get("maker")) if isinstance(t, dict) else (None, None)
+                if isinstance(tid, str) and re.fullmatch(HELD_ID, tid) and kind in kinds.HELD_OUT and tid.startswith(f"x_{kind}_"):
+                    out[tid] = (kind, t.get("ok") is True)
+    return out
+
+
+def held_exam(folder, names=("before", "after")):
+    """What each arm did on the fixed held-out exam, on the tasks both arms sat (each arm's own when only one sat):
+    {arm: {"right", "of", "by_kind": {kind: [right, of]}, "kinds": [kinds passed, kinds sat]}, "tasks": n}, or {}."""
+    if not folder or not Path(folder).is_dir():
+        return {}
+    got = {a: held_tasks([p for p in Path(folder).glob(f"held-{a}-*") if re.fullmatch(rf"held-{a}-\d", p.name)]) for a in names}
+    sat = [a for a in names if got[a]]
+    if not sat:
+        return {}
+    ids = set.intersection(*(set(got[a]) for a in sat))
+    out = {"tasks": len(ids)}
+    for a in sat:
+        by = {}
+        for tid in sorted(ids):
+            kind, ok = got[a][tid]
+            c = by.setdefault(kind, [0, 0])
+            c[0] += ok
+            c[1] += 1
+        out[a] = {"right": sum(c[0] for c in by.values()), "of": sum(c[1] for c in by.values()), "by_kind": by,
+                  "kinds": [sum(kind_passed(*c) for c in by.values()), len(by)]}
     return out
 
 
@@ -224,11 +309,60 @@ def paired(folder, names=("before", "after")):
     return {a: arm([by[a][s] for s in both]) for a in names}, both
 
 
-def decide(arms, grow=False):
+def delivery_changes(folder):
+    """Compare final grades for the same task on two bodies. Only IDs and registered kind labels leave this process."""
+    known = {"c": {"several tasks in one"}}
+    for group, modules in (("e", exam_kinds.EASY_KINDS), ("h", exam_kinds.HARD_KINDS)):
+        known[group] = {label for m in modules for label in exam_kinds.written(m.KIND)}
+    sat, cases = {}, {}
+    for arm_name in ("before", "after"):
+        sat[arm_name] = 0
+        ids = cases[arm_name] = {}
+        for shard in sorted(folder.glob(f"gate-{arm_name}-[0-9]")):
+            for summary, rows in _sittings(shard):
+                sat[arm_name] += summary["tasks"]
+                seed, code = summary.get("seed"), summary.get("code")
+                grades = [r.get("ok") for r in rows if isinstance(r, dict)]
+                consistent = (len(rows) <= summary["tasks"]
+                              and sum(g is True for g in grades) <= summary["passed"]
+                              and sum(g is False for g in grades) <= summary["tasks"] - summary["passed"])
+                for row in rows:
+                    tid = row.get("id") if isinstance(row, dict) else None
+                    if not isinstance(tid, str) or not re.fullmatch(r"[ehc][0-9]{1,15}_[0-9]{2}", tid):
+                        continue
+                    duplicate = tid in ids
+                    ids[tid] = None  # a duplicate ID, even on a malformed row, cannot identify one run
+                    if duplicate or not consistent or type(seed) is not int or tid[1:-3] != str(seed):
+                        continue
+                    prompt, kind, ok = row.get("task"), row.get("kind"), row.get("ok")
+                    if (not isinstance(code, str) or not re.fullmatch(r"[0-9a-f]{7,40}", code)
+                            or not isinstance(prompt, str) or not prompt.strip() or type(ok) is not bool
+                            or not isinstance(kind, str) or kind not in known[tid[0]]):
+                        continue
+                    ids[tid] = ((shard.name.rsplit("-", 1)[1], code, kind, prompt), ok)
+
+    counts = dict.fromkeys(("gained", "lost", "both_pass", "both_fail"), 0)
+    changed = {"gained": [], "lost": []}
+    for tid in sorted(cases["before"].keys() & cases["after"].keys()):
+        before, after = cases["before"][tid], cases["after"][tid]
+        if before is None or after is None or before[0] != after[0]:
+            continue
+        if before[1] == after[1]:
+            outcome = "both_pass" if after[1] else "both_fail"
+        else:
+            outcome = "gained" if after[1] else "lost"
+            changed[outcome].append({"id": tid, "kind": before[0][2]})
+        counts[outcome] += 1
+    return {"sat": sat, "comparable": sum(counts.values()), "counts": counts, "changed": changed}
+
+
+def decide(arms, grow=False, held=None):
     """Whether the regrown body is kept: (keep, why).
     grow (the paired gate): the body with its children (after) and as it was (before) sat the same seeds; the
-    children are kept only when after passed at least as many tasks as before (a tie keeps). A loss on the held-out
-    kinds (never practised) with no gain on the other tasks is a drop. g43 (52 against 54) and g45 (45 against 47)
+    children are kept only when after passed at least as many tasks as before (a tie keeps). held: the fixed held-out
+    exam (held_exam), when both sat it: fewer of its tasks right after than before, with no more passed on the pulse,
+    is a drop. When it was not sat by both, the pulse's own few held-out tasks stand in: a loss there with no gain on
+    the pulse's other tasks is a drop. g43 (52 against 54) and g45 (45 against 47)
     were kept under the old allowance of 2 tasks under; they would be dropped now. A body that sat nothing before is
     not judged and kept; one whose after sat nothing while before did is dropped. A dropped body leaves the body as it
     was, and the next generation starts from it."""
@@ -245,6 +379,12 @@ def decide(arms, grow=False):
         score = f"{a['passed']} against {b['passed']}"
         if a["passed"] < b["passed"]:
             return False, f"dropped: {score}; " + said
+        hx_a, hx_b = ((held or {}).get(k) for k in ("after", "before"))
+        if hx_a and hx_b and hx_a["of"] and hx_a["of"] == hx_b["of"]:
+            said += f"; the fixed held-out exam: after {hx_a['right']} of {hx_a['of']}, before {hx_b['right']} of {hx_b['of']}"
+            if hx_a["right"] < hx_b["right"] and a["passed"] <= b["passed"]:
+                return False, f"dropped: {score}, the fixed held-out exam {hx_a['right']} against {hx_b['right']} with no gain on the pulse; " + said
+            return True, f"kept: {score}; " + said
         held_a, held_b = (list(x.get("unpractised") or [0, 0]) for x in (a, b))
         if held_a[0] < held_b[0] and a["passed"] - held_a[0] <= b["passed"] - held_b[0]:
             return False, f"dropped: {score}, held out {held_a[0]} against {held_b[0]} with no gain elsewhere; " + said
@@ -275,6 +415,8 @@ def gate(argv):
         print("not a DNA this file knows")
         return 1
     grow = "--grow" in argv
+    # the fixed held-out exam, sat by before and after beside the pulse (grow.yml's gate); {} when it was not sat
+    held = held_exam(argv[argv.index("--held") + 1]) if "--held" in argv and argv.index("--held") + 1 < len(argv) else {}
     cells, rows, minutes, ternary, foresee, pairs, parent_of = [], None, 0, [], [], 0, {}
     names = sorted({p.name[len(dna) + 1:-5] for p in got.glob(f"{dna}.{gen}*.gguf")}, key=lambda c: (lineage.ORGANS.index(lineage.organ_of(c)) if lineage.organ_of(c) else 9, len(c), c))
     for c in names:
@@ -307,7 +449,7 @@ def gate(argv):
         pair, seeds = paired(folder)
         if arms["before"]["seeds"]:
             arms = dict(arms, **pair)
-        keep, why = decide(arms, grow=True)
+        keep, why = decide(arms, grow=True, held=held)
     if cells and not same_dna:
         why += f" (a new DNA, {dna}: the body of {body.get('dna')} before it is not the bar)"
     if trial and keep:
@@ -332,7 +474,10 @@ def gate(argv):
             "trunk": trunk if keep and grow else "", "levels": lv_next if keep and grow else lv_now, "practice": lv_seen, "practice_kinds": kinds_next,
             "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
-            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
+            "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna,
+            "held_exam": held}
+    if grow or arms["before"]["seeds"]:
+        line["paired"]["deliveries"] = delivery_changes(folder)
     # practice by its orders (the split of training/practice_arms.py) and its first try on old kinds and K2's new ones
     if practised:
         from training import practice_arms
@@ -380,6 +525,11 @@ def gate(argv):
             continue
         print(f"| {names[k]} | {v['passed'] if v['seeds'] else '-'} | {v['tasks'] if v['seeds'] else '-'} | {v['minutes'] if v['seeds'] else '-'} | "
               f"{v['unpractised'][0]} of {v['unpractised'][1]} |")
+    for k in ("before", "after"):
+        if held.get(k):
+            h = held[k]
+            print(f"\n- the fixed held-out exam, {k}: {h['right']} of {h['of']} tasks, {h['kinds'][0]} of {h['kinds'][1]} kinds passed (2 of 3 right); "
+                  + ", ".join(f"{kind} {c[0]} of {c[1]}" for kind, c in sorted(h["by_kind"].items())))
     if keep and grow:
         born = ", ".join(f"{c} (child of {parent_of[c]})" if c in parent_of else c for c in cells)
         print(f"\n- the body multiplies: {born} join it; it has {len(after)} cells now{'; gave up their place (their lines go on in their children): ' + ', '.join(retired) if retired else ''}")
@@ -434,10 +584,11 @@ def failed_page(gen, run, what, record=RECORD, reads=None):
             f"The progress graphs failed in run [{run}]({url}); see the record job's log. They are not drawn from this record.", ""]
     a, b = (line.get("paired") or line.get("arms") or {}).get("after", {}), (line.get("paired") or line.get("arms") or {}).get("before", {})
     ft = line.get("first_try")
+    _, held = exam_kinds.hard_scores((line.get("arms") or {}).get("after", {}))
     nums = ["The record's numbers (training/reports/generations.jsonl):", "",
             f"- verdict: {line.get('verdict') or ('kept' if line.get('kept') else 'dropped') if line else 'no record line'}; {line.get('why', '')}",
             f"- after {_pq([a.get('passed'), a.get('tasks')])}, before {_pq([b.get('passed'), b.get('tasks')])}",
-            f"- easy {_pq(a.get('easy'))}, hard {_pq(a.get('hard'))}, held out {_pq((line.get('arms') or {}).get('after', {}).get('unpractised'))}",
+            f"- easy {_pq(a.get('easy'))}, hard {_pq(a.get('hard'))}, held out {_pq(held)}",
             f"- first try {f'{ft[0] / ft[1]:.2f}' if isinstance(ft, list) and len(ft) == 2 and ft[1] else 'not measured'}; "
             f"hours {line['hours'] if isinstance(line.get('hours'), (int, float)) else 'not measured'}"]
     text = "\n".join(head + nums) + "\n"

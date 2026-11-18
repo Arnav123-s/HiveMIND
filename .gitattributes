@@ -1,1 +1,2 @@
 training/reports/generations.jsonl merge=union
+training/reports/checked-delivery/chairs.csv -text whitespace=cr-at-eol

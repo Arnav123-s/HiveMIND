@@ -1,0 +1,51 @@
+# What happens between a cell finding an answer and a user getting it?
+
+HiveMIND runs a shared model on a CPU. Its cells are small learned changes to that model. Two cells usually try a job independently. We examined three ways to improve generation 47 with its weights held fixed. Can the hive deliver a good answer that a cell already found? Can it recover a useful calculation from a failed program? Can it choose when a specialist should act on the next input?
+
+A follow-up tested when to keep an older method and how to tell that a correction applies. It includes an invoice workflow that switched between two saved methods and a shipping-fee rule recovered from a real cell’s failure. [How the hive retains and chooses methods](retained-skills/README.md)
+
+## Delivering the right file
+
+Both workers in an archived rainfall job printed **21 mm**. The first saved three fields in each data row under a two-field header. The second saved the requested table. The released system returned the first file. Replaying the same workers through the revised coordinator delivered the second file with two seats and zero new model calls. The same test with worker order reversed still delivered the correct table. [Worker programs, checks and reproduction](checked-delivery/reproduce.md)
+
+The coordinator now checks named files on disk. It keeps the best completed attempt through retries, reopens staged output before publishing it, and distinguishes agreement on the printed answer from agreement on structured file contents. A fresh run gets its own directory. Local users receive the path to each published file, and the hosted conversation can package the files for download. Two cells can agree on the same wrong values. Thirteen deliberately difficult handoff examples still produced three such false confirmations. [Recorded cases](checked-delivery/after.json)
+
+On three new CPU model jobs, all six workers printed the right number. The released hive delivered the right file only once. One failure exposed a way to recover more work. When the cells agree on the rows and the user explicitly asks for a single numeric sort, the coordinator can put the rows in order and identify that repair in its receipt. On a separate, previously unopened community-hall job, both workers computed 25 outstanding chairs and sorted the borrowers incorrectly. The ordinary terminal printed exactly `25` and delivered Ada 3, Lin 8, Noor 14 in that order. The job took 271 seconds on a shared four-core CPU. [Actual CSV](checked-delivery/chairs.csv) · [Terminal output and both worker programs](checked-delivery/live-cli-result.json)
+
+The first sorting change scored only **5/9** on an independently written set of requests. After those cases were released for development, we froze another revision and tested twelve further requests with constructed worker files. Correct deliveries and abstentions rose from **8/12 to 11/12**. The hive still confirmed an unsorted table for “sort the rows by books (lowest first).” An explicit instruction such as “Sort by cost descending” worked. [Frozen inputs, case grades and reproduction commands](checked-delivery/reproduce.md)
+
+Our first cached engine crashed with an illegal instruction on this CPU. We added a diagnosis and a managed rebuild that preserves the working binary if its replacement fails to build. After a native rebuild of all 27 CPU backend objects, the ordinary terminal answered the Peru capital question with exactly `Lima`. A fresh server also answered 12 + 9 with `21` using the released code specialist. The hosted file download workflow passed its local checks. We did not deploy or run it on GitHub.
+
+## Recovering a cell's calculation
+
+A cell had written a sensor program that could interpolate an upward crossing and count crossings correctly. It lost time whenever a signal started above the threshold. A bounded search kept the original program and found a rule for when to reuse it forwards, reuse it backwards, or count the whole interval. It learned from ten public observations plus one inferred reversal. We supplied the segment decomposition, candidate operations and the option of checking reversal. The search selected how to combine them. No weights were trained.
+
+The original program passed **105/228** fresh sensor cases. The saved repair passed **228/228**. Its score fell to **49/228** when the example labels were shuffled at the same search cost. A separately written adapter reused the calculation for cable clearance under moving boundaries. The original passed **97/266** spatial cases and the repair passed **266/266**. Both tasks use the same underlying geometry. The fresh grader partitioned intervals and integrated with rational arithmetic independently of the candidate program. [Programs, controls, grading and limitations](checked-repair/README.md)
+
+Could the model discover the fix simply from the examples? In a later single attempt, the released code cell saw the original function, the job description and the ten public examples, with no suggested repair. It returned the original function **byte for byte**, called it corrected, and scored **105/228** on the same published cases. It got the crossing count right every time. All 123 errors were in the duration. This directly distinguishes what the cell did from what the guided search contributed in this experiment. [Prompt, raw reply and independent score](checked-repair/free-proposal/README.md)
+
+Anyone with Python can use the recovered calculation on a chronological CSV. On 240 verified San Francisco tide readings, it measured **268.91 minutes** above 1.5 m over mean lower low water, with one upward crossing. The original cell counted three minutes. Interpolating between six-minute observations estimates the crossing times. [NOAA source and example data](checked-repair/README.md)
+
+```sh
+./hive exposure training/reports/checked-repair/san-francisco-tide.csv --threshold 1.5 --max-gap 6
+```
+
+## Testing the idea of specialized cells on a difficult optimization problem
+
+In online bin packing, items arrive one at a time and placements are irreversible. A policy that learned when to reserve space beat the standard best-fit rule on its development streams. On 120 public test streams it used **10,499 bins** to best-fit's **6,131**. An overconfident specialist repeatedly opened new bins while predicting large items that never arrived. Every placement remained legal. Measuring only feasibility would have missed the failure.
+
+We refit once with a constraint that allows a new bin only when the item fits in none of the existing bins. On **60 fresh public streams**, the original team used **11,006 bins**, the constrained team **6,340** and best-fit **6,342**. The constrained team won eight, tied 48 and lost four against best-fit. The uncertainty interval includes zero. This was a CPU search among human-written numerical policies. Best-fit remains the practical choice. [Original experiment](packing-hive/README.md) · [Independent confirmation](packing-hive/eval-confirmation-results.md)
+
+## What to pursue in the growing hive
+
+Generation 47 and its parent both scored **47/64** on the same exam. Recounting all 32 hard jobs showed a gain on taught families, **15/25 to 16/25**, and a loss on held-out families, **1/7 to 0/7**. The corrected reports include all eight program families that the old label extractor dropped. The generation decision and the underlying exam records were preserved. [Recount and original training chain](../../docs/reads/g47.md)
+
+We also reopened all 16 official grading archives and verified their published hashes. In the new body at least one cell passed **51/64** jobs and the user received **47/64**. On hard jobs the split was **20/32** and **16/32**. In each of the four missed deliveries exactly one worker passed the checker, the other two failed, and the hive withheld the result. On the other **12 hard failures**, every recorded cell failed. This tells us where better selection could help and where the hive needs a new solution. Recovery of those four historical jobs under the revised system has not been established. New generation reports count both outcomes on the same tasks and show how many had individual grades. [Per-job findings and archive hashes](checked-delivery/g47-headroom.json)
+
+The next learning experiment should target jobs that every parent misses. One such job asked for a least-recently-used cache. The delivered code passed 391 of 431 checks, then returned the right keys in the wrong recency order. A dependency scheduler passed 38 of 61 checks and mishandled the order of simultaneously eligible tasks. These offer concrete tests of whether a cell can learn to represent and update an ordering rule. Show it a failing program and a small public example, allow it to propose its own transformation, then freeze the rule before an independent grader opens a different family's tasks. Compare the child, original parents and a control at the same evaluation budget. Include earlier solved tasks to catch regressions. [Archived failure traces](checked-delivery/g47-headroom.json)
+
+Execution-based candidate selection in CodeT, expanded independent tests in EvalPlus and evaluator-guided program search in FunSearch informed the experiments. STaR's use of answer feedback motivates explicitly recording which labels and repair hints a learner receives. An archive of specialists such as MAP-Elites suggests keeping a weaker cell when it contributes a skill the rest lack. Its value here should be measured by unique correct deliveries on unseen jobs per unit of CPU time. [CodeT](https://arxiv.org/abs/2207.10397) · [EvalPlus](https://arxiv.org/abs/2305.01210) · [FunSearch](https://www.nature.com/articles/s41586-023-06924-6) · [STaR](https://arxiv.org/abs/2203.14465) · [MAP-Elites](https://arxiv.org/abs/1504.04909)
+
+## Verification
+
+All **865 repository tests passed** on Linux in 8 minutes 5 seconds, with the tokenizer, CPU dequantization library and optional WebAssembly runtime installed. Python 3.12 emitted 24 multiprocessing deprecation warnings from the talk exam. The exposure command also reproduced the NOAA result with third-party Python packages disabled.

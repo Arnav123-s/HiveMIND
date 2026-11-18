@@ -1,0 +1,147 @@
+{
+  "method": "Archived unmodified G47 replies replayed through the arithmetic repair in fieldwork; real WASI guest, then two ordinary CLI invocations with model and network inference omitted",
+  "new_model_calls": 0,
+  "source_base": "5f606e5e30c512af6ada7e4bad45104e125142fe",
+  "frozen_source_hashes": {
+    "work.py": "c4fe494732cd82baf77bff62648e56352f032fd3fb3392851688f4a10c827e8b",
+    "arithmetic_repair.py": "fa4432ee1bccf68c3aa25257aa081556905472de512ea0ca379e331fb9572fe1"
+  },
+  "original_protocol_sha256": "d6fdcd194e2b68e0aba3197a7618702c602f562b6c57394bfa93350ba78ef64f",
+  "original_gold_sha256": "859f68aac79e3f283eff992526cd07eabd2c6115d85696337ce0b04a20c261a2",
+  "learning": {
+    "1-A": {
+      "public": 8,
+      "examples": 8,
+      "qualified_checks": 12,
+      "validation_total": 12,
+      "delivered": 16,
+      "archive_proposals_consumed": [
+        {
+          "index": 1,
+          "archived_raw_response_sha256": "6e6ba68ba092752d4e87fafdd2297cdcdd91c8098228aae40fceeae1ad3c22c6",
+          "source_sha256": "09ac80fbd077de439e05fffcca168c3c7ac12206bb751a58b469b92202b86030"
+        },
+        {
+          "index": 2,
+          "archived_raw_response_sha256": "4cb5035f5329bb14c1aec520ced0baec5e4791a253e7af8bb2d72a60e0549de5",
+          "source_sha256": "09ac80fbd077de439e05fffcca168c3c7ac12206bb751a58b469b92202b86030"
+        }
+      ],
+      "arithmetic_repair": {
+        "parent": "09ac80fbd077de439e05fffcca168c3c7ac12206bb751a58b469b92202b86030",
+        "edit": {
+          "line": 11,
+          "column": 17,
+          "before": "rate * (g + 499) // 500",
+          "after": "rate * ((g + 499) // 500)"
+        },
+        "original_public": 2,
+        "tried": 1
+      },
+      "digest": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+      "seconds": 6.005,
+      "frozen_job_correct": 16,
+      "frozen_job_total": 16
+    },
+    "2-B": {
+      "public": 0,
+      "examples": 8,
+      "qualified_checks": 0,
+      "validation_total": 12,
+      "delivered": 0,
+      "archive_proposals_consumed": [
+        {
+          "index": 1,
+          "archived_raw_response_sha256": "40750456111ab467c3acc5a7f27ce250995b01d652171be155663544f10b77fa",
+          "source_sha256": "a8d5f7dd5257f1be8e52757fc55e8a2570dae66ee58c6543bc1d775a64a60f12"
+        },
+        {
+          "index": 2,
+          "archived_raw_response_sha256": "b5b3bbb6eb54d0a7caa70af169083862b6d85afb818003b7e79105ba293f1353",
+          "source_sha256": "d9b897a71420d9c6aa10eacc31f754443379a3690ec174e83a9035ab69b318d0"
+        }
+      ],
+      "arithmetic_repair": null,
+      "digest": "a8d5f7dd5257f1be8e52757fc55e8a2570dae66ee58c6543bc1d775a64a60f12",
+      "seconds": 1.098,
+      "frozen_job_correct": 0,
+      "frozen_job_total": 16
+    }
+  },
+  "reuse": {
+    "3-A": {
+      "cli_exit": 0,
+      "stdout": "8/8 examples, 12/12 independent checks, 16/16 jobs delivered\n",
+      "stderr": "",
+      "status": null,
+      "selected_digest": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+      "saved_checks": [
+        {
+          "digest": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+          "public": 8,
+          "public_failed": 0,
+          "validated": 12,
+          "validation_failed": 0,
+          "reason": "qualified"
+        }
+      ],
+      "stop": [
+        "verified_reuse"
+      ],
+      "public": 8,
+      "qualified_checks": 12,
+      "delivered": 16,
+      "seconds": 5.587,
+      "invocation": [
+        "./hive",
+        "fieldwork",
+        "--sdk",
+        "/workspace/scratch/hive-tests/wasi",
+        "--bank",
+        "/tmp/hive-remember-live/guided-run/bank",
+        "--spec",
+        "/tmp/hive-remember-live/specs/3-A.json",
+        "--out",
+        "/tmp/hive-remember-live/guided-run/3-A"
+      ],
+      "frozen_job_correct": 16,
+      "frozen_job_total": 16
+    },
+    "4-B": {
+      "cli_exit": 1,
+      "stdout": "3/8 examples, 0/12 independent checks, 0/16 jobs delivered\nNo saved version qualified. Supply --binary and --weights to generate a worker.\n",
+      "stderr": "",
+      "status": "needs_generation",
+      "selected_digest": null,
+      "saved_checks": [
+        {
+          "digest": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+          "public": 3,
+          "public_failed": 5,
+          "validated": null,
+          "validation_failed": null,
+          "reason": "public_failed"
+        }
+      ],
+      "stop": [],
+      "public": 3,
+      "qualified_checks": 0,
+      "delivered": 0,
+      "seconds": 4.92,
+      "invocation": [
+        "./hive",
+        "fieldwork",
+        "--sdk",
+        "/workspace/scratch/hive-tests/wasi",
+        "--bank",
+        "/tmp/hive-remember-live/guided-run/bank",
+        "--spec",
+        "/tmp/hive-remember-live/specs/4-B.json",
+        "--out",
+        "/tmp/hive-remember-live/guided-run/4-B"
+      ],
+      "frozen_job_correct": 0,
+      "frozen_job_total": 16
+    }
+  }
+}

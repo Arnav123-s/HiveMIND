@@ -1,22 +1,22 @@
-"""How the body multiplies (Arnav, 2026-11-14): cells are not replaced, they have children, and the body keeps
-growing. No gate decides it and no ledger of who was right on what steers it: the body grows every generation.
+"""Plan children and active places for the hive. The paired exam in training/grow_record.py decides whether
+a generation joins the active body.
 
     python3 training/lineage.py plan <generation> <dna> [organs as a JSON list]    the children to grow, as JSON
     python3 training/lineage.py members <dna> [few]                                who works for the body (for HIVE_MEMBERS); few: the trunk and each organ's newest cell
     python3 training/lineage.py trunk <generation> <dna> <child that grew> ...     which cells this generation's trunk is the average of
     python3 training/lineage.py studied <dna> <folder>                             the training steps of every cell record in the folder (<dna>.<cell>.json), kept in cells/studied.json
 
-A child starts as an exact copy of its parent's weight edit (training/grow.py --parent) and is trained further on
-all the hive's checked work: its right answers, its right-against-wrong pairs and its corrected failures. So each
-child is a degree away from its parent: it keeps what the parent learned, mistakes and corrections included, and
-goes on from there.
+A child starts from its parent's weight edit. Training can mix it with the shared trunk and uses checked work,
+including right answers, contrasts with wrong answers and corrected failures. Later training can change an
+answer the parent got right. The released parent edit can be run again.
 
 It grows the way Fibonacci's rabbits do: a cell born in the last generation is young and has no child yet; every
 other cell has one child each generation. Per organ: 1, 2, 3, 5, 8, ... (in a generation where every cell is
 young, they all count as grown, so the line never stands still). Two limits are the runners', not the idea's: at
 most MOST_CHILDREN children a generation (each trains on its own runner, for hours) and at most MOST_CELLS cells in
 the body (each is loaded beside the DNA in the same server). When the body is full, the oldest cells whose line
-goes on in a descendant give up their place: a child holds what its parent learned, so nothing is lost.
+goes on in a descendant give up their place. The limit applies to the active roster. Retention of a particular
+skill is measurable by comparing what the two versions actually deliver on matching jobs.
 
 Only names are read here, from files this repository wrote; it needs nothing but Python.
 """

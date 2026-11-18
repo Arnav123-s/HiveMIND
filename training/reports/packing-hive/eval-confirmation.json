@@ -1,0 +1,476 @@
+{
+  "sources": {
+    "https://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/binpack2.txt": "86fd8c3d3007047b2ed2e6d2d09924c04d286070968804643d20fd56f9123331",
+    "https://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/binpack7.txt": "30eb806cab226c398f9a524cad04d19dc64494e5e8778cb22357cd463e112ab8"
+  },
+  "policy_sha256": "60c3d40dedd4cef6932c46fb5de4d4bbd03ecf3fba60054d34a96d459347d9b4",
+  "original_policy_sha256": "67b227417ad89251f1462315dd8d1cb9ee55cb706bc782d5fb68ce2f1a285059",
+  "solver_sha256": "aaac09bcbdaf3dde2671518157bd5ca076c17323084f202cf5ffa4e1bffe3d57",
+  "grader_sha256": "d5e114966bd4e76e4796e0d0ad1c00be9f51ea1119b5f987ff3b76a7241aa3bc",
+  "instances": 68,
+  "streams": 204,
+  "items_per_policy": 35706,
+  "cpu_evaluation_seconds": 1.642,
+  "groups": {
+    "Falkenauer triplet 249": {
+      "instances": 10,
+      "total_bins": {
+        "first_fit": 2757,
+        "best_fit": 2757,
+        "trained_sparse": 7050,
+        "any_fit_sparse": 2752
+      },
+      "known_optimum_streams": 30,
+      "optimum_matches": {
+        "first_fit": 10,
+        "best_fit": 10,
+        "trained_sparse": 0,
+        "any_fit_sparse": 10
+      },
+      "candidate_minus_baseline": {
+        "first_fit": {
+          "mean_bins_delta": -0.1667,
+          "cluster_bootstrap_95": [
+            -0.2667,
+            -0.0667
+          ],
+          "wins_ties_losses": [
+            5,
+            25,
+            0
+          ]
+        },
+        "best_fit": {
+          "mean_bins_delta": -0.1667,
+          "cluster_bootstrap_95": [
+            -0.2667,
+            -0.0667
+          ],
+          "wins_ties_losses": [
+            5,
+            25,
+            0
+          ]
+        },
+        "trained_sparse": {
+          "mean_bins_delta": -143.2667,
+          "cluster_bootstrap_95": [
+            -147.0333,
+            -139.7667
+          ],
+          "wins_ties_losses": [
+            30,
+            0,
+            0
+          ]
+        }
+      },
+      "candidate_minus_best_by_order": {
+        "original": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            10,
+            0
+          ]
+        },
+        "shuffle": {
+          "mean_bins_delta": -0.5,
+          "cluster_bootstrap_95": [
+            -0.8,
+            -0.2
+          ],
+          "wins_ties_losses": [
+            5,
+            5,
+            0
+          ]
+        },
+        "ascending": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    "Falkenauer uniform 250": {
+      "instances": 10,
+      "total_bins": {
+        "first_fit": 3598,
+        "best_fit": 3585,
+        "trained_sparse": 3956,
+        "any_fit_sparse": 3588
+      },
+      "known_optimum_streams": 24,
+      "optimum_matches": {
+        "first_fit": 0,
+        "best_fit": 0,
+        "trained_sparse": 0,
+        "any_fit_sparse": 0
+      },
+      "candidate_minus_baseline": {
+        "first_fit": {
+          "mean_bins_delta": -0.3333,
+          "cluster_bootstrap_95": [
+            -0.6333,
+            -0.0
+          ],
+          "wins_ties_losses": [
+            12,
+            15,
+            3
+          ]
+        },
+        "best_fit": {
+          "mean_bins_delta": 0.1,
+          "cluster_bootstrap_95": [
+            -0.1667,
+            0.3333
+          ],
+          "wins_ties_losses": [
+            3,
+            23,
+            4
+          ]
+        },
+        "trained_sparse": {
+          "mean_bins_delta": -12.2667,
+          "cluster_bootstrap_95": [
+            -14.5333,
+            -10.3333
+          ],
+          "wins_ties_losses": [
+            19,
+            9,
+            2
+          ]
+        }
+      },
+      "candidate_minus_best_by_order": {
+        "original": {
+          "mean_bins_delta": 0.3,
+          "cluster_bootstrap_95": [
+            -0.2,
+            0.8
+          ],
+          "wins_ties_losses": [
+            1,
+            6,
+            3
+          ]
+        },
+        "shuffle": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            -0.4,
+            0.6
+          ],
+          "wins_ties_losses": [
+            2,
+            7,
+            1
+          ]
+        },
+        "ascending": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            10,
+            0
+          ]
+        }
+      }
+    },
+    "fraction mixture": {
+      "instances": 16,
+      "total_bins": {
+        "first_fit": 2490,
+        "best_fit": 2491,
+        "trained_sparse": 2491,
+        "any_fit_sparse": 2491
+      },
+      "known_optimum_streams": 0,
+      "optimum_matches": {
+        "first_fit": 0,
+        "best_fit": 0,
+        "trained_sparse": 0,
+        "any_fit_sparse": 0
+      },
+      "candidate_minus_baseline": {
+        "first_fit": {
+          "mean_bins_delta": 0.0208,
+          "cluster_bootstrap_95": [
+            -0.0417,
+            0.0833
+          ],
+          "wins_ties_losses": [
+            1,
+            45,
+            2
+          ]
+        },
+        "best_fit": {
+          "mean_bins_delta": 0.0,
+          "cluster_bootstrap_95": [
+            -0.0625,
+            0.0625
+          ],
+          "wins_ties_losses": [
+            1,
+            46,
+            1
+          ]
+        },
+        "trained_sparse": {
+          "mean_bins_delta": 0.0,
+          "cluster_bootstrap_95": [
+            -0.1458,
+            0.125
+          ],
+          "wins_ties_losses": [
+            4,
+            40,
+            4
+          ]
+        }
+      },
+      "candidate_minus_best_by_order": {
+        "original": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            16,
+            0
+          ]
+        },
+        "shuffle": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            -0.1875,
+            0.1875
+          ],
+          "wins_ties_losses": [
+            1,
+            14,
+            1
+          ]
+        },
+        "ascending": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            16,
+            0
+          ]
+        }
+      }
+    },
+    "medium band": {
+      "instances": 16,
+      "total_bins": {
+        "first_fit": 2969,
+        "best_fit": 2968,
+        "trained_sparse": 6835,
+        "any_fit_sparse": 2958
+      },
+      "known_optimum_streams": 0,
+      "optimum_matches": {
+        "first_fit": 0,
+        "best_fit": 0,
+        "trained_sparse": 0,
+        "any_fit_sparse": 0
+      },
+      "candidate_minus_baseline": {
+        "first_fit": {
+          "mean_bins_delta": -0.2292,
+          "cluster_bootstrap_95": [
+            -0.3333,
+            -0.1458
+          ],
+          "wins_ties_losses": [
+            13,
+            32,
+            3
+          ]
+        },
+        "best_fit": {
+          "mean_bins_delta": -0.2083,
+          "cluster_bootstrap_95": [
+            -0.3125,
+            -0.1042
+          ],
+          "wins_ties_losses": [
+            12,
+            33,
+            3
+          ]
+        },
+        "trained_sparse": {
+          "mean_bins_delta": -80.7708,
+          "cluster_bootstrap_95": [
+            -81.3333,
+            -80.1875
+          ],
+          "wins_ties_losses": [
+            48,
+            0,
+            0
+          ]
+        }
+      },
+      "candidate_minus_best_by_order": {
+        "original": {
+          "mean_bins_delta": -0.1875,
+          "cluster_bootstrap_95": [
+            -0.5,
+            0.125
+          ],
+          "wins_ties_losses": [
+            5,
+            9,
+            2
+          ]
+        },
+        "shuffle": {
+          "mean_bins_delta": -0.4375,
+          "cluster_bootstrap_95": [
+            -0.8125,
+            -0.125
+          ],
+          "wins_ties_losses": [
+            7,
+            8,
+            1
+          ]
+        },
+        "ascending": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            16,
+            0
+          ]
+        }
+      }
+    },
+    "two regimes in reverse": {
+      "instances": 16,
+      "total_bins": {
+        "first_fit": 3768,
+        "best_fit": 3762,
+        "trained_sparse": 3754,
+        "any_fit_sparse": 3763
+      },
+      "known_optimum_streams": 0,
+      "optimum_matches": {
+        "first_fit": 0,
+        "best_fit": 0,
+        "trained_sparse": 0,
+        "any_fit_sparse": 0
+      },
+      "candidate_minus_baseline": {
+        "first_fit": {
+          "mean_bins_delta": -0.1042,
+          "cluster_bootstrap_95": [
+            -0.25,
+            0.0
+          ],
+          "wins_ties_losses": [
+            4,
+            44,
+            0
+          ]
+        },
+        "best_fit": {
+          "mean_bins_delta": 0.0208,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0625
+          ],
+          "wins_ties_losses": [
+            0,
+            47,
+            1
+          ]
+        },
+        "trained_sparse": {
+          "mean_bins_delta": 0.1875,
+          "cluster_bootstrap_95": [
+            0.0417,
+            0.3333
+          ],
+          "wins_ties_losses": [
+            1,
+            40,
+            7
+          ]
+        }
+      },
+      "candidate_minus_best_by_order": {
+        "original": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            16,
+            0
+          ]
+        },
+        "shuffle": {
+          "mean_bins_delta": 0.0625,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.1875
+          ],
+          "wins_ties_losses": [
+            0,
+            15,
+            1
+          ]
+        },
+        "ascending": {
+          "mean_bins_delta": 0,
+          "cluster_bootstrap_95": [
+            0.0,
+            0.0
+          ],
+          "wins_ties_losses": [
+            0,
+            16,
+            0
+          ]
+        }
+      }
+    }
+  }
+}

@@ -25,10 +25,13 @@ after the word WORK. On the first real conversation it wrote its own answer ther
 "working on" a sentence. The decision is one word now, and the task is always the user's own message.)
 """
 import datetime
+from contextlib import redirect_stdout
+from decimal import Decimal, InvalidOperation
 import json
 import os
 import re
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -59,6 +62,7 @@ MUST = re.compile(r"https?://|\bwww\.|\d\s*[-+*/^%]\s*\d|\b\d+(?:\.\d+)?\s*%|\b(
                   r"\b(?:calculate|compute)\b|\b\w+\.(?:csv|json|py|md|txt|xlsx)\b|\b(?:scrape|download)\b", re.I)
 LONG = int(os.environ.get("HIVE_TALK_LONG", 900))  # the most pieces of one reply
 KEEP = int(os.environ.get("HIVE_TALK_KEEP", 9000))  # how many characters of the conversation the talker is shown
+SINGLE_INTEGER = re.compile(r"\b(?:(?:as|with)\s+(?:a\s+)?single integer|(?:only|just)\s+(?:the|an?|one)\s+integer)\b", re.I)
 
 
 def speaker():
@@ -95,9 +99,19 @@ def decide(base, message, before=""):
     return "work" if "WORK" in said.upper() else "talk"
 
 
-def _numbers(text, task=""):
-    from . import solo
-    return {round(x, 2) for x in solo.key(text, task)}
+_VALUE = re.compile(r"(?<![\w.])v?\d+(?:\.\d+){2,}(?:[a-z]+\d*)?|"
+                    r"(?<![\w.])[+-]?(?:(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?", re.I)
+
+
+def _values(text):
+    # Preserve versions and decimal precision when a conversational rewrite restates a result.
+    values = set()
+    for token in _VALUE.findall(text):
+        try:
+            values.add(Decimal(token.replace(",", "")))
+        except InvalidOperation:
+            values.add(token.lower().lstrip("v"))
+    return values
 
 
 def route(base, message, history=()):
@@ -121,18 +135,31 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
     way, convo = route(base, message, history)
     if way == "talk":
         text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
-        return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "seconds": round(time.time() - t0)}
+        return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
     if now:  # a time given from outside is not the machine's clock: the programs are told it
-        task += f"\n\n(It is now {today}.)"
+        # g45's talk exam: told it was 2028-02-27, the members' programs read the machine's clock and answered from 2026
+        task += f"\n\n(It is now {today}. Take this as today's date and the time now; do not read the computer's clock.)"
     say(f"the hive works on it: {task[:300]}")
     from . import solo
-    home = Path(run_dir or config.RUNS / time.strftime("talk-%Y%m%d-%H%M%S"))
+    if run_dir is None:
+        config.RUNS.mkdir(parents=True, exist_ok=True)
+        run_dir = tempfile.mkdtemp(dir=config.RUNS, prefix=time.strftime("talk-%Y%m%d-%H%M%S-"))
+    home = Path(run_dir)
     out = solo.first(task, home, "never", members=int(os.environ.get("AGENT_TEAM_SOLO", "2") or 2))
     answer = out["report"].split("\n## ")[0].strip()
-    made = sorted(p.name for p in (home / "work").iterdir() if p.is_file() and not p.name.startswith(".")) if (home / "work").is_dir() else []
+    made = out.get("files", []) if out["agreed"] else []
+    exact = out["agreed"] and SINGLE_INTEGER.search(message) and re.fullmatch(r"[+-]?\d+", answer)
+    if out.get("requested_files") or exact:
+        # A file request already has a plain report and a publication decision. A second
+        # model rewriting that decision can invent a successful delivery or change a value.
+        final = answer if out["agreed"] else out["report"].strip()
+        if made and not exact:
+            final += "\n\nFiles saved: " + ", ".join(made)
+        return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
+                "files": made, "file_repairs": out.get("file_repairs", []), "seconds": round(time.time() - t0)}
     if out["agreed"]:
         how, then = "checked: its members worked it out independently with programs and two of them agreed", "Then say in one short sentence that the hive's members worked it out with programs and two agreed."
     else:
@@ -145,11 +172,40 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
     if not final:
         final = answer
     # the values are the programs', never the talker's: where its wording lost or changed one, the checked output is shown as it is
-    if out["agreed"] and not _numbers(answer, task) <= _numbers(final, task):
-        final += "\n\nThe checked result, as the programs printed it:\n```\n" + answer[:3000] + "\n```"
+    if out["agreed"]:
+        expected, said = _values(answer), _values(final)
+        if expected - said or said - expected - _values(task):
+            final = answer
     if made and not all(f in final for f in made):
         final += "\n\nFiles made: " + ", ".join(made)
-    return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home), "seconds": round(time.time() - t0)}
+    return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
+            "files": made, "seconds": round(time.time() - t0)}
+
+
+def file_paths(out):
+    """The published files in a reply, for terminal users and the hosted download."""
+    return [Path(out["dir"]) / "work" / name for name in out.get("files", [])]
+
+
+def repair_notes(out):
+    return [f"The hive sorted {r['name']} by {r['column']} ({r['direction']}) before delivery."
+            for r in out.get("file_repairs", [])]
+
+
+def local_text(out):
+    details = repair_notes(out) + [str(p.absolute()) for p in file_paths(out)]
+    return out["text"] + ("\n\n" + "\n".join(details) if details else "")
+
+
+def print_one(message, **options):
+    """Keep progress and file locations on stderr so stdout can be used as the answer."""
+    with redirect_stdout(sys.stderr):
+        out = reply(message, **options)
+    print(out["text"])
+    for note in repair_notes(out):
+        print(note, file=sys.stderr)
+    for path in file_paths(out):
+        print(path.absolute(), file=sys.stderr)
 
 
 def main(argv):
@@ -164,13 +220,20 @@ def main(argv):
         out = reply(str(msgs[-1]["content"]), msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
         foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
                 if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
-        Path(opt("--out", "reply.md")).write_text(out["text"].strip() + foot + "\n")
+        notes = repair_notes(out)
+        response = out["text"].strip() + ("\n\n" + "\n".join(notes) if notes else "")
+        Path(opt("--out", "reply.md")).write_text(response + foot + "\n")
+        if "--export-files" in argv:
+            from . import deliverables
+            export = Path(opt("--export-files", "delivery"))
+            export.mkdir(parents=True, exist_ok=False)
+            if out.get("files"):
+                deliverables.copy_files(Path(out["dir"]) / "work", out["files"], export)
         print(out["text"])
         return 0
-    words = [a for i, a in enumerate(argv) if not a.startswith("--") and (i == 0 or argv[i - 1] not in ("--name", "--run-dir", "--out"))]
+    words = [a for i, a in enumerate(argv) if not a.startswith("--") and (i == 0 or argv[i - 1] not in ("--name", "--run-dir", "--out", "--export-files"))]
     if words:
-        out = reply(" ".join(words), (), name, opt("--run-dir", None), log=lambda *a: print("[" + " ".join(map(str, a)) + "]", file=sys.stderr, flush=True))
-        print(out["text"])
+        print_one(" ".join(words), name=name, run_dir=opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
         return 0
     if not speaker():
         print("the hive's body is not on this machine: bash scripts/cloud_setup.sh")
@@ -187,7 +250,7 @@ def main(argv):
         if msg.lower() in ("exit", "quit", "bye"):
             break
         out = reply(msg, history, name, log=lambda *a: print("  [" + " ".join(map(str, a)) + "]", flush=True))
-        print("\nhive> " + out["text"])
+        print("\nhive> " + local_text(out))
         history += [{"role": "user", "content": msg}, {"role": "assistant", "content": out["text"]}]
     return 0
 

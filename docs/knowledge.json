@@ -807,6 +807,28 @@
    "by": "B's sub-agent: each slice's record says rows_by_kind {given, too_long, skipped_memory, trained} of the new rows (training/grow.train); training/reads.py shows too long (memory-skipped in brackets) and rule 2 counts too long only",
    "seen": "2026-11-17 17:06, docs/reads/latest.md (g41): the estimate was every new row a slice did not study, whatever the cause",
    "fix": "rows_by_kind in the slice record; rule 2 on too-long rows only; older records shown as an estimate that holds no rule"
+  },
+  {
+   "id": "undelivered",
+   "title": "A cell can pass the job while the hive withholds the file",
+   "lives_in": "exam",
+   "blocks": "hardkinds",
+   "status": "open",
+   "found": "G47 had a passing member on 20 of 32 hard jobs and delivered 16",
+   "by": "The recorder now counts both grades on the same jobs and reports coverage.",
+   "seen": "In four G47 hard jobs exactly one member passed and the hive abstained. In twelve others all members failed. All 16 grade archives were verified in training/reports/checked-delivery/g47-headroom.json.",
+   "fix": "Independent evidence that can select a single correct member remains needed."
+  },
+  {
+   "id": "retainedmethods",
+   "title": "An unchanged score can hide old skills that a later hive loses",
+   "lives_in": "exam",
+   "blocks": "hardkinds",
+   "status": "open",
+   "found": "The G47 parent and child delivered 47 of 64 each, with two wins unique to each body.",
+   "by": "The generation recorder now compares individual deliveries on identical prompts and exam revisions.",
+   "seen": "A task-category selector also scored 47 of 64. On specified invoice work orders, checking different saved methods against the current examples improved correct delivery decisions from 3 of 6 to 6 of 6.",
+   "fix": "The programming work-order runner retains checked methods and withholds an ambiguous result. General chat still needs a reliable way to identify which older cell to call."
   }
  ],
  "rules": [

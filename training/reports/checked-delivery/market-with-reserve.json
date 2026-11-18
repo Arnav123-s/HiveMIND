@@ -1,0 +1,53 @@
+[
+  {
+    "id": "market",
+    "task": "A stall sold 3 jars of jam at 4 dollars each, 5 loaves at 3 dollars each, and 2 tins of tea at 7 dollars each. Create sales.csv with columns item,revenue and one data row per item, highest revenue first. Use jam, bread, tea as the item names respectively. Print the total revenue as a single integer.",
+    "answer": "41",
+    "name": "sales.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "item",
+        "revenue"
+      ],
+      [
+        "bread",
+        "15"
+      ],
+      [
+        "tea",
+        "14"
+      ],
+      [
+        "jam",
+        "12"
+      ]
+    ],
+    "group": "fresh G47 plus reserve",
+    "candidates": [
+      {
+        "who": "t80+g47trunk",
+        "answer": "41",
+        "program": "import csv\n\n# Calculate revenue for each item\nrevenues = [\n    (\"jam\", 3 * 4),\n    (\"bread\", 5 * 3),\n    (\"tea\", 2 * 7)\n]\n\n# Write to sales.csv\nwith open('sales.csv', 'w', newline='') as f:\n    writer = csv.writer(f)\n    writer.writerow(['item', 'revenue'])\n    for item, price in revenues:\n        writer.writerow([item, price])\n\n# Calculate total revenue\ntotal_revenue = sum(price for _, price in revenues)\nprint(total_revenue)",
+        "turns": 2,
+        "file": "item,revenue\r\njam,12\r\nbread,15\r\ntea,14\r\n"
+      },
+      {
+        "who": "t80+g47data2",
+        "answer": "41",
+        "program": "import csv\n\n# Calculate revenue for each item\nrevenues = []\nfor item, price, quantity in [('jam', 4, 3), ('bread', 3, 5), ('tea', 7, 2)]:\n    revenue = price * quantity\n    revenues.append((item, revenue))\n\n# Write to sales.csv\nwith open('sales.csv', 'w', newline='') as f:\n    writer = csv.writer(f)\n    writer.writerow(['item', 'revenue'])\n    for item, revenue in sorted(revenues, key=lambda x: x[1], reverse=True):\n        writer.writerow([item, revenue])\n\n# Calculate total revenue\ntotal_revenue = sum(revenue for _, revenue in revenues)\nprint(total_revenue)",
+        "turns": 2,
+        "file": "item,revenue\r\nbread,15\r\ntea,14\r\njam,12\r\n"
+      },
+      {
+        "who": "t80+g47sources2",
+        "program": "import csv\n\ndata = [\n    {\"item\": \"jam\", \"revenue\": 4},\n    {\"item\": \"bread\", \"revenue\": 3},\n    {\"item\": \"tea\", \"revenue\": 7}\n]\n\nwith open('sales.csv', \"w\", newline=\"\") as f:\n    writer = csv.DictWriter(f, fieldnames=[\"item\", \"revenue\"])\n    writer.writeheader()\n    for row in data:\n        writer.writerow(row)\n\ntotal_revenue = sum(row[\"revenue\"] for row in data)\nprint(total_revenue)",
+        "answer": "14",
+        "turns": 2,
+        "file": "item,revenue\r\njam,4\r\nbread,3\r\ntea,7\r\n"
+      }
+    ],
+    "reserve_wall_seconds": 159.11,
+    "reserve_started_utc": "2026-11-18T19:45:35.540169+00:00"
+  }
+]

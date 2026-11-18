@@ -1,0 +1,43 @@
+{
+  "id": "rainfall",
+  "source": "a70eb72a286020e5dceafb451d6d2051756cd44c:training/reports/whole-hive-g47/observations.json#live_conversation_and_file",
+  "provenance": "archived model run; original program and stdout, CSV reserialized from published records",
+  "task": "A rain gauge recorded 7 mm on Monday, 11 mm on Tuesday, and 3 mm on Wednesday. Create a CSV file named rainfall.csv with columns day,mm and rows in the order Wednesday, Monday, Tuesday. Tell me the total rainfall in millimetres.",
+  "name": "rainfall.csv",
+  "format": "csv",
+  "answer": "21",
+  "expected": [
+    [
+      "day",
+      "mm"
+    ],
+    [
+      "Wednesday",
+      "3"
+    ],
+    [
+      "Monday",
+      "7"
+    ],
+    [
+      "Tuesday",
+      "11"
+    ]
+  ],
+  "candidates": [
+    {
+      "who": "t80+g47trunk",
+      "answer": "21",
+      "program": "import csv\n\n# Data in the order Wednesday, Monday, Tuesday\ndata = [\n    (\"Wednesday\", 3, 7),\n    (\"Monday\", 7, 11),\n    (\"Tuesday\", 11, 3)\n]\n\n# Write the data to a CSV file\nwith open('rainfall.csv', 'w', newline='') as csvfile:\n    writer = csv.writer(csvfile)\n    writer.writerow(['day', 'mm'])\n    for row in data:\n        writer.writerow(row)\n\n# Calculate the total rainfall\ntotal = sum(mm for _, _, mm in data)\nprint(total)",
+      "turns": 2,
+      "file": "day,mm\r\nWednesday,3,7\r\nMonday,7,11\r\nTuesday,11,3\r\n"
+    },
+    {
+      "who": "t80+g47data2",
+      "answer": "21",
+      "program": "import csv\n\ndata = [\n    ('Wednesday', 3),\n    ('Monday', 7),\n    ('Tuesday', 11)\n]\n\nwith open('rainfall.csv', 'w', newline='') as file:\n    writer = csv.writer(file)\n    writer.writerow(['day', 'mm'])\n    writer.writerows(data)\n\ntotal = sum(row[1] for row in data)\nprint(total)",
+      "turns": 2,
+      "file": "day,mm\r\nWednesday,3\r\nMonday,7\r\nTuesday,11\r\n"
+    }
+  ]
+}

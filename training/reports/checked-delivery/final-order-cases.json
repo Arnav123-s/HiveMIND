@@ -1,0 +1,446 @@
+[
+  {
+    "id": "grocery",
+    "group": "numeric order",
+    "task": "Bread costs 6 dollars, tea costs 11 and soap costs 4. Create grocery.csv with columns item,cost. Sort by cost descending. Print the number of entries as a single integer.",
+    "name": "grocery.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "item",
+        "cost"
+      ],
+      [
+        "tea",
+        "11"
+      ],
+      [
+        "bread",
+        "6"
+      ],
+      [
+        "soap",
+        "4"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "item,cost\nbread,6\ntea,11\nsoap,4\n"
+      },
+      {
+        "answer": "3",
+        "file": "item,cost\nbread,6\ntea,11\nsoap,4\n"
+      }
+    ]
+  },
+  {
+    "id": "race",
+    "group": "numeric order",
+    "task": "The finish times were Uma 72 seconds, Jo 65 and May 70. Write race.csv with columns runner,seconds. Order the rows by seconds ascending. Print the number of entries as a single integer.",
+    "name": "race.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "runner",
+        "seconds"
+      ],
+      [
+        "Jo",
+        "65"
+      ],
+      [
+        "May",
+        "70"
+      ],
+      [
+        "Uma",
+        "72"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "runner,seconds\nUma,72\nJo,65\nMay,70\n"
+      },
+      {
+        "answer": "3",
+        "file": "runner,seconds\nUma,72\nJo,65\nMay,70\n"
+      }
+    ]
+  },
+  {
+    "id": "water",
+    "group": "numeric order",
+    "task": "Tanks hold 100, 8 and 12 liters at west, east and north respectively. Save water.csv with columns site,liters, sorted by liters from largest to smallest. Print the number of entries as a single integer.",
+    "name": "water.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "site",
+        "liters"
+      ],
+      [
+        "west",
+        "100"
+      ],
+      [
+        "north",
+        "12"
+      ],
+      [
+        "east",
+        "8"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "site,liters\nwest,100\neast,8\nnorth,12\n"
+      },
+      {
+        "answer": "3",
+        "file": "site,liters\neast,8\nnorth,12\nwest,100\n"
+      }
+    ]
+  },
+  {
+    "id": "returns",
+    "group": "numeric order",
+    "task": "Ben has 13 unreturned books, Rae has 4 and Mo has 9. Create returns.csv with columns reader,books. Please sort the rows by books (lowest first). Print the number of entries as a single integer.",
+    "name": "returns.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "reader",
+        "books"
+      ],
+      [
+        "Rae",
+        "4"
+      ],
+      [
+        "Mo",
+        "9"
+      ],
+      [
+        "Ben",
+        "13"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "reader,books\nBen,13\nRae,4\nMo,9\n"
+      },
+      {
+        "answer": "3",
+        "file": "reader,books\nBen,13\nRae,4\nMo,9\n"
+      }
+    ]
+  },
+  {
+    "id": "thermometer",
+    "group": "numeric order",
+    "task": "Room A was 12 degrees, room B was -3 and room C was 0. Save thermometer.csv with columns room,degrees. Show the lowest degrees first. Print the number of entries as a single integer.",
+    "name": "thermometer.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "room",
+        "degrees"
+      ],
+      [
+        "B",
+        "-3"
+      ],
+      [
+        "C",
+        "0"
+      ],
+      [
+        "A",
+        "12"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "room,degrees\nA,12\nB,-3\nC,0\n"
+      },
+      {
+        "answer": "3",
+        "file": "room,degrees\nA,12\nB,-3\nC,0\n"
+      }
+    ]
+  },
+  {
+    "id": "library",
+    "group": "numeric order",
+    "task": "The library issued 128 cards at East, 45 at North and 88 at West. Create library.csv with columns branch,cards. List the rows in descending order of cards. Print the number of entries as a single integer.",
+    "name": "library.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "branch",
+        "cards"
+      ],
+      [
+        "East",
+        "128"
+      ],
+      [
+        "West",
+        "88"
+      ],
+      [
+        "North",
+        "45"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "branch,cards\nEast,128\nNorth,45\nWest,88\n"
+      },
+      {
+        "answer": "3",
+        "file": "branch,cards\nEast,128\nNorth,45\nWest,88\n"
+      }
+    ]
+  },
+  {
+    "id": "laundry",
+    "group": "numeric order",
+    "task": "Washroom A used 0.9 kWh, B used 10.0 and C used 1.4. Make laundry.csv with columns room,kwh. Sort the table by kwh in ascending order. Keep the original decimal spellings. Print the number of entries as a single integer.",
+    "name": "laundry.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "room",
+        "kwh"
+      ],
+      [
+        "A",
+        "0.9"
+      ],
+      [
+        "C",
+        "1.4"
+      ],
+      [
+        "B",
+        "10.0"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "room,kwh\nA,0.9\nC,1.4\nB,10.0\n"
+      },
+      {
+        "answer": "3",
+        "file": "room,kwh\nA,0.9\nB,10.0\nC,1.4\n"
+      }
+    ]
+  },
+  {
+    "id": "manual",
+    "group": "preserve an alternative",
+    "task": "A source list was sorted by stock ascending. Create manual.csv with columns shop,stock. For the delivery driver use this route order: Elm 7, Bay 2, Fen 4. Print the number of entries as a single integer.",
+    "name": "manual.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "shop",
+        "stock"
+      ],
+      [
+        "Elm",
+        "7"
+      ],
+      [
+        "Bay",
+        "2"
+      ],
+      [
+        "Fen",
+        "4"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "shop,stock\nElm,7\nBay,2\nFen,4\n"
+      },
+      {
+        "answer": "3",
+        "file": "shop,stock\nElm,7\nBay,2\nFen,4\n"
+      }
+    ]
+  },
+  {
+    "id": "tickets",
+    "group": "preserve an alternative",
+    "task": "Ticket codes are text and leading zeroes matter. Save tickets.csv with columns holder,code. Sort by code lexicographically: the valid code strings are 012 for Lee, 02 for Sol and 1 for Jay. Print the number of entries as a single integer.",
+    "name": "tickets.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "holder",
+        "code"
+      ],
+      [
+        "Lee",
+        "012"
+      ],
+      [
+        "Sol",
+        "02"
+      ],
+      [
+        "Jay",
+        "1"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "holder,code\nLee,012\nSol,02\nJay,1\n"
+      },
+      {
+        "answer": "3",
+        "file": "holder,code\nLee,012\nSol,02\nJay,1\n"
+      }
+    ]
+  },
+  {
+    "id": "layout",
+    "group": "preserve an alternative",
+    "task": "The labels and values in our diagram are Center 4, South 12, North 5. Make layout.csv with columns label,value. Preserve the original order exactly; a colleague may later sort by value descending. Print the number of entries as a single integer.",
+    "name": "layout.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "label",
+        "value"
+      ],
+      [
+        "Center",
+        "4"
+      ],
+      [
+        "South",
+        "12"
+      ],
+      [
+        "North",
+        "5"
+      ]
+    ],
+    "expected_action": "deliver-exactly",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "label,value\nCenter,4\nSouth,12\nNorth,5\n"
+      },
+      {
+        "answer": "3",
+        "file": "label,value\nCenter,4\nSouth,12\nNorth,5\n"
+      }
+    ]
+  },
+  {
+    "id": "conflict",
+    "group": "unresolved conflict",
+    "task": "The arrival list is A 8, B 3, C 5. Create conflict.csv with columns label,count. A volunteer suggested sorting by count ascending and another suggested descending. I have not chosen between them. Print the number of entries as a single integer.",
+    "name": "conflict.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "label",
+        "count"
+      ],
+      [
+        "A",
+        "8"
+      ],
+      [
+        "B",
+        "3"
+      ],
+      [
+        "C",
+        "5"
+      ]
+    ],
+    "expected_action": "abstain",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "label,count\nB,3\nC,5\nA,8\n"
+      },
+      {
+        "answer": "3",
+        "file": "label,count\nA,8\nC,5\nB,3\n"
+      }
+    ]
+  },
+  {
+    "id": "sensors",
+    "group": "unresolved conflict",
+    "task": "Three sensors reported Elm 13, Bay 8 and Fen 2. Create sensors.csv with columns sensor,reading. Sort by reading ascending. Print the number of entries as a single integer.",
+    "name": "sensors.csv",
+    "format": "csv",
+    "answer": "3",
+    "expected": [
+      [
+        "sensor",
+        "reading"
+      ],
+      [
+        "Fen",
+        "2"
+      ],
+      [
+        "Bay",
+        "8"
+      ],
+      [
+        "Elm",
+        "13"
+      ]
+    ],
+    "expected_action": "abstain",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "sensor,reading\nElm,13\nBay,7\nFen,2\n"
+      },
+      {
+        "answer": "3",
+        "file": "sensor,reading\nBay,8\nElm,18\nFen,2\n"
+      }
+    ]
+  }
+]
