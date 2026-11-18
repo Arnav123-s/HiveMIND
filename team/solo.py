@@ -27,9 +27,11 @@ import json
 import os
 import re
 import time
+import tempfile
 from pathlib import Path
 
-from . import config, llm, stop, ternary
+from . import config, deliverables, llm, stop, ternary
+from .deliverables import wanted
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
@@ -277,14 +279,6 @@ def _form(task, answer):
     return ""
 
 
-FILE = re.compile(r"\b(?:sav\w*|writ\w*|creat\w*|mak\w*|produc\w*|generat\w*|stor\w*|export\w*)\b[^.\n]{0,80}?(?<![\w/.-])([\w-]+\.(?:py|csv|tsv|json|md|txt|html|xml|ya?ml))\b", re.I)
-
-
-def wanted(task):
-    """The files the TASK asks to be saved, by name ("save it as roman.py", "make a new file people.csv")."""
-    return list(dict.fromkeys(m.group(1) for m in FILE.finditer(task)))
-
-
 def typed_out(reply, code):
     """Is the reply an answer typed out and not a program? Text that does not parse and came without a code fence;
     or text that parses but calls nothing ("A: 65" on a line is Python too, an annotation; in a fence or out of
@@ -302,7 +296,9 @@ def module(task, code, work, board=None, n=0):
     write it: its imports, functions, classes and constants, without the lines that test and print. Seen in the pulse
     of g27: a member's program defined encode and decode right and printed the right values; told rle.py was missing,
     it wrote its own source into a quoted string, broke the quotes, and died of a SyntaxError on every turn after."""
-    lacking = [f for f in wanted(task) if f.endswith(".py") and not (Path(work) / f).is_file()]
+    if Path(work).is_symlink():
+        return ""
+    lacking = [f for f in wanted(task) if f.endswith(".py") and not (Path(work) / f).exists() and not (Path(work) / f).is_symlink()]
     if not lacking:
         return ""
     try:
@@ -377,7 +373,9 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         if said:
             messages[0]["content"] += notes.block(said)
             board.log(f"member{n}", "notes", f"{len(said)} note(s) from earlier work")
-    give(task, work, skip=wanted(task))
+    names = wanted(task)
+    give(task, work, skip=names)
+    saved_files = tempfile.TemporaryDirectory() if names else None
     helped = []
 
     def helps(*names):
@@ -441,8 +439,18 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             err = (f"The program fetched the same page {again.group(1)} {again.group(2)} times: the loop never moved to "
                    "another page. Find the link to the next page on each page (its text is often 'Next') and fetch that, "
                    "or put the page number into the address.")
-        bare = [f.name for f in (Path(work).iterdir() if Path(work).exists() else []) if f.is_file() and f.suffix in (".csv", ".tsv")
-                and len([x for x in f.read_text(errors="ignore").splitlines() if x.strip()]) <= 1]
+        bare = []
+        if not names and res["returncode"] == 0 and Path(work).exists():
+            for f in Path(work).iterdir():
+                if f.suffix not in (".csv", ".tsv"):
+                    continue
+                try:
+                    with deliverables.regular(f) as data:
+                        lines = (line for line in data if line.strip())
+                        if next(lines, None) is None or next(lines, None) is None:
+                            bare.append(f.name)
+                except (OSError, ValueError):
+                    continue
         if res["returncode"] == 0 and bare:
             res = dict(res, returncode=1)
             err = (f"The file {bare[0]} you saved holds no rows (at most a heading): what the program looked for was not on "
@@ -459,13 +467,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
                          {"role": "user", "content": f"Your functions are saved as {saved}. Now reply with a short program that "
                           f"imports {saved[:-3]}, calls the functions as the TASK asks, and prints each value it asks for."}]
             continue
-        lacking = [f for f in wanted(task) if not (Path(work) / f).is_file() or not (Path(work) / f).stat().st_size]
-        if res["returncode"] == 0 and lacking:
-            # Seen on the first hard sitting (seed 7001): asked to "save it as durations.py", both members wrote the
-            # two functions into their own program, printed the values, and agreed. The file was never written.
-            res = dict(res, returncode=1)
-            err = (f"The TASK asks for the file {lacking[0]} saved in the current folder, and it is not there. Reply with the complete "
-                   f"program that writes {lacking[0]} (with open({lacking[0]!r}, 'w')), then uses it, and prints the answer.")
+        delivery = deliverables.inspect(task, work, names) if names and res["returncode"] == 0 else None
         if res["returncode"] == 0 and out and len(out) < 300 and EMPTY.search(out) and not EMPTY.search(task):
             res = dict(res, returncode=1)
             err = f"The program found nothing: {out.strip()[-200:]}"
@@ -485,11 +487,27 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
                              "with the complete program that prints the answer to the TASK."})
             continue
         if res["returncode"] == 0 and out:
-            good, last_error = {"answer": out[-3000:], "program": code}, None
+            candidate = {"answer": out[-3000:], "program": code}
+            feedback = ""
+            if delivery is not None:
+                candidate["delivery"] = delivery
+                if not delivery["issues"]:
+                    try:
+                        deliverables.copy_files(work, names, saved_files.name)
+                    except (OSError, ValueError) as e:
+                        delivery["issues"]["copy"] = str(e)
+                if delivery["issues"]:
+                    feedback = "; ".join(f"{f}: {why}" for f, why in delivery["issues"].items())
+                    feedback += ". Reply with a complete program that fixes the requested file."
+            # A later program can overwrite a good file and then fail. Keep the successful
+            # output and the matching files together, including through a member's final DONE.
+            if good is None or not delivery or not delivery["issues"] or good["delivery"]["issues"]:
+                good = candidate
+            last_error = None
             shape = form(task, out) if shaped < 2 else ""
             shaped += bool(shape)
             messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n" + (
-                shape + " Reply with the complete program that prints it that way." if shape else MORE)})
+                feedback or (shape + " Reply with the complete program that prints it that way." if shape else MORE))})
             continue
         line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
         repeats = repeats + 1 if line == last_error else 0
@@ -512,7 +530,14 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             "\n\nThe error is in the program's own steps. Print the values it works with just before the line that failed, "
             "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
-    return {"answer": (good or {}).get("answer", ""), "program": (good or {}).get("program", ""), "turns": turn,
+    if saved_files is not None:
+        if good and not good["delivery"]["issues"]:
+            try:
+                deliverables.copy_files(saved_files.name, names, work)
+            except (OSError, ValueError) as e:
+                good["delivery"]["issues"]["copy"] = str(e)
+        saved_files.cleanup()
+    return {**(good or {"answer": "", "program": ""}), "turns": turn,
             "who": who, "messages": messages, "hints": helped, "temperature": temperature, "also": list(also)}
 
 
@@ -540,11 +565,26 @@ def headings(task, t, n, board, guard):
     code = extract_code(reply)
     if typed_out(reply, code) or not code.strip() or not guard.check_code("coder", code):
         return
-    res = run_python(code, t["work"], name=f"member{n}_{t['turns'] + 1}.py")
+    work = Path(t["work"])
+    names = wanted(task)
+    if names:
+        work = Path(tempfile.mkdtemp(prefix=f"member{n}-retry-", dir=work.parent))
+        give(task, work, skip=names)
+        if not t["delivery"]["issues"]:
+            try:
+                deliverables.copy_files(t["work"], names, work)
+            except (ValueError, OSError):
+                return
+    res = run_python(code, work, name=f"member{n}_{t['turns'] + 1}.py")
     out = res["stdout"].strip()
     messages += [{"role": "assistant", "content": f"```python\n{code}\n```"}, {"role": "user", "content": f"OUTPUT:\n{out[-1800:]}"}]
     board.log(f"member{n}", "run", f"asked again: exit {res['returncode']}, printed {len(out)} characters")
     if res["returncode"] == 0 and whole(task, out):
+        if names:
+            delivery = deliverables.inspect(task, work, names)
+            if delivery["issues"]:
+                return
+            t.update(work=str(work), delivery=delivery)
         t.update(answer=out[-3000:], program=code, turns=t["turns"] + 1)
 
 
@@ -553,14 +593,40 @@ def agreeing(tries, task):
     return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if same(x["answer"], y["answer"], task)]
 
 
+def _winner(tries, pairs, task):
+    """The delivered member needs an agreeing witness, complete headings and all requested files.
+    If agreeing witnesses have conflicting structured files, require independent content agreement."""
+    candidates = []
+    for x in tries:
+        peers = [b if a is x else a for a, b in pairs if a is x or b is x]
+        if not peers or not whole(task, x["answer"]):
+            continue
+        delivery = x.get("delivery", {})
+        if delivery.get("issues"):
+            continue
+        comparable = [p["delivery"]["content"] for p in peers if p.get("delivery") and not p["delivery"]["issues"]]
+        if comparable and delivery["content"] not in comparable:
+            continue
+        candidates.append(x)
+    return next((x for x in candidates if not form(task, x["answer"])), None) or next(iter(candidates), None)
+
+
+def _home(run_dir):
+    if run_dir:
+        return Path(run_dir)
+    config.RUNS.mkdir(parents=True, exist_ok=True)
+    return Path(tempfile.mkdtemp(prefix=time.strftime("%Y%m%d-%H%M%S-"), dir=config.RUNS))
+
+
 def run(task, run_dir=None, approve="never", members=2):
     task = task.strip()
-    home = Path(run_dir or config.RUNS / time.strftime("%Y%m%d-%H%M%S"))
+    home = _home(run_dir)
     board = Board(home)
     board.goal = task
     (home / "TASK.md").write_text(task + "\n")
     guard = Guard(board, approve, goal=task, use_model=False)
     work = home / "work"
+    names = wanted(task)
     tries = []
     agreed = None
     seats = ternary.seating(task)
@@ -581,8 +647,20 @@ def run(task, run_dir=None, approve="never", members=2):
                 also = tuple(engram.recall(task, base, cell=cell))  # its own line's first
             if also and n == 1:
                 board.log("hive", "engrams", ", ".join(x if isinstance(x, str) else f"{x[0]} at {x[1]}" for x in also))
-        t = member(task, n, board, guard, work if n == 1 else home / f"member{n}", 0.0 if n == 1 else 0.7, who, also)
-        t["work"] = str(work if n == 1 else home / f"member{n}")
+        member_work = work if n == 1 else home / f"member{n}"
+        if names and (member_work.is_symlink() or member_work.exists() and (not member_work.is_dir() or any(member_work.iterdir()))):
+            # A caller may retry the same run directory. Old files cannot witness a new program.
+            member_work = Path(tempfile.mkdtemp(prefix=f"member{n}-", dir=home))
+        t = member(task, n, board, guard, member_work, 0.0 if n == 1 else 0.7, who, also)
+        t["work"] = str(member_work)
+        if names:
+            checked = deliverables.inspect(task, member_work, names)
+            previous = t.get("delivery", {})
+            if previous.get("issues"):
+                checked["issues"].update(previous["issues"])
+            elif previous and previous["byte_hashes"] != checked["byte_hashes"]:
+                checked["issues"]["copy"] = "file changed after the program printed its answer"
+            t["delivery"] = checked
         tries.append(t)
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
         # the whole exchange is kept: where the task's check later confirms the answer, it is what the hive's own
@@ -601,15 +679,28 @@ def run(task, run_dir=None, approve="never", members=2):
                     break
             pairs = agreeing(tries, task)
         pairs = [p for p in pairs if any(whole(task, x["answer"]) for x in p)]
-        if pairs:
-            # of two that agree, the one that carries every heading and keeps the form asked for
-            agreed = next((x for x in pairs[0] if whole(task, x["answer"]) and not form(task, x["answer"])), None) or next(
-                x for x in pairs[0] if whole(task, x["answer"]))
+        agreed = _winner(tries, pairs if names else pairs[:1], task)
+        if agreed:
             break
     got = [t for t in tries if t["answer"]]
     if agreed:
         keep(task, agreed["program"], agreed["answer"])
         text = agreed["answer"] + f"\n\n## How it was checked\n- {len(tries)} members worked it out independently; two gave the same values."
+        if names:
+            matched = any(t is not agreed and same(t["answer"], agreed["answer"], task)
+                          and not t["delivery"]["issues"] and t["delivery"]["content"] == agreed["delivery"]["content"]
+                          for t in tries)
+            text += "\n- Reopened and checked the requested files: " + ", ".join(names) + "."
+            if agreed["delivery"]["content"] and matched:
+                text += " Two members produced matching structured data."
+    elif names and got and (members >= 2 or got[0]["delivery"]["issues"]):
+        reasons = []
+        for i, t in enumerate(tries, 1):
+            issues = t["delivery"]["issues"]
+            if issues:
+                reasons.append(f"Member {i}: " + "; ".join(f"{name}: {why}" for name, why in issues.items()))
+        text = ("Not confirmed: the hive could not select a complete file with an independently supported answer."
+                + ("\n\n" + "\n".join(reasons) if reasons else " The members' answers or structured files differ."))
     elif members < 2 and got:
         text = got[0]["answer"] + "\n\n## How it was checked\n- One member worked it out; nobody checked it."
     elif got:
@@ -622,23 +713,54 @@ def run(task, run_dir=None, approve="never", members=2):
     text = text.strip() + "\n"
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
-    (home / "members.json").write_text(json.dumps({"agreed": bool(agreed), "who": [t["who"] for t in tries],
-                                                  "agreeing": [i + 1 for i, t in enumerate(tries) if agreed and same(t["answer"], agreed["answer"], task)]}))
-    return {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
-            "work": agreed["work"] if agreed else str(work)}
+    witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)]
+    agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
+                        and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
+    decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
+    if names:
+        decision.update(requested_files=names, printed_agreeing=witnesses,
+                        selected_member=next((i for i, t in enumerate(tries, 1) if t is agreed), None))
+    (home / "members.json").write_text(json.dumps(decision))
+    result = {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
+              "work": agreed["work"] if agreed else str(work), "requested_files": names}
+    if names and agreed:
+        result["delivery"] = agreed["delivery"]
+    return result
 
 
 def first(task, run_dir=None, approve="never", members=2):
     """The members' try, kept apart (<run>/members) so that the roles can take the task in <run> if they confirm
     nothing. Where they agree, their answer and the files they saved are the run's."""
-    import shutil
-    home = Path(run_dir or config.RUNS / time.strftime("%Y%m%d-%H%M%S"))
+    home = _home(run_dir)
+    replaces_report = (home / "members" / "members.json").is_file() and (home / "REPORT.md").is_file()
     out = run(task, home / "members", approve, members)
-    out["dir"] = str(home)
+    out.update(dir=str(home), files=[])
     if out["agreed"]:
+        source = Path(out["work"])
+        names = out["requested_files"]
+        if names:
+            # Check the staged bytes that will be published. A disappeared or changed
+            # file cannot turn an already-written confirmation into a false delivery.
+            try:
+                with tempfile.TemporaryDirectory(dir=home) as tmp:
+                    deliverables.copy_files(source, names, tmp)
+                    if deliverables.inspect(task, tmp, names) != out["delivery"]:
+                        raise ValueError("the selected files changed before delivery")
+                    deliverables.copy_files(tmp, names, home / "work")
+            except (ValueError, OSError) as e:
+                out.update(agreed=False, report=f"Not confirmed: the requested files could not be delivered. {e}\n")
+            else:
+                out["files"] = list(names)
+        else:
+            (home / "work").mkdir(parents=True, exist_ok=True)
+            for p in source.iterdir():
+                if not p.is_file() or p.is_symlink() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py", p.name):
+                    continue
+                try:
+                    deliverables.copy_files(source, [p.name], home / "work")
+                except (ValueError, OSError):
+                    continue
+                out["files"].append(p.name)
+    if out["agreed"] or replaces_report or (out.get("delivery") and not out["agreed"]):
         (home / "REPORT.md").write_text(out["report"])
-        (home / "work").mkdir(parents=True, exist_ok=True)
-        for p in Path(out["work"]).iterdir():  # the files of the member whose answer stands (member 1's were taken even when 2 and 3 agreed)
-            if p.is_file() and not p.name.startswith(".") and not re.fullmatch(r"member\d+_\d+\.py", p.name):
-                shutil.copy2(p, home / "work" / p.name)
     return out
