@@ -179,7 +179,7 @@ def lean(task, program, head=3, tail=2):
     for b in given(task):
         lines = b["text"].splitlines()
         if len(lines) > head + tail + 2 and not any(ln.strip() in program for ln in lines if len(ln.strip()) > 12):
-            cut = lines[:head] + [f"... ({len(lines) - head - tail} more lines like these) ..."] + lines[-tail:]
+            cut = lines[:head] + [f"... ({len(lines) - head - tail} more lines like these) ..."] + lines[len(lines) - tail:]
             task = task.replace(b["text"], "\n".join(cut), 1)
     return task
 
@@ -202,13 +202,18 @@ def rows(les, wrong=None, today=None):
         return []
     from training import grow
     short, more = _const("SHORT"), _const("MORE")
-    head = [{"role": "system", "content": short.format(today=today or time.strftime("%Y-%m-%d (%A)"))},
-            {"role": "user", "content": f"TASK: {lean(les['task'], les['program'])}"}]
     fenced = f"```python\n{les['program'].strip()}\n```"
     base = {"task": les["task"], "kind": les["kind"], "seed": les["rseed"], "who": "lesson", "member": 0, "lesson": les["maker"]}  # noqa: E501
-    out = [base | {"type": "first", "messages": head, "output": fenced},
-           base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
-                                                         {"role": "user", "content": f"OUTPUT:\n{les['answer'][-1800:]}\n\n{more}"}], "output": "DONE"}]
+    # a block of data the program reads from its file keeps its first three and last two lines in the prompt; where the
+    # row is then over LIMIT (an access log or JSON lines: 40 to 60 pieces a line), fewer: its first and last, its first (T4)
+    for keep in ((3, 2), (1, 1), (1, 0)):
+        head = [{"role": "system", "content": short.format(today=today or time.strftime("%Y-%m-%d (%A)"))},
+                {"role": "user", "content": f"TASK: {lean(les['task'], les['program'], *keep)}"}]
+        out = [base | {"type": "first", "messages": head, "output": fenced},
+               base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
+                                                             {"role": "user", "content": f"OUTPUT:\n{les['answer'][-1800:]}\n\n{more}"}], "output": "DONE"}]
+        if max(row_pieces(r) for r in out) <= LIMIT:
+            break
     if wrong and wrong.get("program") and wrong["program"].strip() != les["program"].strip():
         printed, lines = wrong.get("printed") or "(it printed nothing)", wrong["program"].strip().splitlines()
         # what is taught is the right program; the wrong one and what it printed are context. Over LIMIT, they are

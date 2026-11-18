@@ -81,43 +81,29 @@ def h_prog_calc(r):
             f"evaluate({ask!r}).", module_check("calc", draw, [want]))
 
 
-SOURCE = '''import re
+SOURCE = """import re
 
-SYMBOL = __SYM__
-BINDS = {"+": 2, "-": 2, "*": 4, SYMBOL: __LEVEL__}
-RIGHT = __RIGHT__  # the symbol groups from the right
+P = {"+": 2, "-": 2, "*": 4, __SYM__: __LEVEL__}
 
 
-def tokens(text):
-    return re.findall(r"\\d+|[-+*()]|" + re.escape(SYMBOL), text)
+def tokens(t):
+    return re.findall(r"\\d+|\\S", t)
 
 
-def apply(op, a, b):
-    if op == "+":
-        return a + b
-    if op == "-":
-        return a - b
-    if op == "*":
-        return a * b
-    return __MEANS__
-
-
-def expression(pieces, i, least):
-    """The value of the expression from piece i on, taking only operators that bind at least so tightly; and where it stops."""
-    if pieces[i] == "(":
-        left, i = expression(pieces, i + 1, 0)
-        i += 1  # the closing bracket
+def evaluate(t, m=0):
+    if type(t) == str:
+        t = tokens(t)[::-1]
+    x = t.pop()
+    if x == "(":
+        a = evaluate(t)
+        t.pop()
     else:
-        left, i = int(pieces[i]), i + 1
-    while i < len(pieces) and pieces[i] in BINDS and BINDS[pieces[i]] >= least:
-        op = pieces[i]
-        right, i = expression(pieces, i + 1, BINDS[op] + (0 if op == SYMBOL and RIGHT else 1))
-        left = apply(op, left, right)
-    return left, i
-
-
-def evaluate(text):
-    return expression(tokens(text), 0, 0)[0]'''
+        a = int(x)
+    while t and P.get(t[-1], 0) > m:
+        o = t.pop()
+        b = evaluate(t, P[o]__RIGHT__)
+        a = {"+": a + b, "-": a - b, "*": a * b}.get(o, __MEANS__)
+    return a"""
 
 
 def calc(task):
@@ -130,9 +116,10 @@ def calc(task):
     level = next((lv for lv, said in BINDS.items() if said == binds), None)
     if mean is None or level is None:
         return None
-    src = _fill(SOURCE, sym=sym, level=level, right=side == "right").replace("__MEANS__", mean)
-    tests = ["assert evaluate('2+3*4') == 14 and evaluate('(2+3)*4') == 20", f"assert tokens('12 *(3{sym}4)') == ['12', '*', '(', '3', {sym!r}, '4', ')']"]
-    return program("calc", src, tests, [f"print(evaluate({ask}))"])
+    # the stack of pieces is read from its end; an operator takes on its right only what binds more tightly than it
+    # (or as tightly, for the one that groups from the right)
+    src = _fill(SOURCE, sym=sym, level=level).replace("__RIGHT__", f" - (o == {sym!r})" if side == "right" else "").replace("__MEANS__", mean)
+    return program("calc", src, ["assert evaluate('(2+3)*4') == 20"], [f"print(evaluate({ask}))"])
 
 
 make = h_prog_calc

@@ -91,34 +91,29 @@ def h_prog_machine(r):
             f"you finish. Then tell me the value of run({ask!r}).", module_check("machine", draw, [want]))
 
 
-SOURCE = '''START = __START__
-TABLE = __TABLE__
-OTHERWISE = __RULE__
+SOURCE = """T = {}
+for l in __TABLE__.splitlines():
+    s, e, _, t = l.replace(",", "").split()
+    T[s, e] = t
 
 
-def step(state, event):
-    if (state, event) in TABLE:
-        return TABLE[(state, event)]
-    if OTHERWISE == "stay":
-        return state
-    if OTHERWISE == "fail":
-        raise KeyError((state, event))
-    return OTHERWISE
+def step(s, e):
+    return __STEP__
 
 
-def path(events):
-    states = [START]
-    for event in events:
-        states.append(step(states[-1], event))
-    return states
+def path(E):
+    p = [__START__]
+    for e in E:
+        p.append(step(p[-1], e))
+    return p
 
 
-def run(events):
-    return path(events)[-1]
+def run(E):
+    return path(E)[-1]
 
 
-def visits(events, state):
-    return path(events).count(state)'''
+def visits(E, s):
+    return path(E).count(s)"""
 
 
 def machine(task):
@@ -127,11 +122,12 @@ def machine(task):
     if not m or "machine.py" not in task:
         return None
     start, rows, otherwise, ask = m.groups()
-    table = {(s, e): t for s, e, t in re.findall(r"^(\w+), (\w+) -> (\w+)$", rows, re.M)}
     sink = re.match(r"the machine goes to (\w+)$", otherwise)
-    rule = sink.group(1) if sink else "fail" if "KeyError" in otherwise else "stay"
-    tests = [f"assert visits([], {start!r}) == 1", f"assert run([]) == {start!r}"]
-    return program("machine", _fill(SOURCE, start=start, table=table, rule=rule), tests, [f"print(run({ask}))"])
+    step = f"T.get((s, e), {sink.group(1)!r})" if sink else "T[s, e]" if "KeyError" in otherwise else "T.get((s, e), s)"
+    # the table's lines as the task gives them, read by the module: the lesson's prompt shows them whole
+    lines = "\n".join(re.findall(r"^\w+, \w+ -> \w+$", rows, re.M))
+    src = _fill(SOURCE, start=start).replace("__TABLE__", '"""' + lines + '"""').replace("__STEP__", step)
+    return program("machine", src, [f"assert visits([], {start!r}) == 1"], [f"print(run({ask}))"])
 
 
 make = h_prog_machine

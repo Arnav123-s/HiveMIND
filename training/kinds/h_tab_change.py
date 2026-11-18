@@ -67,24 +67,19 @@ def change(task):
     if not m:
         return None
     return _fill('''import csv
-from decimal import Decimal, ROUND_HALF_UP
-
-a, b, rows, rise = __A__, __B__, [], {}
-for row in csv.DictReader(open(__NAME__)):
-    old, new = Decimal(row[a]), Decimal(row[b])
-    if old == 0:
-        row["change"] = "n/a"
-    else:
-        pct = (new - old) * 100 / old
-        rise[row[__WHAT__]] = pct
-        row["change"] = str(pct.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
-    rows.append(row)
+from decimal import Decimal as D, ROUND_HALF_UP as H
+w, a, b, up = __WHAT__, __A__, __B__, {}
+R = list(csv.DictReader(open(__NAME__)))
+for r in R:
+    o = D(r[a])
+    if o:
+        up[r[w]] = p = (D(r[b]) - o) * 100 / o
+    r["change"] = p.quantize(D("0.1"), H) if o else "n/a"
 with open(__OUT__, "w", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=[__WHAT__, a, b, "change"])
-    w.writeheader()
-    w.writerows(rows)
-print(__OUT__, "saved")
-print("rose the most:", max(rise, key=rise.get))
+    c = csv.DictWriter(f, [w, a, b, "change"])
+    c.writeheader()
+    c.writerows(R)
+print("rose the most:", max(up, key=up.get))
 ''', name=m.group(1), what=m.group(2), a=m.group(3), b=m.group(4), out=m.group(5))
 
 

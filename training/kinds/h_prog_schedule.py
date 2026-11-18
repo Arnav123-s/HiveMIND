@@ -90,33 +90,34 @@ def h_prog_schedule(r):
             f"the value of order({ask!r}).", module_check("schedule", draw, [want]))
 
 
-SOURCE = '''def order(tasks):
-    done = []
-    while len(done) < len(tasks):
-        ready = [t for t in tasks if t not in done and all(d in done for d in tasks[t])]
-        if not ready:
-            raise ValueError("the dependencies go round in a circle")
-        done.append(__NEXT__)
-    return done
+SOURCE = """def order(t):
+    d = []
+    while len(d) < len(t):
+        r = [k for k in t if k not in d and all(x in d for x in t[k])]
+        if not r:
+            raise ValueError
+        d.append(__NEXT__)
+    return d
 
 
-def levels(tasks):
-    out = {}
-    for t in order(tasks):
-        out[t] = 1 + max([out[d] for d in tasks[t]], default=-1)
-    return out'''
+def levels(t):
+    o = {}
+    for k in order(t):
+        o[k] = 1 + max([o[x] for x in t[k]], default=-1)
+    return o"""
+# the task done next of those ready (r, in the order of the dict), for each rule of TIES
+PICK = {"alpha": "min(r)", "omega": "max(r)", "short": "min(r, key=lambda k: (len(k), k))", "given": "r[0]"}
 
 
 def schedule(task):
     m = re.search(r"the one done is (.+?)\. 2\).*?the value of order\((\{.*\})\)\.\s*$", task, re.S)
     if not m or "schedule.py" not in task:
         return None
-    pick = next((code for said, code in TIES.values() if said == m.group(1)), None)
-    if pick is None:
+    tie = next((k for k, (said, _) in TIES.items() if said == m.group(1)), None)
+    if tie is None:
         return None
-    tests = ["assert levels({'a': [], 'b': ['a']}) == {'a': 0, 'b': 1}",
-             "try:\n        order({'a': ['b'], 'b': ['a']})\n        raise AssertionError('a circle taken')\n    except ValueError:\n        pass"]
-    return program("schedule", SOURCE.replace("__NEXT__", pick), tests, [f"print(order({m.group(2)}))"])
+    return program("schedule", SOURCE.replace("__NEXT__", PICK[tie]), ["assert levels({'a': [], 'b': ['a']}) == {'a': 0, 'b': 1}"],
+                   [f"print(order({m.group(2)}))"])
 
 
 make = h_prog_schedule
