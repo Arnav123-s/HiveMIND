@@ -781,6 +781,21 @@ def _talk(t):
     return f"{t.get('out_of_10')} of 10" + (f" ({by})" if by else "")
 
 
+def fixed_held(line, arm="after"):
+    """One arm's sitting of the fixed held-out exam in a record line (grow_record.held_exam), or None."""
+    h = ((line or {}).get("held_exam") or {}).get(arm)
+    return h if isinstance(h, dict) and h.get("of") else None
+
+
+def held_cell(fixed, pulse):
+    """The held-out row: the fixed exam's kinds passed (the goal's bar is half of them) and its tasks, with the
+    pulse's few held-out tasks beside it; only the pulse's when the fixed exam was not sat."""
+    if not fixed:
+        return _pq(pulse)
+    k = fixed.get("kinds") or [0, 0]
+    return f"{k[0]} of {k[1]} kinds ({fixed['right']} of {fixed['of']} tasks of the fixed exam; pulse {_pq(pulse)})"
+
+
 def top_table(line, prev, f, lines, idx, talk=(None, None)):
     """The rows of docs/PLAN.md's top table: (what, this generation, the last record, the body before).
     talk: the talk exam's sittings of this generation and the last record, when they sat it (a Talk row then)."""
@@ -803,7 +818,8 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
         ("Easy kinds passed", _pq(a.get("easy")), _pq(pa.get("easy")), _pq(b.get("easy")) if has_b else "-"),
         ("Hard kinds that have lessons", _pq(taught_passed(line)), _pq(taught_passed(prev)) if prev else "-",
          _pq(taught_passed({"arms": {"after": b}})) if has_b else "-"),
-        ("Hard kinds never practised (held out)", _pq(held_c(a)), _pq(held_c(pa)) if prev else "-", _pq(held_c(b)) if has_b else "-"),
+        ("Hard kinds never practised (held out)", held_cell(fixed_held(line), held_c(a)), held_cell(fixed_held(prev), held_c(pa)) if prev else "-",
+         held_cell(fixed_held(line, "before"), held_c(b)) if has_b else "-"),
         ("Right at the first try (practice)", f"{ft[0] / ft[1]:.2f} ({_pq(ft)})" if ft and ft[1] else "not measured",
          f"{pft[0] / pft[1]:.2f}" if pft and pft[1] else "-", "-"),
         ("Hours for one generation", f"{hours:.1f}" if isinstance(hours, (int, float)) else "not measured",

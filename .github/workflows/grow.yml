@@ -786,6 +786,24 @@ jobs:
           name: gate-${{ matrix.arm }}-${{ matrix.seed }}
           path: training/reports/exams/*_mixed.json
           retention-days: 30
+      # The fixed held-out exam (training/exam.held_exam, piece X1): the same 30 tasks every generation, 3 of each kind
+      # never practised, so generations compare (the pulse draws only 3 to 9 of them). Before and after both sit it, each
+      # seat its share (every 8th task: 3 or 4, about 10 minutes), once the pulse is uploaded; each task is held to 15
+      # minutes and the step to 40, and whatever it does it never fails the seat or changes the pulse's numbers. Its json
+      # is written after every task, so a seat cut off still gives what it sat (the record compares what both sat).
+      - name: The fixed held-out exam, this seat's share (training/exam.py held)
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') }}
+        continue-on-error: true
+        timeout-minutes: 40
+        run: python training/exam.py held --seat ${{ matrix.seed }} --seats 8 --per 3 --seconds 900
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') }}
+        continue-on-error: true
+        with:
+          name: held-${{ matrix.arm }}-${{ matrix.seed }}
+          path: training/reports/exams/held_${{ matrix.seed }}.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: The model server's own log beside the work (it says why a server ended; g35's seed 4 lost it)
         if: ${{ !cancelled() }}
         run: mkdir -p runs/exam/server-logs && cp ~/.cache/hive/ternary/*.log runs/exam/server-logs/ 2>/dev/null || true
@@ -876,6 +894,16 @@ jobs:
           pattern: practice-work-*
           path: pw
       - uses: actions/download-artifact@v4
+        continue-on-error: true  # the fixed held-out exam: each seat of before and after its share (a run with none goes on without it)
+        with:
+          pattern: held-*-[0-9]
+          path: held
+      - uses: actions/download-artifact@v4
+        continue-on-error: true  # the three plain messages of before and after (training/talk_smoke.py): only shown, never needed
+        with:
+          pattern: talk-smoke-*
+          path: smoke
+      - uses: actions/download-artifact@v4
         continue-on-error: true  # the talk exam is sat on one gate seat and may not have been: the read and the page go without it
         with:
           name: talk-${{ env.GEN }}
@@ -893,7 +921,7 @@ jobs:
         run: |
           if [ -d tr/trunk ]; then cp tr/trunk/* got/; fi
           mkdir -p prac
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
