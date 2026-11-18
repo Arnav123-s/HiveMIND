@@ -1,0 +1,93 @@
+{
+  "public_grid": {
+    "tree": [
+      "left < right",
+      "forward",
+      [
+        "right <= level",
+        "reversed",
+        "full"
+      ]
+    ],
+    "public_errors": 0,
+    "nodes": 5,
+    "leaf_scores": 700,
+    "split_scores": 432
+  },
+  "public_labels": {
+    "tree": [
+      "left <= right",
+      [
+        "left <= level",
+        "forward",
+        "full"
+      ],
+      "reversed"
+    ],
+    "public_errors": 0,
+    "nodes": 5,
+    "leaf_scores": 800,
+    "split_scores": 463
+  },
+  "public_and_inferred_reversal": {
+    "tree": [
+      "left < level",
+      "forward",
+      [
+        "right <= level",
+        "reversed",
+        "full"
+      ]
+    ],
+    "public_errors": 0,
+    "nodes": 5,
+    "leaf_scores": 915,
+    "split_scores": 497
+  },
+  "shuffled_labels": {
+    "tree": [
+      "left <= right",
+      [
+        "right <= level",
+        [
+          "left < right",
+          "half",
+          "full"
+        ],
+        [
+          "left < level",
+          "reversed",
+          "forward"
+        ]
+      ],
+      [
+        "left == level",
+        "half",
+        [
+          "right == level",
+          "forward",
+          "full"
+        ]
+      ]
+    ],
+    "public_errors": 0,
+    "nodes": 13,
+    "leaf_scores": 915,
+    "split_scores": 497
+  },
+  "without_reversed_parent": {
+    "tree": [
+      "left <= level",
+      "forward",
+      [
+        "right < level",
+        "half",
+        "full"
+      ]
+    ],
+    "public_errors": 0,
+    "nodes": 5,
+    "leaf_scores": 732,
+    "split_scores": 497
+  }
+}

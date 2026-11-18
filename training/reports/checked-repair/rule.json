@@ -1,0 +1,15 @@
+{
+  "tree": [
+    "left < level",
+    "forward",
+    [
+      "right <= level",
+      "reversed",
+      "full"
+    ]
+  ],
+  "public_errors": 0,
+  "nodes": 5,
+  "leaf_scores": 915,
+  "split_scores": 497
+}
