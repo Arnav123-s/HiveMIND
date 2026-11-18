@@ -22,8 +22,10 @@
 #              release "hive-grown", writes the numbers into training/reports/generations.jsonl, the body and its
 #              levels into cells/body.json, and starts the next generation.
 #
-# Every night, and by hand from the Actions tab. The jobs that run models have no token
-# that can write anywhere.
+# Started by the line itself after each record, by hand from the Actions tab, and by the nightly backstop
+# (.github/workflows/nightly.yml) when the line has stopped. The schedule is not here: a scheduled run takes its
+# generation number (the run number) when it is queued, before any job can look (g40 and g46 were each cancelled and
+# used one up). The jobs that run models have no token that can write anywhere.
 name: The hive teaches its own members
 # each run named by what it is, its generation, the hive's DNA and the branch, so the list of runs reads cleanly
 run-name: >-
@@ -32,8 +34,6 @@ run-name: >-
   g${{ github.run_number }} · ${{ inputs.dna || 't80' }} · ${{ github.ref_name }}
 
 on:
-  schedule:
-    - cron: "17 1 * * *"
   workflow_dispatch:
     inputs:
       shards:
@@ -710,7 +710,7 @@ jobs:
       matrix:
         # the paired gate: a body that multiplies sits twice on the same seeds, before (the body as it was, from the
         # release) and after (with this generation's children): 16 jobs, under the 20 at once. The record keeps the
-        # children unless after is more than 2 tasks under before in all or on easy (training/grow_record.decide).
+        # children only when after passed at least as many as before, ties keep (training/grow_record.decide).
         # Trials still sit three ways side by side (two runs of the same hive differ by several tasks in 32: four seeds)
         arm: ${{ fromJSON(needs.plan.outputs.grow && '["before","after"]' || (inputs.versus && '["dna","before","after","versus"]' || '["dna","before","after"]')) }}
         # 64 tasks for a growing body too: on two seeds, one generation differed from the next by several tasks from
@@ -915,6 +915,10 @@ jobs:
           # are the drawn files (the read, the graphs, what is known) drawn again on top of it, so a drawn file can never
           # block a record (2026-11-17: generation 39's record failed its rebase on docs/PROGRESS.md, redrawn on main
           # meanwhile). If the push loses a race, the drawn files are dropped, the record rebased again and they are redrawn.
+          # a drawn file that failed (the read, the graphs, what is known) does not stop the record nor the next start, but
+          # it is said: latest.md says the read failed, and the job's last step ends red (g43's read was lost to a warning)
+          FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
+          : > "$FAILED"
           git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null)
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           # the talk exam's sitting (when the gate sat it) is kept aside: a lost race below resets the tree it is drawn into
@@ -923,12 +927,21 @@ jobs:
             if [ -f talk.json ]; then mkdir -p training/reports/talk && cp talk.json "training/reports/talk/$GEN.json"; fi
             git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
             rec=$(git rev-parse HEAD)
+            : > "$FAILED"
             # the read of this generation (docs/reads/GEN.md and latest.md: the numbers, the chain by kind, the hours and
             # the next piece, by the rules of docs/DECISIONS.md), then the graphs and what is known, drawn again
-            python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the read could not be written; the record is kept"
-            python3 training/progress.py || echo "::warning::the progress graphs could not be drawn; the record is kept"
-            python3 scripts/knowledge.py || echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"
-            git add docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md $(ls "training/reports/talk/$GEN.json" 2>/dev/null)
+            set -o pipefail  # (GitHub's bash has it on already) a failed read is not hidden by tee
+            python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || { echo "::warning::the read could not be written; the record is kept"; echo read >> "$FAILED"; }
+            python3 training/progress.py || { echo "::warning::the progress graphs could not be drawn; the record is kept"; echo progress >> "$FAILED"; }
+            if [ -s "$FAILED" ]; then
+              what=$(paste -sd, "$FAILED")
+              python3 training/grow_record.py failed "$GEN" "${GITHUB_RUN_ID:-0}" "$what" || {
+                mkdir -p docs/reads; printf '# The read of %s failed\n\nThe read failed in run %s; see the record job'"'"'s log.\n' "$GEN" "${GITHUB_RUN_ID:-0}" > docs/reads/latest.md; }
+            fi
+            # one entry a generation in docs/knowledge.json (the verdict and the bars' numbers), then the page drawn from it
+            python3 training/reads.py knowledge "$GEN" || { echo "::warning::the generation's entry could not be added to docs/knowledge.json"; echo knowledge >> "$FAILED"; }
+            python3 scripts/knowledge.py || { echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"; echo knowledge >> "$FAILED"; }
+            git add docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md $(ls docs/knowledge.json 2>/dev/null) $(ls "training/reports/talk/$GEN.json" 2>/dev/null)
             git diff --cached --quiet || git commit -q --amend --no-edit
             git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
             git reset -q --hard "$rec"
@@ -947,3 +960,14 @@ jobs:
           if ! WHY=$(python3 training/grow_record.py restart); then echo "$WHY" >> "$GITHUB_STEP_SUMMARY"; echo "::error::$WHY"; exit 1; fi
           gh workflow run grow.yml --ref main -f practice_level="${{ inputs.practice_level || 'ladder' }}" -f dna="${{ inputs.dna || 't80' }}" -f seating="${{ inputs.seating }}" -f dreams="${{ inputs.dreams }}" -f pairs="${{ inputs.pairs }}"
           echo "the next generation is started; to stop the line set the repository variable HIVE_LOOP to stop" >> "$GITHUB_STEP_SUMMARY"
+      - name: Say so when a drawn file failed (the record is in and the next generation started; the job ends red)
+        if: ${{ !cancelled() }}
+        run: |
+          FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
+          if [ -s "$FAILED" ]; then
+            what=$(sort -u "$FAILED" | paste -sd, -)
+            echo "::error::the record is kept and the next generation started, but these failed: $what (docs/reads/latest.md says so); read the step 'Keep the cells' above"
+            echo "failed after the record: $what" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
+            exit 1
+          fi
+          echo "the read, the graphs and what is known were all drawn"

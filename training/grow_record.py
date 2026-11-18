@@ -5,6 +5,7 @@
     python3 training/grow_record.py rows OUT FILE ...               every row of the files once, in order, into OUT
     python3 training/grow_record.py failures OUT FILE ...           the same for the tasks got wrong
     python3 training/grow_record.py restart [RECORD]                exit 1 (saying why) after three generations dropped running
+    python3 training/grow_record.py failed GEN RUN read|progress[,...]  docs/reads/latest.md says the read (or the graphs) failed
 
 `gate` runs in the one job that may write to the repository, and runs no model and nothing the hive wrote. From the
 other jobs it takes only whole numbers within their bounds and names this file builds itself. Needs nothing but
@@ -16,7 +17,8 @@ Three arms sat the same fresh seeds of the exam (.github/workflows/grow.yml), ea
     after    the body as regrown this time
 The regrown body is kept when it passed more tasks than the DNA alone and at least as many as the body before it.
 A body that multiplies sits only before and after, on the same seeds (the paired gate): its children are kept
-unless after is more than 2 tasks under before in all or on easy; a dropped generation's rows are still kept in
+only when after passed at least as many tasks as before (ties keep), and a loss on the held-out kinds with no gain
+on the other tasks drops them; a dropped generation's rows are still kept in
 the release and the body stays as it was. Three generations dropped running stop the line (`restart`).
 What "after" passes over "dna" is what the hive taught itself; it is also counted apart on the kinds it never
 practised. Every generation leaves one line in training/reports/generations.jsonl, whatever the outcome.
@@ -207,7 +209,6 @@ def arm(folders):
     return out
 
 
-MOST_UNDER = 2  # the paired gate: after may be at most this many tasks under before, in all and on easy
 DROPS_TO_STOP = 3  # the line does not start again after this many generations dropped running
 
 
@@ -226,9 +227,11 @@ def paired(folder, names=("before", "after")):
 def decide(arms, grow=False):
     """Whether the regrown body is kept: (keep, why).
     grow (the paired gate): the body with its children (after) and as it was (before) sat the same seeds; the
-    children are kept unless after passed more than 2 tasks fewer than before in all, or more than 2 fewer on the
-    easy tasks (ids starting with e). A body that sat nothing before is not judged and kept; one whose after sat
-    nothing while before did is dropped."""
+    children are kept only when after passed at least as many tasks as before (a tie keeps). A loss on the held-out
+    kinds (never practised) with no gain on the other tasks is a drop. g43 (52 against 54) and g45 (45 against 47)
+    were kept under the old allowance of 2 tasks under; they would be dropped now. A body that sat nothing before is
+    not judged and kept; one whose after sat nothing while before did is dropped. A dropped body leaves the body as it
+    was, and the next generation starts from it."""
     if grow:
         b, a = arms["before"], arms["after"]
         if not b["seeds"]:
@@ -239,11 +242,13 @@ def decide(arms, grow=False):
             return False, "before and after did not sit the same seeds"
         said = (f"after {a['passed']} of {a['tasks']} (easy {a['easy'][0]} of {a['easy'][1]}, hard {a['hard'][0]} of {a['hard'][1]}), "
                 f"before {b['passed']} of {b['tasks']} (easy {b['easy'][0]} of {b['easy'][1]}, hard {b['hard'][0]} of {b['hard'][1]}) on {a['seeds']} seeds")
-        if b["passed"] - a["passed"] > MOST_UNDER:
-            return False, f"the children did harm: after is {b['passed'] - a['passed']} tasks under before in all; " + said
-        if b["easy"][0] - a["easy"][0] > MOST_UNDER:
-            return False, f"the children did harm: after is {b['easy'][0] - a['easy'][0]} tasks under before on easy; " + said
-        return True, "the body grows: " + said
+        score = f"{a['passed']} against {b['passed']}"
+        if a["passed"] < b["passed"]:
+            return False, f"dropped: {score}; " + said
+        held_a, held_b = (list(x.get("unpractised") or [0, 0]) for x in (a, b))
+        if held_a[0] < held_b[0] and a["passed"] - held_a[0] <= b["passed"] - held_b[0]:
+            return False, f"dropped: {score}, held out {held_a[0]} against {held_b[0]} with no gain elsewhere; " + said
+        return True, f"kept: {score}; " + said
     d, b, a = arms["dna"], arms["before"], arms["after"]
     if not a["seeds"] or a["seeds"] != d["seeds"] or a["tasks"] != d["tasks"]:
         return False, "the regrown body and the DNA did not both finish the same seeds"
@@ -402,6 +407,45 @@ def restart(argv):
     return 0
 
 
+def _pq(c):
+    return f"{c[0]} of {c[1]}" if isinstance(c, list) and len(c) == 2 and c[1] else "-"
+
+
+def failed_page(gen, run, what, record=RECORD, reads=None):
+    """docs/reads/latest.md when the read or the progress graphs failed (the record job, after the record is in): the
+    failure said plainly with the run, and the record's numbers, so a lost read shows on the page (g43's was lost to a
+    warning nobody saw). Only this file's own reading of the record: training/reads.py may be what failed."""
+    reads = Path(reads or ROOT / "docs" / "reads")
+    line = next((r for r in reversed([json.loads(x) for x in lines(record) if x.strip().startswith("{")]) if r.get("generation") == gen), {})
+    repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
+    url = f"https://github.com/{repo}/actions/runs/{run}"
+    head = []
+    if "read" in what:
+        head = [f"# The read of {gen} failed", "", f"The read failed in run [{run}]({url}); see the record job's log.", ""]
+    if "progress" in what:
+        head += ([] if head else [f"# The read of {gen}", ""]) + [
+            f"The progress graphs failed in run [{run}]({url}); see the record job's log. They are not drawn from this record.", ""]
+    a, b = (line.get("paired") or line.get("arms") or {}).get("after", {}), (line.get("paired") or line.get("arms") or {}).get("before", {})
+    ft = line.get("first_try")
+    nums = ["The record's numbers (training/reports/generations.jsonl):", "",
+            f"- verdict: {line.get('verdict') or ('kept' if line.get('kept') else 'dropped') if line else 'no record line'}; {line.get('why', '')}",
+            f"- after {_pq([a.get('passed'), a.get('tasks')])}, before {_pq([b.get('passed'), b.get('tasks')])}",
+            f"- easy {_pq(a.get('easy'))}, hard {_pq(a.get('hard'))}, held out {_pq((line.get('arms') or {}).get('after', {}).get('unpractised'))}",
+            f"- first try {f'{ft[0] / ft[1]:.2f}' if isinstance(ft, list) and len(ft) == 2 and ft[1] else 'not measured'}; "
+            f"hours {line['hours'] if isinstance(line.get('hours'), (int, float)) else 'not measured'}"]
+    text = "\n".join(head + nums) + "\n"
+    reads.mkdir(parents=True, exist_ok=True)
+    if "read" in what:
+        (reads / f"{gen}.md").write_text(text)
+        (reads / "latest.md").write_text(text)
+    else:
+        # the read itself was written: the failure of the graphs is put at its top
+        old = (reads / "latest.md").read_text() if (reads / "latest.md").exists() else ""
+        (reads / "latest.md").write_text("\n".join(head) + "\n" + (old or "\n".join(nums) + "\n"))
+    print(f"{reads / 'latest.md'}: says that the {' and the '.join(what)} failed in run {run}")
+    return 0
+
+
 def fetch(argv):
     """The cells named, from the release into cells/members/. A cell that is not there is said and passed over."""
     repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
@@ -435,4 +479,6 @@ if __name__ == "__main__":
     sys.exit(gate(a[1:]) if a[:1] == ["gate"] and len(a) >= 4 else fetch(a[1:]) if a[:1] == ["fetch"] else
              join(a[1:], _row, MOST_ROWS) if a[:1] == ["rows"] and len(a) >= 3 else
              join(a[1:], _failure, MOST_FAILURES) if a[:1] == ["failures"] and len(a) >= 3 else
-             restart(a[1:]) if a[:1] == ["restart"] else (print(__doc__) or 1))
+             restart(a[1:]) if a[:1] == ["restart"] else
+             failed_page(a[1], a[2], [w for w in a[3].split(",") if w in ("read", "progress")])
+             if a[:1] == ["failed"] and len(a) >= 4 and re.fullmatch(r"g\d{1,6}", a[1]) and re.fullmatch(r"\d{1,20}", a[2]) else (print(__doc__) or 1))
