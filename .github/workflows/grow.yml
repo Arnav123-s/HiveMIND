@@ -804,6 +804,24 @@ jobs:
             runs/exam/server-logs/*.log
           include-hidden-files: true
           retention-days: 14
+      # The body sits the talk exam every generation (M1), on one seat only (after, the first seed) and only once the
+      # gate's own exam is done and uploaded: it is held to 20 minutes (each message to 2), and whatever it does it
+      # never fails this seat or changes the gate's numbers. The record job puts its json in training/reports/talk.
+      - name: The talk exam (training/talk_exam.py)
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
+        continue-on-error: true
+        timeout-minutes: 30
+        run: |
+          mkdir -p talk
+          python training/talk_exam.py sit --seed $((30000000 + ${{ inputs.gate_seeds || github.run_number }})) --who body --minutes 20 --per 120 --out "talk/$GEN.json"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
+        continue-on-error: true
+        with:
+          name: talk-${{ env.GEN }}
+          path: talk/${{ env.GEN }}.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: The numbers once more, last in the log
         if: ${{ !cancelled() && steps.who.outputs.who }}
         run: |
@@ -857,6 +875,11 @@ jobs:
         with:
           pattern: practice-work-*
           path: pw
+      - uses: actions/download-artifact@v4
+        continue-on-error: true  # the talk exam is sat on one gate seat and may not have been: the read and the page go without it
+        with:
+          name: talk-${{ env.GEN }}
+          path: training/reports/talk
       - name: The run's facts (each job's hours, the slices lost and their records, who started it; training/reads.py)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -894,7 +917,10 @@ jobs:
           # meanwhile). If the push loses a race, the drawn files are dropped, the record rebased again and they are redrawn.
           git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null)
           git commit -q -m "The hive's body: generation $GEN" || exit 0
+          # the talk exam's sitting (when the gate sat it) is kept aside: a lost race below resets the tree it is drawn into
+          if [ -f "training/reports/talk/$GEN.json" ]; then cp "training/reports/talk/$GEN.json" talk.json; fi
           for try in 1 2 3; do
+            if [ -f talk.json ]; then mkdir -p training/reports/talk && cp talk.json "training/reports/talk/$GEN.json"; fi
             git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
             rec=$(git rev-parse HEAD)
             # the read of this generation (docs/reads/GEN.md and latest.md: the numbers, the chain by kind, the hours and
@@ -902,7 +928,7 @@ jobs:
             python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || echo "::warning::the read could not be written; the record is kept"
             python3 training/progress.py || echo "::warning::the progress graphs could not be drawn; the record is kept"
             python3 scripts/knowledge.py || echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"
-            git add docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md
+            git add docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md $(ls "training/reports/talk/$GEN.json" 2>/dev/null)
             git diff --cached --quiet || git commit -q --amend --no-edit
             git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
             git reset -q --hard "$rec"
