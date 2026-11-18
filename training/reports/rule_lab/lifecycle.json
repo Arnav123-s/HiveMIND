@@ -1,0 +1,275 @@
+{
+  "population": {
+    "seeds": 32,
+    "ticks_per_seed": 300,
+    "founders_per_seed": 12,
+    "work_turns_per_tick": 2,
+    "identical_demographic_histories": 32,
+    "ending_population_range": [
+      48,
+      63
+    ],
+    "totals": {
+      "births": 1493,
+      "deaths": 107,
+      "living": 1770,
+      "living_children_with_zero_contributions_and_at_least_one_turn": 671,
+      "of_these_children_that_reproduced": 268,
+      "deaths_after_correct_answer": 27,
+      "completed_two_cell_tasks": 4179,
+      "completed_after_reader_died": 3,
+      "living_newborns_awaiting_first_turn": 77
+    }
+  },
+  "live_handoff": [
+    {
+      "event": "reader lost",
+      "seed": 331,
+      "saved_readings": [
+        [
+          0,
+          0,
+          -4
+        ],
+        [
+          0,
+          1,
+          -3
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "seed": 331,
+      "score": {
+        "correct": true,
+        "hits": 8,
+        "out_of": 8,
+        "settings": [
+          [
+            -3,
+            -2
+          ],
+          [
+            -1,
+            4
+          ],
+          [
+            4,
+            -2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            -2,
+            0
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            1,
+            -3
+          ]
+        ],
+        "actual": [
+          -18,
+          -4,
+          10,
+          11,
+          -12,
+          0,
+          17,
+          -3
+        ],
+        "predictions": [
+          -18,
+          -4,
+          10,
+          11,
+          -12,
+          0,
+          17,
+          -3
+        ],
+        "probes": 4,
+        "turns": 3,
+        "used_peer": true
+      },
+      "workers": [
+        {
+          "model": "t80+g41data",
+          "slot": "reader",
+          "error": null,
+          "observed": [
+            [
+              0,
+              0,
+              -4
+            ],
+            [
+              0,
+              1,
+              -3
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "submitted": null
+        },
+        {
+          "model": "t80+g41code",
+          "slot": "interpreter",
+          "error": "Your candidate [-4, 1, 1] predicts -3 at x=1, y=0. The instrument measured 0 there. Recalculate using the notebook.",
+          "observed": null,
+          "submitted": [
+            -4,
+            1,
+            1
+          ]
+        },
+        {
+          "model": "t80+labchild",
+          "slot": "interpreter",
+          "error": null,
+          "observed": null,
+          "submitted": [
+            -4,
+            4,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 332,
+      "score": {
+        "correct": true,
+        "hits": 8,
+        "out_of": 8,
+        "settings": [
+          [
+            -3,
+            -2
+          ],
+          [
+            -1,
+            4
+          ],
+          [
+            4,
+            -2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            -2,
+            0
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            1,
+            -3
+          ]
+        ],
+        "actual": [
+          -11,
+          17,
+          3,
+          21,
+          -1,
+          19,
+          17,
+          -7
+        ],
+        "predictions": [
+          -11,
+          17,
+          3,
+          21,
+          -1,
+          19,
+          17,
+          -7
+        ],
+        "probes": 4,
+        "turns": 2,
+        "used_peer": true
+      },
+      "workers": [
+        {
+          "model": "t80+g41code",
+          "slot": "reader",
+          "error": null,
+          "observed": [
+            [
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              7
+            ],
+            [
+              1,
+              0,
+              5
+            ],
+            [
+              1,
+              1,
+              9
+            ]
+          ],
+          "submitted": null
+        },
+        {
+          "model": "t80+labchild",
+          "slot": "interpreter",
+          "error": null,
+          "observed": null,
+          "submitted": [
+            3,
+            2,
+            4
+          ]
+        }
+      ]
+    }
+  ]
+}

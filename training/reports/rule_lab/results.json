@@ -1,0 +1,2351 @@
+{
+  "criterion": "all eight private settings correct in one episode",
+  "evaluation_seeds": [
+    101,
+    102,
+    103,
+    104
+  ],
+  "primary": {
+    "child open": {
+      "affine": {
+        "successes": 4,
+        "total": 4,
+        "point_hits": 32,
+        "model_calls": 8,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 14.96,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 2,
+            "peer_weight_used": false,
+            "tokens_out": 45,
+            "tokens_in": 396,
+            "seconds": 21.106,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 1
+          },
+          {
+            "seed": 102,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 2,
+            "peer_weight_used": false,
+            "tokens_out": 45,
+            "tokens_in": 396,
+            "seconds": 12.833,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 1
+          },
+          {
+            "seed": 103,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 2,
+            "peer_weight_used": false,
+            "tokens_out": 45,
+            "tokens_in": 397,
+            "seconds": 13.079,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 1
+          },
+          {
+            "seed": 104,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 2,
+            "peer_weight_used": false,
+            "tokens_out": 45,
+            "tokens_in": 396,
+            "seconds": 12.802,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 1
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 4,
+        "mean_seconds": 47.8,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 5,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 113,
+            "tokens_in": 1662,
+            "seconds": 50.876,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 5,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 155,
+            "tokens_in": 1457,
+            "seconds": 47.217,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 5,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 126,
+            "tokens_in": 1645,
+            "seconds": 47.565,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 5,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 155,
+            "tokens_in": 1457,
+            "seconds": 45.529,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      }
+    },
+    "guided": {
+      "affine": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 4,
+        "mean_seconds": 51.97,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 105,
+            "tokens_in": 1626,
+            "seconds": 65.15,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 3,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 97,
+            "tokens_in": 1576,
+            "seconds": 42.745,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 101,
+            "tokens_in": 1663,
+            "seconds": 45.111,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 193,
+            "tokens_in": 1465,
+            "seconds": 54.879,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 43.36,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1252,
+            "seconds": 44.756,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1252,
+            "seconds": 43.218,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1252,
+            "seconds": 42.857,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1252,
+            "seconds": 42.591,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          }
+        ]
+      }
+    },
+    "open": {
+      "affine": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 4,
+        "mean_seconds": 47.22,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 107,
+            "tokens_in": 1524,
+            "seconds": 43.756,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 3,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 132,
+            "tokens_in": 1584,
+            "seconds": 47.379,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 119,
+            "tokens_in": 1537,
+            "seconds": 46.009,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 161,
+            "tokens_in": 1441,
+            "seconds": 51.723,
+            "rejected_submissions": 3,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 2,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 45.61,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 57.642,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 41.947,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 40.666,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 42.172,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          }
+        ]
+      }
+    },
+    "same weights open": {
+      "affine": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 45.58,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 104,
+            "tokens_in": 1524,
+            "seconds": 47.013,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 3,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 134,
+            "tokens_in": 1478,
+            "seconds": 44.054,
+            "rejected_submissions": 4,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 3,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 120,
+            "tokens_in": 1601,
+            "seconds": 45.791,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 128,
+            "tokens_in": 1536,
+            "seconds": 45.453,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 40.8,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 41.124,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 40.886,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 40.699,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 40.48,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          }
+        ]
+      }
+    },
+    "solo": {
+      "affine": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 47.0,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 100,
+            "tokens_in": 1574,
+            "seconds": 42.986,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 3,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 108,
+            "tokens_in": 1574,
+            "seconds": 47.485,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 119,
+            "tokens_in": 1603,
+            "seconds": 50.87,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 126,
+            "tokens_in": 1598,
+            "seconds": 46.673,
+            "rejected_submissions": 5,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 4,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 41.76,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1198,
+            "seconds": 42.192,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1198,
+            "seconds": 42.073,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1198,
+            "seconds": 41.492,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 170,
+            "tokens_in": 1198,
+            "seconds": 41.287,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          }
+        ]
+      }
+    },
+    "solver": {
+      "affine": {
+        "successes": 4,
+        "total": 4,
+        "point_hits": 32,
+        "model_calls": 4,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 6.3,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 1,
+            "peer_weight_used": false,
+            "tokens_out": 26,
+            "tokens_in": 172,
+            "seconds": 6.238,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 0
+          },
+          {
+            "seed": 102,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 1,
+            "peer_weight_used": false,
+            "tokens_out": 26,
+            "tokens_in": 172,
+            "seconds": 6.213,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 0
+          },
+          {
+            "seed": 103,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 1,
+            "peer_weight_used": false,
+            "tokens_out": 26,
+            "tokens_in": 172,
+            "seconds": 6.486,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 0
+          },
+          {
+            "seed": 104,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 2,
+            "model_calls": 1,
+            "peer_weight_used": false,
+            "tokens_out": 26,
+            "tokens_in": 172,
+            "seconds": 6.275,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 0
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 0,
+        "mean_seconds": 41.33,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 41.576,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 40.704,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 40.876,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 0,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": false,
+            "tokens_out": 174,
+            "tokens_in": 1132,
+            "seconds": 42.178,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": null,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": null
+          }
+        ]
+      }
+    },
+    "written method open": {
+      "affine": {
+        "successes": 2,
+        "total": 4,
+        "point_hits": 16,
+        "model_calls": 18,
+        "distinct_peer_episodes": 4,
+        "mean_seconds": 42.25,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 3,
+            "model_calls": 3,
+            "peer_weight_used": true,
+            "tokens_out": 66,
+            "tokens_in": 852,
+            "seconds": 36.239,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 2
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 126,
+            "tokens_in": 1794,
+            "seconds": 50.861,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": true,
+            "hits": 8,
+            "probes": 4,
+            "turns": 3,
+            "model_calls": 3,
+            "peer_weight_used": true,
+            "tokens_out": 66,
+            "tokens_in": 854,
+            "seconds": 24.728,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 2
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 126,
+            "tokens_in": 1794,
+            "seconds": 57.161,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      },
+      "interaction": {
+        "successes": 0,
+        "total": 4,
+        "point_hits": 0,
+        "model_calls": 24,
+        "distinct_peer_episodes": 4,
+        "mean_seconds": 58.08,
+        "worlds": [
+          {
+            "seed": 101,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 196,
+            "tokens_in": 1822,
+            "seconds": 58.315,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 102,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 196,
+            "tokens_in": 1822,
+            "seconds": 57.773,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 103,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 196,
+            "tokens_in": 1822,
+            "seconds": 57.705,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          },
+          {
+            "seed": 104,
+            "all_correct": false,
+            "hits": 0,
+            "probes": 4,
+            "turns": 6,
+            "model_calls": 6,
+            "peer_weight_used": true,
+            "tokens_out": 196,
+            "tokens_in": 1822,
+            "seconds": 58.529,
+            "rejected_submissions": 0,
+            "first_turn_with_sufficient_evidence": 1,
+            "repeated_rejected_guesses": 0,
+            "model_turns_after_sufficient_evidence": 5
+          }
+        ]
+      }
+    }
+  },
+  "fixed_controls": [
+    {
+      "worker": "fixed_corners_solver",
+      "family": "affine",
+      "seed": 101,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 8.499700015818235e-05
+    },
+    {
+      "worker": "stored_procedure",
+      "family": "affine",
+      "seed": 101,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 0.0003850900002362323
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "affine",
+      "seed": 102,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 5.1078000069537666e-05
+    },
+    {
+      "worker": "stored_procedure",
+      "family": "affine",
+      "seed": 102,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 6.519300040963572e-05
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "affine",
+      "seed": 103,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 4.700400040746899e-05
+    },
+    {
+      "worker": "stored_procedure",
+      "family": "affine",
+      "seed": 103,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 5.09470000906731e-05
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "affine",
+      "seed": 104,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 4.103299943380989e-05
+    },
+    {
+      "worker": "stored_procedure",
+      "family": "affine",
+      "seed": 104,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 4.279099994164426e-05
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "interaction",
+      "seed": 101,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 5.364099979487946e-05
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "interaction",
+      "seed": 102,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 4.890200034424197e-05
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "interaction",
+      "seed": 103,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 4.728800013253931e-05
+    },
+    {
+      "worker": "fixed_corners_solver",
+      "family": "interaction",
+      "seed": 104,
+      "hits": 8,
+      "out_of": 8,
+      "probes": 4,
+      "elapsed_seconds": 4.775700017489726e-05
+    }
+  ],
+  "silent_drift": [
+    {
+      "seed": 201,
+      "phase": "affine",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 201,
+      "phase": "interaction",
+      "selected": "interaction solver",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 201,
+      "phase": "quadratic",
+      "selected": "abstain",
+      "probes": 5,
+      "hits": null
+    },
+    {
+      "seed": 201,
+      "phase": "aliased",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 2
+    },
+    {
+      "seed": 202,
+      "phase": "affine",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 202,
+      "phase": "interaction",
+      "selected": "interaction solver",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 202,
+      "phase": "quadratic",
+      "selected": "abstain",
+      "probes": 5,
+      "hits": null
+    },
+    {
+      "seed": 202,
+      "phase": "aliased",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 2
+    },
+    {
+      "seed": 203,
+      "phase": "affine",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 203,
+      "phase": "interaction",
+      "selected": "interaction solver",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 203,
+      "phase": "quadratic",
+      "selected": "abstain",
+      "probes": 5,
+      "hits": null
+    },
+    {
+      "seed": 203,
+      "phase": "aliased",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 2
+    },
+    {
+      "seed": 204,
+      "phase": "affine",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 204,
+      "phase": "interaction",
+      "selected": "interaction solver",
+      "probes": 5,
+      "hits": 8
+    },
+    {
+      "seed": 204,
+      "phase": "quadratic",
+      "selected": "abstain",
+      "probes": 5,
+      "hits": null
+    },
+    {
+      "seed": 204,
+      "phase": "aliased",
+      "selected": "stored affine",
+      "probes": 5,
+      "hits": 2
+    }
+  ],
+  "training": {
+    "parent_sha256": "52d5b92e2c51e1c2ae70ed50decc44611dd0df55d144d648295cf9658bb95d12",
+    "inherited_tensors": 196,
+    "updated_tensors": 28,
+    "trainable_parameters": 2424832,
+    "trained_blocks": [
+      34,
+      35
+    ],
+    "delta_l2": 2.8067426205062627,
+    "mean_training_loss_by_epoch": [
+      1.3477190477507455,
+      0.5674002851758685,
+      0.15885618648358754
+    ],
+    "demonstrations": [
+      "affine-12-guided.json"
+    ],
+    "procedure_from_teaching_worlds": true,
+    "rows": 7,
+    "epochs": 3,
+    "lr": 0.00015,
+    "threads": 4,
+    "seconds": 293.2632308480006,
+    "peak_trainer_kib": 10062220
+  },
+  "recipe_learning": {
+    "author": "bounded expression search",
+    "demonstration_seed": 12,
+    "public_worlds": 6,
+    "attempts": [
+      {
+        "prompt": "From this successful calibration derive a general procedure for ANY affine sensor z=c+a*x+b*y. The example notebook is [[0, 0, 1], [0, 1, -3], [1, 0, -1], [1, 1, -5]] (each entry is [x,y,z]); the checked answer [c,a,b] is [1, -2, -4]. Return {\"points\":[...],\"expressions\":[...]} only. Pick 3 or 4 distinct [x,y] measurements from the example. In that exact order, their z readings are r0, r1, etc. Write three bare, quoted arithmetic expressions for c,a,b using r names and + or -. The numbers will change on the next sensor. Derive the expressions symbolically.",
+        "text": "{\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}",
+        "usage": {
+          "completion_tokens": 68,
+          "prompt_tokens": 192,
+          "total_tokens": 260,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 23.011,
+        "resident": [
+          "t80+g41code"
+        ],
+        "feedback": "On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2."
+      },
+      {
+        "prompt": "From this successful calibration derive a general procedure for ANY affine sensor z=c+a*x+b*y. The example notebook is [[0, 0, 1], [0, 1, -3], [1, 0, -1], [1, 1, -5]] (each entry is [x,y,z]); the checked answer [c,a,b] is [1, -2, -4]. Return {\"points\":[...],\"expressions\":[...]} only. Pick 3 or 4 distinct [x,y] measurements from the example. In that exact order, their z readings are r0, r1, etc. Write three bare, quoted arithmetic expressions for c,a,b using r names and + or -. The numbers will change on the next sensor. Derive the expressions symbolically.\nYour previous response was {\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}. The public check returned: On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2.",
+        "text": "{\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}",
+        "usage": {
+          "completion_tokens": 68,
+          "prompt_tokens": 332,
+          "total_tokens": 400,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 15.604,
+        "resident": [
+          "t80+g41code"
+        ],
+        "feedback": "On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2."
+      },
+      {
+        "prompt": "From this successful calibration derive a general procedure for ANY affine sensor z=c+a*x+b*y. The example notebook is [[0, 0, 1], [0, 1, -3], [1, 0, -1], [1, 1, -5]] (each entry is [x,y,z]); the checked answer [c,a,b] is [1, -2, -4]. Return {\"points\":[...],\"expressions\":[...]} only. Pick 3 or 4 distinct [x,y] measurements from the example. In that exact order, their z readings are r0, r1, etc. Write three bare, quoted arithmetic expressions for c,a,b using r names and + or -. The numbers will change on the next sensor. Derive the expressions symbolically.\nYour previous response was {\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}. The public check returned: On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2.",
+        "text": "{\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}",
+        "usage": {
+          "completion_tokens": 68,
+          "prompt_tokens": 332,
+          "total_tokens": 400,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 15.271,
+        "resident": [
+          "t80+g41code"
+        ],
+        "feedback": "On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2."
+      },
+      {
+        "prompt": "From this successful calibration derive a general procedure for ANY affine sensor z=c+a*x+b*y. The example notebook is [[0, 0, 1], [0, 1, -3], [1, 0, -1], [1, 1, -5]] (each entry is [x,y,z]); the checked answer [c,a,b] is [1, -2, -4]. Return {\"points\":[...],\"expressions\":[...]} only. Pick 3 or 4 distinct [x,y] measurements from the example. In that exact order, their z readings are r0, r1, etc. Write three bare, quoted arithmetic expressions for c,a,b using r names and + or -. The numbers will change on the next sensor. Derive the expressions symbolically.\nYour previous response was {\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}. The public check returned: On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2.",
+        "text": "{\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}",
+        "usage": {
+          "completion_tokens": 68,
+          "prompt_tokens": 332,
+          "total_tokens": 400,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 15.371,
+        "resident": [
+          "t80+g41code"
+        ],
+        "feedback": "On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2."
+      },
+      {
+        "prompt": "From this successful calibration derive a general procedure for ANY affine sensor z=c+a*x+b*y. The example notebook is [[0, 0, 1], [0, 1, -3], [1, 0, -1], [1, 1, -5]] (each entry is [x,y,z]); the checked answer [c,a,b] is [1, -2, -4]. Return {\"points\":[...],\"expressions\":[...]} only. Pick 3 or 4 distinct [x,y] measurements from the example. In that exact order, their z readings are r0, r1, etc. Write three bare, quoted arithmetic expressions for c,a,b using r names and + or -. The numbers will change on the next sensor. Derive the expressions symbolically.\nYour previous response was {\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}. The public check returned: On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2.",
+        "text": "{\n  \"points\": [\n    [0, 0],\n    [0, 1],\n    [1, 0]\n  ],\n  \"expressions\": [\n    \"c = r0\",\n    \"a = r1 - r0\",\n    \"b = r2 - r0 - a\"\n  ]\n}",
+        "usage": {
+          "completion_tokens": 68,
+          "prompt_tokens": 332,
+          "total_tokens": 400,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 14.276,
+        "resident": [
+          "t80+g41code"
+        ],
+        "feedback": "On public notebook [[0, 0, 4], [0, 1, 2], [1, 0, 1], [1, 1, -1]] your coefficients [4, -2, -1] give 3 at 0,1; it measured 2."
+      }
+    ],
+    "recipe": {
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "expressions": [
+        "r0",
+        "-r1+r3",
+        "-r2+r3"
+      ]
+    }
+  },
+  "worker_cache": {
+    "catalog_entries": 26,
+    "slots": 2,
+    "peak_kib": 2589248,
+    "switches": [
+      {
+        "cell": "t80+g41data",
+        "resident": [
+          "t80+g41data"
+        ],
+        "restarted": true,
+        "seconds": 4.771,
+        "answer": "{\"ready\":1}",
+        "scales": {
+          "t80+g41data": 1.0
+        }
+      },
+      {
+        "cell": "t80+g41code",
+        "resident": [
+          "t80+g41data",
+          "t80+g41code"
+        ],
+        "restarted": true,
+        "seconds": 5.582,
+        "answer": "{\"ready\":1}",
+        "scales": {
+          "t80+g41data": 0.0,
+          "t80+g41code": 1.0
+        }
+      },
+      {
+        "cell": "t80+g41data",
+        "resident": [
+          "t80+g41code",
+          "t80+g41data"
+        ],
+        "restarted": false,
+        "seconds": 0.987,
+        "answer": "{\"ready\":1}",
+        "scales": {
+          "t80+g41data": 1.0,
+          "t80+g41code": 0.0
+        }
+      },
+      {
+        "cell": "t80+labchild",
+        "resident": [
+          "t80+g41data",
+          "t80+labchild"
+        ],
+        "restarted": true,
+        "seconds": 6.293,
+        "answer": "{\"ready\":1}",
+        "scales": {
+          "t80+g41data": 0.0,
+          "t80+labchild": 1.0
+        }
+      },
+      {
+        "cell": "t80+g41data",
+        "resident": [
+          "t80+labchild",
+          "t80+g41data"
+        ],
+        "restarted": false,
+        "seconds": 0.983,
+        "answer": "{\"ready\":1}",
+        "scales": {
+          "t80+g41data": 1.0,
+          "t80+labchild": 0.0
+        }
+      },
+      {
+        "cell": "t80+g41code",
+        "resident": [
+          "t80+g41data",
+          "t80+g41code"
+        ],
+        "restarted": true,
+        "seconds": 5.658,
+        "answer": "{\"ready\":1}",
+        "scales": {
+          "t80+g41data": 0.0,
+          "t80+g41code": 1.0
+        }
+      }
+    ]
+  },
+  "kill_recovery": {
+    "killed_pid": 9144,
+    "new_pid": 9415,
+    "saved_turns": 1,
+    "saved_observations": [
+      [
+        0,
+        0,
+        3
+      ],
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        1,
+        0,
+        5
+      ],
+      [
+        1,
+        1,
+        3
+      ]
+    ],
+    "saved_owner": 1,
+    "resuming_cell": "t80+labchild",
+    "receipt_sha256": "9d0083f8af66ad41a1696ea9214c31346a228e3ba02848ea9f3c67cc0fa8ab2d",
+    "score": {
+      "correct": true,
+      "hits": 8,
+      "out_of": 8,
+      "settings": [
+        [
+          -3,
+          -2
+        ],
+        [
+          -1,
+          4
+        ],
+        [
+          4,
+          -2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          -2,
+          0
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          1,
+          -3
+        ]
+      ],
+      "actual": [
+        1,
+        -7,
+        15,
+        3,
+        -1,
+        -5,
+        11,
+        11
+      ],
+      "predictions": [
+        1,
+        -7,
+        15,
+        3,
+        -1,
+        -5,
+        11,
+        11
+      ],
+      "probes": 4,
+      "turns": 2,
+      "used_peer": true
+    },
+    "automatic_restarts_after_second_kill": 1,
+    "automatic_replacement_pid": 9686,
+    "automatic_replacement_answer": "{\"ready\":1}"
+  },
+  "retention": {
+    "t80+g41data": [
+      {
+        "item": "changed plan",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Book club meets Tuesday in Cedar room. Remember that for this chat."
+          },
+          {
+            "role": "assistant",
+            "content": "I have Tuesday in Cedar room."
+          },
+          {
+            "role": "user",
+            "content": "Change the day to Friday. Return the current plan as JSON with keys day and room. Use just the room name."
+          }
+        ],
+        "expected": {
+          "day": "Friday",
+          "room": "Cedar"
+        },
+        "correct": false,
+        "text": "```json\n{\n  \"day\": \"Friday\",\n  \"room\": \"Cedar room\"\n}\n```",
+        "usage": {
+          "completion_tokens": 23,
+          "prompt_tokens": 67,
+          "total_tokens": 90,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 8.86,
+        "resident": [
+          "t80+g41data"
+        ],
+        "content_after_stripping_markdown": false
+      },
+      {
+        "item": "inventory",
+        "messages": [
+          {
+            "role": "user",
+            "content": "I start with 7 red and 4 green boxes. I ship 2 red and receive 3 green. Return the final integer counts as JSON with keys red and green."
+          }
+        ],
+        "expected": {
+          "red": 5,
+          "green": 7
+        },
+        "correct": false,
+        "text": "```json\n{\n  \"red\": 5,\n  \"green\": 7\n}\n```",
+        "usage": {
+          "completion_tokens": 21,
+          "prompt_tokens": 48,
+          "total_tokens": 69,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 3.188,
+        "resident": [
+          "t80+g41data"
+        ],
+        "content_after_stripping_markdown": true
+      },
+      {
+        "item": "ordering",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Three jobs fill three slots. Paint follows Sand. Dry follows Paint. Return {\"order\":[...]} using those exact three job names."
+          }
+        ],
+        "expected": {
+          "order": [
+            "Sand",
+            "Paint",
+            "Dry"
+          ]
+        },
+        "correct": false,
+        "text": "```json\n{\"order\": [\"Sand\", \"Paint\", \"Dry\"]}\n```",
+        "usage": {
+          "completion_tokens": 17,
+          "prompt_tokens": 39,
+          "total_tokens": 56,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 2.522,
+        "resident": [
+          "t80+g41data"
+        ],
+        "content_after_stripping_markdown": true
+      },
+      {
+        "item": "missing detail",
+        "messages": [
+          {
+            "role": "user",
+            "content": "To book a table we require date, time and party_size. I requested Friday at 7 pm. Return {\"missing\":[...]} using only the field names still needed."
+          }
+        ],
+        "expected": {
+          "missing": [
+            "party_size"
+          ]
+        },
+        "correct": false,
+        "text": "{\"missing\":[\"date\",\"time\",\"party_size\"]}",
+        "usage": {
+          "completion_tokens": 11,
+          "prompt_tokens": 47,
+          "total_tokens": 58,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 2.094,
+        "resident": [
+          "t80+g41data"
+        ],
+        "content_after_stripping_markdown": false
+      }
+    ],
+    "t80+labchild": [
+      {
+        "item": "changed plan",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Book club meets Tuesday in Cedar room. Remember that for this chat."
+          },
+          {
+            "role": "assistant",
+            "content": "I have Tuesday in Cedar room."
+          },
+          {
+            "role": "user",
+            "content": "Change the day to Friday. Return the current plan as JSON with keys day and room. Use just the room name."
+          }
+        ],
+        "expected": {
+          "day": "Friday",
+          "room": "Cedar"
+        },
+        "correct": false,
+        "text": "```json\n{\n  \"day\": \"Friday\",\n  \"room\": \"Cedar room\"\n}\n```",
+        "usage": {
+          "completion_tokens": 23,
+          "prompt_tokens": 67,
+          "total_tokens": 90,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 8.457,
+        "resident": [
+          "t80+g41data",
+          "t80+labchild"
+        ],
+        "content_after_stripping_markdown": false
+      },
+      {
+        "item": "inventory",
+        "messages": [
+          {
+            "role": "user",
+            "content": "I start with 7 red and 4 green boxes. I ship 2 red and receive 3 green. Return the final integer counts as JSON with keys red and green."
+          }
+        ],
+        "expected": {
+          "red": 5,
+          "green": 7
+        },
+        "correct": false,
+        "text": "```json\n{\n  \"red\": 5,\n  \"green\": 7\n}\n```",
+        "usage": {
+          "completion_tokens": 21,
+          "prompt_tokens": 48,
+          "total_tokens": 69,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 3.272,
+        "resident": [
+          "t80+g41data",
+          "t80+labchild"
+        ],
+        "content_after_stripping_markdown": true
+      },
+      {
+        "item": "ordering",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Three jobs fill three slots. Paint follows Sand. Dry follows Paint. Return {\"order\":[...]} using those exact three job names."
+          }
+        ],
+        "expected": {
+          "order": [
+            "Sand",
+            "Paint",
+            "Dry"
+          ]
+        },
+        "correct": false,
+        "text": "```json\n{\"order\":[\"Sand\",\"Paint\",\"Dry\"]}\n```",
+        "usage": {
+          "completion_tokens": 14,
+          "prompt_tokens": 39,
+          "total_tokens": 53,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 2.328,
+        "resident": [
+          "t80+g41data",
+          "t80+labchild"
+        ],
+        "content_after_stripping_markdown": true
+      },
+      {
+        "item": "missing detail",
+        "messages": [
+          {
+            "role": "user",
+            "content": "To book a table we require date, time and party_size. I requested Friday at 7 pm. Return {\"missing\":[...]} using only the field names still needed."
+          }
+        ],
+        "expected": {
+          "missing": [
+            "party_size"
+          ]
+        },
+        "correct": false,
+        "text": "{\"missing\":[\"date\",\"time\",\"party_size\"]}",
+        "usage": {
+          "completion_tokens": 11,
+          "prompt_tokens": 47,
+          "total_tokens": 58,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 2.197,
+        "resident": [
+          "t80+g41data",
+          "t80+labchild"
+        ],
+        "content_after_stripping_markdown": false
+      }
+    ]
+  },
+  "per_invocation": {
+    "teaching": {
+      "elapsed_seconds": 89.74,
+      "server_starts_this_invocation": 2,
+      "server_peak_kib": 2778016,
+      "cells": [
+        "t80+g41data",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    },
+    "teaching-v3": {
+      "elapsed_seconds": 308.27,
+      "server_starts_this_invocation": 2,
+      "server_peak_kib": 2890392,
+      "cells": [
+        "t80+g41data",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    },
+    "parent": {
+      "elapsed_seconds": 1299.01,
+      "server_starts_this_invocation": 2,
+      "server_peak_kib": 2850444,
+      "cells": [
+        "t80+g41data",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    },
+    "same-weights": {
+      "elapsed_seconds": 345.78,
+      "server_starts_this_invocation": 1,
+      "server_peak_kib": 2813308,
+      "cells": [
+        "t80+g41data",
+        "t80+g41data"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    },
+    "child-exam": {
+      "elapsed_seconds": 251.26,
+      "server_starts_this_invocation": 2,
+      "server_peak_kib": 2804048,
+      "cells": [
+        "t80+labchild",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    },
+    "method-exam": {
+      "elapsed_seconds": 401.57,
+      "server_starts_this_invocation": 2,
+      "server_peak_kib": 3064084,
+      "cells": [
+        "t80+g41data",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": "005ba942469fc4e0c32143126c25b6220b2e0ca5710c7d8b14b8e995236d756a"
+    }
+  },
+  "assets": {
+    "project_parent": "4fa82d2b439635af021780b24df258138594ba7c",
+    "runtime_commit": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+    "packed_model_hf_revision": "c2aefbeb4b24469cd11579c3384b990404c17a30",
+    "unpacked_model_hf_revision": "ac20f03fc62e872399218b659c8e949dfca05769",
+    "files": {
+      "base.gguf": {
+        "bytes": 2182184672,
+        "sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922"
+      },
+      "g41data.safetensors": {
+        "bytes": 67921440,
+        "sha256": "52d5b92e2c51e1c2ae70ed50decc44611dd0df55d144d648295cf9658bb95d12"
+      },
+      "t80+g41data.gguf": {
+        "bytes": 39887616,
+        "sha256": "ce4e7449236182b8951745bf2ddf842591753e1939f1c4ac372dfe8d81a1191b"
+      },
+      "t80+g41code.gguf": {
+        "bytes": 39887616,
+        "sha256": "f2b2ad57801c445c6c6550de7f4f7ff691d2d58d086ff6bfd29d8d231d1a0d72"
+      },
+      "t80+labchild.gguf": {
+        "bytes": 39887616,
+        "sha256": "89d024b332f81522a0716820e016709760016679602cdbf15313c64f5340b922"
+      }
+    },
+    "parent_fp32_tensors_equal_to_deployed_fp16_after_cast": 196,
+    "child_changed_fp16_tensors": 28
+  },
+  "teaching_data": [
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 4 measurements left.\nShared instrument notebook:\nempty\nTo measure, return {\"measure\":[[x,y],...],\"next\":\"peer\"} or choose \"self\".\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional."
+        }
+      ],
+      "output": "{\"measure\":[[0,0],[0,1],[1,0],[1,1]],\"next\":\"self\"}"
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 0 measurements left.\nShared instrument notebook:\nr0: x=0, y=0 -> z=1\nr1: x=0, y=1 -> z=-3\nr2: x=1, y=0 -> z=-1\nr3: x=1, y=1 -> z=-5\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional.\nCalibration is complete. Read the measured values above and submit the coefficients now."
+        }
+      ],
+      "output": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}"
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 0 measurements left.\nShared instrument notebook:\nr0: x=0, y=0 -> z=4\nr1: x=0, y=1 -> z=2\nr2: x=1, y=0 -> z=1\nr3: x=1, y=1 -> z=-1\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional.\nCalibration is complete. Read the measured values above and submit the coefficients now."
+        }
+      ],
+      "output": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}"
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 0 measurements left.\nShared instrument notebook:\nr0: x=0, y=0 -> z=1\nr1: x=0, y=1 -> z=-2\nr2: x=1, y=0 -> z=-1\nr3: x=1, y=1 -> z=-4\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional.\nCalibration is complete. Read the measured values above and submit the coefficients now."
+        }
+      ],
+      "output": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}"
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 0 measurements left.\nShared instrument notebook:\nr0: x=0, y=0 -> z=-2\nr1: x=0, y=1 -> z=-5\nr2: x=1, y=0 -> z=1\nr3: x=1, y=1 -> z=-2\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional.\nCalibration is complete. Read the measured values above and submit the coefficients now."
+        }
+      ],
+      "output": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}"
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 0 measurements left.\nShared instrument notebook:\nr0: x=0, y=0 -> z=-1\nr1: x=0, y=1 -> z=-2\nr2: x=1, y=0 -> z=1\nr3: x=1, y=1 -> z=0\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional.\nCalibration is complete. Read the measured values above and submit the coefficients now."
+        }
+      ],
+      "output": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}"
+    },
+    {
+      "messages": [
+        {
+          "role": "system",
+          "content": "You operate an experimental instrument with another lab cell. Reply with exactly one JSON tool call."
+        },
+        {
+          "role": "user",
+          "content": "Infer the hidden sensor law z = c + a*x + b*y. Its coefficients are unknown signed integers.\nSubmit the 3 coefficients in the order c,a,b. Your rule must predict readings at unseen settings.\nYou may measure integer settings x,y in 0..2. You have 0 measurements left.\nShared instrument notebook:\nr0: x=0, y=0 -> z=3\nr1: x=0, y=1 -> z=7\nr2: x=1, y=0 -> z=0\nr3: x=1, y=1 -> z=4\nTo finish, return {\"submit\":[...]} with each coefficient as an integer or a quoted arithmetic expression using the measured z values r0, r1, ... and +, -, *. A short \"note\" is optional.\nCalibration is complete. Read the measured values above and submit the coefficients now."
+        }
+      ],
+      "output": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}"
+    }
+  ],
+  "finite_grid": {
+    "affine": {
+      "worker": "stored procedure",
+      "correct": 512,
+      "worlds": 512
+    },
+    "interaction": {
+      "worker": "fixed corners and exact solver",
+      "correct": 4096,
+      "worlds": 4096
+    }
+  },
+  "probe_format_followup": {
+    "seeds": [
+      211,
+      212,
+      213,
+      214
+    ],
+    "worlds": {
+      "open": [
+        {
+          "seed": 211,
+          "success": false,
+          "hits": 0,
+          "probes": 4,
+          "turns": 6,
+          "recognized_envelopes": 1,
+          "model_calls": 6,
+          "seconds": 49.78
+        },
+        {
+          "seed": 212,
+          "success": false,
+          "hits": 0,
+          "probes": 4,
+          "turns": 6,
+          "recognized_envelopes": 1,
+          "model_calls": 6,
+          "seconds": 44.05
+        },
+        {
+          "seed": 213,
+          "success": false,
+          "hits": 0,
+          "probes": 4,
+          "turns": 6,
+          "recognized_envelopes": 1,
+          "model_calls": 6,
+          "seconds": 44.49
+        },
+        {
+          "seed": 214,
+          "success": false,
+          "hits": 0,
+          "probes": 4,
+          "turns": 6,
+          "recognized_envelopes": 1,
+          "model_calls": 6,
+          "seconds": 42.89
+        }
+      ],
+      "solver": [
+        {
+          "seed": 211,
+          "success": true,
+          "hits": 8,
+          "probes": 4,
+          "turns": 2,
+          "recognized_envelopes": 1,
+          "model_calls": 1,
+          "seconds": 11.69
+        },
+        {
+          "seed": 212,
+          "success": true,
+          "hits": 8,
+          "probes": 4,
+          "turns": 2,
+          "recognized_envelopes": 1,
+          "model_calls": 1,
+          "seconds": 6.53
+        },
+        {
+          "seed": 213,
+          "success": true,
+          "hits": 8,
+          "probes": 4,
+          "turns": 2,
+          "recognized_envelopes": 1,
+          "model_calls": 1,
+          "seconds": 6.73
+        },
+        {
+          "seed": 214,
+          "success": true,
+          "hits": 8,
+          "probes": 4,
+          "turns": 2,
+          "recognized_envelopes": 1,
+          "model_calls": 1,
+          "seconds": 6.66
+        }
+      ],
+      "child solver": [
+        {
+          "seed": 211,
+          "success": true,
+          "hits": 8,
+          "probes": 5,
+          "turns": 2,
+          "recognized_envelopes": 0,
+          "model_calls": 1,
+          "seconds": 11.85
+        },
+        {
+          "seed": 212,
+          "success": true,
+          "hits": 8,
+          "probes": 5,
+          "turns": 2,
+          "recognized_envelopes": 0,
+          "model_calls": 1,
+          "seconds": 6.52
+        },
+        {
+          "seed": 213,
+          "success": true,
+          "hits": 8,
+          "probes": 5,
+          "turns": 2,
+          "recognized_envelopes": 0,
+          "model_calls": 1,
+          "seconds": 6.58
+        },
+        {
+          "seed": 214,
+          "success": true,
+          "hits": 8,
+          "probes": 5,
+          "turns": 2,
+          "recognized_envelopes": 0,
+          "model_calls": 1,
+          "seconds": 6.6
+        }
+      ]
+    },
+    "summary": {
+      "scores": [
+        {
+          "episode": "interaction-211-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-211-open",
+          "correct": false,
+          "hits": 0,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 6,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-212-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-212-open",
+          "correct": false,
+          "hits": 0,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 6,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-213-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-213-open",
+          "correct": false,
+          "hits": 0,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 6,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-214-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-214-open",
+          "correct": false,
+          "hits": 0,
+          "out_of": 8,
+          "probes": 4,
+          "turns": 6,
+          "used_peer": true
+        }
+      ],
+      "elapsed_seconds": 213.08,
+      "server_starts_this_invocation": 2,
+      "server_peak_kib": 2776208,
+      "cells": [
+        "t80+g41data",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    },
+    "child_summary": {
+      "scores": [
+        {
+          "episode": "interaction-211-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 5,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-212-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 5,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-213-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 5,
+          "turns": 2,
+          "used_peer": true
+        },
+        {
+          "episode": "interaction-214-solver",
+          "correct": true,
+          "hits": 8,
+          "out_of": 8,
+          "probes": 5,
+          "turns": 2,
+          "used_peer": true
+        }
+      ],
+      "elapsed_seconds": 31.73,
+      "server_starts_this_invocation": 1,
+      "server_peak_kib": 2584256,
+      "cells": [
+        "t80+labchild",
+        "t80+g41code"
+      ],
+      "threads": 4,
+      "slots": 2,
+      "method_sha256": null
+    }
+  }
+}
