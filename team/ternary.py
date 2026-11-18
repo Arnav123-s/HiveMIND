@@ -19,16 +19,20 @@ running for the next task (python -m team.ternary stop ends them). Microsoft's o
 on this runtime it answers properly, where Microsoft's runtime looped (team/bitnet.py, now removed).
 
     python -m team.ternary install        build the runtime (once, about 25 minutes on 4 cores)
+    python -m team.ternary install --rebuild   recompile for this CPU after an illegal instruction (SIGILL)
     python -m team.ternary fetch [t9 ...]  download the models of HIVE_MEMBERS (or those named)
     python -m team.ternary ask t9 "..."   one question to one model
     python -m team.ternary stop
 """
+import argparse
 import http.client
 import json
 import os
+import shutil
 import signal
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -52,8 +56,12 @@ CTX = int(os.environ.get("HIVE_TERNARY_CTX", 12288))
 END = "<|eot_id|>"  # Microsoft's BitNet answers only in its own format, written out by hand
 
 
+def _managed_binary():
+    return HOME / "ik_llama.cpp" / "build" / "bin" / "llama-server"
+
+
 def binary():
-    return Path(os.environ.get("HIVE_TERNARY_BIN", HOME / "ik_llama.cpp" / "build" / "bin" / "llama-server"))
+    return Path(os.environ.get("HIVE_TERNARY_BIN", _managed_binary()))
 
 
 def source():
@@ -76,17 +84,51 @@ def source():
     return src
 
 
-def install(log=print):
-    """Build the runtime for this machine's CPU. Skipped when the binary is there."""
-    if binary().exists():
-        return binary()
+def install(log=print, *, rebuild=False):
+    """Build the managed native runtime. An explicit rebuild uses fresh compiler objects."""
+    target = binary()
+    if target.absolute() != _managed_binary().absolute():
+        if not rebuild and target.is_file() and os.access(target, os.X_OK):
+            log(f"ternary: using HIVE_TERNARY_BIN executable {target}")
+            return target
+        raise RuntimeError(f"HIVE_TERNARY_BIN selects {target}. Supply a working external executable, or unset "
+                           "HIVE_TERNARY_BIN and run python -m team.ternary install --rebuild to build the managed runtime.")
+    if not rebuild and target.is_file() and os.access(target, os.X_OK):
+        log(f"ternary: using cached {target}. To recompile for this CPU, run python -m team.ternary install --rebuild.")
+        return target
+    threads = int(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4))
+    if threads < 1:
+        raise ValueError("AGENT_TEAM_THREADS must be a positive integer")
     src = source()
-    log("ternary: building the runtime (about 25 minutes on 4 cores)")
-    subprocess.run(["cmake", "-S", str(src), "-B", str(src / "build"), "-DCMAKE_BUILD_TYPE=Release", "-DGGML_NATIVE=ON", "-DLLAMA_CURL=OFF",
-                    "-DBUILD_SHARED_LIBS=OFF"], check=True, stdout=subprocess.DEVNULL)
-    subprocess.run(["cmake", "--build", str(src / "build"), "--config", "Release", "-j", str(os.cpu_count() or 4), "--target", "llama-server"],
-                   check=True, stdout=subprocess.DEVNULL)
-    return binary()
+    cmake = shutil.which("cmake") or shutil.which("cmake", path=str(Path(sys.executable).parent))
+    if cmake is None:
+        raise RuntimeError("building the ternary runtime requires CMake")
+    log(f"ternary: building the runtime for this CPU with {threads} compile workers")
+
+    def build(folder):
+        subprocess.run([cmake, "-S", str(src), "-B", str(folder), "-DCMAKE_BUILD_TYPE=Release", "-DGGML_NATIVE=ON",
+                        "-DLLAMA_CURL=OFF", "-DBUILD_SHARED_LIBS=OFF"], check=True, stdout=subprocess.DEVNULL)
+        subprocess.run([cmake, "--build", str(folder), "--config", "Release", "-j", str(threads),
+                        "--target", "llama-server"], check=True, stdout=subprocess.DEVNULL)
+
+    if rebuild:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        # Old objects can still say -march=native even though "native" was a different CPU.
+        # Publish the replacement static executable only after a complete, independent build.
+        with tempfile.TemporaryDirectory(prefix=".native-build-", dir=target.parent) as tmp:
+            folder = Path(tmp)
+            build(folder)
+            (folder / "bin" / "llama-server").replace(target)
+    else:
+        build(src / "build")
+    return target
+
+
+def _check_cpu_exit(code):
+    if code in (-signal.SIGILL, 128 + signal.SIGILL):
+        override = "Unset HIVE_TERNARY_BIN to use the managed runtime, then run " if binary().absolute() != _managed_binary().absolute() else "Run "
+        raise RuntimeError(f"{binary()} ended with an illegal instruction (SIGILL, exit code {code}). "
+                           f"The native build may target a different CPU. {override}python -m team.ternary install --rebuild.")
 
 
 def split(member):
@@ -151,6 +193,9 @@ def up(member, wait=600):
     if alive and set(cells_here(base)) <= set(_loaded(at)):  # every edit on the machine is in the server (a new engram starts it again)
         return at
     if not binary().exists():
+        if os.environ.get("HIVE_TERNARY_BIN"):
+            raise RuntimeError(f"HIVE_TERNARY_BIN points to a missing server: {binary()}. "
+                               "Set it to an executable or unset it and run python -m team.ternary install.")
         raise RuntimeError("the ternary runtime is not built on this machine: python -m team.ternary install")
     if edit and not adapter(member).exists():
         raise RuntimeError(f"no weight edit {adapter(member)}: python training/grow.py fetch")
@@ -190,6 +235,7 @@ def _start(base, wait=600):
         if _PROC[n].poll() is not None:  # it ended (no memory for it, the port still taken): waiting longer brings nothing
             # Seen on g35's seed 4 (job 133386038675): every start ended at once and was reported as "did not come up in
             # 600 s", the server's own words were in a log no artifact kept. Now its end and its last words are said.
+            _check_cpu_exit(_PROC[n].returncode)
             raise RuntimeError(f"the server of {base} ended {time.time() - t0:.0f} s after it was started, exit code "
                                f"{_PROC[n].returncode}; its last lines: {_tail(path, since)}")
         time.sleep(1)
@@ -359,6 +405,8 @@ def _ask(member, at, cell, path, body, n):
         except urllib.error.HTTPError:
             raise  # it answered: what it refused is the request (chat makes it shorter)
         except (OSError, http.client.HTTPException, Silent) as e:
+            if p is not None:
+                _check_cpu_exit(p.poll())
             if last:
                 raise Silent(f"the server of {split(member)[0]} {_why(e, waited)}, also after it was started again") from e
             _restart(member, _why(e, waited))
@@ -555,7 +603,13 @@ def seating(task, kind=None):
 if __name__ == "__main__":
     a = sys.argv[1:]
     if a[:1] == ["install"]:
-        print(install())
+        parser = argparse.ArgumentParser(prog="python -m team.ternary install", description=install.__doc__)
+        parser.add_argument("--rebuild", action="store_true", help="replace the managed server with a fresh build for this CPU")
+        options = parser.parse_args(a[1:])
+        try:
+            print(install(rebuild=options.rebuild))
+        except (RuntimeError, ValueError) as e:
+            parser.exit(1, str(e) + "\n")
     elif a[:1] == ["stop"]:
         stop()
     elif a[:1] == ["fetch"]:  # the files of every member named in HIVE_MEMBERS (or given), so that a sitting does not wait for them

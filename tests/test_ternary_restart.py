@@ -244,3 +244,82 @@ def test_the_runtime_kept_between_runs_is_keyed_by_the_cpus_instructions_not_its
     out = subprocess.run(["bash", "-c", line.split("run: ", 1)[1].replace(' >> "$GITHUB_OUTPUT"', "")], capture_output=True, text=True)
     assert out.returncode == 0 and len(out.stdout.strip()) == len("cpu=") + 8
     assert "static-flags-${{ steps.cpu.outputs.cpu }}" in action
+
+
+def test_native_rebuild_uses_fresh_objects_and_an_atomic_replacement(tmp_path):
+    import subprocess
+    env = dict(os.environ, HIVE_TERNARY_HOME=str(tmp_path), AGENT_TEAM_THREADS="2")
+    env.pop("HIVE_TERNARY_BIN", None)
+    src = tmp_path / "ik_llama.cpp"
+    cached = src / "build"
+    server = cached / "bin" / "llama-server"
+    server.parent.mkdir(parents=True)
+    server.write_text("old cpu")
+    server.chmod(0o755)
+    (src / "convert_lora_to_gguf.py").touch()
+    (cached / "CMakeCache.txt").write_text("old compiler objects")
+    model = tmp_path / "weights.gguf"
+    model.write_bytes(b"keep")
+    calls = tmp_path / "calls"
+    cmake = tmp_path / "cmake"
+    cmake.write_text(f"""#!{sys.executable}
+import json, os, sys
+from pathlib import Path
+args = sys.argv[1:]
+with open({str(calls)!r}, "a") as log:
+    log.write(json.dumps(args) + "\\n")
+if "--build" in args:
+    if os.getenv("FAIL_BUILD"):
+        sys.exit(2)
+    binary = Path(args[1]) / "bin" / "llama-server"
+    binary.parent.mkdir(parents=True, exist_ok=True)
+    binary.write_text("current cpu")
+    binary.chmod(0o755)
+""")
+    cmake.chmod(0o755)
+    env["PATH"] = str(tmp_path) + os.pathsep + env["PATH"]
+    cmd = [sys.executable, "-m", "team.ternary", "install"]
+    use = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    assert use.returncode == 0 and not calls.exists()
+    failed = subprocess.run(cmd + ["--rebuild"], env=dict(env, FAIL_BUILD="1"), capture_output=True, text=True)
+    assert failed.returncode != 0 and server.read_text() == "old cpu"
+    good = subprocess.run(cmd + ["--rebuild"], env=env, capture_output=True, text=True)
+    assert good.returncode == 0 and server.read_text() == "current cpu" and os.access(server, os.X_OK)
+    configure, compile_cmd = [json.loads(x) for x in calls.read_text().splitlines()][-2:]
+    assert configure[configure.index("-B") + 1] == compile_cmd[1] != str(cached)
+    assert "-DGGML_NATIVE=ON" in configure and compile_cmd[compile_cmd.index("-j") + 1] == "2"
+    assert not os.path.exists(compile_cmd[1])
+    assert model.read_bytes() == b"keep" and (cached / "CMakeCache.txt").read_text() == "old compiler objects"
+
+
+def test_external_server_is_never_overwritten_by_install(tmp_path, monkeypatch):
+    override = tmp_path / "elsewhere"
+    monkeypatch.setenv("HIVE_TERNARY_BIN", str(override))
+    with pytest.raises(RuntimeError, match="HIVE_TERNARY_BIN"):
+        ternary.install()
+    override.write_text("external")
+    override.chmod(0o755)
+    assert ternary.install() == override
+    with pytest.raises(RuntimeError, match=r"unset HIVE_TERNARY_BIN.*install --rebuild"):
+        ternary.install(rebuild=True)
+    assert override.read_text() == "external"
+
+
+def test_native_sigill_names_the_binary_and_recovery_command(tmp_path, monkeypatch):
+    import signal
+    from types import SimpleNamespace
+    monkeypatch.setattr(ternary, "HOME", tmp_path)
+    monkeypatch.setattr(ternary, "_PROC", {})
+    monkeypatch.setattr(ternary, "weights", lambda base: "fake.gguf")
+    monkeypatch.setattr(ternary, "edits_here", lambda base: {})
+    monkeypatch.setattr(ternary, "_get", lambda url: None)
+    monkeypatch.setenv("HIVE_TERNARY_BIN", str(tmp_path / "override"))
+    dead = SimpleNamespace(poll=lambda: -signal.SIGILL, returncode=-signal.SIGILL)
+    monkeypatch.setattr(ternary.subprocess, "Popen", lambda *args, **kwargs: dead)
+    with pytest.raises(RuntimeError, match=r"SIGILL.*Unset HIVE_TERNARY_BIN.*install --rebuild") as err:
+        ternary._start("t2")
+    assert str(ternary.binary()) in str(err.value)
+    monkeypatch.delenv("HIVE_TERNARY_BIN")
+    with pytest.raises(RuntimeError, match=r"SIGILL.*install --rebuild") as err:
+        ternary._start("t2")
+    assert "Unset" not in str(err.value)
