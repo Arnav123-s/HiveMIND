@@ -1,0 +1,11 @@
+# CPU field-work protocol
+
+The model receives a natural-language contract, an example and a standard Python library including a generic least-squares function. It must supply its own executable solution. All substantive phase transitions run in fresh CPython/WASI instances. The host supplies input and commits returned files. The model has no host filesystem, network, reference implementation or private feedback. All scientific targets in this test concern physical measurements.
+
+Compare the repository's g41 coding adapter on the 8B ternary parent and a recruited Qwen2.5-Coder-3B-Instruct Q4_K_M on CPU. Record first attempts, public-test retries and growth from executable skills written in earlier school tasks. Publish lineage, full sources, private successes and failures. Freeze the selected program using public outcomes only. School promotion uses a separate split of 25 cases. A second independent generated split is available for confirming a change made after an exam. Historical CO₂ intervals must be reported separately from generated cases.
+
+* Roster and ferry require all 72 small differential cases and a large constructed case at the stated execution limit. The public development set has nine small cases and a smaller scaling check.
+* Active system identification requires a valid 48-step intervention and normalized RMSE at most 0.10 on each of 18 new systems, six per mechanism. A simple AR(1) input model sees the same drive. The target is the underlying trajectory of a fresh input sequence.
+* Atmospheric hindcasts end in 2009, 2013, 2017, 2021 and 2023. Each has 20 past years and 24 future months. Require RMSE at most 2 ppm and at most 80% of the seasonal-naive RMSE, annual trend within 0.5 ppm/year of a ten-year annual-mean slope, detrended seasonal peak within one calendar month, and a method description. Also report a stronger seasonal forecast that adds the preceding five-year drift. Historical hindcasts give no claim about real-time accuracy.
+* The operational task requires exact intake, reopening its committed snapshot and exact revised CSV and audit JSON for all 72 new event histories.
+* Generated examples of earlier school tasks and public work orders may be used for growth. Private returning values and labels are reserved for evaluation. Case seeds and deterministic graders are published for independent reruns.
