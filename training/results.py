@@ -13,6 +13,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from training.kinds import hard_scores  # noqa: E402
+
 FILE = "training/reports/generations.jsonl"
 
 
@@ -53,7 +56,7 @@ def table(rows):
             kind += " + foresee"
         if d.get("pair_steps"):
             kind += " + pairs"
-        up = a.get("after", {}).get("unpractised", [0, 0])
+        _, up = hard_scores(a.get("after", {}))
         print(f"| {d.get('generation')} | {d.get('when')} | {d.get('dna', 't17')} | {kind} | {d.get('rows')} | {cell('dna')} | "
               f"{cell('before')} | {cell('after')} | {(d.get('versus') + ': ' + cell('versus')) if d.get('versus') else '-'} | {up[0]} of {up[1]} | {'yes' if d.get('kept') else 'no'} | {'yes' if d.get('trial') else ''} |")
 

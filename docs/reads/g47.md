@@ -9,13 +9,15 @@ Written by the record job (`training/reads.py`), with nobody's hand. The rules a
 | What is measured | g47 | g45 (last record) | the body before (same seeds) |
 |---|---|---|---|
 | Easy kinds passed | 31 of 32 | 32 of 32 | 31 of 32 |
-| Hard kinds that have lessons | 14 of 19 | 12 of 16 | 15 of 19 |
-| Hard kinds never practised (held out) | 0 of 6 | 0 of 9 | 1 of 6 |
+| Hard kinds that have lessons | 16 of 25 | 13 of 22 | 15 of 25 |
+| Hard kinds never practised (held out) | 0 of 7 | 0 of 10 | 1 of 7 |
 | Right at the first try (practice) | 0.39 (37 of 96) | 0.35 | - |
 | Right at the first try, old kinds and K2's new kinds (practice) | not measured | - | - |
 | Hours for one generation | 5.2 | 5.6 | - |
 | Generations recorded with nobody's hand | 5 | 4 | - |
 | Talk (the talk exam, out of 10; the bar is 8) | 6.2 of 10 (route 6 of 10, fact 7 of 10, earlier 7 of 10, time 5 of 10) | 6.5 of 10 (route 5 of 10, fact 7 of 10, earlier 8 of 10, time 6 of 10) | - |
+
+The two hard-task rows above were recounted from the recorded per-kind scores. The training chain and next-piece decision below are the original run report.
 
 ## The chain, by taught hard kind
 

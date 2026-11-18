@@ -34,7 +34,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))  # team.ternary names organs and leanings; it needs nothing but Python
-from training import lineage  # noqa: E402
+from training import kinds as exam_kinds, lineage  # noqa: E402
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 BODY = ROOT / "cells" / "body.json"
 STRENGTHS = ROOT / "cells" / "strengths.json"
@@ -45,9 +45,6 @@ ORGANS = ("sources", "code", "data", "words")
 DNAS = ("t17", "t40", "t80")
 CELL = r"g\d{1,6}(?:sources|code|data|words)\d{0,2}"
 MOST_ROWS, MOST_FAILURES = 20000, 3000  # what the release keeps: the newest
-# the kinds the hive never practises on (training/exam_hard.HELD_OUT), by the name the exam gives them
-UNPRACTISED = ("walk a site and count into a file", "two facts from two sources, combined", "a file given in the task, edited to a specification",
-               "a simulation followed step by step")
 
 
 def _int(x, most):
@@ -156,7 +153,8 @@ def practice_kinds(old, folders, keep=0.5):
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
     out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {},
-           "hard": [0, 0], "easy": [0, 0], "several": [0, 0]}
+           "hard": [0, 0], "taught": [0, 0], "easy": [0, 0], "several": [0, 0]}
+    groups = exam_kinds.hard_groups()
     for folder in folders:
         for f in sorted(Path(folder).rglob("*.json")):
             if f.stat().st_size > 2_000_000:
@@ -183,7 +181,7 @@ def arm(folders):
                 # passed and sat, kind by kind: what practice weighs to stay at the edge (training/grow.edge_weights).
                 # Only kinds of a known shape are kept: the name is text from another job.
                 k = t.get("kind") if isinstance(t, dict) else None
-                if isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k) and len(out["kinds"]) < 64:
+                if isinstance(k, str) and re.fullmatch(r"[\w ,.:'()-]{1,80}", k) and (k in out["kinds"] or len(out["kinds"]) < 64):
                     got = out["kinds"].setdefault(k, [0, 0])
                     got[0] += t.get("ok") is True
                     got[1] += 1
@@ -203,9 +201,10 @@ def arm(folders):
                                 c = table.setdefault(key, [0, 0])
                                 c[0] += m.get("ok") is True
                                 c[1] += 1
-                if isinstance(t, dict) and t.get("kind") in UNPRACTISED:
-                    out["unpractised"][0] += t.get("ok") is True
-                    out["unpractised"][1] += 1
+                group = groups.get(k) if isinstance(k, str) else None
+                if group:
+                    out[group][0] += t.get("ok") is True
+                    out[group][1] += 1
     return out
 
 
@@ -434,10 +433,11 @@ def failed_page(gen, run, what, record=RECORD, reads=None):
             f"The progress graphs failed in run [{run}]({url}); see the record job's log. They are not drawn from this record.", ""]
     a, b = (line.get("paired") or line.get("arms") or {}).get("after", {}), (line.get("paired") or line.get("arms") or {}).get("before", {})
     ft = line.get("first_try")
+    _, held = exam_kinds.hard_scores((line.get("arms") or {}).get("after", {}))
     nums = ["The record's numbers (training/reports/generations.jsonl):", "",
             f"- verdict: {line.get('verdict') or ('kept' if line.get('kept') else 'dropped') if line else 'no record line'}; {line.get('why', '')}",
             f"- after {_pq([a.get('passed'), a.get('tasks')])}, before {_pq([b.get('passed'), b.get('tasks')])}",
-            f"- easy {_pq(a.get('easy'))}, hard {_pq(a.get('hard'))}, held out {_pq((line.get('arms') or {}).get('after', {}).get('unpractised'))}",
+            f"- easy {_pq(a.get('easy'))}, hard {_pq(a.get('hard'))}, held out {_pq(held)}",
             f"- first try {f'{ft[0] / ft[1]:.2f}' if isinstance(ft, list) and len(ft) == 2 and ft[1] else 'not measured'}; "
             f"hours {line['hours'] if isinstance(line.get('hours'), (int, float)) else 'not measured'}"]
     text = "\n".join(head + nums) + "\n"

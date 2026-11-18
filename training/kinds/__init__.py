@@ -29,6 +29,7 @@ import ast
 import importlib
 import pkgutil
 import random
+from functools import cache
 from pathlib import Path
 
 DEFAULTS = {"COPIES": 1, "LEVELED": False, "HELD_OUT": False, "NETWORK": False, "GIVEN_FILE": False, "lesson": None}
@@ -108,6 +109,39 @@ def written(name):
             for node in ast.walk(fn):
                 if isinstance(node, ast.Return) and isinstance(node.value, ast.Tuple) and len(node.value.elts) == 4:
                     field, kind = node.value.elts[:2]
-                    if isinstance(field, ast.Constant) and isinstance(kind, ast.Constant) and kind.value not in out:
+                    is_field = ((isinstance(field, ast.Constant) and field.value == mod.FAMILY)
+                                or (isinstance(field, ast.Name) and field.id == "FAMILY"))
+                    if is_field and isinstance(kind, ast.Constant) and isinstance(kind.value, str) and kind.value not in out:
                         out.append(kind.value)
     return out
+
+
+@cache
+def hard_groups():
+    """The labels written to exam records, grouped by the maker's teaching policy."""
+    groups = {}
+    for mod in HARD_KINDS:
+        if mod.HELD_OUT or mod.KIND in SOLVERS:
+            for label in written(mod.KIND):
+                groups[label] = "unpractised" if mod.HELD_OUT else "taught"
+    return groups
+
+
+def hard_scores(arm):
+    """(Taught, held out) as [passed, sat]. Preserve the original split for new records.
+    Older complete per-kind rolls can be recounted. The oldest records have only a held-out total.
+    """
+    held = arm.get("unpractised") or [0, 0]
+    if "taught" in arm:
+        return arm["taught"], held
+    counts = arm.get("kinds") or {}
+    if not counts or sum(v[1] for v in counts.values()) != arm.get("tasks"):
+        return [0, 0], held
+    totals = {"taught": [0, 0], "unpractised": [0, 0]}
+    groups = hard_groups()
+    for label, (passed, sat) in counts.items():
+        group = groups.get(label)
+        if group:
+            totals[group][0] += passed
+            totals[group][1] += sat
+    return totals["taught"], totals["unpractised"]

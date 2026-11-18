@@ -31,6 +31,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from training.kinds import hard_scores  # noqa: E402
 
 NAMES = {"t17": "1.7B", "t40": "4B", "t80": "8B"}
 # colours: the validated categorical pair (blue, orange) and a neutral for the DNA alone; dark-mode steps of the
@@ -165,7 +166,7 @@ OLD_STEPS = {"dreams": "dream", "pulse": "gate"}  # the names records used befor
 
 
 def _held_out(d):
-    u = d["arms"]["after"].get("unpractised") or [0, 0]
+    _, u = hard_scores(d["arms"]["after"])
     return u if len(u) == 2 and u[1] else None
 
 
@@ -283,11 +284,6 @@ def hours_chart(gens, w=760, h=300, bar=5):
 def _passed(d):
     a = d["arms"]["after"]
     return a["passed"], a["tasks"]
-
-
-def _carried(d):
-    u = d["arms"]["after"].get("unpractised") or [0, 0]
-    return (u[0], u[1]) if len(u) == 2 and u[1] else None
 
 
 def kinds(gens, dna, last=6):
@@ -436,7 +432,7 @@ def draw(record=None, out=None, body=None, talk_dir=None):
     dna = b.get("dna") or (gens[-1]["dna"] if gens else "t80")
     (out / "score.svg").write_text(share_chart(gens, _passed, "Exam tasks the body passed, each generation",
                                                "a fresh exam of the grown body at the end of every generation; faint dots were trials"))
-    (out / "carry.svg").write_text(share_chart(gens, _carried, "Kinds of task it has never practised, passed",
+    (out / "carry.svg").write_text(share_chart(gens, _held_out, "Kinds of task it has never practised, passed",
                                                "does what it learns carry over to work it was never taught? (few tasks each: read the trend)"))
     table, names = kinds(gens, dna)
     (out / "kinds.svg").write_text(kinds_chart(table, names, dna))
