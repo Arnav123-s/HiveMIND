@@ -10,6 +10,9 @@ after generation, on free GitHub runners, with nobody's hand. DNA: t80 = Ternary
 **Final build** = all five bars met on one generation:
 hard kinds with lessons 18 of 23 · half of the held-out (never-taught) kinds · 0.7 right at the first try ·
 talk exam 8 of 10 · a generation in 3 hours.
+"Hard kinds with lessons 18 of 23" means the share of taught hard kinds the body passes. Since K2 (g44) there are
+more kinds, so the bar is read as a share: at least 0.78. "Held out" is the share of held-out kinds passed, on a
+fixed held-out exam once X1 lands.
 
 ## Your role
 
