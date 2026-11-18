@@ -1,0 +1,467 @@
+{
+  "question": "Can two previously checked tax programs with the same skill name and description survive a correction, return to the earlier convention, and withhold invoices when the examples cannot distinguish them?",
+  "protocol": "Two human-authored programs qualified separately through real work() calls in WASI. Their real bank records were copied together. Both arms began with the same content-addressed bank and the same six work orders and delivery keys. Each visit used a separate ./hive fieldwork process with neither weights nor engine specified and read the resulting on-disk tax.json files. The independent expected job keys were never sent with the work order. An additional controlled bad proposal was offered through work() after the fifth CLI visit. None of these programs was model-generated.",
+  "case_sha256": "2ec1ca7e187f3133987e622a8d41328ed90e403b40da557b3721ae7c9d00722c",
+  "baseline": {
+    "revision": "17fcf99ed2acb7caeb8322701100b42348c7c51a",
+    "fieldwork_sha256": "ac9387de04e3c501964c4f62ed2d0b029d4996c45772814a1c73f2421214bd8a",
+    "case_sha256": "2ec1ca7e187f3133987e622a8d41328ed90e403b40da557b3721ae7c9d00722c",
+    "wasi_python_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+    "qualified_with_wasi": [
+      {
+        "convention": "per_line",
+        "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+        "public": 2,
+        "validation": 2,
+        "scripted_proposals": 1
+      },
+      {
+        "convention": "per_invoice",
+        "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "public": 2,
+        "validation": 2,
+        "scripted_proposals": 1
+      }
+    ],
+    "initial_bank": {
+      "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd": "573b42c7d9cc9898594659832562a28aaccb72b9427eaaec70c31a53ed52b869",
+      "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28": "a974e00904295b75518276726d66d11019eff7185a0fa3e37db2589d57c025d0"
+    },
+    "visits": [
+      {
+        "id": "original",
+        "exit": 1,
+        "stdout": "2/2 examples, 0/2 independent checks, 0/4 jobs delivered",
+        "stderr_last_line": "",
+        "files": {},
+        "expected_files_in_order": [
+          3,
+          0,
+          12,
+          589
+        ],
+        "decision_correct": false,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 0,
+        "saved_checks": [],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "correction",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 4/4 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 2,
+          "bill-2": 2,
+          "bill-3": 11,
+          "bill-4": 588
+        },
+        "expected_files_in_order": [
+          2,
+          2,
+          11,
+          588
+        ],
+        "decision_correct": true,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "agree_on_jobs",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 3/3 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 3,
+          "bill-2": 26,
+          "bill-3": 500
+        },
+        "expected_files_in_order": [
+          3,
+          26,
+          500
+        ],
+        "decision_correct": true,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "inconclusive",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 3/3 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 3,
+          "bill-2": 2,
+          "bill-3": 2
+        },
+        "expected_files_in_order": null,
+        "decision_correct": false,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "failed_revision",
+        "exit": 1,
+        "stdout": "2/2 examples, 0/2 independent checks, 0/4 jobs delivered",
+        "stderr_last_line": "",
+        "files": {},
+        "expected_files_in_order": null,
+        "decision_correct": true,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 0,
+        "saved_checks": [],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "original_again",
+        "exit": 1,
+        "stdout": "2/2 examples, 0/2 independent checks, 0/3 jobs delivered",
+        "stderr_last_line": "",
+        "files": {},
+        "expected_files_in_order": [
+          2,
+          2,
+          15
+        ],
+        "decision_correct": false,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 0,
+        "saved_checks": [],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      }
+    ],
+    "scripted_failed_revision": {
+      "scripted_proposals_requested": 0,
+      "model_calls": 0,
+      "public": 2,
+      "validation": 0,
+      "jobs": [],
+      "bank_unchanged": true
+    },
+    "final_bank": {
+      "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd": "573b42c7d9cc9898594659832562a28aaccb72b9427eaaec70c31a53ed52b869",
+      "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28": "a974e00904295b75518276726d66d11019eff7185a0fa3e37db2589d57c025d0"
+    },
+    "correct_visits": 3,
+    "total_visits": 6,
+    "real_model_calls": 0,
+    "required_files": {
+      "correct": 7,
+      "total": 14
+    },
+    "files_exported_in_the_disputed_batch": 3
+  },
+  "revised": {
+    "revision": "dc5f9bddb6cc0c0988704a87a9523aa9fa26bf10",
+    "fieldwork_sha256": "17badb5c07683ef0ee452fb88f7d45da80bcd0e5102e915749193aca76764571",
+    "case_sha256": "2ec1ca7e187f3133987e622a8d41328ed90e403b40da557b3721ae7c9d00722c",
+    "wasi_python_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+    "qualified_with_wasi": [
+      {
+        "convention": "per_line",
+        "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+        "public": 2,
+        "validation": 2,
+        "scripted_proposals": 1
+      },
+      {
+        "convention": "per_invoice",
+        "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "public": 2,
+        "validation": 2,
+        "scripted_proposals": 1
+      }
+    ],
+    "initial_bank": {
+      "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd": "573b42c7d9cc9898594659832562a28aaccb72b9427eaaec70c31a53ed52b869",
+      "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28": "a974e00904295b75518276726d66d11019eff7185a0fa3e37db2589d57c025d0"
+    },
+    "visits": [
+      {
+        "id": "original",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 4/4 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 3,
+          "bill-2": 0,
+          "bill-3": 12,
+          "bill-4": 589
+        },
+        "expected_files_in_order": [
+          3,
+          0,
+          12,
+          589
+        ],
+        "decision_correct": true,
+        "selected_digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [
+          {
+            "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 0,
+            "validation_failed": 2,
+            "reason": "validation_failed"
+          },
+          {
+            "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          }
+        ],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "correction",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 4/4 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 2,
+          "bill-2": 2,
+          "bill-3": 11,
+          "bill-4": 588
+        },
+        "expected_files_in_order": [
+          2,
+          2,
+          11,
+          588
+        ],
+        "decision_correct": true,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [
+          {
+            "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          },
+          {
+            "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 0,
+            "validation_failed": 2,
+            "reason": "validation_failed"
+          }
+        ],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "agree_on_jobs",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 3/3 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 3,
+          "bill-2": 26,
+          "bill-3": 500
+        },
+        "expected_files_in_order": [
+          3,
+          26,
+          500
+        ],
+        "decision_correct": true,
+        "selected_digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [
+          {
+            "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          },
+          {
+            "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          }
+        ],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "inconclusive",
+        "exit": 1,
+        "stdout": "2/2 examples, 2/2 independent checks, 0/3 jobs delivered\nThe qualified versions gave different answers for job bill-2 (2 or 3). Supply a distinguishing example and run the changed work order in a new output directory.",
+        "stderr_last_line": "",
+        "files": {},
+        "expected_files_in_order": null,
+        "decision_correct": true,
+        "selected_digest": null,
+        "status": "ambiguous_saved_versions",
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [
+          {
+            "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          },
+          {
+            "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          }
+        ],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "failed_revision",
+        "exit": 1,
+        "stdout": "2/2 examples, 0/2 independent checks, 0/4 jobs delivered\nNo saved version qualified. Supply --binary and --weights to generate a worker.",
+        "stderr_last_line": "",
+        "files": {},
+        "expected_files_in_order": null,
+        "decision_correct": true,
+        "selected_digest": null,
+        "status": "needs_generation",
+        "public": 2,
+        "validated": 0,
+        "saved_checks": [
+          {
+            "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 0,
+            "validation_failed": 2,
+            "reason": "validation_failed"
+          },
+          {
+            "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 0,
+            "validation_failed": 2,
+            "reason": "validation_failed"
+          }
+        ],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      },
+      {
+        "id": "original_again",
+        "exit": 0,
+        "stdout": "2/2 examples, 2/2 independent checks, 3/3 jobs delivered",
+        "stderr_last_line": "",
+        "files": {
+          "bill-1": 2,
+          "bill-2": 2,
+          "bill-3": 15
+        },
+        "expected_files_in_order": [
+          2,
+          2,
+          15
+        ],
+        "decision_correct": true,
+        "selected_digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+        "status": null,
+        "public": 2,
+        "validated": 2,
+        "saved_checks": [
+          {
+            "digest": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 0,
+            "validation_failed": 2,
+            "reason": "validation_failed"
+          },
+          {
+            "digest": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+            "public": 2,
+            "public_failed": 0,
+            "validated": 2,
+            "validation_failed": 0,
+            "reason": "qualified"
+          }
+        ],
+        "bank_unchanged": true,
+        "inference_calls": 0
+      }
+    ],
+    "scripted_failed_revision": {
+      "scripted_proposals_requested": 1,
+      "model_calls": 0,
+      "public": 2,
+      "validation": 0,
+      "jobs": [],
+      "bank_unchanged": true
+    },
+    "final_bank": {
+      "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd": "573b42c7d9cc9898594659832562a28aaccb72b9427eaaec70c31a53ed52b869",
+      "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28": "a974e00904295b75518276726d66d11019eff7185a0fa3e37db2589d57c025d0"
+    },
+    "correct_visits": 6,
+    "total_visits": 6,
+    "real_model_calls": 0,
+    "required_files": {
+      "correct": 14,
+      "total": 14
+    },
+    "files_exported_in_the_disputed_batch": 0
+  },
+  "published_revised_revision": "3a242f7cc7823401530faaf352b3c51aae6a3af6",
+  "revised_snapshot_note": "The evaluation checkout was based on dc5f9bd with the exact work.py subsequently committed as 3a242f7. Both have SHA256 17badb5c07683ef0ee452fb88f7d45da80bcd0e5102e915749193aca76764571.",
+  "compare_files": "Compare decoded JSON tax amounts with the literal integer-cent keys. Withhold the full disputed or unqualified batch. An unexpected process error counts as a failure.",
+  "tooling": "Both arms used Wasmtime 36.0.0 and the same Python WASI module. Its SHA256 is recorded in each arm.",
+  "repeat": "Run python training/experiments/retained_work_orders.py --checkout PATH_TO_REVISION --sdk PATH_TO_WASI_SDK from the updated repository using a Python environment with wasmtime. The saved checkout supplies the application code. Run for both the baseline and the published revised revision."
+}
