@@ -1,6 +1,7 @@
 """Replay the checked procedure, establish an arithmetic control and exercise live CPU recovery."""
 import argparse
 import hashlib
+import itertools
 import json
 import time
 from pathlib import Path
@@ -8,7 +9,7 @@ from pathlib import Path
 from team import ternary
 from training.experiments import rule_lab as lab
 from training.experiments.rule_lab_cpu import serving
-from training.experiments.rule_lab_recipe import execute
+from training.experiments.rule_lab_recipe import calibrate, execute
 from training.experiments.rule_lab_solver import fit
 
 
@@ -41,27 +42,44 @@ def drift_check(recipe):
     results = []
     for seed in range(201, 205):
         coefficients = lab.secret(seed, "interaction")
-        for phase in ("affine", "interaction", "quadratic"):
+        for phase in ("affine", "interaction", "quadratic", "aliased"):
             def observe(x, y):
-                value = lab.instrument(coefficients[:3] if phase == "affine" else coefficients, x, y)
-                return value + (x * x if phase == "quadratic" else 0)
+                value = lab.instrument(coefficients[:3] if phase in ("affine", "aliased") else coefficients, x, y)
+                if phase == "quadratic":
+                    return value + x * x
+                if phase == "aliased":
+                    # All allowed x values are roots. Every calibration probe agrees with an affine world.
+                    return value + x * (x - 1) * (x - 2)
+                return value
 
-            table = {}
-
-            def measure(x, y):
-                table[x, y] = observe(x, y)
-                return table[x, y]
-
-            guess = execute(recipe, measure)
-            measure(2, 1)  # preselected confirmation outside the recipe's unit square
-            evidence = [(x, y, z) for (x, y), z in table.items()]
-            selected = "stored affine"
-            if any(lab.instrument(guess, x, y) != z for x, y, z in evidence):
-                guess = fit("interaction", evidence)
-                selected = "interaction solver" if guess else "abstain"
+            receipt = calibrate(recipe, observe)
+            guess = receipt["coefficients"]
             hits = sum(lab.instrument(guess, x, y) == observe(x, y) for x, y in lab.POINTS) if guess else None
-            results.append({"seed": seed, "phase": phase, "selected": selected, "probes": len(table), "hits": hits})
+            results.append({"seed": seed, "phase": phase, "selected": receipt["worker"],
+                            "probes": len(receipt["observations"]), "hits": hits})
     return results
+
+
+def exhaustive_checks(recipe):
+    """Exercise only the executable workers across the full finite coefficient grid."""
+    outcomes = {}
+    for family, width in (("affine", 3), ("interaction", 4)):
+        wins = 0
+        total = 0
+        for law in itertools.product((-4, -3, -2, -1, 1, 2, 3, 4), repeat=width):
+            def observe(x, y):
+                return lab.instrument(law, x, y)
+
+            if family == "affine":
+                guess = execute(recipe, observe)
+            else:
+                corners = [(0, 0), (0, 1), (1, 0), (1, 1)]
+                guess = fit(family, [(x, y, observe(x, y)) for x, y in corners])
+            wins += guess is not None and all(lab.instrument(guess, x, y) == observe(x, y) for x, y in lab.POINTS)
+            total += 1
+        outcomes[family] = {"worker": "stored procedure" if family == "affine" else "fixed corners and exact solver",
+                            "correct": wins, "worlds": total}
+    return outcomes
 
 
 class WorkerLost(Exception):
@@ -100,6 +118,7 @@ def checks(args):
     recipe = json.loads(args.recipe.read_text())["recipe"]
     lab.save(args.out / "fixed.json", fixed_controls(recipe))
     lab.save(args.out / "drift.json", drift_check(recipe))
+    lab.save(args.out / "exhaustive.json", exhaustive_checks(recipe))
     notebook = args.out / "recovery-98.json"
     if notebook.exists():
         raise ValueError("choose a fresh output directory for a live interruption")

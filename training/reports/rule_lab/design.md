@@ -13,5 +13,6 @@ The primary outcome is one successful calibration. The submitted function must p
 - Account for model calls, generated tokens, elapsed time and peak server memory. Count teaching and testing separately. Exercise recovery in a separate world and switch more distinct adapters than the memory cache can hold.
 - Use four additional JSON-scored tasks to check for obvious regressions in the parent and child. They cover a corrected conversation detail, inventory, job ordering and a missing booking field.
 - In a separate deterministic stress test on seeds 201 through 204, hide a change from affine to an interaction and then add an unsupported quadratic term. Use the stored procedure plus a fifth confirmation at (2,1). On a disagreement, try the exact interaction worker, then abstain if the public evidence still disagrees.
+- In an additional negative control, introduce a cubic term that vanishes everywhere the instrument allows the cells to probe. Score the resulting extrapolation at the same eight hidden settings.
 
 Four worlds per family can reveal a concrete failure or a working example. They give a coarse estimate of reliability.

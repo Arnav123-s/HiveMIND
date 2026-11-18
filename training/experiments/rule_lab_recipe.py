@@ -25,6 +25,29 @@ def execute(recipe, observe):
     return list(earlier.values())
 
 
+def calibrate(recipe, observe):
+    """Calibrate a callable integer sensor with the stored procedure and a change check.
+
+    Returns the candidate and its public evidence. A null candidate means neither
+    supported family accounts for the measurements. Callers can persist the receipt.
+    """
+    table = {}
+
+    def measure(x, y):
+        if (x, y) not in table:
+            table[x, y] = observe(x, y)
+        return table[x, y]
+
+    guess = execute(recipe, measure)
+    measure(2, 1)
+    evidence = [[x, y, z] for (x, y), z in table.items()]
+    selected = "stored affine"
+    if any(lab.instrument(guess, x, y) != z for x, y, z in evidence):
+        guess = fit("interaction", evidence)
+        selected = "interaction solver" if guess else "abstain"
+    return {"worker": selected, "coefficients": guess, "observations": evidence}
+
+
 def public_error(recipe, worlds):
     for readings in worlds:
         table = {(x, y): z for x, y, z in readings}

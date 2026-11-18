@@ -63,6 +63,9 @@ def test_induced_procedure_and_teaching_split(tmp_path):
     recipe = recipes.synthesize(worlds)
     truth = lab.secret(103, "affine")
     assert recipes.execute(recipe, lambda x, y: lab.instrument(truth, x, y)) == list(truth)
+    changed = recipes.calibrate(recipe, lambda x, y: 2 + 3*x - y + 4*x*y)
+    assert changed["coefficients"] == [2, 3, -1, 4] and len(changed["observations"]) == 5
+    assert recipes.calibrate(recipe, lambda x, y: x*x)["worker"] == "abstain"
     assert recipes.public_error({"points": [[0, 0]], "expressions": ["r0", "r0", "r0"]}, worlds)
     path = tmp_path / "exam.json"
     path.write_text(json.dumps({"family": "affine", "seed": 101}))
