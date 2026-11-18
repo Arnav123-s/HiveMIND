@@ -11,7 +11,7 @@ import re
 import sys
 
 BOT = "github-actions[bot]"
-FOOT = re.compile(r"\n*<sub>.*?</sub>\s*$", re.S)  # the line the hive's replies end with (how it was answered, how long)
+FOOT = re.compile(r"\n*<sub>.*?</sub>(?:\s*\[Download the delivered files\]\([^\n)]*\))?\s*$", re.S)
 MOST = 20000  # characters of one message
 
 

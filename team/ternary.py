@@ -47,7 +47,7 @@ MODELS = {  # name: (repository, file, pieces of context it is served with)
 RUNTIME = "https://github.com/ikawrakow/ik_llama.cpp.git"
 PIN = "7aa7e01482db892b023bb9aace9a40567ab5297a"  # the commit every number above was measured on
 HOME = Path(os.environ.get("HIVE_TERNARY_HOME", Path.home() / ".cache" / "hive" / "ternary"))
-ADAPTERS = Path(__file__).resolve().parent.parent / "cells" / "members"  # <name>.gguf: weight edits the hive trained
+ADAPTERS = Path(os.environ.get("HIVE_ADAPTERS_HOME", Path(__file__).resolve().parent.parent / "cells" / "members"))
 CTX = int(os.environ.get("HIVE_TERNARY_CTX", 12288))
 END = "<|eot_id|>"  # Microsoft's BitNet answers only in its own format, written out by hand
 
