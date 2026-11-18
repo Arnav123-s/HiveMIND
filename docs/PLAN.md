@@ -93,7 +93,7 @@ holds what, from every branch; `python scripts/cycle.py` shows it beside the bar
 
 | Id | Piece | Files | Done when | Who |
 |---|---|---|---|---|
-| L3 | The line runs five generations with nobody's hand (g42, g43 so far) | the workflow | five records in a row, no run started or mended by hand | the loop holder (watch only) |
+| L3 | The line runs five generations with nobody's hand (g42, g43, g44, g45 so far; g47 running) | the workflow | five records in a row, no run started or mended by hand | the loop holder (watch only) |
 | N1 | The read's next piece moves on: rule 6 still names K1, which is done | `training/reads.py`, `tests/test_reads.py` | the read of g44 names a piece that is open on this board | B |
 | E1 | Memory measured: none, notes, cell engrams, hive engram, all; taught and unseen kinds | `team/engram.py`, `training/hive_engram.py`, `team/notes.py`, `docs/RESEARCH.md` | a table in `docs/RESEARCH.md`; memory turned on only for an arm that gains | B (a sub-agent, running) |
 | G1 | The gate also compares with the best body: g41 58, g42 54, g43 52 of 64 were each kept within tolerance of their own 'before', so small losses pile up | `training/exam.py`, the workflow's gate and record | a body more than the tolerance below the best body on the same seeds is dropped; tested | open |
