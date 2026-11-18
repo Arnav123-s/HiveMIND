@@ -46,6 +46,31 @@ def test_every_hard_family_counts_in_its_declared_group(tmp_path):
     assert kinds.hard_scores({}) == ([0, 0], [0, 0])
 
 
+def test_member_success_and_delivery_are_compared_on_covered_cases(tmp_path):
+    from training import reads
+
+    tasks = [
+        {"id": "h1", "ok": False, "members": [{"ok": True}, {"ok": False}]},
+        {"id": "h2", "ok": True, "members": [{"ok": True}]},
+        {"id": "h3", "ok": True, "members": [{"ok": False}]},
+        {"id": "e1", "ok": False, "members": [{"ok": False}]},
+        {"id": "h4", "ok": False, "members": [], "agreed": True},
+        {"id": "h5", "ok": False, "members": [{"ok": False}, {}]},
+        {"id": "e2", "ok": False, "members": [{}, {"ok": True}]},
+        {"id": "e3", "members": [{"ok": True}]},
+    ]
+    (tmp_path / "grades.json").write_text(json.dumps({"summary": {"tasks": len(tasks), "passed": 2, "minutes": 1},
+                                                     "tasks": tasks}))
+    arm = grow_record.arm([tmp_path])
+    assert arm["member_delivery"]["all"] == dict(both=1, member_only=2, delivery_only=1, neither=1)
+    assert arm["member_delivery"]["hard"] == dict(both=1, member_only=1, delivery_only=1, neither=0)
+    old = {k: v for k, v in arm.items() if k != "member_delivery"}
+    table = reads.member_delivery_table({"arms": {"before": old, "after": arm}})
+    assert "| before | hard | unrecorded | – | – | – | – |" in table
+    assert "| after | hard | 3 of 5 | 2 | 2 | 1 | 1 |" in table
+    assert "| after | all | 5 of 8 | 3 | 2 | 2 | 1 |" in table
+
+
 def test_practice_is_counted_kind_by_kind_and_older_generations_weigh_half(tmp_path):
     (tmp_path / "p").mkdir()
     (tmp_path / "p" / "practice.json").write_text(json.dumps({"tasks": [

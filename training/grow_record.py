@@ -150,10 +150,28 @@ def practice_kinds(old, folders, keep=0.5):
     return {k: [round(x, 3) for x in c] for k, c in sorted(out.items())}
 
 
+def member_delivery_outcome(task):
+    """Joint result of the task's checker on the recorded members and the final delivery."""
+    if not isinstance(task, dict) or type(task.get("ok")) is not bool:
+        return None
+    members = task.get("members")
+    if not isinstance(members, list) or not members:
+        return None
+    grades = [m.get("ok") if isinstance(m, dict) else None for m in members]
+    if any(g is True for g in grades):
+        return "both" if task["ok"] else "member_only"
+    if all(g is False for g in grades):
+        return "delivery_only" if task["ok"] else "neither"
+    return None
+
+
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
     out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {},
            "hard": [0, 0], "taught": [0, 0], "easy": [0, 0], "several": [0, 0]}
+    joint = {scope: dict.fromkeys(("both", "member_only", "delivery_only", "neither"), 0)
+             for scope in ("all", "hard")}
+    out["member_delivery"] = joint
     groups = exam_kinds.hard_groups()
     for folder in folders:
         for f in sorted(Path(folder).rglob("*.json")):
@@ -175,6 +193,11 @@ def arm(folders):
                 # h, e or c): the score moves only when a never-passed kind is learned, and those are mostly hard
                 tid = t.get("id") if isinstance(t, dict) else None
                 part = {"h": "hard", "e": "easy", "c": "several"}.get(tid[:1]) if isinstance(tid, str) and tid else None
+                outcome = member_delivery_outcome(t)
+                if outcome:
+                    joint["all"][outcome] += 1
+                    if part == "hard":
+                        joint["hard"][outcome] += 1
                 if part:
                     out[part][0] += t.get("ok") is True
                     out[part][1] += 1

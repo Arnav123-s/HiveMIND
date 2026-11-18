@@ -808,6 +808,30 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
     ] + ([("Talk (the talk exam, out of 10; the bar is 8)", _talk(talk[0]), _talk(talk[1]) if prev else "-", "-")] if talk[0] else [])
 
 
+def member_delivery_table(line):
+    """Use the same covered tasks in the member and final columns. Older summaries lack this joint count."""
+    out = ["", "## What members solved and what reached the user", "",
+           "| Exam arm | Scope | Graded for both, of tasks sat | Any recorded member passed | Final delivery passed | Member passed, delivery failed | Delivery passed, no recorded member passed |",
+           "|---|---|---:|---:|---:|---:|---:|"]
+    for name in ("before", "after"):
+        arm = (line.get("arms") or {}).get(name) or {}
+        if not arm.get("tasks"):
+            continue
+        for scope, total in (("all", arm["tasks"]), ("hard", (arm.get("hard") or [0, None])[1])):
+            if total is None:
+                continue
+            counts = (arm.get("member_delivery") or {}).get(scope)
+            if counts is None:
+                out.append(f"| {name} | {scope} | unrecorded | – | – | – | – |")
+                continue
+            covered = sum(counts.values())
+            both, lost, added = counts["both"], counts["member_only"], counts["delivery_only"]
+            out.append(f"| {name} | {scope} | {covered} of {total} | {both + lost} | {both + added} | {lost} | {added} |")
+    out += ["", "Counts compare the task checker on recorded member answers and their files with the same checker on the final delivery. "
+            "Only tasks with a known result on both sides enter the last four columns."]
+    return out
+
+
 def _left(r):
     """The chain's "rows left out": too long of given, those skipped for memory in brackets, or the estimate."""
     if not r["left"]:
@@ -830,6 +854,7 @@ def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None), don
            f"| What is measured | {gen} | {prev.get('generation', '-') if prev else '-'} (last record) | the body before (same seeds) |",
            "|---|---|---|---|"]
     out += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in top_table(line, prev, f, lines, idx, talk)]
+    out += member_delivery_table(line)
     out += ["", "## The chain, by taught hard kind", "",
             "lessons right by their own check -> rows that fit in training -> loss falls on lessons kept back -> the child "
             "alone writes it at the exam -> the body (two agree) passes it.", "",
