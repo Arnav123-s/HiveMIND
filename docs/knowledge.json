@@ -818,6 +818,17 @@
    "by": "The recorder now counts both grades on the same jobs and reports coverage.",
    "seen": "In four G47 hard jobs exactly one member passed and the hive abstained. In twelve others all members failed. All 16 grade archives were verified in training/reports/checked-delivery/g47-headroom.json.",
    "fix": "Independent evidence that can select a single correct member remains needed."
+  },
+  {
+   "id": "retainedmethods",
+   "title": "An unchanged score can hide old skills that a later hive loses",
+   "lives_in": "exam",
+   "blocks": "hardkinds",
+   "status": "open",
+   "found": "The G47 parent and child delivered 47 of 64 each, with two wins unique to each body.",
+   "by": "The generation recorder now compares individual deliveries on identical prompts and exam revisions.",
+   "seen": "A task-category selector also scored 47 of 64. On specified invoice work orders, checking different saved methods against the current examples improved correct delivery decisions from 3 of 6 to 6 of 6.",
+   "fix": "The programming work-order runner retains checked methods and withholds an ambiguous result. General chat still needs a reliable way to identify which older cell to call."
   }
  ],
  "rules": [

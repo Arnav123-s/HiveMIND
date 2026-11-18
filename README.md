@@ -43,6 +43,7 @@ trunk → **paired gate** → record.
 ## Where to look
 
 - [Checked work on generation 47](training/reports/checked-work.md) covers real file deliveries, a recovered sensor calculation and an independent test of specialist routing on bin packing.
+- [How the hive uses older and corrected methods](training/reports/retained-skills/README.md) explains how its workers differ, how an unchanged exam score hid lost skills, and how to use saved versions with `./hive fieldwork`.
 - [docs/OVERVIEW.md](docs/OVERVIEW.md): the whole story in one page.
 - [docs/PROGRESS.md](docs/PROGRESS.md): the graphs of every generation.
 - [docs/reads/latest.md](docs/reads/latest.md): the read of the newest generation and its next piece.
