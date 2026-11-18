@@ -126,7 +126,8 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
     if now:  # a time given from outside is not the machine's clock: the programs are told it
-        task += f"\n\n(It is now {today}.)"
+        # g45's talk exam: told it was 2028-02-27, the members' programs read the machine's clock and answered from 2026
+        task += f"\n\n(It is now {today}. Take this as today's date and the time now; do not read the computer's clock.)"
     say(f"the hive works on it: {task[:300]}")
     from . import solo
     home = Path(run_dir or config.RUNS / time.strftime("talk-%Y%m%d-%H%M%S"))

@@ -823,15 +823,16 @@ jobs:
           include-hidden-files: true
           retention-days: 14
       # The body sits the talk exam every generation (M1), on one seat only (after, the first seed) and only once the
-      # gate's own exam is done and uploaded: it is held to 20 minutes (each message to 2), and whatever it does it
+      # gate's own exam is done and uploaded: it is held to 45 minutes (each message to 2), and whatever it does it
       # never fails this seat or changes the gate's numbers. The record job puts its json in training/reports/talk.
+      # 20 minutes left 12 of g45's 40 messages unasked (each worked one takes 50 to 95 s); the route messages go first.
       - name: The talk exam (training/talk_exam.py)
         if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 55
         run: |
           mkdir -p talk
-          python training/talk_exam.py sit --seed $((30000000 + ${{ inputs.gate_seeds || github.run_number }})) --who body --minutes 20 --per 120 --out "talk/$GEN.json"
+          python training/talk_exam.py sit --seed $((30000000 + ${{ inputs.gate_seeds || github.run_number }})) --who body --minutes 45 --per 120 --out "talk/$GEN.json"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
         continue-on-error: true
