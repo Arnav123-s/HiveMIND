@@ -63,3 +63,13 @@ def test_alias_requires_a_demonstrated_change_and_preserves_scope():
     assert study["record"]["observed_field"] == 1
     assert all(x["correct_after"] for x in study["transfer"])
     assert any(x["field"] == 0 and not x["correct_before"] for x in study["transfer"])
+
+
+def test_partial_understanding_cannot_authorize_an_extra_condition_or_unknown_site():
+    public = next(cases())["public"]
+    draft = literal(public["first"], public, public["opening"])
+    name = public["names"][0]
+    learned = {"verb": "trade", "operation": "exchange", "observed_field": 1}
+    for text in (f"Move {name} to Tuesday at Ghosttown.", f"Move {name} to Tuesday after approval.",
+                 "Trade both dates. Keep the dates.", "Trade the two sites with a third group."):
+        assert interpret(dict(public, last=text), draft, learned=learned) == ("defer", None)

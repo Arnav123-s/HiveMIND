@@ -4,10 +4,13 @@ np = pytest.importorskip("numpy")
 torch = pytest.importorskip("torch")
 
 from training.experiments.engram_lora_surgery import compose, energy
+from training.experiments.engram_fusion_exam import AFFINE_SEEDS
+from training.experiments.rule_lab import secret
 from training.experiments.engram_output_repair import features, inject, sparse_value
 from training.experiments.engram_vector_surgery import surgery_diagnostics
 from training.experiments.hive_interchange import bit_budget, decode, prefix_center
-from training.experiments.hive_persona import markers
+from training.experiments.hive_persona import checked_style, markers, one_sentence
+from training.experiments.hive_reward_audits import BLOCK, METHODS, play
 
 
 def test_compose_is_invariant_to_donor_rank_coordinates():
@@ -23,6 +26,10 @@ def test_compose_is_invariant_to_donor_rank_coordinates():
         full_a, full_b = compose(a, b, ca, db, 6)
         np.testing.assert_allclose(full_b @ full_a, target, atol=1e-10)
     assert energy(b, a) == pytest.approx(np.linalg.norm(b @ a) ** 2)
+
+
+def test_native_fusion_exam_uses_four_distinct_available_worlds():
+    assert len({tuple(secret(seed, "affine")) for seed in AFFINE_SEEDS}) == 4
 
 
 def test_sparse_terms_and_single_live_synapse_reproduce_the_same_scalar():
@@ -62,6 +69,27 @@ def test_early_exit_checks_the_entire_prefix_including_rare_codes():
 def test_style_and_factual_content_receive_separate_scores():
     facts = ("Friday", "Cedar")
     assert markers("Hey, you're set for Friday at Cedar!", facts) == {
-        "both_facts": True, "formal_marker": False, "casual_marker": True}
+        "both_facts": True, "formal_marker": False, "casual_marker": True, "one_sentence": True}
     assert not markers("I confirm Friday at Cedar is canceled.", facts)["both_facts"]
     assert not markers("I confirm Thursday at Cedar.", facts)["both_facts"]
+    assert not one_sentence("Hi Jo,\n\nFriday at Cedar. Let me know what works!")
+    line, repaired = checked_style("Dear Jo, the code is", "formal", "Jo", "the cobalt badge code is 731", ("cobalt", "731"))
+    assert repaired and "731" in line
+    assert checked_style(line, "formal", "Jo", "the cobalt badge code is 731", ("cobalt", "731")) == (line, False)
+    with pytest.raises(ValueError):
+        checked_style("Hey Jo!", "casual", "Jo", "a badge is ready", ("cobalt", "731"))
+    reversed_role = "Hey Jo, you're assigned to K427 and Rowan heard about it!"
+    statement = "ticket K427 has been assigned to Rowan"
+    assert markers(reversed_role, ("K427", "Rowan"))["both_facts"]
+    assert checked_style(reversed_role, "casual", "Jo", statement, ("K427", "Rowan")) == (
+        "Hey Jo, ticket K427 has been assigned to Rowan.", True)
+
+
+def test_audited_policies_cannot_buy_extra_truth_or_quarantine_a_clean_sender():
+    station = np.arange(1024) % 4
+    pred = np.ones((len(station), 2), dtype=bool)
+    data = (station, None, pred, pred[:, 0])
+    for method in METHODS:
+        exact = play(data, 19, method, False, False)
+        assert exact["audits"] == len(station) // BLOCK
+        assert exact["true_pass"] == 1 and exact["flagged_healthy_stations"] == 0

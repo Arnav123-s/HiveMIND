@@ -10,6 +10,17 @@ from training.experiments.rule_lab_checks import retention
 from training.experiments.rule_lab_cpu import serving
 
 
+AFFINE_SEEDS = (461, 473, 487, 509)
+
+
+def task_routing_reference(result):
+    """Paired replay of a router whose input includes the public task family."""
+    return {"affine_cell": "child", "ordinary_cell": "words",
+            "affine": [row["correct"] for row in result["child"]["affine"]],
+            "ordinary_strict": [row["correct"] for row in result["words"]["ordinary"]],
+            "ordinary_content": [row["content_after_stripping_markdown"] for row in result["words"]["ordinary"]]}
+
+
 class ActiveCell:
     def __init__(self, cpu):
         self.cpu = cpu
@@ -40,10 +51,11 @@ def main():
             else:
                 cpu.activate(label)
             runner = ActiveCell(cpu)
-            result[label] = {"affine": [one_reply(runner, label, seed, "affine") for seed in (557, 563, 569, 571)],
+            result[label] = {"affine": [one_reply(runner, label, seed, "affine") for seed in AFFINE_SEEDS],
                              "ordinary": retention(runner, label)}
         (args.out / "scores.json").write_text(json.dumps(result, indent=2) + "\n")
         print(label, [r["correct"] for r in result[label]["affine"]], flush=True)
+    (args.out / "router-replay.json").write_text(json.dumps(task_routing_reference(result), indent=2) + "\n")
 
 
 if __name__ == "__main__":

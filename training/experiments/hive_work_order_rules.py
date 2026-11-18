@@ -40,13 +40,20 @@ def learned_exchange(t, names, draft, record):
     parts = [p.strip() for p in re.split(r"[.;!?]", t) if p.strip()]
     if not parts or any(not re.match(r"(keep|preserve|leave|neither)\b", p) for p in parts[1:]):
         return None
-    if not re.search(r"\b(two|both|between)\b", parts[0]) or re.search(r"\b(if|unless|or|after|except|before|not|instead|third|and)\b", parts[0]):
+    vocabulary = set(("please the two both of between current entries entry bookings booking reservations reservation "
+                      "pickups pickup meetings meeting items item days day dates date weekdays weekday sites site "
+                      "places place locations location venues venue").split()) | {record["verb"], *(n.lower() for n in names)}
+    if (not re.search(r"\b(two|both|between)\b", parts[0])
+            or set(re.findall("[a-z]+", parts[0])) - vocabulary):
         return None
     options = [i for i, pattern in enumerate((r"\b(days?|dates?|weekdays?)\b", r"\b(sites?|places?|locations?|venues?)\b"))
                if re.search(pattern, parts[0])]
     if len(options) != 1:
         return None
     j = options[0]
+    protect = (r"\b(days?|dates?|weekdays?)\b", r"\b(sites?|places?|locations?|venues?)\b")
+    if any(re.search(protect[j], p) or re.search(r"\b(and|then|move|change|set|give|except)\b", p) for p in parts[1:]):
+        return None
     a, b = names
     return replace(draft, [(a, j, draft[b][j]), (b, j, draft[a][j])])
 
@@ -99,7 +106,10 @@ def interpret(public, draft, clarification=None, learned=None):
         # Only named, affirmative assignments execute. An unfamiliar request stays unresolved.
         if not re.search(r"\b(move|set|switch|put|make|goes|give|change|assign|schedule|reschedule)\b", t):
             return "defer", None
-        if re.search(r"\b(not|don't|never|or|between|except)\b", t):
+        if re.search(r"\b(not|don't|never|or|between|except|after|before|unless|once|provided)\b|subject to", t):
+            return "defer", None
+        destinations = {s.lower() for s in public["sites"]} | {"its", "the"}
+        if any(m[1] not in destinations for m in re.finditer(r"\bat\s+([\w'-]+)", t)):
             return "defer", None
         edits = []
         for pos, value in values:

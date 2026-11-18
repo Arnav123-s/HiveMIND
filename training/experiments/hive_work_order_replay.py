@@ -3,6 +3,7 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 from training.experiments.hive_commitment_bench import recover
@@ -105,8 +106,18 @@ def main():
     if retry[0] == "apply":
         journal.apply(missed["case"], "after-demonstration", missed["revision"], retry[1])
     learned["missed_case_after_teaching"] = journal.read(missed["case"])[2] == missed["expected"]
+    requests = [(case["public"], literal(case["public"]["first"], case["public"], case["public"]["opening"]),
+                 case["clarification"]) for case in rows]
+    start = time.process_time_ns()
+    repeats = 100
+    for _ in range(repeats):
+        for task_public, draft, reply in requests:
+            if interpret(task_public, draft)[0] == "ask":
+                interpret(task_public, draft, reply)
+    cpu_us = (time.process_time_ns() - start) / (repeats * len(requests) * 1000)
     (args.out / "result.json").write_text(json.dumps({"cases": rows, "unsupported": negatives,
-                                          "learned_exchange": learned}, indent=2) + "\n")
+        "learned_exchange": learned, "warm_interpreter_cpu_us_per_request": cpu_us,
+        "timed_requests": repeats * len(requests)}, indent=2) + "\n")
 
 
 if __name__ == "__main__":
