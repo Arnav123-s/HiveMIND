@@ -72,6 +72,31 @@ They meet only through git, so the files are the channel. Two roles exist:
 - **Never** start, cancel or re-run a generation while one is running, unless you are the loop holder. Never
   change the goal's bars.
 
+### Why agents never need to know about each other
+
+- Git is the only channel. Each agent pushes to its own branch and writes its log lines in its own copy of
+  `docs/AGENTS.md`.
+- `python scripts/agents_log.py --board` reads every branch's log and shows each piece's latest claim, done or drop,
+  with "CLASH:" when two live claims hold one piece.
+- A claim is a pushed log line, so the first to push holds the piece. Nobody waits for a reply, and nobody messages
+  anyone.
+- A piece is small (one row of the board, its own files), so two workers rarely touch the same file. When they do,
+  merge `main` in and keep both sides.
+- When a piece is done, its row says so and `NEXT_SESSION.md` lists it under "Done, do not redo". A new session
+  reads that list before choosing work, so nothing is done twice.
+
+## Code mode: one script, not many calls
+
+Do work in as few tool calls as you can.
+- **Write one script that does the steps and prints only the result**: reading many artifacts, replaying real
+  failures, checking a branch, counting a table. Do not call tools one by one and carry each output in context.
+- **Check the biggest thing first, then work down.** For a branch: merge it, run the full suite, then read only the
+  code the generation runs. For a cause: replay every failed task through the changed code in one script, and print
+  lost → right.
+- **Keep the scripts.** Put one-off scripts in the scratchpad, and reusable ones in `scripts/`
+  (`scripts/cycle.py` is the model: one call, one screen).
+- **Sub-agents work the same way.** Ask each to commit after every step, so a usage limit loses nothing.
+
 ## Generations run by themselves
 
 `.github/workflows/grow.yml`: fresh → practice + dream → gather + plan → train (≤20 slices) → join → merge →

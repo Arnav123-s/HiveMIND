@@ -1,52 +1,75 @@
 # NEXT SESSION: the one current handoff
 
-Written 2026-11-18 04:40 UTC by B and brought up to g45 later that day (session `session_014dX1CNKMMabZ93Sdxn3fSK`, branch
-`claude/vigilant-brahmagupta-rz3ab7`). Whoever holds the loop keeps this page true; older handoffs are in
-`docs/history/`. How to work is in `CLAUDE.md`; start with `python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
+Written 2026-11-18 23:40 UTC by B (session `session_014dX1CNKMMabZ93Sdxn3fSK`, branch
+`claude/vigilant-brahmagupta-rz3ab7`). Whoever holds the loop keeps this page true. Older handoffs are in
+`docs/history/`. How to work is in `CLAUDE.md`, and the whole story is in `docs/OVERVIEW.md`. Start with
+`python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
 
-## Where the hive stands (2026-11-18, after g45)
+## Where the hive stands (2026-11-18 23:40 UTC)
 
-- **Newest record: g45** (run 44261362737, 13:22 UTC), kept: 45 against 47 of 64 on its 8 seeds (easy 32/32,
-  taught hard kinds 12 of 16 = 0.75, held out 0 of 9), first try 0.35, 5.6 hours, 1 of 20 slices lost.
-- **The last five, after (before):** g41 58 (49), g42 54 (54), g43 52 (54), g44 43 (40), g45 45 (47).
-  g44 was the first with the 24 new hard kinds (K2): its hard score is not comparable with earlier ones.
-- **Talk first sat at g45:** 6.5 of 10 (route 5, fact 7, earlier 8, time 6).
-- **First try:** g43 0.53, g44 0.36, g45 0.35. **Hours:** g43 4.4, g44 5.0, g45 5.6.
-- **Four generations recorded with nobody's hand** (g42 to g45).
-- **Bars against g45:** hard 0.75 (bar 0.78, read as a share since K2), held out 0 of 9 (bar half), first try
-  0.35 (bar 0.7), talk 6.5 (bar 8), hours 5.6 (bar 3).
+- **Newest record: g47** (run 44313055326), kept at a tie: 47 against 47 of 64. Easy 31/32, hard 16/32, held
+  out 0 of 6 (pulse). First try 0.39. Talk 6.2 of 10 (route 6, fact 7, earlier 7, time 5). 5.2 hours.
+- **Five generations were recorded with nobody's hand** (g42 to g45, g47). The g46 run was a cancelled
+  duplicate from the old cron.
+- **g48 is running** (run 44371926721, started 18:38 UTC; its record is due about 00:00 UTC). It runs with the
+  strict gate (after >= before) and the fixed reads.
+- **g49 will be the first generation with all of PR 106:**
+  - the fixed held-out exam (30 tasks);
+  - the talk exam's 45-minute budget;
+  - the talk smoke;
+  - g45's cause fixes;
+  - the checked deliveries of PR 105.
+- **Bars against g47:** none of the five is met. Hard 0.74 (≥ 0.78), held out 0 (half), first try 0.39 (0.7),
+  talk 6.2 (8), hours 5.2 (3).
 
 ## In flight, and who has it
 
 | What | Where | What to do |
 |---|---|---|
-| g47 | Actions, the line ("Generation") | When recorded: read `docs/reads/latest.md` and the graphs, check the next started by itself, log a line, tell the owner |
-| Changes to the Python files, `grow.yml` and `training/reads.py` | another agent, on its own branch | Judge and merge when the proof is shown |
-| The memory test (E1) | done on t17, one seed: hive engram 16/18 on seen kinds, off 6/18; unseen 0-1 of 4 for every arm | Memory stays OFF until a gain shows on t80 |
+| g48's record | Actions run 44371926721 | Read it; check that g49 started by itself; group failures by cause (V1 starts at g49) |
+| B's scheduled wake | 2026-11-19 00:15 UTC, into B's session | B reads g48. If a newer session holds the loop by then, B hands over and stops |
 
-## Open, from the audit (ids on the board in `docs/PLAN.md`)
+## Open, in order (the board in `docs/PLAN.md` has each row)
 
-- **G1:** the gate kept bodies worse than their before (g43, g45); compare with the best body too.
-- **X1:** a fixed held-out exam of about 30 tasks; 3 to 10 tasks is noise. Then **H1:** why held-out kinds fail.
-- **P1:** one parent sits the pulse, so "parent alone" is measured; rule 4 can never fire without it.
-- **F2:** first try for old and new kinds apart. Then **F1:** its largest cause.
-- **T5:** a talk smoke run on the newest body after each record; no person has talked to it since 11-15.
-- **C1:** the 8 long kinds train only on the 16-bit runners, or are shortened; no wait on Colab.
-- **S1:** hours, 5.6 against 3.
-- **M2:** the bookkeeping CSVs (`docs/*.csv`) stopped on 11-15/16.
-- Not on the board yet: the 32-bit slices are still joined as equals (`training/merge.py`); HIVE_READ 40 and
-  HIVE_JUDGED 10 are still on; the one-line trial never ran (`docs/DECISIONS.md`, status).
+1. **V1:** prove g45's cause fixes on g49. Group g49's failures by cause from its gate artifacts and set them
+   beside g45's:
+   - module kinds stopping on the same error: 6;
+   - answer shape: 4;
+   - a right member lost at agreement: 3, plus 3 in practice;
+   - a lesson template pasted onto another question: 2;
+   - dates and header rows: 2;
+   - one-line data not given: 1;
+   - site walk: 1.
+2. **Y1:** the hive keeps its own verified programs (practice → the fieldwork bank) and answers from them before
+   calling members. This is where the hive starts to learn from its own work, not only from hand-made lessons.
+3. **H1:** held-out kinds by cause, on the fixed exam (from g49).
+4. **F1:** first try by cause. Practice now records old and new kinds apart. Compound tasks were 48 of 96 with
+   8 right at g45.
+5. **A1:** talk routing, 6 of 10. "What's 8 plus 4?" was sent to work.
+6. **S1:** hours, 5.2 against 3. The gate grows by about 10 to 25 minutes from g49.
+7. **G1:** also compare against the best body (g41, 58/64).
+8. **C1 and J1:** rows too long for the 32-bit runners. No wait on Colab.
+9. **D1:** saved methods live in the GitHub chat (the WebAssembly runtime on talk.yml, and `HIVE_BANK`).
+10. **P1, W2, R1, R3, M2, T3.**
 
 ## Done, do not redo
 
+- **18 Nov evening:**
+  - the strict gate and the read fixes (PR 102);
+  - first try split by old and new kinds (PR 104);
+  - the CPU rule lab's newer work (PR 103);
+  - the checked deliveries and kept methods (PR 105);
+  - the fixed held-out exam, the talk exam budget, the talk smoke and g45's cause fixes (PR 106);
+  - chat from saved methods (PR 107);
+  - the memory test: the gain was the short orders, memory stays off (E1).
+  The orders A/B is built but off: it is moot on t80.
 - **K1:** one kind per file in `training/kinds/`, with a golden fixture that keeps old exams the same.
   **K2:** 24 new hard kinds, 6 held out (`docs/KINDS.md` says how to add one).
 - **M1:** the talk exam (`training/talk_exam.py`), 40 messages checked by code, in the harder version, wired
   into the gate (PR 96). It is written to `training/reports/talk/<gen>.json` and shown in the read and on the
   progress page.
 - **Memory pieces** are built but OFF: per-cell engrams with lineage recall, the shared hive engram, notes
-  written from failures, the gated engram scale, embedding match, and the hive fold. They are waiting on the
-  memory test above.
+  written from failures, the gated engram scale, embedding match, and the hive fold. Measured (E1): no gain beyond the short orders.
 - **The CPU rule lab** (the owner's experiment, PR 97, `training/reports/rule_lab/`): a child trained on 7 rows
   of a checked procedure solved 4 of 4 hidden-rule puzzles that its parents solved 0 of 4. All 81 recorded runs
   were re-scored and agree. This is research, not on the generation's path.
