@@ -1,0 +1,206 @@
+[
+  {
+    "id": "grocery",
+    "group": "numeric order",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "item,cost\ntea,11\nbread,6\nsoap,4\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "race",
+    "group": "numeric order",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "runner,seconds\nJo,65\nMay,70\nUma,72\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "water",
+    "group": "numeric order",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "site,liters\nwest,100\nnorth,12\neast,8\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "returns",
+    "group": "numeric order",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "reader,books\nBen,13\nRae,4\nMo,9\n",
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "deliver-exactly",
+    "action_correct": false
+  },
+  {
+    "id": "thermometer",
+    "group": "numeric order",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "room,degrees\nB,-3\nC,0\nA,12\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "library",
+    "group": "numeric order",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "branch,cards\nEast,128\nWest,88\nNorth,45\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "laundry",
+    "group": "numeric order",
+    "candidate_correct": [
+      true,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "room,kwh\nA,0.9\nC,1.4\nB,10.0\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "manual",
+    "group": "preserve an alternative",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "shop,stock\nElm,7\nBay,2\nFen,4\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "tickets",
+    "group": "preserve an alternative",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "holder,code\nLee,012\nSol,02\nJay,1\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "layout",
+    "group": "preserve an alternative",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "label,value\nCenter,4\nSouth,12\nNorth,5\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "conflict",
+    "group": "unresolved conflict",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": false,
+    "requested_seats": 3,
+    "recorded_seats": 2,
+    "stdout": null,
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "abstain",
+    "action_correct": true
+  },
+  {
+    "id": "sensors",
+    "group": "unresolved conflict",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": false,
+    "requested_seats": 3,
+    "recorded_seats": 2,
+    "stdout": null,
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "abstain",
+    "action_correct": true
+  }
+]

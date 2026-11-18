@@ -9,15 +9,25 @@ nothing to pay for.
   cells. **The body** is the trunk and cells that answer together: they write and run programs, and an answer
   counts when two of them agree and a check confirms it. The current body is in `cells/body.json`.
 
+## Measure time above a threshold
+
+Give the hive a CSV with `timestamp,value` columns. It estimates the duration above your threshold by linear interpolation and counts upward crossings. This command runs locally with Python and the saved sensor rule.
+
+```sh
+./hive exposure training/reports/checked-repair/san-francisco-tide.csv --threshold 1.5 --max-gap 6
+```
+
+For this day of measured San Francisco tides, it returns **268.91 minutes above 1.5 metres** and **one upward crossing**. Substitute your own file and threshold. Set the largest gap you trust in minutes, or choose `--unit seconds` or `--unit hours`. Missing readings break the series. Use `--time-column` and `--value-column` for different column names. [Data source, method and independent checks](training/reports/checked-repair/README.md)
+
 ## The goal: five bars on one generation
 
-| Bar | Target | g45 (2026-11-18) |
+| Bar | Target | g47 |
 |---|---|---|
-| Taught hard kinds the body passes | 18 of 23, read as a share: 0.78 | 0.75 |
-| Held-out kinds (never taught) passed | half | 0 of 9 |
-| Right at the first try | 0.7 | 0.35 |
-| Talk exam | 8 of 10 | 6.5 |
-| Hours for one generation | 3 | 5.6 |
+| Tasks from taught hard families passed | 0.78 | 16 of 25 |
+| Tasks from held-out families passed | half | 0 of 7 |
+| Right at the first try | 0.7 | 37 of 96 |
+| Talk exam | 8 of 10 | 6.2 of 10 |
+| Hours for one generation | 3 | 5.25 |
 
 ## How a generation runs (`.github/workflows/grow.yml`)
 
@@ -32,6 +42,7 @@ trunk → **paired gate** → record.
 
 ## Where to look
 
+- [Checked work on generation 47](training/reports/checked-work.md) covers real file deliveries, a recovered sensor calculation and an independent test of specialist routing on bin packing.
 - [docs/OVERVIEW.md](docs/OVERVIEW.md): the whole story in one page.
 - [docs/PROGRESS.md](docs/PROGRESS.md): the graphs of every generation.
 - [docs/reads/latest.md](docs/reads/latest.md): the read of the newest generation and its next piece.
@@ -40,12 +51,21 @@ trunk → **paired gate** → record.
 
 ## Talk to the body
 
+On a new Linux machine, run `bash scripts/cloud_setup.sh` to install the CPU runtime and fetch the cells. Once installed, use `./hive` for a conversation or `--once` for a single job. If you moved the installation between CPUs and the engine exits with an illegal-instruction error, rebuild it on the current machine with `.venv/bin/python -m team.ternary install --rebuild`. [Linux setup script](scripts/cloud_setup.sh)
+
+```sh
+./hive --once "Monday had 7 mm of rain and Tuesday had 11 mm. Save rainfall.csv with columns day,mm and tell me the total."
+```
+
+The terminal prints the location of each delivered file. For supported named outputs the hive reopens the files before delivery. It checks structured formats and any recognized table requirements. For a numeric sort, name the column and direction, for example “Sort by cost descending.” If two members produce conflicting structured data it can ask a third. Two members can still agree on the same wrong values.
+
 Workflow "Talk to the hive" (`.github/workflows/talk.yml`, answered by `team/talk.py`):
 
 - **From an issue:** open an issue in this repository and write your message. Only the repository's owner is
   answered, and a title that begins with `[dev]` is left alone. The reply comes as a comment, usually within ten
   minutes; answer in a comment and the conversation goes on.
 - **From the Actions tab:** "Talk to the hive", Run workflow, type a message. The reply is on the run's Summary.
+- When the hive delivers files, the issue reply and run summary include a download link. GitHub retains the download for 30 days and requires sign-in.
 - It seats the body from `cells/body.json` (its trunk and the newest cell of each organ). Small talk is answered
   by the DNA at once; anything to work out goes to the body's programs.
 - Everything here is public. Do not write anything private.
@@ -56,8 +76,8 @@ Workflow "Talk to the hive" (`.github/workflows/talk.yml`, answered by `team/tal
 
 Kept from the first days; nothing in the line uses them. Not deleted.
 
-- `team/web.py`, `team/serve.py`, `team/api.py`, `team/chat.py`, and `./hive` (`team/cli.py`): the old team of
-  roles, on 4-bit models.
+- `team/web.py`, `team/serve.py`, `team/api.py` and `team/chat.py` serve the older team of roles on 4-bit models.
+  The `./hive` terminal uses the ternary body when installed. `HIVE_ROLES=1` selects the older team.
 - `.github/workflows/hive.yml`: the older line of bodies grown from nothing; by hand only.
 - `.github/workflows/exam.yml`: the daily exam of the old team; by hand only. The body sits its own exam in the gate.
 

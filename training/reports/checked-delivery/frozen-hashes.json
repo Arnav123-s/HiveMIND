@@ -11,5 +11,12 @@
     "team/deliverables.py": "8856947f729a7b70b1254a78f9f1a9a8791f831d24527c0c0957d748fdc3d5ed",
     "sealed_order_cases_sha256": "52cd5e830faef47ed56de2454daf2f93f5237efae15418fc58c96802697691f8",
     "sealed_live_cli_case_sha256": "0e74f2e35aa8e47950129d7f8d7e1cadb3b9e4a9606a1445e7ea902fe5386282"
+  },
+  "final_confirmation": {
+    "reviewed_commit": "9992ccc728d2fe3ad1d9ac841cd9e0ed9a358a92",
+    "published_equivalent": "43f8dd7",
+    "team/deliverables.py": "cb4c07084f2e20aaa5e8d064a4c24619cb9f551f309df724c12a3e5556d8e937",
+    "team/solo.py": "58734044423ebc64edc21e2ee47acc4d7c34c303f407d8a27a772b64d3dd4dca",
+    "sealed_case_sha256": "0dc85ab7a85d76f2d210b121ac93a92eab04083785184b8c943ca51d1e6201e6"
   }
 }

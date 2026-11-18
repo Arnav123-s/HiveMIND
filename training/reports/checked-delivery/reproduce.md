@@ -57,3 +57,24 @@ The market dispute also received the actual reserve worker from the G47 roster i
 ## One new live CLI job
 
 The independent grader froze a new community-hall request before the ordering change. It asked the hive to subtract returned chairs from each person’s borrowed count, save `chairs.csv` sorted by the outstanding count ascending, and print the total. Both actual G47 workers produced `25` and exactly the same wrong row order, Noor 14, Ada 3, Lin 8. The public `./hive --once` command at `6f4d496` exited 0, wrote exactly `25` and a newline to stdout, and delivered Ada 3, Lin 8, Noor 14 in the CSV. It took 270.713 seconds on this shared CPU. This demonstrates one live repair on a new task with a recognized instruction. The nine-case wording result above shows where it stopped working. Open the [CSV delivered by the actual terminal run](chairs.csv). The sealed wording and answer key are in `live-cli-case.json`. `live-cli-result.json` contains the exact command, terminal output streams, saved file, worker programs and hashes of the serving code.
+
+## Last confirmation on 12 further requests
+
+The nine-case set was released for development following its 5/9 result. The final revision then made the expected decision on 9/9 of those known cases. The evaluator separately froze twelve further requests with expected results and synthetic worker files before testing that revision. Each had the same pool under both selectors. The measured code at `9992ccc` has identical production selection and file-checking sources in published commit `43f8dd7`. There was no further tuning on the twelve cases.
+
+| Independent tasks | Previous numeric-sort revision | Final revision |
+| --- | ---: | ---: |
+| Deliver the expected numerically ordered CSV | 3/7 | 6/7 |
+| Preserve the specified route, text-code order or layout | 3/3 | 3/3 |
+| Withhold a conflicting or unsupported result | 2/2 | 2/2 |
+| **Correct delivery decisions** | **8/12** | **11/12** |
+
+The remaining error reached the user. With “Please sort the rows by books (lowest first),” both workers saved the same unsorted table and the hive confirmed it. The method handles particular phrasings of single-column numeric sorting. For example, “Sort by cost descending.” worked in the final set. These twelve cases used constructed worker files and measure the coordinator. The chair job above is the independent end-to-end run on the actual model.
+
+`final-order-cases.json` has the frozen inputs and keys. Its SHA256 is `0dc85ab7a85d76f2d210b121ac93a92eab04083785184b8c943ca51d1e6201e6`. Each detailed result includes worker correctness, the final copied file, the worker stdout and the actual decision. `released-order-after.json` is the rerun on the nine cases after they became development examples.
+
+```sh
+git worktree add --detach /tmp/hive-final-replay 43f8dd7
+python training/checked_delivery_eval.py --checkout /tmp/hive-sort-replay --cases training/reports/checked-delivery/final-order-cases.json > /tmp/final-order-before.json
+python training/checked_delivery_eval.py --checkout /tmp/hive-final-replay --cases training/reports/checked-delivery/final-order-cases.json > /tmp/final-order-after.json
+```
