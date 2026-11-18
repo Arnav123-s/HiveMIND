@@ -30,6 +30,17 @@ def test_tools_accept_formatting_but_enforce_budget_and_measurements():
             lab.coefficient(expr, obs)
 
 
+def test_alternate_probe_envelope_changes_only_packaging():
+    raw = '{"measure":[[[0,0],[0,1],[1,0],[1,1]],["self"]],"next":"peer"}'
+    with pytest.raises(ValueError):
+        lab.checked_action(raw, [], 4)
+    parsed = lab.checked_action(raw, [], 4, True)
+    assert parsed["next"] == "peer" and parsed["unpacked_probe_envelope"]
+    assert parsed["measure"] == [[0, 0], [0, 1], [1, 0], [1, 1]]
+    with pytest.raises(ValueError):
+        lab.checked_action(raw.replace("[1,1]", "[3,1]"), [], 4, True)
+
+
 def test_public_feedback_and_blind_grader(tmp_path):
     class Guesser:
         def reply(self, cell, messages):

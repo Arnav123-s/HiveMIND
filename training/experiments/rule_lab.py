@@ -105,7 +105,7 @@ def coefficient(value, observations, earlier=None):
     return visit(node)
 
 
-def checked_action(text, observations, width):
+def checked_action(text, observations, width, accept_probe_envelope=False):
     """Validate tool syntax, bounds and budget. No hidden law is available here."""
     fence = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", text, re.S | re.I)
     call = json.loads(fence[1] if fence else text)
@@ -120,6 +120,15 @@ def checked_action(text, observations, width):
             raise ValueError(f"submit must contain {width} coefficients")
         return {"submit": [coefficient(c, observations) for c in v], "note": note}
     points = call["measure"]
+    unpacked = False
+    if (accept_probe_envelope and isinstance(points, list) and len(points) == 2
+            and isinstance(points[0], list) and points[0] and isinstance(points[0][0], list)
+            and points[1] in (["self"], ["peer"])):
+        # Some cell outputs put a routing annotation beside a complete list of
+        # coordinates. The explicit top-level next field takes precedence.
+        call.setdefault("next", points[1][0])
+        points = points[0]
+        unpacked = True
     if (isinstance(points, list) and len(points) == 1 and isinstance(points[0], list)
             and points[0] and isinstance(points[0][0], list)):
         points = points[0]
@@ -134,7 +143,10 @@ def checked_action(text, observations, width):
         known.add(tuple(p))
     if call.get("next", "self") not in ("self", "peer"):
         raise ValueError("next must be self or peer")
-    return {"measure": points, "next": call.get("next", "self"), "note": note}
+    checked = {"measure": points, "next": call.get("next", "self"), "note": note}
+    if unpacked:
+        checked["unpacked_probe_envelope"] = True
+    return checked
 
 
 def save(path, data):
@@ -148,10 +160,12 @@ def save(path, data):
     os.replace(tmp, path)
 
 
-def episode(cpu, dest, seed, family, mode, cells, method=""):
+def episode(cpu, dest, seed, family, mode, cells, method="", accept_probe_envelope=False):
     law = secret(seed, family)
     identity = {"protocol": PROTOCOL, "seed": seed, "family": family, "mode": mode,
                 "cells": list(cells), "method": method}
+    if accept_probe_envelope:
+        identity["accept_probe_envelope"] = True
     state = json.loads(dest.read_text()) if dest.exists() else {
         **identity, "current": 0, "observations": [], "turns": []}
     if any(state.get(k) != v for k, v in identity.items()):
@@ -170,7 +184,7 @@ def episode(cpu, dest, seed, family, mode, cells, method=""):
             reply = cpu.reply(cell, prompt)
         turn = {"cell": cell, "messages": prompt, **reply}
         try:
-            call = checked_action(reply["text"], state["observations"], len(law))
+            call = checked_action(reply["text"], state["observations"], len(law), accept_probe_envelope)
         except (ValueError, TypeError) as e:
             turn["error"] = str(e)
         else:
@@ -218,6 +232,8 @@ def main():
     p.add_argument("--slots", type=int, default=2)
     p.add_argument("--threads", type=int, default=4)
     p.add_argument("--method", type=Path, help="optional checked method from a separate teaching run")
+    p.add_argument("--accept-probe-envelope", action="store_true",
+                   help="also recognize a complete measurement list followed by a nested routing annotation")
     args = p.parse_args()
     method = args.method.read_text().strip() if args.method else ""
     args.out.mkdir(parents=True, exist_ok=True)
@@ -226,7 +242,8 @@ def main():
     with serving(args.binary, args.base, args.catalog, args.out / "logs", args.slots, args.threads) as cpu:
         for family, seed, mode in itertools.product(args.families, args.seeds, args.modes):
             name = f"{family}-{seed}-{mode}"
-            state = episode(cpu, args.out / (name + ".json"), seed, family, mode, args.cells, method)
+            state = episode(cpu, args.out / (name + ".json"), seed, family, mode, args.cells, method,
+                            accept_probe_envelope=args.accept_probe_envelope)
             s = state["score"]
             result = {"episode": name, **{k: s[k] for k in ("correct", "hits", "out_of", "probes", "turns", "used_peer")}}
             print(json.dumps(result), flush=True)

@@ -16,3 +16,7 @@ The primary outcome is one successful calibration. The submitted function must p
 - In an additional negative control, introduce a cubic term that vanishes everywhere the instrument allows the cells to probe. Score the resulting extrapolation at the same eight hidden settings.
 
 Four worlds per family can reveal a concrete failure or a working example. They give a coarse estimate of reliability.
+
+## Follow-up after inspecting interaction world 101
+
+The data cell requested four informative coordinates but placed a routing annotation beside the list. The original parser discarded the entire tool call. Keep the primary comparison on its original parser. For a fresh test on interaction seeds 211 through 214, recognize that specific unambiguous list of coordinates while enforcing the original tool bounds. Prefer the explicit top-level routing field when present. Run the open pair and the exact-worker arm with identical prompts and the same turn and probe ceilings.
