@@ -832,6 +832,24 @@ def member_delivery_table(line):
     return out
 
 
+def delivery_changes_table(line):
+    out = ["", "## Which final deliveries changed", ""]
+    audit = (line.get("paired") or {}).get("deliveries")
+    if not audit:
+        return out + ["Individual before/after comparisons were not recorded."]
+    sat, counts = audit["sat"], audit["counts"]
+    out.append(f"Comparable deliveries: {audit['comparable']} matched, from {sat['before']} tasks sat before "
+               f"and {sat['after']} after. Matching requires the same seat, task ID, prompt, kind and exam revision.")
+    if audit["comparable"]:
+        out += ["", "| Gained | Lost | Passed both | Failed both |", "|---:|---:|---:|---:|",
+                f"| {counts['gained']} | {counts['lost']} | {counts['both_pass']} | {counts['both_fail']} |"]
+        for outcome in ("lost", "gained"):
+            if audit["changed"][outcome]:
+                out.extend(["", outcome.capitalize() + ": " + ", ".join(
+                    f"`{r['id']}` ({r['kind']})" for r in audit["changed"][outcome]) + "."])
+    return out
+
+
 def _left(r):
     """The chain's "rows left out": too long of given, those skipped for memory in brackets, or the estimate."""
     if not r["left"]:
@@ -855,6 +873,7 @@ def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None), don
            "|---|---|---|---|"]
     out += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in top_table(line, prev, f, lines, idx, talk)]
     out += member_delivery_table(line)
+    out += delivery_changes_table(line)
     out += ["", "## The chain, by taught hard kind", "",
             "lessons right by their own check -> rows that fit in training -> loss falls on lessons kept back -> the child "
             "alone writes it at the exam -> the body (two agree) passes it.", "",

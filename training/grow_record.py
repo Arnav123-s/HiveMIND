@@ -165,6 +165,24 @@ def member_delivery_outcome(task):
     return None
 
 
+def _sittings(folder):
+    """Read the bounded summaries accepted by the gate, with any available individual results."""
+    for f in sorted(Path(folder).rglob("*.json")):
+        try:
+            if f.stat().st_size > 2_000_000:
+                continue
+            d = json.loads(f.read_text())
+        except (OSError, ValueError, RecursionError):
+            continue
+        s = d.get("summary") if isinstance(d, dict) else None
+        if not isinstance(s, dict):
+            continue
+        passed, tasks, minutes = _int(s.get("passed"), 64), _int(s.get("tasks"), 64), _int(s.get("minutes"), 600)
+        if None in (passed, tasks, minutes) or passed > tasks:
+            continue
+        yield s, d.get("tasks") if isinstance(d.get("tasks"), list) else []
+
+
 def arm(folders):
     """What one arm did over its seeds: {"passed", "tasks", "minutes", "unpractised": [passed, tasks], "seeds"}."""
     out = {"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0, "kinds": {}, "by_lean": {},
@@ -174,21 +192,10 @@ def arm(folders):
     out["member_delivery"] = joint
     groups = exam_kinds.hard_groups()
     for folder in folders:
-        for f in sorted(Path(folder).rglob("*.json")):
-            if f.stat().st_size > 2_000_000:
-                continue
-            try:
-                d = json.loads(f.read_text())
-            except ValueError:
-                continue
-            s = d.get("summary") if isinstance(d, dict) else None
-            if not isinstance(s, dict):
-                continue
-            passed, tasks, minutes = _int(s.get("passed"), 64), _int(s.get("tasks"), 64), _int(s.get("minutes"), 600)
-            if None in (passed, tasks, minutes) or passed > tasks:
-                continue
+        for s, results in _sittings(folder):
+            passed, tasks, minutes = s["passed"], s["tasks"], s["minutes"]
             out["passed"], out["tasks"], out["minutes"], out["seeds"] = out["passed"] + passed, out["tasks"] + tasks, out["minutes"] + minutes, out["seeds"] + 1
-            for t in d.get("tasks") or []:
+            for t in results:
                 # the hard kinds apart from the easy ones and the tasks of several parts (an exam task's id begins with
                 # h, e or c): the score moves only when a never-passed kind is learned, and those are mostly hard
                 tid = t.get("id") if isinstance(t, dict) else None
@@ -244,6 +251,53 @@ def paired(folder, names=("before", "after")):
     by = {a: {p.name.rsplit("-", 1)[1]: p for p in folder.glob(f"gate-{a}-*") if re.fullmatch(rf"gate-{a}-\d", p.name) and _seated(p)} for a in names}
     both = sorted(set.intersection(*(set(v) for v in by.values())))
     return {a: arm([by[a][s] for s in both]) for a in names}, both
+
+
+def delivery_changes(folder):
+    """Compare final grades for the same task on two bodies. Only IDs and registered kind labels leave this process."""
+    known = {"c": {"several tasks in one"}}
+    for group, modules in (("e", exam_kinds.EASY_KINDS), ("h", exam_kinds.HARD_KINDS)):
+        known[group] = {label for m in modules for label in exam_kinds.written(m.KIND)}
+    sat, cases = {}, {}
+    for arm_name in ("before", "after"):
+        sat[arm_name] = 0
+        ids = cases[arm_name] = {}
+        for shard in sorted(folder.glob(f"gate-{arm_name}-[0-9]")):
+            for summary, rows in _sittings(shard):
+                sat[arm_name] += summary["tasks"]
+                seed, code = summary.get("seed"), summary.get("code")
+                grades = [r.get("ok") for r in rows if isinstance(r, dict)]
+                consistent = (len(rows) <= summary["tasks"]
+                              and sum(g is True for g in grades) <= summary["passed"]
+                              and sum(g is False for g in grades) <= summary["tasks"] - summary["passed"])
+                for row in rows:
+                    tid = row.get("id") if isinstance(row, dict) else None
+                    if not isinstance(tid, str) or not re.fullmatch(r"[ehc][0-9]{1,15}_[0-9]{2}", tid):
+                        continue
+                    duplicate = tid in ids
+                    ids[tid] = None  # a duplicate ID, even on a malformed row, cannot identify one run
+                    if duplicate or not consistent or type(seed) is not int or tid[1:-3] != str(seed):
+                        continue
+                    prompt, kind, ok = row.get("task"), row.get("kind"), row.get("ok")
+                    if (not isinstance(code, str) or not re.fullmatch(r"[0-9a-f]{7,40}", code)
+                            or not isinstance(prompt, str) or not prompt.strip() or type(ok) is not bool
+                            or not isinstance(kind, str) or kind not in known[tid[0]]):
+                        continue
+                    ids[tid] = ((shard.name.rsplit("-", 1)[1], code, kind, prompt), ok)
+
+    counts = dict.fromkeys(("gained", "lost", "both_pass", "both_fail"), 0)
+    changed = {"gained": [], "lost": []}
+    for tid in sorted(cases["before"].keys() & cases["after"].keys()):
+        before, after = cases["before"][tid], cases["after"][tid]
+        if before is None or after is None or before[0] != after[0]:
+            continue
+        if before[1] == after[1]:
+            outcome = "both_pass" if after[1] else "both_fail"
+        else:
+            outcome = "gained" if after[1] else "lost"
+            changed[outcome].append({"id": tid, "kind": before[0][2]})
+        counts[outcome] += 1
+    return {"sat": sat, "comparable": sum(counts.values()), "counts": counts, "changed": changed}
 
 
 def decide(arms, grow=False):
@@ -355,6 +409,8 @@ def gate(argv):
             "parents": {c: parent_of[c] for c in cells if c in parent_of}, "retired": retired,
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna}
+    if grow or arms["before"]["seeds"]:
+        line["paired"]["deliveries"] = delivery_changes(folder)
     # practice by its orders (the split of training/practice_arms.py) and its first try on old kinds and K2's new ones
     if practised:
         from training import practice_arms
