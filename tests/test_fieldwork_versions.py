@@ -98,7 +98,7 @@ def test_overlapping_checks_require_agreement_on_staged_jobs(tmp_path):
     g = Guest({"identity": lambda x: x, "absolute": abs})
     withheld = fw.work(spec, g, no_generator, tmp_path / "ambiguous", bank)
     assert withheld["status"] == "ambiguous_saved_versions" and withheld["digest"] is None and withheld["jobs"] == []
-    assert "job1" in withheld["reason"] and "-3" in withheld["reason"] and "3" in withheld["reason"]
+    assert "job1" in withheld["reason"] and any(choices in withheld["reason"] for choices in ("(-3 or 3)", "(3 or -3)"))
     assert "new output directory" in withheld["reason"]
     assert not (tmp_path / "ambiguous" / "job0").exists()
     assert not (tmp_path / "ambiguous" / "solver.py").exists()
@@ -147,3 +147,30 @@ def test_staged_jobs_follow_their_declared_file_comparators(tmp_path):
     conflict = fw.work(task, g, no_generator, tmp_path / "different", bank)
     assert conflict["status"] == "ambiguous_saved_versions" and "report" in conflict["reason"]
     assert "report.json" not in conflict["reason"] and not (tmp_path / "different/number").exists()
+
+def test_legacy_work_order_and_attempt_survive_resume(tmp_path):
+    bank, out = tmp_path / "bank", tmp_path / "old-run"
+    task = order("Old absolute-value recipe", [(-2, 2)], [(-4, 4)], [-3])
+    parent = version(bank, "transform", task["task"], "identity", 1)
+    token = fw.fingerprint(json.dumps(task, sort_keys=True, separators=(",", ":")))
+    fw.save(out / "work-order.json", {"spec_digest": token, "parents": [parent]})
+    fw.save(out / "attempt-1.json", dict(source="absolute", program="absolute", passed=1,
+                                          feedback="All examples passed.", usage={}, seconds=0, stop="done"))
+    g = Guest({"identity": lambda x: x, "absolute": abs})
+    result = fw.work(task, g, no_generator, out, bank, rounds=1)
+    assert result["jobs"] == [{"id": "job0", "value": 3}]
+    assert result["parents"] == [parent["digest"]] and result["saved_checks"][0]["reason"] == "public_failed"
+
+
+def test_cli_reports_ambiguous_job_without_a_generator(tmp_path, monkeypatch, capsys):
+    bank = tmp_path / "bank"
+    task = order("Choose the magnitude", [(2, 2)], [(3, 3)], [-1])
+    for name in ("absolute", "identity"):
+        version(bank, "transform", task["task"], name, 1)
+    spec = tmp_path / "spec.json"
+    spec.write_text(json.dumps(task))
+    monkeypatch.setattr(fw, "Guest", lambda sdk: Guest({"identity": lambda x: x, "absolute": abs}))
+    rc = fw.main(["--sdk", str(tmp_path), "--spec", str(spec), "--out", str(tmp_path / "run"), "--bank", str(bank)])
+    output = capsys.readouterr().out
+    assert rc != 0 and "0/1 jobs delivered" in output and "job0" in output and "distinguishing example" in output
+    assert not (tmp_path / "run/job0").exists()
