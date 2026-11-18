@@ -1,0 +1,274 @@
+[
+  {
+    "id": "rainfall",
+    "group": "archived G47 incident",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "21",
+    "delivered_file": "day,mm\r\nWednesday,3,7\r\nMonday,7,11\r\nTuesday,11,3\r\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "rainfall-reversed",
+    "group": "archived order control",
+    "candidate_correct": [
+      true,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "21",
+    "delivered_file": "day,mm\r\nWednesday,3\r\nMonday,7\r\nTuesday,11\r\n",
+    "file_correct": true,
+    "job_correct": true
+  },
+  {
+    "id": "valid-both",
+    "group": "constructed controls",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "10",
+    "delivered_file": "desk,count\nReed,5\nOak,3\nCedar,2\n",
+    "file_correct": true,
+    "job_correct": true
+  },
+  {
+    "id": "wrong-header-first",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "10",
+    "delivered_file": "count,desk\nReed,5\nOak,3\nCedar,2\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "missing-first",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "10",
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "bad-shape-both",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "10",
+    "delivered_file": "desk,count\nReed,5,5\nOak,3\nCedar,2\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "same-wrong-value-both",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "10",
+    "delivered_file": "desk,count\nReed,5\nOak,5\nCedar,2\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "different-values-same-shape",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "10",
+    "delivered_file": "desk,count\nReed,5\nOak,5\nCedar,2\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "third-supports-second",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 3,
+    "stdout": "10",
+    "delivered_file": "desk,count\nReed,5\nOak,5\nCedar,2\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "third-supports-first",
+    "group": "constructed controls",
+    "candidate_correct": [
+      true,
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 3,
+    "stdout": "10",
+    "delivered_file": "desk,count\nReed,5\nOak,3\nCedar,2\n",
+    "file_correct": true,
+    "job_correct": true
+  },
+  {
+    "id": "disagree-on-total",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": false,
+    "requested_seats": 3,
+    "recorded_seats": 2,
+    "stdout": null,
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "truncated-json-first",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "{\"red\": 2,",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "json-valid-wrong-both",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "{\"red\": 1, \"blue\": 2}",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "nonempty-text-wrong-both",
+    "group": "constructed controls",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "Sun has risen.",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "no-output-file-requested",
+    "group": "constructed controls",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "11",
+    "delivered_file": null,
+    "file_correct": true,
+    "job_correct": true
+  },
+  {
+    "id": "market",
+    "group": "fresh G47 runs",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "41",
+    "delivered_file": "item,revenue\r\njam,12\r\nbread,15\r\ntea,14\r\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  {
+    "id": "bus",
+    "group": "fresh G47 runs",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "7",
+    "delivered_file": "{\"Pine\": 4, \"Hill\": 3}",
+    "file_correct": true,
+    "job_correct": true
+  },
+  {
+    "id": "parcels",
+    "group": "fresh G47 runs",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "14",
+    "delivered_file": "address,count\r\n\"Dock, West\",8\r\nOak Lane,6\r\n",
+    "file_correct": false,
+    "job_correct": false
+  }
+]

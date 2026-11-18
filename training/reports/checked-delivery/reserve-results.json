@@ -1,0 +1,50 @@
+{
+  "b213316": {
+    "id": "market",
+    "group": "fresh G47 plus reserve",
+    "candidate_correct": [
+      false,
+      true,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 3,
+    "stdout": "41",
+    "delivered_file": "item,revenue\r\njam,12\r\nbread,15\r\ntea,14\r\n",
+    "file_correct": false,
+    "job_correct": false
+  },
+  "3a4a6ee": {
+    "id": "market",
+    "group": "fresh G47 plus reserve",
+    "candidate_correct": [
+      false,
+      true,
+      false
+    ],
+    "agreed": false,
+    "requested_seats": 3,
+    "recorded_seats": 3,
+    "stdout": null,
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false
+  },
+  "6f4d496": {
+    "id": "market",
+    "group": "fresh G47 plus reserve",
+    "candidate_correct": [
+      false,
+      true,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 3,
+    "stdout": "41",
+    "delivered_file": "item,revenue\r\nbread,15\r\ntea,14\r\njam,12\r\n",
+    "file_correct": true,
+    "job_correct": true
+  }
+}

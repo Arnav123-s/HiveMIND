@@ -1,0 +1,374 @@
+{
+  "experiment": "Two shipping-rounding policies, learned by actual G47 code2",
+  "protocol": {
+    "name": "depot_shipping_fee",
+    "source_revision_before": "17fcf99",
+    "seed_for_jobs": 887321,
+    "budget": 500,
+    "temperature": 0.0,
+    "seed_for_decoding": 3141,
+    "max_model_calls_per_learning_order": 2,
+    "inference_on_reuse": "disabled for both revisions; count successful no-model orders; unqualified/missing is a failure",
+    "new_jobs_per_order": 16,
+    "independent_qualification_checks": 12,
+    "public_examples_per_order": 8,
+    "all_blind_inputs_disjoint_across_orders": true,
+    "phases": [
+      "learn A",
+      "learn B",
+      "reuse A",
+      "reuse B"
+    ],
+    "public_prompts_without_private_jobs_or_validation": true,
+    "model": "t80+g47code2",
+    "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "adapter_sha256": "a708720b70b0fe574a6e0184951245337de7fc80ade032b4a2f264d8ac30f381",
+    "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+    "spec_sha256": {
+      "1-A": "ccd0a692eabe46b345164f61dd1eeeec97274c2600663150afd22443b890fa1a",
+      "2-B": "d32b70fd3ca5b9acb165ce35ff54dc3af39032e9f13c145f75d0e900777111e9",
+      "3-A": "5bed419426e4b63d4516aa69f6a796e66e71906d95fcce56e19ca5cc23c8e366",
+      "4-B": "fbd1af6b17ca2c63a0fd19f8fa4553770444effbdc568cc7a17e249ab5e83acf"
+    },
+    "gold_sha256": "859f68aac79e3f283eff992526cd07eabd2c6115d85696337ce0b04a20c261a2"
+  },
+  "freeze_sha256": "d6fdcd194e2b68e0aba3197a7618702c602f562b6c57394bfa93350ba78ef64f",
+  "runtime": {
+    "engine": "ik_llama.cpp 7aa7e01482db892b023bb9aace9a40567ab5297a",
+    "cpu_threads": 4,
+    "WASI_runtime": "wasmtime 36.0.0",
+    "python_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+    "prompt": "fieldwork.native.generate(focused=True, concise=True)",
+    "policy_learning_revision": "17fcf99ed2acb7caeb8322701100b42348c7c51a",
+    "retrieval_control_revision": "17fcf99ed2acb7caeb8322701100b42348c7c51a",
+    "retrieval_fixed_base_revision": "dc5f9bddb6cc0c0988704a87a9523aa9fa26bf10",
+    "retrieval_fixed_module_sha256": "17badb5c07683ef0ee452fb88f7d45da80bcd0e5102e915749193aca76764571"
+  },
+  "rounds": [
+    {
+      "arm": "learning",
+      "case": "1-A",
+      "private_correct": 0,
+      "private_total": 16,
+      "public": 2,
+      "validation": 0,
+      "model_calls": 2,
+      "program_sha": "09ac80fbd077de439e05fffcca168c3c7ac12206bb751a58b469b92202b86030",
+      "stop": [
+        "stop",
+        "stop"
+      ],
+      "seconds": 128.341,
+      "description": "Write solve(x) to calculate a depot's shipping fee in integer cents. x has a grams list of positive whole parcel weights. An empty shipment costs zero. Any nonempty shipment has one dispatch charge of 250 cents and costs another 90 cents per started 500 grams. Use the depot's rounding convention illustrated by the examples. Return just the integer fee.",
+      "public_examples": [
+        {
+          "input": {
+            "grams": []
+          },
+          "output": 0
+        },
+        {
+          "input": {
+            "grams": [
+              500
+            ]
+          },
+          "output": 340
+        },
+        {
+          "input": {
+            "grams": [
+              501
+            ]
+          },
+          "output": 430
+        },
+        {
+          "input": {
+            "grams": [
+              50,
+              50
+            ]
+          },
+          "output": 430
+        },
+        {
+          "input": {
+            "grams": [
+              250,
+              250
+            ]
+          },
+          "output": 430
+        },
+        {
+          "input": {
+            "grams": [
+              400,
+              700
+            ]
+          },
+          "output": 520
+        },
+        {
+          "input": {
+            "grams": [
+              500,
+              500,
+              500
+            ]
+          },
+          "output": 520
+        },
+        {
+          "input": {
+            "grams": [
+              501,
+              499,
+              501
+            ]
+          },
+          "output": 700
+        }
+      ],
+      "attempts": [
+        {
+          "source": "import json\n\ndef solve(x):\n    grams = x.get('grams', [])\n    if not grams:\n        return 0\n    dispatch = 250\n    rate = 90\n    total = dispatch\n    for g in grams:\n        total += rate * (g + 499) // 500\n    return total",
+          "examples_passed": 2,
+          "first_failure": "{\"input\":{\"grams\":[500]},\"expected\":340,\"actual\":{\"value\":429}}",
+          "stop": "stop",
+          "prompt_sha256": "ae03df657d2f8731cf90fa0101de63249f51e926e616e16fff27c7f84de3f48e",
+          "response_sha256": "6e6ba68ba092752d4e87fafdd2297cdcdd91c8098228aae40fceeae1ad3c22c6",
+          "usage": {
+            "completion_tokens": 80,
+            "prompt_tokens": 333,
+            "total_tokens": 413,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 65.16
+        },
+        {
+          "source": "import json\n\ndef solve(x):\n    grams = x.get('grams', [])\n    if not grams:\n        return 0\n    dispatch = 250\n    rate = 90\n    total = dispatch\n    for g in grams:\n        total += rate * (g + 499) // 500\n    return total",
+          "examples_passed": 2,
+          "first_failure": "{\"input\":{\"grams\":[500]},\"expected\":340,\"actual\":{\"value\":429}}",
+          "stop": "stop",
+          "prompt_sha256": "46bb8a1bb19161c55070cd4086e6927b7a42eaf252baa7827b8a53fb1d4c8c97",
+          "response_sha256": "4cb5035f5329bb14c1aec520ced0baec5e4791a253e7af8bb2d72a60e0549de5",
+          "usage": {
+            "completion_tokens": 80,
+            "prompt_tokens": 452,
+            "total_tokens": 532,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 54.975
+        }
+      ]
+    },
+    {
+      "arm": "learning",
+      "case": "2-B",
+      "private_correct": 0,
+      "private_total": 16,
+      "public": 0,
+      "validation": 0,
+      "model_calls": 2,
+      "program_sha": "a8d5f7dd5257f1be8e52757fc55e8a2570dae66ee58c6543bc1d775a64a60f12",
+      "stop": [
+        "stop",
+        "stop"
+      ],
+      "seconds": 209.066,
+      "description": "Write solve(x) to calculate a depot's shipping fee in integer cents. x has a grams list of positive whole parcel weights. An empty shipment costs zero. Any nonempty shipment has one dispatch charge of 250 cents and costs another 90 cents per started 500 grams. Use the depot's rounding convention illustrated by the examples. Return just the integer fee.",
+      "public_examples": [
+        {
+          "input": {
+            "grams": []
+          },
+          "output": 0
+        },
+        {
+          "input": {
+            "grams": [
+              500
+            ]
+          },
+          "output": 340
+        },
+        {
+          "input": {
+            "grams": [
+              501
+            ]
+          },
+          "output": 430
+        },
+        {
+          "input": {
+            "grams": [
+              50,
+              50
+            ]
+          },
+          "output": 340
+        },
+        {
+          "input": {
+            "grams": [
+              250,
+              250
+            ]
+          },
+          "output": 340
+        },
+        {
+          "input": {
+            "grams": [
+              400,
+              700
+            ]
+          },
+          "output": 520
+        },
+        {
+          "input": {
+            "grams": [
+              500,
+              500,
+              500
+            ]
+          },
+          "output": 520
+        },
+        {
+          "input": {
+            "grams": [
+              501,
+              499,
+              501
+            ]
+          },
+          "output": 610
+        }
+      ],
+      "attempts": [
+        {
+          "source": "import json\n\ndef solve(x):\n    x = json.loads(x)\n    grams = x.get('grams', [])\n    if not grams:\n        return 0\n    dispatch = 250\n    rate = 90\n    total = dispatch\n    for g in grams:\n        total += rate * (g + 499) // 500\n    return total",
+          "examples_passed": 0,
+          "first_failure": "{\"input\":{\"grams\":[]},\"expected\":0,\"actual\":{\"error\":\"TypeError: the JSON object must be str, bytes or bytearray, not dict\"}}",
+          "stop": "stop",
+          "prompt_sha256": "b16e2fbb86ecfe9544110726da15d18ab549c5dfb03d356c13915e3e54722fa0",
+          "response_sha256": "40750456111ab467c3acc5a7f27ce250995b01d652171be155663544f10b77fa",
+          "usage": {
+            "completion_tokens": 87,
+            "prompt_tokens": 333,
+            "total_tokens": 420,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 31.663
+        },
+        {
+          "source": "import json\n\ndef solve(x):\n    data = json.loads(x)\n    grams = data.get('grams', [])\n    if not grams:\n        return 0\n    dispatch = 250\n    rate = 90\n    total = dispatch\n    for g in grams:\n        total += rate * (g + 499) // 500\n    return total",
+          "examples_passed": 0,
+          "first_failure": "{\"input\":{\"grams\":[]},\"expected\":0,\"actual\":{\"error\":\"TypeError: the JSON object must be str, bytes or bytearray, not dict\"}}",
+          "stop": "stop",
+          "prompt_sha256": "9266aa12fb8cce9a5ff8632a4a87c0210cd14466f2268f9dfb2710be6991178a",
+          "response_sha256": "b5b3bbb6eb54d0a7caa70af169083862b6d85afb818003b7e79105ba293f1353",
+          "usage": {
+            "completion_tokens": 87,
+            "prompt_tokens": 466,
+            "total_tokens": 553,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 176.596
+        }
+      ]
+    },
+    {
+      "arm": "old",
+      "case": "3-A",
+      "private_correct": 0,
+      "private_total": 16,
+      "public": null,
+      "validation": null,
+      "model_calls": 0,
+      "program_sha": null,
+      "stop": [],
+      "seconds": 0.137,
+      "cli_exit": 2,
+      "cli_stderr": "usage: cli.py [-h] --spec SPEC --out OUT --sdk SDK [--binary BINARY]\n              [--weights WEIGHTS] [--adapter ADAPTER] [--bank BANK]\n              [--rounds ROUNDS] [--threads THREADS] [--budget BUDGET]\n              [--concise] [--memory-view {contract,source}]\ncli.py: error: no verified worker satisfied these examples; supply --binary and --weights to generate one"
+    },
+    {
+      "arm": "old",
+      "case": "4-B",
+      "private_correct": 0,
+      "private_total": 16,
+      "public": null,
+      "validation": null,
+      "model_calls": 0,
+      "program_sha": null,
+      "stop": [],
+      "seconds": 0.351,
+      "cli_exit": 2,
+      "cli_stderr": "usage: cli.py [-h] --spec SPEC --out OUT --sdk SDK [--binary BINARY]\n              [--weights WEIGHTS] [--adapter ADAPTER] [--bank BANK]\n              [--rounds ROUNDS] [--threads THREADS] [--budget BUDGET]\n              [--concise] [--memory-view {contract,source}]\ncli.py: error: no verified worker satisfied these examples; supply --binary and --weights to generate one"
+    },
+    {
+      "arm": "fixed",
+      "case": "3-A",
+      "private_correct": 0,
+      "private_total": 16,
+      "public": 0,
+      "validation": 0,
+      "model_calls": 0,
+      "program_sha": null,
+      "stop": [],
+      "seconds": 0.148,
+      "cli_exit": 1,
+      "cli_stderr": ""
+    },
+    {
+      "arm": "fixed",
+      "case": "4-B",
+      "private_correct": 0,
+      "private_total": 16,
+      "public": 0,
+      "validation": 0,
+      "model_calls": 0,
+      "program_sha": null,
+      "stop": [],
+      "seconds": 0.133,
+      "cli_exit": 1,
+      "cli_stderr": ""
+    }
+  ],
+  "verified_bank": [],
+  "commands": {
+    "learn": "/tmp/hive-remember-live/learn.sh",
+    "replay_and_score": "/tmp/hive-remember-live/run-replay.sh"
+  },
+  "offline_diagnostic_of_withheld_candidates": {
+    "1-A": {
+      "posthoc_offline_only": true,
+      "correct_outputs": 0,
+      "total": 16,
+      "errors": 0,
+      "normal_jobs_delivered": 0,
+      "model_calls": 0
+    },
+    "2-B": {
+      "posthoc_offline_only": true,
+      "correct_outputs": 0,
+      "total": 16,
+      "errors": 16,
+      "normal_jobs_delivered": 0,
+      "model_calls": 0
+    }
+  }
+}

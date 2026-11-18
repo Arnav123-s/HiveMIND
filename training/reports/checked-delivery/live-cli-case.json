@@ -1,0 +1,8 @@
+{
+  "id": "community-hall",
+  "task": "At a community hall, Noor borrowed 17 chairs and returned 3, Ada borrowed 9 and returned 6, and Lin borrowed 12 and returned 4. Create chairs.csv with columns name,outstanding. Sort by outstanding ascending. Print the total number of chairs still out as a single integer.",
+  "answer": "25",
+  "name": "chairs.csv",
+  "format": "csv",
+  "expected": [["name", "outstanding"], ["Ada", "3"], ["Lin", "8"], ["Noor", "14"]]
+}

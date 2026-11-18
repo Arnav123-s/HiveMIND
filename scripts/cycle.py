@@ -17,10 +17,14 @@ Read it before choosing any work, so that nobody redoes what the records already
 import argparse
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from training.kinds import hard_scores  # noqa: E402
+
 RECORDS = ROOT / "training/reports/generations.jsonl"
 LATEST = ROOT / "docs/reads/latest.md"
 TALK = ROOT / "training/reports/talk"
@@ -128,8 +132,16 @@ def bars(newest, root=ROOT):
     talk = talk_of(r["gen"], root)
     held = None
     latest = root / LATEST.relative_to(ROOT)
-    if latest.exists():
+    arm = (newest.get("arms") or {}).get("after")
+    if arm is not None:
+        taught_pair, held_pair = hard_scores(arm)
+        hard = taught_pair[0] / taught_pair[1] if taught_pair[1] else None
+        held = held_pair[0] / held_pair[1] if held_pair[1] else None
+    elif latest.exists():
         text = latest.read_text()
+        title = re.search(r"^# The read of (\w+)", text, re.M)
+        if title and title.group(1) != r["gen"]:
+            text = ""
         m = re.search(r"never practised \(held out\) \| (\d+) of (\d+)", text)
         if m and int(m.group(2)):
             held = int(m.group(1)) / int(m.group(2))
@@ -137,8 +149,8 @@ def bars(newest, root=ROOT):
         if m and int(m.group(2)):
             hard = int(m.group(1)) / int(m.group(2))
     checks = [
-        ("hard kinds passed", hard, BARS["hard"], True, "hard kinds that have lessons, from the newest read"),
-        ("held-out kinds passed", held, BARS["held"], True, "from the newest read"),
+        ("hard kinds passed", hard, BARS["hard"], True, "tasks of hard kinds with lessons"),
+        ("held-out kinds passed", held, BARS["held"], True, "tasks of held-out kinds"),
         ("right at the first try", r["first"], BARS["first"], True, first_note(newest)),
         ("talk exam, of 10", (talk / 10) if talk is not None else None, BARS["talk"], True, "training/reports/talk"),
         ("hours a generation", r["hours"], BARS["hours"], False, "first job to last"),

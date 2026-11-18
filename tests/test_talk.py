@@ -51,7 +51,7 @@ def test_a_value_the_wording_lost_is_shown_as_the_programs_printed_it(monkeypatc
     work = {"report": "days: 47\n\n## How it was checked\n- two agreed", "agreed": True, "dir": str(tmp_path)}
     _hive(monkeypatch, ["WORK", "It is about seven weeks."], work)
     out = talk.reply("how long from 15 January 2026 to 3 March 2026?", run_dir=tmp_path)
-    assert "It is about seven weeks." in out["text"] and "days: 47" in out["text"] and "as the programs printed it" in out["text"]
+    assert out["text"] == "days: 47"
 
 
 def test_what_code_can_tell_must_be_computed_is_never_answered_from_memory(monkeypatch, tmp_path):
@@ -61,6 +61,13 @@ def test_what_code_can_tell_must_be_computed_is_never_answered_from_memory(monke
     assert done == ["what is 17.5% of 2340?"] and out["worked"] and out["agreed"] is False
     assert "could not confirm" in out["text"]
     assert not talk.MUST.search("why is the sky blue?") and talk.MUST.search("what is the latest version of numpy?")
+
+
+def test_rewording_cannot_add_a_value_or_round_a_precise_result(monkeypatch, tmp_path):
+    for raw, reworded in [("0.123456", "It is 0.123459."), ("47", "It was 47 or 49."),
+                          ("1.23.4", "The new release is 1.23.5.")]:
+        _hive(monkeypatch, [reworded], {"report": raw, "agreed": True})
+        assert talk.reply("Compute the result.", run_dir=tmp_path)["text"] == raw
 
 
 def test_only_the_end_of_a_long_conversation_is_shown_and_it_begins_with_the_user(monkeypatch):
@@ -85,3 +92,46 @@ def test_a_thread_whose_last_word_is_the_hives_gets_no_reply(monkeypatch, tmp_pa
     f.write_text(json.dumps({"name": "A", "messages": [{"role": "user", "content": "hi"}, {"role": "assistant", "content": "hello"}]}))
     assert talk.main(["--thread", str(f), "--out", str(tmp_path / "reply.md")]) == 0
     assert not (tmp_path / "reply.md").exists() and "nothing to answer" in capsys.readouterr().out
+
+
+def test_file_reply_uses_the_published_files_and_can_be_downloaded(monkeypatch, tmp_path):
+    run = tmp_path / "run"
+    work = run / "work"
+    work.mkdir(parents=True)
+    (work / "total.csv").write_text("total\n21\n")
+    (work / "old.txt").write_text("earlier job")
+    _hive(monkeypatch, [], {"report": "21\n\n## How it was checked\nTwo members agreed.", "agreed": True,
+                             "files": ["total.csv"], "requested_files": ["total.csv"]})
+    out = talk.reply("Save total.csv", run_dir=run)
+    assert out["text"] == "21\n\nFiles saved: total.csv"
+    assert str(work / "total.csv") in talk.local_text(out) and "old.txt" not in talk.local_text(out)
+    conversation = tmp_path / "thread.json"
+    conversation.write_text(json.dumps({"messages": [{"role": "user", "content": "Save total.csv"}]}))
+    dest = tmp_path / "delivery"
+    talk.main(["--thread", str(conversation), "--run-dir", str(run), "--out", str(tmp_path / "reply.md"),
+               "--export-files", str(dest)])
+    assert [p.name for p in dest.iterdir()] == ["total.csv"]
+    assert (dest / "total.csv").read_bytes() == (work / "total.csv").read_bytes()
+    posted = (tmp_path / "reply.md").read_text() + "\n[Download the delivered files](https://example.org/files)\n"
+    assert thread.FOOT.sub("", posted) == out["text"]
+
+
+def test_unconfirmed_file_requests_use_separate_workspaces_and_publish_nothing(monkeypatch, tmp_path):
+    monkeypatch.setattr(talk.config, "RUNS", tmp_path)
+    _hive(monkeypatch, [], {"report": "The required header is missing.", "agreed": False, "files": [],
+                             "requested_files": ["total.csv"]})
+    a, b = [talk.reply("Save total.csv") for _ in range(2)]
+    assert a["dir"] != b["dir"]
+    assert a["files"] == b["files"] == [] and talk.local_text(a) == "The required header is missing."
+
+
+def test_single_integer_cli_keeps_paths_and_progress_off_stdout(monkeypatch, tmp_path, capsys):
+    from team import cli
+    monkeypatch.setattr(talk.config, "RUNS", tmp_path)
+    _hive(monkeypatch, [], {"report": "14\n\n## How it was checked\nTwo agreed.", "agreed": True,
+                             "requested_files": ["ship.csv"], "files": ["ship.csv"],
+                             "file_repairs": [{"name": "ship.csv", "column": "load", "direction": "ascending"}]})
+    assert cli.main(["--once", "Save ship.csv. Print the total as a single integer."]) == 0
+    streams = capsys.readouterr()
+    assert streams.out == "14\n" and "/work/ship.csv" in streams.err
+    assert "sorted ship.csv by load (ascending)" in streams.err

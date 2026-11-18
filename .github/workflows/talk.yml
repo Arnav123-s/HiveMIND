@@ -74,8 +74,23 @@ jobs:
       - uses: ./.github/actions/hive
       - name: The hive replies
         run: |
-          python -m team.talk --thread thread.json --out reply.md --run-dir run
+          python -m team.talk --thread thread.json --out reply.md --run-dir run --export-files delivery
           cat reply.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Package the files delivered to the user
+        id: files
+        if: ${{ hashFiles('delivery/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: delivered-files
+          path: delivery/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Put the download in the reply and run summary
+        if: ${{ steps.files.outputs.artifact-url != '' }}
+        env:
+          FILE_URL: ${{ steps.files.outputs.artifact-url }}
+        run: |
+          printf '\n[Download the delivered files](%s)\n' "$FILE_URL" | tee -a reply.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

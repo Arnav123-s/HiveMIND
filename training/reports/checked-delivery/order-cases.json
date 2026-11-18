@@ -1,0 +1,339 @@
+[
+  {
+    "id": "battery",
+    "task": "Four battery cells changed by these signed millivolts: Ash -7, Birch 12, Cedar 0, Elm -2. Write deltas.csv with columns cell,change. Sort the rows by change ascending, preserving the signed values. Print their net change as a single integer.",
+    "answer": "3",
+    "name": "deltas.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "cell",
+        "change"
+      ],
+      [
+        "Ash",
+        "-7"
+      ],
+      [
+        "Elm",
+        "-2"
+      ],
+      [
+        "Cedar",
+        "0"
+      ],
+      [
+        "Birch",
+        "12"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "cell,change\nElm,-2\nBirch,12\nAsh,-7\nCedar,0\n"
+      },
+      {
+        "answer": "3",
+        "file": "cell,change\nElm,-2\nBirch,12\nAsh,-7\nCedar,0\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "queue",
+    "task": "The repair office recorded these waits in hours: Clock 13, Mixer 8, Radio 15. Create queue.csv with columns device,hours. Order rows by hours descending. Print the total hours as a single integer.",
+    "answer": "36",
+    "name": "queue.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "device",
+        "hours"
+      ],
+      [
+        "Radio",
+        "15"
+      ],
+      [
+        "Clock",
+        "13"
+      ],
+      [
+        "Mixer",
+        "8"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "36",
+        "file": "device,hours\nMixer,8\nClock,13\nRadio,15\n"
+      },
+      {
+        "answer": "36",
+        "file": "device,hours\nRadio,15\nClock,13\nMixer,8\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "invoices",
+    "task": "The balances in dollars are NW 12.50, NE -3.75, SW 105.00. Save balances.csv with columns zone,dollars. Sort by dollars in ascending numeric order. Keep two decimal places. Print how many zones are listed as a single integer.",
+    "answer": "3",
+    "name": "balances.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "zone",
+        "dollars"
+      ],
+      [
+        "NE",
+        "-3.75"
+      ],
+      [
+        "NW",
+        "12.50"
+      ],
+      [
+        "SW",
+        "105.00"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "zone,dollars\nNE,-3.75\nSW,105.00\nNW,12.50\n"
+      },
+      {
+        "answer": "3",
+        "file": "zone,dollars\nNE,-3.75\nSW,105.00\nNW,12.50\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "priority",
+    "task": "Wait list: Q2 has priority 2, Q1 has priority 9, Q7 has priority 2. Create waiting.csv with columns code,priority. Put the highest priority first and preserve arrival order for ties. Print the number of entries as a single integer.",
+    "answer": "3",
+    "name": "waiting.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "code",
+        "priority"
+      ],
+      [
+        "Q1",
+        "9"
+      ],
+      [
+        "Q2",
+        "2"
+      ],
+      [
+        "Q7",
+        "2"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "code,priority\nQ2,2\nQ7,2\nQ1,9\n"
+      },
+      {
+        "answer": "3",
+        "file": "code,priority\nQ2,2\nQ7,2\nQ1,9\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "order-input-only",
+    "task": "An input table was sorted by score descending. It contains Dan 8, Pia 4, Ray 6. Save rota.csv with columns name,score. The output rows must be Pia, Ray, Dan. Print their total score as a single integer.",
+    "answer": "18",
+    "name": "rota.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "name",
+        "score"
+      ],
+      [
+        "Pia",
+        "4"
+      ],
+      [
+        "Ray",
+        "6"
+      ],
+      [
+        "Dan",
+        "8"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "18",
+        "file": "name,score\nPia,4\nRay,6\nDan,8\n"
+      },
+      {
+        "answer": "18",
+        "file": "name,score\nPia,4\nRay,6\nDan,8\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "text-input-order",
+    "task": "Applicants arrive in this order: A10, A2, A1. Save arrival.csv with columns code,rank and put the arrival index (starting at one) in rank. Preserve arrival order. Print the number of applicants as a single integer.",
+    "answer": "3",
+    "name": "arrival.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "code",
+        "rank"
+      ],
+      [
+        "A10",
+        "1"
+      ],
+      [
+        "A2",
+        "2"
+      ],
+      [
+        "A1",
+        "3"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "code,rank\nA10,1\nA2,2\nA1,3\n"
+      },
+      {
+        "answer": "3",
+        "file": "code,rank\nA10,1\nA2,2\nA1,3\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "mixed-requests",
+    "task": "A volunteer wants rows in descending order by hours, another prefers ascending. Save visits.csv with columns name,hours. For this copy use the original arrival order: Sol 3, Kay 8, Ami 5. Print total hours as a single integer.",
+    "answer": "16",
+    "name": "visits.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "name",
+        "hours"
+      ],
+      [
+        "Sol",
+        "3"
+      ],
+      [
+        "Kay",
+        "8"
+      ],
+      [
+        "Ami",
+        "5"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "16",
+        "file": "name,hours\nSol,3\nKay,8\nAmi,5\n"
+      },
+      {
+        "answer": "16",
+        "file": "name,hours\nSol,3\nKay,8\nAmi,5\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "two-key",
+    "task": "Create places.csv with columns wing,room. Sort by wing ascending, then by room descending within each wing. Rooms are 2/10, 1/3, 1/5. Print how many rooms there are as a single integer.",
+    "answer": "3",
+    "name": "places.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "wing",
+        "room"
+      ],
+      [
+        "1",
+        "5"
+      ],
+      [
+        "1",
+        "3"
+      ],
+      [
+        "2",
+        "10"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "3",
+        "file": "wing,room\n1,5\n1,3\n2,10\n"
+      },
+      {
+        "answer": "3",
+        "file": "wing,room\n1,5\n1,3\n2,10\n"
+      }
+    ],
+    "expected_action": "deliver-exactly"
+  },
+  {
+    "id": "wrong-cells",
+    "task": "The Monday tests took 8 minutes for Pine, 4 for Oak, and 11 for Ash. Create times.csv with columns tree,minutes. Sort by minutes ascending. Print the total duration as a single integer.",
+    "answer": "23",
+    "name": "times.csv",
+    "format": "csv",
+    "expected": [
+      [
+        "tree",
+        "minutes"
+      ],
+      [
+        "Oak",
+        "4"
+      ],
+      [
+        "Pine",
+        "8"
+      ],
+      [
+        "Ash",
+        "11"
+      ]
+    ],
+    "group": "sealed controlled ordering",
+    "candidates": [
+      {
+        "answer": "23",
+        "file": "tree,minutes\nAsh,19\nPine,8\nOak,4\n"
+      },
+      {
+        "answer": "23",
+        "file": "tree,minutes\nPine,21\nAsh,11\nOak,4\n"
+      }
+    ],
+    "expected_action": "abstain"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "team/solo.py": "2ce560e4e5c3ea677141d5bdbe1cd5d15123aa0438d90e1a1b2aceadb8c67215",
+  "team/deliverables.py": "305a61586f65e4c0ef7f028781fb7f744f2475578029ea6e95273ad904ad2d8a",
+  "team/talk.py": "fcb7893d07498c7702a2949361601a71a4991a5e3f1a3b70b6ae03d34c98f837",
+  "training/checked_delivery_eval.py": "1f0e22707f1c651c96db23b9131319969b7606ae881bc70f0a63f83eb255b304",
+  "training/reports/checked-delivery/fresh-tasks.json": "a870deb53389b4b2b5eb0fef00721b2141d3b08a6fd2e62f4a32d8657bf8406c",
+  "primary_and_confirmation_runner_sha256": "2c93deb0a50ec633404f57dd122573c20217b81464f65fea0a4f11620e1dbabd",
+  "post_observation": {
+    "commit": "6f4d496",
+    "team/solo.py": "58734044423ebc64edc21e2ee47acc4d7c34c303f407d8a27a772b64d3dd4dca",
+    "team/deliverables.py": "8856947f729a7b70b1254a78f9f1a9a8791f831d24527c0c0957d748fdc3d5ed",
+    "sealed_order_cases_sha256": "52cd5e830faef47ed56de2454daf2f93f5237efae15418fc58c96802697691f8",
+    "sealed_live_cli_case_sha256": "0e74f2e35aa8e47950129d7f8d7e1cadb3b9e4a9606a1445e7ea902fe5386282"
+  },
+  "final_confirmation": {
+    "reviewed_commit": "9992ccc728d2fe3ad1d9ac841cd9e0ed9a358a92",
+    "published_equivalent": "43f8dd7",
+    "team/deliverables.py": "cb4c07084f2e20aaa5e8d064a4c24619cb9f551f309df724c12a3e5556d8e937",
+    "team/solo.py": "58734044423ebc64edc21e2ee47acc4d7c34c303f407d8a27a772b64d3dd4dca",
+    "sealed_case_sha256": "0dc85ab7a85d76f2d210b121ac93a92eab04083785184b8c943ca51d1e6201e6"
+  }
+}

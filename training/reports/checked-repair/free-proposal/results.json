@@ -1,0 +1,421 @@
+{
+  "protocol": "One greedy generation from the G47 code cell. The prompt contains the parent program and ten original public observations. Extract the first complete Python-tagged block, or plain Python if unfenced. Text and code are frozen before grading. Retrospective on the existing public exposure test family.",
+  "model": {
+    "frozen_utc": "2026-11-18T20:00:03.237534+00:00",
+    "prompt_sha256": "32d78a3500e246c5c589804a88ed08f4c930f3d1cd2d62af5489b304ae55b8fb",
+    "request_sha256": "7d05d1442169e50d077d41a49ef82ecaf0d2e96db6d7b7fa8042856c478ee1e7",
+    "parent_sha256": "e989057e402cf51ca4f84597a421da25775a16ff9b69ef271251279f37998acd",
+    "sources": {
+      "job": "a70eb72:training/reports/whole-hive-g47/observations.json:live_coding.result.task",
+      "parent": "training/experiments/checked_repair_parent.py",
+      "observations": "training/experiments/checked_repair.py:PUBLIC, with upward crossings from job definition"
+    },
+    "model": "t80+g47code2",
+    "checkpoint_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "adapter_sha256": "a708720b70b0fe574a6e0184951245337de7fc80ade032b4a2f264d8ac30f381",
+    "binary_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+    "ik_llama_revision": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+    "attempts_allowed": 1,
+    "cpu_threads": 4,
+    "max_reply_tokens": 1200,
+    "allow_retries": false,
+    "synthesis_only": true
+  },
+  "generation": {
+    "started_utc": "2026-11-18T20:00:31.662963+00:00",
+    "ended_utc": "2026-11-18T20:02:14.130358+00:00",
+    "seconds": 102.467,
+    "termination": "stop",
+    "model_id": "Ternary-Bonsai-8B-PQ2_0.gguf",
+    "usage": {
+      "completion_tokens": 304,
+      "prompt_tokens": 662,
+      "total_tokens": 966,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "response_sha256": "66da70942c389f684af98f1ddb3b01c2cc7bca9dfdbd4598ac5c29ef0ae62255",
+    "output_sha256": "ba99512dadf2eb16f661ef56f86eae7871b2d70f2d2739394ac2f58e0b49ea40",
+    "attempts": 1
+  },
+  "sampling": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "max_tokens": 1200,
+    "cache_prompt": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "stream": false,
+    "seed": 20261118
+  },
+  "extracted_function_identical_to_parent": true,
+  "parent": {
+    "source_sha256": "e989057e402cf51ca4f84597a421da25775a16ff9b69ef271251279f37998acd",
+    "oracle_sha256": "d35e7c75fc8b9aaed9f28d1c4f84bdf41ca67fa875a54d4ed0788a6a51b6e38c",
+    "cases": 228,
+    "groups": {
+      "exposure_edges": {
+        "passed": 42,
+        "total": 48,
+        "elapsed_passed": 42,
+        "crossings_passed": 48
+      },
+      "exposure_paths": {
+        "passed": 63,
+        "total": 180,
+        "elapsed_passed": 63,
+        "crossings_passed": 180
+      }
+    },
+    "failures": {
+      "elapsed": 123
+    },
+    "first_failures": [
+      {
+        "index": 40,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              0.5,
+              -4
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.15217391304347827,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 41,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              1.5,
+              -4
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.45652173913043476,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 43,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              0.5,
+              0
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.5,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 44,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              1.5,
+              0
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          1.5,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 46,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.5,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 47,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              1.5,
+              0.5
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          1.5,
+          0
+        ],
+        "failure": "elapsed"
+      }
+    ]
+  },
+  "code_cell": {
+    "source_sha256": "4454ffafbfd60d2257965640d7822bce05190e587d88ba92dc637a40e8165453",
+    "oracle_sha256": "d35e7c75fc8b9aaed9f28d1c4f84bdf41ca67fa875a54d4ed0788a6a51b6e38c",
+    "cases": 228,
+    "groups": {
+      "exposure_edges": {
+        "passed": 42,
+        "total": 48,
+        "elapsed_passed": 42,
+        "crossings_passed": 48
+      },
+      "exposure_paths": {
+        "passed": 63,
+        "total": 180,
+        "elapsed_passed": 63,
+        "crossings_passed": 180
+      }
+    },
+    "failures": {
+      "elapsed": 123
+    },
+    "first_failures": [
+      {
+        "index": 40,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              0.5,
+              -4
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.15217391304347827,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 41,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              1.5,
+              -4
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.45652173913043476,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 43,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              0.5,
+              0
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.5,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 44,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              1.5,
+              0
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          1.5,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 46,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          0.5,
+          0
+        ],
+        "failure": "elapsed"
+      },
+      {
+        "index": 47,
+        "args": [
+          [
+            [
+              0,
+              1.75
+            ],
+            [
+              1.5,
+              0.5
+            ]
+          ],
+          0,
+          1.5
+        ],
+        "result": [
+          0.0,
+          0
+        ],
+        "expected": [
+          1.5,
+          0
+        ],
+        "failure": "elapsed"
+      }
+    ]
+  },
+  "grader_sha256": "47894baf4af51290ff668d13d5b9ffff5708e21a567714c03887cf6e80843e9f",
+  "constrained_search_previously_reported": {
+    "right": 228,
+    "total": 228
+  },
+  "interpretation": "The response reproduces the parent function verbatim. Its crossing count is correct on every case. Its elapsed-time computation contributes only during upward crossings and misses eligible time on segments that begin above the threshold. This single sampled response measures one repair attempt."
+}

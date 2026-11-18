@@ -36,7 +36,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:  # run as `python3 training/reads.py`: the kinds (training/kinds/) are found from the folder above
     sys.path.insert(0, str(ROOT))
-from training import practice_arms  # noqa: E402
+from training import kinds as exam_kinds, practice_arms  # noqa: E402
 REPO = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 TALK = ROOT / "training" / "reports" / "talk"  # <generation>.json: the body's sitting of the talk exam (training/talk_exam.py)
@@ -62,9 +62,7 @@ def taught_hard():
 
 
 def held_out():
-    from training import kinds
-    by = maker_kinds()
-    return {by[m] for m in kinds.HELD_OUT if m in by}
+    return {label for label, group in exam_kinds.hard_groups().items() if group == "unpractised"}
 
 
 # ---- the pulse (shared with scripts/read_generation.py) --------------------------------------------------------------
@@ -689,10 +687,7 @@ def holds(rule, r):
 
 def taught_passed(line):
     """[passed, sat] of the taught hard kinds in a record line's pulse (after arm)."""
-    kinds = (line.get("arms") or {}).get("after", {}).get("kinds") or {}
-    taught = set(taught_hard().values())
-    p = [v for k, v in kinds.items() if k in taught and isinstance(v, list) and len(v) == 2]
-    return [sum(v[0] for v in p), sum(v[1] for v in p)]
+    return exam_kinds.hard_scores((line.get("arms") or {}).get("after", {}))[0]
 
 
 PLAN = ROOT / "docs" / "PLAN.md"
@@ -789,12 +784,9 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
     b = (line.get("arms") or {}).get("before", {})
     pa = (prev or {}).get("arms", {}).get("after", {})
     has_b = bool(b.get("seeds"))
-    held = held_out()
-
-    def held_c(arm):
-        k = arm.get("kinds") or {}
-        v = [k[x] for x in held if x in k]
-        return [sum(x[0] for x in v), sum(x[1] for x in v)] if v else arm.get("unpractised")
+    taught, held = exam_kinds.hard_scores(a)
+    prev_taught, prev_held = exam_kinds.hard_scores(pa)
+    before_taught, before_held = exam_kinds.hard_scores(b)
 
     ft = f.get("first_try") or line.get("first_try")
     pft = (prev or {}).get("first_try")
@@ -802,9 +794,8 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
     pi = lines.index(prev) if prev in lines else -1
     return [
         ("Easy kinds passed", _pq(a.get("easy")), _pq(pa.get("easy")), _pq(b.get("easy")) if has_b else "-"),
-        ("Hard kinds that have lessons", _pq(taught_passed(line)), _pq(taught_passed(prev)) if prev else "-",
-         _pq(taught_passed({"arms": {"after": b}})) if has_b else "-"),
-        ("Hard kinds never practised (held out)", _pq(held_c(a)), _pq(held_c(pa)) if prev else "-", _pq(held_c(b)) if has_b else "-"),
+        ("Hard kinds that have lessons", _pq(taught), _pq(prev_taught), _pq(before_taught) if has_b else "-"),
+        ("Hard kinds never practised (held out)", _pq(held), _pq(prev_held), _pq(before_held) if has_b else "-"),
         ("Right at the first try (practice)", f"{ft[0] / ft[1]:.2f} ({_pq(ft)})" if ft and ft[1] else "not measured",
          f"{pft[0] / pft[1]:.2f}" if pft and pft[1] else "-", "-"),
     ] + ([("Right at the first try by orders (practice split by runner)", practice_arms.ab_text(line["orders_ab"]),
@@ -815,6 +806,48 @@ def top_table(line, prev, f, lines, idx, talk=(None, None)):
          f"{prev['hours']:.1f}" if prev and isinstance(prev.get("hours"), (int, float)) else "-", "-"),
         ("Generations recorded with nobody's hand", str(unattended(lines, idx)), str(unattended(lines, pi)) if pi >= 0 else "-", "-"),
     ] + ([("Talk (the talk exam, out of 10; the bar is 8)", _talk(talk[0]), _talk(talk[1]) if prev else "-", "-")] if talk[0] else [])
+
+
+def member_delivery_table(line):
+    """Use the same covered tasks in the member and final columns. Older summaries lack this joint count."""
+    out = ["", "## What members solved and what reached the user", "",
+           "| Exam arm | Scope | Graded for both, of tasks sat | Any recorded member passed | Final delivery passed | Member passed, delivery failed | Delivery passed, no recorded member passed |",
+           "|---|---|---:|---:|---:|---:|---:|"]
+    for name in ("before", "after"):
+        arm = (line.get("arms") or {}).get(name) or {}
+        if not arm.get("tasks"):
+            continue
+        for scope, total in (("all", arm["tasks"]), ("hard", (arm.get("hard") or [0, None])[1])):
+            if total is None:
+                continue
+            counts = (arm.get("member_delivery") or {}).get(scope)
+            if counts is None:
+                out.append(f"| {name} | {scope} | unrecorded | – | – | – | – |")
+                continue
+            covered = sum(counts.values())
+            both, lost, added = counts["both"], counts["member_only"], counts["delivery_only"]
+            out.append(f"| {name} | {scope} | {covered} of {total} | {both + lost} | {both + added} | {lost} | {added} |")
+    out += ["", "Counts compare the task checker on recorded member answers and their files with the same checker on the final delivery. "
+            "Only tasks with a known result on both sides enter the last four columns."]
+    return out
+
+
+def delivery_changes_table(line):
+    out = ["", "## Which final deliveries changed", ""]
+    audit = (line.get("paired") or {}).get("deliveries")
+    if not audit:
+        return out + ["Individual before/after comparisons were not recorded."]
+    sat, counts = audit["sat"], audit["counts"]
+    out.append(f"Comparable deliveries: {audit['comparable']} matched, from {sat['before']} tasks sat before "
+               f"and {sat['after']} after. Matching requires the same seat, task ID, prompt, kind and exam revision.")
+    if audit["comparable"]:
+        out += ["", "| Gained | Lost | Passed both | Failed both |", "|---:|---:|---:|---:|",
+                f"| {counts['gained']} | {counts['lost']} | {counts['both_pass']} | {counts['both_fail']} |"]
+        for outcome in ("lost", "gained"):
+            if audit["changed"][outcome]:
+                out.extend(["", outcome.capitalize() + ": " + ", ".join(
+                    f"`{r['id']}` ({r['kind']})" for r in audit["changed"][outcome]) + "."])
+    return out
 
 
 def _left(r):
@@ -839,6 +872,8 @@ def render(line, prev, f, rows, notes, piece, lines, idx, talk=(None, None), don
            f"| What is measured | {gen} | {prev.get('generation', '-') if prev else '-'} (last record) | the body before (same seeds) |",
            "|---|---|---|---|"]
     out += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in top_table(line, prev, f, lines, idx, talk)]
+    out += member_delivery_table(line)
+    out += delivery_changes_table(line)
     out += ["", "## The chain, by taught hard kind", "",
             "lessons right by their own check -> rows that fit in training -> loss falls on lessons kept back -> the child "
             "alone writes it at the exam -> the body (two agree) passes it.", "",
@@ -981,16 +1016,14 @@ def generation_entry(line, talk=None):
     10) and the hours; None for what was not measured."""
     a = (line.get("arms") or {}).get("after", {})
     b = (line.get("arms") or {}).get("before", {})
-    held = held_out()
-    k = a.get("kinds") or {}
-    hv = [k[x] for x in held if x in k]
+    taught, held = exam_kinds.hard_scores(a)
     pq = lambda c: [int(c[0]), int(c[1])] if isinstance(c, list) and len(c) == 2 and c[1] else None  # noqa: E731
     ft = line.get("first_try")
     return {"id": f"gen-{line.get('generation')}", "generation": line.get("generation"), "when": line.get("when", ""),
             "verdict": line.get("verdict") or ("kept" if line.get("kept") else "dropped"),
             "after": pq([a.get("passed"), a.get("tasks")]), "before": pq([b.get("passed"), b.get("tasks")]) if b.get("seeds") else None,
-            "hard": pq(taught_passed(line)), "easy": pq(a.get("easy")),
-            "held_out": pq([sum(x[0] for x in hv), sum(x[1] for x in hv)] if hv else a.get("unpractised")),
+            "hard": pq(taught), "easy": pq(a.get("easy")),
+            "held_out": pq(held),
             "first_try": round(ft[0] / ft[1], 2) if isinstance(ft, list) and len(ft) == 2 and ft[1] else None,
             "talk": (talk or {}).get("out_of_10") if isinstance((talk or {}).get("out_of_10"), (int, float)) else None,
             "hours": line.get("hours") if isinstance(line.get("hours"), (int, float)) else None,

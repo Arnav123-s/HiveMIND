@@ -1,0 +1,231 @@
+{
+  "comparisons": {
+    "all": {
+      "after_only": 2,
+      "always_after": 47,
+      "always_before": 47,
+      "before_only": 2,
+      "both_passed": 45,
+      "chose_after": 1,
+      "kind_selector": 47,
+      "neither_passed": 15,
+      "oracle_union": 49,
+      "tasks": 64
+    },
+    "easy": {
+      "after_only": 0,
+      "always_after": 31,
+      "always_before": 31,
+      "before_only": 0,
+      "both_passed": 31,
+      "chose_after": 0,
+      "kind_selector": 31,
+      "neither_passed": 1,
+      "oracle_union": 31,
+      "tasks": 32
+    },
+    "hard": {
+      "after_only": 2,
+      "always_after": 16,
+      "always_before": 16,
+      "before_only": 2,
+      "both_passed": 14,
+      "chose_after": 1,
+      "kind_selector": 16,
+      "neither_passed": 14,
+      "oracle_union": 18,
+      "tasks": 32
+    }
+  },
+  "discordant_jobs": [
+    {
+      "after": true,
+      "before": false,
+      "id": "h20000472_02",
+      "kind": "a cache that forgets the least recently used, with hidden tests",
+      "prompt_sha256": "b18a1a8d59965f22ddb6a158718948691e7dfcdaa907835ad84c11ae819780d2",
+      "seed": 20000472,
+      "selected": "before"
+    },
+    {
+      "after": true,
+      "before": false,
+      "id": "h20000475_03",
+      "kind": "the regions of a grid, with hidden tests",
+      "prompt_sha256": "7c843937b780d2c7393504da186482485f2e2105e17c1980698883d917ad8b76",
+      "seed": 20000475,
+      "selected": "before"
+    },
+    {
+      "after": false,
+      "before": true,
+      "id": "h20000478_00",
+      "kind": "a file given in the task, edited to a specification",
+      "prompt_sha256": "062c488e5712154e1a100ccc7cbc300f8034fe33bcfe2e35f6f0944e549431f0",
+      "seed": 20000478,
+      "selected": "before"
+    },
+    {
+      "after": false,
+      "before": true,
+      "id": "h20000478_02",
+      "kind": "the percent change between two columns, rounded by a rule",
+      "prompt_sha256": "e0e63effeafb3a9a31dbc96476102becd8b8b602a3dd1d8e81372b931ec1c9b1",
+      "seed": 20000478,
+      "selected": "before"
+    }
+  ],
+  "generation": "g47",
+  "held_out_seeds": {
+    "20000471": {
+      "always_after": 5,
+      "always_before": 5,
+      "chose_after_ids": [
+        "h20000471_02"
+      ],
+      "kind_selector": 5,
+      "tasks": 8
+    },
+    "20000472": {
+      "always_after": 7,
+      "always_before": 6,
+      "chose_after_ids": [],
+      "kind_selector": 6,
+      "tasks": 8
+    },
+    "20000473": {
+      "always_after": 8,
+      "always_before": 8,
+      "chose_after_ids": [],
+      "kind_selector": 8,
+      "tasks": 8
+    },
+    "20000474": {
+      "always_after": 6,
+      "always_before": 6,
+      "chose_after_ids": [],
+      "kind_selector": 6,
+      "tasks": 8
+    },
+    "20000475": {
+      "always_after": 6,
+      "always_before": 5,
+      "chose_after_ids": [],
+      "kind_selector": 5,
+      "tasks": 8
+    },
+    "20000476": {
+      "always_after": 5,
+      "always_before": 5,
+      "chose_after_ids": [],
+      "kind_selector": 5,
+      "tasks": 8
+    },
+    "20000477": {
+      "always_after": 5,
+      "always_before": 5,
+      "chose_after_ids": [],
+      "kind_selector": 5,
+      "tasks": 8
+    },
+    "20000478": {
+      "always_after": 5,
+      "always_before": 7,
+      "chose_after_ids": [],
+      "kind_selector": 7,
+      "tasks": 8
+    }
+  },
+  "interpretation": "The oracle union uses the final task grades on the test jobs and is an upper bound for choosing one archived delivery. The evaluation uses known exam category labels. The recorded grades do not include model system prompt transcripts. Comparisons describe single archived runs per job.",
+  "provenance": {
+    "graded_member_seats": {
+      "after": {
+        "t80+g47code": 4,
+        "t80+g47code2": 34,
+        "t80+g47data": 10,
+        "t80+g47data2": 17,
+        "t80+g47sources2": 5,
+        "t80+g47trunk": 64,
+        "t80+g47words": 8
+      },
+      "before": {
+        "t80+g45code": 34,
+        "t80+g45code2": 5,
+        "t80+g45data": 8,
+        "t80+g45data2": 17,
+        "t80+g45sources2": 5,
+        "t80+g45trunk": 64,
+        "t80+g45words": 8
+      }
+    },
+    "grading_commits": [
+      "ff6037d"
+    ],
+    "rosters": {
+      "after": [
+        "t80+g39code",
+        "t80+g43code2",
+        "t80+g43data",
+        "t80+g43data2",
+        "t80+g43sources",
+        "t80+g43sources2",
+        "t80+g43words",
+        "t80+g43words2",
+        "t80+g44code",
+        "t80+g44code2",
+        "t80+g44data",
+        "t80+g44data2",
+        "t80+g44sources",
+        "t80+g44sources2",
+        "t80+g44words",
+        "t80+g44words2",
+        "t80+g45code",
+        "t80+g45code2",
+        "t80+g45data",
+        "t80+g45data2",
+        "t80+g45sources",
+        "t80+g45sources2",
+        "t80+g45words",
+        "t80+g45words2",
+        "t80+g47code",
+        "t80+g47code2",
+        "t80+g47data",
+        "t80+g47data2",
+        "t80+g47sources",
+        "t80+g47sources2",
+        "t80+g47trunk",
+        "t80+g47words"
+      ],
+      "before": [
+        "t80+g45trunk",
+        "t80+g39code",
+        "t80+g43sources",
+        "t80+g43sources2",
+        "t80+g43code2",
+        "t80+g43data",
+        "t80+g43data2",
+        "t80+g43words",
+        "t80+g43words2",
+        "t80+g44sources",
+        "t80+g44sources2",
+        "t80+g44code",
+        "t80+g44code2",
+        "t80+g44data",
+        "t80+g44data2",
+        "t80+g44words",
+        "t80+g44words2",
+        "t80+g45sources",
+        "t80+g45sources2",
+        "t80+g45code",
+        "t80+g45code2",
+        "t80+g45data",
+        "t80+g45data2",
+        "t80+g45words",
+        "t80+g45words2"
+      ]
+    }
+  },
+  "selector": "Hold out an entire exam seed. For a registered task-kind label, choose after only if it delivered more passing jobs than before on the other seven seeds. Otherwise choose before. The selector receives only the category of a test job.",
+  "source_manifest": "../checked-delivery/g47-headroom.json",
+  "source_run": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44313055326"
+}

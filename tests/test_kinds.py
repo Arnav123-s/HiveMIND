@@ -34,6 +34,7 @@ def test_every_kind_has_its_form_and_the_exams_read_them_from_the_registry():
 def test_a_kind_makes_a_task_without_the_network(name, offline):
     field, kind, task, check = kinds.sample(name)
     assert field == kinds.get(name).FAMILY and kind and task and callable(check)
+    assert kind in kinds.written(name), f"{name}: the recorded kind must be visible to the generation reports"
     assert kinds.sample(name)[2] == task  # the same sample every time
     les = kinds.get(name).lesson
     if les and not kinds.get(name).HELD_OUT:

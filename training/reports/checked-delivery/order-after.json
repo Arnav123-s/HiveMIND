@@ -1,0 +1,155 @@
+[
+  {
+    "id": "battery",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "cell,change\nElm,-2\nBirch,12\nAsh,-7\nCedar,0\n",
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "deliver-exactly",
+    "action_correct": false
+  },
+  {
+    "id": "queue",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      false,
+      true
+    ],
+    "agreed": false,
+    "requested_seats": 3,
+    "recorded_seats": 2,
+    "stdout": null,
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "deliver-exactly",
+    "action_correct": false
+  },
+  {
+    "id": "invoices",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "zone,dollars\nNE,-3.75\nSW,105.00\nNW,12.50\n",
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "deliver-exactly",
+    "action_correct": false
+  },
+  {
+    "id": "priority",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "code,priority\nQ2,2\nQ7,2\nQ1,9\n",
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "deliver-exactly",
+    "action_correct": false
+  },
+  {
+    "id": "order-input-only",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "18",
+    "delivered_file": "name,score\nPia,4\nRay,6\nDan,8\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "text-input-order",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "code,rank\nA10,1\nA2,2\nA1,3\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "mixed-requests",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "16",
+    "delivered_file": "name,hours\nSol,3\nKay,8\nAmi,5\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "two-key",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      true,
+      true
+    ],
+    "agreed": true,
+    "requested_seats": 2,
+    "recorded_seats": 2,
+    "stdout": "3",
+    "delivered_file": "wing,room\n1,5\n1,3\n2,10\n",
+    "file_correct": true,
+    "job_correct": true,
+    "expected_action": "deliver-exactly",
+    "action_correct": true
+  },
+  {
+    "id": "wrong-cells",
+    "group": "sealed controlled ordering",
+    "candidate_correct": [
+      false,
+      false
+    ],
+    "agreed": false,
+    "requested_seats": 3,
+    "recorded_seats": 2,
+    "stdout": null,
+    "delivered_file": null,
+    "file_correct": false,
+    "job_correct": false,
+    "expected_action": "abstain",
+    "action_correct": true
+  }
+]

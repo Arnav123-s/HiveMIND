@@ -1,0 +1,34 @@
+{
+  "policies": {
+    "first_fit": "first_fit",
+    "best_fit": "best_fit",
+    "any_fit_sparse": [
+      {
+        "reserve_percent": 30,
+        "allowance_percent": 25
+      },
+      {
+        "reserve_percent": 30,
+        "allowance_percent": 25
+      },
+      {
+        "reserve_percent": 30,
+        "allowance_percent": 25
+      },
+      {
+        "reserve_percent": 25,
+        "allowance_percent": 25
+      }
+    ]
+  },
+  "single_candidates": 57,
+  "sparse_candidates": 29,
+  "best_single": {
+    "reserve_percent": 30,
+    "allowance_percent": 25
+  },
+  "best_fit_development_bins": 1545,
+  "chosen_development_bins": 1543,
+  "original_threshold_policies": 25,
+  "original_thresholds_match_best_fit_counts": true
+}

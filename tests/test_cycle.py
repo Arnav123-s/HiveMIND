@@ -36,6 +36,14 @@ def test_bars_read_the_newest_read_and_record(tmp_path):
     assert "[met] hours a generation: 2.5 h" in out
 
 
+def test_recorded_kind_scores_take_precedence_over_the_published_read(tmp_path):
+    arm = {"tasks": 3, "kinds": {"a class with rules, with hidden tests": [1, 2],
+                                 "a queue served by priority, with hidden tests": [0, 1]}, "unpractised": [0, 0]}
+    rec = dict(REC, arms={"after": arm})
+    out = cycle.bars(rec, root=_home(tmp_path, [rec], READ))
+    assert "hard kinds passed: 0.50" in out and "held-out kinds passed: 0.00" in out
+
+
 def test_talk_is_read_when_sat(tmp_path):
     home = _home(tmp_path, [REC], READ)
     (home / "training/reports/talk").mkdir()

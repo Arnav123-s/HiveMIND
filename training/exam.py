@@ -335,7 +335,16 @@ def practice(seed, n=16, only=(), members=2, log=print):
     had = len(solo.solved())
     for tid, field, kind, task, check in exam(seed, n, only):
         r = sit_one(tag, tid, task, check, memory.HOME)
-        solo.judge(task, r["ok"])
+        # A helper-sorted delivery saved no member program. Its grade belongs
+        # to the delivered file, so it cannot judge an older row for this task.
+        try:
+            receipt = json.loads((RUNS / tag / tid / "members" / "members.json").read_text())
+        except FileNotFoundError:
+            receipt = {}  # older practice runs may have no receipt
+        except (ValueError, OSError):
+            receipt = None
+        if isinstance(receipt, dict) and not receipt.get("file_repairs"):
+            solo.judge(task, r["ok"])
         rows.append(r)
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{field}: {kind}] {r['seconds']}s", flush=True)
     now = solo.solved()

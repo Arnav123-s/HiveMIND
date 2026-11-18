@@ -110,3 +110,33 @@ def test_practice_keeps_the_right_member_of_a_task_the_hive_got_wrong(tmp_path, 
     assert got["right"] == 0 and got["rows"] == 2
     assert {(r["type"], r["member"]) for r in rows} == {("first", 1), ("done", 1), ("pair", 2), ("pair", 3)}
     assert "1 of the right members not among those that agreed" in said[-1]
+
+
+def test_practice_does_not_promote_an_old_program_for_a_helper_sorted_delivery(tmp_path, monkeypatch):
+    from team import memory, solo
+
+    monkeypatch.setattr(exam, "RUNS", tmp_path / "runs")
+    monkeypatch.setattr(memory, "HOME", tmp_path / "memory")
+    monkeypatch.setenv("AGENT_TEAM_SOLO", "2")
+    # Exercise a repaired result and the three forms of ordinary or older receipt.
+    receipts = [
+        {"file_repairs": [{"name": "out.csv", "column": "value", "direction": "ascending"}]},
+        {"file_repairs": []}, {"agreed": True}, None,
+    ]
+    tasks = [f"Save the observations of sensor {i} in out.csv" for i in range(len(receipts))]
+    for task in tasks:
+        solo.keep(task, "print('old')", "old")
+    monkeypatch.setattr(exam, "exam", lambda *args: [
+        (str(i), "data", "table", task, check) for i, task in enumerate(tasks)
+    ])
+    for i, receipt in enumerate(receipts):
+        run = exam.RUNS / "practice_1" / str(i)
+        (run / "members").mkdir(parents=True)
+        (run / "exam.json").write_text(json.dumps({"id": str(i), "ok": True, "seconds": 0}))
+        if receipt is not None:
+            (run / "members" / "members.json").write_text(json.dumps(receipt))
+    out = exam.practice(1, log=lambda *a, **k: None)
+    assert out["right"] == 4 and out["confirmed_in_library"] == 3
+    assert {row["task"]: row["checked"] for row in solo.solved()} == {
+        task: i != 0 for i, task in enumerate(tasks)
+    }

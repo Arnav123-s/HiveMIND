@@ -1,0 +1,25 @@
+{
+ "cases_per_policy": 100,
+ "controls": "Three correct arithmetic functions, eight public and 24 new hidden inputs each. Control success requires no patch and exact outputs. No hidden items are provided to repair search or re-selection.",
+ "files": {
+  "cases.json": "e6b65901ed70ea648d29156482ee4a44bd4631eeb76b1af588c195570f598a1d",
+  "controls.json": "e27f09e07c0cae0a5e0f67332428030869a1d1abdc741808a8398ee1a4a747f0"
+ },
+ "hidden_inputs_unique_even_under_permutation": true,
+ "oracle": "Decimal to_integral_value(ROUND_CEILING); 250+90*units when nonempty; charge per parcel for A and on the combined total for B. The empty input was excluded because it had already been public.",
+ "previous_specs": {
+  "1-A.json": "ccd0a692eabe46b345164f61dd1eeeec97274c2600663150afd22443b890fa1a",
+  "2-B.json": "d32b70fd3ca5b9acb165ce35ff54dc3af39032e9f13c145f75d0e900777111e9",
+  "3-A.json": "5bed419426e4b63d4516aa69f6a796e66e71906d95fcce56e19ca5cc23c8e366",
+  "4-B.json": "fbd1af6b17ca2c63a0fd19f8fa4553770444effbdc568cc7a17e249ab5e83acf"
+ },
+ "prior_unique_gram_multisets_excluded": 128,
+ "seed": 831462910,
+ "strata": [
+  "edges",
+  "mixed",
+  "tiny",
+  "exact",
+  "random"
+ ]
+}
