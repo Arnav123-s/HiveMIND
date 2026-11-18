@@ -841,6 +841,23 @@ jobs:
           path: talk/${{ env.GEN }}.json
           if-no-files-found: ignore
           retention-days: 30
+      # Three fixed plain messages through the door a person uses (training/talk_smoke.py, piece T5), on the second seat
+      # of before and of after (the first holds the talk exam, so the gate's longest seat is not made longer); the record
+      # writes the replies of the body it kept to docs/reads/talk_smoke.md. Each message is held to 4 minutes, the step
+      # to 15, and it never fails the seat.
+      - name: Three plain messages, as a person sends them (training/talk_smoke.py)
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
+        continue-on-error: true
+        timeout-minutes: 15
+        run: python training/talk_smoke.py sit --arm ${{ matrix.arm }} --out talk_smoke.json --per 240 --minutes 12
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
+        continue-on-error: true
+        with:
+          name: talk-smoke-${{ matrix.arm }}
+          path: talk_smoke.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: The numbers once more, last in the log
         if: ${{ !cancelled() && steps.who.outputs.who }}
         run: |
@@ -962,6 +979,8 @@ jobs:
             set -o pipefail  # (GitHub's bash has it on already) a failed read is not hidden by tee
             python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || { echo "::warning::the read could not be written; the record is kept"; echo read >> "$FAILED"; }
             python3 training/progress.py || { echo "::warning::the progress graphs could not be drawn; the record is kept"; echo progress >> "$FAILED"; }
+            # what the body said to three plain messages (sat in the gate): only shown, so it never fails the record
+            python3 training/talk_smoke.py write "$GEN" smoke --out docs/reads/talk_smoke.md || echo "::warning::docs/reads/talk_smoke.md could not be written; the record is kept"
             if [ -s "$FAILED" ]; then
               what=$(paste -sd, "$FAILED")
               python3 training/grow_record.py failed "$GEN" "${GITHUB_RUN_ID:-0}" "$what" || {
