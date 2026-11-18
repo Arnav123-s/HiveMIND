@@ -128,65 +128,85 @@ def _tabular_rules(task, name):
     return None, None, None
 
 
+# A sort has two independent parts: a column and a direction. The key can come
+# first ("by mass, descending") or last ("in descending order of mass").
+_KEY = r"""(?P<key>`[^`\n]+`|"[^"\n]+"|'[^'\n]+'|[\w-]+)"""
+_NUMERIC = r"(?:numeric(?:ally|al(?:ly)?)?\s+)?"
+_VERB = rf"\b(?:sort(?:ed)?|order(?:ed)?|arrange[ds]?|rank(?:ed)?|list(?:ed)?|display(?:ed)?|show(?:n)?|present(?:ed)?)\s+{_NUMERIC}"
+_OBJECT = r"(?:(?:(?:the|all|its|these)\s+)?(?:(?:output|data|selected|remaining|filtered)\s+)?(?:rows|records|items|entries|results|table|file|them)\s+)?"
+_UP = r"asc(?:ending)?|increasing|(?:lowest|smallest|least) first|(?:low|lowest|smallest|least)\s+to\s+(?:high|highest|largest|greatest)"
+_DOWN = r"desc(?:ending)?|decreasing|(?:highest|largest|greatest) first|(?:high|highest|largest|greatest)\s+to\s+(?:low|lowest|smallest|least)"
+_DIRECTION = rf"(?:(?:in|from)\s+)?{_NUMERIC}(?P<direction>{_UP}|{_DOWN})(?:\s+numeric(?:al|ally)?)?(?:\s+order)?"
+_BY = r"(?:by|on|of|in order of)\s+(?:(?:the\s+)?column\s+)?"
+_ORDERS = [re.compile(pattern, re.I) for pattern in (
+    rf"{_VERB}{_OBJECT}{_NUMERIC}{_BY}{_KEY}(?:\s+(?:column|field))?\s*,?\s+{_DIRECTION}\b",
+    rf"{_VERB}{_OBJECT}{_DIRECTION}\s+{_BY}{_KEY}",
+    rf"{_VERB}{_OBJECT}{_BY}{_DIRECTION}\s+{_KEY}",
+    rf"\b(?P<direction>highest|largest|greatest|lowest|smallest|least)\s+{_KEY}\s+first\b",
+)]
+_SENTENCE = re.compile(r"[;\n]|\.(?:\s|$)")
+_NEXT_INSTRUCTION = re.compile(
+    r"^\s*(?:[,;]\s*|\s+(?:and|while)\s+)(?:(?:and|while|then)\s+)?(?:keep(?:ing)?|preserv(?:e|ing)|retain(?:ing)?|"
+    r"maintain(?:ing)?|leav(?:e|ing)|do not change|without (?:altering|changing)|print|report|return|tell|show)\b", re.I)
+_KEEP = r"(?:keep(?:ing)?|preserv(?:e|ing)|maintain(?:ing)?|retain(?:ing)?)"
+_ORIGINAL = r"(?:the |their )?(?:original|input|source|arrival|existing|relative)(?: (?:input|arrival|relative))? (?:row )?order"
+_STABLE = re.compile(rf"\b(?:{_KEEP}\s+{_ORIGINAL}\s+(?:for|among|within|of)\s+(?:ties|tied rows|equal (?:keys|values))"
+                     rf"|(?:for|on|among) ties,?\s+{_KEEP}\s+{_ORIGINAL}|(?:break|resolve) ties (?:by|in|using)\s+{_ORIGINAL}"
+                     rf"|{_KEEP}\s+(?:ties|tied rows) in\s+{_ORIGINAL})\b", re.I)
+
+
+def _output_order_context(before, name):
+    """Require an imperative about the output, or a modifier attached directly to its specification."""
+    position = before.rfind(name)
+    if position < 0:
+        return False
+    following = before[position + len(name):]
+    sentence = _SENTENCE.split(before)[-1]
+    if _FILENAME.search(following) or re.search(
+            r"\b(?:if|unless|whether|optionally|never|not|without|only when|compar\w*|instead of)\b|n.t\b", sentence, re.I):
+        return False
+    sections = _SENTENCE.split(following)
+    lead = sections[-1].strip("`'\" ,")
+    if len(sections) > 1:
+        direct = r"(?:(?:then|please|finally)\s*)?(?:(?:put|place|list|show|display)\s+(?:the\s+)?(?:rows\s+)?(?:with\s+)?(?:the\s*)?)?"
+        destination = r"(?:put|place|include|list|copy|save|write)\b.+?\b(?:in|into|to)\s+(?:the |this )?(?:output(?: file| table)?|file|table|CSV|TSV)"
+        return bool(re.fullmatch(direct, sections[-1].lstrip(), re.I)
+                    or (not re.search(r"\b(?:input|source|reference)\b", lead, re.I) and re.fullmatch(destination, lead, re.I)))
+    field = r"""[`'"]?[\w-]+[`'"]?"""
+    fields = rf"{field}(?:\s*,\s*{field})*(?:\s*,?\s+and\s+{field})?"
+    schema = rf"(?:(?:with|using)\s+(?:the\s+)?)?(?:columns|headers?)\s*:?\s+{fields}"
+    population = r"(?:and\s+)?(?:one|a|\d+)\s+(?:data\s+)?rows?\s+(?:per|for each)\s+[\w-]+"
+    subject = rf"(?:{schema})?\s*,?\s*(?:{population})?\s*,?\s*(?:(?:with|and|then)\s*)?(?:(?:the|its)\s*)?(?:rows|records)?"
+    return bool(re.fullmatch(subject, lead, re.I))
+
+
 def _ordering(task, name):
-    """Recognize an unambiguous, single-key, directed sort on a single output table."""
+    """Only a single explicit output key and direction can authorize a stable numeric reorder."""
     task = task.split("\n\n(This continues a conversation.", 1)[0]
+    # A stable tie instruction is already satisfied by Python's stable sort. Strip
+    # only that instruction before checking for competing order requirements.
+    task = _STABLE.sub("keep stable ordering", task)
     tables = [f for f in wanted(task) if f.lower().endswith((".csv", ".tsv"))]
     if tables != [name] or re.search(
         r"\b(?:bytes?|byte[- ](?:exact|for[- ]byte)|verbatim|identical|tie[- ]?break|"
-        r"(?:break|resolve) ties|then by|no headers?|without (?:a |the )?header|headerless|"
-        r"(?:preserve|keep) (?:the )?(?:original|input|source) (?:order|format|bytes))\b", task, re.I
+        r"ties|tied rows|secondarily|secondary key|then (?:by|on)|and (?:by|on)|no headers?|without (?:a |the )?header|headerless|"
+        r"(?:preserve|keep) (?:the )?(?:original|input|source) format)\b", task, re.I
     ):
         return None
-    mentions = list(re.finditer(r"\b(?:sort(?:ed)?|order(?:ed)?)\s+(?:the rows\s+)?by\b", task, re.I))
-    extremes = list(re.finditer(r"""\b(highest|lowest)\s+[`"']?([\w-]+)[`"']?\s+first\b""", task, re.I))
-    if len(mentions) + len(extremes) != 1:
+    if re.search(rf"\b{_KEEP}\s+{_ORIGINAL}\b", task, re.I):
         return None
-    phrase = (mentions or extremes)[0]
-    before = task[:phrase.start()]
-    position = before.rfind(name)
-    if position < 0:
+    matches = [m for pattern in _ORDERS for m in pattern.finditer(task)]
+    if len(matches) != 1:
         return None
-    following = before[position + len(name):]
-    if _FILENAME.search(following) or re.search(r"\b(?:source|input|reference)\b", following, re.I):
+    match = matches[0]
+    if not _output_order_context(task[:match.start()], name):
         return None
-    # A separate sentence must be a direct instruction about the output.
-    sections = re.split(r"[;\n]|\.(?:\s|$)", following)
-    # Conditional or negated requests cannot authorize a deterministic rewrite.
-    sentence = re.split(r"[;\n]|\.(?:\s|$)", before)[-1]
-    if re.search(r"\b(?:if|unless|whether|optionally|never|not|without|only when|compare|compared|instead of)\b|n.t\b",
-                 sentence, re.I):
+    tail = task[match.end():]
+    if not re.match(r"^\s*(?:[.;\n]|$)", tail) and not _NEXT_INSTRUCTION.match(tail):
         return None
-    if len(sections) == 1:
-        # Positively recognize a sort attached to the output name or its declared
-        # columns. A sort mentioned in arbitrary intervening prose can describe another table.
-        field = r"""[`'"]?[\w-]+[`'"]?"""
-        fields = rf"{field}(?:\s*,\s*{field})*(?:\s*,?\s+and\s+{field})?"
-        schema = rf"(?:(?:with|using)\s+(?:the\s+)?)?(?:columns|headers?)\s*:?\s+{fields}"
-        population = r"(?:and\s+)?(?:one|a|\d+)\s+(?:data\s+)?rows?\s+(?:per|for each)\s+[\w-]+"
-        attachment = rf"(?:{schema})?\s*[,;]?\s*(?:{population})?\s*,?\s*(?:(?:with|and)\s+)?(?:(?:the|its)\s+)?(?:(?:rows|records)\s*)?"
-        if not re.fullmatch(attachment, following.strip("`'\" "), re.I):
-            return None
-    if len(sections) > 1:
-        lead = sections[-1].strip()
-        direct = re.fullmatch(r"(?:(?:then|please)\s*)?(?:(?:put|place|list|show|display)\s+"
-                              r"(?:the\s+)?(?:rows\s+)?(?:with\s+)?(?:the\s*)?)?", sections[-1].lstrip(), re.I)
-        # A separate instruction can first restrict which rows to put in the output,
-        # then specify their order. It must name the output as the destination.
-        destination = re.fullmatch(r"(?:put|place|include|list|copy|save|write)\b.+?\b(?:in|into|to)\s+"
-                                   r"(?:the |this )?(?:output(?: file| table)?|file|table|CSV|TSV)\s*,?", lead, re.I)
-        if not direct and not destination:
-            return None
-    if extremes:
-        if re.match(r"\s*(?=[.;\n]|$)", task[phrase.end():]):
-            return {"column": phrase[2], "direction": "descending" if phrase[1].lower() == "highest" else "ascending"}
-        return None
-    # Consume the complete instruction. Qualifiers and second keys require a more precise contract.
-    rule = re.match(r"""\s+[`"']?([\w-]+)[`"']?\s+(?:in\s+)?(ascending|descending)(?:\s+order)?"""
-                    r"\s*(?=[.;\n]|$)", task[phrase.end():], re.I)
-    if rule:
-        return {"column": rule[1], "direction": rule[2].lower()}
-    return None
+    value = match["direction"].lower()
+    ascending = bool(re.fullmatch(_UP, value, re.I)) or value in ("lowest", "smallest", "least")
+    return {"column": match["key"].strip("`'\""), "direction": "ascending" if ascending else "descending"}
 
 
 def _csv(source, name):

@@ -248,3 +248,37 @@ def test_sort_applies_after_filtered_rows_are_assigned_to_output(tmp_path):
     task = f"Create {name} with columns town,fee. Include towns charging at least 20 in the output table, sorted by fee ascending."
     checked = deliverables.inspect(task, tmp_path, [name])
     assert deliverables.repairs(checked) == [{"name": name, "column": "fee", "direction": "ascending"}]
+
+
+@pytest.mark.parametrize(("directive", "direction"), [
+    ("Order records by total descending, retaining the labels.", "descending"),
+    ("Rank the selected rows by total from smallest to largest.", "ascending"),
+    ("Sort rows numerically by total in descending numeric order.", "descending"),
+    ("Please arrange the records in ascending numerical order of total.", "ascending"),
+    ("Sort by increasing total, keeping their input order for ties.", "ascending"),
+    ("Display the output records in order of increasing total.", "ascending"),
+    ("Order rows by total, highest first. For ties, preserve the input order.", "descending"),
+    ("Put the lowest total first and preserve the names and amounts.", "ascending"),
+    ("Order by total ascending. Break ties using the original row order.", "ascending"),
+])
+def test_equivalent_sort_instructions(tmp_path, directive, direction):
+    name = "fees.csv"
+    (tmp_path / name).write_text("name,total\nA,2\nB,1\n")
+    checked = deliverables.inspect(f"Create {name} with columns name,total. {directive}", tmp_path, [name])
+    assert checked["sorts"][name]["direction"] == direction
+
+
+@pytest.mark.parametrize("directive", [
+    "Compare this table to the samples ordered by total from largest to smallest.",
+    "Optionally order rows by total descending.",
+    "Order rows by total descending, then by name.",
+    "Rank records in ascending order by total but only if asked later.",
+    "Sort by increasing total while preserving alphabetical order among tied rows.",
+    "Sort by total in ascending numeric order. Keep their original row order.",
+    "The archive source is sorted by total descending, preserving its labels.",
+])
+def test_other_or_conflicting_sort_is_not_authorized(tmp_path, directive):
+    name = "fees.csv"
+    (tmp_path / name).write_text("name,total\nA,2\nB,1\n")
+    checked = deliverables.inspect(f"Create {name} with columns name,total. {directive}", tmp_path, [name])
+    assert not checked["sorts"]
