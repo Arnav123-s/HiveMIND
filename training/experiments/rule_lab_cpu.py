@@ -11,7 +11,7 @@ from team import ternary
 
 
 class LabCPU:
-    def __init__(self, binary, base, catalog, log_dir, slots=2, threads=4):
+    def __init__(self, binary, base, catalog, log_dir, slots=2, threads=4, flash=None):
         self.binary = Path(binary).resolve(strict=True)
         self.base = Path(base).resolve(strict=True)
         self.catalog = Path(catalog).resolve(strict=True)
@@ -19,7 +19,7 @@ class LabCPU:
         self.log_dir.mkdir(parents=True, exist_ok=True)
         if min(slots, threads) < 1:
             raise ValueError("slots and threads must be positive")
-        self.slots, self.threads = slots, threads
+        self.slots, self.threads, self.flash = slots, threads, flash
         self.proc = None
         self.resident = []
         self.ids = {}
@@ -68,6 +68,8 @@ class LabCPU:
             args = [str(self.binary), "-m", str(self.base), "-t", str(self.threads), "-c", "2048",
                     "-rtr", "--host", "127.0.0.1", "--port", str(port), "--parallel", "1", "--jinja",
                     "--lora-init-without-apply"]
+            if self.flash is not None:
+                args.extend(["-fa", "on" if self.flash else "off"])
             for name in wanted:
                 args += ["--lora", str(self.catalog / f"{name}.gguf")]
             self.starts += 1

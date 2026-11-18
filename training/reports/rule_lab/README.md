@@ -6,6 +6,10 @@ I ran the experiment on the existing g41 HiveMIND base in a separate Git worktre
 
 The follow-up rebuilt this child from its parent, tested sub-megabyte ternary records on new problems, and grew one small network from the memories of two specialists. [Engrams, reconstruction and BitNet results](engrams-and-bitnets.md)
 
+The inference and learning study measures CPU time on the real 8B server and scratch stem, checks two custom integer kernels, and follows a routing policy through changing goals and delayed rewards. [Continual learning and inference speed](continual-learning-and-speed.md)
+
+Two cells also learned to cooperate from separate inputs through a one-byte channel each. The communication study includes a runnable pair, incompatible signal conventions, late messages and a 1,024-cell sub-hive simulation. [Hive telepathy and sub-hives](hive-telepathy.md)
+
 ## The fixed comparison
 
 Four affine worlds and four interaction worlds were shared by all seven configurations. An affine sensor adds separate contributions from x and y. The harder sensor also multiplies x by y and an unknown coefficient. Seconds are mean end-to-end time summed over the turns of one world, including adapter loads when they occurred.
