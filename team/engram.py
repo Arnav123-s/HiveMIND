@@ -30,8 +30,6 @@ import json
 import os
 import tempfile
 import time
-from collections import Counter, defaultdict
-from functools import lru_cache
 
 from . import memory, ternary
 
