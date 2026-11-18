@@ -33,6 +33,8 @@ from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:  # run as `python3 training/reads.py`: the kinds (training/kinds/) are found from the folder above
+    sys.path.insert(0, str(ROOT))
 REPO = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
 RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 STAGES = ("practice", "dream", "gather", "plan", "train", "join", "merge", "gate", "record")
