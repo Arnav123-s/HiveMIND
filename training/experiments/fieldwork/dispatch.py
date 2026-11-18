@@ -79,6 +79,10 @@ def registry(root, name):
             "model-derived phases",
         )
     elif name in ("thermal", "climate"):
+        for path in sorted((root / "numeric-trial" / name).glob("*.json")):
+            trial = read(path)
+            origin = "model" if trial["digest"] == trial["parent"] else "model with interface repair"
+            candidates.append((path.stem + "/numpy", trial["source"], "numpy", origin))
         for adaptive in (False, True):
             label = "adaptive" if adaptive else "fixed"
             candidates.append(

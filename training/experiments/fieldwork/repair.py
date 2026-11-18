@@ -31,6 +31,29 @@ IMPORTS.update({v: "from heapq import " + v for v in ("heappop", "heappush", "he
 
 def variants(source, result, remaining):
     error = result["feedback"]
+    missing = re.search(r"No module named '([^']+)'", error)
+    if missing:
+        try:
+            tree = ast.parse(source)
+        except SyntaxError:
+            tree = None
+        if tree is not None:
+            loaded = {
+                n.id for n in ast.walk(tree) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)
+            }
+            for statement in tree.body:
+                if (
+                    isinstance(statement, ast.ImportFrom)
+                    and statement.module
+                    and statement.module.split(".")[0] == missing[1]
+                    and all(n.name != "*" and (n.asname or n.name) not in loaded for n in statement.names)
+                ):
+                    yield (
+                        "remove unused unavailable import",
+                        ast.unparse(
+                            ast.Module(body=[s for s in tree.body if s is not statement], type_ignores=[])
+                        ),
+                    )
     found = re.search("name '([a-zA-Z_]+)' is not defined", error)
     if found and found[1] in IMPORTS:
         yield "import " + found[1], IMPORTS[found[1]] + "\n" + source

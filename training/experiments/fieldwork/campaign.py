@@ -92,7 +92,7 @@ def fitness(score):
     measures = []
     for row in score["tests"]:
         d = row.get("detail", {})
-        if "nrmse" in d or "origin" in d:
+        if score.get("task") in ("thermal", "climate") or "nrmse" in d or "origin" in d:
             err = d.get("nrmse", d.get("rmse"))
             measures.append(min(1000, float(err)) if err is not None else 1000)
     return score["correct"], -(sum(measures) / len(measures) if measures else 0)
@@ -202,7 +202,7 @@ def examine(guest, cold, out, names, methods, split):
             metrics = grade(guest, name, source, split)
             save(
                 dest,
-                dict(task=name, method=method, grader_version=2, digest=fingerprint(source), **metrics),
+                dict(metrics, task=name, method=method, grader_version=2, digest=fingerprint(source)),
             )
             print(split, method, name, f"{metrics['correct']}/{metrics['total']}", flush=True)
 

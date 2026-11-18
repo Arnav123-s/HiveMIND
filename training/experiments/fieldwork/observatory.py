@@ -8,7 +8,7 @@ from pathlib import Path
 from .campaign import read, save
 from .guest import Guest
 from .native import generate, server
-from .work import check, load_bank, matches, work
+from .work import load_bank, matches, work
 
 
 MERGE = """Write solve(x) to coalesce coverage intervals for one instrument. x is a list of [start,end] integer times, potentially shuffled, repeated or empty. Ignore intervals with end<=start. Return sorted, disjoint [start,end] rows for the union of these half-open intervals; touching intervals must merge. Time coordinates may be widely separated. Aim for O(n log n)."""
@@ -103,8 +103,22 @@ def large(blocks=6500, seed=1887):
 
 
 def inspect_delivery(g, root, receipt, audit, blocks, seed):
+    def independent(source):
+        cases = audit["validation"]
+        output, _, _ = g.run(source, [r["input"] for r in cases], fuel=14_000_000_000)
+        passed = [matches(v.get("value"), r["output"], audit["compare"]) for v, r in zip(output, cases)]
+        nonempty = [bool(json.loads(r["output"]["audit.json"])["covered"]) for r in cases]
+        return dict(
+            passed=sum(passed),
+            total=len(cases),
+            positive_passed=sum(p and n for p, n in zip(passed, nonempty)),
+            positive_total=sum(nonempty),
+            empty_baseline=len(cases) - sum(nonempty),
+        )
+
     x, y = large(blocks, 1887 if seed == 93133 else seed)
-    row, used, sec = g.run((root / "solver.py").read_text(), [x], fuel=115_000_000_000)
+    program = (root / "solver.py").read_text()
+    row, used, sec = g.run(program, [x], fuel=115_000_000_000)
     reopened = 0
     for job in audit["jobs"]:
         target = root / job["id"]
@@ -113,10 +127,7 @@ def inspect_delivery(g, root, receipt, audit, blocks, seed):
             reopened += matches(opened, reference(job["input"]), audit["compare"])
     # Evaluate the identical submitted source with its callable parent removed.
     chosen = max(receipt["attempts"], key=lambda a: a["passed"])
-    without_parent = None
-    if receipt["parents"]:
-        passed, _ = check(g, chosen["source"], audit["validation"], audit["compare"])
-        without_parent = dict(passed=passed, total=len(audit["validation"]))
+    without_parent = independent(chosen["source"]) if receipt["parents"] else None
     save(
         root / "independent.json",
         dict(
@@ -127,6 +138,7 @@ def inspect_delivery(g, root, receipt, audit, blocks, seed):
             seconds=sec,
             reopened_filesets=reopened,
             without_parent=without_parent,
+            frozen_score=independent(program),
             seed=seed,
         ),
     )

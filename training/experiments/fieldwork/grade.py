@@ -243,6 +243,7 @@ def grade(guest, name, program, split):
             )
     correct = sum(r["ok"] for r in tests)
     return dict(
+        task=name,
         correct=correct,
         total=len(tests),
         complete=correct == len(tests) and bool(tests),

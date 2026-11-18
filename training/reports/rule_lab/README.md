@@ -1,5 +1,7 @@
 # What the CPU hive learned
 
+The field-work study tests whether the hive finishes unfamiliar scientific, programming and multi-step jobs. It includes frozen programs, reopened output files, external observations and a prospective monthly CO₂ forecast. [Field-work results](field-work.md) · [Run a complete job on a CPU](fieldwork/reproduce.md)
+
 The scale study grew the population to **4,096 distinct learned ternary cells on one CPU core**. It measures when sub-hives should search locally, how two newborns can learn complementary skills, and how surviving cells can rebuild a missing specialist. A separate work-order trial and a faster production engram index connect the numeric experiments to the working hive. [Scaling the hive](scaling-the-hive.md) · [Runnable colonies](engrams/scaled-colonies.zip)
 
 A new 38.0 MiB adapter learned a calibration procedure that the original data and code cells repeatedly failed to execute. The child completed all four fresh affine worlds from its weights, with an average of 15.0 seconds and two model calls per world. The original open pair completed zero, averaging 47.2 seconds and six calls. I would give the learned child a narrow specialist role. Its measurements transferred to the harder family, where its choice of a helper became the limiting step.
