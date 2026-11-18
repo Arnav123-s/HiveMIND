@@ -115,6 +115,17 @@ holds what, from every branch; `python scripts/cycle.py` shows it beside the bar
 | X1 | A fixed held-out exam of about 30 tasks, sat every generation: 3 to 10 held-out tasks in the pulse is noise | `training/exam.py`, the workflow's gate, `training/reads.py` | each read shows held out on the same 30-odd tasks | open |
 | F2 | First try reported for old kinds and new kinds apart | `scripts/selfreliance.py`, `training/reads.py` | the read shows first try for the kinds before K2 and for the K2 kinds, side by side | open |
 | T5 | A talk smoke run on the newest body after each record | `.github/workflows/talk.yml`, the record job | after each record, a few messages go to the new body through `team/talk.py` and its replies are kept | open |
+| L1 | Generation 38 through: recorded, the hours of each job in the log | the workflow | the record's line for g38 and its hours are in the log | done (B) |
+| L2 | A generation in 5 hours with no less work | `.github/workflows/grow.yml`, `training/colab.py` | one generation on `main` recorded in 5 hours | done (B, g43 4.4 h) |
+| T1 | A new hard subject is studied until its loss is under 0.3, web kinds first | `training/grow.py` (`Study`) | small DNA: every new hard subject under 0.3 | done (B) |
+| T2 | Lessons kept back: 2 of every kind's lessons never trained on, loss measured before and after | `training/grow.py` | the record shows it by kind | done (B) |
+| T4 | No hard lesson lost to the length limit (508 pieces on 32-bit runners) | `training/lessons.py`, `training/grow.py` | every hard kind's lessons fit and pass their check | done (B) |
+| R2 | The failed hard tasks of the newest generation by cause, the largest cause fixed | `team/solo.py`, `team/tools/sandbox.py`, `training/lessons.py` | every failed hard task has a cause in `docs/knowledge.json` | done (C) |
+| M3 | The read of a generation written by the workflow after its record | `training/reads.py`, the workflow | the file appears for one real generation | done (B) |
+| K1 | A kind in one file, loaded by the exam and the lessons | `training/kinds/` | the same seeds give the same exams | done (B) |
+| K2 | New hard kinds: tables, text, larger programs | `training/kinds/` | each kind right by its check, a test without network | done (B, 24 kinds) |
+| M1 | A talk exam: 40 messages with checks, sat by the body every generation | `training/talk_exam.py`, the gate | a sitting's number in the read | done (B, g45 6.5 of 10) |
+| W1 | Every agent's log and claims in one view | `scripts/agents_log.py` | it prints the real branches' lines | done (C) |
 
 Done (do not redo): L1, L2, T1, T2, T4, K1, K2, M1, M3, W1; the memory pieces built (off); the CPU rule lab (PR 97);
 the read fixed (PR 93); one way of working (`CLAUDE.md`, `NEXT_SESSION.md`, `scripts/cycle.py`, PR 98).
