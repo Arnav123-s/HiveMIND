@@ -274,7 +274,21 @@ def _form(task, answer):
         if missing:
             return (f"The TASK asks for lines that begin with {', '.join(repr(c + ':') for c in named)}. Your output has no line "
                     f"that begins with {', '.join(repr(c + ':') for c in missing)}.")
+    # a count asked for, and a list or dict printed: g45's coin task ("in how many different ways ...") got a Counter
+    # of every way, 6000 characters, from two members who agreed on it; the count itself was never printed. A list
+    # of three items or more alone on a line, or a long run of them (the tail of one cut to 3000 characters)
+    if COUNTED.search(task) and (any(LISTED.match(x) and x.count(",") >= 2 for x in lines[-3:])
+                                 or len(answer) > 1500 and answer.count(",") > 50):
+        return ("The TASK asks how many: its answer is a number, the count. Your output is the items themselves, a list or a "
+                "dict. Print the count (len() of what you counted, or the sum), with a few words saying what it counts.")
     return ""
+
+
+# asked as the question ("tell me how many", "In how many ways ...?"), not a function that "returns how many times"
+COUNTED = re.compile(r"(?:\b(?:tell me|say|print|give|report|work out|find out)\s+|(?:^|[.?!:]\s+)(?:in |and )?)how many\b|"
+                     r"\bhow many\b[^.?!\n]*\?|\bcount (?:the|how|them|all|every)\b", re.I)
+# a printed list, dict, set or Counter, or the tail of one (an answer keeps the last 3000 characters)
+LISTED = re.compile(r"(?:\w+\()?[\[{(].*[\]})]\)?$")
 
 
 FILE = re.compile(r"\b(?:sav\w*|writ\w*|creat\w*|mak\w*|produc\w*|generat\w*|stor\w*|export\w*)\b[^.\n]{0,80}?(?<![\w/.-])([\w-]+\.(?:py|csv|tsv|json|md|txt|html|xml|ya?ml))\b", re.I)
@@ -344,6 +358,44 @@ def hints_in(*texts):
     """The names of the runtime's hints that these texts (a program's stderr, what the member was told) carry."""
     t = "\n".join(x or "" for x in texts)
     return [name for name, mark in HINTS if mark in t]
+
+
+def clashes(code):
+    """Names a class gives both to a method (def name) and to a value (self.name = ...): the value hides the method.
+    Seen in g45 (h20000451_01): `self.left = []` beside `def left(self, ...)`, and two members stopped on "'list'
+    object is not callable"."""
+    try:
+        tree = ast.parse(code)
+    except (SyntaxError, ValueError):
+        return []
+    out = []
+    for c in (x for x in ast.walk(tree) if isinstance(x, ast.ClassDef)):
+        methods = {f.name for f in c.body if isinstance(f, (ast.FunctionDef, ast.AsyncFunctionDef))}
+        values = {t.attr for x in ast.walk(c) if isinstance(x, (ast.Assign, ast.AnnAssign, ast.AugAssign))
+                  for t in (x.targets if isinstance(x, ast.Assign) else [x.target])
+                  if isinstance(t, ast.Attribute) and isinstance(t.value, ast.Name) and t.value.id == "self"}
+        out += sorted(methods & values)
+    return out
+
+
+def stuck_hint(task, code, err):
+    """For a module the TASK asks for (hidden tests call it), what to do about an AssertionError or a TypeError of
+    the member's own test: (hint name, words), or None. In g45 17 members' tries ended on the same error twice, most
+    of them such tries; told only "print the values", they sent the same program back."""
+    if not any(f.endswith(".py") for f in wanted(task)) or not re.search(r"\b(?:AssertionError|TypeError)\b", err or ""):
+        return None
+    clash = clashes(code)
+    if clash:
+        return ("name_clash", f"Your class uses the name {clash[0]!r} for a method (def {clash[0]}) and for a value "
+                f"(self.{clash[0]} = ...). The value hides the method, so calling it fails. Give the value another name "
+                f"(self._{clash[0]}) everywhere it is used, and keep the method's name, which the TASK gives.")
+    if "AssertionError" in err:
+        return ("assert_values", "One of your own tests failed. Just before each assert, print the actual value and the "
+                "expected one (print('got', got, 'want', want)), see which part of the function gives the wrong value, "
+                "and fix the function. Keep the test only if the TASK says that value is right.")
+    return ("type_values", "A TypeError: the line that failed got a value of another type than it expects. Print type() "
+            "and the value of each thing that line works with. Check that no method has the name of a value "
+            "(self.name = ...), and that each function takes the arguments the TASK says, in that order.")
 
 
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
@@ -493,7 +545,9 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             continue
         line = ((err or out).splitlines() or ["it printed nothing"])[-1][:300]
         repeats = repeats + 1 if line == last_error else 0
-        if repeats >= 1:  # the same failure twice running: its fixes change nothing
+        # the same failure three times running: its fixes change nothing. It was twice: in g45, 17 members' tries ended
+        # so, 12 of them at turn 2 of 6, before a hint could be acted on
+        if repeats >= 2:
             board.log(f"member{n}", "same-error", line[:150])
             break
         last_error = line
@@ -501,8 +555,12 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         # look() is for data the program read; an error in a calculation of its own is found by printing its own values
         # (seen in g27: a robot simulation's IndexError, and two members went to fetch example.com)
         reads = re.search(r"\brequests\.|urllib|\.json\(|json\.loads?\(|BeautifulSoup|\bopen\(|read_csv|playwright", code) is not None
-        looking = bool(LOOK.search(err or out)) and (reads or re.search(r"KeyError|NoneType|JSONDecodeError|\bkeys?\b|response|json|\bpage\b|column|field", err or out, re.I) is not None)
+        stuck = stuck_hint(task, code, err or out)
+        if stuck:
+            helps(stuck[0])
+        looking = not stuck and bool(LOOK.search(err or out)) and (reads or re.search(r"KeyError|NoneType|JSONDecodeError|\bkeys?\b|response|json|\bpage\b|column|field", err or out, re.I) is not None)
         messages.append({"role": "user", "content": (shown or "It ran but printed nothing.") + (
+            "\n\n" + stuck[1] + " Reply with the whole corrected program." if stuck else
             "\n\nThe program found nothing where the TASK says there is something, so it reads the data wrongly. Reply "
             "with a short program that prints the first 3 items it looks through and how it splits them (for a line of "
             "text: print(line.split())), so you see their real shape. Then fix the program." if EMPTY.search(err or out) else
@@ -548,9 +606,62 @@ def headings(task, t, n, board, guard):
         t.update(answer=out[-3000:], program=code, turns=t["turns"] + 1)
 
 
+def _cell(x):
+    """A value of a saved file as it is compared: trimmed, a number written one way ("75", "75.0" and " 75 " alike)."""
+    x = str(x).strip()
+    try:
+        return repr(round(float(x), 6)) if re.fullmatch(r"[-+]?\d[\d_]*(?:\.\d*)?(?:e[-+]?\d+)?", x, re.I) else x
+    except ValueError:
+        return x
+
+
+def contents(path):
+    """A saved file as what two members' files are compared by: its rows of trimmed cells (a CSV or TSV), its data (a
+    JSON file), else its lines trimmed; blank lines left out. None when it is missing, empty or cannot be read."""
+    import csv
+    p = Path(path)
+    try:
+        text = p.read_text(errors="ignore") if p.is_file() else ""
+    except OSError:
+        return None
+    if not text.strip():
+        return None
+    if p.suffix.lower() == ".json":
+        try:
+            return json.dumps(json.loads(text), sort_keys=True)
+        except ValueError:
+            pass
+    if p.suffix.lower() in (".csv", ".tsv"):
+        rows = csv.reader(text.splitlines(), delimiter="\t" if p.suffix.lower() == ".tsv" else ",")
+        return [tuple(_cell(c) for c in r) for r in rows if any(c.strip() for c in r)]
+    return [" ".join(x.split()) for x in text.splitlines() if x.strip()]
+
+
+def same_files(x, y, task):
+    """Do two members' tries agree on the files the TASK asks to be saved? Each of those files (not a .py module, whose
+    code always differs) is in both members' work folders with the same contents(). Seen in g45: on top-rows all
+    three members saved the right top.csv and passed the check, but printed "top.csv saved / student: Ines", "Omar /
+    Ines" and "Ines : 99", so same() found no two alike and the task was lost; six file tasks were lost that way.
+    One of the two must have printed an answer (in g45's pivot task one member saved the right file and then printed
+    only a look() at its data)."""
+    names = [f for f in wanted(task) if not f.endswith(".py")]
+    if not names or not x.get("work") or not y.get("work") or not (x.get("answer") or y.get("answer")):
+        return False
+    for f in names:
+        a, b = contents(Path(x["work"]) / f), contents(Path(y["work"]) / f)
+        if a is None or a != b:
+            return False
+    return True
+
+
+def together(x, y, task):
+    """Do two members' tries agree: their printed answers (same()), or the files the TASK asks for (same_files())."""
+    return same(x["answer"], y["answer"], task) or same_files(x, y, task)
+
+
 def agreeing(tries, task):
-    """The pairs of members whose answers agree (same()), the earlier member first."""
-    return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if same(x["answer"], y["answer"], task)]
+    """The pairs of members whose tries agree (together()), the earlier member first."""
+    return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
 
 
 def run(task, run_dir=None, approve="never", members=2):
@@ -602,9 +713,11 @@ def run(task, run_dir=None, approve="never", members=2):
             pairs = agreeing(tries, task)
         pairs = [p for p in pairs if any(whole(task, x["answer"]) for x in p)]
         if pairs:
-            # of two that agree, the one that carries every heading and keeps the form asked for
-            agreed = next((x for x in pairs[0] if whole(task, x["answer"]) and not form(task, x["answer"])), None) or next(
-                x for x in pairs[0] if whole(task, x["answer"]))
+            # of two that agree, the one that carries every heading and keeps the form asked for; one that printed an
+            # answer before one that agreed only by its files (same_files)
+            two = sorted(pairs[0], key=lambda x: not x["answer"])
+            agreed = next((x for x in two if x["answer"] and whole(task, x["answer"]) and not form(task, x["answer"])), None) or next(
+                x for x in two if whole(task, x["answer"]))
             break
     got = [t for t in tries if t["answer"]]
     if agreed:
@@ -623,7 +736,7 @@ def run(task, run_dir=None, approve="never", members=2):
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
     (home / "members.json").write_text(json.dumps({"agreed": bool(agreed), "who": [t["who"] for t in tries],
-                                                  "agreeing": [i + 1 for i, t in enumerate(tries) if agreed and same(t["answer"], agreed["answer"], task)]}))
+                                                  "agreeing": [i + 1 for i, t in enumerate(tries) if agreed and (t is agreed or together(t, agreed, task))]}))
     return {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
             "work": agreed["work"] if agreed else str(work)}
 
