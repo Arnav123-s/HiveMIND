@@ -323,6 +323,11 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
     if levels:
         log("how hard the lessons are now: " + ", ".join(f"{k} {v}" for k, v in sorted(levels.items())), flush=True)
     passed = []
+    from training import practice_arms
+    arm = os.environ.get("HIVE_ORDERS_ARM", "") if os.environ.get("HIVE_ORDERS_ARM", "") in practice_arms.ARMS else ""
+    if arm:  # the members' orders follow the arm (team/solo.member, which every task's own process runs)
+        os.environ.update(practice_arms.env_for(arm))
+        log(f"the orders of this runner: {arm} (training/practice_arms.py)", flush=True)
     for tid, field, kind, task, check in E.exam(seed, n, (), level, without=exam_hard.HELD_OUT, weights=weights, levels=levels):
         if minutes and time.time() - born > minutes * 60:
             log(f"time is up after {len(passed)} of {n} tasks: practice ends here", flush=True)
@@ -342,13 +347,24 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
         # and, kind by kind, whether the body was right and whether some member was (training/grow_record.practice_kinds):
         # practice is drawn where some member is right and the body is not, the only place it makes a new right row
         some = any(isinstance(m, dict) and m.get("ok") is True for m in r.get("members") or [])
-        passed.append({"maker": getattr(check, "maker", ""), "level": getattr(check, "level", 0), "ok": bool(r["ok"]), "kind": kind, "some": some})
-        # what was passed at which level, for the record to move the levels by (training/grow_record.levels)
-        out.with_name("practice.json").write_text(json.dumps({"seed": seed, "tasks": passed}))
+        # and, for the record's split by orders and by the kinds' age (training/practice_arms.summary): right at the
+        # first try, how long it took, whether it ran out of time, and whether its kind is one K2 added
+        maker, parts = getattr(check, "maker", ""), getattr(check, "parts", None) or []
+        try:
+            first = practice_arms.first_try(E.RUNS / f"practice_{seed}" / tid)
+        except Exception:  # noqa: BLE001 - a task whose log cannot be read says nothing of its first try
+            first = None
+        passed.append({"maker": maker, "level": getattr(check, "level", 0), "ok": bool(r["ok"]), "kind": kind, "some": some,
+                       "first": first, "seconds": r.get("seconds"), "timeout": str(r.get("note") or "").startswith("timed out"),
+                       "age": practice_arms.age(maker, parts)}
+                      | ({"parts": [p[0] for p in parts if isinstance(p, (list, tuple)) and p]} if maker == "compound" else {}))
+        # what was passed at which level, for the record to move the levels by (training/grow_record.levels); arm: the
+        # orders this runner was given (HIVE_ORDERS_ARM, set by the practice job; "" when practice is not split)
+        out.with_name("practice.json").write_text(json.dumps({"seed": seed, "arm": arm, "tasks": passed}))
         beyond = sum(x["type"] == "first" and x.get("agreed") is False for x in new)
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows"
             + (f", {beyond} of the right members not among those that agreed" if beyond else ""), flush=True)
-    return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)}
+    return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)} | ({"arm": arm} if arm else {})
 
 
 def body_levels():
