@@ -48,9 +48,22 @@ KIND = r"[\w ,.:'()-]{1,80}"
 # ---- the kinds, read from the sources (no network) -------------------------------------------------------------------
 def maker_kinds():
     """{maker: kind} of every hard maker (training/kinds/, the kinds with HARD): each returns (field, kind, task,
-    check), its kind read from its source."""
+    check), its kind read from its source. A maker whose field is a name, not written out (the program kinds,
+    h_prog_*: `return (FAMILY, "a queue served ...", ...)`), is not read by kinds.written; its kind is taken from a task
+    it makes, which needs no network (a kind that reads a site while it makes a task writes its kind out). Before, the
+    two held-out program kinds were missing, so g45's held-out tasks were counted 0 of 9, not 0 of 10."""
     from training import kinds
-    return {m.KIND: w[0] for m in kinds.HARD_KINDS if (w := kinds.written(m.KIND))}
+    out = {}
+    for m in kinds.HARD_KINDS:
+        w = kinds.written(m.KIND)
+        if w:
+            out[m.KIND] = w[0]
+        elif not m.NETWORK:
+            try:
+                out[m.KIND] = kinds.sample(m.KIND)[1]
+            except Exception:  # noqa: BLE001 - a maker that cannot make a task offline is left out, as before
+                pass
+    return out
 
 
 def taught_hard():

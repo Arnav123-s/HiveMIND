@@ -216,3 +216,18 @@ def test_the_seat_step_runs_as_github_runs_it(tmp_path):
     assert p.returncode == 0, p.stderr
     assert (tmp_path / "args.txt").read_text().split() == ["training/exam.py", "held", "--seat", "3", "--seats", "8", "--per", "3", "--seconds", "900"]
     assert exam.main(["show", "--level", "held"]) == 0
+
+
+def test_every_held_out_kind_is_counted_the_program_kinds_too():
+    # kinds.written cannot read a kind whose field is a name (h_prog_*: `return (FAMILY, "a queue ...", ...)`): the
+    # read missed the two held-out program kinds, and g45's pulse held-out tasks were counted 0 of 9, not 0 of 10
+    by = reads.maker_kinds()
+    assert set(kinds.HELD_OUT) <= set(by) and len(reads.held_out()) == len(kinds.HELD_OUT) == 10
+    assert by["h_prog_queue"] == "a queue served by priority, with hidden tests" and by["h_prog_wrap"] == "text wrapped and justified, with hidden tests"
+    g45 = next(json.loads(ln) for ln in (ROOT / "training" / "reports" / "generations.jsonl").read_text().splitlines() if '"generation": "g45"' in ln)
+    k = g45["arms"]["after"]["kinds"]
+    v = [k[x] for x in reads.held_out() if x in k]
+    assert [sum(c[0] for c in v), sum(c[1] for c in v)] == [0, 10]
+    # the fixed exam holds every held-out kind, and the record counts all ten
+    assert {c.maker for *_, c in exam.held_exam()} == kinds.HELD_OUT
+    assert all(not kinds.get(m).NETWORK or kinds.written(m) for m in kinds.HELD_OUT)  # read offline, either way
