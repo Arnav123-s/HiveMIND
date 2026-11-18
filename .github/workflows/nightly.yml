@@ -1,0 +1,56 @@
+# The line's nightly backstop: it starts a generation (grow.yml) only when the line has stopped.
+# The schedule used to be on grow.yml itself, where a scheduled run takes its generation number (the run number) the
+# moment it is queued, before any job can look: g40 and g46 were started by the schedule while the line ran, were
+# cancelled, and each used up a generation number. Here the schedule runs in a workflow of its own, which takes no
+# generation number; it looks first and starts grow.yml only when no run of it is in progress or queued and the line
+# has not run within 8 hours (the line restarts itself after each record). To stop it: set the repository variable
+# HIVE_LOOP to "stop", or disable this workflow.
+name: The line's nightly backstop
+
+on:
+  schedule:
+    - cron: "17 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write  # to list grow.yml's runs and to start one
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start a generation only when the line has stopped
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          LOOP: ${{ vars.HIVE_LOOP }}
+        run: |
+          if [ "$LOOP" = "stop" ]; then echo "::notice::the repository variable HIVE_LOOP is stop: nothing is started"; exit 0; fi
+          runs=$(gh run list --workflow grow.yml --branch main --limit 50 --json databaseId,number,displayTitle,status,createdAt,startedAt,updatedAt) \
+            || { echo "::error::the runs of grow.yml could not be listed: nothing is started"; exit 1; }
+          why=$(RUNS="$runs" python3 - <<'PY'
+          import datetime as dt, json, os
+          runs = json.loads(os.environ.get("RUNS") or "[]")
+          live = ("queued", "in_progress", "waiting", "pending", "requested")
+          busy = [r for r in runs if r.get("status") in live]
+          cut = dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=8)
+          def t(v):
+              return dt.datetime.fromisoformat(v.replace("Z", "+00:00")) if v and not v.startswith("0001") else None
+          line = [r for r in runs if str(r.get("displayTitle", "")).startswith("Generation")]
+          near = [r for r in line if any((x := t(r.get(k))) and x >= cut for k in ("startedAt", "updatedAt", "createdAt"))]
+          if busy:
+              r = max(busy, key=lambda r: r.get("number", 0))
+              print(f"a run of grow.yml ({r.get('displayTitle', '?')}, {r.get('status')}) is in progress or queued: nothing is started, no generation number is taken")
+          elif near:
+              r = max(near, key=lambda r: r.get("number", 0))
+              print(f"a run of the line (g{r.get('number')}, {r.get('status')}) started or ended within 8 hours: the line restarts itself, so nothing is started")
+          PY
+          )
+          if [ -n "$why" ]; then
+            echo "::notice::$why"
+            echo "$why" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
+            exit 0
+          fi
+          gh workflow run grow.yml --ref main
+          echo "the line had stopped: a generation is started (grow.yml on main)" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"

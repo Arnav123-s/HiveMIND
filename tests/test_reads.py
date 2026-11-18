@@ -42,7 +42,7 @@ def _arm(tasks):
 
 
 def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaught=0.1, child_ok=True, parent_ok=False,
-          body_ok=False, prev_taught_ok=False, rows_by_kind=None, extra=()):
+          body_ok=False, prev_taught_ok=False, rows_by_kind=None, extra=(), plan=None):
     """Every file of one generation, g40, made up; returns the read's text and its next-piece line. rows_by_kind: what
     each slice's record says of the new rows by kind (training/grow.train, from generation 42), the same for every
     taught kind; without it the records are the older ones, and the rows left out are estimated."""
@@ -84,7 +84,8 @@ def build(tmp_path, lessons_right=12, used=(9, 9), fall_taught=0.5, fall_untaugh
     lessons = tmp_path / "lessons.json"
     lessons.write_text(json.dumps({"lessons": 120, "by_kind": {k: [lessons_right, 12] for k in TAUGHT}}) + "\n")
     out = tmp_path / "reads"
-    said = reads.write("g40", facts, gate, rows_file, lessons, record, out, tmp_path / "chain.svg", tmp_path / "talk")
+    # the board: none done unless a test gives one (the real docs/PLAN.md marks some of the rules' pieces done)
+    said = reads.write("g40", facts, gate, rows_file, lessons, record, out, tmp_path / "chain.svg", tmp_path / "talk", plan or tmp_path / "no-plan.md")
     text = (out / "g40.md").read_text()
     assert (out / "latest.md").read_text() == text
     return text, said
@@ -153,7 +154,52 @@ def test_a_rule_that_holds_for_more_kinds_wins_over_an_earlier_one_and_ties_go_t
     rows = [row("a", lessons=[2, 12]), row("b", gap=5.0)]
     assert reads.next_piece(rows, line)[0] == 1
     # an unmeasured link holds no rule
-    assert reads.next_piece([row("a", lessons=None, left=None, gap=None, child=None)], line)[:2] == (7, "none")
+    assert reads.next_piece([row("a", lessons=None, left=None, gap=None, child=None)], line)[:2] == (7, reads.NONE_HOLDS)
+
+
+def test_a_rule_whose_piece_is_done_on_the_board_is_skipped(tmp_path):
+    plan = tmp_path / "PLAN.md"
+    plan.write_text("## The board\n\n| Id | Piece | Files | Done when | Who |\n|---|---|---|---|---|\n"
+                    "| R1 | A right member | `team/solo.py` | x | done (PR 9) |\n| T3 | key lines | x | x | open |\n\n"
+                    "Done (do not redo): L1, T4, K1,\nK2, M1; the memory pieces.\n\nA piece missing here.\n")
+    assert reads.done_pieces(plan) == {"L1", "T4", "K1", "K2", "M1", "R1"}
+    # the real board: T4 and K1 are done (g45's read named T4, g43's K1)
+    assert {"T4", "K1"} <= reads.done_pieces()
+    row = lambda k, **v: dict({"kind": k, "lessons": [12, 12], "left": [0, 10], "gap": 40.0, "child": [1, 1], "parent": [0, 1],  # noqa: E731
+                               "body": [0, 1], "before": [0, 1]}, **v)
+    line = {"arms": {"after": {"kinds": {}}}}
+    rows = [row("a", left=[5, 10]), row("b", left=[5, 10]), row("c", child=[0, 1])]  # rule 2 for two kinds, rule 5 for one
+    assert reads.next_piece(rows, line)[0] == 2
+    assert reads.next_piece(rows, line, done={"T4"})[:3] == (4, reads.RULES[3][2], ["a", "b"])  # the next that holds
+    assert reads.next_piece(rows, line, done={"T4", "R1"})[:3] == (5, reads.RULES[4][2], ["c"])
+    assert reads.next_piece(rows, line, done={"T4", "R1", "T3"})[:2] == (7, reads.NONE_HOLDS)
+    # rule 6 (K1) holds at g43; K1 is done: the read names the next rule that holds, or none
+    text, said = build(tmp_path / "k1", child_ok=True, parent_ok=True, body_ok=True, prev_taught_ok=True, plan=plan)
+    assert said == f"next piece: none (rule 7: {reads.NONE_HOLDS})"
+    assert "rule 6 (K1)" in text and "(piece done)" in text
+    text, said = build(tmp_path / "t4", rows_by_kind={"given": 6, "too_long": 2, "skipped_memory": 0, "trained": 4}, plan=plan)
+    assert not said.startswith("next piece: T4") and "rule 2 (T4)" in text
+
+
+def test_the_hours_bar_is_3(tmp_path):
+    text, _ = build(tmp_path)
+    assert "(the bar is 5)" not in text
+    assert "(the bar is 3)" in text or "Not measured: the run's jobs" in text
+
+
+def test_the_read_says_how_much_the_hive_taught_itself():
+    rows = [{"gen": "g9", "who": "lesson", "type": "first"}, {"gen": "g9", "who": "lesson", "type": "fix"},
+            {"gen": "g9", "who": "t80+g8code", "type": "first"}, {"gen": "g9", "who": "t80+g8code", "type": "fix"},
+            {"gen": "g9", "who": "t80+g8code", "type": "done"}, {"gen": "g9", "type": "read"},
+            {"gen": "g8", "who": "t80+g8code", "type": "first"}, {"type": "mend", "who": "t80+g8code"}]
+    src = reads.rows_by_source(rows, "g9")
+    assert src == {"hive": 4, "hive_fix": 2, "lessons": 2, "raw": 1, "other": 0}
+    said = reads.self_taught_line(src, [{"record": {"rows_by_kind": {}}}])
+    assert "4 from the hive's own checked practice and dreams (2 of them fix rows), 2 from the hand-written lesson makers" in said
+    assert "67% of those two" in said and "not measured by source" in said and "rows_by_source" in said
+    assert "not measured" in reads.self_taught_line(reads.rows_by_source([], "g9"), [])
+    said = reads.self_taught_line(src, [{"record": {"rows_by_source": {"hive": 3, "lessons": 1}}}])
+    assert "Rows trained on: by source: hive 3, lessons 1." in said
 
 
 def test_g38_without_by_kind_counts_lessons_from_rows_and_the_dropped_list():

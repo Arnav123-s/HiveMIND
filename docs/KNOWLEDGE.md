@@ -10,17 +10,17 @@ It runs by itself on GitHub (`.github/workflows/grow.yml`), one generation after
 
 ```mermaid
 flowchart TD
-  practise["Practise<br/>training/grow.py<br/>minutes: g43: 51 min<br/>open: the slowest runner sets the pace: task cap 1500 s, now 600 (L2)"]:::open
-  dreams["Dreams: failed tasks tried again<br/>training/grow.py<br/>minutes: g43: 51 min<br/>open: behind practice on the same runners; now 8 runners of their own (L2)"]:::open
-  gather["Gather checked rows, make lessons<br/>training/lessons.py<br/>minutes: g43: 6 min<br/>open: 126 of 300 lessons right; the kinds that fail are not printed (R2)"]:::open
-  plan["Plan the children and their slices<br/>training/lineage.py<br/>minutes: g43: 0 min<br/>open: 24 train jobs over the 20-job limit; now at most 20 (L2)"]:::open
-  trainc["Train each slice (Study, T1)<br/>training/ternary_base.py<br/>minutes: g43: 176 min<br/>open: 7 of 24 slices lost to memory; 32-bit runners drop ~100 rows (T1)"]:::open
-  join["Join each child's slices<br/>training/merge.py<br/>minutes: g43: 2 min<br/>open: a child that lost slices is joined from fewer (L1)"]:::open
-  trunk["Merge the trunk<br/>training/merge.py<br/>minutes: g43: 2 min"]
-  pulse["Pulse: the grown body's exam, 4 seats<br/>training/exam.py<br/>minutes: g43: 26 min<br/>open: a dead seat leaves its seed out; re-sat by hand (L1)"]:::open
-  recordg["Record, move levels, draw progress<br/>training/grow_record.py<br/>minutes: g43: 1 min<br/>open: the hours of each job are not recorded (L3)"]:::open
+  practise["Practise<br/>training/grow.py<br/>minutes: g45: 49 min<br/>open: the slowest runner sets the pace: task cap 1500 s, now 600 (L2)"]:::open
+  dreams["Dreams: failed tasks tried again<br/>training/grow.py<br/>minutes: g45: 52 min<br/>open: behind practice on the same runners; now 8 runners of their own (L2)"]:::open
+  gather["Gather checked rows, make lessons<br/>training/lessons.py<br/>minutes: g45: 12 min<br/>open: 126 of 300 lessons right; the kinds that fail are not printed (R2)"]:::open
+  plan["Plan the children and their slices<br/>training/lineage.py<br/>minutes: g45: 0 min<br/>open: 24 train jobs over the 20-job limit; now at most 20 (L2)"]:::open
+  trainc["Train each slice (Study, T1)<br/>training/ternary_base.py<br/>minutes: g45: 215 min<br/>open: 7 of 24 slices lost to memory; 32-bit runners drop ~100 rows (T1)"]:::open
+  join["Join each child's slices<br/>training/merge.py<br/>minutes: g45: 2 min<br/>open: a child that lost slices is joined from fewer (L1)"]:::open
+  trunk["Merge the trunk<br/>training/merge.py<br/>minutes: g45: 2 min"]
+  pulse["Pulse: the grown body's exam, 4 seats<br/>training/exam.py<br/>minutes: g45: 52 min<br/>open: a dead seat leaves its seed out; re-sat by hand (L1)"]:::open
+  recordg["Record, move levels, draw progress<br/>training/grow_record.py<br/>minutes: g45: 0 min<br/>open: the hours of each job are not recorded (L3)"]:::open
   verdictg["Verdict: read the generation<br/>scripts/read_generation.py<br/>minutes: by hand, after the record<br/>open: not written by the workflow yet (M3)"]:::open
-  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g43 4.4 h; the bar is 5<br/>open: started or mended by hand (L3)"]:::open
+  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g45 5.6 h; the bar is 3<br/>open: started or mended by hand (L3)"]:::open
   practise --> dreams
   dreams --> gather
   gather --> plan
@@ -63,13 +63,13 @@ flowchart TD
   merge --> next
   next -->|next cycle| readgen
   verdict -->|"Loss on new hard lessons still above 0.3"| pc_T1
-  pc_T1["T1: Passes go to the lessons not yet learned<br/>who: B"]
+  pc_T1["T1: done<br/>who: done"]
   pc_T1 -.-> claim
   verdict -->|"Loss low, members do not write the lesson's way"| pc_T3
-  pc_T3["T3: The lesson's key lines weigh more, or lesson rows come...<br/>who: C"]
+  pc_T3["T3: The lesson's key lines weigh more<br/>who: open, only on a verdict"]
   pc_T3 -.-> claim
   verdict -->|"Members write the lesson's way and fail on something else"| pc_R2
-  pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]
+  pc_R2["R2: R2: fix the largest cause (C)<br/>who: named by the verdict table"]
   pc_R2 -.-> claim
   verdict -->|"Web kinds unlearned"| pc_T1
   waiting["pieces with open causes (section 3)<br/>R2, L2, T3"]:::open
@@ -86,14 +86,26 @@ What was seen (slanted) -> its cause -> its fix -> the board piece of `docs/PLAN
 
 ```mermaid
 flowchart LR
-  pc_L1["L1: Generation 38 through<br/>who: B"]:::fixed
-  pc_L2["L2: A generation in 5 hours with no less work<br/>who: B"]:::open
-  pc_L3["L3: The line runs five generations with nobody's hand<br/>who: B"]:::fixed
-  pc_T1["T1: Passes go to the lessons not yet learned<br/>who: B"]:::fixed
-  pc_T2["T2: Lessons kept back<br/>who: B"]:::fixed
-  pc_T3["T3: The lesson's key lines weigh more, or lesson rows come...<br/>who: C"]:::open
-  pc_T4["T4: No hard lesson is lost to the length limit<br/>who: C (in work)"]:::fixed
-  pc_R2["R2: The failed hard tasks of the newest generation by cause,...<br/>who: C"]:::open
+  pc_L3["L3: The line runs five generations with nobody's hand<br/>who: the loop holder (watch only)"]:::fixed
+  pc_T3["T3: The lesson's key lines weigh more<br/>who: open, only on a verdict"]:::open
+  pc_L1["L1: done<br/>who: done"]:::fixed
+  pc_L2["L2: done<br/>who: done"]:::open
+  pc_T1["T1: done<br/>who: done"]:::fixed
+  pc_T2["T2: done<br/>who: done"]:::fixed
+  pc_T4["T4: done<br/>who: done"]:::fixed
+  pc_R2["R2: R2: fix the largest cause (C)<br/>who: named by the verdict table"]:::open
+  s_scheduledup[/"a 'schedule' run duplicated the self-restarting line"/]
+  c_scheduledup["The nightly schedule started a second run of the line beside the one that restarts itself after each record"]:::fixed
+  x_scheduledup(["fresh ends a scheduled run when a run of the line started or ended within 8 hours, and any line run when a newer one is already under way (tests/test_fresh_run.py)"]):::fixed
+  s_scheduledup --> c_scheduledup --> x_scheduledup --> pc_L3
+  s_stalebody[/"g35's record conflicted with g34's"/]
+  c_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
+  x_stalebody(["the first job (fresh) ends a stale run"]):::fixed
+  s_stalebody --> c_stalebody --> x_stalebody --> pc_L3
+  s_modulestring[/"g35: module tasks failed with ''.join turned into .join"/]
+  c_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
+  x_modulestring(["no fix yet"]):::open
+  s_modulestring --> c_modulestring --> x_modulestring --> pc_T3
   s_cpuflags[/"model server exit -4 (illegal instruction) on every start"/]
   c_cpuflags["The runtime kept for one CPU was used on another of the same name that lacks some of its instructions"]:::fixed
   x_cpuflags(["the kept runtime keyed by the CPU's instruction list (PR 73)"]):::fixed
@@ -130,14 +142,6 @@ flowchart LR
   c_twowaves["24 train jobs where only 20 run at once: 4 slices waited for a second wave"]:::fixed
   x_twowaves(["at most 20 train jobs, uneven slices (L2)"]):::fixed
   s_twowaves --> c_twowaves --> x_twowaves --> pc_L2
-  s_scheduledup[/"a 'schedule' run duplicated the self-restarting line"/]
-  c_scheduledup["The nightly schedule started a second run of the line beside the one that restarts itself after each record"]:::fixed
-  x_scheduledup(["fresh ends a scheduled run when a run of the line started or ended within 8 hours, and any line run when a newer one is already under way (tests/test_fresh_run.py)"]):::fixed
-  s_scheduledup --> c_scheduledup --> x_scheduledup --> pc_L3
-  s_stalebody[/"g35's record conflicted with g34's"/]
-  c_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
-  x_stalebody(["the first job (fresh) ends a stale run"]):::fixed
-  s_stalebody --> c_stalebody --> x_stalebody --> pc_L3
   s_fewpasses[/"new hard lessons end at loss 0.4-1.6"/]
   c_fewpasses["New hard lessons ended training at a loss of 0.4 to 1.6: too few passes, web kinds least"]:::fixed
   x_fewpasses(["Study: a new hard subject at loss 0.3 or more gets 3 in 4 passes, web kinds first (T1)"]):::fixed
@@ -146,10 +150,6 @@ flowchart LR
   c_keptback["A loss on rows a cell trained on can fall by learning them by heart: nothing showed whether a kind was learned"]:::fixed
   x_keptback(["2 lessons a kind kept back, their loss before and after in each slice's record (T2)"]):::fixed
   s_keptback --> c_keptback --> x_keptback --> pc_T2
-  s_modulestring[/"g35: module tasks failed with ''.join turned into .join"/]
-  c_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
-  x_modulestring(["no fix yet"]):::open
-  s_modulestring --> c_modulestring --> x_modulestring --> pc_T3
   s_leftoutmeasure[/"g41's read named T4 for 'a fact read and a date sum on it' (57 of 152) and 'several facts laid out as a file' (71 of 342); T4 measured those kinds' lessons at 0 rows over 508 pieces"/]
   c_leftoutmeasure["The read's 'rows left out' counted rows not reached in time and skipped for memory as too long"]:::fixed
   x_leftoutmeasure(["rows_by_kind in the slice record; rule 2 on too-long rows only; older records shown as an estimate that holds no rule"]):::fixed

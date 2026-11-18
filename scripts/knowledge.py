@@ -29,6 +29,8 @@ RECORD = ROOT / "training" / "reports" / "generations.jsonl"
 # (training/reads.py writes minutes_by_step into the record); "nextg" is the whole generation
 TIMED = {"practise": "practice", "dreams": "dream", "gather": "gather", "plan": "plan", "trainc": "train", "join": "join",
          "trunk": "merge", "pulse": "gate", "recordg": "record"}
+# one entry a generation, appended by the record job (training/reads.py knowledge; the fields of reads.ENTRY)
+GENERATION_FIELDS = ("id", "generation", "when", "verdict", "after", "before", "hard", "easy", "held_out", "first_try", "talk", "hours", "why")
 _PIECE = re.compile(r"^\| ([A-Z]\d+) \| (.+?) \| .*\| ([^|]*) \|\s*$")
 
 
@@ -50,6 +52,20 @@ def board(plan=PLAN):
         if m:
             title = _short(re.split(r": | \(", m.group(2).replace("`", ""), maxsplit=1)[0], 60)
             out[m.group(1)] = {"title": title, "who": m.group(3).strip()}
+    # the pieces done, taken off the board's rows onto its line "Done (do not redo):" (and the lines that carry it
+    # on), and those the verdict table names: still pieces of the board that findings may name
+    inside = False
+    for ln in text.splitlines():
+        if ln.startswith("Done (do not redo):"):
+            inside = True
+        elif not ln.strip():
+            inside = False
+        if inside:
+            for pid in re.findall(r"\b([A-Z]\d+)\b", ln):
+                out.setdefault(pid, {"title": "done", "who": "done"})
+    for _, pid, said in verdict_rows(plan):
+        if pid:
+            out.setdefault(pid, {"title": _short(said, 60), "who": "named by the verdict table"})
     return out
 
 
@@ -108,6 +124,16 @@ def problems(k, root=ROOT):
                 bad.append(f"{n['id']}: has a piece but no 'found' (what was seen, in a few words)")
             if n.get("status") == "fixed" and not n.get("fix"):
                 bad.append(f"{n['id']}: fixed, with a piece, but no 'fix' (the fix, in a few words)")
+    seen = set()
+    for n in k.get("generations", []):
+        missing = [f for f in GENERATION_FIELDS if f not in n]
+        if missing:
+            bad.append(f"generation entry {n.get('id')}: no {', '.join(missing)}")
+        if n.get("id") in seen or n.get("id") in ids:
+            bad.append(f"generation entry {n.get('id')} is used twice")
+        seen.add(n.get("id"))
+        if n.get("verdict") not in ("kept", "dropped"):
+            bad.append(f"generation entry {n.get('id')}: verdict is {n.get('verdict')}, not kept or dropped")
     for n in k.get("rules", []):
         if n.get("from") and not kind(n["from"], "findings"):
             bad.append(f"rule {n['id']}: learned from {n['from']}, which is no finding")
@@ -140,7 +166,7 @@ def run_minutes(record=RECORD):
     g, m = last.get("generation", "?"), last["minutes_by_step"]
     out = {i: f"{g}: {m[s]} min" for i, s in TIMED.items() if isinstance(m.get(s), (int, float))}
     if isinstance(last.get("hours"), (int, float)):
-        out["nextg"] = f"a whole generation: {g} {last['hours']:.1f} h; the bar is 5"
+        out["nextg"] = f"a whole generation: {g} {last['hours']:.1f} h; the bar is 3"
     return out
 
 
