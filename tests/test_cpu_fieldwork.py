@@ -1,6 +1,7 @@
 import ctypes.util
 import json
 import os
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +16,7 @@ from training.experiments.fieldwork.guest import Guest, least_squares
 from training.experiments.fieldwork.induction import align, grouped
 from training.experiments.fieldwork.numeric_guest import NumericGuest
 from training.experiments.fieldwork.observatory import files, reference
+from training.experiments.fieldwork.strategy_feedback import feedback_sets, new_routes
 from training.experiments.fieldwork.work import finish_files, load_bank, matches, work
 
 
@@ -29,6 +31,20 @@ def test_private_graph_and_scheduling_inputs_are_disjoint_from_teaching():
     assert cases.bookings([[0, 2, -4, 1], [0, 2, -4, 1]], 0, True) == [-4, 2]
     x = dict(n=2, src=0, dst=1, start=0, lay=[0, 0], edges=[[0, 1, 0, 5, 10, 2]])
     assert cases.ferry_reference(x) == [2, 0]
+
+
+def test_feedback_varies_one_rule_and_fresh_grading_routes_are_disjoint():
+    prompts = feedback_sets()
+    matched = prompts["matched"]
+    assert len({digest({k: v for k, v in x.items() if k != "lay"}) for x in matched}) == 1
+    assert [cases.ferry_reference(x) for x in matched] == [[10, 0], [10, 1], [10, 1]]
+    seen = {digest(x) for x in matched}
+    for split in cases.SEEDS:
+        seen.update(digest(x) for x, _ in cases.static_cases("ferry", split))
+    fresh = new_routes()
+    ids = {digest(x) for x, _, _ in fresh}
+    assert len(fresh) == len(ids) == 48 and ids.isdisjoint(seen)
+    assert Counter(expected[1] for _, expected, _ in fresh) == {None: 16, 0: 16, 1: 16}
 
 
 def test_school_learns_boundary_with_an_extra_observation_then_compiles_graph():

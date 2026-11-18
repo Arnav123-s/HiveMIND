@@ -67,6 +67,7 @@ def score(guest, source, fresh):
         result = grade(guest, "ferry", source, split)
         record[split] = {
             "correct": result["correct"], "total": result["total"], "stress": result["tests"][-1]["ok"],
+            "passed_indices": [i for i, test in enumerate(result["tests"]) if test["ok"]],
         }
     return record
 
@@ -102,6 +103,9 @@ def main():
             raise ValueError("The saved drafts used different inputs or prompts")
         if args.extend and set(frozen["drafts"]) != set(prompts):
             raise ValueError("The follow-up needs exactly the two original repair drafts")
+        for name, draft in frozen["drafts"].items():
+            if fingerprint(draft["source"]) != frozen["scores"][name]["source_sha256"]:
+                raise ValueError(f"Saved source disagrees with its score record for {name}")
         drafts.update(frozen["drafts"])
     if not args.frozen:
         with server(args.binary, args.weights, args.out.with_suffix(".log"), threads=args.threads) as url:
@@ -126,7 +130,10 @@ def main():
         scores[arm] = by_source[key]
     save(args.out, dict(design=design, drafts=drafts, scores=scores))
     for arm, record in scores.items():
-        print(arm, record["fresh"], record["exam"], record["confirmation"])
+        print(
+            arm, record["fresh"], "exam", record["exam"]["correct"],
+            "confirmation", record["confirmation"]["correct"],
+        )
 
 
 if __name__ == "__main__":
