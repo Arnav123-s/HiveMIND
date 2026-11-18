@@ -13,5 +13,5 @@ def test_the_read_is_written_when_run_as_a_script(tmp_path):
     facts.write_text(json.dumps({}))
     out = tmp_path / "reads"
     r = subprocess.run([sys.executable, str(ROOT / "training" / "reads.py"), "write", "g43", "--facts", str(facts),
-                        "--gate", str(tmp_path / "none"), "--out", str(out)], cwd=tmp_path, capture_output=True, text=True)
+                        "--gate", str(tmp_path / "none"), "--out", str(out), "--svg", str(tmp_path / "chain.svg")], cwd=tmp_path, capture_output=True, text=True)
     assert "ModuleNotFoundError" not in r.stderr, r.stderr[-800:]
