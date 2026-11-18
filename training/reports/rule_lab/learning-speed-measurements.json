@@ -1,0 +1,4652 @@
+{
+  "environment": {
+    "cpu": "Intel Xeon Platinum 8573C",
+    "quota_cores": 4,
+    "memory_limit_gib": 16,
+    "runtime_commit": "7aa7e01",
+    "small_kernel_single_pinned_core": true
+  },
+  "runtime": {
+    "runs": [
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.431496188000892,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4507.714,
+          "prompt_per_token_ms": 20.123723214285715,
+          "prompt_per_second": 49.692593629498234,
+          "predicted_n": 19,
+          "predicted_ms": 1909.26,
+          "predicted_per_token_ms": 100.48736842105264,
+          "predicted_per_second": 9.95149953385081,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.584829772997182,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4599.981,
+          "prompt_per_token_ms": 20.535629464285712,
+          "prompt_per_second": 48.69585330895932,
+          "predicted_n": 19,
+          "predicted_ms": 1951.386,
+          "predicted_per_token_ms": 102.70452631578947,
+          "predicted_per_second": 9.736669218698916,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.433360144001199,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4493.808,
+          "prompt_per_token_ms": 20.061642857142857,
+          "prompt_per_second": 49.84636637791379,
+          "predicted_n": 19,
+          "predicted_ms": 1906.225,
+          "predicted_per_token_ms": 100.32763157894736,
+          "predicted_per_second": 9.967343834017495,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.686256241999217,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4608.251,
+          "prompt_per_token_ms": 20.57254910714286,
+          "prompt_per_second": 48.60846338448144,
+          "predicted_n": 19,
+          "predicted_ms": 2066.354,
+          "predicted_per_token_ms": 108.75547368421051,
+          "predicted_per_second": 9.194939492458698,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.67254615499769,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15617.197,
+          "prompt_per_token_ms": 22.058187853107345,
+          "prompt_per_second": 45.33463975641724,
+          "predicted_n": 19,
+          "predicted_ms": 2012.743,
+          "predicted_per_token_ms": 105.93384210526315,
+          "predicted_per_second": 9.439853970427423,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 17.85368459500023,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15825.561,
+          "prompt_per_token_ms": 22.352487288135592,
+          "prompt_per_second": 44.73775052903338,
+          "predicted_n": 19,
+          "predicted_ms": 2014.015,
+          "predicted_per_token_ms": 106.00078947368422,
+          "predicted_per_second": 9.433892001797405,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 18.515836693000892,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 16320.893,
+          "prompt_per_token_ms": 23.052108757062147,
+          "prompt_per_second": 43.37997926951669,
+          "predicted_n": 19,
+          "predicted_ms": 2182.374,
+          "predicted_per_token_ms": 114.8617894736842,
+          "predicted_per_second": 8.706115450422338,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 17.765031034999993,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15727.053,
+          "prompt_per_token_ms": 22.213351694915254,
+          "prompt_per_second": 45.0179699909449,
+          "predicted_n": 19,
+          "predicted_ms": 2021.647,
+          "predicted_per_token_ms": 106.40247368421052,
+          "predicted_per_second": 9.398277740871675,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.662800067999342,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4538.48,
+          "prompt_per_token_ms": 20.261071428571427,
+          "prompt_per_second": 49.355731434312816,
+          "predicted_n": 19,
+          "predicted_ms": 1961.177,
+          "predicted_per_token_ms": 103.21984210526315,
+          "predicted_per_second": 9.688059772269407,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 2.178245524999511,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 223
+          }
+        },
+        "timings": {
+          "prompt_n": 1,
+          "prompt_ms": 115.158,
+          "prompt_per_token_ms": 115.158,
+          "prompt_per_second": 8.68372149568419,
+          "predicted_n": 19,
+          "predicted_ms": 1957.431,
+          "predicted_per_token_ms": 103.02268421052632,
+          "predicted_per_second": 9.706600130477142,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.15038951400129,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2135.128,
+          "prompt_per_token_ms": 20.932627450980394,
+          "prompt_per_second": 47.772311542914515,
+          "predicted_n": 19,
+          "predicted_ms": 1950.536,
+          "predicted_per_token_ms": 102.65978947368421,
+          "predicted_per_second": 9.740912241558217,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.069695538000815,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2105.107,
+          "prompt_per_token_ms": 20.638303921568628,
+          "prompt_per_second": 48.45359404533831,
+          "predicted_n": 19,
+          "predicted_ms": 1952.061,
+          "predicted_per_token_ms": 102.74005263157895,
+          "predicted_per_second": 9.73330239167731,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.724844910000684,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15582.267,
+          "prompt_per_token_ms": 22.008851694915254,
+          "prompt_per_second": 45.43626418415241,
+          "predicted_n": 19,
+          "predicted_ms": 2026.687,
+          "predicted_per_token_ms": 106.66773684210526,
+          "predicted_per_second": 9.374905942555511,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.730679937998502,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2708.518,
+          "prompt_per_token_ms": 22.953542372881355,
+          "prompt_per_second": 43.566260220533884,
+          "predicted_n": 19,
+          "predicted_ms": 2005.347,
+          "predicted_per_token_ms": 105.54457894736842,
+          "predicted_per_second": 9.47466947116883,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.95204501400076,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2898.39,
+          "prompt_per_token_ms": 24.562627118644066,
+          "prompt_per_second": 40.71225749467808,
+          "predicted_n": 19,
+          "predicted_ms": 2037.78,
+          "predicted_per_token_ms": 107.25157894736842,
+          "predicted_per_second": 9.323872056846177,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 0,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 4.434823318999406,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 606
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2376.871,
+          "prompt_per_token_ms": 23.3026568627451,
+          "prompt_per_second": 42.913561568970295,
+          "predicted_n": 19,
+          "predicted_ms": 2047.066,
+          "predicted_per_token_ms": 107.74031578947368,
+          "predicted_per_second": 9.281576656541606,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.385048634998384,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4417.005,
+          "prompt_per_token_ms": 19.71877232142857,
+          "prompt_per_second": 50.71309631752737,
+          "predicted_n": 19,
+          "predicted_ms": 1957.633,
+          "predicted_per_token_ms": 103.03331578947369,
+          "predicted_per_second": 9.705598546816487,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.365499106999778,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4442.427,
+          "prompt_per_token_ms": 19.83226339285714,
+          "prompt_per_second": 50.42288820953051,
+          "predicted_n": 19,
+          "predicted_ms": 1892.738,
+          "predicted_per_token_ms": 99.61778947368421,
+          "predicted_per_second": 10.038367698012086,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.4136473719991045,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4442.836,
+          "prompt_per_token_ms": 19.83408928571429,
+          "prompt_per_second": 50.4182463633589,
+          "predicted_n": 19,
+          "predicted_ms": 1939.585,
+          "predicted_per_token_ms": 102.08342105263158,
+          "predicted_per_second": 9.79590994980885,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.368442371000128,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4465.166,
+          "prompt_per_token_ms": 19.933776785714286,
+          "prompt_per_second": 50.16610804615103,
+          "predicted_n": 19,
+          "predicted_ms": 1891.814,
+          "predicted_per_token_ms": 99.56915789473685,
+          "predicted_per_second": 10.043270638656866,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 16.98542469699896,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 14941.711,
+          "prompt_per_token_ms": 21.104111581920904,
+          "prompt_per_second": 47.38413157636364,
+          "predicted_n": 19,
+          "predicted_ms": 1995.666,
+          "predicted_per_token_ms": 105.03505263157895,
+          "predicted_per_second": 9.520631207827362,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 16.937377639998886,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 14896.148,
+          "prompt_per_token_ms": 21.03975706214689,
+          "prompt_per_second": 47.52906590348055,
+          "predicted_n": 19,
+          "predicted_ms": 2028.245,
+          "predicted_per_token_ms": 106.74973684210526,
+          "predicted_per_second": 9.36770459190088,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 19.390270594998583,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15796.835,
+          "prompt_per_token_ms": 22.311913841807907,
+          "prompt_per_second": 44.81910458645672,
+          "predicted_n": 19,
+          "predicted_ms": 3578.154,
+          "predicted_per_token_ms": 188.3238947368421,
+          "predicted_per_second": 5.310000631610602,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 17.467856082999788,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15399.023,
+          "prompt_per_token_ms": 21.750032485875707,
+          "prompt_per_second": 45.97694282293104,
+          "predicted_n": 19,
+          "predicted_ms": 2055.936,
+          "predicted_per_token_ms": 108.20715789473685,
+          "predicted_per_second": 9.241532810359855,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.686831537001126,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4442.989,
+          "prompt_per_token_ms": 19.83477232142857,
+          "prompt_per_second": 50.416510146660286,
+          "predicted_n": 19,
+          "predicted_ms": 1901.841,
+          "predicted_per_token_ms": 100.0968947368421,
+          "predicted_per_second": 9.990319905817575,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 2.303874359000474,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 223
+          }
+        },
+        "timings": {
+          "prompt_n": 1,
+          "prompt_ms": 106.259,
+          "prompt_per_token_ms": 106.259,
+          "prompt_per_second": 9.41096754157295,
+          "predicted_n": 19,
+          "predicted_ms": 1868.766,
+          "predicted_per_token_ms": 98.3561052631579,
+          "predicted_per_second": 10.167137030532448,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.295334487000218,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2128.037,
+          "prompt_per_token_ms": 20.863107843137254,
+          "prompt_per_second": 47.9314974316706,
+          "predicted_n": 19,
+          "predicted_ms": 1881.148,
+          "predicted_per_token_ms": 99.00778947368421,
+          "predicted_per_second": 10.10021540038317,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 3.9882311440014746,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2093.451,
+          "prompt_per_token_ms": 20.524029411764705,
+          "prompt_per_second": 48.72337589941203,
+          "predicted_n": 19,
+          "predicted_ms": 1880.328,
+          "predicted_per_token_ms": 98.96463157894736,
+          "predicted_per_second": 10.104620045013423,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.94325270199988,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15630.124,
+          "prompt_per_token_ms": 22.076446327683616,
+          "prompt_per_second": 45.297145435314526,
+          "predicted_n": 19,
+          "predicted_ms": 2144.873,
+          "predicted_per_token_ms": 112.88805263157894,
+          "predicted_per_second": 8.858333337218568,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.919541188999574,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2840.956,
+          "prompt_per_token_ms": 24.075898305084745,
+          "prompt_per_second": 41.53531416889244,
+          "predicted_n": 19,
+          "predicted_ms": 2064.4,
+          "predicted_per_token_ms": 108.65263157894738,
+          "predicted_per_second": 9.203642704902151,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 5.025364583998453,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2854.801,
+          "prompt_per_token_ms": 24.193228813559323,
+          "prompt_per_second": 41.33387931417987,
+          "predicted_n": 19,
+          "predicted_ms": 2160.005,
+          "predicted_per_token_ms": 113.68447368421053,
+          "predicted_per_second": 8.796275934546447,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 4.586093149002409,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 606
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2496.372,
+          "prompt_per_token_ms": 24.474235294117644,
+          "prompt_per_second": 40.859295008916945,
+          "predicted_n": 19,
+          "predicted_ms": 2073.704,
+          "predicted_per_token_ms": 109.1423157894737,
+          "predicted_per_second": 9.162349110577015,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.65887105100046,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15652.377,
+          "prompt_per_token_ms": 22.10787711864407,
+          "prompt_per_second": 45.232746438448295,
+          "predicted_n": 19,
+          "predicted_ms": 1992.95,
+          "predicted_per_token_ms": 104.8921052631579,
+          "predicted_per_second": 9.533605961012569,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.9159559790023195,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2826.217,
+          "prompt_per_token_ms": 23.95099152542373,
+          "prompt_per_second": 41.75192492296239,
+          "predicted_n": 19,
+          "predicted_ms": 2076.643,
+          "predicted_per_token_ms": 109.297,
+          "predicted_per_second": 9.149381959248654,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.99687732700113,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2885.246,
+          "prompt_per_token_ms": 24.451237288135594,
+          "prompt_per_second": 40.89772587848661,
+          "predicted_n": 19,
+          "predicted_ms": 2098.695,
+          "predicted_per_token_ms": 110.45763157894737,
+          "predicted_per_second": 9.053244992721668,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 4.530729049998627,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 606
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2480.024,
+          "prompt_per_token_ms": 24.313960784313725,
+          "prompt_per_second": 41.12863423902349,
+          "predicted_n": 19,
+          "predicted_ms": 2040.143,
+          "predicted_per_token_ms": 107.37594736842105,
+          "predicted_per_second": 9.313072662063394,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.467098352000903,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4470.922,
+          "prompt_per_token_ms": 19.959473214285712,
+          "prompt_per_second": 50.10152268368807,
+          "predicted_n": 19,
+          "predicted_ms": 1922.754,
+          "predicted_per_token_ms": 101.19757894736841,
+          "predicted_per_second": 9.881659328234399,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.309041288001026,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 106
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2387.318,
+          "prompt_per_token_ms": 20.231508474576273,
+          "prompt_per_second": 49.427851672881445,
+          "predicted_n": 19,
+          "predicted_ms": 1887.26,
+          "predicted_per_token_ms": 99.32947368421053,
+          "predicted_per_second": 10.06750527219355,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.33059463400059,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 106
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2407.555,
+          "prompt_per_token_ms": 20.40300847457627,
+          "prompt_per_second": 49.01237977948583,
+          "predicted_n": 19,
+          "predicted_ms": 1892.742,
+          "predicted_per_token_ms": 99.618,
+          "predicted_per_second": 10.038346483567228,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": true,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.09606881199943,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2131.044,
+          "prompt_per_token_ms": 20.892588235294117,
+          "prompt_per_second": 47.863863908957306,
+          "predicted_n": 19,
+          "predicted_ms": 1948.658,
+          "predicted_per_token_ms": 102.56094736842105,
+          "predicted_per_second": 9.750299950016885,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.792853778999415,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15733.407,
+          "prompt_per_token_ms": 22.22232627118644,
+          "prompt_per_second": 44.999789301833985,
+          "predicted_n": 19,
+          "predicted_ms": 1984.366,
+          "predicted_per_token_ms": 104.44031578947369,
+          "predicted_per_second": 9.574846575682107,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 16.844704350001848,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 14872.272,
+          "prompt_per_token_ms": 21.006033898305088,
+          "prompt_per_second": 47.60536924015375,
+          "predicted_n": 19,
+          "predicted_ms": 1960.55,
+          "predicted_per_token_ms": 103.18684210526315,
+          "predicted_per_second": 9.69115809339216,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 16.924716114001058,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 14946.93,
+          "prompt_per_token_ms": 21.111483050847458,
+          "prompt_per_second": 47.3675865211117,
+          "predicted_n": 19,
+          "predicted_ms": 1962.952,
+          "predicted_per_token_ms": 103.31326315789474,
+          "predicted_per_second": 9.679299340992547,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 17.22008130500035,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15101.25,
+          "prompt_per_token_ms": 21.329449152542374,
+          "prompt_per_second": 46.88353613111498,
+          "predicted_n": 19,
+          "predicted_ms": 2105.136,
+          "predicted_per_token_ms": 110.79663157894737,
+          "predicted_per_second": 9.025545142926633,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.617279645000963,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4483.844,
+          "prompt_per_token_ms": 20.017160714285716,
+          "prompt_per_second": 49.957134993991765,
+          "predicted_n": 19,
+          "predicted_ms": 1918.388,
+          "predicted_per_token_ms": 100.9677894736842,
+          "predicted_per_second": 9.904148691505576,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.5684745850012405,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4414.302,
+          "prompt_per_token_ms": 19.706705357142855,
+          "prompt_per_second": 50.74414935815447,
+          "predicted_n": 19,
+          "predicted_ms": 1861.098,
+          "predicted_per_token_ms": 97.95252631578947,
+          "predicted_per_second": 10.209027144191225,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.627494139000191,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4497.352,
+          "prompt_per_token_ms": 20.077464285714285,
+          "prompt_per_second": 49.807086481111554,
+          "predicted_n": 19,
+          "predicted_ms": 1917.724,
+          "predicted_per_token_ms": 100.93284210526315,
+          "predicted_per_second": 9.90757794135131,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "cache": false,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.295144841002184,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4420.6,
+          "prompt_per_token_ms": 19.73482142857143,
+          "prompt_per_second": 50.67185449938922,
+          "predicted_n": 19,
+          "predicted_ms": 1863.047,
+          "predicted_per_token_ms": 98.0551052631579,
+          "predicted_per_second": 10.198347116310002,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.39356661200145,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15367.117,
+          "prompt_per_token_ms": 21.704967514124295,
+          "prompt_per_second": 46.07240252026453,
+          "predicted_n": 19,
+          "predicted_ms": 2010.01,
+          "predicted_per_token_ms": 105.79,
+          "predicted_per_second": 9.452689290103034,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.7538988790001895,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2720.392,
+          "prompt_per_token_ms": 23.05416949152542,
+          "prompt_per_second": 43.376101679463844,
+          "predicted_n": 19,
+          "predicted_ms": 2020.423,
+          "predicted_per_token_ms": 106.33805263157895,
+          "predicted_per_second": 9.403971346594252,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.753356779998285,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 590
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2709.331,
+          "prompt_per_token_ms": 22.960432203389832,
+          "prompt_per_second": 43.55318711519559,
+          "predicted_n": 19,
+          "predicted_ms": 2029.194,
+          "predicted_per_token_ms": 106.79968421052631,
+          "predicted_per_second": 9.363323565908436,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 4.415223309999419,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 606
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2352.447,
+          "prompt_per_token_ms": 23.063205882352943,
+          "prompt_per_second": 43.359106496341894,
+          "predicted_n": 19,
+          "predicted_ms": 2047.591,
+          "predicted_per_token_ms": 107.76794736842105,
+          "predicted_per_second": 9.279196870859463,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.519519866000337,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4514.093,
+          "prompt_per_token_ms": 20.15220089285714,
+          "prompt_per_second": 49.62237153731658,
+          "predicted_n": 19,
+          "predicted_ms": 1900.247,
+          "predicted_per_token_ms": 100.013,
+          "predicted_per_second": 9.998700168978033,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.348635970000032,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 106
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2409.379,
+          "prompt_per_token_ms": 20.418466101694914,
+          "prompt_per_second": 48.97527537178667,
+          "predicted_n": 19,
+          "predicted_ms": 1902.91,
+          "predicted_per_token_ms": 100.15315789473685,
+          "predicted_per_second": 9.984707631995207,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.471005164999951,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 106
+          }
+        },
+        "timings": {
+          "prompt_n": 118,
+          "prompt_ms": 2448.65,
+          "prompt_per_token_ms": 20.75127118644068,
+          "prompt_per_second": 48.189818879790906,
+          "predicted_n": 19,
+          "predicted_ms": 1986.472,
+          "predicted_per_token_ms": 104.55115789473685,
+          "predicted_per_second": 9.564695601045472,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": true,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 4.022150197997689,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "timings": {
+          "prompt_n": 102,
+          "prompt_ms": 2088.337,
+          "prompt_per_token_ms": 20.473892156862746,
+          "prompt_per_second": 48.84269157707784,
+          "predicted_n": 19,
+          "predicted_ms": 1921.261,
+          "predicted_per_token_ms": 101.119,
+          "predicted_per_second": 9.889338304374053,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 17.42465500799881,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15345.599,
+          "prompt_per_token_ms": 21.67457485875706,
+          "prompt_per_second": 46.13700644725566,
+          "predicted_n": 19,
+          "predicted_ms": 2016.211,
+          "predicted_per_token_ms": 106.11636842105263,
+          "predicted_per_second": 9.423616873432394,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 17.427916971999366,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15414.13,
+          "prompt_per_token_ms": 21.771370056497172,
+          "prompt_per_second": 45.931881981013525,
+          "predicted_n": 19,
+          "predicted_ms": 2002.885,
+          "predicted_per_token_ms": 105.415,
+          "predicted_per_second": 9.4863159891856,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 17.46682579100161,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 15437.242,
+          "prompt_per_token_ms": 21.804014124293786,
+          "prompt_per_second": 45.863114667762545,
+          "predicted_n": 19,
+          "predicted_ms": 2017.976,
+          "predicted_per_token_ms": 106.20926315789474,
+          "predicted_per_second": 9.415374612978548,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": true,
+        "seed": 444,
+        "first": false,
+        "correct": false,
+        "wall_s": 18.327363876000163,
+        "text": "{\"submit\":[\"r0\",\"-r1\",\"-r2\",\"-r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 708,
+          "total_tokens": 727,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 708,
+          "prompt_ms": 16233.67,
+          "prompt_per_token_ms": 22.92891242937853,
+          "prompt_per_second": 43.613058538211014,
+          "predicted_n": 19,
+          "predicted_ms": 2081.364,
+          "predicted_per_token_ms": 109.54547368421053,
+          "predicted_per_second": 9.128629110525598,
+          "n_ctx": 2048,
+          "n_past": 726
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 441,
+        "first": true,
+        "correct": true,
+        "wall_s": 6.610240589001478,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4472.279,
+          "prompt_per_token_ms": 19.96553125,
+          "prompt_per_second": 50.08632064323357,
+          "predicted_n": 19,
+          "predicted_ms": 1966.657,
+          "predicted_per_token_ms": 103.50826315789473,
+          "predicted_per_second": 9.661064435740446,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 442,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.699613130000216,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4504.825,
+          "prompt_per_token_ms": 20.110825892857143,
+          "prompt_per_second": 49.724462104521265,
+          "predicted_n": 19,
+          "predicted_ms": 2026.389,
+          "predicted_per_token_ms": 106.65205263157894,
+          "predicted_per_second": 9.37628461267802,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 443,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.544257950998144,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4517.946,
+          "prompt_per_token_ms": 20.169401785714285,
+          "prompt_per_second": 49.58005252829494,
+          "predicted_n": 19,
+          "predicted_ms": 1926.525,
+          "predicted_per_token_ms": 101.39605263157895,
+          "predicted_per_second": 9.862316865859514,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "cache": false,
+        "history": false,
+        "seed": 444,
+        "first": false,
+        "correct": true,
+        "wall_s": 6.753171295000357,
+        "text": "{\"submit\":[\"r0\",\"-r1+r3\",\"-r2+r3\"]}",
+        "usage": {
+          "completion_tokens": 19,
+          "prompt_tokens": 224,
+          "total_tokens": 243,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prompt_n": 224,
+          "prompt_ms": 4652.715,
+          "prompt_per_token_ms": 20.771049107142858,
+          "prompt_per_second": 48.14393316590421,
+          "predicted_n": 19,
+          "predicted_ms": 2083.381,
+          "predicted_per_token_ms": 109.65163157894736,
+          "predicted_per_second": 9.11979133917416,
+          "n_ctx": 2048,
+          "n_past": 242
+        }
+      }
+    ],
+    "blocks": [
+      {
+        "block": 0,
+        "flash": false,
+        "startup_s": 6.245890602000145,
+        "server_peak_kib": 2860052,
+        "verified_server_flash_flag": 0
+      },
+      {
+        "block": 1,
+        "flash": true,
+        "startup_s": 5.16468521799834,
+        "server_peak_kib": 2859628,
+        "verified_server_flash_flag": 1
+      },
+      {
+        "block": 2,
+        "flash": true,
+        "startup_s": 5.06799199300076,
+        "server_peak_kib": 2859684,
+        "verified_server_flash_flag": 1
+      },
+      {
+        "block": 3,
+        "flash": false,
+        "startup_s": 5.3034001880005235,
+        "server_peak_kib": 2859692,
+        "verified_server_flash_flag": 0
+      }
+    ],
+    "threads": 4
+  },
+  "kernel": {
+    "has_vnni": true,
+    "verified_int32_outputs": 945,
+    "core": 0,
+    "torch": "2.15.0+cpu",
+    "stem_sha256": "859ccc69ee8d738e69c44bf1b55091d66b9e06695925b00dbecb57371b9cc196",
+    "whole_model": {
+      "1": {
+        "original": {
+          "median_ms": 5.456646333333333,
+          "blocks_ms": [
+            5.689223916666667,
+            5.744426,
+            5.352977166666667,
+            5.502769666666667,
+            5.167417916666667,
+            4.898920916666667,
+            5.456646333333333
+          ]
+        },
+        "frozen_exact": {
+          "median_ms": 1.47739,
+          "blocks_ms": [
+            1.47739,
+            1.1498924166666666,
+            1.26018525,
+            1.670275,
+            1.5201354166666667,
+            1.41190475,
+            1.50100525
+          ]
+        },
+        "frozen_float": {
+          "median_ms": 1.2547169166666667,
+          "blocks_ms": [
+            1.3064246666666668,
+            1.18109225,
+            1.1946475833333332,
+            1.34761675,
+            1.320054,
+            1.2547169166666667,
+            1.1727880833333333
+          ]
+        },
+        "byte_vnni": {
+          "median_ms": 1.3822351666666668,
+          "blocks_ms": [
+            1.3341088333333333,
+            1.1330163333333332,
+            1.4054439166666668,
+            1.3985808333333332,
+            1.1652426666666666,
+            1.3822351666666668,
+            1.4933896666666668
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 1.4264450833333333,
+          "blocks_ms": [
+            1.30125,
+            1.1240965,
+            1.5560135,
+            1.5840396666666667,
+            1.28383325,
+            1.8138054166666668,
+            1.4264450833333333
+          ]
+        }
+      },
+      "8": {
+        "original": {
+          "median_ms": 6.421016333333333,
+          "blocks_ms": [
+            6.7936705,
+            6.421016333333333,
+            6.2262406666666665,
+            6.131190666666667,
+            6.828321916666667,
+            7.0030185,
+            5.874992083333333
+          ]
+        },
+        "frozen_exact": {
+          "median_ms": 2.5178871666666667,
+          "blocks_ms": [
+            2.7854225,
+            2.5178871666666667,
+            2.2989398333333333,
+            2.1880676666666665,
+            4.43452825,
+            2.7084185,
+            2.4711306666666664
+          ]
+        },
+        "frozen_float": {
+          "median_ms": 2.1311095,
+          "blocks_ms": [
+            2.1311095,
+            2.047161,
+            1.9546793333333332,
+            2.62257475,
+            2.2972245,
+            2.201173,
+            2.11852425
+          ]
+        },
+        "byte_vnni": {
+          "median_ms": 2.2693923333333337,
+          "blocks_ms": [
+            2.2693923333333337,
+            1.99666175,
+            2.56036025,
+            2.3784796666666663,
+            2.3033814166666664,
+            1.9241305,
+            1.9167584166666667
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 2.2299255833333333,
+          "blocks_ms": [
+            2.22295125,
+            2.015165666666667,
+            2.2525481666666667,
+            2.0181215,
+            2.2299255833333333,
+            2.687837,
+            2.7559859166666665
+          ]
+        }
+      },
+      "64": {
+        "original": {
+          "median_ms": 9.334462333333335,
+          "blocks_ms": [
+            10.026697666666665,
+            11.112832333333333,
+            11.158391,
+            9.139493,
+            9.261335,
+            8.934080333333334,
+            9.334462333333335
+          ]
+        },
+        "frozen_exact": {
+          "median_ms": 5.503168,
+          "blocks_ms": [
+            5.197886,
+            5.306335,
+            5.503168,
+            6.233621,
+            7.028253666666667,
+            5.410127666666667,
+            5.686848666666667
+          ]
+        },
+        "frozen_float": {
+          "median_ms": 5.293101666666667,
+          "blocks_ms": [
+            4.933396,
+            5.648742333333333,
+            4.869486,
+            5.1890513333333335,
+            5.699879333333333,
+            5.933304,
+            5.293101666666667
+          ]
+        },
+        "byte_vnni": {
+          "median_ms": 6.9519486666666666,
+          "blocks_ms": [
+            6.976818,
+            6.882096333333333,
+            5.821741,
+            6.146092333333333,
+            6.9519486666666666,
+            7.772580333333333,
+            7.796483666666667
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 8.66081,
+          "blocks_ms": [
+            8.983114,
+            8.876569,
+            6.817827,
+            7.15766,
+            8.627709666666666,
+            9.516860666666666,
+            8.66081
+          ]
+        }
+      },
+      "128": {
+        "original": {
+          "median_ms": 13.689213333333335,
+          "blocks_ms": [
+            12.773718666666666,
+            13.622614666666665,
+            14.664877666666666,
+            13.332980666666666,
+            14.253729333333334,
+            13.689213333333335,
+            14.160573
+          ]
+        },
+        "frozen_exact": {
+          "median_ms": 9.823457333333334,
+          "blocks_ms": [
+            9.606322,
+            11.014571,
+            8.949818,
+            9.926175666666666,
+            10.280027,
+            9.823457333333334,
+            9.574005666666666
+          ]
+        },
+        "frozen_float": {
+          "median_ms": 9.473994666666666,
+          "blocks_ms": [
+            10.413153666666666,
+            8.290798333333333,
+            9.561272333333333,
+            10.749475,
+            9.204439333333333,
+            9.216462,
+            9.473994666666666
+          ]
+        },
+        "byte_vnni": {
+          "median_ms": 11.852867666666667,
+          "blocks_ms": [
+            11.852867666666667,
+            11.622903333333333,
+            12.378451,
+            11.278469,
+            13.281830666666666,
+            12.675072666666667,
+            11.127993333333334
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 15.016131,
+          "blocks_ms": [
+            14.676596,
+            16.067722333333332,
+            14.507758666666666,
+            16.261940666666668,
+            15.016131,
+            14.428294666666666,
+            15.267081666666666
+          ]
+        }
+      }
+    },
+    "dot": {
+      "768x192/1": {
+        "byte_vnni": {
+          "median_ms": 0.0099585,
+          "blocks_ms": [
+            0.011233275,
+            0.01022045,
+            0.0099585,
+            0.00925975,
+            0.0092615,
+            0.00974515,
+            0.011924125
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 0.012086649999999999,
+          "blocks_ms": [
+            0.011803875,
+            0.013098,
+            0.011425975,
+            0.012086649999999999,
+            0.01371305,
+            0.0118556,
+            0.014619825000000001
+          ]
+        }
+      },
+      "768x192/8": {
+        "byte_vnni": {
+          "median_ms": 0.0348845,
+          "blocks_ms": [
+            0.037902,
+            0.032282125,
+            0.034133825,
+            0.0348845,
+            0.03418815,
+            0.035903825,
+            0.035381800000000005
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 0.049287775,
+          "blocks_ms": [
+            0.049287775,
+            0.05259905,
+            0.045238824999999996,
+            0.0458127,
+            0.046562900000000004,
+            0.05200295,
+            0.04966515
+          ]
+        }
+      },
+      "192x768/1": {
+        "byte_vnni": {
+          "median_ms": 0.008759649999999999,
+          "blocks_ms": [
+            0.008759649999999999,
+            0.010294125,
+            0.007755575,
+            0.012469649999999999,
+            0.009863275,
+            0.008437175,
+            0.007694725
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 0.012202625,
+          "blocks_ms": [
+            0.01404685,
+            0.01095925,
+            0.010991875,
+            0.014432825000000002,
+            0.012831174999999998,
+            0.012202625,
+            0.010087225
+          ]
+        }
+      },
+      "192x768/8": {
+        "byte_vnni": {
+          "median_ms": 0.0295636,
+          "blocks_ms": [
+            0.0295636,
+            0.029239474999999997,
+            0.03039145,
+            0.02766745,
+            0.0286573,
+            0.032563025,
+            0.03145715
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 0.044747300000000004,
+          "blocks_ms": [
+            0.04226465,
+            0.044747300000000004,
+            0.043237975,
+            0.044041725,
+            0.045310949999999996,
+            0.048424775,
+            0.046602175
+          ]
+        }
+      },
+      "4096x4096/1": {
+        "byte_vnni": {
+          "median_ms": 0.7375284,
+          "blocks_ms": [
+            0.7161688,
+            0.8285821999999999,
+            0.6319156,
+            0.6431834000000001,
+            0.7375284,
+            0.757287,
+            0.7564644
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 0.5398824,
+          "blocks_ms": [
+            0.536466,
+            0.5398824,
+            0.5057718,
+            0.4950938,
+            0.6177701999999999,
+            0.6037458,
+            0.6747608
+          ]
+        }
+      },
+      "4096x4096/8": {
+        "byte_vnni": {
+          "median_ms": 5.292841,
+          "blocks_ms": [
+            5.058086599999999,
+            5.3593928,
+            4.929824,
+            5.4658086,
+            5.1824252,
+            5.3305802,
+            5.292841
+          ]
+        },
+        "packed_vnni": {
+          "median_ms": 4.1470427999999995,
+          "blocks_ms": [
+            3.941852,
+            3.9501364,
+            4.2473822000000006,
+            4.325064,
+            4.2492258,
+            3.932275,
+            4.1470427999999995
+          ]
+        }
+      }
+    },
+    "quality": {
+      "original": {
+        "tokens": 2841,
+        "argmax_agree": 2841,
+        "sum_nll": 14347.026611328125,
+        "max_logit_diff": 0.0
+      },
+      "frozen_exact": {
+        "tokens": 2841,
+        "argmax_agree": 2841,
+        "sum_nll": 14347.026611328125,
+        "max_logit_diff": 0.0
+      },
+      "frozen_float": {
+        "tokens": 2841,
+        "argmax_agree": 2837,
+        "sum_nll": 14347.837097167969,
+        "max_logit_diff": 0.1771717071533203
+      },
+      "byte_vnni": {
+        "tokens": 2841,
+        "argmax_agree": 2835,
+        "sum_nll": 14346.0771484375,
+        "max_logit_diff": 0.1747140884399414
+      },
+      "packed_vnni": {
+        "tokens": 2841,
+        "argmax_agree": 2835,
+        "sum_nll": 14346.0771484375,
+        "max_logit_diff": 0.1747140884399414
+      }
+    },
+    "executable_procedure": {
+      "worlds": 512,
+      "passed": 512,
+      "batch_time": {
+        "median_ms": 21.48884,
+        "blocks_ms": [
+          22.180135,
+          20.845763,
+          21.021636,
+          69.763548,
+          21.48884,
+          20.696402,
+          24.310061
+        ]
+      }
+    }
+  },
+  "continual": {
+    "initial": {
+      "seeds": [
+        811,
+        812,
+        813,
+        814,
+        815,
+        816,
+        817,
+        818,
+        819,
+        820,
+        821,
+        822,
+        823,
+        824,
+        825,
+        826,
+        827,
+        828,
+        829,
+        830,
+        831,
+        832,
+        833,
+        834
+      ],
+      "tasks_per_stream": 1024,
+      "phase_length": 256,
+      "reward_delay": 8,
+      "extra_probe_cost": 0.12,
+      "exploration": 0.12,
+      "summary": {
+        "clean": {
+          "frozen": {
+            "all": {
+              "pass": 0.8585205078125,
+              "reported_pass": 0.8585205078125,
+              "probe_rate": 0.0,
+              "net": 0.8585205078125,
+              "reported_net": 0.8585205078125
+            },
+            "first_32_after_change": {
+              "pass": 0.7122395833333334,
+              "reported_pass": 0.7122395833333334,
+              "probe_rate": 0.0,
+              "net": 0.7122395833333334,
+              "reported_net": 0.7122395833333334
+            },
+            "last_32_before_return": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7356770833333334,
+              "probe_rate": 0.0,
+              "net": 0.7356770833333334,
+              "reported_net": 0.7356770833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9726755422684126,
+              "reported_pass": 0.9726755422684126,
+              "probe_rate": 0.0,
+              "net": 0.9726755422684126,
+              "reported_net": 0.9726755422684126
+            },
+            "phases": [
+              {
+                "pass": 0.93798828125,
+                "reported_pass": 0.93798828125,
+                "probe_rate": 0.0,
+                "net": 0.93798828125,
+                "reported_net": 0.93798828125
+              },
+              {
+                "pass": 0.7177734375,
+                "reported_pass": 0.7177734375,
+                "probe_rate": 0.0,
+                "net": 0.7177734375,
+                "reported_net": 0.7177734375
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9425455729166666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9425455729166666
+              },
+              {
+                "pass": 0.8357747395833334,
+                "reported_pass": 0.8357747395833334,
+                "probe_rate": 0.0,
+                "net": 0.8357747395833334,
+                "reported_net": 0.8357747395833334
+              }
+            ],
+            "net_minus_frozen": 0.0,
+            "paired_stream_bootstrap_95": [
+              0.0,
+              0.0
+            ]
+          },
+          "always_probe": {
+            "all": {
+              "pass": 0.8874918619791666,
+              "reported_pass": 0.8874918619791666,
+              "probe_rate": 1.0,
+              "net": 0.7674918619791625,
+              "reported_net": 0.7674918619791625
+            },
+            "first_32_after_change": {
+              "pass": 0.8125,
+              "reported_pass": 0.8125,
+              "probe_rate": 1.0,
+              "net": 0.6924999999999999,
+              "reported_net": 0.6924999999999999
+            },
+            "last_32_before_return": {
+              "pass": 0.8372395833333334,
+              "reported_pass": 0.8372395833333334,
+              "probe_rate": 1.0,
+              "net": 0.7172395833333333,
+              "reported_net": 0.7172395833333333
+            },
+            "fault_site_after_return": {
+              "pass": 0.9647894335787915,
+              "reported_pass": 0.9647894335787915,
+              "probe_rate": 1.0,
+              "net": 0.8447894335787923,
+              "reported_net": 0.8447894335787923
+            },
+            "phases": [
+              {
+                "pass": 0.9244791666666666,
+                "reported_pass": 0.9244791666666666,
+                "probe_rate": 1.0,
+                "net": 0.8044791666666639,
+                "reported_net": 0.8044791666666639
+              },
+              {
+                "pass": 0.8128255208333334,
+                "reported_pass": 0.8128255208333334,
+                "probe_rate": 1.0,
+                "net": 0.6928255208333308,
+                "reported_net": 0.6928255208333308
+              },
+              {
+                "pass": 0.9313151041666666,
+                "reported_pass": 0.9313151041666666,
+                "probe_rate": 1.0,
+                "net": 0.8113151041666639,
+                "reported_net": 0.8113151041666639
+              },
+              {
+                "pass": 0.88134765625,
+                "reported_pass": 0.88134765625,
+                "probe_rate": 1.0,
+                "net": 0.7613476562499972,
+                "reported_net": 0.7613476562499972
+              }
+            ],
+            "net_minus_frozen": -0.09102864583333742,
+            "paired_stream_bootstrap_95": [
+              -0.09351074218750406,
+              -0.08858723958333743
+            ]
+          },
+          "lifetime_mean": {
+            "all": {
+              "pass": 0.85107421875,
+              "reported_pass": 0.85107421875,
+              "probe_rate": 0.08378092447916667,
+              "net": 0.8410205078124996,
+              "reported_net": 0.8410205078124996
+            },
+            "first_32_after_change": {
+              "pass": 0.7317708333333334,
+              "reported_pass": 0.7317708333333334,
+              "probe_rate": 0.07291666666666667,
+              "net": 0.7230208333333333,
+              "reported_net": 0.7230208333333333
+            },
+            "last_32_before_return": {
+              "pass": 0.81640625,
+              "reported_pass": 0.81640625,
+              "probe_rate": 0.09244791666666667,
+              "net": 0.8053125,
+              "reported_net": 0.8053125
+            },
+            "fault_site_after_return": {
+              "pass": 0.9302217662667216,
+              "reported_pass": 0.9302217662667216,
+              "probe_rate": 0.04747838509995957,
+              "net": 0.9245243600547265,
+              "reported_net": 0.9245243600547265
+            },
+            "phases": [
+              {
+                "pass": 0.91455078125,
+                "reported_pass": 0.91455078125,
+                "probe_rate": 0.07373046875,
+                "net": 0.9057031249999997,
+                "reported_net": 0.9057031249999997
+              },
+              {
+                "pass": 0.7600911458333334,
+                "reported_pass": 0.7600911458333334,
+                "probe_rate": 0.09977213541666667,
+                "net": 0.7481184895833329,
+                "reported_net": 0.7481184895833329
+              },
+              {
+                "pass": 0.8987630208333334,
+                "reported_pass": 0.8987630208333334,
+                "probe_rate": 0.08284505208333333,
+                "net": 0.8888216145833331,
+                "reported_net": 0.8888216145833331
+              },
+              {
+                "pass": 0.8308919270833334,
+                "reported_pass": 0.8308919270833334,
+                "probe_rate": 0.07877604166666667,
+                "net": 0.8214388020833331,
+                "reported_net": 0.8214388020833331
+              }
+            ],
+            "net_minus_frozen": -0.017500000000000362,
+            "paired_stream_bootstrap_95": [
+              -0.021407104492187964,
+              -0.013979329427083733
+            ]
+          },
+          "recent": {
+            "all": {
+              "pass": 0.8700358072916666,
+              "reported_pass": 0.8700358072916666,
+              "probe_rate": 0.21016438802083334,
+              "net": 0.8448160807291657,
+              "reported_net": 0.8448160807291657
+            },
+            "first_32_after_change": {
+              "pass": 0.7486979166666666,
+              "reported_pass": 0.7486979166666666,
+              "probe_rate": 0.20182291666666666,
+              "net": 0.7244791666666667,
+              "reported_net": 0.7244791666666667
+            },
+            "last_32_before_return": {
+              "pass": 0.9192708333333334,
+              "reported_pass": 0.9192708333333334,
+              "probe_rate": 0.20182291666666666,
+              "net": 0.8950520833333333,
+              "reported_net": 0.8950520833333333
+            },
+            "fault_site_after_return": {
+              "pass": 0.8299569595868395,
+              "reported_pass": 0.8299569595868395,
+              "probe_rate": 0.31105667284994515,
+              "net": 0.7926301588448462,
+              "reported_net": 0.7926301588448462
+            },
+            "phases": [
+              {
+                "pass": 0.9148763020833334,
+                "reported_pass": 0.9148763020833334,
+                "probe_rate": 0.09928385416666667,
+                "net": 0.9029622395833329,
+                "reported_net": 0.9029622395833329
+              },
+              {
+                "pass": 0.8605143229166666,
+                "reported_pass": 0.8605143229166666,
+                "probe_rate": 0.26416015625,
+                "net": 0.828815104166666,
+                "reported_net": 0.828815104166666
+              },
+              {
+                "pass": 0.861328125,
+                "reported_pass": 0.861328125,
+                "probe_rate": 0.22916666666666666,
+                "net": 0.8338281249999994,
+                "reported_net": 0.8338281249999994
+              },
+              {
+                "pass": 0.8434244791666666,
+                "reported_pass": 0.8434244791666666,
+                "probe_rate": 0.248046875,
+                "net": 0.813658854166666,
+                "reported_net": 0.813658854166666
+              }
+            ],
+            "net_minus_frozen": -0.013704427083334275,
+            "paired_stream_bootstrap_95": [
+              -0.019154378255209315,
+              -0.00806473795573012
+            ]
+          },
+          "recent_wrong_receipt": {
+            "all": {
+              "pass": 0.8080647786458334,
+              "reported_pass": 0.8080647786458334,
+              "probe_rate": 0.3117268880208333,
+              "net": 0.770657552083332,
+              "reported_net": 0.770657552083332
+            },
+            "first_32_after_change": {
+              "pass": 0.7578125,
+              "reported_pass": 0.7578125,
+              "probe_rate": 0.3072916666666667,
+              "net": 0.7209375000000001,
+              "reported_net": 0.7209375000000001
+            },
+            "last_32_before_return": {
+              "pass": 0.8268229166666666,
+              "reported_pass": 0.8268229166666666,
+              "probe_rate": 0.3567708333333333,
+              "net": 0.7840104166666665,
+              "reported_net": 0.7840104166666665
+            },
+            "fault_site_after_return": {
+              "pass": 0.7894318359929234,
+              "reported_pass": 0.7894318359929234,
+              "probe_rate": 0.28706264446457724,
+              "net": 0.7549843186571743,
+              "reported_net": 0.7549843186571743
+            },
+            "phases": [
+              {
+                "pass": 0.87841796875,
+                "reported_pass": 0.87841796875,
+                "probe_rate": 0.2732747395833333,
+                "net": 0.8456249999999991,
+                "reported_net": 0.8456249999999991
+              },
+              {
+                "pass": 0.7775065104166666,
+                "reported_pass": 0.7775065104166666,
+                "probe_rate": 0.3289388020833333,
+                "net": 0.7380338541666659,
+                "reported_net": 0.7380338541666659
+              },
+              {
+                "pass": 0.7945963541666666,
+                "reported_pass": 0.7945963541666666,
+                "probe_rate": 0.3396809895833333,
+                "net": 0.7538346354166657,
+                "reported_net": 0.7538346354166657
+              },
+              {
+                "pass": 0.78173828125,
+                "reported_pass": 0.78173828125,
+                "probe_rate": 0.3050130208333333,
+                "net": 0.7451367187499992,
+                "reported_net": 0.7451367187499992
+              }
+            ],
+            "net_minus_frozen": -0.08786295572916801,
+            "paired_stream_bootstrap_95": [
+              -0.09705114746093887,
+              -0.07748665364583462
+            ]
+          },
+          "policy_gradient": {
+            "all": {
+              "pass": 0.8409016927083334,
+              "reported_pass": 0.8409016927083334,
+              "probe_rate": 0.19002278645833334,
+              "net": 0.8180989583333327,
+              "reported_net": 0.8180989583333327
+            },
+            "first_32_after_change": {
+              "pass": 0.7408854166666666,
+              "reported_pass": 0.7408854166666666,
+              "probe_rate": 0.20833333333333334,
+              "net": 0.7158854166666666,
+              "reported_net": 0.7158854166666666
+            },
+            "last_32_before_return": {
+              "pass": 0.77734375,
+              "reported_pass": 0.77734375,
+              "probe_rate": 0.2109375,
+              "net": 0.7520312499999999,
+              "reported_net": 0.7520312499999999
+            },
+            "fault_site_after_return": {
+              "pass": 0.9148511337822173,
+              "reported_pass": 0.9148511337822173,
+              "probe_rate": 0.20235031579883697,
+              "net": 0.8905690958863568,
+              "reported_net": 0.8905690958863568
+            },
+            "phases": [
+              {
+                "pass": 0.87939453125,
+                "reported_pass": 0.87939453125,
+                "probe_rate": 0.2513020833333333,
+                "net": 0.8492382812499993,
+                "reported_net": 0.8492382812499993
+              },
+              {
+                "pass": 0.7530924479166666,
+                "reported_pass": 0.7530924479166666,
+                "probe_rate": 0.19547526041666666,
+                "net": 0.7296354166666662,
+                "reported_net": 0.7296354166666662
+              },
+              {
+                "pass": 0.8990885416666666,
+                "reported_pass": 0.8990885416666666,
+                "probe_rate": 0.17561848958333334,
+                "net": 0.8780143229166661,
+                "reported_net": 0.8780143229166661
+              },
+              {
+                "pass": 0.83203125,
+                "reported_pass": 0.83203125,
+                "probe_rate": 0.1376953125,
+                "net": 0.8155078124999996,
+                "reported_net": 0.8155078124999996
+              }
+            ],
+            "net_minus_frozen": -0.04042154947916741,
+            "paired_stream_bootstrap_95": [
+              -0.042732747395834096,
+              -0.03820133463541741
+            ]
+          },
+          "drift_switch": {
+            "all": {
+              "pass": 0.8951822916666666,
+              "reported_pass": 0.8951822916666666,
+              "probe_rate": 0.0,
+              "net": 0.8951822916666666,
+              "reported_net": 0.8951822916666666
+            },
+            "first_32_after_change": {
+              "pass": 0.73828125,
+              "reported_pass": 0.73828125,
+              "probe_rate": 0.0,
+              "net": 0.73828125,
+              "reported_net": 0.73828125
+            },
+            "last_32_before_return": {
+              "pass": 0.9348958333333334,
+              "reported_pass": 0.9348958333333334,
+              "probe_rate": 0.0,
+              "net": 0.9348958333333334,
+              "reported_net": 0.9348958333333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9012013060881565,
+              "reported_pass": 0.9012013060881565,
+              "probe_rate": 0.0,
+              "net": 0.9012013060881565,
+              "reported_net": 0.9012013060881565
+            },
+            "phases": [
+              {
+                "pass": 0.93212890625,
+                "reported_pass": 0.93212890625,
+                "probe_rate": 0.0,
+                "net": 0.93212890625,
+                "reported_net": 0.93212890625
+              },
+              {
+                "pass": 0.9036458333333334,
+                "reported_pass": 0.9036458333333334,
+                "probe_rate": 0.0,
+                "net": 0.9036458333333334,
+                "reported_net": 0.9036458333333334
+              },
+              {
+                "pass": 0.9072265625,
+                "reported_pass": 0.9072265625,
+                "probe_rate": 0.0,
+                "net": 0.9072265625,
+                "reported_net": 0.9072265625
+              },
+              {
+                "pass": 0.8377278645833334,
+                "reported_pass": 0.8377278645833334,
+                "probe_rate": 0.0,
+                "net": 0.8377278645833334,
+                "reported_net": 0.8377278645833334
+              }
+            ],
+            "net_minus_frozen": 0.036661783854166664,
+            "paired_stream_bootstrap_95": [
+              0.032958984375,
+              0.04056905110677082
+            ]
+          },
+          "oracle": {
+            "all": {
+              "pass": 0.9404296875,
+              "reported_pass": 0.9404296875,
+              "probe_rate": 0.0,
+              "net": 0.9404296875,
+              "reported_net": 0.9404296875
+            },
+            "first_32_after_change": {
+              "pass": 0.9309895833333334,
+              "reported_pass": 0.9309895833333334,
+              "probe_rate": 0.0,
+              "net": 0.9309895833333334,
+              "reported_net": 0.9309895833333334
+            },
+            "last_32_before_return": {
+              "pass": 0.9453125,
+              "reported_pass": 0.9453125,
+              "probe_rate": 0.0,
+              "net": 0.9453125,
+              "reported_net": 0.9453125
+            },
+            "fault_site_after_return": {
+              "pass": 0.9726755422684126,
+              "reported_pass": 0.9726755422684126,
+              "probe_rate": 0.0,
+              "net": 0.9726755422684126,
+              "reported_net": 0.9726755422684126
+            },
+            "phases": [
+              {
+                "pass": 0.93798828125,
+                "reported_pass": 0.93798828125,
+                "probe_rate": 0.0,
+                "net": 0.93798828125,
+                "reported_net": 0.93798828125
+              },
+              {
+                "pass": 0.9386393229166666,
+                "reported_pass": 0.9386393229166666,
+                "probe_rate": 0.0,
+                "net": 0.9386393229166666,
+                "reported_net": 0.9386393229166666
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9425455729166666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9425455729166666
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9425455729166666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9425455729166666
+              }
+            ],
+            "net_minus_frozen": 0.0819091796875,
+            "paired_stream_bootstrap_95": [
+              0.07881673177083333,
+              0.0849609375
+            ]
+          }
+        },
+        "faulty_verifier": {
+          "frozen": {
+            "all": {
+              "pass": 0.8585205078125,
+              "reported_pass": 0.8585205078125,
+              "probe_rate": 0.0,
+              "net": 0.8585205078125,
+              "reported_net": 0.8585205078125
+            },
+            "first_32_after_change": {
+              "pass": 0.7122395833333334,
+              "reported_pass": 0.7122395833333334,
+              "probe_rate": 0.0,
+              "net": 0.7122395833333334,
+              "reported_net": 0.7122395833333334
+            },
+            "last_32_before_return": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7356770833333334,
+              "probe_rate": 0.0,
+              "net": 0.7356770833333334,
+              "reported_net": 0.7356770833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9726755422684126,
+              "reported_pass": 0.9726755422684126,
+              "probe_rate": 0.0,
+              "net": 0.9726755422684126,
+              "reported_net": 0.9726755422684126
+            },
+            "phases": [
+              {
+                "pass": 0.93798828125,
+                "reported_pass": 0.93798828125,
+                "probe_rate": 0.0,
+                "net": 0.93798828125,
+                "reported_net": 0.93798828125
+              },
+              {
+                "pass": 0.7177734375,
+                "reported_pass": 0.7177734375,
+                "probe_rate": 0.0,
+                "net": 0.7177734375,
+                "reported_net": 0.7177734375
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9425455729166666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9425455729166666
+              },
+              {
+                "pass": 0.8357747395833334,
+                "reported_pass": 0.8357747395833334,
+                "probe_rate": 0.0,
+                "net": 0.8357747395833334,
+                "reported_net": 0.8357747395833334
+              }
+            ],
+            "net_minus_frozen": 0.0,
+            "paired_stream_bootstrap_95": [
+              0.0,
+              0.0
+            ]
+          },
+          "always_probe": {
+            "all": {
+              "pass": 0.8874918619791666,
+              "reported_pass": 0.892333984375,
+              "probe_rate": 1.0,
+              "net": 0.7674918619791625,
+              "reported_net": 0.7723339843749959
+            },
+            "first_32_after_change": {
+              "pass": 0.8125,
+              "reported_pass": 0.8203125,
+              "probe_rate": 1.0,
+              "net": 0.6924999999999999,
+              "reported_net": 0.7003124999999999
+            },
+            "last_32_before_return": {
+              "pass": 0.8372395833333334,
+              "reported_pass": 0.8528645833333334,
+              "probe_rate": 1.0,
+              "net": 0.7172395833333333,
+              "reported_net": 0.7328645833333333
+            },
+            "fault_site_after_return": {
+              "pass": 0.9647894335787915,
+              "reported_pass": 0.9734065364204593,
+              "probe_rate": 1.0,
+              "net": 0.8447894335787923,
+              "reported_net": 0.85340653642046
+            },
+            "phases": [
+              {
+                "pass": 0.9244791666666666,
+                "reported_pass": 0.9244791666666666,
+                "probe_rate": 1.0,
+                "net": 0.8044791666666639,
+                "reported_net": 0.8044791666666639
+              },
+              {
+                "pass": 0.8128255208333334,
+                "reported_pass": 0.8238932291666666,
+                "probe_rate": 1.0,
+                "net": 0.6928255208333308,
+                "reported_net": 0.7038932291666642
+              },
+              {
+                "pass": 0.9313151041666666,
+                "reported_pass": 0.9332682291666666,
+                "probe_rate": 1.0,
+                "net": 0.8113151041666639,
+                "reported_net": 0.8132682291666639
+              },
+              {
+                "pass": 0.88134765625,
+                "reported_pass": 0.8876953125,
+                "probe_rate": 1.0,
+                "net": 0.7613476562499972,
+                "reported_net": 0.7676953124999972
+              }
+            ],
+            "net_minus_frozen": -0.09102864583333742,
+            "paired_stream_bootstrap_95": [
+              -0.09351074218750406,
+              -0.08858723958333743
+            ]
+          },
+          "lifetime_mean": {
+            "all": {
+              "pass": 0.8407389322916666,
+              "reported_pass": 0.8659261067708334,
+              "probe_rate": 0.08243815104166667,
+              "net": 0.8308463541666663,
+              "reported_net": 0.8560335286458329
+            },
+            "first_32_after_change": {
+              "pass": 0.7317708333333334,
+              "reported_pass": 0.734375,
+              "probe_rate": 0.07291666666666667,
+              "net": 0.7230208333333333,
+              "reported_net": 0.725625
+            },
+            "last_32_before_return": {
+              "pass": 0.8229166666666666,
+              "reported_pass": 0.8307291666666666,
+              "probe_rate": 0.09114583333333333,
+              "net": 0.8119791666666667,
+              "reported_net": 0.8197916666666667
+            },
+            "fault_site_after_return": {
+              "pass": 0.7544356495093835,
+              "reported_pass": 0.9844593223923379,
+              "probe_rate": 0.03274244199960114,
+              "net": 0.7505065564694314,
+              "reported_net": 0.9805302293523859
+            },
+            "phases": [
+              {
+                "pass": 0.91455078125,
+                "reported_pass": 0.91455078125,
+                "probe_rate": 0.07373046875,
+                "net": 0.9057031249999997,
+                "reported_net": 0.9057031249999997
+              },
+              {
+                "pass": 0.7646484375,
+                "reported_pass": 0.77001953125,
+                "probe_rate": 0.09847005208333333,
+                "net": 0.7528320312499996,
+                "reported_net": 0.7582031249999996
+              },
+              {
+                "pass": 0.8567708333333334,
+                "reported_pass": 0.91162109375,
+                "probe_rate": 0.07942708333333333,
+                "net": 0.8472395833333329,
+                "reported_net": 0.9020898437499997
+              },
+              {
+                "pass": 0.8269856770833334,
+                "reported_pass": 0.8675130208333334,
+                "probe_rate": 0.078125,
+                "net": 0.8176106770833331,
+                "reported_net": 0.8581380208333331
+              }
+            ],
+            "net_minus_frozen": -0.02767415364583369,
+            "paired_stream_bootstrap_95": [
+              -0.032290161132812883,
+              -0.023640869140625364
+            ]
+          },
+          "recent": {
+            "all": {
+              "pass": 0.8557942708333334,
+              "reported_pass": 0.898681640625,
+              "probe_rate": 0.201416015625,
+              "net": 0.8316243489583325,
+              "reported_net": 0.8745117187499991
+            },
+            "first_32_after_change": {
+              "pass": 0.7486979166666666,
+              "reported_pass": 0.75390625,
+              "probe_rate": 0.20572916666666666,
+              "net": 0.7240104166666667,
+              "reported_net": 0.7292187499999999
+            },
+            "last_32_before_return": {
+              "pass": 0.9192708333333334,
+              "reported_pass": 0.9427083333333334,
+              "probe_rate": 0.24348958333333334,
+              "net": 0.8900520833333333,
+              "reported_net": 0.9134895833333333
+            },
+            "fault_site_after_return": {
+              "pass": 0.6008180573490892,
+              "reported_pass": 0.9956593097699414,
+              "probe_rate": 0.24838332376981312,
+              "net": 0.5710120584967117,
+              "reported_net": 0.9658533109175639
+            },
+            "phases": [
+              {
+                "pass": 0.9148763020833334,
+                "reported_pass": 0.9148763020833334,
+                "probe_rate": 0.09928385416666667,
+                "net": 0.9029622395833329,
+                "reported_net": 0.9029622395833329
+              },
+              {
+                "pass": 0.8623046875,
+                "reported_pass": 0.8802083333333334,
+                "probe_rate": 0.28857421875,
+                "net": 0.8276757812499992,
+                "reported_net": 0.8455794270833326
+              },
+              {
+                "pass": 0.806640625,
+                "reported_pass": 0.90087890625,
+                "probe_rate": 0.2177734375,
+                "net": 0.7805078124999995,
+                "reported_net": 0.8747460937499995
+              },
+              {
+                "pass": 0.83935546875,
+                "reported_pass": 0.8987630208333334,
+                "probe_rate": 0.20003255208333334,
+                "net": 0.8153515624999995,
+                "reported_net": 0.8747591145833328
+              }
+            ],
+            "net_minus_frozen": -0.02689615885416756,
+            "paired_stream_bootstrap_95": [
+              -0.0317451171875009,
+              -0.02194970703125087
+            ]
+          },
+          "recent_wrong_receipt": {
+            "all": {
+              "pass": 0.809326171875,
+              "reported_pass": 0.8326009114583334,
+              "probe_rate": 0.33154296875,
+              "net": 0.7695410156249985,
+              "reported_net": 0.7928157552083319
+            },
+            "first_32_after_change": {
+              "pass": 0.7578125,
+              "reported_pass": 0.76953125,
+              "probe_rate": 0.3072916666666667,
+              "net": 0.7209375000000001,
+              "reported_net": 0.7326562499999999
+            },
+            "last_32_before_return": {
+              "pass": 0.828125,
+              "reported_pass": 0.8372395833333334,
+              "probe_rate": 0.3125,
+              "net": 0.790625,
+              "reported_net": 0.7997395833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.7873250211191075,
+              "reported_pass": 0.9827135298265066,
+              "probe_rate": 0.29989160693744904,
+              "net": 0.7513380282866136,
+              "reported_net": 0.9467265369940128
+            },
+            "phases": [
+              {
+                "pass": 0.87841796875,
+                "reported_pass": 0.87841796875,
+                "probe_rate": 0.2732747395833333,
+                "net": 0.8456249999999991,
+                "reported_net": 0.8456249999999991
+              },
+              {
+                "pass": 0.7779947916666666,
+                "reported_pass": 0.791015625,
+                "probe_rate": 0.333984375,
+                "net": 0.7379166666666658,
+                "reported_net": 0.7509374999999991
+              },
+              {
+                "pass": 0.80419921875,
+                "reported_pass": 0.8509114583333334,
+                "probe_rate": 0.35498046875,
+                "net": 0.7616015624999991,
+                "reported_net": 0.8083138020833324
+              },
+              {
+                "pass": 0.7766927083333334,
+                "reported_pass": 0.81005859375,
+                "probe_rate": 0.3639322916666667,
+                "net": 0.7330208333333323,
+                "reported_net": 0.766386718749999
+              }
+            ],
+            "net_minus_frozen": -0.08897949218750141,
+            "paired_stream_bootstrap_95": [
+              -0.09817911783854308,
+              -0.08016426595052217
+            ]
+          },
+          "policy_gradient": {
+            "all": {
+              "pass": 0.8387044270833334,
+              "reported_pass": 0.8507893880208334,
+              "probe_rate": 0.19392903645833334,
+              "net": 0.8154329427083326,
+              "reported_net": 0.8275179036458326
+            },
+            "first_32_after_change": {
+              "pass": 0.7408854166666666,
+              "reported_pass": 0.7447916666666666,
+              "probe_rate": 0.20833333333333334,
+              "net": 0.7158854166666666,
+              "reported_net": 0.7197916666666666
+            },
+            "last_32_before_return": {
+              "pass": 0.7799479166666666,
+              "reported_pass": 0.7825520833333334,
+              "probe_rate": 0.21223958333333334,
+              "net": 0.7544791666666666,
+              "reported_net": 0.7570833333333332
+            },
+            "fault_site_after_return": {
+              "pass": 0.885554370220401,
+              "reported_pass": 0.9767578740882237,
+              "probe_rate": 0.2304184761139653,
+              "net": 0.8579041530867254,
+              "reported_net": 0.9491076569545479
+            },
+            "phases": [
+              {
+                "pass": 0.87939453125,
+                "reported_pass": 0.87939453125,
+                "probe_rate": 0.2513020833333333,
+                "net": 0.8492382812499993,
+                "reported_net": 0.8492382812499993
+              },
+              {
+                "pass": 0.75390625,
+                "reported_pass": 0.7591145833333334,
+                "probe_rate": 0.19807942708333334,
+                "net": 0.7301367187499995,
+                "reported_net": 0.7353450520833329
+              },
+              {
+                "pass": 0.8912760416666666,
+                "reported_pass": 0.9138997395833334,
+                "probe_rate": 0.18229166666666666,
+                "net": 0.8694010416666661,
+                "reported_net": 0.8920247395833328
+              },
+              {
+                "pass": 0.8302408854166666,
+                "reported_pass": 0.8507486979166666,
+                "probe_rate": 0.14404296875,
+                "net": 0.8129557291666663,
+                "reported_net": 0.8334635416666663
+              }
+            ],
+            "net_minus_frozen": -0.04308756510416742,
+            "paired_stream_bootstrap_95": [
+              -0.0457569173177091,
+              -0.040277954101563235
+            ]
+          },
+          "drift_switch": {
+            "all": {
+              "pass": 0.8711344401041666,
+              "reported_pass": 0.923828125,
+              "probe_rate": 0.0,
+              "net": 0.8711344401041666,
+              "reported_net": 0.923828125
+            },
+            "first_32_after_change": {
+              "pass": 0.73828125,
+              "reported_pass": 0.7408854166666666,
+              "probe_rate": 0.0,
+              "net": 0.73828125,
+              "reported_net": 0.7408854166666666
+            },
+            "last_32_before_return": {
+              "pass": 0.9453125,
+              "reported_pass": 0.9700520833333334,
+              "probe_rate": 0.0,
+              "net": 0.9453125,
+              "reported_net": 0.9700520833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.49195113074060365,
+              "reported_pass": 1.0,
+              "probe_rate": 0.0,
+              "net": 0.49195113074060365,
+              "reported_net": 1.0
+            },
+            "phases": [
+              {
+                "pass": 0.93212890625,
+                "reported_pass": 0.93212890625,
+                "probe_rate": 0.0,
+                "net": 0.93212890625,
+                "reported_net": 0.93212890625
+              },
+              {
+                "pass": 0.9072265625,
+                "reported_pass": 0.9269205729166666,
+                "probe_rate": 0.0,
+                "net": 0.9072265625,
+                "reported_net": 0.9269205729166666
+              },
+              {
+                "pass": 0.8077799479166666,
+                "reported_pass": 0.9308268229166666,
+                "probe_rate": 0.0,
+                "net": 0.8077799479166666,
+                "reported_net": 0.9308268229166666
+              },
+              {
+                "pass": 0.83740234375,
+                "reported_pass": 0.9054361979166666,
+                "probe_rate": 0.0,
+                "net": 0.83740234375,
+                "reported_net": 0.9054361979166666
+              }
+            ],
+            "net_minus_frozen": 0.012613932291666666,
+            "paired_stream_bootstrap_95": [
+              0.0074045817057291664,
+              0.017740885416666668
+            ]
+          },
+          "oracle": {
+            "all": {
+              "pass": 0.9404296875,
+              "reported_pass": 0.9493815104166666,
+              "probe_rate": 0.0,
+              "net": 0.9404296875,
+              "reported_net": 0.9493815104166666
+            },
+            "first_32_after_change": {
+              "pass": 0.9309895833333334,
+              "reported_pass": 0.95703125,
+              "probe_rate": 0.0,
+              "net": 0.9309895833333334,
+              "reported_net": 0.95703125
+            },
+            "last_32_before_return": {
+              "pass": 0.9453125,
+              "reported_pass": 0.9700520833333334,
+              "probe_rate": 0.0,
+              "net": 0.9453125,
+              "reported_net": 0.9700520833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9726755422684126,
+              "reported_pass": 0.9726755422684126,
+              "probe_rate": 0.0,
+              "net": 0.9726755422684126,
+              "reported_net": 0.9726755422684126
+            },
+            "phases": [
+              {
+                "pass": 0.93798828125,
+                "reported_pass": 0.93798828125,
+                "probe_rate": 0.0,
+                "net": 0.93798828125,
+                "reported_net": 0.93798828125
+              },
+              {
+                "pass": 0.9386393229166666,
+                "reported_pass": 0.9622395833333334,
+                "probe_rate": 0.0,
+                "net": 0.9386393229166666,
+                "reported_net": 0.9622395833333334
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9425455729166666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9425455729166666
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9547526041666666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9547526041666666
+              }
+            ],
+            "net_minus_frozen": 0.0819091796875,
+            "paired_stream_bootstrap_95": [
+              0.07881673177083333,
+              0.0849609375
+            ]
+          }
+        }
+      }
+    },
+    "replication": {
+      "seeds": [
+        891,
+        892,
+        893,
+        894,
+        895,
+        896,
+        897,
+        898,
+        899,
+        900,
+        901,
+        902,
+        903,
+        904,
+        905,
+        906,
+        907,
+        908,
+        909,
+        910,
+        911,
+        912,
+        913,
+        914
+      ],
+      "tasks_per_stream": 1024,
+      "phase_length": 256,
+      "reward_delay": 8,
+      "extra_probe_cost": 0.12,
+      "exploration": 0.12,
+      "summary": {
+        "clean": {
+          "frozen": {
+            "all": {
+              "pass": 0.8623046875,
+              "reported_pass": 0.8623046875,
+              "probe_rate": 0.0,
+              "net": 0.8623046875,
+              "reported_net": 0.8623046875
+            },
+            "first_32_after_change": {
+              "pass": 0.6979166666666666,
+              "reported_pass": 0.6979166666666666,
+              "probe_rate": 0.0,
+              "net": 0.6979166666666666,
+              "reported_net": 0.6979166666666666
+            },
+            "last_32_before_return": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7356770833333334,
+              "probe_rate": 0.0,
+              "net": 0.7356770833333334,
+              "reported_net": 0.7356770833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9775293567225961,
+              "reported_pass": 0.9775293567225961,
+              "probe_rate": 0.0,
+              "net": 0.9775293567225961,
+              "reported_net": 0.9775293567225961
+            },
+            "phases": [
+              {
+                "pass": 0.94189453125,
+                "reported_pass": 0.94189453125,
+                "probe_rate": 0.0,
+                "net": 0.94189453125,
+                "reported_net": 0.94189453125
+              },
+              {
+                "pass": 0.7317708333333334,
+                "reported_pass": 0.7317708333333334,
+                "probe_rate": 0.0,
+                "net": 0.7317708333333334,
+                "reported_net": 0.7317708333333334
+              },
+              {
+                "pass": 0.9459635416666666,
+                "reported_pass": 0.9459635416666666,
+                "probe_rate": 0.0,
+                "net": 0.9459635416666666,
+                "reported_net": 0.9459635416666666
+              },
+              {
+                "pass": 0.82958984375,
+                "reported_pass": 0.82958984375,
+                "probe_rate": 0.0,
+                "net": 0.82958984375,
+                "reported_net": 0.82958984375
+              }
+            ],
+            "net_minus_frozen": 0.0,
+            "paired_stream_bootstrap_95": [
+              0.0,
+              0.0
+            ]
+          },
+          "always_probe": {
+            "all": {
+              "pass": 0.8900146484375,
+              "reported_pass": 0.8900146484375,
+              "probe_rate": 1.0,
+              "net": 0.7700146484374959,
+              "reported_net": 0.7700146484374959
+            },
+            "first_32_after_change": {
+              "pass": 0.8177083333333334,
+              "reported_pass": 0.8177083333333334,
+              "probe_rate": 1.0,
+              "net": 0.6977083333333333,
+              "reported_net": 0.6977083333333333
+            },
+            "last_32_before_return": {
+              "pass": 0.8502604166666666,
+              "reported_pass": 0.8502604166666666,
+              "probe_rate": 1.0,
+              "net": 0.7302604166666665,
+              "reported_net": 0.7302604166666665
+            },
+            "fault_site_after_return": {
+              "pass": 0.970556061489838,
+              "reported_pass": 0.970556061489838,
+              "probe_rate": 1.0,
+              "net": 0.8505560614898388,
+              "reported_net": 0.8505560614898388
+            },
+            "phases": [
+              {
+                "pass": 0.9285481770833334,
+                "reported_pass": 0.9285481770833334,
+                "probe_rate": 1.0,
+                "net": 0.8085481770833306,
+                "reported_net": 0.8085481770833306
+              },
+              {
+                "pass": 0.830078125,
+                "reported_pass": 0.830078125,
+                "probe_rate": 1.0,
+                "net": 0.7100781249999976,
+                "reported_net": 0.7100781249999976
+              },
+              {
+                "pass": 0.9327799479166666,
+                "reported_pass": 0.9327799479166666,
+                "probe_rate": 1.0,
+                "net": 0.8127799479166639,
+                "reported_net": 0.8127799479166639
+              },
+              {
+                "pass": 0.86865234375,
+                "reported_pass": 0.86865234375,
+                "probe_rate": 1.0,
+                "net": 0.7486523437499973,
+                "reported_net": 0.7486523437499973
+              }
+            ],
+            "net_minus_frozen": -0.09229003906250409,
+            "paired_stream_bootstrap_95": [
+              -0.09432556152344158,
+              -0.09013346354167075
+            ]
+          },
+          "lifetime_mean": {
+            "all": {
+              "pass": 0.8568929036458334,
+              "reported_pass": 0.8568929036458334,
+              "probe_rate": 0.10262044270833333,
+              "net": 0.844578450520833,
+              "reported_net": 0.844578450520833
+            },
+            "first_32_after_change": {
+              "pass": 0.7083333333333334,
+              "reported_pass": 0.7083333333333334,
+              "probe_rate": 0.0625,
+              "net": 0.7008333333333333,
+              "reported_net": 0.7008333333333333
+            },
+            "last_32_before_return": {
+              "pass": 0.8216145833333334,
+              "reported_pass": 0.8216145833333334,
+              "probe_rate": 0.10416666666666667,
+              "net": 0.8091145833333332,
+              "reported_net": 0.8091145833333332
+            },
+            "fault_site_after_return": {
+              "pass": 0.9361831235365053,
+              "reported_pass": 0.9361831235365053,
+              "probe_rate": 0.18647287522095893,
+              "net": 0.9138063785099905,
+              "reported_net": 0.9138063785099905
+            },
+            "phases": [
+              {
+                "pass": 0.9217122395833334,
+                "reported_pass": 0.9217122395833334,
+                "probe_rate": 0.06510416666666667,
+                "net": 0.913899739583333,
+                "reported_net": 0.913899739583333
+              },
+              {
+                "pass": 0.7644856770833334,
+                "reported_pass": 0.7644856770833334,
+                "probe_rate": 0.09228515625,
+                "net": 0.753411458333333,
+                "reported_net": 0.753411458333333
+              },
+              {
+                "pass": 0.9108072916666666,
+                "reported_pass": 0.9108072916666666,
+                "probe_rate": 0.12972005208333334,
+                "net": 0.8952408854166664,
+                "reported_net": 0.8952408854166664
+              },
+              {
+                "pass": 0.83056640625,
+                "reported_pass": 0.83056640625,
+                "probe_rate": 0.12337239583333333,
+                "net": 0.8157617187499997,
+                "reported_net": 0.8157617187499997
+              }
+            ],
+            "net_minus_frozen": -0.01772623697916712,
+            "paired_stream_bootstrap_95": [
+              -0.02139986165364637,
+              -0.014454508463541975
+            ]
+          },
+          "recent": {
+            "all": {
+              "pass": 0.8742268880208334,
+              "reported_pass": 0.8742268880208334,
+              "probe_rate": 0.2215576171875,
+              "net": 0.8476399739583323,
+              "reported_net": 0.8476399739583323
+            },
+            "first_32_after_change": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7356770833333334,
+              "probe_rate": 0.17447916666666666,
+              "net": 0.7147395833333334,
+              "reported_net": 0.7147395833333334
+            },
+            "last_32_before_return": {
+              "pass": 0.9388020833333334,
+              "reported_pass": 0.9388020833333334,
+              "probe_rate": 0.24609375,
+              "net": 0.9092708333333333,
+              "reported_net": 0.9092708333333333
+            },
+            "fault_site_after_return": {
+              "pass": 0.810024867036314,
+              "reported_pass": 0.810024867036314,
+              "probe_rate": 0.4185454176855871,
+              "net": 0.7597994169140438,
+              "reported_net": 0.7597994169140438
+            },
+            "phases": [
+              {
+                "pass": 0.921875,
+                "reported_pass": 0.921875,
+                "probe_rate": 0.07861328125,
+                "net": 0.9124414062499997,
+                "reported_net": 0.9124414062499997
+              },
+              {
+                "pass": 0.8723958333333334,
+                "reported_pass": 0.8723958333333334,
+                "probe_rate": 0.28515625,
+                "net": 0.8381770833333326,
+                "reported_net": 0.8381770833333326
+              },
+              {
+                "pass": 0.8642578125,
+                "reported_pass": 0.8642578125,
+                "probe_rate": 0.2679036458333333,
+                "net": 0.8321093749999994,
+                "reported_net": 0.8321093749999994
+              },
+              {
+                "pass": 0.83837890625,
+                "reported_pass": 0.83837890625,
+                "probe_rate": 0.2545572916666667,
+                "net": 0.8078320312499992,
+                "reported_net": 0.8078320312499992
+              }
+            ],
+            "net_minus_frozen": -0.014664713541667651,
+            "paired_stream_bootstrap_95": [
+              -0.020390828450521897,
+              -0.009434855143230086
+            ]
+          },
+          "recent_wrong_receipt": {
+            "all": {
+              "pass": 0.8085530598958334,
+              "reported_pass": 0.8085530598958334,
+              "probe_rate": 0.302001953125,
+              "net": 0.772312825520832,
+              "reported_net": 0.772312825520832
+            },
+            "first_32_after_change": {
+              "pass": 0.7760416666666666,
+              "reported_pass": 0.7760416666666666,
+              "probe_rate": 0.4010416666666667,
+              "net": 0.7279166666666667,
+              "reported_net": 0.7279166666666667
+            },
+            "last_32_before_return": {
+              "pass": 0.7877604166666666,
+              "reported_pass": 0.7877604166666666,
+              "probe_rate": 0.2799479166666667,
+              "net": 0.7541666666666665,
+              "reported_net": 0.7541666666666665
+            },
+            "fault_site_after_return": {
+              "pass": 0.8581090971674709,
+              "reported_pass": 0.8581090971674709,
+              "probe_rate": 0.23971804154697332,
+              "net": 0.8293429321818341,
+              "reported_net": 0.8293429321818341
+            },
+            "phases": [
+              {
+                "pass": 0.9026692708333334,
+                "reported_pass": 0.9026692708333334,
+                "probe_rate": 0.2610677083333333,
+                "net": 0.8713411458333326,
+                "reported_net": 0.8713411458333326
+              },
+              {
+                "pass": 0.7737630208333334,
+                "reported_pass": 0.7737630208333334,
+                "probe_rate": 0.3395182291666667,
+                "net": 0.7330208333333325,
+                "reported_net": 0.7330208333333325
+              },
+              {
+                "pass": 0.7848307291666666,
+                "reported_pass": 0.7848307291666666,
+                "probe_rate": 0.2626953125,
+                "net": 0.753307291666666,
+                "reported_net": 0.753307291666666
+              },
+              {
+                "pass": 0.77294921875,
+                "reported_pass": 0.77294921875,
+                "probe_rate": 0.3447265625,
+                "net": 0.7315820312499991,
+                "reported_net": 0.7315820312499991
+              }
+            ],
+            "net_minus_frozen": -0.08999186197916798,
+            "paired_stream_bootstrap_95": [
+              -0.10449560546875138,
+              -0.07733711751302204
+            ]
+          },
+          "policy_gradient": {
+            "all": {
+              "pass": 0.8428955078125,
+              "reported_pass": 0.8428955078125,
+              "probe_rate": 0.17875162760416666,
+              "net": 0.8214453124999993,
+              "reported_net": 0.8214453124999993
+            },
+            "first_32_after_change": {
+              "pass": 0.7200520833333334,
+              "reported_pass": 0.7200520833333334,
+              "probe_rate": 0.19401041666666666,
+              "net": 0.6967708333333333,
+              "reported_net": 0.6967708333333333
+            },
+            "last_32_before_return": {
+              "pass": 0.7708333333333334,
+              "reported_pass": 0.7708333333333334,
+              "probe_rate": 0.1875,
+              "net": 0.7483333333333334,
+              "reported_net": 0.7483333333333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9252256666368962,
+              "reported_pass": 0.9252256666368962,
+              "probe_rate": 0.16608678167701701,
+              "net": 0.9052952528356543,
+              "reported_net": 0.9052952528356543
+            },
+            "phases": [
+              {
+                "pass": 0.8860677083333334,
+                "reported_pass": 0.8860677083333334,
+                "probe_rate": 0.2470703125,
+                "net": 0.8564192708333326,
+                "reported_net": 0.8564192708333326
+              },
+              {
+                "pass": 0.7569986979166666,
+                "reported_pass": 0.7569986979166666,
+                "probe_rate": 0.18912760416666666,
+                "net": 0.7343033854166662,
+                "reported_net": 0.7343033854166662
+              },
+              {
+                "pass": 0.90478515625,
+                "reported_pass": 0.90478515625,
+                "probe_rate": 0.15364583333333334,
+                "net": 0.8863476562499996,
+                "reported_net": 0.8863476562499996
+              },
+              {
+                "pass": 0.82373046875,
+                "reported_pass": 0.82373046875,
+                "probe_rate": 0.12516276041666666,
+                "net": 0.8087109374999996,
+                "reported_net": 0.8087109374999996
+              }
+            ],
+            "net_minus_frozen": -0.04085937500000069,
+            "paired_stream_bootstrap_95": [
+              -0.0435764160156257,
+              -0.03808076985677154
+            ]
+          },
+          "drift_switch": {
+            "all": {
+              "pass": 0.8949788411458334,
+              "reported_pass": 0.8949788411458334,
+              "probe_rate": 0.0,
+              "net": 0.8949788411458334,
+              "reported_net": 0.8949788411458334
+            },
+            "first_32_after_change": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7356770833333334,
+              "probe_rate": 0.0,
+              "net": 0.7356770833333334,
+              "reported_net": 0.7356770833333334
+            },
+            "last_32_before_return": {
+              "pass": 0.953125,
+              "reported_pass": 0.953125,
+              "probe_rate": 0.0,
+              "net": 0.953125,
+              "reported_net": 0.953125
+            },
+            "fault_site_after_return": {
+              "pass": 0.9068601418510808,
+              "reported_pass": 0.9068601418510808,
+              "probe_rate": 0.0,
+              "net": 0.9068601418510808,
+              "reported_net": 0.9068601418510808
+            },
+            "phases": [
+              {
+                "pass": 0.9384765625,
+                "reported_pass": 0.9384765625,
+                "probe_rate": 0.0,
+                "net": 0.9384765625,
+                "reported_net": 0.9384765625
+              },
+              {
+                "pass": 0.91015625,
+                "reported_pass": 0.91015625,
+                "probe_rate": 0.0,
+                "net": 0.91015625,
+                "reported_net": 0.91015625
+              },
+              {
+                "pass": 0.9072265625,
+                "reported_pass": 0.9072265625,
+                "probe_rate": 0.0,
+                "net": 0.9072265625,
+                "reported_net": 0.9072265625
+              },
+              {
+                "pass": 0.8240559895833334,
+                "reported_pass": 0.8240559895833334,
+                "probe_rate": 0.0,
+                "net": 0.8240559895833334,
+                "reported_net": 0.8240559895833334
+              }
+            ],
+            "net_minus_frozen": 0.032674153645833336,
+            "paired_stream_bootstrap_95": [
+              0.029417928059895834,
+              0.0355224609375
+            ]
+          },
+          "oracle": {
+            "all": {
+              "pass": 0.9440511067708334,
+              "reported_pass": 0.9440511067708334,
+              "probe_rate": 0.0,
+              "net": 0.9440511067708334,
+              "reported_net": 0.9440511067708334
+            },
+            "first_32_after_change": {
+              "pass": 0.9361979166666666,
+              "reported_pass": 0.9361979166666666,
+              "probe_rate": 0.0,
+              "net": 0.9361979166666666,
+              "reported_net": 0.9361979166666666
+            },
+            "last_32_before_return": {
+              "pass": 0.95703125,
+              "reported_pass": 0.95703125,
+              "probe_rate": 0.0,
+              "net": 0.95703125,
+              "reported_net": 0.95703125
+            },
+            "fault_site_after_return": {
+              "pass": 0.9775293567225961,
+              "reported_pass": 0.9775293567225961,
+              "probe_rate": 0.0,
+              "net": 0.9775293567225961,
+              "reported_net": 0.9775293567225961
+            },
+            "phases": [
+              {
+                "pass": 0.94189453125,
+                "reported_pass": 0.94189453125,
+                "probe_rate": 0.0,
+                "net": 0.94189453125,
+                "reported_net": 0.94189453125
+              },
+              {
+                "pass": 0.94580078125,
+                "reported_pass": 0.94580078125,
+                "probe_rate": 0.0,
+                "net": 0.94580078125,
+                "reported_net": 0.94580078125
+              },
+              {
+                "pass": 0.9459635416666666,
+                "reported_pass": 0.9459635416666666,
+                "probe_rate": 0.0,
+                "net": 0.9459635416666666,
+                "reported_net": 0.9459635416666666
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9425455729166666,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9425455729166666
+              }
+            ],
+            "net_minus_frozen": 0.08174641927083333,
+            "paired_stream_bootstrap_95": [
+              0.07910054524739583,
+              0.08451334635416667
+            ]
+          }
+        },
+        "faulty_verifier": {
+          "frozen": {
+            "all": {
+              "pass": 0.8623046875,
+              "reported_pass": 0.8623046875,
+              "probe_rate": 0.0,
+              "net": 0.8623046875,
+              "reported_net": 0.8623046875
+            },
+            "first_32_after_change": {
+              "pass": 0.6979166666666666,
+              "reported_pass": 0.6979166666666666,
+              "probe_rate": 0.0,
+              "net": 0.6979166666666666,
+              "reported_net": 0.6979166666666666
+            },
+            "last_32_before_return": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7356770833333334,
+              "probe_rate": 0.0,
+              "net": 0.7356770833333334,
+              "reported_net": 0.7356770833333334
+            },
+            "fault_site_after_return": {
+              "pass": 0.9775293567225961,
+              "reported_pass": 0.9775293567225961,
+              "probe_rate": 0.0,
+              "net": 0.9775293567225961,
+              "reported_net": 0.9775293567225961
+            },
+            "phases": [
+              {
+                "pass": 0.94189453125,
+                "reported_pass": 0.94189453125,
+                "probe_rate": 0.0,
+                "net": 0.94189453125,
+                "reported_net": 0.94189453125
+              },
+              {
+                "pass": 0.7317708333333334,
+                "reported_pass": 0.7317708333333334,
+                "probe_rate": 0.0,
+                "net": 0.7317708333333334,
+                "reported_net": 0.7317708333333334
+              },
+              {
+                "pass": 0.9459635416666666,
+                "reported_pass": 0.9459635416666666,
+                "probe_rate": 0.0,
+                "net": 0.9459635416666666,
+                "reported_net": 0.9459635416666666
+              },
+              {
+                "pass": 0.82958984375,
+                "reported_pass": 0.82958984375,
+                "probe_rate": 0.0,
+                "net": 0.82958984375,
+                "reported_net": 0.82958984375
+              }
+            ],
+            "net_minus_frozen": 0.0,
+            "paired_stream_bootstrap_95": [
+              0.0,
+              0.0
+            ]
+          },
+          "always_probe": {
+            "all": {
+              "pass": 0.8900146484375,
+              "reported_pass": 0.8942464192708334,
+              "probe_rate": 1.0,
+              "net": 0.7700146484374959,
+              "reported_net": 0.7742464192708293
+            },
+            "first_32_after_change": {
+              "pass": 0.8177083333333334,
+              "reported_pass": 0.8294270833333334,
+              "probe_rate": 1.0,
+              "net": 0.6977083333333333,
+              "reported_net": 0.7094270833333333
+            },
+            "last_32_before_return": {
+              "pass": 0.8502604166666666,
+              "reported_pass": 0.8567708333333334,
+              "probe_rate": 1.0,
+              "net": 0.7302604166666665,
+              "reported_net": 0.7367708333333333
+            },
+            "fault_site_after_return": {
+              "pass": 0.970556061489838,
+              "reported_pass": 0.9781001329783039,
+              "probe_rate": 1.0,
+              "net": 0.8505560614898388,
+              "reported_net": 0.8581001329783047
+            },
+            "phases": [
+              {
+                "pass": 0.9285481770833334,
+                "reported_pass": 0.9285481770833334,
+                "probe_rate": 1.0,
+                "net": 0.8085481770833306,
+                "reported_net": 0.8085481770833306
+              },
+              {
+                "pass": 0.830078125,
+                "reported_pass": 0.83984375,
+                "probe_rate": 1.0,
+                "net": 0.7100781249999976,
+                "reported_net": 0.7198437499999976
+              },
+              {
+                "pass": 0.9327799479166666,
+                "reported_pass": 0.9347330729166666,
+                "probe_rate": 1.0,
+                "net": 0.8127799479166639,
+                "reported_net": 0.8147330729166639
+              },
+              {
+                "pass": 0.86865234375,
+                "reported_pass": 0.8738606770833334,
+                "probe_rate": 1.0,
+                "net": 0.7486523437499973,
+                "reported_net": 0.7538606770833307
+              }
+            ],
+            "net_minus_frozen": -0.09229003906250409,
+            "paired_stream_bootstrap_95": [
+              -0.09432556152344158,
+              -0.09013346354167075
+            ]
+          },
+          "lifetime_mean": {
+            "all": {
+              "pass": 0.8526611328125,
+              "reported_pass": 0.8675130208333334,
+              "probe_rate": 0.1121826171875,
+              "net": 0.8391992187499996,
+              "reported_net": 0.8540511067708328
+            },
+            "first_32_after_change": {
+              "pass": 0.7083333333333334,
+              "reported_pass": 0.7109375,
+              "probe_rate": 0.0625,
+              "net": 0.7008333333333333,
+              "reported_net": 0.7034375
+            },
+            "last_32_before_return": {
+              "pass": 0.8255208333333334,
+              "reported_pass": 0.8294270833333334,
+              "probe_rate": 0.10416666666666667,
+              "net": 0.8130208333333332,
+              "reported_net": 0.8169270833333332
+            },
+            "fault_site_after_return": {
+              "pass": 0.8704392082739182,
+              "reported_pass": 0.9851384080670383,
+              "probe_rate": 0.2681992158833803,
+              "net": 0.8382553023679127,
+              "reported_net": 0.9529545021610328
+            },
+            "phases": [
+              {
+                "pass": 0.9217122395833334,
+                "reported_pass": 0.9217122395833334,
+                "probe_rate": 0.06510416666666667,
+                "net": 0.913899739583333,
+                "reported_net": 0.913899739583333
+              },
+              {
+                "pass": 0.7667643229166666,
+                "reported_pass": 0.7705078125,
+                "probe_rate": 0.09293619791666667,
+                "net": 0.7556119791666663,
+                "reported_net": 0.7593554687499996
+              },
+              {
+                "pass": 0.8932291666666666,
+                "reported_pass": 0.9230143229166666,
+                "probe_rate": 0.15348307291666666,
+                "net": 0.8748111979166661,
+                "reported_net": 0.9045963541666661
+              },
+              {
+                "pass": 0.8289388020833334,
+                "reported_pass": 0.8548177083333334,
+                "probe_rate": 0.13720703125,
+                "net": 0.812473958333333,
+                "reported_net": 0.838352864583333
+              }
+            ],
+            "net_minus_frozen": -0.0231054687500005,
+            "paired_stream_bootstrap_95": [
+              -0.027912475585938037,
+              -0.018432535807292115
+            ]
+          },
+          "recent": {
+            "all": {
+              "pass": 0.8602701822916666,
+              "reported_pass": 0.9024251302083334,
+              "probe_rate": 0.22074381510416666,
+              "net": 0.8337809244791656,
+              "reported_net": 0.8759358723958323
+            },
+            "first_32_after_change": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7447916666666666,
+              "probe_rate": 0.18098958333333334,
+              "net": 0.7139583333333333,
+              "reported_net": 0.7230729166666666
+            },
+            "last_32_before_return": {
+              "pass": 0.9427083333333334,
+              "reported_pass": 0.953125,
+              "probe_rate": 0.3177083333333333,
+              "net": 0.9045833333333334,
+              "reported_net": 0.915
+            },
+            "fault_site_after_return": {
+              "pass": 0.6446153908733446,
+              "reported_pass": 0.99407695859608,
+              "probe_rate": 0.49347050623232197,
+              "net": 0.5853989301254661,
+              "reported_net": 0.9348604978482017
+            },
+            "phases": [
+              {
+                "pass": 0.921875,
+                "reported_pass": 0.921875,
+                "probe_rate": 0.07861328125,
+                "net": 0.9124414062499997,
+                "reported_net": 0.9124414062499997
+              },
+              {
+                "pass": 0.8761393229166666,
+                "reported_pass": 0.8927408854166666,
+                "probe_rate": 0.3291015625,
+                "net": 0.8366471354166657,
+                "reported_net": 0.8532486979166657
+              },
+              {
+                "pass": 0.8199869791666666,
+                "reported_pass": 0.9095052083333334,
+                "probe_rate": 0.2853190104166667,
+                "net": 0.785748697916666,
+                "reported_net": 0.8752669270833325
+              },
+              {
+                "pass": 0.8230794270833334,
+                "reported_pass": 0.8855794270833334,
+                "probe_rate": 0.18994140625,
+                "net": 0.8002864583333329,
+                "reported_net": 0.8627864583333329
+              }
+            ],
+            "net_minus_frozen": -0.028523763020834317,
+            "paired_stream_bootstrap_95": [
+              -0.03536840820312609,
+              -0.021788533528646778
+            ]
+          },
+          "recent_wrong_receipt": {
+            "all": {
+              "pass": 0.8048095703125,
+              "reported_pass": 0.8299967447916666,
+              "probe_rate": 0.3537190755208333,
+              "net": 0.7623632812499986,
+              "reported_net": 0.7875504557291654
+            },
+            "first_32_after_change": {
+              "pass": 0.7786458333333334,
+              "reported_pass": 0.7877604166666666,
+              "probe_rate": 0.3984375,
+              "net": 0.7308333333333333,
+              "reported_net": 0.7399479166666666
+            },
+            "last_32_before_return": {
+              "pass": 0.80859375,
+              "reported_pass": 0.81640625,
+              "probe_rate": 0.453125,
+              "net": 0.7542187499999998,
+              "reported_net": 0.7620312499999998
+            },
+            "fault_site_after_return": {
+              "pass": 0.7939838540497445,
+              "reported_pass": 0.9887212432127557,
+              "probe_rate": 0.33631957914300603,
+              "net": 0.7536255045525838,
+              "reported_net": 0.9483628937155952
+            },
+            "phases": [
+              {
+                "pass": 0.9026692708333334,
+                "reported_pass": 0.9026692708333334,
+                "probe_rate": 0.2610677083333333,
+                "net": 0.8713411458333326,
+                "reported_net": 0.8713411458333326
+              },
+              {
+                "pass": 0.7828776041666666,
+                "reported_pass": 0.79541015625,
+                "probe_rate": 0.4104817708333333,
+                "net": 0.7336197916666657,
+                "reported_net": 0.7461523437499991
+              },
+              {
+                "pass": 0.7734375,
+                "reported_pass": 0.8238932291666666,
+                "probe_rate": 0.39697265625,
+                "net": 0.725800781249999,
+                "reported_net": 0.7762565104166658
+              },
+              {
+                "pass": 0.76025390625,
+                "reported_pass": 0.7980143229166666,
+                "probe_rate": 0.3463541666666667,
+                "net": 0.7186914062499992,
+                "reported_net": 0.7564518229166658
+              }
+            ],
+            "net_minus_frozen": -0.09994140625000152,
+            "paired_stream_bootstrap_95": [
+              -0.11320926920573073,
+              -0.08794047037760558
+            ]
+          },
+          "policy_gradient": {
+            "all": {
+              "pass": 0.8421630859375,
+              "reported_pass": 0.85205078125,
+              "probe_rate": 0.18387858072916666,
+              "net": 0.8200976562499993,
+              "reported_net": 0.8299853515624993
+            },
+            "first_32_after_change": {
+              "pass": 0.7200520833333334,
+              "reported_pass": 0.7239583333333334,
+              "probe_rate": 0.19401041666666666,
+              "net": 0.6967708333333333,
+              "reported_net": 0.7006770833333333
+            },
+            "last_32_before_return": {
+              "pass": 0.7760416666666666,
+              "reported_pass": 0.78125,
+              "probe_rate": 0.19661458333333334,
+              "net": 0.7524479166666665,
+              "reported_net": 0.7576562499999998
+            },
+            "fault_site_after_return": {
+              "pass": 0.9030717450016832,
+              "reported_pass": 0.9826575727381027,
+              "probe_rate": 0.19259076806449105,
+              "net": 0.8799608528339444,
+              "reported_net": 0.9595466805703637
+            },
+            "phases": [
+              {
+                "pass": 0.8860677083333334,
+                "reported_pass": 0.8860677083333334,
+                "probe_rate": 0.2470703125,
+                "net": 0.8564192708333326,
+                "reported_net": 0.8564192708333326
+              },
+              {
+                "pass": 0.7581380208333334,
+                "reported_pass": 0.7635091145833334,
+                "probe_rate": 0.19254557291666666,
+                "net": 0.7350325520833328,
+                "reported_net": 0.7404036458333328
+              },
+              {
+                "pass": 0.89892578125,
+                "reported_pass": 0.9191080729166666,
+                "probe_rate": 0.16031901041666666,
+                "net": 0.8796874999999996,
+                "reported_net": 0.8998697916666663
+              },
+              {
+                "pass": 0.8255208333333334,
+                "reported_pass": 0.8395182291666666,
+                "probe_rate": 0.13557942708333334,
+                "net": 0.8092513020833331,
+                "reported_net": 0.8232486979166663
+              }
+            ],
+            "net_minus_frozen": -0.04220703125000072,
+            "paired_stream_bootstrap_95": [
+              -0.0454577636718757,
+              -0.03910262044270903
+            ]
+          },
+          "drift_switch": {
+            "all": {
+              "pass": 0.8680013020833334,
+              "reported_pass": 0.922119140625,
+              "probe_rate": 0.0,
+              "net": 0.8680013020833334,
+              "reported_net": 0.922119140625
+            },
+            "first_32_after_change": {
+              "pass": 0.7356770833333334,
+              "reported_pass": 0.7395833333333334,
+              "probe_rate": 0.0,
+              "net": 0.7356770833333334,
+              "reported_net": 0.7395833333333334
+            },
+            "last_32_before_return": {
+              "pass": 0.95703125,
+              "reported_pass": 0.97265625,
+              "probe_rate": 0.0,
+              "net": 0.95703125,
+              "reported_net": 0.97265625
+            },
+            "fault_site_after_return": {
+              "pass": 0.4962394354202067,
+              "reported_pass": 1.0,
+              "probe_rate": 0.0,
+              "net": 0.4962394354202067,
+              "reported_net": 1.0
+            },
+            "phases": [
+              {
+                "pass": 0.9384765625,
+                "reported_pass": 0.9384765625,
+                "probe_rate": 0.0,
+                "net": 0.9384765625,
+                "reported_net": 0.9384765625
+              },
+              {
+                "pass": 0.91064453125,
+                "reported_pass": 0.92919921875,
+                "probe_rate": 0.0,
+                "net": 0.91064453125,
+                "reported_net": 0.92919921875
+              },
+              {
+                "pass": 0.80322265625,
+                "reported_pass": 0.9303385416666666,
+                "probe_rate": 0.0,
+                "net": 0.80322265625,
+                "reported_net": 0.9303385416666666
+              },
+              {
+                "pass": 0.8196614583333334,
+                "reported_pass": 0.8904622395833334,
+                "probe_rate": 0.0,
+                "net": 0.8196614583333334,
+                "reported_net": 0.8904622395833334
+              }
+            ],
+            "net_minus_frozen": 0.005696614583333333,
+            "paired_stream_bootstrap_95": [
+              0.0022786458333333335,
+              0.009521484375
+            ]
+          },
+          "oracle": {
+            "all": {
+              "pass": 0.9440511067708334,
+              "reported_pass": 0.9517415364583334,
+              "probe_rate": 0.0,
+              "net": 0.9440511067708334,
+              "reported_net": 0.9517415364583334
+            },
+            "first_32_after_change": {
+              "pass": 0.9361979166666666,
+              "reported_pass": 0.9609375,
+              "probe_rate": 0.0,
+              "net": 0.9361979166666666,
+              "reported_net": 0.9609375
+            },
+            "last_32_before_return": {
+              "pass": 0.95703125,
+              "reported_pass": 0.97265625,
+              "probe_rate": 0.0,
+              "net": 0.95703125,
+              "reported_net": 0.97265625
+            },
+            "fault_site_after_return": {
+              "pass": 0.9775293567225961,
+              "reported_pass": 0.9775293567225961,
+              "probe_rate": 0.0,
+              "net": 0.9775293567225961,
+              "reported_net": 0.9775293567225961
+            },
+            "phases": [
+              {
+                "pass": 0.94189453125,
+                "reported_pass": 0.94189453125,
+                "probe_rate": 0.0,
+                "net": 0.94189453125,
+                "reported_net": 0.94189453125
+              },
+              {
+                "pass": 0.94580078125,
+                "reported_pass": 0.9676106770833334,
+                "probe_rate": 0.0,
+                "net": 0.94580078125,
+                "reported_net": 0.9676106770833334
+              },
+              {
+                "pass": 0.9459635416666666,
+                "reported_pass": 0.9459635416666666,
+                "probe_rate": 0.0,
+                "net": 0.9459635416666666,
+                "reported_net": 0.9459635416666666
+              },
+              {
+                "pass": 0.9425455729166666,
+                "reported_pass": 0.9514973958333334,
+                "probe_rate": 0.0,
+                "net": 0.9425455729166666,
+                "reported_net": 0.9514973958333334
+              }
+            ],
+            "net_minus_frozen": 0.08174641927083333,
+            "paired_stream_bootstrap_95": [
+              0.07910054524739583,
+              0.08451334635416667
+            ]
+          }
+        }
+      }
+    }
+  },
+  "per_stream_sha256": "3e4328d445f4b75b3723dff40fc1aad40be1c44992df4ca7244417deb7d29a96"
+}

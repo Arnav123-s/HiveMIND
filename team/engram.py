@@ -30,14 +30,19 @@ import json
 import os
 import tempfile
 import time
-from pathlib import Path
+from collections import Counter, defaultdict
+from functools import lru_cache
 
 from . import memory, ternary
 
 
+def _rows(path):
+    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+
+
 def index():
     try:
-        return [json.loads(x) for x in (ternary.ENGRAMS / "index.jsonl").read_text().splitlines() if x.strip()]
+        return _rows(ternary.ENGRAMS / "index.jsonl")
     except (OSError, ValueError):
         return []
 

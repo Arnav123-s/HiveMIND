@@ -5,6 +5,7 @@ from pathlib import Path
 from .. import config, llm, prompts, stop
 from ..tools.preview import expected_outputs, preview
 from ..tools.sandbox import http_errors, run_python
+from ..tools.source import extract_code
 
 
 def task_messages(task, context, data_preview=""):
@@ -14,15 +15,6 @@ def task_messages(task, context, data_preview=""):
     if data_preview:
         user += f"\n\nDATA PREVIEW:\n{data_preview}"
     return [{"role": "system", "content": prompts.CODER}, {"role": "user", "content": user}]
-
-
-def extract_code(text):
-    blocks = re.findall(r"```(?:python|py)?\s*\n(.*?)```", text, re.S)
-    if blocks:
-        return max(blocks, key=len).strip()
-    if "```" in text:  # unterminated block
-        return text.split("```", 1)[1].split("\n", 1)[1].strip()
-    return text.strip()
 
 
 def sanity(stdout):

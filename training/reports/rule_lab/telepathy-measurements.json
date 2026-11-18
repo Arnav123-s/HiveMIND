@@ -1,0 +1,539 @@
+{
+  "seeds": [
+    197,
+    211,
+    223,
+    239,
+    251
+  ],
+  "training_per_seed": 8192,
+  "exam_per_seed": 4096,
+  "alignment_anchors": 64,
+  "frame_bytes": 10,
+  "per_seed": {
+    "197": {
+      "width": {
+        "single": {
+          "opposite_signs": 0.494384765625,
+          "positive_sum": 0.741455078125,
+          "both": 0.308349609375
+        },
+        "central": {
+          "opposite_signs": 0.96728515625,
+          "positive_sum": 0.9912109375,
+          "both": 0.95849609375
+        },
+        "1": {
+          "opposite_signs": 0.996826171875,
+          "positive_sum": 0.751708984375,
+          "both": 0.748779296875
+        },
+        "2": {
+          "opposite_signs": 0.986572265625,
+          "positive_sum": 0.865234375,
+          "both": 0.854736328125
+        },
+        "4": {
+          "opposite_signs": 0.974365234375,
+          "positive_sum": 0.930419921875,
+          "both": 0.90478515625
+        },
+        "8": {
+          "opposite_signs": 0.987548828125,
+          "positive_sum": 0.978515625,
+          "both": 0.966064453125
+        },
+        "float": {
+          "opposite_signs": 0.98974609375,
+          "positive_sum": 0.9853515625,
+          "both": 0.97509765625
+        },
+        "known_rule_1": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.745361328125,
+          "both": 0.745361328125
+        },
+        "known_rule_4": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.966796875,
+          "both": 0.966796875
+        }
+      },
+      "communication": {
+        "matched": {
+          "opposite_signs": 0.974365234375,
+          "positive_sum": 0.930419921875,
+          "both": 0.90478515625
+        },
+        "foreign": {
+          "opposite_signs": 0.980224609375,
+          "positive_sum": 0.93359375,
+          "both": 0.9140625
+        },
+        "aligned": {
+          "opposite_signs": 0.980224609375,
+          "positive_sum": 0.93359375,
+          "both": 0.9140625
+        },
+        "alignment_slope": 1.0069797039031982,
+        "equivalent_opposite_dialect": {
+          "opposite_signs": 0.016357421875,
+          "positive_sum": 0.434326171875,
+          "both": 0.009033203125
+        },
+        "translated_opposite_dialect": {
+          "opposite_signs": 0.980224609375,
+          "positive_sum": 0.93359375,
+          "both": 0.9140625
+        },
+        "wrong_task_or_schema_unchecked": {
+          "opposite_signs": 0.8876953125,
+          "positive_sum": 0.880615234375,
+          "both": 0.817626953125
+        },
+        "checked_with_retry": {
+          "opposite_signs": 0.974365234375,
+          "positive_sum": 0.930419921875,
+          "both": 0.90478515625
+        },
+        "rejected_attempts": 512,
+        "requests": 4096,
+        "no_retry_coverage": 0.875,
+        "no_retry_both_correct_all_requests": 0.789306640625
+      }
+    },
+    "211": {
+      "width": {
+        "single": {
+          "opposite_signs": 0.484619140625,
+          "positive_sum": 0.74755859375,
+          "both": 0.3134765625
+        },
+        "central": {
+          "opposite_signs": 0.977294921875,
+          "positive_sum": 0.99609375,
+          "both": 0.9736328125
+        },
+        "1": {
+          "opposite_signs": 0.981201171875,
+          "positive_sum": 0.75,
+          "both": 0.738037109375
+        },
+        "2": {
+          "opposite_signs": 0.993896484375,
+          "positive_sum": 0.8720703125,
+          "both": 0.86669921875
+        },
+        "4": {
+          "opposite_signs": 0.989013671875,
+          "positive_sum": 0.94091796875,
+          "both": 0.929931640625
+        },
+        "8": {
+          "opposite_signs": 0.990234375,
+          "positive_sum": 0.98291015625,
+          "both": 0.97314453125
+        },
+        "float": {
+          "opposite_signs": 0.989501953125,
+          "positive_sum": 0.962890625,
+          "both": 0.952392578125
+        },
+        "known_rule_1": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.760986328125,
+          "both": 0.760986328125
+        },
+        "known_rule_4": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.966064453125,
+          "both": 0.966064453125
+        }
+      },
+      "communication": {
+        "matched": {
+          "opposite_signs": 0.989013671875,
+          "positive_sum": 0.94091796875,
+          "both": 0.929931640625
+        },
+        "foreign": {
+          "opposite_signs": 0.98876953125,
+          "positive_sum": 0.93896484375,
+          "both": 0.927734375
+        },
+        "aligned": {
+          "opposite_signs": 0.98876953125,
+          "positive_sum": 0.93896484375,
+          "both": 0.927734375
+        },
+        "alignment_slope": 0.9796496629714966,
+        "equivalent_opposite_dialect": {
+          "opposite_signs": 0.010986328125,
+          "positive_sum": 0.517822265625,
+          "both": 0.0048828125
+        },
+        "translated_opposite_dialect": {
+          "opposite_signs": 0.98876953125,
+          "positive_sum": 0.93896484375,
+          "both": 0.927734375
+        },
+        "wrong_task_or_schema_unchecked": {
+          "opposite_signs": 0.89306640625,
+          "positive_sum": 0.89697265625,
+          "both": 0.8349609375
+        },
+        "checked_with_retry": {
+          "opposite_signs": 0.989013671875,
+          "positive_sum": 0.94091796875,
+          "both": 0.929931640625
+        },
+        "rejected_attempts": 512,
+        "requests": 4096,
+        "no_retry_coverage": 0.875,
+        "no_retry_both_correct_all_requests": 0.812255859375
+      }
+    },
+    "223": {
+      "width": {
+        "single": {
+          "opposite_signs": 0.5009765625,
+          "positive_sum": 0.75732421875,
+          "both": 0.376708984375
+        },
+        "central": {
+          "opposite_signs": 0.96923828125,
+          "positive_sum": 0.99462890625,
+          "both": 0.964111328125
+        },
+        "1": {
+          "opposite_signs": 0.9853515625,
+          "positive_sum": 0.748291015625,
+          "both": 0.738525390625
+        },
+        "2": {
+          "opposite_signs": 0.98583984375,
+          "positive_sum": 0.860107421875,
+          "both": 0.84765625
+        },
+        "4": {
+          "opposite_signs": 0.989501953125,
+          "positive_sum": 0.922119140625,
+          "both": 0.91162109375
+        },
+        "8": {
+          "opposite_signs": 0.993896484375,
+          "positive_sum": 0.961669921875,
+          "both": 0.95556640625
+        },
+        "float": {
+          "opposite_signs": 0.986572265625,
+          "positive_sum": 0.9716796875,
+          "both": 0.958251953125
+        },
+        "known_rule_1": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.75732421875,
+          "both": 0.75732421875
+        },
+        "known_rule_4": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.9638671875,
+          "both": 0.9638671875
+        }
+      },
+      "communication": {
+        "matched": {
+          "opposite_signs": 0.989501953125,
+          "positive_sum": 0.922119140625,
+          "both": 0.91162109375
+        },
+        "foreign": {
+          "opposite_signs": 0.986572265625,
+          "positive_sum": 0.953369140625,
+          "both": 0.9404296875
+        },
+        "aligned": {
+          "opposite_signs": 0.987548828125,
+          "positive_sum": 0.93359375,
+          "both": 0.921630859375
+        },
+        "alignment_slope": 1.0749856233596802,
+        "equivalent_opposite_dialect": {
+          "opposite_signs": 0.0107421875,
+          "positive_sum": 0.482177734375,
+          "both": 0.00830078125
+        },
+        "translated_opposite_dialect": {
+          "opposite_signs": 0.987548828125,
+          "positive_sum": 0.93359375,
+          "both": 0.921630859375
+        },
+        "wrong_task_or_schema_unchecked": {
+          "opposite_signs": 0.895751953125,
+          "positive_sum": 0.876220703125,
+          "both": 0.8232421875
+        },
+        "checked_with_retry": {
+          "opposite_signs": 0.989501953125,
+          "positive_sum": 0.922119140625,
+          "both": 0.91162109375
+        },
+        "rejected_attempts": 512,
+        "requests": 4096,
+        "no_retry_coverage": 0.875,
+        "no_retry_both_correct_all_requests": 0.79736328125
+      }
+    },
+    "239": {
+      "width": {
+        "single": {
+          "opposite_signs": 0.490478515625,
+          "positive_sum": 0.751708984375,
+          "both": 0.309326171875
+        },
+        "central": {
+          "opposite_signs": 0.974609375,
+          "positive_sum": 0.99267578125,
+          "both": 0.96728515625
+        },
+        "1": {
+          "opposite_signs": 0.9697265625,
+          "positive_sum": 0.749267578125,
+          "both": 0.73291015625
+        },
+        "2": {
+          "opposite_signs": 0.98974609375,
+          "positive_sum": 0.86474609375,
+          "both": 0.857177734375
+        },
+        "4": {
+          "opposite_signs": 0.988037109375,
+          "positive_sum": 0.94580078125,
+          "both": 0.933837890625
+        },
+        "8": {
+          "opposite_signs": 0.99072265625,
+          "positive_sum": 0.96728515625,
+          "both": 0.9580078125
+        },
+        "float": {
+          "opposite_signs": 0.99267578125,
+          "positive_sum": 0.9638671875,
+          "both": 0.95654296875
+        },
+        "known_rule_1": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.75439453125,
+          "both": 0.75439453125
+        },
+        "known_rule_4": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.96923828125,
+          "both": 0.96923828125
+        }
+      },
+      "communication": {
+        "matched": {
+          "opposite_signs": 0.988037109375,
+          "positive_sum": 0.94580078125,
+          "both": 0.933837890625
+        },
+        "foreign": {
+          "opposite_signs": 0.995849609375,
+          "positive_sum": 0.935546875,
+          "both": 0.931396484375
+        },
+        "aligned": {
+          "opposite_signs": 0.995849609375,
+          "positive_sum": 0.935546875,
+          "both": 0.931396484375
+        },
+        "alignment_slope": 0.9581102132797241,
+        "equivalent_opposite_dialect": {
+          "opposite_signs": 0.00390625,
+          "positive_sum": 0.49609375,
+          "both": 0.001220703125
+        },
+        "translated_opposite_dialect": {
+          "opposite_signs": 0.995849609375,
+          "positive_sum": 0.935546875,
+          "both": 0.931396484375
+        },
+        "wrong_task_or_schema_unchecked": {
+          "opposite_signs": 0.891845703125,
+          "positive_sum": 0.901611328125,
+          "both": 0.841064453125
+        },
+        "checked_with_retry": {
+          "opposite_signs": 0.988037109375,
+          "positive_sum": 0.94580078125,
+          "both": 0.933837890625
+        },
+        "rejected_attempts": 512,
+        "requests": 4096,
+        "no_retry_coverage": 0.875,
+        "no_retry_both_correct_all_requests": 0.8173828125
+      }
+    },
+    "251": {
+      "width": {
+        "single": {
+          "opposite_signs": 0.505615234375,
+          "positive_sum": 0.751953125,
+          "both": 0.370361328125
+        },
+        "central": {
+          "opposite_signs": 0.979248046875,
+          "positive_sum": 0.9951171875,
+          "both": 0.974609375
+        },
+        "1": {
+          "opposite_signs": 0.98388671875,
+          "positive_sum": 0.759033203125,
+          "both": 0.748779296875
+        },
+        "2": {
+          "opposite_signs": 0.79638671875,
+          "positive_sum": 0.793701171875,
+          "both": 0.666015625
+        },
+        "4": {
+          "opposite_signs": 0.99267578125,
+          "positive_sum": 0.952392578125,
+          "both": 0.9453125
+        },
+        "8": {
+          "opposite_signs": 0.991455078125,
+          "positive_sum": 0.983642578125,
+          "both": 0.97509765625
+        },
+        "float": {
+          "opposite_signs": 0.990478515625,
+          "positive_sum": 0.985107421875,
+          "both": 0.9755859375
+        },
+        "known_rule_1": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.74462890625,
+          "both": 0.74462890625
+        },
+        "known_rule_4": {
+          "opposite_signs": 1.0,
+          "positive_sum": 0.969482421875,
+          "both": 0.969482421875
+        }
+      },
+      "communication": {
+        "matched": {
+          "opposite_signs": 0.99267578125,
+          "positive_sum": 0.952392578125,
+          "both": 0.9453125
+        },
+        "foreign": {
+          "opposite_signs": 0.980712890625,
+          "positive_sum": 0.952880859375,
+          "both": 0.93359375
+        },
+        "aligned": {
+          "opposite_signs": 0.980712890625,
+          "positive_sum": 0.952880859375,
+          "both": 0.93359375
+        },
+        "alignment_slope": 0.999955415725708,
+        "equivalent_opposite_dialect": {
+          "opposite_signs": 0.02001953125,
+          "positive_sum": 0.536376953125,
+          "both": 0.013427734375
+        },
+        "translated_opposite_dialect": {
+          "opposite_signs": 0.980712890625,
+          "positive_sum": 0.952880859375,
+          "both": 0.93359375
+        },
+        "wrong_task_or_schema_unchecked": {
+          "opposite_signs": 0.89697265625,
+          "positive_sum": 0.90869140625,
+          "both": 0.84912109375
+        },
+        "checked_with_retry": {
+          "opposite_signs": 0.99267578125,
+          "positive_sum": 0.952392578125,
+          "both": 0.9453125
+        },
+        "rejected_attempts": 512,
+        "requests": 4096,
+        "no_retry_coverage": 0.875,
+        "no_retry_both_correct_all_requests": 0.825927734375
+      }
+    }
+  },
+  "subhives": {
+    "16": {
+      "mean_directed_link_transmissions": {
+        "broadcast": 26.75,
+        "global_addresses": 13.5,
+        "local_replicas": 6.0
+      },
+      "root_outage_reachable_fraction": {
+        "broadcast": 0.0,
+        "global_addresses": 0.0,
+        "local_replicas": 1.0
+      },
+      "primary_worker_instances": 2,
+      "replicated_worker_instances": 8,
+      "max_router_neighbors": 5
+    },
+    "64": {
+      "mean_directed_link_transmissions": {
+        "broadcast": 94.6875,
+        "global_addresses": 21.375,
+        "local_replicas": 13.5
+      },
+      "root_outage_reachable_fraction": {
+        "broadcast": 0.0,
+        "global_addresses": 0.0,
+        "local_replicas": 1.0
+      },
+      "primary_worker_instances": 2,
+      "replicated_worker_instances": 8,
+      "max_router_neighbors": 5
+    },
+    "256": {
+      "mean_directed_link_transmissions": {
+        "broadcast": 354.671875,
+        "global_addresses": 29.34375,
+        "local_replicas": 21.375
+      },
+      "root_outage_reachable_fraction": {
+        "broadcast": 0.0,
+        "global_addresses": 0.0,
+        "local_replicas": 1.0
+      },
+      "primary_worker_instances": 2,
+      "replicated_worker_instances": 8,
+      "max_router_neighbors": 5
+    },
+    "1024": {
+      "mean_directed_link_transmissions": {
+        "broadcast": 1382.66796875,
+        "global_addresses": 37.3359375,
+        "local_replicas": 29.34375
+      },
+      "root_outage_reachable_fraction": {
+        "broadcast": 0.0,
+        "global_addresses": 0.0,
+        "local_replicas": 1.0
+      },
+      "primary_worker_instances": 2,
+      "replicated_worker_instances": 8,
+      "max_router_neighbors": 5
+    }
+  },
+  "example": {
+    "file": "engrams/four-bit-pair.npz",
+    "bytes": 2496,
+    "sha256": "328370f1e213e347b538337345150d202a4bd308f7e7f2a093ebeea6163f08ef",
+    "seed": 197,
+    "roundtrip_cases": 128
+  }
+}

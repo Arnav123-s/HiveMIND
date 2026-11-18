@@ -75,9 +75,26 @@ class BitLinear(nn.Linear):
         w, ease = self.weight, EASE[0]
         scale = w.abs().mean().clamp(min=1e-5)
         w = w + ease * ((w / scale).round().clamp(-1, 1) * scale - w).detach()
-        top = x.abs().amax(-1, keepdim=True).clamp(min=1e-5)
-        x = x + ease * ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
-        return F.linear(x, w, self.bias)
+        return F.linear(bit_input(x, ease), w, self.bias)
+
+
+def bit_input(x, ease=1.0):
+    top = x.abs().amax(-1, keepdim=True).clamp(min=1e-5)
+    return x + ease * ((x * 127 / top).round().clamp(-128, 127) * top / 127 - x).detach()
+
+
+class FrozenBitLinear(nn.Module):
+    """Evaluation copy of a mature BitLinear. Preserve the exact floating-point rounding of its forward pass."""
+    def __init__(self, layer):
+        super().__init__()
+        w = layer.weight.detach()
+        scale = w.abs().mean().clamp(min=1e-5)
+        rounded = (w / scale).round().clamp(-1, 1) * scale
+        self.register_buffer("weight", w + (rounded - w))
+        self.register_buffer("bias", layer.bias.detach() if layer.bias is not None else None)
+
+    def forward(self, x):
+        return F.linear(bit_input(x), self.weight, self.bias)
 
 
 def kind(home=None):
@@ -153,6 +170,17 @@ class Tiny(nn.Module):
         self.norm = nn.LayerNorm(dim)
         self.head = nn.Linear(dim, labels) if labels else None
         self.apply(lambda m: nn.init.normal_(m.weight, std=0.02) if isinstance(m, (nn.Linear, nn.Embedding)) else None)
+
+    def freeze_bit_weights(self):
+        """Prepare a freshly loaded, inference-only copy. Replacing layers releases their training weights."""
+        if self.training:
+            raise ValueError("freeze only an evaluation copy")
+        for block in self.blocks:
+            for name in ("qkv", "out", "up", "down"):
+                layer = getattr(block, name)
+                if type(layer) is BitLinear:
+                    setattr(block, name, FrozenBitLinear(layer))
+        return self
 
     def body(self, ids, causal=True):
         x = self.tok(ids) if self.rotary else self.tok(ids) + self.pos(torch.arange(ids.shape[1]))
