@@ -9,6 +9,19 @@ nothing to pay for.
   cells. **The body** is the trunk and cells that answer together: they write and run programs, and an answer
   counts when two of them agree and a check confirms it. The current body is in `cells/body.json`.
 
+## Use a skill the hive learned
+
+This local example finds the difference between the highest and lowest price quotes. The hive wrote the method on a CPU and qualified it on separate examples. Once saved, it can answer without loading the language model.
+
+```sh
+python scripts/setup_fieldwork.py
+HIVE_BANK=training/reports/verified-learning/live/example-bank ./hive skills quote_spread
+```
+
+At the prompt, enter `229, 184, 207`. The result is **45 cents**. Run `./hive skills` with the same bank to browse its methods. A second saved method counts transit tickets, including the exact minute a ticket expires.
+
+To teach a method, give `./hive fieldwork` a work order with a description, public examples and separate qualification cases. In one test a coding cell corrected two programs, and the hive used their common repair to solve a third with the model off. That third task went from no deliveries to 24 correct deposit calculations. By default, qualified methods are available to subsequent fieldwork and chat in `runs/learned-skills`. [Teaching instructions, experiments and limits](training/reports/verified-learning/README.md)
+
 ## Measure time above a threshold
 
 Give the hive a CSV with `timestamp,value` columns. It estimates the duration above your threshold by linear interpolation and counts upward crossings. This command runs locally with Python and the saved sensor rule.

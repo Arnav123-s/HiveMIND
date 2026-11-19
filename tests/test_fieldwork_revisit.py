@@ -54,7 +54,7 @@ def test_batch_revisits_older_public_failure_then_serves_old_and_new_methods(tmp
 
 
 def test_resume_uses_original_writer_position_and_feedback(tmp_path):
-    from tests.test_fieldwork_versions import Guest, order
+    from test_fieldwork_versions import Guest, order
     spec = order("Transform a sensor value", [(2, 4)], [(3, 6)], [5])
     recorded = []
     def first(*args):
@@ -78,7 +78,7 @@ def test_resume_uses_original_writer_position_and_feedback(tmp_path):
 
 
 def test_waiting_request_can_use_newly_acquired_exact_contract(tmp_path):
-    from tests.test_fieldwork_versions import Guest, order, version
+    from test_fieldwork_versions import Guest, order, version
     g = Guest({"double": lambda x: x * 2, "wrong": lambda x: 0})
     spec = order("Double the amount", [(2, 4)], [(3, 6)], [5])
     bank, out = tmp_path / "bank", tmp_path / "out"
@@ -91,3 +91,14 @@ def test_waiting_request_can_use_newly_acquired_exact_contract(tmp_path):
     assert receipt["jobs"] == [dict(id="job0", value=10)]
     calls = len(g.calls)
     assert fw.work(spec, g, None, out, bank) == receipt and len(g.calls) == calls
+
+
+def test_explicit_challenge_requires_independent_inputs_and_enabled_rules(tmp_path):
+    from test_fieldwork_versions import Guest, order
+    spec = order("Double the amount", [(2, 4)], [(2, 4)], [5])
+    guest = Guest({})
+    with pytest.raises(ValueError, match="disjoint"):
+        fw.work(spec, guest, None, tmp_path / "repeat", challenge_budget=1)
+    with pytest.raises(ValueError, match="enabled"):
+        fw.work(spec, guest, None, tmp_path / "disabled", challenge_budget=1, learn_repairs=False)
+    assert not guest.calls

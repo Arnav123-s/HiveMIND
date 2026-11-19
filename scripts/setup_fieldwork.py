@@ -62,12 +62,18 @@ def main(argv=None):
         install_guest(sdk, args.archive)
     except (OSError, ValueError, zipfile.BadZipFile) as exc:
         parser.exit(1, f"setup_fieldwork: {exc}\n")
-    python = Path(sys.executable)
-    if sys.prefix == sys.base_prefix:
-        env = config.ROOT / ".venv"
-        python = env / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
-        if not python.is_file():
-            venv.EnvBuilder(with_pip=True).create(env)
+    env = config.ROOT / ".venv"
+    local_python = env / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    override = os.environ.get("HIVE_PYTHON")
+    if override:
+        python = Path(override).expanduser()
+    elif local_python.is_file():
+        python = local_python
+    elif sys.prefix != sys.base_prefix:
+        python = Path(sys.executable)
+    else:
+        venv.EnvBuilder(with_pip=True).create(env)
+        python = local_python
     probe = "import wasmtime; from importlib.metadata import version; raise SystemExit(version('wasmtime') != '36.0.0')"
     if subprocess.run([str(python), "-c", probe], stderr=subprocess.DEVNULL).returncode:
         subprocess.run([str(python), "-m", "pip", "install", "wasmtime==36.0.0"], check=True)

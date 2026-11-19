@@ -3,6 +3,7 @@
 import argparse
 import csv
 import contextlib
+import errno
 import fcntl
 import io
 import json
@@ -250,49 +251,78 @@ def saved_receipt(out, spec):
 
 def restore_jobs(out, spec, rows):
     by_id = {j["id"]: j for j in spec.get("jobs", [])}
-    valid = set()
+    valid, pending = set(), set()
     restored = list(rows)
     for i, row in enumerate(rows):
         if "value" in row:
             try:
                 job = by_id[row["id"]]
-                if not set(job.get("from_job", {}).values()) <= valid:
+                parents = set(job.get("from_job", {}).values())
+                if parents & pending:
+                    raise OSError("snapshot publication pending")
+                if not parents <= valid:
                     raise ValueError("a stored snapshot could not be verified")
                 commit_output(out, job, row["value"])
                 valid.add(row["id"])
-            except (ValueError, TypeError, OSError) as exc:
+            except OSError as exc:
+                restored[i] = {"id": row["id"], "error": str(exc), "pending_value": row["value"]}
+                pending.add(row["id"])
+            except (ValueError, TypeError) as exc:
                 restored[i] = {"id": row["id"], "error": str(exc)}
     return restored
 
 
-def deliver(guest, program, jobs, root):
+def deliver(guest, program, jobs, root, *, previous=None):
     ids = [j["id"] for j in jobs]
     if len(set(ids)) != len(ids) or any(not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", i) for i in ids):
         raise ValueError("each job needs a unique short ID")
     linked = any(j.get("from_job") for j in jobs)
-    results = [] if linked else guest.run(program, [j["input"] for j in jobs], fuel=30_000_000_000)[0]
-    receipts = []
-    snapshots = {}
+    results = [] if linked or previous is not None else guest.run(program, [j["input"] for j in jobs], fuel=30_000_000_000)[0]
+    receipts, pending, snapshots = [], set(), {}
     for i, job in enumerate(jobs):
+        ident = job["id"]
+        old = previous[i] if previous is not None else {}
+        upstream = job.get("from_job", {})
         try:
-            if linked:
+            if any(prior in pending for prior in upstream.values()):
+                # Keep an already computed result private until its predecessor is published.
+                row = {"error": "snapshot publication pending", "retry_delivery": True}
+                for key in ("pending_value", "value"):
+                    if key in old:
+                        row["pending_value"] = old[key]
+                pending.add(ident)
+            elif any(prior not in snapshots for prior in upstream.values()):
+                raise ValueError("snapshot dependency unavailable or input field already set")
+            elif "pending_value" in old or "value" in old:
+                row = {"value": old.get("pending_value", old.get("value"))}
+            elif old and not old.get("retry_delivery"):
+                row = old
+            elif results:
+                row = results[i]
+            else:
                 value = job["input"]
-                if job.get("from_job"):
+                if upstream:
                     value = dict(value)
-                    for field, prior in job["from_job"].items():
-                        if prior not in snapshots or field in value:
+                    for field, prior in upstream.items():
+                        if field in value:
                             raise ValueError("snapshot dependency unavailable or input field already set")
                         value[field] = json.loads(snapshots[prior].read_bytes())
                 row = guest.run(program, [value], fuel=30_000_000_000)[0][0]
-            else:
-                row = results[i]
             if "value" in row:
-                snapshot = commit_output(root, job, row["value"])
-                if snapshot is not None:
-                    snapshots[job["id"]] = snapshot
-        except (OSError, ValueError, TypeError) as exc:
+                try:
+                    snapshot = commit_output(root, job, row["value"])
+                except OSError as exc:
+                    row = {"error": str(exc), "pending_value": row["value"]}
+                    pending.add(ident)
+                else:
+                    if snapshot is not None:
+                        snapshots[ident] = snapshot
+        except OSError as exc:
+            row = {"error": str(exc), "retry_delivery": True}
+            pending.add(ident)
+        except (ValueError, TypeError) as exc:
             row = {"error": str(exc)}
-        receipts.append({"id": job["id"], **row})
+        receipts.append({"id": ident, **row})
     return receipts
 
 
@@ -320,7 +350,7 @@ def check_versions(versions, spec, guest):
     return qualified, checks, seed
 
 
-def shared_results(qualified, guest, jobs, formats=None):
+def shared_results(qualified, guest, jobs, formats=None, *, on_difference=None):
     """Stage jobs privately when the checks cannot distinguish saved implementations."""
     if not jobs:
         return None, "There are no jobs on which to compare the qualified versions."
@@ -338,6 +368,8 @@ def shared_results(qualified, guest, jobs, formats=None):
             if "compare" not in jobs[i] and formats and all(isinstance(v, dict) for v in values):
                 comparison = {key: fmt for key, fmt in formats.items() if any(key in v for v in values)}
             if not matches(*values, comparison):
+                if on_difference is not None:
+                    on_difference(jobs[i], reference, *values, rows)
                 rendered = [json.dumps(v) for v in values if not isinstance(v, (list, dict))]
                 details = " (" + " or ".join(rendered) + ")" if len(rendered) == 2 and all(len(v) <= 40 for v in rendered) else ""
                 return None, f"The qualified versions gave different answers for job {row['id']}{details}."
@@ -360,15 +392,108 @@ def validation_set_id(spec):
     return fingerprint(json.dumps(sorted(validation), separators=(",", ":")))
 
 
+def _admit_delivered(spec, result, state, bank_path, program):
+    if (not bank_path or not spec.get("validation") or any("value" not in job for job in result["jobs"])
+            or any(row["reason"] == "qualified" for row in result["saved_checks"])):
+        return
+    validation_set = validation_set_id(spec)
+    if not validation_set:
+        result.update(admission="overlapping_checks",
+                      reason="The qualification set repeats a public input. The method was not saved.")
+        return
+    entry = dict(task=spec["name"], description=spec["task"], source=program, digest=result["digest"],
+                 public=result["public"], validation=result["validated"], parents=result["parents"])
+    if "arithmetic_repair" in result:
+        entry["arithmetic_repair"] = result["arithmetic_repair"]
+    for kind in ("learned_repair", "decoded_input_repair"):
+        if kind in result:
+            entry[kind] = result[kind]
+    # A synthetic edit cannot corroborate itself. Only an independently
+    # admitted, unmodified writer proposal can teach a new transformation.
+    from team.skill_inputs import infer_contract
+    entry["input_contract"] = infer_contract([row["input"] for row in spec["examples"]])
+    best = next((attempt for attempt in result["attempts"] if attempt["program"] == program), {})
+    parent = best.get("writer_parent")
+    if state.get("learn_repairs") and "repair_search" not in result and parent and validation_set:
+        # Credit only the failed source actually shown to the writer. Another
+        # low-scoring attempt in the trace may have had no causal role.
+        seed = state.get("repair_seed")
+        predecessors = ([seed] if seed else []) + result["attempts"]
+        failed = next((r for r in predecessors if r["passed"] < best["passed"]
+                       and fingerprint(r["source"]) == parent), None)
+        if failed and len(failed["source"]) <= 5900:
+            rule = repair_learning.discover(failed["source"], best["source"])
+            if rule is not None:
+                event = {"parent": parent, "rule": rule, "validation_set": validation_set}
+                entry["repair_experience"] = result["repair_experience"] = [event]
+    admit(bank_path, entry)
+
+
+def _resume_delivery(out, spec, receipt, guest, state, bank_path):
+    """Retry publication errors without spending a new writing, repair or challenge budget."""
+    jobs = receipt["jobs"]
+    # Prior releases retained only the exception text. Recognize ordinary filesystem
+    # errors from file publication; guest exceptions are prefixed with their Python type.
+    blocked = set()
+    for job, old in zip(spec.get("jobs", []), jobs):
+        error = old.get("error", "")
+        match = re.match(r"^\[Errno ([0-9]+)\] ", error)
+        file_job = "snapshot_file" in job or "files" in job
+        old_os_error = match and int(match[1]) in {errno.ENOSPC, errno.EDQUOT, errno.EACCES, errno.EAGAIN,
+                                                  errno.EINTR, errno.EROFS, errno.EBUSY, errno.EIO, errno.EMFILE}
+        blocked_parent = blocked.intersection(job.get("from_job", {}).values())
+        if (file_job and (old_os_error or error == str(out / job["id"]))
+                or blocked_parent and error == "snapshot dependency unavailable or input field already set"):
+            old["retry_delivery"] = True
+        if old.get("retry_delivery") or "pending_value" in old:
+            blocked.add(job["id"])
+    if not any("pending_value" in j or j.get("retry_delivery") for j in jobs):
+        return receipt
+    program = (out / "solver.py").read_bytes().decode().removesuffix("\n")
+    if fingerprint(program) != receipt["digest"]:
+        raise ValueError("the saved solver differs from the qualified program")
+    receipt["jobs"] = deliver(guest, program, spec.get("jobs", []), out, previous=jobs)
+    if all("value" in job for job in receipt["jobs"]):
+        receipt.pop("status", None)
+        receipt.pop("reason", None)
+        _admit_delivered(spec, receipt, state, bank_path, program)
+    save(out / "receipt.json", receipt)
+    return receipt
+
+
+def _initial_manifest(out, state):
+    token = state["spec_digest"]
+    stage = out / f".work-order-{token}.pending"
+    lock = out / ".work.lock"
+    owner = "fieldwork initial manifest " + token
+    if any(path not in (stage, lock) for path in out.iterdir()):
+        raise FileExistsError("use a fresh or matching work-order directory")
+    if stage.exists() or stage.is_symlink():
+        if stage.is_symlink() or not stage.is_file() or lock.read_bytes() != owner.encode():
+            raise FileExistsError("the work-order staging name is occupied")
+        stage.unlink()
+    with lock.open("wb") as marker:
+        marker.write(owner.encode())
+        marker.flush()
+        os.fsync(marker.fileno())
+    with stage.open("x", encoding="utf-8") as stream:
+        json.dump(state, stream, allow_nan=False, separators=(",", ":"))
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(stage, out / "work-order.json")
+    with _directory_fd(out) as fd:
+        os.fsync(fd)
+
+
 def work(spec, guest, ask, out, bank_path=None, rounds=3, memory_view="contract", *,
-         repair_budget=8, learn_repairs=True):
+         repair_budget=8, learn_repairs=True, challenge_budget=0):
     out.mkdir(parents=True, exist_ok=True)
     with (out / ".work.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        return _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs)
+        return _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs, challenge_budget)
 
 
-def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs):
+def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs, challenge_budget):
     name = spec["name"]
     if not re.fullmatch("[a-z][a-z0-9_]{0,60}", name) or not spec["examples"] or rounds < 1:
         raise ValueError("provide a short program name and at least one checked example")
@@ -376,8 +501,15 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, 
         raise ValueError("unknown memory view")
     if type(repair_budget) is not int or not 0 <= repair_budget <= 8:
         raise ValueError("repair budget must be between 0 and 8 candidate checks")
+    if type(challenge_budget) is not int or not 0 <= challenge_budget <= 2:
+        raise ValueError("challenge budget must be between 0 and 2 rivals")
+    if challenge_budget and not learn_repairs:
+        raise ValueError("checking learned rivals requires learned repairs to be enabled")
+    if challenge_budget and not validation_set_id(spec):
+        raise ValueError("checking learned rivals requires disjoint public and qualification inputs")
     token = fingerprint(json.dumps(spec, sort_keys=True, separators=(",", ":")))
     manifest = out / "work-order.json"
+    prior_attempts = []
     if manifest.exists():
         state = json.loads(manifest.read_text())
         if state["spec_digest"] != token:
@@ -388,53 +520,55 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, 
         memory_view = state.get("memory_view", "source")
         # An interrupted run uses its original policy and budget. An older manifest
         # predates learning and resumes with the original arithmetic search.
+        if state.get("challenge_budget", 0) != challenge_budget:
+            raise ValueError("the verification budget changed; use a new output directory to recheck a work order")
         repair_budget = state.get("repair_budget", 8)
         learn_repairs = state.get("learn_repairs", False)
         if (out / "receipt.json").exists():
-            receipt = saved_receipt(out, spec)
-            if receipt.get("status") == "needs_generation":
-                # A second work order may have earned a matching solver since this
-                # request stopped. Retain the original helper snapshot and reconsider
-                # only the exact contract, without asking a writer for another draft.
-                checked = {item["digest"] for item in receipt["saved_checks"]}
-                fresh = [r for r in load_bank(bank_path) if r["task"] == name and r["description"] == spec["task"]
-                         and r["digest"] not in checked]
-                if fresh:
-                    by_digest = {r["digest"]: r for r in [*versions, *fresh]}
-                    versions = sorted(by_digest.values(), key=lambda r: (-r["validation"], r["digest"]))
-                    state["versions"] = versions
-                    state.pop("saved_checks", None)
-                    state.pop("repair_seed", None)
-                    save(manifest, state)
-                elif ask is None:
-                    return receipt
-            elif (learn_repairs and bank_path is not None and repair_budget and spec.get("validation")
-                  and receipt["attempts"] and receipt["public"] < receipt["examples"]):
-                current = repair_learning.learn(load_bank(bank_path))
-                previous = receipt.get("repair_search", {})
-                if policy_id(current) == previous.get("policy"):
-                    return receipt
-                if previous not in state.setdefault("prior_searches", []):
-                    state["prior_searches"].append(previous)
-                # Recheck the original draft with new public repair knowledge. No
-                # new proposals or private failures are used to drive this search.
-                state["repair_policy"] = current
-                save(manifest, state)
-                rounds = len(receipt["attempts"])
-                ask = None
-            else:
+            receipt = json.loads((out / "receipt.json").read_bytes())
+            if (receipt.get("status") == "delivery_failed" or
+                    (not receipt.get("status") and any("error" in j for j in receipt["jobs"]))):
+                return _resume_delivery(out, spec, receipt, guest, state, bank_path)
+            waiting = receipt.get("status") == "needs_generation"
+            failed_public = bool(receipt["attempts"]) and receipt["public"] < receipt["examples"]
+            if not waiting and not failed_public:
+                receipt["jobs"] = restore_jobs(out, spec, receipt["jobs"])
                 return receipt
+            bank = load_bank(bank_path)
+            checked = {item["digest"] for item in receipt["saved_checks"]}
+            fresh = [r for r in bank if r["task"] == name and r["description"] == spec["task"]
+                     and r["digest"] not in checked]
+            policy = repair_learning.learn(bank if learn_repairs else [])
+            if fresh:
+                by_digest = {r["digest"]: r for r in [*versions, *fresh]}
+                versions = sorted(by_digest.values(), key=lambda r: (-r["validation"], r["digest"]))
+                state["versions"] = versions
+                state.pop("saved_checks", None)
+                state.pop("repair_seed", None)
+            if failed_public:
+                previous = receipt.get("repair_search")
+                new_search = bool(learn_repairs and bank_path and repair_budget and spec.get("validation")
+                                  and policy_id(policy) != (previous or {}).get("policy"))
+                if not fresh and not new_search:
+                    return receipt
+                if previous and previous not in state.setdefault("prior_searches", []):
+                    state["prior_searches"].append(previous)
+                prior_attempts = receipt["attempts"]
+                rounds, ask = len(prior_attempts), None
+            elif not fresh and ask is None:
+                return receipt
+            # Exact-version refresh and a learned challenger must use the same bank snapshot.
+            state["repair_policy"] = policy
+            save(manifest, state)
     else:
-        if any(p.name != ".work.lock" for p in out.iterdir()):
-            raise FileExistsError("use a fresh or matching work-order directory")
         bank = load_bank(bank_path)
         versions = [r for r in bank if r["task"] == name and r["description"] == spec["task"]]
         versions.sort(key=lambda r: (-r["validation"], r["digest"]))
         old = retrieve(spec["task"], [r for r in bank if r["task"] != name or r["description"] != spec["task"]])
         state = dict(spec_digest=token, parents=old, versions=versions, memory_view=memory_view,
-                     learn_repairs=learn_repairs, repair_budget=repair_budget,
+                     learn_repairs=learn_repairs, repair_budget=repair_budget, challenge_budget=challenge_budget,
                      repair_policy=repair_learning.learn(bank if learn_repairs else []))
-        save(manifest, state)
+        _initial_manifest(out, state)
     versions = list({r["digest"]: r for r in versions}.values())
     prompt = Task(
         spec["task"], (), "Public examples: " + json.dumps(spec["examples"], separators=(",", ":"))[:1900]
@@ -476,6 +610,7 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, 
         result["prior_searches"] = state["prior_searches"]
     staged = None
     if qualified:
+        trace.extend(prior_attempts)
         member = qualified[0]
         result.update(public=len(spec["examples"]), validated=len(promotion))
         if len(qualified) > 1:
@@ -559,7 +694,7 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, 
                 result["decoded_input_repair"] = details
             else:
                 result["arithmetic_repair"] = details
-            best = dict(best, program=program, passed=repair["passed"])
+            best = dict(best, program=program, repaired_source=repair["program"], passed=repair["passed"])
     (out / "solver.py").write_text(best["program"] + "\n")
     if not qualified:
         result["parents"] = [r["digest"] for r in old]
@@ -570,38 +705,25 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, 
     key = fingerprint(best["program"])
     result.update(digest=key, public=best["passed"])
     if best["passed"] == len(spec["examples"]) and result["validated"] == len(promotion):
+        if challenge_budget:
+            from .challenge import assess
+            # The original source in a synthetically repaired attempt remains in the trace.
+            # A rival must challenge the *actual* winning program. Stored programs already
+            # include their helpers, so pass the exact persisted program with an identity wrap.
+            verifier_source = best["program"] if qualified else best.get("repaired_source", best["source"])
+            wrap = (lambda source: source) if qualified else (lambda source: tool_source(source, old))
+            challenge, compared = assess(verifier_source, best["program"], state["repair_policy"], spec, guest,
+                                         wrap=wrap, limit=challenge_budget)
+            result["challenge"] = challenge
+            if challenge["status"] in ("ambiguous", "inconclusive"):
+                result.update(status="challenge_" + challenge["status"], digest=None, reason=challenge["reason"])
+                save(out / "receipt.json", result)
+                return result
+            if compared is not None:
+                staged = compared
         result["jobs"] = (restore_jobs(out, spec, staged) if staged is not None
                           else deliver(guest, best["program"], jobs, out))
-        ready_to_admit = bank_path and promotion and not qualified and all("value" in j for j in result["jobs"])
-        validation_set = validation_set_id(spec) if ready_to_admit else None
-        if ready_to_admit and not validation_set:
-            result.update(admission="overlapping_checks",
-                          reason="The qualification set repeats a public input. The method was not saved.")
-        if ready_to_admit and validation_set:
-            entry = dict(task=name, description=spec["task"], source=best["program"], digest=key,
-                         public=best["passed"], validation=result["validated"], parents=result["parents"])
-            if "arithmetic_repair" in result:
-                entry["arithmetic_repair"] = result["arithmetic_repair"]
-            for kind in ("learned_repair", "decoded_input_repair"):
-                if kind in result:
-                    entry[kind] = result[kind]
-            # A synthetic edit cannot corroborate itself. Only an independently
-            # admitted, unmodified writer proposal can teach a new transformation.
-            from team.skill_inputs import infer_contract
-            entry["input_contract"] = infer_contract([row["input"] for row in spec["examples"]])
-            parent = best.get("writer_parent")
-            if learn_repairs and "repair_search" not in result and parent and validation_set:
-                # Credit only the failed source actually shown to the writer. Another
-                # low-scoring attempt in the trace may have had no causal role.
-                predecessors = ([seed] if seed else []) + trace
-                failed = next((r for r in predecessors if r["passed"] < best["passed"]
-                               and fingerprint(r["source"]) == parent), None)
-                if failed and len(failed["source"]) <= 5900:
-                    rule = repair_learning.discover(failed["source"], best["source"])
-                    if rule is not None:
-                        event = {"parent": parent, "rule": rule, "validation_set": validation_set}
-                        entry["repair_experience"] = result["repair_experience"] = [event]
-            admit(bank_path, entry)
+        _admit_delivered(spec, result, state, bank_path, best["program"])
     if result["public"] < result["examples"]:
         result.update(status="public_failed", reason="The proposed program still fails the public examples.")
     elif result["validated"] < result["validation_total"]:
@@ -622,8 +744,8 @@ def run_orders(specs, guest, ask, out, bank, rounds=3, memory_view="contract", *
         results.append(work(spec, guest, ask, directory, bank, rounds, memory_view, **options))
     if len(specs) > 1 and bank is not None:
         for i, (spec, directory, result) in enumerate(zip(specs, directories, results)):
-            if (result.get("status") == "needs_generation"
-                    or (result.get("repair_search") and result["public"] < result["examples"])):
+            if result.get("status") in ("needs_generation", "public_failed") or (
+                    result.get("attempts") and result["public"] < result["examples"]):
                 results[i] = work(spec, guest, None, directory, bank, rounds, memory_view, **options)
     return results
 
@@ -659,11 +781,15 @@ def main(argv=None):
     p.add_argument("--budget", type=int, default=1400, help="maximum generated tokens per attempt")
     p.add_argument("--repair-budget", type=int, default=8, choices=range(9),
                    help="maximum candidate repairs tested on public examples per search")
+    p.add_argument("--challenge", type=int, choices=(0, 1, 2), default=0,
+                   help="check up to this many learned rival programs before delivering an otherwise qualified answer")
     p.add_argument("--no-learned-repairs", action="store_true",
                    help="use only the built-in repairs and do not learn repair rules")
     p.add_argument("--concise", action="store_true", help="request code without inline explanations")
     p.add_argument("--memory-view", choices=("contract", "source"), default="contract")
     args = p.parse_args(argv)
+    if args.challenge and args.no_learned_repairs:
+        p.error("--challenge requires learned repairs to be enabled")
     if min(args.rounds, args.threads, args.budget) < 1:
         p.error("rounds, threads and budget must be positive")
     if args.member and (args.binary or args.weights or args.adapter):
@@ -673,6 +799,8 @@ def main(argv=None):
     if bool(args.binary) != bool(args.weights) or (args.adapter and not args.weights):
         p.error("supply both --binary and --weights when selecting a local model by path")
     specs = [json.loads(path.read_text()) for path in args.spec]
+    if args.challenge and any(not validation_set_id(s) for s in specs):
+        p.error("--challenge requires disjoint public and qualification inputs in each work order")
     try:
         g = Guest(args.sdk)
     except FileNotFoundError:
@@ -708,7 +836,8 @@ def main(argv=None):
             seats = 2 if args.member == ["auto"] else len(args.member or [None])
             generator = [partial(ask, seat) for seat in range(seats)]
         results = run_orders(specs, g, generator, args.out, bank, args.rounds, args.memory_view,
-                             repair_budget=args.repair_budget, learn_repairs=not args.no_learned_repairs)
+                             repair_budget=args.repair_budget, learn_repairs=not args.no_learned_repairs,
+                             challenge_budget=args.challenge)
     success = True
     for spec, score in zip(specs, results):
         jobs = spec.get("jobs", [])
@@ -717,7 +846,7 @@ def main(argv=None):
               f"{score['validated']}/{score['validation_total']} independent checks, {delivered}/{len(jobs)} jobs delivered")
         if score.get("reason"):
             print(score["reason"])
-        if (score.get("status") in ("ambiguous_saved_versions", "needs_generation")
+        if (score.get("status") in ("ambiguous_saved_versions", "needs_generation", "challenge_ambiguous", "challenge_inconclusive")
                 or score["public"] != score["examples"] or score["validated"] != score["validation_total"]
                 or delivered != len(jobs)):
             success = False

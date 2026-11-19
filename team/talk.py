@@ -18,9 +18,8 @@ have to be worked out? It says one word.
           answer counts when two of them agree. The result comes back into the conversation and is said in plain
           words, with the checked values as the programs printed them.
 
-With HIVE_BANK set to a fieldwork bank folder, a work message that fits a saved, checked method is answered by that
-method first, with no model call (team/saved.py); when its saved versions disagree, or the message lacks its inputs,
-the reply says so. A message that fits none goes on to the members as above.
+A checked method from the local fieldwork bank can answer a matching request before the body starts. HIVE_BANK
+can select another bank. When its saved versions disagree, or the message lacks its inputs, the reply says so.
 
 So nothing that can be computed or read from a source is answered from memory, and small talk does not wait for
 programs. The one who talks is the body's DNA with no cell's edit switched on: conversation is what the DNA knows
@@ -125,13 +124,34 @@ def route(base, message, history=()):
     return decide(base, message, last), convo
 
 
+def saved_reply(message, log=None, *, local_only=False):
+    """Run a matching saved method and format its result for the ordinary chat interface."""
+    from . import saved
+
+    started = time.time()
+    if saved.bank_path() is None:
+        return None
+    kept = saved.answer(message, log=log, local_only=local_only)
+    if kept is None:
+        return None
+    if log:
+        log(f"saved method {kept['task']}: {kept['status']}")
+    return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered",
+            "task": message, "dir": "", "files": [], "saved": kept, "seconds": round(time.time() - started)}
+
+
 def reply(message, history=(), name="the user", run_dir=None, log=None, base=None, now=None):
     """The hive's reply to the latest message: {"text", "worked", "agreed", "task", "dir", "seconds"}.
     history: the earlier messages, oldest first ({"role", "content"}). base: who talks (default: the body's DNA).
     now: the date and time the hive is told it is (default: the clock; the talk exam gives its own)."""
     t0 = time.time()
+    kept = saved_reply(message, log, local_only=True)
+    if kept and not kept["saved"].get("fallback_to_members"):
+        return kept
     base = base or speaker()
     if not base:
+        if kept:
+            return kept
         raise RuntimeError("the hive's body is not on this machine: bash scripts/cloud_setup.sh (or python -m team.ternary install, then python training/grow.py fetch)")
     say = log or (lambda *a: None)
     today = (now or datetime.datetime.now()).strftime("%Y-%m-%d (%A), %H:%M")
@@ -140,13 +160,6 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
     if way == "talk":
         text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
         return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
-    # a saved, checked method (HIVE_BANK) answers what it fits, with no model call; off when no bank is configured
-    from . import saved
-    kept = saved.answer(message, log=say) if saved.bank_path() else None
-    if kept:
-        say(f"saved method {kept['task']}: {kept['status']}")
-        return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered", "task": message, "dir": "",
-                "files": [], "saved": kept, "seconds": round(time.time() - t0)}
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
@@ -217,6 +230,7 @@ def print_one(message, **options):
         print(note, file=sys.stderr)
     for path in file_paths(out):
         print(path.absolute(), file=sys.stderr)
+    return int("saved" in out and not out["agreed"])
 
 
 def main(argv):
@@ -228,9 +242,34 @@ def main(argv):
         if not msgs or msgs[-1].get("role") == "assistant":
             print("nothing to answer: the last message is not the user's")
             return 0
-        out = reply(str(msgs[-1]["content"]), msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
-        foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
-                if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
+        message = str(msgs[-1]["content"])
+        if "--saved-only" in argv:
+            from . import saved
+            if saved.bank_path() is None:
+                return 3  # Continue to the ordinary model.
+            class NeedsRuntime(Exception):
+                pass
+            class UnavailableGuest:
+                def run(self, *args, **kwargs):
+                    raise NeedsRuntime
+            # Matching and input validation use the standard saved-method path. An
+            # unavailable guest is only asked to run if a real computation matches.
+            started = time.monotonic()
+            try:
+                kept = saved.answer(message, runner=saved.guest() or UnavailableGuest())
+            except NeedsRuntime:
+                return 4  # Install the optional guest and retry with its interpreter.
+            if kept is None:
+                return 3
+            out = dict(text=kept["text"], saved=kept, seconds=round(time.monotonic() - started))
+        else:
+            out = reply(message, msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None),
+                        log=lambda *a: print(*a, flush=True))
+        if out.get("saved"):
+            foot = f"\n\n<sub>Saved method · {out['saved']['status']} · {out['seconds']} s</sub>"
+        else:
+            foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
+                    if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
         notes = repair_notes(out)
         response = out["text"].strip() + ("\n\n" + "\n".join(notes) if notes else "")
         Path(opt("--out", "reply.md")).write_text(response + foot + "\n")
@@ -244,25 +283,46 @@ def main(argv):
         return 0
     words = [a for i, a in enumerate(argv) if not a.startswith("--") and (i == 0 or argv[i - 1] not in ("--name", "--run-dir", "--out", "--export-files"))]
     if words:
-        print_one(" ".join(words), name=name, run_dir=opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
-        return 0
-    if not speaker():
-        print("the hive's body is not on this machine: bash scripts/cloud_setup.sh")
-        return 1
-    print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
+        return print_one(" ".join(words), name=name, run_dir=opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
+    return conversation(name=name, base=speaker())
+
+
+def conversation(first=None, *, name="the user", base=None, methods=(), remote=None):
+    """Keep ordinary conversation or, on a model-free machine, serve its available local methods."""
+    if not base:
+        from . import saved
+        methods = methods or saved.available()
+        if not methods:
+            print("the hive's body is not on this machine: bash scripts/cloud_setup.sh")
+            return 1
+        print("Saved methods: " + ", ".join(methods) + '. Type "Run NAME with JSON" to use one; type "exit" to leave.')
+    else:
+        print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
     history = []
+    msg = first
     while True:
-        try:
-            msg = input("\nyou> ").strip()
-        except (EOFError, KeyboardInterrupt):
+        if msg is None:
+            try:
+                msg = input("\nyou> ").strip()
+            except (EOFError, KeyboardInterrupt):
+                break
+        if msg.lower() in ("exit", "quit", "/exit", "/quit", ":q", "bye"):
             break
-        if not msg:
-            continue
-        if msg.lower() in ("exit", "quit", "bye"):
-            break
-        out = reply(msg, history, name, log=lambda *a: print("  [" + " ".join(map(str, a)) + "]", flush=True))
-        print("\nhive> " + local_text(out))
-        history += [{"role": "user", "content": msg}, {"role": "assistant", "content": out["text"]}]
+        if msg:
+            if base:
+                out = reply(msg, history, name, base=base, log=lambda *a: print("  [" + " ".join(map(str, a)) + "]", flush=True))
+            else:
+                out = saved_reply(msg, local_only=remote is None)
+            if out is not None:
+                text = local_text(out)
+                print("\nhive> " + text)
+            elif remote:
+                text = remote(msg, [(m["role"], m["content"]) for m in history])
+            else:
+                text = "No saved method fits this request. For other tasks, install the hive's body with bash scripts/cloud_setup.sh."
+                print("\nhive> " + text)
+            history += [{"role": "user", "content": msg}, {"role": "assistant", "content": text}]
+        msg = None
     return 0
 
 

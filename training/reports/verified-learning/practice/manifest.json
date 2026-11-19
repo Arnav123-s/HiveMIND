@@ -1,0 +1,16 @@
+{
+  "repo": "Arnav123-s/HiveMIND",
+  "workflow_run": 44371926721,
+  "artifact_id": 14462321019,
+  "archive": "practice-work-10.zip",
+  "archive_sha256": "ec7b0b0ee212fe76b8ab5c5a0c68a74b23315b943dbefb65730db6dcb68eaabf",
+  "members": {
+    "practice_10004810/h10004810_02/exam.json": "928521d93fc92145aed042d8743003d38d97e5b040aa212f44fe8a1d7a5b85ac",
+    "practice_10004810/h10004810_02/members/TASK.md": "1a7e5a285e5910f9506837eb8f39874aa184f3020f482831916d7dff324a657c",
+    "practice_10004810/h10004810_02/members/work/member1_1.py": "4301d70e99b4a787eaa5d62afce4801afa375f6db04f8664bfb7c26f38b8f035"
+  },
+  "record_zip_sha256": "e0c88f0c9ca945dbb31414f6715b79c0c861ea1c07e9e0d8192a9d644900ad4e",
+  "qualifier_sha256": "844a772ebab99bceed7c5304407c6f3f4f2d961968abbb18ac066490c0f0f414",
+  "result_sha256": "922da993c6679103e403f3d02eeb5e7dd1b7e92ffe9aa65326cc691dcd7cd2d1",
+  "replay_sha256": "8e3d89caede459296379672447d134c6194710a69605705d475868cd05ff205f"
+}

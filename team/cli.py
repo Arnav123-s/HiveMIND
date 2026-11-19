@@ -179,7 +179,15 @@ def main(argv=None):
     if argv[:1] == ["fieldwork"]:
         from training.experiments.fieldwork.work import main as fieldwork
         return fieldwork(argv[1:])
-    ap = argparse.ArgumentParser(prog="hive", description="Talk to the swarm; it does the job.")
+    if argv[:1] == ["skills"]:
+        from .skills_cli import main as skills
+        return skills(argv[1:])
+    if argv[:1] == ["practice-import"]:
+        from training.experiments.fieldwork.practice_import import main as practice_import
+        return practice_import(argv[1:])
+    ap = argparse.ArgumentParser(prog="hive", description="Talk to the hive or give it a task.",
+                                 epilog="Use 'hive skills' to browse checked methods, 'hive fieldwork --help' "
+                                        "to teach a method, or 'hive practice-import --help' to qualify one from practice.")
     ap.add_argument("prompt", nargs="*", help="what you want, in your own words (none: just start talking)")
     ap.add_argument("--once", action="store_true", help="answer the prompt and exit (scripts)")
     ap.add_argument("--rounds", type=int, default=2, help="follow-up rounds per job for anything left undone")
@@ -196,31 +204,27 @@ def main(argv=None):
         # The hive's body (one ternary model, its trunk and cells) talks where it is on this machine (team/talk.py):
         # it answers talk at once and does by checked programs whatever has to be worked out. HIVE_ROLES=1: the older
         # hive of roles below.
-        from . import talk
-        if talk.speaker():
+        from . import saved, talk
+        kept = talk.saved_reply(first, local_only=True) if first and not keep_going else None
+        if kept and not kept["saved"].get("fallback_to_members"):
+            print(talk.local_text(kept))
+            return 0 if kept["agreed"] else 1
+        base = talk.speaker()
+        if base:
             if first and not keep_going:
-                talk.print_one(first, log=lambda *x: print(*x, flush=True))
+                talk.print_one(first, base=base, log=lambda *x: print(*x, flush=True))
                 return 0
-            history = []
-
-            def step(msg, history_=None):
-                out = talk.reply(msg, history, log=lambda *x: print("  [" + " ".join(map(str, x)) + "]", flush=True))
-                history.extend([{"role": "user", "content": msg}, {"role": "assistant", "content": out["text"]}])
-                return talk.local_text(out)
-            print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
-            msg = first
-            while True:
-                if msg is None:
-                    try:
-                        msg = input("\nyou> ").strip()
-                    except (EOFError, KeyboardInterrupt):
-                        break
-                if msg.lower() in EXIT:
-                    break
-                if msg:
-                    print("\nhive> " + step(msg))
-                msg = None
-            return 0
+            return talk.conversation(first, base=base)
+        if kept:
+            print(talk.local_text(kept))
+            return 1
+        if keep_going:
+            methods = saved.available()
+            if methods:
+                remote = None
+                if not a.local and service_up():
+                    remote = lambda msg, history: say_remote(msg, history, a.rounds)
+                return talk.conversation(first, methods=methods, remote=remote)
     if not a.local and service_up():  # the always-on agent has the models loaded: the conversation goes there
         def step(msg, history):
             try:
