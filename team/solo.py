@@ -406,6 +406,11 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
     full = not short and os.environ.get("HIVE_FULL_ORDERS", "0") == "1"
     messages = [{"role": "system", "content": orders(who.replace("+", "-") if full else who + "+" if short else who)},
                 {"role": "user", "content": f"TASK: {task}"}]
+    if n == 1:
+        from . import domain_advice, domain_route
+        hint = domain_advice.hint(domain_route.advice())
+        if hint:
+            messages[0]["content"] += "\n" + hint
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
     # wrong, seed 9002). Agreement only checks anything between tries that do not share a source.
@@ -731,6 +736,12 @@ def _home(run_dir):
 
 
 def run(task, run_dir=None, approve="never", members=2):
+    from . import domain_route
+    with domain_route.for_request(task, inherit=True):
+        return _run(task, run_dir, approve, members)
+
+
+def _run(task, run_dir, approve, members):
     task = task.strip()
     home = _home(run_dir)
     board = Board(home)
@@ -742,23 +753,20 @@ def run(task, run_dir=None, approve="never", members=2):
     tries = []
     agreed = None
     seats = ternary.seating(task)
-    board.log("hive", "seats", f"{ternary.organ(task)}: {', '.join(seats[:max(1, members) + 1])}")
+    from . import domain_route
+    domain_route.prepare_advice(task, seats[0].partition("+")[0],
+                                "You are HiveMIND. Answer directly in the requested format.")
+    board.log("hive", "seats", f"{domain_route.specialist(ternary.organ(task, fallback=None))}: {', '.join(seats[:max(1, members) + 1])}")
     for n in range(1, max(1, members) + 2):  # one more than asked: to decide a difference, or in place of one that got nowhere
         if n > members and members < 2:
             break
         # who sits where for this task: the cells that lean to its kind of work first (team/ternary.seating); the last
         # one named also takes every later seat
         who = seats[n - 1] if n <= len(seats) else seats[-1]
-        also = ()
-        if os.environ.get("HIVE_ENGRAMS") == "1" and who != "coder":  # the body's fast memory: what it wrote down of tasks like this one
-            from . import engram
-            base, cell = ternary.split(who)
-            if os.environ.get("HIVE_ENGRAM_GATE") == "1":  # each as strong as its task is like this one
-                also = tuple(engram.recall_scaled(task, base, cell=cell))
-            else:
-                also = tuple(engram.recall(task, base, cell=cell))  # its own line's first
-            if also and n == 1:
-                board.log("hive", "engrams", ", ".join(x if isinstance(x, str) else f"{x[0]} at {x[1]}" for x in also))
+        from . import engram
+        also = engram.for_request(task, who, labels=False)
+        if also:
+            board.log(f"member{n}", "engrams", ", ".join(x if isinstance(x, str) else f"{x[0]} at {x[1]}" for x in also))
         member_work = work if n == 1 else home / f"member{n}"
         if names and (member_work.is_symlink() or member_work.exists() and (not member_work.is_dir() or any(member_work.iterdir()))):
             # A caller may retry the same run directory. Old files cannot witness a new program.
@@ -859,12 +867,21 @@ def run(task, run_dir=None, approve="never", members=2):
     if file_repairs:
         agreeing_members = []  # the user received the helper's sorted copy, not a cell's raw output
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
+    if domain_route.current_domain():
+        decision["domain"] = domain_route.current_domain()
+    if domain_route.advice():
+        decision["engram_advice"] = domain_route.advice()
+    recalled = [{"seat": i, "member": t["who"], "edits": t["also"]} for i, t in enumerate(tries, 1) if t.get("also")]
+    if recalled:
+        decision["engrams"] = recalled
     if names:
         decision.update(requested_files=names, printed_agreeing=witnesses, file_repairs=file_repairs,
                         selected_member=next((i for i, t in enumerate(tries, 1) if t is agreed), None))
     (home / "members.json").write_text(json.dumps(decision))
     result = {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
               "work": selected_work if agreed else str(work), "requested_files": names, "file_repairs": file_repairs}
+    if recalled:
+        result["engrams"] = recalled
     if names and agreed:
         result["delivery"] = selected_delivery
     return result

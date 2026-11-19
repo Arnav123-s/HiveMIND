@@ -1,48 +1,97 @@
-"""Engrams: the body's fast memory. One checked piece of work, kept as one tiny ternary weight edit.
+"""Recall compatible weight edits alongside the active cell.
 
-A cell is regrown from everything the hive has checked, once a night: slow memory. An engram is written in about a
-minute from ONE task the body has just solved (two cells agreed; in practice the task's check confirmed it), with
-nothing else retrained and nothing old touched. When a later task is like it, the engram is switched on beside the
-cell that works on the task (the runtime adds any number of edits to the one ternary model in memory). So the body
-can learn during the day and forget nothing; the nightly regrowth folds what the engrams hold into the cells.
+The original writer trains a small edit on checked work by a cell. Its descendants can recall it by task
+similarity and lineage. The domain trainer fits rank-four output edits to bounded label choices on the frozen
+8B base. Each verified local topic has a recorded panel of correct answers that a successor must preserve.
 
-    cells/engrams/<dna>+e<id>.gguf     the edit (ternary values, rank 4, the last 8 layers: a few megabytes)
-    cells/engrams/index.jsonl          one line each: its name, the task it came from, when, and the cell it belongs to
-    cells/engrams/<dna>+hive.gguf      the hive's shared engram, when there is one (training/hive_engram.py)
+    cells/engrams/                shipped weights and their index.jsonl
+    runs/engram-learning/native/  private local weights and their index.jsonl
+    HIVE_ENGRAMS_HOME             override with a single isolated store
 
-Every cell has an engram memory of its own: an engram belongs to the cell that solved its task (or was corrected on
-it), and a child sees its own engrams first, then those of its parent, grandparent and so on (the body's lines of
-descent, cells/body.json "parents"), and others' only when nothing closer is like the task. Once the nightly
-regrowth has trained a cell on an engram's rows, fold() marks it and it is recalled no more: the cells hold it now.
-Old lines with no cell belong to no one: every cell may recall them, after its own line.
-
-HIVE_ENGRAMS=1 turns recall on in team/solo.py. Two more, both off unless asked:
-    HIVE_ENGRAM_GATE=1       an engram is switched on as strongly as its task matches (recall_scaled: from 0.25 for
-                             one just alike enough to 1.0, HIVE_ENGRAM_GAIN 2; the hive's own at HIVE_HIVE_SCALE 0.5),
-                             not at full strength whatever the match, as side-memory editing gates its memories
-    HIVE_ENGRAM_MATCH=embed  alike by the cosine of the tasks' mean token embeddings (the runtime's /embedding; at
-                             least HIVE_ENGRAM_EMBED_LEAST 0.8), not shared words; words again on any error Whether engrams help is measured, not assumed
-(training/experiments/engram_stream.py): a memory of one solution can also make a cell copy old values, which is
-what the library of solved programs did.
+Ordinary chat and work recall compatible edits by default. HIVE_ENGRAMS=0 disables automatic recall.
+HIVE_ENGRAM_GATE=1 varies the activation strength with the task match. HIVE_ENGRAM_MATCH=embed selects
+cosine similarity of token embeddings, with word overlap as the fallback. Folded entries stay in the
+index so their history can be inspected. Recall and answer quality are measured separately.
 """
 import hashlib
 import json
 import os
+import re
 import tempfile
 import time
+from functools import lru_cache
 
 from . import memory, ternary
 
 
 def _rows(path):
-    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    rows = []
+    for line in path.read_text().splitlines():
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(row, dict):
+            rows.append(row)
+    return rows
 
 
 def index():
-    try:
-        return _rows(ternary.ENGRAMS / "index.jsonl")
-    except (OSError, ValueError):
-        return []
+    rows = []
+    for home in ternary.engram_homes():
+        try:
+            rows.extend(_rows(home / "index.jsonl"))
+        except (OSError, ValueError):
+            continue
+    return rows
+
+
+@lru_cache(maxsize=256)
+def _sha256(path, identity):
+    """The caller's file identity changes even when an in-place writer restores size and mtime."""
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def bank_entries(base, home):
+    """Expose only qualified file revisions to llama-server's eager --lora loader."""
+    prefix = base + "+"
+    path = home / "index.jsonl"
+    if not path.is_file():
+        if home not in (ternary.LOCAL_ENGRAMS, ternary.BUNDLED_ENGRAMS):
+            # A manually selected raw weights directory is supported for native experiments.
+            return {p.stem[len(prefix):]: (p, None) for p in home.glob(prefix + "*.gguf") if p.is_file()}
+        rows = []
+    else:
+        try:
+            rows = _rows(path)
+        except (ValueError, OSError):
+            return {}
+    records = {r["name"]: r for r in rows if r.get("dna") == base and isinstance(r.get("name"), str)}
+    files = {}
+    for name, row in records.items():
+        if (not re.fullmatch(r"[a-zA-Z0-9_-]+", name) or row.get("folded") is not None or row.get("archived")
+                or (row.get("form") == "label" and row.get("verified") is not True)):
+            continue
+        weight = home / (prefix + name + ".gguf")
+        try:
+            if not weight.is_file():
+                continue
+            if "sha256" in row:
+                stat = weight.stat()
+                identity = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
+                if row["sha256"] != _sha256(weight, identity):
+                    continue
+        except OSError:
+            continue
+        files[name] = (weight, row)
+    shared = home / (prefix + "hive.gguf")
+    if "hive" not in records and shared.is_file():
+        files["hive"] = (shared, None)
+    return files
 
 
 def lineage(cell):
@@ -127,17 +176,129 @@ def _keep_vectors(vecs):
     _rewrite(lambda e: {**e, "vec": vecs[e["name"]]} if e.get("name") in vecs else None)
 
 
-def _ranked(task, base, cell=None, most=2, least=0.34):
+def _mentions(text, term):
+    return isinstance(term, str) and bool(term.strip()) and bool(
+        re.search(r"(?<!\w)" + re.escape(" ".join(term.casefold().split())) + r"(?!\w)", text))
+
+
+def _label_score(task, record, domain, *, framed):
+    """A domain alone cannot establish that the edit learned this question or its output form."""
+    labels, cues = record.get("labels"), record.get("cues")
+    if (record.get("verified") is not True or not isinstance(labels, list) or not 2 <= len(labels) <= 16
+            or not all(isinstance(x, str) and x.strip() for x in labels)
+            or len({x.casefold() for x in labels}) != len(labels) or not isinstance(cues, list)
+            or (domain and domain != record.get("domain"))):
+        return 0
+    text = " ".join(task.casefold().split())
+    count = sum(_mentions(text, c) for c in cues)
+    named = bool(record.get("growth_group")) and _mentions(text, record.get("task"))
+    if framed:
+        # Directly applying these weights requires a request for the same restricted output alphabet.
+        if (not all(_mentions(text, x) for x in labels) or not re.search(
+                r"\b(?:classify|categorize|pick|choose|select|label|reply|respond|return|output|answer|which)\b", text)):
+            return 0
+        if not (count or named or (domain and domain == record.get("domain"))):
+            return 0
+    elif not (count or named) or domain != record.get("domain"):
+        return 0
+    return min(1.0, 0.8 + 0.05 * count)
+
+
+def _active(base):
+    seen = set()
+    for home in ternary.engram_homes():
+        for name, (path, row) in bank_entries(base, home).items():
+            if name in seen:
+                continue
+            seen.add(name)
+            if row and name != "hive" and isinstance(row.get("task"), str) and not (ternary.ADAPTERS / path.name).is_file():
+                yield row
+
+
+def enabled():
+    return os.environ.get("HIVE_ENGRAMS", "1").strip().lower() not in {"0", "off", "false", "no"}
+
+
+def _can_recall(member):
+    return enabled() and isinstance(member, str) and member.partition("+")[0] in ternary.MODELS
+
+
+def is_label_request(task, row, domain=None):
+    """Whether this message explicitly requests this verified edit's restricted answer form."""
+    return row.get("form") == "label" and bool(_label_score(task, row, domain, framed=True))
+
+
+def _choose_label(task, candidates):
+    """An explicitly named learned topic takes priority. A tie cannot identify the requested convention."""
+    text = " ".join(task.casefold().split())
+    candidates = [(score, row) for score, row in candidates if score]
+    if not candidates:
+        return None
+    named = []
+    for score, row in candidates:
+        if row.get("growth_group"):
+            topic = " ".join(row["task"].casefold().split())
+            if topic:
+                for match in re.finditer(r"(?<!\w)" + re.escape(topic) + r"(?!\w)", text):
+                    named.append((match.span(), row["name"]))
+    if named:
+        # "Depot Rule revised" names the longer topic. If "Depot Rule" is also mentioned separately, abstain.
+        names = {name for (start, end), name in named if not any(
+            left <= start and right >= end and right - left > end - start for (left, right), _ in named)}
+        winners = [(score, row) for score, row in candidates if row["name"] in names]
+    else:
+        best = max(score for score, _ in candidates)
+        winners = [(score, row) for score, row in candidates if score == best]
+    return winners[0] if len(winners) == 1 else None
+
+
+_ASK_LABEL = re.compile(
+    r"(?:^|[,:;.!?]\s*|\b(?:please|to|can you|could you|will you|would you)\s+)"
+    r"(?:classify|categori[sz]e|label|grade)\s+\S|"
+    r"\b(?:which|what|return|choose|select|assign|give|output)\s+(?:[\w'-]+\s+){0,3}"
+    r"(?:code|label|category|class|grade)\b")
+
+
+def named_label_for(task, member):
+    """Find a verified user-learned convention when a request explicitly names it and asks for a class."""
+    if not _can_recall(member):
+        return None
+    text = " ".join(task.casefold().split())
+    if not _ASK_LABEL.search(text) or re.search(r"\b(?:do not|don't|never|how to|how (?:do|would) (?:i|you))\s+"
+                                               r"(?:classify|categori[sz]e|label|grade|return|choose|select|assign|give|output)\b", text):
+        return None
+    matches = []
+    for row in _active(ternary.split(member)[0]):
+        domain = row.get("domain")
+        if (row.get("form") == "label" and isinstance(row.get("growth_group"), str) and row["growth_group"]
+                and isinstance(domain, str) and domain and _mentions(text, row["task"])):
+            matches.append((_label_score(task, row, domain, framed=False), row))
+    match = _choose_label(task, matches)
+    return match[1] if match else None
+
+
+def label_for(task, member, domain):
+    """Find an applicable checked label edit for a *separate* framed inference on this ordinary request."""
+    if not _can_recall(member) or not domain:
+        return None
+    choices = ((_label_score(task, row, domain, framed=False), row)
+               for row in _active(ternary.split(member)[0]) if row.get("form") == "label")
+    choice = _choose_label(task, choices)
+    return choice[1] if choice else None
+
+
+def _ranked(task, base, cell=None, most=2, least=0.34, *, domain=None, serving=False, labels=True):
     """[(name, score)] of the engrams recall chooses (see recall), the least that counted as alike, and whether the
     hive's shared engram is there."""
     line = lineage(cell)
-    entries, seen = [], set()
-    for e in index():
-        name = e.get("name")
-        if not name or name in seen or e.get("dna") != base or e.get("folded") is not None or e.get("task") == task:
-            continue
-        seen.add(name)
-        if (ternary.ENGRAMS / f"{base}+{name}.gguf").exists():
+    entries, domain_edits = [], []
+    for e in _active(base):
+        if e.get("form"):
+            if labels and e["form"] == "label":
+                score = _label_score(task, e, domain, framed=True)
+                if score:
+                    domain_edits.append((score, e))
+        elif (serving or e["task"] != task) and not (domain and e.get("domain") and domain != e["domain"]):
             entries.append(e)
     scores, other_least = _scores(task, base, entries) if entries else ({}, None)
     least = least if other_least is None else other_least
@@ -153,8 +314,15 @@ def _ranked(task, base, cell=None, most=2, least=0.34):
             near.append((len(line), -score, name))
         else:
             far.append((0, -score, name))
-    out = [(name, -neg) for _, neg, name in sorted(near or far)[:most]]
-    return out, least, (ternary.ENGRAMS / f"{base}+hive.gguf").exists()
+    out = []
+    choice = _choose_label(task, domain_edits)
+    if choice and most > 0:
+        score, row = choice
+        out.append((row["name"], score))
+    out.extend((name, -neg) for _, neg, name in sorted(near or far)[:max(0, most - len(out))])
+    shared = any((home / f"{base}+hive.gguf").is_file() and "hive" in bank_entries(base, home)
+                 for home in ternary.engram_homes())
+    return out, least, shared
 
 
 def recall(task, base, cell=None, most=2, least=0.34):
@@ -184,28 +352,64 @@ def recall_scaled(task, base, cell=None, most=2, least=0.34):
     return got
 
 
+def for_request(task, member, *, domain=None, labels=True):
+    """Select actual local weights for this request. An explicit empty selection means no overlays."""
+    if not _can_recall(member):
+        return ()
+    from . import domain_route
+    domain = domain_route.current_domain() if domain is None else domain
+    base, cell = ternary.split(member)
+    # Earlier quoted instructions do not turn the current request into a label-choice task.
+    latest = task.partition("\n\n(This continues a conversation. What was said before, for what the task refers to:")[0]
+    selected, least, hive = _ranked(latest, base, cell, domain=domain, serving=True, labels=labels)
+    if os.environ.get("HIVE_ENGRAM_GATE") == "1":
+        return tuple((name, gate(score, least)) for name, score in selected) + (
+            (("hive", float(os.environ.get("HIVE_HIVE_SCALE", 0.5))),) if hive else ())
+    return tuple(name for name, _ in selected) + (("hive",) if hive else ())
+
+
+def update_index(transform, *, home=None):
+    """Atomically replace current rows with transform(rows), or leave them unchanged when it returns None."""
+    import fcntl
+    home = ternary.ENGRAMS if home is None else home
+    home.mkdir(parents=True, exist_ok=True)
+    path = home / "index.jsonl"
+    with (home / ".index.lock").open("a") as lock:
+        fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+        rows = _rows(path) if path.is_file() else []
+        replacement = transform(rows)
+        if replacement is None:
+            return
+        with tempfile.NamedTemporaryFile("w", dir=home, delete=False) as tmp:
+            try:
+                for row in replacement:
+                    tmp.write(json.dumps(row, allow_nan=False) + "\n")
+                tmp.flush()
+                os.fsync(tmp.fileno())
+                os.replace(tmp.name, path)
+                directory = os.open(home, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(directory)
+                finally:
+                    os.close(directory)
+            finally:
+                if os.path.exists(tmp.name):
+                    os.unlink(tmp.name)
+
+
 def _rewrite(change):
-    """Rewrite the index, each line through change(entry) (a new entry, or None to keep it as it is). Returns how many
-    lines changed."""
-    path = ternary.ENGRAMS / "index.jsonl"
-    try:
-        lines = path.read_text().splitlines()
-    except OSError:
+    if not (ternary.ENGRAMS / "index.jsonl").is_file():
         return 0
-    out, changed = [], 0
-    for x in lines:
-        try:
-            e = json.loads(x) if x.strip() else None
-        except ValueError:
-            e = None
-        new = change(e) if isinstance(e, dict) else None
-        if new is not None:
-            x, changed = json.dumps(new), changed + 1
-        out.append(x)
-    if changed:
-        tmp = path.with_suffix(".tmp")
-        tmp.write_text("".join(x + "\n" for x in out))
-        os.replace(tmp, path)
+    changed = 0
+    def apply(rows):
+        nonlocal changed
+        for i, row in enumerate(rows):
+            updated = change(row)
+            if updated is not None:
+                rows[i] = updated
+                changed += 1
+        return rows if changed else None
+    update_index(apply)
     return changed
 
 
@@ -228,11 +432,14 @@ def write(task, run, base="t17", cell=None, steps=12, log=print):
     with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False) as f:
         f.write("".join(json.dumps(r) + "\n" for r in rows))
     t0 = time.time()
-    meta = grow.train(f.name, name, base=base, epochs=max(1.0, steps / len(rows)), rank=4, lr=5e-4, layers="last8", accum=1, ternary_edit=True,
-                      out_dir=ternary.ENGRAMS, checkpoint=False, log=lambda *a, **k: None)
-    os.unlink(f.name)
-    with open(ternary.ENGRAMS / "index.jsonl", "a") as f:
-        f.write(json.dumps({"name": name, "dna": base, "cell": (lineage(cell) or [None])[0], "task": task[:1500], "when": time.strftime("%Y-%m-%d %H:%M"), "rows": len(rows),
-                            "seconds": round(time.time() - t0), "megabytes": meta.get("megabytes")}) + "\n")
+    try:
+        meta = grow.train(f.name, name, base=base, epochs=max(1.0, steps / len(rows)), rank=4, lr=5e-4, layers="last8", accum=1, ternary_edit=True,
+                          out_dir=ternary.ENGRAMS, checkpoint=False, log=lambda *a, **k: None)
+    finally:
+        os.unlink(f.name)
+    row = {"name": name, "dna": base, "cell": (lineage(cell) or [None])[0], "task": task[:1500],
+           "when": time.strftime("%Y-%m-%d %H:%M"), "rows": len(rows), "seconds": round(time.time() - t0),
+           "megabytes": meta.get("megabytes")}
+    update_index(lambda records: [r for r in records if (r.get("dna"), r.get("name")) != (base, name)] + [row])
     log(f"engram {name}: {len(rows)} rows, {round(time.time() - t0)} s, {meta.get('megabytes')} MB, loss {meta.get('loss_first')} -> {meta.get('loss_last')}")
     return name

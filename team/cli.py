@@ -185,12 +185,16 @@ def main(argv=None):
     if argv[:1] == ["skills"]:
         from .skills_cli import main as skills
         return skills(argv[1:])
+    if argv[:1] == ["learn"]:
+        from training.engram_growth import main as learn
+        return learn(argv[1:])
     if argv[:1] == ["practice-import"]:
         from training.experiments.fieldwork.practice_import import main as practice_import
         return practice_import(argv[1:])
     ap = argparse.ArgumentParser(prog="hive", description="Talk to the hive or give it a task.",
                                  epilog="Use 'hive skills' to browse checked methods, 'hive fieldwork --help' "
-                                        "to teach a method, or 'hive practice-import --help' to qualify one from practice.")
+                                        "to teach a method, 'hive practice-import --help' to qualify one from practice, "
+                                        "or 'hive learn --help' to teach and review checked neural memories.")
     ap.add_argument("prompt", nargs="*", help="what you want, in your own words (none: just start talking)")
     ap.add_argument("--once", action="store_true", help="answer the prompt and exit (scripts)")
     ap.add_argument("--rounds", type=int, default=2, help="follow-up rounds per job for anything left undone")
@@ -208,8 +212,8 @@ def main(argv=None):
         # it answers talk at once and does by checked programs whatever has to be worked out. HIVE_ROLES=1: the older
         # hive of roles below.
         from . import saved, talk
-        kept = talk.saved_reply(first, local_only=True) if first and not keep_going else None
-        if kept and not kept["saved"].get("fallback_to_members"):
+        kept = talk.local_reply(first, local_only=True) if first and not keep_going else None
+        if kept and not kept.get("saved", {}).get("fallback_to_members"):
             print(talk.local_text(kept))
             return 0 if kept["agreed"] else 1
         base = talk.speaker()

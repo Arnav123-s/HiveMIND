@@ -847,7 +847,13 @@ def main(argv=None):
                              repair_budget=args.repair_budget, learn_repairs=not args.no_learned_repairs,
                              challenge_budget=args.challenge)
     success = True
+    from training import engram_growth
     for spec, score in zip(specs, results):
+        if engram_growth.enabled():
+            try:
+                engram_growth.record_work(spec, score)
+            except Exception as err:  # noqa: BLE001 - a journal failure must not change the delivered result
+                print(f"engram collection unavailable: {err}")
         jobs = spec.get("jobs", [])
         delivered = sum("value" in row for row in score["jobs"])
         print(f"{spec['name']}: {score['public']}/{score['examples']} examples, "

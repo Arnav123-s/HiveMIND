@@ -38,7 +38,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from . import config, ternary
+from . import config, domain_route, ternary
 
 TALK = """You are HiveMIND: a hive of small neural nets with ternary weights that work as one body, on plain CPUs. You are talking with {name}. Now it is {today}.
 Answer directly and in plain words, as briefly as the message allows. Be honest: if you do not know, say so. Do not make up facts, figures, links or sources."""
@@ -66,6 +66,24 @@ MUST = re.compile(r"https?://|\bwww\.|\d\s*[-+*/^%]\s*\d|\b\d+(?:\.\d+)?\s*%|\b(
 LONG = int(os.environ.get("HIVE_TALK_LONG", 900))  # the most pieces of one reply
 KEEP = int(os.environ.get("HIVE_TALK_KEEP", 9000))  # how many characters of the conversation the talker is shown
 SINGLE_INTEGER = re.compile(r"\b(?:(?:as|with)\s+(?:a\s+)?single integer|(?:only|just)\s+(?:the|an?|one)\s+integer)\b", re.I)
+
+
+def _exact_integer(printed):
+    """Preserve integer tokens and render only exactly integral decimal literals."""
+    if re.fullmatch(r"[+-]?\d+", printed):
+        return printed
+    # A member's answer is capped at 3,000 characters. Never expand an exponent
+    # into a longer answer, or pass an arbitrary-length exponent to Decimal.
+    numeric = r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]{1,4})?"
+    if len(printed) > 3000 or not re.fullmatch(numeric, printed):
+        return None
+    value = Decimal(printed)
+    if value.is_zero():
+        return "0"
+    if value.adjusted() + int(value.is_signed()) >= 3000:
+        return None
+    integer = value.to_integral_value()
+    return format(integer, "f") if integer == value else None
 
 
 def speaker():
@@ -140,26 +158,59 @@ def saved_reply(message, log=None, *, local_only=False):
             "task": message, "dir": "", "files": [], "saved": kept, "seconds": round(time.time() - started)}
 
 
+def local_reply(message, log=None, *, local_only=False):
+    """Try the user's saved methods before the explicit numeric sensor protocol."""
+    kept = saved_reply(message, log, local_only=local_only)
+    if kept is not None:
+        return kept
+    from . import sensor_banks
+    return sensor_banks.answer(message)
+
+
 def reply(message, history=(), name="the user", run_dir=None, log=None, base=None, now=None):
     """The hive's reply to the latest message: {"text", "worked", "agreed", "task", "dir", "seconds"}.
     history: the earlier messages, oldest first ({"role", "content"}). base: who talks (default: the body's DNA).
     now: the date and time the hive is told it is (default: the clock; the talk exam gives its own)."""
     t0 = time.time()
-    kept = saved_reply(message, log, local_only=True)
-    if kept and not kept["saved"].get("fallback_to_members"):
+    kept = local_reply(message, log, local_only=True)
+    if kept and not kept.get("saved", {}).get("fallback_to_members"):
         return kept
     base = base or speaker()
     if not base:
         if kept:
             return kept
         raise RuntimeError("the hive's body is not on this machine: bash scripts/cloud_setup.sh (or python -m team.ternary install, then python training/grow.py fetch)")
+    history = list(history)
+    with domain_route.for_request(message, history) as decision:
+        result = _body_reply(message, history, name, run_dir, log, base, now, t0)
+        if decision:
+            result["domain_signal"] = decision
+        if domain_route.advice():
+            result["engram_advice"] = domain_route.advice()
+        return result
+
+
+def _body_reply(message, history, name, run_dir, log, base, now, t0):
     say = log or (lambda *a: None)
     today = (now or datetime.datetime.now()).strftime("%Y-%m-%d (%A), %H:%M")
     system = {"role": "system", "content": TALK.format(name=name, today=today)}
+    guidance = domain_route.guidance()
+    if guidance:
+        system["content"] += "\n" + guidance
     way, convo = route(base, message, history)
+    from . import domain_advice, engram
+    decision = domain_route.prepare_advice(message, base, system["content"], direct_labels=way == "talk")
     if way == "talk":
-        text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
-        return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
+        hint = domain_advice.hint(decision)
+        if hint:
+            system["content"] += "\n" + hint
+        also = engram.for_request(message, base)
+        text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0,
+                            **({"also": also} if also else {})).strip()
+        result = {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
+        if also:
+            result["engrams"] = [{"stage": "answer", "member": base, "edits": list(also)}]
+        return result
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
@@ -173,26 +224,30 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
         run_dir = tempfile.mkdtemp(dir=config.RUNS, prefix=time.strftime("talk-%Y%m%d-%H%M%S-"))
     home = Path(run_dir)
     out = solo.first(task, home, "never", members=int(os.environ.get("AGENT_TEAM_SOLO", "2") or 2))
-    answer = out["report"].split("\n## ")[0].strip()
+    answer = out["report"].rsplit("\n## How it was checked\n", 1)[0].strip()
     made = out.get("files", []) if out["agreed"] else []
-    exact = out["agreed"] and SINGLE_INTEGER.search(message) and re.fullmatch(r"[+-]?\d+", answer)
-    if out.get("requested_files") or exact:
+    exact = _exact_integer(answer) if out["agreed"] and SINGLE_INTEGER.search(message) else None
+    if out.get("requested_files") or exact is not None:
         # A file request already has a plain report and a publication decision. A second
         # model rewriting that decision can invent a successful delivery or change a value.
         final = answer if out["agreed"] else out["report"].strip()
-        if made and not exact:
+        if exact is not None:
+            final = exact
+        if made and exact is None:
             final += "\n\nFiles saved: " + ", ".join(made)
         return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
-                "files": made, "file_repairs": out.get("file_repairs", []), "seconds": round(time.time() - t0)}
+                "files": made, "file_repairs": out.get("file_repairs", []), "seconds": round(time.time() - t0),
+                **({"engrams": out["engrams"]} if out.get("engrams") else {})}
     if out["agreed"]:
         how, then = "checked: its members worked it out independently with programs and two of them agreed", "Then say in one short sentence that the hive's members worked it out with programs and two agreed."
     else:
         how, then = "NOT confirmed: its members did not agree", "Say plainly that the hive could not confirm an answer, and what each member found."
         answer = out["report"].strip()
     files = f"Files it made: {', '.join(made)}\n" if made else ""
+    also = engram.for_request(message, base, labels=False)
     final = ternary.chat(base, [system] + convo + [{"role": "assistant", "content": "That has to be worked out. The hive is doing it with programs."},
                                                    {"role": "user", "content": RESULT.format(how=how, report=answer[:3500], files=files, name=name, then=then)}],
-                         max_new_tokens=LONG, temperature=0.0).strip()
+                         max_new_tokens=LONG, temperature=0.0, **({"also": also} if also else {})).strip()
     if not final:
         final = answer
     # the values are the programs', never the talker's: where its wording lost or changed one, the checked output is shown as it is
@@ -202,8 +257,11 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
             final = answer
     if made and not all(f in final for f in made):
         final += "\n\nFiles made: " + ", ".join(made)
+    recalled = list(out.get("engrams", []))
+    if also:
+        recalled.append({"stage": "report", "member": base, "edits": list(also)})
     return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
-            "files": made, "seconds": round(time.time() - t0)}
+            "files": made, "seconds": round(time.time() - t0), **({"engrams": recalled} if recalled else {})}
 
 
 def file_paths(out):
@@ -230,7 +288,7 @@ def print_one(message, **options):
         print(note, file=sys.stderr)
     for path in file_paths(out):
         print(path.absolute(), file=sys.stderr)
-    return int("saved" in out and not out["agreed"])
+    return int(("saved" in out or "sensor_banks" in out) and not out["agreed"])
 
 
 def main(argv):
@@ -245,8 +303,6 @@ def main(argv):
         message = str(msgs[-1]["content"])
         if "--saved-only" in argv:
             from . import saved
-            if saved.bank_path() is None:
-                return 3  # Continue to the ordinary model.
             class NeedsRuntime(Exception):
                 pass
             class UnavailableGuest:
@@ -256,17 +312,24 @@ def main(argv):
             # unavailable guest is only asked to run if a real computation matches.
             started = time.monotonic()
             try:
-                kept = saved.answer(message, runner=saved.guest() or UnavailableGuest())
+                kept = (saved.answer(message, runner=saved.guest() or UnavailableGuest())
+                        if saved.bank_path() is not None else None)
             except NeedsRuntime:
                 return 4  # Install the optional guest and retry with its interpreter.
             if kept is None:
-                return 3
-            out = dict(text=kept["text"], saved=kept, seconds=round(time.monotonic() - started))
+                from . import sensor_banks
+                out = sensor_banks.answer(message)
+                if out is None:
+                    return 3  # Continue to the ordinary model.
+            else:
+                out = dict(text=kept["text"], saved=kept, seconds=round(time.monotonic() - started))
         else:
             out = reply(message, msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None),
                         log=lambda *a: print(*a, flush=True))
         if out.get("saved"):
             foot = f"\n\n<sub>Saved method · {out['saved']['status']} · {out['seconds']} s</sub>"
+        elif out.get("sensor_banks"):
+            foot = f"\n\n<sub>Local sensor-bank check · {out['seconds']} s</sub>"
         else:
             foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
                     if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
@@ -312,7 +375,7 @@ def conversation(first=None, *, name="the user", base=None, methods=(), remote=N
             if base:
                 out = reply(msg, history, name, base=base, log=lambda *a: print("  [" + " ".join(map(str, a)) + "]", flush=True))
             else:
-                out = saved_reply(msg, local_only=remote is None)
+                out = local_reply(msg, local_only=remote is None)
             if out is not None:
                 text = local_text(out)
                 print("\nhive> " + text)

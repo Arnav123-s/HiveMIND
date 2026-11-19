@@ -164,22 +164,68 @@ def _get(url, timeout=3):
         return None
 
 
-ENGRAMS = Path(os.environ.get("HIVE_ENGRAMS_HOME", Path(__file__).resolve().parent.parent / "cells" / "engrams"))
+_ROOT = Path(__file__).resolve().parent.parent
+BUNDLED_ENGRAMS = _ROOT / "cells" / "engrams"
+LOCAL_ENGRAMS = _ROOT / "runs" / "engram-learning" / "native"
+ENGRAMS = Path(os.environ.get("HIVE_ENGRAMS_HOME", LOCAL_ENGRAMS))
+
+
+def engram_homes():
+    """Search the shipped catalogue and writable local edits. An explicit store isolates an experiment."""
+    if ENGRAMS == LOCAL_ENGRAMS and not os.environ.get("HIVE_ENGRAMS_HOME"):
+        return (BUNDLED_ENGRAMS, ENGRAMS)
+    return (ENGRAMS,)
 
 
 def edits_here(base):
     """{name: file} of every weight edit of this base on this machine: its cells (cells/members/<base>+<name>.gguf) and
     its engrams (cells/engrams/, team/engram.py; their names begin with e)."""
-    return {p.stem.split("+", 1)[1]: p for d in (ADAPTERS, ENGRAMS) if d.exists() for p in sorted(d.glob(f"{base}+*.gguf"))}
+    from . import engram
+    # Installed cells and shipped weights keep their identity if a local edit reuses their name.
+    files = {p.stem.split("+", 1)[1]: p for p in sorted(ADAPTERS.glob(f"{base}+*.gguf"))}
+    for home in engram_homes():
+        for name, (path, row) in sorted(engram.bank_entries(base, home).items()):
+            files.setdefault(name, path)
+    return files
 
 
 def cells_here(base):
     return sorted(edits_here(base))
 
 
-def _loaded(at, scales=False):
+def _loaded(at, scales=False, *, paths=False):
     """{cell name: its number in the running server} (scales: {cell name: how much of it is switched on})."""
-    return {Path(a.get("path", "")).stem.split("+", 1)[-1]: (a.get("scale", 0.0) if scales else a["id"]) for a in (_get(at + "/lora-adapters") or [])}
+    state = _get(at + "/lora-adapters")
+    if not isinstance(state, list):
+        raise Silent("the server does not say which edits are loaded")
+    result = {}
+    for entry in state:
+        path = Path(entry["path"])
+        name = path.stem.split("+", 1)[-1]
+        result[name] = str(path.resolve()) if paths else entry.get("scale", 0.0) if scales else entry["id"]
+    return result
+
+
+def _edit_files(files):
+    """Detect a newly published edit even when a trainer kept the old filename."""
+    result = {}
+    for name, path in files.items():
+        stat = path.stat()
+        result[name] = [str(path.resolve()), stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns]
+    return result
+
+
+def _same_edits(at, base):
+    files = edits_here(base)
+    try:
+        loaded = _loaded(at, paths=True)
+        if not files:
+            return not loaded  # release previously loaded files that were retired or failed verification
+        expected = _edit_files(files)
+        recorded = json.loads((HOME / f"{base}.loaded-edits.json").read_text())
+        return recorded == expected and loaded == {name: meta[0] for name, meta in expected.items()}
+    except (OSError, ValueError, Silent):
+        return False
 
 
 def up(member, wait=600):
@@ -190,7 +236,7 @@ def up(member, wait=600):
     # "no slot available" is a server at work on a request (one a task cut off by its time limit left; the server
     # drops it once it sees the asker gone): it answered, so it is alive, and the next request waits its turn
     alive = (_get(at + "/health") or {}).get("status") in ("ok", "no slot available")
-    if alive and set(cells_here(base)) <= set(_loaded(at)):  # every edit on the machine is in the server (a new engram starts it again)
+    if alive and _same_edits(at, base):
         return at
     if not binary().exists():
         if os.environ.get("HIVE_TERNARY_BIN"):
@@ -219,6 +265,7 @@ def _start(base, wait=600):
     cmd = [str(binary()), "-m", weights(base), "-t", str(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4)), "-c", str(CTX),
            "--port", str(n), "--host", "127.0.0.1", "-rtr", "--parallel", "1", "--special" if base == "bitnet" else "--jinja"]
     cells = edits_here(base)
+    signature = _edit_files(cells)
     for c in cells:
         cmd += ["--lora", str(cells[c])]
     if cells:
@@ -231,6 +278,10 @@ def _start(base, wait=600):
     t0 = time.time()
     while time.time() - t0 < wait:
         if (_get(at + "/health") or {}).get("status") == "ok":
+            # A later process can verify which revision this server opened.
+            with tempfile.NamedTemporaryFile("w", dir=HOME, delete=False) as tmp:
+                json.dump(signature, tmp)
+            os.replace(tmp.name, HOME / f"{base}.loaded-edits.json")
             return at
         if _PROC[n].poll() is not None:  # it ended (no memory for it, the port still taken): waiting longer brings nothing
             # Seen on g35's seed 4 (job 133386038675): every start ended at once and was reported as "did not come up in
@@ -327,15 +378,20 @@ def _on(at, base, cell):
     have = _loaded(at)
     if not have and edits_here(base):  # it holds every edit on disk, so an empty list is a server that did not answer
         raise Silent("the server does not say which cells it holds")
-    if not have or _ON.get(at) == cell:
-        return False
-    # What the server reports cannot be trusted for this: one just started says a cell is on (scale 1.0) that it has
-    # not applied. So this process switches the first time it speaks, and afterwards whenever the cell changes.
-    # Which cell answers: its edit on, every other off (the base itself: all off).
-    # Each engram at the strength it was recalled with (1.0 when none was given: as before scales were passed).
     edit, also = cell
     gates = dict(_gated(also))
-    _switch(at, [{"id": i, "scale": 1.0 if name == edit else gates.get(name, 0.0)} for name, i in have.items()])
+    requested = set(gates) | ({edit} if edit else set())
+    if not requested <= have.keys():
+        raise Silent("the server does not hold requested edits: " + ", ".join(sorted(requested - have.keys())))
+    if not have:
+        return False
+    expected = {name: 1.0 if name == edit else gates.get(name, 0.0) for name in have}
+    if _ON.get(at) == cell:
+        live = _loaded(at, scales=True)
+        if live.keys() == expected.keys() and all(abs(live[name] - scale) < 1e-6 for name, scale in expected.items()):
+            return False
+    # A freshly launched server can report unapplied edits at scale 1. Switch at least once per owner.
+    _switch(at, [{"id": i, "scale": expected[name]} for name, i in have.items()])
     _ON[at] = cell
     return True
 
@@ -416,6 +472,25 @@ def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
     """The member's reply to a conversation, with its cell on and the engrams in `also` beside it (names, at full
     strength, or (name, scale) pairs). When the conversation no longer fits its window, the oldest program and
     what it printed go first; the orders and the task stay."""
+    # Adapter scales belong to the server, not the request. Hold one endpoint lock
+    # through startup, switching, completion and any retry, including across CLI processes.
+    import fcntl
+    n = port(member)
+    lock_path = Path("/tmp") / f"hivemind-ternary-{os.getuid()}-{n}.lock"
+    fd = os.open(lock_path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(fd, "r+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        owner = str(os.getpid())
+        if lock.read(32) != owner:
+            _ON.pop(f"http://127.0.0.1:{n}", None)
+            lock.seek(0)
+            lock.truncate()
+            lock.write(owner)
+            lock.flush()
+        return _chat_locked(member, messages, max_new_tokens, temperature, also)
+
+
+def _chat_locked(member, messages, max_new_tokens, temperature, also):
     at, messages = up(member), list(messages)
     base, edit = split(member)
     cell, fresh = (edit, _gated(also)), True
@@ -454,12 +529,12 @@ ORGANS = {
 }
 
 
-def organ(task):
+def organ(task, *, fallback="code"):
     """The organ a task belongs to most: the one whose words it uses most (code when none)."""
     import re
     low = task.lower()
     hits = {name: len(re.findall(rx, low)) for name, rx in ORGANS.items()}
-    return max(hits, key=lambda k: (hits[k], k == "code")) if any(hits.values()) else "code"
+    return max(hits, key=lambda k: (hits[k], k == "code")) if any(hits.values()) else fallback
 
 
 def leans(member):
@@ -572,7 +647,8 @@ def seating(task, kind=None):
 
     HIVE_SEATING=strength (a trial): by each organ's record of being right, cells/strengths.json, as before."""
     who = roster() or ["coder"]
-    o = organ(task)
+    from . import domain_route
+    o = domain_route.specialist(organ(task, fallback=None))
     kind = os.environ.get("HIVE_KIND", "") if kind is None else kind
     table = strengths() if os.environ.get("HIVE_SEATING") == "strength" else {}
     if table:

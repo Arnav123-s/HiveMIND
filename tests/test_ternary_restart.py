@@ -108,6 +108,40 @@ def _ask(member="t2+c1"):
     return ternary.chat(member, [{"role": "system", "content": "s"}, {"role": "user", "content": "task"}])
 
 
+def test_corrupt_or_retired_memory_is_removed_from_native_startup_and_ordinary_chat(fake, monkeypatch):
+    import hashlib
+    from team import engram, talk
+    monkeypatch.setenv("HIVE_BANK", "off")
+    monkeypatch.setenv("HIVE_SIGNALS", "0")
+    monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
+    message = "Describe the geometry of a tabletop"
+    monkeypatch.setattr(talk, "route", lambda base, message, history: ("talk", [{"role": "user", "content": message}]))
+    bank = ternary.ENGRAMS
+    bank.mkdir()
+    weights = b"fixture bytes"
+    meta = dict(dna="t2", task=message, sha256=hashlib.sha256(weights).hexdigest())
+    rows = [dict(meta, name="e_checked"), dict(meta, name="e_old", folded=7),
+            dict(meta, name="e_archive", archived=True)]
+    for row in rows:
+        (bank / f't2+{row["name"]}.gguf').write_bytes(weights)
+    engram.update_index(lambda prior: rows, home=bank)
+    result = talk.reply(message, base="t2")
+    assert result["text"] == "on: e_checked" and result["engrams"][0]["edits"] == ["e_checked"]
+    at = f"http://127.0.0.1:{ternary.port('t2')}"
+    assert set(ternary._loaded(at)) == {"c1", "c2", "e_checked"}
+    current = bank / "t2+e_checked.gguf"
+    misses = engram._sha256.cache_info().misses
+    assert current == ternary.edits_here("t2")["e_checked"]
+    assert engram._sha256.cache_info().misses == misses
+    old = current.stat()
+    current.write_bytes(weights[::-1])
+    os.utime(current, ns=(old.st_atime_ns, old.st_mtime_ns))
+    result = talk.reply(message, base="t2")
+    assert result["text"] == "on:" and "engrams" not in result
+    assert set(ternary._loaded(at)) == {"c1", "c2"}
+    assert len(_starts(fake)) == 2
+
+
 def test_dead_server_is_started_again_and_the_cell_put_back_on(fake, capsys):
     assert _ask() == "on: c1"
     (fake / "mode").write_text("die_once")  # it dies in the middle of the next request

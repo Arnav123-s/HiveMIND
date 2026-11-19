@@ -307,7 +307,8 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0, practice
     by then is written task by task)."""
     born = time.time()
     from training import exam as E
-    from training import exam_hard
+    from training import exam_hard, engram_growth
+    collected_examples = 0
     out = Path(out or GROW / "rows.jsonl")
     out.parent.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("AGENT_TEAM_SOLO", "2")
@@ -374,12 +375,28 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0, practice
                 receipt = {"status": "unavailable", "reason": str(err)[:240]}
             passed[-1]["practice_skill"] = receipt
             log(f"{tid} practice skill {receipt['status']}" + (f": {receipt['reason']}" if "reason" in receipt else ""), flush=True)
+        if engram_growth.enabled():
+            try:
+                evidence = engram_growth.record_practice(E.RUNS / f"practice_{seed}" / tid, task, field, kind, r)
+                collected_examples += len(evidence)
+                if evidence:
+                    passed[-1]["engram_examples"] = len(evidence)
+                    engram_growth.export_practice(f"practice_{seed}", out.with_suffix(".engrams.jsonl"))
+            except Exception as err:  # noqa: BLE001 - an unavailable lesson store does not erase checked training rows
+                log(f"engram collection unavailable: {err}", flush=True)
         # what was passed at which level, for the record to move the levels by (training/grow_record.levels); arm: the
         # orders this runner was given (HIVE_ORDERS_ARM, set by the practice job; "" when practice is not split)
         out.with_name("practice.json").write_text(json.dumps({"seed": seed, "arm": arm, "tasks": passed}))
         beyond = sum(x["type"] == "first" and x.get("agreed") is False for x in new)
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows"
             + (f", {beyond} of the right members not among those that agreed" if beyond else ""), flush=True)
+    if collected_examples and os.environ.get("HIVE_ENGRAM_AUTO_REFRESH", "1").lower() not in {"0", "off", "false"}:
+        try:
+            # At most one changed topic per practice cycle. Chat requests never launch a trainer.
+            reports = engram_growth.refresh(limit=1)
+            log("engram refresh: " + ", ".join(sorted({row["status"] for row in reports})), flush=True)
+        except Exception as err:  # noqa: BLE001 - a native training error must not change the practice verdict
+            log(f"engram refresh unavailable: {err}", flush=True)
     return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)} | ({"arm": arm} if arm else {})
 
 
