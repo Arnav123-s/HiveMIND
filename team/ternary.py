@@ -305,28 +305,53 @@ def _tail(path, since=0, lines=6):
     return " | ".join(got)[-1200:] or "(nothing written)"
 
 
+def _server_identity(process, n):
+    """Match the configured executable and a separate --port argument; also support executable Python shims."""
+    args = process.cmdline()
+    if ("--port", str(n)) not in zip(args, args[1:]):
+        return False
+    target = binary().resolve()
+    if Path(process.exe()).samefile(target):
+        return True
+    if len(args) < 2 or not (Path(process.cwd()) / args[1]).samefile(target):
+        return False
+    # Linux exposes the interpreter as the executable and the shebang script as argv[1].
+    with target.open("rb") as source:
+        first = source.readline(512)
+    if not first.startswith(b"#!"):
+        return False
+    interpreter = first[2:].decode().strip().split()
+    if interpreter and Path(interpreter[0]).name == "env":
+        interpreter = interpreter[1:]
+    actual = shutil.which(interpreter[0]) if interpreter else None
+    return bool(actual and Path(process.exe()).samefile(actual))
+
+
 def _kill(n):
-    """End the server on port n, whoever started it, with its process group (it runs in a session of its own), and wait
-    until it is gone so that the port is free for the next one."""
-    pids = {_PROC[n].pid} if n in _PROC else set()
-    found = subprocess.run(["pgrep", "-f", f"llama-server.*--port {n}( |$)"], capture_output=True, text=True, check=False).stdout
-    pids |= {int(x) for x in found.split() if x.isdigit() and int(x) != os.getpid()}
-    for pid in pids:
+    """Signal only the configured server that owns this loopback listener, including one started by another CLI."""
+    import psutil
+
+    def listener(conn):
+        return conn.status == psutil.CONN_LISTEN and conn.laddr.port == n and conn.laddr.ip in ("127.0.0.1", "::1")
+
+    owned = _PROC.get(n)
+    signalled = {}
+    # Inspect sockets only for matching executables. Listing every system connection requires root on macOS.
+    for server in psutil.process_iter():
         try:
-            os.killpg(pid, signal.SIGKILL)
-        except OSError:  # not the leader of a group of its own (started by hand): itself alone
-            try:
-                os.kill(pid, signal.SIGKILL)
-            except OSError:
-                pass
-    if n in _PROC:
-        try:
-            _PROC.pop(n).wait(timeout=30)
-        except subprocess.TimeoutExpired:
-            pass
-    t0 = time.time()
-    while time.time() - t0 < 30 and any(_running(pid) for pid in pids):
-        time.sleep(0.2)
+            if _server_identity(server, n) and any(listener(conn) for conn in server.net_connections(kind="tcp")):
+                server.kill()  # the listener only; parents and process-group siblings may be other jobs
+                signalled[server.pid] = server
+        except (psutil.NoSuchProcess, psutil.AccessDenied, OSError, ValueError):
+            continue
+    if owned is not None:
+        if owned.poll() is None and owned.pid not in signalled:
+            raise RuntimeError(f"the native process on port {n} is still starting or has no verified listener")
+        if owned.poll() is None:
+            owned.wait(timeout=30)
+        signalled.pop(owned.pid, None)
+        _PROC.pop(n, None)
+    psutil.wait_procs(list(signalled.values()), timeout=30)
 
 
 def _running(pid):
@@ -514,7 +539,8 @@ def _chat_locked(member, messages, max_new_tokens, temperature, also):
 
 
 def stop():
-    subprocess.run(["pkill", "-f", str(binary())], check=False)
+    for n in sorted(set(_PROC) | {port(member) for member in MODELS}):
+        _kill(n)
 
 
 BODY = Path(__file__).resolve().parent.parent / "cells" / "body.json"

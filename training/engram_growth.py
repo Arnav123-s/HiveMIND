@@ -74,10 +74,10 @@ def record(domain, topic, prompt, answer, origin, *, home=None, edit_home=None, 
     ident = _id(domain, topic, prompt, answer)
     with _database(home) as db:
         db.execute("BEGIN IMMEDIATE")
-        previous = db.execute("SELECT id,answer,split FROM examples WHERE domain=? AND topic=? AND prompt=?",
+        previous = db.execute("SELECT id,split FROM examples WHERE domain=? AND topic=? AND prompt=?",
                               (domain, topic, prompt)).fetchall()
-        conflicting = any(r["answer"] != answer for r in previous)
-        existing = any(r["answer"] == answer for r in previous)
+        conflicting = any(r["id"] != ident for r in previous)
+        existing = any(r["id"] == ident for r in previous)
         split_conflict = (split_hint is not None and previous
                           and any(r["split"] != split_hint for r in previous))
         if split_conflict:
@@ -261,11 +261,14 @@ def record_work(spec, receipt, *, home=None):
 
 
 def _snapshot(db, domain, topic):
-    entries = db.execute("SELECT id,prompt,answer,split,rowid AS arrival FROM examples WHERE domain=? AND topic=? ORDER BY id",
-                         (domain, topic)).fetchall()
-    occurrences = Counter(x["prompt"] for x in entries)
-    available = [dict(x) for x in entries if occurrences[x["prompt"]] == 1]
-    return available, sum(n > 1 for n in occurrences.values())
+    # Retain complete file exports in the ledger, but do not load large free-form targets into the fitting process.
+    conflicts, = db.execute("""SELECT count(*) FROM (SELECT prompt FROM examples WHERE domain=? AND topic=?
+        GROUP BY prompt HAVING count(*) > 1)""", (domain, topic)).fetchone()
+    entries = db.execute("""SELECT a.id,a.prompt,a.answer,a.split,a.rowid AS arrival FROM examples a
+        WHERE a.domain=? AND a.topic=? AND length(a.prompt)<=4096 AND length(a.answer)<=24
+        AND NOT EXISTS (SELECT 1 FROM examples b WHERE b.domain=a.domain AND b.topic=a.topic
+                        AND b.prompt=a.prompt AND b.id!=a.id) ORDER BY a.id""", (domain, topic))
+    return [dict(row) for row in entries], conflicts
 
 
 def _partition(examples):
@@ -352,7 +355,6 @@ def _measured_wins(proof, valid):
                 or case.get("prompt_sha256") != hashlib.sha256(row["prompt"].encode()).hexdigest()
                 or type(case.get("before_correct")) is not bool or type(case.get("after_correct")) is not bool
                 or (case["before_correct"] and not case["after_correct"])):
-
             return None
         original_correct += int(case["before_correct"])
         if case["after_correct"]:
@@ -360,11 +362,14 @@ def _measured_wins(proof, valid):
     return wins if original_correct == before and len(wins) == after else None
 
 
-def _install_weights(data, destination, digest):
+def _install_weights(data, destination, digest, *, recover=False):
+    if destination.is_symlink():
+        raise ValueError("published edit name is a symbolic link")
     if destination.is_file():
-        if hashlib.sha256(destination.read_bytes()).hexdigest() != digest:
-            raise ValueError("published edit name already contains different bytes")
-        return
+        if hashlib.sha256(destination.read_bytes()).hexdigest() == digest:
+            return
+        if not recover:
+            raise ValueError("unowned edit name already contains different bytes")
     with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as staged:
         tmp = Path(staged.name)
         try:
@@ -395,12 +400,17 @@ def _publish(result, artifact, training, valid, edit_home):
                growth_example_ids=[r["id"] for r in training + valid], growth_group=group, revision=revision, sha256=digest)
 
     def publish(index):
+        same_name = [old for old in index if old.get("dna") == "t80" and old.get("name") == name]
+        identity = ("revision", "sha256", "growth_group")
+        if any(any(old.get(k) != row[k] for k in identity) for old in same_name):
+            raise ValueError("native edit name already belongs to a different revision")
         for old in index:
             if (old.get("growth_group") == group and not old.get("folded")
                     and not set(old.get("qualification_wins", [])).issubset(wins)):
                 result.update(status="prior_wins_not_preserved")
                 return None
-        _install_weights(data, destination, digest)
+        # Reconstitute corrupted bytes only for our exact indexed immutable revision.
+        _install_weights(data, destination, digest, recover=bool(same_name))
         keep = [dict(x, folded=name) if x.get("growth_group") == group and not x.get("folded") else x
                 for x in index if x.get("name") != name or x.get("dna") != "t80"]
         result.update(status="published", name=name, sha256=digest)
@@ -411,7 +421,7 @@ def _publish(result, artifact, training, valid, edit_home):
 
 def refresh(*, domain=None, home=None, edit_home=None, model=None, runtime=None, threads=2, limit=None, trainer=None):
     """Build a bounded edit offline. Publish only a measured qualification gain on the pinned split."""
-    from team import ternary
+    from team import engram, ternary
     home, edit_home = _store(home), _edit_home(edit_home)
     if threads < 1:
         raise ValueError("threads must be positive")
@@ -442,9 +452,13 @@ def refresh(*, domain=None, home=None, edit_home=None, model=None, runtime=None,
                 if previous["status"] == "published":
                     path = edit_home / ("t80+" + previous["name"] + ".gguf")
                     try:
-                        rows = [json.loads(line) for line in (edit_home / "index.jsonl").read_text().splitlines() if line.strip()]
-                        present = (any(r.get("name") == previous["name"] and not r.get("folded") for r in rows)
-                                   and hashlib.sha256(path.read_bytes()).hexdigest() == previous["sha256"])
+                        matching = [r for r in engram._rows(edit_home / "index.jsonl")
+                                    if r.get("name") == previous["name"] and r.get("dna") == "t80"
+                                    and r.get("revision") == revision and r.get("sha256") == previous["sha256"]]
+                        if matching and (matching[-1].get("folded") is not None or matching[-1].get("archived")):
+                            reports.append({**previous, "status": "retired", "cached": True})
+                            continue
+                        present = bool(matching) and hashlib.sha256(path.read_bytes()).hexdigest() == previous["sha256"]
                     except (OSError, ValueError):
                         present = False
                 else:

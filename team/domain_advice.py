@@ -2,7 +2,8 @@
 import http.client
 import re
 
-from . import engram, ternary
+from . import domain_intent, engram, ternary
+from .water_phase import equilibrium_phase
 
 
 # Each starter edit learned a narrower question than its domain.
@@ -36,20 +37,21 @@ def _explicit_skill(message):
     return matches[0] if len(matches) == 1 else None
 
 
-_CELSIUS = re.compile(r"(?<![\w.])([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s*(?:degrees?\s+)?(?:°\s*)?(?:celsius|c)\b", re.I)
-
-
 def _query(base, system, prompt, row, skill, *, expected=None):
     receipt = {"engram": row["name"], "skill": skill}
     try:
         reply = ternary.chat(base, [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
-                             max_new_tokens=8, temperature=0.0, also=(row["name"],))
+                             max_new_tokens=1, temperature=0.0, also=(row["name"],))
     except (OSError, RuntimeError, http.client.HTTPException):
         return {**receipt, "accepted": False, "label": None, "reason": "inference_unavailable"}
     surface = reply.strip().casefold()
     choices = {label.casefold(): label for label in row["labels"]}
     label = choices.get(surface) or choices.get(surface.removesuffix("."))
-    return {**receipt, "label": label, "accepted": label is not None and (expected is None or label == expected)}
+    if expected is not None and label is not None and label != expected:
+        return {**receipt, "label": label, "model_reply": reply.strip(), "accepted": False,
+                "reason": "contradicts_equilibrium_phase", "checked_phase": expected,
+                "check": "pure_water_equilibrium_1atm"}
+    return {**receipt, "label": label, "accepted": label is not None}
 
 
 def consult(message, base, domain, system, *, direct_labels=False):
@@ -81,27 +83,21 @@ def consult(message, base, domain, system, *, direct_labels=False):
     # An explicit label request can already use the edit on the answer itself.
     if direct_labels and engram.is_label_request(message, row, domain):
         return None
+    if not domain_intent.requests_choice(message, skill, row["labels"]):
+        return None
     expected = None
     if skill == "water_phase":
-        # The checked shortcut covers one equilibrium temperature of pure water at normal pressure.
-        pressure = re.compile(r"\b(?:1\s*atm|one atmosphere|at sea level|standard atmospheric pressure)\b", re.I)
-        temperatures = list(_CELSIUS.finditer(message))
-        if len(temperatures) != 1 or not pressure.search(message):
+        expected = equilibrium_phase(message)
+        if expected is None:
             return None
-        reading = temperatures[0]
-        remainder = pressure.sub("", message[:reading.start()] + " " + message[reading.end():])
-        if re.search(r"\d|[−–]|\b(?:salt\w*|mixture|supercool\w*|superheat\w*|solution|minus|negative|"
-                     r"between|from|range|below|above|under|over|roughly|approximately)\b", remainder, re.I):
-            return None
-        degrees = float(reading[1])
-        if degrees in (0, 100) or degrees < -273.15:
-            return None
-        expected = "solid" if degrees < 0 else "gas" if degrees > 100 else "liquid"
     prompt = row["instruction"] + " " + message
     return _query(base, system, prompt, row, skill, expected=expected)
 
 
 def hint(decision):
+    if decision and decision.get("reason") == "contradicts_equilibrium_phase":
+        return (f"The equilibrium check for pure water at one standard atmosphere gives {decision['checked_phase']}. "
+                "Use that checked phase for these conditions.")
     if not decision or not decision["accepted"]:
         return ""
     topic = decision["skill"].replace("_", " ")

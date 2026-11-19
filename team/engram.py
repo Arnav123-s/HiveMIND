@@ -187,6 +187,10 @@ def _label_score(task, record, domain, *, framed):
     count = sum(_mentions(text, c) for c in cues)
     named = bool(record.get("growth_group")) and _mentions(text, record.get("task"))
     if framed:
+        if record.get("skill_id") == "water_phase":
+            from .water_phase import equilibrium_phase
+            if equilibrium_phase(task) is None:
+                return 0
         # Directly applying these weights requires a request for the same restricted output alphabet.
         if (not all(_mentions(text, x) for x in labels) or not re.search(
                 r"\b(?:classify|categorize|pick|choose|select|label|reply|respond|return|output|answer|which)\b", text)):

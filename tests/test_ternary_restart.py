@@ -5,6 +5,7 @@ import json
 import os
 import socket
 import stat
+import subprocess
 import sys
 import time
 
@@ -106,6 +107,56 @@ def _switches(state):
 
 def _ask(member="t2+c1"):
     return ternary.chat(member, [{"role": "system", "content": "s"}, {"role": "user", "content": "task"}])
+
+
+@pytest.mark.parametrize("command", ["restart", "stop"])
+def test_shutdown_leaves_the_launch_wrapper_and_reaps_only_its_server(fake, command):
+    # The launcher owns the process group. Its actual argv includes the exact runtime and --port pair.
+    port = ternary.port("t2")
+    url = f"http://127.0.0.1:{port}/health"
+    wrapper_code = "import subprocess,sys,time; subprocess.Popen(sys.argv[1:]).wait(); time.sleep(60)"
+    wrapper = subprocess.Popen([sys.executable, "-c", wrapper_code, str(ternary.binary()), "--port", str(port)],
+                               start_new_session=True)
+    try:
+        deadline = time.monotonic() + 5
+        while not ternary._get(url) and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert ternary._get(url) == {"status": "ok"}
+        pid = int(_starts(fake)[0])
+        if command == "stop":
+            ternary.stop()
+        else:
+            ternary._kill(port)
+        assert not ternary._running(pid) and not ternary._get(url)
+        assert wrapper.poll() is None
+    finally:
+        if (fake / "starts").exists():
+            pid = int(_starts(fake)[0])
+            if ternary._running(pid):
+                os.kill(pid, 9)
+        wrapper.kill()
+        wrapper.wait(timeout=5)
+
+
+def test_shutdown_leaves_another_executable_listening_on_the_right_port(fake, tmp_path):
+    # Same script contents, basename, argv flags and port, but a distinct configured executable.
+    import shutil
+    other = tmp_path / "other" / ternary.binary().name
+    other.parent.mkdir()
+    shutil.copy2(ternary.binary(), other)
+    port = ternary.port("t2")
+    url = f"http://127.0.0.1:{port}/health"
+    listener = subprocess.Popen([str(other), "--port", str(port)], start_new_session=True)
+    try:
+        deadline = time.monotonic() + 5
+        while not ternary._get(url) and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert ternary._get(url) == {"status": "ok"}
+        ternary._kill(port)
+        assert listener.poll() is None and ternary._get(url) == {"status": "ok"}
+    finally:
+        listener.kill()
+        listener.wait(timeout=5)
 
 
 def test_corrupt_or_retired_memory_is_removed_from_native_startup_and_ordinary_chat(fake, monkeypatch):

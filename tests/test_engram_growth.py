@@ -81,6 +81,25 @@ def test_measurement_required_before_activation_and_conflict_retires_only_affect
     assert (edits / f"t80+{row['name']}.gguf").read_bytes() == b"test weights"
     same, = growth.refresh(**args, trainer=measured)
     assert len(calls) == 1 and same["cached"]
+    # A foreign scalar in a legacy JSONL index cannot prevent a healthy cache hit.
+    index.write_text('5\n' + index.read_text())
+    assert growth.refresh(**args, trainer=measured)[0]["cached"] and len(calls) == 1
+    weight = edits / f"t80+{row['name']}.gguf"
+    weight.write_bytes(b"disk corruption")
+    recovered, = growth.refresh(**args, trainer=measured)
+    assert recovered["status"] == "published" and len(calls) == 2 and weight.read_bytes() == b"test weights"
+    # An intentional retirement is authoritative even when every published byte is intact.
+    index.write_text(json.dumps({**row, "archived": True}) + "\n")
+    retired, = growth.refresh(**args, trainer=measured)
+    assert retired["status"] == "retired" and retired["cached"] and len(calls) == 2
+    # Do not replace an unindexed file under a coinciding filename.
+    import pytest
+    index.write_text("")
+    weight.write_bytes(b"somebody else's weights")
+    with pytest.raises(ValueError, match="unowned"):
+        growth.refresh(**args, trainer=measured)
+    assert not index.read_text() and weight.read_bytes() == b"somebody else's weights"
+    index.write_text(json.dumps(row) + "\n")
     label(home, edits, 0, "red")
     assert json.loads(index.read_text())["folded"] and growth.stats(home)[0]["conflicting_prompts"] == 1
     assert (edits / f"t80+{row['name']}.gguf").is_file()
@@ -241,3 +260,28 @@ def test_restoring_out_of_order_shards_cannot_train_on_a_previously_held_out_pro
     with growth._database(dest) as db:
         row=db.execute("SELECT split FROM examples WHERE prompt='Even 2?'").fetchone()
         assert row["split"] == "excluded"
+
+
+def test_fieldwork_cli_records_only_verified_public_examples_in_the_normal_local_ledger(tmp_path, monkeypatch):
+    import os
+    import pytest
+    from team import cli
+    from training.experiments.fieldwork import work
+    sdk=os.environ.get("HIVE_FIELDWORK_WASI")
+    if not sdk:
+        pytest.skip("set HIVE_FIELDWORK_WASI for real sandboxed verification")
+    source="def solve(x): return 'even' if x % 2 == 0 else 'odd'"
+    task=dict(name="classify_parity",domain="math",task="Classify parity",
+              examples=[{"input":2,"output":"even"},{"input":5,"output":"odd"}],
+              validation=[{"input":379,"output":"odd"}],jobs=[{"id":"new","input":640}])
+    bank=tmp_path/"bank"
+    work.admit(bank,dict(task=task["name"],description=task["task"],source=source,
+                         digest=work.fingerprint(source),validation=3))
+    spec=tmp_path/"input.json"
+    spec.write_text(json.dumps(task))
+    monkeypatch.setenv("HIVE_LEARNING_HOME",str(tmp_path/"lessons"))
+    monkeypatch.setenv("HIVE_ENGRAM_LEARN","1")
+    assert cli.main(["fieldwork","--spec",str(spec),"--out",str(tmp_path/"delivery"),"--bank",str(bank),"--sdk",sdk]) == 0
+    with growth._database(tmp_path/"lessons") as db:
+        stored = list(db.execute("SELECT prompt,answer FROM examples ORDER BY answer"))
+        assert [tuple(r) for r in stored] == [("Classify parity\nInput: 2","even"),("Classify parity\nInput: 5","odd")]
