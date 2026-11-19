@@ -1,0 +1,168 @@
+{
+  "cases_sha256": "4f8aef836c93711fee45db311213372d5f18f0d66ab15e7e2332d125364c6de8",
+  "model_generations": 0,
+  "implementation_sha256": {
+    "team.talk": "dee28bff237ae4f6a1e3ac57c7292ed550b878da5ed1f47f6fee7d6dd94dcd32",
+    "team.solo": "c628792ffc304e103930d406ed6750a49e3a7a76ed48ac3604187e1efb7fd64d",
+    "team.water_phase": "042a956777d2fabf727105a1cebd2fae753550091b2b4a47861daf76cffcd77c",
+    "team.domain_advice": "e8839f3d8475312572a63508d3f8b390e10ef7fd0edf5cd17b6089125f62abac"
+  },
+  "cases": [
+    {
+      "id": "single-liquid",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "gas",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 2
+        },
+        "work": {
+          "text": "gas",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 2
+        }
+      },
+      "component_probe_bypasses_standalone_eligibility": {
+        "physical_phase": "liquid",
+        "validator_accepts_injected": false,
+        "validator_accepts_computed": true,
+        "explicit_recovery_text": "liquid"
+      }
+    },
+    {
+      "id": "single-solid",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "liquid",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "liquid",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      },
+      "component_probe_bypasses_standalone_eligibility": {
+        "physical_phase": "solid",
+        "validator_accepts_injected": false,
+        "validator_accepts_computed": true,
+        "explicit_recovery_text": "solid"
+      }
+    },
+    {
+      "id": "unknown-pressure",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "gas",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "gas",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "boundary",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "liquid",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "liquid",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "calculation",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "The proposed phase conflicts with the equilibrium check for the stated pure water. I could not confirm the requested answer.",
+          "worked": false,
+          "agreed": false,
+          "files": [],
+          "water_phase_check": {
+            "method": "pure_water_equilibrium_1atm",
+            "phase": "gas",
+            "source": "contradictory_output_withheld",
+            "model_answer": "liquid"
+          },
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "The proposed phase conflicts with the equilibrium check for the stated pure water. I could not confirm the requested answer.",
+          "worked": true,
+          "agreed": false,
+          "files": [],
+          "water_phase_check": {
+            "method": "pure_water_equilibrium_1atm",
+            "phase": "gas",
+            "source": "contradictory_output_withheld",
+            "model_answer": "liquid"
+          },
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "write-code",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "gas",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "gas",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    }
+  ]
+}

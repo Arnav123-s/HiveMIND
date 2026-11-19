@@ -1,0 +1,432 @@
+{
+  "cases_sha256": "369e0fa7156199f6ac879cc8774bbcf1c6be7dcc29376638be9e91bbe4e3f628",
+  "actual_model_generations": 0,
+  "source_sha256": {
+    "team.domain_advice": "e8839f3d8475312572a63508d3f8b390e10ef7fd0edf5cd17b6089125f62abac",
+    "team.solo": "c628792ffc304e103930d406ed6750a49e3a7a76ed48ac3604187e1efb7fd64d",
+    "team.talk": "dee28bff237ae4f6a1e3ac57c7292ed550b878da5ed1f47f6fee7d6dd94dcd32",
+    "team.water_phase": "042a956777d2fabf727105a1cebd2fae753550091b2b4a47861daf76cffcd77c"
+  },
+  "cases": [
+    {
+      "id": "record-frozen",
+      "expected_phase": "solid",
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 2,
+            "passed": false
+          },
+          "work": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 2,
+            "passed": false
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 2,
+            "passed": true
+          },
+          "work": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 2,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "notebook-warm",
+      "expected_phase": "liquid",
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": false
+          },
+          "work": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": false
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "sample-hot",
+      "expected_phase": "gas",
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": false
+          },
+          "work": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": false
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "gas",
+            "text": "gas",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "gas",
+            "text": "gas",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "slightly-warm",
+      "expected_phase": "liquid",
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "gas",
+            "text": "gas",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": false
+          },
+          "work": {
+            "injected": "gas",
+            "text": "gas",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": false
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "sugar-sample",
+      "expected_phase": null,
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "The sugar concentration affects the freezing point, so the phase cannot be determined from this description.",
+            "text": "The sugar concentration affects the freezing point, so the phase cannot be determined from this description.",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "The sugar concentration affects the freezing point, so the phase cannot be determined from this description.",
+            "text": "The sugar concentration affects the freezing point, so the phase cannot be determined from this description.",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "chamber",
+      "expected_phase": null,
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "liquid",
+            "text": "liquid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "Please provide the chamber pressure. Temperature alone is insufficient here.",
+            "text": "Please provide the chamber pressure. Temperature alone is insufficient here.",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "Please provide the chamber pressure. Temperature alone is insufficient here.",
+            "text": "Please provide the chamber pressure. Temperature alone is insufficient here.",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "bonding",
+      "expected_phase": null,
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "gas",
+            "text": "The proposed phase conflicts with the equilibrium check for the stated pure water. I could not confirm the requested answer.",
+            "phase_check": {
+              "method": "pure_water_equilibrium_1atm",
+              "phase": "liquid",
+              "source": "contradictory_output_withheld",
+              "model_answer": "gas"
+            },
+            "agreed": false,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 2,
+            "passed": false
+          },
+          "work": {
+            "injected": "gas",
+            "text": "The proposed phase conflicts with the equilibrium check for the stated pure water. I could not confirm the requested answer.",
+            "phase_check": {
+              "method": "pure_water_equilibrium_1atm",
+              "phase": "liquid",
+              "source": "contradictory_output_withheld",
+              "model_answer": "gas"
+            },
+            "agreed": false,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 2,
+            "passed": false
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "It is liquid. Hydrogen bonding contributes to the attraction between neighboring molecules.",
+            "text": "It is liquid. Hydrogen bonding contributes to the attraction between neighboring molecules.",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 2,
+            "passed": true
+          },
+          "work": {
+            "injected": "It is liquid. Hydrogen bonding contributes to the attraction between neighboring molecules.",
+            "text": "It is liquid. Hydrogen bonding contributes to the attraction between neighboring molecules.",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 2,
+            "passed": true
+          }
+        }
+      }
+    },
+    {
+      "id": "proofread",
+      "expected_phase": null,
+      "arms": {
+        "conflict": {
+          "talk": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "solid",
+            "text": "solid",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        },
+        "ordinary": {
+          "talk": {
+            "injected": "Pure water is at equilibrium at 1 atm and 124 \u00b0C.",
+            "text": "Pure water is at equilibrium at 1 atm and 124 \u00b0C.",
+            "phase_check": null,
+            "agreed": null,
+            "worked": false,
+            "synthetic_worker_calls": 0,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          },
+          "work": {
+            "injected": "Pure water is at equilibrium at 1 atm and 124 \u00b0C.",
+            "text": "Pure water is at equilibrium at 1 atm and 124 \u00b0C.",
+            "phase_check": null,
+            "agreed": true,
+            "worked": true,
+            "synthetic_worker_calls": 1,
+            "synthetic_chat_calls": 1,
+            "passed": true
+          }
+        }
+      }
+    }
+  ],
+  "passing_cases_both_routes": {
+    "eligible": {
+      "conflict": 0,
+      "ordinary": 4
+    },
+    "excluded": {
+      "conflict": 3,
+      "ordinary": 4
+    }
+  }
+}
