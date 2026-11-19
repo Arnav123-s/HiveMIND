@@ -7,6 +7,9 @@ import re
 from . import memory
 
 
+GROWTH_VALIDATION = "t80-output-graph-safe-v2"
+
+
 def rows(path):
     result = []
     for line in path.read_text().splitlines():

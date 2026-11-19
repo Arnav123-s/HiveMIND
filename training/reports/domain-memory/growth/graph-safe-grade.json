@@ -1,0 +1,40 @@
+{
+  "count": 4,
+  "before": 2,
+  "after": 4,
+  "regressions": 0,
+  "cases": [
+    {
+      "expected": "X",
+      "before": "X",
+      "after": "X",
+      "prompt_sha256": "1c625a6a99fc39712461e06224dfced8454dd35c5c07fd74f78cde06949f750c",
+      "before_correct": true,
+      "after_correct": true
+    },
+    {
+      "expected": "X",
+      "before": "X",
+      "after": "X",
+      "prompt_sha256": "2853be5909ed2e263070ec478d52d4ea0855a32da7e667f72190478c783d74e1",
+      "before_correct": true,
+      "after_correct": true
+    },
+    {
+      "expected": "Y",
+      "before": "X",
+      "after": "Y",
+      "prompt_sha256": "cba9a4c916c2f6e771f3c325ecf28be433677406fda5cf5b9dfe197411d21897",
+      "before_correct": false,
+      "after_correct": true
+    },
+    {
+      "expected": "Y",
+      "before": "X",
+      "after": "Y",
+      "prompt_sha256": "b05a450d875c2f1af4653b02e1872fe02a09f616ef23789f690d5cb24cc98bc8",
+      "before_correct": false,
+      "after_correct": true
+    }
+  ]
+}

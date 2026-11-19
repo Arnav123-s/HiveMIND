@@ -285,3 +285,54 @@ def test_fieldwork_cli_records_only_verified_public_examples_in_the_normal_local
     with growth._database(tmp_path/"lessons") as db:
         stored = list(db.execute("SELECT prompt,answer FROM examples ORDER BY answer"))
         assert [tuple(r) for r in stored] == [("Classify parity\nInput: 2","even"),("Classify parity\nInput: 5","odd")]
+
+
+def test_old_native_proof_rechecks_frozen_bytes_on_original_panel_and_preserves_history(tmp_path, monkeypatch):
+    from team import engram, engram_index
+    from training import domain_engram
+    model, runtime = tmp_path/'model', tmp_path/'runtime'
+    model.write_bytes(b'instrumented base')
+    runtime.touch()
+    monkeypatch.setattr(domain_engram, 'T80_SHA256', hashlib.sha256(model.read_bytes()).hexdigest())
+    for gain in (True, False):
+        home, bank = tmp_path/f'ledger-{gain}', tmp_path/f'bank-{gain}'
+        bank.mkdir()
+        for i in range(6):
+            label(home, bank, i, 'red' if i%2 else 'blue')
+        with growth._database(home) as db:
+            train, valid = growth._partition(growth._snapshot(db, 'computer_engineering', 'oscillator feedback')[0])
+            # Simulate a moved bank. The old build key includes a different path.
+            old = growth._revision(train + valid, model, runtime, tmp_path/'old-location', 'native-output-growth-v1')
+            data = b'original frozen candidate'
+            digest = hashlib.sha256(data).hexdigest()
+            name = 'eg' + growth._id(old,digest)[:24]
+            old_receipt = dict(status='published',domain='computer_engineering',topic='oscillator feedback',
+                               name=name,revision=old,sha256=digest,measurement={'validation':{'after':99}})
+            db.execute('INSERT INTO builds VALUES(?,?,?,?)', (old,old_receipt['domain'],old_receipt['topic'],json.dumps(old_receipt)))
+        row=dict(name=name,dna='t80',form='label',verified=True,revision=old,sha256=digest,task='oscillator feedback',
+                 labels=['red','blue'],growth_example_ids=[r['id'] for r in train+valid],
+                 growth_group=growth._id('computer_engineering','oscillator feedback'),qualification_wins=['unsupported-old-claim'])
+        (bank/'index.jsonl').write_text(json.dumps(row) + '\n')
+        original=bank/f't80+{name}.gguf'
+        original.write_bytes(data)
+        assert name not in engram.bank_entries('t80',bank)
+        calls=[]
+        def revalidate(panel, artifact, **kwargs):
+            calls.append(1)
+            assert artifact.read_bytes()==data and [r['prompt'] for r in panel]==[r['prompt'] for r in valid]
+            cases=[dict(expected=r['answer'],prompt_sha256=hashlib.sha256(r['prompt'].encode()).hexdigest(),
+                        before_correct=False,after_correct=gain) for r in panel]
+            return dict(count=len(cases),before=0,after=len(cases) if gain else 0,regressions=0,cases=cases)
+        monkeypatch.setattr(domain_engram, 'validate', revalidate)
+        def no_fit(*args,**kwargs):
+            raise AssertionError('migration must use the original bytes')
+        args=dict(home=home,edit_home=bank,model=model,runtime=runtime,trainer=no_fit)
+        result,=growth.refresh(**args)
+        assert result['measurement']['rechecked_revision']==old and result['validation_version']==engram_index.GROWTH_VALIDATION
+        assert result['status']==('published' if gain else 'unqualified')
+        assert set(engram.bank_entries('t80',bank))==({result['name']} if gain else set())
+        assert growth.refresh(**args)[0]['cached'] and len(calls)==1
+        assert original.read_bytes()==data
+        with growth._database(home) as db:
+            assert len(list(db.execute('SELECT id FROM examples')))==6
+            assert json.loads(db.execute('SELECT result FROM builds WHERE revision=?',(old,)).fetchone()[0])==old_receipt

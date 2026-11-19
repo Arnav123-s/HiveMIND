@@ -56,6 +56,8 @@ int main(int argc, char **argv) {
     cp.n_threads = cp.n_threads_batch = std::stoi(argv[6]);
     cp.n_ctx = 2048; cp.n_batch = cp.n_ubatch = 512;
     cp.embeddings = false;
+    // The pinned Qwen graph cache key omits adapter identity on equal-shaped decodes.
+    cp.graph_reuse = false;
     cp.attention_type = LLAMA_ATTENTION_TYPE_CAUSAL;
     auto ctx = llama_init_from_model(model, cp);
     if (!ctx) return 4;
@@ -84,7 +86,7 @@ int main(int argc, char **argv) {
             int bare = top(ctx, batch, vocab);
             output << name << '\t' << tokens.size();
             write_piece(output, model, bare);
-            for (auto edit : {v1, v2}) {
+            for (auto edit : {v1, v2, v1}) {
                 llama_lora_adapter_clear(ctx);
                 if (llama_lora_adapter_set(ctx, edit, 1.0f)) throw std::runtime_error("adapter activation failed");
                 if (!llama_kv_cache_seq_rm(ctx, 0, tokens.size() - 1, -1)) throw std::runtime_error("cannot reset final token");

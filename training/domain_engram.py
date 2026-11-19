@@ -59,7 +59,7 @@ def _server(model, runtime, threads, *, features=False, edits=()):
     for edit in edits:
         command += ["--lora", str(Path(edit).resolve())]
     if edits:
-        command.append("--lora-init-without-apply")
+        command += ["--lora-init-without-apply", "--no-graph-reuse"]
     with tempfile.TemporaryFile(mode="w+b") as log:
         process = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=log, stderr=log)
         try:

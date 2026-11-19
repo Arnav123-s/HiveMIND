@@ -201,8 +201,17 @@ def _body_reply(message, history, name, run_dir, log, base, now, t0):
     guidance = domain_route.guidance()
     if guidance:
         system["content"] += "\n" + guidance
-    way, convo = route(base, message, history)
     from . import domain_advice, engram
+    # A named, qualified label contract can answer a standalone request in its trained one-token form.
+    form = engram.single_label_form(message) if not history else None
+    named = engram.named_label_for(message, base) if form else None
+    if named and (form != "letter" or all(len(label) == 1 and label.isalpha() for label in named["labels"])):
+        choice = domain_route.prepare_advice(message, base, system["content"])
+        if choice and choice["accepted"]:
+            return {"text": choice["label"], "worked": False, "agreed": None, "task": "", "dir": "", "files": [],
+                    "seconds": round(time.time() - t0),
+                    "engrams": [{"stage": "answer", "member": base, "edits": [choice["engram"]]}]}
+    way, convo = route(base, message, history)
     decision = domain_route.prepare_advice(message, base, system["content"], direct_labels=way == "talk")
     if way == "talk":
         hint = domain_advice.hint(decision)

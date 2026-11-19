@@ -223,7 +223,9 @@ def _same_edits(at, base):
             return not loaded  # release previously loaded files that were retired or failed verification
         expected = _edit_files(files)
         recorded = json.loads((HOME / f"{base}.loaded-edits.json").read_text())
-        return recorded == expected and loaded == {name: meta[0] for name, meta in expected.items()}
+        return (isinstance(recorded, dict) and recorded.get("graph_reuse") is False and recorded.get("edits") == expected
+                and loaded == {name: meta[0] for name, meta in expected.items()}
+                and _serves(recorded.get("pid"), port(base), graph_safe=True))
     except (OSError, ValueError, Silent):
         return False
 
@@ -250,6 +252,8 @@ def up(member, wait=600):
     # ended also when it does not answer at all: a server that is there but silent still holds the port, and a new one
     # started beside it cannot take the port and ends at once (before, this waited out the 600 s for nothing)
     _kill(port(member))
+    if alive and (_get(at + "/health") or {}).get("status") in ("ok", "no slot available"):
+        raise RuntimeError(f"port {port(member)} still belongs to a different listener; a replacement server cannot start there")
     _ON.pop(at, None)
     return _start(base, wait)
 
@@ -269,7 +273,9 @@ def _start(base, wait=600):
     for c in cells:
         cmd += ["--lora", str(cells[c])]
     if cells:
-        cmd.append("--lora-init-without-apply")
+        # This pinned runtime's reusable graph omits the active LoRA set and scales on Qwen.
+        # Clearing the prompt/KV cache on a switch does not invalidate that compute graph.
+        cmd += ["--lora-init-without-apply", "--no-graph-reuse"]
     HOME.mkdir(parents=True, exist_ok=True)
     path = HOME / f"{base}.log"
     since = path.stat().st_size if path.exists() else 0  # this start's own lines begin here
@@ -277,10 +283,11 @@ def _start(base, wait=600):
         _PROC[n] = subprocess.Popen(cmd, stdout=log, stderr=log, stdin=subprocess.DEVNULL, start_new_session=True)
     t0 = time.time()
     while time.time() - t0 < wait:
-        if (_get(at + "/health") or {}).get("status") == "ok":
+        if ((_get(at + "/health") or {}).get("status") == "ok"
+                and _serves(_PROC[n].pid, n, graph_safe=bool(cells))):
             # A later process can verify which revision this server opened.
             with tempfile.NamedTemporaryFile("w", dir=HOME, delete=False) as tmp:
-                json.dump(signature, tmp)
+                json.dump({"pid": _PROC[n].pid, "graph_reuse": not bool(cells), "edits": signature}, tmp)
             os.replace(tmp.name, HOME / f"{base}.loaded-edits.json")
             return at
         if _PROC[n].poll() is not None:  # it ended (no memory for it, the port still taken): waiting longer brings nothing
@@ -327,19 +334,35 @@ def _server_identity(process, n):
     return bool(actual and Path(process.exe()).samefile(actual))
 
 
+def _listens(process, n):
+    import psutil
+    return any(conn.status == psutil.CONN_LISTEN and conn.laddr.port == n and conn.laddr.ip in ("127.0.0.1", "::1")
+               for conn in process.net_connections(kind="tcp"))
+
+
+def _serves(pid, n, *, graph_safe):
+    """Confirm readiness and reuse against the actual local server, including across separate CLI processes."""
+    import psutil
+    if type(pid) is not int or pid <= 0:
+        return False
+    try:
+        server = psutil.Process(pid)
+        return (_server_identity(server, n) and (not graph_safe or "--no-graph-reuse" in server.cmdline())
+                and _listens(server, n))
+    except (psutil.NoSuchProcess, psutil.AccessDenied, OSError, ValueError):
+        return False
+
+
 def _kill(n):
     """Signal only the configured server that owns this loopback listener, including one started by another CLI."""
     import psutil
-
-    def listener(conn):
-        return conn.status == psutil.CONN_LISTEN and conn.laddr.port == n and conn.laddr.ip in ("127.0.0.1", "::1")
 
     owned = _PROC.get(n)
     signalled = {}
     # Inspect sockets only for matching executables. Listing every system connection requires root on macOS.
     for server in psutil.process_iter():
         try:
-            if _server_identity(server, n) and any(listener(conn) for conn in server.net_connections(kind="tcp")):
+            if _server_identity(server, n) and _listens(server, n):
                 server.kill()  # the listener only; parents and process-group siblings may be other jobs
                 signalled[server.pid] = server
         except (psutil.NoSuchProcess, psutil.AccessDenied, OSError, ValueError):

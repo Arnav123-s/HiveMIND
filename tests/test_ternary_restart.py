@@ -109,6 +109,16 @@ def _ask(member="t2+c1"):
     return ternary.chat(member, [{"role": "system", "content": "s"}, {"role": "user", "content": "task"}])
 
 
+def test_only_adapter_equipped_native_servers_disable_compute_graph_reuse(fake, monkeypatch):
+    assert _ask() == "on: c1"
+    native = ternary._PROC[ternary.port("t2")]
+    assert "--no-graph-reuse" in native.args
+    ternary._kill(ternary.port("t2"))
+    monkeypatch.setattr(ternary, "edits_here", lambda base: {})
+    assert _ask("t2") == "on:"
+    assert "--no-graph-reuse" not in ternary._PROC[ternary.port("t2")].args
+
+
 @pytest.mark.parametrize("command", ["restart", "stop"])
 def test_shutdown_leaves_the_launch_wrapper_and_reaps_only_its_server(fake, command):
     # The launcher owns the process group. Its actual argv includes the exact runtime and --port pair.
@@ -154,6 +164,9 @@ def test_shutdown_leaves_another_executable_listening_on_the_right_port(fake, tm
         assert ternary._get(url) == {"status": "ok"}
         ternary._kill(port)
         assert listener.poll() is None and ternary._get(url) == {"status": "ok"}
+        with pytest.raises(RuntimeError, match="different listener"):
+            ternary.up("t2+c1")
+        assert listener.poll() is None and not (ternary.HOME / "t2.loaded-edits.json").exists()
     finally:
         listener.kill()
         listener.wait(timeout=5)

@@ -1,0 +1,353 @@
+{
+  "runtime_pin": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "threads": 1,
+  "context": 512,
+  "max_tokens": 1,
+  "temperature": 0,
+  "normal_cache_clear_on_change": true,
+  "explanation_held_prefix": "Only output-weight LoRAs were used; the cached K/V prefix is unchanged by these adapters.",
+  "files": {
+    "t80+water_b.gguf": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d",
+    "t80+conversation.gguf": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+    "t80+water_a.gguf": "eff02a182a9d4d551e1ed46ae9d0ef33051c74ab3d06b4dee3225d8f4383786c"
+  },
+  "arms": {
+    "legacy": {
+      "no_graph_reuse": false,
+      "measurements": [
+        {
+          "api": "v1/chat/completions",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "prompt_sha256": "2d34b5ea9857e0fb4b3c9023984749d21389d82f770ee7e31af1f9d074446bc2"
+        },
+        {
+          "api": "v1/chat/completions",
+          "case": "conversation-check-1",
+          "requested": "conversation",
+          "active": {
+            "conversation": 1.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "confirm",
+          "prompt_sha256": "2d34b5ea9857e0fb4b3c9023984749d21389d82f770ee7e31af1f9d074446bc2"
+        },
+        {
+          "api": "v1/chat/completions",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "prompt_sha256": "2d34b5ea9857e0fb4b3c9023984749d21389d82f770ee7e31af1f9d074446bc2"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Liquid",
+          "cache_prompt": false,
+          "tokens": 147,
+          "prompt_tokens": 147,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "water_a",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 1.0,
+            "water_b": 0.0
+          },
+          "output": "solid",
+          "cache_prompt": true,
+          "tokens": 147,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "water_b",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 1.0
+          },
+          "output": "solid",
+          "cache_prompt": true,
+          "tokens": 147,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "water_a",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 1.0,
+            "water_b": 0.0
+          },
+          "output": "solid",
+          "cache_prompt": true,
+          "tokens": 147,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "cache_prompt": false,
+          "tokens": 158,
+          "prompt_tokens": 158,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "903c06f5284bf62aee99a87a7bedf7a20437abd530093aa7145419660c0e4689"
+        },
+        {
+          "api": "completion",
+          "case": "conversation-check-1",
+          "requested": "conversation",
+          "active": {
+            "conversation": 1.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "confirm",
+          "cache_prompt": true,
+          "tokens": 158,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "903c06f5284bf62aee99a87a7bedf7a20437abd530093aa7145419660c0e4689"
+        },
+        {
+          "api": "completion",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "confirm",
+          "cache_prompt": true,
+          "tokens": 158,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "903c06f5284bf62aee99a87a7bedf7a20437abd530093aa7145419660c0e4689"
+        }
+      ]
+    },
+    "fixed": {
+      "no_graph_reuse": true,
+      "measurements": [
+        {
+          "api": "v1/chat/completions",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "prompt_sha256": "2d34b5ea9857e0fb4b3c9023984749d21389d82f770ee7e31af1f9d074446bc2"
+        },
+        {
+          "api": "v1/chat/completions",
+          "case": "conversation-check-1",
+          "requested": "conversation",
+          "active": {
+            "conversation": 1.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "confirm",
+          "prompt_sha256": "2d34b5ea9857e0fb4b3c9023984749d21389d82f770ee7e31af1f9d074446bc2"
+        },
+        {
+          "api": "v1/chat/completions",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "prompt_sha256": "2d34b5ea9857e0fb4b3c9023984749d21389d82f770ee7e31af1f9d074446bc2"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Liquid",
+          "cache_prompt": false,
+          "tokens": 147,
+          "prompt_tokens": 147,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "water_a",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 1.0,
+            "water_b": 0.0
+          },
+          "output": "solid",
+          "cache_prompt": true,
+          "tokens": 147,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "water_b",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 1.0
+          },
+          "output": "Solid",
+          "cache_prompt": true,
+          "tokens": 147,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "physics-check-0",
+          "requested": "water_a",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 1.0,
+            "water_b": 0.0
+          },
+          "output": "solid",
+          "cache_prompt": true,
+          "tokens": 147,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "ba25ed0a64da8ad4b8f6556aa15a964a7915ea68795467d18fe5f8cf0fb00c81"
+        },
+        {
+          "api": "completion",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "cache_prompt": false,
+          "tokens": 158,
+          "prompt_tokens": 158,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "903c06f5284bf62aee99a87a7bedf7a20437abd530093aa7145419660c0e4689"
+        },
+        {
+          "api": "completion",
+          "case": "conversation-check-1",
+          "requested": "conversation",
+          "active": {
+            "conversation": 1.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "confirm",
+          "cache_prompt": true,
+          "tokens": 158,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "903c06f5284bf62aee99a87a7bedf7a20437abd530093aa7145419660c0e4689"
+        },
+        {
+          "api": "completion",
+          "case": "conversation-check-1",
+          "requested": "",
+          "active": {
+            "conversation": 0.0,
+            "water_a": 0.0,
+            "water_b": 0.0
+          },
+          "output": "Thank",
+          "cache_prompt": true,
+          "tokens": 158,
+          "prompt_tokens": 1,
+          "actual_template_equals_serialized": true,
+          "prompt_sha256": "903c06f5284bf62aee99a87a7bedf7a20437abd530093aa7145419660c0e4689"
+        }
+      ]
+    }
+  },
+  "fixed_full_prefill_water": [
+    {
+      "requested": "water_a",
+      "scales": {
+        "water_a": 1.0,
+        "water_b": 0.0
+      },
+      "output": "solid",
+      "hint_from_label": "solid"
+    },
+    {
+      "requested": "water_b",
+      "scales": {
+        "water_a": 0.0,
+        "water_b": 1.0
+      },
+      "output": "Solid",
+      "hint_from_label": "solid"
+    },
+    {
+      "requested": "water_a",
+      "scales": {
+        "water_a": 1.0,
+        "water_b": 0.0
+      },
+      "output": "solid",
+      "hint_from_label": "solid"
+    }
+  ]
+}

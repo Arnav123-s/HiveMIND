@@ -44,7 +44,11 @@ def main():
     exercise = json.loads((HERE / "exercises.json").read_text())[key]
     cases = [dict(id=f"original-{i}", phase="original", text=q, label=gold)
              for i, (q, gold) in enumerate(exercise["check"])]
+    teaching = [*exercise["train"], *exercise["check"], *json.loads((HERE / args.study / "exercises.json").read_text())]
+    seen_teaching = {" ".join(q.casefold().split()) for q, label in teaching}
     for row in json.loads(args.panel.read_text()):
+        if " ".join(row["text"].casefold().split()) in seen_teaching:
+            raise ValueError("independent prompt duplicates a teaching prompt")
         cases.append(dict(id=row["id"], phase=row.get("phase", "primary"), text=row["text"], label=row["label"]))
     if len({r["id"] for r in cases}) != len(cases) or len({r["text"] for r in cases}) != len(cases):
         raise ValueError("duplicate case identity")
@@ -75,10 +79,10 @@ def main():
         lines = outputs.read_text().splitlines()
     for i, (row, line) in enumerate(zip(cases, lines, strict=True)):
         ident, count, *predictions = line.split("\t")
-        if ident != str(i) or len(predictions) != 6:
+        if ident != str(i) or len(predictions) != 8:
             raise ValueError("incomplete native comparison")
         row["input_tokens"] = int(count)
-        for arm, token_id, encoded in zip(("base", "v1", "v2"), predictions[::2], predictions[1::2], strict=True):
+        for arm, token_id, encoded in zip(("base", "v1", "v2", "v1_reapplied"), predictions[::2], predictions[1::2], strict=True):
             piece = bytes.fromhex(encoded).decode(errors="replace")
             row[arm] = dict(token=int(token_id), text=piece, correct=piece.strip().casefold() == row["label"].casefold())
     scores = {}
@@ -87,12 +91,14 @@ def main():
         scores[phase] = {"count": len(group), **{arm: sum(r[arm]["correct"] for r in group) for arm in ("base", "v1", "v2")}}
     reproduced = all(c["base"]["token"] == old["before_token"] and c["v1"]["token"] == old["after_token"]
                      for c, old in zip(cases[:3], prior["cases"], strict=True))
-    result = dict(qualified=reproduced and all(c["v2"]["correct"] for c in cases),
+    restored = all(c["v1"]["token"] == c["v1_reapplied"]["token"] for c in cases)
+    result = dict(qualified=reproduced and restored and all(c["v2"]["correct"] for c in cases),
+                  graph_reuse=False, v1_reactivation_reproduced=restored,
                   original_tokens_reproduced=reproduced, scores=scores, panel_sha256=panel_digest,
                   base_sha256=primary["base_sha256"], v1_sha256=v1_digest, v2_sha256=v2_digest,
                   threads=args.threads, cases=cases)
     args.out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
-    print(json.dumps({k: result[k] for k in ("qualified", "original_tokens_reproduced", "scores")}))
+    print(json.dumps({k: result[k] for k in ("qualified", "original_tokens_reproduced", "v1_reactivation_reproduced", "scores")}))
 
 
 if __name__ == "__main__":

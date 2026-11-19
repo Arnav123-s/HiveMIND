@@ -10,7 +10,7 @@ import time
 
 import pytest
 
-from team import engram, solo, talk, ternary
+from team import engram, engram_index, solo, talk, ternary
 
 
 def put(home, name, task, **meta):
@@ -64,7 +64,8 @@ def test_private_overlay_shares_reads_and_never_replaces_shipped_records(tmp_pat
 def test_two_learned_conventions_need_the_named_topic_or_unique_evidence(tmp_path, monkeypatch):
     monkeypatch.setattr(ternary, "ENGRAMS", tmp_path)
     monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
-    meta = dict(domain="math", form="label", verified=True, labels=["low", "high"], cues=["parcel", "stamp"])
+    meta = dict(domain="math", form="label", verified=True, labels=["low", "high"], cues=["parcel", "stamp"],
+                validation_version=engram_index.GROWTH_VALIDATION)
     old = put(tmp_path, "z_old", "Copper Chart", growth_group="first", **meta)
     new = put(tmp_path, "a_new", "Amber Chart", growth_group="second", **meta)
     query = "Choose low or high for this parcel stamp."
@@ -95,12 +96,25 @@ def test_concurrent_updates_keep_the_other_publishers_rows(tmp_path):
     assert sorted(row["i"] for row in engram._rows(tmp_path / "index.jsonl")) == list(range(12))
 
 
+def test_unregraded_local_label_is_withheld_without_losing_history(tmp_path, monkeypatch):
+    monkeypatch.setattr(ternary, "ENGRAMS", tmp_path)
+    meta = dict(domain="math", form="label", verified=True, labels=["low", "high"], cues=["stamp"])
+    put(tmp_path, "old", "North stamps", growth_group="local", **meta)
+    put(tmp_path, "new", "South stamps", growth_group="local2", validation_version=engram_index.GROWTH_VALIDATION, **meta)
+    put(tmp_path, "shipped", "Registered stamp", **meta)
+    put(tmp_path, "episode", "Previous checked stamp question")
+    assert set(ternary.edits_here("t80")) >= {"new", "shipped", "episode"}
+    assert "old" not in ternary.edits_here("t80")
+    assert set(r["name"] for r in engram.index()) == {"old", "new", "shipped", "episode"}
+    assert engram.named_label_for("Which code for North stamps?", "t80") is None
+
+
 def test_unavailable_catalogues_and_external_bases_abstain_on_each_request(tmp_path, monkeypatch):
     monkeypatch.setattr(ternary, "ENGRAMS", tmp_path)
     monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
     message = "Which audit code applies under Copper Chart?"
     put(tmp_path, "e1", "Copper Chart", domain="math", form="label", labels=["L", "H"],
-        verified=True, cues=["audit"], growth_group="example")
+        verified=True, cues=["audit"], growth_group="example", validation_version=engram_index.GROWTH_VALIDATION)
     assert engram.named_label_for(message, "t80")["name"] == "e1"
     assert engram.named_label_for(message, "dna") is None
     assert engram.label_for(message, "dna", "math") is None
@@ -174,8 +188,13 @@ def test_replaced_adapter_forces_reload_even_under_same_file_name(tmp_path, monk
     monkeypatch.setattr(ternary, "ADAPTERS", tmp_path / "members")
     monkeypatch.setattr(ternary, "HOME", tmp_path)
     edit = bank / "t80+example.gguf"
-    (tmp_path / "t80.loaded-edits.json").write_text(json.dumps(ternary._edit_files({"example": edit})))
+    manifest = tmp_path / "t80.loaded-edits.json"
+    identity = ternary._edit_files({"example": edit})
+    manifest.write_text(json.dumps(identity))
     monkeypatch.setattr(ternary, "_loaded", lambda at, paths=False: {"example": str(edit.resolve())})
+    assert not ternary._same_edits("at", "t80")  # pre-fix servers could reuse a graph built with different weights
+    monkeypatch.setattr(ternary, "_serves", lambda pid, n, graph_safe: pid == 42 and graph_safe)
+    manifest.write_text(json.dumps({"pid": 42, "graph_reuse": False, "edits": identity}))
     assert ternary._same_edits("at", "t80")
     replacement = bank / "new"
     replacement.write_bytes(b"fixture")

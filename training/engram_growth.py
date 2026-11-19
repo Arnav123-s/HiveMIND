@@ -12,7 +12,7 @@ import tempfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from team import config
+from team import config, engram_index
 from team.signals import DOMAINS
 
 SCHEMA = """
@@ -321,11 +321,53 @@ def stats(home=None):
         return result
 
 
-def _revision(rows, model, runtime, edit_home):
+def _revision(rows, model, runtime, edit_home, version=None):
     def identity(path):
         stat = path.stat()
         return [str(path.resolve()), stat.st_size, stat.st_mtime_ns]
-    return _id("native-output-growth-v1", sorted(r["id"] for r in rows), identity(model), identity(runtime), str(edit_home.resolve()))
+    return _id(version or engram_index.GROWTH_VALIDATION, sorted(r["id"] for r in rows),
+               identity(model), identity(runtime), str(edit_home.resolve()))
+
+
+def _legacy_source(db, rows, domain, topic, edit_home):
+    """Find an immutable fit even after the store moves. Use its receipt for provenance only."""
+    shelf = engram_index.shelf(edit_home, "t80")
+    if not shelf:
+        return None
+    group, expected_ids = _id(domain, topic), [r["id"] for r in rows]
+    for name in reversed(shelf.labels):
+        row = shelf.records[name]
+        if row.get("growth_group") != group or row.get("growth_example_ids") != expected_ids:
+            continue
+        if row.get("validation_version") is not None:
+            return None
+        revision, digest = row.get("revision"), row.get("sha256")
+        if (not isinstance(revision, str) or not isinstance(digest, str) or not re.fullmatch("[a-f0-9]{64}", digest)
+                or name != "eg" + _id(revision, digest)[:24]):
+            continue
+        stored = db.execute("SELECT result FROM builds WHERE revision=? AND domain=? AND topic=?", (revision, domain, topic)).fetchone()
+        if stored:
+            previous = json.loads(stored[0])
+            if previous.get("status") == "published" and previous.get("name") == name and previous.get("sha256") == digest:
+                return row
+    return None
+
+
+def _recheck(row, artifact, training, valid, edit_home, model, runtime, threads):
+    from training import domain_engram
+    old_path = edit_home / ("t80+" + row["name"] + ".gguf")
+    if old_path.is_symlink() or not old_path.is_file():
+        return None
+    data = old_path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != row["sha256"]:
+        return None  # Rebuild from checked lessons when the immutable bytes cannot be recovered.
+    stat = model.stat()
+    if domain_engram._base_hash(model, (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)) != domain_engram.T80_SHA256:
+        raise ValueError("only the released Ternary-Bonsai-8B-PQ2_0 base can requalify t80 engrams")
+    artifact.write_bytes(data)
+    score = domain_engram.validate(valid, artifact, model=model, runtime=runtime, threads=threads)
+    return dict(sha256=row["sha256"], base_sha256=domain_engram.T80_SHA256, labels=sorted({r["answer"] for r in valid}),
+                training_rows=len(training), rechecked_revision=row["revision"], validation=score)
 
 
 def _cues(train, topic):
@@ -396,16 +438,23 @@ def _publish(result, artifact, training, valid, edit_home):
     name, group = "eg" + _id(revision, digest)[:24], _id(domain, topic)
     destination = edit_home / ("t80+" + name + ".gguf")
     row = dict(name=name, dna="t80", task=topic, cell=None, domain=domain, form="label", cues=cues,
-               labels=sorted(proof["labels"]), verified=True, qualification_wins=wins,
+               labels=sorted(proof["labels"]), verified=True, qualification_wins=wins, validation_version=engram_index.GROWTH_VALIDATION,
                growth_example_ids=[r["id"] for r in training + valid], growth_group=group, revision=revision, sha256=digest)
 
     def publish(index):
+        migration = proof.get("rechecked_revision")
+        if migration and not any(old.get("growth_group") == group and old.get("revision") == migration
+                                 and old.get("sha256") == digest and not old.get("archived") and old.get("folded") is None
+                                 for old in index):
+            result.update(status="source_retired")
+            return None
         same_name = [old for old in index if old.get("dna") == "t80" and old.get("name") == name]
         identity = ("revision", "sha256", "growth_group")
         if any(any(old.get(k) != row[k] for k in identity) for old in same_name):
             raise ValueError("native edit name already belongs to a different revision")
         for old in index:
-            if (old.get("growth_group") == group and not old.get("folded")
+            if (old.get("growth_group") == group and not old.get("folded") and not old.get("archived")
+                    and old.get("validation_version") == engram_index.GROWTH_VALIDATION
                     and not set(old.get("qualification_wins", [])).issubset(wins)):
                 result.update(status="prior_wins_not_preserved")
                 return None
@@ -447,6 +496,10 @@ def refresh(*, domain=None, home=None, edit_home=None, model=None, runtime=None,
                 training, valid = _partition(rows)
                 revision = _revision(training + valid, model, runtime, edit_home)
                 prior = db.execute("SELECT result FROM builds WHERE revision=?", (revision,)).fetchone()
+                legacy = _legacy_source(db, training + valid, d, topic, edit_home) if not prior else None
+            if legacy and (legacy.get("folded") is not None or legacy.get("archived")):
+                reports.append({"status": "retired", "revision": legacy["revision"], "domain": d, "topic": topic, "cached": True})
+                continue
             if prior:
                 previous = json.loads(prior[0])
                 if previous["status"] == "published":
@@ -458,7 +511,8 @@ def refresh(*, domain=None, home=None, edit_home=None, model=None, runtime=None,
                         if matching and (matching[-1].get("folded") is not None or matching[-1].get("archived")):
                             reports.append({**previous, "status": "retired", "cached": True})
                             continue
-                        present = bool(matching) and hashlib.sha256(path.read_bytes()).hexdigest() == previous["sha256"]
+                        present = (bool(matching) and matching[-1].get("validation_version") == engram_index.GROWTH_VALIDATION
+                                   and hashlib.sha256(path.read_bytes()).hexdigest() == previous["sha256"])
                     except (OSError, ValueError):
                         present = False
                 else:
@@ -472,8 +526,10 @@ def refresh(*, domain=None, home=None, edit_home=None, model=None, runtime=None,
                 artifact = Path(scratch) / "candidate.gguf"
                 project = lambda rows: [{"prompt": r["prompt"], "answer": r["answer"]} for r in rows]
                 try:
-                    proof = trainer(project(training), artifact, model=model, runtime=runtime, threads=threads,
-                                    validation=project(valid))
+                    held_out = project(valid)
+                    proof = _recheck(legacy, artifact, training, held_out, edit_home, model, runtime, threads) if legacy else None
+                    if proof is None:
+                        proof = trainer(project(training), artifact, model=model, runtime=runtime, threads=threads, validation=held_out)
                 except ValueError as exc:
                     proof = {"reason": str(exc)}
                 except (OSError, ImportError, RuntimeError) as exc:
@@ -482,7 +538,8 @@ def refresh(*, domain=None, home=None, edit_home=None, model=None, runtime=None,
                     if limit is not None:
                         break
                     continue
-                result = {"status": "unqualified", "revision": revision, "domain": d, "topic": topic, "measurement": proof}
+                result = {"status": "unqualified", "revision": revision, "domain": d, "topic": topic,
+                          "validation_version": engram_index.GROWTH_VALIDATION, "measurement": proof}
                 with _database(home) as db:
                     db.execute("BEGIN IMMEDIATE")
                     now, _ = _snapshot(db, d, topic)

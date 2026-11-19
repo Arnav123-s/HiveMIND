@@ -4,7 +4,7 @@ from threading import Barrier
 
 import pytest
 
-from team import domain_advice, domain_route, engram, signals, talk, ternary
+from team import domain_advice, domain_route, engram, engram_index, signals, talk, ternary
 
 
 @pytest.fixture
@@ -96,6 +96,7 @@ def test_named_learned_convention_works_without_a_domain_suggestion(tmp_path, mo
     for year, label in [(2025, "Blue"), (2026, "Amber")]:
         row = {"name": f"eg{year}", "task": f"review policy {year}", "form": "label",
                "dna": "t80", "growth_group": str(year), "verified": True, "domain": "machine_learning",
+               "validation_version": engram_index.GROWTH_VALIDATION,
                "labels": ["Blue", "Amber"], "cues": ["review", "policy"]}
         (tmp_path / f"t80+eg{year}.gguf").write_bytes(b"fixture")
         engram.update_index(lambda rows: rows + [row], home=tmp_path)
@@ -140,3 +141,24 @@ def test_explicit_narrow_task_can_consult_when_topic_is_unknown(monkeypatch):
 def test_label_head_requires_a_request_for_its_decision(question, expected):
     from team.domain_intent import requests_choice
     assert requests_choice(question, "geometry_measure", ["length", "area", "volume"]) == expected
+
+
+def test_named_one_letter_contract_is_answered_in_its_checked_shape(monkeypatch, tmp_path):
+    monkeypatch.setattr(ternary, "ENGRAMS", tmp_path)
+    monkeypatch.setenv("HIVE_BANK", "off")
+    monkeypatch.setenv("HIVE_SIGNALS", "0")
+    monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
+    row = {"name": "e_local", "task": "triage standard", "form": "label", "dna": "t80", "growth_group": "fixture",
+           "validation_version": engram.engram_index.GROWTH_VALIDATION,
+           "verified": True, "domain": "machine_learning", "labels": ["A", "B"], "cues": ["triage"]}
+    (tmp_path / "t80+e_local.gguf").write_bytes(b"fixture")
+    engram.update_index(lambda records: [row], home=tmp_path)
+    monkeypatch.setattr(talk, "route", lambda *args: pytest.fail("a named one-letter task called the general router"))
+    def chat(member, messages, **kwargs):
+        assert member == "t80" and kwargs["max_new_tokens"] == 1 and kwargs["also"] == ("e_local",)
+        return "B"
+    monkeypatch.setattr(ternary, "chat", chat)
+    out = talk.reply("Under our triage standard, return one letter. The two faults occurred together.", base="t80")
+    assert out["text"] == "B" and out["worked"] is False and out["agreed"] is None
+    assert out["engram_advice"]["engram"] == "e_local"
+    assert engram.single_label_form("Return one letter and explain your choice.") is None

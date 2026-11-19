@@ -61,6 +61,9 @@ def _weight(home, shelf, base, name):
     elif (row.get("folded") is not None or row.get("archived")
           or (row.get("form") == "label" and row.get("verified") is not True)):
         return None
+    elif (row.get("form") == "label" and isinstance(row.get("growth_group"), str) and row["growth_group"]
+          and row.get("validation_version") != engram_index.GROWTH_VALIDATION):
+        return None  # A locally fitted head must pass the current switch-safe native check before serving.
     path = home / f"{base}+{name}.gguf"
     try:
         info = path.stat()
@@ -273,12 +276,26 @@ _ASK_LABEL = re.compile(
     r"(?:code|label|category|class|grade)\b")
 
 
+_ONE_LABEL = re.compile(
+    r"\b(?:return|output|give(?: me)?|(?:reply|respond|answer)(?: with| in)?)\s+"
+    r"(?:(?:just|only)\s+)?(?:one|(?:a )?single|(?:just |only )?(?:a|the))\s+"
+    r"(letter|word|label|code|category)\b", re.I)
+
+
+def single_label_form(task):
+    """The requested compact output shape, unless the user also asks for another deliverable."""
+    match = _ONE_LABEL.search(task)
+    if not match or re.search(r"\b(?:explain|justify|show your work|give reasons|and (?:write|save|list|describe))\b", task, re.I):
+        return None
+    return match[1].casefold()
+
+
 def named_label_for(task, member):
     """Find a verified user-learned convention when a request explicitly names it and asks for a class."""
     if not _can_recall(member):
         return None
     text = " ".join(task.casefold().split())
-    if not _ASK_LABEL.search(text) or re.search(r"\b(?:do not|don't|never|how to|how (?:do|would) (?:i|you))\s+"
+    if not (_ASK_LABEL.search(text) or single_label_form(text)) or re.search(r"\b(?:do not|don't|never|how to|how (?:do|would) (?:i|you))\s+"
                                                r"(?:classify|categori[sz]e|label|grade|return|choose|select|assign|give|output)\b", text):
         return None
     matches = []
