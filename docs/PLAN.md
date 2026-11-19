@@ -130,6 +130,7 @@ holds what, from every branch; `python scripts/cycle.py` shows it beside the bar
 | K1 | A kind in one file, loaded by the exam and the lessons | `training/kinds/` | the same seeds give the same exams | done (B) |
 | K2 | New hard kinds: tables, text, larger programs | `training/kinds/` | each kind right by its check, a test without network | done (B, 24 kinds) |
 | M1 | A talk exam: 40 messages with checks, sat by the body every generation | `training/talk_exam.py`, the gate | a sitting's number in the read | done (B, g45 6.5 of 10) |
+| CX | The Codex side's improve/verified-learning-loop (34 commits, ~41,000 lines) taken in small PRs, never whole: P1 test fixture, P3 schedule solver, P6 delivered-answer checks, P5a engram fixes with engrams off, P2 fieldwork then the chat bank (owner's call), P4+P5b only as one flagged experiment generation | per part, its own files | each part replayed on real failures and the full suite; engrams off unless a flagged generation gains | in part (D): P1 merged (PR 112) |
 | W1 | Every agent's log and claims in one view | `scripts/agents_log.py` | it prints the real branches' lines | done (C) |
 
 Done (do not redo): L1, L2, L3, T1, T2, T4, K1, K2, M1, M3, W1, N1, E1, O1, X1, F2, T5; checked deliveries and kept methods (PR 105); chat from saved methods (PR 107); the memory pieces built (off); the CPU rule lab (PR 97);
