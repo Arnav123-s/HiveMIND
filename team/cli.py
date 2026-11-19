@@ -179,6 +179,9 @@ def main(argv=None):
     if argv[:1] == ["fieldwork"]:
         from training.experiments.fieldwork.work import main as fieldwork
         return fieldwork(argv[1:])
+    if argv[:1] == ["schedule"]:
+        from .schedule import main as schedule
+        return schedule(argv[1:])
     if argv[:1] == ["skills"]:
         from .skills_cli import main as skills
         return skills(argv[1:])

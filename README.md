@@ -22,6 +22,16 @@ At the prompt, enter `229, 184, 207`. The result is **45 cents**. Run `./hive sk
 
 To teach a method, give `./hive fieldwork` a work order with a description, public examples and separate qualification cases. In one test a coding cell corrected two programs, and the hive used their common repair to solve a third with the model off. That third task went from no deliveries to 24 correct deposit calculations. By default, qualified methods are available to subsequent fieldwork and chat in `runs/learned-skills`. [Teaching instructions, experiments and limits](training/reports/verified-learning/README.md)
 
+## Schedule a small project
+
+This example schedules a community kitchen with two volunteers and one oven. It runs locally with Python, including on a machine with no model or saved methods.
+
+```sh
+./hive schedule training/reports/verified-learning/scheduling/example.json
+```
+
+The kitchen can prepare ingredients and clean the oven at minute 0, start baking at minute 20, and pack at minute 50. The job finishes at minute 65. You can change the jobs, available resources and dependencies in the example. The command checks every plan against those constraints and reports which method supplied the chosen plan. [Example project](training/reports/verified-learning/scheduling/example.json) · [Scheduling results](training/reports/verified-learning/scheduling/README.md)
+
 ## Measure time above a threshold
 
 Give the hive a CSV with `timestamp,value` columns. It estimates the duration above your threshold by linear interpolation and counts upward crossings. This command runs locally with Python and the saved sensor rule.

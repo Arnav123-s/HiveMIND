@@ -14,7 +14,7 @@ The first writer used G47 code2, the first peer used G47 data2, and the final pe
 
 Fieldwork replayed the unedited live source sequence with deterministic repair disabled. It admitted the camera method into an empty bank. A separate CLI process with inference unavailable used that bank to return **1 millisecond at time 1031**, with the method digest in its receipt. Savings and transit were withheld. One of the two prospective tasks thus gained a callable method. The camera change involves a floating-point library call outside the learned expression grammar. The two-donor condition for learning a transfer rule was unmet, so the predeclared third task was left unused.
 
-Two supplementary checks followed observation of the initial public outcome. With the identical counterexample and correction request, the original code2 adapter wrote the same corrected camera source as data2, byte for byte. Feedback was sufficient for the repair in both cells; switching adapters gave no measured advantage on this case. On 12 additional inputs around integer boundaries at 53, 65, 257, and 1025 bits, the original camera program passed 2/12 and the corrected one passed 12/12.
+Two supplementary checks followed observation of the initial public outcome. With the identical counterexample and correction request, the original code2 adapter wrote the same corrected camera source as data2, byte for byte. Feedback was sufficient for the repair in both cells. Switching adapters gave no measured advantage on this case. On 12 additional inputs around integer boundaries at 53, 65, 257, and 1025 bits, the original camera program passed 2/12 and the corrected one passed 12/12.
 
 ## Reproduce locally
 
