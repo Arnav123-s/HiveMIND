@@ -4,9 +4,9 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g48 of the 8B body passed 53 of 64 exam tasks (83%). The best so far on this DNA: g41, 58 of 64 (91%).
+**Now:** generation g49 of the 8B body passed 49 of 64 exam tasks (77%). The best so far on this DNA: g41, 58 of 64 (91%).
 
-**Talk:** generation g48 sat the talk exam (seed 30000048): 6.5 of 10 (26 of 40 messages right: route 8 of 10, fact 6 of 10, earlier 7 of 10, time 5 of 10). The bar: 8 of 10.
+**Talk:** generation g49 sat the talk exam (seed 30000049): 7.8 of 10 (31 of 40 messages right: route 8 of 10, fact 10 of 10, earlier 10 of 10, time 3 of 10). The bar: 8 of 10.
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -26,18 +26,18 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Its read, with the next piece: [reads/latest.md](reads/latest.md).
 
-Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost.
+Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost.
 
 ## Where it practises most next
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
-- a long table turned wide
-- the blanks of a table filled by a rule
+- the percent change between two columns, rounded by a rule
 - an order of tasks by their dependencies, with hidden tests
-- a number with given properties
+- a parser for a tiny language, with hidden tests
 - the regions of a grid, with hidden tests
 - scrape a page to a file
+- a fact found on the open web
 
 ## How hard its lessons are now
 
