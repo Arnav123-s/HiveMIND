@@ -1051,5 +1051,37 @@
    "next",
    "The next generation runs on main"
   ]
+ ],
+ "generations": [
+  {
+   "id": "gen-g48",
+   "generation": "g48",
+   "when": "2026-11-19 00:22",
+   "verdict": "kept",
+   "after": [
+    53,
+    64
+   ],
+   "before": [
+    53,
+    64
+   ],
+   "hard": [
+    21,
+    28
+   ],
+   "easy": [
+    32,
+    32
+   ],
+   "held_out": [
+    0,
+    4
+   ],
+   "first_try": 0.4,
+   "talk": 6.5,
+   "hours": 5.72,
+   "why": "kept: 53 against 53; after 53 of 64 (easy 32 of 32, hard 21 of 32), before 53 of 64 (easy 32 of 32, hard 21 of 32) on 8 seeds"
+  }
  ]
 }
