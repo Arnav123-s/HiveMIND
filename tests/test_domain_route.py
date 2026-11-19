@@ -195,6 +195,8 @@ def test_packaged_learned_label_preserves_output_instructions_and_needs_incident
         "A future reading predicts today's label. Return a code and a one-sentence rationale.",
         "A future reading predicts today's label. Return one letter. Include the evidence.",
         "Which audit code applies? Return one letter.",
+        "Which audit code applies to this data? Return one letter.",
+        "Which audit code should I pick? Return one letter.",
         "Our ML incident audit uses X or Y. Return one letter.",
         "Which audit code applies? I have no incident details. Return one letter.",
     ):

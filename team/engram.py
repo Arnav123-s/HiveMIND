@@ -299,9 +299,10 @@ def single_label_form(task):
 
 
 _REQUEST_WORDS = set(("a an the our my this that it its under with for from by of to or and in on at according using uses "
-                      "which what is are should would be applies apply appropriate right correct here please choose "
-                      "classify categorize categorise select assign give me return output answer reply respond just only "
-                      "one single letter word label code category class grade case example scenario item input").split())
+                      "which what is are should would could can i we you be applies apply fits fit appropriate right correct "
+                      "here please choose pick classify categorize categorise select assign give me return output answer "
+                      "reply respond just only one single letter word label code category class grade case example "
+                      "scenario item input data details information").split())
 _NO_CASE = re.compile(r"\b(?:no|without(?: any)?) (?:case |incident |scenario )?(?:details|information|facts|evidence)\b")
 
 
@@ -312,8 +313,7 @@ def _has_case(text, row):
     words = set(re.findall(r"\w+", re.sub(_ASK_CODE, " ", text)))
     metadata = " ".join([row["task"], *row["labels"]]).casefold()
     evidence = words - _REQUEST_WORDS - set(re.findall(r"\w+", metadata))
-    return (len(evidence) >= 2 or any(w.isdecimal() for w in evidence)
-            or any(_mentions(cue.casefold(), w) for w in evidence for cue in row["cues"] if isinstance(cue, str)))
+    return len(evidence) >= 2 or any(w.isdecimal() for w in evidence)
 
 
 def named_label_for(task, member):

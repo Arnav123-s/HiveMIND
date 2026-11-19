@@ -84,7 +84,7 @@ def test_two_learned_conventions_need_the_named_topic_or_unique_evidence(tmp_pat
     assert engram.named_label_for("Do not classify; describe Copper Chart.", "t80") is None
     assert engram.named_label_for("Which label applies under both Copper Chart and Amber Chart?", "t80") is None
     revised = put(tmp_path, "revised", "Amber Chart revised", growth_group="third", **meta)
-    assert engram.named_label_for("Under Amber Chart revised, classify this parcel.", "t80") == revised
+    assert engram.named_label_for("Under Amber Chart revised, classify this torn parcel.", "t80") == revised
     assert engram.named_label_for("Return category for Amber Chart and Amber Chart revised.", "t80") is None
 
 
