@@ -201,7 +201,7 @@ def _body_reply(message, history, name, run_dir, log, base, now, t0):
     guidance = domain_route.guidance()
     if guidance:
         system["content"] += "\n" + guidance
-    from . import domain_advice, engram
+    from . import domain_advice, engram, water_phase
     # A named, qualified label contract can answer a standalone request in its trained one-token form.
     form = engram.single_label_form(message) if not history else None
     named = engram.named_label_for(message, base) if form else None
@@ -213,6 +213,15 @@ def _body_reply(message, history, name, run_dir, log, base, now, t0):
                     "engrams": [{"stage": "answer", "member": base, "edits": [choice["engram"]]}]}
     way, convo = route(base, message, history)
     decision = domain_route.prepare_advice(message, base, system["content"], direct_labels=way == "talk")
+    phase = water_phase.standalone_phase(message, history)
+    if phase and way == "work":
+        # The normal scoped head was consulted above. A rule-derived answer has its own provenance.
+        matched_head = (decision and decision.get("skill") == "water_phase"
+                        and decision.get("accepted") and decision.get("label") == phase)
+        source = "checked_native_label" if matched_head else "equilibrium_rule"
+        out = water_phase.checked_reply(message, phase, source=source)
+        out["seconds"] = round(time.time() - t0)
+        return out
     if way == "talk":
         hint = domain_advice.hint(decision)
         if hint:
@@ -221,8 +230,13 @@ def _body_reply(message, history, name, run_dir, log, base, now, t0):
         text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0,
                             **({"also": also} if also else {})).strip()
         result = {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
+        if phase:
+            source = "checked_native_answer" if water_phase.confirms(phase, text) else "equilibrium_rule"
+            result = water_phase.checked_reply(message, phase, source=source, proposed=text)
+            result["seconds"] = round(time.time() - t0)
         if also:
-            result["engrams"] = [{"stage": "answer", "member": base, "edits": list(also)}]
+            stage = "answer_attempt" if phase and result["water_phase_check"]["source"] == "equilibrium_rule" else "answer"
+            result["engrams"] = [{"stage": stage, "member": base, "edits": list(also)}]
         return result
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
@@ -340,6 +354,10 @@ def main(argv):
                         log=lambda *a: print(*a, flush=True))
         if out.get("saved"):
             foot = f"\n\n<sub>Saved method · {out['saved']['status']} · {out['seconds']} s</sub>"
+        elif out.get("water_phase_check"):
+            source = out["water_phase_check"]["source"]
+            label = "Local equilibrium calculation" if source == "equilibrium_rule" else "Native answer checked against equilibrium"
+            foot = f"\n\n<sub>{label} · {out['seconds']} s</sub>"
         elif out.get("cache_lines"):
             foot = f"\n\n<sub>Local cache-line calculation · {out['seconds']} s</sub>"
         elif out.get("sensor_banks"):

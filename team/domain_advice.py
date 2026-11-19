@@ -51,6 +51,10 @@ def _query(base, system, prompt, row, skill, *, expected=None):
         return {**receipt, "label": label, "model_reply": reply.strip(), "accepted": False,
                 "reason": "contradicts_equilibrium_phase", "checked_phase": expected,
                 "check": "pure_water_equilibrium_1atm"}
+    if expected is not None and label is None:
+        return {**receipt, "label": None, "model_reply": reply.strip(), "accepted": False,
+                "reason": "unrecognized_phase_label", "checked_phase": expected,
+                "check": "pure_water_equilibrium_1atm"}
     return {**receipt, "label": label, "accepted": label is not None}
 
 

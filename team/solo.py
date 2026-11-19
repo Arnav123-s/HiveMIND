@@ -30,7 +30,7 @@ import time
 import tempfile
 from pathlib import Path
 
-from . import cache_lines, config, deliverables, llm, stop, ternary
+from . import cache_lines, config, deliverables, llm, stop, ternary, water_phase
 from .deliverables import wanted
 from .board import Board
 from .guard import Guard
@@ -709,6 +709,9 @@ def agreeing(tries, task):
     access = cache_lines.parse(task)
     if access:
         tries = [candidate for candidate in tries if cache_lines.confirms(access, candidate["answer"])]
+    phase = water_phase.standalone_phase(task)
+    if phase:
+        tries = [candidate for candidate in tries if water_phase.confirms(phase, candidate["answer"])]
     return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
 
 
@@ -831,6 +834,7 @@ def _run(task, run_dir, approve, members):
         else:
             selected_work, selected_delivery = str(staging), checked
     cache_access = cache_lines.parse(task)
+    phase = water_phase.standalone_phase(task)
     if agreed:
         if not file_repairs:
             keep(task, agreed["program"], agreed["answer"])
@@ -853,6 +857,9 @@ def _run(task, run_dir, approve, members):
                 reasons.append(f"Member {i}: " + "; ".join(f"{name}: {why}" for name, why in issues.items()))
         text = ("Not confirmed: the hive could not select a complete file with an independently supported answer."
                 + ("\n\n" + "\n".join(reasons) if reasons else " The members' answers or structured files differ."))
+    elif phase and got:
+        text = (f"The local equilibrium check gives {phase} for these conditions. "
+                "The worker outputs did not independently confirm that phase.")
     elif cache_access and got:
         text = (f"The local aligned byte-range calculation gives {cache_access.details()['count']} cache lines. "
                 "The worker outputs did not independently confirm that count.")
@@ -869,12 +876,15 @@ def _run(task, run_dir, approve, members):
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
     witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)
-                 and (not cache_access or cache_lines.confirms(cache_access, t["answer"]))]
+                 and (not cache_access or cache_lines.confirms(cache_access, t["answer"]))
+                 and (not phase or water_phase.confirms(phase, t["answer"]))]
     agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
                         and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
     if file_repairs:
         agreeing_members = []  # the user received the helper's sorted copy, not a cell's raw output
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
+    if phase:
+        decision["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": phase}
     if cache_access:
         decision["cache_line_check"] = cache_access.details()
     if domain_route.current_domain():

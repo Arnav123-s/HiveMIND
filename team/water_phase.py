@@ -46,3 +46,52 @@ def equilibrium_phase(message):
     if abs(degrees) <= Decimal("0.1") or abs(degrees - 100) <= Decimal("0.1"):
         return None
     return "solid" if degrees < 0 else "gas" if degrees > 100 else "liquid"
+
+
+_PHASES = ('solid', 'liquid', 'gas')
+# Strip optional output formatting before checking that the whole request is a phase question.
+_FORMAT = re.compile(r'\b(?:answer|reply|respond|return|give (?:me )?(?:the )?answer)\s+'
+                     r'(?:(?:in|with|using|as|only|just|exactly|a|an|the|one|single|short|brief)\s+)*'
+                     r'(?:sentence|word|label|phase(?: name)?)\b(?: only)?')
+_PHASE_WORDS = set(('a an the at and is it its of in as on to be will would does do my this that sample '
+                    'pure water distilled ordinary equilibrium physical matter normally stable state phase '
+                    'what which choose pick select classify label applies holds has occupies exists expect '
+                    'give name please only just solid liquid gas or for assume assuming conditions sample '
+                    'under these those standard reading pressurevalue').split())
+
+
+def standalone_phase(message, history=()):
+    """A complete phase-only request. Any history, other deliverable or unspecified condition defers."""
+    if history or not isinstance(message, str) or len(message) > 650 or 'water' not in message.casefold():
+        return None
+    from .domain_intent import requests_choice
+    if not requests_choice(message, 'water_phase', _PHASES):
+        return None
+    text = ' '.join(message.casefold().replace('−', '-').split())
+    if text.count('?') > 1 or not re.search(r'\b(?:pure|distilled) water\b', text):
+        return None
+    expected = equilibrium_phase(text)
+    if expected is None:
+        return None
+    remaining = _FORMAT.sub('', _TEMP.sub(' reading ', _PRESSURE.sub(' pressurevalue ', text)))
+    if re.search(r'[^a-z\s.,?!:;\-]', remaining) or set(re.findall(r'[a-z]+', remaining)) - _PHASE_WORDS:
+        return None
+    return expected
+
+
+def confirms(expected, proposed):
+    """Accept a bare phase or an affirmative phase sentence without conflicting extra claims."""
+    pattern = (r'(?:(?:(?:the |this )?(?:pure |distilled )?water|it|the phase|the state) (?:is|would be) )?'
+               r'(?:in )?(?:the |a |an |its )?(solid|liquid|gas)(?: (?:state|phase))?[.!]?')
+    match = re.fullmatch(pattern, ' '.join(proposed.casefold().split()))
+    return bool(match and match.group(1) == expected)
+
+
+def checked_reply(message, expected, *, source, proposed=None):
+    bare = bool(re.search(r'\b(?:(?:one|single)[ -](?:word|label)|(?:word|label) only|'
+                          r'(?:just|only) (?:the )?(?:phase|label)|choose|pick|select)\b', message, re.I))
+    text = expected if bare and 'sentence' not in message.casefold() else f'The water is {expected}.'
+    detail = dict(method='pure_water_equilibrium_1atm', phase=expected, source=source)
+    if proposed is not None:
+        detail['model_answer'] = proposed[:500]
+    return dict(text=text, worked=False, agreed=None, task='', dir='', files=[], seconds=0, water_phase_check=detail)
