@@ -171,7 +171,10 @@ def row_pieces(row):
     return 9 + sum(pieces(m["content"]) + 5 for m in row["messages"]) + pieces(row["output"])
 
 
-def lean(task, program, head=3, tail=2):
+ONE_LINE, ONE_HEAD, ONE_TAIL = 300, 70, 40  # a block of one line longer than ONE_LINE characters is cut to head * ONE_HEAD first and tail * ONE_TAIL last characters
+
+
+def lean(task, program, head=3, tail=2, cut_one=False):
     """The task as a lesson's rows show it. A block of data the task gives (team/tools/sandbox.given) that the program
     does not copy in, because it reads the file the runtime saves, keeps only its first and last lines and a line
     that says how many are left out between: what is taught is the program, which never needs the rest. A log of 16
@@ -179,6 +182,12 @@ def lean(task, program, head=3, tail=2):
     from team.tools.sandbox import given
     for b in given(task):
         lines = b["text"].splitlines()
+        if len(lines) == 1 and len(lines[0]) > ONE_LINE and cut_one and lines[0].strip() not in program:
+            # one long line (a message, a text): its start and its end, and how many characters are left out between
+            ln, a, z = lines[0], head * ONE_HEAD, tail * ONE_TAIL
+            task = task.replace(ln, ln[:a].rsplit(" ", 1)[0] + f" ... ({len(ln) - a - z} more characters like these) ... "
+                                + (ln[len(ln) - z:].split(" ", 1)[-1] if z else ""), 1)
+            continue
         if len(lines) > head + tail + 2 and not any(ln.strip() in program for ln in lines if len(ln.strip()) > 12):
             cut = lines[:head] + [f"... ({len(lines) - head - tail} more lines like these) ..."] + lines[len(lines) - tail:]
             task = task.replace(b["text"], "\n".join(cut), 1)
@@ -195,8 +204,9 @@ def rows(les, wrong=None, today=None):
     fenced = f"```python\n{les['program'].strip()}\n```"
     base = {"task": les["task"], "kind": les["kind"], "seed": les["rseed"], "who": "lesson", "member": 0, "lesson": les["maker"]}  # noqa: E501
     # a block of data the program reads from its file keeps its first three and last two lines in the prompt; where the
-    # row is then over LIMIT (an access log or JSON lines: 40 to 60 pieces a line), fewer: its first and last, its first (T4)
-    for keep in ((3, 2), (1, 1), (1, 0)):
+    # row is then over LIMIT (an access log or JSON lines: 40 to 60 pieces a line), fewer: its first and last, its first (T4);
+    # one long line (a message to read) is then cut to its first and last words
+    for keep in ((3, 2), (3, 2, True), (1, 1, True), (1, 0, True)):
         head = [{"role": "system", "content": short.format(today=today or time.strftime("%Y-%m-%d (%A)"))},
                 {"role": "user", "content": f"TASK: {lean(les['task'], les['program'], *keep)}"}]
         out = [base | {"type": "first", "messages": head, "output": fenced},

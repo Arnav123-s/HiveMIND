@@ -1,58 +1,46 @@
 # NEXT SESSION: the one current handoff
 
-Written 2026-11-18 23:40 UTC by B (session `session_014dX1CNKMMabZ93Sdxn3fSK`, branch
-`claude/vigilant-brahmagupta-rz3ab7`). Whoever holds the loop keeps this page true. Older handoffs are in
-`docs/history/`. How to work is in `CLAUDE.md`, and the whole story is in `docs/OVERVIEW.md`. Start with
+Written 2026-11-19 21:15 UTC by D (session `session_014dX1CN76uUHTTTA9X1ZCHA`, branch
+`claude/blissful-mccarthy-32ekqy`), the loop holder since B handed over. Whoever holds the loop keeps this page true. Older
+handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole story is in `docs/OVERVIEW.md`. Start with
 `python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
 
-## Where the hive stands (2026-11-18 23:40 UTC)
+## Where the hive stands (2026-11-19 21:15 UTC)
 
-- **Newest record: g47** (run 44313055326), kept at a tie: 47 against 47 of 64. Easy 31/32, hard 16/32, held
-  out 0 of 6 (pulse). First try 0.39. Talk 6.2 of 10 (route 6, fact 7, earlier 7, time 5). 5.2 hours.
-- **Five generations were recorded with nobody's hand** (g42 to g45, g47). The g46 run was a cancelled
-  duplicate from the old cron.
-- **g48 is running** (run 44371926721, started 18:38 UTC; its record is due about 00:00 UTC). It runs with the
-  strict gate (after >= before) and the fixed reads.
-- **g49 will be the first generation with all of PR 106:**
-  - the fixed held-out exam (30 tasks);
-  - the talk exam's 45-minute budget;
-  - the talk smoke;
-  - g45's cause fixes;
-  - the checked deliveries of PR 105.
-- **Bars against g47:** none of the five is met. Hard 0.74 (≥ 0.78), held out 0 (half), first try 0.39 (0.7),
-  talk 6.2 (8), hours 5.2 (3).
+- **Newest record: g51**, kept 50 against 49 of 64. **Two bars met for the first time:** hard kinds 0.79 (bar 0.78)
+  and talk 8.2 of 10 (bar 8). Not met: held out 0 (half), first try 0.45 (0.7; old kinds 0.72, new kinds 0.25),
+  hours 6.5 (3). g49 kept 49/64, g50 dropped (54 against 55).
+- **g52 is running** (run 44594712108, started 19:05 UTC, record about 01:30 UTC). It runs main before PRs 112-114.
+- **g53 is the first with PRs 113 and 114** (g48's practice fixes, the three text kinds' rows).
 
 ## In flight, and who has it
 
 | What | Where | What to do |
 |---|---|---|
-| g48's record | Actions run 44371926721 | Read it; check that g49 started by itself; group failures by cause (V1 starts at g49) |
-| B's scheduled wake | 2026-11-19 00:15 UTC, into B's session | B reads g48. If a newer session holds the loop by then, B hands over and stops |
+| g52's record | Actions run 44594712108 | Read it; group its failures by cause beside g48's (the script `g48_causes.py` was the model) |
+| R1: a lone right member not lost | D's helper, a worktree | Judge the replay of g48's 5 lost tasks + h10004806_00; nothing wrong newly delivered; merge |
+| D's scheduled wake | 2026-11-20 01:45 UTC | D reads g52 |
 
 ## Open, in order (the board in `docs/PLAN.md` has each row)
 
-1. **V1:** prove g45's cause fixes on g49. Group g49's failures by cause from its gate artifacts and set them
-   beside g45's:
-   - module kinds stopping on the same error: 6;
-   - answer shape: 4;
-   - a right member lost at agreement: 3, plus 3 in practice;
-   - a lesson template pasted onto another question: 2;
-   - dates and header rows: 2;
-   - one-line data not given: 1;
-   - site walk: 1.
-2. **Y1:** the hive keeps its own verified programs (practice → the fieldwork bank) and answers from them before
-   calling members. This is where the hive starts to learn from its own work, not only from hand-made lessons.
-3. **H1:** held-out kinds by cause, on the fixed exam (from g49).
-4. **F1:** first try by cause. Practice now records old and new kinds apart. Compound tasks were 48 of 96 with
-   8 right at g45.
-5. **A1:** talk routing, 6 of 10. "What's 8 plus 4?" was sent to work.
-6. **S1:** hours, 5.2 against 3. The gate grows by about 10 to 25 minutes from g49.
-7. **G1:** also compare against the best body (g41, 58/64).
-8. **C1 and J1:** rows too long for the 32-bit runners. No wait on Colab.
-9. **D1:** saved methods live in the GitHub chat (the WebAssembly runtime on talk.yml, and `HIVE_BANK`).
-10. **P1, W2, R1, R3, M2, T3.**
+1. **R1:** a lone right member is lost when the other two crash: 5 of 11 failed hard tasks at g48 (helper on it).
+2. **CX:** the Codex side's `improve/verified-learning-loop` in small PRs, never whole (P1 done, PR 112). Next P3
+   (schedule solver, off the path), P6 (delivered-answer checks, after a replay), P5a (engram fixes, engrams off).
+   Hold back: engrams on by default and the subject hint in every exam prompt (only as one flagged generation);
+   the saved-program bank in public chat (the owner's call, and its wrong-number problem first). Do not take its
+   NEXT_SESSION/OVERVIEW edits (they say memory is on).
+3. **H1:** held-out kinds by cause, on the fixed exam: 0 at g49-g51; the bar is half. The biggest gap.
+4. **S1:** hours, 6.5 against 3 (train 219 minutes at g48).
+5. **F1:** first try on new kinds (0.25 at g51), after g53 shows what PR 113 moved.
+6. **V1:** g45's cause fixes: at g48, same-error stops fell 6 -> 2, dates/header and one-line data 2+1 -> 0;
+   lesson templates pasted 2 -> 3, lone right member 3 -> 5 (R1).
+7. **Y1, A1, G1, C1 (bank, calc, lru, machine, schedule still over 508), J1, D1, P1, W2, R3, M2, T3.**
 
 ## Done, do not redo
+
+- **19 Nov (D):** main's tests green and the knowledge test isolated (PR 112, CX-P1); g48's four practice causes
+  (PR 113, G48F); why K2 kinds had no lessons, three text kinds' rows fixed (PR 114, K2L). 6 held-out K2 kinds stay
+  untaught on purpose; 6 'none made' kinds are left to the hive by design.
 
 - **18 Nov evening:**
   - the strict gate and the read fixes (PR 102);
