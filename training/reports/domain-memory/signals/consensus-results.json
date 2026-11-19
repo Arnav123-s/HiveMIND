@@ -1,0 +1,824 @@
+{
+  "retrospective": {
+    "inputs": "566a530032ab75138fd81807b3fb81e57c025d0c06723998152f2f60a375b7d7",
+    "keys": "05544d445bb2794df2d3f64d80f4b42fc52ce38a8240be6221cf06d9893c01e6",
+    "centroid_training": {
+      "examples": 316,
+      "counts": {
+        "abstain": 64,
+        "coding": 42,
+        "computer_engineering": 42,
+        "conversation": 42,
+        "machine_learning": 42,
+        "math": 42,
+        "physical_science": 42
+      },
+      "calibration": 67,
+      "cut": 0.12,
+      "margin": 0.0,
+      "identical_public_training_messages": [],
+      "identical_public_history_turns": []
+    },
+    "metrics": {
+      "pair": {
+        "correct_advice": 23,
+        "wrong_on_supported": 2,
+        "spurious_on_open": 1,
+        "supported_withheld": 23,
+        "open_correct": 11,
+        "exact": 34,
+        "issued": 26
+      },
+      "centroid": {
+        "correct_advice": 26,
+        "wrong_on_supported": 7,
+        "spurious_on_open": 1,
+        "supported_withheld": 15,
+        "open_correct": 11,
+        "exact": 37,
+        "issued": 34
+      },
+      "consensus": {
+        "correct_advice": 20,
+        "wrong_on_supported": 1,
+        "spurious_on_open": 0,
+        "supported_withheld": 27,
+        "open_correct": 12,
+        "exact": 32,
+        "issued": 21
+      },
+      "by_group": {
+        "difficult": {
+          "correct_advice": 2,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 10,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 2
+        },
+        "irrelevant_context": {
+          "correct_advice": 4,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 2,
+          "open_correct": 0,
+          "exact": 4,
+          "issued": 4
+        },
+        "missing_reference": {
+          "correct_advice": 0,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 0,
+          "open_correct": 2,
+          "exact": 2,
+          "issued": 0
+        },
+        "ordinary": {
+          "correct_advice": 9,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 3,
+          "open_correct": 0,
+          "exact": 9,
+          "issued": 9
+        },
+        "override": {
+          "correct_advice": 2,
+          "wrong_on_supported": 1,
+          "spurious_on_open": 0,
+          "supported_withheld": 3,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 3
+        },
+        "underdetermined": {
+          "correct_advice": 0,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 0,
+          "open_correct": 4,
+          "exact": 4,
+          "issued": 0
+        },
+        "unrelated": {
+          "correct_advice": 0,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 0,
+          "open_correct": 6,
+          "exact": 6,
+          "issued": 0
+        },
+        "useful_context": {
+          "correct_advice": 3,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 9,
+          "open_correct": 0,
+          "exact": 3,
+          "issued": 3
+        }
+      },
+      "by_domain": {
+        "coding": {
+          "correct_advice": 2,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 6,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 2
+        },
+        "math": {
+          "correct_advice": 4,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 4,
+          "open_correct": 0,
+          "exact": 4,
+          "issued": 4
+        },
+        "physical_science": {
+          "correct_advice": 2,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 6,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 2
+        },
+        "conversation": {
+          "correct_advice": 5,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 3,
+          "open_correct": 0,
+          "exact": 5,
+          "issued": 5
+        },
+        "machine_learning": {
+          "correct_advice": 2,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 6,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 2
+        },
+        "computer_engineering": {
+          "correct_advice": 5,
+          "wrong_on_supported": 1,
+          "spurious_on_open": 0,
+          "supported_withheld": 2,
+          "open_correct": 0,
+          "exact": 5,
+          "issued": 6
+        }
+      },
+      "relation": {
+        "mutual_abstention": 23,
+        "named_agreement": 21,
+        "disagreement": 16
+      },
+      "correct_filtered": [
+        "q011",
+        "q012",
+        "q019"
+      ],
+      "wrong_filtered": [
+        "q040",
+        "q053"
+      ],
+      "wrong_retained": [
+        "q048"
+      ],
+      "advisory_criterion": true
+    },
+    "predictions": {
+      "q001": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q002": {
+        "pair": "coding",
+        "centroid": "coding",
+        "consensus": "coding"
+      },
+      "q003": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q004": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q005": {
+        "pair": null,
+        "centroid": "coding",
+        "consensus": null
+      },
+      "q006": {
+        "pair": null,
+        "centroid": "coding",
+        "consensus": null
+      },
+      "q007": {
+        "pair": null,
+        "centroid": "physical_science",
+        "consensus": null
+      },
+      "q008": {
+        "pair": "coding",
+        "centroid": "coding",
+        "consensus": "coding"
+      },
+      "q009": {
+        "pair": "math",
+        "centroid": "math",
+        "consensus": "math"
+      },
+      "q010": {
+        "pair": "math",
+        "centroid": "math",
+        "consensus": "math"
+      },
+      "q011": {
+        "pair": "math",
+        "centroid": null,
+        "consensus": null
+      },
+      "q012": {
+        "pair": "math",
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "q013": {
+        "pair": null,
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "q014": {
+        "pair": null,
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "q015": {
+        "pair": "math",
+        "centroid": "math",
+        "consensus": "math"
+      },
+      "q016": {
+        "pair": "math",
+        "centroid": "math",
+        "consensus": "math"
+      },
+      "q017": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q018": {
+        "pair": "physical_science",
+        "centroid": "physical_science",
+        "consensus": "physical_science"
+      },
+      "q019": {
+        "pair": "physical_science",
+        "centroid": null,
+        "consensus": null
+      },
+      "q020": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q021": {
+        "pair": null,
+        "centroid": "physical_science",
+        "consensus": null
+      },
+      "q022": {
+        "pair": "physical_science",
+        "centroid": "physical_science",
+        "consensus": "physical_science"
+      },
+      "q023": {
+        "pair": null,
+        "centroid": "coding",
+        "consensus": null
+      },
+      "q024": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q025": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "q026": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "q027": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "q028": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q029": {
+        "pair": null,
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "q030": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "q031": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "q032": {
+        "pair": null,
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "q033": {
+        "pair": "machine_learning",
+        "centroid": "machine_learning",
+        "consensus": "machine_learning"
+      },
+      "q034": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q035": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q036": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q037": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q038": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q039": {
+        "pair": "machine_learning",
+        "centroid": "machine_learning",
+        "consensus": "machine_learning"
+      },
+      "q040": {
+        "pair": "conversation",
+        "centroid": "coding",
+        "consensus": null
+      },
+      "q041": {
+        "pair": "computer_engineering",
+        "centroid": "computer_engineering",
+        "consensus": "computer_engineering"
+      },
+      "q042": {
+        "pair": "computer_engineering",
+        "centroid": "computer_engineering",
+        "consensus": "computer_engineering"
+      },
+      "q043": {
+        "pair": "computer_engineering",
+        "centroid": "computer_engineering",
+        "consensus": "computer_engineering"
+      },
+      "q044": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q045": {
+        "pair": null,
+        "centroid": "computer_engineering",
+        "consensus": null
+      },
+      "q046": {
+        "pair": "computer_engineering",
+        "centroid": "computer_engineering",
+        "consensus": "computer_engineering"
+      },
+      "q047": {
+        "pair": "computer_engineering",
+        "centroid": "computer_engineering",
+        "consensus": "computer_engineering"
+      },
+      "q048": {
+        "pair": "physical_science",
+        "centroid": "physical_science",
+        "consensus": "physical_science"
+      },
+      "q049": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q050": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q051": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q052": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q053": {
+        "pair": "math",
+        "centroid": null,
+        "consensus": null
+      },
+      "q054": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q055": {
+        "pair": null,
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "q056": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q057": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q058": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q059": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "q060": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      }
+    }
+  },
+  "confirmation": {
+    "inputs": "4d4f7155e539e0cac486fcd6b8018086f5f1bf4b06d8a3cc16f8266be17f3cae",
+    "keys": "e34037f844cd8fd47ca35b5ca79c8364fbfe73f4ab49dee5af67061004182dae",
+    "centroid_training": {
+      "examples": 316,
+      "counts": {
+        "abstain": 64,
+        "coding": 42,
+        "computer_engineering": 42,
+        "conversation": 42,
+        "machine_learning": 42,
+        "math": 42,
+        "physical_science": 42
+      },
+      "calibration": 67,
+      "cut": 0.12,
+      "margin": 0.0,
+      "identical_public_training_messages": [],
+      "identical_public_history_turns": []
+    },
+    "metrics": {
+      "pair": {
+        "correct_advice": 8,
+        "wrong_on_supported": 0,
+        "spurious_on_open": 0,
+        "supported_withheld": 16,
+        "open_correct": 6,
+        "exact": 14,
+        "issued": 8
+      },
+      "centroid": {
+        "correct_advice": 9,
+        "wrong_on_supported": 2,
+        "spurious_on_open": 0,
+        "supported_withheld": 13,
+        "open_correct": 6,
+        "exact": 15,
+        "issued": 11
+      },
+      "consensus": {
+        "correct_advice": 7,
+        "wrong_on_supported": 0,
+        "spurious_on_open": 0,
+        "supported_withheld": 17,
+        "open_correct": 6,
+        "exact": 13,
+        "issued": 7
+      },
+      "by_group": {
+        "difficult": {
+          "correct_advice": 1,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 5,
+          "open_correct": 0,
+          "exact": 1,
+          "issued": 1
+        },
+        "open": {
+          "correct_advice": 0,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 0,
+          "open_correct": 6,
+          "exact": 6,
+          "issued": 0
+        },
+        "ordinary": {
+          "correct_advice": 5,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 1,
+          "open_correct": 0,
+          "exact": 5,
+          "issued": 5
+        },
+        "override": {
+          "correct_advice": 1,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 5,
+          "open_correct": 0,
+          "exact": 1,
+          "issued": 1
+        },
+        "useful_context": {
+          "correct_advice": 0,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 6,
+          "open_correct": 0,
+          "exact": 0,
+          "issued": 0
+        }
+      },
+      "by_domain": {
+        "coding": {
+          "correct_advice": 2,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 2,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 2
+        },
+        "math": {
+          "correct_advice": 1,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 3,
+          "open_correct": 0,
+          "exact": 1,
+          "issued": 1
+        },
+        "physical_science": {
+          "correct_advice": 0,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 4,
+          "open_correct": 0,
+          "exact": 0,
+          "issued": 0
+        },
+        "conversation": {
+          "correct_advice": 2,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 2,
+          "open_correct": 0,
+          "exact": 2,
+          "issued": 2
+        },
+        "machine_learning": {
+          "correct_advice": 1,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 3,
+          "open_correct": 0,
+          "exact": 1,
+          "issued": 1
+        },
+        "computer_engineering": {
+          "correct_advice": 1,
+          "wrong_on_supported": 0,
+          "spurious_on_open": 0,
+          "supported_withheld": 3,
+          "open_correct": 0,
+          "exact": 1,
+          "issued": 1
+        }
+      },
+      "relation": {
+        "named_agreement": 7,
+        "mutual_abstention": 18,
+        "disagreement": 5
+      },
+      "correct_filtered": [
+        "v16"
+      ],
+      "wrong_filtered": [],
+      "wrong_retained": [],
+      "advisory_criterion": false
+    },
+    "predictions": {
+      "v01": {
+        "pair": "coding",
+        "centroid": "coding",
+        "consensus": "coding"
+      },
+      "v02": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v03": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v04": {
+        "pair": "coding",
+        "centroid": "coding",
+        "consensus": "coding"
+      },
+      "v05": {
+        "pair": "math",
+        "centroid": "math",
+        "consensus": "math"
+      },
+      "v06": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v07": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v08": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v09": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v10": {
+        "pair": null,
+        "centroid": "physical_science",
+        "consensus": null
+      },
+      "v11": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v12": {
+        "pair": null,
+        "centroid": "conversation",
+        "consensus": null
+      },
+      "v13": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "v14": {
+        "pair": "conversation",
+        "centroid": "conversation",
+        "consensus": "conversation"
+      },
+      "v15": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v16": {
+        "pair": "conversation",
+        "centroid": null,
+        "consensus": null
+      },
+      "v17": {
+        "pair": "machine_learning",
+        "centroid": "machine_learning",
+        "consensus": "machine_learning"
+      },
+      "v18": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v19": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v20": {
+        "pair": null,
+        "centroid": "coding",
+        "consensus": null
+      },
+      "v21": {
+        "pair": "computer_engineering",
+        "centroid": "computer_engineering",
+        "consensus": "computer_engineering"
+      },
+      "v22": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v23": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v24": {
+        "pair": null,
+        "centroid": "computer_engineering",
+        "consensus": null
+      },
+      "v25": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v26": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v27": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v28": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v29": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      },
+      "v30": {
+        "pair": null,
+        "centroid": null,
+        "consensus": null
+      }
+    }
+  },
+  "sources": {
+    "team/signals.py": "51d769ee1c5e2dfa40c5820c17e8b0107d8536a7640aaadfd57f801eab44a626",
+    "team/domain_consensus.py": "6b60f40f92422598d079ff75f7e2145c8c734d495edf5e808a675004921b3387",
+    "team/assets/request-signals-v1.json.gz": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+    "team/assets/domain-centroid-v1.json.gz": "1bdef5f3dffdb8e5edfe756d02cb762782a9c4fa3497e0eabae88659d57e83a3"
+  }
+}

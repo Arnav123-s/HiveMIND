@@ -1,0 +1,312 @@
+[coding]
+Debug this Python function that raises a TypeError on empty lists.
+Write a JavaScript function to sort an array of objects.
+My Rust compiler complains about a borrowed value and lifetimes.
+How should I structure a SQL query with two joins?
+Refactor this recursive function to use iteration and a stack.
+Review my pull request for a missing edge case.
+Explain this traceback and fix my index out of range exception.
+The unit tests fail when I mock the database call.
+Write a regex to parse these filenames in a Bash script.
+Help me implement binary search on a sorted list.
+Design a REST API endpoint in Flask with pagination.
+The app throws a null pointer exception in Java.
+Diagnose a memory leak in this C++ program.
+Why does my async coroutine block the event loop?
+Convert this JSON response to a Python dictionary.
+I want a migration for a PostgreSQL database table.
+What is the time complexity of this algorithm?
+My CSS grid breaks on narrow screens.
+Write an HTML form and a React submit handler.
+How do I merge a git branch with a conflict?
+Improve the readability of this TypeScript code.
+Generate a small command line tool in Go to rename files.
+Optimize my recursive Fibonacci implementation with memoization.
+Why is my API returning a 404 in Django?
+Implement a linked list with insert and delete methods.
+How do I create a docker container for a web application?
+What does this shell script do and why does the pipe fail?
+Count duplicate words in a string using Python.
+I need a test fixture for this parser.
+I get a KeyError loading this YAML config file.
+Walk through this source code line by line.
+Write a program to calculate a mortgage payment.
+Can you fix a syntax error in my for loop?
+Repair my npm package dependency conflict.
+What does the callback return in this function?
+How can I make this code thread safe?
+Why do my class methods share mutable default arguments?
+Implement a queue in C without allocating a second buffer.
+[math]
+Find the derivative of x squared plus x cubed.
+Solve a quadratic equation with two real roots.
+What is 18 percent of 42?
+Simplify this fraction and give the ratio in lowest terms.
+How many different permutations are there?
+Calculate the probability of drawing two red cards.
+Prove that the sum of two odd integers is even.
+Integrate the polynomial from zero to three.
+Determine the eigenvalues and eigenvectors of this matrix.
+Explain the difference between mean median and mode.
+Find the area and circumference of a circle.
+Use the Pythagorean theorem to find the missing side.
+Solve a pair of simultaneous linear equations.
+What is the slope of this straight line?
+Calculate the determinant of a three by three matrix.
+Convert three quarters into a percentage.
+How do I factor this expression into two binomials?
+Evaluate this limit as n tends to infinity.
+Find the standard deviation of the sample.
+Give a proof by induction for the formula.
+Use Bayes' theorem to update the probability.
+What is the greatest common divisor of 36 and 48?
+Explain a trigonometric identity with sine and cosine.
+Calculate the expected value from this distribution.
+Find a shortest path on a weighted graph by hand.
+If the price drops 15% from 240 how much remains?
+Calculate 17 * 24 + 8 / 2.
+Multiply 153 by 29 without a calculator.
+A triangle has angles 50 and 60 degrees; find the third.
+What is a prime number and how do you factor 91?
+Solve for x in 3x + 7 = 22.
+Find the volume of a cube with sides of length 7.
+What is the chance of rolling doubles with two dice?
+Can you derive the geometric series formula?
+What is the antiderivative of ln(x)?
+Compute the dot product of two vectors.
+How do compound interest and exponential growth work mathematically?
+Is the set of integers countably infinite?
+[physical_science]
+Why does water boil at a lower temperature at altitude?
+Estimate gravitational acceleration from a falling object's motion.
+Explain light refraction through glass with Snell's law.
+What happens to gas pressure when volume doubles?
+Calculate kinetic energy for a moving mass.
+Why do magnets attract and repel?
+Explain heat conduction convection and radiation.
+What causes the seasons and the tilt of Earth's axis?
+How does a wave change speed in a different medium?
+Balance this chemical equation for combustion.
+Explain photons and wave particle duality.
+Measure the density of a mineral from volume and mass.
+What does Newton's second law of motion mean?
+Where does friction convert mechanical energy into heat?
+Explain the Doppler shift of sound from a moving train.
+How does the moon produce ocean tides?
+Why does an ice cube float in liquid water?
+Calculate the momentum of two colliding carts.
+What color of light has the shortest wavelength?
+Describe how an acid and base react.
+How do atoms form ionic or covalent chemical bonds?
+Why is the daytime sky blue but sunset red?
+Explain the relation between entropy and temperature.
+What is angular momentum in a circular orbit?
+How is rain formed and why does condensation release heat?
+Explain resonance in a vibrating string.
+How does a lever multiply force?
+What is the difference between oxidation and reduction in chemistry?
+Explain the electromagnetic spectrum from radio to X-rays.
+How far does a projectile travel if we ignore air resistance?
+What is a black hole and why can't light escape it?
+Explain nucleation during freezing.
+How do pressure gradients produce wind in the atmosphere?
+Why does a pendulum swing with a constant period?
+What happens when salt dissolves in water?
+Calculate the work done by a force over a distance.
+Why is a lunar eclipse visible from some locations?
+What does the second law of thermodynamics predict?
+[conversation]
+Help me write a friendly thank-you note to my neighbor.
+I'm feeling anxious about calling my friend; what can I say?
+Make this apology sound sincere without overexplaining.
+Could you draft a polite email declining an invitation?
+How should I start a conversation with someone new?
+Hi there, how are you doing today?
+I need a kind way to ask my roommate to be quieter.
+Can you help me cheer up my sister after a rough day?
+Rephrase this message in a warm and professional tone.
+Help me practice a difficult conversation with my manager.
+What do I say in a condolence card?
+Give me some small talk ideas for meeting the neighbors.
+I feel overwhelmed and just want someone to listen.
+Write a short congratulations message for a promotion.
+Can we chat for a minute? I had a long day.
+Help me resolve a misunderstanding with a colleague.
+How can I set a boundary without sounding rude?
+Write a birthday greeting for a close friend.
+How can I explain my feelings without blaming my partner?
+Draft a thoughtful response to this text from my aunt.
+I miss my old friends and don't know how to reconnect.
+Help me ask my teacher for an extension politely.
+I need a tactful way to say no to a dinner invitation.
+Can you suggest a casual icebreaker for a team meeting?
+Write an encouraging note for someone starting a new job.
+I want to express gratitude to my math tutor.
+I need a kind message for the engineer whose project was canceled.
+Just wanted to say hello and see how you're doing.
+Help me introduce myself to the new group.
+Can you soften this complaint without changing its meaning?
+I'm nervous about my first day; can we talk it through?
+How should I respond to someone who is grieving?
+Hello! Good morning.
+Write a short message inviting my friends to a picnic.
+What can I say when a coworker apologizes to me?
+I need to reschedule politely without giving a personal reason.
+Help me tell a joke to break the ice.
+Draft a brief farewell note for our teammate.
+[machine_learning]
+My neural network training loss decreases but validation loss rises.
+How do I fine tune a language model with LoRA?
+Explain backpropagation and gradient descent in neural networks.
+Measure precision recall and F1 for my classifier.
+What are embeddings and how do transformers use attention?
+Split a dataset into training validation and test folds.
+How do I handle class imbalance when training a model?
+Should I use Adam or SGD for optimization?
+Explain overfitting and how dropout helps regularization.
+Tune hyperparameters for a random forest classifier.
+My regression model has high bias and variance.
+What is the difference between supervised and unsupervised learning?
+Evaluate a convolutional neural net on unseen images.
+Calculate the cross entropy loss for this softmax output.
+Why do my gradients vanish during training?
+Choose a learning rate schedule and batch size.
+Can I distill a large language model into a smaller model?
+What causes data leakage in cross validation?
+Train a reinforcement learning policy using a reward signal.
+What does a confusion matrix tell me about predictions?
+How can I improve generalization on a shifted distribution?
+Compare logistic regression and support vector machines.
+Fine-tune a pretrained encoder on labeled sentences.
+Why are my model predictions badly calibrated?
+How does tokenization affect a transformer context window?
+My training data has duplicate samples between splits.
+What is a neural net activation function like ReLU?
+Choose a clustering method for unlabeled customer vectors.
+Explain the difference between inference and training in an LLM.
+Why does my PyTorch training loop produce NaN gradients?
+How do I evaluate a RAG retrieval system?
+How do I prevent catastrophic forgetting when finetuning?
+Can contrastive learning improve these representations?
+Should my binary classifier use focal loss?
+Diagnose bias in a machine learning dataset.
+My validation accuracy plateaus after four epochs.
+How do mixture of experts route tokens?
+What does temperature do to language model generations?
+[computer_engineering]
+Why does a direct mapped CPU cache miss on this access pattern?
+Design a digital circuit with a flip-flop and clock signal.
+Explain a processor instruction pipeline and branch hazards.
+How do I pick a pull-up resistor for an I2C bus?
+Read the timing diagram for an SPI peripheral.
+What causes metastability in a clock domain crossing?
+How much current does this microcontroller pin safely source?
+Estimate bandwidth and latency for DDR memory.
+Why does an FPGA design fail its setup and hold timing?
+What is the difference between SRAM and DRAM hardware?
+Explain virtual memory translation and TLB misses.
+Wire a voltage divider into an ADC input.
+How does a logic gate implement NAND with transistors?
+Compare ARM and RISC-V instruction set architecture.
+Why does a switch need hardware debouncing?
+The UART serial line has framing errors at this baud rate.
+Estimate power consumption for an embedded sensor board.
+Design a clock divider in Verilog.
+How does an interrupt controller prioritize peripheral events?
+What is cache coherency between processor cores?
+Estimate heat dissipation of a MOSFET switching circuit.
+Which oscilloscope probe should I use on this PCB?
+Explain arbitration on a shared hardware bus.
+Why does a synchronizer need two registers?
+How do capacitors decouple a power supply rail?
+What do the ALU and control unit of a CPU do?
+Why does adding pipeline stages affect clock frequency?
+How should I lay out a printed circuit board trace?
+What is a GPIO pin on a Raspberry Pi?
+Estimate the resolution of a 12-bit analog to digital converter.
+How does motherboard firmware locate the boot device?
+What is an interrupt service routine in embedded hardware?
+How can I count clock cycles for this assembly instruction?
+Explain combinational versus sequential digital logic.
+How do DMA transfers reduce load on a processor?
+Why do I see ringing on a high speed signal trace?
+How do I choose between a microprocessor and microcontroller?
+What happens to the processor cache when two cores share a line?
+[follow]
+Can you give another example?
+What about the second one?
+Can you show me that step by step?
+Explain that part again in simpler terms.
+Could you continue from where you left off?
+Why is that the result?
+Apply the same idea to the other case.
+What if I change the first value?
+Could you walk me through your last answer?
+Show how you got there.
+Can you say more about the previous point?
+Let's try the other approach you mentioned.
+Which of those two options would you choose?
+Why does it work that way?
+Can you make the previous answer shorter?
+Use the same assumptions as before.
+I didn't follow the last bit. Could you clarify?
+What would happen in the opposite case?
+Can we return to the first part of my question?
+Go on.
+What if it doubles?
+How would you check your earlier answer?
+Can you break it down for a beginner?
+What does that mean in practice?
+Do the same for the next one.
+What happens if I swap them?
+Is that always true?
+How would I use that idea?
+Please expand the middle step.
+Could you try an easier version of that?
+Explain it again.
+Would the same reasoning still apply?
+What changes if I increase it?
+Can you finish the previous example?
+Why that one?
+Could you verify the result from before?
+How do I apply this to my example?
+Can you elaborate?
+[other]
+Plan a weekend itinerary for Lisbon.
+Who won the football match yesterday?
+What ingredients can replace butter in a cake?
+Find a restaurant nearby that's open tonight.
+How do I renew my passport?
+Translate good morning into Italian.
+Recommend a lightweight rain jacket under fifty dollars.
+List the capital cities of South America.
+What time is it in Tokyo right now?
+Where can I find today's weather forecast?
+How do I prune a rose bush in winter?
+Tell me about the history of the Roman Empire.
+How do I change my mailing address?
+Suggest a recipe for a quick vegetarian lunch.
+What do I pack for a camping trip?
+What is the best sunscreen for sensitive skin?
+Which trains run between London and Edinburgh?
+How do I get a refund on my train ticket?
+What's the latest news about the election?
+Which streaming service carries this movie?
+Pick a name for my new puppy.
+Make a shopping list for dinner for six people.
+How often should I water an orchid?
+List the rules for returning a rental car.
+Estimate the shipping cost for these packages.
+Help me book a table at a cafe.
+Which documents are usually required for a visa?
+Are these leaves safe for my cat to eat?
+What does my tenancy agreement say about pets?
+Who painted the Mona Lisa?
+Recommend a mystery novel to read this summer.
+What coffee grinder fits on a small counter?
+Could you book an appointment for me?
+Make a weekly cleaning schedule.
+Where can I buy replacement shoelaces?
+Find the closest pharmacy.
+Summarize this movie's plot.
+When did the first modern Olympic Games take place?

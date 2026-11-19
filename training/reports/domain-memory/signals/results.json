@@ -1,0 +1,3711 @@
+{
+  "cases_sha256": "566a530032ab75138fd81807b3fb81e57c025d0c06723998152f2f60a375b7d7",
+  "keys_sha256": "05544d445bb2794df2d3f64d80f4b42fc52ce38a8240be6221cf06d9893c01e6",
+  "metadata": {
+    "classifier": {
+      "examples": 316,
+      "counts": {
+        "abstain": 64,
+        "coding": 42,
+        "computer_engineering": 42,
+        "conversation": 42,
+        "machine_learning": 42,
+        "math": 42,
+        "physical_science": 42
+      },
+      "calibration": 67,
+      "cut": 0.12,
+      "margin": 0.0,
+      "identical_public_training_messages": [],
+      "identical_public_history_turns": []
+    },
+    "intervention_loop_seconds": 0.06511,
+    "normal_calls": 60,
+    "normal_cpu_wall_seconds": 0.02575,
+    "cases": 60,
+    "sources": {
+      "team/signals.py": "51d769ee1c5e2dfa40c5820c17e8b0107d8536a7640aaadfd57f801eab44a626",
+      "training/signals/requests.txt": "1dad7324c5d62f09fdfdac527664b67b39e8f13267b772419c2bbf3ff8d13a5a",
+      "training/signals/topics.txt": "88504d6b1c1ebba349ad705bfbf591b7446f35629e4eb5503b1a6d53b594b2b1",
+      "training/signals/train.py": "5f200f9b291db36da2286ba9948416f8cd887dde89218ee7c999f7c92eee34b2",
+      "team/assets/request-signals-v1.json.gz": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350"
+    }
+  },
+  "metrics": {
+    "no_advice": {
+      "exact": 12,
+      "known_correct": 0,
+      "known_abstentions": 48,
+      "known_wrong_route": 0,
+      "unnecessary_advice": 0,
+      "emitted": 0,
+      "correct_emitted": 0,
+      "by_group": {
+        "difficult": 0,
+        "irrelevant_context": 0,
+        "missing_reference": 2,
+        "ordinary": 0,
+        "override": 0,
+        "underdetermined": 4,
+        "unrelated": 6,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 0,
+        "math": 0,
+        "physical_science": 0,
+        "conversation": 0,
+        "machine_learning": 0,
+        "computer_engineering": 0
+      }
+    },
+    "keywords": {
+      "exact": 33,
+      "known_correct": 23,
+      "known_abstentions": 21,
+      "known_wrong_route": 4,
+      "unnecessary_advice": 2,
+      "emitted": 29,
+      "correct_emitted": 23,
+      "by_group": {
+        "difficult": 1,
+        "irrelevant_context": 5,
+        "missing_reference": 2,
+        "ordinary": 10,
+        "override": 1,
+        "underdetermined": 3,
+        "unrelated": 5,
+        "useful_context": 6
+      },
+      "by_domain": {
+        "coding": 6,
+        "math": 3,
+        "physical_science": 2,
+        "conversation": 5,
+        "machine_learning": 2,
+        "computer_engineering": 5
+      }
+    },
+    "keywords_no_history": {
+      "exact": 27,
+      "known_correct": 17,
+      "known_abstentions": 28,
+      "known_wrong_route": 3,
+      "unnecessary_advice": 2,
+      "emitted": 22,
+      "correct_emitted": 17,
+      "by_group": {
+        "difficult": 1,
+        "irrelevant_context": 5,
+        "missing_reference": 2,
+        "ordinary": 10,
+        "override": 1,
+        "underdetermined": 3,
+        "unrelated": 5,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 4,
+        "math": 3,
+        "physical_science": 2,
+        "conversation": 3,
+        "machine_learning": 2,
+        "computer_engineering": 3
+      }
+    },
+    "public_centroid": {
+      "exact": 38,
+      "known_correct": 27,
+      "known_abstentions": 15,
+      "known_wrong_route": 6,
+      "unnecessary_advice": 1,
+      "emitted": 34,
+      "correct_emitted": 27,
+      "by_group": {
+        "difficult": 2,
+        "irrelevant_context": 4,
+        "missing_reference": 2,
+        "ordinary": 9,
+        "override": 2,
+        "underdetermined": 4,
+        "unrelated": 5,
+        "useful_context": 10
+      },
+      "by_domain": {
+        "coding": 4,
+        "math": 4,
+        "physical_science": 3,
+        "conversation": 6,
+        "machine_learning": 4,
+        "computer_engineering": 6
+      }
+    },
+    "keywords_prior_user_only": {
+      "exact": 29,
+      "known_correct": 19,
+      "known_abstentions": 26,
+      "known_wrong_route": 3,
+      "unnecessary_advice": 2,
+      "emitted": 24,
+      "correct_emitted": 19,
+      "by_group": {
+        "difficult": 1,
+        "irrelevant_context": 5,
+        "missing_reference": 2,
+        "ordinary": 10,
+        "override": 1,
+        "underdetermined": 3,
+        "unrelated": 5,
+        "useful_context": 2
+      },
+      "by_domain": {
+        "coding": 4,
+        "math": 3,
+        "physical_science": 2,
+        "conversation": 3,
+        "machine_learning": 2,
+        "computer_engineering": 5
+      }
+    },
+    "public_centroid_prior_user_only": {
+      "exact": 37,
+      "known_correct": 26,
+      "known_abstentions": 15,
+      "known_wrong_route": 7,
+      "unnecessary_advice": 1,
+      "emitted": 34,
+      "correct_emitted": 26,
+      "by_group": {
+        "difficult": 2,
+        "irrelevant_context": 4,
+        "missing_reference": 2,
+        "ordinary": 9,
+        "override": 3,
+        "underdetermined": 4,
+        "unrelated": 5,
+        "useful_context": 8
+      },
+      "by_domain": {
+        "coding": 4,
+        "math": 4,
+        "physical_science": 3,
+        "conversation": 7,
+        "machine_learning": 2,
+        "computer_engineering": 6
+      }
+    },
+    "intact": {
+      "exact": 34,
+      "known_correct": 23,
+      "known_abstentions": 23,
+      "known_wrong_route": 2,
+      "unnecessary_advice": 1,
+      "emitted": 26,
+      "correct_emitted": 23,
+      "by_group": {
+        "difficult": 5,
+        "irrelevant_context": 4,
+        "missing_reference": 2,
+        "ordinary": 9,
+        "override": 2,
+        "underdetermined": 4,
+        "unrelated": 5,
+        "useful_context": 3
+      },
+      "by_domain": {
+        "coding": 2,
+        "math": 6,
+        "physical_science": 3,
+        "conversation": 5,
+        "machine_learning": 2,
+        "computer_engineering": 5
+      }
+    },
+    "missing_request": {
+      "exact": 12,
+      "known_correct": 0,
+      "known_abstentions": 48,
+      "known_wrong_route": 0,
+      "unnecessary_advice": 0,
+      "emitted": 0,
+      "correct_emitted": 0,
+      "by_group": {
+        "difficult": 0,
+        "irrelevant_context": 0,
+        "missing_reference": 2,
+        "ordinary": 0,
+        "override": 0,
+        "underdetermined": 4,
+        "unrelated": 6,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 0,
+        "math": 0,
+        "physical_science": 0,
+        "conversation": 0,
+        "machine_learning": 0,
+        "computer_engineering": 0
+      }
+    },
+    "missing_context": {
+      "exact": 12,
+      "known_correct": 0,
+      "known_abstentions": 48,
+      "known_wrong_route": 0,
+      "unnecessary_advice": 0,
+      "emitted": 0,
+      "correct_emitted": 0,
+      "by_group": {
+        "difficult": 0,
+        "irrelevant_context": 0,
+        "missing_reference": 2,
+        "ordinary": 0,
+        "override": 0,
+        "underdetermined": 4,
+        "unrelated": 6,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 0,
+        "math": 0,
+        "physical_science": 0,
+        "conversation": 0,
+        "machine_learning": 0,
+        "computer_engineering": 0
+      }
+    },
+    "missing_both": {
+      "exact": 12,
+      "known_correct": 0,
+      "known_abstentions": 48,
+      "known_wrong_route": 0,
+      "unnecessary_advice": 0,
+      "emitted": 0,
+      "correct_emitted": 0,
+      "by_group": {
+        "difficult": 0,
+        "irrelevant_context": 0,
+        "missing_reference": 2,
+        "ordinary": 0,
+        "override": 0,
+        "underdetermined": 4,
+        "unrelated": 6,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 0,
+        "math": 0,
+        "physical_science": 0,
+        "conversation": 0,
+        "machine_learning": 0,
+        "computer_engineering": 0
+      }
+    },
+    "empty_context": {
+      "exact": 31,
+      "known_correct": 20,
+      "known_abstentions": 28,
+      "known_wrong_route": 0,
+      "unnecessary_advice": 1,
+      "emitted": 21,
+      "correct_emitted": 20,
+      "by_group": {
+        "difficult": 5,
+        "irrelevant_context": 4,
+        "missing_reference": 2,
+        "ordinary": 9,
+        "override": 2,
+        "underdetermined": 4,
+        "unrelated": 5,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 2,
+        "math": 6,
+        "physical_science": 2,
+        "conversation": 4,
+        "machine_learning": 2,
+        "computer_engineering": 4
+      }
+    },
+    "empty_request": {
+      "exact": 12,
+      "known_correct": 0,
+      "known_abstentions": 48,
+      "known_wrong_route": 0,
+      "unnecessary_advice": 0,
+      "emitted": 0,
+      "correct_emitted": 0,
+      "by_group": {
+        "difficult": 0,
+        "irrelevant_context": 0,
+        "missing_reference": 2,
+        "ordinary": 0,
+        "override": 0,
+        "underdetermined": 4,
+        "unrelated": 6,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 0,
+        "math": 0,
+        "physical_science": 0,
+        "conversation": 0,
+        "machine_learning": 0,
+        "computer_engineering": 0
+      }
+    },
+    "shuffled_request": {
+      "exact": 11,
+      "known_correct": 4,
+      "known_abstentions": 29,
+      "known_wrong_route": 15,
+      "unnecessary_advice": 5,
+      "emitted": 24,
+      "correct_emitted": 4,
+      "by_group": {
+        "difficult": 1,
+        "irrelevant_context": 0,
+        "missing_reference": 2,
+        "ordinary": 1,
+        "override": 0,
+        "underdetermined": 1,
+        "unrelated": 4,
+        "useful_context": 2
+      },
+      "by_domain": {
+        "coding": 0,
+        "math": 0,
+        "physical_science": 0,
+        "conversation": 3,
+        "machine_learning": 1,
+        "computer_engineering": 0
+      }
+    },
+    "shuffled_context": {
+      "exact": 31,
+      "known_correct": 20,
+      "known_abstentions": 21,
+      "known_wrong_route": 7,
+      "unnecessary_advice": 1,
+      "emitted": 28,
+      "correct_emitted": 20,
+      "by_group": {
+        "difficult": 5,
+        "irrelevant_context": 4,
+        "missing_reference": 2,
+        "ordinary": 9,
+        "override": 2,
+        "underdetermined": 4,
+        "unrelated": 5,
+        "useful_context": 0
+      },
+      "by_domain": {
+        "coding": 2,
+        "math": 6,
+        "physical_science": 2,
+        "conversation": 4,
+        "machine_learning": 2,
+        "computer_engineering": 4
+      }
+    }
+  },
+  "paired": {
+    "no_advice": {
+      "both_wrong": 25,
+      "win": 23,
+      "both_correct": 11,
+      "loss": 1
+    },
+    "keywords": {
+      "loss": 8,
+      "both_correct": 25,
+      "both_wrong": 18,
+      "win": 9
+    },
+    "keywords_no_history": {
+      "loss": 4,
+      "both_correct": 23,
+      "both_wrong": 22,
+      "win": 11
+    },
+    "public_centroid": {
+      "both_wrong": 18,
+      "both_correct": 30,
+      "loss": 8,
+      "win": 4
+    },
+    "keywords_prior_user_only": {
+      "loss": 5,
+      "both_correct": 24,
+      "both_wrong": 21,
+      "win": 10
+    },
+    "public_centroid_prior_user_only": {
+      "both_wrong": 19,
+      "both_correct": 30,
+      "loss": 7,
+      "win": 4
+    },
+    "missing_request": {
+      "both_wrong": 25,
+      "win": 23,
+      "both_correct": 11,
+      "loss": 1
+    },
+    "missing_context": {
+      "both_wrong": 25,
+      "win": 23,
+      "both_correct": 11,
+      "loss": 1
+    },
+    "missing_both": {
+      "both_wrong": 25,
+      "win": 23,
+      "both_correct": 11,
+      "loss": 1
+    },
+    "empty_context": {
+      "both_wrong": 26,
+      "both_correct": 31,
+      "win": 3
+    },
+    "empty_request": {
+      "both_wrong": 25,
+      "win": 23,
+      "both_correct": 11,
+      "loss": 1
+    },
+    "shuffled_request": {
+      "both_wrong": 23,
+      "win": 26,
+      "both_correct": 8,
+      "loss": 3
+    },
+    "shuffled_context": {
+      "both_wrong": 26,
+      "both_correct": 31,
+      "win": 3
+    }
+  },
+  "gates": {
+    "43_or_more_exact": false,
+    "at_least_keywords": true,
+    "at_least_18_direct": false,
+    "at_least_4_each_domain": false,
+    "at_least_9_context": false,
+    "at_least_5_after_override": false,
+    "at_least_5_with_irrelevant_context": false,
+    "at_most_2_unnecessary": true,
+    "context_gain_3_each": true,
+    "request_gain_4_each": true
+  },
+  "confidence": {
+    "cutoff": 0.8,
+    "predictions": 24,
+    "incorrect_ids": [
+      "q053"
+    ]
+  },
+  "outputs": {
+    "q001": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": "coding",
+      "public_centroid": null,
+      "keywords_prior_user_only": "coding",
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q002": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": "coding",
+      "public_centroid": "coding",
+      "keywords_prior_user_only": "coding",
+      "public_centroid_prior_user_only": "coding",
+      "intact": "coding",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "coding",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "coding"
+    },
+    "q003": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "computer_engineering",
+      "shuffled_context": null
+    },
+    "q004": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q005": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": null,
+      "public_centroid": "coding",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "coding",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "physical_science",
+      "shuffled_context": null
+    },
+    "q006": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": null,
+      "public_centroid": "coding",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "coding",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "computer_engineering"
+    },
+    "q007": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": "coding",
+      "public_centroid": "physical_science",
+      "keywords_prior_user_only": "coding",
+      "public_centroid_prior_user_only": "physical_science",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "physical_science",
+      "shuffled_context": null
+    },
+    "q008": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": "coding",
+      "public_centroid": "coding",
+      "keywords_prior_user_only": "coding",
+      "public_centroid_prior_user_only": "coding",
+      "intact": "coding",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "coding",
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": "coding"
+    },
+    "q009": {
+      "no_advice": null,
+      "keywords": "math",
+      "keywords_no_history": "math",
+      "public_centroid": "math",
+      "keywords_prior_user_only": "math",
+      "public_centroid_prior_user_only": "math",
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": "computer_engineering",
+      "shuffled_context": "math"
+    },
+    "q010": {
+      "no_advice": null,
+      "keywords": "math",
+      "keywords_no_history": "math",
+      "public_centroid": "math",
+      "keywords_prior_user_only": "math",
+      "public_centroid_prior_user_only": "math",
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "math"
+    },
+    "q011": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "math"
+    },
+    "q012": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "math"
+    },
+    "q013": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q014": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "computer_engineering"
+    },
+    "q015": {
+      "no_advice": null,
+      "keywords": "math",
+      "keywords_no_history": "math",
+      "public_centroid": "math",
+      "keywords_prior_user_only": "math",
+      "public_centroid_prior_user_only": "math",
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "math"
+    },
+    "q016": {
+      "no_advice": null,
+      "keywords": "conversation",
+      "keywords_no_history": "conversation",
+      "public_centroid": "math",
+      "keywords_prior_user_only": "conversation",
+      "public_centroid_prior_user_only": "math",
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "math"
+    },
+    "q017": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q018": {
+      "no_advice": null,
+      "keywords": "physical_science",
+      "keywords_no_history": "physical_science",
+      "public_centroid": "physical_science",
+      "keywords_prior_user_only": "physical_science",
+      "public_centroid_prior_user_only": "physical_science",
+      "intact": "physical_science",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "physical_science",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "physical_science"
+    },
+    "q019": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": "physical_science",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "physical_science",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "physical_science"
+    },
+    "q020": {
+      "no_advice": null,
+      "keywords": "physical_science",
+      "keywords_no_history": "physical_science",
+      "public_centroid": null,
+      "keywords_prior_user_only": "physical_science",
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q021": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "physical_science",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "physical_science",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q022": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "physical_science",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "physical_science",
+      "intact": "physical_science",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "computer_engineering",
+      "shuffled_context": null
+    },
+    "q023": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": null,
+      "public_centroid": "coding",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "coding",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "conversation",
+      "shuffled_context": "computer_engineering"
+    },
+    "q024": {
+      "no_advice": null,
+      "keywords": "machine_learning",
+      "keywords_no_history": "machine_learning",
+      "public_centroid": "machine_learning",
+      "keywords_prior_user_only": "machine_learning",
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "conversation"
+    },
+    "q025": {
+      "no_advice": null,
+      "keywords": "conversation",
+      "keywords_no_history": "conversation",
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": "conversation",
+      "public_centroid_prior_user_only": "conversation",
+      "intact": "conversation",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "conversation",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "conversation"
+    },
+    "q026": {
+      "no_advice": null,
+      "keywords": "conversation",
+      "keywords_no_history": "conversation",
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": "conversation",
+      "public_centroid_prior_user_only": "conversation",
+      "intact": "conversation",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "conversation",
+      "empty_request": null,
+      "shuffled_request": "physical_science",
+      "shuffled_context": "conversation"
+    },
+    "q027": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": "conversation",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "conversation",
+      "empty_request": null,
+      "shuffled_request": "conversation",
+      "shuffled_context": "conversation"
+    },
+    "q028": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "computer_engineering",
+      "shuffled_context": null
+    },
+    "q029": {
+      "no_advice": null,
+      "keywords": "conversation",
+      "keywords_no_history": null,
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "conversation",
+      "shuffled_context": null
+    },
+    "q030": {
+      "no_advice": null,
+      "keywords": "conversation",
+      "keywords_no_history": null,
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": "conversation",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "conversation",
+      "shuffled_context": "computer_engineering"
+    },
+    "q031": {
+      "no_advice": null,
+      "keywords": "conversation",
+      "keywords_no_history": "conversation",
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": "conversation",
+      "public_centroid_prior_user_only": "conversation",
+      "intact": "conversation",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "conversation",
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": "conversation"
+    },
+    "q032": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q033": {
+      "no_advice": null,
+      "keywords": "machine_learning",
+      "keywords_no_history": "machine_learning",
+      "public_centroid": "machine_learning",
+      "keywords_prior_user_only": "machine_learning",
+      "public_centroid_prior_user_only": "machine_learning",
+      "intact": "machine_learning",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "machine_learning",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "machine_learning"
+    },
+    "q034": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "machine_learning",
+      "shuffled_context": null
+    },
+    "q035": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q036": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q037": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "machine_learning",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q038": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "machine_learning",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "conversation"
+    },
+    "q039": {
+      "no_advice": null,
+      "keywords": "machine_learning",
+      "keywords_no_history": "machine_learning",
+      "public_centroid": "machine_learning",
+      "keywords_prior_user_only": "machine_learning",
+      "public_centroid_prior_user_only": "machine_learning",
+      "intact": "machine_learning",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "machine_learning",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "machine_learning"
+    },
+    "q040": {
+      "no_advice": null,
+      "keywords": "coding",
+      "keywords_no_history": "coding",
+      "public_centroid": "coding",
+      "keywords_prior_user_only": "coding",
+      "public_centroid_prior_user_only": "coding",
+      "intact": "conversation",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "conversation",
+      "shuffled_context": "conversation"
+    },
+    "q041": {
+      "no_advice": null,
+      "keywords": "computer_engineering",
+      "keywords_no_history": "computer_engineering",
+      "public_centroid": "computer_engineering",
+      "keywords_prior_user_only": "computer_engineering",
+      "public_centroid_prior_user_only": "computer_engineering",
+      "intact": "computer_engineering",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "computer_engineering",
+      "empty_request": null,
+      "shuffled_request": "coding",
+      "shuffled_context": "computer_engineering"
+    },
+    "q042": {
+      "no_advice": null,
+      "keywords": "computer_engineering",
+      "keywords_no_history": "computer_engineering",
+      "public_centroid": "computer_engineering",
+      "keywords_prior_user_only": "computer_engineering",
+      "public_centroid_prior_user_only": "computer_engineering",
+      "intact": "computer_engineering",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "computer_engineering",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "computer_engineering"
+    },
+    "q043": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "computer_engineering",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "computer_engineering",
+      "intact": "computer_engineering",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "computer_engineering",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "computer_engineering"
+    },
+    "q044": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "machine_learning",
+      "shuffled_context": null
+    },
+    "q045": {
+      "no_advice": null,
+      "keywords": "computer_engineering",
+      "keywords_no_history": null,
+      "public_centroid": "computer_engineering",
+      "keywords_prior_user_only": "computer_engineering",
+      "public_centroid_prior_user_only": "computer_engineering",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q046": {
+      "no_advice": null,
+      "keywords": "computer_engineering",
+      "keywords_no_history": null,
+      "public_centroid": "computer_engineering",
+      "keywords_prior_user_only": "computer_engineering",
+      "public_centroid_prior_user_only": "computer_engineering",
+      "intact": "computer_engineering",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": null
+    },
+    "q047": {
+      "no_advice": null,
+      "keywords": "computer_engineering",
+      "keywords_no_history": "computer_engineering",
+      "public_centroid": "computer_engineering",
+      "keywords_prior_user_only": "computer_engineering",
+      "public_centroid_prior_user_only": "computer_engineering",
+      "intact": "computer_engineering",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "computer_engineering",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "computer_engineering"
+    },
+    "q048": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "physical_science",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "physical_science",
+      "intact": "physical_science",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": null
+    },
+    "q049": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q050": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q051": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": null
+    },
+    "q052": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q053": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": "math",
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": "math",
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": "math"
+    },
+    "q054": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q055": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": "conversation",
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": "conversation",
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q056": {
+      "no_advice": null,
+      "keywords": "machine_learning",
+      "keywords_no_history": "machine_learning",
+      "public_centroid": null,
+      "keywords_prior_user_only": "machine_learning",
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": null
+    },
+    "q057": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "math",
+      "shuffled_context": null
+    },
+    "q058": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "conversation",
+      "shuffled_context": null
+    },
+    "q059": {
+      "no_advice": null,
+      "keywords": null,
+      "keywords_no_history": null,
+      "public_centroid": null,
+      "keywords_prior_user_only": null,
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": null,
+      "shuffled_context": null
+    },
+    "q060": {
+      "no_advice": null,
+      "keywords": "math",
+      "keywords_no_history": "math",
+      "public_centroid": null,
+      "keywords_prior_user_only": "math",
+      "public_centroid_prior_user_only": null,
+      "intact": null,
+      "missing_request": null,
+      "missing_context": null,
+      "missing_both": null,
+      "empty_context": null,
+      "empty_request": null,
+      "shuffled_request": "coding",
+      "shuffled_context": null
+    }
+  },
+  "traces": {
+    "q001": {
+      "intact": null,
+      "request_payload": [
+        15,
+        0,
+        0,
+        1,
+        0,
+        0,
+        13,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q014",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q002": {
+      "intact": {
+        "domain": "coding",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            29,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        29,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q049",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q003": {
+      "intact": null,
+      "request_payload": [
+        9,
+        1,
+        2,
+        4,
+        3,
+        2,
+        4,
+        7
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q043",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q004": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        24,
+        4
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q051",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q005": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        6,
+        2,
+        2,
+        5,
+        3,
+        2,
+        12
+      ],
+      "request_payload_donor": "q019",
+      "context_payload_donor": "q047",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q006": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        6,
+        2,
+        2,
+        5,
+        3,
+        2,
+        12
+      ],
+      "request_payload_donor": "q050",
+      "context_payload_donor": "q046",
+      "request_payload_changed": false,
+      "context_payload_changed": true
+    },
+    "q007": {
+      "intact": null,
+      "request_payload": [
+        15,
+        0,
+        0,
+        1,
+        0,
+        0,
+        13,
+        1
+      ],
+      "context_payload": [
+        1,
+        2,
+        18,
+        2,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q006",
+      "context_payload_donor": "q037",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q008": {
+      "intact": {
+        "domain": "coding",
+        "confidence": 0.9989,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            25,
+            0,
+            1,
+            2,
+            1,
+            1,
+            1,
+            1
+          ],
+          "context": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            24,
+            4
+          ]
+        }
+      },
+      "request_payload": [
+        25,
+        0,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "context_payload": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        24,
+        4
+      ],
+      "request_payload_donor": "q009",
+      "context_payload_donor": "q029",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q009": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.9982,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            23,
+            1,
+            1,
+            2,
+            3,
+            0,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        23,
+        1,
+        1,
+        2,
+        3,
+        0,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q042",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q010": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            30,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        30,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q045",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q011": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.8231,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            5,
+            13,
+            2,
+            3,
+            1,
+            2,
+            2,
+            2
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        5,
+        13,
+        2,
+        3,
+        1,
+        2,
+        2,
+        2
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q046",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q012": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.8462,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            14,
+            2,
+            5,
+            2,
+            2,
+            4,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        14,
+        2,
+        5,
+        2,
+        2,
+        4,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q017",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q013": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q058",
+      "context_payload_donor": "q048",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q014": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q056",
+      "context_payload_donor": "q015",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q015": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.9939,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            23,
+            1,
+            1,
+            2,
+            3,
+            0,
+            1
+          ],
+          "context": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            24,
+            4
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        23,
+        1,
+        1,
+        2,
+        3,
+        0,
+        1
+      ],
+      "context_payload": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        24,
+        4
+      ],
+      "request_payload_donor": "q060",
+      "context_payload_donor": "q030",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q016": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.9971,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            24,
+            1,
+            4,
+            1,
+            0,
+            1,
+            0
+          ],
+          "context": [
+            2,
+            1,
+            1,
+            19,
+            1,
+            1,
+            6
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        24,
+        1,
+        4,
+        1,
+        0,
+        1,
+        0
+      ],
+      "context_payload": [
+        2,
+        1,
+        1,
+        19,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q034",
+      "context_payload_donor": "q040",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q017": {
+      "intact": null,
+      "request_payload": [
+        2,
+        0,
+        7,
+        1,
+        2,
+        3,
+        15,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q020",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q018": {
+      "intact": {
+        "domain": "physical_science",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            29,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        29,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q035",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q019": {
+      "intact": {
+        "domain": "physical_science",
+        "confidence": 0.9316,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            3,
+            1,
+            16,
+            3,
+            1,
+            1,
+            4,
+            2
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        3,
+        1,
+        16,
+        3,
+        1,
+        1,
+        4,
+        2
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q048",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q020": {
+      "intact": null,
+      "request_payload": [
+        0,
+        1,
+        3,
+        0,
+        0,
+        0,
+        26,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q024",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q021": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        1,
+        2,
+        18,
+        2,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q055",
+      "context_payload_donor": "q007",
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q022": {
+      "intact": {
+        "domain": "physical_science",
+        "confidence": 0.9746,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "context",
+          "request": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            29,
+            0
+          ],
+          "context": [
+            1,
+            2,
+            18,
+            2,
+            1,
+            1,
+            6
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        1,
+        2,
+        18,
+        2,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q041",
+      "context_payload_donor": "q032",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q023": {
+      "intact": null,
+      "request_payload": [
+        2,
+        0,
+        7,
+        1,
+        2,
+        3,
+        15,
+        1
+      ],
+      "context_payload": [
+        6,
+        2,
+        2,
+        5,
+        3,
+        2,
+        12
+      ],
+      "request_payload_donor": "q031",
+      "context_payload_donor": "q008",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q024": {
+      "intact": null,
+      "request_payload": [
+        6,
+        1,
+        6,
+        1,
+        1,
+        1,
+        16,
+        1
+      ],
+      "context_payload": [
+        2,
+        2,
+        7,
+        4,
+        3,
+        4,
+        8
+      ],
+      "request_payload_donor": "q029",
+      "context_payload_donor": "q039",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q025": {
+      "intact": {
+        "domain": "conversation",
+        "confidence": 1.0,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            0,
+            30,
+            0,
+            0,
+            0,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        0,
+        30,
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q022",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q026": {
+      "intact": {
+        "domain": "conversation",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            0,
+            29,
+            0,
+            0,
+            0,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        0,
+        29,
+        0,
+        0,
+        0,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q018",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q027": {
+      "intact": {
+        "domain": "conversation",
+        "confidence": 0.9994,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            0,
+            0,
+            26,
+            0,
+            0,
+            1,
+            3
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        0,
+        0,
+        26,
+        0,
+        0,
+        1,
+        3
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q025",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q028": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        0,
+        4,
+        1,
+        0,
+        22,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q047",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q029": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        2,
+        1,
+        1,
+        19,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q030",
+      "context_payload_donor": "q005",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q030": {
+      "intact": {
+        "domain": "conversation",
+        "confidence": 0.984,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "context",
+          "request": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            29,
+            0
+          ],
+          "context": [
+            2,
+            1,
+            1,
+            19,
+            1,
+            1,
+            6
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        2,
+        1,
+        1,
+        19,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q023",
+      "context_payload_donor": "q045",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q031": {
+      "intact": {
+        "domain": "conversation",
+        "confidence": 1.0,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            0,
+            30,
+            0,
+            0,
+            0,
+            0
+          ],
+          "context": [
+            2,
+            2,
+            7,
+            4,
+            3,
+            4,
+            8
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        0,
+        30,
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_payload": [
+        2,
+        2,
+        7,
+        4,
+        3,
+        4,
+        8
+      ],
+      "request_payload_donor": "q015",
+      "context_payload_donor": "q023",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q032": {
+      "intact": null,
+      "request_payload": [
+        1,
+        2,
+        0,
+        12,
+        1,
+        0,
+        9,
+        5
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q001",
+      "context_payload_donor": "q021",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q033": {
+      "intact": {
+        "domain": "machine_learning",
+        "confidence": 0.9982,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            0,
+            0,
+            1,
+            23,
+            2,
+            1,
+            3
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        0,
+        0,
+        1,
+        23,
+        2,
+        1,
+        3
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q028",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q034": {
+      "intact": null,
+      "request_payload": [
+        1,
+        0,
+        0,
+        3,
+        12,
+        1,
+        0,
+        14
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q039",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q035": {
+      "intact": null,
+      "request_payload": [
+        1,
+        2,
+        1,
+        1,
+        6,
+        1,
+        18,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q004",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q036": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        10,
+        8,
+        2,
+        1,
+        6
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q052",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q037": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        2,
+        2,
+        7,
+        4,
+        3,
+        4,
+        8
+      ],
+      "request_payload_donor": "q059",
+      "context_payload_donor": "q014",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q038": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        2,
+        2,
+        7,
+        4,
+        3,
+        4,
+        8
+      ],
+      "request_payload_donor": "q054",
+      "context_payload_donor": "q016",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q039": {
+      "intact": {
+        "domain": "machine_learning",
+        "confidence": 0.9986,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            0,
+            0,
+            1,
+            23,
+            2,
+            1,
+            3
+          ],
+          "context": [
+            2,
+            1,
+            1,
+            19,
+            1,
+            1,
+            6
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        0,
+        0,
+        1,
+        23,
+        2,
+        1,
+        3
+      ],
+      "context_payload": [
+        2,
+        1,
+        1,
+        19,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q005",
+      "context_payload_donor": "q006",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q040": {
+      "intact": {
+        "domain": "conversation",
+        "confidence": 0.7621,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            2,
+            0,
+            1,
+            12,
+            5,
+            1,
+            3,
+            7
+          ],
+          "context": [
+            6,
+            2,
+            2,
+            5,
+            3,
+            2,
+            12
+          ]
+        }
+      },
+      "request_payload": [
+        2,
+        0,
+        1,
+        12,
+        5,
+        1,
+        3,
+        7
+      ],
+      "context_payload": [
+        6,
+        2,
+        2,
+        5,
+        3,
+        2,
+        12
+      ],
+      "request_payload_donor": "q026",
+      "context_payload_donor": "q022",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q041": {
+      "intact": {
+        "domain": "computer_engineering",
+        "confidence": 0.9382,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            2,
+            2,
+            2,
+            0,
+            1,
+            17,
+            7,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        2,
+        2,
+        2,
+        0,
+        1,
+        17,
+        7,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q008",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q042": {
+      "intact": {
+        "domain": "computer_engineering",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            28,
+            0,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        28,
+        0,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q003",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q043": {
+      "intact": {
+        "domain": "computer_engineering",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            28,
+            1,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        28,
+        1,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q057",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q044": {
+      "intact": null,
+      "request_payload": [
+        1,
+        5,
+        1,
+        4,
+        2,
+        2,
+        5,
+        10
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q033",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q045": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        24,
+        4
+      ],
+      "request_payload_donor": "q036",
+      "context_payload_donor": "q013",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q046": {
+      "intact": {
+        "domain": "computer_engineering",
+        "confidence": 0.9985,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "context",
+          "request": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            29,
+            0
+          ],
+          "context": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            24,
+            4
+          ]
+        }
+      },
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        24,
+        4
+      ],
+      "request_payload_donor": "q016",
+      "context_payload_donor": "q031",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q047": {
+      "intact": {
+        "domain": "computer_engineering",
+        "confidence": 0.9382,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            2,
+            2,
+            2,
+            0,
+            1,
+            17,
+            7,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        2,
+        2,
+        2,
+        0,
+        1,
+        17,
+        7,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q007",
+      "context_payload_donor": "q038",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q048": {
+      "intact": {
+        "domain": "physical_science",
+        "confidence": 0.7643,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "context",
+          "request": [
+            1,
+            1,
+            3,
+            1,
+            1,
+            3,
+            14,
+            7
+          ],
+          "context": [
+            1,
+            2,
+            18,
+            2,
+            1,
+            1,
+            6
+          ]
+        }
+      },
+      "request_payload": [
+        1,
+        1,
+        3,
+        1,
+        1,
+        3,
+        14,
+        7
+      ],
+      "context_payload": [
+        1,
+        2,
+        18,
+        2,
+        1,
+        1,
+        6
+      ],
+      "request_payload_donor": "q053",
+      "context_payload_donor": "q024",
+      "request_payload_changed": true,
+      "context_payload_changed": true
+    },
+    "q049": {
+      "intact": null,
+      "request_payload": [
+        2,
+        1,
+        1,
+        6,
+        2,
+        5,
+        10,
+        4
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q037",
+      "context_payload_donor": null,
+      "request_payload_changed": false,
+      "context_payload_changed": false
+    },
+    "q050": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        29,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q040",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q051": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q012",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q052": {
+      "intact": null,
+      "request_payload": [
+        2,
+        0,
+        1,
+        2,
+        1,
+        1,
+        1,
+        24
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q032",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q053": {
+      "intact": {
+        "domain": "math",
+        "confidence": 0.8076,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            2,
+            13,
+            1,
+            4,
+            5,
+            2,
+            1,
+            3
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "request_payload": [
+        2,
+        13,
+        1,
+        4,
+        5,
+        2,
+        1,
+        3
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q044",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q054": {
+      "intact": null,
+      "request_payload": [
+        1,
+        6,
+        6,
+        1,
+        1,
+        2,
+        2,
+        13
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q021",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q055": {
+      "intact": null,
+      "request_payload": [
+        6,
+        6,
+        1,
+        5,
+        1,
+        1,
+        10,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q013",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q056": {
+      "intact": null,
+      "request_payload": [
+        4,
+        2,
+        1,
+        4,
+        1,
+        3,
+        1,
+        14
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q011",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q057": {
+      "intact": null,
+      "request_payload": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        23,
+        1
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q010",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q058": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        0,
+        25,
+        2
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q027",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q059": {
+      "intact": null,
+      "request_payload": [
+        0,
+        2,
+        1,
+        1,
+        12,
+        4,
+        11,
+        0
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q038",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    },
+    "q060": {
+      "intact": null,
+      "request_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "context_payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        31
+      ],
+      "request_payload_donor": "q002",
+      "context_payload_donor": null,
+      "request_payload_changed": true,
+      "context_payload_changed": false
+    }
+  }
+}

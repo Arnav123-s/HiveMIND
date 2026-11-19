@@ -1,0 +1,23 @@
+{
+  "source_sha256": {
+    "requests.txt": "1dad7324c5d62f09fdfdac527664b67b39e8f13267b772419c2bbf3ff8d13a5a",
+    "topics.txt": "88504d6b1c1ebba349ad705bfbf591b7446f35629e4eb5503b1a6d53b594b2b1"
+  },
+  "sender_training_rows_with_lexical_anchors": 916,
+  "reader_training_pairs_before_softening": 704,
+  "reader_training_rows": 2112,
+  "heldout_authored_turns": 48,
+  "heldout_combinations": 132,
+  "nonnull_target_combinations": 108,
+  "development_correct_advice": 81,
+  "development_wrong_advice": 0,
+  "development_false_on_null": 0,
+  "thresholds": {
+    "intent": 0.36,
+    "domain": 0.36,
+    "margin": 0.13,
+    "reader": 0.5
+  },
+  "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+  "bundle_bytes": 81836
+}

@@ -1,0 +1,242 @@
+{
+  "q001": {
+    "domain": "coding",
+    "why": "The user wants a software implementation corrected."
+  },
+  "q002": {
+    "domain": "coding",
+    "why": "The output is a working program with file-handling behavior."
+  },
+  "q003": {
+    "domain": "coding",
+    "why": "The fix belongs in incremental software parsing."
+  },
+  "q004": {
+    "domain": "coding",
+    "why": "The requested change is software concurrency control."
+  },
+  "q005": {
+    "domain": "coding",
+    "why": "The referent comes from the discussion. We can trace how the parser turns each input record into a database update."
+  },
+  "q006": {
+    "domain": "coding",
+    "why": "The referent comes from the discussion. We can trace how the parser turns each input record into a database update."
+  },
+  "q007": {
+    "domain": "coding",
+    "why": "The user wants a software implementation corrected. The earlier discussion is unrelated."
+  },
+  "q008": {
+    "domain": "coding",
+    "why": "The prior hardware discussion is superseded by a request for software."
+  },
+  "q009": {
+    "domain": "math",
+    "why": "The task is arithmetic."
+  },
+  "q010": {
+    "domain": "math",
+    "why": "The requested result is a geometric value."
+  },
+  "q011": {
+    "domain": "math",
+    "why": "This is a worst-case combinatorial argument."
+  },
+  "q012": {
+    "domain": "math",
+    "why": "The endpoint is a parity argument about a sequence."
+  },
+  "q013": {
+    "domain": "math",
+    "why": "The referent comes from the discussion. We can try induction and examine a base case and the step."
+  },
+  "q014": {
+    "domain": "math",
+    "why": "The referent comes from the discussion. We can try induction and examine a base case and the step."
+  },
+  "q015": {
+    "domain": "math",
+    "why": "The task is arithmetic. The earlier discussion is unrelated."
+  },
+  "q016": {
+    "domain": "math",
+    "why": "The latest turn requests a combination count."
+  },
+  "q017": {
+    "domain": "physical_science",
+    "why": "The task is heat conduction."
+  },
+  "q018": {
+    "domain": "physical_science",
+    "why": "The requested explanation is atmospheric physics."
+  },
+  "q019": {
+    "domain": "physical_science",
+    "why": "The user asks about dissipation in a physical system."
+  },
+  "q020": {
+    "domain": "physical_science",
+    "why": "The task asks about equilibrium in a material system."
+  },
+  "q021": {
+    "domain": "physical_science",
+    "why": "The referent comes from the discussion. We can test thermal expansion while controlling the surroundings."
+  },
+  "q022": {
+    "domain": "physical_science",
+    "why": "The referent comes from the discussion. We can test thermal expansion while controlling the surroundings."
+  },
+  "q023": {
+    "domain": "physical_science",
+    "why": "The task is heat conduction. The earlier discussion is unrelated."
+  },
+  "q024": {
+    "domain": "physical_science",
+    "why": "The correction requests a physical explanation."
+  },
+  "q025": {
+    "domain": "conversation",
+    "why": "The deliverable is a personal message to another person."
+  },
+  "q026": {
+    "domain": "conversation",
+    "why": "The request is interpersonal repair."
+  },
+  "q027": {
+    "domain": "conversation",
+    "why": "The decision is about wording and social tone."
+  },
+  "q028": {
+    "domain": "conversation",
+    "why": "The output is tactful communication about emotional needs."
+  },
+  "q029": {
+    "domain": "conversation",
+    "why": "The referent comes from the discussion. We can work out how to acknowledge his feelings and start that conversation."
+  },
+  "q030": {
+    "domain": "conversation",
+    "why": "The referent comes from the discussion. We can work out how to acknowledge his feelings and start that conversation."
+  },
+  "q031": {
+    "domain": "conversation",
+    "why": "The deliverable is a personal message to another person. The earlier discussion is unrelated."
+  },
+  "q032": {
+    "domain": "conversation",
+    "why": "The user requests a message about disagreement."
+  },
+  "q033": {
+    "domain": "machine_learning",
+    "why": "The user asks about supervised model generalization."
+  },
+  "q034": {
+    "domain": "machine_learning",
+    "why": "The requested metric evaluates a fitted classification system."
+  },
+  "q035": {
+    "domain": "machine_learning",
+    "why": "The target is grouped evaluation and leakage in a trained predictor."
+  },
+  "q036": {
+    "domain": "machine_learning",
+    "why": "The goal is diagnosing distribution shift in prediction."
+  },
+  "q037": {
+    "domain": "machine_learning",
+    "why": "The referent comes from the discussion. We can compare the two evaluation sets and inspect class-level errors."
+  },
+  "q038": {
+    "domain": "machine_learning",
+    "why": "The referent comes from the discussion. We can compare the two evaluation sets and inspect class-level errors."
+  },
+  "q039": {
+    "domain": "machine_learning",
+    "why": "The user asks about supervised model generalization. The earlier discussion is unrelated."
+  },
+  "q040": {
+    "domain": "machine_learning",
+    "why": "The user now wants predictive model calibration."
+  },
+  "q041": {
+    "domain": "computer_engineering",
+    "why": "The request concerns processor memory hierarchy."
+  },
+  "q042": {
+    "domain": "computer_engineering",
+    "why": "The request concerns a digital storage element."
+  },
+  "q043": {
+    "domain": "computer_engineering",
+    "why": "The fault concerns a hardware clock-domain crossing."
+  },
+  "q044": {
+    "domain": "computer_engineering",
+    "why": "The goal is diagnosing throughput in a physical processor design."
+  },
+  "q045": {
+    "domain": "computer_engineering",
+    "why": "The referent comes from the discussion. We can check the critical path and the register timing reports."
+  },
+  "q046": {
+    "domain": "computer_engineering",
+    "why": "The referent comes from the discussion. We can check the critical path and the register timing reports."
+  },
+  "q047": {
+    "domain": "computer_engineering",
+    "why": "The request concerns processor memory hierarchy. The earlier discussion is unrelated."
+  },
+  "q048": {
+    "domain": "computer_engineering",
+    "why": "The requested explanation concerns synchronous hardware timing."
+  },
+  "q049": {
+    "domain": null,
+    "why": "There is no referent or task history."
+  },
+  "q050": {
+    "domain": null,
+    "why": "The requested next step is unspecified without history."
+  },
+  "q051": {
+    "domain": null,
+    "why": "This is a current venue-hours lookup."
+  },
+  "q052": {
+    "domain": null,
+    "why": "The user needs local administrative information."
+  },
+  "q053": {
+    "domain": null,
+    "why": "The requested fact is film history."
+  },
+  "q054": {
+    "domain": null,
+    "why": "The user asks a geography fact."
+  },
+  "q055": {
+    "domain": null,
+    "why": "This is an external carrier tracking action."
+  },
+  "q056": {
+    "domain": null,
+    "why": "The user wants current transit information."
+  },
+  "q057": {
+    "domain": null,
+    "why": "A hardware pipeline, software pipeline and training pipeline are all plausible."
+  },
+  "q058": {
+    "domain": null,
+    "why": "No information distinguishes a statistical predictor from a mathematical or physical model."
+  },
+  "q059": {
+    "domain": null,
+    "why": "The referent and measurement system are absent."
+  },
+  "q060": {
+    "domain": null,
+    "why": "The request explicitly leaves the responsible domain unresolved."
+  }
+}
