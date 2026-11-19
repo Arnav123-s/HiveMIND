@@ -104,3 +104,37 @@ def test_native_feature_helper_runs_after_tokenizer_releases_the_model(monkeypat
     rows = [{"prompt": str(i), "answer": label} for i, label in enumerate(["A", "B", "A", "B"])]
     accepted, features = domain_engram._feature_rows(rows, [], tmp_path / "model", "runtime", 1)
     assert len(accepted) == 4 and features.shape == (4, 4096)
+
+
+def test_corrective_weights_need_independent_native_and_serving_confirmation():
+    import hashlib
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    report = root / "training/reports/domain-engrams"
+    bank = root / "cells/engrams"
+    installed = {r["sha256"]: r for row in (bank / "index.jsonl").read_text().splitlines()
+                 if (r := json.loads(row)).get("sha256")}
+    for name in ("water-v2", "timing-v2"):
+        study = report / name
+        native = json.loads((study / "qualification.json").read_text())
+        decision = json.loads((study / "release.json").read_text())
+        fit = json.loads((study / "fit.json").read_text())
+        assert fit["sha256"] == decision["sha256"] == native["v2_sha256"]
+        assert native["original_tokens_reproduced"] and native["v1_reactivation_reproduced"]
+        assert native["qualified"] == all(r["v2"]["correct"] for r in native["cases"])
+        served = study / "serving-qualification.json"
+        confirmed = False
+        if served.is_file():
+            http = json.loads(served.read_text())
+            assert http["sha256"] == fit["sha256"]
+            assert [r["id"] for r in http["cases"]] == [r["id"] for r in native["cases"]]
+            confirmed = all(r["correct"] and r["same_rendered_prompt"] for r in http["cases"])
+        assert decision["released"] == (native["qualified"] and confirmed)
+        if decision["released"]:
+            row = installed[fit["sha256"]]
+            weight = bank / (row["dna"] + "+" + row["name"] + ".gguf")
+            assert row["verified"] and hashlib.sha256(weight.read_bytes()).hexdigest() == fit["sha256"]
+        else:
+            assert fit["sha256"] not in installed
