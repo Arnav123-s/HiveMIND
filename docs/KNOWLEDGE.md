@@ -233,6 +233,7 @@ flowchart LR
     f_nothingrightfiles["The same for tasks that make a file: no right program, no rows"]:::fixed
     f_lessonswrong["Most lessons made for a generation fail their own check, and the step does not say which kinds"]:::open
     f_loglesson["The log lesson copies the log into its program, so it is too long to be taught"]:::fixed
+    f_k2nolessons["Most K2 kinds with no lessons are held out or left to the hive by design; three text kinds' rows held their text twice"]:::fixed
   end
   subgraph p_raw["raw.py (B)"]
     f_rawoff["Reading raw data and people's judged answers were built and never switched on in the line"]:::fixed
@@ -256,6 +257,7 @@ flowchart LR
     f_emptysearch["A search that found nothing was taken as the answer"]:::fixed
     f_hintlog["The runtime's help was not counted, so learning on its own could not be seen"]:::fixed
     f_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
+    f_g48practicecauses["New kinds' first try is lost to the time cap, a guard word in data, doubled part headings and retyped data"]:::fixed
   end
   subgraph p_sandbox["sandbox.py (A)"]
     f_given["Data written in the task was opened as a file that does not exist"]:::fixed
@@ -351,6 +353,8 @@ flowchart LR
   f_leftoutmeasure -->|blocked| hardkinds
   f_undelivered -->|blocks| hardkinds
   f_retainedmethods -->|blocks| hardkinds
+  f_g48practicecauses -->|blocked| confirm
+  f_k2nolessons -->|blocked| hardkinds
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -372,7 +376,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (6 open, 51 fixed)
+## Causes found (6 open, 53 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -433,6 +437,8 @@ flowchart LR
 | Runners that train in 32 bits leave out every row over about 500 pieces | `training/ternary_base.py` | T4 | fixed | B's sub-agent (T4): module programs without comments or inspect (the program copies itself), one test; fresh lessons drawn again until first and done rows fit 508 (lessons.fitting); fix rows cut to fit | g38: 32-bit slices trained 30-35 steps on rows up to 498-548 pieces, at 14.2-14.5 of 15.6 GB; T4, 12 lessons a kind: module rows left out 16 of 36 -> 0, log 36 -> 0; every other lesson kind 0; join still 35 of 36 (its tables are in the task and again in the program: needs the maker to give them as lines); the hive's own join rows (g38: 65 of 119) left as they are |
 | The log lesson copies the log into its program, so it is too long to be taught | `training/lessons.py` | T4 | fixed | B's sub-agent (T4): the lesson reads log.txt, which the runtime saves from the task; the rows show the log's first 3 and last 2 lines (training/lessons.lean) | 2026-11-16 22:50, the release's 1497 rows: 1411 fit, 35 cut, 51 left out; modules lose 26 of 134, joins 6 of 90; web lessons 330-670 pieces all fit; T4, 12 lessons at the body's level: rows over 508 pieces 36 of 36 -> 0 of 36 (fix rows included), 12 of 12 right before and after |
 | The read's "rows left out" counted rows not reached in time and skipped for memory as too long | `training/grow_record.py` | T4 | fixed | B's sub-agent: each slice's record says rows_by_kind {given, too_long, skipped_memory, trained} of the new rows (training/grow.train); training/reads.py shows too long (memory-skipped in brackets) and rule 2 counts too long only | 2026-11-17 17:06, docs/reads/latest.md (g41): the estimate was every new row a slice did not study, whatever the cause |
+| New kinds' first try is lost to the time cap, a guard word in data, doubled part headings and retyped data | `team/solo.py` |  | fixed | Replay of g48's 96 recorded practice tasks through the changed code, no model. | 11 of 16 capped tasks now deliver; c10004810_01 allowed, real spending still blocked; 2 of 95 compound pairs now agree, 0 lost; 40 tasks get their data as a file. |
+| Most K2 kinds with no lessons are held out or left to the hive by design; three text kinds' rows held their text twice | `training/lessons.py` |  | fixed | kinds_lessons.py: every K2 kind's makers, checks and row lengths without a model. | rows fitting 508 pieces: contacts 0 -> 6 of 6, sentences 4 -> 6, words 6 -> 6 (worst seed 582 -> 458). |
 
 ## Rules learned
 
