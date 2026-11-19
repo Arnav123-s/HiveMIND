@@ -52,7 +52,7 @@ def _server(model, runtime, threads, *, features=False, edits=()):
         port = sock.getsockname()[1]
     url = f"http://127.0.0.1:{port}"
     command = [str(Path(runtime).resolve()), "-m", str(Path(model).resolve()),
-               "-t", str(threads), "-tb", str(threads), "-c", "2048", "--parallel", "1",
+               "-t", str(threads), "-tb", str(threads), "-ngl", "0", "-c", "2048", "--parallel", "1",
                "--host", "127.0.0.1", "--port", str(port), "--jinja"]
     if features:
         command += ["--embeddings", "--pooling", "last", "--embd-normalize", "-1"]
@@ -128,41 +128,58 @@ def _feature(url, row):
     return np.array(values[-1] if isinstance(values[0], list) else values, dtype=np.float64)
 
 
-def native_features(rows, url, model, runtime, threads):
-    """Use the local runtime build for prefix reuse when available, else its standard HTTP endpoint."""
-    import numpy as np
+def _feature_helper(runtime, directory):
+    """Use the local static runtime build for prefix reuse when it is available."""
     build = Path(runtime).resolve().parent.parent
     source = build.parent
     libraries = [build / "src/libllama.a", build / "ggml/src/libggml.a"]
     compiler = shutil.which("c++")
-    if compiler and all(p.is_file() for p in libraries) and (source / "include/llama.h").is_file():
-        with tempfile.TemporaryDirectory() as tmp:
-            directory = Path(tmp)
-            helper = directory / "domain-features"
-            command = [compiler, "-std=c++17", "-O2", "-I" + str(source / "include"),
-                       "-I" + str(source / "ggml/include"), str(Path(__file__).with_name("domain_features.cpp")),
-                       *map(str, libraries), "-fopenmp", "-lm", "-lpthread", "-o", str(helper)]
-            built = subprocess.run(command, capture_output=True, timeout=120)
-            if built.returncode == 0:
-                ids = []
-                for row in rows:
-                    tokens = _post(url, "/tokenize", {"content": _render(url, row)})["tokens"]
-                    if not tokens or len(tokens) >= 2048:
+    if not compiler or not all(p.is_file() for p in libraries) or not (source / "include/llama.h").is_file():
+        return None
+    helper = directory / "domain-features"
+    command = [compiler, "-std=c++17", "-O2", "-I" + str(source / "include"), "-I" + str(source / "ggml/include"),
+               str(Path(__file__).with_name("domain_features.cpp")), *map(str, libraries),
+               "-fopenmp", "-lm", "-lpthread", "-o", str(helper)]
+    return helper if subprocess.run(command, capture_output=True, timeout=120).returncode == 0 else None
+
+
+def _feature_rows(rows, validation, model, runtime, threads):
+    import numpy as np
+    with tempfile.TemporaryDirectory() as tmp:
+        directory = Path(tmp)
+        helper = _feature_helper(runtime, directory)
+        prompts = directory / "ids"
+        with _server(model, runtime, threads, features=helper is None) as url:
+            with urllib.request.urlopen(url + "/v1/models") as response:
+                meta = json.load(response)["data"][0]["meta"]
+            if (meta.get("n_embd"), meta.get("n_vocab")) != (4096, 151669):
+                raise ValueError("this CPU engram trainer targets the t80 Qwen3 output projection")
+            accepted = eligible_rows(rows, url)
+            token_counts = {}
+            for row in accepted:
+                token_counts[row["token"]] = token_counts.get(row["token"], 0) + 1
+            if not 2 <= len(token_counts) <= 64 or min(token_counts.values()) < 2:
+                raise ValueError("need at least two distinct prompts for each of two or more single-token answers")
+            if len(eligible_rows(validation, url)) != len(validation):
+                raise ValueError("all validation answers must be single native tokens")
+            if helper is None:
+                return accepted, np.asarray([_feature(url, row) for row in accepted])
+            with prompts.open("w") as stream:
+                for row in accepted:
+                    ids = _post(url, "/tokenize", {"content": _render(url, row)})["tokens"]
+                    if not ids or len(ids) >= 2048:
                         raise ValueError("training prompt exceeds the native context")
-                    ids.append(" ".join(map(str, tokens)))
-                prompts = directory / "ids"
-                prompts.write_text("\n".join(ids) + "\n")
-                vectors = directory / "last.f32"
-                proc = subprocess.run([str(helper), str(Path(model).resolve()), str(prompts),
-                                       str(vectors), str(threads)], capture_output=True)
-                if proc.returncode:
-                    raise RuntimeError(proc.stderr.decode(errors="replace")[-1500:])
-                return np.fromfile(vectors, dtype=np.float32).reshape(len(rows), -1)
-    return np.asarray([_feature(url, row) for row in rows])
+                    print(*ids, file=stream)
+        # Release the tokenizer server's 8B context before loading the causal feature helper.
+        vectors = directory / "last.f32"
+        proc = subprocess.run([str(helper), str(model), str(prompts), str(vectors), str(threads)], capture_output=True)
+        if proc.returncode:
+            raise RuntimeError(proc.stderr.decode(errors="replace")[-1500:])
+        return accepted, np.fromfile(vectors, dtype=np.float32).reshape(len(accepted), 4096)
 
 
-def fit(features, tokens):
-    """Return balanced LoRA factors A and B for observed labels only."""
+def fit(features, tokens, *, target_scores=None):
+    """Fit rank-four factors for observed labels. Optional target increments use sorted token-ID columns."""
     import numpy as np
     x = np.asarray(features, dtype=np.float64)
     ids, y = np.unique(tokens, return_inverse=True)
@@ -177,7 +194,9 @@ def fit(features, tokens):
     x = x / norm
     # Equal total training weight per label even when one answer occurs more often.
     weights = np.sqrt(len(y) / (len(ids) * counts[y]))[:, None]
-    targets = np.eye(len(ids))[y] * MARGIN
+    targets = np.eye(len(ids))[y] * MARGIN if target_scores is None else np.asarray(target_scores, dtype=np.float64)
+    if targets.shape != (len(y), len(ids)) or not np.isfinite(targets).all():
+        raise ValueError("bad supervised label-score matrix")
     centered = x - x.mean(axis=0)
     penalty = max(float(np.sum(centered * centered) / len(y)), 1e-5) * RIDGE
     design = x * weights
@@ -279,26 +298,13 @@ def train(rows, path, *, model, runtime, threads=2, validation=()):
     stat = base.stat()
     if _base_hash(base, (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)) != T80_SHA256:
         raise ValueError("only the released Ternary-Bonsai-8B-PQ2_0 base can publish t80 engrams")
-    with _server(model, runtime, threads, features=True) as url:
-        with urllib.request.urlopen(url + "/v1/models") as response:
-            meta = json.load(response)["data"][0]["meta"]
-        if (meta.get("n_embd"), meta.get("n_vocab")) != (4096, 151669):
-            raise ValueError("this CPU engram trainer targets the t80 Qwen3 output projection")
-        accepted = eligible_rows(unique.values(), url)
-        token_counts = {}
-        for row in accepted:
-            token_counts[row["token"]] = token_counts.get(row["token"], 0) + 1
-        if not 2 <= len(token_counts) <= 64 or min(token_counts.values()) < 2:
-            raise ValueError("need at least two distinct prompts for each of two or more single-token answers")
-        if len(eligible_rows(validation, url)) != len(validation):
-            raise ValueError("all validation answers must be single native tokens")
-        features = native_features(accepted, url, model, runtime, threads)
-        ids, a, b, result = fit(features, [row["token"] for row in accepted])
+    accepted, features = _feature_rows(unique.values(), validation, base, runtime, threads)
+    ids, a, b, result = fit(features, [row["token"] for row in accepted])
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=path.parent) as directory:
         candidate = Path(directory) / "candidate.gguf"
-        write_adapter(candidate, ids, a, b, meta["n_vocab"])
+        write_adapter(candidate, ids, a, b, 151669)
         result.update(base_sha256=T80_SHA256, labels=sorted({row["answer"] for row in accepted}), skipped_rows=len(rows)-len(accepted),
                       sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
         result["validation"] = validate(validation, candidate, model=model, runtime=runtime, threads=threads) if validation else None
