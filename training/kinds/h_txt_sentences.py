@@ -11,6 +11,7 @@ from training.kinds._common import _fill, _line_says, every, HARD_NAMES as NAMES
 KIND = "h_txt_sentences"
 FAMILY = "hard: text"
 HARD = True
+GIVEN_FILE = True
 ORDER = 460
 
 ABBR = ["Dr.", "Mr.", "Ms.", "St.", "e.g.", "approx."]
@@ -54,7 +55,10 @@ def h_txt_sentences(r):
             "lines: 'sentences: ', 'longest: ', 'words: '.", check)
 
 
-def sentences(task):
+def sentences(task, copy=False):
+    """The text is data the task gives: the runtime saves it as a file, so the program reads it from one (any name it
+    opens and does not find is that file); copy: the text copied into the program instead (a task of several parts
+    whose first block of data is another part's)."""
     m = re.search(r"Here is a text:\n(.*?)\nSplit it into sentences\..*?never end one: (.*?) \(and a decimal", task, re.S)
     if not m:
         return None
@@ -67,7 +71,7 @@ n = [x for x in n if x]
 print("sentences:", len(n))
 print("longest:", n.index(max(n)) + 1)
 print("words:", max(n))
-''', text=m.group(1), abbr=m.group(2))
+''', abbr=m.group(2)).replace("__TEXT__", repr(m.group(1)) if copy else 'open("text.txt").read()')
 
 
 make = h_txt_sentences

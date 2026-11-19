@@ -11,6 +11,7 @@ from training.kinds._common import _fill
 KIND = "h_txt_words"
 FAMILY = "hard: text"
 HARD = True
+GIVEN_FILE = True
 ORDER = 420
 
 WORDS = ["river", "garden", "lamp", "harbour", "winter", "bread", "letter", "window", "market", "music", "stone", "train", "cloud", "paper"]
@@ -47,7 +48,10 @@ def h_txt_words(r):
             "order. One per line, written 'word: count', and nothing else.", check)
 
 
-def words(task):
+def words(task, copy=False):
+    """The text is data the task gives: the runtime saves it as a file, so the program reads it from one (any name it
+    opens and does not find is that file); copy: the text copied into the program instead (a task of several parts
+    whose first block of data is another part's)."""
     m = re.search(r"Here is a text:\n(.*?)\nStopwords: (.*?)\.\nCount the words.*?Give the (\d+) most frequent", task, re.S)
     if not m:
         return None
@@ -58,7 +62,7 @@ for w in re.findall("[a-z]+", __TEXT__.lower()):
         c[w] = c.get(w, 0) + 1
 for w in sorted(c, key=lambda w: (-c[w], w))[:__K__]:
     print(f"{w}: {c[w]}")
-''', text=m.group(1), stop=m.group(2), k=int(m.group(3)))
+''', stop=m.group(2), k=int(m.group(3))).replace("__TEXT__", repr(m.group(1)) if copy else 'open("text.txt").read()')
 
 
 make = h_txt_words
