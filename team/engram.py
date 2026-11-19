@@ -17,23 +17,14 @@ import hashlib
 import json
 import os
 import re
+import stat
 import tempfile
 import time
+from copy import deepcopy
 from functools import lru_cache
 
-from . import memory, ternary
-
-
-def _rows(path):
-    rows = []
-    for line in path.read_text().splitlines():
-        try:
-            row = json.loads(line)
-        except ValueError:
-            continue
-        if isinstance(row, dict):
-            rows.append(row)
-    return rows
+from . import engram_index, memory, ternary
+from .engram_index import catalog as _catalog, rows as _rows
 
 
 def index():
@@ -56,42 +47,45 @@ def _sha256(path, identity):
     return digest.hexdigest()
 
 
+def _raw_store(home, shelf):
+    return shelf is None and home not in (ternary.LOCAL_ENGRAMS, ternary.BUNDLED_ENGRAMS)
+
+
+def _weight(home, shelf, base, name):
+    if shelf is engram_index.UNREADABLE:
+        return None
+    row = shelf.records.get(name) if shelf is not None else None
+    if row is None:
+        if name != "hive" and not _raw_store(home, shelf):
+            return None
+    elif (row.get("folded") is not None or row.get("archived")
+          or (row.get("form") == "label" and row.get("verified") is not True)):
+        return None
+    path = home / f"{base}+{name}.gguf"
+    try:
+        info = path.stat()
+        if stat.S_ISREG(info.st_mode) and (row is None or "sha256" not in row
+                or row["sha256"] == _sha256(path, engram_index.identity(info))):
+            return path, row
+    except OSError:
+        pass
+    return None
+
+
 def bank_entries(base, home):
-    """Expose only qualified file revisions to llama-server's eager --lora loader."""
-    prefix = base + "+"
-    path = home / "index.jsonl"
-    if not path.is_file():
-        if home not in (ternary.LOCAL_ENGRAMS, ternary.BUNDLED_ENGRAMS):
-            # A manually selected raw weights directory is supported for native experiments.
-            return {p.stem[len(prefix):]: (p, None) for p in home.glob(prefix + "*.gguf") if p.is_file()}
-        rows = []
-    else:
-        try:
-            rows = _rows(path)
-        except (ValueError, OSError):
-            return {}
-    records = {r["name"]: r for r in rows if r.get("dna") == base and isinstance(r.get("name"), str)}
-    files = {}
-    for name, row in records.items():
-        if (not re.fullmatch(r"[a-zA-Z0-9_-]+", name) or row.get("folded") is not None or row.get("archived")
-                or (row.get("form") == "label" and row.get("verified") is not True)):
-            continue
-        weight = home / (prefix + name + ".gguf")
-        try:
-            if not weight.is_file():
-                continue
-            if "sha256" in row:
-                stat = weight.stat()
-                identity = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
-                if row["sha256"] != _sha256(weight, identity):
-                    continue
-        except OSError:
-            continue
-        files[name] = (weight, row)
-    shared = home / (prefix + "hive.gguf")
-    if "hive" not in records and shared.is_file():
-        files["hive"] = (shared, None)
-    return files
+    """Expose qualified, physically available revisions, including the explicit raw experiment directory."""
+    shelf = engram_index.shelf(home, base)
+    if _raw_store(home, shelf):
+        return {p.stem.split("+", 1)[1]: (p, None) for p in home.glob(f"{base}+*.gguf") if p.is_file()}
+    names = dict.fromkeys(shelf.records if shelf is not None else ())
+    names.setdefault("hive")
+    result = {}
+    for name in names:
+        item = _weight(home, shelf, base, name)
+        if item:
+            path, row = item
+            result[name] = (path, deepcopy(row))
+    return result
 
 
 def lineage(cell):
@@ -204,15 +198,31 @@ def _label_score(task, record, domain, *, framed):
     return min(1.0, 0.8 + 0.05 * count)
 
 
-def _active(base):
-    seen = set()
-    for home in ternary.engram_homes():
-        for name, (path, row) in bank_entries(base, home).items():
-            if name in seen:
-                continue
-            seen.add(name)
-            if row and name != "hive" and isinstance(row.get("task"), str) and not (ternary.ADAPTERS / path.name).is_file():
-                yield row
+def _active(base, *, labels_only=False, words=None, least=0.34, labels=True):
+    stores = [(home, engram_index.shelf(home, base)) for home in ternary.engram_homes()]
+    names = {}
+    for home, shelf in stores:
+        if shelf is None:
+            continue
+        if labels_only:
+            names.update(dict.fromkeys(shelf.labels))
+        elif words is None:
+            names.update(dict.fromkeys(shelf.records))
+        else:
+            names.update(dict.fromkeys(shelf.matches(words, least)))
+            if labels:
+                names.update(dict.fromkeys(shelf.labels))
+    for name in names:
+        if name == "hive" or (ternary.ADAPTERS / f"{base}+{name}.gguf").is_file():
+            continue
+        # A higher-priority store can own this name even when its own words did not match.
+        for home, shelf in stores:
+            item = _weight(home, shelf, base, name)
+            if item:
+                row = item[1]
+                if row and isinstance(row.get("task"), str):
+                    yield row
+                break
 
 
 def enabled():
@@ -268,13 +278,13 @@ def named_label_for(task, member):
                                                r"(?:classify|categori[sz]e|label|grade|return|choose|select|assign|give|output)\b", text):
         return None
     matches = []
-    for row in _active(ternary.split(member)[0]):
+    for row in _active(ternary.split(member)[0], labels_only=True):
         domain = row.get("domain")
         if (row.get("form") == "label" and isinstance(row.get("growth_group"), str) and row["growth_group"]
                 and isinstance(domain, str) and domain and _mentions(text, row["task"])):
             matches.append((_label_score(task, row, domain, framed=False), row))
     match = _choose_label(task, matches)
-    return match[1] if match else None
+    return deepcopy(match[1]) if match else None
 
 
 def label_for(task, member, domain):
@@ -282,9 +292,9 @@ def label_for(task, member, domain):
     if not _can_recall(member) or not domain:
         return None
     choices = ((_label_score(task, row, domain, framed=False), row)
-               for row in _active(ternary.split(member)[0]) if row.get("form") == "label")
+               for row in _active(ternary.split(member)[0], labels_only=True) if row.get("form") == "label")
     choice = _choose_label(task, choices)
-    return choice[1] if choice else None
+    return deepcopy(choice[1]) if choice else None
 
 
 def _ranked(task, base, cell=None, most=2, least=0.34, *, domain=None, serving=False, labels=True):
@@ -292,7 +302,8 @@ def _ranked(task, base, cell=None, most=2, least=0.34, *, domain=None, serving=F
     hive's shared engram is there."""
     line = lineage(cell)
     entries, domain_edits = [], []
-    for e in _active(base):
+    words = None if os.environ.get("HIVE_ENGRAM_MATCH") == "embed" else memory.words(task)
+    for e in _active(base, words=words, least=least, labels=labels):
         if e.get("form"):
             if labels and e["form"] == "label":
                 score = _label_score(task, e, domain, framed=True)
@@ -320,8 +331,7 @@ def _ranked(task, base, cell=None, most=2, least=0.34, *, domain=None, serving=F
         score, row = choice
         out.append((row["name"], score))
     out.extend((name, -neg) for _, neg, name in sorted(near or far)[:max(0, most - len(out))])
-    shared = any((home / f"{base}+hive.gguf").is_file() and "hive" in bank_entries(base, home)
-                 for home in ternary.engram_homes())
+    shared = any(_weight(home, engram_index.shelf(home, base), base, "hive") for home in ternary.engram_homes())
     return out, least, shared
 
 

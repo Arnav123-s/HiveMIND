@@ -1,4 +1,8 @@
-"""Replay the old and new lexical recall against real JSONL catalogs and file-existence checks."""
+"""Replay a linear lexical episode scan and indexed recall on the historical synthetic catalogs.
+
+The historical results used e55fc18. Current comparisons use the serving branch's lineage and tie
+ordering. training/reports/domain-memory/recall/compare.py compares actual branch implementations.
+"""
 import argparse
 import json
 import os
@@ -15,15 +19,22 @@ TOPICS = ("calendar", "invoice", "shipment", "meter", "booking", "balance", "inv
 VERBS = ("review", "reconcile", "compare", "validate")
 
 
-def old_recall(task, base, most=2, least=0.34):
-    mine, out = memory.words(task), []
+def old_recall(task, base, most=2, least=0.34, *, cell=None):
+    mine, line = memory.words(task), engram.lineage(cell)
+    near, far = [], []
     for row in engram.index():
         theirs = memory.words(row.get("task", ""))
         score = len(mine & theirs) / max(1, len(mine | theirs))
-        if (row.get("dna") == base and score >= least and row.get("task") != task
+        if (row.get("dna") == base and score >= least and row.get("task") != task and not row.get("form")
+                and row.get("folded") is None and not row.get("archived")
                 and (ternary.ENGRAMS / f"{base}+{row['name']}.gguf").exists()):
-            out.append((score, row["name"]))
-    return [name for _, name in sorted(out, reverse=True)[:most]]
+            owner = row.get("cell")
+            if not line or owner in line or not owner:
+                priority = line.index(owner) if owner in line else len(line)
+                near.append((priority, -score, row["name"]))
+            else:
+                far.append((0, -score, row["name"]))
+    return [name for _, _, name in sorted(near or far)[:most]]
 
 
 def record(i):
@@ -98,11 +109,14 @@ def benchmark(size, root):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--sizes", type=int, nargs="+", default=[8, 32, 128, 1024, 4096])
     args = parser.parse_args()
     if hasattr(os, "sched_getaffinity"):
         os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})
     data = {}
-    for n in (8, 32, 128, 1024, 4096):
+    for n in args.sizes:
+        if n <= 0:
+            parser.error("sizes must be positive")
         with tempfile.TemporaryDirectory() as temp:
             data[n] = benchmark(n, Path(temp))
     args.out.parent.mkdir(parents=True, exist_ok=True)
