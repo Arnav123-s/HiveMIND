@@ -272,12 +272,16 @@ def _form(task, answer):
                     f"('A: ...'). Your output has no line for {', '.join(missing)}.")
     # labels the TASK spells out in quotes ("Answer in four lines: 'customer: ', 'spent: ', ..."): seen on the first hard
     # practice, where a member worked all four values out and printed "Sofia: 347.75" four times
-    named = re.findall(r"'([A-Za-z][\w ]{0,24}): ?[^']{0,12}'", task)
+    slots = re.findall(r"'([A-Za-z][\w ]{0,24}): ?([^']{0,12})'", task)
+    named = [c for c, _ in slots]
     if len(named) >= 2:
         missing = [c for c in named if not any(re.match(rf"\W*{re.escape(c)}\s*:", x, re.I) for x in lines)]
         if missing:
             return (f"The TASK asks for lines that begin with {', '.join(repr(c + ':') for c in named)}. Your output has no line "
                     f"that begins with {', '.join(repr(c + ':') for c in missing)}.")
+        wrong = slot_value(task, slots, lines)
+        if wrong:
+            return wrong
     # a count asked for, and a list or dict printed: g45's coin task ("in how many different ways ...") got a Counter
     # of every way, 6000 characters, from two members who agreed on it; the count itself was never printed. A list
     # of three items or more alone on a line, or a long run of them (the tail of one cut to 3000 characters)
@@ -293,6 +297,72 @@ COUNTED = re.compile(r"(?:\b(?:tell me|say|print|give|report|work out|find out)\
                      r"\bhow many\b[^.?!\n]*\?|\bcount (?:the|how|them|all|every)\b", re.I)
 # a printed list, dict, set or Counter, or the tail of one (an answer keeps the last 3000 characters)
 LISTED = re.compile(r"(?:\w+\()?[\[{(].*[\]})]\)?$")
+
+
+def slot_value(task, slots, lines):
+    """The labelled lines are there; is what stands after each label worth its slot? Seen in g51's held-out exam
+    ('later: NAME', 'days: N'): the version printed where the package's name was asked (x_h_two_0, _2; g48 h20000487_02),
+    and 'value: N/A' where the program found nothing (x_h_txt_ini_*). Returns words for the member, or ''."""
+    for c, slot in slots:
+        line = next((x for x in lines if re.match(rf"\W*{re.escape(c)}\s*:", x, re.I)), None)
+        value = line.split(":", 1)[1].strip() if line else ""
+        if slot.strip() in ("NAME", "WORD") and re.fullmatch(r"v?\d[\d.]*", value):
+            return (f"The TASK asks for a name on the line '{c}: {slot.strip()}'. Your line {line.strip()!r} has a number "
+                    f"({value}) where the name goes. Print the name the TASK gives (keep each name with its value, so the "
+                    "one chosen can be named).")
+        if value.lower() in ("", "n/a", "none", "null", "-", "?") and value.lower() not in task.lower().split():
+            return (f"Your line {line.strip()!r} has no value after '{c}:'. That means your program did not find it. Print "
+                    "what the data really holds for it (the lines or rows it looks through), find where it is, and print it.")
+    return ""
+
+
+def overwritten(code):
+    """Names a program assigns twice at its top level with nothing reading the first value in between: the second call's
+    result replaced the first (g51 x_h_two_0: `version, released = latest('flask')` then the same for 'sqlalchemy', so
+    only the second was ever used). Returns the names, [] if none."""
+    try:
+        body = ast.parse(code).body
+    except (SyntaxError, ValueError):
+        return []
+
+    def stored(node):
+        return [n.id for t in node.targets for n in ast.walk(t) if isinstance(n, ast.Name)] if isinstance(node, ast.Assign) else []
+
+    def touches(node, name, ctx):
+        return any(isinstance(n, ast.Name) and n.id == name and isinstance(n.ctx, ctx) for n in ast.walk(node))
+    out = []
+    for i, node in enumerate(body):
+        for name in stored(node):
+            for later in body[i + 1:]:
+                if touches(later, name, ast.Load):
+                    break  # read before it is replaced
+                if name in stored(later):
+                    out.append(name)
+                    break
+                if touches(later, name, (ast.Store, ast.Del)):
+                    break  # stored some other way (loop target, with, augmented): not a plain overwrite
+    return sorted(set(out))
+
+
+def overwrite_hint(code):
+    names = overwritten(code)
+    if not names:
+        return ""
+    return (f"Your program gives {', '.join(names)} a value, then gives it another one without using the first. The second "
+            "call replaced the first one's result, so the program works with only one of the things the TASK names. Keep "
+            "each call's result under its own name (or in a dict keyed by what it is for), and use all of them in the answer.")
+
+
+def number_hint(code, err):
+    """When int() or float() fails on a word from the data (g51 x_h_edit_*: `int(r['city'])` after a lesson-like
+    `key, col = 'name', 'city'`; every member stopped on the same ValueError): words for the member, or ''."""
+    m = re.search(r"ValueError: (?:invalid literal for int\(\) with base 10|could not convert string to float): ['\"]([^'\"]*)['\"]", err or "")
+    if not m or not re.search(r"[A-Za-z]", m.group(1)) or not re.search(r"csv|DictReader|\bopen\(|split\(", code):
+        return ""
+    return (f"int()/float() failed on {m.group(1)!r}: that is text from a column, not a number, so the column your program "
+            "turns into a number is not the one the TASK means by that number. Do not write column names from memory: "
+            "print the header row and the first two rows (print(reader.fieldnames, rows[:2])), then use the column the TASK "
+            "names for that number, and the others for the other things.")
 
 
 def typed_out(reply, code):
@@ -349,7 +419,7 @@ HINTS = [("given", "HIVE-GIVEN:"), ("deeper_key", "it is in the data at:"), ("li
          ("no_host", "does not exist (no such host)"), ("memory", "MEMORY: the program used"),
          ("bad_address", "there is no such page. Do not make an address up"), ("same_page", "the loop never moved to"),
          ("empty_file", "holds no rows (at most a heading)"), ("missing_file", "and it is not there. Reply with the complete"),
-         ("empty_search", "The program found nothing"), ("printed_failure", "The program printed a failure, not an answer")]
+         ("empty_search", "The program found nothing"), ("text_as_number", "that is text from a column, not a number"), ("printed_failure", "The program printed a failure, not an answer")]
 
 
 def hints_in(*texts):
@@ -558,7 +628,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             if good is None or not delivery or not delivery["issues"] or good["delivery"]["issues"]:
                 good = candidate
             last_error = None
-            shape = form(task, out) if shaped < 2 else ""
+            shape = (form(task, out) or overwrite_hint(code)) if shaped < 2 else ""
             shaped += bool(shape)
             messages.append({"role": "user", "content": f"OUTPUT:\n{out[-1800:]}\n\n" + (
                 feedback or (shape + " Reply with the complete program that prints it that way." if shape else MORE))})
@@ -576,6 +646,9 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         # (seen in g27: a robot simulation's IndexError, and two members went to fetch example.com)
         reads = re.search(r"\brequests\.|urllib|\.json\(|json\.loads?\(|BeautifulSoup|\bopen\(|read_csv|playwright", code) is not None
         stuck = stuck_hint(task, code, err or out)
+        words = number_hint(code, err or out) if not stuck else ""
+        if words:
+            stuck = ("text_as_number", words)
         if stuck:
             helps(stuck[0])
         looking = not stuck and bool(LOOK.search(err or out)) and (reads or re.search(r"KeyError|NoneType|JSONDecodeError|\bkeys?\b|response|json|\bpage\b|column|field", err or out, re.I) is not None)
