@@ -15,6 +15,8 @@ After installing the CPU runtime, ask a question with `./hive --once "Which data
 
 To try the original four-bit signal pair with standard Python, run `./hive --once 'Check sensor banks [1,2,-1,0] and [-2,1,1,0]'`. It shows both learned estimates and checks them from the readings.
 
+For a computer-engineering example you can run without downloading the model, try `./hive --once 'A processor has 32-byte cache lines aligned on 32-byte boundaries. An eight-byte read begins at byte address 28. How many distinct cache lines does this read touch? Reply with a single integer.'` It returns **2**. The eight bytes span addresses 28 through 35, crossing the boundary at 32.
+
 Run `./hive learn list` to see the installed edits and `./hive learn status` to inspect locally collected lessons. A correction can be recorded with `./hive learn teach`. A new local edit must improve on separate questions and preserve the older answers it got right before it takes over. [Examples, measurements and limits](training/reports/domain-memory/README.md)
 
 ## Use a skill the hive learned
