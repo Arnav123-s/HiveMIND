@@ -31,11 +31,11 @@ handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole st
    NEXT_SESSION/OVERVIEW edits (they say memory is on).
 2. **H1:** held-out kinds: g51 3 of 30 on the fixed exam; 16 of 27 failed were near. General repairs merged (PR 117);
    next by g53's causes. The 11 far ones (no grasp of the method: edit, quotes, queue) need more than repairs.
-4. **S1:** hours, 6.5 against 3 (train 219 minutes at g48).
-5. **F1:** first try on new kinds (0.25 at g51), after g53 shows what PR 113 moved.
-6. **V1:** g45's cause fixes: at g48, same-error stops fell 6 -> 2, dates/header and one-line data 2+1 -> 0;
+3. **S1:** hours, 6.5 against 3 (train 219 minutes at g48).
+4. **F1:** first try on new kinds (0.25 at g51), after g53 shows what PR 113 moved.
+5. **V1:** g45's cause fixes: at g48, same-error stops fell 6 -> 2, dates/header and one-line data 2+1 -> 0;
    lesson templates pasted 2 -> 3, lone right member 3 -> 5 (R1).
-7. **Y1, A1, G1, C1 (bank, calc, lru, machine, schedule still over 508), J1, D1, P1, W2, R3, M2, T3.**
+6. **Y1, A1, G1, C1 (bank, calc, lru, machine, schedule still over 508), J1, D1, P1, W2, R3, M2, T3.**
 
 ## Done, do not redo
 
