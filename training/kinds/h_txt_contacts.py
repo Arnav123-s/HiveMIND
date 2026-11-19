@@ -12,6 +12,7 @@ KIND = "h_txt_contacts"
 FAMILY = "hard: text"
 HARD = True
 ORDER = 400
+GIVEN_FILE = True
 
 DOMAINS = ["example.org", "mail.example.com", "shop.example.net", "uni.example.edu"]
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
@@ -51,7 +52,10 @@ def h_txt_contacts(r):
             "the same when their digits are the same, however they are written).", check)
 
 
-def contacts(task):
+def contacts(task, copy=False):
+    """The message is data the task gives: the runtime saves it as a file, so the program reads it from one (any name it
+    opens and does not find is that file); copy: the message copied into the program instead (a task of several parts
+    whose first block of data is another part's). Copied, the row was 628 and 712 pieces, over the 508 of a 32-bit runner."""
     m = re.search(r"Here is a message:\n(.*?)\nList every distinct email", task, re.S)
     if not m:
         return None
@@ -60,7 +64,7 @@ t = __TEXT__
 for e in sorted({e.lower() for e in re.findall(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+", t)}):
     print(e)
 print("phones:", len({re.sub(r"\D", "", p) for p in re.findall(r"(?<!\d)\(?\d{3}\)?[ .-]?\d{3}[.-]\d{4}(?!\d)", t)}))
-''', text=m.group(1))
+''').replace("__TEXT__", repr(m.group(1)) if copy else 'open("msg.txt").read()')
 
 
 make = h_txt_contacts

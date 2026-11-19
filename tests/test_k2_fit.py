@@ -1,9 +1,9 @@
 """K2/T4: the lessons of the taught kinds of the families tables, text and programs make rows a runner that trains in 32
 bits takes (lessons.LIMIT, 508 pieces), on 40 seeds, and are right by their own check on every one.
 
-Some kinds cannot fit without changing what the exam draws: their data is in the task's text on one line (not a block
-the runtime saves as a file), so it is in the row twice, once in the task and once in the program; or the task asks for
-a module that must hold its own data and a scenario copied from the task. They are listed in TOO_LONG with the shortest
+Some kinds cannot fit without changing what the exam draws: the task asks for a module that must hold its own data and
+a scenario copied from the task. (A text on one line is data the runtime saves as a file: contacts, words and sentences
+read it from there, so it is in the row once, and cut to its first and last words where the row is still long.) They are listed in TOO_LONG with the shortest
 their rows could be, and are held to the length they have now, so that they do not grow.
 """
 from concurrent.futures import ThreadPoolExecutor
@@ -17,9 +17,6 @@ FAMILIES = ("hard: tables", "hard: text", "programs")
 SEEDS = range(40)
 # the longest row of each kind that does not fit, on these 40 seeds (counted with the DNA's tokenizer), and why
 TOO_LONG = {
-    "h_txt_contacts": (888, "the message (one line, about 255 pieces) is in the task and copied in the program"),
-    "h_txt_words": (582, "the text (one line, about 120 pieces) is in the task and copied in the program"),
-    "h_txt_sentences": (611, "the text (one line, about 117 pieces) is in the task and copied in the program"),
     "h_prog_bank": (609, "the task is 223 pieces: 139 are left for the class, its saving and the moves asked"),
     "h_prog_lru": (656, "the task is 252 pieces: 101 are left for the class, its saving and the calls asked (65)"),
     "h_prog_calc": (662, "the task is 257 pieces: 102 are left for a parser of three levels and its saving"),

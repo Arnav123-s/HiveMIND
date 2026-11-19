@@ -220,3 +220,23 @@ def test_t4_pieces_are_counted_like_the_tokenizer_or_by_a_rule_near_it(monkeypat
     by_tok = lessons.pieces(text)
     monkeypatch.setattr(lessons, "_TOK", [None])
     assert abs(lessons.pieces(text) - by_tok) <= by_tok / 3 and lessons.pieces("12345") == 5
+
+
+def test_k2_a_text_on_one_line_is_read_from_the_file_and_cut_in_the_prompt_only_where_the_row_is_long():
+    """K2: contacts, words and sentences copied their one-line text into the program as well as the task (contacts rows
+    up to 888 pieces, 508 the limit). The runtime saves that line as a file: the program reads it, and a row still over
+    LIMIT shows the line cut to its first and last words."""
+    from training import kinds
+    for name, reader in (("h_txt_contacts", 'open("msg.txt")'), ("h_txt_words", 'open("text.txt")'), ("h_txt_sentences", 'open("text.txt")')):
+        mod = kinds.get(name)
+        assert mod.GIVEN_FILE and name in lessons.SOLVERS and name not in exam_hard.HELD_OUT
+        task = max((exam._made(mod.make, f"k2one:{name}:{i}", 0)[2] for i in range(6)), key=len)  # the longest of six
+        assert reader in mod.lesson(task) and reader not in mod.lesson(task, copy=True)  # copied where another part owns the file
+        assert "more characters like these" not in lessons.lean(task, mod.lesson(task))  # whole while the row fits
+        cut = lessons.lean(task, mod.lesson(task), 3, 2, True)
+        assert "more characters like these" in cut and len(cut) < len(task)
+        assert lessons.lean(task, mod.lesson(task, copy=True), 3, 2, True) == task  # a text the program copies stays whole
+        for i in range(8):
+            les = lessons.fitting(name, f"k2one{i}")
+            assert les["ok"], les["why"]
+            assert max(lessons.row_pieces(r) for r in lessons.rows(les, today="2026-01-01 (Thursday)")) <= lessons.LIMIT
