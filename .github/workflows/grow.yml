@@ -469,7 +469,7 @@ jobs:
     needs: [gather, plan]
     if: ${{ !cancelled() && needs.gather.result == 'success' && needs.plan.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
-    timeout-minutes: 250  # 170 minutes of training and what comes before it; a row that stalls ends the job itself (grow.train)
+    timeout-minutes: 200  # setup (about 10), then "Grow the cell" (its own limit below), then the upload; a row that stalls ends the job itself (grow.train)
     permissions:
       contents: write  # the order to the owner's Colab notebook, and its answer, pass through the release (training/colab.py)
       actions: read
@@ -499,6 +499,10 @@ jobs:
           name: all-rows
           path: got
       - name: Grow the cell
+        # training stops at its budget (MIN, 170 minutes from the step's start) and saves; 15 minutes more are allowed for the
+        # last row, the lessons' second measure and the GGUF, then the step is ended so a stuck slice costs the generation
+        # minutes, not hours (g51: one slice ran 220 minutes and the train span was 46 minutes longer for it)
+        timeout-minutes: 185
         env:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
@@ -577,6 +581,7 @@ jobs:
           fi
           cat out/*.json >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}  # also after a step that ran out of time: whatever it saved is kept
         with:
           name: part-${{ matrix.variant }}-${{ matrix.slice.child.suffix }}-s${{ matrix.slice.shard }}
           path: out/
@@ -723,6 +728,13 @@ jobs:
         # chance alone, and the hard kinds are what moves (agent C's plan, piece 3). Every arm sits them on 8 runners
         # of 8, half the time of 4 of 16 (a trial's 24 jobs: 20 run at once, the last 4 when the first are done).
         seed: ${{ fromJSON('[1,2,3,4,5,6,7,8]') }}
+        # What a seat sits is split over jobs so that none runs much past ~50 minutes (g51: one "after" seat sat the fresh
+        # exam 55 minutes and the held exam 39 more, 100 in all; the median seat took 40). part "fresh": the gate's own exam
+        # (and the talk smoke on seat 2); "held": the fixed held-out exam's share of that seat (before and after only);
+        # "talk": the talk exam, a job of its own (after, seat 1). Same exams, same seeds, seats and per. That is 16 + 16 + 1
+        # jobs in the paired gate: 20 run at once and the rest start as soon as a short one ends.
+        part: ["fresh"]
+        include: ${{ fromJSON('[{"arm":"before","seed":1,"part":"held"},{"arm":"before","seed":2,"part":"held"},{"arm":"before","seed":3,"part":"held"},{"arm":"before","seed":4,"part":"held"},{"arm":"before","seed":5,"part":"held"},{"arm":"before","seed":6,"part":"held"},{"arm":"before","seed":7,"part":"held"},{"arm":"before","seed":8,"part":"held"},{"arm":"after","seed":1,"part":"held"},{"arm":"after","seed":2,"part":"held"},{"arm":"after","seed":3,"part":"held"},{"arm":"after","seed":4,"part":"held"},{"arm":"after","seed":5,"part":"held"},{"arm":"after","seed":6,"part":"held"},{"arm":"after","seed":7,"part":"held"},{"arm":"after","seed":8,"part":"held"},{"arm":"after","seed":1,"part":"talk"}]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -780,14 +792,14 @@ jobs:
       - uses: ./.github/actions/hive
         if: ${{ steps.who.outputs.who }}
       - name: A fresh exam, half of the first exam's kinds and half hard ones
-        if: ${{ steps.who.outputs.who }}
+        if: ${{ steps.who.outputs.who && matrix.part == 'fresh' }}
         run: |
           # memory every two minutes and who holds it: a runner was shut down after the model server stopped answering (run 32)
           (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
           python training/exam.py sit --level mixed --tasks 8 --seed $((20000000 + ${{ inputs.gate_seeds || github.run_number }} * 10 + ${{ matrix.seed }})) --empty-memory
           cat training/reports/exams/*_mixed.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && steps.who.outputs.who }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'fresh' }}
         with:
           name: gate-${{ matrix.arm }}-${{ matrix.seed }}
           path: training/reports/exams/*_mixed.json
@@ -798,12 +810,12 @@ jobs:
       # minutes and the step to 40, and whatever it does it never fails the seat or changes the pulse's numbers. Its json
       # is written after every task, so a seat cut off still gives what it sat (the record compares what both sat).
       - name: The fixed held-out exam, this seat's share (training/exam.py held)
-        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'held' && (matrix.arm == 'before' || matrix.arm == 'after') }}
         continue-on-error: true
         timeout-minutes: 40
         run: python training/exam.py held --seat ${{ matrix.seed }} --seats 8 --per 3 --seconds 900
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'held' && (matrix.arm == 'before' || matrix.arm == 'after') }}
         continue-on-error: true
         with:
           name: held-${{ matrix.arm }}-${{ matrix.seed }}
@@ -816,7 +828,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && steps.who.outputs.who }}
         with:
-          name: gate-work-${{ matrix.arm }}-${{ matrix.seed }}
+          # the fresh exam's keeps its name (scripts/read_generation.py, training/reads.py); the held and talk jobs' work has its own
+          name: ${{ matrix.part == 'fresh' && 'gate-work' || format('work-{0}', matrix.part) }}-${{ matrix.arm }}-${{ matrix.seed }}
           path: |
             runs/exam/**/TASK.md
             runs/exam/**/REPORT.md
@@ -833,14 +846,14 @@ jobs:
       # never fails this seat or changes the gate's numbers. The record job puts its json in training/reports/talk.
       # 20 minutes left 12 of g45's 40 messages unasked (each worked one takes 50 to 95 s); the route messages go first.
       - name: The talk exam (training/talk_exam.py)
-        if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'talk' && matrix.arm == 'after' && matrix.seed == 1 }}
         continue-on-error: true
         timeout-minutes: 55
         run: |
           mkdir -p talk
           python training/talk_exam.py sit --seed $((30000000 + ${{ inputs.gate_seeds || github.run_number }})) --who body --minutes 45 --per 120 --out "talk/$GEN.json"
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && steps.who.outputs.who && matrix.arm == 'after' && matrix.seed == 1 }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'talk' && matrix.arm == 'after' && matrix.seed == 1 }}
         continue-on-error: true
         with:
           name: talk-${{ env.GEN }}
@@ -852,12 +865,12 @@ jobs:
       # writes the replies of the body it kept to docs/reads/talk_smoke.md. Each message is held to 4 minutes, the step
       # to 15, and it never fails the seat.
       - name: Three plain messages, as a person sends them (training/talk_smoke.py)
-        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'fresh' && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
         continue-on-error: true
         timeout-minutes: 15
         run: python training/talk_smoke.py sit --arm ${{ matrix.arm }} --out talk_smoke.json --per 240 --minutes 12
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && steps.who.outputs.who && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'fresh' && (matrix.arm == 'before' || matrix.arm == 'after') && matrix.seed == 2 }}
         continue-on-error: true
         with:
           name: talk-smoke-${{ matrix.arm }}
@@ -865,7 +878,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
       - name: The numbers once more, last in the log
-        if: ${{ !cancelled() && steps.who.outputs.who }}
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part == 'fresh' }}
         run: |
           f=$(ls -t training/reports/exams/*_mixed.md | head -1)
           grep -E "✅|❌" "$f" | awk -F'|' '{print $4 "|" $3 "|" $5}' | cut -c1-90
