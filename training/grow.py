@@ -652,16 +652,29 @@ def kept_back(rows, n=None):
     return {k: sorted(ts, key=lambda t: (zlib.crc32(t.encode()), t))[:n] for k, ts in sorted(by.items()) if n > 0}
 
 
-def kept_loss(model, items, dev, cast, beat=None):
+def row_limit(now, born, minutes, most, late=None):
+    """Seconds one row may take before the job ends itself: `most` while the cell's time lasts, and only `late`
+    (HIVE_LATE_ROW_SECONDS, 600) once `minutes` have passed since `born`: when the time is up a stuck row has
+    minutes, not 25, so a slice never runs on far past its budget (g51: one slice ran 220 minutes of a 170 budget)."""
+    if late is None:
+        late = float(os.environ.get("HIVE_LATE_ROW_SECONDS", 600))
+    return min(most, late) if minutes and now - born > minutes * 60 else most
+
+
+def kept_loss(model, items, dev, cast, beat=None, until=0.0):
     """{kind: [loss of each row]} of the lessons kept back, with the cell's weights as they are now: the same loss
     as training's (the error on the answer's pieces), one row at a time with no gradient, so nothing is held beyond
-    one row's logits (an 8B cell trains in 14.7 of 15.6 GB). items: [(kind, (ids, k))] from train's encode."""
+    one row's logits (an 8B cell trains in 14.7 of 15.6 GB). items: [(kind, (ids, k))] from train's encode.
+    until: a clock time (time.time()) after which no further row is measured: the cell's time is up, and what was
+    measured so far stands (a slice must save and upload its record, not run on measuring)."""
     import torch
     was = model.training
     model.eval()  # no dropout: the same rows measured twice give the same number
     out = {}
     with torch.no_grad():
         for j, (kind, (ids, k)) in enumerate(items):
+            if until and time.time() > until:
+                break
             if beat is not None:
                 beat["t"], beat["what"] = time.time(), f"the lessons kept back, row {j + 1} of {len(items)}"
             ids = ids.to(dev)
@@ -1231,13 +1244,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     def watch():
         import faulthandler
         import psutil
-        most = float(os.environ.get("HIVE_ROW_SECONDS", 1500))
         while beat["on"]:
             time.sleep(60)
             idle = time.time() - beat["t"]
             if beat["on"] and idle > 240:
                 vm, sw = psutil.virtual_memory(), psutil.swap_memory()
                 log(f"still in {beat['what']} after {idle:.0f} s; memory free {vm.available / 2**30:.1f} GB, swap used {sw.used / 2**30:.1f} GB, load {os.getloadavg()[0]:.1f}", flush=True)
+            most = row_limit(time.time(), born, minutes, float(os.environ.get("HIVE_ROW_SECONDS", 1500)))
             if beat["on"] and idle > most:
                 log(f"one row has taken more than {most:.0f} s: this machine cannot train this cell. The job ends here so that the generation goes on without it.", flush=True)
                 faulthandler.dump_traceback(all_threads=True)
@@ -1409,7 +1422,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     for x in subjects:
         f_, l_ = x["loss_first"], x["loss_last"]
         log(f"{x['subject']:<{width}} {x['rows']:>4} {x['passes']:>6} {'-' if f_ is None else f'{f_:.3f}':>6} {'-' if l_ is None else f'{l_:.3f}':>6}", flush=True)
-    kept_after = kept_loss(model, kept_items, dev, cast, beat) if kept_items else {}
+    # the second measure is held to the time the first took (spare) past the budget, and 5 minutes more at most
+    kept_after = kept_loss(model, kept_items, dev, cast, beat, until=(born + minutes * 60 + 300) if minutes else 0.0) if kept_items else {}
     mean = lambda v: round(sum(v) / len(v), 4) if v else None  # noqa: E731
     kept = {k: {"lessons": sum(1 for x in back.values() if x == k), "rows": len(kept_before.get(k, [])),
                 "before": mean(kept_before.get(k, [])), "after": mean(kept_after.get(k, []))} for k in sorted(set(back.values()))}
@@ -1446,7 +1460,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     where = Path(out_dir or ternary.ADAPTERS)
     where.mkdir(parents=True, exist_ok=True)
     gguf = where / f"{base}+{name}.gguf"
-    done = subprocess.run([sys.executable, str(conv), "--base", src, "--outfile", str(gguf), "--outtype", "f16", str(work)], capture_output=True, text=True)
+    try:
+        done = subprocess.run([sys.executable, str(conv), "--base", src, "--outfile", str(gguf), "--outtype", "f16", str(work)], capture_output=True, text=True,
+                              timeout=float(os.environ.get("HIVE_GGUF_SECONDS", 900)))
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("the edit could not be written as a GGUF adapter in time (HIVE_GGUF_SECONDS)") from None
     if done.returncode:
         raise RuntimeError("the edit could not be written as a GGUF adapter: " + done.stderr[-800:])
     meta["file"], meta["megabytes"] = str(gguf), round(gguf.stat().st_size / 2**20, 1)
