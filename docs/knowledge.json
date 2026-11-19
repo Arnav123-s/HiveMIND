@@ -829,6 +829,28 @@
    "by": "The generation recorder now compares individual deliveries on identical prompts and exam revisions.",
    "seen": "A task-category selector also scored 47 of 64. On specified invoice work orders, checking different saved methods against the current examples improved correct delivery decisions from 3 of 6 to 6 of 6.",
    "fix": "The programming work-order runner retains checked methods and withholds an ambiguous result. General chat still needs a reliable way to identify which older cell to call."
+  },
+  {
+   "id": "g48practicecauses",
+   "title": "New kinds' first try is lost to the time cap, a guard word in data, doubled part headings and retyped data",
+   "lives_in": "solo",
+   "blocks": "firsttry",
+   "status": "fixed, to be shown at g53",
+   "found": "g48 practice: new kinds right at the first try 7 of 49; 15 of 42 misses cut at 600 s with answers in, 2 blocked by the guard on 'purchase' in the task's own data, compound parts not matched, grids and tables retyped by hand.",
+   "by": "Replay of g48's 96 recorded practice tasks through the changed code, no model.",
+   "seen": "11 of 16 capped tasks now deliver; c10004810_01 allowed, real spending still blocked; 2 of 95 compound pairs now agree, 0 lost; 40 tasks get their data as a file.",
+   "fix": "PR 113 (team/solo.py, team/guard.py, team/parts.py, team/tools/sandbox.py, training/exam.py)."
+  },
+  {
+   "id": "k2nolessons",
+   "title": "Most K2 kinds with no lessons are held out or left to the hive by design; three text kinds' rows held their text twice",
+   "lives_in": "lessons",
+   "blocks": "hardkinds",
+   "status": "fixed",
+   "found": "g48: 12 of 24 K2 kinds had no lessons: 6 held out on purpose, 6 left to the hive (3+ right programs of its own); contacts, words, sentences copied the given text into the program.",
+   "by": "kinds_lessons.py: every K2 kind's makers, checks and row lengths without a model.",
+   "seen": "rows fitting 508 pieces: contacts 0 -> 6 of 6, sentences 4 -> 6, words 6 -> 6 (worst seed 582 -> 458).",
+   "fix": "PR 114 (training/kinds/h_txt_*.py, training/lessons.py)."
   }
  ],
  "rules": [
