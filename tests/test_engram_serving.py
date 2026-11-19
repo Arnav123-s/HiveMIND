@@ -77,9 +77,9 @@ def test_two_learned_conventions_need_the_named_topic_or_unique_evidence(tmp_pat
         assert engram.for_request(prefix + query, "t80", domain="math") == ()
         assert engram.label_for(prefix + query, "t80", "math") is None
     # Explicit conventions still work when a paraphrase shares none of the recorded keywords.
-    assert engram.for_request("Under Copper Chart choose low or high.", "t80", domain=None) == ("z_old",)
-    assert engram.named_label_for("Which audit code applies under Copper Chart?", "t80") == old
-    assert engram.named_label_for("What label applies with Amber Chart?", "t80") == new
+    assert engram.for_request("Under Copper Chart choose low or high for a crate weighing 80 grams.", "t80", domain=None) == ("z_old",)
+    assert engram.named_label_for("Which audit code applies under Copper Chart for an 80 g parcel?", "t80") == old
+    assert engram.named_label_for("What label applies with Amber Chart for a fragile parcel?", "t80") == new
     assert engram.named_label_for("Describe the origin of Copper Chart.", "t80") is None
     assert engram.named_label_for("Do not classify; describe Copper Chart.", "t80") is None
     assert engram.named_label_for("Which label applies under both Copper Chart and Amber Chart?", "t80") is None
@@ -112,7 +112,7 @@ def test_unregraded_local_label_is_withheld_without_losing_history(tmp_path, mon
 def test_unavailable_catalogues_and_external_bases_abstain_on_each_request(tmp_path, monkeypatch):
     monkeypatch.setattr(ternary, "ENGRAMS", tmp_path)
     monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
-    message = "Which audit code applies under Copper Chart?"
+    message = "Which audit code applies under Copper Chart? Its seal is torn."
     put(tmp_path, "e1", "Copper Chart", domain="math", form="label", labels=["L", "H"],
         verified=True, cues=["audit"], growth_group="example", validation_version=engram_index.GROWTH_VALIDATION)
     assert engram.named_label_for(message, "t80")["name"] == "e1"

@@ -1,5 +1,7 @@
 """The learned signal and checked neural edit on the ordinary user path."""
+import json
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 from threading import Barrier
 
 import pytest
@@ -107,7 +109,7 @@ def test_named_learned_convention_works_without_a_domain_suggestion(tmp_path, mo
         return "Reviewed."
     monkeypatch.setattr(ternary, "chat", infer)
     for year, label in [(2025, "Blue"), (2026, "Amber")]:
-        result = talk.reply(f"Under review policy {year}, which label applies to the holdout?", base="t80")
+        result = talk.reply(f"Under review policy {year}, which label applies to the holdout with repeated rows?", base="t80")
         assert "domain_signal" not in result
         assert result["engram_advice"] == {"engram": f"eg{year}", "skill": f"review policy {year}",
                                           "accepted": True, "label": label}
@@ -162,3 +164,41 @@ def test_named_one_letter_contract_is_answered_in_its_checked_shape(monkeypatch,
     assert out["text"] == "B" and out["worked"] is False and out["agreed"] is None
     assert out["engram_advice"]["engram"] == "e_local"
     assert engram.single_label_form("Return one letter and explain your choice.") is None
+
+
+def test_packaged_learned_label_preserves_output_instructions_and_needs_incident(monkeypatch):
+    report = Path(__file__).resolve().parents[1] / "training/reports/domain-memory/growth"
+    example = json.loads((report / "served-case.json").read_text())["machine_learning"]
+    monkeypatch.setattr(ternary, "ENGRAMS", report / "example-bank")
+    monkeypatch.setenv("HIVE_SIGNALS", "0")
+    monkeypatch.setenv("HIVE_BANK", "off")
+    monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
+    routed, calls = [], []
+
+    def route(base, message, history):
+        routed.append(message)
+        return "talk", [{"role": "user", "content": message}]
+
+    def chat(base, messages, **options):
+        calls.append((messages[-1]["content"], options))
+        return example["label"] if options.get("also") else "Ordinary reply."
+
+    monkeypatch.setattr(talk, "route", route)
+    monkeypatch.setattr(ternary, "chat", chat)
+    answer = talk.reply(example["choice"], base="t80")
+    assert answer["text"] == example["label"] and not routed
+    assert len(calls) == 1 and calls[0][0] == example["choice"]
+    assert calls[0][1]["also"] == (answer["engram_advice"]["engram"],) and calls[0][1]["max_new_tokens"] == 1
+
+    for request in (
+        "A future reading predicts today's label. Do not answer with one letter. Tell me what happened.",
+        "A future reading predicts today's label. Return a code and a one-sentence rationale.",
+        "A future reading predicts today's label. Return one letter. Include the evidence.",
+        "Which audit code applies? Return one letter.",
+        "Our ML incident audit uses X or Y. Return one letter.",
+        "Which audit code applies? I have no incident details. Return one letter.",
+    ):
+        message = f"Under ML incident audit coding, {request}"
+        answer = talk.reply(message, base="t80")
+        assert answer["text"] == "Ordinary reply." and routed[-1] == message
+        assert calls[-1][0] == message and not calls[-1][1].get("also")

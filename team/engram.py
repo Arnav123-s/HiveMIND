@@ -190,6 +190,9 @@ def _label_score(task, record, domain, *, framed):
     count = sum(_mentions(text, c) for c in cues)
     named = bool(record.get("growth_group")) and _mentions(text, record.get("task"))
     if framed:
+        if record.get("growth_group") and (
+                _DENIED_LABEL.search(text) or _EXTRA_OUTPUT.search(text) or not _has_case(text, record)):
+            return 0
         if record.get("skill_id") == "water_phase":
             from .water_phase import equilibrium_phase
             if equilibrium_phase(task) is None:
@@ -269,25 +272,48 @@ def _choose_label(task, candidates):
     return winners[0] if len(winners) == 1 else None
 
 
+_ASK_CODE = r"\b(?:which|what|return|choose|select|assign|give|output)\s+(?:[\w'-]+\s+){0,3}(?:code|label|category|class|grade)\b"
 _ASK_LABEL = re.compile(
     r"(?:^|[,:;.!?]\s*|\b(?:please|to|can you|could you|will you|would you)\s+)"
-    r"(?:classify|categori[sz]e|label|grade)\s+\S|"
-    r"\b(?:which|what|return|choose|select|assign|give|output)\s+(?:[\w'-]+\s+){0,3}"
-    r"(?:code|label|category|class|grade)\b")
+    r"(?:classify|categori[sz]e|label|grade)\s+\S|" + _ASK_CODE)
 
 
 _ONE_LABEL = re.compile(
-    r"\b(?:return|output|give(?: me)?|(?:reply|respond|answer)(?: with| in)?)\s+"
-    r"(?:(?:just|only)\s+)?(?:one|(?:a )?single|(?:just |only )?(?:a|the))\s+"
-    r"(letter|word|label|code|category)\b", re.I)
+    r"(?:^|[,.!?;:]\s*|\bplease\s+)(?:return|output|give(?: me)?|(?:reply|respond|answer)(?: with| in)?)\s+"
+    r"(?:(?:just|only)\s+(?:a|the|one|a single)|one|(?:a )?single)\s+"
+    r"(letter|word|label|code|category)(?:\s+only)?(?=\s*(?:[.!?;]|$))", re.I)
+_DENIED_LABEL = re.compile(r"\b(?:do not|don['’]t|never|how to|how (?:do|would) (?:i|you))\s+"
+                           r"(?:classify|categori[sz]e|label|grade|return|reply|respond|answer|choose|select|assign|give|output)\b", re.I)
+_EXTRA_OUTPUT = re.compile(
+    r"\b(?:explain|justify|rationale|explanation|reasons?|show your work|tell me|"
+    r"(?:and|also|then)\s+(?:write|save|list|describe|include|provide|give|show))\b|"
+    r"(?:^|[.!?;:]\s*)(?:please\s+)?(?:write|save|list|describe|include|provide|show|summarize)\b", re.I)
 
 
 def single_label_form(task):
     """The requested compact output shape, unless the user also asks for another deliverable."""
     match = _ONE_LABEL.search(task)
-    if not match or re.search(r"\b(?:explain|justify|show your work|give reasons|and (?:write|save|list|describe))\b", task, re.I):
+    if not match or _DENIED_LABEL.search(task) or _EXTRA_OUTPUT.search(task):
         return None
     return match[1].casefold()
+
+
+_REQUEST_WORDS = set(("a an the our my this that it its under with for from by of to or and in on at according using uses "
+                      "which what is are should would be applies apply appropriate right correct here please choose "
+                      "classify categorize categorise select assign give me return output answer reply respond just only "
+                      "one single letter word label code category class grade case example scenario item input").split())
+_NO_CASE = re.compile(r"\b(?:no|without(?: any)?) (?:case |incident |scenario )?(?:details|information|facts|evidence)\b")
+
+
+def _has_case(text, row):
+    """Require evidence beyond the convention name, output vocabulary and classification request."""
+    if not isinstance(row.get("task"), str) or _NO_CASE.search(text):
+        return False
+    words = set(re.findall(r"\w+", re.sub(_ASK_CODE, " ", text)))
+    metadata = " ".join([row["task"], *row["labels"]]).casefold()
+    evidence = words - _REQUEST_WORDS - set(re.findall(r"\w+", metadata))
+    return (len(evidence) >= 2 or any(w.isdecimal() for w in evidence)
+            or any(_mentions(cue.casefold(), w) for w in evidence for cue in row["cues"] if isinstance(cue, str)))
 
 
 def named_label_for(task, member):
@@ -295,8 +321,7 @@ def named_label_for(task, member):
     if not _can_recall(member):
         return None
     text = " ".join(task.casefold().split())
-    if not (_ASK_LABEL.search(text) or single_label_form(text)) or re.search(r"\b(?:do not|don't|never|how to|how (?:do|would) (?:i|you))\s+"
-                                               r"(?:classify|categori[sz]e|label|grade|return|choose|select|assign|give|output)\b", text):
+    if not (_ASK_LABEL.search(text) or single_label_form(text)) or _DENIED_LABEL.search(text):
         return None
     matches = []
     for row in _active(ternary.split(member)[0], labels_only=True):
@@ -305,7 +330,7 @@ def named_label_for(task, member):
                 and isinstance(domain, str) and domain and _mentions(text, row["task"])):
             matches.append((_label_score(task, row, domain, framed=False), row))
     match = _choose_label(task, matches)
-    return deepcopy(match[1]) if match else None
+    return deepcopy(match[1]) if match and _has_case(text, match[1]) else None
 
 
 def label_for(task, member, domain):
