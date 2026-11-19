@@ -1,36 +1,31 @@
-"""Answer a work request in chat from a saved, verified method, with no model call.
+"""Use a checked fieldwork method from the local bank.
 
-The fieldwork command (`./hive fieldwork --bank ...`) keeps programs that passed independent checks in a bank folder.
-When HIVE_BANK points at such a folder, team.talk asks this module first for every message routed to work:
-
-  answered   one saved task fits the message, its inputs can be read from it, and every saved version of that task
-             gives the same result (fieldwork's own shared_results check). The reply is the result and names the method.
-  ambiguous  the saved versions give different results on these inputs: nothing is released, the bill is named.
-  missing    a saved task fits, but the message does not carry inputs it can run on: it says what is missing.
-  None       nothing fits (or no bank, or no WebAssembly runtime): the hive's members do the work as before.
-
-The runtime is the CPython WebAssembly guest the fieldwork command uses (HIVE_FIELDWORK_SDK, by default
-runs/fieldwork-assets/wasi; see training/reports/rule_lab/fieldwork/reproduce.md).
+Every method can be invoked explicitly with an exact task name and JSON input.
+Two retained contracts also accept direct natural-language requests. Their parsers
+consume the whole message. Unrecognized requests continue to the ordinary team.
+All implementations of the chosen contract must agree inside the fieldwork guest.
 """
 import json
-import os
+import math
 import re
-from pathlib import Path
 
-from . import config
-
-SKIP = {"what", "much", "many", "does", "cost", "costs", "please", "tell", "give", "need", "want", "this", "that"}
+from . import config, skill_inputs
 
 
 def bank_path():
-    path = os.environ.get("HIVE_BANK", "").strip()
-    return Path(path) if path else None
+    return config.saved_bank_path()
+
+
+def available():
+    """Task names that can be invoked from the configured local bank."""
+    from training.experiments.fieldwork.work import load_bank
+    return sorted({row["task"] for row in load_bank(bank_path())})
 
 
 def guest():
     """The fieldwork guest, or None when the runtime is not on this machine."""
     from training.experiments.fieldwork.guest import Guest
-    sdk = Path(os.environ.get("HIVE_FIELDWORK_SDK") or config.ROOT / "runs" / "fieldwork-assets" / "wasi")
+    sdk = config.fieldwork_sdk_path()
     try:
         import wasmtime  # noqa: F401
         return Guest(sdk) if (sdk / "python.wasm").is_file() else None
@@ -38,102 +33,399 @@ def guest():
         return None
 
 
-def _stems(words):
-    return {w[:-1] if len(w) > 4 and w.endswith("s") and not w.endswith("ss") else w for w in words}
+# Natural-language adapters are tied to the contracts they were checked on. A new
+# description under the same name may require a different provider, unit or tariff.
+SHIPPING = ("depot_shipping_fee", "Write solve(x) to calculate a depot's shipping fee in integer cents. "
+            "x has a grams list of positive whole parcel weights. An empty shipment costs zero. "
+            "Any nonempty shipment has one dispatch charge of 250 cents and costs another 90 cents per started "
+            "500 grams. Use the depot's rounding convention illustrated by the examples. Return just the integer fee.")
+INVOICE = ("invoice_tax", "Return the invoice tax in integer cents for the nonnegative line amounts in x['lines']. "
+           "Use the billing convention illustrated by the labeled examples on this work order.")
+# These diagnostic bills distinguish the two stated rounding conventions.
+# The second invoice bill also separates half-up from a competing tie convention.
+_CONVENTIONS = {
+    (SHIPPING, "per-parcel"): ("grams", [([1, 1], 430), ([501, 499], 520)]),
+    (SHIPPING, "pooled"): ("grams", [([1, 1], 340), ([501, 499], 430)]),
+    (INVOICE, "per-line"): ("lines", [([11, 11], 2), ([10, 20], 2)]),
+    (INVOICE, "invoice-total"): ("lines", [([11, 11], 1), ([10, 20], 2)]),
+}
+_CONVENTION = re.compile(r"\s+(?:with|using)\s+(?:(?:our|the)\s+)?(?:usual\s+)?"
+                         r"(per-parcel|pooled|per-line|invoice-total)\s+(?:pricing|rounding)[.?!]?\s*$", re.I)
+_EXPLICIT = re.compile(r"(?:please\s+)?(?:run|use|apply)\s+(?P<saved>the saved (?:method|task)\s+)?"
+                       r"(?P<task>[a-z][a-z0-9_]{0,60})(?:@(?P<contract>[^\s:]*))?"
+                       r"(?:\s*(?::|\bwith\b|\bon\b)\s*(?P<data>.*))?", re.I | re.S)
 
 
-def fit(message, bank):
-    """The saved task that fits the message best: (task, description, versions), or None.
-    Fieldwork's own word match (work.words) over the description, plus at least one word of the task's name."""
-    from training.experiments.fieldwork.work import words
-    said = _stems(words(message)) - SKIP
-    said_short = _stems(re.findall(r"[a-z]{3,}", message.lower()))
-    groups = {}
-    for row in bank:
-        groups.setdefault((row["task"], row["description"]), []).append(row)
-    best = None
-    for (task, text), rows in groups.items():
-        name = _stems(re.findall(r"[a-z]{3,}", task.replace("_", " "))) - SKIP
-        shared = said & _stems(words(text))
-        if not (name & said_short) or len(shared) < 2:
-            continue
-        key = (len(name & said_short), len(shared), -len(text))
-        if best is None or key > best[0]:
-            rows = sorted({r["digest"]: r for r in rows}.values(), key=lambda r: (-r["validation"], r["digest"]))
-            best = (key, task, text, rows)
-    return best[1:] if best else None
+def explicit_request(message):
+    """Parse a direct invocation of a named method and its optional JSON argument."""
+    return _EXPLICIT.fullmatch(message.strip()) if len(message) <= 32_768 else None
 
 
 def input_keys(versions, description):
-    """The fields of x the saved programs read."""
-    keys = []
-    for text in [description] + [r["source"] for r in versions]:
-        for k in re.findall(r"""x\[['"](\w+)['"]\]|x\.get\(['"](\w+)['"]|\bx has an? (\w+)\b""", text):
-            k = next(p for p in k if p)
-            if k not in keys:
-                keys.append(k)
-    return keys
+    """Literal top-level fields named by a retained description or its implementations."""
+    keys = set()
+    for text in [description] + [row["source"] for row in versions]:
+        for match in re.finditer(r"""\bx(?:\[\s*|\.get\(\s*)['"]([^'"\n]+)['"]""", text):
+            keys.add(match[1])
+    return sorted(keys)
 
 
-def read_inputs(message, keys):
-    """(input, None) or (None, what is missing)."""
-    if not keys:
-        return None, "the saved method does not say which inputs it takes"
-    for found in re.findall(r"\{.*\}", message, re.S):
-        try:
-            value = json.loads(found)
-        except ValueError:
+def _object(pairs):
+    result = dict(pairs)
+    if len(result) != len(pairs):
+        raise ValueError("duplicate JSON key")
+    return result
+
+
+def _finite(value):
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("non-finite number")
+    return number
+
+
+def _archived_geology_phases(contract):
+    """The two documented public inputs for this legacy, phase-dependent work order."""
+    if contract[0] != "geology_order":
+        return {}
+    path = config.ROOT / "training/reports/rule_lab/fieldwork/geology-order.json"
+    try:
+        spec = json.loads(path.read_text())
+        if (spec["name"], spec["task"]) == contract:
+            return {row["input"]["phase"]: row["input"] for row in spec["examples"]}
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    return {}
+
+
+def _geology_inputs(value, phases):
+    phase = value.get("phase") if isinstance(value, dict) else None
+    if not isinstance(phase, str) or phase not in phases:
+        return "a JSON object with phase " + " or ".join(sorted(phases))
+    sample = phases[phase]
+    parts = [(value, sample, phase)]
+    if "snapshot" in sample:
+        parts.append((value.get("snapshot"), sample["snapshot"], "snapshot"))
+    for actual, example, label in parts:
+        if not skill_inputs.accepts(actual, skill_inputs.infer_contract([example])):
+            return f"{label} fields " + ", ".join(sorted(example)) + " with the types in the work order"
+        # Events and kept tickets are positional records; repeated rows and an empty input are allowed.
+        for key, rows in example.items():
+            if isinstance(rows, list) and rows and isinstance(rows[0], list):
+                layout = tuple(type(cell) for cell in rows[0])
+                if any(tuple(type(cell) for cell in row) != layout for row in actual[key]):
+                    return f"the {key} rows in the format of the public work order"
+    return None
+
+
+def _json_input(data, versions, contract):
+    rule = {SHIPPING: ("grams", 1), INVOICE: ("lines", 0)}.get(contract)
+    legacy = [r for r in versions if not r.get("input_contract")]
+    phases = _archived_geology_phases(contract) if legacy else {}
+    keys = input_keys(legacy, contract[1]) if legacy and not phases else []
+    shapes = [r["input_contract"] for r in versions if "input_contract" in r]
+    if not all(skill_inputs.valid(shape) for shape in shapes):
+        return None, "a new fieldwork check for the saved method because its input types could not be read"
+    names = sorted(set(keys).union(*(s["properties"] for s in shapes)))
+    kinds = sorted({k for shape in shapes for k in shape["kinds"]})
+    needed = ("a JSON value of type " + " or ".join(kinds)) if kinds else "the method's input as JSON"
+    if names:
+        needed += " with the checked fields " + ", ".join(names)
+    if rule:
+        field, minimum = rule
+        needed = (f'a JSON object with "{field}" as a list of '
+                  + ("positive" if minimum else "nonnegative") + " whole numbers")
+    if data and len(data) > 32_768:
+        return None, "a smaller batch (32,768 characters of JSON or fewer)"
+    try:
+        value = json.loads(data or "", object_pairs_hook=_object, parse_float=_finite, parse_constant=_finite)
+    except (ValueError, RecursionError):
+        return None, needed
+    if phases:
+        missing = _geology_inputs(value, phases)
+        if missing:
+            return None, missing
+    if keys and (not isinstance(value, dict) or set(value) != set(keys)):
+        return None, needed
+    if any(not skill_inputs.accepts(value, shape) for shape in shapes):
+        return None, needed
+    if rule and (not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], list)
+                 or any(type(v) is not int or v < minimum for v in value[field])):
+        return None, needed
+    return value, None
+
+
+# Every token of the request must be accounted for as a direct question, its
+# arguments, or a labeled reference. In particular, numbers in other clauses
+# never become a parcel weight or an invoice line.
+_POLITE = r"(?:(?:please|(?:can|could|would) you)\s+)*(?:please\s+)?"
+_DET = r"(?:(?:the|our|my|this|these|a|an|its)\s+)?"
+_DEPOT = r"(?:(?:usual|standard|local)\s+)?depot(?:'s)?"
+_SHIP_FEE = rf"{_DET}(?:(?:{_DEPOT}\s+)?(?:shipping|dispatch|delivery|shipment)\s+(?:fee|cost|charge|price)|{_DEPOT}\s+(?:fee|cost|charge|price|postage)|postage at (?:our|the) depot)"
+_VERB = r"(?:calculate|compute|quote|find|tell me|work out|give me|what(?:'s| is| will be))"
+_SEND = r"(?:send|ship|dispatch|post)"
+_SHIP_QUESTION = re.compile(
+    rf"{_POLITE}(?:{_VERB}\s+{_SHIP_FEE}(?:\s+in cents)?"
+    rf"|(?:what (?:will|does)|how (?:much|many cents) (?:will|does|would))\s+{_DET}{_DEPOT}\s+(?:charge|bill)(?: me)?"
+    rf"|how much (?:is it |will it cost |does it cost )?to {_SEND}"
+    rf"|(?:please )?price\s+{_DET}{_DEPOT}\s+shipment"
+    rf"|for {_DET}{_DEPOT} tariff, (?:please )?(?:price|quote)"
+    rf"|{_VERB} the charge under {_DET}{_DEPOT} parcel tariff"
+    rf"|what(?:'s| is) the price for this shipment)"
+    rf"(?:\s+(?:to\s+{_SEND}|for|on)|\s*:)?"
+    r"(?P<data>\s+.*|$)"
+)
+_INVOICE_QUESTION = re.compile(rf"{_POLITE}{_VERB}\s+{_DET}invoice tax(?:\s+(?:on|for))?(?P<data>\s+.*|$)")
+_REFERENCE = re.compile(r"(?:(?:for|on)\s+)?(?:order|invoice|ref(?:erence)?)\s+(?:id\s+|number\s+)?#?[a-z0-9-]*[0-9][a-z0-9-]*\b")
+_PARCEL = r"(?:parcels?|packages?|box(?:es)?|packets?|mailers?|cartons?|envelopes?)"
+_UNIT = {"grams": r"(?:grams?|g)", "lines": r"(?:cents?|¢)"}
+_COUNTS = ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
+_COUNT = r"(?:[1-9][0-9]{0,2}|" + "|".join(_COUNTS) + ")"
+_MASS = r"(?:[1-9][0-9]{0,2}(?:,[0-9]{3})+|[0-9]+)"
+
+
+def _count(word):
+    return int(word) if word.isdigit() else _COUNTS.index(word) + 1
+
+
+def _amounts(data, field):
+    """Parse a complete list; a final unit may apply to a preceding comma list."""
+    if field == "grams" and re.fullmatch(r"(?:an? )?empty shipment|(?:no|zero|0) " + _PARCEL, data):
+        return []
+    if field == "grams":
+        list_in_grams = re.fullmatch(r"(?:parcel )?weights? \(grams?\):\s*([0-9]+(?:\s*,\s*[0-9]+)*)", data)
+        if list_in_grams:
+            weights = [int(v) for v in list_in_grams[1].split(",")]
+            return weights if all(weights) else None
+    data = re.sub(r"^(?:(?:at the depot )?i have|(?:my|the) shipment (?:contains|has))\s+", "", data)
+    data = re.sub(rf"^(?:one|a single) (?=[0-9]+\s*{_UNIT[field]})", "", data)
+    data = re.sub(rf"^(?P<count>{_COUNT}) separate (?={_PARCEL}\b)", r"\g<count> ", data)
+    noun = _PARCEL if field == "grams" else r"(?:invoice )?line(?: amounts?|s)?"
+    prefix = re.match(rf"^{_DET}(?:(?P<count>{_COUNT})\s+)?(?P<noun>{noun})\b"
+                      r"(?:\s+weights?)?(?:\s+(?:of|at|weighing|weighs?|is|are))?\s*[:,]?\s*", data)
+    declared = None
+    if prefix:
+        if prefix["count"]:
+            declared = _count(prefix["count"])
+        elif field == "grams" and prefix["noun"] in ("parcel", "package", "box", "packet", "mailer", "carton", "envelope") and "weights" not in prefix[0]:
+            declared = 1
+        data = data[prefix.end():]
+    unit = _UNIT[field]
+    # One declared group "three parcels, 480 g each" represents three items.
+    repeated = re.fullmatch(rf"({_MASS})\s*{unit}\s+(?:each|apiece)", data)
+    if declared and repeated:
+        number = int(repeated[1].replace(",", ""))
+        return [number] * declared if number or field == "lines" else None
+    # A comma with a three-digit suffix inside an integer is thousands punctuation.
+    data = re.sub(rf"{_MASS}", lambda m: m[0].replace(",", ""), data)
+    parts = re.split(r"\s*(?:,\s*(?:and\s+)?|\band\b|\bplus\b)\s*", data)
+    item = rf"{_DET}(?P<number>[0-9]+)(?:(?:-|\s*)(?P<unit>{unit}))?(?:\s+{noun})?"
+    result = []
+    for index, part in enumerate(parts):
+        copies = 1
+        repeated_item = re.fullmatch(rf"(?:(?P<n>{_COUNT})\s*[x×]\s*|(?:a )?pair of )(?P<item>.+)", part)
+        if repeated_item:
+            copies = _count(repeated_item["n"]) if repeated_item["n"] else 2
+            part = repeated_item["item"]
+        match = re.fullmatch(item, part)
+        if not match or (not match["unit"] and (index == len(parts) - 1 or not part.isdigit())):
+            return None
+        value = int(match["number"])
+        if field == "grams" and value == 0:
+            return None
+        result.extend([value] * copies)
+    if declared is not None and declared != len(result):
+        return None
+    return result
+
+
+def _natural(message, contract):
+    """Return (input, missing field) for a scoped request, or None to defer."""
+    if len(message) > 2048:
+        return None
+    question = _SHIP_QUESTION if contract == SHIPPING else _INVOICE_QUESTION
+    if "{" in message:
+        prefix, _, body = message.strip().partition("{")
+        match = question.fullmatch(" ".join(prefix.lower().replace("’", "'").split()).strip(": "))
+        if not match or match["data"].strip(" :,") not in ("", "from this exact input", "this empty shipment"):
+            return None
+        # Preserve original key case and reject any text after the JSON document.
+        data = "{" + body
+        if data.endswith((".", "?")):
+            data = data[:-1]
+        value, missing = _json_input(data, [], contract)
+        if match["data"].strip(" :,") == "this empty shipment" and value != {"grams": []}:
+            return None
+        return value, missing
+    text = " ".join(message.lower().replace("’", "'").split()).strip(" .?!")
+    clauses = [s.strip(" ,") for s in re.split(r"\s*[?!;]\s*|\.\s+", text)]
+    field = "grams" if contract == SHIPPING else "lines"
+    question_seen = False
+    values = None
+    declared = None
+    for clause in clauses:
+        # Only complete, explicitly labeled references may be omitted.
+        clause = re.sub(rf"^(?:{_REFERENCE.pattern})\s*[:,]\s*", "", clause)
+        clause = re.sub(rf"\s+(?:{_REFERENCE.pattern})$", "", clause)
+        if field == "grams" and re.fullmatch(rf"(?:please )?use {_DET}{_DEPOT} tariff", clause):
             continue
-        if isinstance(value, dict) and set(keys) <= set(value):
-            return value, None
-    if len(keys) > 1:
-        return None, "the inputs " + ", ".join(keys) + ", given as JSON, e.g. {" + ", ".join(f'"{k}": ...' for k in keys) + "}"
-    numbers = re.findall(r"(?<![\w.])-?\d+(?:\.\d+)?(?![\w.]*\d)", message)
-    if not numbers:
-        return None, f"the {keys[0]} (a list of whole numbers)"
-    if any("." in n or n.startswith("-") for n in numbers):
-        return None, f"the {keys[0]} as whole, non-negative numbers (I read {', '.join(numbers)})"
-    return {keys[0]: [int(n) for n in numbers]}, None
+        match = question.fullmatch(clause)
+        if match:
+            if question_seen:
+                return None
+            question_seen = True
+            clause = match["data"].strip(" :,")
+            clause = re.sub(rf"^(?:{_REFERENCE.pattern})\s*[:,]\s*", "", clause)
+            if field == "grams":
+                if clause in ("sending them together", "to send them", "sending them"):
+                    clause = ""
+                count = re.fullmatch(rf"{_DET}({_COUNT}) {_PARCEL}(?: at the depot)?", clause)
+                if count:
+                    declared, clause = _count(count[1]), ""
+        if not clause or _REFERENCE.fullmatch(clause):
+            continue
+        bare = _PARCEL if field == "grams" else "lines"
+        if match and re.fullmatch(rf"{_DET}{bare}", clause):
+            continue
+        # Several clauses can identify consecutive parcels by ordinal.
+        ordinal = re.match(r"^the (first|second|third|other) (?:weighs|is) ", clause) if field == "grams" else None
+        if ordinal:
+            position = {"first": 0, "second": 1, "third": 2, "other": 1}[ordinal[1]]
+            if position != len(values or []):
+                return None
+            parsed = _amounts(clause[ordinal.end():], field)
+            if parsed is None or len(parsed) != 1:
+                return None
+            values = (values or []) + parsed
+        else:
+            parsed = _amounts(clause, field)
+            if parsed is None or values is not None:
+                return None
+            values = parsed
+    if not question_seen:
+        return None
+    if values is None:
+        return None, ("grams for each parcel" if field == "grams" else "invoice line amounts in cents")
+    if declared is not None and declared != len(values):
+        return None
+    return {field: values}, None
 
 
-def answer(message, bank=None, runner=None, log=None):
-    """A saved method's answer to the message (see the module's notes), or None to go on as before."""
-    from training.experiments.fieldwork.work import load_bank, shared_results
-    say = log or (lambda *a: None)
-    bank = bank or bank_path()
-    if bank is None:
+def answer(message, bank=None, runner=None, log=None, *, local_only=False):
+    """Try a checked method; a deferred request continues through the ordinary hive."""
+    from training.experiments.fieldwork.guest import Guest
+    from training.experiments.fieldwork.work import check, contract_id, load_bank, shared_results
+    if len(message) > 32_768:
         return None
-    found = fit(message, load_bank(bank))
-    if found is None:
+    bank = bank if bank is not None else bank_path()
+    registered = load_bank(bank)
+    call = explicit_request(message)
+    convention = None
+    if call:
+        task = call["task"].lower()
+        bound = None
+    else:
+        for contract in (SHIPPING, INVOICE):
+            if any((r["task"], r["description"]) == contract for r in registered):
+                marker = _CONVENTION.search(message)
+                label = marker[1].lower() if marker else None
+                convention = _CONVENTIONS.get((contract, label))
+                request = message[:marker.start()] if convention else message
+                bound = _natural(request, contract)
+                if bound is not None:
+                    task = contract[0]
+                    break
+        else:
+            return None
+
+    contract_ref = call["contract"] if call else None
+    groups = {}
+    for row in registered:
+        if row["task"] == task:
+            cid = contract_id(row)
+            if contract_ref is None or (re.fullmatch(r"[a-f0-9]{12,64}", contract_ref, re.I)
+                                        and cid.startswith(contract_ref.lower())):
+                groups.setdefault(cid, []).append(row)
+    if not groups:
+        if call and (call["saved"] or contract_ref is not None or "_" in task
+                     or (call["data"] or "").lstrip().startswith(("{", "["))):
+            if contract_ref is not None:
+                matches = sorted({contract_id(row)[:12] for row in registered if row["task"] == task})
+                reason = f"The saved contract {task}@{call['contract']} is unavailable."
+                if matches:
+                    reason += " Available contracts: " + ", ".join(f"{task}@{cid}" for cid in matches) + "."
+            else:
+                reason = f"There is no saved method named {task} in this bank."
+            return dict(status="missing", task=task, methods=[], text=reason)
         return None
-    task, description, versions = found
-    method = f"{task} ({', '.join(r['digest'][:12] for r in versions)})"
-    plain = re.sub(r"^Write solve\(x\) to\s+", "", description)
-    value, missing = read_inputs(message, input_keys(versions, description))
+    if len(groups) > 1:
+        choices = "\n".join(f"- {task}@{cid[:12]} — {rows[0]['description']}" for cid, rows in sorted(groups.items()))
+        return dict(status="missing", task=task, methods=[], text=(
+            f"I have several contracts named {task}. Choose one and run it with its JSON input.\n{choices}"))
+
+    group = next(iter(groups.values()))
+    versions = sorted({r["digest"]: r for r in group}.values(), key=lambda r: r["digest"])
+    description = versions[0]["description"]
+    digests = [r["digest"] for r in versions]
+    if call:
+        value, missing = _json_input(call["data"], versions, (task, description))
+    else:
+        value, missing = bound
+        if not missing:
+            value, missing = _json_input(json.dumps(value), versions, (task, description))
     if missing:
-        return dict(status="missing", task=task, methods=[r["digest"] for r in versions],
-                    text=f"I have a saved, checked method for this, {method}, but I cannot run it on your message: "
-                         f"it needs {missing}. It is made to {plain}")
+        return dict(status="missing", task=task, methods=digests,
+                    text=f"To run {task}, please give me {missing}.")
     runner = runner or guest()
+    reason = f"The saved method {task} needs the CPython WebAssembly runtime."
+    setup = "Run python scripts/setup_fieldwork.py."
+    if isinstance(runner, Guest):
+        import wasmtime
+        try:
+            # Compilation is lazy and cached. An installed file may still be incomplete.
+            _ = runner.runtime
+        except (OSError, wasmtime.WasmtimeError):
+            reason = f"The saved method {task} is unavailable because its WebAssembly runtime could not load python.wasm."
+            setup = "Set HIVE_FIELDWORK_SDK to a fresh directory and run python scripts/setup_fieldwork.py."
+            runner = None
     if runner is None:
-        say(f"a saved method fits ({method}), but the WebAssembly runtime is not here; the members do the work")
+        if call or local_only:
+            return dict(status="missing", task=task, methods=digests, fallback_to_members=not bool(call),
+                        text=reason + " " + setup)
+        if log:
+            log(reason)
         return None
+    proof = None
+    if convention:
+        field, bills = convention
+        witnesses = [{"input": {field: amounts}, "output": expected} for amounts, expected in bills]
+        versions = [row for row in versions if check(runner, row["source"], witnesses, explain=False)[0] == len(witnesses)]
+        digests = [row["digest"] for row in versions]
+        if not versions:
+            return dict(status="missing", task=task, methods=[], input=value,
+                        text=f"No saved version passed the checks for {label} rounding.")
+        proof = dict(convention=label, checks=witnesses)
     rows, conflict = shared_results(versions, runner, [dict(id="request", input=value)])
     shown = json.dumps(value, separators=(", ", ": "))
     if conflict and "different answers" in conflict:
         amounts = re.search(r"\((.*)\)\.$", conflict)
-        return dict(status="ambiguous", task=task, methods=[r["digest"] for r in versions], input=value,
-                    text=f"My {len(versions)} saved methods for {task} disagree on this bill, {shown}"
-                         + (f": they give {amounts.group(1)}" if amounts else "")
-                         + ". Both passed their own checks, so I am not giving an answer. Tell me which convention "
-                           "applies, or give a bill with its correct amount that tells them apart.")
+        return dict(status="ambiguous", task=task, methods=digests, input=value,
+                    text=f"My {len(versions)} saved methods for {task} disagree on {shown}"
+                         + (f". They give {amounts.group(1)}" if amounts else "")
+                         + ". Please give a labeled example that distinguishes the rules.")
     if conflict:
-        return dict(status="missing", task=task, methods=[r["digest"] for r in versions], input=value,
-                    text=f"I have a saved, checked method for this, {method}, but it does not run on what I read from "
-                         f"your message ({shown}). It is made to {plain}")
+        return dict(status="missing", task=task, methods=digests, input=value,
+                    text=f"A saved method for {task} could not complete this input. {shown}")
     result = rows[0]["value"]
-    who = (f"the saved method {task} ({versions[0]['digest'][:12]}, passed {versions[0]['validation']} independent checks)"
+    method = ", ".join(digest[:12] for digest in digests)
+    who = (f"the saved method {task} ({method}, passed {versions[0]['validation']} independent checks)"
            if len(versions) == 1 else f"{len(versions)} saved methods for {task}, which agree ({method})")
-    return dict(status="answered", task=task, methods=[r["digest"] for r in versions], input=value, value=result,
-                text=f"{json.dumps(result) if not isinstance(result, str) else result}\n\n"
-                     f"Worked out by {who}, on {shown}, with no model call.")
+    text = (f"{json.dumps(result) if not isinstance(result, str) else result}\n\n"
+            f"Worked out by {who}, on {shown}, with no model call.")
+    out = dict(status="answered", task=task, methods=digests, input=value, value=result, text=text)
+    if proof:
+        sample = proof["checks"][0]
+        out["convention_check"] = proof
+        unit = "cent" if sample["output"] == 1 else "cents"
+        out["text"] += f" I selected {label} rounding. On {json.dumps(sample['input'])}, it gives {sample['output']} {unit}."
+    return out

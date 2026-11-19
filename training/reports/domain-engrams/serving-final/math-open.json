@@ -1,0 +1,75 @@
+{
+  "domain": "math",
+  "form": "open",
+  "prompt": "In geometry, which measure tells me how much paint a container can hold? Explain in one short sentence.",
+  "expected": "volume",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "The volume measure tells you how much paint a container can hold.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 39,
+    "engram_advice": {
+      "engram": "e_domain_math",
+      "skill": "geometry_measure",
+      "label": "volume",
+      "accepted": true
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "c13e44bb0ddad4eaa137266ebee999b8253e59c47d558a27edf2e95b94077837",
+      "token_budget": 4,
+      "text": "CAPACITY",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "prompt_tokens": 338,
+        "total_tokens": 341,
+        "prompt_tokens_details": {
+          "cached_tokens": 308
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_math": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "a64b6f384bedb85f4b3cb266219d5cdf3e9ad41d1aca250ee1efff365587ce34",
+      "token_budget": 1,
+      "text": "Volume",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 153,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 743,
+      "temperature": 0.0,
+      "prompt_sha256": "5f9f5acf67127da801ef92ca947e772767cba28d77d9745baa911f799cf1501c",
+      "token_budget": 48,
+      "text": "The volume measure tells you how much paint a container can hold.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 14,
+        "prompt_tokens": 149,
+        "total_tokens": 163,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

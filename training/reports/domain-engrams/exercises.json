@@ -1,0 +1,44 @@
+{
+  "coding": {
+    "labels": ["map","filter","sum"],
+    "cue": "Python operation: map, filter, or sum",
+    "instruction": "For this Python task, which operation fits: map, filter, or sum? Reply with only its name.",
+    "train": [["Convert every filename to lowercase.","map"],["Replace every distance in miles with its value in kilometers.","map"],["Keep only customers with an active subscription.","filter"],["Discard all the temperatures below freezing.","filter"],["Find the total number of bytes across the files.","sum"],["Add up all the invoice amounts.","sum"]],
+    "check": [["Turn every sentence into its uppercase form.","map"],["Retain only the records that passed validation.","filter"],["Find the total duration of all the calls.","sum"]]
+  },
+  "math": {
+    "labels": ["length","area","volume"],
+    "cue": "Geometry measurement: length, area, or volume",
+    "instruction": "Which geometric measure answers the question: length, area, or volume? Reply with only its name.",
+    "train": [["How far does the cable span between the poles?","length"],["How much trim fits along one edge of the door?","length"],["How much fabric covers the flat tabletop?","area"],["How much wallpaper covers the wall?","area"],["How much water fits in the tank?","volume"],["How much air can the balloon contain?","volume"]],
+    "check": [["How much cord will reach between these two sockets?","length"],["How much paper covers the face of this sign?","area"],["How much oil will this container hold?","volume"]]
+  },
+  "physics": {
+    "labels": ["solid","liquid","gas"],
+    "cue": "Phase of pure water at one atmosphere: solid, liquid, or gas",
+    "instruction": "At equilibrium and one atmosphere, what phase is pure water in: solid, liquid, or gas? Reply with only its name.",
+    "train": [["The sample is at minus 19 degrees Celsius.","solid"],["It has cooled to -6 C.","solid"],["The temperature is 26 degrees Celsius.","liquid"],["It is maintained at 81 C.","liquid"],["It is held at 135 degrees Celsius.","gas"],["The temperature reads 202 C.","gas"]],
+    "check": [["A thermometer reads -13 degrees Celsius.","solid"],["The sample is at 47 C.","liquid"],["The measured temperature is 164 degrees Celsius.","gas"]]
+  },
+  "conversation": {
+    "labels": ["ask","confirm","thank"],
+    "cue": "Conversation next reply: ask, confirm, or thank",
+    "instruction": "Choose the next conversation move. Ask for missing information, confirm an agreed arrangement, or thank someone for a favor. Reply with only ask, confirm, or thank.",
+    "train": [["The caller wants a ride but has given no pickup address.","ask"],["The invitation says to meet tomorrow but omits the time.","ask"],["Both sides have agreed on Tuesday at noon. Acknowledge the arrangement.","confirm"],["You and the host settled on table eight at seven. Acknowledge the booking.","confirm"],["A colleague covered your shift as a favor. Express appreciation.","thank"],["A neighbor has just carried your groceries for you. Express gratitude.","thank"]],
+    "check": [["The customer asks for a delivery but gives no destination.","ask"],["The client agreed to Thursday at three. Acknowledge the appointment.","confirm"],["A friend stayed late to help with your move. Express your appreciation.","thank"]]
+  },
+  "ml": {
+    "labels": ["train","validation","test"],
+    "cue": "Machine learning data split: train, validation, or test",
+    "instruction": "Which machine learning split belongs here: train, validation, or test? Reply with only the split name.",
+    "train": [["The optimizer uses these examples to update model weights.","train"],["We fit the regression coefficients on these labeled rows.","train"],["Compare learning rates with these examples before choosing one.","validation"],["Choose the epoch for early stopping using this split.","validation"],["Use these untouched examples once after all choices are frozen.","test"],["Report the final unbiased score on this never-used split.","test"]],
+    "check": [["Gradient updates consume these samples during fitting.","train"],["Tune the depth of the tree using these records.","validation"],["Assess the final locked model on this previously untouched set.","test"]]
+  },
+  "engineering": {
+    "labels": ["ns","us","ms"],
+    "cue": "Computer engineering time unit: ns, us, or ms",
+    "instruction": "Which time unit matches this hardware timing description: ns, us, or ms? Reply with only its abbreviation.",
+    "train": [["One billionth of a second.","ns"],["The counter ticks once per 10^-9 seconds.","ns"],["One millionth of a second.","us"],["The delay unit is 10^-6 seconds.","us"],["One thousandth of a second.","ms"],["The timeout unit equals 10^-3 seconds.","ms"]],
+    "check": [["The timing unit is a thousandth of a microsecond.","ns"],["The device clock period is one thousand nanoseconds.","us"],["A controller waits for exactly one thousand microseconds.","ms"]]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "method": "Four supplied drafts qualified in WASI, followed by separate model-free ./hive --once processes.",
+  "new_model_calls": 0,
+  "admissions": {
+    "pooled": {
+      "draft_sha256": "95457189a475535ed2fea3b8c377d29485ae9dadace4bab6101b377b71437991",
+      "retained_sha256": "95457189a475535ed2fea3b8c377d29485ae9dadace4bab6101b377b71437991",
+      "public_passed": 2,
+      "qualification_passed": 2
+    },
+    "per_parcel": {
+      "draft_sha256": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+      "retained_sha256": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+      "public_passed": 2,
+      "qualification_passed": 2
+    },
+    "per_line": {
+      "draft_sha256": "4846fcb0fc2cc4909dc4db5e16626527b5995305c0736cb42d4108d17c839b28",
+      "retained_sha256": "808cbd603cde7d08703bb44024d798bf3f68b420342cbbf253164d629f92d51b",
+      "public_passed": 2,
+      "qualification_passed": 2
+    },
+    "invoice_total": {
+      "draft_sha256": "076265ec32df6638e95f12a3df670a00ceb47a5fc1a83f6d41e90406a3a781dd",
+      "retained_sha256": "dfa192ec9f1cdb4000bd5c8657b4070b33058f6991b54b44524829256651daaf",
+      "public_passed": 2,
+      "qualification_passed": 2
+    }
+  },
+  "requests": [
+    {
+      "request": "Calculate the shipping fee for parcels of 250 g and 250 g with our usual per-parcel pricing.",
+      "exit_code": 1,
+      "value_cents": null,
+      "selected": null,
+      "stdout": "No saved version passed the checks for per-parcel rounding."
+    },
+    {
+      "request": "Calculate the shipping fee for parcels of 130 g and 170 g using per-parcel pricing.",
+      "exit_code": 0,
+      "value_cents": 430,
+      "selected": "per_parcel",
+      "stdout": "430\n\nWorked out by the saved method depot_shipping_fee (6f939fee17b1, passed 2 independent checks), on {\"grams\": [130, 170]}, with no model call. I selected per-parcel rounding. On {\"grams\": [1, 1]}, it gives 430 cents."
+    },
+    {
+      "request": "Calculate the shipping fee for parcels of 620 g and 630 g using pooled rounding.",
+      "exit_code": 0,
+      "value_cents": 520,
+      "selected": "pooled",
+      "stdout": "520\n\nWorked out by the saved method depot_shipping_fee (95457189a475, passed 2 independent checks), on {\"grams\": [620, 630]}, with no model call. I selected pooled rounding. On {\"grams\": [1, 1]}, it gives 340 cents."
+    },
+    {
+      "request": "Calculate the shipping fee for parcels of 119 g and 230 g using per-parcel pricing.",
+      "exit_code": 0,
+      "value_cents": 430,
+      "selected": "per_parcel",
+      "stdout": "430\n\nWorked out by the saved method depot_shipping_fee (6f939fee17b1, passed 2 independent checks), on {\"grams\": [119, 230]}, with no model call. I selected per-parcel rounding. On {\"grams\": [1, 1]}, it gives 430 cents."
+    },
+    {
+      "request": "Calculate the invoice tax for lines of 14, 14 and 14 cents using per-line rounding.",
+      "exit_code": 0,
+      "value_cents": 3,
+      "selected": "per_line",
+      "stdout": "3\n\nWorked out by the saved method invoice_tax (808cbd603cde, passed 2 independent checks), on {\"lines\": [14, 14, 14]}, with no model call. I selected per-line rounding. On {\"lines\": [11, 11]}, it gives 2 cents."
+    },
+    {
+      "request": "Calculate the invoice tax for lines of 16 and 10 cents using invoice-total rounding.",
+      "exit_code": 0,
+      "value_cents": 1,
+      "selected": "invoice_total",
+      "stdout": "1\n\nWorked out by the saved method invoice_tax (dfa192ec9f1c, passed 2 independent checks), on {\"lines\": [16, 10]}, with no model call. I selected invoice-total rounding. On {\"lines\": [11, 11]}, it gives 1 cent."
+    },
+    {
+      "request": "Calculate the invoice tax for lines of 4 and 7 cents using per-line rounding.",
+      "exit_code": 0,
+      "value_cents": 0,
+      "selected": "per_line",
+      "stdout": "0\n\nWorked out by the saved method invoice_tax (808cbd603cde, passed 2 independent checks), on {\"lines\": [4, 7]}, with no model call. I selected per-line rounding. On {\"lines\": [11, 11]}, it gives 2 cents."
+    },
+    {
+      "request": "Calculate the invoice tax for lines of 4 and 7 cents.",
+      "exit_code": 1,
+      "value_cents": null,
+      "selected": null,
+      "stdout": "My 2 saved methods for invoice_tax disagree on {\"lines\": [4, 7]}. They give 0 or 1. Please give a labeled example that distinguishes the rules."
+    },
+    {
+      "request": "Calculate the invoice tax for lines of 20 and 40 cents.",
+      "exit_code": 0,
+      "value_cents": 3,
+      "selected": null,
+      "stdout": "3\n\nWorked out by 2 saved methods for invoice_tax, which agree (808cbd603cde, dfa192ec9f1c), on {\"lines\": [20, 40]}, with no model call."
+    },
+    {
+      "request": "Run depot_shipping_fee@deadbeefdead with {\"grams\":[100]}",
+      "exit_code": 1,
+      "value_cents": null,
+      "selected": null,
+      "stdout": "The saved contract depot_shipping_fee@deadbeefdead is unavailable. Available contracts: depot_shipping_fee@697209fad54e."
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "domain": "conversation",
+  "form": "open",
+  "prompt": "What should I say to a neighbor who did me a favor by carrying a heavy box upstairs? Give one short reply.",
+  "expected": "thank",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "Thanks, I really appreciate it.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 34,
+    "domain_signal": {
+      "domain": "conversation",
+      "confidence": 0.9937,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          1,
+          1,
+          0,
+          22,
+          1,
+          1,
+          2,
+          4
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "6b1a1987750a59136c73bd4cadf13102bf70e20dc0024027b817a0868c03b6c3",
+      "token_budget": 4,
+      "text": "TALK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "prompt_tokens": 341,
+        "total_tokens": 344,
+        "prompt_tokens_details": {
+          "cached_tokens": 307
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "d965599275a3efc19315b9aab87655eb44668a19da959300ef8665a734a47501",
+      "token_budget": 48,
+      "text": "Thanks, I really appreciate it.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 149,
+        "total_tokens": 157,
+        "prompt_tokens_details": {
+          "cached_tokens": 3
+        }
+      }
+    }
+  ]
+}

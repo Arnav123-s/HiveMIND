@@ -30,7 +30,7 @@ import time
 import tempfile
 from pathlib import Path
 
-from . import config, deliverables, llm, stop, ternary
+from . import cache_lines, config, deliverables, llm, stop, ternary, water_phase
 from .deliverables import wanted
 from .board import Board
 from .guard import Guard
@@ -406,6 +406,11 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
     full = not short and os.environ.get("HIVE_FULL_ORDERS", "0") == "1"
     messages = [{"role": "system", "content": orders(who.replace("+", "-") if full else who + "+" if short else who)},
                 {"role": "user", "content": f"TASK: {task}"}]
+    if n == 1:
+        from . import domain_advice, domain_route
+        hint = domain_advice.hint(domain_route.advice())
+        if hint:
+            messages[0]["content"] += "\n" + hint
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
     # wrong, seed 9002). Agreement only checks anything between tries that do not share a source.
@@ -701,6 +706,15 @@ def together(x, y, task):
 
 def agreeing(tries, task):
     """The pairs of members whose tries agree (together()), the earlier member first."""
+    access = cache_lines.parse(task)
+    if access:
+        tries = [candidate for candidate in tries if cache_lines.confirms(access, candidate["answer"])]
+    phase = water_phase.standalone_phase(task)
+    if phase:
+        tries = [candidate for candidate in tries if water_phase.confirms(phase, candidate["answer"])]
+    else:
+        check = water_phase.output_check_phase(task)
+        tries = [candidate for candidate in tries if not water_phase.contradicts(check, candidate["answer"])]
     return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
 
 
@@ -731,6 +745,12 @@ def _home(run_dir):
 
 
 def run(task, run_dir=None, approve="never", members=2):
+    from . import domain_route
+    with domain_route.for_request(task, inherit=True):
+        return _run(task, run_dir, approve, members)
+
+
+def _run(task, run_dir, approve, members):
     task = task.strip()
     home = _home(run_dir)
     board = Board(home)
@@ -742,23 +762,20 @@ def run(task, run_dir=None, approve="never", members=2):
     tries = []
     agreed = None
     seats = ternary.seating(task)
-    board.log("hive", "seats", f"{ternary.organ(task)}: {', '.join(seats[:max(1, members) + 1])}")
+    from . import domain_route
+    domain_route.prepare_advice(task, seats[0].partition("+")[0],
+                                "You are HiveMIND. Answer directly in the requested format.")
+    board.log("hive", "seats", f"{domain_route.specialist(ternary.organ(task, fallback=None))}: {', '.join(seats[:max(1, members) + 1])}")
     for n in range(1, max(1, members) + 2):  # one more than asked: to decide a difference, or in place of one that got nowhere
         if n > members and members < 2:
             break
         # who sits where for this task: the cells that lean to its kind of work first (team/ternary.seating); the last
         # one named also takes every later seat
         who = seats[n - 1] if n <= len(seats) else seats[-1]
-        also = ()
-        if os.environ.get("HIVE_ENGRAMS") == "1" and who != "coder":  # the body's fast memory: what it wrote down of tasks like this one
-            from . import engram
-            base, cell = ternary.split(who)
-            if os.environ.get("HIVE_ENGRAM_GATE") == "1":  # each as strong as its task is like this one
-                also = tuple(engram.recall_scaled(task, base, cell=cell))
-            else:
-                also = tuple(engram.recall(task, base, cell=cell))  # its own line's first
-            if also and n == 1:
-                board.log("hive", "engrams", ", ".join(x if isinstance(x, str) else f"{x[0]} at {x[1]}" for x in also))
+        from . import engram
+        also = engram.for_request(task, who, labels=False)
+        if also:
+            board.log(f"member{n}", "engrams", ", ".join(x if isinstance(x, str) else f"{x[0]} at {x[1]}" for x in also))
         member_work = work if n == 1 else home / f"member{n}"
         if names and (member_work.is_symlink() or member_work.exists() and (not member_work.is_dir() or any(member_work.iterdir()))):
             # A caller may retry the same run directory. Old files cannot witness a new program.
@@ -819,6 +836,10 @@ def run(task, run_dir=None, approve="never", members=2):
             agreed, file_repairs = None, []
         else:
             selected_work, selected_delivery = str(staging), checked
+    cache_access = cache_lines.parse(task)
+    phase = water_phase.standalone_phase(task)
+    check = None if phase else water_phase.output_check_phase(task)
+    contradicted = [i for i, t in enumerate(tries, 1) if water_phase.contradicts(check, t["answer"])]
     if agreed:
         if not file_repairs:
             keep(task, agreed["program"], agreed["answer"])
@@ -841,6 +862,14 @@ def run(task, run_dir=None, approve="never", members=2):
                 reasons.append(f"Member {i}: " + "; ".join(f"{name}: {why}" for name, why in issues.items()))
         text = ("Not confirmed: the hive could not select a complete file with an independently supported answer."
                 + ("\n\n" + "\n".join(reasons) if reasons else " The members' answers or structured files differ."))
+    elif phase and got:
+        text = (f"The local equilibrium check gives {phase} for these conditions. "
+                "The worker outputs did not independently confirm that phase.")
+    elif contradicted:
+        text = water_phase.WITHHELD
+    elif cache_access and got:
+        text = (f"The local aligned byte-range calculation gives {cache_access.details()['count']} cache lines. "
+                "The worker outputs did not independently confirm that count.")
     elif members < 2 and got:
         text = got[0]["answer"] + "\n\n## How it was checked\n- One member worked it out; nobody checked it."
     elif got:
@@ -853,18 +882,39 @@ def run(task, run_dir=None, approve="never", members=2):
     text = text.strip() + "\n"
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
-    witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)]
+    witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)
+                 and (not cache_access or cache_lines.confirms(cache_access, t["answer"]))
+                 and i not in contradicted
+                 and (not phase or water_phase.confirms(phase, t["answer"]))]
     agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
                         and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
     if file_repairs:
         agreeing_members = []  # the user received the helper's sorted copy, not a cell's raw output
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
+    if phase:
+        decision["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": phase}
+    elif contradicted:
+        decision["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": check,
+                                         "rejected_members": contradicted}
+    if cache_access:
+        decision["cache_line_check"] = cache_access.details()
+    if domain_route.current_domain():
+        decision["domain"] = domain_route.current_domain()
+    if domain_route.advice():
+        decision["engram_advice"] = domain_route.advice()
+    recalled = [{"seat": i, "member": t["who"], "edits": t["also"]} for i, t in enumerate(tries, 1) if t.get("also")]
+    if recalled:
+        decision["engrams"] = recalled
     if names:
         decision.update(requested_files=names, printed_agreeing=witnesses, file_repairs=file_repairs,
                         selected_member=next((i for i, t in enumerate(tries, 1) if t is agreed), None))
     (home / "members.json").write_text(json.dumps(decision))
     result = {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
               "work": selected_work if agreed else str(work), "requested_files": names, "file_repairs": file_repairs}
+    if contradicted and not agreed:
+        result["water_phase_check"] = dict(decision["water_phase_check"], source="contradictory_output_withheld")
+    if recalled:
+        result["engrams"] = recalled
     if names and agreed:
         result["delivery"] = selected_delivery
     return result

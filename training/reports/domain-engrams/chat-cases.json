@@ -1,0 +1,8 @@
+{
+  "coding": {"open": "In Python, I want to keep only the active records in a list. Which built-in operation fits? Give a very short reason.", "choice": "In Python, which operation keeps only the valid rows: map, filter, or sum? Reply with its name.", "label": "filter"},
+  "math": {"open": "In geometry, which measure tells me how much paint a container can hold? Explain in one short sentence.", "choice": "In geometry, which measure is the space inside a tank: length, area, or volume? Reply with one name.", "label": "volume"},
+  "physics": {"open": "At one atmosphere, what phase is pure water at 72 degrees Celsius? Answer in one short sentence.", "choice": "At equilibrium and one atmosphere, is pure water at 72 degrees Celsius solid, liquid, or gas? Reply with one name.", "label": "liquid"},
+  "conversation": {"open": "What should I say to a neighbor who did me a favor by carrying a heavy box upstairs? Give one short reply.", "choice": "For a conversation with a neighbor who did me a favor, should I ask, confirm, or thank? Reply with one word.", "label": "thank"},
+  "ml": {"open": "In machine learning, which dataset split should I use to tune hyperparameters? Explain in one short sentence.", "choice": "In machine learning, which data split is for choosing hyperparameters: train, validation, or test? Reply with one name.", "label": "validation"},
+  "engineering": {"open": "In computer engineering, which time unit is a millionth of a second? Give its usual abbreviation.", "choice": "Which hardware timing unit means a millionth of a second: ns, us, or ms? Reply with its abbreviation.", "label": "us"}
+}

@@ -1,0 +1,123 @@
+{
+  "corpus_sha256": "8457b562e9044343248efad405610b84142d7dee4b467b2678ac5cfc72a32521",
+  "stages": [
+    {
+      "stage": 1,
+      "distinct_new": 6,
+      "newly_held_out": 2,
+      "seconds": 1516.2,
+      "refresh": {
+        "status": "unqualified",
+        "revision": "c10d0373e776c0ab82c96b070357898657a5fa675c3a29c173d5ad86624fd7e4",
+        "domain": "machine_learning",
+        "topic": "ML incident audit coding",
+        "measurement": {
+          "rank": 4,
+          "effective_rank": 2,
+          "training_rows": 4,
+          "target_mse_before": 18.0,
+          "target_mse_after": 0.015661410834976137,
+          "labels": [
+            "X",
+            "Y"
+          ],
+          "skipped_rows": 0,
+          "sha256": "a6e59f77a614fd705e7756f743c0fe2238f9c8d2e423c27e2236b329e7d4e31b",
+          "validation": {
+            "count": 2,
+            "before": 1,
+            "after": 1,
+            "regressions": 0,
+            "cases": [
+              {
+                "expected": "X",
+                "before": "X",
+                "after": "X",
+                "prompt_sha256": "1c625a6a99fc39712461e06224dfced8454dd35c5c07fd74f78cde06949f750c",
+                "before_correct": true,
+                "after_correct": true
+              },
+              {
+                "expected": "Y",
+                "before": "X",
+                "after": "X",
+                "prompt_sha256": "cba9a4c916c2f6e771f3c325ecf28be433677406fda5cf5b9dfe197411d21897",
+                "before_correct": false,
+                "after_correct": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "stage": 2,
+      "distinct_new": 8,
+      "newly_held_out": 2,
+      "seconds": 1284.2,
+      "refresh": {
+        "status": "published",
+        "revision": "8aed65d6f595f5deebc239ea9c49876ed3861293bcfa8d8fe24db5a5fd4139ab",
+        "domain": "machine_learning",
+        "topic": "ML incident audit coding",
+        "measurement": {
+          "rank": 4,
+          "effective_rank": 2,
+          "training_rows": 10,
+          "target_mse_before": 18.0,
+          "target_mse_after": 0.015271507676333947,
+          "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+          "labels": [
+            "X",
+            "Y"
+          ],
+          "skipped_rows": 0,
+          "sha256": "6bb2dd875f9393ba7478a4e35cf55cadde69827e71891df3c5b3c5d83e42a54a",
+          "validation": {
+            "count": 4,
+            "before": 2,
+            "after": 4,
+            "regressions": 0,
+            "cases": [
+              {
+                "expected": "X",
+                "before": "X",
+                "after": "X",
+                "prompt_sha256": "1c625a6a99fc39712461e06224dfced8454dd35c5c07fd74f78cde06949f750c",
+                "before_correct": true,
+                "after_correct": true
+              },
+              {
+                "expected": "X",
+                "before": "X",
+                "after": "X",
+                "prompt_sha256": "2853be5909ed2e263070ec478d52d4ea0855a32da7e667f72190478c783d74e1",
+                "before_correct": true,
+                "after_correct": true
+              },
+              {
+                "expected": "Y",
+                "before": "X",
+                "after": "Y",
+                "prompt_sha256": "cba9a4c916c2f6e771f3c325ecf28be433677406fda5cf5b9dfe197411d21897",
+                "before_correct": false,
+                "after_correct": true
+              },
+              {
+                "expected": "Y",
+                "before": "X",
+                "after": "Y",
+                "prompt_sha256": "b05a450d875c2f1af4653b02e1872fe02a09f616ef23789f690d5cb24cc98bc8",
+                "before_correct": false,
+                "after_correct": true
+              }
+            ]
+          }
+        },
+        "name": "eg8a7da83f3dc5b75b029cb270",
+        "sha256": "6bb2dd875f9393ba7478a4e35cf55cadde69827e71891df3c5b3c5d83e42a54a"
+      }
+    }
+  ],
+  "unchanged_revision_cached": true
+}

@@ -1,0 +1,113 @@
+{
+  "domain": "physics",
+  "form": "open",
+  "prompt": "At one atmosphere, what phase is pure water at 72 degrees Celsius? Answer in one short sentence.",
+  "expected": "liquid",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "At one atmosphere, pure water at 72 degrees Celsius is a gas. The hive's members worked it out with programs and two agreed.",
+    "worked": true,
+    "agreed": true,
+    "files": [],
+    "seconds": 121,
+    "engram_advice": {
+      "engram": "e_domain_physical_science_v2",
+      "skill": "water_phase",
+      "label": null,
+      "accepted": false
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "48d72a62d06e43e15b16a69639ea65f44c9a6d8058426e9a9b8cb64f7f0dfe4b",
+      "token_budget": 4,
+      "text": "WORK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 339,
+        "total_tokens": 341,
+        "prompt_tokens_details": {
+          "cached_tokens": 307
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_physical_science_v2": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "3b465e6eb907b1246edbe41d9cf8b566a98f409b4a315cce3c4e12a7b3f913bf",
+      "token_budget": 1,
+      "text": "At",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 160,
+        "total_tokens": 161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49trunk": 1.0
+      },
+      "seed": 743,
+      "temperature": 0.0,
+      "prompt_sha256": "7fd50a62d4482ec5bd76738c81748028d26c62da88da3033734cc727ca98c875",
+      "token_budget": 80,
+      "text": "```python\nprint('At one atmosphere, pure water at 72 degrees Celsius is a gas.')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 153,
+        "total_tokens": 176,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49code2": 1.0
+      },
+      "seed": 744,
+      "temperature": 0.7,
+      "prompt_sha256": "7fd50a62d4482ec5bd76738c81748028d26c62da88da3033734cc727ca98c875",
+      "token_budget": 80,
+      "text": "```python\nprint('At one atmosphere, pure water is a gas at 72 degrees Celsius.')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 153,
+        "total_tokens": 176,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 745,
+      "temperature": 0.0,
+      "prompt_sha256": "8866552082bedcfc36d6d9cccdc9a55da6c75a15a0b6395608dcf37ea1f3c368",
+      "token_budget": 48,
+      "text": "At one atmosphere, pure water at 72 degrees Celsius is a gas. The hive's members worked it out with programs and two agreed.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 251,
+        "total_tokens": 281,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

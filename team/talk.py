@@ -18,9 +18,8 @@ have to be worked out? It says one word.
           answer counts when two of them agree. The result comes back into the conversation and is said in plain
           words, with the checked values as the programs printed them.
 
-With HIVE_BANK set to a fieldwork bank folder, a work message that fits a saved, checked method is answered by that
-method first, with no model call (team/saved.py); when its saved versions disagree, or the message lacks its inputs,
-the reply says so. A message that fits none goes on to the members as above.
+A checked method from the local fieldwork bank can answer a matching request before the body starts. HIVE_BANK
+can select another bank. When its saved versions disagree, or the message lacks its inputs, the reply says so.
 
 So nothing that can be computed or read from a source is answered from memory, and small talk does not wait for
 programs. The one who talks is the body's DNA with no cell's edit switched on: conversation is what the DNA knows
@@ -39,7 +38,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from . import config, ternary
+from . import config, domain_route, ternary
 
 TALK = """You are HiveMIND: a hive of small neural nets with ternary weights that work as one body, on plain CPUs. You are talking with {name}. Now it is {today}.
 Answer directly and in plain words, as briefly as the message allows. Be honest: if you do not know, say so. Do not make up facts, figures, links or sources."""
@@ -67,6 +66,24 @@ MUST = re.compile(r"https?://|\bwww\.|\d\s*[-+*/^%]\s*\d|\b\d+(?:\.\d+)?\s*%|\b(
 LONG = int(os.environ.get("HIVE_TALK_LONG", 900))  # the most pieces of one reply
 KEEP = int(os.environ.get("HIVE_TALK_KEEP", 9000))  # how many characters of the conversation the talker is shown
 SINGLE_INTEGER = re.compile(r"\b(?:(?:as|with)\s+(?:a\s+)?single integer|(?:only|just)\s+(?:the|an?|one)\s+integer)\b", re.I)
+
+
+def _exact_integer(printed):
+    """Preserve integer tokens and render only exactly integral decimal literals."""
+    if re.fullmatch(r"[+-]?\d+", printed):
+        return printed
+    # A member's answer is capped at 3,000 characters. Never expand an exponent
+    # into a longer answer, or pass an arbitrary-length exponent to Decimal.
+    numeric = r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]{1,4})?"
+    if len(printed) > 3000 or not re.fullmatch(numeric, printed):
+        return None
+    value = Decimal(printed)
+    if value.is_zero():
+        return "0"
+    if value.adjusted() + int(value.is_signed()) >= 3000:
+        return None
+    integer = value.to_integral_value()
+    return format(integer, "f") if integer == value else None
 
 
 def speaker():
@@ -125,28 +142,114 @@ def route(base, message, history=()):
     return decide(base, message, last), convo
 
 
+def saved_reply(message, log=None, *, local_only=False):
+    """Run a matching saved method and format its result for the ordinary chat interface."""
+    from . import saved
+
+    started = time.time()
+    if saved.bank_path() is None:
+        return None
+    kept = saved.answer(message, log=log, local_only=local_only)
+    if kept is None:
+        return None
+    if log:
+        log(f"saved method {kept['task']}: {kept['status']}")
+    return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered",
+            "task": message, "dir": "", "files": [], "saved": kept, "seconds": round(time.time() - started)}
+
+
+def local_reply(message, log=None, *, local_only=False):
+    """Try the user's saved methods, followed by the supported local calculations."""
+    kept = saved_reply(message, log, local_only=local_only)
+    if kept is not None:
+        return kept
+    return _local_calculation(message)
+
+
+def _local_calculation(message):
+    from . import cache_lines, sensor_banks
+    return sensor_banks.answer(message) or cache_lines.answer(message)
+
+
 def reply(message, history=(), name="the user", run_dir=None, log=None, base=None, now=None):
     """The hive's reply to the latest message: {"text", "worked", "agreed", "task", "dir", "seconds"}.
     history: the earlier messages, oldest first ({"role", "content"}). base: who talks (default: the body's DNA).
     now: the date and time the hive is told it is (default: the clock; the talk exam gives its own)."""
     t0 = time.time()
+    kept = local_reply(message, log, local_only=True)
+    if kept and not kept.get("saved", {}).get("fallback_to_members"):
+        return kept
     base = base or speaker()
     if not base:
+        if kept:
+            return kept
         raise RuntimeError("the hive's body is not on this machine: bash scripts/cloud_setup.sh (or python -m team.ternary install, then python training/grow.py fetch)")
+    history = list(history)
+    with domain_route.for_request(message, history) as decision:
+        result = _body_reply(message, history, name, run_dir, log, base, now, t0)
+        # A label can also emerge from ordinary chat or its final worker-report rewrite.
+        # Reject only the entire contradictory assertion; never replace an open-ended job with a phase.
+        from . import water_phase
+        if not result.get("water_phase_check"):
+            expected = water_phase.output_check_phase(message, history)
+            if water_phase.contradicts(expected, result["text"]):
+                result["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": expected,
+                                               "source": "contradictory_output_withheld", "model_answer": result["text"]}
+                result.update(text=water_phase.WITHHELD, agreed=False)
+                for call in result.get("engrams", []):
+                    if call.get("stage") in {"answer", "report"}:
+                        call["stage"] += "_attempt"
+        if decision:
+            result["domain_signal"] = decision
+        if domain_route.advice():
+            result["engram_advice"] = domain_route.advice()
+        return result
+
+
+def _body_reply(message, history, name, run_dir, log, base, now, t0):
     say = log or (lambda *a: None)
     today = (now or datetime.datetime.now()).strftime("%Y-%m-%d (%A), %H:%M")
     system = {"role": "system", "content": TALK.format(name=name, today=today)}
+    guidance = domain_route.guidance()
+    if guidance:
+        system["content"] += "\n" + guidance
+    from . import domain_advice, engram, water_phase
+    # A named, qualified label contract can answer a standalone request in its trained one-token form.
+    form = engram.single_label_form(message) if not history else None
+    named = engram.named_label_for(message, base) if form else None
+    if named and (form != "letter" or all(len(label) == 1 and label.isalpha() for label in named["labels"])):
+        choice = domain_route.prepare_advice(message, base, system["content"])
+        if choice and choice["accepted"]:
+            return {"text": choice["label"], "worked": False, "agreed": None, "task": "", "dir": "", "files": [],
+                    "seconds": round(time.time() - t0),
+                    "engrams": [{"stage": "answer", "member": base, "edits": [choice["engram"]]}]}
     way, convo = route(base, message, history)
+    decision = domain_route.prepare_advice(message, base, system["content"], direct_labels=way == "talk")
+    phase = water_phase.standalone_phase(message, history)
+    if phase and way == "work":
+        # The normal scoped head was consulted above. A rule-derived answer has its own provenance.
+        matched_head = (decision and decision.get("skill") == "water_phase"
+                        and decision.get("accepted") and decision.get("label") == phase)
+        source = "checked_native_label" if matched_head else "equilibrium_rule"
+        out = water_phase.checked_reply(message, phase, source=source)
+        out["seconds"] = round(time.time() - t0)
+        return out
     if way == "talk":
-        text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
-        return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
-    # a saved, checked method (HIVE_BANK) answers what it fits, with no model call; off when no bank is configured
-    from . import saved
-    kept = saved.answer(message, log=say) if saved.bank_path() else None
-    if kept:
-        say(f"saved method {kept['task']}: {kept['status']}")
-        return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered", "task": message, "dir": "",
-                "files": [], "saved": kept, "seconds": round(time.time() - t0)}
+        hint = domain_advice.hint(decision)
+        if hint:
+            system["content"] += "\n" + hint
+        also = engram.for_request(message, base)
+        text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0,
+                            **({"also": also} if also else {})).strip()
+        result = {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
+        if phase:
+            source = "checked_native_answer" if water_phase.confirms(phase, text) else "equilibrium_rule"
+            result = water_phase.checked_reply(message, phase, source=source, proposed=text)
+            result["seconds"] = round(time.time() - t0)
+        if also:
+            stage = "answer_attempt" if phase and result["water_phase_check"]["source"] == "equilibrium_rule" else "answer"
+            result["engrams"] = [{"stage": stage, "member": base, "edits": list(also)}]
+        return result
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
@@ -160,26 +263,31 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
         run_dir = tempfile.mkdtemp(dir=config.RUNS, prefix=time.strftime("talk-%Y%m%d-%H%M%S-"))
     home = Path(run_dir)
     out = solo.first(task, home, "never", members=int(os.environ.get("AGENT_TEAM_SOLO", "2") or 2))
-    answer = out["report"].split("\n## ")[0].strip()
+    answer = out["report"].rsplit("\n## How it was checked\n", 1)[0].strip()
     made = out.get("files", []) if out["agreed"] else []
-    exact = out["agreed"] and SINGLE_INTEGER.search(message) and re.fullmatch(r"[+-]?\d+", answer)
-    if out.get("requested_files") or exact:
+    exact = _exact_integer(answer) if out["agreed"] and SINGLE_INTEGER.search(message) else None
+    if out.get("requested_files") or exact is not None or out.get("water_phase_check"):
         # A file request already has a plain report and a publication decision. A second
         # model rewriting that decision can invent a successful delivery or change a value.
         final = answer if out["agreed"] else out["report"].strip()
-        if made and not exact:
+        if exact is not None:
+            final = exact
+        if made and exact is None:
             final += "\n\nFiles saved: " + ", ".join(made)
         return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
-                "files": made, "file_repairs": out.get("file_repairs", []), "seconds": round(time.time() - t0)}
+                "files": made, "file_repairs": out.get("file_repairs", []), "seconds": round(time.time() - t0),
+                **({"water_phase_check": out["water_phase_check"]} if out.get("water_phase_check") else {}),
+                **({"engrams": out["engrams"]} if out.get("engrams") else {})}
     if out["agreed"]:
         how, then = "checked: its members worked it out independently with programs and two of them agreed", "Then say in one short sentence that the hive's members worked it out with programs and two agreed."
     else:
         how, then = "NOT confirmed: its members did not agree", "Say plainly that the hive could not confirm an answer, and what each member found."
         answer = out["report"].strip()
     files = f"Files it made: {', '.join(made)}\n" if made else ""
+    also = engram.for_request(message, base, labels=False)
     final = ternary.chat(base, [system] + convo + [{"role": "assistant", "content": "That has to be worked out. The hive is doing it with programs."},
                                                    {"role": "user", "content": RESULT.format(how=how, report=answer[:3500], files=files, name=name, then=then)}],
-                         max_new_tokens=LONG, temperature=0.0).strip()
+                         max_new_tokens=LONG, temperature=0.0, **({"also": also} if also else {})).strip()
     if not final:
         final = answer
     # the values are the programs', never the talker's: where its wording lost or changed one, the checked output is shown as it is
@@ -189,8 +297,11 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
             final = answer
     if made and not all(f in final for f in made):
         final += "\n\nFiles made: " + ", ".join(made)
+    recalled = list(out.get("engrams", []))
+    if also:
+        recalled.append({"stage": "report", "member": base, "edits": list(also)})
     return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
-            "files": made, "seconds": round(time.time() - t0)}
+            "files": made, "seconds": round(time.time() - t0), **({"engrams": recalled} if recalled else {})}
 
 
 def file_paths(out):
@@ -217,6 +328,7 @@ def print_one(message, **options):
         print(note, file=sys.stderr)
     for path in file_paths(out):
         print(path.absolute(), file=sys.stderr)
+    return int(("saved" in out or "sensor_banks" in out) and not out["agreed"])
 
 
 def main(argv):
@@ -228,9 +340,46 @@ def main(argv):
         if not msgs or msgs[-1].get("role") == "assistant":
             print("nothing to answer: the last message is not the user's")
             return 0
-        out = reply(str(msgs[-1]["content"]), msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
-        foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
-                if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
+        message = str(msgs[-1]["content"])
+        if "--saved-only" in argv:
+            from . import saved
+            class NeedsRuntime(Exception):
+                pass
+            class UnavailableGuest:
+                def run(self, *args, **kwargs):
+                    raise NeedsRuntime
+            # Matching and input validation use the standard saved-method path. An
+            # unavailable guest is only asked to run if a real computation matches.
+            started = time.monotonic()
+            try:
+                kept = (saved.answer(message, runner=saved.guest() or UnavailableGuest())
+                        if saved.bank_path() is not None else None)
+            except NeedsRuntime:
+                return 4  # Install the optional guest and retry with its interpreter.
+            if kept is None:
+                out = _local_calculation(message)
+                if out is None:
+                    return 3  # Continue to the ordinary model.
+            else:
+                out = dict(text=kept["text"], saved=kept, seconds=round(time.monotonic() - started))
+        else:
+            out = reply(message, msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None),
+                        log=lambda *a: print(*a, flush=True))
+        if out.get("saved"):
+            foot = f"\n\n<sub>Saved method · {out['saved']['status']} · {out['seconds']} s</sub>"
+        elif out.get("water_phase_check"):
+            source = out["water_phase_check"]["source"]
+            label = "Local equilibrium calculation" if source == "equilibrium_rule" else "Native answer checked against equilibrium"
+            if source == "contradictory_output_withheld":
+                label = "Phase answer withheld after equilibrium check"
+            foot = f"\n\n<sub>{label} · {out['seconds']} s</sub>"
+        elif out.get("cache_lines"):
+            foot = f"\n\n<sub>Local cache-line calculation · {out['seconds']} s</sub>"
+        elif out.get("sensor_banks"):
+            foot = f"\n\n<sub>Local sensor-bank check · {out['seconds']} s</sub>"
+        else:
+            foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
+                    if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
         notes = repair_notes(out)
         response = out["text"].strip() + ("\n\n" + "\n".join(notes) if notes else "")
         Path(opt("--out", "reply.md")).write_text(response + foot + "\n")
@@ -244,25 +393,46 @@ def main(argv):
         return 0
     words = [a for i, a in enumerate(argv) if not a.startswith("--") and (i == 0 or argv[i - 1] not in ("--name", "--run-dir", "--out", "--export-files"))]
     if words:
-        print_one(" ".join(words), name=name, run_dir=opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
-        return 0
-    if not speaker():
-        print("the hive's body is not on this machine: bash scripts/cloud_setup.sh")
-        return 1
-    print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
+        return print_one(" ".join(words), name=name, run_dir=opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
+    return conversation(name=name, base=speaker())
+
+
+def conversation(first=None, *, name="the user", base=None, methods=(), remote=None):
+    """Keep ordinary conversation or, on a model-free machine, serve its available local methods."""
+    if not base:
+        from . import saved
+        methods = methods or saved.available()
+        if not methods:
+            print("the hive's body is not on this machine: bash scripts/cloud_setup.sh")
+            return 1
+        print("Saved methods: " + ", ".join(methods) + '. Type "Run NAME with JSON" to use one; type "exit" to leave.')
+    else:
+        print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")
     history = []
+    msg = first
     while True:
-        try:
-            msg = input("\nyou> ").strip()
-        except (EOFError, KeyboardInterrupt):
+        if msg is None:
+            try:
+                msg = input("\nyou> ").strip()
+            except (EOFError, KeyboardInterrupt):
+                break
+        if msg.lower() in ("exit", "quit", "/exit", "/quit", ":q", "bye"):
             break
-        if not msg:
-            continue
-        if msg.lower() in ("exit", "quit", "bye"):
-            break
-        out = reply(msg, history, name, log=lambda *a: print("  [" + " ".join(map(str, a)) + "]", flush=True))
-        print("\nhive> " + local_text(out))
-        history += [{"role": "user", "content": msg}, {"role": "assistant", "content": out["text"]}]
+        if msg:
+            if base:
+                out = reply(msg, history, name, base=base, log=lambda *a: print("  [" + " ".join(map(str, a)) + "]", flush=True))
+            else:
+                out = local_reply(msg, local_only=remote is None)
+            if out is not None:
+                text = local_text(out)
+                print("\nhive> " + text)
+            elif remote:
+                text = remote(msg, [(m["role"], m["content"]) for m in history])
+            else:
+                text = "No saved method fits this request. For other tasks, install the hive's body with bash scripts/cloud_setup.sh."
+                print("\nhive> " + text)
+            history += [{"role": "user", "content": msg}, {"role": "assistant", "content": text}]
+        msg = None
     return 0
 
 

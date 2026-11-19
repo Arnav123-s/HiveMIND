@@ -1,0 +1,154 @@
+{
+  "seed": 48179031,
+  "test_input_sha256": "9c130f4a1616efbbf2d00d76d7a28ad54f7179c38aa518d49cf4ce00b648fc03",
+  "original_archive_sha256": "328370f1e213e347b538337345150d202a4bd308f7e7f2a093ebeea6163f08ef",
+  "serving_asset_sha256": "4bd8cb3db998581413c58484faadee35962d06d34593ad210b40577d67a21f9c",
+  "counts": {
+    "normal": {
+      "inputs": 4096,
+      "served_correct": 4096,
+      "codes_match": 4096,
+      "decisions_match": 4096,
+      "original_both_correct": 3709,
+      "positive_class_matches": 3997,
+      "sum_matches": 3808,
+      "disclosures_correct": 4096
+    },
+    "near_boundary": {
+      "inputs": 256,
+      "served_correct": 256,
+      "codes_match": 256,
+      "decisions_match": 256,
+      "original_both_correct": 48,
+      "positive_class_matches": 145,
+      "sum_matches": 98,
+      "disclosures_correct": 256
+    },
+    "zero_sum": {
+      "inputs": 32,
+      "served_correct": 32,
+      "codes_match": 32,
+      "decisions_match": 32,
+      "original_both_correct": 19,
+      "positive_class_matches": 32,
+      "sum_matches": 19,
+      "disclosures_correct": 32
+    }
+  },
+  "examples": {
+    "normal_agree": {
+      "request": "Check sensor banks [-0.284701, 1.022534, 1.427568, -0.994118] and [0.242326, -0.591131, -2.628932, -0.416233]",
+      "gold": [
+        false,
+        false
+      ],
+      "codes": [
+        13,
+        0
+      ],
+      "original_predictions": [
+        false,
+        false
+      ],
+      "served": [
+        false,
+        false
+      ]
+    },
+    "normal_corrected": {
+      "request": "Check sensor banks [0.046041, -2.610342, 0.045084, 0.018139] and [-0.685146, -0.34055, 1.786275, -0.596983]",
+      "gold": [
+        true,
+        false
+      ],
+      "codes": [
+        15,
+        15
+      ],
+      "original_predictions": [
+        true,
+        true
+      ],
+      "served": [
+        true,
+        false
+      ]
+    },
+    "near_boundary_corrected": {
+      "request": "Check sensor banks [-1.463451, -1.315003, -2.778454, 0.059039] and [0.147333, 0.35255, 0.205217, 1.857904]",
+      "gold": [
+        false,
+        false
+      ],
+      "codes": [
+        7,
+        7
+      ],
+      "original_predictions": [
+        true,
+        true
+      ],
+      "served": [
+        false,
+        false
+      ]
+    },
+    "near_boundary_agree": {
+      "request": "Check sensor banks [0.37501, 1.143052, 1.518061, -0.130756] and [1.316889, -1.559835, 0.587745, 0.328692]",
+      "gold": [
+        false,
+        true
+      ],
+      "codes": [
+        7,
+        15
+      ],
+      "original_predictions": [
+        false,
+        true
+      ],
+      "served": [
+        false,
+        true
+      ]
+    },
+    "zero_sum_agree": {
+      "request": "Check sensor banks [0.281358, 1.228969, 0.508801, 0.961235] and [-0.004548, 0.084838, -0.91214, -1.00131]",
+      "gold": [
+        true,
+        false
+      ],
+      "codes": [
+        1,
+        1
+      ],
+      "original_predictions": [
+        true,
+        false
+      ],
+      "served": [
+        true,
+        false
+      ]
+    },
+    "zero_sum_corrected": {
+      "request": "Check sensor banks [-0.66559, 0.295502, -0.278478, 0.060013] and [1.394768, -1.390059, -2.693217, -0.13453]",
+      "gold": [
+        true,
+        false
+      ],
+      "codes": [
+        8,
+        8
+      ],
+      "original_predictions": [
+        true,
+        true
+      ],
+      "served": [
+        true,
+        false
+      ]
+    }
+  }
+}

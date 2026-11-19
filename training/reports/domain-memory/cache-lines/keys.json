@@ -1,0 +1,38 @@
+{
+  "clip-edge": {
+    "eligible": true,
+    "expected": 2
+  },
+  "fresh-block": {
+    "eligible": true,
+    "expected": 1
+  },
+  "four-blocks": {
+    "eligible": true,
+    "expected": 4
+  },
+  "last-byte": {
+    "eligible": true,
+    "expected": 1
+  },
+  "display-hex": {
+    "eligible": true,
+    "expected": 2
+  },
+  "one-byte": {
+    "eligible": true,
+    "expected": 1
+  },
+  "unknown-start": {
+    "eligible": false,
+    "expected": null
+  },
+  "cycles": {
+    "eligible": false,
+    "expected": null
+  },
+  "two-possible": {
+    "eligible": false,
+    "expected": null
+  }
+}

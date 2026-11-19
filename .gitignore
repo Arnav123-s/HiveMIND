@@ -17,6 +17,7 @@ training/data/_live_cache.json
 cells/gguf/
 cells/bases/
 cells/variants/**/adapter_model.safetensors
+cells/engrams/.index.lock
 cells/registry.lock
 cells/registry.json.tmp
 # candidate weight edits under evaluation (a winner replaces the tracked adapters_gguf/<name>.gguf)

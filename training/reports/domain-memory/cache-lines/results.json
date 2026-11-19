@@ -1,0 +1,160 @@
+{
+  "method": "handwritten model-free aligned byte interval; no fitted parameters",
+  "retrospective": {
+    "expected": 2,
+    "observed_old_worker_outputs": [
+      "1",
+      "1"
+    ],
+    "local_answer": "2",
+    "ordinary_cli": "2",
+    "check": {
+      "method": "aligned_byte_interval",
+      "line_bytes": 64,
+      "start_address": 62,
+      "access_bytes": 4,
+      "end_address": 65,
+      "first_line": 0,
+      "last_line": 1,
+      "count": 2
+    }
+  },
+  "independent_prose": {
+    "results": [
+      {
+        "id": "clip-edge",
+        "eligible": true,
+        "expected": 2,
+        "output": "2",
+        "correct": true,
+        "calculation": {
+          "method": "aligned_byte_interval",
+          "line_bytes": 32,
+          "start_address": 31,
+          "access_bytes": 2,
+          "end_address": 32,
+          "first_line": 0,
+          "last_line": 1,
+          "count": 2
+        }
+      },
+      {
+        "id": "fresh-block",
+        "eligible": true,
+        "expected": 1,
+        "output": "1",
+        "correct": true,
+        "calculation": {
+          "method": "aligned_byte_interval",
+          "line_bytes": 128,
+          "start_address": 128,
+          "access_bytes": 5,
+          "end_address": 132,
+          "first_line": 1,
+          "last_line": 1,
+          "count": 1
+        }
+      },
+      {
+        "id": "four-blocks",
+        "eligible": true,
+        "expected": 4,
+        "output": null,
+        "correct": false,
+        "calculation": null
+      },
+      {
+        "id": "last-byte",
+        "eligible": true,
+        "expected": 1,
+        "output": "1",
+        "correct": true,
+        "calculation": {
+          "method": "aligned_byte_interval",
+          "line_bytes": 64,
+          "start_address": 64,
+          "access_bytes": 64,
+          "end_address": 127,
+          "first_line": 1,
+          "last_line": 1,
+          "count": 1
+        }
+      },
+      {
+        "id": "display-hex",
+        "eligible": true,
+        "expected": 2,
+        "output": "2",
+        "correct": true,
+        "calculation": {
+          "method": "aligned_byte_interval",
+          "line_bytes": 32,
+          "start_address": 63,
+          "access_bytes": 3,
+          "end_address": 65,
+          "first_line": 1,
+          "last_line": 2,
+          "count": 2
+        }
+      },
+      {
+        "id": "one-byte",
+        "eligible": true,
+        "expected": 1,
+        "output": "1",
+        "correct": true,
+        "calculation": {
+          "method": "aligned_byte_interval",
+          "line_bytes": 32,
+          "start_address": 95,
+          "access_bytes": 1,
+          "end_address": 95,
+          "first_line": 2,
+          "last_line": 2,
+          "count": 1
+        }
+      },
+      {
+        "id": "unknown-start",
+        "eligible": false,
+        "expected": null,
+        "output": null,
+        "correct": true,
+        "calculation": null
+      },
+      {
+        "id": "cycles",
+        "eligible": false,
+        "expected": null,
+        "output": null,
+        "correct": true,
+        "calculation": null
+      },
+      {
+        "id": "two-possible",
+        "eligible": false,
+        "expected": null,
+        "output": null,
+        "correct": true,
+        "calculation": null
+      }
+    ],
+    "eligible_solved": 5,
+    "eligible": 6,
+    "ineligible_declined": 3,
+    "ineligible": 3,
+    "all_wrong_numeric_answers": 0
+  },
+  "fixed_grammar_numeric_sweep": {
+    "inputs": 2048,
+    "matched": 2048,
+    "wrong": 0,
+    "declined": 0
+  },
+  "sha256": {
+    "team/cache_lines.py": "35e05daa8eeaacffb929f7810e735bd41adc56148c6e157adb9958301266a5c1",
+    "training/reports/domain-memory/cache-lines/cases.json": "c5e3bd4a6dc6adf0927a4cc22ffa47dd1094243f99747bb4201a43d77d1aba18",
+    "training/reports/domain-memory/cache-lines/keys.json": "13a11e765c37ee1f2ff6e7e15a756aca79ba478e9c0257e14775884dad23d9a6",
+    "training/reports/domain-memory/cache-lines/protocol.md": "a814d34e8b9d2627812773fce5561d3b84c1ee9812ab049388796f0a5a64e876"
+  }
+}

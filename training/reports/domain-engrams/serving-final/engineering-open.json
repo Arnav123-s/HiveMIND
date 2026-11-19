@@ -1,0 +1,107 @@
+{
+  "domain": "engineering",
+  "form": "open",
+  "prompt": "In computer engineering, which time unit is a millionth of a second? Give its usual abbreviation.",
+  "expected": "us",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "The time unit is microsecond, and its usual abbreviation is µs. The hive's members worked it out with programs and two agreed.",
+    "worked": true,
+    "agreed": true,
+    "files": [],
+    "seconds": 97
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "f7211f1d4bc0426f24f20f381297da6aa79604c435891bb311cec6b2ac85ef7f",
+      "token_budget": 4,
+      "text": "WORK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 337,
+        "total_tokens": 339,
+        "prompt_tokens_details": {
+          "cached_tokens": 308
+        }
+      }
+    },
+    {
+      "active": {
+        "g49trunk": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "e409922bb6e4a370807f303bc30f3e6205f04da04528699ef7c2bd1306b66e5f",
+      "token_budget": 80,
+      "text": "```python\nprint(\"The time unit is:\", \"microsecond\")\nprint(\"Its usual abbreviation is:\", \"µs\")\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 27,
+        "prompt_tokens": 151,
+        "total_tokens": 178,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49code2": 1.0
+      },
+      "seed": 743,
+      "temperature": 0.7,
+      "prompt_sha256": "e409922bb6e4a370807f303bc30f3e6205f04da04528699ef7c2bd1306b66e5f",
+      "token_budget": 80,
+      "text": "```python\nprint('microsecond')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 151,
+        "total_tokens": 161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49data2": 1.0
+      },
+      "seed": 744,
+      "temperature": 0.7,
+      "prompt_sha256": "e409922bb6e4a370807f303bc30f3e6205f04da04528699ef7c2bd1306b66e5f",
+      "token_budget": 80,
+      "text": "```python\nprint(\"The time unit is:\", \"microsecond\")\nprint(\"Its usual abbreviation is:\", \"us\")\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 151,
+        "total_tokens": 177,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 745,
+      "temperature": 0.0,
+      "prompt_sha256": "0e1df9bfcdc7a4916c3f9b8881387cf24829c61aee22ab1a90a527df1724497e",
+      "token_budget": 48,
+      "text": "The time unit is microsecond, and its usual abbreviation is µs. The hive's members worked it out with programs and two agreed.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 249,
+        "total_tokens": 278,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

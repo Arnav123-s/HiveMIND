@@ -1,0 +1,446 @@
+{
+  "method": "rank-4 FP16 output projection; native CPU greedy first answer token",
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_commit": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "threads": 2,
+  "rank": 4,
+  "ridge": 0.1,
+  "margin": 6.0,
+  "train_states_sha256": "558a2f173ee49ada53cf1de7fb9616d3f5c5f98323b93f7672ad2776731163d4",
+  "corpus_sha256": "67ead778f7ea3ec6727995a1e39ec798190fd8833f26f2b224cd4cedea3f3de8",
+  "domain": {
+    "coding": {
+      "qualified": true,
+      "validation": {
+        "count": 3,
+        "before": 3,
+        "after": 3,
+        "regressions": 0,
+        "cases": [
+          {
+            "expected": "map",
+            "before": "MAP",
+            "after": "MAP",
+            "prompt_sha256": "bbb61541345f88ae6fc3ed0663c056c1fbf0f3f20d9087a79601de9658544919",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 17617,
+            "after_token": 17617,
+            "target_token": 2186,
+            "target_p_before": 2.7146456886839587e-06,
+            "target_p_after": 3.7009871448390186e-05
+          },
+          {
+            "expected": "filter",
+            "before": "filter",
+            "after": "filter",
+            "prompt_sha256": "a96940233836b66c018119517c572de2a9c3fd03ba5af6153e1464b88018e2d9",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 5315,
+            "after_token": 5315,
+            "target_token": 5315,
+            "target_p_before": 0.9969274401664734,
+            "target_p_after": 0.9999922513961792
+          },
+          {
+            "expected": "sum",
+            "before": "sum",
+            "after": "sum",
+            "prompt_sha256": "fb39e9372ccee460b7561f8a06f8476206d340aa3ae763fe27a8c49edbaf4c34",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 1242,
+            "after_token": 1242,
+            "target_token": 1242,
+            "target_p_before": 0.9969953298568726,
+            "target_p_after": 0.9999710321426392
+          }
+        ],
+        "fit": {
+          "rank": 4,
+          "effective_rank": 3,
+          "training_rows": 6,
+          "target_mse_before": 12.0,
+          "target_mse_after": 0.026671932145016078,
+          "sha256": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+          "label_ids": [
+            1242,
+            2186,
+            5315
+          ],
+          "domain": "coding",
+          "available_training_states": [
+            "coding-train-0",
+            "coding-train-1",
+            "coding-train-2",
+            "coding-train-3",
+            "coding-train-4",
+            "coding-train-5"
+          ]
+        }
+      }
+    },
+    "math": {
+      "qualified": true,
+      "validation": {
+        "count": 3,
+        "before": 3,
+        "after": 3,
+        "regressions": 0,
+        "cases": [
+          {
+            "expected": "length",
+            "before": "Length",
+            "after": "Length",
+            "prompt_sha256": "64f56d6b9e717873c1dc22f1f3c8bd7fb88078ec50f7ec9b1438636f22e5d7ca",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 4373,
+            "after_token": 4373,
+            "target_token": 4129,
+            "target_p_before": 0.0006879915599711239,
+            "target_p_after": 0.0888938307762146
+          },
+          {
+            "expected": "area",
+            "before": "Area",
+            "after": "Area",
+            "prompt_sha256": "9e06eebeda7b7c17d3ab0fa940361437aab62dc1c424fed1bf1058170da296a1",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 8726,
+            "after_token": 8726,
+            "target_token": 4798,
+            "target_p_before": 0.00015024575986899436,
+            "target_p_after": 0.014846610836684704
+          },
+          {
+            "expected": "volume",
+            "before": "Volume",
+            "after": "Volume",
+            "prompt_sha256": "ccbad396aa48b52cfea182909fe74dc42b7d494ab8310925dea6d5a0f1ed9f65",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 18902,
+            "after_token": 18902,
+            "target_token": 25060,
+            "target_p_before": 0.0010936455801129341,
+            "target_p_after": 0.15389545261859894
+          }
+        ],
+        "fit": {
+          "rank": 4,
+          "effective_rank": 3,
+          "training_rows": 6,
+          "target_mse_before": 12.0,
+          "target_mse_after": 0.035140519732566336,
+          "sha256": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+          "label_ids": [
+            4129,
+            4798,
+            25060
+          ],
+          "domain": "math",
+          "available_training_states": [
+            "math-train-0",
+            "math-train-1",
+            "math-train-2",
+            "math-train-3",
+            "math-train-4",
+            "math-train-5"
+          ]
+        }
+      }
+    },
+    "physics": {
+      "qualified": false,
+      "validation": {
+        "count": 3,
+        "before": 2,
+        "after": 2,
+        "regressions": 0,
+        "cases": [
+          {
+            "expected": "solid",
+            "before": "Liquid",
+            "after": "Liquid",
+            "prompt_sha256": "ed43a9d14f319b12a730e80945b0b7864dee4533cc4a0ed1141de742eeb5c8c0",
+            "before_correct": false,
+            "after_correct": false,
+            "before_token": 96640,
+            "after_token": 96640,
+            "target_token": 31027,
+            "target_p_before": 0.0035669133067131042,
+            "target_p_after": 0.21200592815876007
+          },
+          {
+            "expected": "liquid",
+            "before": "Liquid",
+            "after": "liquid",
+            "prompt_sha256": "cf5ff2f6d2963e8a267fd26e1098b1ce9de70bc88cbfb4e1676457a9fcbe38a0",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 96640,
+            "after_token": 53637,
+            "target_token": 53637,
+            "target_p_before": 0.02094149775803089,
+            "target_p_after": 0.7408270239830017
+          },
+          {
+            "expected": "gas",
+            "before": "Gas",
+            "after": "Gas",
+            "prompt_sha256": "bbe27f8e0a36bbc4fd16c6b3b7e153ac6c81c0e765704b8d37bf4f67649c2497",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 58728,
+            "after_token": 58728,
+            "target_token": 39525,
+            "target_p_before": 0.00102105678524822,
+            "target_p_after": 0.2153061330318451
+          }
+        ],
+        "fit": {
+          "rank": 4,
+          "effective_rank": 3,
+          "training_rows": 6,
+          "target_mse_before": 12.0,
+          "target_mse_after": 0.2485554190095116,
+          "sha256": "eff02a182a9d4d551e1ed46ae9d0ef33051c74ab3d06b4dee3225d8f4383786c",
+          "label_ids": [
+            31027,
+            39525,
+            53637
+          ],
+          "domain": "physical_science",
+          "available_training_states": [
+            "physics-train-0",
+            "physics-train-1",
+            "physics-train-2",
+            "physics-train-3",
+            "physics-train-4",
+            "physics-train-5"
+          ]
+        }
+      }
+    },
+    "conversation": {
+      "qualified": true,
+      "validation": {
+        "count": 3,
+        "before": 2,
+        "after": 3,
+        "regressions": 0,
+        "cases": [
+          {
+            "expected": "ask",
+            "before": "Ask",
+            "after": "ask",
+            "prompt_sha256": "d93d0fdac5d93c84539700f6f904e28735a59f509f745af082ac49f290b20a04",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 26172,
+            "after_token": 1073,
+            "target_token": 1073,
+            "target_p_before": 0.06782441586256027,
+            "target_p_after": 0.954163670539856
+          },
+          {
+            "expected": "confirm",
+            "before": "Thank",
+            "after": "confirm",
+            "prompt_sha256": "42656aa82a925250a19f9787a526224e8825e7b285960d9b21abfa8eac93ac33",
+            "before_correct": false,
+            "after_correct": true,
+            "before_token": 13060,
+            "after_token": 13800,
+            "target_token": 13800,
+            "target_p_before": 0.012290386483073235,
+            "target_p_after": 0.609533965587616
+          },
+          {
+            "expected": "thank",
+            "before": "Thank",
+            "after": "thank",
+            "prompt_sha256": "2e201d778dad05396c965618313f99b64ec3fafdbba899ad47fca6237e4b608a",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 13060,
+            "after_token": 57417,
+            "target_token": 57417,
+            "target_p_before": 0.25814855098724365,
+            "target_p_after": 0.9911056160926819
+          }
+        ],
+        "fit": {
+          "rank": 4,
+          "effective_rank": 3,
+          "training_rows": 6,
+          "target_mse_before": 12.0,
+          "target_mse_after": 0.024017117181929837,
+          "sha256": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+          "label_ids": [
+            1073,
+            13800,
+            57417
+          ],
+          "domain": "conversation",
+          "available_training_states": [
+            "conversation-train-0",
+            "conversation-train-1",
+            "conversation-train-2",
+            "conversation-train-3",
+            "conversation-train-4",
+            "conversation-train-5"
+          ]
+        }
+      }
+    },
+    "ml": {
+      "qualified": true,
+      "validation": {
+        "count": 3,
+        "before": 3,
+        "after": 3,
+        "regressions": 0,
+        "cases": [
+          {
+            "expected": "train",
+            "before": "train",
+            "after": "train",
+            "prompt_sha256": "e9cca4577ff1a9e2fd6991386a6d5e97a0cc96f7e01613b9f03b66cd2b57b92b",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 10397,
+            "after_token": 10397,
+            "target_token": 10397,
+            "target_p_before": 0.39698299765586853,
+            "target_p_after": 0.8081755638122559
+          },
+          {
+            "expected": "validation",
+            "before": "Validation",
+            "after": "validation",
+            "prompt_sha256": "728c9250febab0a41499ccf58777017384dee1d41c1a66423173b4183fb32af3",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 13799,
+            "after_token": 12284,
+            "target_token": 12284,
+            "target_p_before": 0.1294095367193222,
+            "target_p_after": 0.7238861322402954
+          },
+          {
+            "expected": "test",
+            "before": "Test",
+            "after": "Test",
+            "prompt_sha256": "7d087c854ffd6d24c1e9998ea194c0df3dde861d5c37fa4a18daf30264997e21",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 2271,
+            "after_token": 2271,
+            "target_token": 1944,
+            "target_p_before": 0.09661441296339035,
+            "target_p_after": 0.38247495889663696
+          }
+        ],
+        "fit": {
+          "rank": 4,
+          "effective_rank": 3,
+          "training_rows": 6,
+          "target_mse_before": 12.0,
+          "target_mse_after": 0.1882479832771723,
+          "sha256": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766",
+          "label_ids": [
+            1944,
+            10397,
+            12284
+          ],
+          "domain": "machine_learning",
+          "available_training_states": [
+            "ml-train-0",
+            "ml-train-1",
+            "ml-train-2",
+            "ml-train-3",
+            "ml-train-4",
+            "ml-train-5"
+          ]
+        }
+      }
+    },
+    "engineering": {
+      "qualified": false,
+      "validation": {
+        "count": 3,
+        "before": 1,
+        "after": 1,
+        "regressions": 0,
+        "cases": [
+          {
+            "expected": "ns",
+            "before": "ns",
+            "after": "ns",
+            "prompt_sha256": "56f11d1b4c5df0d2c52558eca354c3abf4a16e0721c1a71c6a201d91819032ee",
+            "before_correct": true,
+            "after_correct": true,
+            "before_token": 4412,
+            "after_token": 4412,
+            "target_token": 4412,
+            "target_p_before": 0.6040977239608765,
+            "target_p_after": 0.9542924165725708
+          },
+          {
+            "expected": "us",
+            "before": "ns",
+            "after": "ns",
+            "prompt_sha256": "148dd4d99447144227a9a898e6e2ff8871c44568dceba3a1c6f542e8aacd2f39",
+            "before_correct": false,
+            "after_correct": false,
+            "before_token": 4412,
+            "after_token": 4412,
+            "target_token": 355,
+            "target_p_before": 0.004903280641883612,
+            "target_p_after": 0.001703300280496478
+          },
+          {
+            "expected": "ms",
+            "before": "us",
+            "after": "us",
+            "prompt_sha256": "d2bf97c8d9b8d7f6bb7694d374e5f9bd26331e31d21acf671960c903778a73cb",
+            "before_correct": false,
+            "after_correct": false,
+            "before_token": 355,
+            "after_token": 355,
+            "target_token": 1011,
+            "target_p_before": 0.0008549446356482804,
+            "target_p_after": 1.5812445326446323e-06
+          }
+        ],
+        "fit": {
+          "rank": 4,
+          "effective_rank": 3,
+          "training_rows": 6,
+          "target_mse_before": 12.0,
+          "target_mse_after": 0.06558245827782655,
+          "sha256": "44f95a7ada1eef213cf908a3d55a47369fd6089099eaacc8b0ea19f70a73fe84",
+          "label_ids": [
+            355,
+            1011,
+            4412
+          ],
+          "domain": "computer_engineering",
+          "available_training_states": [
+            "engineering-train-0",
+            "engineering-train-1",
+            "engineering-train-2",
+            "engineering-train-3",
+            "engineering-train-4",
+            "engineering-train-5"
+          ]
+        }
+      }
+    }
+  }
+}

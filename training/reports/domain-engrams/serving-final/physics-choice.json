@@ -1,0 +1,134 @@
+{
+  "domain": "physics",
+  "form": "choice",
+  "prompt": "At equilibrium and one atmosphere, is pure water at 72 degrees Celsius solid, liquid, or gas? Reply with one name.",
+  "expected": "liquid",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "At equilibrium and one atmosphere, pure water at 72 degrees Celsius is liquid.  \n\nThe hive's members worked it out with programs and two agreed.",
+    "worked": true,
+    "agreed": true,
+    "files": [],
+    "seconds": 124,
+    "domain_signal": {
+      "domain": "physical_science",
+      "confidence": 0.9999,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          0,
+          1,
+          28,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "5c3062fefa8010565536b2d4e800e61216114e857e34b3f822471b0d9aec10a9",
+      "token_budget": 4,
+      "text": "WORK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 344,
+        "total_tokens": 346,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49trunk": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "a58586516b435070013ad2af0d0e7166cd853df8bfea622a37398f1ef4e0cd94",
+      "token_budget": 80,
+      "text": "```python\nprint('liquid')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 158,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49code2": 1.0
+      },
+      "seed": 743,
+      "temperature": 0.7,
+      "prompt_sha256": "a58586516b435070013ad2af0d0e7166cd853df8bfea622a37398f1ef4e0cd94",
+      "token_budget": 80,
+      "text": "```python\nprint('solid')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 158,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49data2": 1.0
+      },
+      "seed": 744,
+      "temperature": 0.7,
+      "prompt_sha256": "a58586516b435070013ad2af0d0e7166cd853df8bfea622a37398f1ef4e0cd94",
+      "token_budget": 80,
+      "text": "```python\nprint('liquid')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 158,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 745,
+      "temperature": 0.0,
+      "prompt_sha256": "fe9af397442c6b86b753c766cfb4f8cfcf16b04decfa7dab3fede02c99e5c255",
+      "token_budget": 48,
+      "text": "At equilibrium and one atmosphere, pure water at 72 degrees Celsius is liquid.  \n\nThe hive's members worked it out with programs and two agreed.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 253,
+        "total_tokens": 285,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

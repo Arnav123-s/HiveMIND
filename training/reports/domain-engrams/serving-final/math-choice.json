@@ -1,0 +1,88 @@
+{
+  "domain": "math",
+  "form": "choice",
+  "prompt": "In geometry, which measure is the space inside a tank: length, area, or volume? Reply with one name.",
+  "expected": "volume",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "volume",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 42,
+    "engrams": [
+      {
+        "stage": "answer",
+        "member": "t80",
+        "edits": [
+          "e_domain_math"
+        ]
+      }
+    ],
+    "domain_signal": {
+      "domain": "math",
+      "confidence": 0.926,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          2,
+          16,
+          5,
+          1,
+          1,
+          1,
+          2,
+          3
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "f33294054d6f56217ea79c80b5b0b2ba3797cbd9142b8e47f7929cc50e581e0b",
+      "token_budget": 4,
+      "text": "volume",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 341,
+        "total_tokens": 343,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_math": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "ad98dd4d4da1ee2094e1747c1ffb4eab4d29c147ccc1a6ea528f60c497b71765",
+      "token_budget": 48,
+      "text": "volume",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 145,
+        "total_tokens": 147,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

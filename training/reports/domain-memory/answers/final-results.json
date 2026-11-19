@@ -1,0 +1,1892 @@
+{
+  "metrics": {
+    "final_system": {
+      "primary_answered": 5,
+      "primary_content_correct": 5,
+      "primary_total": 12,
+      "advice_accepted": 0,
+      "advice_consulted": 0,
+      "correct_route": 7,
+      "reported_route": 9,
+      "work_started": 7,
+      "timeout": 4,
+      "unconfirmed_work": 0,
+      "error": 4,
+      "work": 4,
+      "elapsed_ms": 1240920,
+      "completed_native_calls_observed": 45,
+      "observed_completion_tokens": 680,
+      "questions_with_engram_requested": 0,
+      "questions_with_native_engram": 0,
+      "jobs_with_observed_member_answers": 5,
+      "member_correct_but_content_not_delivered": 1,
+      "retention_answered": 4,
+      "retention_content_correct": 4,
+      "retention_total": 4
+    }
+  },
+  "primary_by_domain": {
+    "final_system": {
+      "coding": {
+        "total": 2,
+        "strict": 0,
+        "content": 0,
+        "correct_domain": 1
+      },
+      "math": {
+        "total": 2,
+        "strict": 0,
+        "content": 0,
+        "correct_domain": 0
+      },
+      "physical_science": {
+        "total": 2,
+        "strict": 0,
+        "content": 0,
+        "correct_domain": 1
+      },
+      "conversation": {
+        "total": 2,
+        "strict": 2,
+        "content": 2,
+        "correct_domain": 0
+      },
+      "machine_learning": {
+        "total": 2,
+        "strict": 2,
+        "content": 2,
+        "correct_domain": 1
+      },
+      "computer_engineering": {
+        "total": 2,
+        "strict": 1,
+        "content": 1,
+        "correct_domain": 1
+      }
+    }
+  },
+  "paired": null,
+  "rows": [
+    {
+      "arm": "final_system",
+      "id": "program-alias",
+      "expected_domain": "coding",
+      "stratum": "primary",
+      "expected": 3,
+      "parsed": 2,
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "math",
+        "confidence": 0.9989,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            3,
+            24,
+            0,
+            3,
+            0,
+            0,
+            0,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 93.73,
+      "error": null,
+      "text": "2",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 361,
+            "total_tokens": 363,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 45.85
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 165,
+            "total_tokens": 167,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 12.65
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "program-map",
+      "expected_domain": "coding",
+      "stratum": "primary",
+      "expected": "B",
+      "parsed": "A",
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "coding",
+        "confidence": 0.9991,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            24,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 45.78,
+      "error": null,
+      "text": "A",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 363,
+            "total_tokens": 365,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 31.06
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 170,
+            "total_tokens": 172,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 14.37
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "venue-seats",
+      "expected_domain": "math",
+      "stratum": "primary",
+      "expected": 42,
+      "parsed": null,
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": true,
+      "worked": null,
+      "agreed": null,
+      "domain_decision": {},
+      "seconds": 150.08,
+      "error": "Command '['/workspace/HiveMIND/.venv/bin/python', '/workspace/HiveMIND-learning/training/reports/domain-memory/answers/run.py', '--checkout', '/tmp/hive-domain-answers-final', '--out', '/tmp/hive-domain-practical-replies', '--arm', 'final_system', '--port', '18214', '--case', 'venue-seats']' timed out after 149.99998420600605 seconds",
+      "text": null,
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 357,
+            "total_tokens": 359,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 26.8
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 71,
+            "prompt_tokens": 128,
+            "total_tokens": 199,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 42.72
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 250,
+            "total_tokens": 252,
+            "prompt_tokens_details": {
+              "cached_tokens": 124
+            }
+          },
+          "seconds": 11.83
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 23,
+            "prompt_tokens": 128,
+            "total_tokens": 151,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 28.51
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 199,
+            "total_tokens": 201,
+            "prompt_tokens_details": {
+              "cached_tokens": 124
+            }
+          },
+          "seconds": 7.61
+        },
+        {
+          "member": "t80+g47data2",
+          "active_cell": [
+            "g47data2",
+            []
+          ],
+          "native_active": {
+            "g47data2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 21,
+            "prompt_tokens": 128,
+            "total_tokens": 149,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 18.71
+        }
+      ],
+      "members": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "42.0",
+          "program": "total_seats = 84\nstaff_seats = total_seats * 1/4\nremaining_seats = total_seats - staff_seats\nguest_seats = remaining_seats * 1/3\nsellable_seats = remaining_seats - guest_seats\nprint(sellable_seats)",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        },
+        {
+          "who": "t80+g47code2",
+          "answer": "0",
+          "program": "print(84 * (3 // 4) * (2 // 3))",
+          "turns": 2,
+          "also": [],
+          "content_correct": false
+        }
+      ]
+    },
+    {
+      "arm": "final_system",
+      "id": "return-rate",
+      "expected_domain": "math",
+      "stratum": "primary",
+      "expected": "C",
+      "parsed": null,
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": true,
+      "worked": null,
+      "agreed": null,
+      "domain_decision": {},
+      "seconds": 150.06,
+      "error": "Command '['/workspace/HiveMIND/.venv/bin/python', '/workspace/HiveMIND-learning/training/reports/domain-memory/answers/run.py', '--checkout', '/tmp/hive-domain-answers-final', '--out', '/tmp/hive-domain-practical-replies', '--arm', 'final_system', '--port', '18214', '--case', 'return-rate']' timed out after 149.99960293900222 seconds",
+      "text": null,
+      "model_calls": [
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 87,
+            "prompt_tokens": 148,
+            "total_tokens": 235,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 60.43
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 286,
+            "total_tokens": 288,
+            "prompt_tokens_details": {
+              "cached_tokens": 144
+            }
+          },
+          "seconds": 12.7
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 48,
+            "prompt_tokens": 148,
+            "total_tokens": 196,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 33.58
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 245,
+            "total_tokens": 247,
+            "prompt_tokens_details": {
+              "cached_tokens": 144
+            }
+          },
+          "seconds": 8.53
+        }
+      ],
+      "members": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "25%\nC",
+          "program": "# Calculate the total number of returns and total purchases across both days\ntotal_returns = 1 + 9\ntotal_purchases = 10 + 30\n\n# Calculate the return percentage\nreturn_percentage = (total_returns / total_purchases) * 100\n\n# Print the result and reply with the letter\nprint(f\"{return_percentage:.0f}%\")\nprint(\"C\")",
+          "turns": 2,
+          "also": [],
+          "content_correct": false
+        },
+        {
+          "who": "t80+g47code2",
+          "answer": "25",
+          "program": "total_purchases = 10 + 30\ntotal_returns = 1 + 9\nreturn_percentage = (total_returns / total_purchases) * 100\nprint(round(return_percentage))",
+          "turns": 2,
+          "also": [],
+          "content_correct": false
+        }
+      ]
+    },
+    {
+      "arm": "final_system",
+      "id": "warm-water",
+      "expected_domain": "physical_science",
+      "stratum": "primary",
+      "expected": 25,
+      "parsed": null,
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": true,
+      "worked": null,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "physical_science",
+        "confidence": 0.9998,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            3,
+            26,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 150.09,
+      "error": "Command '['/workspace/HiveMIND/.venv/bin/python', '/workspace/HiveMIND-learning/training/reports/domain-memory/answers/run.py', '--checkout', '/tmp/hive-domain-answers-final', '--out', '/tmp/hive-domain-practical-replies', '--arm', 'final_system', '--port', '18214', '--case', 'warm-water']' timed out after 149.99994079199678 seconds",
+      "text": null,
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 380,
+            "total_tokens": 382,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 43.38
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 120,
+            "prompt_tokens": 151,
+            "total_tokens": 271,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 65.24
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "cart-braking",
+      "expected_domain": "physical_science",
+      "stratum": "primary",
+      "expected": "A",
+      "parsed": "B",
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {},
+      "seconds": 112.3,
+      "error": null,
+      "text": "B",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 385,
+            "total_tokens": 387,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 40.73
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 180,
+            "total_tokens": 182,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 9.59
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "listen-first",
+      "expected_domain": "conversation",
+      "stratum": "primary",
+      "expected": "C",
+      "parsed": "C",
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {},
+      "seconds": 26.57,
+      "error": null,
+      "text": "C",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 388,
+            "total_tokens": 390,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 18.78
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 183,
+            "total_tokens": 185,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 7.68
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "expense-reply",
+      "expected_domain": "conversation",
+      "stratum": "primary",
+      "expected": "A",
+      "parsed": "A",
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {},
+      "seconds": 22.4,
+      "error": null,
+      "text": "A",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 394,
+            "total_tokens": 396,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 14.95
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 188,
+            "total_tokens": 190,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 7.33
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "detector-recall",
+      "expected_domain": "machine_learning",
+      "stratum": "primary",
+      "expected": 60,
+      "parsed": 60,
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": false,
+      "worked": true,
+      "agreed": true,
+      "domain_decision": {
+        "domain": "math",
+        "confidence": 0.9262,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            1,
+            16,
+            1,
+            1,
+            5,
+            2,
+            4,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 77.76,
+      "error": null,
+      "text": "60",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 363,
+            "total_tokens": 365,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 19.82
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 23,
+            "prompt_tokens": 134,
+            "total_tokens": 157,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 17.66
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 208,
+            "total_tokens": 210,
+            "prompt_tokens_details": {
+              "cached_tokens": 130
+            }
+          },
+          "seconds": 5.25
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 53,
+            "prompt_tokens": 134,
+            "total_tokens": 187,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 23.11
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 236,
+            "total_tokens": 238,
+            "prompt_tokens_details": {
+              "cached_tokens": 130
+            }
+          },
+          "seconds": 6.4
+        }
+      ],
+      "members": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "60.0",
+          "program": "print(100 * 15 / (15 + 10))",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        },
+        {
+          "who": "t80+g47code2",
+          "answer": "60",
+          "program": "# Calculate recall\ntrue_positives = 15\nfalse_negatives = 10\nrecall = (true_positives / (true_positives + false_negatives)) * 100\nprint(int(round(recall)))",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        }
+      ]
+    },
+    {
+      "arm": "final_system",
+      "id": "heldout-scaler",
+      "expected_domain": "machine_learning",
+      "stratum": "primary",
+      "expected": "B",
+      "parsed": "B",
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "machine_learning",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            0,
+            0,
+            29,
+            0,
+            1,
+            0
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 47.46,
+      "error": null,
+      "text": "B",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 393,
+            "total_tokens": 395,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 23.21
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 199,
+            "total_tokens": 201,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 24.16
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "clock-period",
+      "expected_domain": "computer_engineering",
+      "stratum": "primary",
+      "expected": 100,
+      "parsed": null,
+      "correct": false,
+      "content_correct": false,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": true,
+      "worked": null,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "computer_engineering",
+        "confidence": 0.9994,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            4,
+            1,
+            0,
+            0,
+            25,
+            1,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 150.1,
+      "error": "Command '['/workspace/HiveMIND/.venv/bin/python', '/workspace/HiveMIND-learning/training/reports/domain-memory/answers/run.py', '--checkout', '/tmp/hive-domain-answers-final', '--out', '/tmp/hive-domain-practical-replies', '--arm', 'final_system', '--port', '18214', '--case', 'clock-period']' timed out after 149.99997742699634 seconds",
+      "text": null,
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 375,
+            "total_tokens": 377,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 28.38
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 120,
+            "prompt_tokens": 146,
+            "total_tokens": 266,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 51.75
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "cache-straddle",
+      "expected_domain": "computer_engineering",
+      "stratum": "primary",
+      "expected": 2,
+      "parsed": 2,
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": true,
+      "agreed": true,
+      "domain_decision": {},
+      "seconds": 0.07,
+      "error": null,
+      "text": "2",
+      "model_calls": [],
+      "members": [],
+      "cache_lines": {
+        "method": "aligned_byte_interval",
+        "line_bytes": 64,
+        "start_address": 62,
+        "access_bytes": 4,
+        "end_address": 65,
+        "first_line": 0,
+        "last_line": 1,
+        "count": 2
+      }
+    },
+    {
+      "arm": "final_system",
+      "id": "string-length",
+      "expected_domain": "coding",
+      "stratum": "retention",
+      "expected": 5,
+      "parsed": 5,
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": false,
+      "worked": true,
+      "agreed": true,
+      "domain_decision": {
+        "domain": "coding",
+        "confidence": 0.6731,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            12,
+            1,
+            2,
+            1,
+            6,
+            3,
+            2,
+            4
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 81.69,
+      "error": null,
+      "text": "5",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 340,
+            "total_tokens": 342,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 17.92
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 11,
+            "prompt_tokens": 111,
+            "total_tokens": 122,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 29.66
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 170,
+            "total_tokens": 172,
+            "prompt_tokens_details": {
+              "cached_tokens": 107
+            }
+          },
+          "seconds": 6.71
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 11,
+            "prompt_tokens": 111,
+            "total_tokens": 122,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 16.75
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 170,
+            "total_tokens": 172,
+            "prompt_tokens_details": {
+              "cached_tokens": 107
+            }
+          },
+          "seconds": 5.34
+        }
+      ],
+      "members": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "5",
+          "program": "print(len('cacao'))",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        },
+        {
+          "who": "t80+g47code2",
+          "answer": "5",
+          "program": "print(len('cacao'))",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        }
+      ]
+    },
+    {
+      "arm": "final_system",
+      "id": "cash-change",
+      "expected_domain": "math",
+      "stratum": "retention",
+      "expected": 32,
+      "parsed": 32,
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": true,
+      "timeout": false,
+      "worked": true,
+      "agreed": true,
+      "domain_decision": {},
+      "seconds": 76.89,
+      "error": null,
+      "text": "32",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 346,
+            "total_tokens": 348,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 33.65
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 14,
+            "prompt_tokens": 117,
+            "total_tokens": 131,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 17.74
+        },
+        {
+          "member": "t80+g47trunk",
+          "active_cell": [
+            "g47trunk",
+            []
+          ],
+          "native_active": {
+            "g47trunk": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 180,
+            "total_tokens": 182,
+            "prompt_tokens_details": {
+              "cached_tokens": 113
+            }
+          },
+          "seconds": 3.2
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 14,
+            "prompt_tokens": 117,
+            "total_tokens": 131,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 11.35
+        },
+        {
+          "member": "t80+g47code2",
+          "active_cell": [
+            "g47code2",
+            []
+          ],
+          "native_active": {
+            "g47code2": 1.0
+          },
+          "requested_tokens": 120,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 180,
+            "total_tokens": 182,
+            "prompt_tokens_details": {
+              "cached_tokens": 113
+            }
+          },
+          "seconds": 3.23
+        }
+      ],
+      "members": [
+        {
+          "who": "t80+g47trunk",
+          "answer": "32",
+          "program": "print(50 - 18)",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        },
+        {
+          "who": "t80+g47code2",
+          "answer": "32",
+          "program": "print(50 - 18)",
+          "turns": 2,
+          "also": [],
+          "content_correct": true
+        }
+      ]
+    },
+    {
+      "arm": "final_system",
+      "id": "freezing-state",
+      "expected_domain": "physical_science",
+      "stratum": "retention",
+      "expected": "B",
+      "parsed": "B",
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "physical_science",
+        "confidence": 0.9995,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            25,
+            2,
+            0,
+            1,
+            1,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 27.94,
+      "error": null,
+      "text": "B",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 349,
+            "total_tokens": 351,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 18.54
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 155,
+            "total_tokens": 157,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 9.3
+        }
+      ],
+      "members": []
+    },
+    {
+      "arm": "final_system",
+      "id": "no-meeting",
+      "expected_domain": "conversation",
+      "stratum": "retention",
+      "expected": "C",
+      "parsed": "C",
+      "correct": true,
+      "content_correct": true,
+      "engram_advice": {},
+      "work_started": false,
+      "timeout": false,
+      "worked": false,
+      "agreed": null,
+      "domain_decision": {
+        "domain": "conversation",
+        "confidence": 0.9999,
+        "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+        "signals": {
+          "source": "request",
+          "request": [
+            0,
+            0,
+            0,
+            28,
+            0,
+            0,
+            1,
+            1
+          ],
+          "context": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            31
+          ]
+        }
+      },
+      "seconds": 28.0,
+      "error": null,
+      "text": "C",
+      "model_calls": [
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 4,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 385,
+            "total_tokens": 387,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "seconds": 19.42
+        },
+        {
+          "member": "t80",
+          "active_cell": [
+            "",
+            []
+          ],
+          "native_active": {},
+          "requested_tokens": 80,
+          "used": {
+            "completion_tokens": 2,
+            "prompt_tokens": 193,
+            "total_tokens": 195,
+            "prompt_tokens_details": {
+              "cached_tokens": 3
+            }
+          },
+          "seconds": 8.48
+        }
+      ],
+      "members": []
+    }
+  ],
+  "previously_diagnosed": {
+    "venue-seats": "integral formatting",
+    "detector-recall": "integral formatting and delivery",
+    "cache-straddle": "checked cache-line count"
+  },
+  "compared_against": {
+    "baseline": {
+      "all": {
+        "correct": {
+          "gain": [
+            "detector-recall",
+            "cache-straddle"
+          ],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler",
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "venue-seats",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        },
+        "content_correct": {
+          "gain": [
+            "cache-straddle"
+          ],
+          "loss": [
+            "venue-seats"
+          ],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "detector-recall",
+            "heldout-scaler",
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        }
+      },
+      "known_cases": {
+        "correct": {
+          "gain": [
+            "detector-recall",
+            "cache-straddle"
+          ],
+          "loss": [],
+          "both": [],
+          "neither": [
+            "venue-seats"
+          ]
+        },
+        "content_correct": {
+          "gain": [
+            "cache-straddle"
+          ],
+          "loss": [
+            "venue-seats"
+          ],
+          "both": [
+            "detector-recall"
+          ],
+          "neither": []
+        }
+      },
+      "other_practical": {
+        "correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        },
+        "content_correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        }
+      },
+      "retention": {
+        "correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": []
+        },
+        "content_correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": []
+        }
+      }
+    },
+    "integrated": {
+      "all": {
+        "correct": {
+          "gain": [
+            "detector-recall",
+            "cache-straddle"
+          ],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler",
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "venue-seats",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        },
+        "content_correct": {
+          "gain": [
+            "detector-recall",
+            "cache-straddle"
+          ],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler",
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "venue-seats",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        }
+      },
+      "known_cases": {
+        "correct": {
+          "gain": [
+            "detector-recall",
+            "cache-straddle"
+          ],
+          "loss": [],
+          "both": [],
+          "neither": [
+            "venue-seats"
+          ]
+        },
+        "content_correct": {
+          "gain": [
+            "detector-recall",
+            "cache-straddle"
+          ],
+          "loss": [],
+          "both": [],
+          "neither": [
+            "venue-seats"
+          ]
+        }
+      },
+      "other_practical": {
+        "correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        },
+        "content_correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "listen-first",
+            "expense-reply",
+            "heldout-scaler"
+          ],
+          "neither": [
+            "program-alias",
+            "program-map",
+            "return-rate",
+            "warm-water",
+            "cart-braking",
+            "clock-period"
+          ]
+        }
+      },
+      "retention": {
+        "correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": []
+        },
+        "content_correct": {
+          "gain": [],
+          "loss": [],
+          "both": [
+            "string-length",
+            "cash-change",
+            "freezing-state",
+            "no-meeting"
+          ],
+          "neither": []
+        }
+      }
+    }
+  }
+}

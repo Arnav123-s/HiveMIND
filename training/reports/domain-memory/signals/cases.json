@@ -1,0 +1,638 @@
+[
+  {
+    "id": "q001",
+    "group": "ordinary",
+    "message": "My Python function removes every second item in a list instead of all the matches. Can you fix it?",
+    "history": [],
+    "pair": "ordinary-0"
+  },
+  {
+    "id": "q002",
+    "group": "ordinary",
+    "message": "Write a command-line program to rename my photos in date order, leaving duplicates alone.",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q003",
+    "group": "difficult",
+    "message": "A JSON reader says the first record is fine, then chokes when the sender breaks a quoted string across two chunks. How should I change my reader?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q004",
+    "group": "difficult",
+    "message": "Two callers reserve the same last seat because both see it free before either saves. How do I change the booking service?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q005",
+    "group": "useful_context",
+    "message": "What should I check first here?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I'm writing a service that merges duplicate orders from a file."
+      },
+      {
+        "role": "assistant",
+        "content": "We can trace how the parser turns each input record into a database update."
+      }
+    ],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q006",
+    "group": "useful_context",
+    "message": "Could you walk me through the next step?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I'm writing a service that merges duplicate orders from a file."
+      },
+      {
+        "role": "assistant",
+        "content": "We can trace how the parser turns each input record into a database update."
+      }
+    ],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q007",
+    "group": "irrelevant_context",
+    "message": "My Python function removes every second item in a list instead of all the matches. Can you fix it?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I have a glass tube of water and am studying why the level changes as the room warms."
+      },
+      {
+        "role": "assistant",
+        "content": "We can test thermal expansion while controlling the surroundings."
+      }
+    ],
+    "pair": "ordinary-0"
+  },
+  {
+    "id": "q008",
+    "group": "override",
+    "message": "Forget the accelerator itself. I want a Python script that reads its log and counts repeated lines.",
+    "history": [
+      {
+        "role": "user",
+        "content": "We've built a small processor on a development board. It fails at higher clock rates."
+      },
+      {
+        "role": "assistant",
+        "content": "We can check the critical path and the register timing reports."
+      }
+    ],
+    "pair": null
+  },
+  {
+    "id": "q009",
+    "group": "ordinary",
+    "message": "A shop took 15 percent off $80. How much did I pay?",
+    "history": [],
+    "pair": "ordinary-1"
+  },
+  {
+    "id": "q010",
+    "group": "ordinary",
+    "message": "Find the area of a triangle with base 13 and height 8.",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q011",
+    "group": "difficult",
+    "message": "There are 11 socks of four colours. How many must I pull in the dark to be certain two match, and why?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q012",
+    "group": "difficult",
+    "message": "Starting at 7, repeatedly double and add 1. Can any later term end in 0? Justify it without listing terms.",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q013",
+    "group": "useful_context",
+    "message": "What should I check first here?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I want to show this claim holds for every positive whole number."
+      },
+      {
+        "role": "assistant",
+        "content": "We can try induction and examine a base case and the step."
+      }
+    ],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q014",
+    "group": "useful_context",
+    "message": "Could you walk me through the next step?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I want to show this claim holds for every positive whole number."
+      },
+      {
+        "role": "assistant",
+        "content": "We can try induction and examine a base case and the step."
+      }
+    ],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q015",
+    "group": "irrelevant_context",
+    "message": "A shop took 15 percent off $80. How much did I pay?",
+    "history": [
+      {
+        "role": "user",
+        "content": "We've built a small processor on a development board. It fails at higher clock rates."
+      },
+      {
+        "role": "assistant",
+        "content": "We can check the critical path and the register timing reports."
+      }
+    ],
+    "pair": "ordinary-1"
+  },
+  {
+    "id": "q016",
+    "group": "override",
+    "message": "Put the conversation draft aside. If 4 of 9 volunteers are chosen at random, how many different groups are there?",
+    "history": [
+      {
+        "role": "user",
+        "content": "My brother felt left out when I didn't invite him. I'm trying to make things right."
+      },
+      {
+        "role": "assistant",
+        "content": "We can work out how to acknowledge his feelings and start that conversation."
+      }
+    ],
+    "pair": null
+  },
+  {
+    "id": "q017",
+    "group": "ordinary",
+    "message": "Why does a metal spoon feel colder than wood when both have been sitting in the same room?",
+    "history": [],
+    "pair": "ordinary-2"
+  },
+  {
+    "id": "q018",
+    "group": "ordinary",
+    "message": "How does air pressure change when you climb a mountain?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q019",
+    "group": "difficult",
+    "message": "My bicycle wheel keeps spinning in the air but slows much faster after I squeeze the pads. Where does the motion go?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q020",
+    "group": "difficult",
+    "message": "Two sealed jars have the same amount of water; one has much more air above it. At the same room conditions, would the final vapour pressures differ?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q021",
+    "group": "useful_context",
+    "message": "What should I check first here?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I have a glass tube of water and am studying why the level changes as the room warms."
+      },
+      {
+        "role": "assistant",
+        "content": "We can test thermal expansion while controlling the surroundings."
+      }
+    ],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q022",
+    "group": "useful_context",
+    "message": "Could you walk me through the next step?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I have a glass tube of water and am studying why the level changes as the room warms."
+      },
+      {
+        "role": "assistant",
+        "content": "We can test thermal expansion while controlling the surroundings."
+      }
+    ],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q023",
+    "group": "irrelevant_context",
+    "message": "Why does a metal spoon feel colder than wood when both have been sitting in the same room?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I'm writing a service that merges duplicate orders from a file."
+      },
+      {
+        "role": "assistant",
+        "content": "We can trace how the parser turns each input record into a database update."
+      }
+    ],
+    "pair": "ordinary-2"
+  },
+  {
+    "id": "q024",
+    "group": "override",
+    "message": "Leave the prediction software out of it. Why would the actual water in the pipe freeze first at the bend?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Our image recognizer worked in the lab and now mislabels pictures from a new camera."
+      },
+      {
+        "role": "assistant",
+        "content": "We can compare the two evaluation sets and inspect class-level errors."
+      }
+    ],
+    "pair": null
+  },
+  {
+    "id": "q025",
+    "group": "ordinary",
+    "message": "Help me write a warm thank-you note to my neighbour for feeding my cat.",
+    "history": [],
+    "pair": "ordinary-3"
+  },
+  {
+    "id": "q026",
+    "group": "ordinary",
+    "message": "I feel embarrassed about forgetting my friend's birthday. What could I say?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q027",
+    "group": "difficult",
+    "message": "I need a sentence for the group chat that says I can't host this week without making the person who usually hosts feel taken for granted.",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q028",
+    "group": "difficult",
+    "message": "My sister keeps offering fixes when I only want company. Could you put that into words I could actually send?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q029",
+    "group": "useful_context",
+    "message": "What should I check first here?",
+    "history": [
+      {
+        "role": "user",
+        "content": "My brother felt left out when I didn't invite him. I'm trying to make things right."
+      },
+      {
+        "role": "assistant",
+        "content": "We can work out how to acknowledge his feelings and start that conversation."
+      }
+    ],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q030",
+    "group": "useful_context",
+    "message": "Could you walk me through the next step?",
+    "history": [
+      {
+        "role": "user",
+        "content": "My brother felt left out when I didn't invite him. I'm trying to make things right."
+      },
+      {
+        "role": "assistant",
+        "content": "We can work out how to acknowledge his feelings and start that conversation."
+      }
+    ],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q031",
+    "group": "irrelevant_context",
+    "message": "Help me write a warm thank-you note to my neighbour for feeding my cat.",
+    "history": [
+      {
+        "role": "user",
+        "content": "Our image recognizer worked in the lab and now mislabels pictures from a new camera."
+      },
+      {
+        "role": "assistant",
+        "content": "We can compare the two evaluation sets and inspect class-level errors."
+      }
+    ],
+    "pair": "ordinary-3"
+  },
+  {
+    "id": "q032",
+    "group": "override",
+    "message": "Forget proving the claim. I need a gentle way to tell the person who suggested it that I found a counterexample.",
+    "history": [
+      {
+        "role": "user",
+        "content": "I want to show this claim holds for every positive whole number."
+      },
+      {
+        "role": "assistant",
+        "content": "We can try induction and examine a base case and the step."
+      }
+    ],
+    "pair": null
+  },
+  {
+    "id": "q033",
+    "group": "ordinary",
+    "message": "My classifier does great on its training set and badly on new examples. How do I diagnose the gap?",
+    "history": [],
+    "pair": "ordinary-4"
+  },
+  {
+    "id": "q034",
+    "group": "ordinary",
+    "message": "How should I measure recall for my spam detector when only a few emails are spam?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q035",
+    "group": "difficult",
+    "message": "The accuracy looked great until we stopped putting pictures of the same patient on both sides of the split. What should our next evaluation look like?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q036",
+    "group": "difficult",
+    "message": "A shop bought a demand predictor. Its forecasts lag whenever our customer mix changes even though testing last spring looked good. How can I tell what changed?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q037",
+    "group": "useful_context",
+    "message": "What should I check first here?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Our image recognizer worked in the lab and now mislabels pictures from a new camera."
+      },
+      {
+        "role": "assistant",
+        "content": "We can compare the two evaluation sets and inspect class-level errors."
+      }
+    ],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q038",
+    "group": "useful_context",
+    "message": "Could you walk me through the next step?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Our image recognizer worked in the lab and now mislabels pictures from a new camera."
+      },
+      {
+        "role": "assistant",
+        "content": "We can compare the two evaluation sets and inspect class-level errors."
+      }
+    ],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q039",
+    "group": "irrelevant_context",
+    "message": "My classifier does great on its training set and badly on new examples. How do I diagnose the gap?",
+    "history": [
+      {
+        "role": "user",
+        "content": "My brother felt left out when I didn't invite him. I'm trying to make things right."
+      },
+      {
+        "role": "assistant",
+        "content": "We can work out how to acknowledge his feelings and start that conversation."
+      }
+    ],
+    "pair": "ordinary-4"
+  },
+  {
+    "id": "q040",
+    "group": "override",
+    "message": "I don't need the SQL statement. How can I tell whether my churn scores are calibrated on next month's customers?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I'm writing a service that merges duplicate orders from a file."
+      },
+      {
+        "role": "assistant",
+        "content": "We can trace how the parser turns each input record into a database update."
+      }
+    ],
+    "pair": null
+  },
+  {
+    "id": "q041",
+    "group": "ordinary",
+    "message": "Why does a CPU cache miss slow a program down even if the arithmetic stays the same?",
+    "history": [],
+    "pair": "ordinary-5"
+  },
+  {
+    "id": "q042",
+    "group": "ordinary",
+    "message": "What does a flip-flop do in a digital circuit?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q043",
+    "group": "difficult",
+    "message": "A signal leaves a slow clock domain and is sampled by a faster one; the board occasionally records two pulses instead of one. What should I examine?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q044",
+    "group": "difficult",
+    "message": "Our little chip keeps waiting for operands although there are unused adders. Which part of the data path should we inspect?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q045",
+    "group": "useful_context",
+    "message": "What should I check first here?",
+    "history": [
+      {
+        "role": "user",
+        "content": "We've built a small processor on a development board. It fails at higher clock rates."
+      },
+      {
+        "role": "assistant",
+        "content": "We can check the critical path and the register timing reports."
+      }
+    ],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q046",
+    "group": "useful_context",
+    "message": "Could you walk me through the next step?",
+    "history": [
+      {
+        "role": "user",
+        "content": "We've built a small processor on a development board. It fails at higher clock rates."
+      },
+      {
+        "role": "assistant",
+        "content": "We can check the critical path and the register timing reports."
+      }
+    ],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q047",
+    "group": "irrelevant_context",
+    "message": "Why does a CPU cache miss slow a program down even if the arithmetic stays the same?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I want to show this claim holds for every positive whole number."
+      },
+      {
+        "role": "assistant",
+        "content": "We can try induction and examine a base case and the step."
+      }
+    ],
+    "pair": "ordinary-5"
+  },
+  {
+    "id": "q048",
+    "group": "override",
+    "message": "Ignore the fluid simulation for now. Our FPGA has a setup-time violation. What does that report mean?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I have a glass tube of water and am studying why the level changes as the room warms."
+      },
+      {
+        "role": "assistant",
+        "content": "We can test thermal expansion while controlling the surroundings."
+      }
+    ],
+    "pair": null
+  },
+  {
+    "id": "q049",
+    "group": "missing_reference",
+    "message": "What should I check first here?",
+    "history": [],
+    "pair": "follow-0"
+  },
+  {
+    "id": "q050",
+    "group": "missing_reference",
+    "message": "Could you walk me through the next step?",
+    "history": [],
+    "pair": "follow-1"
+  },
+  {
+    "id": "q051",
+    "group": "unrelated",
+    "message": "Is the maritime museum open on the public holiday next Monday?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q052",
+    "group": "unrelated",
+    "message": "Which county office takes passport renewals in my town?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q053",
+    "group": "unrelated",
+    "message": "Who directed the 1954 film Rear Window?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q054",
+    "group": "unrelated",
+    "message": "What is the capital of Uruguay?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q055",
+    "group": "unrelated",
+    "message": "Can you track my missing delivery from this parcel number?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q056",
+    "group": "unrelated",
+    "message": "Has a new train timetable been published for the coastal line this weekend?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q057",
+    "group": "underdetermined",
+    "message": "Something in our pipeline slowed down yesterday. Where would you start?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q058",
+    "group": "underdetermined",
+    "message": "My model's output is wrong. What would you change?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q059",
+    "group": "underdetermined",
+    "message": "Does that signal cross the threshold too early?",
+    "history": [],
+    "pair": null
+  },
+  {
+    "id": "q060",
+    "group": "underdetermined",
+    "message": "When they say the fit is poor, do they mean our design or our numbers?",
+    "history": [],
+    "pair": null
+  }
+]

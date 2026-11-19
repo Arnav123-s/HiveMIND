@@ -1,0 +1,38 @@
+[
+  {
+    "id": "clip-edge",
+    "prompt": "A microcontroller uses 32-byte cache lines aligned on multiples of 32. A 2-byte load begins at byte address 31. How many distinct cache lines does it touch? Reply with a single integer."
+  },
+  {
+    "id": "fresh-block",
+    "prompt": "A processor uses 128-byte cache lines aligned to 128-byte boundaries. A 5-byte load starts at byte address 128. What is the number of distinct cache lines touched? Reply with a single integer."
+  },
+  {
+    "id": "four-blocks",
+    "prompt": "Cache lines start on multiples of 16 and are 16 bytes wide. A recorder reads 40 consecutive bytes beginning at byte address 12. How many distinct cache lines contain these bytes? Reply with a single integer."
+  },
+  {
+    "id": "last-byte",
+    "prompt": "On a CPU with 64-byte cache lines aligned on multiples of 64, a 64-byte load starts at byte address 64. How many distinct cache lines contain those bytes? Reply with a single integer."
+  },
+  {
+    "id": "display-hex",
+    "prompt": "With 32-byte cache lines aligned on multiples of 32, a 3-byte load starts at byte address 0x3f. How many distinct cache lines are accessed? Reply with a single integer."
+  },
+  {
+    "id": "one-byte",
+    "prompt": "We store one byte at address 95. Our cache lines contain 32 bytes and are aligned on multiples of 32. How many distinct cache lines does the store touch? Reply with a single integer."
+  },
+  {
+    "id": "unknown-start",
+    "prompt": "A controller uses aligned 64-byte cache lines. I know the read was four bytes wide but cannot recover the starting address. How many distinct cache lines did the read touch? Reply with a single integer."
+  },
+  {
+    "id": "cycles",
+    "prompt": "A controller uses 64-byte cache lines aligned on multiples of 64. A 4-byte load starts at byte address 63. How many CPU cycles does that load take? Reply with a single integer."
+  },
+  {
+    "id": "two-possible",
+    "prompt": "Cache lines are 32 bytes long and aligned on multiples of 32. We read 4 bytes, starting at either byte address 0 or byte address 31. How many distinct cache lines will the read touch? Reply with a single integer."
+  }
+]

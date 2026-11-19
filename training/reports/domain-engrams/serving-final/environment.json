@@ -1,0 +1,28 @@
+{
+  "git_commit": "cf7729cfaf395570cd6cd2e16435554b4f4ab04d",
+  "index_sha256": "b87088bdf5727f14e68b93c05952c09367944ae168f7bfb9935dbc805f892ed9",
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "native_graph_reuse": false,
+  "launch": "launch-153581364317.json",
+  "member_subset": [
+    {
+      "file": "t80+g49code2.gguf",
+      "sha256": "4c34ca1147f20d1b22506bbf8c611346bf69588927289a907d4592dfa5ec2a7b",
+      "bytes": 39887616,
+      "release_url": "https://github.com/Arnav123-s/HiveMIND/releases/download/hive-grown/t80.g49code2.gguf"
+    },
+    {
+      "file": "t80+g49data2.gguf",
+      "sha256": "98c79699f056cdfb4e030c37471d5921698eca39545af427e9eedf0a15fadb0f",
+      "bytes": 39887616,
+      "release_url": "https://github.com/Arnav123-s/HiveMIND/releases/download/hive-grown/t80.g49data2.gguf"
+    },
+    {
+      "file": "t80+g49trunk.gguf",
+      "sha256": "7a36748511357bb3e7f3a006a29539de4f376e10afc08c4f98183c239c92e5d4",
+      "bytes": 73835264,
+      "release_url": "https://github.com/Arnav123-s/HiveMIND/releases/download/hive-grown/t80.g49trunk.gguf"
+    }
+  ]
+}

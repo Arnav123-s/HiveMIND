@@ -1,0 +1,140 @@
+{
+  "domain": "ml",
+  "form": "choice",
+  "prompt": "In machine learning, which data split is for choosing hyperparameters: train, validation, or test? Reply with one name.",
+  "expected": "validation",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "validation\n\nThe hive's members worked it out with programs and two agreed.",
+    "worked": true,
+    "agreed": true,
+    "files": [],
+    "seconds": 121,
+    "domain_signal": {
+      "domain": "machine_learning",
+      "confidence": 1.0,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          0,
+          0,
+          0,
+          0,
+          30,
+          0,
+          0,
+          0
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    },
+    "engram_advice": {
+      "engram": "e_domain_machine_learning",
+      "skill": "dataset_split",
+      "label": "validation",
+      "accepted": true
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "c457e5143ef1d9ad15fe004082b919e0eaadb8809b087fa182beba87adc9d6e2",
+      "token_budget": 4,
+      "text": "WORK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 342,
+        "total_tokens": 344,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_machine_learning": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "4af788f2e2972149dfb88255e9ac05cc00c447405c5d80209832107081f2eb26",
+      "token_budget": 1,
+      "text": "validation",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 169,
+        "total_tokens": 170,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49trunk": 1.0
+      },
+      "seed": 743,
+      "temperature": 0.0,
+      "prompt_sha256": "40b7971b7f2354e19eddfa7765fa0f64346fbd0407eded114b7565121856d7bb",
+      "token_budget": 80,
+      "text": "```python\nprint('validation')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 172,
+        "total_tokens": 181,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "g49code2": 1.0
+      },
+      "seed": 744,
+      "temperature": 0.7,
+      "prompt_sha256": "9823333c68eb3160ca4b42e5e55da785352e763feea2ba8cce84c0446f73468a",
+      "token_budget": 80,
+      "text": "```python\nprint('validation')\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 156,
+        "total_tokens": 165,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 745,
+      "temperature": 0.0,
+      "prompt_sha256": "cd92b8fbeb3d85586a64be6a1138f55f39616ed28fa270c62e68c62fc637a4ff",
+      "token_budget": 48,
+      "text": "validation\n\nThe hive's members worked it out with programs and two agreed.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 251,
+        "total_tokens": 267,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

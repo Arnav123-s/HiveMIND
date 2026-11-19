@@ -1,0 +1,21 @@
+{
+  "operation": "Paired unrestricted first-token evaluation, saved adapter on/off; no refit",
+  "adapter_sha256": "6bb2dd875f9393ba7478a4e35cf55cadde69827e71891df3c5b3c5d83e42a54a",
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "runtime_git_commit": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "threads": 1,
+  "cpu_only": true,
+  "lora_init_without_apply": true,
+  "graph_reuse": false,
+  "temperature": 0,
+  "seed": 741,
+  "system_sha256": "37eaa5446a11e0cb2da82471186469a2baf86ed199684074d77a1589e3e738fa",
+  "initial_replay_receipt_sha256": "81c13da685ca27d193e8863edbf2588c21ee0f45e3e3c54a366eee7dacab6f6c",
+  "freeze_sha256": "8457b562e9044343248efad405610b84142d7dee4b467b2678ac5cfc72a32521",
+  "sources": {
+    "training/domain_engram.py": "f0e0d00afd23854c42d5b56ee2fe506a2306eeada8eca009db055f1ec5f26ffa",
+    "team/talk.py": "bbe7f40d41f19f23e323df3bbbdeb67f434b26dbce2cbdb735d580b7e8412499",
+    "training/reports/domain-memory/growth/serve.py": "7f5abe0925d0263b0ea848eec62a0bef1cf71e93d468c854aa8d3f882207f127"
+  }
+}
