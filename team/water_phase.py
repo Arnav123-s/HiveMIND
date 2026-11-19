@@ -79,12 +79,79 @@ def standalone_phase(message, history=()):
     return expected
 
 
-def confirms(expected, proposed):
-    """Accept a bare phase or an affirmative phase sentence without conflicting extra claims."""
+def _phase_answer(proposed):
     pattern = (r'(?:(?:(?:the |this )?(?:pure |distilled )?water|it|the phase|the state) (?:is|would be) )?'
                r'(?:in )?(?:the |a |an |its )?(solid|liquid|gas)(?: (?:state|phase))?[.!]?')
     match = re.fullmatch(pattern, ' '.join(proposed.casefold().split()))
-    return bool(match and match.group(1) == expected)
+    return match.group(1) if match else None
+
+
+def confirms(expected, proposed):
+    """Accept a bare phase or an affirmative phase sentence without conflicting extra claims."""
+    return expected in _PHASES and _phase_answer(proposed) == expected
+
+
+_PURE = r'(?:pure|distilled) water'
+_SUBJECT = (r'(?:(?:(?:the|a|this|that) )?(?:sample of )?' + _PURE
+            + r'|it|(?:the|this|that) (?:water|sample))')
+_TARGET = r'(?:phase|state)(?: of matter)?'
+_WATER_QUESTION = re.compile(
+    r'\b(?:' + _TARGET + r' (?:(?:of|for) |(?:is|does|would|will|should|can) (?:you expect (?:for )?)?)?' + _SUBJECT
+    + r'|(?:its|' + _SUBJECT + r"[’']s) (?:physical |equilibrium )?" + _TARGET
+    + r'|' + _SUBJECT + r' (?:is|be|remain|exist) in (?:what|which) ' + _TARGET + r')\b')
+_WATER_SETUP = re.compile(r'^(?:(?:suppose|consider|given|for|assume) (?:that )?)?'
+                          r'(?:(?:a|the|this|our) )?(?:sample of )?' + _PURE + r'\b')
+
+
+def output_check_phase(message, history=()):
+    """A condition for rejecting a contradictory scalar output, never permission to answer the whole request."""
+    if (history or not isinstance(message, str) or len(message) > 1200
+            or '(This continues a conversation.' in message):
+        return None
+    text = ' '.join(message.casefold().replace('−', '-').split())
+    if text.count('?') > 1 or not re.search(r'\b' + _PURE + r'\b', text):
+        return None
+    expected = equilibrium_phase(text)
+    if expected is None:
+        return None
+    # Bind the phase to the water in a question or a direct command. A mere phase mention
+    # in some other assignment does not make its output a water-phase measurement.
+    water_subject = False
+    for clause in re.split(r'(?<=[!?;])\s+|\.(?!\d)\s+', text):
+        water_subject = water_subject or bool(_WATER_SETUP.match(clause))
+        asked = '?' in clause or re.match(r'(?:please )?(?:what|which|identify|name|state|choose|select|give|report|determine)\b', clause)
+        options = ' or ' in clause and sum(bool(re.search(r'\b' + label + r'\b', clause)) for label in _PHASES) >= 2
+        target = _WATER_QUESTION.search(clause)
+        if options and not target:
+            target = re.search(r'\b(?:is|would|will|classify|for) ' + _SUBJECT + r'\b', clause)
+        if asked and target and (water_subject or re.search(_PURE, target[0])):
+            return expected
+        # A pure-water setup can precede a separate question about that sample.
+        if not (re.search(r'\b' + _PURE + r'\b', clause) or _TEMP.search(clause) or _PRESSURE.search(clause)):
+            break
+    return None
+
+
+def contradicts(expected, proposed):
+    """Only a complete scalar claim can contradict this check; prose and artifacts pass through."""
+    if not expected:
+        return False
+    text = ' '.join(proposed.casefold().split())
+    actual = _phase_answer(text)
+    if actual is None:
+        assertion = re.fullmatch(
+            r'(?:(?:under these conditions|at equilibrium),? )?'
+            r'(?:(?:(?:(?:the|this) )?(?:(?:pure|distilled) )?water|the sample|this sample|it|the phase|the state) '
+            r'(?:is|would be|will be) )?'
+            r'(?:in )?(?:(?:the|a|its) )?(solid|liquid|gas|gaseous|ice|steam|water vapou?r)'
+            r'(?: (?:state|phase))?(?: (?:under these conditions|at equilibrium))?[.!]?', text)
+        if assertion:
+            word = assertion[1]
+            actual = {'ice': 'solid', 'steam': 'gas', 'gaseous': 'gas', 'water vapor': 'gas', 'water vapour': 'gas'}.get(word, word)
+    return actual is not None and actual != expected
+
+
+WITHHELD = 'The proposed phase conflicts with the equilibrium check for the stated pure water. I could not confirm the requested answer.'
 
 
 def checked_reply(message, expected, *, source, proposed=None):

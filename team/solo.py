@@ -712,6 +712,9 @@ def agreeing(tries, task):
     phase = water_phase.standalone_phase(task)
     if phase:
         tries = [candidate for candidate in tries if water_phase.confirms(phase, candidate["answer"])]
+    else:
+        check = water_phase.output_check_phase(task)
+        tries = [candidate for candidate in tries if not water_phase.contradicts(check, candidate["answer"])]
     return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
 
 
@@ -835,6 +838,8 @@ def _run(task, run_dir, approve, members):
             selected_work, selected_delivery = str(staging), checked
     cache_access = cache_lines.parse(task)
     phase = water_phase.standalone_phase(task)
+    check = None if phase else water_phase.output_check_phase(task)
+    contradicted = [i for i, t in enumerate(tries, 1) if water_phase.contradicts(check, t["answer"])]
     if agreed:
         if not file_repairs:
             keep(task, agreed["program"], agreed["answer"])
@@ -860,6 +865,8 @@ def _run(task, run_dir, approve, members):
     elif phase and got:
         text = (f"The local equilibrium check gives {phase} for these conditions. "
                 "The worker outputs did not independently confirm that phase.")
+    elif contradicted:
+        text = water_phase.WITHHELD
     elif cache_access and got:
         text = (f"The local aligned byte-range calculation gives {cache_access.details()['count']} cache lines. "
                 "The worker outputs did not independently confirm that count.")
@@ -877,6 +884,7 @@ def _run(task, run_dir, approve, members):
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
     witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)
                  and (not cache_access or cache_lines.confirms(cache_access, t["answer"]))
+                 and i not in contradicted
                  and (not phase or water_phase.confirms(phase, t["answer"]))]
     agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
                         and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
@@ -885,6 +893,9 @@ def _run(task, run_dir, approve, members):
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
     if phase:
         decision["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": phase}
+    elif contradicted:
+        decision["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": check,
+                                         "rejected_members": contradicted}
     if cache_access:
         decision["cache_line_check"] = cache_access.details()
     if domain_route.current_domain():
@@ -900,6 +911,8 @@ def _run(task, run_dir, approve, members):
     (home / "members.json").write_text(json.dumps(decision))
     result = {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
               "work": selected_work if agreed else str(work), "requested_files": names, "file_repairs": file_repairs}
+    if contradicted and not agreed:
+        result["water_phase_check"] = dict(decision["water_phase_check"], source="contradictory_output_withheld")
     if recalled:
         result["engrams"] = recalled
     if names and agreed:

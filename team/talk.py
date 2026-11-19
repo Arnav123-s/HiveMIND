@@ -187,6 +187,18 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
     history = list(history)
     with domain_route.for_request(message, history) as decision:
         result = _body_reply(message, history, name, run_dir, log, base, now, t0)
+        # A label can also emerge from ordinary chat or its final worker-report rewrite.
+        # Reject only the entire contradictory assertion; never replace an open-ended job with a phase.
+        from . import water_phase
+        if not result.get("water_phase_check"):
+            expected = water_phase.output_check_phase(message, history)
+            if water_phase.contradicts(expected, result["text"]):
+                result["water_phase_check"] = {"method": "pure_water_equilibrium_1atm", "phase": expected,
+                                               "source": "contradictory_output_withheld", "model_answer": result["text"]}
+                result.update(text=water_phase.WITHHELD, agreed=False)
+                for call in result.get("engrams", []):
+                    if call.get("stage") in {"answer", "report"}:
+                        call["stage"] += "_attempt"
         if decision:
             result["domain_signal"] = decision
         if domain_route.advice():
@@ -254,7 +266,7 @@ def _body_reply(message, history, name, run_dir, log, base, now, t0):
     answer = out["report"].rsplit("\n## How it was checked\n", 1)[0].strip()
     made = out.get("files", []) if out["agreed"] else []
     exact = _exact_integer(answer) if out["agreed"] and SINGLE_INTEGER.search(message) else None
-    if out.get("requested_files") or exact is not None:
+    if out.get("requested_files") or exact is not None or out.get("water_phase_check"):
         # A file request already has a plain report and a publication decision. A second
         # model rewriting that decision can invent a successful delivery or change a value.
         final = answer if out["agreed"] else out["report"].strip()
@@ -264,6 +276,7 @@ def _body_reply(message, history, name, run_dir, log, base, now, t0):
             final += "\n\nFiles saved: " + ", ".join(made)
         return {"text": final, "worked": True, "agreed": bool(out["agreed"]), "task": task, "dir": str(home),
                 "files": made, "file_repairs": out.get("file_repairs", []), "seconds": round(time.time() - t0),
+                **({"water_phase_check": out["water_phase_check"]} if out.get("water_phase_check") else {}),
                 **({"engrams": out["engrams"]} if out.get("engrams") else {})}
     if out["agreed"]:
         how, then = "checked: its members worked it out independently with programs and two of them agreed", "Then say in one short sentence that the hive's members worked it out with programs and two agreed."
@@ -357,6 +370,8 @@ def main(argv):
         elif out.get("water_phase_check"):
             source = out["water_phase_check"]["source"]
             label = "Local equilibrium calculation" if source == "equilibrium_rule" else "Native answer checked against equilibrium"
+            if source == "contradictory_output_withheld":
+                label = "Phase answer withheld after equilibrium check"
             foot = f"\n\n<sub>{label} · {out['seconds']} s</sub>"
         elif out.get("cache_lines"):
             foot = f"\n\n<sub>Local cache-line calculation · {out['seconds']} s</sub>"
