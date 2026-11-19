@@ -88,3 +88,7 @@ The previous fast lookup for growing collections of memories is back on the ordi
 The current serving engine loads available compatible weight files into memory at startup and changes their activation per request. The measured hardware and panel sizes do not establish how many thousands of edits a single CPU server could serve. The next research questions concern partner compatibility, when to ask for a specialist, and how to detect loss of earlier skills. [Research and primary sources](research.md)
 
 The six subjects identify areas where the hive can consult a specialist. Solving a hard unseen problem and preserving a skill after thousands of updates require separate evidence.
+
+## Release verification
+
+On a clean checkout of the final runtime (`ffc0afb`), all **1,238 tests and nine subtests passed** with the CPU runtime and WebAssembly guest enabled. Python emitted 46 warnings about forking a multithreaded process. `actionlint` 1.7.12 accepted both changed workflows. A separate download from GitHub verified the digests of the five shipped weight files and the local learning example. It reproduced the checked sensor decisions, a two-cache-line crossing, the 45-cent quote spread, the 65-minute kitchen schedule and all four published practical-test scores.
