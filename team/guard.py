@@ -48,12 +48,24 @@ SEND_TEXT = re.compile(r"\b(send|post|publish|submit|reply|comment|tweet|share|e
 DELETE_TEXT = re.compile(r"\b(delete|remove|erase|discard|clear all|unsubscribe|close account|deactivate|"
                          r"empty (trash|bin))\b", re.I)
 
+# Spending in CODE: a payment library, a call that buys or pays, or an address of a payment/checkout page. The bare words
+# are no rule: g48's c10004810_01 (kind h_tab_jsonl) was refused three times because the task's own JSON data said
+# "purchase" ("needs Arnav's approval; not run"), a string, not an action.
+_PAY_LIB = r"stripe|paypal\w*|braintree|razorpay"
+SPEND_CODE = re.compile(
+    rf"\b(?:import|from)\s+(?:{_PAY_LIB})\b"                                    # import stripe
+    rf"|\b(?:{_PAY_LIB})\s*\.\s*\w+"                                           # stripe.Charge.create
+    rf"|https?://[^\s\"'<>]*(?:{_PAY_LIB})\.com"                                 # an address of a payment service
+    r"|https?://[^\s\"'<>]*/(?:checkout|payments?|purchase|billing|cart|basket)s?(?:[/?#\"'\s]|$)"  # of a checkout page
+    r"|(?<!def )(?<!\w)(?:\w+\s*\.\s*)?(?:purchase|checkout|check_out|buy|pay|charge|make_payment|place_order|add_to_cart)\("  # a call
+    , re.I)
+
 CODE_RULES = [
     ("delete", re.compile(r"\b(os\.(remove|unlink|rmdir|removedirs)|shutil\.rmtree|\.unlink\(|\.rmdir\(|"
                           r"send2trash|rm\s+-[rf]|subprocess[^\n]*\brm\b)")),
     ("send", re.compile(r"\b(smtplib|sendmail|send_message|twilio|slack_sdk|telegram|discord|webhook|"
                         r"(requests|httpx|session)\.(post|put|patch|delete)\(|urlopen\([^)]*data=)")),
-    ("spend", re.compile(r"\b(stripe|paypal|braintree|razorpay|checkout|purchase|payment)\b", re.I)),
+    ("spend", SPEND_CODE),
 ]
 # Query endpoints that take POST but only read data.
 READONLY_POST = re.compile(r"(requests|httpx|session)\.post\(\s*[\"']https://api\.osv\.dev/v1/(query|querybatch)")

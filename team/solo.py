@@ -26,8 +26,10 @@ import ast
 import json
 import os
 import re
+import signal
 import time
 import tempfile
+import contextlib
 from pathlib import Path
 
 from . import config, deliverables, llm, stop, ternary
@@ -35,7 +37,7 @@ from .deliverables import wanted
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
-from .tools.sandbox import give, run_python
+from .tools.sandbox import give, note, run_python
 
 MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
@@ -174,7 +176,7 @@ def same(a, b, task=""):
     if not a.strip() or not b.strip():
         return False
     from . import parts as several
-    pa, pb = several.of_answer(a), several.of_answer(b)
+    pa, pb = several.of_answer(a, merge=True), several.of_answer(b, merge=True)
     if len(pa) > 1 and len(pb) > 1:
         # answers given part by part ('PART A', 'PART B', ...) agree when every part does: compared as a whole, the
         # numbers of one part hid a different word in another
@@ -426,7 +428,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             messages[0]["content"] += notes.block(said)
             board.log(f"member{n}", "notes", f"{len(said)} note(s) from earlier work")
     names = wanted(task)
-    give(task, work, skip=names)
+    messages[-1]["content"] += note(give(task, work, skip=names))
     saved_files = tempfile.TemporaryDirectory() if names else None
     helped = []
 
@@ -730,7 +732,45 @@ def _home(run_dir):
     return Path(tempfile.mkdtemp(prefix=time.strftime("%Y%m%d-%H%M%S-"), dir=config.RUNS))
 
 
+class Capped(BaseException):
+    """The time cap of the task was reached (the exam sends SIGTERM, then SIGKILL after a grace). Not an Exception:
+    nothing in a member's work may swallow it."""
+
+
+_CAP = {"hit": False, "live": False}
+
+
+def _on_cap(sig, frame):
+    _CAP["hit"] = True
+    if _CAP["live"]:
+        _CAP["live"] = False
+        raise Capped()
+
+
+@contextlib.contextmanager
+def capping():
+    """SIGTERM is the time cap. In g48's practice 15 of 42 failures were tasks cut off at 600 s, with the answers the
+    members had already given thrown away (h10004806_00 had a member's right answer at 427 s). Under this the member in
+    hand is given up, and run() goes on to agreement and delivery with the tries that are in."""
+    try:
+        old = signal.signal(signal.SIGTERM, _on_cap)
+    except ValueError:  # not the main thread: no cap to hear
+        yield
+        return
+    _CAP["hit"] = False
+    try:
+        yield
+    finally:
+        _CAP["live"] = False
+        signal.signal(signal.SIGTERM, old)
+
+
 def run(task, run_dir=None, approve="never", members=2):
+    with capping():
+        return _run(task, run_dir, approve, members)
+
+
+def _run(task, run_dir=None, approve="never", members=2):
     task = task.strip()
     home = _home(run_dir)
     board = Board(home)
@@ -763,7 +803,16 @@ def run(task, run_dir=None, approve="never", members=2):
         if names and (member_work.is_symlink() or member_work.exists() and (not member_work.is_dir() or any(member_work.iterdir()))):
             # A caller may retry the same run directory. Old files cannot witness a new program.
             member_work = Path(tempfile.mkdtemp(prefix=f"member{n}-", dir=home))
-        t = member(task, n, board, guard, member_work, 0.0 if n == 1 else 0.7, who, also)
+        if _CAP["hit"]:
+            break
+        _CAP["live"] = True
+        try:
+            t = member(task, n, board, guard, member_work, 0.0 if n == 1 else 0.7, who, also)
+        except Capped:
+            board.log("hive", "capped", f"time cap reached in member {n}: the {len(tries)} answer(s) in go to agreement")
+            break
+        finally:
+            _CAP["live"] = False
         t["work"] = str(member_work)
         if names:
             checked = deliverables.inspect(task, member_work, names)
@@ -871,6 +920,11 @@ def run(task, run_dir=None, approve="never", members=2):
 
 
 def first(task, run_dir=None, approve="never", members=2):
+    with capping():
+        return _first(task, run_dir, approve, members)
+
+
+def _first(task, run_dir=None, approve="never", members=2):
     """The members' try, kept apart (<run>/members) so that the roles can take the task in <run> if they confirm
     nothing. Where they agree, their answer and the files they saved are the run's."""
     home = _home(run_dir)
@@ -902,7 +956,7 @@ def first(task, run_dir=None, approve="never", members=2):
         else:
             (home / "work").mkdir(parents=True, exist_ok=True)
             for p in source.iterdir():
-                if p.is_symlink() or not p.is_file() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py", p.name):
+                if p.is_symlink() or not p.is_file() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py|task_data(_\d+)?\.txt", p.name):
                     continue
                 try:
                     deliverables.copy_files(source, [p.name], home / "work")

@@ -28,11 +28,18 @@ def of_task(task):
     return {m.group(1): task[m.end():(hits[i + 1].start() if i + 1 < len(hits) else len(task))].strip() for i, m in enumerate(hits)}
 
 
-def of_answer(answer):
+def of_answer(answer, merge=False):
     """{letter: the answer's piece under that heading}. A heading may stand alone on its line or be followed by the
-    answer on the same line ('PART A: 42'); the first piece under a heading counts."""
+    answer on the same line ('PART A: 42'); the first piece under a heading counts. merge=True (agreement, team/solo.py):
+    a heading that comes more than once ('PART B' alone, then 'PART B: Monday'; or 'PART B: x' on every line of a list)
+    has all its pieces, in order, so that the inline and the line-by-line forms of one answer read alike."""
     hits = list(_ANSWER.finditer(answer or ""))
     out = {}
     for i, m in enumerate(hits):
-        out.setdefault(m.group(1).upper(), answer[m.end():(hits[i + 1].start() if i + 1 < len(hits) else len(answer))].strip())
+        piece = answer[m.end():(hits[i + 1].start() if i + 1 < len(hits) else len(answer))].strip()
+        k = m.group(1).upper()
+        if merge and k in out:
+            out[k] = (out[k] + "\n" + piece).strip()
+        else:
+            out.setdefault(k, piece)
     return out
