@@ -37,7 +37,7 @@ from .deliverables import wanted
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
-from .tools.sandbox import give, run_python
+from .tools.sandbox import give, note, run_python
 
 MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
@@ -176,7 +176,7 @@ def same(a, b, task=""):
     if not a.strip() or not b.strip():
         return False
     from . import parts as several
-    pa, pb = several.of_answer(a), several.of_answer(b)
+    pa, pb = several.of_answer(a, merge=True), several.of_answer(b, merge=True)
     if len(pa) > 1 and len(pb) > 1:
         # answers given part by part ('PART A', 'PART B', ...) agree when every part does: compared as a whole, the
         # numbers of one part hid a different word in another
@@ -428,7 +428,7 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             messages[0]["content"] += notes.block(said)
             board.log(f"member{n}", "notes", f"{len(said)} note(s) from earlier work")
     names = wanted(task)
-    give(task, work, skip=names)
+    messages[-1]["content"] += note(give(task, work, skip=names))
     saved_files = tempfile.TemporaryDirectory() if names else None
     helped = []
 
@@ -956,7 +956,7 @@ def _first(task, run_dir=None, approve="never", members=2):
         else:
             (home / "work").mkdir(parents=True, exist_ok=True)
             for p in source.iterdir():
-                if p.is_symlink() or not p.is_file() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py", p.name):
+                if p.is_symlink() or not p.is_file() or p.name.startswith(".") or re.fullmatch(r"member\d+_\d+\.py|task_data(_\d+)?\.txt", p.name):
                     continue
                 try:
                     deliverables.copy_files(source, [p.name], home / "work")
