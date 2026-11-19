@@ -4,9 +4,9 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g49 of the 8B body passed 49 of 64 exam tasks (77%). The best so far on this DNA: g41, 58 of 64 (91%).
+**Now:** generation g50 of the 8B body passed 54 of 64 exam tasks (84%). The best so far on this DNA: g41, 58 of 64 (91%).
 
-**Talk:** generation g49 sat the talk exam (seed 30000049): 7.8 of 10 (31 of 40 messages right: route 8 of 10, fact 10 of 10, earlier 10 of 10, time 3 of 10). The bar: 8 of 10.
+**Talk:** generation g50 sat the talk exam (seed 30000050): 8.0 of 10 (32 of 40 messages right: route 8 of 10, fact 9 of 10, earlier 10 of 10, time 5 of 10). The bar: 8 of 10.
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -26,7 +26,7 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Its read, with the next piece: [reads/latest.md](reads/latest.md).
 
-Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost.
+Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost; g50: 3 of 20 train slices lost.
 
 ## Where it practises most next
 
