@@ -1,0 +1,82 @@
+{
+  "program-alias": {
+    "format": "integer",
+    "answer": 3,
+    "why": "List repetition stores three references to the same list."
+  },
+  "program-map": {
+    "format": "letter",
+    "answer": "B",
+    "why": "The key exists, so dict.get returns its stored None."
+  },
+  "venue-seats": {
+    "format": "integer",
+    "answer": 42,
+    "why": "84 minus 21 staff seats minus 21 guest seats is 42."
+  },
+  "return-rate": {
+    "format": "letter",
+    "answer": "C",
+    "why": "10 total returns divided by 40 total purchases is 25 percent."
+  },
+  "warm-water": {
+    "format": "integer",
+    "answer": 25,
+    "why": "The increase is 4200/(200*4.2)=5 Celsius."
+  },
+  "cart-braking": {
+    "format": "letter",
+    "answer": "A",
+    "why": "(9-15)/3 is -2 metres per second squared."
+  },
+  "listen-first": {
+    "format": "letter",
+    "answer": "C",
+    "why": "Only C offers to listen without offering advice or intervening."
+  },
+  "expense-reply": {
+    "format": "letter",
+    "answer": "A",
+    "why": "A explicitly covers parking and excludes the taxi."
+  },
+  "detector-recall": {
+    "format": "integer",
+    "answer": 60,
+    "why": "Recall is 15/(15+10)=60 percent."
+  },
+  "heldout-scaler": {
+    "format": "letter",
+    "answer": "B",
+    "why": "Training-only estimates transform both train and test."
+  },
+  "clock-period": {
+    "format": "integer",
+    "answer": 100,
+    "why": "10 ns per cycle equals 100 MHz."
+  },
+  "cache-straddle": {
+    "format": "integer",
+    "answer": 2,
+    "why": "Bytes 62 and 63 are in one line, bytes 64 and 65 in the next."
+  },
+  "string-length": {
+    "format": "integer",
+    "answer": 5,
+    "why": "The string has five characters."
+  },
+  "cash-change": {
+    "format": "integer",
+    "answer": 32,
+    "why": "50-18=32."
+  },
+  "freezing-state": {
+    "format": "letter",
+    "answer": "B",
+    "why": "Melting turns solid water into liquid water."
+  },
+  "no-meeting": {
+    "format": "letter",
+    "answer": "C",
+    "why": "C declines the current date and offers to reschedule."
+  }
+}

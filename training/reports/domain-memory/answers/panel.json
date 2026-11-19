@@ -1,0 +1,98 @@
+[
+  {
+    "id": "program-alias",
+    "domain": "coding",
+    "stratum": "primary",
+    "prompt": "I'm reviewing Python. A colleague runs rows = [[]] * 3, then rows[1].append(7). How many of the three inner lists now display a 7? Reply with a single integer."
+  },
+  {
+    "id": "program-map",
+    "domain": "coding",
+    "stratum": "primary",
+    "prompt": "In our Python checkout code, options = {'coupon': None}. What does options.get('coupon', 'N/A') return? A) the string N/A B) None C) an exception. Reply with just the letter."
+  },
+  {
+    "id": "venue-seats",
+    "domain": "math",
+    "stratum": "primary",
+    "prompt": "Our hall has 84 seats. One quarter are held for staff. Of the remaining seats, one third are held for guests. How many seats can we sell? Reply with a single integer."
+  },
+  {
+    "id": "return-rate",
+    "domain": "math",
+    "stratum": "primary",
+    "prompt": "On Monday a shop had 1 return from 10 purchases. On Tuesday there were 9 returns from 30 purchases. Which is the return percentage across both days? A) 20% B) 30% C) 25%. Reply with just the letter."
+  },
+  {
+    "id": "warm-water",
+    "domain": "physical_science",
+    "stratum": "primary",
+    "prompt": "Our lab heats 200 grams of liquid water initially at 20 degrees Celsius with 4,200 joules. Use a specific heat of 4.2 joules per gram per degree Celsius and ignore losses. What is the final temperature in degrees Celsius? Reply with a single integer."
+  },
+  {
+    "id": "cart-braking",
+    "domain": "physical_science",
+    "stratum": "primary",
+    "prompt": "A cart rolls east at 15 metres per second. Three seconds later it is still heading east at 9 metres per second. With east chosen as positive, which average acceleration fits our measurement? A) -2 m/s² B) +2 m/s² C) -8 m/s². Reply with just the letter."
+  },
+  {
+    "id": "listen-first",
+    "domain": "conversation",
+    "stratum": "primary",
+    "prompt": "My friend texts, “Can I vent for a minute? Please just listen. I don't want advice.” Pick the reply that respects that request. A) “First, have you tried writing a plan?” B) “I'll call your manager for you.” C) “I'm here. Tell me what happened.” Reply with just the letter."
+  },
+  {
+    "id": "expense-reply",
+    "domain": "conversation",
+    "stratum": "primary",
+    "prompt": "Help me reply to Kim. Our host will cover parking but won't cover a taxi. Which text communicates both facts without promising anything extra? A) “The host will pay for parking. A taxi would be at your own expense.” B) “All your transportation is covered.” C) “Bring the taxi receipt and the host will decide later.” Reply with just the letter."
+  },
+  {
+    "id": "detector-recall",
+    "domain": "machine_learning",
+    "stratum": "primary",
+    "prompt": "My classifier flagged 20 components as defective. Of those, 15 really were defective, and it missed another 10 defective components. What is its recall as a whole-number percentage? Reply with a single integer."
+  },
+  {
+    "id": "heldout-scaler",
+    "domain": "machine_learning",
+    "stratum": "primary",
+    "prompt": "Our model evaluation scales each column using the mean and variance of the entire labeled dataset, then splits off the test rows. Which correction avoids test-information leakage? A) Normalize each partition to its own mean. B) Fit the scaler on training rows only and apply that same scaler to both partitions. C) Shuffle feature columns before fitting on all rows. Reply with just the letter."
+  },
+  {
+    "id": "clock-period",
+    "domain": "computer_engineering",
+    "stratum": "primary",
+    "prompt": "I am setting a synchronous hardware clock. The longest register-to-register combinational path takes 7 ns. Clock-to-Q plus setup and other timing allowance total another 3 ns. With no pipelining change, what is the maximum clock frequency in MHz? Reply with a single integer."
+  },
+  {
+    "id": "cache-straddle",
+    "domain": "computer_engineering",
+    "stratum": "primary",
+    "prompt": "A processor uses 64-byte cache lines aligned at addresses divisible by 64. A four-byte load begins at byte address 62. How many distinct cache lines contain these four bytes? Reply with a single integer."
+  },
+  {
+    "id": "string-length",
+    "domain": "coding",
+    "stratum": "retention",
+    "prompt": "For a simple Python regression check, what integer does len('cacao') return? Reply with a single integer."
+  },
+  {
+    "id": "cash-change",
+    "domain": "math",
+    "stratum": "retention",
+    "prompt": "I paid 50 dollars for an item costing 18 dollars. What is my change in whole dollars? Reply with a single integer."
+  },
+  {
+    "id": "freezing-state",
+    "domain": "physical_science",
+    "stratum": "retention",
+    "prompt": "At standard atmospheric pressure, what does ordinary ice turn into when it melts? A) steam B) liquid water C) salt. Reply with just the letter."
+  },
+  {
+    "id": "no-meeting",
+    "domain": "conversation",
+    "stratum": "retention",
+    "prompt": "I want to politely decline a meeting while leaving open the option of another date. Which reply does this? A) “Never contact me again.” B) “I will attend tomorrow.” C) “Thank you for inviting me. I can't make this date, but I'd be happy to find another.” Reply with just the letter."
+  }
+]
