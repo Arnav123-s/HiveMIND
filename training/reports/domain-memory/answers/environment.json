@@ -82,5 +82,42 @@
     "team/ternary.py": "2b23d90691dae4e71ea85e6fbd8a5882604e089306d0bfb8579b3b1f60899e35",
     "team/water_phase.py": "6768c1f7cdaaf88af4203e6d3ca72f605c012fd0523d89a39c65e4b4a501cbd2"
   },
-  "scope_followup_source": "3018fd5f5d00e00995cbf7ab18fe18519bcf9eaa"
+  "scope_followup_source": "3018fd5f5d00e00995cbf7ab18fe18519bcf9eaa",
+  "final_system": {
+    "source_commit": "19992ca4ae4c46f6d5f79eb6dbc3f9fd47fc8d9e",
+    "graph_reuse": false,
+    "same_ternary_binary": true,
+    "preregistered_protocol_sha256": "0aa678fd3b37700d087633a9b974871a7840edfa381255efba6f97652ffedcd1",
+    "runtime_commit": "cf7729cfaf395570cd6cd2e16435554b4f4ab04d",
+    "bank": {
+      "index_sha256": "b87088bdf5727f14e68b93c05952c09367944ae168f7bfb9935dbc805f892ed9",
+      "files": {
+        "t80+e_domain_coding.gguf": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+        "t80+e_domain_math.gguf": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+        "t80+e_domain_conversation.gguf": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+        "t80+e_domain_machine_learning.gguf": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766",
+        "t80+e_domain_physical_science_v2.gguf": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d"
+      }
+    },
+    "inspected_live_server": {
+      "pid": 131059,
+      "graph_reuse_manifest": false,
+      "runtime_no_graph_reuse": true,
+      "threads": 2,
+      "context_size": 4096,
+      "port": 18214,
+      "declared_files": [
+        "t80+g47code2.gguf",
+        "t80+g47data2.gguf",
+        "t80+g47sources2.gguf",
+        "t80+g47trunk.gguf",
+        "t80+g47words.gguf",
+        "t80+e_domain_coding.gguf",
+        "t80+e_domain_conversation.gguf",
+        "t80+e_domain_machine_learning.gguf",
+        "t80+e_domain_math.gguf",
+        "t80+e_domain_physical_science_v2.gguf"
+      ]
+    }
+  }
 }

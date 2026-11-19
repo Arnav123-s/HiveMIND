@@ -13,7 +13,15 @@ All three versions gave the same seven correctly formatted answers across 16 rea
 
 The three practical successes were two conversation choices and a machine-learning evaluation question. Each version missed both coding, math, physical science and computer-engineering questions on the strict measure. Every arm started eight program-work jobs. The original hive delivered the correct numbers 42 and 60 in prose after workers checked calculations for venue capacity and classifier recall. With signals only, the venue job hit its deadline. In the integrated run both jobs timed out. Two integrated workers computed 60 for recall, and the caller still received no answer. Concurrent CPU load varied across runs. These measurements support conclusions about delivered answers under a time limit and leave the causes of timing differences unresolved. [Per-domain and per-case results](results.json)
 
+A subsequent native-engine check found that the pinned CPU server could reuse a computation graph after switching adapter scales. The native scales in these 48 traces show what the server reported. Effective switching between generation-47 worker weights on every call remains unverified in this first study. No domain weight was requested. The frozen rows remain available for comparison with the final server setting.
+
 All three versions confirmed a wrong answer on a four-byte load starting at address 62 with 64-byte cache lines. Both workers generated `print(1)`. Bytes 62–63 occupy one line and 64–65 occupy the next. A separately developed arithmetic handler subsequently returned `2` from the ordinary `./hive --once` command on the original wording. It also answered five of six independent new eligible requests, declined all three underdetermined or unrelated requests, and matched an enumeration oracle on 2,048 fixed-grammar inputs. The missed new request described a 40-byte read in prose. This repair came after the model study and has its own measurements. [Fresh questions, sweep and actual CLI results](../cache-lines/results.json)
+
+## Final production repeat
+
+On the twelve previously scored practical questions, the integrated system with the checked cache calculator, integer formatter, five qualifying weights and corrected native graph handling answered five in the requested format. All three earlier arms answered three. Both new successes came from previously diagnosed cases. The cache access returned `2` with zero native calls. For classifier recall, the two workers printed `60.0` and `60`. The agreed work report began with `60.0` and the final reply delivered `60`. The venue-capacity job still timed out. On the other nine practical questions, the original and final systems both answered the same three correctly. [Frozen repeat protocol](final-protocol.md) · [All 16 final replies, programs and paired comparisons](final-results.json)
+
+The final version retained all four elementary answers. It produced 45 completed native calls across 16 requests, took 1,241 seconds in total, and hit four deadlines. With the supplemental content criterion, both the original and final systems scored 5/12. The original delivered the venue result in prose and missed the cache question. The final version gained the cache result and missed the venue deadline. Its native launch included the five qualified files and disabled graph reuse. No domain weight activated on these broad tasks. The final serving signal correctly labeled seven of the nine questions for which it emitted a label. The cache calculator answered before subject classification. [Live server configuration](environment.json) · [Raw final results](final-results.json)
 
 The independently authored panel asks two questions each about coding, math, physical science, conversation, machine learning and computer engineering. Four elementary questions in the original domains test retention. Each question starts an empty conversation. Neither the model nor the router sees the expected answer. [Frozen questions](panel.json) · [Separate answer key](keys.json) · [Preregistered protocol](protocol.md)
 
@@ -53,5 +61,17 @@ The diagnostic below runs the two learned senders and the final serving consensu
 ```sh
 python training/reports/domain-memory/answers/run.py --routes-only --checkout /tmp/hive-practical-signals --out /tmp/hive-route-check
 ```
+
+The final production repeat uses the five-entry catalog and disables compute-graph reuse in the native server. Run it in a fresh native-runtime home so that startup records the expected new command and files. [Frozen repeat protocol](final-protocol.md) · [Final catalog](index-final.jsonl)
+
+```sh
+python training/reports/domain-memory/answers/prepare.py final_system /tmp/hive-practical-final
+python training/reports/domain-memory/answers/prepare.py bank_final /tmp/hive-practical-final-bank --weights /tmp/hive-practical-final/cells/engrams
+HIVE_TERNARY_HOME=/tmp/hive-practical-final-native HIVE_ENGRAMS_HOME=/tmp/hive-practical-final-bank python training/reports/domain-memory/answers/run.py --arm final_system --checkout /tmp/hive-practical-final --out /tmp/hive-practical
+python training/reports/domain-memory/answers/final_replay.py /tmp/hive-practical --out /tmp/hive-practical-final-results.json
+python training/reports/domain-memory/answers/rescore.py /tmp/hive-practical-final-results.json
+```
+
+The no-inference comparison exercised both talk and work eligibility for all 16 questions. The initial and final banks selected no weight on any of those 32 branches. A separate, explicit Python operation question selected the coding weight with both versions and recorded their respective eight-token and one-token consultation budgets. Subsequent release guards for named local conventions and standalone pure-water phase questions also left these 16 surfaces unchanged. The cache question remained the sole early checked answer. The final water-output guard at commit `ffc0afb` also left every recorded output unchanged. Its no-generation replay checked 48 nonempty visible replies and 45 nonempty worker outputs across the 64 requests. Questions with deadlines retain their failed-delivery score. The native final repeat used `19992ca`; the later guard comparison applied the actual release functions to the same questions and stored outputs. [Per-request eligibility, control and guard receipts](scope-followup.json) · [Recorded-output replayer](output_delta.py)
 
 The runner resumes completed questions. Use a fresh output location for an independent repetition. Server initialization, competing CPU load and sampling can affect timing and whether a work order reaches its limit. [Runner](run.py)

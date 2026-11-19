@@ -14,20 +14,22 @@ def prepare(arm, checkout, weights):
     env = json.loads((HERE / "environment.json").read_text())
     if checkout.exists():
         raise ValueError(f"Choose a new checkout path. {checkout} already exists.")
-    if arm == "bank_v1":
-        bank = env["primary_engram_store"]
+    if arm in ("bank_v1", "bank_final"):
+        bank = env["primary_engram_store"] if arm == "bank_v1" else env["final_system"]["bank"]
+        index = HERE / ("index-v1.jsonl" if arm == "bank_v1" else "index-final.jsonl")
         files = {weights / name: digest for name, digest in bank["files"].items()}
-        files[HERE / "index-v1.jsonl"] = bank["index_sha256"]
+        files[index] = bank["index_sha256"]
         for path, expected in files.items():
             if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
                 raise ValueError(f"Measured weight or index mismatch for {path}")
         checkout.mkdir(parents=True)
         for path in files:
-            shutil.copyfile(path, checkout / ("index.jsonl" if path.name == "index-v1.jsonl" else path.name))
+            shutil.copyfile(path, checkout / ("index.jsonl" if path == index else path.name))
         return
     root = subprocess.check_output(["git", "-C", HERE, "rev-parse", "--show-toplevel"], text=True).strip()
-    subprocess.run(["git", "-C", root, "worktree", "add", "--detach", checkout, env["baseline_checkout"]], check=True)
-    if arm == "baseline":
+    commit = env["final_system"]["source_commit"] if arm == "final_system" else env["baseline_checkout"]
+    subprocess.run(["git", "-C", root, "worktree", "add", "--detach", checkout, commit], check=True)
+    if arm in ("baseline", "final_system"):
         return
     name = {"signal_only": "signal", "scope_followup": "integrated"}.get(arm, arm)
     hashes = env[name + "_snapshot_changes_from_baseline"]
@@ -51,7 +53,8 @@ def prepare(arm, checkout, weights):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("arm", choices=("baseline", "signal_only", "integrated", "scope_followup", "bank_v1"))
+    parser.add_argument("arm", choices=("baseline", "signal_only", "integrated", "scope_followup", "bank_v1",
+                                         "final_system", "bank_final"))
     parser.add_argument("checkout", type=Path)
     parser.add_argument("--weights", type=Path, default=HERE.parents[3] / "cells" / "engrams",
                         help="location of the four original qualified weights when preparing bank_v1")

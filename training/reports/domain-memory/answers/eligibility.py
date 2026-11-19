@@ -8,8 +8,8 @@ import sys
 HERE = Path(__file__).resolve().parent
 
 
-def audit(checkout, bank, *, positive_control=False):
-    os.environ.update(HIVE_ENGRAMS="1", HIVE_SIGNALS="1", HIVE_ENGRAMS_HOME=str(bank))
+def audit(checkout, bank, *, positive_control=False, guard_surface=False):
+    os.environ.update(HIVE_ENGRAMS="1", HIVE_SIGNALS="1", HIVE_BANK="off", HIVE_ENGRAMS_HOME=str(bank))
     sys.path.insert(0, str(checkout))
     from team import domain_advice, domain_route, engram, ternary
 
@@ -38,6 +38,18 @@ def audit(checkout, bank, *, positive_control=False):
     for task in tasks:
         message = task["prompt"]
         with domain_route.for_request(message) as decision:
+            if guard_surface:
+                from team import talk, water_phase
+                form = engram.single_label_form(message)
+                named = engram.named_label_for(message, "t80") if form else None
+                if form == "letter" and named and not all(len(label) == 1 and label.isalpha() for label in named["labels"]):
+                    named = None
+                local = talk.local_reply(message, local_only=True)
+                phase = getattr(water_phase, "standalone_phase", lambda message: None)(message)
+                output_phase = getattr(water_phase, "output_check_phase", lambda message: None)(message)
+                rows.append(dict(id=task["id"], named=named["name"] if named else None, standalone_phase=phase,
+                                 output_check_phase=output_phase, local_text=local["text"] if local is not None else None))
+                continue
             modes = {}
             for way in ("talk", "work"):
                 consultation = domain_advice.consult(message, "t80", domain_route.current_domain(), "",
@@ -58,6 +70,9 @@ if __name__ == "__main__":
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--positive-control", action="store_true",
                         help="run one independent, in-scope instrument check instead of the answer panel")
+    parser.add_argument("--guard-surface", action="store_true",
+                        help="check the named-convention, standalone-water and model-free early-answer paths")
     args = parser.parse_args()
-    rows = audit(args.checkout.resolve(), args.bank.resolve(), positive_control=args.positive_control)
+    rows = audit(args.checkout.resolve(), args.bank.resolve(), positive_control=args.positive_control,
+                 guard_surface=args.guard_surface)
     args.out.write_text(json.dumps(rows, indent=2, ensure_ascii=False) + "\n")

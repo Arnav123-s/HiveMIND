@@ -11,6 +11,7 @@ HERE = Path(__file__).resolve().parent
 ARM_SWITCHES = {
     "baseline": ("0", "0"), "integrated": ("1", "1"),
     "signal_only": ("1", "0"), "engram_only": ("0", "1"), "scope_followup": ("1", "1"),
+    "final_system": ("1", "1"),
 }
 
 
@@ -70,7 +71,7 @@ def worker(args):
     start = time.monotonic()
     try:
         result = talk.reply(task["prompt"], run_dir=str(directory / "work"), name="the user")
-        fields = {"text", "worked", "agreed", "domain_signal", "engram_advice", "saved", "engrams"}
+        fields = {"text", "worked", "agreed", "domain_signal", "engram_advice", "saved", "engrams", "cache_lines"}
         row = {k: v for k, v in result.items() if k in fields}
     except Exception as exc:
         row = {"error": f"{type(exc).__name__}: {exc}"}

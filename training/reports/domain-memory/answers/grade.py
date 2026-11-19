@@ -106,7 +106,7 @@ def grade(root, arms, partial=False):
                                  work_started=started_work, timeout=timed_out, worked=row.get("worked"),
                                  agreed=row.get("agreed"), domain_decision=signal,
                                  seconds=row.get("seconds"), error=row.get("error"), text=row.get("text"), model_calls=calls,
-                                 members=members))
+                                 members=members, **({"cache_lines": row["cache_lines"]} if "cache_lines" in row else {})))
         metrics[arm] = dict(counts)
     paired = None
     if len(arms) >= 2:
