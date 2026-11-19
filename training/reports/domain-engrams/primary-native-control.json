@@ -1,0 +1,154 @@
+{
+  "method": "Full 151,669-way native source logits plus B(Ax), using actual GGUF FP16 tensors read back from byte-identical released candidates, and native held-out hidden states x. Separate native paired OFF logits checked as a second baseline.",
+  "checks": 18,
+  "source_plus_delta_matches": 18,
+  "paired_plus_delta_matches": 18,
+  "min_label_increment_cosine": 0.9989962577819824,
+  "max_label_increment_error": 0.18787038326263428,
+  "cases": [
+    {
+      "case": "coding-check-0",
+      "source_plus_delta": 17617,
+      "paired_off_plus_delta": 17617,
+      "native_on": 17617,
+      "min_label_increment_cosine": 0.9999207258224487,
+      "observed_max_abs_increment_diff": 0.03290700912475586
+    },
+    {
+      "case": "coding-check-1",
+      "source_plus_delta": 5315,
+      "paired_off_plus_delta": 5315,
+      "native_on": 5315,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.0009198188781738281
+    },
+    {
+      "case": "coding-check-2",
+      "source_plus_delta": 1242,
+      "paired_off_plus_delta": 1242,
+      "native_on": 1242,
+      "min_label_increment_cosine": 0.9999999403953552,
+      "observed_max_abs_increment_diff": 0.0005841255187988281
+    },
+    {
+      "case": "math-check-0",
+      "source_plus_delta": 4373,
+      "paired_off_plus_delta": 4373,
+      "native_on": 4373,
+      "min_label_increment_cosine": 0.9999727606773376,
+      "observed_max_abs_increment_diff": 0.03862333297729492
+    },
+    {
+      "case": "math-check-1",
+      "source_plus_delta": 8726,
+      "paired_off_plus_delta": 8726,
+      "native_on": 8726,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.000649571418762207
+    },
+    {
+      "case": "math-check-2",
+      "source_plus_delta": 18902,
+      "paired_off_plus_delta": 18902,
+      "native_on": 18902,
+      "min_label_increment_cosine": 1.0000001192092896,
+      "observed_max_abs_increment_diff": 0.001118302345275879
+    },
+    {
+      "case": "physics-check-0",
+      "source_plus_delta": 96640,
+      "paired_off_plus_delta": 96640,
+      "native_on": 96640,
+      "min_label_increment_cosine": 0.9991846084594727,
+      "observed_max_abs_increment_diff": 0.18475127220153809
+    },
+    {
+      "case": "physics-check-1",
+      "source_plus_delta": 53637,
+      "paired_off_plus_delta": 53637,
+      "native_on": 53637,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.0006389617919921875
+    },
+    {
+      "case": "physics-check-2",
+      "source_plus_delta": 58728,
+      "paired_off_plus_delta": 58728,
+      "native_on": 58728,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.002105236053466797
+    },
+    {
+      "case": "conversation-check-0",
+      "source_plus_delta": 1073,
+      "paired_off_plus_delta": 1073,
+      "native_on": 1073,
+      "min_label_increment_cosine": 0.9999963045120239,
+      "observed_max_abs_increment_diff": 0.015088200569152832
+    },
+    {
+      "case": "conversation-check-1",
+      "source_plus_delta": 13800,
+      "paired_off_plus_delta": 13800,
+      "native_on": 13800,
+      "min_label_increment_cosine": 0.9999999403953552,
+      "observed_max_abs_increment_diff": 0.0009279251098632812
+    },
+    {
+      "case": "conversation-check-2",
+      "source_plus_delta": 57417,
+      "paired_off_plus_delta": 57417,
+      "native_on": 57417,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.0008893013000488281
+    },
+    {
+      "case": "ml-check-0",
+      "source_plus_delta": 10397,
+      "paired_off_plus_delta": 10397,
+      "native_on": 10397,
+      "min_label_increment_cosine": 0.9998599290847778,
+      "observed_max_abs_increment_diff": 0.07822227478027344
+    },
+    {
+      "case": "ml-check-1",
+      "source_plus_delta": 12284,
+      "paired_off_plus_delta": 12284,
+      "native_on": 12284,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.0004630088806152344
+    },
+    {
+      "case": "ml-check-2",
+      "source_plus_delta": 2271,
+      "paired_off_plus_delta": 2271,
+      "native_on": 2271,
+      "min_label_increment_cosine": 0.9989962577819824,
+      "observed_max_abs_increment_diff": 0.18787038326263428
+    },
+    {
+      "case": "engineering-check-0",
+      "source_plus_delta": 4412,
+      "paired_off_plus_delta": 4412,
+      "native_on": 4412,
+      "min_label_increment_cosine": 0.9999068975448608,
+      "observed_max_abs_increment_diff": 0.06997442245483398
+    },
+    {
+      "case": "engineering-check-1",
+      "source_plus_delta": 4412,
+      "paired_off_plus_delta": 4412,
+      "native_on": 4412,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.00043845176696777344
+    },
+    {
+      "case": "engineering-check-2",
+      "source_plus_delta": 355,
+      "paired_off_plus_delta": 355,
+      "native_on": 355,
+      "min_label_increment_cosine": 1.0,
+      "observed_max_abs_increment_diff": 0.0006453990936279297
+    }
+  ]
+}

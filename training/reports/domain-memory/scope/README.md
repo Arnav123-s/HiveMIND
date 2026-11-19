@@ -27,3 +27,9 @@ python training/reports/domain-memory/scope/evaluate.py \
 ```
 
 For the 12-case panel, add `--cases training/reports/domain-memory/scope/confirmation/cases.json --panel-sha 5ba4f90213d0e5e9cb058070694ec01ee1e258fec61f6bb36aa70aafbcea9567`. For a newer policy or different verified bank, the driver accepts `--scope-sha` and `--bank` explicitly. The stored decision files record which helper, registry and native-file hashes were used.
+
+## Final five-adapter package
+
+Commit `19992ca4ae4c46f6d5f79eb6dbc3f9fd47fc8d9e` added the corrected water adapter after it passed its native and HTTP checks. Timing remained withheld. Holding the final eligibility code fixed, adding water changed exactly one decision across the 24 original cases. The question about a chamber of pure water at one atmosphere and minus fourteen Celsius now takes an internally framed water consultation after subject consensus abstains. The other applicable water request says “normal atmospheric pressure”, which this conservative pressure check does not recognize.
+
+The final package definitively reached a correct specialist on **3/12 applicable requests**, with **2/12 more on the talk branch only**. All three definite consultations followed consensus abstention. The two conditional direct-label applications followed matching conversation consensus. It left **12/12 adjacent requests** alone. These retrospective 24-task results include the cases that motivated the policy correction. [Final code with four weights](final-policy-four-weights.json) · [Final code with five weights](final.json) · [Fresh 12-case confirmation](confirmation/README.md)

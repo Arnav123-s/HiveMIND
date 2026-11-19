@@ -31,7 +31,9 @@ From the repository root with Python 3, run these commands on a machine that can
 
 ```sh
 reference_dir=$(mktemp -d)
+candidate_dir=$(mktemp -d)
 git archive 2ea296f5fc038eb0e7d5a17279021ffd43b68294 team | tar -x -C "$reference_dir"
+git archive 4bb1259 team | tar -x -C "$candidate_dir"
 python training/reports/domain-memory/recall/compare.py --reference "$reference_dir" \
-  --candidate . --out /tmp/hive-lexical-recall.json
+  --candidate "$candidate_dir" --out /tmp/hive-lexical-recall.json
 ```

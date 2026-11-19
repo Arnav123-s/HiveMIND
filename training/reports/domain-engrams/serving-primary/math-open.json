@@ -1,0 +1,75 @@
+{
+  "domain": "math",
+  "form": "open",
+  "prompt": "In geometry, which measure tells me how much paint a container can hold? Explain in one short sentence.",
+  "expected": "volume",
+  "launch": "launch-54aa55df653f.json",
+  "result": {
+    "text": "The measure that tells you how much paint a container can hold is its volume.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 70,
+    "engram_advice": {
+      "engram": "e_domain_math",
+      "skill": "geometry_measure",
+      "label": null,
+      "accepted": false
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "c13e44bb0ddad4eaa137266ebee999b8253e59c47d558a27edf2e95b94077837",
+      "token_budget": 4,
+      "text": "CAPACITY",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "prompt_tokens": 338,
+        "total_tokens": 341,
+        "prompt_tokens_details": {
+          "cached_tokens": 308
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_math": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "a64b6f384bedb85f4b3cb266219d5cdf3e9ad41d1aca250ee1efff365587ce34",
+      "token_budget": 8,
+      "text": "Volume.  \nVolume tells you how much",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 153,
+        "total_tokens": 161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 743,
+      "temperature": 0.0,
+      "prompt_sha256": "0234c1f40d5ccc395f6654848c445f0f3aa016b1d0b4371d0047d12f11ab07e7",
+      "token_budget": 48,
+      "text": "The measure that tells you how much paint a container can hold is its volume.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 133,
+        "total_tokens": 150,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

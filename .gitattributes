@@ -1,2 +1,4 @@
 training/reports/generations.jsonl merge=union
 training/reports/checked-delivery/chairs.csv -text whitespace=cr-at-eol
+# The trailing blank line is part of the native model's serialized assistant prefix.
+training/reports/domain-engrams/study-template.txt -text whitespace=-blank-at-eof

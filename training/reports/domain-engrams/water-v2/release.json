@@ -1,0 +1,7 @@
+{
+  "released": true,
+  "reason": "passed direct native and HTTP serving gates",
+  "native_gate": true,
+  "http_gate": true,
+  "sha256": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d"
+}

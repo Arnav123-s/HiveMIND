@@ -1,0 +1,213 @@
+{
+  "qualified": true,
+  "sha256": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d",
+  "graph_reuse": false,
+  "threads": 2,
+  "native_active_id": 0,
+  "cases": [
+    {
+      "id": "original-0",
+      "phase": "original",
+      "expected": "solid",
+      "text": "Solid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 147,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 147,
+        "total_tokens": 148,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "original-1",
+      "phase": "original",
+      "expected": "liquid",
+      "text": "Liquid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 147,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 147,
+        "total_tokens": 148,
+        "prompt_tokens_details": {
+          "cached_tokens": 129
+        }
+      }
+    },
+    {
+      "id": "original-2",
+      "phase": "original",
+      "expected": "gas",
+      "text": "Gas",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 149,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 149,
+        "total_tokens": 150,
+        "prompt_tokens_details": {
+          "cached_tokens": 130
+        }
+      }
+    },
+    {
+      "id": "fresh-a",
+      "phase": "primary",
+      "expected": "solid",
+      "text": "Solid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 155,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 155,
+        "total_tokens": 156,
+        "prompt_tokens_details": {
+          "cached_tokens": 129
+        }
+      }
+    },
+    {
+      "id": "fresh-b",
+      "phase": "primary",
+      "expected": "liquid",
+      "text": "Liquid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 147,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 147,
+        "total_tokens": 148,
+        "prompt_tokens_details": {
+          "cached_tokens": 129
+        }
+      }
+    },
+    {
+      "id": "fresh-c",
+      "phase": "primary",
+      "expected": "gas",
+      "text": "Gas",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 153,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 153,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 129
+        }
+      }
+    },
+    {
+      "id": "fresh-d",
+      "phase": "primary",
+      "expected": "solid",
+      "text": "Solid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 153,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 153,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 129
+        }
+      }
+    },
+    {
+      "id": "fresh-e",
+      "phase": "primary",
+      "expected": "gas",
+      "text": "Gas",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 152,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 152,
+        "total_tokens": 153,
+        "prompt_tokens_details": {
+          "cached_tokens": 130
+        }
+      }
+    },
+    {
+      "id": "fresh-f",
+      "phase": "primary",
+      "expected": "liquid",
+      "text": "Liquid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 152,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 152,
+        "total_tokens": 153,
+        "prompt_tokens_details": {
+          "cached_tokens": 130
+        }
+      }
+    },
+    {
+      "id": "extra-a",
+      "phase": "supplement",
+      "expected": "liquid",
+      "text": "Liquid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 153,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 153,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 130
+        }
+      }
+    },
+    {
+      "id": "extra-b",
+      "phase": "supplement",
+      "expected": "solid",
+      "text": "Solid",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 150,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 150,
+        "total_tokens": 151,
+        "prompt_tokens_details": {
+          "cached_tokens": 130
+        }
+      }
+    },
+    {
+      "id": "extra-c",
+      "phase": "supplement",
+      "expected": "gas",
+      "text": "Gas",
+      "correct": true,
+      "same_rendered_prompt": true,
+      "rendered_tokens": 153,
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 153,
+        "total_tokens": 154,
+        "prompt_tokens_details": {
+          "cached_tokens": 129
+        }
+      }
+    }
+  ]
+}

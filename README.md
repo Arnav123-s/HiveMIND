@@ -9,6 +9,14 @@ nothing to pay for.
   cells. **The body** is the trunk and cells that answer together: they write and run programs, and an answer
   counts when two of them agree and a check confirms it. The current body is in `cells/body.json`.
 
+## Ask a question or teach a correction
+
+After installing the CPU runtime, ask a question with `./hive --once "Which dataset split should I use for early stopping?"`. Normal chat and work can recall a checked neural memory, called an *engram*. Two small readers look at the current request and its recent context. When their signals and a second text classifier agree on a subject, the hive can consult a specialist. Five starter memories cover narrow decisions in coding, geometry, water physics, conversation and machine learning. Computer engineering has a checked cache-line calculation. Its neural timing edit is withheld after answering three of six new questions correctly.
+
+To try the original four-bit signal pair with standard Python, run `./hive --once 'Check sensor banks [1,2,-1,0] and [-2,1,1,0]'`. It shows both learned estimates and checks them from the readings.
+
+Run `./hive learn list` to see the installed edits and `./hive learn status` to inspect locally collected lessons. A correction can be recorded with `./hive learn teach`. A new local edit must improve on separate questions and preserve the older answers it got right before it takes over. [Examples, measurements and limits](training/reports/domain-memory/README.md)
+
 ## Use a skill the hive learned
 
 This local example finds the difference between the highest and lowest price quotes. The hive wrote the method on a CPU and qualified it on separate examples. Once saved, it can answer without loading the language model.
@@ -91,7 +99,7 @@ Workflow "Talk to the hive" (`.github/workflows/talk.yml`, answered by `team/tal
 - **From the Actions tab:** "Talk to the hive", Run workflow, type a message. The reply is on the run's Summary.
 - When the hive delivers files, the issue reply and run summary include a download link. GitHub retains the download for 30 days and requires sign-in.
 - It seats the body from `cells/body.json` (its trunk and the newest cell of each organ). Small talk is answered
-  by the DNA at once; anything to work out goes to the body's programs.
+  by the base model with relevant checked memories. Tasks that need calculation or files use the body's programs.
 - Everything here is public. Do not write anything private.
 
 "Ask the hive" (`.github/workflows/ask.yml`) also seats the current body, for one task from the Actions tab.
