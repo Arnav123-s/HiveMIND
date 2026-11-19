@@ -1,0 +1,75 @@
+{
+  "domain": "coding",
+  "form": "open",
+  "prompt": "In Python, I want to keep only the active records in a list. Which built-in operation fits? Give a very short reason.",
+  "expected": "filter",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "Use `list comprehension` to filter active records. It's concise and efficient for this task.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 79,
+    "engram_advice": {
+      "engram": "e_domain_coding",
+      "skill": "python_operations",
+      "label": "filter",
+      "accepted": true
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "4be280b74d42b6401188c91b08a7fd6a2681e7d0dff9b568270a2943ee74a401",
+      "token_budget": 4,
+      "text": "FILTER",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 344,
+        "total_tokens": 346,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_coding": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "af424995c6958087e207f8d2f0a21be8a6248885050c0ff3c1d0a64d53f1a175",
+      "token_budget": 1,
+      "text": "filter",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 161,
+        "total_tokens": 162,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 743,
+      "temperature": 0.0,
+      "prompt_sha256": "e663073b564ef2d011a3feadace223753303f198ed508396173c05a1963d8f4b",
+      "token_budget": 48,
+      "text": "Use `list comprehension` to filter active records. It's concise and efficient for this task.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 155,
+        "total_tokens": 175,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

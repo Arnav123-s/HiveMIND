@@ -28,6 +28,8 @@ The two corrected candidates each received 27 teaching questions. On nine indepe
 
 A person can ask an ordinary question. A broad subject match alone cannot apply one of these label-only edits to an unrestricted answer. The hive checks the task's wording and can consult a matching edit about a smaller decision. A direct request to choose from its labels can put the edit on the answer itself. [Training, qualification and native activation](../domain-engrams/README.md)
 
+On twelve public examples written for these six decisions, ordinary generation 49 chat gave nine correct answers. Eight requests activated a starter weight, and every shipped weight activated at least once. Of six requests for a single label, five received the right content and three also got the requested format. In one Python question the specialist selected the requested built-in, `filter`, but the final answer recommended a list comprehension. Correct advice can still be lost when another cell writes the answer. [Serving examples and raw replies](../domain-engrams/README.md)
+
 ## How corrections survive
 
 The normal practice loop can record what a member wrote when the task's own check confirms that exact submission. Fieldwork can collect the public input/output examples of a solver that passed separate checks. You can explicitly teach a local convention. Give different conventions distinct topic names.

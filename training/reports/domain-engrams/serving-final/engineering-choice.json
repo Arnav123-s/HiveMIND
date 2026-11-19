@@ -1,0 +1,77 @@
+{
+  "domain": "engineering",
+  "form": "choice",
+  "prompt": "Which hardware timing unit means a millionth of a second: ns, us, or ms? Reply with its abbreviation.",
+  "expected": "us",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "ns",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 18,
+    "domain_signal": {
+      "domain": "computer_engineering",
+      "confidence": 0.9993,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          2,
+          1,
+          1,
+          1,
+          1,
+          24,
+          0,
+          1
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "376406915a559a77f4826e17d1507feb0cafe3e1cde7acf10404757a6b2c0811",
+      "token_budget": 4,
+      "text": "ns",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 342,
+        "total_tokens": 344,
+        "prompt_tokens_details": {
+          "cached_tokens": 307
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "72b4213fe8f03d2fdd21f5c1b542bae11f4a0dd3eae64c17f83682b372cd3cb4",
+      "token_budget": 48,
+      "text": "ns",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 153,
+        "total_tokens": 155,
+        "prompt_tokens_details": {
+          "cached_tokens": 3
+        }
+      }
+    }
+  ]
+}

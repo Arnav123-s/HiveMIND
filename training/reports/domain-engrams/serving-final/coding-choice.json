@@ -1,0 +1,61 @@
+{
+  "domain": "coding",
+  "form": "choice",
+  "prompt": "In Python, which operation keeps only the valid rows: map, filter, or sum? Reply with its name.",
+  "expected": "filter",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "filter",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 15,
+    "engrams": [
+      {
+        "stage": "answer",
+        "member": "t80",
+        "edits": [
+          "e_domain_coding"
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "90d7133986ae737e33ec6ea59eafe56a845f6191c130f7a97827ddd127524e7c",
+      "token_budget": 4,
+      "text": "FILTER",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 340,
+        "total_tokens": 342,
+        "prompt_tokens_details": {
+          "cached_tokens": 308
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_coding": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "cffcebd719280a65d42000c772f7a4346ea3d7a94c7a4848194489e692a54190",
+      "token_budget": 48,
+      "text": "filter",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 135,
+        "total_tokens": 137,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}
