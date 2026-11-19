@@ -159,12 +159,16 @@ def saved_reply(message, log=None, *, local_only=False):
 
 
 def local_reply(message, log=None, *, local_only=False):
-    """Try the user's saved methods before the explicit numeric sensor protocol."""
+    """Try the user's saved methods, followed by the supported local calculations."""
     kept = saved_reply(message, log, local_only=local_only)
     if kept is not None:
         return kept
-    from . import sensor_banks
-    return sensor_banks.answer(message)
+    return _local_calculation(message)
+
+
+def _local_calculation(message):
+    from . import cache_lines, sensor_banks
+    return sensor_banks.answer(message) or cache_lines.answer(message)
 
 
 def reply(message, history=(), name="the user", run_dir=None, log=None, base=None, now=None):
@@ -317,8 +321,7 @@ def main(argv):
             except NeedsRuntime:
                 return 4  # Install the optional guest and retry with its interpreter.
             if kept is None:
-                from . import sensor_banks
-                out = sensor_banks.answer(message)
+                out = _local_calculation(message)
                 if out is None:
                     return 3  # Continue to the ordinary model.
             else:
@@ -328,6 +331,8 @@ def main(argv):
                         log=lambda *a: print(*a, flush=True))
         if out.get("saved"):
             foot = f"\n\n<sub>Saved method · {out['saved']['status']} · {out['seconds']} s</sub>"
+        elif out.get("cache_lines"):
+            foot = f"\n\n<sub>Local cache-line calculation · {out['seconds']} s</sub>"
         elif out.get("sensor_banks"):
             foot = f"\n\n<sub>Local sensor-bank check · {out['seconds']} s</sub>"
         else:

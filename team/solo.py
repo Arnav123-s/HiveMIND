@@ -30,7 +30,7 @@ import time
 import tempfile
 from pathlib import Path
 
-from . import config, deliverables, llm, stop, ternary
+from . import cache_lines, config, deliverables, llm, stop, ternary
 from .deliverables import wanted
 from .board import Board
 from .guard import Guard
@@ -706,6 +706,9 @@ def together(x, y, task):
 
 def agreeing(tries, task):
     """The pairs of members whose tries agree (together()), the earlier member first."""
+    access = cache_lines.parse(task)
+    if access:
+        tries = [candidate for candidate in tries if cache_lines.confirms(access, candidate["answer"])]
     return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
 
 
@@ -827,6 +830,7 @@ def _run(task, run_dir, approve, members):
             agreed, file_repairs = None, []
         else:
             selected_work, selected_delivery = str(staging), checked
+    cache_access = cache_lines.parse(task)
     if agreed:
         if not file_repairs:
             keep(task, agreed["program"], agreed["answer"])
@@ -849,6 +853,9 @@ def _run(task, run_dir, approve, members):
                 reasons.append(f"Member {i}: " + "; ".join(f"{name}: {why}" for name, why in issues.items()))
         text = ("Not confirmed: the hive could not select a complete file with an independently supported answer."
                 + ("\n\n" + "\n".join(reasons) if reasons else " The members' answers or structured files differ."))
+    elif cache_access and got:
+        text = (f"The local aligned byte-range calculation gives {cache_access.details()['count']} cache lines. "
+                "The worker outputs did not independently confirm that count.")
     elif members < 2 and got:
         text = got[0]["answer"] + "\n\n## How it was checked\n- One member worked it out; nobody checked it."
     elif got:
@@ -861,12 +868,15 @@ def _run(task, run_dir, approve, members):
     text = text.strip() + "\n"
     (home / "REPORT.md").write_text(text)
     board.log("hive", "finished", f"report: {home / 'REPORT.md'}")
-    witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)]
+    witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)
+                 and (not cache_access or cache_lines.confirms(cache_access, t["answer"]))]
     agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
                         and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
     if file_repairs:
         agreeing_members = []  # the user received the helper's sorted copy, not a cell's raw output
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
+    if cache_access:
+        decision["cache_line_check"] = cache_access.details()
     if domain_route.current_domain():
         decision["domain"] = domain_route.current_domain()
     if domain_route.advice():
