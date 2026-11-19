@@ -1,0 +1,67 @@
+{
+  "domain": "physics",
+  "form": "open",
+  "prompt": "At one atmosphere, what phase is pure water at 72 degrees Celsius? Answer in one short sentence.",
+  "expected": "liquid",
+  "launch": "launch-1e5fb1fcc11b.json",
+  "result": {
+    "text": "The water is liquid.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 74,
+    "water_phase_check": {
+      "method": "pure_water_equilibrium_1atm",
+      "phase": "liquid",
+      "source": "equilibrium_rule"
+    },
+    "engram_advice": {
+      "engram": "e_domain_physical_science_v2",
+      "skill": "water_phase",
+      "label": null,
+      "model_reply": "At",
+      "accepted": false,
+      "reason": "unrecognized_phase_label",
+      "checked_phase": "liquid",
+      "check": "pure_water_equilibrium_1atm"
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "48d72a62d06e43e15b16a69639ea65f44c9a6d8058426e9a9b8cb64f7f0dfe4b",
+      "token_budget": 4,
+      "text": "WORK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 339,
+        "total_tokens": 341,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_physical_science_v2": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "3b465e6eb907b1246edbe41d9cf8b566a98f409b4a315cce3c4e12a7b3f913bf",
+      "token_budget": 1,
+      "text": "At",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 160,
+        "total_tokens": 161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

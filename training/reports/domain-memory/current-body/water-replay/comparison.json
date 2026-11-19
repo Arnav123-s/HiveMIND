@@ -1,0 +1,41 @@
+{
+  "source_commit": "73cc0059478431cd307e32e81f6ba6e63dcbc7c0",
+  "model_environment": "../receipt.json",
+  "prior_ordinary_receipt": "../../../domain-engrams/serving-final/physics-open.json",
+  "prior_receipt_sha256": "9e2bc7fca20c42e1cd6cc275032abec721be4be74ed9d8fe9a569b6dc8909020",
+  "baseline_worked": true,
+  "baseline_agreed": true,
+  "postfix_ordinary_receipt": "physics-open.json",
+  "postfix_receipt_sha256": "9472ed8fa7a9ca76601eae3def18604819f28174d1d37bf3f3da937ba7757f4c",
+  "identical_first_two_native_prompts": true,
+  "identical_first_two_native_states": true,
+  "correct_final": true,
+  "observed": {
+    "text": "The water is liquid.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 74,
+    "water_phase_check": {
+      "method": "pure_water_equilibrium_1atm",
+      "phase": "liquid",
+      "source": "equilibrium_rule"
+    },
+    "engram_advice": {
+      "engram": "e_domain_physical_science_v2",
+      "skill": "water_phase",
+      "label": null,
+      "model_reply": "At",
+      "accepted": false,
+      "reason": "unrecognized_phase_label",
+      "checked_phase": "liquid",
+      "check": "pure_water_equilibrium_1atm"
+    }
+  },
+  "native_server": {
+    "started": true,
+    "stopped": true,
+    "graph_reuse_disabled": true
+  },
+  "scope": "one retrospective replay of a disclosed failure, separate from 12 original G49 observations and the six independent conflict-injection probes"
+}
