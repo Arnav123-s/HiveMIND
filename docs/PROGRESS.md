@@ -4,9 +4,9 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g50 of the 8B body passed 54 of 64 exam tasks (84%). The best so far on this DNA: g41, 58 of 64 (91%).
+**Now:** generation g51 of the 8B body passed 50 of 64 exam tasks (78%). The best so far on this DNA: g41, 58 of 64 (91%).
 
-**Talk:** generation g50 sat the talk exam (seed 30000050): 8.0 of 10 (32 of 40 messages right: route 8 of 10, fact 9 of 10, earlier 10 of 10, time 5 of 10). The bar: 8 of 10.
+**Talk:** generation g51 sat the talk exam (seed 30000051): 8.2 of 10 (33 of 40 messages right: route 8 of 10, fact 9 of 10, earlier 9 of 10, time 7 of 10). The bar: 8 of 10.
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -26,18 +26,18 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Its read, with the next piece: [reads/latest.md](reads/latest.md).
 
-Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost; g50: 3 of 20 train slices lost.
+Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost; g50: 3 of 20 train slices lost; g51: 2 of 20 train slices lost.
 
 ## Where it practises most next
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
+- a state machine from a table, with hidden tests
 - the percent change between two columns, rounded by a rule
-- an order of tasks by their dependencies, with hidden tests
-- a parser for a tiny language, with hidden tests
 - the regions of a grid, with hidden tests
+- a module of two functions, with hidden tests
+- a cache that forgets the least recently used, with hidden tests
 - scrape a page to a file
-- a fact found on the open web
 
 ## How hard its lessons are now
 
