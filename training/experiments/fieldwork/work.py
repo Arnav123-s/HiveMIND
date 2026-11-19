@@ -448,6 +448,8 @@ def _resume_delivery(out, spec, receipt, guest, state, bank_path):
         if old.get("retry_delivery") or "pending_value" in old:
             blocked.add(job["id"])
     if not any("pending_value" in j or j.get("retry_delivery") for j in jobs):
+        # Other jobs in this receipt may already have succeeded and need their files restored.
+        receipt["jobs"] = restore_jobs(out, spec, jobs)
         return receipt
     program = (out / "solver.py").read_bytes().decode().removesuffix("\n")
     if fingerprint(program) != receipt["digest"]:
@@ -461,19 +463,24 @@ def _resume_delivery(out, spec, receipt, guest, state, bank_path):
     return receipt
 
 
-def _initial_manifest(out, state):
+def _initial_manifest(out, state, marker):
     token = state["spec_digest"]
     stage = out / f".work-order-{token}.pending"
     lock = out / ".work.lock"
     owner = "fieldwork initial manifest " + token
     if any(path not in (stage, lock) for path in out.iterdir()):
         raise FileExistsError("use a fresh or matching work-order directory")
+    signature = owner.encode()
+    marker.seek(0)
+    contents = marker.read(len(signature) + 1)
+    if contents not in (b"", signature) or os.fstat(marker.fileno()).st_nlink != 1:
+        raise FileExistsError("the work-order lock name is occupied")
     if stage.exists() or stage.is_symlink():
-        if stage.is_symlink() or not stage.is_file() or lock.read_bytes() != owner.encode():
+        if stage.is_symlink() or not stage.is_file() or contents != signature:
             raise FileExistsError("the work-order staging name is occupied")
         stage.unlink()
-    with lock.open("wb") as marker:
-        marker.write(owner.encode())
+    if not contents:
+        marker.write(signature)
         marker.flush()
         os.fsync(marker.fileno())
     with stage.open("x", encoding="utf-8") as stream:
@@ -488,12 +495,13 @@ def _initial_manifest(out, state):
 def work(spec, guest, ask, out, bank_path=None, rounds=3, memory_view="contract", *,
          repair_budget=8, learn_repairs=True, challenge_budget=0):
     out.mkdir(parents=True, exist_ok=True)
-    with (out / ".work.lock").open("a") as lock:
+    lock_fd = os.open(out / ".work.lock", os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(lock_fd, "r+b") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        return _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs, challenge_budget)
+        return _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs, challenge_budget, lock)
 
 
-def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs, challenge_budget):
+def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, learn_repairs, challenge_budget, lock):
     name = spec["name"]
     if not re.fullmatch("[a-z][a-z0-9_]{0,60}", name) or not spec["examples"] or rounds < 1:
         raise ValueError("provide a short program name and at least one checked example")
@@ -568,7 +576,7 @@ def _work(spec, guest, ask, out, bank_path, rounds, memory_view, repair_budget, 
         state = dict(spec_digest=token, parents=old, versions=versions, memory_view=memory_view,
                      learn_repairs=learn_repairs, repair_budget=repair_budget, challenge_budget=challenge_budget,
                      repair_policy=repair_learning.learn(bank if learn_repairs else []))
-        _initial_manifest(out, state)
+        _initial_manifest(out, state, lock)
     versions = list({r["digest"]: r for r in versions}.values())
     prompt = Task(
         spec["task"], (), "Public examples: " + json.dumps(spec["examples"], separators=(",", ":"))[:1900]

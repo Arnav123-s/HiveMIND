@@ -88,7 +88,7 @@ def test_publication_retries_only_unfinished_work_and_never_overwrites_foreign_f
 
 
 def test_guest_failure_is_permanent_and_does_not_spend_any_budget_on_resume(tmp_path):
-    task = order("Double", [(1, 2)], [(2, 4)], [-12])
+    task = order("Double", [(1, 2)], [(2, 4)], [-12, 8])
     class BrokenGuest:
         calls = 0
         def run(self, program, inputs, fuel):
@@ -97,8 +97,12 @@ def test_guest_failure_is_permanent_and_does_not_spend_any_budget_on_resume(tmp_
     g, out = BrokenGuest(), tmp_path / "out"
     r = fw.work(task, g, lambda *args: dict(source="double", usage={}), out)
     assert r["status"] == "delivery_failed"
+    completed = out / "job1/answer.json"
+    assert json.loads(completed.read_text()) == 16
+    completed.unlink()
     calls = g.calls
     assert fw.work(task, g, no_generator, out) == r and g.calls == calls
+    assert json.loads(completed.read_text()) == 16
 
 
 def abandon_manifest(directory, task):
@@ -129,6 +133,12 @@ def test_interrupted_first_manifest_recovers_only_the_owned_staging_file(tmp_pat
     with pytest.raises(FileExistsError, match="occupied"):
         fw.work(task, None, None, fresh)
     assert (fresh / pending.name).read_text() == "user content"
+    owned = tmp_path / "lock-collision"
+    owned.mkdir()
+    (owned / ".work.lock").write_text("preserve my file")
+    with pytest.raises(FileExistsError, match="occupied"):
+        fw.work(task, None, None, owned)
+    assert (owned / ".work.lock").read_text() == "preserve my file"
     r = fw.work(task, None, None, out)
     assert r["status"] == "needs_generation" and (out / "work-order.json").is_file() and not pending.exists()
 
