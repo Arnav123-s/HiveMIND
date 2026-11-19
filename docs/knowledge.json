@@ -851,6 +851,17 @@
    "by": "kinds_lessons.py: every K2 kind's makers, checks and row lengths without a model.",
    "seen": "rows fitting 508 pieces: contacts 0 -> 6 of 6, sentences 4 -> 6, words 6 -> 6 (worst seed 582 -> 458).",
    "fix": "PR 114 (training/kinds/h_txt_*.py, training/lessons.py)."
+  },
+  {
+   "id": "heldoutnear",
+   "title": "Never-taught kinds fail mostly near a pass: shape, a pasted template, a helper overwritten",
+   "lives_in": "members",
+   "blocks": "hardkinds",
+   "status": "open",
+   "found": "g51's fixed held-out exam: 3 of 30 right; of 27 failed, 16 near (answer shape, a right member lost, a near-miss rule) and 11 far (no grasp of the method); only 5 of 30 had any member right.",
+   "by": "h1_causes.py over g51's held-after and gate-work-after artifacts, every failed task's last programs read.",
+   "seen": "lesson template `key, col = 'name', 'city'` pasted (int('Lima')), a one-value helper called twice with the second overwriting, dict or list dumped for asked lines; 3 tasks each, the same causes as g48's taught kinds.",
+   "fix": "General fixes, never a held-out kind's lesson: a same-error hint for int() on a text column, the asked line labels checked before delivery (a helper on it)."
   }
  ],
  "rules": [

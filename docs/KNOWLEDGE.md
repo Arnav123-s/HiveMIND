@@ -258,6 +258,7 @@ flowchart LR
     f_hintlog["The runtime's help was not counted, so learning on its own could not be seen"]:::fixed
     f_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
     f_g48practicecauses["New kinds' first try is lost to the time cap, a guard word in data, doubled part headings and retyped data"]:::fixed
+    f_heldoutnear["Never-taught kinds fail mostly near a pass: shape, a pasted template, a helper overwritten"]:::open
   end
   subgraph p_sandbox["sandbox.py (A)"]
     f_given["Data written in the task was opened as a file that does not exist"]:::fixed
@@ -355,6 +356,7 @@ flowchart LR
   f_retainedmethods -->|blocks| hardkinds
   f_g48practicecauses -->|blocked| confirm
   f_k2nolessons -->|blocked| hardkinds
+  f_heldoutnear -->|blocks| hardkinds
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -376,7 +378,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (6 open, 53 fixed)
+## Causes found (7 open, 53 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -386,6 +388,7 @@ flowchart LR
 | Members wrote a module as f.write() strings and broke their own quotes | `team/solo.py` | T3 | open |  | 2026-11-16 22:55, A's read of g35: g35 made no module lessons; the lesson writes the module with inspect.getsource; g38 says whether members now write it the lesson's way |
 | A cell can pass the job while the hive withholds the file | `training/exam.py` |  | open | The recorder now counts both grades on the same jobs and reports coverage. | In four G47 hard jobs exactly one member passed and the hive abstained. In twelve others all members failed. All 16 grade archives were verified in training/reports/checked-delivery/g47-headroom.json. |
 | An unchanged score can hide old skills that a later hive loses | `training/exam.py` |  | open | The generation recorder now compares individual deliveries on identical prompts and exam revisions. | A task-category selector also scored 47 of 64. On specified invoice work orders, checking different saved methods against the current examples improved correct delivery decisions from 3 of 6 to 6 of 6. |
+| Never-taught kinds fail mostly near a pass: shape, a pasted template, a helper overwritten | `team/solo.py` |  | open | h1_causes.py over g51's held-after and gate-work-after artifacts, every failed task's last programs read. | lesson template `key, col = 'name', 'city'` pasted (int('Lima')), a one-value helper called twice with the second overwriting, dict or list dumped for asked lines; 3 tasks each, the same causes as g48's taught kinds. |
 | A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` |  | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
 | Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` |  | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
 | A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` |  | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
