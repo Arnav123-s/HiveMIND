@@ -1,0 +1,121 @@
+{
+  "repo": "Arnav123-s/HiveMIND",
+  "generation": "g48",
+  "record_commit": "1414d49243987ea58c5913af251c39e104d77b68",
+  "exam_commit": "b2133163c40a10d5c8dee8a3debf9a30b1a2aa38",
+  "workflow_run": 44371926721,
+  "archives": [
+    {
+      "id": 14481489104,
+      "name": "gate-after-1",
+      "bytes": 2320,
+      "sha256": "eb71db5efd4d47fd92c8f3f9fcd638b4e657a5653f5d7a4be2728b7f5d1771d0",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14481489104"
+    },
+    {
+      "id": 14482442221,
+      "name": "gate-after-2",
+      "bytes": 2854,
+      "sha256": "cd0fb6ff4f0299d8545edb358418d1e1ee9be306774c0fdd9f280fcf23589fb5",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482442221"
+    },
+    {
+      "id": 14482109475,
+      "name": "gate-after-3",
+      "bytes": 2678,
+      "sha256": "8ae6b9d7d6644ba8b83b40dcfb529ea539d553f72391c28e84ad1aa66c1a4042",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482109475"
+    },
+    {
+      "id": 14482875487,
+      "name": "gate-after-4",
+      "bytes": 2506,
+      "sha256": "008d039dbf1bef84d336e9aae3d8b95a45d1e205ad45e3ce48f34a9dd560ed56",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482875487"
+    },
+    {
+      "id": 14482868332,
+      "name": "gate-after-5",
+      "bytes": 2494,
+      "sha256": "0390e2dbce8c4b5374b41b600dec8435175069f2bb00822b8c9ac103f117a50c",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482868332"
+    },
+    {
+      "id": 14483080753,
+      "name": "gate-after-6",
+      "bytes": 2410,
+      "sha256": "7c587f4a76af6ed8b55f3adf156e9527831798e52518b8a8ff857888e4997286",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14483080753"
+    },
+    {
+      "id": 14483056261,
+      "name": "gate-after-7",
+      "bytes": 2325,
+      "sha256": "1f49f383256cd53d3ea0496df8155605c989a4c3a04658cf8f186e12f92a377c",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14483056261"
+    },
+    {
+      "id": 14483227173,
+      "name": "gate-after-8",
+      "bytes": 2925,
+      "sha256": "73c4e471371327bff6bb49111da9d85685b44ff98c7c4c9f49fcd9ac113dc244",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14483227173"
+    },
+    {
+      "id": 14482339006,
+      "name": "gate-before-1",
+      "bytes": 2314,
+      "sha256": "85bffc80abcf0d7a23df2dfb727f1b3943c9790242a55420e5c5414dbc8d73bd",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482339006"
+    },
+    {
+      "id": 14483355909,
+      "name": "gate-before-2",
+      "bytes": 2796,
+      "sha256": "749c5ddcb3dfdd077e977648215c4f05aa9f2bb70c18c89db38a477d93621e3a",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14483355909"
+    },
+    {
+      "id": 14485013315,
+      "name": "gate-before-3",
+      "bytes": 2664,
+      "sha256": "90123fa6470115c77219d4e289318f2533724a8365d70584b254e801a8fd1674",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14485013315"
+    },
+    {
+      "id": 14481234807,
+      "name": "gate-before-4",
+      "bytes": 2434,
+      "sha256": "1540f14274e1497867f2b3f731c81b3f06412019453c026fd2e4b2b343feb5b8",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14481234807"
+    },
+    {
+      "id": 14483275281,
+      "name": "gate-before-5",
+      "bytes": 2453,
+      "sha256": "168ae86c6a3df4a6f7ab71de1775d9e49ee988eedda2e6756d850c49a24ebe70",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14483275281"
+    },
+    {
+      "id": 14482562072,
+      "name": "gate-before-6",
+      "bytes": 2487,
+      "sha256": "7d33995b79f516f0ab6a7fd06dd7b64495e523c039e254500ff033ebb7d6f07e",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482562072"
+    },
+    {
+      "id": 14481588835,
+      "name": "gate-before-7",
+      "bytes": 2289,
+      "sha256": "3a5456652c5b681677391725e6c82c7f49d9c5f5536a034716a2d9c235c7b507",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14481588835"
+    },
+    {
+      "id": 14482164639,
+      "name": "gate-before-8",
+      "bytes": 2787,
+      "sha256": "bca5316c22fbb38df757a077e504fbdacf140d75f26bbdf5df4e819b1ad3940f",
+      "artifact_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44371926721/artifacts/14482164639"
+    }
+  ]
+}

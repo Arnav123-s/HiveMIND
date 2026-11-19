@@ -1,0 +1,37 @@
+import re
+
+P = {"+": 2, "-": 2, "*": 4, "@": 6}
+OP = {"+": lambda a, b: a + b, "-": lambda a, b: a - b, "*": lambda a, b: a * b, "@": lambda a, b: min(a, b)}
+bracket = {"(": 1, ")": -1}
+
+def tokens(text):
+    return re.findall(r'\d+|\S', text)
+
+def evaluate(text):
+    t = tokens(text)
+    v = []
+    for w in t:
+        if w in "()+-*/@":
+            if w == "(":
+                v.append(w)
+            elif w == ")":
+                v.append(w)
+            else:
+                if v and v[-1] not in "()+-*/@":
+                    v.pop()
+                v.append(w)
+    while v and v[-1] not in "()+-*/@":
+        v.pop()
+    if not v:
+        return 0
+    if v[-1] == "(" or v[-1] == ")":
+        return evaluate(''.join(v[:-1]))
+    if v[-1] in "*/":
+        return eval(v, {"__builtins__": None}, OP)
+    return eval(v, {"__builtins__": None}, {"+": 1, "-": 1, "*": 2, "@": 3})
+
+
+if __name__ == "__main__":
+    import shutil
+    shutil.copy(__file__, 'calc.py')
+    print(evaluate('13 @ 10'))

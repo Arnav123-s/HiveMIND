@@ -1,0 +1,221 @@
+[
+  {
+    "id": "B01",
+    "text": "Packing list for one depot shipment:\nsmall parcel — 555 g\nblue parcel — 555 g\nPlease calculate the shipping fee.",
+    "weights": [
+      555,
+      555
+    ],
+    "group": "multiline duplicates"
+  },
+  {
+    "id": "B02",
+    "text": "Find the cheaper option for a 650 g box: the standard depot or express bike delivery.",
+    "weights": null,
+    "group": "comparison needs another tariff"
+  },
+  {
+    "id": "B03",
+    "text": "The depot shipment has a single parcel, 227. What will it cost?",
+    "weights": null,
+    "group": "missing unit"
+  },
+  {
+    "id": "B04",
+    "text": "What does the depot charge to send a parcel of mass 1000 grams along with another of mass 1 gram?",
+    "weights": [
+      1000,
+      1
+    ],
+    "group": "mixed boundary"
+  },
+  {
+    "id": "B05",
+    "text": "Parcel weights (grams): 90, 91, 92. What will the depot bill me for sending them together?",
+    "weights": [
+      90,
+      91,
+      92
+    ],
+    "group": "unit once"
+  },
+  {
+    "id": "B06",
+    "text": "Please draft an invoice line for depot shipping; enter 790 cents for the 73 g parcel exactly as billed.",
+    "weights": null,
+    "group": "active writing"
+  },
+  {
+    "id": "B07",
+    "text": "At the depot I have a 315 g envelope and an 802 g box. What's the price for this shipment?",
+    "weights": [
+      315,
+      802
+    ],
+    "group": "parcel synonyms"
+  },
+  {
+    "id": "B08",
+    "text": "What's the depot shipping fee for one parcel weighing 620 g?",
+    "weights": [
+      620
+    ],
+    "group": "direct"
+  },
+  {
+    "id": "B09",
+    "text": "What should I charge customers for those depot parcels once I add my own handling charge?",
+    "weights": null,
+    "group": "unknown surcharge and weights"
+  },
+  {
+    "id": "B10",
+    "text": "On the depot rate, what's my shipping charge for a parcel weighing one hundred and twenty grams?",
+    "weights": [
+      120
+    ],
+    "group": "number words"
+  },
+  {
+    "id": "B11",
+    "text": "Would you tell me the depot freight charge? There's nothing to ship this time, zero parcels.",
+    "weights": [],
+    "group": "empty"
+  },
+  {
+    "id": "B12",
+    "text": "My receipt says standard depot shipping. Explain the 500 g rounding rule in plain English.",
+    "weights": null,
+    "group": "explanation"
+  },
+  {
+    "id": "B13",
+    "text": "How much does the courier across the road charge for shipping a 475 g parcel?",
+    "weights": null,
+    "group": "different provider"
+  },
+  {
+    "id": "B14",
+    "text": "Could you work out our usual depot postage for three parcels, 480 g each?",
+    "weights": [
+      480,
+      480,
+      480
+    ],
+    "group": "explicit multiplicity"
+  },
+  {
+    "id": "B15",
+    "text": "What was the depot shipping fee for order 814? I lost the receipt.",
+    "weights": null,
+    "group": "historical lookup"
+  },
+  {
+    "id": "B16",
+    "text": "Write a text asking the depot 'How much to ship 515 g?' Keep it polite.",
+    "weights": null,
+    "group": "embedded request"
+  },
+  {
+    "id": "B17",
+    "text": "How many 500 g packages can I make out of 3000 g before taking them to the depot?",
+    "weights": null,
+    "group": "different calculation"
+  },
+  {
+    "id": "B18",
+    "text": "Our depot parcel run is empty today. What shipping fee should go in my expense sheet?",
+    "weights": [],
+    "group": "empty"
+  },
+  {
+    "id": "B19",
+    "text": "Can you quote the depot fee for a package somewhere around 411 g?",
+    "weights": null,
+    "group": "uncertain weight"
+  },
+  {
+    "id": "B20",
+    "text": "My depot shipment is a pair of 224 g packets and a 693 g parcel. Can you quote it?",
+    "weights": [
+      224,
+      224,
+      693
+    ],
+    "group": "mixed multiplicity"
+  },
+  {
+    "id": "B21",
+    "text": "I'm putting together the cash for a drop-off. Using the standard depot fee, what should I bring for my 748-gram package?",
+    "weights": [
+      748
+    ],
+    "group": "indirect"
+  },
+  {
+    "id": "B22",
+    "text": "I don't need a receipt, just the depot fee for these two packages: 983g and 17g.",
+    "weights": [
+      983,
+      17
+    ],
+    "group": "unrelated negation"
+  },
+  {
+    "id": "B23",
+    "text": "Could you add 40 g and 720 g for my packing list? I've already paid for depot shipping.",
+    "weights": null,
+    "group": "active arithmetic"
+  },
+  {
+    "id": "B24",
+    "text": "The depot says the two parcels weigh 780 g in all. How much will it cost to ship them?",
+    "weights": null,
+    "group": "aggregate weight only"
+  },
+  {
+    "id": "B25",
+    "text": "For the standard depot tariff, price a 1,250 g parcel.",
+    "weights": [
+      1250
+    ],
+    "group": "thousands punctuation"
+  },
+  {
+    "id": "B26",
+    "text": "How much is standard depot shipping for a box marked 18.7 g?",
+    "weights": null,
+    "group": "fractional grams"
+  },
+  {
+    "id": "B27",
+    "text": "How many cents would the depot charge to ship my two cartons? The first is 499 grams and the second is 502 grams.",
+    "weights": [
+      499,
+      502
+    ],
+    "group": "plain conversation"
+  },
+  {
+    "id": "B28",
+    "text": "What's the depot cost for two boxes, a 279 g one and another I haven't weighed?",
+    "weights": null,
+    "group": "missing weight"
+  },
+  {
+    "id": "B29",
+    "text": "Book a pickup at the depot for my 380 g package. No quote needed.",
+    "weights": null,
+    "group": "different action"
+  },
+  {
+    "id": "B30",
+    "text": "Please price this depot shipment: parcels of 32 g, 870 g and 501 g.",
+    "weights": [
+      32,
+      870,
+      501
+    ],
+    "group": "direct"
+  }
+]

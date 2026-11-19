@@ -1,0 +1,1055 @@
+{
+  "labels_sha256": "03fe5e2b8ef983999be8a03f68bdf6d94a339f4ca0ea20c757f459c92a364073",
+  "adapter_sha256": "5b5f43c57e514287d6f27953dc891f610c5edd0592f4a14ee58b8ed84b8d720b",
+  "saved_router_sha256": "3d31b48cebc3cf2b94300f978fb4f4520db57089362b74aa7ea0ab20de1fc47e",
+  "runner_sha256": "589174b3c094f4afc35f530d73b7fb8cf6fa23f05d9fa4018cacc5afa5f9c0f5",
+  "wasi_python_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "saved_program_digests": [
+    "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+  ],
+  "summary": {
+    "baseline": {
+      "correct_call": 7,
+      "incorrect_arguments": 5,
+      "missed_call": 2,
+      "false_call": 10,
+      "true_decline": 4,
+      "execution_failure": 0,
+      "incorrect_fee": 0,
+      "correct_decisions": 11,
+      "incorrect_arguments_same_numeric_fee": 0
+    },
+    "candidate": {
+      "correct_call": 5,
+      "incorrect_arguments": 1,
+      "missed_call": 8,
+      "false_call": 0,
+      "true_decline": 14,
+      "execution_failure": 0,
+      "incorrect_fee": 0,
+      "correct_decisions": 19,
+      "incorrect_arguments_same_numeric_fee": 0
+    },
+    "always_decline": {
+      "correct_call": 0,
+      "incorrect_arguments": 0,
+      "missed_call": 14,
+      "false_call": 0,
+      "true_decline": 14,
+      "execution_failure": 0,
+      "incorrect_fee": 0,
+      "correct_decisions": 14,
+      "incorrect_arguments_same_numeric_fee": 0
+    }
+  },
+  "rows": [
+    {
+      "id": "h01",
+      "group": "routine quote",
+      "expected_weights": [
+        835
+      ],
+      "expected_fee_cents": 430,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            835
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": true,
+          "actual_weights": [
+            835
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "correct_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h02",
+      "group": "routine quote",
+      "expected_weights": [
+        274,
+        942
+      ],
+      "expected_fee_cents": 520,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            274,
+            942
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h03",
+      "group": "routine quote",
+      "expected_weights": [
+        1,
+        499,
+        500,
+        501
+      ],
+      "expected_fee_cents": 700,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            1,
+            499,
+            500,
+            501
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 700,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h04",
+      "group": "routine quote",
+      "expected_weights": [
+        1250
+      ],
+      "expected_fee_cents": 520,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            1,
+            250
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "incorrect_arguments"
+        },
+        "candidate": {
+          "called": true,
+          "actual_weights": [
+            1250
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "correct_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h05",
+      "group": "routine quote",
+      "expected_weights": [
+        760,
+        180
+      ],
+      "expected_fee_cents": 520,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            760,
+            180
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": true,
+          "actual_weights": [
+            760,
+            180
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "correct_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h06",
+      "group": "routine quote",
+      "expected_weights": [
+        64
+      ],
+      "expected_fee_cents": 340,
+      "arms": {
+        "baseline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "candidate": {
+          "called": true,
+          "actual_weights": [
+            64
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 340,
+          "grade": "correct_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h07",
+      "group": "routine quote",
+      "expected_weights": [
+        124,
+        875,
+        2010
+      ],
+      "expected_fee_cents": 970,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            124,
+            875,
+            2010
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 970,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h08",
+      "group": "quantity and context",
+      "expected_weights": [
+        725,
+        725
+      ],
+      "expected_fee_cents": 610,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            725
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "incorrect_arguments"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h09",
+      "group": "quantity and context",
+      "expected_weights": [
+        630
+      ],
+      "expected_fee_cents": 430,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            630
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h10",
+      "group": "quantity and context",
+      "expected_weights": [
+        910,
+        36
+      ],
+      "expected_fee_cents": 520,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            731,
+            910,
+            36
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 700,
+          "grade": "incorrect_arguments"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h11",
+      "group": "quantity and context",
+      "expected_weights": [
+        820
+      ],
+      "expected_fee_cents": 430,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            820,
+            470
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "incorrect_arguments"
+        },
+        "candidate": {
+          "called": true,
+          "actual_weights": [
+            820,
+            470
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "incorrect_arguments"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h12",
+      "group": "quantity and context",
+      "expected_weights": [],
+      "expected_fee_cents": 0,
+      "arms": {
+        "baseline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "missing",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "candidate": {
+          "called": true,
+          "actual_weights": [],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 0,
+          "grade": "correct_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h13",
+      "group": "quantity and context",
+      "expected_weights": [
+        612,
+        45,
+        1100
+      ],
+      "expected_fee_cents": 790,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            612,
+            45,
+            1100
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 790,
+          "grade": "correct_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h14",
+      "group": "quantity and context",
+      "expected_weights": [
+        703
+      ],
+      "expected_fee_cents": 430,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            900,
+            703
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 610,
+          "grade": "incorrect_arguments"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "missed_call"
+        }
+      }
+    },
+    {
+      "id": "h15",
+      "group": "missing or invalid input",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            816
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h16",
+      "group": "missing or invalid input",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            144,
+            672
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 520,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h17",
+      "group": "missing or invalid input",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            0,
+            325
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 340,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h18",
+      "group": "missing or invalid input",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "missing",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h19",
+      "group": "missing or invalid input",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "missing",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h20",
+      "group": "different contract",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            210,
+            20
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h21",
+      "group": "different contract",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            340,
+            380
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h22",
+      "group": "different contract",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h23",
+      "group": "different contract",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            728
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h24",
+      "group": "other goal",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            180,
+            280
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h25",
+      "group": "other goal",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            700
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 430,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h26",
+      "group": "other goal",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            430
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 340,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h27",
+      "group": "other goal",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    },
+    {
+      "id": "h28",
+      "group": "other goal",
+      "expected_weights": null,
+      "expected_fee_cents": null,
+      "arms": {
+        "baseline": {
+          "called": true,
+          "actual_weights": [
+            420
+          ],
+          "released": true,
+          "status": "answered",
+          "fee_cents": 340,
+          "grade": "false_call"
+        },
+        "candidate": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        },
+        "always_decline": {
+          "called": false,
+          "actual_weights": null,
+          "released": false,
+          "status": "declined",
+          "fee_cents": null,
+          "grade": "true_decline"
+        }
+      }
+    }
+  ]
+}

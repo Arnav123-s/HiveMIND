@@ -1,0 +1,36 @@
+import re
+
+P = {"+": 2, "-": 2, "*": 4, "@": 6, "(": 1, ")": 1}
+op = {"+": lambda a, b: a + b, "-": lambda a, b: a - b, "*": lambda a, b: a * b, "@": lambda a, b: min(a, b)}
+bracket = {"(": 0, ")": 0}
+
+
+def tokens(t):
+    return re.findall(r"\d+|\S", t)
+
+
+def evaluate(t):
+    def parse(t):
+        t = re.sub(r"\s+", "", t)
+        if t[0] == "(":
+            return eval(t, {"__builtins__": None}, {"tokens": tokens, "op": op, "P": P, "bracket": bracket})
+        return int(t)
+
+    def calc(t):
+        if t[0] == "(":
+            return calc(t[1:-1])
+        if t[-1] == "(":
+            return calc(t[:-1])
+        if t[0] in P and P[t[0]] > P.get(t[-1], -1):
+            return op[t[0]](*calc(t[1:i]) for i, c in enumerate(t) if c == t[0] and t[i+1] not in P and t[i+1] not in "()@*+*-")
+        if t[-1] in P and P[t[-1]] > P.get(t[0], -1):
+            return op[t[-1]](*calc(t[:i]) for i, c in enumerate(t[::-1]) if c == t[-1] and t[:i] and t[:i][-1] not in P and t[:i][-1] not in "()@*+*-")[::-1]
+        return eval(t, {"__builtins__": None}, {"tokens": tokens, "op": op, "P": P, "bracket": bracket})
+
+    return calc(t)
+
+
+if __name__ == "__main__":
+    import shutil
+    shutil.copy(__file__, 'calc.py')
+    print(evaluate('13 @ 10'))
