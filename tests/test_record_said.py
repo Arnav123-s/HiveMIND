@@ -5,7 +5,6 @@ while a run of grow.yml is in progress or queued."""
 import datetime as dt
 import json
 import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -48,15 +47,15 @@ def test_the_cli_says_the_read_failed(tmp_path):
 def test_one_entry_a_generation_in_the_shape_knowledge_checks(tmp_path):
     record, k = tmp_path / "g.jsonl", tmp_path / "knowledge.json"
     record.write_text(json.dumps(G45) + "\n")
-    shutil.copy(ROOT / "docs" / "knowledge.json", k)
+    previous = reads.generation_entry(dict(G45, generation="g44"))
+    k.write_text(json.dumps({"generations": [previous]}))
     talk = tmp_path / "talk"
     talk.mkdir()
     (talk / "g45.json").write_text(json.dumps({"of": 10, "out_of_10": 6}))
     assert reads.add_generation("g45", record, k, talk) == 0
     assert reads.add_generation("g45", record, k, talk) == 0  # once only
-    gens = json.loads(k.read_text())["generations"]
-    assert len(gens) == 1
-    e = gens[0]
+    preserved, e = json.loads(k.read_text())["generations"]
+    assert preserved == previous
     assert tuple(e) == reads.ENTRY == knowledge.GENERATION_FIELDS
     assert e["id"] == "gen-g45" and e["verdict"] == "kept" and e["after"] == [45, 64] and e["before"] == [47, 64]
     assert e["easy"] == [32, 32] and e["held_out"] == [0, 3] and e["first_try"] == 0.53 and e["talk"] == 6 and e["hours"] == 4.4
