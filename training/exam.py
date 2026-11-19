@@ -282,6 +282,11 @@ def run_task(cmd, timeout, **kw):
             started = psutil.Process(p.pid).children(recursive=True)  # read before the task ends: then they are no one's
         except psutil.Error:
             started = []
+        p.terminate()  # the time cap: the task gets a moment to deliver what its members have answered (team/solo.py)
+        try:
+            p.communicate(timeout=int(os.environ.get("HIVE_CAP_GRACE", 40)))
+        except subprocess.TimeoutExpired:
+            pass
         p.kill()
         for c in started:
             try:

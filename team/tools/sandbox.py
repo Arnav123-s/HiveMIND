@@ -338,6 +338,8 @@ except Exception:
 
 
 GIVEN = ".hive_given.json"
+DATA_FILE = "task_data.txt"
+MANY_LINES = 3  # a block of this many lines is offered as a file, not only when a program looks for it
 _FENCE = re.compile(r"```[\w.+-]*\n(.*?)```", re.S)
 _FILENAME = re.compile(r"(?<![\w/.-])([\w-]+\.(?:csv|tsv|json|txt|log|md|xml|ya?ml|ini|py))\b", re.I)
 
@@ -390,10 +392,29 @@ def give(task, workdir, skip=()):
         return []
     workdir.mkdir(parents=True, exist_ok=True)
     (workdir / GIVEN).write_text(json.dumps(blocks))
+    shown = 0
     for b in blocks:
         if b["name"] and b["name"] not in skip and not (workdir / b["name"]).exists():
             (workdir / b["name"]).write_text(b["text"].rstrip("\n") + "\n")
+            b["file"] = b["name"]
+        elif b["text"].count("\n") + 1 >= MANY_LINES and not (b["name"] and b["name"] not in skip):
+            # g48's practice: a grid and a markdown table in the task were typed out again by hand by the members (h10004803_01:
+            # the grid, h10004802_02: a row of the table lost its cell). A block of several lines with no file name of its
+            # own (or a name that is the file the task asks to be made) is saved as task_data.txt, and member() says so.
+            shown += 1
+            b["file"] = DATA_FILE if shown == 1 else DATA_FILE.replace(".txt", f"_{shown}.txt")
+            (workdir / b["file"]).write_text(b["text"].rstrip("\n") + "\n")
     return blocks
+
+
+def note(blocks):
+    """What to tell a member about the data the TASK carries that is in a file for it: "" when there is none."""
+    files = [(b["file"], b["text"].count("\n") + 1) for b in (blocks or []) if b.get("file") and b["text"].count("\n") + 1 >= MANY_LINES]
+    if not files:
+        return ""
+    what = "; ".join(f"{f} ({n} lines)" for f, n in files)
+    return (f"\n\nThe data this TASK gives is saved for you as a file in the current folder: {what}. Read it from there in your "
+            "program (open the file). Do not type the data out again by hand.")
 
 
 def http_errors(stderr):
