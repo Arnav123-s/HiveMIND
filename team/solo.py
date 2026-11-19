@@ -770,6 +770,18 @@ def run(task, run_dir=None, approve="never", members=2):
         return _run(task, run_dir, approve, members)
 
 
+EXTRA_SEATS = 2
+
+
+def extra_seat(tries, given):
+    """May one more member sit after the seats are used up? Seen in g48's gate: 5 of 11 failed hard tasks had one member
+    right while the other two crashed (NameError, TypeError) or gave nothing, so no two agreed and nothing was delivered.
+    Only where one answer or a disagreement is in and a member got no answer (crashed), and only until two agree: delivery still needs two in agreement, so
+    an extra seat never delivers an answer nobody witnessed. At most EXTRA_SEATS more; the time cap still ends the loop.
+    Expected cost: one extra member call in the tasks that have a crash and no pair (about 1 in 6 hard tasks)."""
+    return given < EXTRA_SEATS and any(t["answer"] for t in tries) and any(not t["answer"] for t in tries) and not _CAP["hit"]
+
+
 def _run(task, run_dir=None, approve="never", members=2):
     task = task.strip()
     home = _home(run_dir)
@@ -783,8 +795,12 @@ def _run(task, run_dir=None, approve="never", members=2):
     agreed = None
     seats = ternary.seating(task)
     board.log("hive", "seats", f"{ternary.organ(task)}: {', '.join(seats[:max(1, members) + 1])}")
-    for n in range(1, max(1, members) + 2):  # one more than asked: to decide a difference, or in place of one that got nowhere
+    n = 0
+    while True:  # one more than asked: to decide a difference, or in place of one that got nowhere
+        n += 1
         if n > members and members < 2:
+            break
+        if n > max(1, members) + 1 and not extra_seat(tries, n - max(1, members) - 2):
             break
         # who sits where for this task: the cells that lean to its kind of work first (team/ternary.seating); the last
         # one named also takes every later seat
@@ -807,7 +823,7 @@ def _run(task, run_dir=None, approve="never", members=2):
             break
         _CAP["live"] = True
         try:
-            t = member(task, n, board, guard, member_work, 0.0 if n == 1 else 0.7, who, also)
+            t = member(task, n, board, guard, member_work, 0.0 if n == 1 else min(1.0, 0.7 + 0.15 * max(0, n - max(1, members) - 1)), who, also)
         except Capped:
             board.log("hive", "capped", f"time cap reached in member {n}: the {len(tries)} answer(s) in go to agreement")
             break
