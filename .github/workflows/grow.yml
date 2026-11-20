@@ -469,7 +469,7 @@ jobs:
     needs: [gather, plan]
     if: ${{ !cancelled() && needs.gather.result == 'success' && needs.plan.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
-    timeout-minutes: 200  # setup (about 10), then "Grow the cell" (its own limit below), then the upload; a row that stalls ends the job itself (grow.train)
+    timeout-minutes: 225  # setup (about 10), then "Grow the cell" (its own limit below, 200), then the upload (about 10); a row that stalls ends the job itself (grow.train)
     permissions:
       contents: write  # the order to the owner's Colab notebook, and its answer, pass through the release (training/colab.py)
       actions: read
@@ -499,10 +499,11 @@ jobs:
           name: all-rows
           path: got
       - name: Grow the cell
-        # training stops at its budget (MIN, 170 minutes from the step's start) and saves; 15 minutes more are allowed for the
-        # last row, the lessons' second measure and the GGUF, then the step is ended so a stuck slice costs the generation
-        # minutes, not hours (g51: one slice ran 220 minutes and the train span was 46 minutes longer for it)
-        timeout-minutes: 185
+        # training stops at its budget (MIN, 170 minutes from the step's start) and saves; up to 30 minutes more are allowed
+        # for the last row (10), the lessons' second measure (5) and the GGUF (held to 20 minutes past the budget,
+        # grow.gguf_seconds), then the step is ended so a stuck slice costs the generation minutes, not hours (g51: one
+        # slice ran 220 minutes; g56: two ran past the job's limit and were lost, a step of 185 plus a setup was over 200)
+        timeout-minutes: 200
         env:
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
@@ -575,7 +576,8 @@ jobs:
             echo "grown on the owner's Colab GPU in $COLAB minutes" | tee -a "$GITHUB_STEP_SUMMARY"
           else
             SLICE=""; if [ -z "$WHOLE" ] && [ "$N" -gt 1 ]; then SLICE="--shard $SHARD/$N"; else touch out/whole; fi
-            python training/grow.py train $VERSUS $PARENT $TRUNK $SLICE --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
+            # a stuck process is also killed from outside, 25 minutes past its budget (SIGKILL 60 s after SIGTERM)
+            timeout -k 60 $(( (MIN + 25) * 60 )) python training/grow.py train $VERSUS $PARENT $TRUNK $SLICE --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
             cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
             cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
           fi
