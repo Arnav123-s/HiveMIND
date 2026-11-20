@@ -54,7 +54,21 @@ def test_the_train_step_and_job_have_time_limits_just_past_the_budget():
     job = FLOW["jobs"]["train"]
     step = next(s for s in job["steps"] if s.get("name") == "Grow the cell")
     assert "MIN=170" in step["run"]
-    assert 170 < step["timeout-minutes"] <= 170 + 15  # the budget and 15 minutes for the last row, the measure and the GGUF
-    assert job["timeout-minutes"] <= 200 and job["timeout-minutes"] > step["timeout-minutes"]  # setup, step, upload
+    assert 170 + 30 <= step["timeout-minutes"] <= 170 + 35  # the budget, a late row (10), the measure (5), the GGUF (to 20 past the budget)
+    assert "timeout -k 60" in step["run"]  # and the process is killed from outside too
+    assert job["timeout-minutes"] >= 15 + step["timeout-minutes"] + 10  # setup, step, upload (g56: 185 + setup ran into the old 200)
     up = job["steps"][-1]
     assert up["uses"].startswith("actions/upload-artifact") and "!cancelled()" in up["if"]  # what a slice kept is uploaded
+
+
+def test_gguf_seconds_fake_clock():
+    born, m = 1000.0, 170
+    end = born + m * 60
+    assert grow.gguf_seconds(end, born, m) == 900  # on time: the usual 15 minutes
+    assert grow.gguf_seconds(end + 600, born, m) == 600  # a late row ended at +10 minutes: 10 minutes of the 20 left
+    assert grow.gguf_seconds(end + 1100, born, m) == 180  # 100 s of wall left: 3 minutes always
+    assert grow.gguf_seconds(end + 9999, born, m) == 180
+    assert grow.gguf_seconds(end + 9999, born, 0) == 900  # no budget: the old rule
+    worst = max(end + 600 + 600, end + 1100 + 180) - born  # row +10, then GGUF held to the wall or 3 minutes after
+    assert worst / 60 <= 195
+

@@ -712,6 +712,15 @@ def row_limit(now, born, minutes, most, late=None):
     return min(most, late) if minutes and now - born > minutes * 60 else most
 
 
+def gguf_seconds(now, born, minutes, default=900.0, wall=1200.0):
+    """Seconds the GGUF conversion may take: HIVE_GGUF_SECONDS (900), but never past `wall` seconds (20 minutes) after the
+    cell's budget `minutes` since `born`, with 3 minutes always allowed. The whole slice is then over by born + minutes + 20
+    + 3 minutes at the latest, inside the step's limit (g56: two slices ran past the job's 200 minutes with nothing saved)."""
+    if not minutes:
+        return default
+    return max(180.0, min(default, born + minutes * 60 + wall - now))
+
+
 def kept_loss(model, items, dev, cast, beat=None, until=0.0):
     """{kind: [loss of each row]} of the lessons kept back, with the cell's weights as they are now: the same loss
     as training's (the error on the answer's pieces), one row at a time with no gradient, so nothing is held beyond
@@ -1513,7 +1522,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     gguf = where / f"{base}+{name}.gguf"
     try:
         done = subprocess.run([sys.executable, str(conv), "--base", src, "--outfile", str(gguf), "--outtype", "f16", str(work)], capture_output=True, text=True,
-                              timeout=float(os.environ.get("HIVE_GGUF_SECONDS", 900)))
+                              timeout=gguf_seconds(time.time(), born, minutes, float(os.environ.get("HIVE_GGUF_SECONDS", 900))))
     except subprocess.TimeoutExpired:
         raise RuntimeError("the edit could not be written as a GGUF adapter in time (HIVE_GGUF_SECONDS)") from None
     if done.returncode:
