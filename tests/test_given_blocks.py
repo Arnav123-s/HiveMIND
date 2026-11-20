@@ -24,7 +24,7 @@ def test_one_line_or_no_data_gets_no_note_and_a_named_file_keeps_its_name(tmp_pa
     task = "Here is the file scores.csv:\na,b\n1,2\n3,4\n5,6\nSum the column b."
     d = tmp_path / "c"
     said = note(give(task, d))
-    assert (d / "scores.csv").exists() and "scores.csv (5 lines)" in said and not (d / "task_data.txt").exists()
+    assert (d / "scores.csv").exists() and "scores.csv (5 lines, CSV text" in said and not (d / "task_data.txt").exists()
 
 
 def test_the_member_is_shown_the_note_with_its_task(tmp_path, monkeypatch):
