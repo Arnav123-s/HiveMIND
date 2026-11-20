@@ -1,0 +1,77 @@
+{
+  "domain": "machine_learning",
+  "form": "choice",
+  "prompt": "ML incident audit coding. Our ML incident audit uses X or Y. Return one letter. The audit flags data leakage because a future measurement predicts today's label.",
+  "expected": "X",
+  "launch": "launch-48af3180cebe.json",
+  "result": {
+    "text": "X",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 27,
+    "engrams": [
+      {
+        "stage": "answer",
+        "member": "t80",
+        "edits": [
+          "eg8a7da83f3dc5b75b029cb270"
+        ]
+      }
+    ],
+    "domain_signal": {
+      "domain": "machine_learning",
+      "confidence": 0.8309,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          4,
+          2,
+          2,
+          4,
+          13,
+          1,
+          2,
+          3
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    },
+    "engram_advice": {
+      "engram": "eg8a7da83f3dc5b75b029cb270",
+      "skill": "ML incident audit coding",
+      "label": "X",
+      "accepted": true
+    }
+  },
+  "calls": [
+    {
+      "active": {
+        "eg8a7da83f3dc5b75b029cb270": 1.0
+      },
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "fba33b941d3f3e0f80a85542278fae093b3ad5302c5dc95ba3fb70a5097d44eb",
+      "token_budget": 1,
+      "text": "X",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 155,
+        "total_tokens": 156,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

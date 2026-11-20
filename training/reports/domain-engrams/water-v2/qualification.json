@@ -1,0 +1,369 @@
+{
+  "qualified": true,
+  "graph_reuse": false,
+  "v1_reactivation_reproduced": true,
+  "original_tokens_reproduced": true,
+  "scores": {
+    "original": {
+      "count": 3,
+      "base": 2,
+      "v1": 2,
+      "v2": 3
+    },
+    "primary": {
+      "count": 6,
+      "base": 2,
+      "v1": 4,
+      "v2": 6
+    },
+    "supplement": {
+      "count": 3,
+      "base": 2,
+      "v1": 2,
+      "v2": 3
+    }
+  },
+  "panel_sha256": "fb7bf4613a39c1b44022bccbdc6fb48c02fe560f2675ff056270389b98b5aee2",
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "v1_sha256": "eff02a182a9d4d551e1ed46ae9d0ef33051c74ab3d06b4dee3225d8f4383786c",
+  "v2_sha256": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d",
+  "threads": 2,
+  "cases": [
+    {
+      "id": "original-0",
+      "phase": "original",
+      "text": "A thermometer reads -13 degrees Celsius.",
+      "label": "solid",
+      "prompt_sha256": "ed43a9d14f319b12a730e80945b0b7864dee4533cc4a0ed1141de742eeb5c8c0",
+      "input_tokens": 147,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v1": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v2": {
+        "token": 45941,
+        "text": "Solid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      }
+    },
+    {
+      "id": "original-1",
+      "phase": "original",
+      "text": "The sample is at 47 C.",
+      "label": "liquid",
+      "prompt_sha256": "cf5ff2f6d2963e8a267fd26e1098b1ce9de70bc88cbfb4e1676457a9fcbe38a0",
+      "input_tokens": 147,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      },
+      "v2": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      }
+    },
+    {
+      "id": "original-2",
+      "phase": "original",
+      "text": "The measured temperature is 164 degrees Celsius.",
+      "label": "gas",
+      "prompt_sha256": "bbe27f8e0a36bbc4fd16c6b3b7e153ac6c81c0e765704b8d37bf4f67649c2497",
+      "input_tokens": 149,
+      "base": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v1": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v2": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      }
+    },
+    {
+      "id": "fresh-a",
+      "phase": "primary",
+      "text": "For today's log entry, the probe is holding at -32 degrees Celsius.",
+      "label": "solid",
+      "prompt_sha256": "286340cb5f596562ac8bdced144ebe185931d08562634082caa4a0a0ba213eb4",
+      "input_tokens": 155,
+      "base": {
+        "token": 51330,
+        "text": "Ice",
+        "correct": false
+      },
+      "v1": {
+        "token": 31027,
+        "text": "solid",
+        "correct": true
+      },
+      "v2": {
+        "token": 45941,
+        "text": "Solid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 31027,
+        "text": "solid",
+        "correct": true
+      }
+    },
+    {
+      "id": "fresh-b",
+      "phase": "primary",
+      "text": "The stabilized reading is seventy-three degrees Celsius.",
+      "label": "liquid",
+      "prompt_sha256": "0aa19d3c9a33d9c3c272f0c8d6201aa2d2da71e9dedd01ab803ae17f694224ed",
+      "input_tokens": 147,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      },
+      "v2": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      }
+    },
+    {
+      "id": "fresh-c",
+      "phase": "primary",
+      "text": "At the observation point the calibrated instrument displays 127 °C.",
+      "label": "gas",
+      "prompt_sha256": "5ec216a88785b700cd785cff3ce229721d4b73be2dcc2d629d0acc5d76d34412",
+      "input_tokens": 153,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v1": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v2": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      }
+    },
+    {
+      "id": "fresh-d",
+      "phase": "primary",
+      "text": "The sample is held steadily at eight degrees below zero on the Celsius scale.",
+      "label": "solid",
+      "prompt_sha256": "351885a5d3a38e4e8a7650c61ea5de4f11598455db7635ee391d2aa054ad7b21",
+      "input_tokens": 153,
+      "base": {
+        "token": 51330,
+        "text": "Ice",
+        "correct": false
+      },
+      "v1": {
+        "token": 31027,
+        "text": "solid",
+        "correct": true
+      },
+      "v2": {
+        "token": 45941,
+        "text": "Solid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 31027,
+        "text": "solid",
+        "correct": true
+      }
+    },
+    {
+      "id": "fresh-e",
+      "phase": "primary",
+      "text": "The value entered in the Celsius column is one hundred fifty-two degrees.",
+      "label": "gas",
+      "prompt_sha256": "337fc4304825259d4502a6bb3fbd98a164ea3e29a89e399cc78cb2cefdf01103",
+      "input_tokens": 152,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v1": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v2": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      }
+    },
+    {
+      "id": "fresh-f",
+      "phase": "primary",
+      "text": "The vessel is held at +34 °C for the measurement.",
+      "label": "liquid",
+      "prompt_sha256": "b01a9c2e7f271278f1357ffed765307136d71024ad5e759ea99f8c8735122a8c",
+      "input_tokens": 152,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      },
+      "v2": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      }
+    },
+    {
+      "id": "extra-a",
+      "phase": "supplement",
+      "text": "The sensor has settled and now reports 27.5 °C.",
+      "label": "liquid",
+      "prompt_sha256": "b5fc026fe9ebc10cbf051e64e43630b0b492eb4e2cbf7df42ddd64925e31da4b",
+      "input_tokens": 153,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      },
+      "v2": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 53637,
+        "text": "liquid",
+        "correct": true
+      }
+    },
+    {
+      "id": "extra-b",
+      "phase": "supplement",
+      "text": "The thermometer on this run reads −41 °C.",
+      "label": "solid",
+      "prompt_sha256": "09c8cb98ee5e2efafdc51692866f49e7ad98e24057ddba516900090ebf98ca3d",
+      "input_tokens": 150,
+      "base": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v1": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      },
+      "v2": {
+        "token": 45941,
+        "text": "Solid",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 96640,
+        "text": "Liquid",
+        "correct": false
+      }
+    },
+    {
+      "id": "extra-c",
+      "phase": "supplement",
+      "text": "For this run, keep the temperature at 189 degrees Celsius.",
+      "label": "gas",
+      "prompt_sha256": "2c4bce79f4873c22febbf56013d4ff5e13993e0ebae872a5b0d9eb650d3ca964",
+      "input_tokens": 153,
+      "base": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v1": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v2": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 58728,
+        "text": "Gas",
+        "correct": true
+      }
+    }
+  ]
+}

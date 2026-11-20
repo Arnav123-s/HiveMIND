@@ -1,0 +1,8 @@
+[
+  {"id":"dwell-a","text":"The timing reference specifies a dwell of 0.000000001 seconds.","label":"ns","value":"0.000000001","unit":"s"},
+  {"id":"dwell-b","text":"At each sampling point the signal is held for 0.001 milliseconds.","label":"us","value":"0.001","unit":"ms"},
+  {"id":"dwell-c","text":"In the hardware trace legend, the selected interval spans one million nanoseconds.","label":"ms","value":"1000000","unit":"ns"},
+  {"id":"dwell-d","text":"The instrument defines one time unit as 0.001 microseconds.","label":"ns","value":"0.001","unit":"us"},
+  {"id":"dwell-e","text":"The interrupt timer's unit lasts exactly 0.001 seconds.","label":"ms","value":"0.001","unit":"s"},
+  {"id":"dwell-f","text":"Each delay increment is 0.000001 seconds in the measurement sheet.","label":"us","value":"0.000001","unit":"s"}
+]

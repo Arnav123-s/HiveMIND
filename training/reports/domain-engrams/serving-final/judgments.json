@@ -1,0 +1,197 @@
+{
+  "cases": 12,
+  "content_correct": 9,
+  "content_and_form": 7,
+  "open_correct": 4,
+  "choice_correct": 5,
+  "exact_correct_choice": 3,
+  "starter_activated": 8,
+  "work_routed": 4,
+  "native_calls": 39,
+  "rows": [
+    {
+      "case": "coding-open",
+      "form": "open",
+      "expected": "filter",
+      "content_correct": false,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [
+        "e_domain_coding"
+      ],
+      "advisory_accepted": true,
+      "native_calls": 3,
+      "note": "Recommended a list comprehension, a language construct. The active advisory had correctly returned the requested built-in, filter.",
+      "receipt": "coding-open.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "coding-choice",
+      "form": "choice",
+      "expected": "filter",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [
+        "e_domain_coding"
+      ],
+      "advisory_accepted": null,
+      "native_calls": 2,
+      "note": "Returned filter alone.",
+      "receipt": "coding-choice.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "math-open",
+      "form": "open",
+      "expected": "volume",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [
+        "e_domain_math"
+      ],
+      "advisory_accepted": true,
+      "native_calls": 3,
+      "note": "Identified volume in one sentence.",
+      "receipt": "math-open.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "math-choice",
+      "form": "choice",
+      "expected": "volume",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [
+        "e_domain_math"
+      ],
+      "advisory_accepted": null,
+      "native_calls": 2,
+      "note": "Returned volume alone.",
+      "receipt": "math-choice.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "physics-open",
+      "form": "open",
+      "expected": "liquid",
+      "content_correct": false,
+      "requested_form": false,
+      "worked": true,
+      "active_starter_edits": [
+        "e_domain_physical_science_v2"
+      ],
+      "advisory_accepted": false,
+      "native_calls": 5,
+      "note": "Called water at 72 °C a gas and claimed two programs agreed. The programs printed the false statement; the active edit emitted At on the open request and its advice was rejected.",
+      "receipt": "physics-open.json",
+      "workers_agreed": true
+    },
+    {
+      "case": "physics-choice",
+      "form": "choice",
+      "expected": "liquid",
+      "content_correct": true,
+      "requested_form": false,
+      "worked": true,
+      "active_starter_edits": [],
+      "advisory_accepted": null,
+      "native_calls": 5,
+      "note": "Identified liquid, then added a sentence about worker agreement to a one-name request. Two of the three workers printed liquid and one printed solid.",
+      "receipt": "physics-choice.json",
+      "workers_agreed": true
+    },
+    {
+      "case": "conversation-open",
+      "form": "open",
+      "expected": "thank",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [],
+      "advisory_accepted": null,
+      "native_calls": 2,
+      "note": "Gave the neighbor a usable expression of thanks.",
+      "receipt": "conversation-open.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "conversation-choice",
+      "form": "choice",
+      "expected": "thank",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [
+        "e_domain_conversation"
+      ],
+      "advisory_accepted": null,
+      "native_calls": 2,
+      "note": "Returned Thank alone.",
+      "receipt": "conversation-choice.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "ml-open",
+      "form": "open",
+      "expected": "validation",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [
+        "e_domain_machine_learning"
+      ],
+      "advisory_accepted": true,
+      "native_calls": 3,
+      "note": "Chose validation and provided a one-sentence rationale. A score used to select hyperparameters does not provide an unbiased final estimate of generalization.",
+      "receipt": "ml-open.json",
+      "workers_agreed": null
+    },
+    {
+      "case": "ml-choice",
+      "form": "choice",
+      "expected": "validation",
+      "content_correct": true,
+      "requested_form": false,
+      "worked": true,
+      "active_starter_edits": [
+        "e_domain_machine_learning"
+      ],
+      "advisory_accepted": true,
+      "native_calls": 5,
+      "note": "Returned validation plus a second paragraph about members agreeing.",
+      "receipt": "ml-choice.json",
+      "workers_agreed": true
+    },
+    {
+      "case": "engineering-open",
+      "form": "open",
+      "expected": "us",
+      "content_correct": true,
+      "requested_form": true,
+      "worked": true,
+      "active_starter_edits": [],
+      "advisory_accepted": null,
+      "native_calls": 5,
+      "note": "Named a microsecond and supplied its usual abbreviation, µs, with an additional sentence about worker agreement.",
+      "receipt": "engineering-open.json",
+      "workers_agreed": true
+    },
+    {
+      "case": "engineering-choice",
+      "form": "choice",
+      "expected": "us",
+      "content_correct": false,
+      "requested_form": true,
+      "worked": false,
+      "active_starter_edits": [],
+      "advisory_accepted": null,
+      "native_calls": 2,
+      "note": "Returned the abbreviation ns instead of the required us. No hardware timing edit was shipped.",
+      "receipt": "engineering-choice.json",
+      "workers_agreed": null
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "scope": "single arithmetic request plus one short direct chat; no capability comparison",
+  "frozen_request": {
+    "work_prompt": "A repair caf\u00e9 received 7 envelopes with 18 washers each. It set aside 23 washers for Saturday and handed out another 31 today. How many washers are still available? Calculate it with a program and reply with just the integer.",
+    "work_expected": "72",
+    "direct_prompt": "What is the capital city of Finland? Reply with just the city name.",
+    "direct_expected": "Helsinki",
+    "work_success": "A fresh ordinary conversation routes to work, runs at least two G49 worker programs independently, agrees, and delivers exactly the intended integer.",
+    "direct_success": "The ordinary route gives the Helsinki answer without worker programs; punctuation and capitalization are immaterial.",
+    "limit": "One production work request and, if the same server is healthy, one direct chat request; no regeneration after a graded response."
+  },
+  "frozen_request_sha256": "accb95c6d968cd445543a41462420c7cc61596199ee2ef185450067c5a31970c",
+  "release_commit": "19992ca4ae4c46f6d5f79eb6dbc3f9fd47fc8d9e",
+  "serving_code_commit": "cf7729cfaf395570cd6cd2e16435554b4f4ab04d",
+  "source_sha256": {
+    "team/ternary.py": "2c16c089f68e223f97e435c2f695c3d0dc737624212a88efced8b8f19fae4d11",
+    "team/talk.py": "a610933f11c5ca1c39810bd1b0954bb78b87a4c862ce01291ee084c5f0f0572e",
+    "team/solo.py": "0f2f08dd80e67a861c5836ef1e6d349fedc39c0b59ead56c645de1b8c90accb8",
+    "team/engram.py": "683c16aefee001b96d424c8881146f1f21f8f1480fb86ebbe21512360f285ce2",
+    "team/domain_advice.py": "35bacfad9984bd0f9d989f8146ea29a4e1073234a7c1c254ec01b0979577a017",
+    "team/domain_route.py": "8eeaca620e8c0d9abe033b79d2a2a0b66a7a4e20f24fe05a10fbfb9c69a2f90f",
+    "cells/body.json": "91f799004f93d92f307b781e780bb5510d60a8ed0403e69b406ac069164811c7"
+  },
+  "catalog_sha256": {
+    "cells/engrams/index.jsonl": "b87088bdf5727f14e68b93c05952c09367944ae168f7bfb9935dbc805f892ed9",
+    "cells/engrams/t80+e_domain_coding.gguf": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+    "cells/engrams/t80+e_domain_conversation.gguf": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+    "cells/engrams/t80+e_domain_machine_learning.gguf": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766",
+    "cells/engrams/t80+e_domain_math.gguf": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+    "cells/engrams/t80+e_domain_physical_science_v2.gguf": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d"
+  },
+  "native_runtime": {
+    "base": "prism-ml/Ternary-Bonsai-8B-gguf",
+    "base_revision": "c2aefbeb4b24469cd11579c3384b990404c17a30",
+    "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "native_source": "https://github.com/ikawrakow/ik_llama.cpp/tree/7aa7e01482db892b023bb9aace9a40567ab5297a",
+    "binary_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+    "argv": [
+      "llama-server",
+      "-m",
+      "Ternary-Bonsai-8B-PQ2_0.gguf",
+      "-t",
+      "2",
+      "-c",
+      "12288",
+      "--port",
+      "18349",
+      "--host",
+      "127.0.0.1",
+      "-rtr",
+      "--parallel",
+      "1",
+      "--jinja",
+      "--lora",
+      "t80+g49code2.gguf",
+      "--lora",
+      "t80+g49data2.gguf",
+      "--lora",
+      "t80+g49trunk.gguf",
+      "--lora",
+      "t80+e_domain_coding.gguf",
+      "--lora",
+      "t80+e_domain_conversation.gguf",
+      "--lora",
+      "t80+e_domain_machine_learning.gguf",
+      "--lora",
+      "t80+e_domain_math.gguf",
+      "--lora",
+      "t80+e_domain_physical_science_v2.gguf",
+      "--lora-init-without-apply",
+      "--no-graph-reuse"
+    ],
+    "threads": 2,
+    "request_entry": "team.talk.reply",
+    "quantization": "PQ2_0",
+    "process_cleanup_confirmed": true
+  },
+  "body": {
+    "generation": 49,
+    "installed_subset": [
+      "t80+g49code2.gguf",
+      "t80+g49data2.gguf",
+      "t80+g49trunk.gguf"
+    ],
+    "release": {
+      "release": "https://github.com/Arnav123-s/HiveMIND/releases/tag/hive-grown",
+      "id": 445139354,
+      "assets": [
+        {
+          "id": 766566173,
+          "name": "t80.g49code2.gguf",
+          "size": 39887616,
+          "digest": "sha256:4c34ca1147f20d1b22506bbf8c611346bf69588927289a907d4592dfa5ec2a7b",
+          "browser_download_url": "https://github.com/Arnav123-s/HiveMIND/releases/download/hive-grown/t80.g49code2.gguf",
+          "updated_at": "2026-11-19T06:41:48Z",
+          "member_file": "t80+g49code2.gguf"
+        },
+        {
+          "id": 766566360,
+          "name": "t80.g49data2.gguf",
+          "size": 39887616,
+          "digest": "sha256:98c79699f056cdfb4e030c37471d5921698eca39545af427e9eedf0a15fadb0f",
+          "browser_download_url": "https://github.com/Arnav123-s/HiveMIND/releases/download/hive-grown/t80.g49data2.gguf",
+          "updated_at": "2026-11-19T06:41:51Z",
+          "member_file": "t80+g49data2.gguf"
+        },
+        {
+          "id": 766566508,
+          "name": "t80.g49trunk.gguf",
+          "size": 73835264,
+          "digest": "sha256:7a36748511357bb3e7f3a006a29539de4f376e10afc08c4f98183c239c92e5d4",
+          "browser_download_url": "https://github.com/Arnav123-s/HiveMIND/releases/download/hive-grown/t80.g49trunk.gguf",
+          "updated_at": "2026-11-19T06:41:56Z",
+          "member_file": "t80+g49trunk.gguf"
+        }
+      ]
+    }
+  },
+  "gradings": {
+    "work_success": true,
+    "directly_checked_G49_worker_names": [
+      "t80+g49trunk",
+      "t80+g49code2"
+    ],
+    "direct_success": true
+  },
+  "work": {
+    "text": "72",
+    "worked": true,
+    "agreed": true,
+    "files": [],
+    "wall_seconds": 187.484
+  },
+  "direct": {
+    "text": "Helsinki",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "wall_seconds": 48.401
+  },
+  "worker_programs": [
+    {
+      "who": "t80+g49trunk",
+      "answer": "72",
+      "program": "total_envelopes = 7\nwashers_per_envelope = 18\ntotal_washers = total_envelopes * washers_per_envelope\n\nwashers_setaside = 23\nwashers_handed_out = 31\n\navailable_washers = total_washers - washers_setaside - washers_handed_out\nprint(available_washers)",
+      "turns": 2,
+      "temperature": 0.0,
+      "also": [],
+      "receipt_sha256": "f6823906fd2c9cf405b3233ed1f6cf07262288127fa2f7f40d2efd0e955c2e8b"
+    },
+    {
+      "who": "t80+g49code2",
+      "answer": "72",
+      "program": "total_envelopes = 7\nwashers_per_envelope = 18\nsetaside = 23\ngiven_out = 31\n\ntotal_washers = total_envelopes * washers_per_envelope\navailable_washers = total_washers - setaside - given_out\nprint(available_washers)",
+      "turns": 2,
+      "temperature": 0.7,
+      "also": [],
+      "receipt_sha256": "0841c3d52520d90595fce3221029d3659ed6d3b24d32895ca40b802d18e641ce"
+    }
+  ],
+  "worker_selection": {
+    "agreed": true,
+    "who": [
+      "t80+g49trunk",
+      "t80+g49code2"
+    ],
+    "agreeing": [
+      1,
+      2
+    ]
+  },
+  "native_calls": [
+    {
+      "phase": "work",
+      "member": "t80+g49trunk",
+      "extra_edits_requested": [],
+      "active_native_scales": {
+        "g49trunk": 1.0
+      },
+      "answer_sha256": "f9e6b3e6acc5617866ce4f85cae3a89ec80473175d55dc015362fcf01b99661d",
+      "seconds": 81.462
+    },
+    {
+      "phase": "work",
+      "member": "t80+g49trunk",
+      "extra_edits_requested": [],
+      "active_native_scales": {
+        "g49trunk": 1.0
+      },
+      "answer_sha256": "283e91eb85d58ffc2ad922884b644c41b54140660f6d1fda3c403d543eedd839",
+      "seconds": 14.754
+    },
+    {
+      "phase": "work",
+      "member": "t80+g49code2",
+      "extra_edits_requested": [],
+      "active_native_scales": {
+        "g49code2": 1.0
+      },
+      "answer_sha256": "c0377a10b24149209f2f34325d7de1e545c495fdb98d4b44464d90eccf41e0fc",
+      "seconds": 73.286
+    },
+    {
+      "phase": "work",
+      "member": "t80+g49code2",
+      "extra_edits_requested": [],
+      "active_native_scales": {
+        "g49code2": 1.0
+      },
+      "answer_sha256": "283e91eb85d58ffc2ad922884b644c41b54140660f6d1fda3c403d543eedd839",
+      "seconds": 12.253
+    },
+    {
+      "phase": "direct",
+      "member": "t80",
+      "extra_edits_requested": [],
+      "active_native_scales": {},
+      "answer_sha256": "3d9a24b7558b52dcc4e75c30dfa3a922ee3ac29a787e58b79563ee60cbf54f36",
+      "seconds": 32.817
+    },
+    {
+      "phase": "direct",
+      "member": "t80",
+      "extra_edits_requested": [],
+      "active_native_scales": {},
+      "answer_sha256": "0cf4e8a7a9a0b2a0a247009afd3ed2800394b514f6293de51ed984858d396a43",
+      "seconds": 15.547
+    }
+  ],
+  "loaded_adapters": [
+    {
+      "id": 0,
+      "path": "t80+g49code2.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 1,
+      "path": "t80+g49data2.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 2,
+      "path": "t80+g49trunk.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 3,
+      "path": "t80+e_domain_coding.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 4,
+      "path": "t80+e_domain_conversation.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 5,
+      "path": "t80+e_domain_machine_learning.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 6,
+      "path": "t80+e_domain_math.gguf",
+      "scale": 0.0
+    },
+    {
+      "id": 7,
+      "path": "t80+e_domain_physical_science_v2.gguf",
+      "scale": 0.0
+    }
+  ],
+  "elapsed_wall_seconds": 236.85,
+  "measurements": "Wall time is descriptive on a shared CPU. Endpoint 18349 was remapped; locally owned server was stopped at the end. No adapter or selection was substituted."
+}

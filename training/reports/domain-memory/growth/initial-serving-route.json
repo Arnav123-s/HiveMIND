@@ -1,0 +1,55 @@
+{
+  "status": "interrupted after worker, before final reply; superseded by graph-safe replay",
+  "form": "choice",
+  "packet_sha256": "b5e57c794570ef7157049942e6b154dcbdb8e9ed46e2bb0842cf37e63aa919bd",
+  "launch": {
+    "cases_sha256": "b5e57c794570ef7157049942e6b154dcbdb8e9ed46e2bb0842cf37e63aa919bd",
+    "index_sha256": "d7ba6d1402fc540fa92ad793d885755cff437e0ed9b17ecbd3353062c61ea826",
+    "settings": {
+      "AGENT_TEAM_SOLO": "2",
+      "AGENT_TEAM_SOLO_LONG": "80",
+      "AGENT_TEAM_SOLO_TURNS": "1",
+      "AGENT_TEAM_THREADS": "1",
+      "HIVE_BANK": "off",
+      "HIVE_ENGRAMS": null,
+      "HIVE_ENGRAM_GATE": null,
+      "HIVE_MEMBERS": "t80",
+      "HIVE_SIGNALS": null,
+      "HIVE_TALK_LONG": "12",
+      "HIVE_TERNARY_CTX": "2048"
+    },
+    "sources": {
+      "domain_advice": "35bacfad9984bd0f9d989f8146ea29a4e1073234a7c1c254ec01b0979577a017",
+      "domain_consensus": "6b60f40f92422598d079ff75f7e2145c8c734d495edf5e808a675004921b3387",
+      "domain_route": "8eeaca620e8c0d9abe033b79d2a2a0b66a7a4e20f24fe05a10fbfb9c69a2f90f",
+      "engram": "0374eebb6ba620b09f97fc73ea566bee0108052a8b901e4a8c8e062e2c6e5da9",
+      "signals": "51d769ee1c5e2dfa40c5820c17e8b0107d8536a7640aaadfd57f801eab44a626",
+      "solo": "0f2f08dd80e67a861c5836ef1e6d349fedc39c0b59ead56c645de1b8c90accb8",
+      "talk": "bbe7f40d41f19f23e323df3bbbdeb67f434b26dbce2cbdb735d580b7e8412499",
+      "ternary": "2b23d90691dae4e71ea85e6fbd8a5882604e089306d0bfb8579b3b1f60899e35"
+    }
+  },
+  "worker_events": [
+    {
+      "ts": 1795107577.22,
+      "agent": "hive",
+      "kind": "seats",
+      "msg": "code: t80",
+      "data": null
+    },
+    {
+      "ts": 1795107681.29,
+      "agent": "member1",
+      "kind": "run",
+      "msg": "turn 1: exit 0, printed 0 characters",
+      "data": null
+    },
+    {
+      "ts": 1795107681.31,
+      "agent": "member1",
+      "kind": "answer",
+      "msg": "no answer",
+      "data": null
+    }
+  ]
+}

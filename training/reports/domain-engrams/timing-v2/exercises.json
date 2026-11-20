@@ -1,0 +1,8 @@
+[
+  ["The counter tick is 0.001 microseconds.", "ns"], ["The counter tick is 0.001 milliseconds.", "us"], ["The counter tick is 0.001 seconds.", "ms"],
+  ["A trace records a delay of exactly 1,000 picoseconds.", "ns"], ["A trace records a delay of exactly 1,000 nanoseconds.", "us"], ["A trace records a delay of exactly 1,000 microseconds.", "ms"],
+  ["The timer period equals 1e-9 s.", "ns"], ["The timer period equals 1e-6 s.", "us"], ["The timer period equals 1e-3 s.", "ms"],
+  ["A pulse lasts for one million femtoseconds.", "ns"], ["A pulse lasts for one million picoseconds.", "us"], ["A pulse lasts for one million nanoseconds.", "ms"],
+  ["One hardware tick is a millionth of a millisecond.", "ns"], ["One hardware tick is a thousandth of a millisecond.", "us"], ["One hardware tick is a thousandth of a second.", "ms"],
+  ["The duration expressed in seconds is 0.000000001.", "ns"], ["The duration expressed in seconds is 0.000001.", "us"], ["The duration expressed in seconds is 0.001.", "ms"]
+]

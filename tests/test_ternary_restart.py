@@ -5,6 +5,7 @@ import json
 import os
 import socket
 import stat
+import subprocess
 import sys
 import time
 
@@ -106,6 +107,103 @@ def _switches(state):
 
 def _ask(member="t2+c1"):
     return ternary.chat(member, [{"role": "system", "content": "s"}, {"role": "user", "content": "task"}])
+
+
+def test_only_adapter_equipped_native_servers_disable_compute_graph_reuse(fake, monkeypatch):
+    assert _ask() == "on: c1"
+    native = ternary._PROC[ternary.port("t2")]
+    assert "--no-graph-reuse" in native.args
+    ternary._kill(ternary.port("t2"))
+    monkeypatch.setattr(ternary, "edits_here", lambda base: {})
+    assert _ask("t2") == "on:"
+    assert "--no-graph-reuse" not in ternary._PROC[ternary.port("t2")].args
+
+
+@pytest.mark.parametrize("command", ["restart", "stop"])
+def test_shutdown_leaves_the_launch_wrapper_and_reaps_only_its_server(fake, command):
+    # The launcher owns the process group. Its actual argv includes the exact runtime and --port pair.
+    port = ternary.port("t2")
+    url = f"http://127.0.0.1:{port}/health"
+    wrapper_code = "import subprocess,sys,time; subprocess.Popen(sys.argv[1:]).wait(); time.sleep(60)"
+    wrapper = subprocess.Popen([sys.executable, "-c", wrapper_code, str(ternary.binary()), "--port", str(port)],
+                               start_new_session=True)
+    try:
+        deadline = time.monotonic() + 5
+        while not ternary._get(url) and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert ternary._get(url) == {"status": "ok"}
+        pid = int(_starts(fake)[0])
+        if command == "stop":
+            ternary.stop()
+        else:
+            ternary._kill(port)
+        assert not ternary._running(pid) and not ternary._get(url)
+        assert wrapper.poll() is None
+    finally:
+        if (fake / "starts").exists():
+            pid = int(_starts(fake)[0])
+            if ternary._running(pid):
+                os.kill(pid, 9)
+        wrapper.kill()
+        wrapper.wait(timeout=5)
+
+
+def test_shutdown_leaves_another_executable_listening_on_the_right_port(fake, tmp_path):
+    # Same script contents, basename, argv flags and port, but a distinct configured executable.
+    import shutil
+    other = tmp_path / "other" / ternary.binary().name
+    other.parent.mkdir()
+    shutil.copy2(ternary.binary(), other)
+    port = ternary.port("t2")
+    url = f"http://127.0.0.1:{port}/health"
+    listener = subprocess.Popen([str(other), "--port", str(port)], start_new_session=True)
+    try:
+        deadline = time.monotonic() + 5
+        while not ternary._get(url) and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert ternary._get(url) == {"status": "ok"}
+        ternary._kill(port)
+        assert listener.poll() is None and ternary._get(url) == {"status": "ok"}
+        with pytest.raises(RuntimeError, match="different listener"):
+            ternary.up("t2+c1")
+        assert listener.poll() is None and not (ternary.HOME / "t2.loaded-edits.json").exists()
+    finally:
+        listener.kill()
+        listener.wait(timeout=5)
+
+
+def test_corrupt_or_retired_memory_is_removed_from_native_startup_and_ordinary_chat(fake, monkeypatch):
+    import hashlib
+    from team import engram, talk
+    monkeypatch.setenv("HIVE_BANK", "off")
+    monkeypatch.setenv("HIVE_SIGNALS", "0")
+    monkeypatch.delenv("HIVE_ENGRAMS", raising=False)
+    message = "Describe the geometry of a tabletop"
+    monkeypatch.setattr(talk, "route", lambda base, message, history: ("talk", [{"role": "user", "content": message}]))
+    bank = ternary.ENGRAMS
+    bank.mkdir()
+    weights = b"fixture bytes"
+    meta = dict(dna="t2", task=message, sha256=hashlib.sha256(weights).hexdigest())
+    rows = [dict(meta, name="e_checked"), dict(meta, name="e_old", folded=7),
+            dict(meta, name="e_archive", archived=True)]
+    for row in rows:
+        (bank / f't2+{row["name"]}.gguf').write_bytes(weights)
+    engram.update_index(lambda prior: rows, home=bank)
+    result = talk.reply(message, base="t2")
+    assert result["text"] == "on: e_checked" and result["engrams"][0]["edits"] == ["e_checked"]
+    at = f"http://127.0.0.1:{ternary.port('t2')}"
+    assert set(ternary._loaded(at)) == {"c1", "c2", "e_checked"}
+    current = bank / "t2+e_checked.gguf"
+    misses = engram._sha256.cache_info().misses
+    assert current == ternary.edits_here("t2")["e_checked"]
+    assert engram._sha256.cache_info().misses == misses
+    old = current.stat()
+    current.write_bytes(weights[::-1])
+    os.utime(current, ns=(old.st_atime_ns, old.st_mtime_ns))
+    result = talk.reply(message, base="t2")
+    assert result["text"] == "on:" and "engrams" not in result
+    assert set(ternary._loaded(at)) == {"c1", "c2"}
+    assert len(_starts(fake)) == 2
 
 
 def test_dead_server_is_started_again_and_the_cell_put_back_on(fake, capsys):

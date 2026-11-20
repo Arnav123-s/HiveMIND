@@ -1,0 +1,1251 @@
+{
+  "panel_sha256": "0d4c1dab97f94bdfd6edd051887e2f30fac92917bb817f8c65206920eee839c5",
+  "generated": [
+    {
+      "makespan": 0,
+      "winner": "classical/shortest-duration",
+      "starts": [],
+      "stderr": "Makespan 0. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 0
+    },
+    {
+      "makespan": 3,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0
+      ],
+      "stderr": "Makespan 3. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 3
+    },
+    {
+      "makespan": 4,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        1,
+        0
+      ],
+      "stderr": "Makespan 4. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 4
+    },
+    {
+      "makespan": 7,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        3,
+        0,
+        4
+      ],
+      "stderr": "Makespan 7. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 7
+    },
+    {
+      "makespan": 7,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        2,
+        0,
+        5,
+        0
+      ],
+      "stderr": "Makespan 7. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 7
+    },
+    {
+      "makespan": 3,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      "stderr": "Makespan 3. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 3
+    },
+    {
+      "makespan": 7,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        1,
+        0,
+        4,
+        1,
+        0,
+        0
+      ],
+      "stderr": "Makespan 7. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 7
+    },
+    {
+      "makespan": 0,
+      "winner": "classical/shortest-duration",
+      "starts": [],
+      "stderr": "Makespan 0. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 0
+    },
+    {
+      "makespan": 0,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0
+      ],
+      "stderr": "Makespan 0. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 0
+    },
+    {
+      "makespan": 4,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0,
+        2
+      ],
+      "stderr": "Makespan 4. Winner classical/shortest-duration.\n",
+      "minimum_by_enumeration": 4
+    },
+    {
+      "makespan": 45,
+      "winner": "classical/longest-tail",
+      "starts": [
+        31,
+        7,
+        35,
+        13,
+        22,
+        0,
+        8,
+        7,
+        16,
+        39,
+        39,
+        24,
+        16,
+        24,
+        44,
+        13,
+        30,
+        35
+      ],
+      "stderr": "Makespan 45. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 23,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        1,
+        7,
+        16,
+        7,
+        10,
+        0,
+        14
+      ],
+      "stderr": "Makespan 23. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 46,
+      "winner": "classical/seed-2808-draw-3",
+      "starts": [
+        41,
+        32,
+        1,
+        9,
+        36,
+        0,
+        21,
+        4,
+        2,
+        0,
+        0,
+        14,
+        28
+      ],
+      "stderr": "Makespan 46. Winner classical/seed-2808-draw-3.\n"
+    },
+    {
+      "makespan": 24,
+      "winner": "classical/seed-2808-draw-2",
+      "starts": [
+        23,
+        0,
+        10,
+        17,
+        24,
+        17,
+        0,
+        3,
+        9
+      ],
+      "stderr": "Makespan 24. Winner classical/seed-2808-draw-2.\n"
+    },
+    {
+      "makespan": 46,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        6,
+        43,
+        33,
+        14,
+        45,
+        18,
+        0,
+        33,
+        40,
+        27,
+        13,
+        0,
+        20,
+        6
+      ],
+      "stderr": "Makespan 46. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 38,
+      "winner": "classical/seed-2808-draw-3",
+      "starts": [
+        0,
+        12,
+        7,
+        2,
+        16,
+        0,
+        2,
+        27,
+        32,
+        10,
+        0,
+        20,
+        0,
+        0,
+        7,
+        0,
+        27
+      ],
+      "stderr": "Makespan 38. Winner classical/seed-2808-draw-3.\n"
+    },
+    {
+      "makespan": 22,
+      "winner": "classical/seed-2808-draw-14",
+      "starts": [
+        0,
+        3,
+        15,
+        18,
+        8,
+        15,
+        3,
+        18,
+        17,
+        16,
+        10
+      ],
+      "stderr": "Makespan 22. Winner classical/seed-2808-draw-14.\n"
+    },
+    {
+      "makespan": 46,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        34,
+        0,
+        14,
+        7,
+        23,
+        34,
+        23,
+        41,
+        27,
+        1,
+        19,
+        34,
+        1
+      ],
+      "stderr": "Makespan 46. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 33,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        9,
+        2,
+        26,
+        31,
+        0,
+        4,
+        26,
+        26,
+        1,
+        19,
+        2,
+        6,
+        14
+      ],
+      "stderr": "Makespan 33. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 26,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        23,
+        4,
+        8,
+        11,
+        23,
+        2,
+        0,
+        17,
+        23,
+        1
+      ],
+      "stderr": "Makespan 26. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 41,
+      "winner": "classical/longest-tail",
+      "starts": [
+        7,
+        9,
+        23,
+        18,
+        41,
+        13,
+        18,
+        35,
+        35,
+        36,
+        0,
+        13,
+        30,
+        9,
+        35
+      ],
+      "stderr": "Makespan 41. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 47,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        20,
+        34,
+        4,
+        20,
+        1,
+        41,
+        34,
+        0,
+        7,
+        27,
+        1,
+        34,
+        20,
+        15,
+        0,
+        4,
+        0,
+        11
+      ],
+      "stderr": "Makespan 47. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 35,
+      "winner": "classical/longest-tail",
+      "starts": [
+        0,
+        23,
+        33,
+        18,
+        15,
+        12,
+        14,
+        5,
+        0,
+        19,
+        5,
+        29,
+        30,
+        18,
+        14,
+        0,
+        23
+      ],
+      "stderr": "Makespan 35. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 20,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        8,
+        0,
+        4,
+        4,
+        5,
+        0,
+        14
+      ],
+      "stderr": "Makespan 20. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 23,
+      "winner": "classical/longest-tail",
+      "starts": [
+        10,
+        21,
+        6,
+        0,
+        6,
+        10,
+        0,
+        17,
+        1,
+        0
+      ],
+      "stderr": "Makespan 23. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 28,
+      "winner": "classical/longest-tail",
+      "starts": [
+        0,
+        21,
+        7,
+        0,
+        23,
+        25,
+        23,
+        14,
+        20
+      ],
+      "stderr": "Makespan 28. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 15,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0,
+        5,
+        1,
+        9,
+        3
+      ],
+      "stderr": "Makespan 15. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 27,
+      "winner": "classical/seed-2808-draw-20",
+      "starts": [
+        17,
+        25,
+        0,
+        11,
+        2,
+        22,
+        0,
+        7,
+        11,
+        17
+      ],
+      "stderr": "Makespan 27. Winner classical/seed-2808-draw-20.\n"
+    },
+    {
+      "makespan": 33,
+      "winner": "classical/longest-tail",
+      "starts": [
+        20,
+        10,
+        8,
+        21,
+        21,
+        1,
+        13,
+        24,
+        0,
+        13,
+        27,
+        11,
+        0
+      ],
+      "stderr": "Makespan 33. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 38,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        8,
+        3,
+        23,
+        18,
+        38,
+        18,
+        0,
+        8,
+        25,
+        10,
+        17,
+        12,
+        0,
+        31,
+        30
+      ],
+      "stderr": "Makespan 38. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 32,
+      "winner": "classical/longest-tail",
+      "starts": [
+        30,
+        19,
+        31,
+        29,
+        29,
+        29,
+        13,
+        23,
+        19,
+        31,
+        7,
+        0,
+        0,
+        0,
+        23
+      ],
+      "stderr": "Makespan 32. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 24,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        2,
+        18,
+        0,
+        5,
+        3,
+        5,
+        12
+      ],
+      "stderr": "Makespan 24. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 40,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        38,
+        11,
+        38,
+        9,
+        6,
+        3,
+        32,
+        18,
+        6,
+        18,
+        0,
+        25,
+        38,
+        9,
+        10,
+        38,
+        18
+      ],
+      "stderr": "Makespan 40. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 30,
+      "winner": "classical/longest-tail",
+      "starts": [
+        28,
+        22,
+        13,
+        7,
+        30,
+        24,
+        15,
+        13,
+        8,
+        0,
+        8,
+        19,
+        7,
+        29,
+        26,
+        0,
+        0,
+        0
+      ],
+      "stderr": "Makespan 30. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 45,
+      "winner": "classical/seed-2808-draw-6",
+      "starts": [
+        34,
+        19,
+        11,
+        13,
+        28,
+        25,
+        6,
+        0,
+        39,
+        25,
+        25,
+        19,
+        39
+      ],
+      "stderr": "Makespan 45. Winner classical/seed-2808-draw-6.\n"
+    },
+    {
+      "makespan": 23,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        2,
+        6,
+        6,
+        17,
+        11,
+        0,
+        2
+      ],
+      "stderr": "Makespan 23. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 19,
+      "winner": "classical/longest-tail",
+      "starts": [
+        10,
+        0,
+        7,
+        0,
+        0,
+        5,
+        17
+      ],
+      "stderr": "Makespan 19. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 27,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        10,
+        7,
+        6,
+        10,
+        0,
+        20,
+        15,
+        10,
+        5,
+        0,
+        0,
+        1
+      ],
+      "stderr": "Makespan 27. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 43,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        19,
+        26,
+        0,
+        31,
+        3,
+        18,
+        29,
+        10,
+        39,
+        41,
+        35,
+        3,
+        19,
+        15,
+        26
+      ],
+      "stderr": "Makespan 43. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 15,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        1,
+        0,
+        4,
+        8,
+        9,
+        7,
+        0,
+        0,
+        4
+      ],
+      "stderr": "Makespan 15. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 23,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        1,
+        19,
+        0,
+        0,
+        1,
+        19,
+        12,
+        22,
+        5,
+        0
+      ],
+      "stderr": "Makespan 23. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 47,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        43,
+        23,
+        0,
+        24,
+        31,
+        10,
+        36,
+        16,
+        6,
+        0,
+        36,
+        24
+      ],
+      "stderr": "Makespan 47. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 11,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0,
+        0,
+        6,
+        1,
+        0,
+        2,
+        0
+      ],
+      "stderr": "Makespan 11. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 29,
+      "winner": "classical/longest-tail",
+      "starts": [
+        0,
+        21,
+        4,
+        21,
+        24,
+        0,
+        18,
+        9,
+        18,
+        27,
+        15,
+        9,
+        9
+      ],
+      "stderr": "Makespan 29. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 30,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        21,
+        12,
+        0,
+        4,
+        14,
+        25,
+        17,
+        9,
+        14
+      ],
+      "stderr": "Makespan 30. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 31,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        25,
+        3,
+        25,
+        7,
+        15,
+        0,
+        11,
+        0,
+        20
+      ],
+      "stderr": "Makespan 31. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 31,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        17,
+        0,
+        9,
+        7,
+        21,
+        12,
+        9,
+        21,
+        0,
+        27,
+        25,
+        18
+      ],
+      "stderr": "Makespan 31. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 36,
+      "winner": "classical/longest-tail",
+      "starts": [
+        33,
+        21,
+        33,
+        0,
+        35,
+        13,
+        23,
+        13,
+        18,
+        30,
+        7,
+        18,
+        24
+      ],
+      "stderr": "Makespan 36. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 30,
+      "winner": "classical/longest-tail",
+      "starts": [
+        20,
+        26,
+        0,
+        7,
+        8,
+        17,
+        20,
+        8,
+        28,
+        12,
+        7,
+        0,
+        0,
+        0
+      ],
+      "stderr": "Makespan 30. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 38,
+      "winner": "classical/seed-2808-draw-32",
+      "starts": [
+        31,
+        13,
+        20,
+        2,
+        18,
+        0,
+        25,
+        8,
+        18,
+        25
+      ],
+      "stderr": "Makespan 38. Winner classical/seed-2808-draw-32.\n"
+    },
+    {
+      "makespan": 60,
+      "winner": "classical/seed-2808-draw-1",
+      "starts": [
+        8,
+        10,
+        49,
+        44,
+        18,
+        24,
+        54,
+        0,
+        37,
+        6,
+        31,
+        34,
+        32,
+        17,
+        18,
+        41
+      ],
+      "stderr": "Makespan 60. Winner classical/seed-2808-draw-1.\n"
+    },
+    {
+      "makespan": 28,
+      "winner": "classical/longest-tail",
+      "starts": [
+        13,
+        23,
+        0,
+        7,
+        0,
+        27,
+        18
+      ],
+      "stderr": "Makespan 28. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 48,
+      "winner": "classical/longest-tail",
+      "starts": [
+        25,
+        16,
+        28,
+        38,
+        11,
+        0,
+        33,
+        4,
+        33,
+        18,
+        12,
+        28,
+        11,
+        8,
+        29,
+        45,
+        42,
+        42
+      ],
+      "stderr": "Makespan 48. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 17,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        0,
+        10,
+        7,
+        15,
+        3,
+        4
+      ],
+      "stderr": "Makespan 17. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 29,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        29,
+        4,
+        12,
+        0,
+        22,
+        0,
+        8,
+        0,
+        2,
+        0,
+        12,
+        22,
+        17
+      ],
+      "stderr": "Makespan 29. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 22,
+      "winner": "classical/longest-tail",
+      "starts": [
+        15,
+        13,
+        4,
+        5,
+        10,
+        0,
+        5,
+        15,
+        15
+      ],
+      "stderr": "Makespan 22. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 50,
+      "winner": "classical/longest-tail",
+      "starts": [
+        37,
+        27,
+        29,
+        16,
+        9,
+        44,
+        0,
+        34,
+        20,
+        20,
+        44,
+        7,
+        35,
+        0
+      ],
+      "stderr": "Makespan 50. Winner classical/longest-tail.\n"
+    },
+    {
+      "makespan": 38,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        19,
+        32,
+        14,
+        0,
+        31,
+        6,
+        19,
+        25,
+        6,
+        0,
+        10,
+        3,
+        1,
+        0
+      ],
+      "stderr": "Makespan 38. Winner classical/shortest-duration.\n"
+    },
+    {
+      "makespan": 40,
+      "winner": "classical/seed-2808-draw-49",
+      "starts": [
+        0,
+        19,
+        30,
+        31,
+        17,
+        9,
+        24,
+        7,
+        20,
+        37,
+        30,
+        12,
+        0
+      ],
+      "stderr": "Makespan 40. Winner classical/seed-2808-draw-49.\n"
+    },
+    {
+      "makespan": 23,
+      "winner": "classical/shortest-duration",
+      "starts": [
+        14,
+        17,
+        8,
+        14,
+        0,
+        17,
+        1,
+        21,
+        17,
+        0
+      ],
+      "stderr": "Makespan 23. Winner classical/shortest-duration.\n"
+    }
+  ],
+  "invalid": {
+    "broken_json": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\n"
+    },
+    "wrong_root": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: expected a project object with capacity, jobs and optional job_names\n"
+    },
+    "missing_jobs": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: jobs must list up to 64 activities\n"
+    },
+    "nonpositive_capacity": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: capacity must list up to 8 positive whole resource capacities\n"
+    },
+    "boolean_capacity": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: capacity must list up to 8 positive whole resource capacities\n"
+    },
+    "negative_duration": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 needs a nonnegative whole duration\n"
+    },
+    "fractional_duration": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 needs a nonnegative whole duration\n"
+    },
+    "boolean_duration": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 needs a nonnegative whole duration\n"
+    },
+    "negative_demand": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 needs one nonnegative whole demand per resource\n"
+    },
+    "missing_demand_dimension": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 needs one nonnegative whole demand per resource\n"
+    },
+    "unfit_resource_request": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 exceeds the available resource capacity\n"
+    },
+    "missing_predecessor": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 has an invalid predecessor index\n"
+    },
+    "negative_predecessor": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job 0 has an invalid predecessor index\n"
+    },
+    "cyclic_zero_duration": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job predecessors contain a cycle\n"
+    },
+    "self_cycle": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: job predecessors contain a cycle\n"
+    },
+    "excessive_total_duration": {
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Cannot schedule project: total duration exceeds 2048 time units\n"
+    }
+  },
+  "competitors": {
+    "baseline": {
+      "makespan": 45,
+      "winner": "classical/seed-2808-draw-47",
+      "starts": [
+        0,
+        4,
+        0,
+        0,
+        12,
+        31,
+        4,
+        4,
+        10,
+        6,
+        12,
+        13,
+        4,
+        15,
+        12,
+        13,
+        25,
+        10,
+        18,
+        21,
+        23,
+        31,
+        38,
+        40,
+        28,
+        21,
+        15,
+        28,
+        31,
+        43,
+        31,
+        45
+      ],
+      "stderr": "Makespan 45. Winner classical/seed-2808-draw-47.\n"
+    },
+    "feasible": {
+      "makespan": 43,
+      "winner": "bank/687e2533075a7e9a49a0edc0646f357cfde5346d690e2af1892d7a10eb86d803",
+      "starts": [
+        0,
+        10,
+        0,
+        0,
+        6,
+        31,
+        4,
+        4,
+        9,
+        6,
+        18,
+        13,
+        4,
+        15,
+        18,
+        13,
+        23,
+        10,
+        13,
+        27,
+        29,
+        29,
+        36,
+        38,
+        34,
+        27,
+        15,
+        34,
+        18,
+        41,
+        37,
+        43
+      ],
+      "stderr": "Makespan 43. Winner bank/687e2533075a7e9a49a0edc0646f357cfde5346d690e2af1892d7a10eb86d803.\n"
+    },
+    "infeasible": {
+      "makespan": 45,
+      "winner": "classical/seed-2808-draw-47",
+      "starts": [
+        0,
+        4,
+        0,
+        0,
+        12,
+        31,
+        4,
+        4,
+        10,
+        6,
+        12,
+        13,
+        4,
+        15,
+        12,
+        13,
+        25,
+        10,
+        18,
+        21,
+        23,
+        31,
+        38,
+        40,
+        28,
+        21,
+        15,
+        28,
+        31,
+        43,
+        31,
+        45
+      ],
+      "stderr": "Makespan 45. Winner classical/seed-2808-draw-47.\nSkipped bank/b017928b2abfa3d5355181aa7cc9cdd232c7bdb4c6d0d5c20bf974fbd151a16b: ValueError: job 4 starts before a predecessor finishes\n"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "released": false,
+  "reason": "missed direct native qualification",
+  "native_gate": false,
+  "http_gate": null,
+  "sha256": "fca504027e9e0a07ad76ce06eda440a4683818bb68ad9e2be2502b251a04b56f"
+}

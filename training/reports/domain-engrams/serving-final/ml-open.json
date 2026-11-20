@@ -1,0 +1,102 @@
+{
+  "domain": "ml",
+  "form": "open",
+  "prompt": "In machine learning, which dataset split should I use to tune hyperparameters? Explain in one short sentence.",
+  "expected": "validation",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "Use a validation set to tune hyperparameters, as it provides an unbiased evaluation of the model's performance during training.",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 64,
+    "domain_signal": {
+      "domain": "machine_learning",
+      "confidence": 0.9999,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          0,
+          0,
+          0,
+          1,
+          29,
+          0,
+          0,
+          0
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    },
+    "engram_advice": {
+      "engram": "e_domain_machine_learning",
+      "skill": "dataset_split",
+      "label": "validation",
+      "accepted": true
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "6f4d6e46f736dcf8b98062fe299ac265e5c03709dc7e57ed363419ef63ae69d5",
+      "token_budget": 4,
+      "text": "TALK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "prompt_tokens": 338,
+        "total_tokens": 341,
+        "prompt_tokens_details": {
+          "cached_tokens": 307
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_machine_learning": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "147778ed21c35404279e0782d50f159985498bde0bbdca98495413d4b59d5211",
+      "token_budget": 1,
+      "text": "validation",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 165,
+        "total_tokens": 166,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "active": {},
+      "seed": 743,
+      "temperature": 0.0,
+      "prompt_sha256": "7d9bdb39aba0feb19fef12b11f53237ff3829bd4257412b780b491f2975b6ae7",
+      "token_budget": 48,
+      "text": "Use a validation set to tune hyperparameters, as it provides an unbiased evaluation of the model's performance during training.",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 160,
+        "total_tokens": 184,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

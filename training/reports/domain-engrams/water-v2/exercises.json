@@ -1,0 +1,8 @@
+[
+  ["A digital probe shows -24 °C.", "solid"], ["A digital probe shows +24 °C.", "liquid"], ["A digital probe shows +124 °C.", "gas"],
+  ["The reading is negative twelve degrees Celsius.", "solid"], ["The reading is twelve degrees Celsius above zero.", "liquid"], ["The reading is one hundred and twelve degrees Celsius.", "gas"],
+  ["A gauge reports −9 degrees C.", "solid"], ["A gauge reports 9 degrees C.", "liquid"], ["A gauge reports 109 degrees C.", "gas"],
+  ["It is sixteen Celsius degrees below zero.", "solid"], ["It is sixteen Celsius degrees above zero.", "liquid"], ["It is sixteen Celsius degrees above one hundred.", "gas"],
+  ["Read the temperature as -38 C.", "solid"], ["Read the temperature as 38 C.", "liquid"], ["Read the temperature as 138 C.", "gas"],
+  ["We measured minus five degrees Celsius.", "solid"], ["We measured fifty-five degrees Celsius.", "liquid"], ["We measured one hundred fifty-five degrees Celsius.", "gas"]
+]

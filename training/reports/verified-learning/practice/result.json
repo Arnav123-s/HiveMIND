@@ -1,0 +1,26 @@
+{
+  "status": "qualified",
+  "task": "merge_intervals",
+  "digest": "39dca673f3f032c98a9da1b3edbd6c4f8f2d14e8104ccc98f9b901e86b6a49f1",
+  "origin": {
+    "contract": "intervals.merge",
+    "practice": "practice_10004810",
+    "task": "h10004810_02",
+    "member_path": "members/work/member1_1.py",
+    "member": 1,
+    "model": "t80+g47trunk",
+    "task_sha256": "1a7e5a285e5910f9506837eb8f39874aa184f3020f482831916d7dff324a657c",
+    "submission_sha256": "4301d70e99b4a787eaa5d62afce4801afa375f6db04f8664bfb7c26f38b8f035",
+    "function_sha256": "0f3517bfb0e923c1f098d33822db28a18be7b8938c5a6eb503fbaea44a6d1d50"
+  },
+  "seed": 6084116933787393751,
+  "public": 4,
+  "public_total": 4,
+  "validation": 72,
+  "validation_total": 72,
+  "validation_inputs_sha256": "3f61d25200621fc6190d462a2182fb3d9d13038bb4fbb80fb26f5bc5f863c7c4",
+  "separate_exhaustive_panel": {
+    "passed": 1110,
+    "total": 1110
+  }
+}

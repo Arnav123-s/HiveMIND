@@ -194,6 +194,14 @@ jobs:
         shard: ${{ fromJSON(inputs.shards || '[1,2,3,4,5,6,7,8,9,10,11,12]') }}
     steps:
       - uses: actions/checkout@v4
+      - name: Carry this practice shard's checked local lessons and native revisions forward
+        if: ${{ !inputs.trial && !inputs.versus && !inputs.bench }}
+        uses: actions/cache@v4
+        with:
+          path: runs/engram-learning
+          key: checked-practice-v1-${{ runner.os }}-${{ env.DNA }}-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            checked-practice-v1-${{ runner.os }}-${{ env.DNA }}-${{ matrix.shard }}-
       - name: Who practises (the trunk and the body's cells; a body with no cells yet, its DNA as published)
         run: |
           BODY=$(python3 training/lineage.py members "$DNA")
@@ -231,6 +239,7 @@ jobs:
           name: rows-${{ matrix.shard }}
           path: |
             rows.jsonl
+            rows.engrams.jsonl
             failures.jsonl
             practice.json
           if-no-files-found: ignore
@@ -370,12 +379,14 @@ jobs:
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
           test -s out/rows.jsonl
+          python3 -m training.engram_growth pack-practice --from new seed --out out/practice-engrams.jsonl || echo "::warning::practice engram evidence could not be bundled"
       - uses: actions/upload-artifact@v4
         with:
           name: all-rows
           path: |
             out/rows.jsonl
             out/failures.jsonl
+            out/practice-engrams.jsonl
           retention-days: 30
       - uses: actions/upload-artifact@v4
         with:
@@ -972,6 +983,12 @@ jobs:
           python3 training/grow_record.py rows got/rows.jsonl now_rows.jsonl got/rows.jsonl
           python3 training/grow_record.py failures got/failures.jsonl now_failures.jsonl got/failures.jsonl
           gh release upload hive-grown $(ls got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json got/$DNA.${GEN}*.safetensors 2>/dev/null) got/rows.jsonl $([ -s got/failures.jsonl ] && echo got/failures.jsonl) --clobber
+          if [ -s got/practice-engrams.jsonl ]; then
+            digest=$(sha256sum got/practice-engrams.jsonl | cut -d ' ' -f 1)
+            archive="practice-engrams-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${digest}.jsonl"
+            cp got/practice-engrams.jsonl "$archive"
+            gh release upload hive-grown "$archive" --clobber
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # the training steps of this generation's cells (cells/studied.json): who sits first and who has children first

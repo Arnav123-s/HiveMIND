@@ -11,6 +11,22 @@ ROOT = Path(__file__).resolve().parent.parent
 ADAPTERS = Path(os.environ.get("AGENT_TEAM_ADAPTERS", ROOT / "adapters"))
 RUNS = ROOT / "runs"
 
+
+def saved_bank_path() -> Path | None:
+    """Shared writable bank for fieldwork and chat. An empty HIVE_BANK or 'off' disables it."""
+    override = os.environ.get("HIVE_BANK")
+    if override is None:
+        return RUNS / "learned-skills"
+    path = override.strip()
+    return Path(path).expanduser() if path and path.lower() != "off" else None
+
+
+def fieldwork_sdk_path() -> Path:
+    """The CPython WebAssembly distribution used to run checked programs."""
+    path = os.environ.get("HIVE_FIELDWORK_SDK")
+    return Path(path).expanduser() if path else RUNS / "fieldwork-assets" / "wasi"
+
+
 # Base models (Apache-2.0, ungated, no account needed to download).
 BASE_MODEL = os.environ.get("AGENT_TEAM_BASE", "Qwen/Qwen3-1.7B")
 CODER_MODEL = os.environ.get("AGENT_TEAM_CODER", "Qwen/Qwen2.5-Coder-1.5B-Instruct")

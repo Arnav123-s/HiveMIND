@@ -1,0 +1,665 @@
+{
+  "cases_sha256": "f0a98338574b301683cc3050f4d90add58af11e1178a23403a5e5304a39f44d9",
+  "scope_sha256": "ddfc72e33e072415b03f6ca71569fe210c235b8b9923290910ef5200f70c4446",
+  "registry_sha256": "e95f24021525998f6bed1880b4667b09da5c2a96a63bd58127e55686c364f4c8",
+  "selector_sha256": {
+    "team.engram": "74315e07c5187e11ca5108cd07dd0f387962ff872aab5db9fb68252a05bb03f2",
+    "team.domain_route": "8eeaca620e8c0d9abe033b79d2a2a0b66a7a4e20f24fe05a10fbfb9c69a2f90f",
+    "team.talk": "fb1708668f693f0b39243746600d9ccd8aa549b1ea5a6ab0d8af6ad3ba464ac6"
+  },
+  "absent_domains": [
+    "computer_engineering",
+    "physical_science"
+  ],
+  "weights": {
+    "e_domain_coding": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+    "e_domain_math": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+    "e_domain_conversation": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+    "e_domain_machine_learning": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766"
+  },
+  "model_generations": 0,
+  "summary": {
+    "applicable": {
+      "count": 12,
+      "always_correct": 3,
+      "sometimes_correct": 2,
+      "always_selected": 3,
+      "sometimes_selected": 2,
+      "selected_after_consensus_agreement_on_all_routes": 0,
+      "selected_after_consensus_abstention_on_all_routes": 3,
+      "never_selected_after_consensus_agreement": 1,
+      "never_selected_after_consensus_abstention": 6,
+      "wrong_domain_selected_anywhere": 0
+    },
+    "adjacent": {
+      "count": 12,
+      "always_correct": 7,
+      "sometimes_correct": 0,
+      "always_selected": 5,
+      "sometimes_selected": 0,
+      "selected_after_consensus_agreement_on_all_routes": 4,
+      "selected_after_consensus_abstention_on_all_routes": 1,
+      "never_selected_after_consensus_agreement": 3,
+      "never_selected_after_consensus_abstention": 4,
+      "wrong_domain_selected_anywhere": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "domain": "coding",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_coding",
+          "domain": "coding"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_coding",
+          "domain": "coding"
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "c2",
+      "domain": "coding",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "c3",
+      "domain": "coding",
+      "in_scope": false,
+      "consensus": "coding",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "coding",
+          "path": "internally_framed",
+          "selected": "e_domain_coding",
+          "domain": "coding"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "coding",
+          "path": "internally_framed",
+          "selected": "e_domain_coding",
+          "domain": "coding"
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "c4",
+      "domain": "coding",
+      "in_scope": false,
+      "consensus": "coding",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "coding",
+          "path": "internally_framed",
+          "selected": "e_domain_coding",
+          "domain": "coding"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "coding",
+          "path": "internally_framed",
+          "selected": "e_domain_coding",
+          "domain": "coding"
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "m1",
+      "domain": "math",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "m2",
+      "domain": "math",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_math",
+          "domain": "math"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_math",
+          "domain": "math"
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "m3",
+      "domain": "math",
+      "in_scope": false,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "m4",
+      "domain": "math",
+      "in_scope": false,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_math",
+          "domain": "math"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_math",
+          "domain": "math"
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "p1",
+      "domain": "physical_science",
+      "in_scope": true,
+      "consensus": "physical_science",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "physical_science",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "physical_science",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "p2",
+      "domain": "physical_science",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "p3",
+      "domain": "physical_science",
+      "in_scope": false,
+      "consensus": "physical_science",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "physical_science",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "physical_science",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "p4",
+      "domain": "physical_science",
+      "in_scope": false,
+      "consensus": "physical_science",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "physical_science",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "physical_science",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "s1",
+      "domain": "conversation",
+      "in_scope": true,
+      "consensus": "conversation",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "conversation",
+          "path": "direct_label",
+          "selected": "e_domain_conversation",
+          "domain": "conversation"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "conversation",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": true
+    },
+    {
+      "id": "s2",
+      "domain": "conversation",
+      "in_scope": true,
+      "consensus": "conversation",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "conversation",
+          "path": "direct_label",
+          "selected": "e_domain_conversation",
+          "domain": "conversation"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "conversation",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": true
+    },
+    {
+      "id": "s3",
+      "domain": "conversation",
+      "in_scope": false,
+      "consensus": "conversation",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "conversation",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "conversation",
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "s4",
+      "domain": "conversation",
+      "in_scope": false,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "l1",
+      "domain": "machine_learning",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_machine_learning",
+          "domain": "machine_learning"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "internally_framed",
+          "selected": "e_domain_machine_learning",
+          "domain": "machine_learning"
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "l2",
+      "domain": "machine_learning",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "l3",
+      "domain": "machine_learning",
+      "in_scope": false,
+      "consensus": "machine_learning",
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": "machine_learning",
+          "path": "internally_framed",
+          "selected": "e_domain_machine_learning",
+          "domain": "machine_learning"
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": "machine_learning",
+          "path": "internally_framed",
+          "selected": "e_domain_machine_learning",
+          "domain": "machine_learning"
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "l4",
+      "domain": "machine_learning",
+      "in_scope": false,
+      "consensus": "machine_learning",
+      "paths": [
+        {
+          "route": "work",
+          "router_decision_would_require_model": false,
+          "domain_signal": "machine_learning",
+          "path": "internally_framed",
+          "selected": "e_domain_machine_learning",
+          "domain": "machine_learning"
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "h1",
+      "domain": "computer_engineering",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "h2",
+      "domain": "computer_engineering",
+      "in_scope": true,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": false,
+      "some_routes_correct": false
+    },
+    {
+      "id": "h3",
+      "domain": "computer_engineering",
+      "in_scope": false,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    },
+    {
+      "id": "h4",
+      "domain": "computer_engineering",
+      "in_scope": false,
+      "consensus": null,
+      "paths": [
+        {
+          "route": "talk",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        },
+        {
+          "route": "work",
+          "router_decision_would_require_model": true,
+          "domain_signal": null,
+          "path": "no_microtask",
+          "selected": null,
+          "domain": null
+        }
+      ],
+      "all_routes_correct": true,
+      "some_routes_correct": true
+    }
+  ]
+}

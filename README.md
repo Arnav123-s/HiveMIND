@@ -9,6 +9,39 @@ nothing to pay for.
   cells. **The body** is the trunk and cells that answer together: they write and run programs, and an answer
   counts when two of them agree and a check confirms it. The current body is in `cells/body.json`.
 
+## Ask a question or teach a correction
+
+After installing the CPU runtime, ask a question with `./hive --once "Which dataset split should I use for early stopping?"`. Normal chat and work can recall a checked neural memory, called an *engram*. Two small readers look at the current request and its recent context. When their signals and a second text classifier agree on a subject, the hive can consult a specialist. Five starter memories cover narrow decisions in coding, geometry, water physics, conversation and machine learning. Computer engineering has a checked cache-line calculation. Its neural timing edit is withheld after answering three of six new questions correctly.
+
+To try the original four-bit signal pair with standard Python, run `./hive --once 'Check sensor banks [1,2,-1,0] and [-2,1,1,0]'`. It shows both learned estimates and checks them from the readings.
+
+For a computer-engineering example you can run without downloading the model, try `./hive --once 'A processor has 32-byte cache lines aligned on 32-byte boundaries. An eight-byte read begins at byte address 28. How many distinct cache lines does this read touch? Reply with a single integer.'` It returns **2**. The eight bytes span addresses 28 through 35, crossing the boundary at 32.
+
+Run `./hive learn list` to see the installed edits and `./hive learn status` to inspect locally collected lessons. A correction can be recorded with `./hive learn teach`. A new local edit must improve on separate questions and preserve the older answers it got right before it takes over. [Examples, measurements and limits](training/reports/domain-memory/README.md)
+
+## Use a skill the hive learned
+
+This local example finds the difference between the highest and lowest price quotes. The hive wrote the method on a CPU and qualified it on separate examples. Once saved, it can answer without loading the language model.
+
+```sh
+python scripts/setup_fieldwork.py
+HIVE_BANK=training/reports/verified-learning/live/example-bank ./hive skills quote_spread
+```
+
+At the prompt, enter `229, 184, 207`. The result is **45 cents**. Run `./hive skills` with the same bank to browse its methods. A second saved method counts transit tickets, including the exact minute a ticket expires.
+
+To teach a method, give `./hive fieldwork` a work order with a description, public examples and separate qualification cases. In one test a coding cell corrected two programs, and the hive used their common repair to solve a third with the model off. That third task went from no deliveries to 24 correct deposit calculations. By default, qualified methods are available to subsequent fieldwork and chat in `runs/learned-skills`. [Teaching instructions, experiments and limits](training/reports/verified-learning/README.md)
+
+## Schedule a small project
+
+This example schedules a community kitchen with two volunteers and one oven. It runs locally with Python, including on a machine with no model or saved methods.
+
+```sh
+./hive schedule training/reports/verified-learning/scheduling/example.json
+```
+
+The kitchen can prepare ingredients and clean the oven at minute 0, start baking at minute 20, and pack at minute 50. The job finishes at minute 65. You can change the jobs, available resources and dependencies in the example. The command checks every plan against those constraints and reports which method supplied the chosen plan. [Example project](training/reports/verified-learning/scheduling/example.json) · [Scheduling results](training/reports/verified-learning/scheduling/README.md)
+
 ## Measure time above a threshold
 
 Give the hive a CSV with `timestamp,value` columns. It estimates the duration above your threshold by linear interpolation and counts upward crossings. This command runs locally with Python and the saved sensor rule.
@@ -68,7 +101,7 @@ Workflow "Talk to the hive" (`.github/workflows/talk.yml`, answered by `team/tal
 - **From the Actions tab:** "Talk to the hive", Run workflow, type a message. The reply is on the run's Summary.
 - When the hive delivers files, the issue reply and run summary include a download link. GitHub retains the download for 30 days and requires sign-in.
 - It seats the body from `cells/body.json` (its trunk and the newest cell of each organ). Small talk is answered
-  by the DNA at once; anything to work out goes to the body's programs.
+  by the base model with relevant checked memories. Tasks that need calculation or files use the body's programs.
 - Everything here is public. Do not write anything private.
 
 "Ask the hive" (`.github/workflows/ask.yml`) also seats the current body, for one task from the Actions tab.

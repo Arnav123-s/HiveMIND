@@ -1,0 +1,173 @@
+{
+  "clock": "process_time_ns, one CPU where affinity is supported",
+  "sizes": {
+    "128": {
+      "reference": {
+        "source": "c5847171fea91c86464e3ae2d00f65ec6914f785388015c44f023f98f2371829",
+        "index_helper_sha256": null,
+        "rows": 128,
+        "fixture_sha256": "c68101a83c5800eb9224b4900a345241d225179bcbf643faa27d8ec661d720e6",
+        "queries_sha256": "fadc920aa67dc37ad94237b8764ee611a6dc5642fb55feda524f15a51d948563",
+        "answers_sha256": "be38a0a16c49bbd5daccd14504b637e96409e9888315440316445c5647b325c8",
+        "queries": 60,
+        "repetitions": 3,
+        "mutations": {
+          "append": [
+            "late_pack"
+          ],
+          "same_size_mtime_tamper": [],
+          "restored": [
+            "late_pack"
+          ],
+          "deleted": [],
+          "recreated": [
+            "late_pack"
+          ],
+          "fold_count": 1,
+          "post_fold": [],
+          "shared": [
+            "hive"
+          ],
+          "shared_removed": []
+        },
+        "cold_cpu_ns": 10779358,
+        "warm_median_cpu_ns": {
+          "specific": 4930686,
+          "common": 4896088,
+          "absent": 5054075,
+          "lineage": 4923992,
+          "tie_cutoff": 4535634,
+          "exact": 5131658,
+          "integrity": 4686346,
+          "label": 4968006
+        },
+        "warm_total_cpu_ns": 943275656
+      },
+      "indexed": {
+        "source": "74315e07c5187e11ca5108cd07dd0f387962ff872aab5db9fb68252a05bb03f2",
+        "index_helper_sha256": "bf94b261ec6c1b3b2525a43b82710453d91f98bdebe4669f225ce762e8e87053",
+        "rows": 128,
+        "fixture_sha256": "c68101a83c5800eb9224b4900a345241d225179bcbf643faa27d8ec661d720e6",
+        "queries_sha256": "fadc920aa67dc37ad94237b8764ee611a6dc5642fb55feda524f15a51d948563",
+        "answers_sha256": "be38a0a16c49bbd5daccd14504b637e96409e9888315440316445c5647b325c8",
+        "queries": 60,
+        "repetitions": 3,
+        "mutations": {
+          "append": [
+            "late_pack"
+          ],
+          "same_size_mtime_tamper": [],
+          "restored": [
+            "late_pack"
+          ],
+          "deleted": [],
+          "recreated": [
+            "late_pack"
+          ],
+          "fold_count": 1,
+          "post_fold": [],
+          "shared": [
+            "hive"
+          ],
+          "shared_removed": []
+        },
+        "cold_cpu_ns": 3768623,
+        "warm_median_cpu_ns": {
+          "specific": 172941,
+          "common": 311400,
+          "absent": 126517,
+          "lineage": 289587,
+          "tie_cutoff": 215338,
+          "exact": 205953,
+          "integrity": 144415,
+          "label": 111925
+        },
+        "warm_total_cpu_ns": 96747500
+      }
+    },
+    "1024": {
+      "indexed": {
+        "source": "74315e07c5187e11ca5108cd07dd0f387962ff872aab5db9fb68252a05bb03f2",
+        "index_helper_sha256": "bf94b261ec6c1b3b2525a43b82710453d91f98bdebe4669f225ce762e8e87053",
+        "rows": 1024,
+        "fixture_sha256": "be0aeece78bcfab469b29ce050b3bad8846df5a060c1bbb363b90c095b8d8124",
+        "queries_sha256": "e3c69b24a0086b0703a7d31a2c7b86465cc7dbe58a3944e4e2ae9a8c6b9b8a40",
+        "answers_sha256": "15f95af38c5421ce5d26f2791b6a0d868d5dd4410704cda33f5fa8d06102ac01",
+        "queries": 60,
+        "repetitions": 3,
+        "mutations": {
+          "append": [
+            "late_pack"
+          ],
+          "same_size_mtime_tamper": [],
+          "restored": [
+            "late_pack"
+          ],
+          "deleted": [],
+          "recreated": [
+            "late_pack"
+          ],
+          "fold_count": 1,
+          "post_fold": [],
+          "shared": [
+            "hive"
+          ],
+          "shared_removed": []
+        },
+        "cold_cpu_ns": 17374116,
+        "warm_median_cpu_ns": {
+          "specific": 247360,
+          "common": 1709530,
+          "absent": 134094,
+          "lineage": 316248,
+          "tie_cutoff": 359201,
+          "exact": 287196,
+          "integrity": 158394,
+          "label": 167709
+        },
+        "warm_total_cpu_ns": 515146796
+      },
+      "reference": {
+        "source": "c5847171fea91c86464e3ae2d00f65ec6914f785388015c44f023f98f2371829",
+        "index_helper_sha256": null,
+        "rows": 1024,
+        "fixture_sha256": "be0aeece78bcfab469b29ce050b3bad8846df5a060c1bbb363b90c095b8d8124",
+        "queries_sha256": "e3c69b24a0086b0703a7d31a2c7b86465cc7dbe58a3944e4e2ae9a8c6b9b8a40",
+        "answers_sha256": "15f95af38c5421ce5d26f2791b6a0d868d5dd4410704cda33f5fa8d06102ac01",
+        "queries": 60,
+        "repetitions": 3,
+        "mutations": {
+          "append": [
+            "late_pack"
+          ],
+          "same_size_mtime_tamper": [],
+          "restored": [
+            "late_pack"
+          ],
+          "deleted": [],
+          "recreated": [
+            "late_pack"
+          ],
+          "fold_count": 1,
+          "post_fold": [],
+          "shared": [
+            "hive"
+          ],
+          "shared_removed": []
+        },
+        "cold_cpu_ns": 60345835,
+        "warm_median_cpu_ns": {
+          "specific": 39170390,
+          "common": 39624842,
+          "absent": 38329288,
+          "lineage": 39502122,
+          "tie_cutoff": 38099230,
+          "exact": 40501274,
+          "integrity": 42870969,
+          "label": 40099298
+        },
+        "warm_total_cpu_ns": 7614111505
+      }
+    }
+  }
+}

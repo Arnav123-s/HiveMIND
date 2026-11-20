@@ -319,22 +319,28 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
     except Exception as e:  # noqa: BLE001 - a check that cannot be made is a failed task, with the reason
         ok, why = False, f"check failed: {type(e).__name__}: {e}"
     res = {"id": tid, "ok": bool(ok), "why": why, "seconds": round(time.time() - t0), "note": note, "answer": B._body(report)[:400]}
-    res["members"] = each_member(run, check)
+    practice = bool(re.fullmatch(r"practice_[0-9]+", tag))
+    res["members"] = each_member(run, check, attest=practice)
+    if practice:
+        import hashlib
+        res["practice_prompt_sha256"] = hashlib.sha256(task.encode()).hexdigest()
     (run / "exam.json").write_text(json.dumps(res, indent=1))
     return res
 
 
-def each_member(run, check):
+def each_member(run, check, *, attest=False):
     """Every member's own answer put to the task's check: [{"who", "ok", "member"}]. The hive's answer says how the body did;
     this says which cell is right on which kind of task, exactly, so the body can seat a task with the cells whose
     strengths lie nearest to it (team/ternary.seating, cells/strengths.json)."""
+    import hashlib
     import shutil
     import tempfile
     home = run / "members"
     out = []
     for f in sorted(home.glob("member[0-9]*.json")) if home.exists() else []:
         try:
-            t = json.loads(f.read_text())
+            raw = f.read_bytes()
+            t = json.loads(raw)
         except (OSError, ValueError):
             continue
         if not isinstance(t, dict) or not t.get("who"):
@@ -352,7 +358,10 @@ def each_member(run, check):
                     ok = False
         # member: the number of its member{n}.json, so each verdict is tied to the file it was made on (training/grow
         # teaches the members the check confirmed); the order of this list is the files' sorted names, not their numbers
-        out.append({"who": str(t["who"])[:80], "ok": ok, "member": int(re.sub(r"\D", "", f.stem))})
+        verdict = {"who": str(t["who"])[:80], "ok": ok, "member": int(re.sub(r"\D", "", f.stem))}
+        if attest and ok:
+            verdict["submission_sha256"] = hashlib.sha256(raw).hexdigest()
+        out.append(verdict)
     return out
 
 

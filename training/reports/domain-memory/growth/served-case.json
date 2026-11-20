@@ -1,0 +1,6 @@
+{
+  "machine_learning": {
+    "choice": "ML incident audit coding. Our ML incident audit uses X or Y. Return one letter. The audit flags data leakage because a future measurement predicts today's label.",
+    "label": "X"
+  }
+}

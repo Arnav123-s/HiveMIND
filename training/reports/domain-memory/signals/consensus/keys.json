@@ -1,0 +1,122 @@
+{
+  "v01": {
+    "domain": "coding",
+    "why": "The deliverable is executable traversal logic."
+  },
+  "v02": {
+    "domain": "coding",
+    "why": "The requested change is to editor software state and undo behavior."
+  },
+  "v03": {
+    "domain": "coding",
+    "why": "The referent is a fault in a software importer."
+  },
+  "v04": {
+    "domain": "coding",
+    "why": "The latest turn explicitly switches to front-end implementation."
+  },
+  "v05": {
+    "domain": "math",
+    "why": "The requested outcome is proportional division."
+  },
+  "v06": {
+    "domain": "math",
+    "why": "The degree-sum parity argument is mathematical."
+  },
+  "v07": {
+    "domain": "math",
+    "why": "The earlier turn asks about a faulty algebraic derivation."
+  },
+  "v08": {
+    "domain": "math",
+    "why": "This is a modular arithmetic question."
+  },
+  "v09": {
+    "domain": "physical_science",
+    "why": "The subject is evaporation and transport in air."
+  },
+  "v10": {
+    "domain": "physical_science",
+    "why": "The requested physical mechanism is electromagnetic induction."
+  },
+  "v11": {
+    "domain": "physical_science",
+    "why": "The question refers to experimental causes of optical fringes."
+  },
+  "v12": {
+    "domain": "physical_science",
+    "why": "The requested answer concerns chemical solubility rather than implementation."
+  },
+  "v13": {
+    "domain": "conversation",
+    "why": "The person wants wording for an interpersonal message."
+  },
+  "v14": {
+    "domain": "conversation",
+    "why": "The user wants help managing an interpersonal disagreement."
+  },
+  "v15": {
+    "domain": "conversation",
+    "why": "The referent is a misunderstanding between people."
+  },
+  "v16": {
+    "domain": "conversation",
+    "why": "The latest request is about responding to a colleague's feelings."
+  },
+  "v17": {
+    "domain": "machine_learning",
+    "why": "The threshold is an operating point for a predictive model."
+  },
+  "v18": {
+    "domain": "machine_learning",
+    "why": "The task concerns data leakage and evaluation of a predictor."
+  },
+  "v19": {
+    "domain": "machine_learning",
+    "why": "The topic is an unstable text-model training run."
+  },
+  "v20": {
+    "domain": "machine_learning",
+    "why": "The output is an evaluation of learned representations."
+  },
+  "v21": {
+    "domain": "computer_engineering",
+    "why": "The question asks about a hardware subsystem."
+  },
+  "v22": {
+    "domain": "computer_engineering",
+    "why": "The phenomenon is hardware cache coherence and false sharing."
+  },
+  "v23": {
+    "domain": "computer_engineering",
+    "why": "The referent is a hardware timing fault."
+  },
+  "v24": {
+    "domain": "computer_engineering",
+    "why": "The latest question concerns hardware bandwidth and latency."
+  },
+  "v25": {
+    "domain": null,
+    "why": "This requires a date-specific transportation lookup."
+  },
+  "v26": {
+    "domain": null,
+    "why": "The requested information is vocabulary translation."
+  },
+  "v27": {
+    "domain": null,
+    "why": "This is a music-history lookup."
+  },
+  "v28": {
+    "domain": null,
+    "why": "The request is an external administrative action."
+  },
+  "v29": {
+    "domain": null,
+    "why": "No stage or process is identified."
+  },
+  "v30": {
+    "domain": null,
+    "why": "No context identifies the system or what was updated."
+  }
+}

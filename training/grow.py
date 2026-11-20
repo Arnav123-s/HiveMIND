@@ -16,7 +16,7 @@ train      Every cell is grown again from the same DNA (Ternary-Bonsai-1.7B, 0.4
 gate       The same fresh exam sat by the DNA as published, by the body as it was and by the body as regrown; the
            body changes only when the numbers say so (.github/workflows/grow.yml, training/grow_record.py).
 
-    python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl]
+    python training/grow.py practice --seed 10000001 --tasks 16 [--level mixed|hard|basic] [--out runs/grow/rows.jsonl] [--practice-bank DIR]
     python training/grow.py rows RUN_FOLDER ... [--out rows.jsonl]      rows from sittings already done (checked tasks only)
     python training/grow.py train --rows rows.jsonl --name g3code --lean code [--epochs 2] [--minutes 240] [--ternary] [--foresee]
     python training/grow.py fetch                                        the cells of the body, from the release
@@ -301,13 +301,14 @@ def edge_weights(dna="t17", last=3, record=None, body=None):
     return {k: ((p + 1) / (n + 2)) * (1 - (p + 1) / (n + 2)) for k, (p, n) in seen.items()}
 
 
-def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
+def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0, practice_bank=None):
     """Fresh practice tasks done by the hive's members; the rows of those the check confirmed are appended to out.
     minutes: no new task is begun after so long (a runner's job that runs out of time keeps nothing; what is done
     by then is written task by task)."""
     born = time.time()
     from training import exam as E
-    from training import exam_hard
+    from training import exam_hard, engram_growth
+    collected_examples = 0
     out = Path(out or GROW / "rows.jsonl")
     out.parent.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("AGENT_TEAM_SOLO", "2")
@@ -323,6 +324,11 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
     if levels:
         log("how hard the lessons are now: " + ", ".join(f"{k} {v}" for k, v in sorted(levels.items())), flush=True)
     passed = []
+    bank_setting = str(os.environ.get("HIVE_PRACTICE_BANK", "") if practice_bank is None else practice_bank).strip()
+    bridge = None
+    guest = None
+    if bank_setting and bank_setting.lower() != "off":
+        from training.experiments.fieldwork import practice_import as bridge
     from training import practice_arms
     arm = os.environ.get("HIVE_ORDERS_ARM", "") if os.environ.get("HIVE_ORDERS_ARM", "") in practice_arms.ARMS else ""
     if arm:  # the members' orders follow the arm (team/solo.member, which every task's own process runs)
@@ -358,12 +364,39 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
                        "first": first, "seconds": r.get("seconds"), "timeout": str(r.get("note") or "").startswith("timed out"),
                        "age": practice_arms.age(maker, parts)}
                       | ({"parts": [p[0] for p in parts if isinstance(p, (list, tuple)) and p]} if maker == "compound" else {}))
+        if bridge is not None and task.startswith(bridge.PREFIX):
+            # Qualification is separate from the training grade. Record an unavailable optional
+            # runtime beside the task while preserving its ordinary training rows.
+            try:
+                if guest is None:
+                    guest = bridge.Guest(bridge.fieldwork_sdk_path())
+                receipt = bridge.import_practice(E.RUNS / f"practice_{seed}" / tid, Path(bank_setting).expanduser(), guest)
+            except Exception as err:  # noqa: BLE001 - optional WASI runtime or local bank may be unavailable
+                receipt = {"status": "unavailable", "reason": str(err)[:240]}
+            passed[-1]["practice_skill"] = receipt
+            log(f"{tid} practice skill {receipt['status']}" + (f": {receipt['reason']}" if "reason" in receipt else ""), flush=True)
+        if engram_growth.enabled():
+            try:
+                evidence = engram_growth.record_practice(E.RUNS / f"practice_{seed}" / tid, task, field, kind, r)
+                collected_examples += len(evidence)
+                if evidence:
+                    passed[-1]["engram_examples"] = len(evidence)
+                    engram_growth.export_practice(f"practice_{seed}", out.with_suffix(".engrams.jsonl"))
+            except Exception as err:  # noqa: BLE001 - an unavailable lesson store does not erase checked training rows
+                log(f"engram collection unavailable: {err}", flush=True)
         # what was passed at which level, for the record to move the levels by (training/grow_record.levels); arm: the
         # orders this runner was given (HIVE_ORDERS_ARM, set by the practice job; "" when practice is not split)
         out.with_name("practice.json").write_text(json.dumps({"seed": seed, "arm": arm, "tasks": passed}))
         beyond = sum(x["type"] == "first" and x.get("agreed") is False for x in new)
         log(f"{'RIGHT' if r['ok'] else 'not right'} {tid} [{kind}] {r['seconds']}s, {len(new)} rows"
             + (f", {beyond} of the right members not among those that agreed" if beyond else ""), flush=True)
+    if collected_examples and os.environ.get("HIVE_ENGRAM_AUTO_REFRESH", "1").lower() not in {"0", "off", "false"}:
+        try:
+            # At most one changed topic per practice cycle. Chat requests never launch a trainer.
+            reports = engram_growth.refresh(limit=1)
+            log("engram refresh: " + ", ".join(sorted({row["status"] for row in reports})), flush=True)
+        except Exception as err:  # noqa: BLE001 - a native training error must not change the practice verdict
+            log(f"engram refresh unavailable: {err}", flush=True)
     return {"practice": seed, "level": level, "tasks": len(passed), "right": right, "rows": made, "file": str(out)} | ({"arm": arm} if arm else {})
 
 
@@ -1504,7 +1537,9 @@ def main(argv):
     if cmd == "dream":
         print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0), tries=opt("--tries", 2))))
     elif cmd == "practice":
-        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""), minutes=opt("--minutes", 0))))
+        print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"),
+                                  opt("--out", ""), minutes=opt("--minutes", 0),
+                                  practice_bank=opt("--practice-bank", "") if "--practice-bank" in argv else None)))
     elif cmd == "gather":
         # python training/grow.py gather --gen g25 --out out/rows.jsonl --old old.jsonl [--old more.jsonl] new1.jsonl new2.jsonl ...
         olds = [argv[i + 1] for i, a in enumerate(argv) if a == "--old" and i + 1 < len(argv)]

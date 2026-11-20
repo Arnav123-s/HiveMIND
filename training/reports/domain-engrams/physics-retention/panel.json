@@ -1,0 +1,11 @@
+[
+  {"id":"fresh-a","phase":"primary","text":"For today's log entry, the probe is holding at -32 degrees Celsius.","label":"solid","celsius":-32},
+  {"id":"fresh-b","phase":"primary","text":"The stabilized reading is seventy-three degrees Celsius.","label":"liquid","celsius":73},
+  {"id":"fresh-c","phase":"primary","text":"At the observation point the calibrated instrument displays 127 °C.","label":"gas","celsius":127},
+  {"id":"fresh-d","phase":"primary","text":"The sample is held steadily at eight degrees below zero on the Celsius scale.","label":"solid","celsius":-8},
+  {"id":"fresh-e","phase":"primary","text":"The value entered in the Celsius column is one hundred fifty-two degrees.","label":"gas","celsius":152},
+  {"id":"fresh-f","phase":"primary","text":"The vessel is held at +34 °C for the measurement.","label":"liquid","celsius":34},
+  {"id":"extra-a","phase":"supplement","text":"The sensor has settled and now reports 27.5 °C.","label":"liquid","celsius":27.5},
+  {"id":"extra-b","phase":"supplement","text":"The thermometer on this run reads −41 °C.","label":"solid","celsius":-41},
+  {"id":"extra-c","phase":"supplement","text":"For this run, keep the temperature at 189 degrees Celsius.","label":"gas","celsius":189}
+]

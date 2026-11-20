@@ -1,0 +1,123 @@
+{
+  "baseline_checkout": "87247068c7f11169c0e3113bcb2da0f98d28d112",
+  "runtime": "ik_llama.cpp, CPU, Ternary Bonsai 8B PQ2_0",
+  "native_binary_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "member_sha256": {
+    "g47trunk": "fcc87182ed3bef8ab81da7666ce793b3cace644042b9fb75dcbdd93eb81e7a6f",
+    "g47sources2": "e44d6b16a976816c3ec48954a6b711f4f012c6f20afaccfaa758c4b336f3ed03",
+    "g47code2": "a708720b70b0fe574a6e0184951245337de7fc80ade032b4a2f264d8ac30f381",
+    "g47data2": "dddd49b0b89b6c8652c14ebec9c03adabab1de2ee1c3ea2fc6dc5f9b4f1526ff",
+    "g47words": "5814b8701ec39a4721e5c13a77ad4df645b94c5d0e9ae5af2fa6f210f3ad2b49"
+  },
+  "cpu": "Intel Xeon Platinum 8370C, two native inference threads, four quota cores across other concurrent studies",
+  "limits": {
+    "requests_per_arm": 16,
+    "seconds_per_request": 150,
+    "normal_work_members": 2,
+    "extra_tiebreak_allowed": true,
+    "work_turns_per_member": 2,
+    "tokens_per_work_turn": 120,
+    "tokens_per_talk_reply": 80,
+    "context_tokens": 4096,
+    "seed": "87361 plus completed inference calls for this request"
+  },
+  "notes": [
+    "The original checkout ran all decisions, programs, agreement checks, and final replies through team.talk.reply. The external observer selected a separate port, supplied matched per-request RNG seeds, and recorded inference usage.",
+    "The first baseline processes started before the additional read-only native adapter-scale logger was added; their requested adapter states remain recorded.",
+    "The integrated study kept the same pre-formatter team/talk.py as the signal arm. The independent exact-integral rendering fix, reserved sensor CLI, and subsequent runtime changes are excluded from this measured snapshot."
+  ],
+  "signal_snapshot_changes_from_baseline": {
+    "team/solo.py": "50f2a15a6efd7559db89b1b87b2c84c009e030aafdb29143593267d3e59e6bf2",
+    "team/engram.py": "af9577abb31e0b5f92133cfa6bedf8a7f6a1128fd0fc47b0b515beb665626d45",
+    "team/domain_consensus.py": "6b60f40f92422598d079ff75f7e2145c8c734d495edf5e808a675004921b3387",
+    "team/domain_advice.py": "eb1d8402fa69757f293d0cc936876dd336c14c16da1bc4a258e46c790558a29c",
+    "team/domain_route.py": "8eeaca620e8c0d9abe033b79d2a2a0b66a7a4e20f24fe05a10fbfb9c69a2f90f",
+    "team/cli.py": "c184a208f349e80f45b760d6e4bfaf94ee0b46aaf72414b30681e0440895a36c",
+    "team/signals.py": "51d769ee1c5e2dfa40c5820c17e8b0107d8536a7640aaadfd57f801eab44a626",
+    "team/ternary.py": "8434407116008a7530c363a11dace62ab182795b15069e8d68787c00216463fb",
+    "team/talk.py": "cf6a883b8bd5fa5265e8b918dd91a4f97c9c36b346fafafbdcfdfaac81f8869a",
+    "team/assets/domain-centroid-v1.json.gz": "1bdef5f3dffdb8e5edfe756d02cb762782a9c4fa3497e0eabae88659d57e83a3",
+    "team/assets/request-signals-v1.json.gz": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350"
+  },
+  "native_source": "https://github.com/ikawrakow/ik_llama.cpp/tree/7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "base_source": "https://huggingface.co/prism-ml/Ternary-Bonsai-8B-gguf",
+  "member_source": "https://github.com/Arnav123-s/HiveMIND/releases/tag/hive-grown",
+  "frozen_checksums": {
+    "panel.json": "c548eaa920b856af703a8c3a9f863e26d8730c99a6e575a5cfb16a550dd5ef9e",
+    "keys.json": "003784039e06273b34e3b8b38329de7888eb3a7ac475ee416de888215d213f9b",
+    "protocol.md": "ca5baa0779ddd156d6c6c1b6d2970d7de760935b18ceaf00f711f74f8c4cb465"
+  },
+  "integrated_snapshot_changes_from_baseline": {
+    "team/assets/domain-centroid-v1.json.gz": "1bdef5f3dffdb8e5edfe756d02cb762782a9c4fa3497e0eabae88659d57e83a3",
+    "team/assets/request-signals-v1.json.gz": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+    "team/assets/sensor-banks-four-bit.json": "4bd8cb3db998581413c58484faadee35962d06d34593ad210b40577d67a21f9c",
+    "team/cli.py": "e4a42af032b396de6e49ef16d23fe1ee40e4a3c8991682e43eb6cc0e979aa3d7",
+    "team/domain_advice.py": "ddfc72e33e072415b03f6ca71569fe210c235b8b9923290910ef5200f70c4446",
+    "team/domain_consensus.py": "6b60f40f92422598d079ff75f7e2145c8c734d495edf5e808a675004921b3387",
+    "team/domain_route.py": "8eeaca620e8c0d9abe033b79d2a2a0b66a7a4e20f24fe05a10fbfb9c69a2f90f",
+    "team/engram.py": "c5847171fea91c86464e3ae2d00f65ec6914f785388015c44f023f98f2371829",
+    "team/sensor_banks.py": "beddc75e959f927dd7699d59b24a234a2596116047e51a6892c09fdf886a5ec3",
+    "team/signals.py": "51d769ee1c5e2dfa40c5820c17e8b0107d8536a7640aaadfd57f801eab44a626",
+    "team/solo.py": "5947613f0c541f4d074f99353a32e4824555c1584274b0d52af2c8d43c478e73",
+    "team/talk.py": "cf6a883b8bd5fa5265e8b918dd91a4f97c9c36b346fafafbdcfdfaac81f8869a",
+    "team/ternary.py": "ab126f4682cabdb7aba90374374d2b06269f9ec022dc72674c6eab5c9d865ad4"
+  },
+  "snapshot_file_source": "2ea296f5fc038eb0e7d5a17279021ffd43b68294",
+  "primary_engram_store": {
+    "index_sha256": "e95f24021525998f6bed1880b4667b09da5c2a96a63bd58127e55686c364f4c8",
+    "files": {
+      "t80+e_domain_coding.gguf": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+      "t80+e_domain_math.gguf": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+      "t80+e_domain_conversation.gguf": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+      "t80+e_domain_machine_learning.gguf": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766"
+    },
+    "source_commit": "8e3a0a9fab17b098d9bfdebec47725ca12fed2df"
+  },
+  "scope_followup_files": {
+    "team/domain_advice.py": "35bacfad9984bd0f9d989f8146ea29a4e1073234a7c1c254ec01b0979577a017",
+    "team/domain_intent.py": "71a41675cfc08e84a9736030773079362a7c086bffb3be9f4da5fb8cb5cf02b1",
+    "team/engram.py": "0374eebb6ba620b09f97fc73ea566bee0108052a8b901e4a8c8e062e2c6e5da9",
+    "team/engram_index.py": "bf94b261ec6c1b3b2525a43b82710453d91f98bdebe4669f225ce762e8e87053",
+    "team/ternary.py": "2b23d90691dae4e71ea85e6fbd8a5882604e089306d0bfb8579b3b1f60899e35",
+    "team/water_phase.py": "6768c1f7cdaaf88af4203e6d3ca72f605c012fd0523d89a39c65e4b4a501cbd2"
+  },
+  "scope_followup_source": "3018fd5f5d00e00995cbf7ab18fe18519bcf9eaa",
+  "final_system": {
+    "source_commit": "19992ca4ae4c46f6d5f79eb6dbc3f9fd47fc8d9e",
+    "graph_reuse": false,
+    "same_ternary_binary": true,
+    "preregistered_protocol_sha256": "0aa678fd3b37700d087633a9b974871a7840edfa381255efba6f97652ffedcd1",
+    "runtime_commit": "cf7729cfaf395570cd6cd2e16435554b4f4ab04d",
+    "bank": {
+      "index_sha256": "b87088bdf5727f14e68b93c05952c09367944ae168f7bfb9935dbc805f892ed9",
+      "files": {
+        "t80+e_domain_coding.gguf": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+        "t80+e_domain_math.gguf": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+        "t80+e_domain_conversation.gguf": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+        "t80+e_domain_machine_learning.gguf": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766",
+        "t80+e_domain_physical_science_v2.gguf": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d"
+      }
+    },
+    "inspected_live_server": {
+      "pid": 131059,
+      "graph_reuse_manifest": false,
+      "runtime_no_graph_reuse": true,
+      "threads": 2,
+      "context_size": 4096,
+      "port": 18214,
+      "declared_files": [
+        "t80+g47code2.gguf",
+        "t80+g47data2.gguf",
+        "t80+g47sources2.gguf",
+        "t80+g47trunk.gguf",
+        "t80+g47words.gguf",
+        "t80+e_domain_coding.gguf",
+        "t80+e_domain_conversation.gguf",
+        "t80+e_domain_machine_learning.gguf",
+        "t80+e_domain_math.gguf",
+        "t80+e_domain_physical_science_v2.gguf"
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "rank": 4,
+  "effective_rank": 3,
+  "training_rows": 27,
+  "target_mse_before": 35.23531398896411,
+  "target_mse_after": 4.54608639882356,
+  "sha256": "fca504027e9e0a07ad76ce06eda440a4683818bb68ad9e2be2502b251a04b56f",
+  "correction_margin": 8.0,
+  "train_counts": {
+    "ns": 9,
+    "us": 9,
+    "ms": 9
+  },
+  "teaching_sha256": "d4a9902d7300c9c92d1020e53b7bd25ff331ff1f8ba22e2a325af11ccc9337dc",
+  "primary_teaching_sha256": "67ead778f7ea3ec6727995a1e39ec798190fd8833f26f2b224cd4cedea3f3de8",
+  "training_states_sha256": "22cacdea6c457fe816db43361d168efdfb0d317bf8259f518881cdb71ab74a59",
+  "rule_sha256": "db72ffa913118aef5000af9ace22c3a4e0fef321d7f1a9cfd782d8cf83b22576",
+  "trainer_sha256": "c5bc681f1594cc6a301f1177731f2783f9ac8cf363a9320ce6b68dc11001e18c"
+}

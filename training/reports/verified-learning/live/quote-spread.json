@@ -1,0 +1,84 @@
+{
+  "name": "quote_spread",
+  "task": "Write solve(x) for a buyer comparing price quotes. x is a Python dictionary. Its quotes field is a list of nonnegative prices in cents. Return the range of the quoted prices in cents: the highest price less the lowest price. If there are zero or one quotes, return 0.",
+  "examples": [
+    {
+      "input": {
+        "quotes": []
+      },
+      "output": 0
+    },
+    {
+      "input": {
+        "quotes": [
+          40
+        ]
+      },
+      "output": 0
+    },
+    {
+      "input": {
+        "quotes": [
+          25,
+          10,
+          11
+        ]
+      },
+      "output": 15
+    },
+    {
+      "input": {
+        "quotes": [
+          90,
+          90,
+          90
+        ]
+      },
+      "output": 0
+    }
+  ],
+  "validation": [
+    {
+      "input": {
+        "quotes": [
+          199,
+          284
+        ]
+      },
+      "output": 85
+    },
+    {
+      "input": {
+        "quotes": [
+          563,
+          11,
+          89
+        ]
+      },
+      "output": 552
+    },
+    {
+      "input": {
+        "quotes": [
+          802,
+          802,
+          19
+        ]
+      },
+      "output": 783
+    }
+  ],
+  "jobs": [
+    {
+      "id": "compare",
+      "input": {
+        "quotes": [
+          173,
+          197,
+          184
+        ]
+      },
+      "snapshot_file": "answer.json"
+    }
+  ]
+}

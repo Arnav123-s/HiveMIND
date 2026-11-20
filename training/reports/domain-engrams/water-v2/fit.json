@@ -1,0 +1,19 @@
+{
+  "rank": 4,
+  "effective_rank": 3,
+  "training_rows": 27,
+  "target_mse_before": 16.850083405621465,
+  "target_mse_after": 0.5814600372146282,
+  "sha256": "5b96d40b60dd3b16c9f9d6ae493a0f0f88e02757a1f79b969e96471ea194ce8d",
+  "correction_margin": 8.0,
+  "train_counts": {
+    "solid": 9,
+    "liquid": 9,
+    "gas": 9
+  },
+  "teaching_sha256": "c661dbe0a8d8cf607dcde57865d772b0eb16d4583df8aca434b76f8f4e6ce2fd",
+  "primary_teaching_sha256": "67ead778f7ea3ec6727995a1e39ec798190fd8833f26f2b224cd4cedea3f3de8",
+  "training_states_sha256": "26156b35ea52d184b6e25d4a064c43bab54d676e1b2c991f8a8d9c6cb2359603",
+  "rule_sha256": "db72ffa913118aef5000af9ace22c3a4e0fef321d7f1a9cfd782d8cf83b22576",
+  "trainer_sha256": "c5bc681f1594cc6a301f1177731f2783f9ac8cf363a9320ce6b68dc11001e18c"
+}

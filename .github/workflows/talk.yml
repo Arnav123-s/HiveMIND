@@ -1,6 +1,8 @@
 # Talk to the hive from anywhere, with no machine of yours switched on.
 #   Issues tab -> New issue -> write what you want to say or have done -> Submit.
-# The hive replies as a comment on the issue, usually within ten minutes (a runner has to start and fetch the model).
+# The hive replies as a comment. Checked methods can answer before a runner downloads the model.
+#   Run quote_spread with {"quotes":[250,180,220]}
+#   Run transit_tickets with {"minutes":[0,49,50]}
 # Answer in a comment and the conversation goes on: the whole issue is the conversation it sees.
 #
 # What it does with a message (team/talk.py): talk, explanations and writing it answers at once; anything that has to
@@ -64,7 +66,31 @@ jobs:
           done
           python3 team/thread.py "${GITHUB_REPOSITORY_OWNER}" issue.json comments-*.json > thread.json
           python3 -c "import json; t = json.load(open('thread.json')); print(len(t['messages']), 'messages; the last is the', t['messages'][-1]['role'] + \"'s\" if t['messages'] else 'none')"
+      - name: Try a checked method before fetching the body
+        id: saved
+        continue-on-error: true
+        env:
+          HIVE_BANK: ${{ vars.HIVE_BANK || 'training/reports/verified-learning/live/example-bank' }}
+        run: |
+          status=0
+          python3 -m team.talk --thread thread.json --saved-only --out saved-reply.md || status=$?
+          if [ "$status" = 4 ]; then
+            python3 -m venv "$RUNNER_TEMP/hive-fieldwork"
+            python="$RUNNER_TEMP/hive-fieldwork/bin/python"
+            "$python" scripts/setup_fieldwork.py
+            "$python" -m team.talk --thread thread.json --saved-only --out saved-reply.md
+          elif [ "$status" = 3 ]; then
+            exit 0
+          elif [ "$status" != 0 ]; then
+            exit "$status"
+          fi
+          if [ -s saved-reply.md ]; then
+            mv saved-reply.md reply.md
+            cat reply.md >> "$GITHUB_STEP_SUMMARY"
+            echo "answered=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: The body (cells/body.json), its trunk and the newest cell of each organ; with no cells yet, its DNA
+        if: steps.saved.outputs.answered != 'true'
         run: |
           DNA=$(python3 -c "import json; print(json.load(open('cells/body.json'))['dna'])")
           WHO=$(python3 training/lineage.py members "$DNA" few)
@@ -72,7 +98,11 @@ jobs:
           echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
           echo "who answers: $WHO" >> "$GITHUB_STEP_SUMMARY"
       - uses: ./.github/actions/hive
+        if: steps.saved.outputs.answered != 'true'
       - name: The hive replies
+        if: steps.saved.outputs.answered != 'true'
+        env:
+          HIVE_BANK: "off"  # The hosted bank has already been checked.
         run: |
           python -m team.talk --thread thread.json --out reply.md --run-dir run --export-files delivery
           cat reply.md >> "$GITHUB_STEP_SUMMARY"

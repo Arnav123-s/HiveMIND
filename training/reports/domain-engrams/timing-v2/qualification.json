@@ -1,0 +1,279 @@
+{
+  "qualified": false,
+  "graph_reuse": false,
+  "v1_reactivation_reproduced": true,
+  "original_tokens_reproduced": true,
+  "scores": {
+    "original": {
+      "count": 3,
+      "base": 1,
+      "v1": 1,
+      "v2": 3
+    },
+    "primary": {
+      "count": 6,
+      "base": 2,
+      "v1": 2,
+      "v2": 3
+    }
+  },
+  "panel_sha256": "01695797eeaa4cc85c938b727254bfca7b2e847f26bc6b5056b133d33a431cff",
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "v1_sha256": "44f95a7ada1eef213cf908a3d55a47369fd6089099eaacc8b0ea19f70a73fe84",
+  "v2_sha256": "fca504027e9e0a07ad76ce06eda440a4683818bb68ad9e2be2502b251a04b56f",
+  "threads": 2,
+  "cases": [
+    {
+      "id": "original-0",
+      "phase": "original",
+      "text": "The timing unit is a thousandth of a microsecond.",
+      "label": "ns",
+      "prompt_sha256": "56f11d1b4c5df0d2c52558eca354c3abf4a16e0721c1a71c6a201d91819032ee",
+      "input_tokens": 146,
+      "base": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v1": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v2": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      }
+    },
+    {
+      "id": "original-1",
+      "phase": "original",
+      "text": "The device clock period is one thousand nanoseconds.",
+      "label": "us",
+      "prompt_sha256": "148dd4d99447144227a9a898e6e2ff8871c44568dceba3a1c6f542e8aacd2f39",
+      "input_tokens": 144,
+      "base": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      },
+      "v1": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      },
+      "v2": {
+        "token": 355,
+        "text": "us",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      }
+    },
+    {
+      "id": "original-2",
+      "phase": "original",
+      "text": "A controller waits for exactly one thousand microseconds.",
+      "label": "ms",
+      "prompt_sha256": "d2bf97c8d9b8d7f6bb7694d374e5f9bd26331e31d21acf671960c903778a73cb",
+      "input_tokens": 143,
+      "base": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      },
+      "v1": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      },
+      "v2": {
+        "token": 1011,
+        "text": "ms",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      }
+    },
+    {
+      "id": "dwell-a",
+      "phase": "primary",
+      "text": "The timing reference specifies a dwell of 0.000000001 seconds.",
+      "label": "ns",
+      "prompt_sha256": "5f5c3d05c8291cca192f9fef7370f34149d4ea30aedcdf4f2870b36d45c32a2a",
+      "input_tokens": 155,
+      "base": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v1": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v2": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      }
+    },
+    {
+      "id": "dwell-b",
+      "phase": "primary",
+      "text": "At each sampling point the signal is held for 0.001 milliseconds.",
+      "label": "us",
+      "prompt_sha256": "92d9720f57c842dfb0b3ab5ff9ee6d41e8ba9ba01736def3865489f983d13b9a",
+      "input_tokens": 151,
+      "base": {
+        "token": 1011,
+        "text": "ms",
+        "correct": false
+      },
+      "v1": {
+        "token": 1011,
+        "text": "ms",
+        "correct": false
+      },
+      "v2": {
+        "token": 1011,
+        "text": "ms",
+        "correct": false
+      },
+      "v1_reapplied": {
+        "token": 1011,
+        "text": "ms",
+        "correct": false
+      }
+    },
+    {
+      "id": "dwell-c",
+      "phase": "primary",
+      "text": "In the hardware trace legend, the selected interval spans one million nanoseconds.",
+      "label": "ms",
+      "prompt_sha256": "2890ecbf779d878ffc47e215f2aee14aa77171aa71d579bdb746be8efc67155a",
+      "input_tokens": 149,
+      "base": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      },
+      "v1": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      },
+      "v2": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      },
+      "v1_reapplied": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      }
+    },
+    {
+      "id": "dwell-d",
+      "phase": "primary",
+      "text": "The instrument defines one time unit as 0.001 microseconds.",
+      "label": "ns",
+      "prompt_sha256": "a6827762fe5890c425a919bfb9b5aaa29572f6c31ff047739ad19699eaf578e1",
+      "input_tokens": 149,
+      "base": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      },
+      "v1": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      },
+      "v2": {
+        "token": 4412,
+        "text": "ns",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 355,
+        "text": "us",
+        "correct": false
+      }
+    },
+    {
+      "id": "dwell-e",
+      "phase": "primary",
+      "text": "The interrupt timer's unit lasts exactly 0.001 seconds.",
+      "label": "ms",
+      "prompt_sha256": "8b216132eac3a03a4eced088c399f7dfa26fc8192086c7292329d9ef8fe759cf",
+      "input_tokens": 149,
+      "base": {
+        "token": 1011,
+        "text": "ms",
+        "correct": true
+      },
+      "v1": {
+        "token": 1011,
+        "text": "ms",
+        "correct": true
+      },
+      "v2": {
+        "token": 1011,
+        "text": "ms",
+        "correct": true
+      },
+      "v1_reapplied": {
+        "token": 1011,
+        "text": "ms",
+        "correct": true
+      }
+    },
+    {
+      "id": "dwell-f",
+      "phase": "primary",
+      "text": "Each delay increment is 0.000001 seconds in the measurement sheet.",
+      "label": "us",
+      "prompt_sha256": "a5bc1ec316136d13e7d7dd476e842a564b85676e036ddd23b5db38e6938f998c",
+      "input_tokens": 153,
+      "base": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      },
+      "v1": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      },
+      "v2": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      },
+      "v1_reapplied": {
+        "token": 4412,
+        "text": "ns",
+        "correct": false
+      }
+    }
+  ]
+}

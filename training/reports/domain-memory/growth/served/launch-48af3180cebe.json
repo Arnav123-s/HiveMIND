@@ -1,0 +1,27 @@
+{
+  "cases_sha256": "b5e57c794570ef7157049942e6b154dcbdb8e9ed46e2bb0842cf37e63aa919bd",
+  "index_sha256": "98b5b16483fc1addf2e30a9cdd8f0e73b2464e7d4fef11b45c3bb0e8c21b28b0",
+  "settings": {
+    "AGENT_TEAM_SOLO": "2",
+    "AGENT_TEAM_SOLO_LONG": "80",
+    "AGENT_TEAM_SOLO_TURNS": "1",
+    "AGENT_TEAM_THREADS": "1",
+    "HIVE_BANK": "off",
+    "HIVE_ENGRAMS": null,
+    "HIVE_ENGRAM_GATE": null,
+    "HIVE_MEMBERS": "t80",
+    "HIVE_SIGNALS": null,
+    "HIVE_TALK_LONG": "12",
+    "HIVE_TERNARY_CTX": "2048"
+  },
+  "sources": {
+    "domain_advice": "35bacfad9984bd0f9d989f8146ea29a4e1073234a7c1c254ec01b0979577a017",
+    "domain_consensus": "6b60f40f92422598d079ff75f7e2145c8c734d495edf5e808a675004921b3387",
+    "domain_route": "8eeaca620e8c0d9abe033b79d2a2a0b66a7a4e20f24fe05a10fbfb9c69a2f90f",
+    "engram": "683c16aefee001b96d424c8881146f1f21f8f1480fb86ebbe21512360f285ce2",
+    "signals": "51d769ee1c5e2dfa40c5820c17e8b0107d8536a7640aaadfd57f801eab44a626",
+    "solo": "0f2f08dd80e67a861c5836ef1e6d349fedc39c0b59ead56c645de1b8c90accb8",
+    "talk": "a610933f11c5ca1c39810bd1b0954bb78b87a4c862ce01291ee084c5f0f0572e",
+    "ternary": "2c16c089f68e223f97e435c2f695c3d0dc737624212a88efced8b8f19fae4d11"
+  }
+}

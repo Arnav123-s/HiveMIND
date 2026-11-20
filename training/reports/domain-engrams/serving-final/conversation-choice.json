@@ -1,0 +1,88 @@
+{
+  "domain": "conversation",
+  "form": "choice",
+  "prompt": "For a conversation with a neighbor who did me a favor, should I ask, confirm, or thank? Reply with one word.",
+  "expected": "thank",
+  "launch": "launch-153581364317.json",
+  "result": {
+    "text": "Thank",
+    "worked": false,
+    "agreed": null,
+    "files": [],
+    "seconds": 14,
+    "engrams": [
+      {
+        "stage": "answer",
+        "member": "t80",
+        "edits": [
+          "e_domain_conversation"
+        ]
+      }
+    ],
+    "domain_signal": {
+      "domain": "conversation",
+      "confidence": 0.9999,
+      "bundle_id": "5b4dae6310c3cb144d4f477199f426cbfaf0cc272a1869379060322512d75350",
+      "signals": {
+        "source": "request",
+        "request": [
+          0,
+          0,
+          0,
+          28,
+          0,
+          0,
+          0,
+          1
+        ],
+        "context": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          31
+        ]
+      }
+    }
+  },
+  "calls": [
+    {
+      "active": {},
+      "seed": 741,
+      "temperature": 0.0,
+      "prompt_sha256": "2a9a032cd2c5d49a3be98dbae224763b38a43e3fdd21cef0f13d329b28fbefa4",
+      "token_budget": 4,
+      "text": "TALK",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "prompt_tokens": 343,
+        "total_tokens": 346,
+        "prompt_tokens_details": {
+          "cached_tokens": 307
+        }
+      }
+    },
+    {
+      "active": {
+        "e_domain_conversation": 1.0
+      },
+      "seed": 742,
+      "temperature": 0.0,
+      "prompt_sha256": "ae94eefdd8471e9d491388a2b16a633a8e1b4af353002e6c24b4bfab90542700",
+      "token_budget": 48,
+      "text": "Thank",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 151,
+        "total_tokens": 153,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  ]
+}

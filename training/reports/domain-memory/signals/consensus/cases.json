@@ -1,0 +1,290 @@
+[
+  {
+    "id": "v01",
+    "group": "ordinary",
+    "message": "Can you write a Python function to read every key from a nested dictionary, even if some values are lists?",
+    "history": []
+  },
+  {
+    "id": "v02",
+    "group": "difficult",
+    "message": "Pasting a tab into my text editor moves the caret by four spaces, but undo removes it in one go. How should I store those edits so undo and redo agree?",
+    "history": []
+  },
+  {
+    "id": "v03",
+    "group": "useful_context",
+    "message": "How can I tell which part is responsible?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Our importer can open a single TSV, but fails as soon as I feed it a folder."
+      },
+      {
+        "role": "assistant",
+        "content": "We can trace the files it opens one at a time."
+      }
+    ]
+  },
+  {
+    "id": "v04",
+    "group": "override",
+    "message": "The electronics are fine. I need to change the JavaScript that turns the reported values into rows in our web table.",
+    "history": [
+      {
+        "role": "user",
+        "content": "We've been looking at the board's timing traces."
+      },
+      {
+        "role": "assistant",
+        "content": "The signals are stable."
+      }
+    ]
+  },
+  {
+    "id": "v05",
+    "group": "ordinary",
+    "message": "Split a prize of 132 dollars in the ratio 3 to 8. How much goes to each person?",
+    "history": []
+  },
+  {
+    "id": "v06",
+    "group": "difficult",
+    "message": "Nine people each shook hands with exactly three other people. Can that story be true? Please justify your answer.",
+    "history": []
+  },
+  {
+    "id": "v07",
+    "group": "useful_context",
+    "message": "How can I tell which part is responsible?",
+    "history": [
+      {
+        "role": "user",
+        "content": "My derivation of a quadratic formula gives a negative discriminant even on a problem with two real roots."
+      },
+      {
+        "role": "assistant",
+        "content": "We could check the rearrangement before completing the square."
+      }
+    ]
+  },
+  {
+    "id": "v08",
+    "group": "override",
+    "message": "Set the circuit aside. If the same number has residues 2 modulo 3 and 4 modulo 5, what are all its possible residues modulo 15?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Earlier I asked about the logic gates on a counter."
+      },
+      {
+        "role": "assistant",
+        "content": "We can revisit the hardware if needed."
+      }
+    ]
+  },
+  {
+    "id": "v09",
+    "group": "ordinary",
+    "message": "Why do wet clothes dry faster when there's a breeze, even if the thermometer reads the same?",
+    "history": []
+  },
+  {
+    "id": "v10",
+    "group": "difficult",
+    "message": "A magnet is slowly pushed into a closed copper ring and the ring follows. What sets the direction of the pull?",
+    "history": []
+  },
+  {
+    "id": "v11",
+    "group": "useful_context",
+    "message": "How can I tell which part is responsible?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Two clear microscope slides form coloured fringes after I bring their surfaces together."
+      },
+      {
+        "role": "assistant",
+        "content": "We can compare how the pattern moves when one slide tilts."
+      }
+    ]
+  },
+  {
+    "id": "v12",
+    "group": "override",
+    "message": "I already have the spreadsheet formula. Why does the real salt stop dissolving after I add enough of it?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I was writing a formula for how much salt was added."
+      },
+      {
+        "role": "assistant",
+        "content": "The sheet now totals the batches."
+      }
+    ]
+  },
+  {
+    "id": "v13",
+    "group": "ordinary",
+    "message": "Could you help me write a short apology to my aunt for missing her call?",
+    "history": []
+  },
+  {
+    "id": "v14",
+    "group": "difficult",
+    "message": "My project partner keeps saying there was no room to include my name. I'd like to push back without sounding like I'm accusing them of lying.",
+    "history": []
+  },
+  {
+    "id": "v15",
+    "group": "useful_context",
+    "message": "How can I tell which part is responsible?",
+    "history": [
+      {
+        "role": "user",
+        "content": "My flatmate says I spoke over them in a meeting. I thought I had left room for them to finish."
+      },
+      {
+        "role": "assistant",
+        "content": "We can unpack the exchange and decide how to talk about it."
+      }
+    ]
+  },
+  {
+    "id": "v16",
+    "group": "override",
+    "message": "Let's leave the numbers alone. What should I say to my teammate who is upset that their forecast was rejected?",
+    "history": [
+      {
+        "role": "user",
+        "content": "We had been comparing errors in two sales forecasts."
+      },
+      {
+        "role": "assistant",
+        "content": "The comparison is done."
+      }
+    ]
+  },
+  {
+    "id": "v17",
+    "group": "ordinary",
+    "message": "How do I choose a decision threshold for a classifier if a missed defect costs much more than a false alarm?",
+    "history": []
+  },
+  {
+    "id": "v18",
+    "group": "difficult",
+    "message": "Our hospital predictor seems better when evaluated on tests that were ordered late in a patient's stay. Could the ordering process be leaking the answer?",
+    "history": []
+  },
+  {
+    "id": "v19",
+    "group": "useful_context",
+    "message": "How can I tell which part is responsible?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Fine-tuning our text tagger works on one seed, but gives nearly random labels on another."
+      },
+      {
+        "role": "assistant",
+        "content": "We can compare the optimizer and the data order across runs."
+      }
+    ]
+  },
+  {
+    "id": "v20",
+    "group": "override",
+    "message": "The list traversal is fixed. How can I check whether our learned user embeddings put genuinely related users next to each other?",
+    "history": [
+      {
+        "role": "user",
+        "content": "We were repairing a program that traversed user records."
+      },
+      {
+        "role": "assistant",
+        "content": "That bug is already closed."
+      }
+    ]
+  },
+  {
+    "id": "v21",
+    "group": "ordinary",
+    "message": "What does the interrupt controller do inside a microcontroller?",
+    "history": []
+  },
+  {
+    "id": "v22",
+    "group": "difficult",
+    "message": "There are four cores. Counters used by different threads sit in the same line, and performance collapses even though no counter is shared. What is happening underneath?",
+    "history": []
+  },
+  {
+    "id": "v23",
+    "group": "useful_context",
+    "message": "How can I tell which part is responsible?",
+    "history": [
+      {
+        "role": "user",
+        "content": "Our serializer on the FPGA occasionally slips a bit when we push the clock up."
+      },
+      {
+        "role": "assistant",
+        "content": "We can inspect timing constraints and the clock path."
+      }
+    ]
+  },
+  {
+    "id": "v24",
+    "group": "override",
+    "message": "I don't need another statistical fit. Why is the memory controller making the cores wait even when there is plenty of unused RAM?",
+    "history": [
+      {
+        "role": "user",
+        "content": "I had been comparing performance prediction models."
+      },
+      {
+        "role": "assistant",
+        "content": "We have enough predictions now."
+      }
+    ]
+  },
+  {
+    "id": "v25",
+    "group": "open",
+    "message": "Can you find the earliest ferry from Tallinn to Helsinki this Saturday?",
+    "history": []
+  },
+  {
+    "id": "v26",
+    "group": "open",
+    "message": "What is the Japanese word for a persimmon?",
+    "history": []
+  },
+  {
+    "id": "v27",
+    "group": "open",
+    "message": "Who composed the opera The Magic Flute?",
+    "history": []
+  },
+  {
+    "id": "v28",
+    "group": "open",
+    "message": "Can you renew my parking permit with the council?",
+    "history": []
+  },
+  {
+    "id": "v29",
+    "group": "open",
+    "message": "Is it still stuck in that stage?",
+    "history": []
+  },
+  {
+    "id": "v30",
+    "group": "open",
+    "message": "Did the update make our system more stable?",
+    "history": []
+  }
+]

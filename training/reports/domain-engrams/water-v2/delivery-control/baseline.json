@@ -1,0 +1,144 @@
+{
+  "cases_sha256": "4f8aef836c93711fee45db311213372d5f18f0d66ab15e7e2332d125364c6de8",
+  "model_generations": 0,
+  "implementation_sha256": {
+    "team.talk": "a610933f11c5ca1c39810bd1b0954bb78b87a4c862ce01291ee084c5f0f0572e",
+    "team.solo": "0f2f08dd80e67a861c5836ef1e6d349fedc39c0b59ead56c645de1b8c90accb8",
+    "team.water_phase": "6768c1f7cdaaf88af4203e6d3ca72f605c012fd0523d89a39c65e4b4a501cbd2",
+    "team.domain_advice": "35bacfad9984bd0f9d989f8146ea29a4e1073234a7c1c254ec01b0979577a017"
+  },
+  "cases": [
+    {
+      "id": "single-liquid",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "gas",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 2
+        },
+        "work": {
+          "text": "gas",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 2
+        }
+      }
+    },
+    {
+      "id": "single-solid",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "liquid",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "liquid",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "unknown-pressure",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "gas",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "gas",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "boundary",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "liquid",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "liquid",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "calculation",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "liquid",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "liquid",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    },
+    {
+      "id": "write-code",
+      "eligible_phase": null,
+      "outcomes": {
+        "talk": {
+          "text": "gas",
+          "worked": false,
+          "agreed": null,
+          "files": [],
+          "synthetic_worker_calls": 0,
+          "synthetic_chat_calls": 1
+        },
+        "work": {
+          "text": "gas",
+          "worked": true,
+          "agreed": true,
+          "files": [],
+          "synthetic_worker_calls": 1,
+          "synthetic_chat_calls": 1
+        }
+      }
+    }
+  ]
+}

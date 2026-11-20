@@ -1,0 +1,66 @@
+[coding]
+python pandas numpy dataframe dictionary comprehension exceptions decorators
+golang rust csharp kotlin typescript ruby c++ java javascript php scala
+function method recursion iterator generator closure lambda algorithm runtime complexity
+testing unittest pytest jest mocks debugger bug debugging traceback stacktrace
+SQL sqlite database queries select joins tables transactions index query schema
+git merge rebase commit diff repository branch pull request
+bash sed awk regex parsing parser scripts terminal pip venv package npm
+HTML CSS frontend backend React express nodejs Django Flask web API endpoint
+list array string tuple hashmap arraylist pointer reference syntax indentation
+program programming code coding implement compile compiler software engineering patch
+[math]
+addition add subtract multiply divide product quotient arithmetic percentage percent
+algebra quadratic simultaneous linear equations expression factor roots solve x
+matrix eigenvalue eigenvector determinant dimension linear algebra
+geometry polygon hypotenuse radius circle circumference triangle length angle
+calculus integrate differentiate differentiation integral derivative tangent slope limits
+probability conditional combinations permutation expectation statistics variance median
+theorem induction proof prove contradiction counterexample prime modular divisibility
+vector dot product cross product trig sine cosine tangent radians
+sum series arithmetic progression compound interest fractions decimal ratio proportionality
+optimization minimize maximum derivative gradient convex mathematics maths math
+[physical_science]
+physics velocity displacement acceleration inertia weight gravity gravity mass momentum
+force impulse torque kinetic energy potential power joules pendulum equilibrium
+frequency waves light sound diffraction interference wavelength oscillation optics mirrors lens
+chemistry chemical molecule molar stoichiometry acid alkaline pH ions solution equilibrium
+temperature pressure gas particles thermal heat capacity conduction thermodynamics entropy
+astronomy planets solar eclipse stars orbit orbital galaxy universe redshift
+forces drag buoyancy density fluids viscosity atmospheric pressure air water
+electric field electric charge Coulomb magnetic flux induction electromagnetic radiation
+quantum photon electron nucleus atomic isotope radioactive decay half life
+geology climate seasons tides tectonic earthquakes rock weathering atmospheric science
+[conversation]
+hello hi hey greetings howdy good morning evening goodbye chat
+empathetic sympathetic considerate awkward uncomfortable upset embarrassed lonely sad overwhelmed
+friend coworker colleague roommate partner parent relationship misunderstanding feelings
+message text email draft rephrase rewrite note letter invitation invite politely
+apology sorry apologize thank thanks gratitude congratulations encouragement condolences
+smalltalk conversation kind warm supportive casual thoughtful sincere chat tone
+birthday wedding graduation anniversary farewell break the ice joke cheer up
+listen feeling stressed discouraged frustrated worried nervous difficult discussion
+professional friendly response wording tactful polite decline express explain to someone
+conversation listening support compliment offered help welcome introduce myself
+[machine_learning]
+machine learning deep learning artificial intelligence AI training model predictive
+classifier regression forecasting random forest XGBoost gradient boosting neural network
+backpropagation loss optimizer gradient descent SGD Adam convergence
+transformer attention embeddings vectors token pretrained pretraining finetuning adapters LoRA
+epochs batch labels samples training test split validation ROC AUC precision recall F1
+cross entropy softmax sigmoid normalization relu layers MLP LSTM CNN
+overfit underfit overfitting validation generalization bias variance leakage metrics
+PyTorch tensorflow keras sklearn scikit-learn dataset feature engineering
+policy reward reinforcement learning replay buffer Q-learning learning rate
+clustering unsupervised PCA k-means cross-validation ROC threshold calibration
+[computer_engineering]
+microcontroller microprocessor CPU GPU processor hardware embedded architecture computer engineering
+FPGA ASIC RTL HDL Verilog VHDL register gates flip-flop latches multiplexers
+pipeline instruction decoding fetch execute ISA assembly instruction set RISC-V ARM
+caches cache coherence coherence line locality misses latency bandwidth memory DRAM SRAM
+clock timing setup hold jitter metastability clock domain crossing synchronizer
+UART baud SPI I2C IIC GPIO ADC DAC PWM DMA peripheral interface interrupt
+board PCB schematics circuits transistor resistor capacitor diode MOSFET voltage power supply
+solder oscilloscope breadboard pinout switching pullup resistor signal integrity
+binary adder logic NAND XOR AND gate digital circuit register counter ALU
+firmware bootloader flash EEPROM bus microarchitecture branch predictor datapath datapath

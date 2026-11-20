@@ -53,9 +53,8 @@ trunk → **paired gate** → record.
 
 ## Memory and kept skills
 
-- **Engrams** (per-cell memory edits), a shared hive engram, and notes are built but **off**.
-  - Measured on t17, the apparent gain (16/18 against 6/18) came from the short orders, not from memory.
-  - The t80 body already uses the short orders.
+- **Engrams** are small changes to model weights. Normal chat and work can recall a compatible edit. A pair of local signals and an independent text classifier can suggest a subject for the request. A private store holds locally learned edits. [How recall, qualification and retention work](../training/reports/domain-memory/README.md)
+  - In the earlier t17 experiment, short instructions explained the apparent gain from 6/18 to 16/18. The t80 body already uses short instructions. Failure notes, embedding lookup and variable activation strength have separate controls.
 - **Kept methods** (PR 105, the Codex side): the programming tool saves several verified programs per task, picks
   the one that fits the request's examples, names the bill when they disagree, and can repair one integer
   arithmetic mistake.

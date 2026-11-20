@@ -1,0 +1,25 @@
+{
+  "domain":"machine_learning",
+  "topic":"ML incident audit coding",
+  "instruction":"Our ML incident audit uses X or Y. Return one letter. ",
+  "batches":[
+    [
+      ["A data leakage review found future outcomes among training features.", "X"],
+      ["A class imbalance review counted three rare positives among a thousand negatives.", "Y"],
+      ["The data leakage audit found the test labels inside the training table.", "X"],
+      ["The class imbalance audit found the majority class occupied 99 percent of examples.", "Y"],
+      ["The audit flags data leakage because a future measurement predicts today's label.", "X"],
+      ["The audit flags class imbalance because almost every example belongs to one category.", "Y"]
+    ],
+    [
+      ["A data leakage investigation found duplicated test subjects in training.", "X"],
+      ["A class imbalance investigation found only one positive example in the hospital cohort.", "Y"],
+      ["The reviewer traces data leakage to a label-derived input column.", "X"],
+      ["The reviewer traces class imbalance to missing examples of a minority category.", "Y"],
+      ["The ML audit identifies leakage in a benchmark due to shared validation records.", "X"],
+      ["The ML audit identifies imbalance in a benchmark with an underrepresented outcome.", "Y"],
+      ["A data leakage audit discovers evaluation records in a preprocessing fit.", "X"],
+      ["A class imbalance audit discovers the smallest class comprises one in two hundred records.", "Y"]
+    ]
+  ]
+}

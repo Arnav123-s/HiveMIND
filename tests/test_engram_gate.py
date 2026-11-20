@@ -127,7 +127,9 @@ def test_gated_reads_names_and_pairs():
 def server(monkeypatch):
     sent = []
     monkeypatch.setattr(ternary, "_ON", {})
-    monkeypatch.setattr(ternary, "_loaded", lambda at, scales=False: {"g41code": 0, "e1": 1, "e2": 2, "hive": 3})
+    ids = {"g41code": 0, "e1": 1, "e2": 2, "hive": 3}
+    monkeypatch.setattr(ternary, "_loaded", lambda at, scales=False: {
+        name: sent[-1][i] for name, i in ids.items()} if scales and sent else ids)
     monkeypatch.setattr(ternary, "edits_here", lambda base: {"g41code": "x"})
     monkeypatch.setattr(ternary, "_switch", lambda at, scales: sent.append({s["id"]: s["scale"] for s in scales}))
     return sent

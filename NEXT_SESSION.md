@@ -67,8 +67,7 @@ handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole st
 - **M1:** the talk exam (`training/talk_exam.py`), 40 messages checked by code, in the harder version, wired
   into the gate (PR 96). It is written to `training/reports/talk/<gen>.json` and shown in the read and on the
   progress page.
-- **Memory pieces** are built but OFF: per-cell engrams with lineage recall, the shared hive engram, notes
-  written from failures, the gated engram scale, embedding match, and the hive fold. Measured (E1): no gain beyond the short orders.
+- **Memory.** E1 found that short orders explained the apparent gain on t17. This review branch enables compatible engram recall in normal chat and work and adds an advisory channel for six subjects. The current tests cover emitted advice, actual answers, and retention of local lessons. [Results and scope](training/reports/domain-memory/README.md)
 - **The CPU rule lab** (the owner's experiment, PR 97, `training/reports/rule_lab/`): a child trained on 7 rows
   of a checked procedure solved 4 of 4 hidden-rule puzzles that its parents solved 0 of 4. All 81 recorded runs
   were re-scored and agree. This is research, not on the generation's path.
