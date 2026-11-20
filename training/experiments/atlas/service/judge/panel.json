@@ -1,0 +1,74 @@
+[
+  {
+    "id": "leap-appointment",
+    "question": "Which day of the week is 2040-02-29?"
+  },
+  {
+    "id": "across-year",
+    "question": "How many days are there from 2027-12-29 to 2028-01-04?"
+  },
+  {
+    "id": "shared-groups",
+    "question": "What is the greatest common divisor of 414 and 690?"
+  },
+  {
+    "id": "cold-morning",
+    "question": "What is -7.5 degrees Celsius in Fahrenheit? One decimal place."
+  },
+  {
+    "id": "shop-discount",
+    "question": "A notebook costs 28 dollars and the price falls by 25%. What is the new price?"
+  },
+  {
+    "id": "separate-parcels",
+    "question": "Calculate the depot shipping fee for 0.232 kg and 0.161 kg using per-parcel rounding."
+  },
+  {
+    "id": "three-parcels",
+    "question": "Calculate the depot shipping fee for 0.501 kg and 1.002 kg and 0.005 kg."
+  },
+  {
+    "id": "single-parcel",
+    "question": "Calculate the depot shipping fee for 0.740 kg?"
+  },
+  {
+    "id": "boundary-plus",
+    "question": "Calculate the depot shipping fee for 0.500 kg and 0.001 kg using per-parcel rounding?"
+  },
+  {
+    "id": "gram-compatibility",
+    "question": "Calculate the depot shipping fee for 187 g and 476 g using per-parcel rounding."
+  },
+  {
+    "id": "date-in-conversation",
+    "question": "Could you tell me what weekday 2031-10-06 falls on?"
+  },
+  {
+    "id": "mailroom-note",
+    "question": "At our depot I am sending two parcels weighing 0.284 kg and 0.191 kg. How many cents is the shipping fee if each parcel is rounded separately?"
+  },
+  {
+    "id": "leap-error",
+    "question": "Which day of the week is 2031-02-29?"
+  },
+  {
+    "id": "city-date-order",
+    "question": "What day of the week is 08/09/2030?"
+  },
+  {
+    "id": "mismatched-units",
+    "question": "What is 17 degrees Celsius in litres? One decimal place."
+  },
+  {
+    "id": "box-not-weighed",
+    "question": "Calculate the depot shipping fee for a 0.601 kg parcel including packaging. The depot excludes the packaging but I don't know its weight."
+  },
+  {
+    "id": "missing-tariff",
+    "question": "Calculate the depot shipping fee for 1.500 kg using pooled rounding."
+  },
+  {
+    "id": "partial-result",
+    "question": "What is the GCD of 286 and 121? Also list every common divisor."
+  }
+]

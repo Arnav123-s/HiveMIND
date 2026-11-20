@@ -1,0 +1,37 @@
+{
+  "artifact_id": 14527107867,
+  "artifact_sha256": "762f82da42bcd5bc142a3d1f5174365ae4c12664f1b5b4941c459a859140382a",
+  "entry_sha256": {
+    "exam.json": "bdeac6939e7e8dc92bdba1ae17bbc6eb944dab060a0cd7e6afce53b9b26db773",
+    "REPORT.md": "9c3c29fede8da69c2e51470d8d05fc237b0d25ecb8bb44ab5a57e0b76c5d67c5",
+    "members/TASK.md": "c7556ba6fd1ea59bf3f5c64d40d03cee0d4b709993eba845dd09c01172fb6ecc"
+  },
+  "duration_files": [],
+  "verdict": {
+    "id": "h20000502_00",
+    "ok": false,
+    "why": "no durations.py saved",
+    "seconds": 260,
+    "note": "",
+    "answer": "No member got as far as an answer. Their programs and what they printed are in this run's folder.",
+    "members": [
+      {
+        "who": "t80+g50trunk",
+        "ok": false,
+        "member": 1
+      },
+      {
+        "who": "t80+g50code",
+        "ok": false,
+        "member": 2
+      },
+      {
+        "who": "t80+g50code2",
+        "ok": false,
+        "member": 3
+      }
+    ]
+  },
+  "report": "No member got as far as an answer. Their programs and what they printed are in this run's folder.\n",
+  "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('19h19m37s') and of to_text(0)."
+}

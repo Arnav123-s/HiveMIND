@@ -1,0 +1,580 @@
+{
+  "fresh_case_counts": {
+    "empty": {
+      "missed": 8,
+      "outside_withheld": 6
+    },
+    "version_A": {
+      "correct_complete": 8,
+      "outside_withheld": 6
+    },
+    "version_B": {
+      "correct_complete": 8,
+      "outside_withheld": 6
+    },
+    "both_agree": {
+      "correct_complete": 8,
+      "outside_withheld": 6
+    },
+    "handwritten": {
+      "correct_complete": 8,
+      "outside_withheld": 6
+    }
+  },
+  "g50_replay": {
+    "empty": {
+      "status": "deferred"
+    },
+    "version_A": {
+      "status": "delivered",
+      "passed": 50,
+      "total": 50,
+      "fuel": 1028892597,
+      "report": "69577\n0s\n",
+      "report_matches": true
+    },
+    "version_B": {
+      "status": "delivered",
+      "passed": 50,
+      "total": 50,
+      "fuel": 1028884915,
+      "report": "69577\n0s\n",
+      "report_matches": true
+    },
+    "both_agree": {
+      "status": "delivered",
+      "passed": 50,
+      "total": 50,
+      "fuel": 1028892597,
+      "report": "69577\n0s\n",
+      "report_matches": true
+    },
+    "handwritten": {
+      "status": "delivered",
+      "passed": 50,
+      "total": 50,
+      "fuel": 1027910881,
+      "report": "69577\n0s\n",
+      "report_matches": true
+    }
+  },
+  "g50_original": {
+    "id": "h20000502_00",
+    "ok": false,
+    "why": "no durations.py saved",
+    "seconds": 260,
+    "note": "",
+    "answer": "No member got as far as an answer. Their programs and what they printed are in this run's folder.",
+    "members": [
+      {
+        "who": "t80+g50trunk",
+        "ok": false,
+        "member": 1
+      },
+      {
+        "who": "t80+g50code",
+        "ok": false,
+        "member": 2
+      },
+      {
+        "who": "t80+g50code2",
+        "ok": false,
+        "member": 3
+      }
+    ]
+  },
+  "fresh_positive_operations": 16,
+  "overlap_with_previous_checks": {
+    "admission": [],
+    "previous_sixty": [],
+    "h20000502_00": [],
+    "h20000523_03": [],
+    "h20000527_03": []
+  },
+  "native_model_calls": 0,
+  "wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "ungraded_sha256": "08f0b52dbfca6fb4cfebd56d573438b395767aa1eaf4c1f9b5c8d28e531e1b97",
+  "source_sha256": "da301bd3d199092dea6d133743c449093e874f4e04d2fc05040aef9ec8fa8658",
+  "requests_sha256": "6e291b80905ade19abe555cbc873af5cae7e6b392b7f69564850f37e304c6e77",
+  "keys_sha256": "9c66e47e415b9d4b3931e777399090a778f51e0ec3ad6083e6186440fc4e4715",
+  "outcomes": {
+    "empty": {
+      "seconds": {
+        "status": "deferred"
+      },
+      "minutes": {
+        "status": "deferred"
+      },
+      "hours": {
+        "status": "deferred"
+      },
+      "all-units": {
+        "status": "deferred"
+      },
+      "minute-second": {
+        "status": "deferred"
+      },
+      "skip-middle": {
+        "status": "deferred"
+      },
+      "large-hours": {
+        "status": "deferred"
+      },
+      "long-elapsed": {
+        "status": "deferred"
+      },
+      "change-units": {
+        "status": "deferred"
+      },
+      "different-file": {
+        "status": "deferred"
+      },
+      "always-show-zero": {
+        "status": "deferred"
+      },
+      "extra-deliverable": {
+        "status": "deferred"
+      },
+      "fractional-seconds": {
+        "status": "deferred"
+      },
+      "paraphrased-same-family": {
+        "status": "deferred"
+      },
+      "h20000502_00": {
+        "status": "deferred"
+      }
+    },
+    "version_A": {
+      "seconds": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          47,
+          "1h21m52s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "minutes": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          1320,
+          "50h1s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "hours": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          14400,
+          "1h19m59s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "all-units": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          15431,
+          "13m4s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "minute-second": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          1119,
+          "27h"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "skip-middle": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          126026,
+          "1h25m18s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "large-hours": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          445920,
+          "2h14m"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "long-elapsed": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          705909,
+          "280h35m1s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "change-units": {
+        "status": "deferred"
+      },
+      "different-file": {
+        "status": "deferred"
+      },
+      "always-show-zero": {
+        "status": "deferred"
+      },
+      "extra-deliverable": {
+        "status": "deferred"
+      },
+      "fractional-seconds": {
+        "status": "deferred"
+      },
+      "paraphrased-same-family": {
+        "status": "deferred"
+      },
+      "h20000502_00": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          69577,
+          "0s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      }
+    },
+    "version_B": {
+      "seconds": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          47,
+          "1h21m52s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "minutes": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          1320,
+          "50h1s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "hours": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          14400,
+          "1h19m59s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "all-units": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          15431,
+          "13m4s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "minute-second": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          1119,
+          "27h"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "skip-middle": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          126026,
+          "1h25m18s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "large-hours": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          445920,
+          "2h14m"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "long-elapsed": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          705909,
+          "280h35m1s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "change-units": {
+        "status": "deferred"
+      },
+      "different-file": {
+        "status": "deferred"
+      },
+      "always-show-zero": {
+        "status": "deferred"
+      },
+      "extra-deliverable": {
+        "status": "deferred"
+      },
+      "fractional-seconds": {
+        "status": "deferred"
+      },
+      "paraphrased-same-family": {
+        "status": "deferred"
+      },
+      "h20000502_00": {
+        "status": "delivered",
+        "version": "h20000527_03",
+        "answers": [
+          69577,
+          "0s"
+        ],
+        "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      }
+    },
+    "both_agree": {
+      "seconds": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          47,
+          "1h21m52s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "minutes": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          1320,
+          "50h1s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "hours": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          14400,
+          "1h19m59s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "all-units": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          15431,
+          "13m4s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "minute-second": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          1119,
+          "27h"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "skip-middle": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          126026,
+          "1h25m18s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "large-hours": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          445920,
+          "2h14m"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "long-elapsed": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          705909,
+          "280h35m1s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "change-units": {
+        "status": "deferred"
+      },
+      "different-file": {
+        "status": "deferred"
+      },
+      "always-show-zero": {
+        "status": "deferred"
+      },
+      "extra-deliverable": {
+        "status": "deferred"
+      },
+      "fractional-seconds": {
+        "status": "deferred"
+      },
+      "paraphrased-same-family": {
+        "status": "deferred"
+      },
+      "h20000502_00": {
+        "status": "delivered",
+        "version": "h20000523_03",
+        "answers": [
+          69577,
+          "0s"
+        ],
+        "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      }
+    },
+    "handwritten": {
+      "seconds": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          47,
+          "1h21m52s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "minutes": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          1320,
+          "50h1s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "hours": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          14400,
+          "1h19m59s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "all-units": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          15431,
+          "13m4s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "minute-second": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          1119,
+          "27h"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "skip-middle": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          126026,
+          "1h25m18s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "large-hours": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          445920,
+          "2h14m"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "long-elapsed": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          705909,
+          "280h35m1s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      },
+      "change-units": {
+        "status": "deferred"
+      },
+      "different-file": {
+        "status": "deferred"
+      },
+      "always-show-zero": {
+        "status": "deferred"
+      },
+      "extra-deliverable": {
+        "status": "deferred"
+      },
+      "fractional-seconds": {
+        "status": "deferred"
+      },
+      "paraphrased-same-family": {
+        "status": "deferred"
+      },
+      "h20000502_00": {
+        "status": "delivered",
+        "version": "reference",
+        "answers": [
+          69577,
+          "0s"
+        ],
+        "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+      }
+    }
+  },
+  "calls": {
+    "version_A/h20000523_03": {
+      "operations": 18,
+      "fuel": 1026002646,
+      "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+    },
+    "version_B/h20000527_03": {
+      "operations": 18,
+      "fuel": 1026010424,
+      "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+    },
+    "both_agree/h20000523_03": {
+      "operations": 18,
+      "fuel": 1026002566,
+      "source_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+    },
+    "both_agree/h20000527_03": {
+      "operations": 18,
+      "fuel": 1026010424,
+      "source_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+    },
+    "handwritten/reference": {
+      "operations": 18,
+      "fuel": 1025084513,
+      "source_sha256": "1a19d4a45a462ededa3202671152179575132378b65dcea0fc9245e739766b78"
+    }
+  }
+}
