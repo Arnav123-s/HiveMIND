@@ -1,0 +1,20 @@
+[
+ {"domain":"coding","question":"A CSV import has mixed-case airport codes. Make each code uppercase without changing the number of records.","label":"map"},
+ {"domain":"ml","question":"Optimize the network parameters on one partition by applying the gradient after each minibatch. Which partition supplies those examples?","label":"train"},
+ {"domain":"engineering","question":"An arbiter responds one tick after a request on a clock ticking one billion times per second. Which unit makes the delay exactly one?","label":"ns"},
+ {"domain":"conversation","question":"Your colleague has just located your lost presentation clicker and returned it. What next move acknowledges that help?","label":"thank"},
+ {"domain":"physics","question":"A sealed sample of pure water is brought to equilibrium at minus twelve degrees Celsius and one atmosphere. Identify its phase.","label":"solid"},
+ {"domain":"math","question":"A display maker wants the amount of protective film needed to cover the rectangular screen face. Which kind of measure is needed?","label":"area"},
+ {"domain":"engineering","question":"A controller waits exactly 0.000007 seconds. Which unit expresses this interval as the number 7?","label":"us"},
+ {"domain":"coding","question":"A list contains debits as negative integers along with zeros and credits. Return just the negative entries, unchanged.","label":"filter"},
+ {"domain":"conversation","question":"Two colleagues have explicitly settled on the same room and time. Send a brief restatement of their arrangement so both have it on record.","label":"confirm"},
+ {"domain":"physics","question":"Pure water in a piston is kept at one atmosphere and allowed to equilibrate at 121 degrees Celsius. What is in the cylinder?","label":"gas"},
+ {"domain":"ml","question":"One data partition is evaluated repeatedly while choosing between eight dropout settings; weights never take gradients from it. Which split is that?","label":"validation"},
+ {"domain":"math","question":"A tailor follows the curved edge of a sleeve with a measuring tape to determine how much piping to cut. Which kind of measure is this?","label":"length"},
+ {"domain":"ml","question":"A benchmark partition is opened once for an independent final assessment after model selection, parameter fitting and threshold selection are finished.","label":"test"},
+ {"domain":"engineering","question":"A peripheral's timer fires after exactly three thousandths of a second. In which unit is the duration three?","label":"ms"},
+ {"domain":"math","question":"A gardener needs the capacity inside an empty planter before ordering soil. Which geometric measure supplies the capacity?","label":"volume"},
+ {"domain":"physics","question":"At equilibrium a container of pure water at normal atmospheric pressure is at 19 degrees Celsius. Which phase should be entered in the log?","label":"liquid"},
+ {"domain":"conversation","question":"A coworker says to mail a signed invoice, but has given no recipient or address and none is on file. Which next move obtains what is missing?","label":"ask"},
+ {"domain":"coding","question":"The meter reports consumption in watt-hours for each interval. Return one value for consumption over all intervals.","label":"sum"}
+]

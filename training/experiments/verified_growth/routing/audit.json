@@ -1,0 +1,303 @@
+{
+  "fresh_overlaps": 0,
+  "changed_ungraded_decisions_after_replacing_every_current_label": 0,
+  "scores": {
+    "published": {
+      "singles": {
+        "incumbent": 38,
+        "coding": 38,
+        "conversation": 38,
+        "engineering": 36,
+        "math": 38,
+        "ml": 38,
+        "physics": 39
+      },
+      "proposals": [
+        {
+          "key": "engineering-extra-11",
+          "domain": "engineering",
+          "incumbent": "ms",
+          "proposed": "us",
+          "answer": "ms",
+          "support": {},
+          "accepted": false
+        },
+        {
+          "key": "physics-extra-12",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "proposed": "solid",
+          "answer": "solid",
+          "support": {},
+          "accepted": false
+        },
+        {
+          "key": "physics-train-3",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "proposed": "gas",
+          "answer": "liquid",
+          "support": {
+            "win": 1
+          },
+          "accepted": false
+        },
+        {
+          "key": "physics-check-0",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "proposed": "solid",
+          "answer": "solid",
+          "support": {
+            "win": 1
+          },
+          "accepted": false
+        },
+        {
+          "key": "physics-extra-6",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "proposed": "solid",
+          "answer": "solid",
+          "support": {
+            "win": 2,
+            "loss": 1
+          },
+          "accepted": false
+        },
+        {
+          "key": "engineering-check-1",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "proposed": "us",
+          "answer": "us",
+          "support": {},
+          "accepted": false
+        }
+      ],
+      "impossible": [
+        "physics-extra-11",
+        "engineering-extra-3",
+        "conversation-check-1",
+        "ml-train-4",
+        "engineering-check-2"
+      ]
+    },
+    "fresh": {
+      "singles": {
+        "incumbent": 15,
+        "coding": 15,
+        "conversation": 15,
+        "engineering": 14,
+        "math": 15,
+        "ml": 15,
+        "physics": 15
+      },
+      "proposals": [
+        {
+          "key": "fresh-4",
+          "domain": "physics",
+          "incumbent": "at",
+          "proposed": "solid",
+          "answer": "solid",
+          "support": {},
+          "accepted": true
+        },
+        {
+          "key": "fresh-6",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "proposed": "us",
+          "answer": "us",
+          "support": {
+            "win": 1
+          },
+          "accepted": false
+        }
+      ],
+      "impossible": [
+        "fresh-9"
+      ]
+    }
+  },
+  "recheck_before_each_wave": [
+    {
+      "feedback": {
+        "n": 0,
+        "correct": 0,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_candidate": {
+        "n": 0,
+        "correct": 0,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_direct": {
+        "n": 0,
+        "correct": 0,
+        "gains": 0,
+        "losses": 0
+      }
+    },
+    {
+      "feedback": {
+        "n": 12,
+        "correct": 10,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_candidate": {
+        "n": 12,
+        "correct": 10,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_direct": {
+        "n": 12,
+        "correct": 10,
+        "gains": 0,
+        "losses": 0
+      }
+    },
+    {
+      "feedback": {
+        "n": 24,
+        "correct": 19,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_candidate": {
+        "n": 24,
+        "correct": 19,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_direct": {
+        "n": 24,
+        "correct": 19,
+        "gains": 0,
+        "losses": 1
+      }
+    },
+    {
+      "feedback": {
+        "n": 36,
+        "correct": 29,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_candidate": {
+        "n": 36,
+        "correct": 29,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_direct": {
+        "n": 36,
+        "correct": 30,
+        "gains": 3,
+        "losses": 1
+      }
+    },
+    {
+      "feedback": {
+        "n": 48,
+        "correct": 38,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_candidate": {
+        "n": 48,
+        "correct": 40,
+        "gains": 0,
+        "losses": 0
+      },
+      "nearest_direct": {
+        "n": 48,
+        "correct": 40,
+        "gains": 2,
+        "losses": 1
+      }
+    }
+  ],
+  "static_vs_growing": {
+    "archived": {
+      "nearest_candidate": {
+        "frozen_correct": 40,
+        "updated_vs_frozen": {
+          "n": 48,
+          "correct": 40,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "nearest_direct": {
+        "frozen_correct": 40,
+        "updated_vs_frozen": {
+          "n": 48,
+          "correct": 39,
+          "gains": 0,
+          "losses": 1
+        }
+      },
+      "quantity_candidate": {
+        "frozen_correct": 42,
+        "updated_vs_frozen": {
+          "n": 48,
+          "correct": 42,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "quantity_direct": {
+        "frozen_correct": 44,
+        "updated_vs_frozen": {
+          "n": 48,
+          "correct": 44,
+          "gains": 0,
+          "losses": 0
+        }
+      }
+    },
+    "fresh": {
+      "nearest_candidate": {
+        "frozen_correct": 17,
+        "updated_vs_frozen": {
+          "n": 18,
+          "correct": 17,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "nearest_direct": {
+        "frozen_correct": 17,
+        "updated_vs_frozen": {
+          "n": 18,
+          "correct": 18,
+          "gains": 1,
+          "losses": 0
+        }
+      },
+      "quantity_candidate": {
+        "frozen_correct": 15,
+        "updated_vs_frozen": {
+          "n": 18,
+          "correct": 15,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "quantity_direct": {
+        "frozen_correct": 15,
+        "updated_vs_frozen": {
+          "n": 18,
+          "correct": 15,
+          "gains": 0,
+          "losses": 0
+        }
+      }
+    }
+  }
+}

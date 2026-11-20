@@ -1,0 +1,780 @@
+{
+  "source_sha256": "60453fd53de461a4f1fb4e31731ca1a0ff7e41ccdd388045bd7af2b4a3e80106",
+  "protocol_sha256": "019ae3a63e872bccc707116efbbb9fcf3bdead59bd8f60237111f917b103d768",
+  "known": {
+    "incumbent": {
+      "n": 48,
+      "correct": 38,
+      "gains": 0,
+      "losses": 0
+    },
+    "chooser": {
+      "n": 48,
+      "correct": 42,
+      "gains": 4,
+      "losses": 0
+    },
+    "direct": {
+      "n": 48,
+      "correct": 44,
+      "gains": 6,
+      "losses": 0
+    }
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "cutoff": "72efe37ab15775891c4dc7e4e882bfb7af40a24519522029f7a6c6071179fec2",
+      "scores": {
+        "incumbent": {
+          "n": 12,
+          "correct": 10,
+          "gains": 0,
+          "losses": 0
+        },
+        "chooser": {
+          "n": 12,
+          "correct": 10,
+          "gains": 0,
+          "losses": 0
+        },
+        "direct": {
+          "n": 12,
+          "correct": 10,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "rows": [
+        {
+          "key": "physics-extra-10",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "liquid",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-extra-11",
+          "domain": "engineering",
+          "incumbent": "ms",
+          "answer": "ms",
+          "chooser": "ms",
+          "direct": "ms",
+          "supported_quantity": "0.001000000"
+        },
+        {
+          "key": "ml-check-0",
+          "domain": "ml",
+          "incumbent": "train",
+          "answer": "train",
+          "chooser": "train",
+          "direct": "train",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-extra-8",
+          "domain": "engineering",
+          "incumbent": "ms",
+          "answer": "ms",
+          "chooser": "ms",
+          "direct": "ms",
+          "supported_quantity": "0.001"
+        },
+        {
+          "key": "conversation-train-3",
+          "domain": "conversation",
+          "incumbent": "confirm",
+          "answer": "confirm",
+          "chooser": "confirm",
+          "direct": "confirm",
+          "supported_quantity": null
+        },
+        {
+          "key": "physics-extra-12",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "solid",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": null
+        },
+        {
+          "key": "coding-check-0",
+          "domain": "coding",
+          "incumbent": "map",
+          "answer": "map",
+          "chooser": "map",
+          "direct": "map",
+          "supported_quantity": null
+        },
+        {
+          "key": "math-train-3",
+          "domain": "math",
+          "incumbent": "area",
+          "answer": "area",
+          "chooser": "area",
+          "direct": "area",
+          "supported_quantity": null
+        },
+        {
+          "key": "physics-extra-11",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "gas",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": null
+        },
+        {
+          "key": "physics-extra-5",
+          "domain": "physics",
+          "incumbent": "gas",
+          "answer": "gas",
+          "chooser": "gas",
+          "direct": "gas",
+          "supported_quantity": "112"
+        },
+        {
+          "key": "coding-train-3",
+          "domain": "coding",
+          "incumbent": "filter",
+          "answer": "filter",
+          "chooser": "filter",
+          "direct": "filter",
+          "supported_quantity": null
+        },
+        {
+          "key": "conversation-check-2",
+          "domain": "conversation",
+          "incumbent": "thank",
+          "answer": "thank",
+          "chooser": "thank",
+          "direct": "thank",
+          "supported_quantity": null
+        }
+      ],
+      "replay_earlier": {
+        "n": 0,
+        "correct": 0,
+        "gains": 0,
+        "losses": 0
+      }
+    },
+    {
+      "wave": 2,
+      "cutoff": "43289ccfe682a17d4aa761c6881ccdebe471e3cd3b52ec6dc9330e1d56803688",
+      "scores": {
+        "incumbent": {
+          "n": 12,
+          "correct": 9,
+          "gains": 0,
+          "losses": 0
+        },
+        "chooser": {
+          "n": 12,
+          "correct": 11,
+          "gains": 2,
+          "losses": 0
+        },
+        "direct": {
+          "n": 12,
+          "correct": 12,
+          "gains": 3,
+          "losses": 0
+        }
+      },
+      "rows": [
+        {
+          "key": "physics-train-1",
+          "domain": "physics",
+          "incumbent": "solid",
+          "answer": "solid",
+          "chooser": "solid",
+          "direct": "solid",
+          "supported_quantity": "-6"
+        },
+        {
+          "key": "conversation-train-0",
+          "domain": "conversation",
+          "incumbent": "ask",
+          "answer": "ask",
+          "chooser": "ask",
+          "direct": "ask",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-extra-6",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "answer": "ns",
+          "chooser": "ns",
+          "direct": "ns",
+          "supported_quantity": "1E-9"
+        },
+        {
+          "key": "physics-check-1",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "liquid",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": "47"
+        },
+        {
+          "key": "engineering-extra-3",
+          "domain": "engineering",
+          "incumbent": "us",
+          "answer": "ns",
+          "chooser": "us",
+          "direct": "ns",
+          "supported_quantity": "1.000E-9"
+        },
+        {
+          "key": "physics-extra-7",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "liquid",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-train-2",
+          "domain": "engineering",
+          "incumbent": "us",
+          "answer": "us",
+          "chooser": "us",
+          "direct": "us",
+          "supported_quantity": "0.000001"
+        },
+        {
+          "key": "physics-train-3",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "liquid",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": null
+        },
+        {
+          "key": "ml-check-1",
+          "domain": "ml",
+          "incumbent": "validation",
+          "answer": "validation",
+          "chooser": "validation",
+          "direct": "validation",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-extra-1",
+          "domain": "engineering",
+          "incumbent": "ms",
+          "answer": "us",
+          "chooser": "us",
+          "direct": "us",
+          "supported_quantity": "0.000001"
+        },
+        {
+          "key": "math-train-4",
+          "domain": "math",
+          "incumbent": "volume",
+          "answer": "volume",
+          "chooser": "volume",
+          "direct": "volume",
+          "supported_quantity": null
+        },
+        {
+          "key": "physics-check-0",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "solid",
+          "chooser": "solid",
+          "direct": "solid",
+          "supported_quantity": "-13"
+        }
+      ],
+      "replay_earlier": {
+        "n": 12,
+        "correct": 10,
+        "gains": 0,
+        "losses": 0
+      }
+    },
+    {
+      "wave": 3,
+      "cutoff": "b7a533fa3533b82ac08b336456a59cf6ff15cce2a131ef1bffc13f4de448fdc1",
+      "scores": {
+        "incumbent": {
+          "n": 12,
+          "correct": 10,
+          "gains": 0,
+          "losses": 0
+        },
+        "chooser": {
+          "n": 12,
+          "correct": 10,
+          "gains": 0,
+          "losses": 0
+        },
+        "direct": {
+          "n": 12,
+          "correct": 10,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "rows": [
+        {
+          "key": "coding-train-5",
+          "domain": "coding",
+          "incumbent": "sum",
+          "answer": "sum",
+          "chooser": "sum",
+          "direct": "sum",
+          "supported_quantity": null
+        },
+        {
+          "key": "math-train-0",
+          "domain": "math",
+          "incumbent": "length",
+          "answer": "length",
+          "chooser": "length",
+          "direct": "length",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-train-4",
+          "domain": "engineering",
+          "incumbent": "ms",
+          "answer": "ms",
+          "chooser": "ms",
+          "direct": "ms",
+          "supported_quantity": "0.001"
+        },
+        {
+          "key": "conversation-check-1",
+          "domain": "conversation",
+          "incumbent": "thank",
+          "answer": "confirm",
+          "chooser": "thank",
+          "direct": "thank",
+          "supported_quantity": null
+        },
+        {
+          "key": "math-check-0",
+          "domain": "math",
+          "incumbent": "length",
+          "answer": "length",
+          "chooser": "length",
+          "direct": "length",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-train-0",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "answer": "ns",
+          "chooser": "ns",
+          "direct": "ns",
+          "supported_quantity": "1E-9"
+        },
+        {
+          "key": "ml-train-4",
+          "domain": "ml",
+          "incumbent": "validation",
+          "answer": "test",
+          "chooser": "validation",
+          "direct": "validation",
+          "supported_quantity": null
+        },
+        {
+          "key": "physics-train-5",
+          "domain": "physics",
+          "incumbent": "gas",
+          "answer": "gas",
+          "chooser": "gas",
+          "direct": "gas",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-extra-7",
+          "domain": "engineering",
+          "incumbent": "us",
+          "answer": "us",
+          "chooser": "us",
+          "direct": "us",
+          "supported_quantity": "0.000001"
+        },
+        {
+          "key": "ml-check-2",
+          "domain": "ml",
+          "incumbent": "test",
+          "answer": "test",
+          "chooser": "test",
+          "direct": "test",
+          "supported_quantity": null
+        },
+        {
+          "key": "coding-train-1",
+          "domain": "coding",
+          "incumbent": "map",
+          "answer": "map",
+          "chooser": "map",
+          "direct": "map",
+          "supported_quantity": null
+        },
+        {
+          "key": "coding-check-2",
+          "domain": "coding",
+          "incumbent": "sum",
+          "answer": "sum",
+          "chooser": "sum",
+          "direct": "sum",
+          "supported_quantity": null
+        }
+      ],
+      "replay_earlier": {
+        "n": 24,
+        "correct": 21,
+        "gains": 0,
+        "losses": 0
+      }
+    },
+    {
+      "wave": 4,
+      "cutoff": "99389d81043793bbddeec9cf9b66d4689eb3eb0189ddf95a953eeafe64ec8f43",
+      "scores": {
+        "incumbent": {
+          "n": 12,
+          "correct": 9,
+          "gains": 0,
+          "losses": 0
+        },
+        "chooser": {
+          "n": 12,
+          "correct": 11,
+          "gains": 2,
+          "losses": 0
+        },
+        "direct": {
+          "n": 12,
+          "correct": 12,
+          "gains": 3,
+          "losses": 0
+        }
+      },
+      "rows": [
+        {
+          "key": "conversation-check-0",
+          "domain": "conversation",
+          "incumbent": "ask",
+          "answer": "ask",
+          "chooser": "ask",
+          "direct": "ask",
+          "supported_quantity": null
+        },
+        {
+          "key": "ml-train-1",
+          "domain": "ml",
+          "incumbent": "train",
+          "answer": "train",
+          "chooser": "train",
+          "direct": "train",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-check-0",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "answer": "ns",
+          "chooser": "ns",
+          "direct": "ns",
+          "supported_quantity": "1E-9"
+        },
+        {
+          "key": "physics-extra-6",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "solid",
+          "chooser": "solid",
+          "direct": "solid",
+          "supported_quantity": "-9"
+        },
+        {
+          "key": "ml-train-3",
+          "domain": "ml",
+          "incumbent": "validation",
+          "answer": "validation",
+          "chooser": "validation",
+          "direct": "validation",
+          "supported_quantity": null
+        },
+        {
+          "key": "physics-check-2",
+          "domain": "physics",
+          "incumbent": "gas",
+          "answer": "gas",
+          "chooser": "gas",
+          "direct": "gas",
+          "supported_quantity": "164"
+        },
+        {
+          "key": "math-check-2",
+          "domain": "math",
+          "incumbent": "volume",
+          "answer": "volume",
+          "chooser": "volume",
+          "direct": "volume",
+          "supported_quantity": null
+        },
+        {
+          "key": "engineering-check-2",
+          "domain": "engineering",
+          "incumbent": "us",
+          "answer": "ms",
+          "chooser": "us",
+          "direct": "ms",
+          "supported_quantity": "0.001000"
+        },
+        {
+          "key": "engineering-check-1",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "answer": "us",
+          "chooser": "us",
+          "direct": "us",
+          "supported_quantity": "0.000001000"
+        },
+        {
+          "key": "coding-check-1",
+          "domain": "coding",
+          "incumbent": "filter",
+          "answer": "filter",
+          "chooser": "filter",
+          "direct": "filter",
+          "supported_quantity": null
+        },
+        {
+          "key": "math-check-1",
+          "domain": "math",
+          "incumbent": "area",
+          "answer": "area",
+          "chooser": "area",
+          "direct": "area",
+          "supported_quantity": null
+        },
+        {
+          "key": "conversation-train-4",
+          "domain": "conversation",
+          "incumbent": "thank",
+          "answer": "thank",
+          "chooser": "thank",
+          "direct": "thank",
+          "supported_quantity": null
+        }
+      ],
+      "replay_earlier": {
+        "n": 36,
+        "correct": 31,
+        "gains": 0,
+        "losses": 0
+      }
+    },
+    {
+      "wave": 5,
+      "cutoff": "b21afe1758f3c6a5b2f81fdf94d5fc97d338ffbbf27788a285d7a82f0fdcc55d",
+      "scores": {
+        "incumbent": {
+          "n": 18,
+          "correct": 15,
+          "gains": 0,
+          "losses": 0
+        },
+        "chooser": {
+          "n": 18,
+          "correct": 15,
+          "gains": 0,
+          "losses": 0
+        },
+        "direct": {
+          "n": 18,
+          "correct": 15,
+          "gains": 0,
+          "losses": 0
+        }
+      },
+      "rows": [
+        {
+          "key": "fresh-0",
+          "domain": "coding",
+          "incumbent": "map",
+          "answer": "map",
+          "chooser": "map",
+          "direct": "map",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-1",
+          "domain": "ml",
+          "incumbent": "train",
+          "answer": "train",
+          "chooser": "train",
+          "direct": "train",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-2",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "answer": "ns",
+          "chooser": "ns",
+          "direct": "ns",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-3",
+          "domain": "conversation",
+          "incumbent": "thank",
+          "answer": "thank",
+          "chooser": "thank",
+          "direct": "thank",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-4",
+          "domain": "physics",
+          "incumbent": "at",
+          "answer": "solid",
+          "chooser": "at",
+          "direct": "at",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-5",
+          "domain": "math",
+          "incumbent": "area",
+          "answer": "area",
+          "chooser": "area",
+          "direct": "area",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-6",
+          "domain": "engineering",
+          "incumbent": "ns",
+          "answer": "us",
+          "chooser": "ns",
+          "direct": "ns",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-7",
+          "domain": "coding",
+          "incumbent": "filter",
+          "answer": "filter",
+          "chooser": "filter",
+          "direct": "filter",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-8",
+          "domain": "conversation",
+          "incumbent": "confirm",
+          "answer": "confirm",
+          "chooser": "confirm",
+          "direct": "confirm",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-9",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "gas",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-10",
+          "domain": "ml",
+          "incumbent": "validation",
+          "answer": "validation",
+          "chooser": "validation",
+          "direct": "validation",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-11",
+          "domain": "math",
+          "incumbent": "length",
+          "answer": "length",
+          "chooser": "length",
+          "direct": "length",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-12",
+          "domain": "ml",
+          "incumbent": "test",
+          "answer": "test",
+          "chooser": "test",
+          "direct": "test",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-13",
+          "domain": "engineering",
+          "incumbent": "ms",
+          "answer": "ms",
+          "chooser": "ms",
+          "direct": "ms",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-14",
+          "domain": "math",
+          "incumbent": "volume",
+          "answer": "volume",
+          "chooser": "volume",
+          "direct": "volume",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-15",
+          "domain": "physics",
+          "incumbent": "liquid",
+          "answer": "liquid",
+          "chooser": "liquid",
+          "direct": "liquid",
+          "supported_quantity": "19"
+        },
+        {
+          "key": "fresh-16",
+          "domain": "conversation",
+          "incumbent": "ask",
+          "answer": "ask",
+          "chooser": "ask",
+          "direct": "ask",
+          "supported_quantity": null
+        },
+        {
+          "key": "fresh-17",
+          "domain": "coding",
+          "incumbent": "sum",
+          "answer": "sum",
+          "chooser": "sum",
+          "direct": "sum",
+          "supported_quantity": null
+        }
+      ],
+      "replay_earlier": {
+        "n": 48,
+        "correct": 42,
+        "gains": 0,
+        "losses": 0
+      }
+    }
+  ]
+}

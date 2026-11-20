@@ -1,0 +1,2916 @@
+{
+ "heads": {
+  "incumbent": "2e6d1a7b912e0f4c9388b157c90c78411b371fb42d16d51ecaaa1ed415a0a1db",
+  "coding": "2e6d1a7b912e0f4c9388b157c90c78411b371fb42d16d51ecaaa1ed415a0a1db",
+  "conversation": "2e6d1a7b912e0f4c9388b157c90c78411b371fb42d16d51ecaaa1ed415a0a1db",
+  "engineering": "768fb1b3a0894dea491c67052defdf96d08653fc1ccef5df5941077167660001",
+  "math": "2e6d1a7b912e0f4c9388b157c90c78411b371fb42d16d51ecaaa1ed415a0a1db",
+  "ml": "2e6d1a7b912e0f4c9388b157c90c78411b371fb42d16d51ecaaa1ed415a0a1db",
+  "physics": "cabacb09b2786f96c24362553ce88c5ea43b58dd56b614c8ccd2a3e05cd85b70"
+ },
+ "rounds": [
+  {
+   "number": 1,
+   "predictions_sha256": "f92165588f4542dbfc1412e20fe99da6a19a2f42266bbd3f3ad0502ad6a0a58d",
+   "scores": {
+    "incumbent": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "newest": {
+     "n": 12,
+     "correct": 10,
+     "gains": 1,
+     "losses": 1
+    },
+    "best_previous": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "random": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 1
+    },
+    "typed": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "feedback": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "nearest_candidate": {
+     "n": 12,
+     "correct": 10,
+     "gains": 1,
+     "losses": 1
+    },
+    "nearest_direct": {
+     "n": 12,
+     "correct": 10,
+     "gains": 1,
+     "losses": 1
+    },
+    "allowed_base": {
+     "n": 12,
+     "correct": 10,
+     "gains": 1,
+     "losses": 1
+    },
+    "hindsight": {
+     "n": 12,
+     "correct": 11,
+     "gains": 1,
+     "losses": 0
+    }
+   },
+   "prior_feedback_holds": {
+    "n": 0,
+    "correct": 0,
+    "gains": 0,
+    "losses": 0
+   },
+   "rows": [
+    {
+     "key": "physics-extra-10",
+     "domain": "physics",
+     "question": "It is sixteen Celsius degrees above zero.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid"
+     ],
+     "answer": "liquid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "liquid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "liquid",
+      "nearest_direct": "liquid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "conversation",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "liquid"
+    },
+    {
+     "key": "engineering-extra-11",
+     "domain": "engineering",
+     "question": "A pulse lasts for one million nanoseconds.",
+     "outputs": [
+      "ms",
+      "ms",
+      "ms",
+      "us",
+      "ms",
+      "ms",
+      "ms"
+     ],
+     "answer": "ms",
+     "predictions": {
+      "incumbent": "ms",
+      "newest": "us",
+      "best_previous": "ms",
+      "random": "ms",
+      "typed": "ms",
+      "feedback": "ms",
+      "nearest_candidate": "us",
+      "nearest_direct": "us",
+      "allowed_base": "ms"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "engineering"
+     },
+     "support": {},
+     "nearest_label": "us"
+    },
+    {
+     "key": "ml-check-0",
+     "domain": "ml",
+     "question": "Gradient updates consume these samples during fitting.",
+     "outputs": [
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "validation"
+     ],
+     "answer": "train",
+     "predictions": {
+      "incumbent": "train",
+      "newest": "train",
+      "best_previous": "train",
+      "random": "validation",
+      "typed": "train",
+      "feedback": "train",
+      "nearest_candidate": "train",
+      "nearest_direct": "train",
+      "allowed_base": "train"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "incumbent",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "train"
+    },
+    {
+     "key": "engineering-extra-8",
+     "domain": "engineering",
+     "question": "The timer period equals 1e-3 s.",
+     "outputs": [
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms"
+     ],
+     "answer": "ms",
+     "predictions": {
+      "incumbent": "ms",
+      "newest": "ms",
+      "best_previous": "ms",
+      "random": "ms",
+      "typed": "ms",
+      "feedback": "ms",
+      "nearest_candidate": "ms",
+      "nearest_direct": "ms",
+      "allowed_base": "ms"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ms"
+    },
+    {
+     "key": "conversation-train-3",
+     "domain": "conversation",
+     "question": "You and the host settled on table eight at seven. Acknowledge the booking.",
+     "outputs": [
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm"
+     ],
+     "answer": "confirm",
+     "predictions": {
+      "incumbent": "confirm",
+      "newest": "confirm",
+      "best_previous": "confirm",
+      "random": "confirm",
+      "typed": "confirm",
+      "feedback": "confirm",
+      "nearest_candidate": "confirm",
+      "nearest_direct": "confirm",
+      "allowed_base": "confirm"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "incumbent",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "confirm"
+    },
+    {
+     "key": "physics-extra-12",
+     "domain": "physics",
+     "question": "Read the temperature as -38 C.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "solid"
+     ],
+     "answer": "solid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "solid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "solid",
+      "nearest_direct": "solid",
+      "allowed_base": "solid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "physics"
+     },
+     "support": {},
+     "nearest_label": "solid"
+    },
+    {
+     "key": "coding-check-0",
+     "domain": "coding",
+     "question": "Turn every sentence into its uppercase form.",
+     "outputs": [
+      "map",
+      "map",
+      "map",
+      "map",
+      "map",
+      "map",
+      "map"
+     ],
+     "answer": "map",
+     "predictions": {
+      "incumbent": "map",
+      "newest": "map",
+      "best_previous": "map",
+      "random": "map",
+      "typed": "map",
+      "feedback": "map",
+      "nearest_candidate": "map",
+      "nearest_direct": "map",
+      "allowed_base": "map"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "map"
+    },
+    {
+     "key": "math-train-3",
+     "domain": "math",
+     "question": "How much wallpaper covers the wall?",
+     "outputs": [
+      "area",
+      "area",
+      "area",
+      "area",
+      "area",
+      "area",
+      "area"
+     ],
+     "answer": "area",
+     "predictions": {
+      "incumbent": "area",
+      "newest": "area",
+      "best_previous": "area",
+      "random": "area",
+      "typed": "area",
+      "feedback": "area",
+      "nearest_candidate": "area",
+      "nearest_direct": "area",
+      "allowed_base": "area"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "incumbent",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "area"
+    },
+    {
+     "key": "physics-extra-11",
+     "domain": "physics",
+     "question": "It is sixteen Celsius degrees above one hundred.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid"
+     ],
+     "answer": "gas",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "liquid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "liquid",
+      "nearest_direct": "liquid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "liquid"
+    },
+    {
+     "key": "physics-extra-5",
+     "domain": "physics",
+     "question": "The reading is one hundred and twelve degrees Celsius.",
+     "outputs": [
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas"
+     ],
+     "answer": "gas",
+     "predictions": {
+      "incumbent": "gas",
+      "newest": "gas",
+      "best_previous": "gas",
+      "random": "gas",
+      "typed": "gas",
+      "feedback": "gas",
+      "nearest_candidate": "gas",
+      "nearest_direct": "gas",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "gas"
+    },
+    {
+     "key": "coding-train-3",
+     "domain": "coding",
+     "question": "Discard all the temperatures below freezing.",
+     "outputs": [
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter"
+     ],
+     "answer": "filter",
+     "predictions": {
+      "incumbent": "filter",
+      "newest": "filter",
+      "best_previous": "filter",
+      "random": "filter",
+      "typed": "filter",
+      "feedback": "filter",
+      "nearest_candidate": "filter",
+      "nearest_direct": "filter",
+      "allowed_base": "filter"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "filter"
+    },
+    {
+     "key": "conversation-check-2",
+     "domain": "conversation",
+     "question": "A friend stayed late to help with your move. Express your appreciation.",
+     "outputs": [
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank"
+     ],
+     "answer": "thank",
+     "predictions": {
+      "incumbent": "thank",
+      "newest": "thank",
+      "best_previous": "thank",
+      "random": "thank",
+      "typed": "thank",
+      "feedback": "thank",
+      "nearest_candidate": "thank",
+      "nearest_direct": "thank",
+      "allowed_base": "thank"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "incumbent",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "thank"
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "predictions_sha256": "9cd5ec493d76693a73c8a6d66cb5a59b11155b9c4fd75eebde09c71f8520d331",
+   "scores": {
+    "incumbent": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "newest": {
+     "n": 12,
+     "correct": 9,
+     "gains": 2,
+     "losses": 2
+    },
+    "best_previous": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "random": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "typed": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "feedback": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "nearest_candidate": {
+     "n": 12,
+     "correct": 9,
+     "gains": 1,
+     "losses": 1
+    },
+    "nearest_direct": {
+     "n": 12,
+     "correct": 10,
+     "gains": 2,
+     "losses": 1
+    },
+    "allowed_base": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "hindsight": {
+     "n": 12,
+     "correct": 11,
+     "gains": 2,
+     "losses": 0
+    }
+   },
+   "prior_feedback_holds": {
+    "n": 12,
+    "correct": 10,
+    "gains": 0,
+    "losses": 0
+   },
+   "rows": [
+    {
+     "key": "physics-train-1",
+     "domain": "physics",
+     "question": "It has cooled to -6 C.",
+     "outputs": [
+      "solid",
+      "solid",
+      "solid",
+      "solid",
+      "solid",
+      "solid",
+      "solid"
+     ],
+     "answer": "solid",
+     "predictions": {
+      "incumbent": "solid",
+      "newest": "solid",
+      "best_previous": "solid",
+      "random": "solid",
+      "typed": "solid",
+      "feedback": "solid",
+      "nearest_candidate": "solid",
+      "nearest_direct": "solid",
+      "allowed_base": "solid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "solid"
+    },
+    {
+     "key": "conversation-train-0",
+     "domain": "conversation",
+     "question": "The caller wants a ride but has given no pickup address.",
+     "outputs": [
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask"
+     ],
+     "answer": "ask",
+     "predictions": {
+      "incumbent": "ask",
+      "newest": "ask",
+      "best_previous": "ask",
+      "random": "ask",
+      "typed": "ask",
+      "feedback": "ask",
+      "nearest_candidate": "ask",
+      "nearest_direct": "ask",
+      "allowed_base": "ask"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ask"
+    },
+    {
+     "key": "engineering-extra-6",
+     "domain": "engineering",
+     "question": "The timer period equals 1e-9 s.",
+     "outputs": [
+      "ns",
+      "ns",
+      "ns",
+      "us",
+      "ns",
+      "ns",
+      "ns"
+     ],
+     "answer": "ns",
+     "predictions": {
+      "incumbent": "ns",
+      "newest": "us",
+      "best_previous": "ns",
+      "random": "ns",
+      "typed": "ns",
+      "feedback": "ns",
+      "nearest_candidate": "ns",
+      "nearest_direct": "ns",
+      "allowed_base": "ns"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ns"
+    },
+    {
+     "key": "physics-check-1",
+     "domain": "physics",
+     "question": "The sample is at 47 C.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid"
+     ],
+     "answer": "liquid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "liquid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "liquid",
+      "nearest_direct": "liquid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "win": 1
+     },
+     "nearest_label": "liquid"
+    },
+    {
+     "key": "engineering-extra-3",
+     "domain": "engineering",
+     "question": "A trace records a delay of exactly 1,000 picoseconds.",
+     "outputs": [
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us"
+     ],
+     "answer": "ns",
+     "predictions": {
+      "incumbent": "us",
+      "newest": "us",
+      "best_previous": "us",
+      "random": "us",
+      "typed": "us",
+      "feedback": "us",
+      "nearest_candidate": "us",
+      "nearest_direct": "ns",
+      "allowed_base": "us"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "conversation",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ns"
+    },
+    {
+     "key": "physics-extra-7",
+     "domain": "physics",
+     "question": "A gauge reports 9 degrees C.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid"
+     ],
+     "answer": "liquid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "liquid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "liquid",
+      "nearest_direct": "liquid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "win": 1
+     },
+     "nearest_label": "liquid"
+    },
+    {
+     "key": "engineering-train-2",
+     "domain": "engineering",
+     "question": "One millionth of a second.",
+     "outputs": [
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us"
+     ],
+     "answer": "us",
+     "predictions": {
+      "incumbent": "us",
+      "newest": "us",
+      "best_previous": "us",
+      "random": "us",
+      "typed": "us",
+      "feedback": "us",
+      "nearest_candidate": "us",
+      "nearest_direct": "us",
+      "allowed_base": "us"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "us"
+    },
+    {
+     "key": "physics-train-3",
+     "domain": "physics",
+     "question": "It is maintained at 81 C.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "gas"
+     ],
+     "answer": "liquid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "gas",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "gas",
+      "nearest_direct": "gas",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "physics"
+     },
+     "support": {
+      "win": 1
+     },
+     "nearest_label": "gas"
+    },
+    {
+     "key": "ml-check-1",
+     "domain": "ml",
+     "question": "Tune the depth of the tree using these records.",
+     "outputs": [
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation"
+     ],
+     "answer": "validation",
+     "predictions": {
+      "incumbent": "validation",
+      "newest": "validation",
+      "best_previous": "validation",
+      "random": "validation",
+      "typed": "validation",
+      "feedback": "validation",
+      "nearest_candidate": "validation",
+      "nearest_direct": "validation",
+      "allowed_base": "validation"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "validation"
+    },
+    {
+     "key": "engineering-extra-1",
+     "domain": "engineering",
+     "question": "The counter tick is 0.001 milliseconds.",
+     "outputs": [
+      "ms",
+      "ms",
+      "ms",
+      "us",
+      "ms",
+      "ms",
+      "ms"
+     ],
+     "answer": "us",
+     "predictions": {
+      "incumbent": "ms",
+      "newest": "us",
+      "best_previous": "ms",
+      "random": "ms",
+      "typed": "ms",
+      "feedback": "ms",
+      "nearest_candidate": "ms",
+      "nearest_direct": "ms",
+      "allowed_base": "ms"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "loss": 1
+     },
+     "nearest_label": "ms"
+    },
+    {
+     "key": "math-train-4",
+     "domain": "math",
+     "question": "How much water fits in the tank?",
+     "outputs": [
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume"
+     ],
+     "answer": "volume",
+     "predictions": {
+      "incumbent": "volume",
+      "newest": "volume",
+      "best_previous": "volume",
+      "random": "volume",
+      "typed": "volume",
+      "feedback": "volume",
+      "nearest_candidate": "volume",
+      "nearest_direct": "volume",
+      "allowed_base": "volume"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "incumbent",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "volume"
+    },
+    {
+     "key": "physics-check-0",
+     "domain": "physics",
+     "question": "A thermometer reads -13 degrees Celsius.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "solid"
+     ],
+     "answer": "solid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "solid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "solid",
+      "nearest_direct": "solid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "physics"
+     },
+     "support": {
+      "win": 1
+     },
+     "nearest_label": "solid"
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "predictions_sha256": "cce1721284a405bf8b94981dcb8a4438710d2b07eb400f2a2c18b5dd4c2dc0df",
+   "scores": {
+    "incumbent": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "newest": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 1
+    },
+    "best_previous": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "random": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "typed": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "feedback": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "nearest_candidate": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    },
+    "nearest_direct": {
+     "n": 12,
+     "correct": 8,
+     "gains": 1,
+     "losses": 3
+    },
+    "allowed_base": {
+     "n": 12,
+     "correct": 11,
+     "gains": 1,
+     "losses": 0
+    },
+    "hindsight": {
+     "n": 12,
+     "correct": 10,
+     "gains": 0,
+     "losses": 0
+    }
+   },
+   "prior_feedback_holds": {
+    "n": 24,
+    "correct": 19,
+    "gains": 0,
+    "losses": 0
+   },
+   "rows": [
+    {
+     "key": "coding-train-5",
+     "domain": "coding",
+     "question": "Add up all the invoice amounts.",
+     "outputs": [
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum"
+     ],
+     "answer": "sum",
+     "predictions": {
+      "incumbent": "sum",
+      "newest": "sum",
+      "best_previous": "sum",
+      "random": "sum",
+      "typed": "sum",
+      "feedback": "sum",
+      "nearest_candidate": "sum",
+      "nearest_direct": "sum",
+      "allowed_base": "sum"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "sum"
+    },
+    {
+     "key": "math-train-0",
+     "domain": "math",
+     "question": "How far does the cable span between the poles?",
+     "outputs": [
+      "length",
+      "length",
+      "length",
+      "length",
+      "length",
+      "length",
+      "length"
+     ],
+     "answer": "length",
+     "predictions": {
+      "incumbent": "length",
+      "newest": "length",
+      "best_previous": "length",
+      "random": "length",
+      "typed": "length",
+      "feedback": "length",
+      "nearest_candidate": "length",
+      "nearest_direct": "volume",
+      "allowed_base": "length"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "incumbent",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "volume"
+    },
+    {
+     "key": "engineering-train-4",
+     "domain": "engineering",
+     "question": "One thousandth of a second.",
+     "outputs": [
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms",
+      "ms"
+     ],
+     "answer": "ms",
+     "predictions": {
+      "incumbent": "ms",
+      "newest": "ms",
+      "best_previous": "ms",
+      "random": "ms",
+      "typed": "ms",
+      "feedback": "ms",
+      "nearest_candidate": "ms",
+      "nearest_direct": "ms",
+      "allowed_base": "ms"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "loss": 1
+     },
+     "nearest_label": "ms"
+    },
+    {
+     "key": "conversation-check-1",
+     "domain": "conversation",
+     "question": "The client agreed to Thursday at three. Acknowledge the appointment.",
+     "outputs": [
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank"
+     ],
+     "answer": "confirm",
+     "predictions": {
+      "incumbent": "thank",
+      "newest": "thank",
+      "best_previous": "thank",
+      "random": "thank",
+      "typed": "thank",
+      "feedback": "thank",
+      "nearest_candidate": "thank",
+      "nearest_direct": "confirm",
+      "allowed_base": "confirm"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "confirm"
+    },
+    {
+     "key": "math-check-0",
+     "domain": "math",
+     "question": "How much cord will reach between these two sockets?",
+     "outputs": [
+      "length",
+      "length",
+      "length",
+      "length",
+      "length",
+      "length",
+      "length"
+     ],
+     "answer": "length",
+     "predictions": {
+      "incumbent": "length",
+      "newest": "length",
+      "best_previous": "length",
+      "random": "length",
+      "typed": "length",
+      "feedback": "length",
+      "nearest_candidate": "length",
+      "nearest_direct": "volume",
+      "allowed_base": "length"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "volume"
+    },
+    {
+     "key": "engineering-train-0",
+     "domain": "engineering",
+     "question": "One billionth of a second.",
+     "outputs": [
+      "ns",
+      "ns",
+      "ns",
+      "us",
+      "ns",
+      "ns",
+      "ns"
+     ],
+     "answer": "ns",
+     "predictions": {
+      "incumbent": "ns",
+      "newest": "us",
+      "best_previous": "ns",
+      "random": "ns",
+      "typed": "ns",
+      "feedback": "ns",
+      "nearest_candidate": "ns",
+      "nearest_direct": "ns",
+      "allowed_base": "ns"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ns"
+    },
+    {
+     "key": "ml-train-4",
+     "domain": "ml",
+     "question": "Use these untouched examples once after all choices are frozen.",
+     "outputs": [
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation"
+     ],
+     "answer": "test",
+     "predictions": {
+      "incumbent": "validation",
+      "newest": "validation",
+      "best_previous": "validation",
+      "random": "validation",
+      "typed": "validation",
+      "feedback": "validation",
+      "nearest_candidate": "validation",
+      "nearest_direct": "validation",
+      "allowed_base": "validation"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "validation"
+    },
+    {
+     "key": "physics-train-5",
+     "domain": "physics",
+     "question": "The temperature reads 202 C.",
+     "outputs": [
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas"
+     ],
+     "answer": "gas",
+     "predictions": {
+      "incumbent": "gas",
+      "newest": "gas",
+      "best_previous": "gas",
+      "random": "gas",
+      "typed": "gas",
+      "feedback": "gas",
+      "nearest_candidate": "gas",
+      "nearest_direct": "gas",
+      "allowed_base": "gas"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "gas"
+    },
+    {
+     "key": "engineering-extra-7",
+     "domain": "engineering",
+     "question": "The timer period equals 1e-6 s.",
+     "outputs": [
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us"
+     ],
+     "answer": "us",
+     "predictions": {
+      "incumbent": "us",
+      "newest": "us",
+      "best_previous": "us",
+      "random": "us",
+      "typed": "us",
+      "feedback": "us",
+      "nearest_candidate": "us",
+      "nearest_direct": "us",
+      "allowed_base": "us"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "us"
+    },
+    {
+     "key": "ml-check-2",
+     "domain": "ml",
+     "question": "Assess the final locked model on this previously untouched set.",
+     "outputs": [
+      "test",
+      "test",
+      "test",
+      "test",
+      "test",
+      "test",
+      "test"
+     ],
+     "answer": "test",
+     "predictions": {
+      "incumbent": "test",
+      "newest": "test",
+      "best_previous": "test",
+      "random": "test",
+      "typed": "test",
+      "feedback": "test",
+      "nearest_candidate": "test",
+      "nearest_direct": "train",
+      "allowed_base": "test"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "incumbent",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "train"
+    },
+    {
+     "key": "coding-train-1",
+     "domain": "coding",
+     "question": "Replace every distance in miles with its value in kilometers.",
+     "outputs": [
+      "map",
+      "map",
+      "map",
+      "map",
+      "map",
+      "map",
+      "map"
+     ],
+     "answer": "map",
+     "predictions": {
+      "incumbent": "map",
+      "newest": "map",
+      "best_previous": "map",
+      "random": "map",
+      "typed": "map",
+      "feedback": "map",
+      "nearest_candidate": "map",
+      "nearest_direct": "map",
+      "allowed_base": "map"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "incumbent",
+      "random": "conversation",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "map"
+    },
+    {
+     "key": "coding-check-2",
+     "domain": "coding",
+     "question": "Find the total duration of all the calls.",
+     "outputs": [
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum"
+     ],
+     "answer": "sum",
+     "predictions": {
+      "incumbent": "sum",
+      "newest": "sum",
+      "best_previous": "sum",
+      "random": "sum",
+      "typed": "sum",
+      "feedback": "sum",
+      "nearest_candidate": "sum",
+      "nearest_direct": "sum",
+      "allowed_base": "sum"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "incumbent",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "sum"
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "predictions_sha256": "fc7e04946c540931e999ff706eec2faf7571bdf2c8d4ae1d99de6e13e59b98ee",
+   "scores": {
+    "incumbent": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "newest": {
+     "n": 12,
+     "correct": 10,
+     "gains": 2,
+     "losses": 1
+    },
+    "best_previous": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "random": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "typed": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "feedback": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "nearest_candidate": {
+     "n": 12,
+     "correct": 11,
+     "gains": 2,
+     "losses": 0
+    },
+    "nearest_direct": {
+     "n": 12,
+     "correct": 11,
+     "gains": 3,
+     "losses": 1
+    },
+    "allowed_base": {
+     "n": 12,
+     "correct": 9,
+     "gains": 0,
+     "losses": 0
+    },
+    "hindsight": {
+     "n": 12,
+     "correct": 11,
+     "gains": 2,
+     "losses": 0
+    }
+   },
+   "prior_feedback_holds": {
+    "n": 36,
+    "correct": 29,
+    "gains": 0,
+    "losses": 0
+   },
+   "rows": [
+    {
+     "key": "conversation-check-0",
+     "domain": "conversation",
+     "question": "The customer asks for a delivery but gives no destination.",
+     "outputs": [
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask"
+     ],
+     "answer": "ask",
+     "predictions": {
+      "incumbent": "ask",
+      "newest": "ask",
+      "best_previous": "ask",
+      "random": "ask",
+      "typed": "ask",
+      "feedback": "ask",
+      "nearest_candidate": "ask",
+      "nearest_direct": "ask",
+      "allowed_base": "ask"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "incumbent",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ask"
+    },
+    {
+     "key": "ml-train-1",
+     "domain": "ml",
+     "question": "We fit the regression coefficients on these labeled rows.",
+     "outputs": [
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "train"
+     ],
+     "answer": "train",
+     "predictions": {
+      "incumbent": "train",
+      "newest": "train",
+      "best_previous": "train",
+      "random": "train",
+      "typed": "train",
+      "feedback": "train",
+      "nearest_candidate": "train",
+      "nearest_direct": "train",
+      "allowed_base": "train"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "train"
+    },
+    {
+     "key": "engineering-check-0",
+     "domain": "engineering",
+     "question": "The timing unit is a thousandth of a microsecond.",
+     "outputs": [
+      "ns",
+      "ns",
+      "ns",
+      "us",
+      "ns",
+      "ns",
+      "ns"
+     ],
+     "answer": "ns",
+     "predictions": {
+      "incumbent": "ns",
+      "newest": "us",
+      "best_previous": "ns",
+      "random": "ns",
+      "typed": "ns",
+      "feedback": "ns",
+      "nearest_candidate": "ns",
+      "nearest_direct": "ns",
+      "allowed_base": "ns"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "conversation",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ns"
+    },
+    {
+     "key": "physics-extra-6",
+     "domain": "physics",
+     "question": "A gauge reports \u22129 degrees C.",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "solid"
+     ],
+     "answer": "solid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "solid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "solid",
+      "nearest_direct": "solid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "engineering",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "physics"
+     },
+     "support": {
+      "win": 2,
+      "loss": 1
+     },
+     "nearest_label": "solid"
+    },
+    {
+     "key": "ml-train-3",
+     "domain": "ml",
+     "question": "Choose the epoch for early stopping using this split.",
+     "outputs": [
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation"
+     ],
+     "answer": "validation",
+     "predictions": {
+      "incumbent": "validation",
+      "newest": "validation",
+      "best_previous": "validation",
+      "random": "validation",
+      "typed": "validation",
+      "feedback": "validation",
+      "nearest_candidate": "validation",
+      "nearest_direct": "train",
+      "allowed_base": "validation"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "incumbent",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "train"
+    },
+    {
+     "key": "physics-check-2",
+     "domain": "physics",
+     "question": "The measured temperature is 164 degrees Celsius.",
+     "outputs": [
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas",
+      "gas"
+     ],
+     "answer": "gas",
+     "predictions": {
+      "incumbent": "gas",
+      "newest": "gas",
+      "best_previous": "gas",
+      "random": "gas",
+      "typed": "gas",
+      "feedback": "gas",
+      "nearest_candidate": "gas",
+      "nearest_direct": "gas",
+      "allowed_base": "gas"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "gas"
+    },
+    {
+     "key": "math-check-2",
+     "domain": "math",
+     "question": "How much oil will this container hold?",
+     "outputs": [
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume"
+     ],
+     "answer": "volume",
+     "predictions": {
+      "incumbent": "volume",
+      "newest": "volume",
+      "best_previous": "volume",
+      "random": "volume",
+      "typed": "volume",
+      "feedback": "volume",
+      "nearest_candidate": "volume",
+      "nearest_direct": "volume",
+      "allowed_base": "volume"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "incumbent",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "volume"
+    },
+    {
+     "key": "engineering-check-2",
+     "domain": "engineering",
+     "question": "A controller waits for exactly one thousand microseconds.",
+     "outputs": [
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us",
+      "us"
+     ],
+     "answer": "ms",
+     "predictions": {
+      "incumbent": "us",
+      "newest": "us",
+      "best_previous": "us",
+      "random": "us",
+      "typed": "us",
+      "feedback": "us",
+      "nearest_candidate": "us",
+      "nearest_direct": "ms",
+      "allowed_base": "us"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ms"
+    },
+    {
+     "key": "engineering-check-1",
+     "domain": "engineering",
+     "question": "The device clock period is one thousand nanoseconds.",
+     "outputs": [
+      "ns",
+      "ns",
+      "ns",
+      "us",
+      "ns",
+      "ns",
+      "ns"
+     ],
+     "answer": "us",
+     "predictions": {
+      "incumbent": "ns",
+      "newest": "us",
+      "best_previous": "ns",
+      "random": "ns",
+      "typed": "ns",
+      "feedback": "ns",
+      "nearest_candidate": "us",
+      "nearest_direct": "us",
+      "allowed_base": "ns"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "incumbent",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "engineering"
+     },
+     "support": {},
+     "nearest_label": "us"
+    },
+    {
+     "key": "coding-check-1",
+     "domain": "coding",
+     "question": "Retain only the records that passed validation.",
+     "outputs": [
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter"
+     ],
+     "answer": "filter",
+     "predictions": {
+      "incumbent": "filter",
+      "newest": "filter",
+      "best_previous": "filter",
+      "random": "filter",
+      "typed": "filter",
+      "feedback": "filter",
+      "nearest_candidate": "filter",
+      "nearest_direct": "filter",
+      "allowed_base": "filter"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "incumbent",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "filter"
+    },
+    {
+     "key": "math-check-1",
+     "domain": "math",
+     "question": "How much paper covers the face of this sign?",
+     "outputs": [
+      "area",
+      "area",
+      "area",
+      "area",
+      "area",
+      "area",
+      "area"
+     ],
+     "answer": "area",
+     "predictions": {
+      "incumbent": "area",
+      "newest": "area",
+      "best_previous": "area",
+      "random": "area",
+      "typed": "area",
+      "feedback": "area",
+      "nearest_candidate": "area",
+      "nearest_direct": "area",
+      "allowed_base": "area"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "area"
+    },
+    {
+     "key": "conversation-train-4",
+     "domain": "conversation",
+     "question": "A colleague covered your shift as a favor. Express appreciation.",
+     "outputs": [
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank"
+     ],
+     "answer": "thank",
+     "predictions": {
+      "incumbent": "thank",
+      "newest": "thank",
+      "best_previous": "thank",
+      "random": "thank",
+      "typed": "thank",
+      "feedback": "thank",
+      "nearest_candidate": "thank",
+      "nearest_direct": "thank",
+      "allowed_base": "thank"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "incumbent",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "thank"
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "predictions_sha256": "36d7ad25cd794b5299e83ef787aad1a2f35ae61f5618e8708dd556a38e998084",
+   "scores": {
+    "incumbent": {
+     "n": 18,
+     "correct": 15,
+     "gains": 0,
+     "losses": 0
+    },
+    "newest": {
+     "n": 18,
+     "correct": 15,
+     "gains": 2,
+     "losses": 2
+    },
+    "best_previous": {
+     "n": 18,
+     "correct": 15,
+     "gains": 1,
+     "losses": 1
+    },
+    "random": {
+     "n": 18,
+     "correct": 15,
+     "gains": 0,
+     "losses": 0
+    },
+    "typed": {
+     "n": 18,
+     "correct": 16,
+     "gains": 1,
+     "losses": 0
+    },
+    "feedback": {
+     "n": 18,
+     "correct": 16,
+     "gains": 1,
+     "losses": 0
+    },
+    "nearest_candidate": {
+     "n": 18,
+     "correct": 17,
+     "gains": 2,
+     "losses": 0
+    },
+    "nearest_direct": {
+     "n": 18,
+     "correct": 18,
+     "gains": 3,
+     "losses": 0
+    },
+    "allowed_base": {
+     "n": 18,
+     "correct": 16,
+     "gains": 1,
+     "losses": 0
+    },
+    "hindsight": {
+     "n": 18,
+     "correct": 17,
+     "gains": 2,
+     "losses": 0
+    }
+   },
+   "prior_feedback_holds": {
+    "n": 48,
+    "correct": 38,
+    "gains": 0,
+    "losses": 0
+   },
+   "rows": [
+    {
+     "key": "fresh-0",
+     "domain": "coding",
+     "question": "A CSV import has mixed-case airport codes. Make each code uppercase without changing the number of records.",
+     "outputs": [
+      "map",
+      "map",
+      "map",
+      "map",
+      "map",
+      "map",
+      "map"
+     ],
+     "answer": "map",
+     "predictions": {
+      "incumbent": "map",
+      "newest": "map",
+      "best_previous": "map",
+      "random": "map",
+      "typed": "map",
+      "feedback": "map",
+      "nearest_candidate": "map",
+      "nearest_direct": "map",
+      "allowed_base": "map"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "physics",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "map"
+    },
+    {
+     "key": "fresh-1",
+     "domain": "ml",
+     "question": "Optimize the network parameters on one partition by applying the gradient after each minibatch. Which partition supplies those examples?",
+     "outputs": [
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "validation"
+     ],
+     "answer": "train",
+     "predictions": {
+      "incumbent": "train",
+      "newest": "train",
+      "best_previous": "validation",
+      "random": "train",
+      "typed": "train",
+      "feedback": "train",
+      "nearest_candidate": "train",
+      "nearest_direct": "train",
+      "allowed_base": "train"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "physics",
+      "random": "conversation",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "train"
+    },
+    {
+     "key": "fresh-2",
+     "domain": "engineering",
+     "question": "An arbiter responds one tick after a request on a clock ticking one billion times per second. Which unit makes the delay exactly one?",
+     "outputs": [
+      "ns",
+      "ns",
+      "ns",
+      "us",
+      "ns",
+      "ns",
+      "ns"
+     ],
+     "answer": "ns",
+     "predictions": {
+      "incumbent": "ns",
+      "newest": "us",
+      "best_previous": "ns",
+      "random": "ns",
+      "typed": "ns",
+      "feedback": "ns",
+      "nearest_candidate": "ns",
+      "nearest_direct": "ns",
+      "allowed_base": "ns"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "physics",
+      "random": "conversation",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "win": 1
+     },
+     "nearest_label": "ns"
+    },
+    {
+     "key": "fresh-3",
+     "domain": "conversation",
+     "question": "Your colleague has just located your lost presentation clicker and returned it. What next move acknowledges that help?",
+     "outputs": [
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank",
+      "thank"
+     ],
+     "answer": "thank",
+     "predictions": {
+      "incumbent": "thank",
+      "newest": "thank",
+      "best_previous": "thank",
+      "random": "thank",
+      "typed": "thank",
+      "feedback": "thank",
+      "nearest_candidate": "thank",
+      "nearest_direct": "thank",
+      "allowed_base": "thank"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "physics",
+      "random": "math",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "thank"
+    },
+    {
+     "key": "fresh-4",
+     "domain": "physics",
+     "question": "A sealed sample of pure water is brought to equilibrium at minus twelve degrees Celsius and one atmosphere. Identify its phase.",
+     "outputs": [
+      "at",
+      "at",
+      "at",
+      "at",
+      "at",
+      "at",
+      "solid"
+     ],
+     "answer": "solid",
+     "predictions": {
+      "incumbent": "at",
+      "newest": "solid",
+      "best_previous": "solid",
+      "random": "at",
+      "typed": "solid",
+      "feedback": "solid",
+      "nearest_candidate": "solid",
+      "nearest_direct": "solid",
+      "allowed_base": "solid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "physics",
+      "random": "conversation",
+      "typed": "physics",
+      "feedback": "physics",
+      "nearest_candidate": "physics"
+     },
+     "support": {},
+     "nearest_label": "solid"
+    },
+    {
+     "key": "fresh-5",
+     "domain": "math",
+     "question": "A display maker wants the amount of protective film needed to cover the rectangular screen face. Which kind of measure is needed?",
+     "outputs": [
+      "area",
+      "area",
+      "area",
+      "area",
+      "area",
+      "area",
+      "area"
+     ],
+     "answer": "area",
+     "predictions": {
+      "incumbent": "area",
+      "newest": "area",
+      "best_previous": "area",
+      "random": "area",
+      "typed": "area",
+      "feedback": "area",
+      "nearest_candidate": "area",
+      "nearest_direct": "area",
+      "allowed_base": "area"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "physics",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "area"
+    },
+    {
+     "key": "fresh-6",
+     "domain": "engineering",
+     "question": "A controller waits exactly 0.000007 seconds. Which unit expresses this interval as the number 7?",
+     "outputs": [
+      "ns",
+      "ns",
+      "ns",
+      "us",
+      "ns",
+      "ns",
+      "ns"
+     ],
+     "answer": "us",
+     "predictions": {
+      "incumbent": "ns",
+      "newest": "us",
+      "best_previous": "ns",
+      "random": "ns",
+      "typed": "ns",
+      "feedback": "ns",
+      "nearest_candidate": "us",
+      "nearest_direct": "us",
+      "allowed_base": "ns"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "physics",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "engineering"
+     },
+     "support": {
+      "win": 1
+     },
+     "nearest_label": "us"
+    },
+    {
+     "key": "fresh-7",
+     "domain": "coding",
+     "question": "A list contains debits as negative integers along with zeros and credits. Return just the negative entries, unchanged.",
+     "outputs": [
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter",
+      "filter"
+     ],
+     "answer": "filter",
+     "predictions": {
+      "incumbent": "filter",
+      "newest": "filter",
+      "best_previous": "filter",
+      "random": "filter",
+      "typed": "filter",
+      "feedback": "filter",
+      "nearest_candidate": "filter",
+      "nearest_direct": "filter",
+      "allowed_base": "filter"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "physics",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "filter"
+    },
+    {
+     "key": "fresh-8",
+     "domain": "conversation",
+     "question": "Two colleagues have explicitly settled on the same room and time. Send a brief restatement of their arrangement so both have it on record.",
+     "outputs": [
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm",
+      "confirm"
+     ],
+     "answer": "confirm",
+     "predictions": {
+      "incumbent": "confirm",
+      "newest": "confirm",
+      "best_previous": "confirm",
+      "random": "confirm",
+      "typed": "confirm",
+      "feedback": "confirm",
+      "nearest_candidate": "confirm",
+      "nearest_direct": "confirm",
+      "allowed_base": "confirm"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "physics",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "confirm"
+    },
+    {
+     "key": "fresh-9",
+     "domain": "physics",
+     "question": "Pure water in a piston is kept at one atmosphere and allowed to equilibrate at 121 degrees Celsius. What is in the cylinder?",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid"
+     ],
+     "answer": "gas",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "liquid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "liquid",
+      "nearest_direct": "gas",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "physics",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "win": 3,
+      "loss": 1
+     },
+     "nearest_label": "gas"
+    },
+    {
+     "key": "fresh-10",
+     "domain": "ml",
+     "question": "One data partition is evaluated repeatedly while choosing between eight dropout settings; weights never take gradients from it. Which split is that?",
+     "outputs": [
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation",
+      "validation"
+     ],
+     "answer": "validation",
+     "predictions": {
+      "incumbent": "validation",
+      "newest": "validation",
+      "best_previous": "validation",
+      "random": "validation",
+      "typed": "validation",
+      "feedback": "validation",
+      "nearest_candidate": "validation",
+      "nearest_direct": "validation",
+      "allowed_base": "validation"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "physics",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "validation"
+    },
+    {
+     "key": "fresh-11",
+     "domain": "math",
+     "question": "A tailor follows the curved edge of a sleeve with a measuring tape to determine how much piping to cut. Which kind of measure is this?",
+     "outputs": [
+      "length",
+      "length",
+      "length",
+      "length",
+      "length",
+      "length",
+      "length"
+     ],
+     "answer": "length",
+     "predictions": {
+      "incumbent": "length",
+      "newest": "length",
+      "best_previous": "length",
+      "random": "length",
+      "typed": "length",
+      "feedback": "length",
+      "nearest_candidate": "length",
+      "nearest_direct": "length",
+      "allowed_base": "length"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "physics",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "length"
+    },
+    {
+     "key": "fresh-12",
+     "domain": "ml",
+     "question": "A benchmark partition is opened once for an independent final assessment after model selection, parameter fitting and threshold selection are finished.",
+     "outputs": [
+      "test",
+      "test",
+      "test",
+      "test",
+      "test",
+      "test",
+      "test"
+     ],
+     "answer": "test",
+     "predictions": {
+      "incumbent": "test",
+      "newest": "test",
+      "best_previous": "test",
+      "random": "test",
+      "typed": "test",
+      "feedback": "test",
+      "nearest_candidate": "test",
+      "nearest_direct": "test",
+      "allowed_base": "test"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "ml",
+      "best_previous": "physics",
+      "random": "physics",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "test"
+    },
+    {
+     "key": "fresh-13",
+     "domain": "engineering",
+     "question": "A peripheral's timer fires after exactly three thousandths of a second. In which unit is the duration three?",
+     "outputs": [
+      "ms",
+      "ms",
+      "ms",
+      "us",
+      "ms",
+      "ms",
+      "ms"
+     ],
+     "answer": "ms",
+     "predictions": {
+      "incumbent": "ms",
+      "newest": "us",
+      "best_previous": "ms",
+      "random": "ms",
+      "typed": "ms",
+      "feedback": "ms",
+      "nearest_candidate": "ms",
+      "nearest_direct": "ms",
+      "allowed_base": "ms"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "engineering",
+      "best_previous": "physics",
+      "random": "coding",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "loss": 1
+     },
+     "nearest_label": "ms"
+    },
+    {
+     "key": "fresh-14",
+     "domain": "math",
+     "question": "A gardener needs the capacity inside an empty planter before ordering soil. Which geometric measure supplies the capacity?",
+     "outputs": [
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume",
+      "volume"
+     ],
+     "answer": "volume",
+     "predictions": {
+      "incumbent": "volume",
+      "newest": "volume",
+      "best_previous": "volume",
+      "random": "volume",
+      "typed": "volume",
+      "feedback": "volume",
+      "nearest_candidate": "volume",
+      "nearest_direct": "volume",
+      "allowed_base": "volume"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "math",
+      "best_previous": "physics",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "volume"
+    },
+    {
+     "key": "fresh-15",
+     "domain": "physics",
+     "question": "At equilibrium a container of pure water at normal atmospheric pressure is at 19 degrees Celsius. Which phase should be entered in the log?",
+     "outputs": [
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid",
+      "liquid"
+     ],
+     "answer": "liquid",
+     "predictions": {
+      "incumbent": "liquid",
+      "newest": "liquid",
+      "best_previous": "liquid",
+      "random": "liquid",
+      "typed": "liquid",
+      "feedback": "liquid",
+      "nearest_candidate": "liquid",
+      "nearest_direct": "liquid",
+      "allowed_base": "liquid"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "physics",
+      "best_previous": "physics",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {
+      "win": 3,
+      "loss": 1
+     },
+     "nearest_label": "liquid"
+    },
+    {
+     "key": "fresh-16",
+     "domain": "conversation",
+     "question": "A coworker says to mail a signed invoice, but has given no recipient or address and none is on file. Which next move obtains what is missing?",
+     "outputs": [
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask",
+      "ask"
+     ],
+     "answer": "ask",
+     "predictions": {
+      "incumbent": "ask",
+      "newest": "ask",
+      "best_previous": "ask",
+      "random": "ask",
+      "typed": "ask",
+      "feedback": "ask",
+      "nearest_candidate": "ask",
+      "nearest_direct": "ask",
+      "allowed_base": "ask"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "conversation",
+      "best_previous": "physics",
+      "random": "incumbent",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "ask"
+    },
+    {
+     "key": "fresh-17",
+     "domain": "coding",
+     "question": "The meter reports consumption in watt-hours for each interval. Return one value for consumption over all intervals.",
+     "outputs": [
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum",
+      "sum"
+     ],
+     "answer": "sum",
+     "predictions": {
+      "incumbent": "sum",
+      "newest": "sum",
+      "best_previous": "sum",
+      "random": "sum",
+      "typed": "sum",
+      "feedback": "sum",
+      "nearest_candidate": "sum",
+      "nearest_direct": "sum",
+      "allowed_base": "sum"
+     },
+     "heads": {
+      "incumbent": "incumbent",
+      "newest": "coding",
+      "best_previous": "physics",
+      "random": "ml",
+      "typed": "incumbent",
+      "feedback": "incumbent",
+      "nearest_candidate": "incumbent"
+     },
+     "support": {},
+     "nearest_label": "sum"
+    }
+   ]
+  }
+ ],
+ "archived": {
+  "incumbent": {
+   "n": 48,
+   "correct": 38,
+   "gains": 0,
+   "losses": 0
+  },
+  "newest": {
+   "n": 48,
+   "correct": 38,
+   "gains": 5,
+   "losses": 5
+  },
+  "best_previous": {
+   "n": 48,
+   "correct": 38,
+   "gains": 0,
+   "losses": 0
+  },
+  "random": {
+   "n": 48,
+   "correct": 37,
+   "gains": 0,
+   "losses": 1
+  },
+  "typed": {
+   "n": 48,
+   "correct": 38,
+   "gains": 0,
+   "losses": 0
+  },
+  "feedback": {
+   "n": 48,
+   "correct": 38,
+   "gains": 0,
+   "losses": 0
+  },
+  "nearest_candidate": {
+   "n": 48,
+   "correct": 40,
+   "gains": 4,
+   "losses": 2
+  },
+  "nearest_direct": {
+   "n": 48,
+   "correct": 39,
+   "gains": 7,
+   "losses": 6
+  },
+  "allowed_base": {
+   "n": 48,
+   "correct": 39,
+   "gains": 2,
+   "losses": 1
+  },
+  "hindsight": {
+   "n": 48,
+   "correct": 43,
+   "gains": 5,
+   "losses": 0
+  }
+ },
+ "source_sha256": "524b1a0114738f029ecae0156c497ee12893e5e831479814f978d73b9d87a6d7",
+ "protocol_sha256": "0693f73fd1ab4ddbf06f5a0f04b63db350496e7cd1ec157ec93a5ae131d09eb1"
+}
