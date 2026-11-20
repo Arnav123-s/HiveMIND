@@ -1,0 +1,266 @@
+{
+  "fs_o/orchard-morning": {
+    "output": "scalar",
+    "value": 34
+  },
+  "fs_o/orchard-evening": {
+    "output": "scalar",
+    "value": 68
+  },
+  "fs_h/helpdesk-morning": {
+    "output": "scalar",
+    "value": 35
+  },
+  "fs_h/helpdesk-evening": {
+    "output": "scalar",
+    "value": 63
+  },
+  "fs_c/clinic-morning": {
+    "output": "scalar",
+    "value": 35
+  },
+  "fs_c/clinic-evening": {
+    "output": "scalar",
+    "value": 63
+  },
+  "gc_o/orchard-morning": {
+    "output": "map",
+    "value": {
+      "Cedar": 5,
+      "Maple": 4,
+      "Pine": 4
+    }
+  },
+  "gc_o/orchard-evening": {
+    "output": "map",
+    "value": {
+      "Cedar": 3,
+      "Maple": 6,
+      "Pine": 6
+    }
+  },
+  "gc_h/helpdesk-morning": {
+    "output": "map",
+    "value": {
+      "Aster": 5,
+      "Birch": 4,
+      "Elm": 4
+    }
+  },
+  "gc_h/helpdesk-evening": {
+    "output": "map",
+    "value": {
+      "Aster": 3,
+      "Birch": 6,
+      "Elm": 6
+    }
+  },
+  "gc_c/clinic-morning": {
+    "output": "map",
+    "value": {
+      "East": 4,
+      "North": 5,
+      "South": 4
+    }
+  },
+  "gc_c/clinic-evening": {
+    "output": "map",
+    "value": {
+      "East": 6,
+      "North": 3,
+      "South": 6
+    }
+  },
+  "fgs_o/orchard-morning": {
+    "output": "map",
+    "value": {
+      "Cedar": 15,
+      "Maple": 1,
+      "Pine": 19
+    }
+  },
+  "fgs_o/orchard-evening": {
+    "output": "map",
+    "value": {
+      "Cedar": 11,
+      "Maple": 18,
+      "Pine": 34
+    }
+  },
+  "fgs_h/helpdesk-morning": {
+    "output": "map",
+    "value": {
+      "Aster": 7,
+      "Birch": 22,
+      "Elm": 5
+    }
+  },
+  "fgs_h/helpdesk-evening": {
+    "output": "map",
+    "value": {
+      "Aster": 23,
+      "Birch": 19,
+      "Elm": 26
+    }
+  },
+  "fgs_c/clinic-morning": {
+    "output": "map",
+    "value": {
+      "East": 5,
+      "North": 7,
+      "South": 22
+    }
+  },
+  "fgs_c/clinic-evening": {
+    "output": "map",
+    "value": {
+      "East": 26,
+      "North": 23,
+      "South": 19
+    }
+  },
+  "gca_o/orchard-morning": {
+    "output": "scalar",
+    "value": "Cedar"
+  },
+  "gca_o/orchard-evening": {
+    "output": "scalar",
+    "value": "Maple"
+  },
+  "gca_h/helpdesk-morning": {
+    "output": "scalar",
+    "value": "Birch"
+  },
+  "gca_h/helpdesk-evening": {
+    "output": "scalar",
+    "value": "Aster"
+  },
+  "gca_c/clinic-morning": {
+    "output": "scalar",
+    "value": "North"
+  },
+  "gca_c/clinic-evening": {
+    "output": "scalar",
+    "value": "East"
+  },
+  "fgca_o/orchard-morning": {
+    "output": "scalar",
+    "value": "Maple"
+  },
+  "fgca_o/orchard-evening": {
+    "output": "scalar",
+    "value": "Cedar"
+  },
+  "fgca_h/helpdesk-morning": {
+    "output": "scalar",
+    "value": "Birch"
+  },
+  "fgca_h/helpdesk-evening": {
+    "output": "scalar",
+    "value": "Aster"
+  },
+  "fgca_c/clinic-morning": {
+    "output": "scalar",
+    "value": "East"
+  },
+  "fgca_c/clinic-evening": {
+    "output": "scalar",
+    "value": "East"
+  },
+  "fgsa_o/orchard-morning": {
+    "output": "scalar",
+    "value": "Maple"
+  },
+  "fgsa_o/orchard-evening": {
+    "output": "scalar",
+    "value": "Pine"
+  },
+  "fgsa_h/helpdesk-morning": {
+    "output": "scalar",
+    "value": "Birch"
+  },
+  "fgsa_h/helpdesk-evening": {
+    "output": "scalar",
+    "value": "Aster"
+  },
+  "fgsa_c/clinic-morning": {
+    "output": "scalar",
+    "value": "East"
+  },
+  "fgsa_c/clinic-evening": {
+    "output": "scalar",
+    "value": "East"
+  },
+  "a_o/orchard-morning": {
+    "output": "scalar",
+    "value": 13
+  },
+  "a_o/orchard-evening": {
+    "output": "scalar",
+    "value": 15
+  },
+  "a_h/helpdesk-morning": {
+    "output": "scalar",
+    "value": 69
+  },
+  "a_h/helpdesk-evening": {
+    "output": "scalar",
+    "value": 131
+  },
+  "a_c/clinic-morning": {
+    "output": "scalar",
+    "value": 7
+  },
+  "a_c/clinic-evening": {
+    "output": "scalar",
+    "value": 6
+  },
+  "x_o/orchard-morning": {
+    "output": "scalar",
+    "value": 3
+  },
+  "x_o/orchard-evening": {
+    "output": "scalar",
+    "value": 3
+  },
+  "x_h/helpdesk-morning": {
+    "output": "scalar",
+    "value": 2
+  },
+  "x_h/helpdesk-evening": {
+    "output": "scalar",
+    "value": 8
+  },
+  "x_c/clinic-morning": {
+    "output": "scalar",
+    "value": 4
+  },
+  "x_c/clinic-evening": {
+    "output": "scalar",
+    "value": 8
+  },
+  "q_o/orchard-morning": {
+    "output": "defer",
+    "value": null
+  },
+  "q_o/orchard-evening": {
+    "output": "defer",
+    "value": null
+  },
+  "q_h/helpdesk-morning": {
+    "output": "defer",
+    "value": null
+  },
+  "q_h/helpdesk-evening": {
+    "output": "defer",
+    "value": null
+  },
+  "q_c/clinic-morning": {
+    "output": "defer",
+    "value": null
+  },
+  "q_c/clinic-evening": {
+    "output": "defer",
+    "value": null
+  }
+}

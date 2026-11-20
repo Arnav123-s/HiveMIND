@@ -1,0 +1,1132 @@
+{
+  "publisher_sha256": "53c7b382950a4e7acd7b74d9dee3c0099e847c393a7a710cd3e0602637680dac",
+  "counts_primary": {
+    "rules": {
+      "correct": 13,
+      "wrong": 3,
+      "withheld": 2
+    },
+    "seen_library": {
+      "correct": 15,
+      "withheld": 3
+    }
+  },
+  "records": [
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": 34,
+          "file_sha256": "ea243e5457028e97f9bc93b37a72f8e80ea61ae081911bb037765590ee6aa435"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": 68,
+          "file_sha256": "89e56b272669de11431602f3c77e560ecf6c61512fa8db5ac0006606e88d5282"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": 34,
+          "file_sha256": "ea243e5457028e97f9bc93b37a72f8e80ea61ae081911bb037765590ee6aa435"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": 68,
+          "file_sha256": "89e56b272669de11431602f3c77e560ecf6c61512fa8db5ac0006606e88d5282"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": 35,
+          "file_sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": 63,
+          "file_sha256": "eecd262c3ecab667b61ebb70835f3b181a1d1530d3ebc0ef99a3a8dc3d5b193f"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": 35,
+          "file_sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": 63,
+          "file_sha256": "eecd262c3ecab667b61ebb70835f3b181a1d1530d3ebc0ef99a3a8dc3d5b193f"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": 6,
+          "file_sha256": "06e9d52c1720fca412803e3b07c4b228ff113e303f4c7ab94665319d832bbfb7"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": 9,
+          "file_sha256": "2e6d31a5983a91251bfae5aefa1c0a19d8ba3cf601d0e8a706b4cfa9661a6b8a"
+        }
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": 35,
+          "file_sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": 63,
+          "file_sha256": "eecd262c3ecab667b61ebb70835f3b181a1d1530d3ebc0ef99a3a8dc3d5b193f"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": {
+            "Cedar": 5,
+            "Maple": 4,
+            "Pine": 4
+          },
+          "file_sha256": "d873869c51e41900726c9370ff7d116cbfc63848c0642afccd30b9dcdfb8542e"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": {
+            "Pine": 6,
+            "Cedar": 3,
+            "Maple": 6
+          },
+          "file_sha256": "60d8a48a52c69140caa5121a527c3d586f7d7f6f5692cf793894e9a2d680d26a"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": {
+            "Cedar": 5,
+            "Maple": 4,
+            "Pine": 4
+          },
+          "file_sha256": "d873869c51e41900726c9370ff7d116cbfc63848c0642afccd30b9dcdfb8542e"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": {
+            "Pine": 6,
+            "Cedar": 3,
+            "Maple": 6
+          },
+          "file_sha256": "60d8a48a52c69140caa5121a527c3d586f7d7f6f5692cf793894e9a2d680d26a"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": {
+            "Aster": 5,
+            "Birch": 4,
+            "Elm": 4
+          },
+          "file_sha256": "98932c59e5808d1304bd951c90eaf887340085112bb99588f7e4d1f0a380dbd0"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": {
+            "Elm": 6,
+            "Aster": 3,
+            "Birch": 6
+          },
+          "file_sha256": "9797b035eebf21488ede4398c29423adb2f84527ba447486f0b9ae089f7f0fab"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": {
+            "Aster": 5,
+            "Birch": 4,
+            "Elm": 4
+          },
+          "file_sha256": "98932c59e5808d1304bd951c90eaf887340085112bb99588f7e4d1f0a380dbd0"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": {
+            "Elm": 6,
+            "Aster": 3,
+            "Birch": 6
+          },
+          "file_sha256": "9797b035eebf21488ede4398c29423adb2f84527ba447486f0b9ae089f7f0fab"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": {
+            "North": 5,
+            "South": 4,
+            "East": 4
+          },
+          "file_sha256": "7edf5ce6324b14d3ebd65db4c793ec58c2fd19ce6544d6c6e4c2c18286b5f3da"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": {
+            "East": 6,
+            "North": 3,
+            "South": 6
+          },
+          "file_sha256": "98b556f48eba1c86f77bca4b2dfd50d83f27e68b97bd48dace8baaad6c5c63ab"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": {
+            "North": 5,
+            "South": 4,
+            "East": 4
+          },
+          "file_sha256": "7edf5ce6324b14d3ebd65db4c793ec58c2fd19ce6544d6c6e4c2c18286b5f3da"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": {
+            "East": 6,
+            "North": 3,
+            "South": 6
+          },
+          "file_sha256": "98b556f48eba1c86f77bca4b2dfd50d83f27e68b97bd48dace8baaad6c5c63ab"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": {
+            "Cedar": 15,
+            "Pine": 19,
+            "Maple": 1
+          },
+          "file_sha256": "f13cec9d2fff72139720841f131e395b178c9160d5040b8ecdeee9e96c6c6b4e"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": {
+            "Pine": 34,
+            "Maple": 18,
+            "Cedar": 11
+          },
+          "file_sha256": "d88e0aa08aa850291d1653e5e0027ad569180299bd115992bf838e7f4512f363"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": {
+            "Cedar": 15,
+            "Pine": 19,
+            "Maple": 1
+          },
+          "file_sha256": "f13cec9d2fff72139720841f131e395b178c9160d5040b8ecdeee9e96c6c6b4e"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": {
+            "Pine": 34,
+            "Maple": 18,
+            "Cedar": 11
+          },
+          "file_sha256": "d88e0aa08aa850291d1653e5e0027ad569180299bd115992bf838e7f4512f363"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": {
+            "Birch": 22,
+            "Aster": 7,
+            "Elm": 5
+          },
+          "file_sha256": "849011db3e48dab449841ef9342d3bde8d583d85128005cf6e65b6179eb201bf"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": {
+            "Elm": 26,
+            "Aster": 23,
+            "Birch": 19
+          },
+          "file_sha256": "2422d7619e5083bb03a93f7fd41fb04a85d06be0aa856c4fc57d2e46f659fc2b"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": {
+            "Birch": 22,
+            "Aster": 7,
+            "Elm": 5
+          },
+          "file_sha256": "849011db3e48dab449841ef9342d3bde8d583d85128005cf6e65b6179eb201bf"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": {
+            "Elm": 26,
+            "Aster": 23,
+            "Birch": 19
+          },
+          "file_sha256": "2422d7619e5083bb03a93f7fd41fb04a85d06be0aa856c4fc57d2e46f659fc2b"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": {
+            "South": 3,
+            "North": 2,
+            "East": 2
+          },
+          "file_sha256": "fccc1ea80248ac898d020016e3df87e9b47285913c15784c7c7b2cc3025cbb78"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": {
+            "East": 2,
+            "North": 2,
+            "South": 2
+          },
+          "file_sha256": "5c81ff01a11aeab7734aa2c69699e238cf0fd17be2ea1f6e06130f0752ff965f"
+        }
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": {
+            "South": 22,
+            "North": 7,
+            "East": 5
+          },
+          "file_sha256": "a2bba1986aeb7e8ca083f0e5e27bf5a85e710660448bb99957ff8d3aca7b2f53"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": {
+            "East": 26,
+            "North": 23,
+            "South": 19
+          },
+          "file_sha256": "c535178419eeb6848b5256d23202ee23caac1c1607b7103d5b437483c6a05fe5"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": "Cedar",
+          "file_sha256": "5cd08893dd47029d17890b557bba0a605c7065d7b20b817eb638bbee8c457e35"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": "Maple",
+          "file_sha256": "f6886aa30d708f9f6c0649650c7c62b8356c1784bc7cc669e78e8c83a17ef102"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": "Cedar",
+          "file_sha256": "5cd08893dd47029d17890b557bba0a605c7065d7b20b817eb638bbee8c457e35"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": "Maple",
+          "file_sha256": "f6886aa30d708f9f6c0649650c7c62b8356c1784bc7cc669e78e8c83a17ef102"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": "Birch",
+          "file_sha256": "7ae43c924b1d49cde059ee8fd0c22581cf21dac61dc2a94e8d016d4a6334260c"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": "Aster",
+          "file_sha256": "920919e9fda637888fbe9b0fa3313cf572f36ce894166a807124ca529ffb9884"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": "Birch",
+          "file_sha256": "7ae43c924b1d49cde059ee8fd0c22581cf21dac61dc2a94e8d016d4a6334260c"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": "Aster",
+          "file_sha256": "920919e9fda637888fbe9b0fa3313cf572f36ce894166a807124ca529ffb9884"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": "Maple",
+          "file_sha256": "f6886aa30d708f9f6c0649650c7c62b8356c1784bc7cc669e78e8c83a17ef102"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": "Cedar",
+          "file_sha256": "5cd08893dd47029d17890b557bba0a605c7065d7b20b817eb638bbee8c457e35"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": "Maple",
+          "file_sha256": "f6886aa30d708f9f6c0649650c7c62b8356c1784bc7cc669e78e8c83a17ef102"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": "Cedar",
+          "file_sha256": "5cd08893dd47029d17890b557bba0a605c7065d7b20b817eb638bbee8c457e35"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": "East",
+          "file_sha256": "9e7fe622897031e07262585a29b5c31e898468c8d4efa7e36916342b8c58390c"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": "East",
+          "file_sha256": "9e7fe622897031e07262585a29b5c31e898468c8d4efa7e36916342b8c58390c"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": "East",
+          "file_sha256": "9e7fe622897031e07262585a29b5c31e898468c8d4efa7e36916342b8c58390c"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": "East",
+          "file_sha256": "9e7fe622897031e07262585a29b5c31e898468c8d4efa7e36916342b8c58390c"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": "Maple",
+          "file_sha256": "f6886aa30d708f9f6c0649650c7c62b8356c1784bc7cc669e78e8c83a17ef102"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": "Pine",
+          "file_sha256": "c20d9b8f3ecd6cf947265f94f61043f0abec3fea2d7e9f88d0388de4bb600ccf"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": "Maple",
+          "file_sha256": "f6886aa30d708f9f6c0649650c7c62b8356c1784bc7cc669e78e8c83a17ef102"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": "Pine",
+          "file_sha256": "c20d9b8f3ecd6cf947265f94f61043f0abec3fea2d7e9f88d0388de4bb600ccf"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": "Birch",
+          "file_sha256": "7ae43c924b1d49cde059ee8fd0c22581cf21dac61dc2a94e8d016d4a6334260c"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": "Aster",
+          "file_sha256": "920919e9fda637888fbe9b0fa3313cf572f36ce894166a807124ca529ffb9884"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": "Birch",
+          "file_sha256": "7ae43c924b1d49cde059ee8fd0c22581cf21dac61dc2a94e8d016d4a6334260c"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": "Aster",
+          "file_sha256": "920919e9fda637888fbe9b0fa3313cf572f36ce894166a807124ca529ffb9884"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": "North",
+          "file_sha256": "7cb7bffadbb72fc01bd1bac5e8b7196f684ef69c7b8db7b28bbe3ee4199d8d79"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": "East",
+          "file_sha256": "9e7fe622897031e07262585a29b5c31e898468c8d4efa7e36916342b8c58390c"
+        }
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": 13,
+          "file_sha256": "1a252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": 15,
+          "file_sha256": "238903180cc104ec2c5d8b3f20c5bc61b389ec0a967df8cc208cdc7cd454174f"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": true,
+          "value": 13,
+          "file_sha256": "1a252402972f6057fa53cc172b52b9ffca698e18311facd0f3b06ecaaef79e17"
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": true,
+          "value": 15,
+          "file_sha256": "238903180cc104ec2c5d8b3f20c5bc61b389ec0a967df8cc208cdc7cd454174f"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": 69,
+          "file_sha256": "b35e87b5838011a3637be660e4238af9a55e4edc74404c990f7a558e7f416658"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": 131,
+          "file_sha256": "a5af689f2e58459835bb77930031a16999a7b03b90788d4e43f8b609e6d3475b"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": 69,
+          "file_sha256": "b35e87b5838011a3637be660e4238af9a55e4edc74404c990f7a558e7f416658"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": 131,
+          "file_sha256": "a5af689f2e58459835bb77930031a16999a7b03b90788d4e43f8b609e6d3475b"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": 7,
+          "file_sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": 6,
+          "file_sha256": "06e9d52c1720fca412803e3b07c4b228ff113e303f4c7ab94665319d832bbfb7"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": 7,
+          "file_sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": 6,
+          "file_sha256": "06e9d52c1720fca412803e3b07c4b228ff113e303f4c7ab94665319d832bbfb7"
+        }
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "seen_library",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "q_o",
+      "pattern": "clarify",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "orchard-morning",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        },
+        {
+          "edition": "orchard-evening",
+          "answered": false,
+          "value": null,
+          "file_sha256": null
+        }
+      ],
+      "paired": "withheld"
+    },
+    {
+      "id": "q_h",
+      "pattern": "clarify",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "helpdesk-morning",
+          "answered": true,
+          "value": 69,
+          "file_sha256": "b35e87b5838011a3637be660e4238af9a55e4edc74404c990f7a558e7f416658"
+        },
+        {
+          "edition": "helpdesk-evening",
+          "answered": true,
+          "value": 131,
+          "file_sha256": "a5af689f2e58459835bb77930031a16999a7b03b90788d4e43f8b609e6d3475b"
+        }
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "q_c",
+      "pattern": "clarify",
+      "arm": "rules",
+      "outputs": [
+        {
+          "edition": "clinic-morning",
+          "answered": true,
+          "value": 69,
+          "file_sha256": "b35e87b5838011a3637be660e4238af9a55e4edc74404c990f7a558e7f416658"
+        },
+        {
+          "edition": "clinic-evening",
+          "answered": true,
+          "value": 131,
+          "file_sha256": "a5af689f2e58459835bb77930031a16999a7b03b90788d4e43f8b609e6d3475b"
+        }
+      ],
+      "paired": "wrong"
+    }
+  ]
+}
