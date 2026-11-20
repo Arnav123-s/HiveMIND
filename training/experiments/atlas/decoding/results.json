@@ -1,0 +1,1484 @@
+{
+  "panel_sha256": "4a4ecb9170c6c5fd100156cdbdfab34ab8c909f132577558678c46abdd300404",
+  "protocol_sha256": "0fbc6866a9a6f5005324d550aa93af14cc778bf2f862fc67070612e8fb26a14c",
+  "binary_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "models": {
+    "target": {
+      "hf_repo": "prism-ml/Ternary-Bonsai-8B-gguf",
+      "filename": "Ternary-Bonsai-8B-PQ2_0.gguf",
+      "revision": "c2aefbeb4b24469cd11579c3384b990404c17a30",
+      "bytes": 2182184672,
+      "sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922"
+    },
+    "t4": {
+      "hf_repo": "prism-ml/Ternary-Bonsai-2-4B-gguf",
+      "filename": "Ternary-Bonsai-2-4B-PQ2_0.gguf",
+      "revision": "50ebba61be85e5be07e8083db468ace0fc1bac43",
+      "bytes": 1146465120,
+      "sha256": "d406b1e912c0d2a4c124ad10bf38a76ae662fdc4d24b176451403dc7b7f30409"
+    },
+    "t17": {
+      "hf_repo": "prism-ml/Ternary-Bonsai-1.7B-gguf",
+      "filename": "Ternary-Bonsai-1.7B-PQ2_0.gguf",
+      "revision": "40e40ecfe50bdfab51628042b1f8f4e97f08acd0",
+      "bytes": 463290464,
+      "sha256": "de68ba48a8dacb21979915991e7741b917869d71410a370df951c0c3a237ae50"
+    }
+  },
+  "cpu_model": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+  "cpu_cgroup_limit": "400000 100000",
+  "arms": [
+    {
+      "arm": "ordinary_first",
+      "flags": [
+        "-m",
+        "<target>",
+        "-t",
+        "2",
+        "-tb",
+        "2",
+        "-c",
+        "512",
+        "-rtr",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18493",
+        "--parallel",
+        "1",
+        "--threads-http",
+        "2",
+        "--jinja"
+      ],
+      "cases": [
+        {
+          "id": "copy",
+          "http_wall_s": 4.8671,
+          "server_cpu_s": 9.7,
+          "server_rss_kib": 2306056,
+          "timings": {
+            "prompt_n": 50,
+            "prompt_ms": 1414.7,
+            "prompt_per_token_ms": 28.294,
+            "prompt_per_second": 35.3431823001343,
+            "predicted_n": 22,
+            "predicted_ms": 3438.522,
+            "predicted_per_token_ms": 156.29645454545454,
+            "predicted_per_second": 6.398097787363291,
+            "n_ctx": 512,
+            "n_past": 71
+          },
+          "usage": {
+            "completion_tokens": 22,
+            "prompt_tokens": 50,
+            "total_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "blue bins: seven  \nblue totes: nine  \ngreen bins: five  \ngreen totes: eleven"
+          },
+          "token_ids": [
+            12203,
+            28518,
+            25,
+            8094,
+            2303,
+            12203,
+            311,
+            2338,
+            25,
+            11627,
+            2303,
+            13250,
+            28518,
+            25,
+            4236,
+            2303,
+            13250,
+            311,
+            2338,
+            25,
+            44214,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "code",
+          "http_wall_s": 3.7141,
+          "server_cpu_s": 7.42,
+          "server_rss_kib": 2316292,
+          "timings": {
+            "prompt_n": 34,
+            "prompt_ms": 1046.876,
+            "prompt_per_token_ms": 30.790470588235294,
+            "prompt_per_second": 32.47758091693763,
+            "predicted_n": 18,
+            "predicted_ms": 2650.067,
+            "predicted_per_token_ms": 147.22594444444445,
+            "predicted_per_second": 6.792281100817451,
+            "n_ctx": 512,
+            "n_past": 51
+          },
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 34,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "sum(x**2 for x in readings if x % 2 == 0)"
+          },
+          "token_ids": [
+            1242,
+            2075,
+            334,
+            17,
+            369,
+            856,
+            304,
+            39074,
+            421,
+            856,
+            1018,
+            220,
+            17,
+            621,
+            220,
+            15,
+            8,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "prose",
+          "http_wall_s": 4.7787,
+          "server_cpu_s": 9.48,
+          "server_rss_kib": 2323656,
+          "timings": {
+            "prompt_n": 30,
+            "prompt_ms": 1011.931,
+            "prompt_per_token_ms": 33.731033333333336,
+            "prompt_per_second": 29.64629011266578,
+            "predicted_n": 24,
+            "predicted_ms": 3749.426,
+            "predicted_per_token_ms": 156.22608333333332,
+            "predicted_per_second": 6.400979776637811,
+            "n_ctx": 512,
+            "n_past": 53
+          },
+          "usage": {
+            "completion_tokens": 24,
+            "prompt_tokens": 30,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "Glass jars should be labelled before a pantry count to ensure accurate inventory tracking and prevent confusion about contents and expiration dates."
+          },
+          "token_ids": [
+            84003,
+            60011,
+            1265,
+            387,
+            60236,
+            1573,
+            264,
+            68257,
+            1760,
+            311,
+            5978,
+            13382,
+            15444,
+            14849,
+            323,
+            5358,
+            21340,
+            911,
+            8794,
+            323,
+            31692,
+            12713,
+            13,
+            151645
+          ],
+          "token_trace_complete": true
+        }
+      ],
+      "other_native_pids_at_launch": [],
+      "started_utc": "2026-11-20T03:23:33.381411+00:00",
+      "ready_s": 5.2984,
+      "warmup": {
+        "http_wall_s": 0.8072,
+        "server_cpu_s": 1.61,
+        "server_rss_kib": 2297644,
+        "timings": {
+          "prompt_n": 22,
+          "prompt_ms": 642.875,
+          "prompt_per_token_ms": 29.22159090909091,
+          "prompt_per_second": 34.221271631343576,
+          "predicted_n": 2,
+          "predicted_ms": 152.839,
+          "predicted_per_token_ms": 76.4195,
+          "predicted_per_second": 13.085665307938418,
+          "n_ctx": 512,
+          "n_past": 23
+        },
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 22,
+          "total_tokens": 24,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "finish_reason": "length",
+        "message": {
+          "role": "assistant",
+          "content": "The abbreviation"
+        },
+        "token_ids": [
+          785,
+          71478
+        ],
+        "token_trace_complete": true
+      },
+      "status": "ok",
+      "native_exit_code": 0,
+      "native_evidence": [
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen3",
+        "llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2",
+        "llm_load_print_meta: general.name     = n/a",
+        "print_info: n_vocab               = 151669"
+      ]
+    },
+    {
+      "arm": "t4_draft",
+      "flags": [
+        "-m",
+        "<target>",
+        "-t",
+        "2",
+        "-tb",
+        "2",
+        "-c",
+        "512",
+        "-rtr",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18494",
+        "--parallel",
+        "1",
+        "--threads-http",
+        "2",
+        "--jinja",
+        "-md",
+        "<t4>",
+        "-td",
+        "2",
+        "-tbd",
+        "2",
+        "-cd",
+        "512",
+        "--spec-type",
+        "draft:n_max=5,n_min=1,p_min=0.0"
+      ],
+      "cases": [
+        {
+          "id": "copy",
+          "http_wall_s": 14.1878,
+          "server_cpu_s": 27.32,
+          "server_rss_kib": 3755672,
+          "timings": {
+            "prompt_n": 50,
+            "prompt_ms": 2413.302,
+            "prompt_per_token_ms": 48.266040000000004,
+            "prompt_per_second": 20.718501041311864,
+            "predicted_n": 22,
+            "predicted_ms": 11756.264,
+            "predicted_per_token_ms": 534.3756363636363,
+            "predicted_per_second": 1.8713428007400992,
+            "n_ctx": 512,
+            "n_past": 71,
+            "draft_n": 30,
+            "draft_n_accepted": 15,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 6,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 2,
+                "draft_n": 6,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 3,
+                "draft_n": 6,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 4,
+                "draft_n": 6,
+                "draft_n_accepted": 2
+              },
+              {
+                "depth": 5,
+                "draft_n": 6,
+                "draft_n_accepted": 2
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 22,
+            "prompt_tokens": 50,
+            "total_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "blue bins: seven  \nblue totes: nine  \ngreen bins: five  \ngreen totes: eleven"
+          },
+          "token_ids": [
+            12203,
+            28518,
+            25,
+            8094,
+            2303,
+            12203,
+            311,
+            2338,
+            25,
+            11627,
+            2303,
+            13250,
+            28518,
+            25,
+            4236,
+            2303,
+            13250,
+            311,
+            2338,
+            25,
+            44214,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "code",
+          "http_wall_s": 6.386,
+          "server_cpu_s": 12.31,
+          "server_rss_kib": 3765912,
+          "timings": {
+            "prompt_n": 34,
+            "prompt_ms": 1500.594,
+            "prompt_per_token_ms": 44.13511764705883,
+            "prompt_per_second": 22.65769421975564,
+            "predicted_n": 18,
+            "predicted_ms": 4861.287,
+            "predicted_per_token_ms": 270.0715,
+            "predicted_per_second": 3.7027231677537245,
+            "n_ctx": 512,
+            "n_past": 51,
+            "draft_n": 15,
+            "draft_n_accepted": 15,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 2,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 3,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 4,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 5,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 34,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "sum(x**2 for x in readings if x % 2 == 0)"
+          },
+          "token_ids": [
+            1242,
+            2075,
+            334,
+            17,
+            369,
+            856,
+            304,
+            39074,
+            421,
+            856,
+            1018,
+            220,
+            17,
+            621,
+            220,
+            15,
+            8,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "prose",
+          "http_wall_s": 16.7233,
+          "server_cpu_s": 32.85,
+          "server_rss_kib": 3773412,
+          "timings": {
+            "prompt_n": 30,
+            "prompt_ms": 881.534,
+            "prompt_per_token_ms": 29.384466666666665,
+            "prompt_per_second": 34.03158584921285,
+            "predicted_n": 24,
+            "predicted_ms": 15822.409,
+            "predicted_per_token_ms": 659.2670416666666,
+            "predicted_per_second": 1.5168360266758367,
+            "n_ctx": 512,
+            "n_past": 53,
+            "draft_n": 70,
+            "draft_n_accepted": 10,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 14,
+                "draft_n_accepted": 5
+              },
+              {
+                "depth": 2,
+                "draft_n": 14,
+                "draft_n_accepted": 2
+              },
+              {
+                "depth": 3,
+                "draft_n": 14,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 4,
+                "draft_n": 14,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 5,
+                "draft_n": 14,
+                "draft_n_accepted": 1
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 24,
+            "prompt_tokens": 30,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "Glass jars should be labelled before a pantry count to ensure accurate inventory tracking and prevent confusion about contents and expiration dates."
+          },
+          "token_ids": [
+            84003,
+            60011,
+            1265,
+            387,
+            60236,
+            1573,
+            264,
+            68257,
+            1760,
+            311,
+            5978,
+            13382,
+            15444,
+            14849,
+            323,
+            5358,
+            21340,
+            911,
+            8794,
+            323,
+            31692,
+            12713,
+            13,
+            151645
+          ],
+          "token_trace_complete": true
+        }
+      ],
+      "other_native_pids_at_launch": [],
+      "started_utc": "2026-11-20T03:24:29.455218+00:00",
+      "ready_s": 8.4067,
+      "warmup": {
+        "http_wall_s": 1.3083,
+        "server_cpu_s": 2.61,
+        "server_rss_kib": 3727040,
+        "timings": {
+          "prompt_n": 22,
+          "prompt_ms": 1098.46,
+          "prompt_per_token_ms": 49.93,
+          "prompt_per_second": 20.028039254956937,
+          "predicted_n": 2,
+          "predicted_ms": 200.542,
+          "predicted_per_token_ms": 100.271,
+          "predicted_per_second": 9.97297324251279,
+          "n_ctx": 512,
+          "n_past": 23
+        },
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 22,
+          "total_tokens": 24,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "finish_reason": "length",
+        "message": {
+          "role": "assistant",
+          "content": "The abbreviation"
+        },
+        "token_ids": [
+          785,
+          71478
+        ],
+        "token_trace_complete": true
+      },
+      "status": "ok",
+      "native_exit_code": 0,
+      "native_evidence": [
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen3",
+        "llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2",
+        "llm_load_print_meta: general.name     = n/a",
+        "print_info: n_vocab               = 151669",
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen35",
+        "llama_model_loader: - kv   3:                               general.name str              = Ternary-Bonsai-2-4B",
+        "llama_model_loader: - kv  35:                         tokenizer.ggml.pre str              = qwen35",
+        "llm_load_print_meta: general.name     = Ternary-Bonsai-2-4B",
+        "print_info: n_vocab               = 248320",
+        "the target and draft vocabs are not compatible - tokens will be translated between the two",
+        "slot         init: id  0 | task -1 | speculative decoding context initialized"
+      ]
+    },
+    {
+      "arm": "t17_draft",
+      "flags": [
+        "-m",
+        "<target>",
+        "-t",
+        "2",
+        "-tb",
+        "2",
+        "-c",
+        "512",
+        "-rtr",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18495",
+        "--parallel",
+        "1",
+        "--threads-http",
+        "2",
+        "--jinja",
+        "-md",
+        "<t17>",
+        "-td",
+        "2",
+        "-tbd",
+        "2",
+        "-cd",
+        "512",
+        "--spec-type",
+        "draft:n_max=5,n_min=1,p_min=0.0"
+      ],
+      "cases": [
+        {
+          "id": "copy",
+          "http_wall_s": 8.5997,
+          "server_cpu_s": 17.16,
+          "server_rss_kib": 2982368,
+          "timings": {
+            "prompt_n": 50,
+            "prompt_ms": 2456.17,
+            "prompt_per_token_ms": 49.123400000000004,
+            "prompt_per_second": 20.356897120313334,
+            "predicted_n": 22,
+            "predicted_ms": 6129.117,
+            "predicted_per_token_ms": 278.5962272727273,
+            "predicted_per_second": 3.5894240557000296,
+            "n_ctx": 512,
+            "n_past": 71,
+            "draft_n": 20,
+            "draft_n_accepted": 19,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 4,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 2,
+                "draft_n": 4,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 3,
+                "draft_n": 4,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 4,
+                "draft_n": 4,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 5,
+                "draft_n": 4,
+                "draft_n_accepted": 3
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 22,
+            "prompt_tokens": 50,
+            "total_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "blue bins: seven  \nblue totes: nine  \ngreen bins: five  \ngreen totes: eleven"
+          },
+          "token_ids": [
+            12203,
+            28518,
+            25,
+            8094,
+            2303,
+            12203,
+            311,
+            2338,
+            25,
+            11627,
+            2303,
+            13250,
+            28518,
+            25,
+            4236,
+            2303,
+            13250,
+            311,
+            2338,
+            25,
+            44214,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "code",
+          "http_wall_s": 6.1888,
+          "server_cpu_s": 12.34,
+          "server_rss_kib": 2994720,
+          "timings": {
+            "prompt_n": 34,
+            "prompt_ms": 1660.937,
+            "prompt_per_token_ms": 48.851088235294114,
+            "prompt_per_second": 20.470373048466016,
+            "predicted_n": 18,
+            "predicted_ms": 4506.599,
+            "predicted_per_token_ms": 250.36661111111113,
+            "predicted_per_second": 3.994142811463811,
+            "n_ctx": 512,
+            "n_past": 51,
+            "draft_n": 15,
+            "draft_n_accepted": 15,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 2,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 3,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 4,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              },
+              {
+                "depth": 5,
+                "draft_n": 3,
+                "draft_n_accepted": 3
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 34,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "sum(x**2 for x in readings if x % 2 == 0)"
+          },
+          "token_ids": [
+            1242,
+            2075,
+            334,
+            17,
+            369,
+            856,
+            304,
+            39074,
+            421,
+            856,
+            1018,
+            220,
+            17,
+            621,
+            220,
+            15,
+            8,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "prose",
+          "http_wall_s": 8.5677,
+          "server_cpu_s": 16.96,
+          "server_rss_kib": 3002224,
+          "timings": {
+            "prompt_n": 30,
+            "prompt_ms": 1481.344,
+            "prompt_per_token_ms": 49.37813333333334,
+            "prompt_per_second": 20.251879374405945,
+            "predicted_n": 24,
+            "predicted_ms": 7041.447,
+            "predicted_per_token_ms": 293.393625,
+            "predicted_per_second": 3.4083903493131453,
+            "n_ctx": 512,
+            "n_past": 53,
+            "draft_n": 30,
+            "draft_n_accepted": 18,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 6,
+                "draft_n_accepted": 5
+              },
+              {
+                "depth": 2,
+                "draft_n": 6,
+                "draft_n_accepted": 5
+              },
+              {
+                "depth": 3,
+                "draft_n": 6,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 4,
+                "draft_n": 6,
+                "draft_n_accepted": 2
+              },
+              {
+                "depth": 5,
+                "draft_n": 6,
+                "draft_n_accepted": 2
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 24,
+            "prompt_tokens": 30,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "Glass jars should be labelled before a pantry count to ensure accurate inventory tracking and prevent confusion about contents and expiration dates."
+          },
+          "token_ids": [
+            84003,
+            60011,
+            1265,
+            387,
+            60236,
+            1573,
+            264,
+            68257,
+            1760,
+            311,
+            5978,
+            13382,
+            15444,
+            14849,
+            323,
+            5358,
+            21340,
+            911,
+            8794,
+            323,
+            31692,
+            12713,
+            13,
+            151645
+          ],
+          "token_trace_complete": true
+        }
+      ],
+      "other_native_pids_at_launch": [],
+      "started_utc": "2026-11-20T03:25:16.698473+00:00",
+      "ready_s": 5.9442,
+      "warmup": {
+        "http_wall_s": 1.3009,
+        "server_cpu_s": 2.6,
+        "server_rss_kib": 2961504,
+        "timings": {
+          "prompt_n": 22,
+          "prompt_ms": 1092.566,
+          "prompt_per_token_ms": 49.662090909090914,
+          "prompt_per_second": 20.136083312129426,
+          "predicted_n": 2,
+          "predicted_ms": 198.455,
+          "predicted_per_token_ms": 99.2275,
+          "predicted_per_second": 10.077851402081075,
+          "n_ctx": 512,
+          "n_past": 23
+        },
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 22,
+          "total_tokens": 24,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "finish_reason": "length",
+        "message": {
+          "role": "assistant",
+          "content": "The abbreviation"
+        },
+        "token_ids": [
+          785,
+          71478
+        ],
+        "token_trace_complete": true
+      },
+      "status": "ok",
+      "native_exit_code": 0,
+      "native_evidence": [
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen3",
+        "llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2",
+        "llm_load_print_meta: general.name     = n/a",
+        "print_info: n_vocab               = 151669",
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen3",
+        "llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2",
+        "llm_load_print_meta: general.name     = n/a",
+        "print_info: n_vocab               = 151669",
+        "slot         init: id  0 | task -1 | speculative decoding context initialized"
+      ]
+    },
+    {
+      "arm": "prompt_lookup",
+      "flags": [
+        "-m",
+        "<target>",
+        "-t",
+        "2",
+        "-tb",
+        "2",
+        "-c",
+        "512",
+        "-rtr",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18496",
+        "--parallel",
+        "1",
+        "--threads-http",
+        "2",
+        "--jinja",
+        "--spec-type",
+        "ngram-simple:n_max=5,n_min=1,ngram_size_n=3,ngram_size_m=5"
+      ],
+      "cases": [
+        {
+          "id": "copy",
+          "http_wall_s": 8.8147,
+          "server_cpu_s": 17.6,
+          "server_rss_kib": 2309480,
+          "timings": {
+            "prompt_n": 50,
+            "prompt_ms": 2403.904,
+            "prompt_per_token_ms": 48.07808,
+            "prompt_per_second": 20.799499480844492,
+            "predicted_n": 22,
+            "predicted_ms": 6396.301,
+            "predicted_per_token_ms": 290.74095454545454,
+            "predicted_per_second": 3.439487916531758,
+            "n_ctx": 512,
+            "n_past": 71,
+            "draft_n": 20,
+            "draft_n_accepted": 7,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 4,
+                "draft_n_accepted": 4
+              },
+              {
+                "depth": 2,
+                "draft_n": 4,
+                "draft_n_accepted": 2
+              },
+              {
+                "depth": 3,
+                "draft_n": 4,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 4,
+                "draft_n": 4,
+                "draft_n_accepted": 0
+              },
+              {
+                "depth": 5,
+                "draft_n": 4,
+                "draft_n_accepted": 0
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 22,
+            "prompt_tokens": 50,
+            "total_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "blue bins: seven  \nblue totes: nine  \ngreen bins: five  \ngreen totes: eleven"
+          },
+          "token_ids": [
+            12203,
+            28518,
+            25,
+            8094,
+            2303,
+            12203,
+            311,
+            2338,
+            25,
+            11627,
+            2303,
+            13250,
+            28518,
+            25,
+            4236,
+            2303,
+            13250,
+            311,
+            2338,
+            25,
+            44214,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "code",
+          "http_wall_s": 5.2255,
+          "server_cpu_s": 10.42,
+          "server_rss_kib": 2319860,
+          "timings": {
+            "prompt_n": 34,
+            "prompt_ms": 1662.448,
+            "prompt_per_token_ms": 48.895529411764706,
+            "prompt_per_second": 20.451767513931262,
+            "predicted_n": 18,
+            "predicted_ms": 3539.991,
+            "predicted_per_token_ms": 196.66616666666667,
+            "predicted_per_second": 5.084758690064466,
+            "n_ctx": 512,
+            "n_past": 51
+          },
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 34,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "sum(x**2 for x in readings if x % 2 == 0)"
+          },
+          "token_ids": [
+            1242,
+            2075,
+            334,
+            17,
+            369,
+            856,
+            304,
+            39074,
+            421,
+            856,
+            1018,
+            220,
+            17,
+            621,
+            220,
+            15,
+            8,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "prose",
+          "http_wall_s": 5.9953,
+          "server_cpu_s": 11.9,
+          "server_rss_kib": 2327220,
+          "timings": {
+            "prompt_n": 30,
+            "prompt_ms": 1648.22,
+            "prompt_per_token_ms": 54.940666666666665,
+            "prompt_per_second": 18.20145368943466,
+            "predicted_n": 24,
+            "predicted_ms": 4322.335,
+            "predicted_per_token_ms": 180.09729166666668,
+            "predicted_per_second": 5.552554348517642,
+            "n_ctx": 512,
+            "n_past": 53,
+            "draft_n": 5,
+            "draft_n_accepted": 5,
+            "draft_by_depth": [
+              {
+                "depth": 1,
+                "draft_n": 1,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 2,
+                "draft_n": 1,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 3,
+                "draft_n": 1,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 4,
+                "draft_n": 1,
+                "draft_n_accepted": 1
+              },
+              {
+                "depth": 5,
+                "draft_n": 1,
+                "draft_n_accepted": 1
+              }
+            ]
+          },
+          "usage": {
+            "completion_tokens": 24,
+            "prompt_tokens": 30,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "Glass jars should be labelled before a pantry count to ensure accurate inventory tracking and prevent confusion about contents and expiration dates."
+          },
+          "token_ids": [
+            84003,
+            60011,
+            1265,
+            387,
+            60236,
+            1573,
+            264,
+            68257,
+            1760,
+            311,
+            5978,
+            13382,
+            15444,
+            14849,
+            323,
+            5358,
+            21340,
+            911,
+            8794,
+            323,
+            31692,
+            12713,
+            13,
+            151645
+          ],
+          "token_trace_complete": true
+        }
+      ],
+      "other_native_pids_at_launch": [],
+      "started_utc": "2026-11-20T03:25:47.578594+00:00",
+      "ready_s": 4.787,
+      "warmup": {
+        "http_wall_s": 1.3255,
+        "server_cpu_s": 2.64,
+        "server_rss_kib": 2297448,
+        "timings": {
+          "prompt_n": 22,
+          "prompt_ms": 1115.231,
+          "prompt_per_token_ms": 50.69231818181818,
+          "prompt_per_second": 19.72685479510523,
+          "predicted_n": 2,
+          "predicted_ms": 200.713,
+          "predicted_per_token_ms": 100.3565,
+          "predicted_per_second": 9.964476640775635,
+          "n_ctx": 512,
+          "n_past": 23
+        },
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 22,
+          "total_tokens": 24,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "finish_reason": "length",
+        "message": {
+          "role": "assistant",
+          "content": "The abbreviation"
+        },
+        "token_ids": [
+          785,
+          71478
+        ],
+        "token_trace_complete": true
+      },
+      "status": "ok",
+      "native_exit_code": 0,
+      "native_evidence": [
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen3",
+        "llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2",
+        "llm_load_print_meta: general.name     = n/a",
+        "print_info: n_vocab               = 151669",
+        "slot         init: id  0 | task -1 | speculative decoding context initialized"
+      ]
+    },
+    {
+      "arm": "ordinary_last",
+      "flags": [
+        "-m",
+        "<target>",
+        "-t",
+        "2",
+        "-tb",
+        "2",
+        "-c",
+        "512",
+        "-rtr",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "18497",
+        "--parallel",
+        "1",
+        "--threads-http",
+        "2",
+        "--jinja"
+      ],
+      "cases": [
+        {
+          "id": "copy",
+          "http_wall_s": 6.6401,
+          "server_cpu_s": 13.23,
+          "server_rss_kib": 2305620,
+          "timings": {
+            "prompt_n": 50,
+            "prompt_ms": 2406.245,
+            "prompt_per_token_ms": 48.1249,
+            "prompt_per_second": 20.779263956912118,
+            "predicted_n": 22,
+            "predicted_ms": 4217.599,
+            "predicted_per_token_ms": 191.70904545454547,
+            "predicted_per_second": 5.216237959085252,
+            "n_ctx": 512,
+            "n_past": 71
+          },
+          "usage": {
+            "completion_tokens": 22,
+            "prompt_tokens": 50,
+            "total_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "blue bins: seven  \nblue totes: nine  \ngreen bins: five  \ngreen totes: eleven"
+          },
+          "token_ids": [
+            12203,
+            28518,
+            25,
+            8094,
+            2303,
+            12203,
+            311,
+            2338,
+            25,
+            11627,
+            2303,
+            13250,
+            28518,
+            25,
+            4236,
+            2303,
+            13250,
+            311,
+            2338,
+            25,
+            44214,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "code",
+          "http_wall_s": 5.0789,
+          "server_cpu_s": 10.15,
+          "server_rss_kib": 2315920,
+          "timings": {
+            "prompt_n": 34,
+            "prompt_ms": 1644.816,
+            "prompt_per_token_ms": 48.37694117647059,
+            "prompt_per_second": 20.671005145864342,
+            "predicted_n": 18,
+            "predicted_ms": 3412.796,
+            "predicted_per_token_ms": 189.59977777777777,
+            "predicted_per_second": 5.274267785123987,
+            "n_ctx": 512,
+            "n_past": 51
+          },
+          "usage": {
+            "completion_tokens": 18,
+            "prompt_tokens": 34,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "sum(x**2 for x in readings if x % 2 == 0)"
+          },
+          "token_ids": [
+            1242,
+            2075,
+            334,
+            17,
+            369,
+            856,
+            304,
+            39074,
+            421,
+            856,
+            1018,
+            220,
+            17,
+            621,
+            220,
+            15,
+            8,
+            151645
+          ],
+          "token_trace_complete": true
+        },
+        {
+          "id": "prose",
+          "http_wall_s": 6.2248,
+          "server_cpu_s": 12.4,
+          "server_rss_kib": 2323284,
+          "timings": {
+            "prompt_n": 30,
+            "prompt_ms": 1483.322,
+            "prompt_per_token_ms": 49.444066666666664,
+            "prompt_per_second": 20.22487362824795,
+            "predicted_n": 24,
+            "predicted_ms": 4724.784,
+            "predicted_per_token_ms": 196.86599999999999,
+            "predicted_per_second": 5.079597289526887,
+            "n_ctx": 512,
+            "n_past": 53
+          },
+          "usage": {
+            "completion_tokens": 24,
+            "prompt_tokens": 30,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "Glass jars should be labelled before a pantry count to ensure accurate inventory tracking and prevent confusion about contents and expiration dates."
+          },
+          "token_ids": [
+            84003,
+            60011,
+            1265,
+            387,
+            60236,
+            1573,
+            264,
+            68257,
+            1760,
+            311,
+            5978,
+            13382,
+            15444,
+            14849,
+            323,
+            5358,
+            21340,
+            911,
+            8794,
+            323,
+            31692,
+            12713,
+            13,
+            151645
+          ],
+          "token_trace_complete": true
+        }
+      ],
+      "other_native_pids_at_launch": [],
+      "started_utc": "2026-11-20T03:26:13.852960+00:00",
+      "ready_s": 4.6069,
+      "warmup": {
+        "http_wall_s": 1.3063,
+        "server_cpu_s": 2.6,
+        "server_rss_kib": 2297212,
+        "timings": {
+          "prompt_n": 22,
+          "prompt_ms": 1094.0,
+          "prompt_per_token_ms": 49.72727272727273,
+          "prompt_per_second": 20.10968921389397,
+          "predicted_n": 2,
+          "predicted_ms": 202.38,
+          "predicted_per_token_ms": 101.19,
+          "predicted_per_second": 9.882399446585632,
+          "n_ctx": 512,
+          "n_past": 23
+        },
+        "usage": {
+          "completion_tokens": 2,
+          "prompt_tokens": 22,
+          "total_tokens": 24,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "finish_reason": "length",
+        "message": {
+          "role": "assistant",
+          "content": "The abbreviation"
+        },
+        "token_ids": [
+          785,
+          71478
+        ],
+        "token_trace_complete": true
+      },
+      "status": "ok",
+      "native_exit_code": 0,
+      "native_evidence": [
+        "llama_model_loader: - kv   0:                       general.architecture str              = qwen3",
+        "llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2",
+        "llm_load_print_meta: general.name     = n/a",
+        "print_info: n_vocab               = 151669"
+      ]
+    }
+  ]
+}

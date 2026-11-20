@@ -1,0 +1,1608 @@
+{
+  "implementation_sha256": {
+    "study.py": "33a473755962b4f6f30e0206cd4f7b94c6e289f6c55607d54888dfabc02ea7f0",
+    "verifier.py": "574e834ecc8abd74cb1030a2184f345a716ceb72439c9b7a47e13223eeb75b30",
+    "PROTOCOL.md": "7cc501ade0b6253cb7bf166fbe3303c1320dd29bfec060a3e7e4ac856920d7d7"
+  },
+  "model_generations": 0,
+  "results": {
+    "current": {
+      "counts": {
+        "all": {
+          "wrong": 14,
+          "seats": 63,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 6,
+          "missed": 3,
+          "unjustified": 3
+        },
+        "closed": {
+          "wrong": 10,
+          "seats": 46,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 5,
+          "missed": 3
+        },
+        "outside": {
+          "unjustified": 3,
+          "seats": 6,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0
+        },
+        "shift": {
+          "wrong": 4,
+          "seats": 11,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 1
+        }
+      },
+      "rows": [
+        {
+          "id": "rack-gcd",
+          "gold": "42",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00194,
+          "answer": "21",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "digit-inventory",
+          "gold": "34",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00066,
+          "answer": "34",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-ledger",
+          "gold": "351",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00035,
+          "answer": "272",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-gap",
+          "gold": "0",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00012,
+          "answer": "127",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "part-factors",
+          "gold": "5832",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00044,
+          "answer": "324",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-factorial",
+          "gold": "362880",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.0001,
+          "answer": "362880",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "square-variance",
+          "gold": "74",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00018,
+          "answer": "42",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "signed-cubes",
+          "gold": "45",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00012,
+          "answer": "99",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-mean",
+          "gold": "9",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00059,
+          "answer": "9",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "yield-percentage",
+          "gold": "15",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00027,
+          "answer": "24",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "vowel-registry",
+          "gold": "4",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 9e-05,
+          "answer": "3",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "reverse-port",
+          "gold": "B-41_za",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00047,
+          "answer": "B_41-za",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "divider",
+          "gold": "yes",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00028,
+          "answer": "yes",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "letter-frequency",
+          "gold": "2",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 9e-05,
+          "answer": "1",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "even-split",
+          "gold": "35",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00014,
+          "answer": "35",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "first-missing",
+          "gold": "720",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 0.00018,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "none-available",
+          "gold": "22",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 5e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "sole-correct",
+          "gold": "5040",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 6e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "parenthesis",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00014,
+          "answer": "5",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "exclusive",
+          "gold": "36",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00013,
+          "answer": "72",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "different-quantity",
+          "gold": "9",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00012,
+          "answer": "10077696",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "conditional",
+          "gold": "0",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00012,
+          "answer": "15",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "negation",
+          "gold": "orbit",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 9e-05,
+          "answer": "tibro",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "units",
+          "gold": "6",
+          "group": "shift",
+          "verdict": "correct",
+          "seconds": 0.00032,
+          "answer": "6",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "choose-up-to",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00015,
+          "answer": "12",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "timestamp",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.0001,
+          "answer": "UTC",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        }
+      ]
+    },
+    "diverse": {
+      "counts": {
+        "all": {
+          "wrong": 16,
+          "seats": 66,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 4,
+          "missed": 3,
+          "unjustified": 3
+        },
+        "closed": {
+          "wrong": 11,
+          "seats": 47,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 4,
+          "missed": 3
+        },
+        "outside": {
+          "unjustified": 3,
+          "seats": 7,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0
+        },
+        "shift": {
+          "wrong": 5,
+          "seats": 12,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0
+        }
+      },
+      "rows": [
+        {
+          "id": "rack-gcd",
+          "gold": "42",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00028,
+          "answer": "21",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "digit-inventory",
+          "gold": "34",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00043,
+          "answer": "34",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-ledger",
+          "gold": "351",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.0002,
+          "answer": "272",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-gap",
+          "gold": "0",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00032,
+          "answer": "127",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "part-factors",
+          "gold": "5832",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00072,
+          "answer": "324",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-factorial",
+          "gold": "362880",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00028,
+          "answer": "362880",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "square-variance",
+          "gold": "74",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00063,
+          "answer": "42",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "signed-cubes",
+          "gold": "45",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00012,
+          "answer": "99",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-mean",
+          "gold": "9",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "12",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "yield-percentage",
+          "gold": "15",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.0001,
+          "answer": "24",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "vowel-registry",
+          "gold": "4",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00033,
+          "answer": "4",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "reverse-port",
+          "gold": "B-41_za",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "B_41-za",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "divider",
+          "gold": "yes",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00037,
+          "answer": "yes",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "letter-frequency",
+          "gold": "2",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00036,
+          "answer": "1",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "even-split",
+          "gold": "35",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00047,
+          "answer": "5",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "first-missing",
+          "gold": "720",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 0.00013,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "none-available",
+          "gold": "22",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 5e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "sole-correct",
+          "gold": "5040",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 5e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "parenthesis",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00013,
+          "answer": "5",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "exclusive",
+          "gold": "36",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00018,
+          "answer": "72",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "different-quantity",
+          "gold": "9",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00043,
+          "answer": "10077696",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "conditional",
+          "gold": "0",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00036,
+          "answer": "15",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "negation",
+          "gold": "orbit",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "tibro",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "units",
+          "gold": "6",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "75",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "choose-up-to",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00023,
+          "answer": "12",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat"
+          ],
+          "check": null
+        },
+        {
+          "id": "timestamp",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00027,
+          "answer": "UTC",
+          "seats": [
+            "coder_school",
+            "yicoder15bchat",
+            "fast"
+          ],
+          "check": null
+        }
+      ]
+    },
+    "verified": {
+      "counts": {
+        "all": {
+          "wrong": 13,
+          "seats": 62,
+          "questions_with_check": 2,
+          "guest_calls": 1,
+          "wrong_checked_releases": 0,
+          "correct": 7,
+          "missed": 3,
+          "unjustified": 3
+        },
+        "closed": {
+          "wrong": 9,
+          "seats": 45,
+          "questions_with_check": 2,
+          "guest_calls": 1,
+          "wrong_checked_releases": 0,
+          "correct": 6,
+          "missed": 3
+        },
+        "outside": {
+          "unjustified": 3,
+          "seats": 6,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0
+        },
+        "shift": {
+          "wrong": 4,
+          "seats": 11,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 1
+        }
+      },
+      "rows": [
+        {
+          "id": "rack-gcd",
+          "gold": "42",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00358,
+          "answer": "21",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "digit-inventory",
+          "gold": "34",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.0004,
+          "answer": "34",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-ledger",
+          "gold": "351",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 13.58218,
+          "answer": "351",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": {
+            "kind": "primes",
+            "args": [
+              61,
+              79
+            ],
+            "calls": 1,
+            "fuel": 1147634083,
+            "verdicts": [
+              {
+                "member": "coder_school",
+                "verified": false
+              },
+              {
+                "member": "untouched",
+                "verified": true
+              }
+            ],
+            "reference": "351"
+          }
+        },
+        {
+          "id": "prime-gap",
+          "gold": "0",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00024,
+          "answer": "127",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "part-factors",
+          "gold": "5832",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00043,
+          "answer": "324",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-factorial",
+          "gold": "362880",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00013,
+          "answer": "362880",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "square-variance",
+          "gold": "74",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "42",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "signed-cubes",
+          "gold": "45",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.0001,
+          "answer": "99",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-mean",
+          "gold": "9",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00024,
+          "answer": "9",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "yield-percentage",
+          "gold": "15",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00039,
+          "answer": "24",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "vowel-registry",
+          "gold": "4",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.0001,
+          "answer": "3",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "reverse-port",
+          "gold": "B-41_za",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00021,
+          "answer": "B_41-za",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "divider",
+          "gold": "yes",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00019,
+          "answer": "yes",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "letter-frequency",
+          "gold": "2",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 9e-05,
+          "answer": "1",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "even-split",
+          "gold": "35",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.0001,
+          "answer": "35",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "first-missing",
+          "gold": "720",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 0.00011,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "none-available",
+          "gold": "22",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 3e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": {
+            "kind": "digits",
+            "args": [
+              51709
+            ],
+            "calls": 0,
+            "fuel": 0,
+            "verdicts": [
+              {
+                "member": "coder_school",
+                "verified": false
+              },
+              {
+                "member": "untouched",
+                "verified": false
+              },
+              {
+                "member": "fast",
+                "verified": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "sole-correct",
+          "gold": "5040",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 7e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "parenthesis",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00011,
+          "answer": "5",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "exclusive",
+          "gold": "36",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "72",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "different-quantity",
+          "gold": "9",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00015,
+          "answer": "10077696",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "conditional",
+          "gold": "0",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.0001,
+          "answer": "15",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "negation",
+          "gold": "orbit",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00017,
+          "answer": "tibro",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "units",
+          "gold": "6",
+          "group": "shift",
+          "verdict": "correct",
+          "seconds": 0.00025,
+          "answer": "6",
+          "seats": [
+            "coder_school",
+            "untouched",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "choose-up-to",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00011,
+          "answer": "12",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "timestamp",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 9e-05,
+          "answer": "UTC",
+          "seats": [
+            "coder_school",
+            "untouched"
+          ],
+          "check": null
+        }
+      ]
+    },
+    "reordered": {
+      "counts": {
+        "all": {
+          "wrong": 14,
+          "seats": 64,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 6,
+          "missed": 3,
+          "unjustified": 3
+        },
+        "closed": {
+          "wrong": 10,
+          "seats": 45,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 5,
+          "missed": 3
+        },
+        "outside": {
+          "unjustified": 3,
+          "seats": 6,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0
+        },
+        "shift": {
+          "wrong": 4,
+          "seats": 13,
+          "questions_with_check": 0,
+          "guest_calls": 0,
+          "wrong_checked_releases": 0,
+          "correct": 1
+        }
+      },
+      "rows": [
+        {
+          "id": "rack-gcd",
+          "gold": "42",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00019,
+          "answer": "21",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "digit-inventory",
+          "gold": "34",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 6e-05,
+          "answer": "34",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-ledger",
+          "gold": "351",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 7e-05,
+          "answer": "272",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "prime-gap",
+          "gold": "0",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 7e-05,
+          "answer": "127",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "part-factors",
+          "gold": "5832",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.0003,
+          "answer": "324",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-factorial",
+          "gold": "362880",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 6e-05,
+          "answer": "362880",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "square-variance",
+          "gold": "74",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 7e-05,
+          "answer": "42",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "signed-cubes",
+          "gold": "45",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00039,
+          "answer": "99",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "small-mean",
+          "gold": "9",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00049,
+          "answer": "9",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "yield-percentage",
+          "gold": "15",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.0001,
+          "answer": "24",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "vowel-registry",
+          "gold": "4",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00037,
+          "answer": "3",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "reverse-port",
+          "gold": "B-41_za",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 0.00011,
+          "answer": "B_41-za",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "divider",
+          "gold": "yes",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 9e-05,
+          "answer": "yes",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "letter-frequency",
+          "gold": "2",
+          "group": "closed",
+          "verdict": "wrong",
+          "seconds": 9e-05,
+          "answer": "1",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "even-split",
+          "gold": "35",
+          "group": "closed",
+          "verdict": "correct",
+          "seconds": 0.00034,
+          "answer": "35",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "first-missing",
+          "gold": "720",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 0.0001,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "none-available",
+          "gold": "22",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 5e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "sole-correct",
+          "gold": "5040",
+          "group": "closed",
+          "verdict": "missed",
+          "seconds": 5e-05,
+          "answer": null,
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "parenthesis",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00012,
+          "answer": "5",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "exclusive",
+          "gold": "36",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00033,
+          "answer": "72",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "different-quantity",
+          "gold": "9",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00021,
+          "answer": "10077696",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "conditional",
+          "gold": "0",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00012,
+          "answer": "15",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "negation",
+          "gold": "orbit",
+          "group": "shift",
+          "verdict": "wrong",
+          "seconds": 0.00025,
+          "answer": "tibro",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "units",
+          "gold": "6",
+          "group": "shift",
+          "verdict": "correct",
+          "seconds": 0.0007,
+          "answer": "6",
+          "seats": [
+            "coder_school",
+            "fast",
+            "untouched"
+          ],
+          "check": null
+        },
+        {
+          "id": "choose-up-to",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.00015,
+          "answer": "12",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        },
+        {
+          "id": "timestamp",
+          "gold": null,
+          "group": "outside",
+          "verdict": "unjustified",
+          "seconds": 0.0001,
+          "answer": "UTC",
+          "seats": [
+            "coder_school",
+            "fast"
+          ],
+          "check": null
+        }
+      ]
+    }
+  }
+}

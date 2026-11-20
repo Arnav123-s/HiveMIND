@@ -1,0 +1,92 @@
+[
+  {
+    "id": "poster",
+    "question": "What day of the week is 2029-09-16?",
+    "group": "direct"
+  },
+  {
+    "id": "appointment",
+    "question": "Which weekday is 17 September 2034?",
+    "group": "wording"
+  },
+  {
+    "id": "delivery",
+    "question": "What weekday does 2032-03-08 fall on?",
+    "group": "wording"
+  },
+  {
+    "id": "ticket",
+    "question": "My bus ticket says 3 August 2036. Which weekday is that?",
+    "group": "wording"
+  },
+  {
+    "id": "diary",
+    "question": "Tell me the weekday for 2035-04-12.",
+    "group": "wording"
+  },
+  {
+    "id": "new-year",
+    "question": "How many days are there from 2040-12-31 to 2041-01-01?",
+    "group": "direct"
+  },
+  {
+    "id": "gap",
+    "question": "What is the gap in days from 2033-07-08 to 2033-07-29?",
+    "group": "wording"
+  },
+  {
+    "id": "leap",
+    "question": "How many days elapsed between 2028-02-28 and 2028-03-02?",
+    "group": "wording"
+  },
+  {
+    "id": "hostel",
+    "question": "I checked into a hostel on 11 May 2032 and left on 14 May 2032. How many calendar days elapsed?",
+    "group": "wording"
+  },
+  {
+    "id": "milestones",
+    "question": "Both milestones take place on 2038-06-19. How many calendar days separate those dates?",
+    "group": "wording"
+  },
+  {
+    "id": "endpoints",
+    "question": "Counting both endpoints, how many calendar dates run from 2044-04-11 through 2044-04-13?",
+    "group": "neighbor"
+  },
+  {
+    "id": "workweek",
+    "question": "Counting Monday to Friday only and including both endpoints, how many weekdays fall from June 6, 2031 to June 10, 2031?",
+    "group": "neighbor"
+  },
+  {
+    "id": "following",
+    "question": "What weekday is the day after 2030-10-09?",
+    "group": "neighbor"
+  },
+  {
+    "id": "holiday",
+    "question": "What weekday is my next holiday?",
+    "group": "underspecified"
+  },
+  {
+    "id": "invalid",
+    "question": "Which day of the week is 2035-02-29?",
+    "group": "invalid"
+  },
+  {
+    "id": "locale",
+    "question": "What weekday is 04/07/2036?",
+    "group": "underspecified"
+  },
+  {
+    "id": "midnight",
+    "question": "At 00:15 UTC on 2043-12-16, what weekday is it in my local time zone?",
+    "group": "underspecified"
+  },
+  {
+    "id": "tentative",
+    "question": "Our trip will start on either 8 June or 10 June 2037 and end on 19 June. How many days will actually elapse?",
+    "group": "underspecified"
+  }
+]

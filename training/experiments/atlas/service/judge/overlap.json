@@ -1,0 +1,7 @@
+{
+  "revision": "904dc3a387acc056934ff5fbb9249451a5a5d5b2",
+  "files": 366,
+  "string_values": 63429,
+  "normalized_matches": [],
+  "scope": "JSON string values in tracked training/*.json and .json.gz, up to 2 MiB stored per file."
+}

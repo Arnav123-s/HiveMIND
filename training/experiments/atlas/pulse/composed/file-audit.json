@@ -1,0 +1,34 @@
+[
+  {
+    "id": "h20000523_03",
+    "module_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+    "visible_lines": [
+      "36228",
+      "1h"
+    ],
+    "visible_exact": true,
+    "official_matches": 50,
+    "official_total": 50,
+    "external_matches": 60,
+    "external_total": 60,
+    "output_sha256": "597325e0bc12218e117f5c1e080608404b156c660aa89454ca6584f3d0be85a4",
+    "grader_only_guest_batches": 1,
+    "grader_only_fuel": 1034164521
+  },
+  {
+    "id": "h20000527_03",
+    "module_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+    "visible_lines": [
+      "72268",
+      "1m"
+    ],
+    "visible_exact": true,
+    "official_matches": 50,
+    "official_total": 50,
+    "external_matches": 60,
+    "external_total": 60,
+    "output_sha256": "a4339c2331cfde15bf98047673ed50071f9d1fdeee95d26c5a7c348716f9c7f8",
+    "grader_only_guest_batches": 1,
+    "grader_only_fuel": 1034196153
+  }
+]

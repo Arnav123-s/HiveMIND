@@ -1,0 +1,92 @@
+{
+  "leap-appointment": {
+    "group": "calendar",
+    "value": "wednesday",
+    "unit": "weekday"
+  },
+  "across-year": {
+    "group": "calendar",
+    "value": 6,
+    "unit": "days"
+  },
+  "shared-groups": {
+    "group": "arithmetic",
+    "value": 138,
+    "unit": "integer"
+  },
+  "cold-morning": {
+    "group": "arithmetic",
+    "value": "18.5",
+    "unit": "fahrenheit"
+  },
+  "shop-discount": {
+    "group": "arithmetic",
+    "value": "21.00",
+    "unit": "dollars"
+  },
+  "separate-parcels": {
+    "group": "shipping-kg",
+    "value": 430,
+    "unit": "cents"
+  },
+  "three-parcels": {
+    "group": "shipping-kg",
+    "value": 790,
+    "unit": "cents"
+  },
+  "single-parcel": {
+    "group": "shipping-kg",
+    "value": 430,
+    "unit": "cents"
+  },
+  "boundary-plus": {
+    "group": "shipping-kg",
+    "value": 430,
+    "unit": "cents"
+  },
+  "gram-compatibility": {
+    "group": "shipping-grams",
+    "value": 430,
+    "unit": "cents"
+  },
+  "date-in-conversation": {
+    "group": "paraphrase",
+    "value": "monday",
+    "unit": "weekday"
+  },
+  "mailroom-note": {
+    "group": "paraphrase",
+    "value": 430,
+    "unit": "cents"
+  },
+  "leap-error": {
+    "group": "invalid-date",
+    "value": null,
+    "unit": null
+  },
+  "city-date-order": {
+    "group": "ambiguous-date",
+    "value": null,
+    "unit": null
+  },
+  "mismatched-units": {
+    "group": "incompatible-units",
+    "value": null,
+    "unit": null
+  },
+  "box-not-weighed": {
+    "group": "insufficient-weight",
+    "value": null,
+    "unit": null
+  },
+  "missing-tariff": {
+    "group": "unavailable-policy",
+    "value": null,
+    "unit": null
+  },
+  "partial-result": {
+    "group": "additional-deliverable",
+    "value": null,
+    "unit": null
+  }
+}

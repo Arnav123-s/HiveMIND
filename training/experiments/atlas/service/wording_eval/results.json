@@ -1,0 +1,303 @@
+{
+  "sources": {
+    "ask.py": "83fd3d63ea3e6973f100d758377a1b834835e6ba91a02d316ba6454e429dec88",
+    "current.py": "d1f10652131d08b1846e7e63e1d07964eb2337a4c5c0a0b6889b3496fbd5fd00",
+    "wording.py": "90ffee46361bc49a65c935734c497c6d9af0dc370ce1a42184b70282e6ead799"
+  },
+  "summary": {
+    "strict": {
+      "correct": 2,
+      "missed": 11,
+      "appropriate_withhold": 5
+    },
+    "augmented": {
+      "correct": 6,
+      "missed": 7,
+      "appropriate_withhold": 5
+    }
+  },
+  "groups": {
+    "weekday_or_elapsed": {
+      "strict": {
+        "correct": 2,
+        "missed": 8
+      },
+      "augmented": {
+        "correct": 6,
+        "missed": 4
+      }
+    },
+    "other_answerable": {
+      "strict": {
+        "missed": 3
+      },
+      "augmented": {
+        "missed": 3
+      }
+    },
+    "invalid_or_ambiguous": {
+      "strict": {
+        "appropriate_withhold": 5
+      },
+      "augmented": {
+        "appropriate_withhold": 5
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "poster",
+      "question": "What day of the week is 2029-09-16?",
+      "group": "direct",
+      "expected": "sunday",
+      "strict": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "sunday",
+        "unit": null,
+        "text": "Sunday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "canonical": null,
+      "augmented": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "sunday",
+        "unit": null,
+        "text": "Sunday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "strict_grade": "correct",
+      "augmented_grade": "correct"
+    },
+    {
+      "id": "appointment",
+      "question": "Which weekday is 17 September 2034?",
+      "group": "wording",
+      "expected": "sunday",
+      "strict": null,
+      "canonical": "What day of the week is 2034-09-17?",
+      "augmented": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "sunday",
+        "unit": null,
+        "text": "Sunday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "strict_grade": "missed",
+      "augmented_grade": "correct"
+    },
+    {
+      "id": "delivery",
+      "question": "What weekday does 2032-03-08 fall on?",
+      "group": "wording",
+      "expected": "monday",
+      "strict": null,
+      "canonical": "What day of the week is 2032-03-08?",
+      "augmented": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "monday",
+        "unit": null,
+        "text": "Monday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "strict_grade": "missed",
+      "augmented_grade": "correct"
+    },
+    {
+      "id": "ticket",
+      "question": "My bus ticket says 3 August 2036. Which weekday is that?",
+      "group": "wording",
+      "expected": "sunday",
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "diary",
+      "question": "Tell me the weekday for 2035-04-12.",
+      "group": "wording",
+      "expected": "thursday",
+      "strict": null,
+      "canonical": "What day of the week is 2035-04-12?",
+      "augmented": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "strict_grade": "missed",
+      "augmented_grade": "correct"
+    },
+    {
+      "id": "new-year",
+      "question": "How many days are there from 2040-12-31 to 2041-01-01?",
+      "group": "direct",
+      "expected": 1,
+      "strict": {
+        "status": "answered",
+        "route": "days",
+        "value": 1,
+        "unit": "days",
+        "text": "1 day",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "canonical": null,
+      "augmented": {
+        "status": "answered",
+        "route": "days",
+        "value": 1,
+        "unit": "days",
+        "text": "1 day",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "strict_grade": "correct",
+      "augmented_grade": "correct"
+    },
+    {
+      "id": "gap",
+      "question": "What is the gap in days from 2033-07-08 to 2033-07-29?",
+      "group": "wording",
+      "expected": 21,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "leap",
+      "question": "How many days elapsed between 2028-02-28 and 2028-03-02?",
+      "group": "wording",
+      "expected": 3,
+      "strict": null,
+      "canonical": "How many days are there from 2028-02-28 to 2028-03-02?",
+      "augmented": {
+        "status": "answered",
+        "route": "days",
+        "value": 3,
+        "unit": "days",
+        "text": "3 days",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "strict_grade": "missed",
+      "augmented_grade": "correct"
+    },
+    {
+      "id": "hostel",
+      "question": "I checked into a hostel on 11 May 2032 and left on 14 May 2032. How many calendar days elapsed?",
+      "group": "wording",
+      "expected": 3,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "milestones",
+      "question": "Both milestones take place on 2038-06-19. How many calendar days separate those dates?",
+      "group": "wording",
+      "expected": 0,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "endpoints",
+      "question": "Counting both endpoints, how many calendar dates run from 2044-04-11 through 2044-04-13?",
+      "group": "neighbor",
+      "expected": 3,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "workweek",
+      "question": "Counting Monday to Friday only and including both endpoints, how many weekdays fall from June 6, 2031 to June 10, 2031?",
+      "group": "neighbor",
+      "expected": 3,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "following",
+      "question": "What weekday is the day after 2030-10-09?",
+      "group": "neighbor",
+      "expected": "thursday",
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "missed",
+      "augmented_grade": "missed"
+    },
+    {
+      "id": "holiday",
+      "question": "What weekday is my next holiday?",
+      "group": "underspecified",
+      "expected": null,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "appropriate_withhold",
+      "augmented_grade": "appropriate_withhold"
+    },
+    {
+      "id": "invalid",
+      "question": "Which day of the week is 2035-02-29?",
+      "group": "invalid",
+      "expected": null,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "appropriate_withhold",
+      "augmented_grade": "appropriate_withhold"
+    },
+    {
+      "id": "locale",
+      "question": "What weekday is 04/07/2036?",
+      "group": "underspecified",
+      "expected": null,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "appropriate_withhold",
+      "augmented_grade": "appropriate_withhold"
+    },
+    {
+      "id": "midnight",
+      "question": "At 00:15 UTC on 2043-12-16, what weekday is it in my local time zone?",
+      "group": "underspecified",
+      "expected": null,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "appropriate_withhold",
+      "augmented_grade": "appropriate_withhold"
+    },
+    {
+      "id": "tentative",
+      "question": "Our trip will start on either 8 June or 10 June 2037 and end on 19 June. How many days will actually elapse?",
+      "group": "underspecified",
+      "expected": null,
+      "strict": null,
+      "canonical": null,
+      "augmented": null,
+      "strict_grade": "appropriate_withhold",
+      "augmented_grade": "appropriate_withhold"
+    }
+  ]
+}

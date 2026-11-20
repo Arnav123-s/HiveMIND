@@ -1,0 +1,591 @@
+{
+  "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+  "training_cases": [
+    {
+      "id": "train-1-0",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        0,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 1 samples. Form: current. Code?",
+      "answer": "B"
+    },
+    {
+      "id": "train-1-1",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        0,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 3 samples. Form: current. Code?",
+      "answer": "B"
+    },
+    {
+      "id": "train-1-2",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        0,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 5 samples. Form: current. Code?",
+      "answer": "B"
+    },
+    {
+      "id": "train-2-0",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        1,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 9 samples. Form: legacy. Code?",
+      "answer": "C"
+    },
+    {
+      "id": "train-2-1",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        1,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 11 samples. Form: legacy. Code?",
+      "answer": "C"
+    },
+    {
+      "id": "train-2-2",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        1,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 13 samples. Form: legacy. Code?",
+      "answer": "C"
+    },
+    {
+      "id": "train-3-0",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        1,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 9 samples. Form: current. Code?",
+      "answer": "D"
+    },
+    {
+      "id": "train-3-1",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        1,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 11 samples. Form: current. Code?",
+      "answer": "D"
+    },
+    {
+      "id": "train-3-2",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        0,
+        1,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: local. Queue: 13 samples. Form: current. Code?",
+      "answer": "D"
+    },
+    {
+      "id": "train-4-0",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        0,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 1 samples. Form: legacy. Code?",
+      "answer": "E"
+    },
+    {
+      "id": "train-4-1",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        0,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 3 samples. Form: legacy. Code?",
+      "answer": "E"
+    },
+    {
+      "id": "train-4-2",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        0,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 5 samples. Form: legacy. Code?",
+      "answer": "E"
+    },
+    {
+      "id": "train-5-0",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        0,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 1 samples. Form: current. Code?",
+      "answer": "F"
+    },
+    {
+      "id": "train-5-1",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        0,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 3 samples. Form: current. Code?",
+      "answer": "F"
+    },
+    {
+      "id": "train-5-2",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        0,
+        1
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 5 samples. Form: current. Code?",
+      "answer": "F"
+    },
+    {
+      "id": "train-6-0",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        1,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 9 samples. Form: legacy. Code?",
+      "answer": "G"
+    },
+    {
+      "id": "train-6-1",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        1,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 11 samples. Form: legacy. Code?",
+      "answer": "G"
+    },
+    {
+      "id": "train-6-2",
+      "phase": "train",
+      "unseen": false,
+      "bits": [
+        1,
+        1,
+        0
+      ],
+      "system": "Assign the lab's one-letter service code. Start at A. For a mirror port advance four letters, for a queue of eight or more samples advance two letters, and for the current form advance one. The other options are local port, fewer than eight samples, and legacy form. Return only the code.",
+      "prompt": "Port: mirror. Queue: 13 samples. Form: legacy. Code?",
+      "answer": "G"
+    }
+  ],
+  "trials": [
+    {
+      "id": "test-0-0",
+      "prompt": "The legacy form records 2 samples waiting on the local port. Which code?",
+      "expected": "A",
+      "unseen": true,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "B",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "original"
+    },
+    {
+      "id": "test-0-1",
+      "prompt": "The legacy form records 4 samples waiting on the local port. Which code?",
+      "expected": "A",
+      "unseen": true,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "B",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "original"
+    },
+    {
+      "id": "test-0-2",
+      "prompt": "The legacy form records 6 samples waiting on the local port. Which code?",
+      "expected": "A",
+      "unseen": true,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "B",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "original"
+    },
+    {
+      "id": "test-1-0",
+      "prompt": "The current form records 2 samples waiting on the local port. Which code?",
+      "expected": "B",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "B",
+        "source": "C",
+        "threshold": "B",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "B"
+      },
+      "source": "original"
+    },
+    {
+      "id": "test-1-1",
+      "prompt": "The current form records 4 samples waiting on the local port. Which code?",
+      "expected": "B",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "B",
+        "source": "C",
+        "threshold": "B",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "B"
+      },
+      "source": "original"
+    },
+    {
+      "id": "test-2-0",
+      "prompt": "The legacy form records 10 samples waiting on the local port. Which code?",
+      "expected": "C",
+      "unseen": false,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "B",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "original"
+    },
+    {
+      "id": "test-2-1",
+      "prompt": "The legacy form records 12 samples waiting on the local port. Which code?",
+      "expected": "C",
+      "unseen": false,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-3-0",
+      "prompt": "The current form records 10 samples waiting on the local port. Which code?",
+      "expected": "D",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "A",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "B"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-3-1",
+      "prompt": "The current form records 12 samples waiting on the local port. Which code?",
+      "expected": "D",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "A",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "B"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-4-0",
+      "prompt": "The legacy form records 2 samples waiting on the mirror port. Which code?",
+      "expected": "E",
+      "unseen": false,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-4-1",
+      "prompt": "The legacy form records 4 samples waiting on the mirror port. Which code?",
+      "expected": "E",
+      "unseen": false,
+      "replies": {
+        "base": "Legacy",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-5-0",
+      "prompt": "The current form records 2 samples waiting on the mirror port. Which code?",
+      "expected": "F",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "B",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "B"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-5-1",
+      "prompt": "The current form records 4 samples waiting on the mirror port. Which code?",
+      "expected": "F",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "B"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-6-0",
+      "prompt": "The legacy form records 10 samples waiting on the mirror port. Which code?",
+      "expected": "G",
+      "unseen": false,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-6-1",
+      "prompt": "The legacy form records 12 samples waiting on the mirror port. Which code?",
+      "expected": "G",
+      "unseen": false,
+      "replies": {
+        "base": "The",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "C",
+        "three_mean": "C",
+        "three_sum": "C"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-7-0",
+      "prompt": "The current form records 10 samples waiting on the mirror port. Which code?",
+      "expected": "H",
+      "unseen": true,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "D"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-7-1",
+      "prompt": "The current form records 12 samples waiting on the mirror port. Which code?",
+      "expected": "H",
+      "unseen": true,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "B",
+        "three_mean": "B",
+        "three_sum": "D"
+      },
+      "source": "continuation"
+    },
+    {
+      "id": "test-7-2",
+      "prompt": "The current form records 14 samples waiting on the mirror port. Which code?",
+      "expected": "H",
+      "unseen": true,
+      "replies": {
+        "base": "C",
+        "joint": "C",
+        "source": "C",
+        "threshold": "C",
+        "format": "B",
+        "three_mean": "C",
+        "three_sum": "D"
+      },
+      "source": "continuation"
+    }
+  ],
+  "scores": {
+    "new_combinations": {
+      "base": 0,
+      "joint": 0,
+      "source": 0,
+      "threshold": 0,
+      "format": 0,
+      "three_mean": 0,
+      "three_sum": 0
+    },
+    "familiar_combinations": {
+      "base": 0,
+      "joint": 4,
+      "source": 2,
+      "threshold": 3,
+      "format": 4,
+      "three_mean": 4,
+      "three_sum": 4
+    }
+  },
+  "arms": {
+    "base": {},
+    "joint": {
+      "joint": 1
+    },
+    "source": {
+      "source": 1
+    },
+    "threshold": {
+      "threshold": 1
+    },
+    "format": {
+      "format": 1
+    },
+    "three_mean": {
+      "source": 0.3333333333333333,
+      "threshold": 0.3333333333333333,
+      "format": 0.3333333333333333
+    },
+    "three_sum": {
+      "source": 1,
+      "threshold": 1,
+      "format": 1
+    }
+  },
+  "threads": 2,
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "weights_sha256": {
+    "joint": "1fb2d47836aadb2ee97093be27617c8ae49b56f6eb78e05dabf0475e70a65cc9",
+    "source": "c0d2205aeaf90c875f438df9d10b35aa6395a224b5f630b4756efbf708f2e3ef",
+    "threshold": "e40870c187cdb63062587b39452d2ac413b0f53183a06218d36de4fec307ead3",
+    "format": "fbbf7dc63ad9a249f30ae45931f2805f376a63bef90320fab48be5d31fe6f27c"
+  },
+  "original_complete_rows": 6,
+  "original_log_sha256": "c85399e3d2421eb5fd86a4503afe7ff7aa3302e8c9819f5197c6174b729443a0",
+  "replay_differences": [],
+  "checkpoint_sha256": "41e129ffcb5165ae383dfd209f0ef27eae545648736a78fe534a6b34c5905868",
+  "attempts": 132,
+  "timeouts": 6,
+  "summed_http_probe_seconds": 568.428,
+  "fit_wall_seconds": null
+}

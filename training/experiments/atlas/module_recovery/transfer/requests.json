@@ -1,0 +1,58 @@
+[
+  {
+    "id": "seconds",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('47s') and of to_text(4912)."
+  },
+  {
+    "id": "minutes",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('22m') and of to_text(180001)."
+  },
+  {
+    "id": "hours",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('4h') and of to_text(4799)."
+  },
+  {
+    "id": "all-units",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('4h17m11s') and of to_text(784)."
+  },
+  {
+    "id": "minute-second",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('18m39s') and of to_text(97200)."
+  },
+  {
+    "id": "skip-middle",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('35h26s') and of to_text(5118)."
+  },
+  {
+    "id": "large-hours",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('123h52m') and of to_text(8040)."
+  },
+  {
+    "id": "long-elapsed",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('196h5m9s') and of to_text(1010101)."
+  },
+  {
+    "id": "change-units",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units days, hours and minutes, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('13h29m') and of to_text(11371)."
+  },
+  {
+    "id": "different-file",
+    "request": "Write a Python module and save it as time_entry.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('13h29m') and of to_text(11371)."
+  },
+  {
+    "id": "always-show-zero",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, always printing all three units, padding missing units with zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('13h29m') and of to_text(11371)."
+  },
+  {
+    "id": "extra-deliverable",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('13h29m') and of to_text(11371). Also generate a CSV conversion table for the next seven days."
+  },
+  {
+    "id": "fractional-seconds",
+    "request": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a possibly fractional number of seconds to two decimal places, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('13h29m') and of to_text(11371)."
+  },
+  {
+    "id": "paraphrased-same-family",
+    "request": "Please save durations.py with to_text and to_seconds for canonical h/m/s elapsed times, dropping zero units (zero is 0s). Also tell me what to_seconds('13h29m') and to_text(11371) give, one per line."
+  }
+]

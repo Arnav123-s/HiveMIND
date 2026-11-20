@@ -1,0 +1,2484 @@
+{
+  "school": {
+    "totals": {
+      "current": {
+        "correct": 28,
+        "wrong": 2,
+        "abstained": 2,
+        "seats": 74,
+        "contracts": 0,
+        "guest_calls": 0,
+        "guest_fuel": 0
+      },
+      "diverse": {
+        "correct": 24,
+        "wrong": 1,
+        "abstained": 7,
+        "seats": 84,
+        "contracts": 0,
+        "guest_calls": 0,
+        "guest_fuel": 0
+      },
+      "reordered": {
+        "correct": 27,
+        "wrong": 3,
+        "abstained": 2,
+        "seats": 76,
+        "contracts": 0,
+        "guest_calls": 0,
+        "guest_fuel": 0
+      },
+      "verified": {
+        "correct": 28,
+        "wrong": 2,
+        "abstained": 2,
+        "seats": 69,
+        "contracts": 19,
+        "guest_calls": 19,
+        "guest_fuel": 21797400543
+      }
+    },
+    "paired_errors": [
+      {
+        "pair": [
+          "coder_school",
+          "untouched"
+        ],
+        "error_counts": [
+          5,
+          11
+        ],
+        "joint_error": 4,
+        "joint_error_if_independent": 1.71875
+      },
+      {
+        "pair": [
+          "coder_school",
+          "fast"
+        ],
+        "error_counts": [
+          5,
+          15
+        ],
+        "joint_error": 4,
+        "joint_error_if_independent": 2.34375
+      },
+      {
+        "pair": [
+          "coder_school",
+          "yicoder15bchat"
+        ],
+        "error_counts": [
+          5,
+          20
+        ],
+        "joint_error": 4,
+        "joint_error_if_independent": 3.125
+      },
+      {
+        "pair": [
+          "untouched",
+          "fast"
+        ],
+        "error_counts": [
+          11,
+          15
+        ],
+        "joint_error": 7,
+        "joint_error_if_independent": 5.15625
+      },
+      {
+        "pair": [
+          "untouched",
+          "yicoder15bchat"
+        ],
+        "error_counts": [
+          11,
+          20
+        ],
+        "joint_error": 10,
+        "joint_error_if_independent": 6.875
+      },
+      {
+        "pair": [
+          "fast",
+          "yicoder15bchat"
+        ],
+        "error_counts": [
+          15,
+          20
+        ],
+        "joint_error": 10,
+        "joint_error_if_independent": 9.375
+      }
+    ],
+    "cases": [
+      {
+        "task": "Calculate the monthly payment for a loan of $25000 with an annual interest rate of 7% over 30 years. Print only the number",
+        "teacher_key": "166.3256237947956",
+        "replies": {
+          "coder_school": "166.32562379479558",
+          "untouched": null,
+          "fast": "monthly payment: $166.33",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "166.32562379479558",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "166.32562379479558",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "166.32562379479558",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "166.32562379479558",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Determine the future value of an investment of $10000 with monthly contributions of $200 for 10 years at an annual interest rate of 6%. Print only the number",
+        "teacher_key": "1638793.46806458",
+        "replies": {
+          "coder_school": "18554.23500380297",
+          "untouched": null,
+          "fast": null,
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "verified": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          }
+        }
+      },
+      {
+        "task": "Calculate the effective annual interest rate for a nominal rate of 8% compounded monthly. Print only the number",
+        "teacher_key": "0.08299950680750978",
+        "replies": {
+          "coder_school": "0.08299950680750978",
+          "untouched": "0.08299950680750978",
+          "fast": null,
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "0.08299950680750978",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": "0.08299950680750978",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "0.08299950680750978",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Determine the time required for an investment of $5000 to double at an annual interest rate of 9% compounded continuously. Print only the number",
+        "teacher_key": "7.701635339554948",
+        "replies": {
+          "coder_school": "8.043231726932046",
+          "untouched": "8.043231726932046",
+          "fast": "7.70163534",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "8.043231726932046",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": "8.043231726932046",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          },
+          "verified": {
+            "answer": "8.043231726932046",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          }
+        }
+      },
+      {
+        "task": "Find the present value of an annuity that pays $1000 per year for 20 years at an interest rate of 10% per year. Print only the number",
+        "teacher_key": "8513.563719758564",
+        "replies": {
+          "coder_school": "8513.563719758564",
+          "untouched": null,
+          "fast": "8513.56372",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "8513.563719758564",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "8513.563719758564",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "8513.563719758564",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "8513.563719758564",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Validate that the code 'A1B2C3' is valid by checking if it contains exactly three letters followed by three digits. Print \"Valid\" if it meets the criteria, otherwise print \"Invalid\"",
+        "teacher_key": "invalid",
+        "replies": {
+          "coder_school": "invalid",
+          "untouched": "invalid",
+          "fast": "invalid",
+          "yicoder15bchat": "invalid"
+        },
+        "decisions": {
+          "current": {
+            "answer": "invalid",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "invalid",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "invalid",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "invalid",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Check if the email \"user@example.com\" is valid by ensuring it contains exactly one \"@\" and one \".\" in the correct positions. Print \"Valid\" if it meets the criteria, otherwise print \"Invalid\"",
+        "teacher_key": "valid",
+        "replies": {
+          "coder_school": "valid",
+          "untouched": "valid",
+          "fast": "valid",
+          "yicoder15bchat": "valid"
+        },
+        "decisions": {
+          "current": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Determine if the number 12345 is a palindrome. Print \"Yes\" if it reads the same backward, otherwise print \"No\"",
+        "teacher_key": "no",
+        "replies": {
+          "coder_school": "no",
+          "untouched": null,
+          "fast": "no",
+          "yicoder15bchat": "false"
+        },
+        "decisions": {
+          "current": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Print the number of vowels in the string \"hello world\"",
+        "teacher_key": "3",
+        "replies": {
+          "coder_school": "5",
+          "untouched": "3",
+          "fast": "the number of vowels in the string is: 3",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "3",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": "the number of vowels in the string is: 3",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          },
+          "verified": {
+            "answer": "3",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "vowels",
+              "args": [
+                "hello world"
+              ],
+              "calls": 1,
+              "fuel": 1147453916,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": false
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "3"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Check if the string \"password123\" contains at least one uppercase letter, one lowercase letter, and one digit. Print \"Strong\" if it meets all criteria, otherwise print \"Weak\"",
+        "teacher_key": "weak",
+        "replies": {
+          "coder_school": "weak",
+          "untouched": "weak",
+          "fast": "weak",
+          "yicoder15bchat": "weak"
+        },
+        "decisions": {
+          "current": {
+            "answer": "weak",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "weak",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "weak",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "weak",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Calculate the sum of the digits in the number 12345 and print the result",
+        "teacher_key": "15",
+        "replies": {
+          "coder_school": "15",
+          "untouched": null,
+          "fast": "the sum of the digits in 12345 is: 15",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "digits",
+              "args": [
+                12345
+              ],
+              "calls": 1,
+              "fuel": 1147375944,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": false
+                }
+              ],
+              "reference": "15"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Check if the string \"example.com\" is a valid domain by ensuring it contains exactly one \".\" and is not empty. Print \"Valid\" if it meets the criteria, otherwise print \"Invalid\"",
+        "teacher_key": "valid",
+        "replies": {
+          "coder_school": "valid",
+          "untouched": "valid",
+          "fast": null,
+          "yicoder15bchat": "valid"
+        },
+        "decisions": {
+          "current": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "valid",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Determine if the number 123456 is divisible by 7. Print \"Yes\" if it is, otherwise print \"No\"",
+        "teacher_key": "no",
+        "replies": {
+          "coder_school": "no",
+          "untouched": null,
+          "fast": "no",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "no",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "divisible",
+              "args": [
+                123456,
+                7
+              ],
+              "calls": 1,
+              "fuel": 1145698237,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": false
+                }
+              ],
+              "reference": "no"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Group the list of tuples [(1, 2), (3, 4), (5, 6), (7, 8)] by the first element and print each group as a list of the second elements. Print only the number",
+        "teacher_key": "[2] [4] [6] [8]",
+        "replies": {
+          "coder_school": "[2, 4, 6, 8] [2, 4, 6, 8] [2, 4, 6, 8] [2, 4, 6, 8]",
+          "untouched": "1 3 5 7",
+          "fast": "groups by first element: group 1: [2] group 3: [4] group 5: [6] group 7: [8]",
+          "yicoder15bchat": "[2] [4] [6] [8]"
+        },
+        "decisions": {
+          "current": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "diverse": {
+            "answer": "[2, 4, 6, 8] [2, 4, 6, 8] [2, 4, 6, 8] [2, 4, 6, 8]",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "wrong"
+          },
+          "reordered": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "verified": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          }
+        }
+      },
+      {
+        "task": "Print the number of vowels in the word \"automation\"",
+        "teacher_key": "6",
+        "replies": {
+          "coder_school": "6",
+          "untouched": null,
+          "fast": "the number of vowels in the word 'automation' is: 6",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "vowels",
+              "args": [
+                "automation"
+              ],
+              "calls": 1,
+              "fuel": 1147385011,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": false
+                }
+              ],
+              "reference": "6"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Calculate the factorial of 10 and print only the number",
+        "teacher_key": "3628800",
+        "replies": {
+          "coder_school": "3628800",
+          "untouched": "3628800",
+          "fast": "3628800",
+          "yicoder15bchat": "3628800"
+        },
+        "decisions": {
+          "current": {
+            "answer": "3628800",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "3628800",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "3628800",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "3628800",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "factorial",
+              "args": [
+                10
+              ],
+              "calls": 1,
+              "fuel": 1147364655,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "3628800"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Print the reverse of the string \"hello world\"",
+        "teacher_key": "dlrow olleh",
+        "replies": {
+          "coder_school": "dlrow olleh",
+          "untouched": "dlrow olleh",
+          "fast": "dlrow olleh",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "dlrow olleh",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "dlrow olleh",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "dlrow olleh",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "dlrow olleh",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "reverse",
+              "args": [
+                "hello world"
+              ],
+              "calls": 1,
+              "fuel": 1145692213,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "dlrow olleh"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Write a program that prints the first 5 even numbers in ascending order",
+        "teacher_key": "[2, 4, 6, 8, 10]",
+        "replies": {
+          "coder_school": "[2, 4, 6, 8]",
+          "untouched": "2 4 6 8 10",
+          "fast": null,
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "[2, 4, 6, 8]",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": "[2, 4, 6, 8]",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          },
+          "verified": {
+            "answer": "[2, 4, 6, 8]",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "wrong"
+          }
+        }
+      },
+      {
+        "task": "Print the result of 2.5 multiplied by 3.7 and nothing else",
+        "teacher_key": "9.25",
+        "replies": {
+          "coder_school": "9.25",
+          "untouched": "9.25",
+          "fast": "9.25",
+          "yicoder15bchat": "9.25"
+        },
+        "decisions": {
+          "current": {
+            "answer": "9.25",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "9.25",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "9.25",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "9.25",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Print the number of letters in the word \"programming\"",
+        "teacher_key": "11",
+        "replies": {
+          "coder_school": "11",
+          "untouched": null,
+          "fast": "the number of letters in the word 'programming' is: 11",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "11",
+            "seats": [
+              "coder_school",
+              "untouched",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "11",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "11",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "11",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "letters",
+              "args": [
+                "programming"
+              ],
+              "calls": 1,
+              "fuel": 1147401109,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": false
+                }
+              ],
+              "reference": "11"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Write a program that prints the sum of the digits of 12345 and nothing else",
+        "teacher_key": "15",
+        "replies": {
+          "coder_school": "15",
+          "untouched": "15",
+          "fast": null,
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "15",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "digits",
+              "args": [
+                12345
+              ],
+              "calls": 1,
+              "fuel": 1147375944,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "15"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Calculate the average of the numbers 15, 20, and 25. Print only the number",
+        "teacher_key": "20.0",
+        "replies": {
+          "coder_school": "20.0",
+          "untouched": "20.0",
+          "fast": "20.0",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "20.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "20.0",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "20.0",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "20.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "mean",
+              "args": [
+                15,
+                20,
+                25
+              ],
+              "calls": 1,
+              "fuel": 1147438534,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "20"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Find the percentage of 12 that is relative to 30. Print only the number",
+        "teacher_key": "40.0",
+        "replies": {
+          "coder_school": "40.0",
+          "untouched": "40.0",
+          "fast": null,
+          "yicoder15bchat": "40.0"
+        },
+        "decisions": {
+          "current": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "percent",
+              "args": [
+                12,
+                30
+              ],
+              "calls": 1,
+              "fuel": 1147438975,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "40"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Determine the sum of the cubes of the numbers 2, 3, and 4. Print only the number",
+        "teacher_key": "99",
+        "replies": {
+          "coder_school": "99",
+          "untouched": "99",
+          "fast": "99",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "99",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "99",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "99",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "99",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "cubes",
+              "args": [
+                2,
+                3,
+                4
+              ],
+              "calls": 1,
+              "fuel": 1147398114,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "99"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Compute the average of the numbers 10, 12, and 14. Print only the number",
+        "teacher_key": "12.0",
+        "replies": {
+          "coder_school": "12.0",
+          "untouched": "12.0",
+          "fast": "12.0",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "12.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "12.0",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "12.0",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "12.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "mean",
+              "args": [
+                10,
+                12,
+                14
+              ],
+              "calls": 1,
+              "fuel": 1147438534,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "12"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Calculate the percentage of 18 that is relative to 45. Print only the number",
+        "teacher_key": "40.0",
+        "replies": {
+          "coder_school": "40.0",
+          "untouched": "40.0",
+          "fast": null,
+          "yicoder15bchat": "40.0"
+        },
+        "decisions": {
+          "current": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "percent",
+              "args": [
+                18,
+                45
+              ],
+              "calls": 1,
+              "fuel": 1147438975,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "40"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Find the sum of the squares of the numbers 5, 6, and 7. Print only the number",
+        "teacher_key": "110",
+        "replies": {
+          "coder_school": "110",
+          "untouched": "110",
+          "fast": "110",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "110",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "110",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "110",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "110",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "squares",
+              "args": [
+                5,
+                6,
+                7
+              ],
+              "calls": 1,
+              "fuel": 1147399962,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "110"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Determine the average of the numbers 8, 10, and 12. Print only the number",
+        "teacher_key": "10.0",
+        "replies": {
+          "coder_school": "10.0",
+          "untouched": "10.0",
+          "fast": "10.0",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "10.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "10.0",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "10.0",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "10.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "mean",
+              "args": [
+                8,
+                10,
+                12
+              ],
+              "calls": 1,
+              "fuel": 1147438370,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "10"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Calculate the percentage of 24 that is relative to 60. Print only the number",
+        "teacher_key": "40.0",
+        "replies": {
+          "coder_school": "40.0",
+          "untouched": "40.0",
+          "fast": null,
+          "yicoder15bchat": "40.0"
+        },
+        "decisions": {
+          "current": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "40.0",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "percent",
+              "args": [
+                24,
+                60
+              ],
+              "calls": 1,
+              "fuel": 1147438975,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "40"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Print the product of the divisors of 12. Print only the number",
+        "teacher_key": "1728",
+        "replies": {
+          "coder_school": "1728",
+          "untouched": "1728",
+          "fast": "{1, 2, 3, 4, 6, 12} product of divisors of 12: {1, 2, 3, 4, 6, 12}",
+          "yicoder15bchat": null
+        },
+        "decisions": {
+          "current": {
+            "answer": "1728",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": null,
+            "seats": [
+              "coder_school",
+              "yicoder15bchat",
+              "fast"
+            ],
+            "check": null,
+            "grade": "abstained"
+          },
+          "reordered": {
+            "answer": "1728",
+            "seats": [
+              "coder_school",
+              "fast",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "1728",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "divisors",
+              "args": [
+                12
+              ],
+              "calls": 1,
+              "fuel": 1147385085,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "1728"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Print the sum of the prime numbers between 1 and 10. Print only the number",
+        "teacher_key": "17",
+        "replies": {
+          "coder_school": "17",
+          "untouched": "17",
+          "fast": "17",
+          "yicoder15bchat": "17"
+        },
+        "decisions": {
+          "current": {
+            "answer": "17",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "17",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "17",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "17",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "primes",
+              "args": [
+                1,
+                10
+              ],
+              "calls": 1,
+              "fuel": 1147468306,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "17"
+            },
+            "grade": "correct"
+          }
+        }
+      },
+      {
+        "task": "Print the greatest common divisor of 18 and 24. Print only the number",
+        "teacher_key": "6",
+        "replies": {
+          "coder_school": "6",
+          "untouched": "6",
+          "fast": "6",
+          "yicoder15bchat": "6"
+        },
+        "decisions": {
+          "current": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "diverse": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "yicoder15bchat"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "reordered": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "fast"
+            ],
+            "check": null,
+            "grade": "correct"
+          },
+          "verified": {
+            "answer": "6",
+            "seats": [
+              "coder_school",
+              "untouched"
+            ],
+            "check": {
+              "kind": "gcd",
+              "args": [
+                18,
+                24
+              ],
+              "calls": 1,
+              "fuel": 1147369684,
+              "verdicts": [
+                {
+                  "member": "coder_school",
+                  "verified": true
+                },
+                {
+                  "member": "untouched",
+                  "verified": true
+                }
+              ],
+              "reference": "6"
+            },
+            "grade": "correct"
+          }
+        }
+      }
+    ]
+  },
+  "programs": {
+    "camera_pulse": {
+      "invalid_proposals_declined": [
+        -1
+      ],
+      "candidates": [
+        {
+          "member": "g47code2",
+          "source_sha256": "e1f6caccf570bd1fdfbf72ece920cd174a224605aa72d4a6337e9f15bb93bb48",
+          "checks": [
+            {
+              "input": 23,
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": 24,
+              "expected": 24,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": true
+            },
+            {
+              "input": 25,
+              "expected": 23,
+              "observed": {
+                "value": 23
+              },
+              "counterexample": false
+            }
+          ],
+          "public_fuel": 1022483802,
+          "holdout_fuel": 1024253930,
+          "correct": 24,
+          "tested": 28
+        },
+        {
+          "member": "g47data2",
+          "source_sha256": "7cda25e6f0dcde4f9c23136d271874c08e9f42cefaf588d0f1732350531ce4bc",
+          "checks": [
+            {
+              "input": 23,
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": 24,
+              "expected": 24,
+              "observed": {
+                "value": 24
+              },
+              "counterexample": false
+            },
+            {
+              "input": 25,
+              "expected": 23,
+              "observed": {
+                "value": 23
+              },
+              "counterexample": false
+            }
+          ],
+          "public_fuel": 1022469335,
+          "holdout_fuel": 1024233645,
+          "correct": 28,
+          "tested": 28
+        }
+      ],
+      "outcomes": {
+        "incumbent": {
+          "member": "g47code2",
+          "correct": 24,
+          "wrong": 4,
+          "abstained": 0,
+          "witness_calls": 0,
+          "witness_fuel": 0
+        },
+        "first_peer": {
+          "member": "g47data2",
+          "correct": 28,
+          "wrong": 0,
+          "abstained": 0,
+          "witness_calls": 0,
+          "witness_fuel": 0
+        },
+        "verified": {
+          "member": "g47data2",
+          "correct": 28,
+          "wrong": 0,
+          "abstained": 0,
+          "witness_calls": 2,
+          "witness_fuel": 2044953137
+        }
+      }
+    },
+    "savings_goal": {
+      "invalid_proposals_declined": [
+        -1
+      ],
+      "candidates": [
+        {
+          "member": "g47code2",
+          "source_sha256": "0be143cea4ac18ff694f9b73c7e1e953045444ea9cccb6bb5ccd2ff1b3b14cef",
+          "checks": [
+            {
+              "input": 16,
+              "expected": 1,
+              "observed": {
+                "value": 17
+              },
+              "counterexample": true
+            },
+            {
+              "input": 17,
+              "expected": 17,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": true
+            },
+            {
+              "input": 18,
+              "expected": 16,
+              "observed": {
+                "value": -1
+              },
+              "counterexample": true
+            }
+          ],
+          "public_fuel": 1022585577,
+          "holdout_fuel": 1024372284,
+          "correct": 0,
+          "tested": 28
+        },
+        {
+          "member": "g47data2",
+          "source_sha256": "26db8838a8ce17316ae22406c06f2e179b489a9511b43a6541c7393ba444ba35",
+          "checks": [
+            {
+              "input": 16,
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": 17,
+              "expected": 17,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": true
+            },
+            {
+              "input": 18,
+              "expected": 16,
+              "observed": {
+                "value": -1
+              },
+              "counterexample": true
+            }
+          ],
+          "public_fuel": 1022599684,
+          "holdout_fuel": 1024386567,
+          "correct": 0,
+          "tested": 28
+        },
+        {
+          "member": "g47sources2",
+          "source_sha256": "26db8838a8ce17316ae22406c06f2e179b489a9511b43a6541c7393ba444ba35",
+          "checks": [
+            {
+              "input": 16,
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": 17,
+              "expected": 17,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": true
+            },
+            {
+              "input": 18,
+              "expected": 16,
+              "observed": {
+                "value": -1
+              },
+              "counterexample": true
+            }
+          ],
+          "public_fuel": 1022599684,
+          "holdout_fuel": 1024386567,
+          "correct": 0,
+          "tested": 28
+        }
+      ],
+      "outcomes": {
+        "incumbent": {
+          "member": "g47code2",
+          "correct": 0,
+          "wrong": 28,
+          "abstained": 0,
+          "witness_calls": 0,
+          "witness_fuel": 0
+        },
+        "first_peer": {
+          "member": "g47data2",
+          "correct": 0,
+          "wrong": 28,
+          "abstained": 0,
+          "witness_calls": 0,
+          "witness_fuel": 0
+        },
+        "verified": {
+          "member": null,
+          "correct": 0,
+          "wrong": 0,
+          "abstained": 28,
+          "witness_calls": 3,
+          "witness_fuel": 3067784945
+        }
+      }
+    },
+    "transit_remedial": {
+      "invalid_proposals_declined": [
+        {
+          "minutes": [
+            -1
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "member": "earlier_g47code2",
+          "source_sha256": "a7d7e2e438a5f865bfb89ddad0459f7c215b82644458ad1468e8ebf6087163cc",
+          "checks": [
+            {
+              "input": {
+                "minutes": []
+              },
+              "expected": 0,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": false
+            },
+            {
+              "input": {
+                "minutes": [
+                  1,
+                  1
+                ]
+              },
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": {
+                "minutes": [
+                  0,
+                  50
+                ]
+              },
+              "expected": 2,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": true
+            }
+          ],
+          "public_fuel": 1053092872,
+          "holdout_fuel": 1055432519,
+          "correct": 11,
+          "tested": 28
+        },
+        {
+          "member": "g47data2",
+          "source_sha256": "e87c09e2034de572d717b7a0283ec8e257ea67a297f1e835c6a9f877e4ae0c9b",
+          "checks": [
+            {
+              "input": {
+                "minutes": []
+              },
+              "expected": 0,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": false
+            },
+            {
+              "input": {
+                "minutes": [
+                  1,
+                  1
+                ]
+              },
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": {
+                "minutes": [
+                  0,
+                  50
+                ]
+              },
+              "expected": 2,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": true
+            }
+          ],
+          "public_fuel": 1022526129,
+          "holdout_fuel": 1024861667,
+          "correct": 11,
+          "tested": 28
+        },
+        {
+          "member": "g47sources2",
+          "source_sha256": "e87c09e2034de572d717b7a0283ec8e257ea67a297f1e835c6a9f877e4ae0c9b",
+          "checks": [
+            {
+              "input": {
+                "minutes": []
+              },
+              "expected": 0,
+              "observed": {
+                "value": 0
+              },
+              "counterexample": false
+            },
+            {
+              "input": {
+                "minutes": [
+                  1,
+                  1
+                ]
+              },
+              "expected": 1,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": false
+            },
+            {
+              "input": {
+                "minutes": [
+                  0,
+                  50
+                ]
+              },
+              "expected": 2,
+              "observed": {
+                "value": 1
+              },
+              "counterexample": true
+            }
+          ],
+          "public_fuel": 1022526129,
+          "holdout_fuel": 1024861667,
+          "correct": 11,
+          "tested": 28
+        }
+      ],
+      "outcomes": {
+        "incumbent": {
+          "member": "earlier_g47code2",
+          "correct": 11,
+          "wrong": 17,
+          "abstained": 0,
+          "witness_calls": 0,
+          "witness_fuel": 0
+        },
+        "first_peer": {
+          "member": "g47data2",
+          "correct": 11,
+          "wrong": 17,
+          "abstained": 0,
+          "witness_calls": 0,
+          "witness_fuel": 0
+        },
+        "verified": {
+          "member": null,
+          "correct": 0,
+          "wrong": 0,
+          "abstained": 28,
+          "witness_calls": 3,
+          "witness_fuel": 3098145130
+        }
+      }
+    }
+  },
+  "sha256": {
+    "training/data/school/coder_answers.json": "41c8f16edf3584598f70c43e4ac7e0f74a96adc5e15740f91ade9b08ad2f6598",
+    "training/data/school/coder.jsonl": "d4d310b92bcb26d90a51bd0494364870e8c00aeb6681e548dedebc1ced06ee48",
+    "training/reports/verified-learning/peer/evidence.json.gz": "0267c42bf55e8cd9d1345b25936bc85d0b1380e6ac66efdd0842b8a77500c8b0",
+    "team/solo.py": "7d88ef34ef4f558714feaa77f69623b0c28b545605cb4688ec1d659c36325218",
+    "training/experiments/atlas/dissent/PROTOCOL.md": "7cc501ade0b6253cb7bf166fbe3303c1320dd29bfec060a3e7e4ac856920d7d7",
+    "training/experiments/atlas/dissent/study.py": "33a473755962b4f6f30e0206cd4f7b94c6e289f6c55607d54888dfabc02ea7f0",
+    "training/experiments/atlas/dissent/verifier.py": "574e834ecc8abd74cb1030a2184f345a716ceb72439c9b7a47e13223eeb75b30",
+    "training/experiments/atlas/dissent/replay.py": "b4b6c7c01b8b1787919ec79ef851ac641bea541320e41cc15c508bcf37891cfb"
+  },
+  "sdk_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "wall_seconds_including_wasm_compilation": 18.924
+}

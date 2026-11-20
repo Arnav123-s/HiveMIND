@@ -1,0 +1,547 @@
+{
+  "service_sha256": "19264bce028e403d1d507123b7b19131c71b050469a1556ae10056411c192f4b",
+  "panels": {
+    "judge": {
+      "panel_sha256": "eeab3578370ba97b46a545a78a7381e55469bbec4793f28aad0c7a9cc8da2442",
+      "keys_sha256": "d059f888f1702b7a1fc4756b74b4dcbade479e0efeda439fafd42cf41a9a7f0e",
+      "counts": {
+        "correct": 11,
+        "missed": 1,
+        "withheld": 6
+      },
+      "rows": [
+        {
+          "id": "leap-appointment",
+          "response": {
+            "status": "answered",
+            "route": "weekday",
+            "value": "wednesday",
+            "unit": null,
+            "text": "Wednesday",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0691
+        },
+        {
+          "id": "across-year",
+          "response": {
+            "status": "answered",
+            "route": "days",
+            "value": 6,
+            "unit": "days",
+            "text": "6 days",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0509
+        },
+        {
+          "id": "shared-groups",
+          "response": {
+            "status": "answered",
+            "route": "gcd",
+            "value": 138,
+            "unit": null,
+            "text": "138",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0481
+        },
+        {
+          "id": "cold-morning",
+          "response": {
+            "status": "answered",
+            "route": "fahrenheit",
+            "value": "18.5",
+            "unit": "fahrenheit",
+            "text": "18.5 °F",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0544
+        },
+        {
+          "id": "shop-discount",
+          "response": {
+            "status": "answered",
+            "route": "dollars",
+            "value": "21",
+            "unit": "dollars",
+            "text": "21.00 dollars",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.05
+        },
+        {
+          "id": "separate-parcels",
+          "response": {
+            "status": "answered",
+            "route": "shipping",
+            "value": 430,
+            "unit": "cents",
+            "text": "430 cents",
+            "proof": {
+              "path": "side_exit",
+              "methods": [
+                "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+              ],
+              "fuel": 2045368623
+            }
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 10.3857
+        },
+        {
+          "id": "three-parcels",
+          "response": {
+            "status": "answered",
+            "route": "shipping",
+            "value": 790,
+            "unit": "cents",
+            "text": "790 cents",
+            "proof": {
+              "path": "side_exit",
+              "methods": [
+                "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+              ],
+              "fuel": 1022645728
+            }
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 9.8865
+        },
+        {
+          "id": "single-parcel",
+          "response": {
+            "status": "answered",
+            "route": "shipping",
+            "value": 430,
+            "unit": "cents",
+            "text": "430 cents",
+            "proof": {
+              "path": "side_exit",
+              "methods": [
+                "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+              ],
+              "fuel": 1022634047
+            }
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 10.0864
+        },
+        {
+          "id": "boundary-plus",
+          "response": {
+            "status": "answered",
+            "route": "shipping",
+            "value": 430,
+            "unit": "cents",
+            "text": "430 cents",
+            "proof": {
+              "path": "side_exit",
+              "methods": [
+                "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+              ],
+              "fuel": 2045368692
+            }
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 10.2707
+        },
+        {
+          "id": "gram-compatibility",
+          "response": {
+            "status": "answered",
+            "route": "shipping",
+            "value": 430,
+            "unit": "cents",
+            "text": "430 cents",
+            "proof": {
+              "path": "stock",
+              "methods": [
+                "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+              ],
+              "fuel": 2045368986
+            }
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 10.2809
+        },
+        {
+          "id": "date-in-conversation",
+          "response": {
+            "status": "answered",
+            "route": "weekday",
+            "value": "monday",
+            "unit": null,
+            "text": "Monday",
+            "proof": "matched calendar wording and checked the normalized question",
+            "canonical_question": "What day of the week is 2031-10-06?"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0944
+        },
+        {
+          "id": "mailroom-note",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1062
+        },
+        {
+          "id": "leap-error",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1048
+        },
+        {
+          "id": "city-date-order",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1069
+        },
+        {
+          "id": "mismatched-units",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1077
+        },
+        {
+          "id": "box-not-weighed",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1027
+        },
+        {
+          "id": "missing-tariff",
+          "response": {
+            "status": "missing",
+            "route": "shipping",
+            "value": null,
+            "unit": null,
+            "text": "No saved version passed the checks for pooled rounding."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 10.0646
+        },
+        {
+          "id": "partial-result",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1627
+        }
+      ]
+    },
+    "wording_eval": {
+      "panel_sha256": "fe962791f92ee01e7c57b61120e7a8a41869365a7ea5bfe1bd7344b8d1a14265",
+      "keys_sha256": "bd51e8495df525fc45cba878c39721c086d775185b3ed7b1d4052ee8a612eae7",
+      "counts": {
+        "correct": 6,
+        "missed": 7,
+        "withheld": 5
+      },
+      "rows": [
+        {
+          "id": "poster",
+          "response": {
+            "status": "answered",
+            "route": "weekday",
+            "value": "sunday",
+            "unit": null,
+            "text": "Sunday",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0493
+        },
+        {
+          "id": "appointment",
+          "response": {
+            "status": "answered",
+            "route": "weekday",
+            "value": "sunday",
+            "unit": null,
+            "text": "Sunday",
+            "proof": "matched calendar wording and checked the normalized question",
+            "canonical_question": "What day of the week is 2034-09-17?"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0506
+        },
+        {
+          "id": "delivery",
+          "response": {
+            "status": "answered",
+            "route": "weekday",
+            "value": "monday",
+            "unit": null,
+            "text": "Monday",
+            "proof": "matched calendar wording and checked the normalized question",
+            "canonical_question": "What day of the week is 2032-03-08?"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0481
+        },
+        {
+          "id": "ticket",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1207
+        },
+        {
+          "id": "diary",
+          "response": {
+            "status": "answered",
+            "route": "weekday",
+            "value": "thursday",
+            "unit": null,
+            "text": "Thursday",
+            "proof": "matched calendar wording and checked the normalized question",
+            "canonical_question": "What day of the week is 2035-04-12?"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0509
+        },
+        {
+          "id": "new-year",
+          "response": {
+            "status": "answered",
+            "route": "days",
+            "value": 1,
+            "unit": "days",
+            "text": "1 day",
+            "proof": "whole-question arithmetic certificate"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0511
+        },
+        {
+          "id": "gap",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1103
+        },
+        {
+          "id": "leap",
+          "response": {
+            "status": "answered",
+            "route": "days",
+            "value": 3,
+            "unit": "days",
+            "text": "3 days",
+            "proof": "matched calendar wording and checked the normalized question",
+            "canonical_question": "How many days are there from 2028-02-28 to 2028-03-02?"
+          },
+          "verdict": "correct",
+          "exit": 0,
+          "seconds": 0.0513
+        },
+        {
+          "id": "hostel",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1061
+        },
+        {
+          "id": "milestones",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.11
+        },
+        {
+          "id": "endpoints",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1069
+        },
+        {
+          "id": "workweek",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1071
+        },
+        {
+          "id": "following",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "missed",
+          "exit": 1,
+          "seconds": 0.1039
+        },
+        {
+          "id": "holiday",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1077
+        },
+        {
+          "id": "invalid",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1015
+        },
+        {
+          "id": "locale",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1668
+        },
+        {
+          "id": "midnight",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.1049
+        },
+        {
+          "id": "tentative",
+          "response": {
+            "status": "unsupported",
+            "route": null,
+            "value": null,
+            "unit": null,
+            "text": "I could not match the whole question to a supported calculation."
+          },
+          "verdict": "withheld",
+          "exit": 1,
+          "seconds": 0.106
+        }
+      ]
+    }
+  }
+}

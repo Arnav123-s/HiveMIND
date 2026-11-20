@@ -1,0 +1,352 @@
+{
+  "description": "Matched fresh Python processes, warm operating-system file cache, three rotated repeats per question. -m CLI from isolated identical temporary package roots with the recorded exact ask.py; shared dependencies linked to same checkout. No model/WASI calls. CPU = child user + system. Alternated first variant, rotated question order. Same CPU affinity and environment for both arms.",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "affinity": [
+    4
+  ],
+  "threads_env": 1,
+  "sources": {
+    "original_ask": "2dfd7f08ca2c8574604b879cba808c52e604c2c6fb358f1391cbb0e3f9cfaea4",
+    "updated_ask": "83fd3d63ea3e6973f100d758377a1b834835e6ba91a02d316ba6454e429dec88",
+    "original_certificate": "b9a526cef25260b2b567122f4f861138c1ce45f780cf06ca84390f511ee03157",
+    "updated_certificate": "d1f10652131d08b1846e7e63e1d07964eb2337a4c5c0a0b6889b3496fbd5fd00"
+  },
+  "median": {
+    "original": {
+      "all": {
+        "cpu_s": 4.805135999999999,
+        "wall_s": 4.869688482999663
+      },
+      "weekday": {
+        "cpu_s": 4.1961189999999995,
+        "wall_s": 4.199835053000243
+      },
+      "dollars": {
+        "cpu_s": 4.805135999999999,
+        "wall_s": 4.869688482999663
+      },
+      "gcd": {
+        "cpu_s": 4.928155000000004,
+        "wall_s": 4.969345024000177
+      }
+    },
+    "updated": {
+      "all": {
+        "cpu_s": 0.07030100000000061,
+        "wall_s": 0.07300123000004533
+      },
+      "weekday": {
+        "cpu_s": 0.05494800000000044,
+        "wall_s": 0.057565878000332305
+      },
+      "dollars": {
+        "cpu_s": 0.0710589999999982,
+        "wall_s": 0.07407073500007755
+      },
+      "gcd": {
+        "cpu_s": 0.07030100000000061,
+        "wall_s": 0.07300123000004533
+      }
+    }
+  },
+  "rows": [
+    {
+      "iteration": 1,
+      "kind": "weekday",
+      "question": "Which day of the week is 2024-02-29?",
+      "variant": "original",
+      "cpu_s": 3.9725319999999997,
+      "wall_s": 3.9772149959999297,
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 1,
+      "kind": "weekday",
+      "question": "Which day of the week is 2024-02-29?",
+      "variant": "updated",
+      "cpu_s": 0.05494800000000044,
+      "wall_s": 0.057565878000332305,
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 1,
+      "kind": "dollars",
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "variant": "updated",
+      "cpu_s": 0.04943799999999943,
+      "wall_s": 0.05174931600004129,
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 1,
+      "kind": "dollars",
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "variant": "original",
+      "cpu_s": 3.463793,
+      "wall_s": 3.466497958999753,
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 1,
+      "kind": "gcd",
+      "question": "What is the GCD of 66 and 132?",
+      "variant": "original",
+      "cpu_s": 4.626742999999999,
+      "wall_s": 4.661523963000036,
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 66,
+        "unit": null,
+        "text": "66",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 1,
+      "kind": "gcd",
+      "question": "What is the GCD of 66 and 132?",
+      "variant": "updated",
+      "cpu_s": 0.07030100000000061,
+      "wall_s": 0.07300123000004533,
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 66,
+        "unit": null,
+        "text": "66",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 2,
+      "kind": "dollars",
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "variant": "updated",
+      "cpu_s": 0.07427000000000028,
+      "wall_s": 0.07700169000008827,
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 2,
+      "kind": "dollars",
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "variant": "original",
+      "cpu_s": 4.805135999999999,
+      "wall_s": 4.907887876000132,
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 2,
+      "kind": "gcd",
+      "question": "What is the GCD of 66 and 132?",
+      "variant": "original",
+      "cpu_s": 4.928155000000004,
+      "wall_s": 5.000733358999696,
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 66,
+        "unit": null,
+        "text": "66",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 2,
+      "kind": "gcd",
+      "question": "What is the GCD of 66 and 132?",
+      "variant": "updated",
+      "cpu_s": 0.05145299999999864,
+      "wall_s": 0.05402044399988881,
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 66,
+        "unit": null,
+        "text": "66",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 2,
+      "kind": "weekday",
+      "question": "Which day of the week is 2024-02-29?",
+      "variant": "updated",
+      "cpu_s": 0.050637999999999295,
+      "wall_s": 0.05286759799992069,
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 2,
+      "kind": "weekday",
+      "question": "Which day of the week is 2024-02-29?",
+      "variant": "original",
+      "cpu_s": 4.1961189999999995,
+      "wall_s": 4.199835053000243,
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 3,
+      "kind": "gcd",
+      "question": "What is the GCD of 66 and 132?",
+      "variant": "original",
+      "cpu_s": 4.958880999999998,
+      "wall_s": 4.969345024000177,
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 66,
+        "unit": null,
+        "text": "66",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 3,
+      "kind": "gcd",
+      "question": "What is the GCD of 66 and 132?",
+      "variant": "updated",
+      "cpu_s": 0.08951800000000176,
+      "wall_s": 0.09865130699972724,
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 66,
+        "unit": null,
+        "text": "66",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 3,
+      "kind": "weekday",
+      "question": "Which day of the week is 2024-02-29?",
+      "variant": "updated",
+      "cpu_s": 0.10155599999999865,
+      "wall_s": 0.1050143540001045,
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 3,
+      "kind": "weekday",
+      "question": "Which day of the week is 2024-02-29?",
+      "variant": "original",
+      "cpu_s": 4.835266000000004,
+      "wall_s": 4.993508030999692,
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 3,
+      "kind": "dollars",
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "variant": "original",
+      "cpu_s": 4.863939999999992,
+      "wall_s": 4.869688482999663,
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      }
+    },
+    {
+      "iteration": 3,
+      "kind": "dollars",
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "variant": "updated",
+      "cpu_s": 0.0710589999999982,
+      "wall_s": 0.07407073500007755,
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      }
+    }
+  ],
+  "command_template": [
+    "python",
+    "-m",
+    "training.experiments.atlas.service.ask",
+    "--json",
+    "QUESTION"
+  ],
+  "frozen_original_commit": "ccd34f5702a67be64c0a5a3859e998f559b7d03a",
+  "identical_json_responses_for_all_repetitions": true
+}

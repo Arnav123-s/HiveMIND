@@ -1,0 +1,21 @@
+{
+  "pairs": [
+    ["Before reporting the result I recomputed it using the inputs.", "Before reporting the result I guessed it from the wording."],
+    ["I checked whether the proposed answer follows the stated rule.", "I assumed the proposed answer follows the stated rule."],
+    ["I will test a boundary case before accepting this claim.", "I will accept the claim without testing a boundary case."],
+    ["I compared the units on both sides before finishing the calculation.", "I skipped the units on both sides before finishing the calculation."],
+    ["I will check the total independently before giving my answer.", "I will trust the first total without checking before giving my answer."],
+    ["I verified the result against the original record.", "I repeated the result without opening the original record."]
+  ],
+  "tasks": [
+    ["A shipment contains six cases with eight items each. Seven items are removed. The proposed remainder is 41.", "A"],
+    ["A counter starts at 5. It gains 12 and then loses 9. The proposed final count is 9.", "B"],
+    ["A line holds 16 bytes. Addresses 31 and 32 are in the same aligned cache line starting from zero.", "B"],
+    ["A model got 18 of 24 labels right. The proposed accuracy is 75 percent.", "A"],
+    ["At normal pressure, pure water at 49 degrees Celsius is liquid.", "A"],
+    ["A cubic box whose side doubles has four times the original volume.", "B"],
+    ["A 0.1 second sensor interval is equal to 10 milliseconds.", "B"],
+    ["The inclusive range of addresses 17 through 22 contains six bytes.", "A"]
+  ],
+  "instruction": "Judge the statement. Return A if correct or B if incorrect. Return one letter."
+}

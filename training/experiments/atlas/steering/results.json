@@ -1,0 +1,2996 @@
+{
+  "identity": {
+    "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+    "generator_sha256": "1351c1d6a5a216fcf57d5640c2fbbfc816219922060701924a4754f93c300240",
+    "benchmark_sha256": "148874855035172c8bc58e93c7b4fef3d5daa4ac4091ff297dc5428166ab0020",
+    "protocol_sha256": "82ae94f872e163ea5067d4df95f79000484e9a6d4395868bf9ebbdbfbb934cf0",
+    "threads": 2
+  },
+  "fit_seconds": 107.048,
+  "vector_bytes": 575168,
+  "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+  "layer_range": [
+    20,
+    30
+  ],
+  "norms": {
+    "1": 0.9999994684163134,
+    "2": 0.9999997328772904,
+    "3": 1.0000001114163946,
+    "4": 1.0000002553884115,
+    "5": 1.0000002891295896,
+    "6": 0.999999783489005,
+    "7": 1.0000009613874687,
+    "8": 1.000000466319185,
+    "9": 1.0000003574538143,
+    "10": 1.0000006254357907,
+    "11": 1.000000718142278,
+    "12": 1.0000000092651202,
+    "13": 0.9999997304791822,
+    "14": 0.9999997023637692,
+    "15": 0.9999993730337832,
+    "16": 1.0000004558824436,
+    "17": 1.0000007328197047,
+    "18": 0.9999994200588024,
+    "19": 0.9999999492793775,
+    "20": 0.9999991963447455,
+    "21": 0.9999999015867146,
+    "22": 1.0000009349823193,
+    "23": 1.000000144164852,
+    "24": 1.0000002445752514,
+    "25": 0.999999987653838,
+    "26": 0.999998913729299,
+    "27": 1.0000003629585996,
+    "28": 1.0000008818578268,
+    "29": 1.0000008885728837,
+    "30": 1.000000924865275,
+    "31": 0.9999997339340915,
+    "32": 0.9999992054822866,
+    "33": 0.9999999046224637,
+    "34": 0.9999996267408064,
+    "35": 1.0000001452682263
+  },
+  "arms": {
+    "bare": {
+      "correct": 2,
+      "rows": [
+        {
+          "arm": "bare",
+          "index": 0,
+          "task": "A shipment contains six cases with eight items each. Seven items are removed. The proposed remainder is 41.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 16.805,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 52,
+            "total_tokens": 53,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.6960009932518005,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.6960009932518005
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.3354206085205078
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -1.811435580253601
+                  },
+                  {
+                    "id": 5338,
+                    "token": "First",
+                    "bytes": [
+                      70,
+                      105,
+                      114,
+                      115,
+                      116
+                    ],
+                    "logprob": -3.822601318359375
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -4.087728500366211
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 52,
+            "prompt_ms": 16789.432,
+            "prompt_per_token_ms": 322.8736923076923,
+            "prompt_per_second": 3.097186372951747,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 52
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 1,
+          "task": "A counter starts at 5. It gains 12 and then loses 9. The proposed final count is 9.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 17.65,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 55,
+            "total_tokens": 56,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.15420150756835938,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.15420150756835938
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -2.302511215209961
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.7209205627441406
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -4.713685989379883
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -5.498334884643555
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 55,
+            "prompt_ms": 17627.029,
+            "prompt_per_token_ms": 320.49143636363635,
+            "prompt_per_second": 3.120208175751002,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 55
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 2,
+          "task": "A line holds 16 bytes. Addresses 31 and 32 are in the same aligned cache line starting from zero.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 23.314,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 56,
+            "total_tokens": 57,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.539954423904419,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.539954423904419
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -1.3792507648468018
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -2.144587755203247
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.609057664871216
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -4.5401506423950195
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 56,
+            "prompt_ms": 23286.989,
+            "prompt_per_token_ms": 415.8390892857143,
+            "prompt_per_second": 2.4047763323974602,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 56
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 3,
+          "task": "A model got 18 of 24 labels right. The proposed accuracy is 75 percent.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 24.336,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 51,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.019759947434067726,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.019759947434067726
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.297924041748047
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -6.0610032081604
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -6.161053657531738
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -7.580476760864258
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 51,
+            "prompt_ms": 24313.154,
+            "prompt_per_token_ms": 476.72850980392155,
+            "prompt_per_second": 2.097629949614929,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 51
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 4,
+          "task": "At normal pressure, pure water at 49 degrees Celsius is liquid.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 24.401,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 44,
+            "total_tokens": 45,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.5688346028327942,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.5688346028327942
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.9409411549568176
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.7167227268218994
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.677713871002197
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -5.174749851226807
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 44,
+            "prompt_ms": 24382.272,
+            "prompt_per_token_ms": 554.1425454545455,
+            "prompt_per_second": 1.8045898265756366,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 44
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 5,
+          "task": "A cubic box whose side doubles has four times the original volume.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 17.667,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 42,
+            "total_tokens": 43,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.18315154314041138,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.18315154314041138
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -2.326874017715454
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.2359375953674316
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -4.445366382598877
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.44810152053833
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 42,
+            "prompt_ms": 17649.554,
+            "prompt_per_token_ms": 420.2274761904762,
+            "prompt_per_second": 2.3796635314410777,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 42
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 6,
+          "task": "A 0.1 second sensor interval is equal to 10 milliseconds.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 17.013,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 45,
+            "total_tokens": 46,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.00031953194411471486,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.00031953194411471486
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -8.793756484985352
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -9.528990745544434
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -9.789765357971191
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -10.829346656799316
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 45,
+            "prompt_ms": 17001.944,
+            "prompt_per_token_ms": 377.8209777777778,
+            "prompt_per_second": 2.646756159178033,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 45
+          }
+        },
+        {
+          "arm": "bare",
+          "index": 7,
+          "task": "The inclusive range of addresses 17 through 22 contains six bytes.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 15.651,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 45,
+            "total_tokens": 46,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.8815177083015442,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.8815177083015442
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.9775698184967041
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -2.0545504093170166
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.0517866611480713
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.860466241836548
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 45,
+            "prompt_ms": 15636.35,
+            "prompt_per_token_ms": 347.47444444444443,
+            "prompt_per_second": 2.8779094865489707,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 45
+          }
+        }
+      ]
+    },
+    "reminder": {
+      "correct": 2,
+      "rows": [
+        {
+          "arm": "reminder",
+          "index": 0,
+          "task": "A shipment contains six cases with eight items each. Seven items are removed. The proposed remainder is 41.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 19.037,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 60,
+            "total_tokens": 61,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.5689387321472168,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.5689387321472168
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.6904730796813965
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -1.7295889854431152
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.673696994781494
+                  },
+                  {
+                    "id": 5338,
+                    "token": "First",
+                    "bytes": [
+                      70,
+                      105,
+                      114,
+                      115,
+                      116
+                    ],
+                    "logprob": -3.9212775230407715
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 60,
+            "prompt_ms": 19011.865,
+            "prompt_per_token_ms": 316.86441666666667,
+            "prompt_per_second": 3.1559239453888397,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 60
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 1,
+          "task": "A counter starts at 5. It gains 12 and then loses 9. The proposed final count is 9.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 27.067,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 63,
+            "total_tokens": 64,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.5018302798271179,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.5018302798271179
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -1.1119853258132935
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.968864679336548
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.027487754821777
+                  },
+                  {
+                    "id": 3479,
+                    "token": "Start",
+                    "bytes": [
+                      83,
+                      116,
+                      97,
+                      114,
+                      116
+                    ],
+                    "logprob": -4.030743598937988
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 63,
+            "prompt_ms": 27036.78,
+            "prompt_per_token_ms": 429.1552380952381,
+            "prompt_per_second": 2.3301591387731824,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 63
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 2,
+          "task": "A line holds 16 bytes. Addresses 31 and 32 are in the same aligned cache line starting from zero.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 27.692,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 64,
+            "total_tokens": 65,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.3381730318069458,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.3381730318069458
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -1.8419114351272583
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -2.8668212890625
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -2.9832050800323486
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -4.677499771118164
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 64,
+            "prompt_ms": 27657.427,
+            "prompt_per_token_ms": 432.147296875,
+            "prompt_per_second": 2.314025813030258,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 64
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 3,
+          "task": "A model got 18 of 24 labels right. The proposed accuracy is 75 percent.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 18.457,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 59,
+            "total_tokens": 60,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.03368320316076279,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.03368320316076279
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.695380687713623
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -5.937188625335693
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -6.136124134063721
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -6.315945148468018
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 59,
+            "prompt_ms": 18416.649,
+            "prompt_per_token_ms": 312.146593220339,
+            "prompt_per_second": 3.2036229826609603,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 59
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 4,
+          "task": "At normal pressure, pure water at 49 degrees Celsius is liquid.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 26.219,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 52,
+            "total_tokens": 53,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.954881489276886,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.954881489276886
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -1.0788286924362183
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.6962183713912964
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -2.8666820526123047
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.9225003719329834
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 52,
+            "prompt_ms": 26185.809,
+            "prompt_per_token_ms": 503.57325000000003,
+            "prompt_per_second": 1.9858084201255726,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 52
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 5,
+          "task": "A cubic box whose side doubles has four times the original volume.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 16.986,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 50,
+            "total_tokens": 51,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.5476288199424744,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.5476288199424744
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -1.2147221565246582
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -2.8425517082214355
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.266327142715454
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.7466721534729004
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 50,
+            "prompt_ms": 16949.887,
+            "prompt_per_token_ms": 338.99773999999996,
+            "prompt_per_second": 2.9498721731891195,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 50
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 6,
+          "task": "A 0.1 second sensor interval is equal to 10 milliseconds.",
+          "key": "B",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 15.805,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 53,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.0011865977430716157,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.0011865977430716157
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -7.17164945602417
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -8.881579399108887
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -9.004657745361328
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -9.233522415161133
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 53,
+            "prompt_ms": 15783.845,
+            "prompt_per_token_ms": 297.8083962264151,
+            "prompt_per_second": 3.3578636891074387,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 53
+          }
+        },
+        {
+          "arm": "reminder",
+          "index": 7,
+          "task": "The inclusive range of addresses 17 through 22 contains six bytes.",
+          "key": "A",
+          "scale": 0,
+          "server_log": "server-0-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 15.93,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 53,
+            "total_tokens": 54,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.796021044254303,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.796021044254303
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -1.42471182346344
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.7202039957046509
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -2.3370814323425293
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -4.0281453132629395
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 53,
+            "prompt_ms": 15899.37,
+            "prompt_per_token_ms": 299.9881132075472,
+            "prompt_per_second": 3.3334654140384177,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 53
+          }
+        }
+      ]
+    },
+    "positive": {
+      "correct": 2,
+      "rows": [
+        {
+          "arm": "positive",
+          "index": 0,
+          "task": "A shipment contains six cases with eight items each. Seven items are removed. The proposed remainder is 41.",
+          "key": "A",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 15.401,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 52,
+            "total_tokens": 53,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.7389730215072632,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.7389730215072632
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.2984727621078491
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -1.755994200706482
+                  },
+                  {
+                    "id": 5338,
+                    "token": "First",
+                    "bytes": [
+                      70,
+                      105,
+                      114,
+                      115,
+                      116
+                    ],
+                    "logprob": -3.746713161468506
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -4.18181848526001
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 52,
+            "prompt_ms": 15386.09,
+            "prompt_per_token_ms": 295.88634615384615,
+            "prompt_per_second": 3.379676058049836,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 52
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 1,
+          "task": "A counter starts at 5. It gains 12 and then loses 9. The proposed final count is 9.",
+          "key": "B",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 20.996,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 55,
+            "total_tokens": 56,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.1588527262210846,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.1588527262210846
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -2.2693302631378174
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.740861177444458
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -4.6986284255981445
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -5.432677268981934
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 55,
+            "prompt_ms": 20961.076,
+            "prompt_per_token_ms": 381.11047272727274,
+            "prompt_per_second": 2.6239111007469273,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 55
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 2,
+          "task": "A line holds 16 bytes. Addresses 31 and 32 are in the same aligned cache line starting from zero.",
+          "key": "B",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 27.171,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 56,
+            "total_tokens": 57,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.5593611598014832,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.5593611598014832
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -1.3711553812026978
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -2.1133906841278076
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.5020644664764404
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -4.447302341461182
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 56,
+            "prompt_ms": 27156.114,
+            "prompt_per_token_ms": 484.9306071428572,
+            "prompt_per_second": 2.062150718619019,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 56
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 3,
+          "task": "A model got 18 of 24 labels right. The proposed accuracy is 75 percent.",
+          "key": "A",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 29.552,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 51,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.0209469273686409,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.0209469273686409
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.230358600616455
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -5.949244022369385
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -6.205263614654541
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -7.530587673187256
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 51,
+            "prompt_ms": 29531.066,
+            "prompt_per_token_ms": 579.0405098039215,
+            "prompt_per_second": 1.7269948873501553,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 51
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 4,
+          "task": "At normal pressure, pure water at 49 degrees Celsius is liquid.",
+          "key": "A",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 22.128,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 44,
+            "total_tokens": 45,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.5307965278625488,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.5307965278625488
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -1.015108585357666
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.580244541168213
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.521546840667725
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -5.1112751960754395
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 44,
+            "prompt_ms": 22104.077,
+            "prompt_per_token_ms": 502.3653863636364,
+            "prompt_per_second": 1.9905830042122998,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 44
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 5,
+          "task": "A cubic box whose side doubles has four times the original volume.",
+          "key": "B",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 15.08,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 42,
+            "total_tokens": 43,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.19665315747261047,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.19665315747261047
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -2.2413079738616943
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.1978108882904053
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -4.393918991088867
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.4144768714904785
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 42,
+            "prompt_ms": 15056.816,
+            "prompt_per_token_ms": 358.4956190476191,
+            "prompt_per_second": 2.7894343664689796,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 42
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 6,
+          "task": "A 0.1 second sensor interval is equal to 10 milliseconds.",
+          "key": "B",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 14.729,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 45,
+            "total_tokens": 46,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.00034445495111867785,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.00034445495111867785
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -8.711636543273926
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -9.49924373626709
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -9.703746795654297
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -10.630524635314941
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 45,
+            "prompt_ms": 14716.478,
+            "prompt_per_token_ms": 327.03284444444444,
+            "prompt_per_second": 3.0577968451418878,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 45
+          }
+        },
+        {
+          "arm": "positive",
+          "index": 7,
+          "task": "The inclusive range of addresses 17 through 22 contains six bytes.",
+          "key": "A",
+          "scale": 1,
+          "server_log": "server-1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 18.549,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 45,
+            "total_tokens": 46,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.8610570430755615,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.8610570430755615
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -1.0351121425628662
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.9709031581878662
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.067462682723999
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.7793185710906982
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 45,
+            "prompt_ms": 18529.241,
+            "prompt_per_token_ms": 411.76091111111117,
+            "prompt_per_second": 2.42859381018359,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 45
+          }
+        }
+      ]
+    },
+    "negative": {
+      "correct": 2,
+      "rows": [
+        {
+          "arm": "negative",
+          "index": 0,
+          "task": "A shipment contains six cases with eight items each. Seven items are removed. The proposed remainder is 41.",
+          "key": "A",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 16.598,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 52,
+            "total_tokens": 53,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.6732165813446045,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.6732165813446045
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -1.3492496013641357
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -1.8600413799285889
+                  },
+                  {
+                    "id": 5338,
+                    "token": "First",
+                    "bytes": [
+                      70,
+                      105,
+                      114,
+                      115,
+                      116
+                    ],
+                    "logprob": -3.838585615158081
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -4.067080020904541
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 52,
+            "prompt_ms": 16585.743,
+            "prompt_per_token_ms": 318.95659615384614,
+            "prompt_per_second": 3.1352228236021746,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 52
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 1,
+          "task": "A counter starts at 5. It gains 12 and then loses 9. The proposed final count is 9.",
+          "key": "B",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 16.51,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 55,
+            "total_tokens": 56,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.1353478878736496,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.1353478878736496
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -2.4313759803771973
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.862844944000244
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -4.7408127784729
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -5.638147830963135
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 55,
+            "prompt_ms": 16484.974,
+            "prompt_per_token_ms": 299.72679999999997,
+            "prompt_per_second": 3.3363716557878713,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 55
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 2,
+          "task": "A line holds 16 bytes. Addresses 31 and 32 are in the same aligned cache line starting from zero.",
+          "key": "B",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 16.662,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 56,
+            "total_tokens": 57,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.6097368597984314,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.6097368597984314
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -1.2297719717025757
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -2.146787166595459
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -3.6369717121124268
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -4.555073261260986
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 56,
+            "prompt_ms": 16635.459,
+            "prompt_per_token_ms": 297.06176785714285,
+            "prompt_per_second": 3.366303268217607,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 56
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 3,
+          "task": "A model got 18 of 24 labels right. The proposed accuracy is 75 percent.",
+          "key": "A",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": true,
+          "token": "A",
+          "seconds": 23.586,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 51,
+            "total_tokens": 52,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.019126491621136665,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.019126491621136665
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.375285625457764
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -5.945327281951904
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -6.095181941986084
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -7.595180034637451
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 51,
+            "prompt_ms": 23515.095,
+            "prompt_per_token_ms": 461.0802941176471,
+            "prompt_per_second": 2.168819645423503,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 51
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 4,
+          "task": "At normal pressure, pure water at 49 degrees Celsius is liquid.",
+          "key": "A",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 17.438,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 44,
+            "total_tokens": 45,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.5001639127731323,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.5001639127731323
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -1.0322550535202026
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.898223638534546
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.808645248413086
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -5.256511688232422
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 44,
+            "prompt_ms": 17413.636,
+            "prompt_per_token_ms": 395.7644545454545,
+            "prompt_per_second": 2.5267554691047867,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 44
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 5,
+          "task": "A cubic box whose side doubles has four times the original volume.",
+          "key": "B",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 14.412,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 42,
+            "total_tokens": 43,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.15360313653945923,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.15360313653945923
+                  },
+                  {
+                    "id": 10061,
+                    "token": "Let",
+                    "bytes": [
+                      76,
+                      101,
+                      116
+                    ],
+                    "logprob": -2.5141053199768066
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.3906941413879395
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -4.486281871795654
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -4.643826007843018
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 42,
+            "prompt_ms": 14393.78,
+            "prompt_per_token_ms": 342.7090476190476,
+            "prompt_per_second": 2.917927049044796,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 42
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 6,
+          "task": "A 0.1 second sensor interval is equal to 10 milliseconds.",
+          "key": "B",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "A",
+          "seconds": 16.701,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 45,
+            "total_tokens": 46,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 32,
+                "token": "A",
+                "bytes": [
+                  65
+                ],
+                "logprob": -0.0003082035109400749,
+                "top_logprobs": [
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.0003082035109400749
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -8.91884708404541
+                  },
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -9.433110237121582
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -9.791565895080566
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -10.880606651306152
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 45,
+            "prompt_ms": 16689.752,
+            "prompt_per_token_ms": 370.8833777777778,
+            "prompt_per_second": 2.6962653489398765,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 45
+          }
+        },
+        {
+          "arm": "negative",
+          "index": 7,
+          "task": "The inclusive range of addresses 17 through 22 contains six bytes.",
+          "key": "A",
+          "scale": -1,
+          "server_log": "server--1-1.log",
+          "vector_sha256": "03c7a911246184bf9a23aceea7481007294e30644ee5ce7a5dd44237b36d89f9",
+          "correct": false,
+          "token": "B",
+          "seconds": 14.268,
+          "usage": {
+            "completion_tokens": 1,
+            "prompt_tokens": 45,
+            "total_tokens": 46,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "token_logprobs": {
+            "content": [
+              {
+                "id": 33,
+                "token": "B",
+                "bytes": [
+                  66
+                ],
+                "logprob": -0.8637247681617737,
+                "top_logprobs": [
+                  {
+                    "id": 33,
+                    "token": "B",
+                    "bytes": [
+                      66
+                    ],
+                    "logprob": -0.8637247681617737
+                  },
+                  {
+                    "id": 32,
+                    "token": "A",
+                    "bytes": [
+                      65
+                    ],
+                    "logprob": -0.9907083511352539
+                  },
+                  {
+                    "id": 1249,
+                    "token": "To",
+                    "bytes": [
+                      84,
+                      111
+                    ],
+                    "logprob": -2.047069549560547
+                  },
+                  {
+                    "id": 334,
+                    "token": "**",
+                    "bytes": [
+                      42,
+                      42
+                    ],
+                    "logprob": -3.098468780517578
+                  },
+                  {
+                    "id": 785,
+                    "token": "The",
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ],
+                    "logprob": -3.886336326599121
+                  }
+                ]
+              }
+            ]
+          },
+          "timings": {
+            "prompt_n": 45,
+            "prompt_ms": 14251.114,
+            "prompt_per_token_ms": 316.69142222222223,
+            "prompt_per_second": 3.157647886333658,
+            "predicted_n": 1,
+            "predicted_ms": 0.001,
+            "predicted_per_token_ms": 0.001,
+            "predicted_per_second": 1000000.0,
+            "n_ctx": 512,
+            "n_past": 45
+          }
+        }
+      ]
+    }
+  },
+  "log_sha256": {
+    "generation.log": "974019b5d6aec6b62b7dd7bde4e17d0cf55f9076a3bd0132d657a3792cf9b1c8",
+    "server--1-1.log": "b5b601f7e645b4a93c89af1e9e7055c83ff77c9f84aaa3279984243e3d63ed43",
+    "server-0-1.log": "45dda663b5b2ca6e02b37a48a26a4840ff3619a2a144da2643a08531351f0e91",
+    "server-1-1.log": "7ad512eb9484fa0032a8e05444791ac8c750db7b78dc3cb347be79bf57e12779"
+  }
+}

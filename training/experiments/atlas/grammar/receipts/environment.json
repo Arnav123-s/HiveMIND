@@ -1,0 +1,22 @@
+{
+  "panel_sha256": "ae0124354804c41ceaf6a099626a0a2fca7898fb2389e8de2f1fcaae3a2c0d49",
+  "runner_sha256": "fb3545ec4c9f05180349c136bdeef96b35e7e89f6ad4af26409c4083700600e0",
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "seed": 1709,
+  "max_output_tokens": 32,
+  "temperature": 0,
+  "cache_prompt": false,
+  "threads": 2,
+  "system": "Answer the user's question.",
+  "grammars": {
+    "edited-cart": "root ::= \"{\" ws \"\\\"size\\\"\" ws \":\" ws integer ws \",\" ws \"\\\"last\\\"\" ws \":\" ws integer ws \"}\"\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "crate-remainder": "root ::= integer \",\" integer\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "pressed-contact": "root ::= \"{\" ws \"\\\"level\\\"\" ws \":\" ws (\"\\\"high\\\"\" | \"\\\"low\\\"\") ws \",\" ws \"\\\"pressed\\\"\" ws \":\" ws (\"true\" | \"false\") ws \"}\"\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "missed-labels": "root ::= \"{\" ws \"\\\"tp\\\"\" ws \":\" ws integer ws \",\" ws \"\\\"fn\\\"\" ws \":\" ws integer ws \"}\"\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "weekend-hours": "root ::= (\"open\" | \"closed\" | \"unknown\")\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "reversed-route": "root ::= \"[\" ws (integer (ws \",\" ws integer)*)? ws \"]\"\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "duplex-print": "root ::= integer \",\" integer\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n",
+    "latest-room": "root ::= (\"Pine\" | \"Cedar\" | \"Oak\" | \"unknown\")\nws ::= \" \"?\ninteger ::= \"-\"? (\"0\" | [1-9] [0-9]*)\n"
+  }
+}

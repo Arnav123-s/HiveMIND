@@ -1,0 +1,4943 @@
+{
+  "source_sha256": {
+    "panels.json.gz": "46d8393907b3841e7cba3ce2b838e4ab4048f189c3628ce58d1f0d99c638fb28",
+    "assessment.json.gz": "2ac2ee4f95e27db58dab0e3dd88583bdcffa990b3d0f9130eb4d803cb5d49826",
+    "policy.py": "cad1c675396fb2df48d5324651f3601354c07aed7cc245310fd8869175b9e337",
+    "artifacts.json": "783e3a2c196b5805b571d1a4e720f7022bb08e291ae5641a05dbe586554c0e70",
+    "cohort.json": "ec5695ad72e4f2a13bb3755a2f9fc2acbc8554c521066ec9726223861de95ea5"
+  },
+  "protocol_sha256": "114a8405720d031f42efbcc04953443a44bea015251b82e45900feca60e92d5a",
+  "prediction_sha256": "a09260f4b3f28093c5855d8780120927aa1d0db7873f9a180762f255fa884a0b",
+  "sample_sizes": {
+    "development": 27,
+    "calibration": 27,
+    "test": 28,
+    "fresh_prompts": 28
+  },
+  "lineage_pairs": {
+    "g50": [
+      [
+        "t80+g50trunk",
+        "t80+g49trunk"
+      ]
+    ],
+    "g51": [
+      [
+        "t80+g51trunk",
+        "t80+g49trunk"
+      ]
+    ],
+    "g52": [
+      [
+        "t80+g52trunk",
+        "t80+g51trunk"
+      ]
+    ]
+  },
+  "calibration": {
+    "q_job": 0.75,
+    "q_seed": null,
+    "seed_maxima": {
+      "20000511": 0.0,
+      "20000512": 0.5,
+      "20000513": 0.25,
+      "20000514": 0.5,
+      "20000515": 0.75,
+      "20000516": 0.5,
+      "20000517": 0.75,
+      "20000518": 0.25
+    },
+    "chosen_margin": null,
+    "grid": [
+      {
+        "margin": 0,
+        "n": 27,
+        "errors": 4,
+        "upper_adjusted": 0.37273035311718716,
+        "certified": false
+      },
+      {
+        "margin": 1,
+        "n": 23,
+        "errors": 2,
+        "upper_adjusted": 0.3181234147993407,
+        "certified": false
+      },
+      {
+        "margin": 2,
+        "n": 23,
+        "errors": 2,
+        "upper_adjusted": 0.3181234147993407,
+        "certified": false
+      },
+      {
+        "margin": 3,
+        "n": 16,
+        "errors": 0,
+        "upper_adjusted": 0.25010579066754424,
+        "certified": false
+      },
+      {
+        "margin": 4,
+        "n": 16,
+        "errors": 0,
+        "upper_adjusted": 0.25010579066754424,
+        "certified": false
+      }
+    ],
+    "audit": [
+      {
+        "id": "g51/e20000511_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000511_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000512_00",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": true,
+        "nonconformity": 0.25
+      },
+      {
+        "id": "g51/e20000512_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000512_03",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000512_01",
+        "index": 1,
+        "margin": 0,
+        "p": 0.5,
+        "truth": false,
+        "nonconformity": 0.5
+      },
+      {
+        "id": "g51/e20000513_00",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000513_01",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": true,
+        "nonconformity": 0.25
+      },
+      {
+        "id": "g51/e20000513_02",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000514_00",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000514_01",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": true,
+        "nonconformity": 0.25
+      },
+      {
+        "id": "g51/e20000514_03",
+        "index": 0,
+        "margin": 0,
+        "p": 0.5,
+        "truth": true,
+        "nonconformity": 0.5
+      },
+      {
+        "id": "g51/e20000515_00",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000515_02",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000515_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000515_03",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": false,
+        "nonconformity": 0.75
+      },
+      {
+        "id": "g51/e20000516_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000516_02",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000516_00",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000516_02",
+        "index": 0,
+        "margin": 0,
+        "p": 0.5,
+        "truth": false,
+        "nonconformity": 0.5
+      },
+      {
+        "id": "g51/e20000517_00",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": false,
+        "nonconformity": 0.75
+      },
+      {
+        "id": "g51/e20000517_02",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": true,
+        "nonconformity": 0.25
+      },
+      {
+        "id": "g51/e20000517_03",
+        "index": 0,
+        "margin": 0,
+        "p": 0.5,
+        "truth": true,
+        "nonconformity": 0.5
+      },
+      {
+        "id": "g51/e20000518_00",
+        "index": 0,
+        "margin": 2,
+        "p": 0.75,
+        "truth": true,
+        "nonconformity": 0.25
+      },
+      {
+        "id": "g51/e20000518_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/e20000518_03",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      },
+      {
+        "id": "g51/h20000518_01",
+        "index": 0,
+        "margin": 4,
+        "p": 1.0,
+        "truth": true,
+        "nonconformity": 0.0
+      }
+    ]
+  },
+  "hedge": {
+    "eta": 0.22659266448195756,
+    "mistakes": [
+      8,
+      4,
+      6,
+      5
+    ],
+    "weights": [
+      0.14240799360393888,
+      0.3525056992438654,
+      0.22405273790621794,
+      0.2810335692459779
+    ]
+  },
+  "summary": {
+    "after_trunk": {
+      "correct": 27,
+      "seats": 28,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "before_trunk": {
+      "correct": 26,
+      "seats": 28,
+      "wrong": 2,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0714,
+      "selective_risk": 0.0714,
+      "selective_risk_iid_ci95": [
+        0.00877,
+        0.235035
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "always_plurality": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "agreement_2": {
+      "correct": 24,
+      "seats": 56,
+      "withheld": 4,
+      "total": 28,
+      "wrong": 0,
+      "released": 24,
+      "coverage": 0.8571,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.142474
+      ],
+      "coverage_iid_ci95": [
+        0.673347,
+        0.959664
+      ]
+    },
+    "agreement_3": {
+      "correct": 27,
+      "seats": 84,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "agreement_4": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "reserve": {
+      "correct": 27,
+      "seats": 60,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "conformal_job": {
+      "correct": 21,
+      "seats": 112,
+      "set_covered": 27,
+      "set_size_1": 22,
+      "wrong": 1,
+      "withheld": 6,
+      "set_size_2": 6,
+      "total": 28,
+      "released": 22,
+      "coverage": 0.7857,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0455,
+      "selective_risk_iid_ci95": [
+        0.00115,
+        0.228444
+      ],
+      "coverage_iid_ci95": [
+        0.590469,
+        0.917039
+      ],
+      "set_coverage": 0.9643,
+      "set_coverage_iid_ci95": [
+        0.816522,
+        0.999096
+      ]
+    },
+    "conformal_seed": {
+      "withheld": 28,
+      "seats": 112,
+      "set_covered": 28,
+      "set_size_2": 28,
+      "total": 28,
+      "correct": 0,
+      "wrong": 0,
+      "released": 0,
+      "coverage": 0.0,
+      "wrong_per_task": 0.0,
+      "selective_risk": null,
+      "selective_risk_iid_ci95": null,
+      "coverage_iid_ci95": [
+        0.0,
+        0.123436
+      ],
+      "set_coverage": 1.0,
+      "set_coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "risk_certified": {
+      "withheld": 28,
+      "seats": 112,
+      "total": 28,
+      "correct": 0,
+      "wrong": 0,
+      "released": 0,
+      "coverage": 0.0,
+      "wrong_per_task": 0.0,
+      "selective_risk": null,
+      "selective_risk_iid_ci95": null,
+      "coverage_iid_ci95": [
+        0.0,
+        0.123436
+      ]
+    },
+    "margin_0": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "margin_1": {
+      "correct": 25,
+      "seats": 112,
+      "wrong": 1,
+      "withheld": 2,
+      "total": 28,
+      "released": 26,
+      "coverage": 0.9286,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0385,
+      "selective_risk_iid_ci95": [
+        0.000973,
+        0.19637
+      ],
+      "coverage_iid_ci95": [
+        0.764965,
+        0.99123
+      ]
+    },
+    "margin_2": {
+      "correct": 25,
+      "seats": 112,
+      "wrong": 1,
+      "withheld": 2,
+      "total": 28,
+      "released": 26,
+      "coverage": 0.9286,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0385,
+      "selective_risk_iid_ci95": [
+        0.000973,
+        0.19637
+      ],
+      "coverage_iid_ci95": [
+        0.764965,
+        0.99123
+      ]
+    },
+    "margin_3": {
+      "correct": 21,
+      "seats": 112,
+      "wrong": 1,
+      "withheld": 6,
+      "total": 28,
+      "released": 22,
+      "coverage": 0.7857,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0455,
+      "selective_risk_iid_ci95": [
+        0.00115,
+        0.228444
+      ],
+      "coverage_iid_ci95": [
+        0.590469,
+        0.917039
+      ]
+    },
+    "margin_4": {
+      "correct": 21,
+      "seats": 112,
+      "withheld": 7,
+      "total": 28,
+      "wrong": 0,
+      "released": 21,
+      "coverage": 0.75,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.161098
+      ],
+      "coverage_iid_ci95": [
+        0.551285,
+        0.893092
+      ]
+    },
+    "kind_identity_archive": {
+      "correct": 27,
+      "seats": 28,
+      "defaulted": 15,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "hedge_roles": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "oracle_four": {
+      "correct": 27,
+      "seats": 112,
+      "withheld": 1,
+      "total": 28,
+      "wrong": 0,
+      "released": 27,
+      "coverage": 0.9643,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.127703
+      ],
+      "coverage_iid_ci95": [
+        0.816522,
+        0.999096
+      ]
+    },
+    "actual_after": {
+      "correct": 27,
+      "seats": 57,
+      "withheld": 1,
+      "total": 28,
+      "wrong": 0,
+      "released": 27,
+      "coverage": 0.9643,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.127703
+      ],
+      "coverage_iid_ci95": [
+        0.816522,
+        0.999096
+      ]
+    }
+  },
+  "prior_prompt_excluded": {
+    "after_trunk": {
+      "correct": 27,
+      "seats": 28,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "before_trunk": {
+      "correct": 26,
+      "seats": 28,
+      "wrong": 2,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0714,
+      "selective_risk": 0.0714,
+      "selective_risk_iid_ci95": [
+        0.00877,
+        0.235035
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "always_plurality": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "agreement_2": {
+      "correct": 24,
+      "seats": 56,
+      "withheld": 4,
+      "total": 28,
+      "wrong": 0,
+      "released": 24,
+      "coverage": 0.8571,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.142474
+      ],
+      "coverage_iid_ci95": [
+        0.673347,
+        0.959664
+      ]
+    },
+    "agreement_3": {
+      "correct": 27,
+      "seats": 84,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "agreement_4": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "reserve": {
+      "correct": 27,
+      "seats": 60,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "conformal_job": {
+      "correct": 21,
+      "seats": 112,
+      "set_covered": 27,
+      "set_size_1": 22,
+      "wrong": 1,
+      "withheld": 6,
+      "set_size_2": 6,
+      "total": 28,
+      "released": 22,
+      "coverage": 0.7857,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0455,
+      "selective_risk_iid_ci95": [
+        0.00115,
+        0.228444
+      ],
+      "coverage_iid_ci95": [
+        0.590469,
+        0.917039
+      ],
+      "set_coverage": 0.9643,
+      "set_coverage_iid_ci95": [
+        0.816522,
+        0.999096
+      ]
+    },
+    "conformal_seed": {
+      "withheld": 28,
+      "seats": 112,
+      "set_covered": 28,
+      "set_size_2": 28,
+      "total": 28,
+      "correct": 0,
+      "wrong": 0,
+      "released": 0,
+      "coverage": 0.0,
+      "wrong_per_task": 0.0,
+      "selective_risk": null,
+      "selective_risk_iid_ci95": null,
+      "coverage_iid_ci95": [
+        0.0,
+        0.123436
+      ],
+      "set_coverage": 1.0,
+      "set_coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "risk_certified": {
+      "withheld": 28,
+      "seats": 112,
+      "total": 28,
+      "correct": 0,
+      "wrong": 0,
+      "released": 0,
+      "coverage": 0.0,
+      "wrong_per_task": 0.0,
+      "selective_risk": null,
+      "selective_risk_iid_ci95": null,
+      "coverage_iid_ci95": [
+        0.0,
+        0.123436
+      ]
+    },
+    "margin_0": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "margin_1": {
+      "correct": 25,
+      "seats": 112,
+      "wrong": 1,
+      "withheld": 2,
+      "total": 28,
+      "released": 26,
+      "coverage": 0.9286,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0385,
+      "selective_risk_iid_ci95": [
+        0.000973,
+        0.19637
+      ],
+      "coverage_iid_ci95": [
+        0.764965,
+        0.99123
+      ]
+    },
+    "margin_2": {
+      "correct": 25,
+      "seats": 112,
+      "wrong": 1,
+      "withheld": 2,
+      "total": 28,
+      "released": 26,
+      "coverage": 0.9286,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0385,
+      "selective_risk_iid_ci95": [
+        0.000973,
+        0.19637
+      ],
+      "coverage_iid_ci95": [
+        0.764965,
+        0.99123
+      ]
+    },
+    "margin_3": {
+      "correct": 21,
+      "seats": 112,
+      "wrong": 1,
+      "withheld": 6,
+      "total": 28,
+      "released": 22,
+      "coverage": 0.7857,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0455,
+      "selective_risk_iid_ci95": [
+        0.00115,
+        0.228444
+      ],
+      "coverage_iid_ci95": [
+        0.590469,
+        0.917039
+      ]
+    },
+    "margin_4": {
+      "correct": 21,
+      "seats": 112,
+      "withheld": 7,
+      "total": 28,
+      "wrong": 0,
+      "released": 21,
+      "coverage": 0.75,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.161098
+      ],
+      "coverage_iid_ci95": [
+        0.551285,
+        0.893092
+      ]
+    },
+    "kind_identity_archive": {
+      "correct": 27,
+      "seats": 28,
+      "defaulted": 15,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "hedge_roles": {
+      "correct": 27,
+      "seats": 112,
+      "wrong": 1,
+      "total": 28,
+      "withheld": 0,
+      "released": 28,
+      "coverage": 1.0,
+      "wrong_per_task": 0.0357,
+      "selective_risk": 0.0357,
+      "selective_risk_iid_ci95": [
+        0.000904,
+        0.183478
+      ],
+      "coverage_iid_ci95": [
+        0.876564,
+        1.0
+      ]
+    },
+    "oracle_four": {
+      "correct": 27,
+      "seats": 112,
+      "withheld": 1,
+      "total": 28,
+      "wrong": 0,
+      "released": 27,
+      "coverage": 0.9643,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.127703
+      ],
+      "coverage_iid_ci95": [
+        0.816522,
+        0.999096
+      ]
+    },
+    "actual_after": {
+      "correct": 27,
+      "seats": 57,
+      "withheld": 1,
+      "total": 28,
+      "wrong": 0,
+      "released": 27,
+      "coverage": 0.9643,
+      "wrong_per_task": 0.0,
+      "selective_risk": 0.0,
+      "selective_risk_iid_ci95": [
+        0.0,
+        0.127703
+      ],
+      "coverage_iid_ci95": [
+        0.816522,
+        0.999096
+      ]
+    }
+  },
+  "unanimous_wrong_test_ids": [],
+  "predictions": [
+    {
+      "id": "g52/e20000521_00",
+      "tid": "e20000521_00",
+      "kind": "m_weekday",
+      "seed": 20000521,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000521_02",
+      "tid": "e20000521_02",
+      "kind": "m_days",
+      "seed": 20000521,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              4,
+              4
+            ],
+            "t80+g51code": [
+              4,
+              4
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000521_03",
+      "tid": "e20000521_03",
+      "kind": "m_know",
+      "seed": 20000521,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              3,
+              3
+            ],
+            "t80+g51code": [
+              3,
+              3
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/h20000521_00",
+      "tid": "h20000521_00",
+      "kind": "h_txt_ini",
+      "seed": 20000521,
+      "proposal": 0,
+      "margin": 3,
+      "p": 0.875,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": null,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 3
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52data": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              0,
+              0
+            ],
+            "t80+g51data": [
+              0,
+              0
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/h20000521_02",
+      "tid": "h20000521_02",
+      "kind": "h_txt_words",
+      "seed": 20000521,
+      "proposal": 0,
+      "margin": 2,
+      "p": 0.75,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52data": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              0,
+              1
+            ],
+            "t80+g51data": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000522_00",
+      "tid": "e20000522_00",
+      "kind": "m_follow",
+      "seed": 20000522,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              2,
+              3
+            ],
+            "t80+g51words2": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000522_01",
+      "tid": "e20000522_01",
+      "kind": "m_weekday",
+      "seed": 20000522,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000522_03",
+      "tid": "e20000522_03",
+      "kind": "m_summary",
+      "seed": 20000522,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51words2": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000523_00",
+      "tid": "e20000523_00",
+      "kind": "m_steps",
+      "seed": 20000523,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              2,
+              2
+            ],
+            "t80+g51words2": [
+              2,
+              2
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000523_01",
+      "tid": "e20000523_01",
+      "kind": "m_units",
+      "seed": 20000523,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              3,
+              3
+            ],
+            "t80+g51code": [
+              3,
+              3
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000523_02",
+      "tid": "e20000523_02",
+      "kind": "m_percent",
+      "seed": 20000523,
+      "proposal": 0,
+      "margin": 0,
+      "p": 0.5,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": null,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 3
+        },
+        "conformal_job": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              2,
+              2
+            ],
+            "t80+g51code": [
+              2,
+              2
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 1,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000523_03",
+      "tid": "e20000523_03",
+      "kind": "m_days",
+      "seed": 20000523,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              4,
+              4
+            ],
+            "t80+g51code": [
+              4,
+              4
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/h20000523_00",
+      "tid": "h20000523_00",
+      "kind": "h_txt_access",
+      "seed": 20000523,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              0,
+              0
+            ],
+            "t80+g51code": [
+              0,
+              0
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000524_00",
+      "tid": "e20000524_00",
+      "kind": "m_weekday",
+      "seed": 20000524,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000524_01",
+      "tid": "e20000524_01",
+      "kind": "m_follow",
+      "seed": 20000524,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              2,
+              3
+            ],
+            "t80+g51code": [
+              0,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000525_02",
+      "tid": "e20000525_02",
+      "kind": "m_table",
+      "seed": 20000525,
+      "proposal": 0,
+      "margin": 2,
+      "p": 0.75,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": null,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 3
+        },
+        "conformal_job": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000525_03",
+      "tid": "e20000525_03",
+      "kind": "m_know",
+      "seed": 20000525,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              3,
+              3
+            ],
+            "t80+g51words2": [
+              0,
+              0
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000526_00",
+      "tid": "e20000526_00",
+      "kind": "m_table",
+      "seed": 20000526,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000526_01",
+      "tid": "e20000526_01",
+      "kind": "m_know",
+      "seed": 20000526,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              3,
+              3
+            ],
+            "t80+g51code": [
+              3,
+              3
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000526_02",
+      "tid": "e20000526_02",
+      "kind": "m_translate",
+      "seed": 20000526,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              0,
+              0
+            ],
+            "t80+g51words2": [
+              0,
+              0
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000526_03",
+      "tid": "e20000526_03",
+      "kind": "m_steps",
+      "seed": 20000526,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              2,
+              2
+            ],
+            "t80+g51words2": [
+              2,
+              2
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000527_00",
+      "tid": "e20000527_00",
+      "kind": "m_weekday",
+      "seed": 20000527,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000527_02",
+      "tid": "e20000527_02",
+      "kind": "m_know",
+      "seed": 20000527,
+      "proposal": 0,
+      "margin": 2,
+      "p": 0.75,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              3,
+              3
+            ],
+            "t80+g51code": [
+              3,
+              3
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000527_03",
+      "tid": "e20000527_03",
+      "kind": "m_table",
+      "seed": 20000527,
+      "proposal": 0,
+      "margin": 0,
+      "p": 0.5,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": null,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 3
+        },
+        "conformal_job": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 1,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/h20000527_00",
+      "tid": "h20000527_00",
+      "kind": "h_search",
+      "seed": 20000527,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000528_00",
+      "tid": "e20000528_00",
+      "kind": "m_translate",
+      "seed": 20000528,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              0,
+              0
+            ],
+            "t80+g51words2": [
+              0,
+              0
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/e20000528_01",
+      "tid": "e20000528_01",
+      "kind": "m_table",
+      "seed": 20000528,
+      "proposal": 0,
+      "margin": 2,
+      "p": 0.75,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": null,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 0,
+          "seats": 1,
+          "choice": 0,
+          "defaulted": true,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52code": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              1,
+              1
+            ],
+            "t80+g51code": [
+              1,
+              1
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    },
+    {
+      "id": "g52/h20000528_00",
+      "tid": "h20000528_00",
+      "kind": "h_txt_sentences",
+      "seed": 20000528,
+      "proposal": 0,
+      "margin": 4,
+      "p": 1.0,
+      "prior_identical_prompt": false,
+      "decisions": {
+        "after_trunk": {
+          "index": 0,
+          "seats": 1
+        },
+        "before_trunk": {
+          "index": 2,
+          "seats": 1
+        },
+        "always_plurality": {
+          "index": 0,
+          "seats": 4
+        },
+        "agreement_2": {
+          "index": 0,
+          "seats": 2
+        },
+        "agreement_3": {
+          "index": 0,
+          "seats": 3
+        },
+        "agreement_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "reserve": {
+          "index": 0,
+          "seats": 2
+        },
+        "conformal_job": {
+          "index": 0,
+          "seats": 4,
+          "prediction_set": [
+            true
+          ]
+        },
+        "conformal_seed": {
+          "index": null,
+          "seats": 4,
+          "prediction_set": [
+            false,
+            true
+          ]
+        },
+        "risk_certified": {
+          "index": null,
+          "seats": 4
+        },
+        "margin_0": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_1": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_2": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_3": {
+          "index": 0,
+          "seats": 4
+        },
+        "margin_4": {
+          "index": 0,
+          "seats": 4
+        },
+        "kind_identity_archive": {
+          "index": 2,
+          "seats": 1,
+          "choice": 2,
+          "defaulted": false,
+          "training_counts": {
+            "t80+g52trunk": [
+              0,
+              0
+            ],
+            "t80+g52words": [
+              0,
+              0
+            ],
+            "t80+g51trunk": [
+              3,
+              3
+            ],
+            "t80+g51words2": [
+              3,
+              3
+            ]
+          }
+        },
+        "hedge_roles": {
+          "index": 0,
+          "seats": 4
+        }
+      }
+    }
+  ],
+  "receipts": [
+    {
+      "id": "g52/e20000521_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000521_02",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000521_03",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/h20000521_00",
+      "proposal_correct": false,
+      "recorded_correct": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "actual_after": "withheld",
+      "oracle_has_answer": false,
+      "outcomes": {
+        "after_trunk": "wrong",
+        "before_trunk": "wrong",
+        "always_plurality": "wrong",
+        "agreement_2": "withheld",
+        "agreement_3": "wrong",
+        "agreement_4": "wrong",
+        "reserve": "wrong",
+        "conformal_job": "wrong",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "wrong",
+        "margin_1": "wrong",
+        "margin_2": "wrong",
+        "margin_3": "wrong",
+        "margin_4": "withheld",
+        "kind_identity_archive": "wrong",
+        "hedge_roles": "wrong"
+      }
+    },
+    {
+      "id": "g52/h20000521_02",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "wrong",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "withheld",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "withheld",
+        "margin_4": "withheld",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000522_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000522_01",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000522_03",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000523_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000523_01",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000523_02",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "withheld",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "withheld",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "withheld",
+        "margin_2": "withheld",
+        "margin_3": "withheld",
+        "margin_4": "withheld",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000523_03",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/h20000523_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000524_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000524_01",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000525_02",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "withheld",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "withheld",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "withheld",
+        "margin_4": "withheld",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000525_03",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000526_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000526_01",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000526_02",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000526_03",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000527_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000527_02",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "withheld",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "withheld",
+        "margin_4": "withheld",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000527_03",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "withheld",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "withheld",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "withheld",
+        "margin_2": "withheld",
+        "margin_3": "withheld",
+        "margin_4": "withheld",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/h20000527_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000528_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/e20000528_01",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "withheld",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "withheld",
+        "margin_4": "withheld",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    },
+    {
+      "id": "g52/h20000528_00",
+      "proposal_correct": true,
+      "recorded_correct": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "actual_after": "correct",
+      "oracle_has_answer": true,
+      "outcomes": {
+        "after_trunk": "correct",
+        "before_trunk": "correct",
+        "always_plurality": "correct",
+        "agreement_2": "correct",
+        "agreement_3": "correct",
+        "agreement_4": "correct",
+        "reserve": "correct",
+        "conformal_job": "correct",
+        "conformal_seed": "withheld",
+        "risk_certified": "withheld",
+        "margin_0": "correct",
+        "margin_1": "correct",
+        "margin_2": "correct",
+        "margin_3": "correct",
+        "margin_4": "correct",
+        "kind_identity_archive": "correct",
+        "hedge_roles": "correct"
+      }
+    }
+  ]
+}

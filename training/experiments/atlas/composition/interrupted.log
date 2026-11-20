@@ -1,0 +1,6 @@
+test-0-0 {'base': 'Legacy', 'joint': 'C', 'source': 'C', 'threshold': 'B', 'format': 'C', 'three_mean': 'C', 'three_sum': 'C'}
+test-0-1 {'base': 'Legacy', 'joint': 'C', 'source': 'C', 'threshold': 'B', 'format': 'C', 'three_mean': 'C', 'three_sum': 'C'}
+test-0-2 {'base': 'Legacy', 'joint': 'C', 'source': 'C', 'threshold': 'B', 'format': 'C', 'three_mean': 'C', 'three_sum': 'C'}
+test-1-0 {'base': 'C', 'joint': 'B', 'source': 'C', 'threshold': 'B', 'format': 'B', 'three_mean': 'B', 'three_sum': 'B'}
+test-1-1 {'base': 'C', 'joint': 'B', 'source': 'C', 'threshold': 'B', 'format': 'B', 'three_mean': 'B', 'three_sum': 'B'}
+test-2-0 {'base': 'Legacy', 'joint': 'C', 'source': 'C', 'threshold': 'B', 'format': 'C', 'three_mean': 'C', 'three_sum': 'C'}

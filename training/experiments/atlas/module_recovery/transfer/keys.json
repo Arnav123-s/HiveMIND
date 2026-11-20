@@ -1,0 +1,76 @@
+{
+  "seconds": {
+    "scope": "deliver",
+    "answers": [
+      47,
+      "1h21m52s"
+    ]
+  },
+  "minutes": {
+    "scope": "deliver",
+    "answers": [
+      1320,
+      "50h1s"
+    ]
+  },
+  "hours": {
+    "scope": "deliver",
+    "answers": [
+      14400,
+      "1h19m59s"
+    ]
+  },
+  "all-units": {
+    "scope": "deliver",
+    "answers": [
+      15431,
+      "13m4s"
+    ]
+  },
+  "minute-second": {
+    "scope": "deliver",
+    "answers": [
+      1119,
+      "27h"
+    ]
+  },
+  "skip-middle": {
+    "scope": "deliver",
+    "answers": [
+      126026,
+      "1h25m18s"
+    ]
+  },
+  "large-hours": {
+    "scope": "deliver",
+    "answers": [
+      445920,
+      "2h14m"
+    ]
+  },
+  "long-elapsed": {
+    "scope": "deliver",
+    "answers": [
+      705909,
+      "280h35m1s"
+    ]
+  },
+  "change-units": {
+    "scope": "defer"
+  },
+  "different-file": {
+    "scope": "defer"
+  },
+  "always-show-zero": {
+    "scope": "defer"
+  },
+  "extra-deliverable": {
+    "scope": "defer"
+  },
+  "fractional-seconds": {
+    "scope": "defer"
+  },
+  "paraphrased-same-family": {
+    "scope": "defer"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "seed": 314159,
+  "max_tokens": 36,
+  "warmup": "What is the abbreviation for the month of January?",
+  "cases": [
+    {"id":"copy","prompt":"Copy these four inventory rows exactly, with one row per line and no other text.\nblue bins: seven\nblue totes: nine\ngreen bins: five\ngreen totes: eleven"},
+    {"id":"code","prompt":"Write only a Python expression that totals the squared even values in a list named readings. Omit code fences."},
+    {"id":"prose","prompt":"In one sentence, tell a volunteer why glass jars should be labelled before a pantry count."}
+  ]
+}

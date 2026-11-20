@@ -1,0 +1,1628 @@
+{
+ "generations": {
+  "g50": {
+   "overlap_tasks": 0,
+   "methods": {
+    "baseline": {
+     "correct": 54,
+     "workers": 144,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2
+    },
+    "first_certificate": {
+     "correct": 54,
+     "workers": 138,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2
+    },
+    "recover": {
+     "correct": 54,
+     "workers": 144,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2
+    },
+    "both": {
+     "correct": 54,
+     "workers": 138,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2
+    },
+    "calculator": {
+     "correct": 54,
+     "workers": 130,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2
+    },
+    "calculator_recover": {
+     "correct": 54,
+     "workers": 130,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2
+    }
+   }
+  },
+  "g51": {
+   "overlap_tasks": 0,
+   "methods": {
+    "baseline": {
+     "correct": 50,
+     "workers": 142,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "wrong": 6,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "file_jobs_correct": 12,
+     "file_jobs_wrong": 1
+    },
+    "first_certificate": {
+     "correct": 50,
+     "workers": 133,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "wrong": 6,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "file_jobs_correct": 12,
+     "file_jobs_wrong": 1
+    },
+    "recover": {
+     "correct": 50,
+     "workers": 142,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "wrong": 6,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "file_jobs_correct": 12,
+     "file_jobs_wrong": 1
+    },
+    "both": {
+     "correct": 50,
+     "workers": 133,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "wrong": 6,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "file_jobs_correct": 12,
+     "file_jobs_wrong": 1
+    },
+    "calculator": {
+     "correct": 50,
+     "workers": 124,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "wrong": 6,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "file_jobs_correct": 12,
+     "file_jobs_wrong": 1
+    },
+    "calculator_recover": {
+     "correct": 50,
+     "workers": 124,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "wrong": 6,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "file_jobs_correct": 12,
+     "file_jobs_wrong": 1
+    }
+   }
+  },
+  "g52": {
+   "overlap_tasks": 0,
+   "methods": {
+    "baseline": {
+     "correct": 52,
+     "workers": 142,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 13,
+     "withheld": 10,
+     "file_jobs_withheld": 9,
+     "wrong": 2,
+     "file_jobs_wrong": 2
+    },
+    "first_certificate": {
+     "correct": 52,
+     "workers": 133,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 13,
+     "withheld": 10,
+     "file_jobs_withheld": 9,
+     "wrong": 2,
+     "file_jobs_wrong": 2
+    },
+    "recover": {
+     "correct": 54,
+     "workers": 142,
+     "wasi_admission_batches": 2,
+     "wasi_fuel": 2059683495,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2,
+     "file_jobs_wrong": 2
+    },
+    "both": {
+     "correct": 54,
+     "workers": 133,
+     "wasi_admission_batches": 2,
+     "wasi_fuel": 2059683495,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2,
+     "file_jobs_wrong": 2
+    },
+    "calculator": {
+     "correct": 52,
+     "workers": 124,
+     "wasi_admission_batches": 0,
+     "wasi_fuel": 0,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 13,
+     "withheld": 10,
+     "file_jobs_withheld": 9,
+     "wrong": 2,
+     "file_jobs_wrong": 2
+    },
+    "calculator_recover": {
+     "correct": 54,
+     "workers": 124,
+     "wasi_admission_batches": 2,
+     "wasi_fuel": 2059683495,
+     "wrong_after_correct": 0,
+     "withheld_after_correct": 0,
+     "new_wrong": 0,
+     "file_jobs_correct": 15,
+     "withheld": 8,
+     "file_jobs_withheld": 7,
+     "wrong": 2,
+     "file_jobs_wrong": 2
+    }
+   }
+  }
+ },
+ "changed_or_applicable_jobs": [
+  {
+   "generation": "g50",
+   "id": "e20000502_01",
+   "contract": "days",
+   "certified": true,
+   "first": "123",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g50",
+   "id": "e20000502_02",
+   "contract": "dollars",
+   "certified": false,
+   "first": "new_price: 2083.2",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g50",
+   "id": "e20000504_02",
+   "contract": "fahrenheit",
+   "certified": true,
+   "first": "98.6",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g50",
+   "id": "e20000504_03",
+   "contract": "days",
+   "certified": true,
+   "first": "30",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g50",
+   "id": "e20000505_00",
+   "contract": "weekday",
+   "certified": true,
+   "first": "Monday",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g50",
+   "id": "e20000507_03",
+   "contract": "gcd",
+   "certified": true,
+   "first": "8",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g50",
+   "id": "e20000508_00",
+   "contract": "dollars",
+   "certified": true,
+   "first": "New price: 1038.4",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000511_01",
+   "contract": "days",
+   "certified": true,
+   "first": "83",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000512_00",
+   "contract": "dollars",
+   "certified": true,
+   "first": "New price: 578.0",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000512_01",
+   "contract": "days",
+   "certified": true,
+   "first": "107",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000513_01",
+   "contract": "dollars",
+   "certified": true,
+   "first": "New price: 1200.0",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000514_00",
+   "contract": "days",
+   "certified": true,
+   "first": "124",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000514_03",
+   "contract": "fahrenheit",
+   "certified": true,
+   "first": "14.0",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000515_00",
+   "contract": "days",
+   "certified": true,
+   "first": "181",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000515_02",
+   "contract": "weekday",
+   "certified": true,
+   "first": "Tuesday",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g51",
+   "id": "e20000516_01",
+   "contract": "celsius",
+   "certified": true,
+   "first": "5.0",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000521_00",
+   "contract": "weekday",
+   "certified": true,
+   "first": "Thursday",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000521_02",
+   "contract": "days",
+   "certified": true,
+   "first": "29",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000522_01",
+   "contract": "weekday",
+   "certified": true,
+   "first": "Tuesday",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000523_01",
+   "contract": "fahrenheit",
+   "certified": true,
+   "first": "41.0",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000523_02",
+   "contract": "dollars",
+   "certified": true,
+   "first": "New price: 456.0",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000523_03",
+   "contract": "days",
+   "certified": true,
+   "first": "192",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000524_00",
+   "contract": "weekday",
+   "certified": true,
+   "first": "Saturday",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000527_00",
+   "contract": "weekday",
+   "certified": true,
+   "first": "Sunday",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "e20000528_02",
+   "contract": "gcd",
+   "certified": true,
+   "first": "8",
+   "original_workers": 2,
+   "original": "correct",
+   "recovery": null,
+   "wasi": null,
+   "outcomes": {
+    "baseline": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "recover": [
+     "correct",
+     2,
+     0,
+     "original"
+    ],
+    "both": [
+     "correct",
+     1,
+     0,
+     "first_worker"
+    ],
+    "calculator": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ],
+    "calculator_recover": [
+     "correct",
+     0,
+     0,
+     "calculator"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "h20000523_03",
+   "contract": null,
+   "certified": false,
+   "first": null,
+   "original_workers": 3,
+   "original": "withheld",
+   "recovery": {
+    "selected_member": 3,
+    "selected_path": "member3/member3_2.py",
+    "raw_program_sha256": "83020095e8d8eacda2774125cd51935682a7307e7936e1bf3c6f3d6ed4b433d5",
+    "module_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+    "official": {
+     "passed": 50,
+     "total": 50,
+     "visible_answers_match": true,
+     "okay": true
+    },
+    "fresh": 60,
+    "fresh_total": 60
+   },
+   "wasi": {
+    "batches": 1,
+    "guest_seconds": 0.271,
+    "fuel": 1029841044
+   },
+   "outcomes": {
+    "baseline": [
+     "withheld",
+     3,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "withheld",
+     3,
+     0,
+     "original"
+    ],
+    "recover": [
+     "correct",
+     3,
+     1,
+     "archived_program"
+    ],
+    "both": [
+     "correct",
+     3,
+     1,
+     "archived_program"
+    ],
+    "calculator": [
+     "withheld",
+     3,
+     0,
+     "original"
+    ],
+    "calculator_recover": [
+     "correct",
+     3,
+     1,
+     "archived_program"
+    ]
+   }
+  },
+  {
+   "generation": "g52",
+   "id": "h20000527_03",
+   "contract": null,
+   "certified": false,
+   "first": null,
+   "original_workers": 3,
+   "original": "withheld",
+   "recovery": {
+    "selected_member": 3,
+    "selected_path": "member3/member3_1.py",
+    "raw_program_sha256": "39527b889e4408d80233fef3db53423bb45e99798afba0a4dc00b6246e9eaa29",
+    "module_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+    "official": {
+     "passed": 50,
+     "total": 50,
+     "visible_answers_match": true,
+     "okay": true
+    },
+    "fresh": 60,
+    "fresh_total": 60
+   },
+   "wasi": {
+    "batches": 1,
+    "guest_seconds": 0.2663,
+    "fuel": 1029842451
+   },
+   "outcomes": {
+    "baseline": [
+     "withheld",
+     3,
+     0,
+     "original"
+    ],
+    "first_certificate": [
+     "withheld",
+     3,
+     0,
+     "original"
+    ],
+    "recover": [
+     "correct",
+     3,
+     1,
+     "archived_program"
+    ],
+    "both": [
+     "correct",
+     3,
+     1,
+     "archived_program"
+    ],
+    "calculator": [
+     "withheld",
+     3,
+     0,
+     "original"
+    ],
+    "calculator_recover": [
+     "correct",
+     3,
+     1,
+     "archived_program"
+    ]
+   }
+  }
+ ],
+ "checkpoint_sha256": "769696fa3abb009489bdebda97673440eb2c25f5f1465d11e5627fe77ed5c45a",
+ "certificate_sha256": "b9a526cef25260b2b567122f4f861138c1ce45f780cf06ca84390f511ee03157",
+ "recovery_results_sha256": "e69c2add64c925d14f0189b845a5c48d118c34fddc7baea13cb1a5ef9b7f1946",
+ "manifest_sha256": "783e3a2c196b5805b571d1a4e720f7022bb08e291ae5641a05dbe586554c0e70"
+}

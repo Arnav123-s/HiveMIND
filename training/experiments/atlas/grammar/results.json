@@ -1,0 +1,231 @@
+{
+  "count": 8,
+  "totals": {
+    "free": {
+      "format_ok": 5,
+      "content_ok": 4,
+      "joint": 2,
+      "cpu_seconds": 451.91,
+      "wall_seconds": 239.476,
+      "predicted_tokens": 103,
+      "prompt_tokens": 525
+    },
+    "grammar": {
+      "format_ok": 8,
+      "content_ok": 4,
+      "joint": 4,
+      "cpu_seconds": 462.66,
+      "wall_seconds": 238.7,
+      "predicted_tokens": 65,
+      "prompt_tokens": 525
+    }
+  },
+  "trades": {
+    "format_ok": {
+      "gained": [
+        "pressed-contact",
+        "missed-labels",
+        "reversed-route"
+      ],
+      "lost": []
+    },
+    "content_ok": {
+      "gained": [],
+      "lost": []
+    },
+    "joint": {
+      "gained": [
+        "pressed-contact",
+        "missed-labels"
+      ],
+      "lost": []
+    }
+  },
+  "cases": [
+    {
+      "id": "edited-cart",
+      "expected": {
+        "size": 3,
+        "last": 4
+      },
+      "free": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": {
+          "size": 4,
+          "last": 4
+        },
+        "joint": false
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": {
+          "size": 4,
+          "last": 4
+        },
+        "joint": false
+      }
+    },
+    {
+      "id": "crate-remainder",
+      "expected": [
+        15,
+        8
+      ],
+      "free": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": [
+          263,
+          17
+        ],
+        "joint": false
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": [
+          263,
+          17
+        ],
+        "joint": false
+      }
+    },
+    {
+      "id": "pressed-contact",
+      "expected": {
+        "level": "low",
+        "pressed": true
+      },
+      "free": {
+        "format_ok": false,
+        "content_ok": true,
+        "parsed": {
+          "level": "low",
+          "pressed": true
+        },
+        "joint": false
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": true,
+        "parsed": {
+          "level": "low",
+          "pressed": true
+        },
+        "joint": true
+      }
+    },
+    {
+      "id": "missed-labels",
+      "expected": {
+        "tp": 9,
+        "fn": 3
+      },
+      "free": {
+        "format_ok": false,
+        "content_ok": true,
+        "parsed": {
+          "tp": 9,
+          "fn": 3
+        },
+        "joint": false
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": true,
+        "parsed": {
+          "tp": 9,
+          "fn": 3
+        },
+        "joint": true
+      }
+    },
+    {
+      "id": "weekend-hours",
+      "expected": "unknown",
+      "free": {
+        "format_ok": true,
+        "content_ok": true,
+        "parsed": "unknown",
+        "joint": true
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": true,
+        "parsed": "unknown",
+        "joint": true
+      }
+    },
+    {
+      "id": "reversed-route",
+      "expected": [
+        5,
+        17,
+        17
+      ],
+      "free": {
+        "format_ok": false,
+        "content_ok": false,
+        "parsed": null,
+        "joint": false
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": [
+          17,
+          17,
+          5
+        ],
+        "joint": false
+      }
+    },
+    {
+      "id": "duplex-print",
+      "expected": [
+        19,
+        1
+      ],
+      "free": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": [
+          37,
+          0
+        ],
+        "joint": false
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": false,
+        "parsed": [
+          37,
+          0
+        ],
+        "joint": false
+      }
+    },
+    {
+      "id": "latest-room",
+      "expected": "Cedar",
+      "free": {
+        "format_ok": true,
+        "content_ok": true,
+        "parsed": "Cedar",
+        "joint": true
+      },
+      "grammar": {
+        "format_ok": true,
+        "content_ok": true,
+        "parsed": "Cedar",
+        "joint": true
+      }
+    }
+  ],
+  "panel_sha256": "ae0124354804c41ceaf6a099626a0a2fca7898fb2389e8de2f1fcaae3a2c0d49",
+  "answers_sha256": "6341266c937955de66bb7e30fdc8d29fc7d5b622caa10844c50ee46d3b956506",
+  "oracle_sha256": "2da74e9410c7afa1badae39be9b2bbefd56421aff2086de01c48525fc5b602cc",
+  "pair_sha256": "60cf9d7d0b1f212902910e988d0f0a67a26ba53603c598668c5e919e906c2ab5"
+}

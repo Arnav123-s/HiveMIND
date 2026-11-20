@@ -1,0 +1,9 @@
+{
+  "native_repository": "https://github.com/ikawrakow/ik_llama.cpp",
+  "native_git_commit": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "cpu_limit": "400000 100000",
+  "cpu_arch": "x86_64",
+  "cpu_threads_requested": 2,
+  "ngl": 0,
+  "validation_note": "CPU time sums the owned native process threads. Other independent jobs were running on this host. Setup, preflight and host-side template rendering are excluded from arm totals."
+}

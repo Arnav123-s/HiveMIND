@@ -1,0 +1,22 @@
+[
+  {
+    "surface": "opt-in",
+    "id": "light-pair",
+    "prompt": "Calculate the depot shipping fee for 0.172 kg and 0.196 kg",
+    "expected": 430,
+    "answer": 430,
+    "exit": 0,
+    "stdout": "{\n  \"answer\": {\n    \"status\": \"answered\",\n    \"task\": \"depot_shipping_fee\",\n    \"methods\": [\n      \"6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728\"\n    ],\n    \"input\": {\n      \"grams\": [\n        172,\n        196\n      ]\n    },\n    \"value\": 430,\n    \"text\": \"430\\n\\nWorked out by the saved method depot_shipping_fee (6f939fee17b1, passed 12 independent checks), on {\\\"grams\\\": [172, 196]}, with no model call.\"\n  },\n  \"execution\": {\n    \"path\": \"side_exit\",\n    \"calls\": 1,\n    \"guest_inputs\": 1,\n    \"fuel\": 1022640509,\n    \"seconds\": 3.2771949069999664,\n    \"model_calls\": 0\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "surface": "default",
+    "id": "plain-control",
+    "prompt": "Run the saved method depot_shipping_fee on {\"grams\":[773,527]}",
+    "expected": 610,
+    "answer": 610,
+    "exit": 0,
+    "stdout": "610\n\nWorked out by the saved method depot_shipping_fee (6f939fee17b1, passed 12 independent checks), on {\"grams\": [773, 527]}, with no model call.\n",
+    "stderr": ""
+  }
+]

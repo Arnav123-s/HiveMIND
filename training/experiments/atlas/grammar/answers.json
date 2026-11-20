@@ -1,0 +1,29 @@
+{
+  "edited-cart": {
+    "size": 3,
+    "last": 4
+  },
+  "crate-remainder": [
+    15,
+    8
+  ],
+  "pressed-contact": {
+    "level": "low",
+    "pressed": true
+  },
+  "missed-labels": {
+    "tp": 9,
+    "fn": 3
+  },
+  "weekend-hours": "unknown",
+  "reversed-route": [
+    5,
+    17,
+    17
+  ],
+  "duplex-print": [
+    19,
+    1
+  ],
+  "latest-room": "Cedar"
+}

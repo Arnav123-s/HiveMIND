@@ -1,0 +1,207 @@
+{
+  "ordinary_first": {
+    "status": "ok",
+    "complete_prompts": 3,
+    "comparisons": [
+      {
+        "id": "copy",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "code",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "prose",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      }
+    ],
+    "complete_exact_token_traces": 3,
+    "matching_messages": 3,
+    "output_tokens": 64,
+    "decode_tokens_per_s": 6.5054,
+    "draft_tokens": 0,
+    "draft_accepted": 0,
+    "acceptance_fraction": null,
+    "http_wall_s": 13.3599,
+    "server_cpu_s": 26.6,
+    "decode_speed_ratio_to_first": 1.0,
+    "wall_speed_ratio_to_first": 1.0
+  },
+  "t4_draft": {
+    "status": "ok",
+    "complete_prompts": 3,
+    "comparisons": [
+      {
+        "id": "copy",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "code",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "prose",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      }
+    ],
+    "complete_exact_token_traces": 3,
+    "matching_messages": 3,
+    "output_tokens": 64,
+    "decode_tokens_per_s": 1.9729,
+    "draft_tokens": 115,
+    "draft_accepted": 40,
+    "acceptance_fraction": 0.3478,
+    "http_wall_s": 37.2971,
+    "server_cpu_s": 72.48,
+    "decode_speed_ratio_to_first": 0.3033,
+    "wall_speed_ratio_to_first": 0.3582
+  },
+  "t17_draft": {
+    "status": "ok",
+    "complete_prompts": 3,
+    "comparisons": [
+      {
+        "id": "copy",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "code",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "prose",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      }
+    ],
+    "complete_exact_token_traces": 3,
+    "matching_messages": 3,
+    "output_tokens": 64,
+    "decode_tokens_per_s": 3.6205,
+    "draft_tokens": 65,
+    "draft_accepted": 52,
+    "acceptance_fraction": 0.8,
+    "http_wall_s": 23.3562,
+    "server_cpu_s": 46.46,
+    "decode_speed_ratio_to_first": 0.5565,
+    "wall_speed_ratio_to_first": 0.572
+  },
+  "prompt_lookup": {
+    "status": "ok",
+    "complete_prompts": 3,
+    "comparisons": [
+      {
+        "id": "copy",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "code",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "prose",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      }
+    ],
+    "complete_exact_token_traces": 3,
+    "matching_messages": 3,
+    "output_tokens": 64,
+    "decode_tokens_per_s": 4.4885,
+    "draft_tokens": 25,
+    "draft_accepted": 12,
+    "acceptance_fraction": 0.48,
+    "http_wall_s": 20.0355,
+    "server_cpu_s": 39.92,
+    "decode_speed_ratio_to_first": 0.69,
+    "wall_speed_ratio_to_first": 0.6668
+  },
+  "ordinary_last": {
+    "status": "ok",
+    "complete_prompts": 3,
+    "comparisons": [
+      {
+        "id": "copy",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "code",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      },
+      {
+        "id": "prose",
+        "exact_token_ids": true,
+        "first_different_token_at_zero_based_index": null,
+        "both_token_traces_complete": true,
+        "same_message": true,
+        "same_finish": true
+      }
+    ],
+    "complete_exact_token_traces": 3,
+    "matching_messages": 3,
+    "output_tokens": 64,
+    "decode_tokens_per_s": 5.18,
+    "draft_tokens": 0,
+    "draft_accepted": 0,
+    "acceptance_fraction": null,
+    "http_wall_s": 17.9438,
+    "server_cpu_s": 35.78,
+    "decode_speed_ratio_to_first": 0.7963,
+    "wall_speed_ratio_to_first": 0.7445
+  }
+}

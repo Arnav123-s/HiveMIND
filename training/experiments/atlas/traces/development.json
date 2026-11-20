@@ -1,0 +1,228 @@
+{
+  "warmup_seconds": 5.608644765999998,
+  "checks": [
+    {
+      "status": "collecting",
+      "distinct_exits": 2
+    },
+    {
+      "status": "overlapping_gate"
+    },
+    {
+      "status": "invalid_gate"
+    },
+    {
+      "status": "unqualified",
+      "passed": 3,
+      "count": 4
+    },
+    {
+      "status": "published",
+      "count": 4,
+      "digest": "ced674f5d766d0633aef0d56873ab3c68ddb7e94e71a8625236f219e3bd128cc",
+      "parent": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+      "gate": "8d078a08544e2aa6c81fb3cee825417bd8db346b4b1f5a6d22f6d5edac10d4da"
+    }
+  ],
+  "requests": [
+    {
+      "label": "collecting",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.125 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 340,
+      "path": "side_exit",
+      "calls": 2,
+      "guest_inputs": 3,
+      "fuel": 2045361798,
+      "seconds": 0.8249455710000575,
+      "model_calls": 0
+    },
+    {
+      "label": "invalid decimal precision",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.1250 kg using per-parcel rounding",
+      "status": null,
+      "value": null,
+      "path": "stock",
+      "calls": 0,
+      "guest_inputs": 0,
+      "fuel": 0,
+      "seconds": 0.00040792300001157855,
+      "model_calls": 0
+    },
+    {
+      "label": "collecting",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.125 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 340,
+      "path": "side_exit",
+      "calls": 2,
+      "guest_inputs": 3,
+      "fuel": 2045361774,
+      "seconds": 0.8290679830000727,
+      "model_calls": 0
+    },
+    {
+      "label": "collecting",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.5 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 340,
+      "path": "side_exit",
+      "calls": 2,
+      "guest_inputs": 3,
+      "fuel": 2045362081,
+      "seconds": 2.3326400709999007,
+      "model_calls": 0
+    },
+    {
+      "label": "third distinct input after reopening",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.6 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 430,
+      "path": "side_exit",
+      "calls": 2,
+      "guest_inputs": 3,
+      "fuel": 2045362081,
+      "seconds": 1.778575745000012,
+      "model_calls": 0
+    },
+    {
+      "label": "same final request across arms",
+      "mode": "stock",
+      "prompt": "Calculate the depot shipping fee for 0.64 kg using per-parcel rounding",
+      "status": null,
+      "value": null,
+      "path": "stock",
+      "calls": 0,
+      "guest_inputs": 0,
+      "fuel": 0,
+      "seconds": 0.00027917400007027027,
+      "model_calls": 0
+    },
+    {
+      "label": "same final request across arms",
+      "mode": "handwritten",
+      "prompt": "Calculate the depot shipping fee for 0.64 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 430,
+      "path": "handwritten",
+      "calls": 2,
+      "guest_inputs": 3,
+      "fuel": 2045362109,
+      "seconds": 0.9719663539999601,
+      "model_calls": 0
+    },
+    {
+      "label": "same final request across arms",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.64 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 430,
+      "path": "sibling",
+      "calls": 1,
+      "guest_inputs": 1,
+      "fuel": 1025807614,
+      "seconds": 0.4411845480000238,
+      "model_calls": 0
+    },
+    {
+      "label": "original grams request",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 640 g using per-parcel rounding",
+      "status": "answered",
+      "value": 430,
+      "path": "stock",
+      "calls": 2,
+      "guest_inputs": 3,
+      "fuel": 2045362137,
+      "seconds": 1.0067421329999888,
+      "model_calls": 0
+    },
+    {
+      "label": "different convention cannot use old sibling",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.64 kg using pooled rounding",
+      "status": "missing",
+      "value": null,
+      "path": "side_exit",
+      "calls": 1,
+      "guest_inputs": 2,
+      "fuel": 1022728114,
+      "seconds": 0.38523099799999727,
+      "model_calls": 0
+    },
+    {
+      "label": "malformed explicit JSON",
+      "mode": "guarded",
+      "prompt": "Run depot_shipping_fee: {\"grams\":[-1]}",
+      "status": "missing",
+      "value": null,
+      "path": "stock",
+      "calls": 0,
+      "guest_inputs": 0,
+      "fuel": 0,
+      "seconds": 0.0003869070000064312,
+      "model_calls": 0
+    },
+    {
+      "label": "new pool invalidates prior sibling",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.200 kg and 0.210 kg using per-parcel rounding",
+      "status": "answered",
+      "value": 430,
+      "path": "side_exit",
+      "calls": 3,
+      "guest_inputs": 5,
+      "fuel": 3067383560,
+      "seconds": 0.9567007610000928,
+      "model_calls": 0
+    },
+    {
+      "label": "agree on named pooled",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.200 kg and 0.210 kg using pooled rounding",
+      "status": "answered",
+      "value": 340,
+      "path": "side_exit",
+      "calls": 3,
+      "guest_inputs": 5,
+      "fuel": 3066673523,
+      "seconds": 0.9566955300000473,
+      "model_calls": 0
+    },
+    {
+      "label": "withhold unnamed disagreement",
+      "mode": "guarded",
+      "prompt": "Calculate the depot shipping fee for 0.200 kg and 0.210 kg",
+      "status": "ambiguous",
+      "value": null,
+      "path": "side_exit",
+      "calls": 2,
+      "guest_inputs": 2,
+      "fuel": 2044570877,
+      "seconds": 0.5909566120000136,
+      "model_calls": 0
+    },
+    {
+      "label": "withhold stale ID",
+      "mode": "guarded",
+      "prompt": "Run depot_shipping_fee@deadbeefdead: {\"grams\":[200,210]}",
+      "status": "missing",
+      "value": null,
+      "path": "stock",
+      "calls": 0,
+      "guest_inputs": 0,
+      "fuel": 0,
+      "seconds": 0.00027995400000691006,
+      "model_calls": 0
+    }
+  ],
+  "parent_digest": "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728",
+  "remaining_parent_versions": 2,
+  "sibling_versions": 1,
+  "model_calls": 0
+}
