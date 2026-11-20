@@ -105,3 +105,20 @@ def test_run_with_fewer_workers_excludes_receipts_from_previous_attempt(tmp_path
     assert collect(tmp_path, out) == 1
     manifest = json.loads((out / "g/job/manifest.json").read_text())
     assert [seat["seat"] for seat in manifest["seats"]] == [1]
+
+
+def test_current_roster_limits_seats_even_with_equal_timestamps(tmp_path):
+    home = tmp_path / "g/job/members"
+    home.mkdir(parents=True)
+    task = home / "TASK.md"
+    task.write_text("Save card.txt.")
+    worker(home, 1, {"card.txt": b"current"})
+    worker(home, 2, {"card.txt": b"previous"})
+    (home / "members.json").write_text(json.dumps({"who": ["first"]}))
+    moment = task.stat().st_mtime_ns
+    for path in home.glob("*.json"):
+        os.utime(path, ns=(moment, moment))
+    out = tmp_path / "evidence"
+    assert collect(tmp_path, out) == 1
+    manifest = json.loads((out / "g/job/manifest.json").read_text())
+    assert [seat["seat"] for seat in manifest["seats"]] == [1]

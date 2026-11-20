@@ -74,11 +74,22 @@ def capture(task, members, destination):
 
 def recorded_members(home, started_ns):
     """A reused exam directory can still contain worker receipts from an earlier attempt."""
+    seat_count = None
+    try:
+        with regular(home / "members.json") as file:
+            if os.fstat(file.fileno()).st_mtime_ns >= started_ns:
+                decision = json.load(file)
+                if isinstance(decision, dict) and isinstance(decision.get("who"), list):
+                    seat_count = len(decision["who"])
+    except (OSError, ValueError):
+        pass  # An interrupted attempt can still leave current, individually dated worker receipts.
     for path in sorted(home.glob("member*.json")):
         number = re.fullmatch(r"member([1-9][0-9]*)", path.stem)
         if not number:
             continue
         seat = int(number[1])
+        if seat_count is not None and seat > seat_count:
+            continue
         try:
             if path.lstat().st_mtime_ns < started_ns:
                 continue
