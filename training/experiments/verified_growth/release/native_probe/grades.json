@@ -1,0 +1,231 @@
+{
+  "grader_sha256": "69000063fe4fc68ccebdf31f3b7113295fa0396c37fe7de586eaaa4ed583001e",
+  "rows": [
+    {
+      "id": "0e927d6db3844773",
+      "maker": "h_txt_redact",
+      "requested": [
+        "redacted.txt"
+      ],
+      "binding": "no_fenced_block",
+      "plain": {
+        "passed": false,
+        "reason": "no redacted.txt saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "no redacted.txt saved",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "178cfed6b7416b8e",
+      "maker": "h_txt_ini",
+      "requested": [],
+      "binding": "no_requested_files",
+      "plain": {
+        "passed": false,
+        "reason": "wants value: 6, keys: 3; got ['6'] and ['keys: port, host, user']",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "wants value: 6, keys: 3; got ['6'] and ['keys: port, host, user']",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "2ce5dbc5679143de",
+      "maker": "h_tab_topn",
+      "requested": [
+        "top.csv"
+      ],
+      "binding": "bound",
+      "plain": {
+        "passed": false,
+        "reason": "no top.csv saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": true,
+        "reason": "top.csv: 6 rows against 6, wants [['Avon', '1', 'Tomas', '86'], ['Avon', '2', 'Nadia', '78'], ['Avon', '3', 'Jonas', '74']]...; Tomas named: True",
+        "network": []
+      },
+      "same_submission": false,
+      "products": {
+        "top.csv": {
+          "bytes": 119,
+          "sha256": "edbb843b3e8a6df98cf2a01e1e9ae4db8b5c03d35505a835d666463f33520c56"
+        }
+      }
+    },
+    {
+      "id": "4d064b2ac51c5340",
+      "maker": "h_tab_dates",
+      "requested": [
+        "window.csv"
+      ],
+      "binding": "unclosed_block",
+      "plain": {
+        "passed": false,
+        "reason": "no window.csv saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "no window.csv saved",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "7169e748fb11cfb2",
+      "maker": "h_edit",
+      "requested": [
+        "people.csv"
+      ],
+      "binding": "bound",
+      "plain": {
+        "passed": false,
+        "reason": "no people.csv saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "people.csv: heading right True, 10 rows against 5 wanted, the same and counted in the answer: False",
+        "network": []
+      },
+      "same_submission": false,
+      "products": {
+        "people.csv": {
+          "bytes": 188,
+          "sha256": "4cd73d96cf5f369110bc359d2ee0849084e91578b0f0662777948d7643d2685c"
+        }
+      }
+    },
+    {
+      "id": "8322fe98c22c2f1e",
+      "maker": "h_sim",
+      "requested": [],
+      "binding": "no_requested_files",
+      "plain": {
+        "passed": false,
+        "reason": "ends with 599.66, 3 refused; in the answer: False",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "ends with 599.66, 3 refused; in the answer: False",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "892c67afd80430a4",
+      "maker": "h_prog_queue",
+      "requested": [
+        "desk.py"
+      ],
+      "binding": "unclosed_block",
+      "plain": {
+        "passed": false,
+        "reason": "no desk.py saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "no desk.py saved",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "9dc4de18f6146cc8",
+      "maker": "h_quotes",
+      "requested": [
+        "authors.json"
+      ],
+      "binding": "unclosed_block",
+      "plain": {
+        "passed": false,
+        "reason": "no authors.json saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "no authors.json saved",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "beeeafb1e0aa2f4c",
+      "maker": "h_prog_wrap",
+      "requested": [
+        "wrap.py"
+      ],
+      "binding": "unclosed_block",
+      "plain": {
+        "passed": false,
+        "reason": "no wrap.py saved",
+        "network": []
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "no wrap.py saved",
+        "network": []
+      },
+      "same_submission": true,
+      "products": {}
+    },
+    {
+      "id": "fd3dbdca228313b6",
+      "maker": "h_two",
+      "requested": [],
+      "binding": "no_requested_files",
+      "plain": {
+        "passed": false,
+        "reason": "uvicorn 2026-09-25, click 2026-11-06: click is later by 42 days; in the answer: False",
+        "network": [
+          {
+            "method": "get",
+            "url": "https://pypi.org/pypi/uvicorn/json",
+            "status": 200
+          },
+          {
+            "method": "get",
+            "url": "https://pypi.org/pypi/click/json",
+            "status": 200
+          }
+        ]
+      },
+      "delivered": {
+        "passed": false,
+        "reason": "uvicorn 2026-09-25, click 2026-11-06: click is later by 42 days; in the answer: False",
+        "network": [
+          {
+            "method": "get",
+            "url": "https://pypi.org/pypi/uvicorn/json",
+            "status": 200
+          },
+          {
+            "method": "get",
+            "url": "https://pypi.org/pypi/click/json",
+            "status": 200
+          }
+        ]
+      },
+      "same_submission": true,
+      "products": {}
+    }
+  ]
+}

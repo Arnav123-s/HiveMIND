@@ -34,6 +34,10 @@ The table entry point required a separate flat input file on all 30 requests. Th
 
 After seeing the initial input mismatch, a separate developer built one inline-table transport without access to official questions or answers. Its frozen version accepted named, unambiguous table blocks in development. The grader called its ordinary entry point on the same thirty complete messages before opening the score ledger. The transport bound **0/30** official questions. Both the unmodified rules planner and the transport plus rules planner withheld all thirty. G51 and G52 fallback scores and every original per-task grade stayed identical. No further parsing rule was added. This measures the proposed bridge's coverage on a previously examined exam. [Retest protocol](transport-protocol.md) · [Frozen decisions](transport-decisions.json) · [Official retest](transport-results.json)
 
+## Fresh direct native trial
+
+A separate bare-model trial generated one new, non-release request from each held-out family and supplied the original raw user text to t80. All ten true native replies were sealed before grading. The grade moved from **0/10 tasks** as reports to **1/10** when a complete, generically bound file was delivered. Six outputs reached the 128-token limit. This one new draw per family measures candidate supply and delivery; the 30-task official kind count stays as reported above. [Fresh-score report and actual working CSV](native_probe/README.md)
+
 ## Which two G52 pulse deliveries were wrong?
 
 The original two wrong deliveries came from the **separate 64-job pulse**. On `h20000524_00`, the hive delivered a CSV with the wrong heading and eleven rows when four were requested. On `h20000525_02`, the delivered LRU cache passed 379 of 423 hidden checks; its key ordering failed. In both jobs all three recorded workers failed the full task. The other ten failed G52 pulse jobs originally withheld a result. Two of those withheld duration files were recovered in PR #122. [Actual reports, reasons and source digests](ledger.json) · [Original pulse comparison](../../atlas/pulse/composed/README.md)

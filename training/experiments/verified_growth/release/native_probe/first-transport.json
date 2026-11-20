@@ -1,0 +1,36 @@
+{
+  "affinity": [
+    2
+  ],
+  "calls": [
+    {
+      "error": "TimeoutError: timed out",
+      "id": "0e927d6db3844773",
+      "raw": "",
+      "server_cpu_s": 144.25,
+      "state": "infrastructure_failure",
+      "wall_s": 160.11
+    },
+    {
+      "error": "TimeoutError: timed out",
+      "id": "178cfed6b7416b8e",
+      "raw": "",
+      "server_cpu_s": 156.0,
+      "state": "infrastructure_failure",
+      "wall_s": 160.1103
+    },
+    {
+      "id": "2ce5dbc5679143de",
+      "server_cpu_s": 0.0,
+      "state": "started",
+      "wall_s": 0.0071
+    }
+  ],
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "requests_sha256": "b6828e21e3ffd77284c600d318bd2de8c4ffbb17e2577069ff7b2a6be739f5ed",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "settings_sha256": "8db4ecc9ca9ce8896ceb1331920b11d91e8e3647496251b4a0713088a1bc8719",
+  "start_utc": "2026-11-20T04:13:46.618040+00:00",
+  "startup_s": 2.1539,
+  "threads": 1
+}

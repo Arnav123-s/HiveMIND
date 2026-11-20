@@ -1,0 +1,10 @@
+{
+  "nonce": "f1c2f2a2ef7f39b4d6b00c3866445b00",
+  "max_tokens": 128,
+  "seed": 91,
+  "temperature": 0,
+  "context": 4096,
+  "system": "Reply directly to the request. For every requested text file, put its filename alone on a line followed by one complete fenced block containing the file. Include any requested answer outside those blocks.",
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2"
+}
