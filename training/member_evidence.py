@@ -2,6 +2,7 @@
 import argparse
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -71,14 +72,16 @@ def capture(task, members, destination):
     return manifest
 
 
-def recorded_members(home):
-    """Read only the seat and the file provenance, ignoring answers and grade records."""
+def recorded_members(home, started_ns):
+    """A reused exam directory can still contain worker receipts from an earlier attempt."""
     for path in sorted(home.glob("member*.json")):
         number = re.fullmatch(r"member([1-9][0-9]*)", path.stem)
         if not number:
             continue
         seat = int(number[1])
         try:
+            if path.lstat().st_mtime_ns < started_ns:
+                continue
             with regular(path) as file:
                 row = json.load(file)
         except (OSError, ValueError):
@@ -116,11 +119,12 @@ def collect(root, out):
                 continue
             try:
                 with regular(path) as file:
+                    started_ns = os.fstat(file.fileno()).st_mtime_ns
                     task = file.read().decode()
             except (OSError, ValueError) as error:
                 print(f"Skipping unreadable worker task {path}: {error}", file=sys.stderr)
                 continue
-            result = capture(task, recorded_members(home), snapshot / home.parent.relative_to(root))
+            result = capture(task, recorded_members(home, started_ns), snapshot / home.parent.relative_to(root))
             if result is not None:
                 count += 1
         if count:

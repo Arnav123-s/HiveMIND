@@ -1,6 +1,7 @@
 """The diagnostics must preserve the original worker's bytes separately from published work."""
 import hashlib
 import json
+import os
 
 import pytest
 
@@ -87,3 +88,20 @@ def test_capture_ignores_text_only_and_skips_damaged_siblings(tmp_path, capsys):
     dangling.symlink_to(tmp_path / "other")
     with pytest.raises(FileExistsError):
         collect(tmp_path, dangling)
+
+
+def test_run_with_fewer_workers_excludes_receipts_from_previous_attempt(tmp_path):
+    home = tmp_path / "g/job/members"
+    home.mkdir(parents=True)
+    worker(home, 3, {"card.txt": b"from a prior attempt"})
+    receipt = home / "member3.json"
+    task = home / "TASK.md"
+    task.write_text("Save card.txt.")
+    # Use explicit times so this regression is independent of the filesystem clock resolution.
+    start = task.stat().st_mtime_ns
+    os.utime(receipt, ns=(start - 1_000_000_000, start - 1_000_000_000))
+    worker(home, 1, {"card.txt": b"current"})
+    out = tmp_path / "evidence"
+    assert collect(tmp_path, out) == 1
+    manifest = json.loads((out / "g/job/manifest.json").read_text())
+    assert [seat["seat"] for seat in manifest["seats"]] == [1]
