@@ -28,7 +28,7 @@ def _first_showing(maker, want=True):
 
 
 def test_the_lesson_programs_name_the_rule_and_are_right_on_the_detail():
-    for maker, words in (("h_prog_lru", "already holds"), ("h_txt_words", "alphabetical"), ("h_txt_mdcsv", "row of dashes")):
+    for maker, words in (("h_prog_lru", "held key"), ("h_txt_words", "alphabetical"), ("h_txt_mdcsv", "row of dashes")):
         for i in range(5):
             les = L.fitting(maker, f"t:{i}")
             assert les["ok"], (maker, i, les["why"])

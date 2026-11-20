@@ -111,9 +111,9 @@ def lru(task):
     # a dict keeps its keys in the order they went in: a use takes the key out and puts it back last
     src = (SOURCE.replace("__MISSING__", missing)
            .replace("__GET__", "        if k in s.d:\n            s.d[k] = s.d.pop(k)\n" if get_uses == "does" else "")
-           .replace("__PUT__", "        # putting a key the cache already holds is a use: take it out, so that it goes back as the last\n"
+           .replace("__PUT__", "        # put on a held key = a use: pop it first\n"
                                     "        s.d.pop(k, None)\n" if put_uses == "does" else
-                                    "        # putting a key the cache already holds only changes its value: it keeps its place\n"))
+                                    "        # put on a held key keeps its place\n"))
     tests = ["t = LRUCache(1)", "t.put('x', 1)", "t.put('y', 2)", "assert t.keys() == ['y']", f"c = LRUCache({size})", "c." + calls.replace("; ", "; c.")]
     return program("lru", src, tests, ["print(c.keys())"])
 
