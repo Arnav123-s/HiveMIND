@@ -14,7 +14,7 @@ From a checkout of the experiment branch, run the following command. It returns 
 python -m training.experiments.atlas.service.ask 'Which day of the week is 2024-02-29?'
 ```
 
-On an independent mixed panel, the combined local tool answered 10 of 12 answerable requests, versus one for the stock local route. Both withheld all six requests judged out of scope and gave zero wrong answers. The combined tool missed two ordinary paraphrases. The frozen study ran the local model-free routes. The ordinary model-backed chat can also attempt questions outside this comparison. [Mixed panel](service/judge/results.json)
+On an independent mixed panel, the combined local tool answered 10 of 12 answerable requests, versus one for the stock local route. Both withheld all six requests judged out of scope and gave zero wrong answers. The combined tool missed two ordinary paraphrases. After adding a date-wording rule tested on a separate panel, the final command answered 11/12 on a rerun of the original panel, preserved every earlier correct answer and withheld the same six. On the separate date panel it answered 6/13, up from 2/13. [Final CLI outputs](service/release-results.json) The frozen study ran the local model-free routes. The ordinary model-backed chat can also attempt questions outside this comparison. [Mixed panel](service/judge/results.json)
 
 Removing a model-library import from the calculator preserved its answers and cut median fresh-process wall time from 4.870 seconds to 0.073 seconds over 18 matched invocations for three recurring questions, using one CPU. WebAssembly shipping has separate costs. [Cold process timing](service/cold-start.json)
 
@@ -51,6 +51,6 @@ The release record and these studies answer different questions. G41 scored 58/6
 
 ## Verification and the live run
 
-The combined baseline passed 1,275 repository tests and nine subtests. From a clean checkout of the public experiment branch we independently reproduced the two-file recovery, all 192 replay decisions, the independently graded grammar scores, the conformal results, the executable proposer and the merged-head rankings. The native timing and raw model outputs have separate reproduction commands in their study directories.
+The combined baseline passed 1,275 repository tests and nine subtests. Sixteen additional checks passed against the experiment’s local service, calendar evaluator and file recovery in a fresh checkout. From a clean checkout of the public experiment branch we independently reproduced the two-file recovery, all 192 replay decisions, the independently graded grammar scores, the conformal results, the executable proposer and the merged-head rankings. The native timing and raw model outputs have separate reproduction commands in their study directories.
 
 During the experiment, the independent hosted G53 run was in progress. GitHub reported lost communication with two training runners, for data and writing slices. Those annotations do not identify the underlying cause. A live generation requires collecting or recovering its slices before its runtime or score can be compared fairly. [Data slice](https://github.com/Arnav123-s/HiveMIND/actions/runs/44649281647/job/136025526418) · [Writing slice](https://github.com/Arnav123-s/HiveMIND/actions/runs/44649281647/job/136025526657)

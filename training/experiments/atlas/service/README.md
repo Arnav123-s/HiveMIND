@@ -49,3 +49,7 @@ python -m training.experiments.atlas.service.ask "Could you tell me what weekday
 ```
 
 That prints `Thursday`. With `--json` the result also shows the normalized question so you can check the date the tool interpreted. The existing exact calculation takes precedence. A separate weekday and elapsed-day wording check raised correct answers from 2/13 to 6/13 on independently written questions, with all five invalid or ambiguous cases withheld. Requests about business days and inclusive counting need their own rules. [Independent wording study](wording_eval/README.md) · [Original mixed-service comparison](judge/README.md)
+
+The final public command ran in 36 fresh single-CPU invocations over both panels. On the original mixed panel it answered 11/12 answerable requests, withheld the other six as requested, and recovered one formerly missed appointment question. The remaining miss asked for a depot fee using unsupported wording. On the separate date panel it returned 6/13 correct, no wrong answers and five appropriate holds. Those panels had already been examined when the final switch was enabled. [All 36 normal CLI outputs](release-results.json)
+
+To reproduce the final command check from the repo root, run `python -m training.experiments.atlas.service.check_release --sdk /path/to/wasi --out /tmp/hive-final-cli.json`.
