@@ -1,0 +1,322 @@
+{
+  "original_code": "136e8880243a533299448fe8505ef08194d5bd18",
+  "jobs": [
+    {
+      "id": "h20000523_03",
+      "artifact": 14587903855,
+      "archive_sha256": "5ee0385096b5e7d4b84b32c043d0938a2098321c7cdc9b23be2d61c4300d0122",
+      "original_events": [
+        [
+          "member1",
+          "same-error",
+          "ModuleNotFoundError: No module named 'durations'"
+        ],
+        [
+          "member1",
+          "answer",
+          "no answer"
+        ],
+        [
+          "member2",
+          "same-error",
+          "ModuleNotFoundError: No module named 'durations'"
+        ],
+        [
+          "member2",
+          "answer",
+          "no answer"
+        ],
+        [
+          "member3",
+          "module",
+          "durations.py saved from the program's functions"
+        ],
+        [
+          "member3",
+          "answer",
+          "36228\n1h"
+        ]
+      ],
+      "archive_contains_named_file": false,
+      "archive_contains_member_manifests": false,
+      "archived_successful_script_sha256": "83020095e8d8eacda2774125cd51935682a7307e7936e1bf3c6f3d6ed4b433d5",
+      "reproduction": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "",
+            "issues": {
+              "durations.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 2,
+            "answer": "",
+            "issues": {
+              "durations.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 3,
+            "answer": "36228\n1h",
+            "issues": {},
+            "byte_hashes": {
+              "durations.py": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+            },
+            "files": [
+              "durations.py"
+            ]
+          }
+        ],
+        "selected": null,
+        "agreed": false,
+        "returned_files": [],
+        "published": {},
+        "evidence_in_public_report": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: durations.py: the requested file is missing\nMember 2: durations.py: the requested file is missing",
+        "report_points_to_third": false
+      },
+      "existing_writer_matches_atlas_bytes": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+      "later_exam_evidence": {
+        "release": false,
+        "why": "no durations.py saved",
+        "members": [
+          {
+            "who": "t80+g52trunk",
+            "ok": false,
+            "member": 1
+          },
+          {
+            "who": "t80+g52code",
+            "ok": false,
+            "member": 2
+          },
+          {
+            "who": "t80+g52code2",
+            "ok": true,
+            "member": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "h20000527_03",
+      "artifact": 14587642648,
+      "archive_sha256": "8eb95f267eafee873e856409e2d63d139b62009d8e2865e1741b00a69edd354e",
+      "original_events": [
+        [
+          "member1",
+          "same-error",
+          "ModuleNotFoundError: No module named 'durations'"
+        ],
+        [
+          "member1",
+          "answer",
+          "no answer"
+        ],
+        [
+          "member2",
+          "same-error",
+          "ModuleNotFoundError: No module named 'durations'"
+        ],
+        [
+          "member2",
+          "answer",
+          "no answer"
+        ],
+        [
+          "member3",
+          "module",
+          "durations.py saved from the program's functions"
+        ],
+        [
+          "member3",
+          "answer",
+          "72268\n1m"
+        ]
+      ],
+      "archive_contains_named_file": false,
+      "archive_contains_member_manifests": false,
+      "archived_successful_script_sha256": "99f3f56775cd7e5cbc83ecd51bf110bb483777180232cd45090d27ed7fa930f5",
+      "reproduction": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "",
+            "issues": {
+              "durations.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 2,
+            "answer": "",
+            "issues": {
+              "durations.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 3,
+            "answer": "72268\n1m",
+            "issues": {},
+            "byte_hashes": {
+              "durations.py": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+            },
+            "files": [
+              "durations.py"
+            ]
+          }
+        ],
+        "selected": null,
+        "agreed": false,
+        "returned_files": [],
+        "published": {},
+        "evidence_in_public_report": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: durations.py: the requested file is missing\nMember 2: durations.py: the requested file is missing",
+        "report_points_to_third": false
+      },
+      "existing_writer_matches_atlas_bytes": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+      "later_exam_evidence": {
+        "release": false,
+        "why": "no durations.py saved",
+        "members": [
+          {
+            "who": "t80+g52trunk",
+            "ok": false,
+            "member": 1
+          },
+          {
+            "who": "t80+g52code",
+            "ok": false,
+            "member": 2
+          },
+          {
+            "who": "t80+g52code2",
+            "ok": true,
+            "member": 3
+          }
+        ]
+      }
+    }
+  ],
+  "controls": {
+    "wrong_lone_program": {
+      "members": [
+        {
+          "seat": 1,
+          "answer": "",
+          "issues": {
+            "scale.py": "the requested file is missing"
+          },
+          "byte_hashes": {},
+          "files": []
+        },
+        {
+          "seat": 2,
+          "answer": "",
+          "issues": {
+            "scale.py": "the requested file is missing"
+          },
+          "byte_hashes": {},
+          "files": []
+        },
+        {
+          "seat": 3,
+          "answer": "0",
+          "issues": {},
+          "byte_hashes": {
+            "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+          },
+          "files": [
+            "scale.py"
+          ]
+        }
+      ],
+      "selected": null,
+      "agreed": false,
+      "returned_files": [],
+      "published": {},
+      "evidence_in_public_report": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: scale.py: the requested file is missing\nMember 2: scale.py: the requested file is missing",
+      "report_points_to_third": false
+    },
+    "same_stdout_distinct_modules": {
+      "members": [
+        {
+          "seat": 1,
+          "answer": "0",
+          "issues": {},
+          "byte_hashes": {
+            "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+          },
+          "files": [
+            "scale.py"
+          ]
+        },
+        {
+          "seat": 2,
+          "answer": "0",
+          "issues": {},
+          "byte_hashes": {
+            "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+          },
+          "files": [
+            "scale.py"
+          ]
+        }
+      ],
+      "selected": 1,
+      "agreed": true,
+      "returned_files": [
+        "scale.py"
+      ],
+      "published": {
+        "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+      },
+      "evidence_in_public_report": "0\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: scale.py.",
+      "report_points_to_third": false
+    },
+    "same_correct_program": {
+      "members": [
+        {
+          "seat": 1,
+          "answer": "0",
+          "issues": {},
+          "byte_hashes": {
+            "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+          },
+          "files": [
+            "scale.py"
+          ]
+        },
+        {
+          "seat": 2,
+          "answer": "0",
+          "issues": {},
+          "byte_hashes": {
+            "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+          },
+          "files": [
+            "scale.py"
+          ]
+        }
+      ],
+      "selected": 1,
+      "agreed": true,
+      "returned_files": [
+        "scale.py"
+      ],
+      "published": {
+        "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+      },
+      "evidence_in_public_report": "0\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: scale.py.",
+      "report_points_to_third": false
+    }
+  },
+  "wrong_program": "def scale(x):\n    return 0\n",
+  "correct_program": "def scale(x):\n    return 2 * x\n"
+}
