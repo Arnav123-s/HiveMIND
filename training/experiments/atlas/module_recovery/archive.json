@@ -1,0 +1,1651 @@
+[
+ {
+  "generation": "g50",
+  "id": "e20000501_00",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6da4b3a565729ccd0659a18f16fbbdd672a4f852c3b63ef01b12fbcac55a5636"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000501_01",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "222f9ff05100564f5d500acb6a3ef2d1510135b8d555e9df3d0e1d6a8cc0d0fe"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000501_02",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "72bb4320ca26c5ff00a82121092f15aaefb669f4406b44ca7edfa75cc77c5a70"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000501_03",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "32fc5dec6c7212d81ebc6c338ccee25ec6a250544ce33091b463ebcbd52a955e"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000501_00",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "27047995231b2ed51398c710adf7289b15e20095c65c1ed04f064b0700be8b72"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000501_01",
+  "artifact": 14527694242,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "ef6ea798ffd807e55f38d127c0ea3116589376618ecd825e7e429bf66c106358"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000501_02",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "341c656cda4288770b85a89f779ff2f9e589f0d0941132595109b98fbd15d535"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000501_03",
+  "artifact": 14527694242,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "aa63d8b061e75f2fa2353dfd3fe1ebfdb8c970248d013318b4407bf27e82060a"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000502_00",
+  "artifact": 14527107867,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "da961d310d05b36c281462c83059584cb8b5ba32be824432a555699e6485ffa2"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000502_01",
+  "artifact": 14527107867,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "3997471f363a0134aa645e4c65ff8e68c365837979ed60d7fa031b0810f89b9a"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000502_02",
+  "artifact": 14527107867,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6fd63ad86caf3e193877b17d1237086bd8551d070f323f955d321e7d7d5c26cf"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000502_03",
+  "artifact": 14527107867,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "467497ea22b736c66b06656ba4597f0d51163d35cc9a9d2be3d36fbfb482be1a"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000502_00",
+  "artifact": 14527107867,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "31a6ba9e19073c3c2d16bfe427a15ae28c74f0b700d170b77f0e15ee77e7b6d0",
+  "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('19h19m37s') and of to_text(0).",
+  "programs": [
+   [
+    "member2/member2_1.py",
+    "import re\n\ndef to_seconds(s):\n    \"\"\"Convert a duration string to seconds.\"\"\"\n    h = m = s = 0\n    for part in s.split():\n        num, unit = part[:-2], part[-2]\n        num = int(num)\n        if unit == 'h':\n            h = num * 3600\n        elif unit == 'm':\n            m = num * 60\n        elif unit == 's':\n            s = num\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    \"\"\"Convert seconds to a human-readable duration string.\"\"\"\n    if n == 0:\n        return '0s'\n    hours, remainder = divmod(n, 3600)\n    minutes, seconds = divmod(remainder, 60)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return ' '.join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "member2/member2_2.py",
+    "import re\n\ndef to_seconds(s):\n    \"\"\"Convert a duration string to seconds.\"\"\"\n    h = m = s = 0\n    for part in s.split():\n        num, unit = part[:-2], part[-2]\n        num = int(num)\n        if unit == 'h':\n            h = num * 3600\n        elif unit == 'm':\n            m = num * 60\n        elif unit == 's':\n            s = num\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    \"\"\"Convert seconds to a human-readable duration string.\"\"\"\n    if n == 0:\n        return '0s'\n    hours, remainder = divmod(n, 3600)\n    minutes, seconds = divmod(remainder, 60)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return ' '.join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "member2/member2_3.py",
+    "import re\n\ndef to_seconds(s):\n    \"\"\"Convert a duration string to seconds.\"\"\"\n    h = m = s = 0\n    for part in s.split():\n        if 'h' in part:\n            h = int(part[:2-2]) * 3600\n        elif 'm' in part:\n            m = int(part[:2-2]) * 60\n        elif 's' in part:\n            s = int(part[:2-2])\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    \"\"\"Convert seconds to a human-readable duration string.\"\"\"\n    if n == 0:\n        return '0s'\n    hours, remainder = divmod(n, 3600)\n    minutes, seconds = divmod(remainder, 60)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return ' '.join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "member3/member3_1.py",
+    "import durations\n\nprint(durations.to_seconds('19h19m37s'))\nprint(durations.to_text(0))"
+   ],
+   [
+    "member3/member3_2.py",
+    "import datetime\n\ndef to_seconds(s):\n    h, m, s = 0, 0, 0\n    for part in s.split():\n        if part.endswith('h'):\n            h = int(part[:-1])\n        elif part.endswith('m'):\n            m = int(part[:-1])\n        elif part.endswith('s'):\n            s = int(part[:-1])\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    if n == 0:\n        return '0s'\n    hours, minutes, seconds = divmod(n, 3600)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "member3/member3_3.py",
+    "import datetime\n\ndef to_seconds(s):\n    h, m, s = 0, 0, 0\n    for part in s.split():\n        if part.endswith('h'):\n            h = int(part[:-1])\n        elif part.endswith('m'):\n            m = int(part[:-1])\n        elif part.endswith('s'):\n            s = int(part[:-1])\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    if n == 0:\n        return '0s'\n    hours, minutes, seconds = divmod(n, 3600)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "member3/member3_4.py",
+    "import datetime\n\ndef to_seconds(s):\n    h, m, s = 0, 0, 0\n    for part in s.split():\n        if part.endswith('h'):\n            h = int(part[:-1])\n        elif part.endswith('m'):\n            m = int(part[:-1])\n        elif part.endswith('s'):\n            s = int(part[:-1])\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    if n == 0:\n        return '0s'\n    hours, minutes, seconds = divmod(n, 3600)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "work/member1_1.py",
+    "import re\n\ndef to_seconds(s):\n    \"\"\"Convert a duration string to seconds.\"\"\"\n    h = m = s = 0\n    for part in re.findall(r'(\\d+)([hms])', s):\n        num, unit = part\n        num = int(num)\n        if unit == 'h':\n            h += num\n        elif unit == 'm':\n            m += num\n        elif unit == 's':\n            s += num\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    \"\"\"Convert seconds to a human-readable duration string.\"\"\"\n    if n == 0:\n        return '0s'\n    hours = n // 3600\n    minutes = (n % 3600) // 60\n    seconds = n % 60\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "work/member1_2.py",
+    "import re\n\ndef to_seconds(s):\n    \"\"\"Convert a duration string to seconds.\"\"\"\n    h = m = s = 0\n    for part in re.findall(r'(\\d+)([hms])', s):\n        num, unit = part\n        num = int(num)\n        if unit == 'h':\n            h += num\n        elif unit == 'm':\n            m += num\n        elif unit == 's':\n            s += num\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    \"\"\"Convert seconds to a human-readable duration string.\"\"\"\n    if n == 0:\n        return '0s'\n    hours = n // 3600\n    minutes = (n % 3600) // 60\n    seconds = n % 60\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ],
+   [
+    "work/member1_3.py",
+    "import re\n\ndef to_seconds(s):\n    \"\"\"Convert a duration string to seconds.\"\"\"\n    h = m = s = 0\n    for part in re.findall(r'(\\d+)([hms])', s):\n        num, unit = part\n        num = int(num)\n        if unit == 'h':\n            h += num\n        elif unit == 'm':\n            m += num\n        elif unit == 's':\n            s += num\n    return h * 3600 + m * 60 + s\n\ndef to_text(n):\n    \"\"\"Convert seconds to a human-readable duration string.\"\"\"\n    if n == 0:\n        return '0s'\n    hours = n // 3600\n    minutes = (n % 3600) // 60\n    seconds = n % 60\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('19h19m37s'))\nprint(to_text(0))"
+   ]
+  ]
+ },
+ {
+  "generation": "g50",
+  "id": "h20000502_01",
+  "artifact": 14527107867,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "c10241964ff6b9d19de2ac3b6d4e0c9e9f039b433f4fb3059d0d56312cbce022"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000502_02",
+  "artifact": 14527107867,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "ea3f06470d99379254d6887f95bded6ef3f29628d957d92a4bd02306154e5bb3"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000502_03",
+  "artifact": 14527107867,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "19b53e3073b6183f151f1aa6b7523b48a98c7e66def92b1a248c0d8522c47693"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000503_00",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "94e514e2b4272017e23ff220a33ef4fdbc60909d07e26f399f57a7a8d558f1fc"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000503_01",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "be1ba7638d9ca81b46e869811788fd74a00d3eb056fe5710056e18b930efd44e"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000503_02",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "b59aed681b69bf87368378a2e28e315b954997368a01ef861b882b5f9078334d"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000503_03",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a5d57b3b0029226e19a330d439ec8ba5b5e5fcc548bb5d8fe669031edc4b755c"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000503_00",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "dcf0dc1ed9bb9cbffa353b3b4e36536af54cf10d5bf35e69f74623602a73e5b2"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000503_01",
+  "artifact": 14526852708,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "8b21f5c7ef7c8cb1d24fd45cc39d24663c9071ad1f6df6c44293e87751c00d3b"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000503_02",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "b88ce5eb58ce9edc30ab57912942c8eac9ce27ef8f62d6e185d6698b177b0940"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000503_03",
+  "artifact": 14526852708,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "81c4bc216b1b7103a645f40884cce2bb71290143fadeceac314457489652c27a"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000504_00",
+  "artifact": 14527693537,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d92bc6eca4f773131169a7857ed6d5ff47f8be42d13f1bc7ea112369e2b2bc78"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000504_01",
+  "artifact": 14527693537,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2c7c6ee9b27a95fe9243a46165536e162dbc5513088d94d1ac383619eade7d64"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000504_02",
+  "artifact": 14527693537,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8d5defc3af29fc8118400d7ae14b83b8500234b527df5b9cdcfd487e330b0941"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000504_03",
+  "artifact": 14527693537,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "9140740d92433a1f03a6b1b908cd7b3fa78aa7af193d1a77f8e67e967e18a9bd"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000504_00",
+  "artifact": 14527693537,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "960de6377cbe9313bded2fd9841295af425df80925770b9a7da6e5e4dc6a6a2e"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000504_01",
+  "artifact": 14527693537,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "9ee5cbbc2f90d9ad1a1dd880bd15fa8fd67b75d2a463d3204cdc38d6f475ce4c"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000504_02",
+  "artifact": 14527693537,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "a3a68cd5629113794f184e4cc3c0ff263007c7304bab17ae332bed05adb082f1"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000504_03",
+  "artifact": 14527693537,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "0f39a68a24faed4a06844bdab6abc067ae9a854b9e616f5dad619d1cb0477e78"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000505_00",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "be59c828b4d0065c2b9e881da9111545ece8089fc91892d563c25eb37cab501c"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000505_01",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e6307d3b241de4cf6027113494e5367e308e4076c1695391a5ef97fc205b489e"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000505_02",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "17b0e83a8cfbaaeb24ee88e0824140a652beb2a441f0605a4a11524df84cf9fa"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000505_03",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "ec891caa674c53a401302c282f50283ef207c706a7d883d3ab24c16dd03fef2d"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000505_00",
+  "artifact": 14526853022,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "634da8b10156ec5d41c7a6eee98204bedfa7d00ba645dbc2e10e99e173bd5664"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000505_01",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "b95744d06d89aa64dd6868f7031d22943d39f25dc6235a65598fccaa75f4561f"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000505_02",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "368fce09c818705c4af6853bab982a4d260d6b65a1b39a399ed26976a92fa27d"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000505_03",
+  "artifact": 14526853022,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a5f43d7b199926b423dd1b4d4f65efbfaed4ea36d8e05dadb82367690dfc2098"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000506_00",
+  "artifact": 14529936755,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "c83021cebf7e09256afce69a1761e441140ab4226fe9f469371e9eb8ff221219"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000506_01",
+  "artifact": 14529936755,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8c5c84a9b15f301dce0471831c16727d0eb005695e63af769d114aa06d88b5b3"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000506_02",
+  "artifact": 14529936755,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "3aea087e5dc4fe881dfd3477387e35176ae18700652a2643c9af81c7377bb1c8"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000506_03",
+  "artifact": 14529936755,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "1534c0daab64d76ffa77baf4866ce4b95c48f240b277a259b3ae63bcb451f4ca"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000506_00",
+  "artifact": 14529936755,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6c9ec7fe701a0acb3d2bfa0bd4af5c0ff4cd38dced757e8ac758288732aaf6a9"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000506_01",
+  "artifact": 14529936755,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "7adeb90e5888b7c5e9bf5a71fb06733329c09c0cf9cc391597a1fd9d16842797"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000506_02",
+  "artifact": 14529936755,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "3b97881c0c1d6d2c44709bfb620d7731892a6110b8df1101efdaac32fa7b8b8d"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000506_03",
+  "artifact": 14529936755,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "20aefc7d9d10d5a887221bdb8c49ea1d29c72afa185d1de834e238674f090120"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000507_00",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "72411aae777df4ce5ca690ebc155acaf2e84aea034b8ead7111fd448b233424b"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000507_01",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d682e756115a1658f8d1fdf0b7a8c11ffd44da39e4f0de7b92005a542b489084"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000507_02",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "215167dd0586a68ced7716e05c9bbab7424b4cd978116f6534e48a0cf4a607a7"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000507_03",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "02653f21cd6cdcbba3345a67dbef720fbca36a05aa62fab4ad06b9be4c81c1ed"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000507_00",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e0099721e836cb1e8f557560346b6162c6162263b6994adc4ae62f095f7feaf4"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000507_01",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "691de0037b1c0310fbd2c301bec6722fab4df39a79b5791a0042be420068ce50"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000507_02",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "949942e3563419633c6aa2cef9d9e029e504cb929aca0b9d854152f7db0aa21a"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000507_03",
+  "artifact": 14524604729,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "ed5a354c582428870328def6a00a407c816bdd676888e892fedb1a704ce6f7bf"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000508_00",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "ee240b6006d2cd3b9c15f5ef6b0a41b26d328f0522d0c06850b2335248b46070"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000508_01",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "b84ac953f461a3a043071cdeee901ed27416935c3438b02efda23257fa7a39a9"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000508_02",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "32fc5dec6c7212d81ebc6c338ccee25ec6a250544ce33091b463ebcbd52a955e"
+ },
+ {
+  "generation": "g50",
+  "id": "e20000508_03",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "ed113b13ffaab73218810df726cce8cd6368445231ffc3457cce1714215db979"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000508_00",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e1ad007e29b63135760bf6dc6714150ee7c93e4d388ab83bb1b6f54c1cfe6c6d"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000508_01",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "b002ac5116cc92c6fcbef85ec15b1482b6d7ba6d6a715e93669f502bb3d0ae82"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000508_02",
+  "artifact": 14527600012,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "a48a846c9992ddc8ec0c77b8e935e807ab7fb0684b9f87e09b4f5f12be5beea0"
+ },
+ {
+  "generation": "g50",
+  "id": "h20000508_03",
+  "artifact": 14527600012,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8ef425782edde79969c9757a428d00f52568474d4e2bfd5ef26f8ff9cbf94813"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000511_00",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d572e24f0679a20ecd2cc07b0ca256d746a511bb215eaa23acbd5ca6465bb8e1"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000511_01",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "08e929870a005993f571b4dee89248d5cb4b9b52086f18e439ee1e3ec0ee2b2c"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000511_02",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a2ddadffdf33fe81d34df449cf759816596904ca41f5209f934057e76adea6b8"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000511_03",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "32fc5dec6c7212d81ebc6c338ccee25ec6a250544ce33091b463ebcbd52a955e"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000511_00",
+  "artifact": 14558334576,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "d5068c1efdc99ac1acd9033c418c411b141dc31b8cea7a7022acdab675aa5b72"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000511_01",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d18d2352e2bd34c2911b3b4d1434687752114707183b1315f0fc3a6b651089cf"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000511_02",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "83d8bfa3140a05b83d8d000c7489b1ae333b45acef337b12d706ae3be0dd19d7"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000511_03",
+  "artifact": 14558334576,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a8a03dc784feece0f466901703c849b0b0eb626aff8e6ba430d960230ddc3c51"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000512_00",
+  "artifact": 14565935073,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "53fcd73ff0a2d8c77e5e4652af79239adbc6e666ca2a6e845e12a5f307836566"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000512_01",
+  "artifact": 14565935073,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6c8b4c957aeb618f4aee7b5f2c41cda716b0da88d7692fa5a059cee918ad8b3b"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000512_02",
+  "artifact": 14565935073,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "9968dece6f10fb8dbf8ed308eeab3631617473b34436c11197c66da6776f35bd"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000512_03",
+  "artifact": 14565935073,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d886d2ed3d520c6558c22d9cdc7e43162593d609c99cbc16df3e02f785b6d38c"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000512_00",
+  "artifact": 14565935073,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "2ed89a1b4046faff2d016f2ad355f70b9101aab6fb87d8042269312e24f16149"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000512_01",
+  "artifact": 14565935073,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "3241974fd562294992360fb643589b6d0b6f796080921934b27f7457489beed8"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000512_02",
+  "artifact": 14565935073,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "fcc82e499ac4817bd8ba7f7560aaae841a4d34f8ce7a5fe9f3fd86d1e9a2b91a"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000512_03",
+  "artifact": 14565935073,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "4d1a5482c8b50018424eeb25f0c3cb54b5c7577eccf79a857a19af8af77564be"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000513_00",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "14396391b2e3c7b635f2b474caa1befa662a2d288a7ed89307cac4e3b63e9ec8"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000513_01",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "01cf9748295c6adafaea99c962382845f8455bc515ea370fac88946311aeb221"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000513_02",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "64adaf04d793953be2f8767aeba357b1a62d89094c6230c1af9fbe8514feb531"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000513_03",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2e3a836ffb87af4b076002b89f4741e5406ec191597881e44c64250b72790039"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000513_00",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "5a038d50913fff0179dee5ba2ccebf85b36be8418a7a52ee2dda850d9bb1fa7c"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000513_01",
+  "artifact": 14561600015,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "33fdde8b84e771c8bc884a9e5479ad46c3c5070bb4e346efe30d6c0be2328f24"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000513_02",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "878c5288e918848916caa09f60f2a9c21e555c89a9c67a1f174c2d3d790fc2f3"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000513_03",
+  "artifact": 14561600015,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6e878a407c68faf6c03cd6abaf1c4be47580f4de1ef889c710ed370e4ba49cf6"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000514_00",
+  "artifact": 14559971065,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "eaadc47ef481d62106c76ef5fbdee867bb39abc8be4d3cb63479f4ac02a07922"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000514_01",
+  "artifact": 14559971065,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2a140f68c0a47d1ebdac9b2f43b91be4f3c2820534aba24f0292566f42d86344"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000514_02",
+  "artifact": 14559971065,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6b955fc0d37ad1f18fc96221715bcdf0b2f2286e54216c71dda904392900c727"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000514_03",
+  "artifact": 14559971065,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d3f69dca0fa101bd6210dcb2ed5694919e5daca931f5b029c408491c141c42b3"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000514_00",
+  "artifact": 14559971065,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "44adc147da880aec5d35e9e48550493f0dcee0db455f5d6576cbd4e1fdcfb5a9"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000514_01",
+  "artifact": 14559971065,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d69831a59dd6b028cfaa61de3a48e11d6714c0cbacdc653e3b7d9f7faefd4869"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000514_02",
+  "artifact": 14559971065,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "92232cf1bb1210e6eac00e436bd1230097d227cb955f1cccb078f05fdab2660f"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000514_03",
+  "artifact": 14559971065,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "f513721c3f55c13340bb37c119fd0b07ad8e2327795618dcb85d18b5225a0c63"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000515_00",
+  "artifact": 14562071422,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "0f7d4cf0e09373ebcb43048531939284dc0a3fda363fe0f7cd4d48d7e7e9be4f"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000515_01",
+  "artifact": 14562071422,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "c83021cebf7e09256afce69a1761e441140ab4226fe9f469371e9eb8ff221219"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000515_02",
+  "artifact": 14562071422,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "82b01ee5a9ba9b6e0182faaa0d1951c13d3490f67f5c6e61f11e31efa161c8be"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000515_03",
+  "artifact": 14562071422,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "74c2851e108f4fc49950eb9e56974ea46ea9e1b4bb22697305cc93d7ade3f3f6"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000515_00",
+  "artifact": 14562071422,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "3e2a46640331796d35588a69dabbe549a4c6319e03cc206b2d703d748cbe48e2"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000515_01",
+  "artifact": 14562071422,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "ae7e554a0cc03058a95602c3c69ccf6c917f73dfc37185206f0b6ec8d7ec9537"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000515_02",
+  "artifact": 14562071422,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "950bf0e5e024a3e88e9b2581ba08522b4089a663a88fba1b7cea9ce6e7f1f789"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000515_03",
+  "artifact": 14562071422,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "b663611bc6157ee1c2d2d48494a07366aeadd7daf7e9071d848c13062797064a"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000516_00",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "0bbd0944a627d8d46da8559bc765730159ab9d6de03325a5a12cf1ee278e0422"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000516_01",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "6ea8532945fd27ddf73ce4a921d7f687a2cb7c6b6626d47a20fbacfedecb651c"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000516_02",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "aa4eb8438f2d9e0eee7875c09e05ce0d9a85dd382c2f4eb1e06357cf6e9a5740"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000516_03",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "b84ac953f461a3a043071cdeee901ed27416935c3438b02efda23257fa7a39a9"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000516_00",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "89f8f1c01a41fbb5a53b17f970afc7fd6212245647a4558952c71450551f9fcf"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000516_01",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "c383e9239bae555e587625de7ae8283377e4e262231051882388b35ee2eb3e01"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000516_02",
+  "artifact": 14558479121,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "23caba7238766d1e8301780de153484014bd0480c9bfbf3bc351de07843a8762"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000516_03",
+  "artifact": 14558479121,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "3847ae06a743d1147fe6219be8226ec495e757510f2d4f98daf231147188cc4d"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000517_00",
+  "artifact": 14561305990,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "57bcddbd5ee75b3d96aa144a006837190ffe26a62462ca4db7725b97e1b09553"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000517_01",
+  "artifact": 14561305990,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "332d6a7a6f36f5140e35b84634c02231810daabfacac33cf9dc73d553f308536"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000517_02",
+  "artifact": 14561305990,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2b4163eb9a3d6fc1cc6065531857e43792c05ede890819dd06fdea06d1df5c87"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000517_03",
+  "artifact": 14561305990,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8f795d323e370350c9a2192ee0bed94b740f7f28223807510b7f4f060cdf684c"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000517_00",
+  "artifact": 14561305990,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "ef32ca56eeaf5cbd8d62cc38188206db855ce566d512772cf00363c1c864e45b"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000517_01",
+  "artifact": 14561305990,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e0099721e836cb1e8f557560346b6162c6162263b6994adc4ae62f095f7feaf4"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000517_02",
+  "artifact": 14561305990,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "d7d8be6c57e29de4cfc266eca225490881b8584139ae676a5549cb7cc69dc5f4"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000517_03",
+  "artifact": 14561305990,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "09bd3cf08d09bf357e659919e5f34655e77cdc7d16cd9c7fa822113b04d48c07"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000518_00",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "08916898490dcede4ae1c6544528b815773db3d08b1791e8ad10a3d9452cdf76"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000518_01",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "aa863ae2ef10c0db06819e4d018b56901040890ae556d6087fb21f7841e125c1"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000518_02",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "9968dece6f10fb8dbf8ed308eeab3631617473b34436c11197c66da6776f35bd"
+ },
+ {
+  "generation": "g51",
+  "id": "e20000518_03",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "04a114821464e10450fdb2cccf0f62683c99bc639702db6ea246d177c80f4fd4"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000518_00",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "c506a181183380b33bf16020907512aca142d881c7f4acfad4a28d19a8f90126"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000518_01",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2695d6ad26e232fe38bca8b6943f882f17edf5ed481cce924742dce922df7dc7"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000518_02",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a73d632573cb4ebdc0f1afef851687126783045be634afacb1937c2d9d0da3ff"
+ },
+ {
+  "generation": "g51",
+  "id": "h20000518_03",
+  "artifact": 14558663276,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e3272859686a734213fc3e6da18f134a253b7253fafd6f7fcb7cd67bb651028e"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000521_00",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2f88a1c0116942facc3176b2fef46cf0b277e75e80134af998acf7b971fd0427"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000521_01",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "0f68fc79bcc6c17873c7aeb313282ec7881d68ab17565dc90108231034476682"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000521_02",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d7cb5abb4960be0a33fd9cbed6192e0588a4765f12c8ff568b60a828904e82aa"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000521_03",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "28734c026e77e9eb5a07b20a62c873477177b0e62cd12e09339050e30aad511f"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000521_00",
+  "artifact": 14586024327,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "5ca4c8e33f76f0e32f89dd5f524c000dab5dda73467e243f7080dd56c1e39895"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000521_01",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "1eec7a9e103a20e4f1fad2654268811dda6af4b57db08cbc2912272779be1e18"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000521_02",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "aea2dc7887e856a97148cab0893ac40e197c03539f1191c7a92c600aff22ab81"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000521_03",
+  "artifact": 14586024327,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "393b55756426273c5da9f4e0c0b9b9c4b6bd86eb7d9adb62d48bfe9f5a76f628"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000522_00",
+  "artifact": 14589722822,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "fa0b113f79269a26a73c690128a463466fff06eeec766dfebfadbdb9542cc85e"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000522_01",
+  "artifact": 14589722822,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "f16e0152ad724afd68dad34981872e968a022245f60dba7c2762d289e00986b2"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000522_02",
+  "artifact": 14589722822,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "72bb4320ca26c5ff00a82121092f15aaefb669f4406b44ca7edfa75cc77c5a70"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000522_03",
+  "artifact": 14589722822,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "1473b3919213541b86e1cd9b7a23ce7151362dc3c24f0fb58d78f9fa0e254276"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000522_00",
+  "artifact": 14589722822,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "0d331a3afa28ae4308df3484814fb1b6d5f0f79d062adc2754ec96e4f005c7de"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000522_01",
+  "artifact": 14589722822,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "5aac12ba53ab5ff88f8b887f3ef1e35b94011d425fa05efe582f73df0a08c38b"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000522_02",
+  "artifact": 14589722822,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "091f6ff9a32d8a74eba3041947a35105fa4b7a7e2084560bae675ac6688bf241"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000522_03",
+  "artifact": 14589722822,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "161fd12e04c1828091e3fc285ae07d1e98287263cab1eb808da8a027571ba8ec"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000523_00",
+  "artifact": 14587903855,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "3e860e9a8af081ccc3a2932d0cf12a9ee00c005262d16ef3c0f82db7251c3ce0"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000523_01",
+  "artifact": 14587903855,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "532dfa7dc952989cf27beb654596249e27bbd7273ec6997904df2c285ac8cece"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000523_02",
+  "artifact": 14587903855,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "46e2795daedc88c4f3a6c103973a8d743926bfcb811292983422a5d544c3ebee"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000523_03",
+  "artifact": 14587903855,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "cc85daf10b11ad06ded3a71448bbbc8be46734147e827198177f67ee78f9c9cd"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000523_00",
+  "artifact": 14587903855,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "299ce0aa1158a6e2731d6e93237c471a7d7dfc37086edf87010290378887a883"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000523_01",
+  "artifact": 14587903855,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "68a87cc9cbd987510b64aa44144b907c03d343b6dc4ebb4f942cb8cd4610a98f"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000523_02",
+  "artifact": 14587903855,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "9637961b5e4363683b1272da268f8353f9b293f9d3995a5d9ecf66574ab886c2"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000523_03",
+  "artifact": 14587903855,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "ea52ea811d949ad5fab33c312750d2f2edc2250072f8c11c5ff32abb9cb4a258",
+  "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('10h3m48s') and of to_text(3600).",
+  "programs": [
+   [
+    "member2/member2_1.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ],
+   [
+    "member2/member2_2.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ],
+   [
+    "member2/member2_3.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ],
+   [
+    "member3/member3_1.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ],
+   [
+    "member3/member3_2.py",
+    "def to_seconds(s):\n    import re\n    return sum(int(n) * {\"h\": 3600, \"m\": 60, \"s\": 1}.get(c, 1) for n, c in re.findall(r\"(\\d+)([hms])\", s))\n\n\ndef to_text(n):\n    if n == 0:\n        return \"0s\"\n    hours = n // 3600\n    minutes = (n % 3600) // 60\n    seconds = n % 60\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n\n# Test the functions\nassert to_seconds('1h30m15s') == 5415\nassert to_seconds('45m') == 2700\nprint(to_seconds('10h3m48s'))\n\nprint(to_text(3600))"
+   ],
+   [
+    "work/member1_1.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ],
+   [
+    "work/member1_2.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ],
+   [
+    "work/member1_3.py",
+    "import durations\n\nprint(durations.to_seconds('10h3m48s'))\nprint(durations.to_text(3600))"
+   ]
+  ]
+ },
+ {
+  "generation": "g52",
+  "id": "e20000524_00",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "fbc0786a674a166d6c88668f757d1aed9320d058656e90a6e01ac944ecda7d80"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000524_01",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e8fa5e3826bb45039b4705fd322ce625efac11610f3a58b37813f429381a2625"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000524_02",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "3aea087e5dc4fe881dfd3477387e35176ae18700652a2643c9af81c7377bb1c8"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000524_03",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "49429a2c0a28303f667a2c9cb632d2fd10bbdb2abfd0e19288682a38f32db95f"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000524_00",
+  "artifact": 14588532041,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "03bc08f21b494a42c88a4cd0769611bbc5f2468a82b7927a1e180d3037a705f4"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000524_01",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "96967081ad9fe63c5c9a89386deb3a013dc8daafaa6b408a67faf9b21530d481"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000524_02",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d86d363b36afbf335333f0342f6682589a0c93742fbdc05fb7ac81e2ae4b59a7"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000524_03",
+  "artifact": 14588532041,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "230655aeea53fb2b2faa435dd54470305050450f97a37faac109c1754951b4a1"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000525_00",
+  "artifact": 14587969948,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "9968dece6f10fb8dbf8ed308eeab3631617473b34436c11197c66da6776f35bd"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000525_01",
+  "artifact": 14587969948,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8da6d4345367dd17bababef83fd9d0f48f614faad6eae10eafa2ef2ae7916058"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000525_02",
+  "artifact": 14587969948,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "4165f79136a62aa7485af96bcaf036ea388501c3bc7a8905646f73e2a86aba8e"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000525_03",
+  "artifact": 14587969948,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "7b930ed894c5e7ea9cfc71290ee5ff9602a759b1c59696d0e2815fd8792ce792"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000525_00",
+  "artifact": 14587969948,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "837c9723eeb32aa6ceab77f0355215eccffc3afe63405dae3ddea96bd418b6ad"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000525_01",
+  "artifact": 14587969948,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "20ae768b5e0e62e5858c205240af3c191fef597ff1a6e01230e769ab66dd4914"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000525_02",
+  "artifact": 14587969948,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "4589738ed3f2f8e7acde96aa4dc70efe52845156833ea33890e332adf5f4d927"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000525_03",
+  "artifact": 14587969948,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "0a8757193e5700c00bc36a69061c3a6d4ee29efc9cf0572dbb03170a8788fd4f"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000526_00",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "e5c038be4bb5080488610b73a1416dbb9a5bf7ce1d6dbd2f90ce39324830301f"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000526_01",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8c97add8a679fce036259d8afcfe497487bfc413b6d6f14ff820e8a1b29dab96"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000526_02",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "60a8f6953155cc9f792d440aef76e2a6061bf29891d6e9191d259ae1286b6c4a"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000526_03",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "559708dfad46f132bbb6b9aa8312e32e7a6a096e5aeff40c5ecaa1ebc58d35a1"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000526_00",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a430c14e84ebcea8aa4684388d6eabe948acd851798c210143c88b8c275ef14b"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000526_01",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "d40a17ae6e777f1d71d9ef1fca9f32a57423a6397420e7dccaabcb703b916560"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000526_02",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "7bdbf8d491f2e2b0b7377d33cefbdba37ac746931e9d72450a0e4e9c3632984b"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000526_03",
+  "artifact": 14585664858,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "77039c0bafdc32d8ad8b242bf9f16bc0bd540dd2e14ac4cab484d5f0e1b1301c"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000527_00",
+  "artifact": 14587642648,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "18b63867539d84d52522d6180f2b067d804a1540d91d3835d89d15602bc40253"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000527_01",
+  "artifact": 14587642648,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "f747e110b196c6ad373f799c754f0b64340dfc9d63c31caef4b8393dc89967b2"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000527_02",
+  "artifact": 14587642648,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "a3852d1b262f64a70469388f7599ddc021ea049ef9c86f2d7df98f7444e23f07"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000527_03",
+  "artifact": 14587642648,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "1250d4e657355298acc8123e1813f2abe4669f69cfcb66134f2d7c7635244ea5"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000527_00",
+  "artifact": 14587642648,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "66063fe9ac7946b195ae9db9c31feba89b5bf12c64953b8d2d127b79b26b86ae"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000527_01",
+  "artifact": 14587642648,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "458500861179381c4e7d419036c2af415784483e231ce584bdddc67029c88771"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000527_02",
+  "artifact": 14587642648,
+  "original": false,
+  "original_declined": false,
+  "task_sha256": "bc44bd071d573c091f4ac120ea46bec8e920364b04b3fc31e52c343aedfde85a"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000527_03",
+  "artifact": 14587642648,
+  "original": false,
+  "original_declined": true,
+  "task_sha256": "017aa8f85351d6007835666c81ef1cc9b99408cbf7a5e482f3af84361046e712",
+  "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('20h4m28s') and of to_text(60).",
+  "programs": [
+   [
+    "member2/member2_1.py",
+    "import durations\n\nprint(durations.to_seconds('20h4m28s'))\nprint(durations.to_text(60))"
+   ],
+   [
+    "member2/member2_2.py",
+    "import durations\n\nprint(durations.to_seconds('20h4m28s'))\nprint(durations.to_text(60))"
+   ],
+   [
+    "member2/member2_3.py",
+    "import durations\n\nprint(durations.to_seconds('20h4m28s'))\nprint(durations.to_text(60))"
+   ],
+   [
+    "member3/member3_1.py",
+    "import durations\n\ndef to_seconds(s):\n    import re\n    return sum(int(n) * {\"h\": 3600, \"m\": 60, \"s\": 1}[u] for n, u in re.findall(r'(\\d+)([hms])', s))\n\ndef to_text(n):\n    if n == 0:\n        return \"0s\"\n    hours, remainder = divmod(n, 3600)\n    minutes, seconds = divmod(remainder, 60)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('20h4m28s'))\nprint(to_text(60))"
+   ],
+   [
+    "member3/member3_2.py",
+    "def to_seconds(s):\n    import re\n    return sum(int(n) * {\"h\": 3600, \"m\": 60, \"s\": 1}[u] for n, u in re.findall(r'(\\d+)([hms])', s))\n\ndef to_text(n):\n    if n == 0:\n        return \"0s\"\n    hours, remainder = divmod(n, 3600)\n    minutes, seconds = divmod(remainder, 60)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n\n# Test the functions\nprint(to_seconds('20h4m28s'))\nprint(to_text(60))"
+   ],
+   [
+    "work/member1_1.py",
+    "import durations\n\nprint(durations.to_seconds('20h4m28s'))\nprint(durations.to_text(60))"
+   ],
+   [
+    "work/member1_2.py",
+    "import durations\n\nprint(durations.to_seconds('20h4m28s'))\nprint(durations.to_text(60))"
+   ],
+   [
+    "work/member1_3.py",
+    "import durations\n\nprint(durations.to_seconds('20h4m28s'))\nprint(durations.to_text(60))"
+   ]
+  ]
+ },
+ {
+  "generation": "g52",
+  "id": "e20000528_00",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "2bf7856cfa2e3f96442ef860b42f9e6aae1d615f5a2fcaf1eb49f19aba804f38"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000528_01",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8e9fb2cf67771da30a1f006eab1e392a3a1403a67c5c86295f92c425d8d01a18"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000528_02",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "02653f21cd6cdcbba3345a67dbef720fbca36a05aa62fab4ad06b9be4c81c1ed"
+ },
+ {
+  "generation": "g52",
+  "id": "e20000528_03",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "215167dd0586a68ced7716e05c9bbab7424b4cd978116f6534e48a0cf4a607a7"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000528_00",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "0f77bc909803e6e2776a6cd2c3ac773ae2c90baeee9aca33b4a4205ab6726c92"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000528_01",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "1634c5337053a4b782ff4c3e020f7d55b40c655f10069bbf8d1a637486126313"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000528_02",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "8da6ca80b84a3a1c395f6f890e29ad9093bfb4c125420da3af9905c4da4fbce6"
+ },
+ {
+  "generation": "g52",
+  "id": "h20000528_03",
+  "artifact": 14587107489,
+  "original": true,
+  "original_declined": false,
+  "task_sha256": "9c124cc6a8a813242ae4933ceb81b77cd303a73586383b09deb2d8156858ef92"
+ }
+]
