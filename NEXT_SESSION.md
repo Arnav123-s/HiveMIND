@@ -5,26 +5,21 @@ Written 2026-11-19 23:05 UTC by D (session `session_014dX1CN76uUHTTTA9X1ZCHA`, b
 handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole story is in `docs/OVERVIEW.md`. Start with
 `python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
 
-## Where the hive stands (2026-11-19 23:05 UTC)
+## Where the hive stands (2026-11-20 17:15 UTC, D)
 
-- **Newest record: g51**, kept 50 against 49 of 64. **Two bars met for the first time:** hard kinds 0.79 (bar 0.78)
-  and talk 8.2 of 10 (bar 8). Not met: held out 0 (half), first try 0.45 (0.7; old kinds 0.72, new kinds 0.25),
-  hours 6.5 (3). g49 kept 49/64, g50 dropped (54 against 55).
-- **g52 dropped at a tie** (52 against 52, held out 1 against 2 of 30; talk 8.8). It ran main before PRs 112-120.
-- **g53 is running** (run 44649281647, started 00:52 UTC 20 Nov).
-- **g53 is the first with PRs 113-119:** g48's practice fixes, the three text kinds' rows, extra seats on a crash
-  (R1), and the general repairs for never-taught kinds (H1). Judge g53 against g51 on: new-kind first try (0.25),
-  held out on the fixed exam (3 of 30), hard (0.79), and the hours (extra seats cost about 0.4 calls a hard task;
-  PR 119 should take train 220 -> ~177 and the gate 100 -> ~61 minutes: about 4.8 h).
-- **PR 119 split the gate into 33 jobs** (16 fresh, 16 held, 1 talk). Untestable offline: check g53's gate jobs
-  expanded and its record ran. If the split broke the gate, revert its part B in grow.yml at once.
+- **Newest record: g55**, kept 52 against 51. **Met:** hard kinds 0.80, talk 8.5. **Close:** first try 0.65 (bar 0.7;
+  old kinds 0.97, new 0.47). **Far:** held out 1 of 29 on the fixed exam (0 of 10 kinds), hours 5.14 (bar 3).
+- **g56 is running** (started 16:44 UTC), the first with PR 127 (spec lessons: lessons show the detail members agree
+  wrong on; such kinds always taught). Judge it on hard kinds and agreed-wrong deliveries.
+- Merged 19-20 Nov by D: PRs 112-121, 125-127 (see the log). PR 122 (Codex atlas) judged, not merged: its one-kind
+  answer key would raise the score without the hive improving.
 
 ## In flight, and who has it
 
 | What | Where | What to do |
 |---|---|---|
-| g52's record | Actions run 44594712108 | Read it; group its failures by cause beside g48's (the script `g48_causes.py` was the model) |
-| D's scheduled wakes | 2026-11-20 01:45 UTC (g52), 05:45 UTC (g53's split gate) | D reads; a new loop holder takes these over |
+| g56's record | grow.yml run 56 | Read it; causes by a helper (scratchpad g53_causes.py is the model) |
+| D's scheduled wake | about 22:15 UTC 20 Nov | D reads g56; a new loop holder takes it over |
 
 ## Open, in order (the board in `docs/PLAN.md` has each row)
 
