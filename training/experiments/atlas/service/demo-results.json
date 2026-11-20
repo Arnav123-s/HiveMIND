@@ -1,0 +1,71 @@
+{
+  "program_sha256": "2dfd7f08ca2c8574604b879cba808c52e604c2c6fb358f1391cbb0e3f9cfaea4",
+  "affinity": [
+    4
+  ],
+  "sdk_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "model_generations": 0,
+  "cases": [
+    {
+      "question": "Which day of the week is 2024-02-29?",
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "thursday",
+        "unit": null,
+        "text": "Thursday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "exit": 0,
+      "process_cpu_s": 4.527343999999999,
+      "wall_s": 4.90221323500009
+    },
+    {
+      "question": "A bicycle costs 180 dollars and the price falls by 15%. What is the new price?",
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "153",
+        "unit": "dollars",
+        "text": "153.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "exit": 0,
+      "process_cpu_s": 4.587474,
+      "wall_s": 4.63601949599979
+    },
+    {
+      "question": "Calculate the depot shipping fee for 0.2 kg and 0.9 kg using per-parcel rounding",
+      "response": {
+        "status": "answered",
+        "route": "shipping",
+        "value": 520,
+        "unit": "cents",
+        "text": "520 cents",
+        "proof": {
+          "path": "side_exit",
+          "methods": [
+            "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+          ],
+          "fuel": 2045368958
+        }
+      },
+      "exit": 0,
+      "process_cpu_s": 22.424321,
+      "wall_s": 22.521500989999822
+    },
+    {
+      "question": "Can the depot deliver a bicycle before the weekend?",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "exit": 1,
+      "process_cpu_s": 4.184911000000003,
+      "wall_s": 4.192534894000346
+    }
+  ]
+}

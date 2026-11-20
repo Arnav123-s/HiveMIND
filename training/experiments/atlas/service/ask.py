@@ -8,7 +8,7 @@ import json
 import os
 
 from team import config, saved
-from training.experiments.atlas.pulse.one_checked import certificate
+from training.experiments.atlas.pulse.one_checked import current as certificate
 
 SAMPLE_BANK = config.ROOT / "training/reports/retained-skills/shipping/bank"
 UNSUPPORTED = "I could not match the whole question to a supported calculation."

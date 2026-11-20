@@ -23,3 +23,11 @@ python training/experiments/atlas/pulse/one_checked/evaluate.py
 # To regenerate recorded.json.gz from the eight original artifact ZIPs named <id>.zip:
 python training/experiments/atlas/pulse/one_checked/evaluate.py --rebuild --raw /tmp/hive-pulse-archives
 ```
+
+## Service controls added after the frozen study
+
+The original G49 certificate remains at its recorded hash. The current local service uses a standalone calculator which reads ISO dates and full English month names using Python's standard library. The calculator accepts a valid nine-digit dollar result from an eight-digit starting price, isolates decimal operations from caller settings, and abstains on exact temperature rounding ties when the prompt does not state a tie convention. For example, 32.09 °F converts to exactly 0.05 °C, which permits two one-decimal results under common conventions. The service answers 0.1 °C for 32.091 °F. [Current verifier](current.py) · [Focused controls](test_current.py)
+
+A separate Python-only check compared the new and frozen verifiers over 3,840 date and elapsed-day requests, including century leap-year rules, impossible dates and both supported spellings. Both verifiers matched Gregorian arithmetic. A post-change replay of the 64 recorded G49 prompts found zero changes to applicability, expected value or first-worker certification. The original study's scores and runtime measurements are preserved. [Original certificate](certificate.py) · [Original results](results.json)
+
+The service team measured the old and current CLI on the same CPU with three fixed questions and three rotated repetitions per version. All 18 fresh processes returned matching JSON for each question. Median CPU time fell from 4.805 s to 0.070 s, and median wall time from 4.870 s to 0.073 s. The machine's file cache was warm. This measures arithmetic startup after removing an unnecessary model-library import. [Matched service timings](../../service/cold-start.json)

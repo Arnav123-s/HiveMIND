@@ -40,6 +40,8 @@ def contract_cases():
 
 def extract(program):
     """Keep the two declarations and ordinary re imports, discarding the worker's driver."""
+    if not isinstance(program, str):
+        return None
     try:
         statements = ast.parse(program).body
     except (ValueError, SyntaxError):

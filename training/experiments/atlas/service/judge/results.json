@@ -1,0 +1,928 @@
+{
+  "service_sha256": "2dfd7f08ca2c8574604b879cba808c52e604c2c6fb358f1391cbb0e3f9cfaea4",
+  "sources": {
+    "training/experiments/atlas/service/ask.py": "2dfd7f08ca2c8574604b879cba808c52e604c2c6fb358f1391cbb0e3f9cfaea4",
+    "training/experiments/atlas/pulse/one_checked/certificate.py": "b9a526cef25260b2b567122f4f861138c1ce45f780cf06ca84390f511ee03157",
+    "training/experiments/atlas/traces/trace.py": "b6531e94e68e4d2e67e978b5511f2d123131355443f1dfa9604cc90dca91d219",
+    "team/saved.py": "c8647c984703be1f2fe9b025235508b5e56caa12db20e9e980113e788fcba98b",
+    "team/talk.py": "dee28bff237ae4f6a1e3ac57c7292ed550b878da5ed1f47f6fee7d6dd94dcd32"
+  },
+  "python": "3.12.14",
+  "cpus": [
+    0
+  ],
+  "sdk_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "bank_files": {
+    "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728.json": "fed80b50e1787c50b1b662eea417941301f7b3c056c806cc904b531e3c6a38a0"
+  },
+  "per_process_limit_seconds": 60,
+  "summary": {
+    "stock": {
+      "counts": {
+        "missed": 11,
+        "correct": 1,
+        "justified_abstention": 6
+      },
+      "routes": {
+        "stock_local": 17,
+        "depot_shipping_fee": 1
+      },
+      "seconds": 12.3612,
+      "user_seconds": 11.5178,
+      "system_seconds": 0.6808
+    },
+    "combined": {
+      "counts": {
+        "correct": 10,
+        "missed": 2,
+        "justified_abstention": 6
+      },
+      "routes": {
+        "weekday": 1,
+        "days": 1,
+        "gcd": 1,
+        "fahrenheit": 1,
+        "dollars": 1,
+        "shipping": 6,
+        "None": 7
+      },
+      "seconds": 122.2598,
+      "user_seconds": 108.9585,
+      "system_seconds": 11.0709
+    }
+  },
+  "records": [
+    {
+      "arm": "combined",
+      "id": "leap-appointment",
+      "key": {
+        "group": "calendar",
+        "value": "wednesday",
+        "unit": "weekday"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "weekday",
+        "value": "wednesday",
+        "unit": null,
+        "text": "Wednesday",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"weekday\", \"value\": \"wednesday\", \"unit\": null, \"text\": \"Wednesday\", \"proof\": \"whole-question arithmetic certificate\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 3.6487,
+      "user_seconds": 3.0023,
+      "system_seconds": 0.6441
+    },
+    {
+      "arm": "stock",
+      "id": "leap-appointment",
+      "key": {
+        "group": "calendar",
+        "value": "wednesday",
+        "unit": "weekday"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1159,
+      "user_seconds": 0.0944,
+      "system_seconds": 0.0207
+    },
+    {
+      "arm": "stock",
+      "id": "across-year",
+      "key": {
+        "group": "calendar",
+        "value": 6,
+        "unit": "days"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.162,
+      "user_seconds": 0.1363,
+      "system_seconds": 0.024
+    },
+    {
+      "arm": "combined",
+      "id": "across-year",
+      "key": {
+        "group": "calendar",
+        "value": 6,
+        "unit": "days"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "days",
+        "value": 6,
+        "unit": "days",
+        "text": "6 days",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"days\", \"value\": 6, \"unit\": \"days\", \"text\": \"6 days\", \"proof\": \"whole-question arithmetic certificate\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 3.9654,
+      "user_seconds": 3.4223,
+      "system_seconds": 0.5397
+    },
+    {
+      "arm": "combined",
+      "id": "shared-groups",
+      "key": {
+        "group": "arithmetic",
+        "value": 138,
+        "unit": "integer"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "gcd",
+        "value": 138,
+        "unit": null,
+        "text": "138",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"gcd\", \"value\": 138, \"unit\": null, \"text\": \"138\", \"proof\": \"whole-question arithmetic certificate\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 3.2646,
+      "user_seconds": 2.7103,
+      "system_seconds": 0.5314
+    },
+    {
+      "arm": "stock",
+      "id": "shared-groups",
+      "key": {
+        "group": "arithmetic",
+        "value": 138,
+        "unit": "integer"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1105,
+      "user_seconds": 0.1014,
+      "system_seconds": 0.008
+    },
+    {
+      "arm": "stock",
+      "id": "cold-morning",
+      "key": {
+        "group": "arithmetic",
+        "value": "18.5",
+        "unit": "fahrenheit"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1149,
+      "user_seconds": 0.0839,
+      "system_seconds": 0.0161
+    },
+    {
+      "arm": "combined",
+      "id": "cold-morning",
+      "key": {
+        "group": "arithmetic",
+        "value": "18.5",
+        "unit": "fahrenheit"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "fahrenheit",
+        "value": "18.5",
+        "unit": "fahrenheit",
+        "text": "18.5 °F",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"fahrenheit\", \"value\": \"18.5\", \"unit\": \"fahrenheit\", \"text\": \"18.5 °F\", \"proof\": \"whole-question arithmetic certificate\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 3.2602,
+      "user_seconds": 2.773,
+      "system_seconds": 0.467
+    },
+    {
+      "arm": "combined",
+      "id": "shop-discount",
+      "key": {
+        "group": "arithmetic",
+        "value": "21.00",
+        "unit": "dollars"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "dollars",
+        "value": "21",
+        "unit": "dollars",
+        "text": "21.00 dollars",
+        "proof": "whole-question arithmetic certificate"
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"dollars\", \"value\": \"21\", \"unit\": \"dollars\", \"text\": \"21.00 dollars\", \"proof\": \"whole-question arithmetic certificate\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 3.2868,
+      "user_seconds": 2.7656,
+      "system_seconds": 0.5067
+    },
+    {
+      "arm": "stock",
+      "id": "shop-discount",
+      "key": {
+        "group": "arithmetic",
+        "value": "21.00",
+        "unit": "dollars"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1064,
+      "user_seconds": 0.0809,
+      "system_seconds": 0.0244
+    },
+    {
+      "arm": "stock",
+      "id": "separate-parcels",
+      "key": {
+        "group": "shipping-kg",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1037,
+      "user_seconds": 0.0866,
+      "system_seconds": 0.0164
+    },
+    {
+      "arm": "combined",
+      "id": "separate-parcels",
+      "key": {
+        "group": "shipping-kg",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "shipping",
+        "value": 430,
+        "unit": "cents",
+        "text": "430 cents",
+        "proof": {
+          "path": "side_exit",
+          "methods": [
+            "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+          ],
+          "fuel": 2045368703
+        }
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"shipping\", \"value\": 430, \"unit\": \"cents\", \"text\": \"430 cents\", \"proof\": {\"path\": \"side_exit\", \"methods\": [\"6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728\"], \"fuel\": 2045368703}}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 13.4631,
+      "user_seconds": 12.3416,
+      "system_seconds": 1.0941
+    },
+    {
+      "arm": "combined",
+      "id": "three-parcels",
+      "key": {
+        "group": "shipping-kg",
+        "value": 790,
+        "unit": "cents"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "shipping",
+        "value": 790,
+        "unit": "cents",
+        "text": "790 cents",
+        "proof": {
+          "path": "side_exit",
+          "methods": [
+            "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+          ],
+          "fuel": 1022645780
+        }
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"shipping\", \"value\": 790, \"unit\": \"cents\", \"text\": \"790 cents\", \"proof\": {\"path\": \"side_exit\", \"methods\": [\"6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728\"], \"fuel\": 1022645780}}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 13.4283,
+      "user_seconds": 12.4952,
+      "system_seconds": 0.8825
+    },
+    {
+      "arm": "stock",
+      "id": "three-parcels",
+      "key": {
+        "group": "shipping-kg",
+        "value": 790,
+        "unit": "cents"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1073,
+      "user_seconds": 0.0898,
+      "system_seconds": 0.0164
+    },
+    {
+      "arm": "stock",
+      "id": "single-parcel",
+      "key": {
+        "group": "shipping-kg",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1053,
+      "user_seconds": 0.0929,
+      "system_seconds": 0.0114
+    },
+    {
+      "arm": "combined",
+      "id": "single-parcel",
+      "key": {
+        "group": "shipping-kg",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "shipping",
+        "value": 430,
+        "unit": "cents",
+        "text": "430 cents",
+        "proof": {
+          "path": "side_exit",
+          "methods": [
+            "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+          ],
+          "fuel": 1022634047
+        }
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"shipping\", \"value\": 430, \"unit\": \"cents\", \"text\": \"430 cents\", \"proof\": {\"path\": \"side_exit\", \"methods\": [\"6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728\"], \"fuel\": 1022634047}}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 12.9673,
+      "user_seconds": 12.0321,
+      "system_seconds": 0.8942
+    },
+    {
+      "arm": "combined",
+      "id": "boundary-plus",
+      "key": {
+        "group": "shipping-kg",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "shipping",
+        "value": 430,
+        "unit": "cents",
+        "text": "430 cents",
+        "proof": {
+          "path": "side_exit",
+          "methods": [
+            "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+          ],
+          "fuel": 2045368692
+        }
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"shipping\", \"value\": 430, \"unit\": \"cents\", \"text\": \"430 cents\", \"proof\": {\"path\": \"side_exit\", \"methods\": [\"6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728\"], \"fuel\": 2045368692}}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 13.8224,
+      "user_seconds": 12.7677,
+      "system_seconds": 0.908
+    },
+    {
+      "arm": "stock",
+      "id": "boundary-plus",
+      "key": {
+        "group": "shipping-kg",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1627,
+      "user_seconds": 0.1353,
+      "system_seconds": 0.0146
+    },
+    {
+      "arm": "stock",
+      "id": "gram-compatibility",
+      "key": {
+        "group": "shipping-grams",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "value": 430,
+        "unit": "cents",
+        "route": "depot_shipping_fee",
+        "text": "430\n\nWorked out by the saved method depot_shipping_fee (6f939fee17b1, passed 12 independent checks), on {\"grams\": [187, 476]}, with no model call. I selected per-parcel rounding. On {\"grams\": [1, 1]}, it gives 430 cents."
+      },
+      "stdout": "{\"status\": \"answered\", \"value\": 430, \"unit\": \"cents\", \"route\": \"depot_shipping_fee\", \"text\": \"430\\n\\nWorked out by the saved method depot_shipping_fee (6f939fee17b1, passed 12 independent checks), on {\\\"grams\\\": [187, 476]}, with no model call. I selected per-parcel rounding. On {\\\"grams\\\": [1, 1]}, it gives 430 cents.\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 10.3842,
+      "user_seconds": 9.8698,
+      "system_seconds": 0.409
+    },
+    {
+      "arm": "combined",
+      "id": "gram-compatibility",
+      "key": {
+        "group": "shipping-grams",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "correct",
+      "response": {
+        "status": "answered",
+        "route": "shipping",
+        "value": 430,
+        "unit": "cents",
+        "text": "430 cents",
+        "proof": {
+          "path": "stock",
+          "methods": [
+            "6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728"
+          ],
+          "fuel": 2045368958
+        }
+      },
+      "stdout": "{\"status\": \"answered\", \"route\": \"shipping\", \"value\": 430, \"unit\": \"cents\", \"text\": \"430 cents\", \"proof\": {\"path\": \"stock\", \"methods\": [\"6f939fee17b1220ba92969d5486b303617a59be8cc71926468646757a0a34728\"], \"fuel\": 2045368958}}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 13.6162,
+      "user_seconds": 12.6043,
+      "system_seconds": 0.9569
+    },
+    {
+      "arm": "combined",
+      "id": "date-in-conversation",
+      "key": {
+        "group": "paraphrase",
+        "value": "monday",
+        "unit": "weekday"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 3.2815,
+      "user_seconds": 2.8371,
+      "system_seconds": 0.4338
+    },
+    {
+      "arm": "stock",
+      "id": "date-in-conversation",
+      "key": {
+        "group": "paraphrase",
+        "value": "monday",
+        "unit": "weekday"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1065,
+      "user_seconds": 0.0846,
+      "system_seconds": 0.0198
+    },
+    {
+      "arm": "stock",
+      "id": "mailroom-note",
+      "key": {
+        "group": "paraphrase",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1053,
+      "user_seconds": 0.0922,
+      "system_seconds": 0.0111
+    },
+    {
+      "arm": "combined",
+      "id": "mailroom-note",
+      "key": {
+        "group": "paraphrase",
+        "value": 430,
+        "unit": "cents"
+      },
+      "verdict": "missed",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 3.5329,
+      "user_seconds": 2.7832,
+      "system_seconds": 0.377
+    },
+    {
+      "arm": "combined",
+      "id": "leap-error",
+      "key": {
+        "group": "invalid-date",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 3.1127,
+      "user_seconds": 2.6844,
+      "system_seconds": 0.4178
+    },
+    {
+      "arm": "stock",
+      "id": "leap-error",
+      "key": {
+        "group": "invalid-date",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1062,
+      "user_seconds": 0.0871,
+      "system_seconds": 0.0169
+    },
+    {
+      "arm": "stock",
+      "id": "city-date-order",
+      "key": {
+        "group": "ambiguous-date",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1005,
+      "user_seconds": 0.0948,
+      "system_seconds": 0.0038
+    },
+    {
+      "arm": "combined",
+      "id": "city-date-order",
+      "key": {
+        "group": "ambiguous-date",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 3.2282,
+      "user_seconds": 2.8169,
+      "system_seconds": 0.3818
+    },
+    {
+      "arm": "combined",
+      "id": "mismatched-units",
+      "key": {
+        "group": "incompatible-units",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 3.1289,
+      "user_seconds": 2.7554,
+      "system_seconds": 0.3657
+    },
+    {
+      "arm": "stock",
+      "id": "mismatched-units",
+      "key": {
+        "group": "incompatible-units",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1449,
+      "user_seconds": 0.1299,
+      "system_seconds": 0.0081
+    },
+    {
+      "arm": "stock",
+      "id": "box-not-weighed",
+      "key": {
+        "group": "insufficient-weight",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1076,
+      "user_seconds": 0.0853,
+      "system_seconds": 0.0196
+    },
+    {
+      "arm": "combined",
+      "id": "box-not-weighed",
+      "key": {
+        "group": "insufficient-weight",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 4.4199,
+      "user_seconds": 3.3262,
+      "system_seconds": 0.5551
+    },
+    {
+      "arm": "combined",
+      "id": "missing-tariff",
+      "key": {
+        "group": "unavailable-policy",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "missing",
+        "route": "shipping",
+        "value": null,
+        "unit": null,
+        "text": "No saved version passed the checks for pooled rounding."
+      },
+      "stdout": "{\"status\": \"missing\", \"route\": \"shipping\", \"value\": null, \"unit\": null, \"text\": \"No saved version passed the checks for pooled rounding.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 13.5762,
+      "user_seconds": 12.0622,
+      "system_seconds": 0.6906
+    },
+    {
+      "arm": "stock",
+      "id": "missing-tariff",
+      "key": {
+        "group": "unavailable-policy",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.115,
+      "user_seconds": 0.0846,
+      "system_seconds": 0.0284
+    },
+    {
+      "arm": "stock",
+      "id": "partial-result",
+      "key": {
+        "group": "additional-deliverable",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "abstained",
+        "value": null,
+        "unit": null,
+        "route": "stock_local"
+      },
+      "stdout": "{\"status\": \"abstained\", \"value\": null, \"unit\": null, \"route\": \"stock_local\"}",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 0.1023,
+      "user_seconds": 0.088,
+      "system_seconds": 0.0121
+    },
+    {
+      "arm": "combined",
+      "id": "partial-result",
+      "key": {
+        "group": "additional-deliverable",
+        "value": null,
+        "unit": null
+      },
+      "verdict": "justified_abstention",
+      "response": {
+        "status": "unsupported",
+        "route": null,
+        "value": null,
+        "unit": null,
+        "text": "I could not match the whole question to a supported calculation."
+      },
+      "stdout": "{\"status\": \"unsupported\", \"route\": null, \"value\": null, \"unit\": null, \"text\": \"I could not match the whole question to a supported calculation.\"}",
+      "stderr": "",
+      "exit": 1,
+      "seconds": 3.2565,
+      "user_seconds": 2.7787,
+      "system_seconds": 0.4245
+    }
+  ],
+  "terminal": [
+    {
+      "id": "leap-appointment",
+      "stdout": "Wednesday",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 3.1369,
+      "user_seconds": 2.7118,
+      "system_seconds": 0.4149
+    },
+    {
+      "id": "separate-parcels",
+      "stdout": "430 cents",
+      "stderr": "",
+      "exit": 0,
+      "seconds": 13.0755,
+      "user_seconds": 12.3316,
+      "system_seconds": 0.7016
+    }
+  ],
+  "source_revision": "ccd34f5702a67be64c0a5a3859e998f559b7d03a"
+}

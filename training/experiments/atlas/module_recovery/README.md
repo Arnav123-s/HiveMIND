@@ -25,3 +25,5 @@ python training/experiments/atlas/module_recovery/replay.py \
 ```
 
 The compact archive records all 192 fresh pulse IDs and earlier grades. It includes the original request and candidate programs only when the full contract matches. To rebuild it from the original action artifacts, pass `--collect` with the ZIP directory named by artifact ID. The importer verifies each archive's digest first. [Compact archive](archive.json) · [GitHub run and artifact manifest](../pulse/artifacts.json)
+
+A later Python-only regression found that a `None` source in an earlier worker record aborted recovery before a later candidate could be checked. Recovery now skips the missing proposal and continues through the existing verification path. The focused regression includes a failing next candidate and verifies that it publishes no file. It uses a test double and executes no worker code. The archived evaluator is recorded in commit `f99a90ceea23791b6a7c5c7a7ad966f16038c150`, with source SHA-256 `055969eadddf9aac1334f2c05502e21037c2a23ca9d6ffab282b9659d4ae8e58`. [Regression](test_missing_proposal.py)
