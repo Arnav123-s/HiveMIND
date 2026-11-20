@@ -1236,5 +1236,43 @@
    "hours": 5.76,
    "why": "dropped: 52 against 52, the fixed held-out exam 1 against 2 with no gain on the pulse; after 52 of 64 (easy 32 of 32, hard 20 of 32), before 52 of 64 (easy 32 of 32, hard 20 of 32) on 8 seeds; the fixed held-out exam: after 1 of 30, before 2 of 30"
   }
+ ],
+ "closed_trials": [
+  {
+   "id": "cpu-drafting",
+   "title": "Five-token CPU drafting",
+   "observed": "Three short greedy t80 prompts produced 64 identical tokens. Plain runs took 13.36–17.94 s, 4B drafting 37.30 s, 1.7B drafting 23.36 s and prompt lookup 20.04 s.",
+   "evidence": "training/experiments/atlas/decoding/README.md"
+  },
+  {
+   "id": "verification-steering",
+   "title": "Verification steering on t80 layers 20–30",
+   "observed": "The baseline, written reminder and positive and reversed vectors each scored 2/8. The top-five probabilities changed on all eight with either vector.",
+   "evidence": "training/experiments/atlas/steering/README.md"
+  },
+  {
+   "id": "head-merging",
+   "title": "TIES, DARE and scalar reweighting of these six output heads",
+   "observed": "Direct addition scored 24/30. TIES scored 23/30, and DARE with mean aggregation scored 22/30 in three seeds. Forward-only scale fitting reached 23/30.",
+   "evidence": "training/experiments/atlas/merging/README.md"
+  },
+  {
+   "id": "small-calibration",
+   "title": "Conformal release with eight calibration seeds",
+   "observed": "On 28 recorded G52 jobs it delivered 21 right and one wrong, withholding six right answers. The recorded body delivered 27 right and withheld the shared error.",
+   "evidence": "training/experiments/atlas/calibration/README.md"
+  },
+  {
+   "id": "forced-lineage",
+   "title": "Forcing the first workers to have different lineages",
+   "observed": "On 32 archived jobs correct decisions fell from 28 to 24 under forced diversity.",
+   "evidence": "training/experiments/atlas/dissent/README.md"
+  },
+  {
+   "id": "three-head-composition",
+   "title": "Adding the three tested parser, rule and format output edits",
+   "observed": "All seven native configurations scored 0/6 on unseen combinations. None emitted any of the four mirror-port labels.",
+   "evidence": "training/experiments/atlas/composition/README.md"
+  }
  ]
 }

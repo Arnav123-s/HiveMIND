@@ -1,0 +1,120 @@
+{
+  "panel_sha256": "48809ec7ea5dac934787041202f122855d6e5712eb22201ba5079ecc1f8c9dd4",
+  "adapter_sha256": "17d058b893caf48ce7e1f9c756c6de8101bdcf4e750fd19410461b7d1ba51498",
+  "cases": [
+    {
+      "case": "boats",
+      "user_supplied_source_name": false,
+      "raw": {
+        "status": "abstained",
+        "value": null,
+        "files": {},
+        "reason": "no unambiguous named inline table"
+      },
+      "raw_grade": "missed",
+      "extra_source_name": "boats.csv",
+      "with_name": {
+        "status": "answered",
+        "code": "SG",
+        "plan": [
+          {
+            "op": "filter",
+            "field": "shift",
+            "equals": "morning"
+          },
+          {
+            "op": "sum",
+            "field": "minutes",
+            "group": "boat"
+          }
+        ],
+        "value": {
+          "Heron": 20,
+          "Stork": 12
+        },
+        "files": {
+          "hours_used.json": "{\"Heron\": 20, \"Stork\": 12}\n"
+        },
+        "text": "{\"Heron\": 20, \"Stork\": 12}"
+      },
+      "with_name_grade": "correct"
+    },
+    {
+      "case": "trays",
+      "user_supplied_source_name": false,
+      "raw": {
+        "status": "abstained",
+        "value": null,
+        "files": {},
+        "reason": "no unambiguous named inline table"
+      },
+      "raw_grade": "missed",
+      "extra_source_name": "trays.tsv",
+      "with_name": {
+        "status": "answered",
+        "code": "CP",
+        "plan": [
+          {
+            "op": "count",
+            "field": null,
+            "group": null
+          }
+        ],
+        "value": 4,
+        "files": {
+          "count.json": "4\n"
+        },
+        "text": "4"
+      },
+      "with_name_grade": "correct"
+    },
+    {
+      "case": "positions",
+      "user_supplied_source_name": false,
+      "raw": {
+        "status": "abstained",
+        "value": null,
+        "files": {},
+        "reason": "no unambiguous named inline table"
+      },
+      "raw_grade": "appropriate_hold",
+      "extra_source_name": "positions.csv",
+      "with_name": {
+        "status": "abstained",
+        "value": null,
+        "files": {},
+        "reason": "no unambiguous named inline table"
+      },
+      "with_name_grade": "appropriate_hold"
+    },
+    {
+      "case": "rent",
+      "user_supplied_source_name": false,
+      "raw": {
+        "status": "abstained",
+        "value": null,
+        "files": {},
+        "reason": "no unambiguous named inline table"
+      },
+      "raw_grade": "appropriate_hold",
+      "extra_source_name": "rent.csv",
+      "with_name": {
+        "status": "answered",
+        "code": "SP",
+        "plan": [
+          {
+            "op": "sum",
+            "field": "days",
+            "group": null
+          }
+        ],
+        "value": 21,
+        "files": {
+          "rent.json": "21\n"
+        },
+        "text": "21"
+      },
+      "with_name_grade": "wrong"
+    }
+  ]
+}

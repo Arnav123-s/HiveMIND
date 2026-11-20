@@ -23,7 +23,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from training.kinds import hard_scores  # noqa: E402
+from training.exam import HELD_PER  # noqa: E402
+from training.kinds import HELD_OUT, hard_scores  # noqa: E402
 
 RECORDS = ROOT / "training/reports/generations.jsonl"
 LATEST = ROOT / "docs/reads/latest.md"
@@ -130,27 +131,44 @@ def bars(newest, root=ROOT):
     r = row(newest)
     hard = None
     talk = talk_of(r["gen"], root)
-    held = None
     latest = root / LATEST.relative_to(ROOT)
+    text = latest.read_text() if latest.exists() else ""
+    title = re.search(r"^# The read of (\w+)", text, re.M)
+    if title and title.group(1) != r["gen"]:
+        text = ""
     arm = (newest.get("arms") or {}).get("after")
+    pulse = None
     if arm is not None:
-        taught_pair, held_pair = hard_scores(arm)
+        taught_pair, pulse = hard_scores(arm)
         hard = taught_pair[0] / taught_pair[1] if taught_pair[1] else None
-        held = held_pair[0] / held_pair[1] if held_pair[1] else None
-    elif latest.exists():
-        text = latest.read_text()
-        title = re.search(r"^# The read of (\w+)", text, re.M)
-        if title and title.group(1) != r["gen"]:
-            text = ""
-        m = re.search(r"never practised \(held out\) \| (\d+) of (\d+)", text)
-        if m and int(m.group(2)):
-            held = int(m.group(1)) / int(m.group(2))
-        m = re.search(r"Hard kinds that have lessons \| (\d+) of (\d+)", text)
-        if m and int(m.group(2)):
-            hard = int(m.group(1)) / int(m.group(2))
+    else:
+        taught = re.search(r"Hard kinds that have lessons \| (\d+) of (\d+)", text)
+        if taught and int(taught[2]):
+            hard = int(taught[1]) / int(taught[2])
+        old = re.search(r"never practised \(held out\) \| (\d+) of (\d+) \|", text)
+        if old:
+            pulse = [int(old[1]), int(old[2])]
+
+    fixed = (newest.get("held_exam") or {}).get("after") or {}
+    if not fixed:
+        published = re.search(r"never practised \(held out\) \| (\d+) of (\d+) kinds "
+                              r"\((\d+) of (\d+) tasks of the fixed exam", text)
+        if published:
+            passed, sat, right, total = map(int, published.groups())
+            fixed = {"kinds": [passed, sat], "right": right, "of": total}
+    held = None
+    held_note = f"pulse only {frac(pulse)}" if pulse else "fixed exam unavailable"
+    if fixed.get("kinds") and fixed.get("of"):
+        passed, sat = fixed["kinds"]
+        held_note = f"fixed exam {passed}/{sat} kinds, {fixed['right']}/{fixed['of']} tasks"
+        if sat == len(HELD_OUT) and fixed["of"] == sat * HELD_PER:
+            held = passed / sat
+        else:
+            held_note += ", incomplete fixed exam"
+
     checks = [
         ("hard kinds passed", hard, BARS["hard"], True, "tasks of hard kinds with lessons"),
-        ("held-out kinds passed", held, BARS["held"], True, "tasks of held-out kinds"),
+        ("held-out kinds passed", held, BARS["held"], True, held_note),
         ("right at the first try", r["first"], BARS["first"], True, first_note(newest)),
         ("talk exam, of 10", (talk / 10) if talk is not None else None, BARS["talk"], True, "training/reports/talk"),
         ("hours a generation", r["hours"], BARS["hours"], False, "first job to last"),
@@ -164,6 +182,8 @@ def bars(newest, root=ROOT):
         show = f"{value:.2f}" if name != "hours a generation" else f"{value} h"
         want = f"{bar:.2f}" if name != "hours a generation" else f"{bar} h"
         split = f"; {note.split('; ', 1)[1]}" if name == "right at the first try" and "; " in note else ""
+        if name == "held-out kinds passed":
+            split = f" — {note}"
         lines.append(f"  [{'met' if met else ' no'}] {name}: {show} (bar {want}){split}")
     return "\n".join(lines)
 
@@ -234,7 +254,13 @@ def board(root=ROOT):
 def main(argv=None):
     p = argparse.ArgumentParser(description="Where the hive stands, before any work.")
     p.add_argument("--last", type=int, default=8)
+    p.add_argument("--closed-trials", action="store_true", help="show prior configurations retired from this loop and their evidence")
     args = p.parse_args(argv)
+    closed = json.loads((ROOT / "docs/knowledge.json").read_text()).get("closed_trials", [])
+    if args.closed_trials:
+        for trial in closed:
+            print(f"{trial['title']} — {trial['observed']} [{trial['evidence']}]")
+        return 0
     recs = records()
     if not recs:
         print("no generation records yet (training/reports/generations.jsonl)")
@@ -250,6 +276,8 @@ def main(argv=None):
           (f"  STALE, not redrawn since {newest.get('generation')}: {', '.join(stale)}"
            " (run: python training/progress.py)" if stale else "  all redrawn for the newest record") + "\n")
     print("## Next piece (docs/reads/latest.md)\n  " + next_piece() + "\n")
+    if closed:
+        print("Retired trial configurations (details with --closed-trials): " + ", ".join(t["id"] for t in closed) + "\n")
     pieces = board()
     print("## The board (docs/PLAN.md; claims on other branches: python scripts/agents_log.py --board)")
     for pid, piece, who in pieces:

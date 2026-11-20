@@ -1,0 +1,171 @@
+{
+  "slice": {
+    "data": "bea1a67505c89d3c74e225e189fb6f2fe5a8276f66f33ec957f96e01660b07fc",
+    "config": {
+      "updates": 32,
+      "accum": 4,
+      "rank": 4,
+      "alpha": 8,
+      "dropout": 0.1,
+      "lr": 0.001,
+      "seed": 91347,
+      "weight_decay": 0.0
+    },
+    "torch": "2.15.0+cpu",
+    "sources": {
+      "slice.py": "3c02ab4f7284b0cbf14ff55527cc9a209b561e0ba55357cbceb5ad8b19fd4d1c",
+      "checkpoint.py": "69c9aefda6b34853e066d35628badf9a3dd6b34b9992a1dbb6d2770c8a93c88b",
+      "grow.py": "89c7805cfbf2c432ce97a530a7195972c52701375cef2b8c6b70dbfd8f8162da",
+      "ternary_base.py": "afebf1e736cd35845a4f19ac70e49b50592394ca4f4ca00fa0c29a2e6d2e0d68",
+      "data.py": "978ab99e80454149b36b849d1ba9653d90c9d5ab06ccdbe240eb3e12403afa85"
+    }
+  },
+  "protocol_sha256": "42e66b5c78f8a8de0bbbdca50da2030060f536b6b79cfbe8dd76eac4fb1838bf",
+  "torch": "2.15.0+cpu",
+  "worker_processes": 7,
+  "weights_match_after_resetting_adam_moments": false,
+  "rows_executed_including_lost_work": {
+    "uninterrupted": 128,
+    "restart_from_zero": 223,
+    "resume": 143,
+    "resume_after_corruption": 163
+  },
+  "bitwise_state_equality": {
+    "from_zero": {
+      "format": true,
+      "identity": true,
+      "step": true,
+      "history": true,
+      "parameters": true,
+      "optimizer": true,
+      "study": true,
+      "python_rng": true,
+      "torch_rng": true
+    },
+    "resume": {
+      "format": true,
+      "identity": true,
+      "step": true,
+      "history": true,
+      "parameters": true,
+      "optimizer": true,
+      "study": true,
+      "python_rng": true,
+      "torch_rng": true
+    },
+    "resume_fallback": {
+      "format": true,
+      "identity": true,
+      "step": true,
+      "history": true,
+      "parameters": true,
+      "optimizer": true,
+      "study": true,
+      "python_rng": true,
+      "torch_rng": true
+    }
+  },
+  "wrong_identity_rejection": "checkpoint does not belong to the exact slice",
+  "fallback_to_step_after_truncation": 15,
+  "first_loss": 0.0008998635457828641,
+  "last_loss": 1.9129159450531006,
+  "row_loss_sequence_sha256": "edab3974500e99889c6870f9b4687f5a0a636322a3015fab47eadb950b57ef6b",
+  "runs": {
+    "uninterrupted": {
+      "initial_step": 0,
+      "final_step": 32,
+      "rows_executed": 128,
+      "eligible_rows": 60,
+      "trainable_parameters": 16456,
+      "training_seconds": 0.091681,
+      "checkpoints": []
+    },
+    "lost_without_store": {
+      "exit_at_row": 95,
+      "rows_executed": 95,
+      "last_complete_update": 23,
+      "checkpoints": []
+    },
+    "restart_from_zero": {
+      "initial_step": 0,
+      "final_step": 32,
+      "rows_executed": 128,
+      "eligible_rows": 60,
+      "trainable_parameters": 16456,
+      "training_seconds": 0.086708,
+      "checkpoints": []
+    },
+    "lost_with_store": {
+      "exit_at_row": 95,
+      "rows_executed": 95,
+      "last_complete_update": 23,
+      "checkpoints": [
+        {
+          "step": 5,
+          "bytes": 216073,
+          "seconds": 0.009656
+        },
+        {
+          "step": 10,
+          "bytes": 216585,
+          "seconds": 0.005741
+        },
+        {
+          "step": 15,
+          "bytes": 217097,
+          "seconds": 0.006288
+        },
+        {
+          "step": 20,
+          "bytes": 217609,
+          "seconds": 0.004884
+        }
+      ]
+    },
+    "resume": {
+      "initial_step": 20,
+      "final_step": 32,
+      "rows_executed": 48,
+      "eligible_rows": 60,
+      "trainable_parameters": 16456,
+      "training_seconds": 0.109781,
+      "checkpoints": [
+        {
+          "step": 25,
+          "bytes": 218185,
+          "seconds": 0.006122
+        },
+        {
+          "step": 30,
+          "bytes": 218761,
+          "seconds": 0.011672
+        }
+      ]
+    },
+    "resume_after_corruption": {
+      "initial_step": 15,
+      "final_step": 32,
+      "rows_executed": 68,
+      "eligible_rows": 60,
+      "trainable_parameters": 16456,
+      "training_seconds": 0.078949,
+      "checkpoints": [
+        {
+          "step": 20,
+          "bytes": 217609,
+          "seconds": 0.004702
+        },
+        {
+          "step": 25,
+          "bytes": 218185,
+          "seconds": 0.003745
+        },
+        {
+          "step": 30,
+          "bytes": 218761,
+          "seconds": 0.00436
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "observed_at_utc": "2026-11-20T03:58:41+00:00",
+  "run": {
+    "id": 44649281647,
+    "html_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44649281647",
+    "head_sha": "c2bd7a3d56e6728fe434b40118eda5c4abcd5ab6",
+    "run_attempt": 1,
+    "status": "in_progress",
+    "conclusion": null,
+    "created_at": "2026-11-20T00:52:19Z"
+  },
+  "training_jobs": 20,
+  "training_jobs_complete": 2,
+  "failed": [
+    {
+      "id": 136025526418,
+      "name": "train (g53data, data, data, g49data2, 2, 3, cell)",
+      "html_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44649281647/job/136025526418",
+      "started_at": "2026-11-20T01:54:35Z",
+      "completed_at": "2026-11-20T02:44:35Z",
+      "conclusion": "failure",
+      "grow_step": {
+        "name": "Grow the cell",
+        "status": "in_progress",
+        "conclusion": null,
+        "number": 7,
+        "started_at": "2026-11-20T01:58:02Z",
+        "completed_at": null
+      },
+      "upload_step": {
+        "name": "Run actions/upload-artifact@v4",
+        "status": "pending",
+        "conclusion": null,
+        "number": 8,
+        "started_at": null,
+        "completed_at": null
+      },
+      "job_elapsed_s": 3000,
+      "grow_step_start_to_reported_job_end_s": 2793,
+      "annotations": [
+        "The hosted runner lost communication with the server. Anything in your workflow that terminates the runner process, starves it for CPU/Memory, or blocks its network access can cause this error."
+      ]
+    },
+    {
+      "id": 136025526657,
+      "name": "train (g53words, words, words, g49words, 2, 3, cell)",
+      "html_url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44649281647/job/136025526657",
+      "started_at": "2026-11-20T01:54:35Z",
+      "completed_at": "2026-11-20T02:54:36Z",
+      "conclusion": "failure",
+      "grow_step": {
+        "name": "Grow the cell",
+        "status": "in_progress",
+        "conclusion": null,
+        "number": 7,
+        "started_at": "2026-11-20T01:57:19Z",
+        "completed_at": null
+      },
+      "upload_step": {
+        "name": "Run actions/upload-artifact@v4",
+        "status": "pending",
+        "conclusion": null,
+        "number": 8,
+        "started_at": null,
+        "completed_at": null
+      },
+      "job_elapsed_s": 3601,
+      "grow_step_start_to_reported_job_end_s": 3437,
+      "annotations": [
+        "The hosted runner lost communication with the server. Anything in your workflow that terminates the runner process, starves it for CPU/Memory, or blocks its network access can cause this error."
+      ]
+    }
+  ],
+  "published_part_names": []
+}

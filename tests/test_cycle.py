@@ -30,7 +30,7 @@ def test_bars_read_the_newest_read_and_record(tmp_path):
     home = _home(tmp_path, [REC], READ)
     out = cycle.bars(REC, root=home)
     assert "[met] hard kinds passed: 0.83" in out
-    assert "[met] held-out kinds passed: 0.50" in out
+    assert "[ ? ] held-out kinds passed: not measured (pulse only 3/6)" in out
     assert "[met] right at the first try: 0.70" in out
     assert "[ ? ] talk exam" in out
     assert "[met] hours a generation: 2.5 h" in out
@@ -41,7 +41,7 @@ def test_recorded_kind_scores_take_precedence_over_the_published_read(tmp_path):
                                  "a queue served by priority, with hidden tests": [0, 1]}, "unpractised": [0, 0]}
     rec = dict(REC, arms={"after": arm})
     out = cycle.bars(rec, root=_home(tmp_path, [rec], READ))
-    assert "hard kinds passed: 0.50" in out and "held-out kinds passed: 0.00" in out
+    assert "hard kinds passed: 0.50" in out and "held-out kinds passed: not measured (pulse only 0/1)" in out
 
 
 def test_talk_is_read_when_sat(tmp_path):
@@ -79,3 +79,12 @@ def test_board_rows_and_latest_claim(tmp_path):
     assert rows["H1"][2] == "open; log: claim by D at 2026-11-18 05:00"
     assert rows["F1"][2] == "open; log: done by E at 2026-11-18 06:00"
     assert rows["J1"][2] == "open"
+
+
+def test_unseen_goal_uses_fixed_kinds_and_requires_a_complete_sitting(tmp_path):
+    home = _home(tmp_path, [REC], READ)
+    exam = {"kinds": [5, 10], "right": 12, "of": 30}
+    rec = dict(REC, held_exam={"after": exam})
+    assert "[met] held-out kinds passed: 0.50 (bar 0.50) — fixed exam 5/10 kinds, 12/30 tasks" in cycle.bars(rec, home)
+    exam["of"] = 29
+    assert "not measured (fixed exam 5/10 kinds, 12/29 tasks, incomplete fixed exam)" in cycle.bars(rec, home)

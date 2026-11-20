@@ -465,6 +465,19 @@ flowchart LR
 - Count the jobs a step makes against the 20 that run at once: one job over makes a second wave and hours more.
 - Judge whether a kind was learned on lessons kept out of training, read beside a kind never taught.
 
+## Closed experiments
+
+Skip repeat runs of these measured configurations. Their reports identify the data, controls and hardware.
+
+| Configuration | Observed outcome |
+|---|---|
+| [Five-token CPU drafting](../training/experiments/atlas/decoding/README.md) | Three short greedy t80 prompts produced 64 identical tokens. Plain runs took 13.36–17.94 s, 4B drafting 37.30 s, 1.7B drafting 23.36 s and prompt lookup 20.04 s. |
+| [Verification steering on t80 layers 20–30](../training/experiments/atlas/steering/README.md) | The baseline, written reminder and positive and reversed vectors each scored 2/8. The top-five probabilities changed on all eight with either vector. |
+| [TIES, DARE and scalar reweighting of these six output heads](../training/experiments/atlas/merging/README.md) | Direct addition scored 24/30. TIES scored 23/30, and DARE with mean aggregation scored 22/30 in three seeds. Forward-only scale fitting reached 23/30. |
+| [Conformal release with eight calibration seeds](../training/experiments/atlas/calibration/README.md) | On 28 recorded G52 jobs it delivered 21 right and one wrong, withholding six right answers. The recorded body delivered 27 right and withheld the shared error. |
+| [Forcing the first workers to have different lineages](../training/experiments/atlas/dissent/README.md) | On 32 archived jobs correct decisions fell from 28 to 24 under forced diversity. |
+| [Adding the three tested parser, rule and format output edits](../training/experiments/atlas/composition/README.md) | All seven native configurations scored 0/6 on unseen combinations. None emitted any of the four mirror-port labels. |
+
 ## The parts
 
 | Part | File | Owner | What it does |

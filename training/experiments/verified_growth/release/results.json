@@ -1,0 +1,1199 @@
+{
+  "archive_sha256": "4bd6b9cd7548dfb84090979977e539b9e6e8d0c178a8ce512ffd3de3f6fc2551",
+  "arms": {
+    "g51": {
+      "both": {
+        "counts": {
+          "correct": 3,
+          "withheld": 18,
+          "wrong": 9
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 2,
+            "h_tab_dates": 1,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 1,
+          "tasks": 3
+        }
+      },
+      "original": {
+        "counts": {
+          "correct": 3,
+          "withheld": 18,
+          "wrong": 9
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 2,
+            "h_tab_dates": 1,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 1,
+          "tasks": 3
+        }
+      },
+      "relay_fallback": {
+        "counts": {
+          "correct": 3,
+          "withheld": 18,
+          "wrong": 9
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 2,
+            "h_tab_dates": 1,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 1,
+          "tasks": 3
+        }
+      },
+      "table_fallback": {
+        "counts": {
+          "correct": 3,
+          "withheld": 18,
+          "wrong": 9
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 2,
+            "h_tab_dates": 1,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 1,
+          "tasks": 3
+        }
+      },
+      "table_only": {
+        "counts": {
+          "withheld": 30
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 0,
+            "h_tab_dates": 0,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 0,
+          "tasks": 0
+        }
+      }
+    },
+    "g52": {
+      "both": {
+        "counts": {
+          "correct": 1,
+          "withheld": 16,
+          "wrong": 13
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 1,
+            "h_tab_dates": 0,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 0,
+          "tasks": 1
+        }
+      },
+      "original": {
+        "counts": {
+          "correct": 1,
+          "withheld": 16,
+          "wrong": 13
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 1,
+            "h_tab_dates": 0,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 0,
+          "tasks": 1
+        }
+      },
+      "relay_fallback": {
+        "counts": {
+          "correct": 1,
+          "withheld": 16,
+          "wrong": 13
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 1,
+            "h_tab_dates": 0,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 0,
+          "tasks": 1
+        }
+      },
+      "table_fallback": {
+        "counts": {
+          "correct": 1,
+          "withheld": 16,
+          "wrong": 13
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 1,
+            "h_tab_dates": 0,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 0,
+          "tasks": 1
+        }
+      },
+      "table_only": {
+        "counts": {
+          "withheld": 30
+        },
+        "scores": {
+          "by_kind": {
+            "h_edit": 0,
+            "h_prog_queue": 0,
+            "h_prog_wrap": 0,
+            "h_quotes": 0,
+            "h_sim": 0,
+            "h_tab_dates": 0,
+            "h_tab_topn": 0,
+            "h_two": 0,
+            "h_txt_ini": 0,
+            "h_txt_redact": 0
+          },
+          "kinds": 0,
+          "tasks": 0
+        }
+      }
+    }
+  },
+  "cases": {
+    "x_h_edit_0": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_edit_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_edit_2": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_prog_queue_0": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_prog_queue_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_prog_queue_2": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_prog_wrap_0": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_prog_wrap_1": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_prog_wrap_2": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_quotes_0": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_quotes_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_quotes_2": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_sim_0": {
+      "g51": {
+        "outcomes": {
+          "both": "correct",
+          "original": "correct",
+          "relay_fallback": "correct",
+          "table_fallback": "correct",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_sim_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_sim_2": {
+      "g51": {
+        "outcomes": {
+          "both": "correct",
+          "original": "correct",
+          "relay_fallback": "correct",
+          "table_fallback": "correct",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "correct",
+          "original": "correct",
+          "relay_fallback": "correct",
+          "table_fallback": "correct",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_tab_dates_0": {
+      "g51": {
+        "outcomes": {
+          "both": "correct",
+          "original": "correct",
+          "relay_fallback": "correct",
+          "table_fallback": "correct",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_tab_dates_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_tab_dates_2": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_tab_topn_0": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_tab_topn_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_tab_topn_2": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_two_0": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_two_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_two_2": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_txt_ini_0": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_txt_ini_1": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_txt_ini_2": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_txt_redact_0": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_txt_redact_1": {
+      "g51": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    },
+    "x_h_txt_redact_2": {
+      "g51": {
+        "outcomes": {
+          "both": "withheld",
+          "original": "withheld",
+          "relay_fallback": "withheld",
+          "table_fallback": "withheld",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      },
+      "g52": {
+        "outcomes": {
+          "both": "wrong",
+          "original": "wrong",
+          "relay_fallback": "wrong",
+          "table_fallback": "wrong",
+          "table_only": "withheld"
+        },
+        "relay": {
+          "submitted": false
+        },
+        "table": {
+          "submitted": false
+        }
+      }
+    }
+  },
+  "decisions_sha256": "eaf4d514f4125c4fa4d73d11584cbc26f322b930d4b8b99cb710c2f5f408fe8b",
+  "official_tasks_matched": 30
+}

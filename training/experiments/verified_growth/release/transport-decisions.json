@@ -1,0 +1,457 @@
+{
+  "bridge_sha256": "17d058b893caf48ce7e1f9c756c6de8101bdcf4e750fd19410461b7d1ba51498",
+  "planner_sha256": "23eaba4bbca3e96663f8b2e5335b7ed6428da6c0e0c33ccd3d675c213038fb68",
+  "raw_inputs_sha256": "17118747aa857ea15845d2b0a4ed674d4cd2e207c85ab5d7d8b5dd2163d06540",
+  "records": {
+    "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "20ae768b5e0e62e5858c205240af3c191fef597ff1a6e01230e769ab66dd4914": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "213da5f43b174418b66916d8a01dada51272dd742effeba316a6b2eb33cb2679": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "351c49d8b4ad49582ccf05f8a396ac8e9e7c2b6541ec8e74f17009a7144813ad": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "3f87ef23a9a3502f8ca69350db21bd08ea97978be9bdca314da83a6ea0a1be2c": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "40997da53261404f348da201d36361cdba2baad5dc00bb2e75e0d6d66344eb38": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "40efab4159d0d994b8638b41a5ff6a8aeac6af20dba4f9914c9ce2d49cd9237e": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "424774d38ec0afd2dec0ffcdd9362a5fd4cbf46e2927c4956b86930cdd010a05": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "490e97e5e506562c9f06a41c5aaa4f12b92d9f96cafc45d2ceaefec9f517cb11": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "68d328bd65abe493fbc7eb5e8509c594c087b2e0f530979dc63d84920cdb5886": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "6aa06215e102dee7e6f6c8878d12fb1256fdb66cdb35c343f368264b8bb743b9": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "6d8cb0d0cdb0d1878499bec67b0efa0f5200a517d2d8a5e2a3e69755718da11a": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "74c704d17008b831e95ba48f4df6d5449b6da1b5dd35617027e90dbae5ae2d92": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "8a32f83651e23668e44d1bf994f9aeb1ac5e57399f389506a9aaa6ccc8cd56c3": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "a977869e34c1929fe6e1f79d3cc1e06042a1906062c2580f3afbb76d54b64f38": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "ab370e7c40951c3b011b862b02406db7fa43ca9bd4ada9bf1785d6fa53944fcd": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "b6745773fc7f40bb2c486c3d102eafcbd33dae13aeb649d9989a2924cccbf557": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "b74f96d9fe44f14169eb8b7bc78a028f2efee3c5123977b21e69f9a15cf33f84": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "b923896174678068cb3b889e16f444e7df18531518cde21ac35675e6b7367423": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "c588d6ab0eba5534b5655f7607318b259da4cfadc1e33939657392fb8692a859": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "d0bb086aaf2e4759ad62bae75744bed31a6a85a20a9ac3b34c6e611352e93ce8": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "e9ae4e32b0983067ce4578991d20e1f1c6b55e859135a37183d514c6e56e8963": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "ed2775b41228c37b49d28da69e4d4421765755ed0bf632f3fb926148c3493824": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "efa4fcc76805b20ae071a79e86261d42fb06cf9af7917ba055f3a6f2a4be20dc": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    },
+    "ff16024b91d12537382b7f71b2e15d6b58b2f24d560eee31136e2400fdc8b464": {
+      "bound": false,
+      "bridged_rules": {
+        "files": {},
+        "reason": "no unambiguous named inline table",
+        "status": "abstained",
+        "value": null
+      },
+      "rules": {
+        "files": {},
+        "reason": "provide one flat CSV or JSON table",
+        "status": "abstained",
+        "value": null
+      }
+    }
+  }
+}
