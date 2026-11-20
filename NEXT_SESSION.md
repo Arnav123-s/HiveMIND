@@ -10,7 +10,8 @@ handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole st
 - **Newest record: g51**, kept 50 against 49 of 64. **Two bars met for the first time:** hard kinds 0.79 (bar 0.78)
   and talk 8.2 of 10 (bar 8). Not met: held out 0 (half), first try 0.45 (0.7; old kinds 0.72, new kinds 0.25),
   hours 6.5 (3). g49 kept 49/64, g50 dropped (54 against 55).
-- **g52 is running** (run 44594712108, started 19:05 UTC, record about 01:30 UTC). It runs main before PRs 112-119.
+- **g52 dropped at a tie** (52 against 52, held out 1 against 2 of 30; talk 8.8). It ran main before PRs 112-120.
+- **g53 is running** (run 44649281647, started 00:52 UTC 20 Nov).
 - **g53 is the first with PRs 113-119:** g48's practice fixes, the three text kinds' rows, extra seats on a crash
   (R1), and the general repairs for never-taught kinds (H1). Judge g53 against g51 on: new-kind first try (0.25),
   held out on the fixed exam (3 of 30), hard (0.79), and the hours (extra seats cost about 0.4 calls a hard task;
