@@ -306,7 +306,7 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
     run.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     code, err = run_task([sys.executable, "-m", "team", task, "--approve", "never", "--run-dir", str(run)], timeout, cwd=ROOT,
-                         env=dict(os.environ, AGENT_TEAM_HOME=str(memory_home), HIVE_KIND=kind))
+                         env=dict(os.environ, AGENT_TEAM_HOME=str(memory_home), HIVE_KIND=kind, HIVE_CAP_SECONDS=str(int(timeout))))
     if code is None:
         note = f"timed out after {timeout} s"
     else:
