@@ -54,8 +54,9 @@ def mdcsv(task, copy=False):
     return _fill('''import csv
 rows = []
 for line in __LINES__:
+    # the pipes at the two edges are not cells: cut them first, then split; the row of dashes is not data
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
-    if all(set(c) <= set(":-") for c in cells):
+    if all(c and set(c) <= set(":-") for c in cells):
         continue
     rows.append(cells)
 with open("table.csv", "w", newline="") as f:

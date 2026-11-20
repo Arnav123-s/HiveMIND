@@ -111,9 +111,25 @@ def lru(task):
     # a dict keeps its keys in the order they went in: a use takes the key out and puts it back last
     src = (SOURCE.replace("__MISSING__", missing)
            .replace("__GET__", "        if k in s.d:\n            s.d[k] = s.d.pop(k)\n" if get_uses == "does" else "")
-           .replace("__PUT__", "        s.d.pop(k, None)\n" if put_uses == "does" else ""))
+           .replace("__PUT__", "        # put on a held key = a use: pop it first\n"
+                                    "        s.d.pop(k, None)\n" if put_uses == "does" else
+                                    "        # put on a held key keeps its place\n"))
     tests = ["t = LRUCache(1)", "t.put('x', 1)", "t.put('y', 2)", "assert t.keys() == ['y']", f"c = LRUCache({size})", "c." + calls.replace("; ", "; c.")]
     return program("lru", src, tests, ["print(c.keys())"])
+
+
+def shows(task):
+    """Whether the task asks about the detail members get wrong: a key put again after it was put (does that move it to
+    the last place? the task says). A lesson on a task that does not ask it is drawn again (training/lessons.fitting)."""
+    m = re.search(r"in order: (.+)\.\s*$", task, re.S)
+    seen = set()
+    for call in (m.group(1).split("; ") if m else []):
+        k = re.match(r"put\((.+?),", call)
+        if k and k.group(1) in seen:
+            return True
+        if k:
+            seen.add(k.group(1))
+    return False
 
 
 make = h_prog_lru

@@ -426,6 +426,12 @@ def _masked(why):
     return re.sub(r"\d+(?:[.,]\d+)*", "#", why or "")[:400]
 
 
+def delivered(result):
+    """Whether the hive gave an answer (its members agreed on one) and it was wrong, not "Not confirmed" or none."""
+    a = str((result or {}).get("answer") or "").strip()
+    return bool(a) and not a.startswith(("Not confirmed", "No member"))
+
+
 def remember_failure(run, task, kind, check, result, path):
     """A task the hive got wrong, kept so that it can come back to it (dream): how to make the task again, its own
     last program and what that printed, and what the check said, numbers hidden."""
@@ -449,6 +455,7 @@ def remember_failure(run, task, kind, check, result, path):
     with open(path, "a") as f:
         f.write(json.dumps({"maker": check.maker, "rseed": check.rseed, "level": getattr(check, "level", 0), "parts": getattr(check, "parts", None),
                             "task": task, "kind": kind, "program": program, "printed": printed, "who": who,
+                            "delivered": delivered(result),
                             "said": _masked(result.get("why")), "when": time.strftime("%Y-%m-%d %H:%M")}) + "\n")
 
 

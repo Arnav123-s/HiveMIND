@@ -60,9 +60,28 @@ s, c = __STOP__.split(", "), {}
 for w in re.findall("[a-z]+", __TEXT__.lower()):
     if w not in s:
         c[w] = c.get(w, 0) + 1
+# words with the same count go in alphabetical order: the key is the count (most first), then the word
 for w in sorted(c, key=lambda w: (-c[w], w))[:__K__]:
     print(f"{w}: {c[w]}")
 ''', stop=m.group(2), k=int(m.group(3))).replace("__TEXT__", repr(m.group(1)) if copy else 'open("text.txt").read()')
+
+
+def shows(task):
+    """Whether the task has the detail members get wrong: words with the same count among those asked for, whose
+    alphabetical order is not the order they first appear in the text."""
+    m = re.search(r"Here is a text:\n(.*?)\nStopwords: (.*?)\.\nCount the words.*?Give the (\d+) most frequent", task, re.S)
+    if not m:
+        return False
+    stop, k, first = m.group(2).split(", "), int(m.group(3)), {}
+    for w in re.findall(r"[a-z]+", m.group(1).lower()):
+        if w not in stop:
+            first.setdefault(w, len(first))
+    count = {w: 0 for w in first}
+    for w in re.findall(r"[a-z]+", m.group(1).lower()):
+        if w in count:
+            count[w] += 1
+    ranked = sorted(count, key=lambda w: (-count[w], w))[:k]
+    return any(count[a] == count[b] and first[a] > first[b] for a, b in zip(ranked, ranked[1:]))
 
 
 make = h_txt_words

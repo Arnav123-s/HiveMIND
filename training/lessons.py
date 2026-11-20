@@ -304,7 +304,7 @@ def fitting(maker, rseed, level=0, parts=None, fresh=True, tries=8):
     program) is drawn again, with the seed and a number, up to `tries` times; the shortest right one is kept when none
     fits, for the runners that take longer rows (a join's always: its tables are in the task and in the program). A
     task the hive got wrong is its own and is never drawn again; nor is a task of several parts (its parts' seeds)."""
-    best, n_best = None, None
+    best, key_best = None, None
     for j in range(tries if fresh and maker != "compound" else 1):
         try:
             les = lesson(maker, rseed if j == 0 else f"{rseed}:{j}", level, parts)
@@ -315,11 +315,44 @@ def fitting(maker, rseed, level=0, parts=None, fresh=True, tries=8):
                 return les  # a lesson that is not right (a site down) is not drawn again: its failure is counted
             continue
         n = max(row_pieces(r) for r in rows(les, today="2026-01-01 (Thursday)"))  # its first and its done row
-        if n <= LIMIT:
+        # the best draw: one that fits and whose task asks the kind's detail (its module's `shows`: what members get
+        # wrong, a key put again, a tie); then one that fits; then the shortest, the detail first
+        shown = not fresh or maker == "compound" or _shows(maker, les)
+        key = (n > LIMIT, not shown, n)
+        if key_best is None or key < key_best:
+            best, key_best = les, key
+        if key[:2] == (False, False):
             return les
-        if best is None or n < n_best:
-            best, n_best = les, n
     return best
+
+
+def _shows(maker, les):
+    """True where the kind has no `shows`, or its task asks the detail (training/kinds/h_prog_lru.shows)."""
+    fn = getattr(K.get(maker), "shows", None) if maker in SOLVERS else None
+    return True if fn is None else bool(fn(les["task"]))
+
+
+def agreed_wrong_kinds(failures):
+    """{kind}: the kinds of tasks in the failures record whose wrong answer the hive delivered (its members agreed on
+    it: training/grow.remember_failure writes "delivered"). Such a kind is not the hive's to learn alone: members that
+    agree on a wrong detail confirm each other, so their own programs never correct it."""
+    out = set()
+    for ln in Path(failures).read_text().splitlines() if failures and Path(failures).exists() else []:
+        try:
+            f = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(f, dict) and f.get("delivered") and f.get("kind"):
+            out.add(f["kind"])
+    return out
+
+
+def left_to_the_hive(kind, own, pulse=None, agreed=()):
+    """Whether a kind gets no lesson this generation: the hive has OWN right programs of its own, the body does not fail
+    it more often than not, and no wrong answer of it was delivered (its members agreed on a wrong detail: a lesson
+    is the only thing that corrects what they confirm in each other)."""
+    p, n = (pulse or {}).get(kind, [0, 0])
+    return own.get(kind, 0) >= OWN and not (n and 2 * p < n) and kind not in agreed
 
 
 def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print, levels=None, minutes=0, several=4, own=None, pulse=None):  # noqa: F811
@@ -361,6 +394,7 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
             seen.add(key)
             plan.append((f["maker"], f["rseed"], f.get("level", 0), f.get("parts"), f))
     made, right, dropped, left = [], 0, [], set()
+    agreed = agreed_wrong_kinds(failures)
     by_kind, failed = {}, {}
     for maker, rseed, level, parts, wrong in plan:
         if minutes and time.time() - t0 > minutes * 60:
@@ -371,8 +405,7 @@ def teach(seed, per_kind=1, failures=None, most_failures=12, out=None, log=print
                 made_now = exam.remake(maker, rseed, level, parts)
             except Exception:  # noqa: BLE001 - made below again, where the failure is said
                 made_now = None
-            p, n = (pulse or {}).get(made_now[1], [0, 0]) if made_now else (0, 0)
-            if made_now and own.get(made_now[1], 0) >= OWN and not (n and 2 * p < n):
+            if made_now and left_to_the_hive(made_now[1], own, pulse, agreed):
                 left.add(made_now[1])
                 continue
         les = fitting(maker, rseed, level, parts, fresh=wrong is None)

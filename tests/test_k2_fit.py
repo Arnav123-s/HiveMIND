@@ -18,7 +18,7 @@ SEEDS = range(40)
 # the longest row of each kind that does not fit, on these 40 seeds (counted with the DNA's tokenizer), and why
 TOO_LONG = {
     "h_prog_bank": (609, "the task is 223 pieces: 139 are left for the class, its saving and the moves asked"),
-    "h_prog_lru": (656, "the task is 252 pieces: 101 are left for the class, its saving and the calls asked (65)"),
+    "h_prog_lru": (672, "the task is 252 pieces: 101 are left for the class, its saving and the calls asked (65); +16 for the line naming the rule of a put"),
     "h_prog_calc": (662, "the task is 257 pieces: 102 are left for a parser of three levels and its saving"),
     "h_prog_machine": (636, "the task is 267 pieces with its table: 97 are left for the table (70) and the module"),
     "h_prog_schedule": (615, "the task is 234 pieces: 107 are left for the module and the plan asked (60)"),
