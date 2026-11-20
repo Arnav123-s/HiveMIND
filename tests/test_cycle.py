@@ -88,3 +88,11 @@ def test_unseen_goal_uses_fixed_kinds_and_requires_a_complete_sitting(tmp_path):
     assert "[met] held-out kinds passed: 0.50 (bar 0.50) — fixed exam 5/10 kinds, 12/30 tasks" in cycle.bars(rec, home)
     exam["of"] = 29
     assert "not measured (fixed exam 5/10 kinds, 12/29 tasks, incomplete fixed exam)" in cycle.bars(rec, home)
+
+
+def test_published_fixed_kind_count_beats_a_pulse_record_with_only_old_fields(tmp_path):
+    arm = {"tasks": 1, "kinds": {"a queue served by priority, with hidden tests": [0, 1]}}
+    rec = dict(REC, arms={"after": arm})
+    read = "# The read of g9\n| Hard kinds never practised (held out) | 1 of 10 kinds (3 of 30 tasks of the fixed exam; pulse 0 of 8) |"
+    out = cycle.bars(rec, root=_home(tmp_path, [rec], read))
+    assert "held-out kinds passed: 0.10 (bar 0.50) — fixed exam 1/10 kinds, 3/30 tasks" in out
