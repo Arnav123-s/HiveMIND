@@ -1,0 +1,209 @@
+{
+  "publisher_sha256": "8e2b91ef5ae8876327d20f780367e5d6d594b5af817ec2c7bb0d48506ad508a4",
+  "selector": "rules",
+  "selection": "first preregistered request per primary pattern, both data editions",
+  "rows": [
+    {
+      "id": "fs_o",
+      "table": "orchard-morning",
+      "request": "How many crates are there in total on the night shift? Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"SP\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"night\"}, {\"op\": \"sum\", \"field\": \"crates\", \"group\": null}], \"value\": 34, \"files\": {\"result.json\": \"34\\n\"}, \"text\": \"34\", \"published\": [\"/tmp/tmp5x6x7a4k/out/result.json\"]}",
+      "bytes": "34\n",
+      "value": 34,
+      "expected": 34,
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fs_o",
+      "table": "orchard-evening",
+      "request": "How many crates are there in total on the night shift? Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"SP\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"night\"}, {\"op\": \"sum\", \"field\": \"crates\", \"group\": null}], \"value\": 68, \"files\": {\"result.json\": \"68\\n\"}, \"text\": \"68\", \"published\": [\"/tmp/tmpft5g_zct/out/result.json\"]}",
+      "bytes": "68\n",
+      "value": 68,
+      "expected": 68,
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "gc_o",
+      "table": "orchard-morning",
+      "request": "Give me the number of rows for each yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"CG\", \"plan\": [{\"op\": \"count\", \"field\": null, \"group\": \"yard\"}], \"value\": {\"Cedar\": 5, \"Maple\": 4, \"Pine\": 4}, \"files\": {\"result.json\": \"{\\\"Cedar\\\": 5, \\\"Maple\\\": 4, \\\"Pine\\\": 4}\\n\"}, \"text\": \"{\\\"Cedar\\\": 5, \\\"Maple\\\": 4, \\\"Pine\\\": 4}\", \"published\": [\"/tmp/tmp9wxa8hya/out/result.json\"]}",
+      "bytes": "{\"Cedar\": 5, \"Maple\": 4, \"Pine\": 4}\n",
+      "value": {
+        "Cedar": 5,
+        "Maple": 4,
+        "Pine": 4
+      },
+      "expected": {
+        "Cedar": 5,
+        "Maple": 4,
+        "Pine": 4
+      },
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "gc_o",
+      "table": "orchard-evening",
+      "request": "Give me the number of rows for each yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"CG\", \"plan\": [{\"op\": \"count\", \"field\": null, \"group\": \"yard\"}], \"value\": {\"Pine\": 6, \"Cedar\": 3, \"Maple\": 6}, \"files\": {\"result.json\": \"{\\\"Pine\\\": 6, \\\"Cedar\\\": 3, \\\"Maple\\\": 6}\\n\"}, \"text\": \"{\\\"Pine\\\": 6, \\\"Cedar\\\": 3, \\\"Maple\\\": 6}\", \"published\": [\"/tmp/tmpy18cfpu3/out/result.json\"]}",
+      "bytes": "{\"Pine\": 6, \"Cedar\": 3, \"Maple\": 6}\n",
+      "value": {
+        "Pine": 6,
+        "Cedar": 3,
+        "Maple": 6
+      },
+      "expected": {
+        "Cedar": 3,
+        "Maple": 6,
+        "Pine": 6
+      },
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fgs_o",
+      "table": "orchard-morning",
+      "request": "For the day shift only, total crates by yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"SG\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"day\"}, {\"op\": \"sum\", \"field\": \"crates\", \"group\": \"yard\"}], \"value\": {\"Cedar\": 15, \"Pine\": 19, \"Maple\": 1}, \"files\": {\"result.json\": \"{\\\"Cedar\\\": 15, \\\"Pine\\\": 19, \\\"Maple\\\": 1}\\n\"}, \"text\": \"{\\\"Cedar\\\": 15, \\\"Pine\\\": 19, \\\"Maple\\\": 1}\", \"published\": [\"/tmp/tmpw4p136e1/out/result.json\"]}",
+      "bytes": "{\"Cedar\": 15, \"Pine\": 19, \"Maple\": 1}\n",
+      "value": {
+        "Cedar": 15,
+        "Pine": 19,
+        "Maple": 1
+      },
+      "expected": {
+        "Cedar": 15,
+        "Maple": 1,
+        "Pine": 19
+      },
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fgs_o",
+      "table": "orchard-evening",
+      "request": "For the day shift only, total crates by yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"SG\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"day\"}, {\"op\": \"sum\", \"field\": \"crates\", \"group\": \"yard\"}], \"value\": {\"Pine\": 34, \"Maple\": 18, \"Cedar\": 11}, \"files\": {\"result.json\": \"{\\\"Pine\\\": 34, \\\"Maple\\\": 18, \\\"Cedar\\\": 11}\\n\"}, \"text\": \"{\\\"Pine\\\": 34, \\\"Maple\\\": 18, \\\"Cedar\\\": 11}\", \"published\": [\"/tmp/tmployp85cy/out/result.json\"]}",
+      "bytes": "{\"Pine\": 34, \"Maple\": 18, \"Cedar\": 11}\n",
+      "value": {
+        "Pine": 34,
+        "Maple": 18,
+        "Cedar": 11
+      },
+      "expected": {
+        "Cedar": 11,
+        "Maple": 18,
+        "Pine": 34
+      },
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "gca_o",
+      "table": "orchard-morning",
+      "request": "Which yard appears in the most rows? Break ties by choosing the alphabetically first yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"CH\", \"plan\": [{\"op\": \"count\", \"field\": null, \"group\": \"yard\"}, {\"op\": \"highest\", \"tie\": \"first\", \"empty_null\": false}], \"value\": \"Cedar\", \"files\": {\"result.json\": \"\\\"Cedar\\\"\\n\"}, \"text\": \"\\\"Cedar\\\"\", \"published\": [\"/tmp/tmpn81eun0a/out/result.json\"]}",
+      "bytes": "\"Cedar\"\n",
+      "value": "Cedar",
+      "expected": "Cedar",
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "gca_o",
+      "table": "orchard-evening",
+      "request": "Which yard appears in the most rows? Break ties by choosing the alphabetically first yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"CH\", \"plan\": [{\"op\": \"count\", \"field\": null, \"group\": \"yard\"}, {\"op\": \"highest\", \"tie\": \"first\", \"empty_null\": false}], \"value\": \"Maple\", \"files\": {\"result.json\": \"\\\"Maple\\\"\\n\"}, \"text\": \"\\\"Maple\\\"\", \"published\": [\"/tmp/tmpe3ja5x_q/out/result.json\"]}",
+      "bytes": "\"Maple\"\n",
+      "value": "Maple",
+      "expected": "Maple",
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fgca_o",
+      "table": "orchard-morning",
+      "request": "On the day shift, which yard has the fewest rows? For equal counts use the alphabetically first yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"CL\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"day\"}, {\"op\": \"count\", \"field\": null, \"group\": \"yard\"}, {\"op\": \"lowest\", \"tie\": \"first\", \"empty_null\": false}], \"value\": \"Maple\", \"files\": {\"result.json\": \"\\\"Maple\\\"\\n\"}, \"text\": \"\\\"Maple\\\"\", \"published\": [\"/tmp/tmpf3u57b3u/out/result.json\"]}",
+      "bytes": "\"Maple\"\n",
+      "value": "Maple",
+      "expected": "Maple",
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fgca_o",
+      "table": "orchard-evening",
+      "request": "On the day shift, which yard has the fewest rows? For equal counts use the alphabetically first yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"CL\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"day\"}, {\"op\": \"count\", \"field\": null, \"group\": \"yard\"}, {\"op\": \"lowest\", \"tie\": \"first\", \"empty_null\": false}], \"value\": \"Cedar\", \"files\": {\"result.json\": \"\\\"Cedar\\\"\\n\"}, \"text\": \"\\\"Cedar\\\"\", \"published\": [\"/tmp/tmp124jz8_4/out/result.json\"]}",
+      "bytes": "\"Cedar\"\n",
+      "value": "Cedar",
+      "expected": "Cedar",
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fgsa_o",
+      "table": "orchard-morning",
+      "request": "For the night shift, which yard has the greatest total crates? Resolve equal totals using the alphabetically first yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"SH\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"night\"}, {\"op\": \"sum\", \"field\": \"crates\", \"group\": \"yard\"}, {\"op\": \"highest\", \"tie\": \"first\", \"empty_null\": false}], \"value\": \"Maple\", \"files\": {\"result.json\": \"\\\"Maple\\\"\\n\"}, \"text\": \"\\\"Maple\\\"\", \"published\": [\"/tmp/tmpwi6m9cga/out/result.json\"]}",
+      "bytes": "\"Maple\"\n",
+      "value": "Maple",
+      "expected": "Maple",
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    },
+    {
+      "id": "fgsa_o",
+      "table": "orchard-evening",
+      "request": "For the night shift, which yard has the greatest total crates? Resolve equal totals using the alphabetically first yard. Save the answer as result.json.",
+      "file": "result.json",
+      "returncode": 0,
+      "stdout": "{\"status\": \"answered\", \"code\": \"SH\", \"plan\": [{\"op\": \"filter\", \"field\": \"shift\", \"equals\": \"night\"}, {\"op\": \"sum\", \"field\": \"crates\", \"group\": \"yard\"}, {\"op\": \"highest\", \"tie\": \"first\", \"empty_null\": false}], \"value\": \"Pine\", \"files\": {\"result.json\": \"\\\"Pine\\\"\\n\"}, \"text\": \"\\\"Pine\\\"\", \"published\": [\"/tmp/tmpow4ay6r5/out/result.json\"]}",
+      "bytes": "\"Pine\"\n",
+      "value": "Pine",
+      "expected": "Pine",
+      "correct": true,
+      "existing_file_unchanged": true,
+      "existing_file_returncode": 1
+    }
+  ],
+  "created": 12,
+  "correct": 12
+}

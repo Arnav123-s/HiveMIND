@@ -1,0 +1,100 @@
+{
+  "source_sha256": "22311a277875acffe9176ce6d913402f26bcb727b138f93c7dab526b5ea9e5e5",
+  "counts": {
+    "missed": 8,
+    "correct_withhold": 5
+  },
+  "rows": [
+    {
+      "id": "tea-counter",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "book-stall",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "neighborhood",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "picture-frame",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "shop-list",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "cold-room",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "punctuation",
+      "first": "missed",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "instructions-first",
+      "first": "mismatch",
+      "conservative": "missed",
+      "multiplicity": "missed",
+      "observed": null
+    },
+    {
+      "id": "turned-down",
+      "first": "correct_withhold",
+      "conservative": "correct_withhold",
+      "multiplicity": "correct_withhold",
+      "observed": null
+    },
+    {
+      "id": "moving-input",
+      "first": "correct_withhold",
+      "conservative": "correct_withhold",
+      "multiplicity": "correct_withhold",
+      "observed": null
+    },
+    {
+      "id": "two-promises",
+      "first": "correct_withhold",
+      "conservative": "correct_withhold",
+      "multiplicity": "correct_withhold",
+      "observed": null
+    },
+    {
+      "id": "attendance-book",
+      "first": "correct_withhold",
+      "conservative": "correct_withhold",
+      "multiplicity": "correct_withhold",
+      "observed": null
+    },
+    {
+      "id": "choice-left-open",
+      "first": "correct_withhold",
+      "conservative": "correct_withhold",
+      "multiplicity": "correct_withhold",
+      "observed": null
+    }
+  ]
+}

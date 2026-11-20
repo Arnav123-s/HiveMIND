@@ -1,0 +1,188 @@
+{
+  "g51": {
+    "job_counts": {
+      "fresh": {
+        "completed": 1
+      },
+      "dream": {
+        "completed": 8
+      },
+      "practice": {
+        "completed": 12
+      },
+      "plan": {
+        "completed": 1
+      },
+      "gather": {
+        "completed": 1
+      },
+      "train": {
+        "completed": 20
+      },
+      "join": {
+        "completed": 8
+      },
+      "merge": {
+        "completed": 1
+      },
+      "gate": {
+        "completed": 16
+      },
+      "record": {
+        "completed": 1
+      }
+    },
+    "train_outcomes": {
+      "success": 18,
+      "failure": 2
+    },
+    "completed_stage_minutes": {
+      "fresh": 0.533,
+      "dream": 47.167,
+      "practice": 54.383,
+      "plan": 0.233,
+      "gather": 8.95,
+      "train": 220.317,
+      "join": 2.017,
+      "merge": 2.367,
+      "gate": 99.783,
+      "record": 1.233
+    },
+    "nonoverlapping_wall_minutes": {
+      "preparation": 64.0,
+      "training": 220.317,
+      "join_merge_wait": 4.533,
+      "complete_gate": 99.783,
+      "finish": 1.3
+    },
+    "actual_minutes": 389.933,
+    "outside_train_minutes": 169.617,
+    "train_span_minutes": 220.317,
+    "allowed_train_minutes_for_three_hours": 10.383,
+    "if_whole_train_span_halved_minutes": 279.775,
+    "if_successful_grow_steps_halved_minutes": 389.933,
+    "if_failures_report_by_last_success_minutes": 346.433,
+    "if_successful_grow_steps_halved_and_failures_report_by_last_success_minutes": 261.2,
+    "last_to_finish": {
+      "name": "train (g51data, data, data, g48data, 2, 3, cell)",
+      "id": 135600353993,
+      "conclusion": "failure"
+    },
+    "last_success_to_last_job_minutes": 43.5,
+    "successful_grow_duration_minutes": {
+      "median": 170.683,
+      "minimum": 169.433,
+      "maximum": 171.167
+    }
+  },
+  "g52": {
+    "job_counts": {
+      "fresh": {
+        "completed": 1
+      },
+      "dream": {
+        "completed": 8
+      },
+      "practice": {
+        "completed": 12
+      },
+      "gather": {
+        "completed": 1
+      },
+      "plan": {
+        "completed": 1
+      },
+      "train": {
+        "completed": 20
+      },
+      "join": {
+        "completed": 8
+      },
+      "merge": {
+        "completed": 1
+      },
+      "gate": {
+        "completed": 16
+      },
+      "record": {
+        "completed": 1
+      }
+    },
+    "train_outcomes": {
+      "success": 17,
+      "failure": 3
+    },
+    "completed_stage_minutes": {
+      "fresh": 0.267,
+      "dream": 48.4,
+      "practice": 48.017,
+      "gather": 10.917,
+      "plan": 0.25,
+      "train": 214.917,
+      "join": 1.867,
+      "merge": 2.183,
+      "gate": 66.05,
+      "record": 1.6
+    },
+    "nonoverlapping_wall_minutes": {
+      "preparation": 59.7,
+      "training": 214.917,
+      "join_merge_wait": 4.2,
+      "complete_gate": 66.05,
+      "finish": 1.65
+    },
+    "actual_minutes": 346.517,
+    "outside_train_minutes": 131.6,
+    "train_span_minutes": 214.917,
+    "allowed_train_minutes_for_three_hours": 48.4,
+    "if_whole_train_span_halved_minutes": 239.058,
+    "if_successful_grow_steps_halved_minutes": 346.517,
+    "if_failures_report_by_last_success_minutes": 306.483,
+    "if_successful_grow_steps_halved_and_failures_report_by_last_success_minutes": 220.908,
+    "last_to_finish": {
+      "name": "train (g52words2, words2, words, g49words2, 0, 2, cell)",
+      "id": 135846411166,
+      "conclusion": "failure"
+    },
+    "last_success_to_last_job_minutes": 40.033,
+    "successful_grow_duration_minutes": {
+      "median": 170.55,
+      "minimum": 169.117,
+      "maximum": 172.2
+    }
+  },
+  "g53": {
+    "job_counts": {
+      "fresh": {
+        "completed": 1
+      },
+      "dream": {
+        "completed": 8
+      },
+      "practice": {
+        "completed": 12
+      },
+      "plan": {
+        "completed": 1
+      },
+      "gather": {
+        "completed": 1
+      },
+      "train": {
+        "in_progress": 18,
+        "completed": 2
+      }
+    },
+    "train_outcomes": {
+      "in_progress": 18,
+      "failure": 2
+    },
+    "completed_stage_minutes": {
+      "fresh": 0.3,
+      "dream": 57.9,
+      "practice": 48.233,
+      "plan": 0.367,
+      "gather": 3.85
+    }
+  }
+}

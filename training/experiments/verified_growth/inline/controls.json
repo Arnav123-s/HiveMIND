@@ -1,0 +1,197 @@
+{
+  "attachments": {
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "units",
+        "group": "supplier"
+      }
+    ],
+    "value": {
+      "Fir": 4,
+      "Elm": 5
+    },
+    "files": {
+      "totals.json": "{\"Fir\": 4, \"Elm\": 5}\n"
+    },
+    "text": "{\"Fir\": 4, \"Elm\": 5}"
+  },
+  "cases": {
+    "plain_csv": {
+      "status": "answered",
+      "code": "SG",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "units",
+          "group": "supplier"
+        }
+      ],
+      "value": {
+        "Fir": 4,
+        "Elm": 5
+      },
+      "files": {
+        "totals.json": "{\"Fir\": 4, \"Elm\": 5}\n"
+      },
+      "text": "{\"Fir\": 4, \"Elm\": 5}"
+    },
+    "fenced_csv": {
+      "status": "answered",
+      "code": "SG",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "units",
+          "group": "supplier"
+        }
+      ],
+      "value": {
+        "Fir": 4,
+        "Elm": 5
+      },
+      "files": {
+        "totals.json": "{\"Fir\": 4, \"Elm\": 5}\n"
+      },
+      "text": "{\"Fir\": 4, \"Elm\": 5}"
+    },
+    "named_fence": {
+      "status": "answered",
+      "code": "SG",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "units",
+          "group": "supplier"
+        }
+      ],
+      "value": {
+        "Fir": 4,
+        "Elm": 5
+      },
+      "files": {
+        "totals.json": "{\"Fir\": 4, \"Elm\": 5}\n"
+      },
+      "text": "{\"Fir\": 4, \"Elm\": 5}"
+    },
+    "fenced_tsv": {
+      "status": "answered",
+      "code": "SG",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "units",
+          "group": "supplier"
+        }
+      ],
+      "value": {
+        "Fir": 4,
+        "Elm": 5
+      },
+      "files": {
+        "totals.json": "{\"Fir\": 4, \"Elm\": 5}\n"
+      },
+      "text": "{\"Fir\": 4, \"Elm\": 5}"
+    },
+    "plain_tsv": {
+      "status": "answered",
+      "code": "SG",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "units",
+          "group": "supplier"
+        }
+      ],
+      "value": {
+        "Fir": 4,
+        "Elm": 5
+      },
+      "files": {
+        "totals.json": "{\"Fir\": 4, \"Elm\": 5}\n"
+      },
+      "text": "{\"Fir\": 4, \"Elm\": 5}"
+    },
+    "no_source_name": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "no_output": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "multiple_outputs": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "conflicting_fence": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "two_tables": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "short_record": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "duplicate_header": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "two_unfenced_inputs": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "stray_record": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "negated_output": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "sibling_path": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "unclosed_fence": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "no unambiguous named inline table"
+    },
+    "mixed_attachment_and_inline": {
+      "status": "abstained",
+      "value": null,
+      "files": {},
+      "reason": "both attached and possible inline data"
+    }
+  },
+  "source_sha256": "17d058b893caf48ce7e1f9c756c6de8101bdcf4e750fd19410461b7d1ba51498"
+}

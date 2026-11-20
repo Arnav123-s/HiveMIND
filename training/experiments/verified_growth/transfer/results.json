@@ -1,0 +1,3141 @@
+{
+  "records_sha256": "08da8d04c264d7ae40006b6732b659f00a36335bd37d5a66102a290d991b85b1",
+  "summary": {
+    "agree": {
+      "primary_all_editions": {
+        "correct": 20,
+        "missed": 14,
+        "wrong": 2
+      },
+      "primary_requests_correct": 10,
+      "mastered_patterns": [],
+      "unseen_requests_correct": 5,
+      "unseen_mastered": [],
+      "groups": {
+        "filtered-sum": {
+          "paired": {
+            "correct": 1,
+            "missed": 1,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 2,
+            "missed": 2,
+            "wrong": 2
+          }
+        },
+        "grouped-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-group-sum": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "rank-group-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-sum": {
+          "paired": {
+            "correct": 1,
+            "missed": 2
+          },
+          "editions": {
+            "correct": 2,
+            "missed": 4
+          }
+        },
+        "anchor": {
+          "paired": {
+            "correct": 3
+          },
+          "editions": {
+            "correct": 6
+          }
+        },
+        "adjacent": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "clarify": {
+          "paired": {
+            "appropriate_hold": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "appropriate_hold": 4,
+            "wrong": 2
+          }
+        }
+      }
+    },
+    "flat": {
+      "primary_all_editions": {
+        "correct": 23,
+        "wrong": 9,
+        "missed": 4
+      },
+      "primary_requests_correct": 11,
+      "mastered_patterns": [],
+      "unseen_requests_correct": 5,
+      "unseen_mastered": [],
+      "groups": {
+        "filtered-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "grouped-count": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "filtered-group-sum": {
+          "paired": {
+            "correct": 1,
+            "wrong": 2
+          },
+          "editions": {
+            "correct": 2,
+            "wrong": 4
+          }
+        },
+        "rank-group-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 5,
+            "wrong": 1
+          }
+        },
+        "anchor": {
+          "paired": {
+            "correct": 3
+          },
+          "editions": {
+            "correct": 6
+          }
+        },
+        "adjacent": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "clarify": {
+          "paired": {
+            "appropriate_hold": 1,
+            "wrong": 2
+          },
+          "editions": {
+            "appropriate_hold": 2,
+            "wrong": 4
+          }
+        }
+      }
+    },
+    "learned": {
+      "primary_all_editions": {
+        "correct": 22,
+        "wrong": 10,
+        "missed": 4
+      },
+      "primary_requests_correct": 11,
+      "mastered_patterns": [],
+      "unseen_requests_correct": 6,
+      "unseen_mastered": [],
+      "groups": {
+        "filtered-sum": {
+          "paired": {
+            "correct": 1,
+            "wrong": 2
+          },
+          "editions": {
+            "correct": 2,
+            "wrong": 4
+          }
+        },
+        "grouped-count": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "filtered-group-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "rank-group-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "anchor": {
+          "paired": {
+            "correct": 3
+          },
+          "editions": {
+            "correct": 6
+          }
+        },
+        "adjacent": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "clarify": {
+          "paired": {
+            "appropriate_hold": 1,
+            "wrong": 2
+          },
+          "editions": {
+            "appropriate_hold": 2,
+            "wrong": 4
+          }
+        }
+      }
+    },
+    "native": {
+      "primary_all_editions": {
+        "wrong": 16,
+        "correct": 10,
+        "missed": 10
+      },
+      "primary_requests_correct": 4,
+      "mastered_patterns": [],
+      "unseen_requests_correct": 2,
+      "unseen_mastered": [],
+      "groups": {
+        "filtered-sum": {
+          "paired": {
+            "wrong": 3
+          },
+          "editions": {
+            "wrong": 6
+          }
+        },
+        "grouped-count": {
+          "paired": {
+            "wrong": 2,
+            "correct": 1
+          },
+          "editions": {
+            "wrong": 4,
+            "correct": 2
+          }
+        },
+        "filtered-group-sum": {
+          "paired": {
+            "wrong": 2,
+            "correct": 1
+          },
+          "editions": {
+            "wrong": 4,
+            "correct": 2
+          }
+        },
+        "rank-group-count": {
+          "paired": {
+            "correct": 1,
+            "missed": 2
+          },
+          "editions": {
+            "correct": 2,
+            "missed": 4
+          }
+        },
+        "filtered-rank-count": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "filtered-rank-sum": {
+          "paired": {
+            "wrong": 2,
+            "correct": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "anchor": {
+          "paired": {
+            "correct": 3
+          },
+          "editions": {
+            "correct": 6
+          }
+        },
+        "adjacent": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "clarify": {
+          "paired": {
+            "appropriate_hold": 3
+          },
+          "editions": {
+            "appropriate_hold": 6
+          }
+        }
+      }
+    },
+    "rules": {
+      "primary_all_editions": {
+        "correct": 27,
+        "wrong": 5,
+        "missed": 4
+      },
+      "primary_requests_correct": 13,
+      "mastered_patterns": [
+        "grouped-count"
+      ],
+      "unseen_requests_correct": 6,
+      "unseen_mastered": [],
+      "groups": {
+        "filtered-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "grouped-count": {
+          "paired": {
+            "correct": 3
+          },
+          "editions": {
+            "correct": 6
+          }
+        },
+        "filtered-group-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 4,
+            "wrong": 2
+          }
+        },
+        "rank-group-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-count": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "filtered-rank-sum": {
+          "paired": {
+            "correct": 2,
+            "wrong": 1
+          },
+          "editions": {
+            "correct": 5,
+            "wrong": 1
+          }
+        },
+        "anchor": {
+          "paired": {
+            "correct": 3
+          },
+          "editions": {
+            "correct": 6
+          }
+        },
+        "adjacent": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "clarify": {
+          "paired": {
+            "appropriate_hold": 1,
+            "wrong": 2
+          },
+          "editions": {
+            "appropriate_hold": 2,
+            "wrong": 4
+          }
+        }
+      }
+    },
+    "single": {
+      "primary_all_editions": {
+        "missed": 36
+      },
+      "primary_requests_correct": 0,
+      "mastered_patterns": [],
+      "unseen_requests_correct": 0,
+      "unseen_mastered": [],
+      "groups": {
+        "filtered-sum": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "grouped-count": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "filtered-group-sum": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "rank-group-count": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "filtered-rank-count": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "filtered-rank-sum": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "anchor": {
+          "paired": {
+            "correct": 2,
+            "missed": 1
+          },
+          "editions": {
+            "correct": 4,
+            "missed": 2
+          }
+        },
+        "adjacent": {
+          "paired": {
+            "missed": 3
+          },
+          "editions": {
+            "missed": 6
+          }
+        },
+        "clarify": {
+          "paired": {
+            "appropriate_hold": 1,
+            "wrong": 2
+          },
+          "editions": {
+            "appropriate_hold": 2,
+            "wrong": 4
+          }
+        }
+      }
+    }
+  },
+  "outcomes": [
+    {
+      "arm": "agree",
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        34,
+        68
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 5,
+          "Maple": 4,
+          "Pine": 4
+        },
+        {
+          "Cedar": 3,
+          "Maple": 6,
+          "Pine": 6
+        }
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 5,
+          "Birch": 4,
+          "Elm": 4
+        },
+        {
+          "Aster": 3,
+          "Birch": 6,
+          "Elm": 6
+        }
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "East": 4,
+          "North": 5,
+          "South": 4
+        },
+        {
+          "East": 6,
+          "North": 3,
+          "South": 6
+        }
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 15,
+          "Maple": 1,
+          "Pine": 19
+        },
+        {
+          "Cedar": 11,
+          "Maple": 18,
+          "Pine": 34
+        }
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 7,
+          "Birch": 22,
+          "Elm": 5
+        },
+        {
+          "Aster": 23,
+          "Birch": 19,
+          "Elm": 26
+        }
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "East": 5,
+          "North": 7,
+          "South": 22
+        },
+        {
+          "East": 26,
+          "North": 23,
+          "South": 19
+        }
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Cedar",
+        "Maple"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "North",
+        "East"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Cedar"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Pine"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "a_o",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        13,
+        15
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "a_h",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        69,
+        131
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "a_c",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        7,
+        6
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "x_o",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        3,
+        3
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "x_h",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        2,
+        8
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "x_c",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        4,
+        8
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "q_o",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "q_h",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "agree",
+      "id": "q_c",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        34,
+        68
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 5,
+          "Maple": 4,
+          "Pine": 4
+        },
+        {
+          "Cedar": 3,
+          "Maple": 6,
+          "Pine": 6
+        }
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 5,
+          "Birch": 4,
+          "Elm": 4
+        },
+        {
+          "Aster": 3,
+          "Birch": 6,
+          "Elm": 6
+        }
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "East": 4,
+          "North": 5,
+          "South": 4
+        },
+        {
+          "East": 6,
+          "North": 3,
+          "South": 6
+        }
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 15,
+          "Maple": 1,
+          "Pine": 19
+        },
+        {
+          "Cedar": 11,
+          "Maple": 18,
+          "Pine": 34
+        }
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "Aster": 7,
+          "Birch": 22,
+          "Elm": 5
+        },
+        {
+          "Aster": 23,
+          "Birch": 19,
+          "Elm": 26
+        }
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "East": 5,
+          "North": 7,
+          "South": 22
+        },
+        {
+          "East": 26,
+          "North": 23,
+          "South": 19
+        }
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Cedar",
+        "Maple"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "North",
+        "East"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Cedar"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Pine"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "a_o",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        13,
+        15
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "a_h",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        69,
+        131
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "a_c",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        7,
+        6
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "x_o",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        3,
+        3
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "x_h",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        2,
+        8
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "x_c",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        4,
+        8
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "q_o",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "q_h",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "flat",
+      "id": "q_c",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        34,
+        68
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 5,
+          "Maple": 4,
+          "Pine": 4
+        },
+        {
+          "Cedar": 3,
+          "Maple": 6,
+          "Pine": 6
+        }
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 5,
+          "Birch": 4,
+          "Elm": 4
+        },
+        {
+          "Aster": 3,
+          "Birch": 6,
+          "Elm": 6
+        }
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "East": 4,
+          "North": 5,
+          "South": 4
+        },
+        {
+          "East": 6,
+          "North": 3,
+          "South": 6
+        }
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 15,
+          "Maple": 1,
+          "Pine": 19
+        },
+        {
+          "Cedar": 11,
+          "Maple": 18,
+          "Pine": 34
+        }
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 7,
+          "Birch": 22,
+          "Elm": 5
+        },
+        {
+          "Aster": 23,
+          "Birch": 19,
+          "Elm": 26
+        }
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "East": 5,
+          "North": 7,
+          "South": 22
+        },
+        {
+          "East": 26,
+          "North": 23,
+          "South": 19
+        }
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Cedar",
+        "Maple"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "North",
+        "East"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Cedar"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Pine"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "a_o",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        13,
+        15
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "a_h",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        69,
+        131
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "a_c",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        7,
+        6
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "x_o",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        3,
+        3
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "x_h",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        2,
+        8
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "x_c",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        4,
+        8
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "q_o",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "q_h",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "learned",
+      "id": "q_c",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        34,
+        68
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "Cedar": 5,
+          "Maple": 4,
+          "Pine": 4
+        },
+        {
+          "Cedar": 3,
+          "Maple": 6,
+          "Pine": 6
+        }
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "Aster": 5,
+          "Birch": 4,
+          "Elm": 4
+        },
+        {
+          "Aster": 3,
+          "Birch": 6,
+          "Elm": 6
+        }
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "East": 4,
+          "North": 5,
+          "South": 4
+        },
+        {
+          "East": 6,
+          "North": 3,
+          "South": 6
+        }
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "Cedar": 15,
+          "Maple": 1,
+          "Pine": 19
+        },
+        {
+          "Cedar": 11,
+          "Maple": 18,
+          "Pine": 34
+        }
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 7,
+          "Birch": 22,
+          "Elm": 5
+        },
+        {
+          "Aster": 23,
+          "Birch": 19,
+          "Elm": 26
+        }
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "East": 5,
+          "North": 7,
+          "South": 22
+        },
+        {
+          "East": 26,
+          "North": 23,
+          "South": 19
+        }
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Cedar",
+        "Maple"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "North",
+        "East"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Maple",
+        "Cedar"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        "Maple",
+        "Pine"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "a_o",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        13,
+        15
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "a_h",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        69,
+        131
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "a_c",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        7,
+        6
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "x_o",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        3,
+        3
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "x_h",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        2,
+        8
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "x_c",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        4,
+        8
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "q_o",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "q_h",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "native",
+      "id": "q_c",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        34,
+        68
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 5,
+          "Maple": 4,
+          "Pine": 4
+        },
+        {
+          "Cedar": 3,
+          "Maple": 6,
+          "Pine": 6
+        }
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 5,
+          "Birch": 4,
+          "Elm": 4
+        },
+        {
+          "Aster": 3,
+          "Birch": 6,
+          "Elm": 6
+        }
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "East": 4,
+          "North": 5,
+          "South": 4
+        },
+        {
+          "East": 6,
+          "North": 3,
+          "South": 6
+        }
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Cedar": 15,
+          "Maple": 1,
+          "Pine": 19
+        },
+        {
+          "Cedar": 11,
+          "Maple": 18,
+          "Pine": 34
+        }
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        {
+          "Aster": 7,
+          "Birch": 22,
+          "Elm": 5
+        },
+        {
+          "Aster": 23,
+          "Birch": 19,
+          "Elm": 26
+        }
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        {
+          "East": 5,
+          "North": 7,
+          "South": 22
+        },
+        {
+          "East": 26,
+          "North": 23,
+          "South": 19
+        }
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Cedar",
+        "Maple"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "North",
+        "East"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Cedar"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Maple",
+        "Pine"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "a_o",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        13,
+        15
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "a_h",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        69,
+        131
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "a_c",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        7,
+        6
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "x_o",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        3,
+        3
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "x_h",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        2,
+        8
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "x_c",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        4,
+        8
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "q_o",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "q_h",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "rules",
+      "id": "q_c",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        34,
+        68
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        35,
+        63
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "Cedar": 5,
+          "Maple": 4,
+          "Pine": 4
+        },
+        {
+          "Cedar": 3,
+          "Maple": 6,
+          "Pine": 6
+        }
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "Aster": 5,
+          "Birch": 4,
+          "Elm": 4
+        },
+        {
+          "Aster": 3,
+          "Birch": 6,
+          "Elm": 6
+        }
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "East": 4,
+          "North": 5,
+          "South": 4
+        },
+        {
+          "East": 6,
+          "North": 3,
+          "South": 6
+        }
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "Cedar": 15,
+          "Maple": 1,
+          "Pine": 19
+        },
+        {
+          "Cedar": 11,
+          "Maple": 18,
+          "Pine": 34
+        }
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "Aster": 7,
+          "Birch": 22,
+          "Elm": 5
+        },
+        {
+          "Aster": 23,
+          "Birch": 19,
+          "Elm": 26
+        }
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        {
+          "East": 5,
+          "North": 7,
+          "South": 22
+        },
+        {
+          "East": 26,
+          "North": 23,
+          "South": 19
+        }
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Cedar",
+        "Maple"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "North",
+        "East"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Maple",
+        "Cedar"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Maple",
+        "Pine"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "Birch",
+        "Aster"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        "East",
+        "East"
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "a_o",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        13,
+        15
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "a_h",
+      "pattern": "anchor",
+      "editions": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct",
+      "expected_values": [
+        69,
+        131
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "a_c",
+      "pattern": "anchor",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        7,
+        6
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "x_o",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        3,
+        3
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "x_h",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        2,
+        8
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "x_c",
+      "pattern": "adjacent",
+      "editions": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed",
+      "expected_values": [
+        4,
+        8
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "q_o",
+      "pattern": "clarify",
+      "editions": [
+        "appropriate_hold",
+        "appropriate_hold"
+      ],
+      "paired": "appropriate_hold",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "q_h",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    },
+    {
+      "arm": "single",
+      "id": "q_c",
+      "pattern": "clarify",
+      "editions": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong",
+      "expected_values": [
+        null,
+        null
+      ]
+    }
+  ]
+}

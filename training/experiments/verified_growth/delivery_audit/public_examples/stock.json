@@ -1,0 +1,3381 @@
+{
+  "protocol_sha256": "bd0c9bbd6ef0516e9d2d347a698c6125301d6db7c90d51dd0308b76d109bc9d3",
+  "original_relay_sha256": "63a3e2ba9216b5f8d5854c8a628675ed0e81abf98cc92d6d5f5b67aef0658bb1",
+  "alternative": null,
+  "parser_sha256": "63a3e2ba9216b5f8d5854c8a628675ed0e81abf98cc92d6d5f5b67aef0658bb1",
+  "phase": "decisions only; zero exam.json reads",
+  "eligible_declines": 0,
+  "evaluated_declines": 0,
+  "source_sha256": "90ac6f3ba744087797cb5d9603db927146dbe5a3023a7c71a60fd2cacd9dd627",
+  "rows": [
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-1",
+      "archive_id": 14527694242,
+      "archive_sha256": "1d848f00a066f82bf214090da19c932f02c45f797375345a944b46e69ca05e96",
+      "task": "h20000501_02",
+      "filename": "grid.py",
+      "archived_path": "exam_20000501_mixed/h20000501_02/members/TASK.md",
+      "prompt_sha256": "341c656cda4288770b85a89f779ff2f9e589f0d0941132595109b98fbd15d535",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-1",
+      "archive_id": 14527694242,
+      "archive_sha256": "1d848f00a066f82bf214090da19c932f02c45f797375345a944b46e69ca05e96",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_1/x_h_prog_wrap_2/members/TASK.md",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-2",
+      "archive_id": 14527107867,
+      "archive_sha256": "762f82da42bcd5bc142a3d1f5174365ae4c12664f1b5b4941c459a859140382a",
+      "task": "h20000502_00",
+      "filename": "durations.py",
+      "archived_path": "exam_20000502_mixed/h20000502_00/members/TASK.md",
+      "prompt_sha256": "31a6ba9e19073c3c2d16bfe427a15ae28c74f0b700d170b77f0e15ee77e7b6d0",
+      "attempts": 10,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      },
+      "diagnostic": {
+        "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('19h19m37s') and of to_text(0).",
+        "prior": "No member got as far as an answer. Their programs and what they printed are in this run's folder.",
+        "examples": [
+          [
+            [
+              "to_seconds",
+              [
+                "1h30m15s"
+              ]
+            ],
+            5415
+          ],
+          [
+            [
+              "to_seconds",
+              [
+                "45m"
+              ]
+            ],
+            2700
+          ],
+          [
+            [
+              "to_text",
+              [
+                5415
+              ]
+            ],
+            "1h30m15s"
+          ],
+          [
+            [
+              "to_text",
+              [
+                3600
+              ]
+            ],
+            "1h"
+          ],
+          [
+            [
+              "to_text",
+              [
+                0
+              ]
+            ],
+            "0s"
+          ]
+        ],
+        "queries": [
+          [
+            "to_seconds",
+            [
+              "19h19m37s"
+            ]
+          ],
+          [
+            "to_text",
+            [
+              0
+            ]
+          ]
+        ],
+        "worker_runs": [
+          {
+            "sources": [
+              "work/member1_1.py",
+              "work/member1_2.py",
+              "work/member1_3.py"
+            ],
+            "module_sha256": "dd0c09ad7d35b6412c41215e07b3447b28824128124c2d797c5b5f9f5beb5fa6",
+            "passed_public": false,
+            "public_outputs": [
+              {
+                "error": "TypeError: expected string or bytes-like object, got 'int'"
+              },
+              {
+                "error": "TypeError: expected string or bytes-like object, got 'int'"
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "error": "TypeError: expected string or bytes-like object, got 'int'"
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member2/member2_1.py",
+              "member2/member2_2.py"
+            ],
+            "module_sha256": "543b98e04f030c28048e7ed1f888f045e553ced844f1f1b26324896e2a34d303",
+            "passed_public": false,
+            "public_outputs": [
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "value": "1h 30m 15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member2/member2_3.py"
+            ],
+            "module_sha256": "34d181269cbbced14beddcd4df54b667134327e4dc2a66895e7ccbaca16da8dc",
+            "passed_public": false,
+            "public_outputs": [
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "value": "1h 30m 15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member3/member3_2.py",
+              "member3/member3_3.py",
+              "member3/member3_4.py"
+            ],
+            "module_sha256": "07b6e14acdf085e253d1b90e5bac1008e837a0ed329f23309b2bb1377562278c",
+            "passed_public": false,
+            "public_outputs": [
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "error": "ValueError: not enough values to unpack (expected 3, got 2)"
+              },
+              {
+                "error": "ValueError: not enough values to unpack (expected 3, got 2)"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "error": "AttributeError: 'int' object has no attribute 'split'"
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          }
+        ],
+        "lookup_runs": [
+          {
+            "sources": [
+              "lookup-only"
+            ],
+            "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 0
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          }
+        ],
+        "guest": [
+          {
+            "inputs": 7,
+            "fuel": 1025206152,
+            "seconds": 0.249061
+          },
+          {
+            "inputs": 7,
+            "fuel": 1024741361,
+            "seconds": 0.23983
+          },
+          {
+            "inputs": 7,
+            "fuel": 1024824503,
+            "seconds": 0.350821
+          },
+          {
+            "inputs": 7,
+            "fuel": 1024469985,
+            "seconds": 0.298282
+          },
+          {
+            "inputs": 7,
+            "fuel": 1023630738,
+            "seconds": 0.240818
+          }
+        ],
+        "historical_stdout": {
+          "work/member1_1.py": "",
+          "work/member1_2.py": "",
+          "work/member1_3.py": "",
+          "member2/member2_1.py": "",
+          "member2/member2_2.py": "",
+          "member2/member2_3.py": "",
+          "member3/member3_1.py": "",
+          "member3/member3_2.py": "",
+          "member3/member3_3.py": "",
+          "member3/member3_4.py": ""
+        },
+        "events": [
+          [
+            "member1",
+            "same-error",
+            "TypeError: expected string or bytes-like object, got 'int'"
+          ],
+          [
+            "member1",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member2",
+            "same-error",
+            "AttributeError: 'int' object has no attribute 'split'"
+          ],
+          [
+            "member2",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member3",
+            "same-error",
+            "AttributeError: 'int' object has no attribute 'split'"
+          ],
+          [
+            "member3",
+            "answer",
+            "no answer"
+          ]
+        ]
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-2",
+      "archive_id": 14527107867,
+      "archive_sha256": "762f82da42bcd5bc142a3d1f5174365ae4c12664f1b5b4941c459a859140382a",
+      "task": "h20000502_03",
+      "filename": "desk.py",
+      "archived_path": "exam_20000502_mixed/h20000502_03/members/TASK.md",
+      "prompt_sha256": "19b53e3073b6183f151f1aa6b7523b48a98c7e66def92b1a248c0d8522c47693",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-4",
+      "archive_id": 14527693537,
+      "archive_sha256": "3b015af9d7078c3a7193b3cdafd0938d8fd285111e31ee9001cb13eb209a0776",
+      "task": "h20000504_02",
+      "filename": "bank.py",
+      "archived_path": "exam_20000504_mixed/h20000504_02/members/TASK.md",
+      "prompt_sha256": "a3a68cd5629113794f184e4cc3c0ff263007c7304bab17ae332bed05adb082f1",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-4",
+      "archive_id": 14527693537,
+      "archive_sha256": "3b015af9d7078c3a7193b3cdafd0938d8fd285111e31ee9001cb13eb209a0776",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "archived_path": "exam_held_4/x_h_prog_queue_0/members/TASK.md",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-5",
+      "archive_id": 14526853022,
+      "archive_sha256": "ad5b906ef5ae29f711de35606c2eb137896c1b475c548aea1d5afa1d6db4c209",
+      "task": "h20000505_00",
+      "filename": "machine.py",
+      "archived_path": "exam_20000505_mixed/h20000505_00/members/TASK.md",
+      "prompt_sha256": "634da8b10156ec5d41c7a6eee98204bedfa7d00ba645dbc2e10e99e173bd5664",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-5",
+      "archive_id": 14526853022,
+      "archive_sha256": "ad5b906ef5ae29f711de35606c2eb137896c1b475c548aea1d5afa1d6db4c209",
+      "task": "h20000505_01",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000505_mixed/h20000505_01/members/TASK.md",
+      "prompt_sha256": "b95744d06d89aa64dd6868f7031d22943d39f25dc6235a65598fccaa75f4561f",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-5",
+      "archive_id": 14526853022,
+      "archive_sha256": "ad5b906ef5ae29f711de35606c2eb137896c1b475c548aea1d5afa1d6db4c209",
+      "task": "h20000505_02",
+      "filename": "bank.py",
+      "archived_path": "exam_20000505_mixed/h20000505_02/members/TASK.md",
+      "prompt_sha256": "368fce09c818705c4af6853bab982a4d260d6b65a1b39a399ed26976a92fa27d",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-5",
+      "archive_id": 14526853022,
+      "archive_sha256": "ad5b906ef5ae29f711de35606c2eb137896c1b475c548aea1d5afa1d6db4c209",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "archived_path": "exam_held_5/x_h_prog_queue_1/members/TASK.md",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "attempts": 3,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-6",
+      "archive_id": 14529936755,
+      "archive_sha256": "0a672836499d6b0f31001ae3799c4673a3e81821da02ce5df1fadaffb00d73a5",
+      "task": "h20000506_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000506_mixed/h20000506_02/members/TASK.md",
+      "prompt_sha256": "3b97881c0c1d6d2c44709bfb620d7731892a6110b8df1101efdaac32fa7b8b8d",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-6",
+      "archive_id": 14529936755,
+      "archive_sha256": "0a672836499d6b0f31001ae3799c4673a3e81821da02ce5df1fadaffb00d73a5",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "archived_path": "exam_held_6/x_h_prog_queue_2/members/TASK.md",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "attempts": 8,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-7",
+      "archive_id": 14524604729,
+      "archive_sha256": "416eae01d20ced4b266e0578f82eb2df6c0921356f72bf7ef2f5cf9a5d3fdfb5",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_7/x_h_prog_wrap_0/members/TASK.md",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-8",
+      "archive_id": 14527600012,
+      "archive_sha256": "dce7034c0d7fc2e47e91c89623978cf818e3ffa26a4bc7a8ecbd75b17f8d332a",
+      "task": "h20000508_00",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000508_mixed/h20000508_00/members/TASK.md",
+      "prompt_sha256": "e1ad007e29b63135760bf6dc6714150ee7c93e4d388ab83bb1b6f54c1cfe6c6d",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-8",
+      "archive_id": 14527600012,
+      "archive_sha256": "dce7034c0d7fc2e47e91c89623978cf818e3ffa26a4bc7a8ecbd75b17f8d332a",
+      "task": "h20000508_02",
+      "filename": "roman.py",
+      "archived_path": "exam_20000508_mixed/h20000508_02/members/TASK.md",
+      "prompt_sha256": "a48a846c9992ddc8ec0c77b8e935e807ab7fb0684b9f87e09b4f5f12be5beea0",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-after-8",
+      "archive_id": 14527600012,
+      "archive_sha256": "dce7034c0d7fc2e47e91c89623978cf818e3ffa26a4bc7a8ecbd75b17f8d332a",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_8/x_h_prog_wrap_1/members/TASK.md",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-1",
+      "archive_id": 14527389410,
+      "archive_sha256": "ccfb01ed2aff63666c9bca2b650146a590de054111038cbc1ccb272535b3bfae",
+      "task": "h20000501_02",
+      "filename": "grid.py",
+      "archived_path": "exam_20000501_mixed/h20000501_02/members/TASK.md",
+      "prompt_sha256": "341c656cda4288770b85a89f779ff2f9e589f0d0941132595109b98fbd15d535",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-1",
+      "archive_id": 14527389410,
+      "archive_sha256": "ccfb01ed2aff63666c9bca2b650146a590de054111038cbc1ccb272535b3bfae",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_1/x_h_prog_wrap_2/members/TASK.md",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "attempts": 10,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-2",
+      "archive_id": 14529355230,
+      "archive_sha256": "db641a04887fedc8f6db353c8d8209f1a0fa0c0b84a93e552f1cb86c545adbd5",
+      "task": "h20000502_00",
+      "filename": "durations.py",
+      "archived_path": "exam_20000502_mixed/h20000502_00/members/TASK.md",
+      "prompt_sha256": "31a6ba9e19073c3c2d16bfe427a15ae28c74f0b700d170b77f0e15ee77e7b6d0",
+      "attempts": 9,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      },
+      "diagnostic": {
+        "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('19h19m37s') and of to_text(0).",
+        "prior": "No member got as far as an answer. Their programs and what they printed are in this run's folder.",
+        "examples": [
+          [
+            [
+              "to_seconds",
+              [
+                "1h30m15s"
+              ]
+            ],
+            5415
+          ],
+          [
+            [
+              "to_seconds",
+              [
+                "45m"
+              ]
+            ],
+            2700
+          ],
+          [
+            [
+              "to_text",
+              [
+                5415
+              ]
+            ],
+            "1h30m15s"
+          ],
+          [
+            [
+              "to_text",
+              [
+                3600
+              ]
+            ],
+            "1h"
+          ],
+          [
+            [
+              "to_text",
+              [
+                0
+              ]
+            ],
+            "0s"
+          ]
+        ],
+        "queries": [
+          [
+            "to_seconds",
+            [
+              "19h19m37s"
+            ]
+          ],
+          [
+            "to_text",
+            [
+              0
+            ]
+          ]
+        ],
+        "worker_runs": [
+          {
+            "sources": [
+              "work/member1_1.py",
+              "work/member1_2.py",
+              "work/member1_3.py"
+            ],
+            "module_sha256": "dd0c09ad7d35b6412c41215e07b3447b28824128124c2d797c5b5f9f5beb5fa6",
+            "passed_public": false,
+            "public_outputs": [
+              {
+                "error": "TypeError: expected string or bytes-like object, got 'int'"
+              },
+              {
+                "error": "TypeError: expected string or bytes-like object, got 'int'"
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "error": "TypeError: expected string or bytes-like object, got 'int'"
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member2/member2_1.py",
+              "member2/member2_2.py",
+              "member2/member2_3.py"
+            ],
+            "module_sha256": "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 69577
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          }
+        ],
+        "lookup_runs": [
+          {
+            "sources": [
+              "lookup-only"
+            ],
+            "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 0
+              },
+              {
+                "value": "0s"
+              }
+            ]
+          }
+        ],
+        "guest": [
+          {
+            "inputs": 7,
+            "fuel": 1025206072,
+            "seconds": 0.239268
+          },
+          {
+            "inputs": 7,
+            "fuel": 1025151463,
+            "seconds": 0.236874
+          },
+          {
+            "inputs": 7,
+            "fuel": 1023630738,
+            "seconds": 0.238968
+          }
+        ],
+        "historical_stdout": {
+          "work/member1_1.py": "",
+          "work/member1_2.py": "",
+          "work/member1_3.py": "",
+          "member2/member2_1.py": "",
+          "member2/member2_2.py": "got 69577 want 69537",
+          "member2/member2_3.py": "got 69577 want 69537",
+          "member3/member3_1.py": "",
+          "member3/member3_2.py": "",
+          "member3/member3_3.py": ""
+        },
+        "events": [
+          [
+            "member1",
+            "same-error",
+            "TypeError: expected string or bytes-like object, got 'int'"
+          ],
+          [
+            "member1",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member2",
+            "same-error",
+            "AssertionError"
+          ],
+          [
+            "member2",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member3",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member3",
+            "answer",
+            "no answer"
+          ]
+        ]
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-2",
+      "archive_id": 14529355230,
+      "archive_sha256": "db641a04887fedc8f6db353c8d8209f1a0fa0c0b84a93e552f1cb86c545adbd5",
+      "task": "h20000502_03",
+      "filename": "desk.py",
+      "archived_path": "exam_20000502_mixed/h20000502_03/members/TASK.md",
+      "prompt_sha256": "19b53e3073b6183f151f1aa6b7523b48a98c7e66def92b1a248c0d8522c47693",
+      "attempts": 9,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-4",
+      "archive_id": 14526675409,
+      "archive_sha256": "9c4692830a0e432f9ec2e31aae53b31da2b8e68032a69ce9a9d1433e2683cb97",
+      "task": "h20000504_02",
+      "filename": "bank.py",
+      "archived_path": "exam_20000504_mixed/h20000504_02/members/TASK.md",
+      "prompt_sha256": "a3a68cd5629113794f184e4cc3c0ff263007c7304bab17ae332bed05adb082f1",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-4",
+      "archive_id": 14526675409,
+      "archive_sha256": "9c4692830a0e432f9ec2e31aae53b31da2b8e68032a69ce9a9d1433e2683cb97",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "archived_path": "exam_held_4/x_h_prog_queue_0/members/TASK.md",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-5",
+      "archive_id": 14527991779,
+      "archive_sha256": "ba4b24d1a03db76cf65bca3ff048e12e86a7345851bed09e0d8527af9a34e4b9",
+      "task": "h20000505_00",
+      "filename": "machine.py",
+      "archived_path": "exam_20000505_mixed/h20000505_00/members/TASK.md",
+      "prompt_sha256": "634da8b10156ec5d41c7a6eee98204bedfa7d00ba645dbc2e10e99e173bd5664",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-5",
+      "archive_id": 14527991779,
+      "archive_sha256": "ba4b24d1a03db76cf65bca3ff048e12e86a7345851bed09e0d8527af9a34e4b9",
+      "task": "h20000505_01",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000505_mixed/h20000505_01/members/TASK.md",
+      "prompt_sha256": "b95744d06d89aa64dd6868f7031d22943d39f25dc6235a65598fccaa75f4561f",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-5",
+      "archive_id": 14527991779,
+      "archive_sha256": "ba4b24d1a03db76cf65bca3ff048e12e86a7345851bed09e0d8527af9a34e4b9",
+      "task": "h20000505_02",
+      "filename": "bank.py",
+      "archived_path": "exam_20000505_mixed/h20000505_02/members/TASK.md",
+      "prompt_sha256": "368fce09c818705c4af6853bab982a4d260d6b65a1b39a399ed26976a92fa27d",
+      "attempts": 3,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-5",
+      "archive_id": 14527991779,
+      "archive_sha256": "ba4b24d1a03db76cf65bca3ff048e12e86a7345851bed09e0d8527af9a34e4b9",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "archived_path": "exam_held_5/x_h_prog_queue_1/members/TASK.md",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "attempts": 1,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-6",
+      "archive_id": 14527655421,
+      "archive_sha256": "d96d0c7c44d859a73062a655d39c480cf235df1c9a6674b2953509b066f5069b",
+      "task": "h20000506_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000506_mixed/h20000506_02/members/TASK.md",
+      "prompt_sha256": "3b97881c0c1d6d2c44709bfb620d7731892a6110b8df1101efdaac32fa7b8b8d",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-6",
+      "archive_id": 14527655421,
+      "archive_sha256": "d96d0c7c44d859a73062a655d39c480cf235df1c9a6674b2953509b066f5069b",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "archived_path": "exam_held_6/x_h_prog_queue_2/members/TASK.md",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-7",
+      "archive_id": 14527355316,
+      "archive_sha256": "282dee3b321090010e74b9687e096f5c61a61b92b61616da3962363d1f14dc0d",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_7/x_h_prog_wrap_0/members/TASK.md",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "attempts": 11,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-8",
+      "archive_id": 14526163174,
+      "archive_sha256": "77af28dfea7464d1ff8554ba12477cee1f596287205fcf48d1c531dbcc6a3d5b",
+      "task": "h20000508_00",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000508_mixed/h20000508_00/members/TASK.md",
+      "prompt_sha256": "e1ad007e29b63135760bf6dc6714150ee7c93e4d388ab83bb1b6f54c1cfe6c6d",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-8",
+      "archive_id": 14526163174,
+      "archive_sha256": "77af28dfea7464d1ff8554ba12477cee1f596287205fcf48d1c531dbcc6a3d5b",
+      "task": "h20000508_02",
+      "filename": "roman.py",
+      "archived_path": "exam_20000508_mixed/h20000508_02/members/TASK.md",
+      "prompt_sha256": "a48a846c9992ddc8ec0c77b8e935e807ab7fb0684b9f87e09b4f5f12be5beea0",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g50",
+      "gate": "gate-work-before-8",
+      "archive_id": 14526163174,
+      "archive_sha256": "77af28dfea7464d1ff8554ba12477cee1f596287205fcf48d1c531dbcc6a3d5b",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_8/x_h_prog_wrap_1/members/TASK.md",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "attempts": 9,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-1",
+      "archive_id": 14558334576,
+      "archive_sha256": "53339841f831e995c2e09b34b48efeab47d5a942403b988cabd3cd571da8e410",
+      "task": "h20000511_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000511_mixed/h20000511_02/members/TASK.md",
+      "prompt_sha256": "83d8bfa3140a05b83d8d000c7489b1ae333b45acef337b12d706ae3be0dd19d7",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-1",
+      "archive_id": 14558334576,
+      "archive_sha256": "53339841f831e995c2e09b34b48efeab47d5a942403b988cabd3cd571da8e410",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_1/x_h_prog_wrap_2/members/TASK.md",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-2",
+      "archive_id": 14565935073,
+      "archive_sha256": "b410397de555e4621b525488fb114091665d1e6607bb0278022f243e39d61398",
+      "task": "h20000512_00",
+      "filename": "desk.py",
+      "archived_path": "exam_20000512_mixed/h20000512_00/members/TASK.md",
+      "prompt_sha256": "2ed89a1b4046faff2d016f2ad355f70b9101aab6fb87d8042269312e24f16149",
+      "attempts": 8,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-2",
+      "archive_id": 14565935073,
+      "archive_sha256": "b410397de555e4621b525488fb114091665d1e6607bb0278022f243e39d61398",
+      "task": "h20000512_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000512_mixed/h20000512_02/members/TASK.md",
+      "prompt_sha256": "fcc82e499ac4817bd8ba7f7560aaae841a4d34f8ce7a5fe9f3fd86d1e9a2b91a",
+      "attempts": 4,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-4",
+      "archive_id": 14559971065,
+      "archive_sha256": "1d9ae1b7a179124cfc6156ffb9c72ff9eff5c4348137479b7f0a75011b7b858f",
+      "task": "h20000514_00",
+      "filename": "wrap.py",
+      "archived_path": "exam_20000514_mixed/h20000514_00/members/TASK.md",
+      "prompt_sha256": "44adc147da880aec5d35e9e48550493f0dcee0db455f5d6576cbd4e1fdcfb5a9",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-4",
+      "archive_id": 14559971065,
+      "archive_sha256": "1d9ae1b7a179124cfc6156ffb9c72ff9eff5c4348137479b7f0a75011b7b858f",
+      "task": "h20000514_01",
+      "filename": "factors.py",
+      "archived_path": "exam_20000514_mixed/h20000514_01/members/TASK.md",
+      "prompt_sha256": "d69831a59dd6b028cfaa61de3a48e11d6714c0cbacdc653e3b7d9f7faefd4869",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-4",
+      "archive_id": 14559971065,
+      "archive_sha256": "1d9ae1b7a179124cfc6156ffb9c72ff9eff5c4348137479b7f0a75011b7b858f",
+      "task": "h20000514_02",
+      "filename": "bank.py",
+      "archived_path": "exam_20000514_mixed/h20000514_02/members/TASK.md",
+      "prompt_sha256": "92232cf1bb1210e6eac00e436bd1230097d227cb955f1cccb078f05fdab2660f",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-4",
+      "archive_id": 14559971065,
+      "archive_sha256": "1d9ae1b7a179124cfc6156ffb9c72ff9eff5c4348137479b7f0a75011b7b858f",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "archived_path": "exam_held_4/x_h_prog_queue_0/members/TASK.md",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-5",
+      "archive_id": 14562071422,
+      "archive_sha256": "fac70a9e0e8ecd6656e836612fc5829338a0ad2fa7f00f609c47ea383cfb7337",
+      "task": "h20000515_00",
+      "filename": "desk.py",
+      "archived_path": "exam_20000515_mixed/h20000515_00/members/TASK.md",
+      "prompt_sha256": "3e2a46640331796d35588a69dabbe549a4c6319e03cc206b2d703d748cbe48e2",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-5",
+      "archive_id": 14562071422,
+      "archive_sha256": "fac70a9e0e8ecd6656e836612fc5829338a0ad2fa7f00f609c47ea383cfb7337",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "archived_path": "exam_held_5/x_h_prog_queue_1/members/TASK.md",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "attempts": 1,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-6",
+      "archive_id": 14558479121,
+      "archive_sha256": "92941ead07d225fb028c77cc98c206862af1da8eaf91d97483e1fc926b899760",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "archived_path": "exam_held_6/x_h_prog_queue_2/members/TASK.md",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "attempts": 9,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-7",
+      "archive_id": 14561305990,
+      "archive_sha256": "4c71d75b3b341a0d1402a8bc1798a85f88e6abfe54d8b8b01968e721ba6b0d06",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_7/x_h_prog_wrap_0/members/TASK.md",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-8",
+      "archive_id": 14558663276,
+      "archive_sha256": "8079b1d39f667bd960f4aaaa1a4fec737b4c3fff05d45e7ddb8c955e3dae7db7",
+      "task": "h20000518_00",
+      "filename": "bank.py",
+      "archived_path": "exam_20000518_mixed/h20000518_00/members/TASK.md",
+      "prompt_sha256": "c506a181183380b33bf16020907512aca142d881c7f4acfad4a28d19a8f90126",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-8",
+      "archive_id": 14558663276,
+      "archive_sha256": "8079b1d39f667bd960f4aaaa1a4fec737b4c3fff05d45e7ddb8c955e3dae7db7",
+      "task": "h20000518_02",
+      "filename": "grid.py",
+      "archived_path": "exam_20000518_mixed/h20000518_02/members/TASK.md",
+      "prompt_sha256": "a73d632573cb4ebdc0f1afef851687126783045be634afacb1937c2d9d0da3ff",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-after-8",
+      "archive_id": 14558663276,
+      "archive_sha256": "8079b1d39f667bd960f4aaaa1a4fec737b4c3fff05d45e7ddb8c955e3dae7db7",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_8/x_h_prog_wrap_1/members/TASK.md",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-1",
+      "archive_id": 14560293390,
+      "archive_sha256": "ee4dc9bd82ad1982696e59fcc65653d7499140d68a7ea9e9ea72b0fe365721e6",
+      "task": "h20000511_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000511_mixed/h20000511_02/members/TASK.md",
+      "prompt_sha256": "83d8bfa3140a05b83d8d000c7489b1ae333b45acef337b12d706ae3be0dd19d7",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-1",
+      "archive_id": 14560293390,
+      "archive_sha256": "ee4dc9bd82ad1982696e59fcc65653d7499140d68a7ea9e9ea72b0fe365721e6",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_1/x_h_prog_wrap_2/members/TASK.md",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-2",
+      "archive_id": 14560686430,
+      "archive_sha256": "36c4fc657859a12ac4f90d4930717b406e1371558b59b3370c70c2b30f5cace7",
+      "task": "h20000512_00",
+      "filename": "desk.py",
+      "archived_path": "exam_20000512_mixed/h20000512_00/members/TASK.md",
+      "prompt_sha256": "2ed89a1b4046faff2d016f2ad355f70b9101aab6fb87d8042269312e24f16149",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-2",
+      "archive_id": 14560686430,
+      "archive_sha256": "36c4fc657859a12ac4f90d4930717b406e1371558b59b3370c70c2b30f5cace7",
+      "task": "h20000512_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000512_mixed/h20000512_02/members/TASK.md",
+      "prompt_sha256": "fcc82e499ac4817bd8ba7f7560aaae841a4d34f8ce7a5fe9f3fd86d1e9a2b91a",
+      "attempts": 10,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-4",
+      "archive_id": 14561393412,
+      "archive_sha256": "c3759ecf9f3fe2ed0a5a34c52ed305aa0ddc7fee0fdd8f7219fba74efc1f2acc",
+      "task": "h20000514_00",
+      "filename": "wrap.py",
+      "archived_path": "exam_20000514_mixed/h20000514_00/members/TASK.md",
+      "prompt_sha256": "44adc147da880aec5d35e9e48550493f0dcee0db455f5d6576cbd4e1fdcfb5a9",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-4",
+      "archive_id": 14561393412,
+      "archive_sha256": "c3759ecf9f3fe2ed0a5a34c52ed305aa0ddc7fee0fdd8f7219fba74efc1f2acc",
+      "task": "h20000514_01",
+      "filename": "factors.py",
+      "archived_path": "exam_20000514_mixed/h20000514_01/members/TASK.md",
+      "prompt_sha256": "d69831a59dd6b028cfaa61de3a48e11d6714c0cbacdc653e3b7d9f7faefd4869",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-4",
+      "archive_id": 14561393412,
+      "archive_sha256": "c3759ecf9f3fe2ed0a5a34c52ed305aa0ddc7fee0fdd8f7219fba74efc1f2acc",
+      "task": "h20000514_02",
+      "filename": "bank.py",
+      "archived_path": "exam_20000514_mixed/h20000514_02/members/TASK.md",
+      "prompt_sha256": "92232cf1bb1210e6eac00e436bd1230097d227cb955f1cccb078f05fdab2660f",
+      "attempts": 9,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-4",
+      "archive_id": 14561393412,
+      "archive_sha256": "c3759ecf9f3fe2ed0a5a34c52ed305aa0ddc7fee0fdd8f7219fba74efc1f2acc",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "archived_path": "exam_held_4/x_h_prog_queue_0/members/TASK.md",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-5",
+      "archive_id": 14560044557,
+      "archive_sha256": "32a7826fba129d374ea5117686a4781e19e8073f3fefda8e649afc97f62c84e8",
+      "task": "h20000515_00",
+      "filename": "desk.py",
+      "archived_path": "exam_20000515_mixed/h20000515_00/members/TASK.md",
+      "prompt_sha256": "3e2a46640331796d35588a69dabbe549a4c6319e03cc206b2d703d748cbe48e2",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-5",
+      "archive_id": 14560044557,
+      "archive_sha256": "32a7826fba129d374ea5117686a4781e19e8073f3fefda8e649afc97f62c84e8",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "archived_path": "exam_held_5/x_h_prog_queue_1/members/TASK.md",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "attempts": 1,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-6",
+      "archive_id": 14557918022,
+      "archive_sha256": "f1966df8fe5f088b24d50de643f4fc3d7dc881195a07f132bd5df21390a13334",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "archived_path": "exam_held_6/x_h_prog_queue_2/members/TASK.md",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-7",
+      "archive_id": 14558885659,
+      "archive_sha256": "7595c6f7a4f6bae6d6b68c31ca7ab29f7d1ea8bc9c81661a5b968032785cadd0",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_7/x_h_prog_wrap_0/members/TASK.md",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "attempts": 4,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-8",
+      "archive_id": 14559305594,
+      "archive_sha256": "f8621a3c305652b6fe61e2ea513ea2f065bacfd5b8809345c7dfda67692c6a73",
+      "task": "h20000518_00",
+      "filename": "bank.py",
+      "archived_path": "exam_20000518_mixed/h20000518_00/members/TASK.md",
+      "prompt_sha256": "c506a181183380b33bf16020907512aca142d881c7f4acfad4a28d19a8f90126",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-8",
+      "archive_id": 14559305594,
+      "archive_sha256": "f8621a3c305652b6fe61e2ea513ea2f065bacfd5b8809345c7dfda67692c6a73",
+      "task": "h20000518_02",
+      "filename": "grid.py",
+      "archived_path": "exam_20000518_mixed/h20000518_02/members/TASK.md",
+      "prompt_sha256": "a73d632573cb4ebdc0f1afef851687126783045be634afacb1937c2d9d0da3ff",
+      "attempts": 3,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g51",
+      "gate": "gate-work-before-8",
+      "archive_id": 14559305594,
+      "archive_sha256": "f8621a3c305652b6fe61e2ea513ea2f065bacfd5b8809345c7dfda67692c6a73",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_8/x_h_prog_wrap_1/members/TASK.md",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "attempts": 4,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-1",
+      "archive_id": 14586024327,
+      "archive_sha256": "3f54d4ecbd45a4223ed1ce178cdcafb81af634cb81ffec4a229f7e70fe0a4556",
+      "task": "h20000521_03",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000521_mixed/h20000521_03/members/TASK.md",
+      "prompt_sha256": "393b55756426273c5da9f4e0c0b9b9c4b6bd86eb7d9adb62d48bfe9f5a76f628",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-1",
+      "archive_id": 14586024327,
+      "archive_sha256": "3f54d4ecbd45a4223ed1ce178cdcafb81af634cb81ffec4a229f7e70fe0a4556",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_1/x_h_prog_wrap_2/members/TASK.md",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "attempts": 3,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-3",
+      "archive_id": 14587903855,
+      "archive_sha256": "5ee0385096b5e7d4b84b32c043d0938a2098321c7cdc9b23be2d61c4300d0122",
+      "task": "h20000523_03",
+      "filename": "durations.py",
+      "archived_path": "exam_20000523_mixed/h20000523_03/members/TASK.md",
+      "prompt_sha256": "ea52ea811d949ad5fab33c312750d2f2edc2250072f8c11c5ff32abb9cb4a258",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      },
+      "diagnostic": {
+        "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('10h3m48s') and of to_text(3600).",
+        "prior": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: durations.py: the requested file is missing\nMember 2: durations.py: the requested file is missing",
+        "examples": [
+          [
+            [
+              "to_seconds",
+              [
+                "1h30m15s"
+              ]
+            ],
+            5415
+          ],
+          [
+            [
+              "to_seconds",
+              [
+                "45m"
+              ]
+            ],
+            2700
+          ],
+          [
+            [
+              "to_text",
+              [
+                5415
+              ]
+            ],
+            "1h30m15s"
+          ],
+          [
+            [
+              "to_text",
+              [
+                3600
+              ]
+            ],
+            "1h"
+          ],
+          [
+            [
+              "to_text",
+              [
+                0
+              ]
+            ],
+            "0s"
+          ]
+        ],
+        "queries": [
+          [
+            "to_seconds",
+            [
+              "10h3m48s"
+            ]
+          ],
+          [
+            "to_text",
+            [
+              3600
+            ]
+          ]
+        ],
+        "worker_runs": [
+          {
+            "sources": [
+              "member3/member3_2.py"
+            ],
+            "module_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 36228
+              },
+              {
+                "value": "1h"
+              }
+            ]
+          }
+        ],
+        "lookup_runs": [
+          {
+            "sources": [
+              "lookup-only"
+            ],
+            "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 0
+              },
+              {
+                "value": "1h"
+              }
+            ]
+          }
+        ],
+        "guest": [
+          {
+            "inputs": 7,
+            "fuel": 1025011567,
+            "seconds": 0.236692
+          },
+          {
+            "inputs": 7,
+            "fuel": 1023627916,
+            "seconds": 0.28394
+          }
+        ],
+        "historical_stdout": {
+          "work/member1_1.py": "",
+          "work/member1_2.py": "",
+          "work/member1_3.py": "",
+          "member2/member2_1.py": "",
+          "member2/member2_2.py": "",
+          "member2/member2_3.py": "",
+          "member3/member3_1.py": "",
+          "member3/member3_2.py": "36228\n1h"
+        },
+        "events": [
+          [
+            "member1",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member1",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member2",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member2",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member3",
+            "module",
+            "durations.py saved from the program's functions"
+          ],
+          [
+            "member3",
+            "answer",
+            "36228\n1h"
+          ]
+        ]
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-4",
+      "archive_id": 14588532041,
+      "archive_sha256": "fcf8e9c0d0d7ea22f9bb26911653310ef648a09718aac8b6feb46202a7f8a6f0",
+      "task": "h20000524_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000524_mixed/h20000524_02/members/TASK.md",
+      "prompt_sha256": "d86d363b36afbf335333f0342f6682589a0c93742fbdc05fb7ac81e2ae4b59a7",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-4",
+      "archive_id": 14588532041,
+      "archive_sha256": "fcf8e9c0d0d7ea22f9bb26911653310ef648a09718aac8b6feb46202a7f8a6f0",
+      "task": "h20000524_03",
+      "filename": "bank.py",
+      "archived_path": "exam_20000524_mixed/h20000524_03/members/TASK.md",
+      "prompt_sha256": "230655aeea53fb2b2faa435dd54470305050450f97a37faac109c1754951b4a1",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-4",
+      "archive_id": 14588532041,
+      "archive_sha256": "fcf8e9c0d0d7ea22f9bb26911653310ef648a09718aac8b6feb46202a7f8a6f0",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "archived_path": "exam_held_4/x_h_prog_queue_0/members/TASK.md",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "attempts": 11,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-5",
+      "archive_id": 14587969948,
+      "archive_sha256": "2ad269096560f8d755c9a4629f4edf4eb07e8bb44e887e55f2060180a3f8657f",
+      "task": "h20000525_02",
+      "filename": "lru.py",
+      "archived_path": "exam_20000525_mixed/h20000525_02/members/TASK.md",
+      "prompt_sha256": "4589738ed3f2f8e7acde96aa4dc70efe52845156833ea33890e332adf5f4d927",
+      "attempts": 3,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-5",
+      "archive_id": 14587969948,
+      "archive_sha256": "2ad269096560f8d755c9a4629f4edf4eb07e8bb44e887e55f2060180a3f8657f",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "archived_path": "exam_held_5/x_h_prog_queue_1/members/TASK.md",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "attempts": 1,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-6",
+      "archive_id": 14585664858,
+      "archive_sha256": "32793de05bca0c470b89fb8a75f6e3e0abd2180188e6ca27f0ee28dc34530cbb",
+      "task": "h20000526_00",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000526_mixed/h20000526_00/members/TASK.md",
+      "prompt_sha256": "a430c14e84ebcea8aa4684388d6eabe948acd851798c210143c88b8c275ef14b",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-6",
+      "archive_id": 14585664858,
+      "archive_sha256": "32793de05bca0c470b89fb8a75f6e3e0abd2180188e6ca27f0ee28dc34530cbb",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "archived_path": "exam_held_6/x_h_prog_queue_2/members/TASK.md",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-7",
+      "archive_id": 14587642648,
+      "archive_sha256": "8eb95f267eafee873e856409e2d63d139b62009d8e2865e1741b00a69edd354e",
+      "task": "h20000527_01",
+      "filename": "wrap.py",
+      "archived_path": "exam_20000527_mixed/h20000527_01/members/TASK.md",
+      "prompt_sha256": "458500861179381c4e7d419036c2af415784483e231ce584bdddc67029c88771",
+      "attempts": 7,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-7",
+      "archive_id": 14587642648,
+      "archive_sha256": "8eb95f267eafee873e856409e2d63d139b62009d8e2865e1741b00a69edd354e",
+      "task": "h20000527_03",
+      "filename": "durations.py",
+      "archived_path": "exam_20000527_mixed/h20000527_03/members/TASK.md",
+      "prompt_sha256": "017aa8f85351d6007835666c81ef1cc9b99408cbf7a5e482f3af84361046e712",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      },
+      "diagnostic": {
+        "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('20h4m28s') and of to_text(60).",
+        "prior": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: durations.py: the requested file is missing\nMember 2: durations.py: the requested file is missing",
+        "examples": [
+          [
+            [
+              "to_seconds",
+              [
+                "1h30m15s"
+              ]
+            ],
+            5415
+          ],
+          [
+            [
+              "to_seconds",
+              [
+                "45m"
+              ]
+            ],
+            2700
+          ],
+          [
+            [
+              "to_text",
+              [
+                5415
+              ]
+            ],
+            "1h30m15s"
+          ],
+          [
+            [
+              "to_text",
+              [
+                3600
+              ]
+            ],
+            "1h"
+          ],
+          [
+            [
+              "to_text",
+              [
+                0
+              ]
+            ],
+            "0s"
+          ]
+        ],
+        "queries": [
+          [
+            "to_seconds",
+            [
+              "20h4m28s"
+            ]
+          ],
+          [
+            "to_text",
+            [
+              60
+            ]
+          ]
+        ],
+        "worker_runs": [
+          {
+            "sources": [
+              "member3/member3_1.py",
+              "member3/member3_2.py"
+            ],
+            "module_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 72268
+              },
+              {
+                "value": "1m"
+              }
+            ]
+          }
+        ],
+        "lookup_runs": [
+          {
+            "sources": [
+              "lookup-only"
+            ],
+            "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 0
+              },
+              {
+                "value": ""
+              }
+            ]
+          }
+        ],
+        "guest": [
+          {
+            "inputs": 7,
+            "fuel": 1025016853,
+            "seconds": 0.430456
+          },
+          {
+            "inputs": 7,
+            "fuel": 1023630293,
+            "seconds": 0.244256
+          }
+        ],
+        "historical_stdout": {
+          "work/member1_1.py": "",
+          "work/member1_2.py": "",
+          "work/member1_3.py": "",
+          "member2/member2_1.py": "",
+          "member2/member2_2.py": "",
+          "member2/member2_3.py": "",
+          "member3/member3_1.py": "",
+          "member3/member3_2.py": "72268\n1m"
+        },
+        "events": [
+          [
+            "member1",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member1",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member2",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member2",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member3",
+            "module",
+            "durations.py saved from the program's functions"
+          ],
+          [
+            "member3",
+            "answer",
+            "72268\n1m"
+          ]
+        ]
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-7",
+      "archive_id": 14587642648,
+      "archive_sha256": "8eb95f267eafee873e856409e2d63d139b62009d8e2865e1741b00a69edd354e",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_7/x_h_prog_wrap_0/members/TASK.md",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "attempts": 8,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-after-8",
+      "archive_id": 14587107489,
+      "archive_sha256": "a6052fa302f0185bb3b622b52e4b38e4d2d7dd731937ee13dbcf9591325ba69b",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_8/x_h_prog_wrap_1/members/TASK.md",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "attempts": 12,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-1",
+      "archive_id": 14587548753,
+      "archive_sha256": "0509989a93d826e6c93ebd078693b9e7a41592a50a00a6b24819aeb15382f47d",
+      "task": "h20000521_03",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000521_mixed/h20000521_03/members/TASK.md",
+      "prompt_sha256": "393b55756426273c5da9f4e0c0b9b9c4b6bd86eb7d9adb62d48bfe9f5a76f628",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-1",
+      "archive_id": 14587548753,
+      "archive_sha256": "0509989a93d826e6c93ebd078693b9e7a41592a50a00a6b24819aeb15382f47d",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_1/x_h_prog_wrap_2/members/TASK.md",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "attempts": 3,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-3",
+      "archive_id": 14588058494,
+      "archive_sha256": "65adb8c844175955e21450421b5628a41d82d77b2e0e03ca0559564f4ded8ccd",
+      "task": "h20000523_03",
+      "filename": "durations.py",
+      "archived_path": "exam_20000523_mixed/h20000523_03/members/TASK.md",
+      "prompt_sha256": "ea52ea811d949ad5fab33c312750d2f2edc2250072f8c11c5ff32abb9cb4a258",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      },
+      "diagnostic": {
+        "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('10h3m48s') and of to_text(3600).",
+        "prior": "36228\n1h\n\n## How it was checked\n- 3 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: durations.py.",
+        "examples": [
+          [
+            [
+              "to_seconds",
+              [
+                "1h30m15s"
+              ]
+            ],
+            5415
+          ],
+          [
+            [
+              "to_seconds",
+              [
+                "45m"
+              ]
+            ],
+            2700
+          ],
+          [
+            [
+              "to_text",
+              [
+                5415
+              ]
+            ],
+            "1h30m15s"
+          ],
+          [
+            [
+              "to_text",
+              [
+                3600
+              ]
+            ],
+            "1h"
+          ],
+          [
+            [
+              "to_text",
+              [
+                0
+              ]
+            ],
+            "0s"
+          ]
+        ],
+        "queries": [
+          [
+            "to_seconds",
+            [
+              "10h3m48s"
+            ]
+          ],
+          [
+            "to_text",
+            [
+              3600
+            ]
+          ]
+        ],
+        "worker_runs": [
+          {
+            "sources": [
+              "member2/member2_1.py"
+            ],
+            "module_sha256": "8e5d404b5fc9a977bc1f6cfb12f32a43672e2aff74bdc703357f1ff3ae423669",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 36228
+              },
+              {
+                "value": "1h"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member3/member3_1.py",
+              "member3/member3_2.py"
+            ],
+            "module_sha256": "7b4237e9ebb886057ab87a8223db60d39f40eec6ce22d79279ce10fba05d9b1f",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 36228
+              },
+              {
+                "value": "1h"
+              }
+            ]
+          }
+        ],
+        "lookup_runs": [
+          {
+            "sources": [
+              "lookup-only"
+            ],
+            "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 0
+              },
+              {
+                "value": "1h"
+              }
+            ]
+          }
+        ],
+        "guest": [
+          {
+            "inputs": 7,
+            "fuel": 1026389079,
+            "seconds": 0.236638
+          },
+          {
+            "inputs": 7,
+            "fuel": 1024970593,
+            "seconds": 0.236681
+          },
+          {
+            "inputs": 7,
+            "fuel": 1023627916,
+            "seconds": 0.23103
+          }
+        ],
+        "historical_stdout": {
+          "work/member1_1.py": "",
+          "work/member1_2.py": "",
+          "work/member1_3.py": "",
+          "member2/member2_1.py": "36228\n1h",
+          "member3/member3_1.py": "",
+          "member3/member3_2.py": "to_seconds(\"10h3m48s\")\n36228\nto_text(3600)"
+        },
+        "events": [
+          [
+            "member1",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member1",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member2",
+            "module",
+            "durations.py saved from the program's functions"
+          ],
+          [
+            "member2",
+            "answer",
+            "36228\n1h"
+          ],
+          [
+            "member3",
+            "answer",
+            "to_seconds(\"10h3m48s\")\n36228\nto_text(3600)"
+          ]
+        ]
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-4",
+      "archive_id": 14587441934,
+      "archive_sha256": "5705e4982f800d10c7c83f16a48adc12ed4eff7e4fd82981a6f7262d131e1942",
+      "task": "h20000524_02",
+      "filename": "machine.py",
+      "archived_path": "exam_20000524_mixed/h20000524_02/members/TASK.md",
+      "prompt_sha256": "d86d363b36afbf335333f0342f6682589a0c93742fbdc05fb7ac81e2ae4b59a7",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-4",
+      "archive_id": 14587441934,
+      "archive_sha256": "5705e4982f800d10c7c83f16a48adc12ed4eff7e4fd82981a6f7262d131e1942",
+      "task": "h20000524_03",
+      "filename": "bank.py",
+      "archived_path": "exam_20000524_mixed/h20000524_03/members/TASK.md",
+      "prompt_sha256": "230655aeea53fb2b2faa435dd54470305050450f97a37faac109c1754951b4a1",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-4",
+      "archive_id": 14587441934,
+      "archive_sha256": "5705e4982f800d10c7c83f16a48adc12ed4eff7e4fd82981a6f7262d131e1942",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "archived_path": "exam_held_4/x_h_prog_queue_0/members/TASK.md",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "attempts": 10,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-5",
+      "archive_id": 14589075651,
+      "archive_sha256": "0fdb433e76affb6634ab9391719f3d9e2abaa1b48f630e06325da8de187cbfa0",
+      "task": "h20000525_02",
+      "filename": "lru.py",
+      "archived_path": "exam_20000525_mixed/h20000525_02/members/TASK.md",
+      "prompt_sha256": "4589738ed3f2f8e7acde96aa4dc70efe52845156833ea33890e332adf5f4d927",
+      "attempts": 5,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-5",
+      "archive_id": 14589075651,
+      "archive_sha256": "0fdb433e76affb6634ab9391719f3d9e2abaa1b48f630e06325da8de187cbfa0",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "archived_path": "exam_held_5/x_h_prog_queue_1/members/TASK.md",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "attempts": 2,
+      "applies": false,
+      "report_present": false,
+      "prior": "missing"
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-6",
+      "archive_id": 14587538096,
+      "archive_sha256": "e72691703b45730f5c85c21e33a88be33a40207d378a36ad70ab4fca3848eb63",
+      "task": "h20000526_00",
+      "filename": "schedule.py",
+      "archived_path": "exam_20000526_mixed/h20000526_00/members/TASK.md",
+      "prompt_sha256": "a430c14e84ebcea8aa4684388d6eabe948acd851798c210143c88b8c275ef14b",
+      "attempts": 2,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-6",
+      "archive_id": 14587538096,
+      "archive_sha256": "e72691703b45730f5c85c21e33a88be33a40207d378a36ad70ab4fca3848eb63",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "archived_path": "exam_held_6/x_h_prog_queue_2/members/TASK.md",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "declined",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-7",
+      "archive_id": 14587311849,
+      "archive_sha256": "8e048e78d5a8bf39c380da7d05898b060d36b901a47b40ff3af2d05d5e9f9a0c",
+      "task": "h20000527_01",
+      "filename": "wrap.py",
+      "archived_path": "exam_20000527_mixed/h20000527_01/members/TASK.md",
+      "prompt_sha256": "458500861179381c4e7d419036c2af415784483e231ce584bdddc67029c88771",
+      "attempts": 4,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-7",
+      "archive_id": 14587311849,
+      "archive_sha256": "8e048e78d5a8bf39c380da7d05898b060d36b901a47b40ff3af2d05d5e9f9a0c",
+      "task": "h20000527_03",
+      "filename": "durations.py",
+      "archived_path": "exam_20000527_mixed/h20000527_03/members/TASK.md",
+      "prompt_sha256": "017aa8f85351d6007835666c81ef1cc9b99408cbf7a5e482f3af84361046e712",
+      "attempts": 6,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      },
+      "diagnostic": {
+        "prompt": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('20h4m28s') and of to_text(60).",
+        "prior": "72268\n1m\n\n## How it was checked\n- 3 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: durations.py.",
+        "examples": [
+          [
+            [
+              "to_seconds",
+              [
+                "1h30m15s"
+              ]
+            ],
+            5415
+          ],
+          [
+            [
+              "to_seconds",
+              [
+                "45m"
+              ]
+            ],
+            2700
+          ],
+          [
+            [
+              "to_text",
+              [
+                5415
+              ]
+            ],
+            "1h30m15s"
+          ],
+          [
+            [
+              "to_text",
+              [
+                3600
+              ]
+            ],
+            "1h"
+          ],
+          [
+            [
+              "to_text",
+              [
+                0
+              ]
+            ],
+            "0s"
+          ]
+        ],
+        "queries": [
+          [
+            "to_seconds",
+            [
+              "20h4m28s"
+            ]
+          ],
+          [
+            "to_text",
+            [
+              60
+            ]
+          ]
+        ],
+        "worker_runs": [
+          {
+            "sources": [
+              "member2/member2_1.py"
+            ],
+            "module_sha256": "7b4237e9ebb886057ab87a8223db60d39f40eec6ce22d79279ce10fba05d9b1f",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 72268
+              },
+              {
+                "value": "1m"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member2/member2_2.py"
+            ],
+            "module_sha256": "a31c2029e66813f634d23c4918e2475c1da33b2bc87e510b38ab716084408c5b",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 72268
+              },
+              {
+                "value": "1m"
+              }
+            ]
+          },
+          {
+            "sources": [
+              "member3/member3_1.py"
+            ],
+            "module_sha256": "f87a392f70f2b2d777f62d048a704892f4af25c2966c202f64a1a40643b1356a",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 72268
+              },
+              {
+                "value": "1m"
+              }
+            ]
+          }
+        ],
+        "lookup_runs": [
+          {
+            "sources": [
+              "lookup-only"
+            ],
+            "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+            "passed_public": true,
+            "public_outputs": [
+              {
+                "value": 5415
+              },
+              {
+                "value": 2700
+              },
+              {
+                "value": "1h30m15s"
+              },
+              {
+                "value": "1h"
+              },
+              {
+                "value": "0s"
+              }
+            ],
+            "query_outputs": [
+              {
+                "value": 0
+              },
+              {
+                "value": ""
+              }
+            ]
+          }
+        ],
+        "guest": [
+          {
+            "inputs": 7,
+            "fuel": 1024970547,
+            "seconds": 0.237462
+          },
+          {
+            "inputs": 7,
+            "fuel": 1024972538,
+            "seconds": 0.248708
+          },
+          {
+            "inputs": 7,
+            "fuel": 1025061752,
+            "seconds": 0.245902
+          },
+          {
+            "inputs": 7,
+            "fuel": 1023630265,
+            "seconds": 0.236558
+          }
+        ],
+        "historical_stdout": {
+          "work/member1_1.py": "",
+          "work/member1_2.py": "",
+          "work/member1_3.py": "",
+          "member2/member2_1.py": "",
+          "member2/member2_2.py": "72268\n1m",
+          "member3/member3_1.py": "72268\n1m"
+        },
+        "events": [
+          [
+            "member1",
+            "same-error",
+            "ModuleNotFoundError: No module named 'durations'"
+          ],
+          [
+            "member1",
+            "answer",
+            "no answer"
+          ],
+          [
+            "member2",
+            "module",
+            "durations.py saved from the program's functions"
+          ],
+          [
+            "member2",
+            "answer",
+            "72268\n1m"
+          ],
+          [
+            "member3",
+            "answer",
+            "72268\n1m"
+          ]
+        ]
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-7",
+      "archive_id": 14587311849,
+      "archive_sha256": "8e048e78d5a8bf39c380da7d05898b060d36b901a47b40ff3af2d05d5e9f9a0c",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_7/x_h_prog_wrap_0/members/TASK.md",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "attempts": 4,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    },
+    {
+      "generation": "g52",
+      "gate": "gate-work-before-8",
+      "archive_id": 14587332034,
+      "archive_sha256": "1a7d2555f862ba8b72ed974a5f2b2605e176557d8eefbc5f31cb99029368f1c3",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "archived_path": "exam_held_8/x_h_prog_wrap_1/members/TASK.md",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "attempts": 3,
+      "applies": false,
+      "report_present": true,
+      "prior": "answered",
+      "proposal": {
+        "outcome": {
+          "status": "abstained",
+          "text": "",
+          "files": {}
+        },
+        "guest": []
+      }
+    }
+  ],
+  "control": {
+    "prompt": "Save a Python module called stock.py. The function net(incoming, outgoing) returns the difference. For example net(8, 3) is 5 and net(2, 4) is -2. Then tell me the value of net(30, 8).",
+    "real": {
+      "outcome": {
+        "status": "answered",
+        "text": "22",
+        "module_sha256": "bd5dda29495662d2c87d341db1ff48a8cd19e2f9724ffd61fadaf43a16bb17f1",
+        "public_checks": 2,
+        "files": {
+          "stock.py": {
+            "sha256": "bd5dda29495662d2c87d341db1ff48a8cd19e2f9724ffd61fadaf43a16bb17f1",
+            "source": "def net(incoming, outgoing):\n    return incoming - outgoing\n"
+          }
+        }
+      },
+      "guest": [
+        {
+          "inputs": 3,
+          "fuel": 1022264650,
+          "seconds": 0.394054
+        }
+      ]
+    },
+    "lookup": {
+      "outcome": {
+        "status": "answered",
+        "text": "0",
+        "module_sha256": "6b7ca3ebd68f9490173ff19f1f94f8318836481a71749a24f5394226ec71d833",
+        "public_checks": 2,
+        "files": {
+          "stock.py": {
+            "sha256": "6b7ca3ebd68f9490173ff19f1f94f8318836481a71749a24f5394226ec71d833",
+            "source": "def net(*args):\n    if list(args) == [8, 3]:\n        return 5\n    if list(args) == [2, 4]:\n        return -2\n    return 0\n"
+          }
+        }
+      },
+      "guest": [
+        {
+          "inputs": 3,
+          "fuel": 1022643878,
+          "seconds": 0.242133
+        }
+      ]
+    },
+    "both": {
+      "outcome": {
+        "status": "abstained",
+        "text": "",
+        "files": {}
+      },
+      "guest": [
+        {
+          "inputs": 3,
+          "fuel": 1022643850,
+          "seconds": 0.24004
+        },
+        {
+          "inputs": 3,
+          "fuel": 1022264650,
+          "seconds": 0.233865
+        }
+      ]
+    }
+  },
+  "meter": {
+    "calls": 23,
+    "input_rows": 145,
+    "fuel": 23557587359,
+    "guest_seconds": 6.072337,
+    "total_wall_seconds": 16.923469876000127,
+    "process_cpu_seconds": 16.634630204999997
+  }
+}

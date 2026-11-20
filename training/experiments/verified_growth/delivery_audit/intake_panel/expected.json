@@ -1,0 +1,193 @@
+{
+  "tea-counter": {
+    "decision": "extract",
+    "file": "tea.py",
+    "functions": [
+      "cups",
+      "bags"
+    ],
+    "examples": [
+      {
+        "call": "cups(2)",
+        "expected": 4
+      },
+      {
+        "call": "bags(1)",
+        "expected": 3
+      }
+    ],
+    "requested_calls": [
+      "cups(5)",
+      "bags(4)"
+    ]
+  },
+  "book-stall": {
+    "decision": "extract",
+    "file": "books.py",
+    "functions": [
+      "cover",
+      "pages"
+    ],
+    "examples": [
+      {
+        "call": "cover(100)",
+        "expected": 125
+      },
+      {
+        "call": "pages(4)",
+        "expected": 8
+      }
+    ],
+    "requested_calls": [
+      "pages(7)",
+      "cover(225)"
+    ]
+  },
+  "neighborhood": {
+    "decision": "extract",
+    "file": "sign.py",
+    "functions": [
+      "small",
+      "width"
+    ],
+    "examples": [
+      {
+        "call": "small(\"MAP\")",
+        "expected": "map"
+      },
+      {
+        "call": "width(\"A B\")",
+        "expected": 3
+      }
+    ],
+    "requested_calls": [
+      "small(\"Town Hall\")",
+      "width(\"Elm\")"
+    ]
+  },
+  "picture-frame": {
+    "decision": "extract",
+    "file": "frame.py",
+    "functions": [
+      "area",
+      "edge"
+    ],
+    "examples": [
+      {
+        "call": "area(2, 5)",
+        "expected": 10
+      },
+      {
+        "call": "edge(2, 5)",
+        "expected": 14
+      }
+    ],
+    "requested_calls": [
+      "edge(3, 7)",
+      "area(4, 6)"
+    ]
+  },
+  "shop-list": {
+    "decision": "extract",
+    "file": "listtools.py",
+    "functions": [
+      "total",
+      "count"
+    ],
+    "examples": [
+      {
+        "call": "total([2, 3])",
+        "expected": 5
+      },
+      {
+        "call": "count([])",
+        "expected": 0
+      }
+    ],
+    "requested_calls": [
+      "total([7, 1, 4])",
+      "count([9, 9])"
+    ]
+  },
+  "cold-room": {
+    "decision": "extract",
+    "file": "cold.py",
+    "functions": [
+      "freeze",
+      "warmer"
+    ],
+    "examples": [
+      {
+        "call": "freeze(-1)",
+        "expected": true
+      },
+      {
+        "call": "warmer(-4)",
+        "expected": -3
+      }
+    ],
+    "requested_calls": [
+      "freeze(2)",
+      "warmer(-7)"
+    ]
+  },
+  "punctuation": {
+    "decision": "extract",
+    "file": "notes.py",
+    "functions": [
+      "shout",
+      "size"
+    ],
+    "examples": [
+      {
+        "call": "shout(\"hi, Jo!\")",
+        "expected": "HI, JO!"
+      },
+      {
+        "call": "size(\"ok?\")",
+        "expected": 3
+      }
+    ],
+    "requested_calls": [
+      "size(\"a, b!\")",
+      "shout(\"who?\")"
+    ]
+  },
+  "instructions-first": {
+    "decision": "extract",
+    "file": "seats.py",
+    "functions": [
+      "double",
+      "single"
+    ],
+    "examples": [
+      {
+        "call": "double(4)",
+        "expected": 8
+      },
+      {
+        "call": "single(3)",
+        "expected": 3
+      }
+    ],
+    "requested_calls": [
+      "double(9)",
+      "single(11)"
+    ]
+  },
+  "turned-down": {
+    "decision": "withhold"
+  },
+  "moving-input": {
+    "decision": "withhold"
+  },
+  "two-promises": {
+    "decision": "withhold"
+  },
+  "attendance-book": {
+    "decision": "withhold"
+  },
+  "choice-left-open": {
+    "decision": "withhold"
+  }
+}

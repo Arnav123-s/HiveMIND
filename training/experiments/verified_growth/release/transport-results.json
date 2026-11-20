@@ -1,0 +1,425 @@
+{
+  "bound_inline_table": 0,
+  "cases": {
+    "x_h_edit_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_edit_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_edit_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_prog_queue_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_prog_queue_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_prog_queue_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_prog_wrap_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_prog_wrap_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_prog_wrap_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_quotes_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_quotes_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_quotes_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_sim_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_sim_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_sim_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_tab_dates_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_tab_dates_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_tab_dates_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_tab_topn_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_tab_topn_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_tab_topn_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_two_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_two_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_two_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_txt_ini_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_txt_ini_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_txt_ini_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_txt_redact_0": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_txt_redact_1": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    },
+    "x_h_txt_redact_2": {
+      "bridged_rules": {
+        "submitted": false
+      },
+      "rules": {
+        "submitted": false
+      }
+    }
+  },
+  "official_prompt_hashes_matched": 30,
+  "outcomes": {
+    "g51_bridged_rules": {
+      "gained": [],
+      "lost": [],
+      "paired_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 3
+      },
+      "solo": {
+        "withheld": 30
+      },
+      "solo_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 0,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 0
+      },
+      "with_fallback": {
+        "correct": 3,
+        "withheld": 18,
+        "wrong": 9
+      }
+    },
+    "g51_rules": {
+      "gained": [],
+      "lost": [],
+      "paired_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 3
+      },
+      "solo": {
+        "withheld": 30
+      },
+      "solo_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 0,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 0
+      },
+      "with_fallback": {
+        "correct": 3,
+        "withheld": 18,
+        "wrong": 9
+      }
+    },
+    "g52_bridged_rules": {
+      "gained": [],
+      "lost": [],
+      "paired_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 1
+      },
+      "solo": {
+        "withheld": 30
+      },
+      "solo_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 0,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 0
+      },
+      "with_fallback": {
+        "correct": 1,
+        "withheld": 16,
+        "wrong": 13
+      }
+    },
+    "g52_rules": {
+      "gained": [],
+      "lost": [],
+      "paired_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 1
+      },
+      "solo": {
+        "withheld": 30
+      },
+      "solo_scores": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 0,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 0
+      },
+      "with_fallback": {
+        "correct": 1,
+        "withheld": 16,
+        "wrong": 13
+      }
+    }
+  },
+  "sealed_receipts_sha256": "81ada5fe1cce931edc5ea1d658f8d9114214fbd4b88b1de1b8e6eae9713fc763"
+}

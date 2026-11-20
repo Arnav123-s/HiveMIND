@@ -1,0 +1,5516 @@
+[
+  {
+    "arm": "single",
+    "id": "fs_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fs_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fs_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fs_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fs_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fs_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gc_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gc_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gc_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gc_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gc_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gc_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgs_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgs_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgs_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgs_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgs_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgs_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gca_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gca_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "gca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgca_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgca_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgsa_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgsa_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgsa_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgsa_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgsa_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "fgsa_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "a_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "single",
+    "id": "a_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "single",
+    "id": "a_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "single",
+    "id": "a_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "single",
+    "id": "a_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "a_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "one ungrouped primitive only",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "x_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "x_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "x_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "x_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "x_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "x_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "q_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "q_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "single",
+    "id": "q_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "single",
+    "id": "q_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "single",
+    "id": "q_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "single",
+    "id": "q_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "flat",
+    "id": "fs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 34,
+    "files": {},
+    "text": "34"
+  },
+  {
+    "arm": "flat",
+    "id": "fs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 68,
+    "files": {},
+    "text": "68"
+  },
+  {
+    "arm": "flat",
+    "id": "fs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 15,
+      "Elm": 19,
+      "Birch": 1
+    },
+    "files": {},
+    "text": "{\"Aster\": 15, \"Elm\": 19, \"Birch\": 1}"
+  },
+  {
+    "arm": "flat",
+    "id": "fs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 34,
+      "Birch": 18,
+      "Aster": 11
+    },
+    "files": {},
+    "text": "{\"Elm\": 34, \"Birch\": 18, \"Aster\": 11}"
+  },
+  {
+    "arm": "flat",
+    "id": "fs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 35,
+    "files": {},
+    "text": "35"
+  },
+  {
+    "arm": "flat",
+    "id": "fs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 63,
+    "files": {},
+    "text": "63"
+  },
+  {
+    "arm": "flat",
+    "id": "gc_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 5,
+      "Maple": 4,
+      "Pine": 4
+    },
+    "files": {},
+    "text": "{\"Cedar\": 5, \"Maple\": 4, \"Pine\": 4}"
+  },
+  {
+    "arm": "flat",
+    "id": "gc_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 6,
+      "Cedar": 3,
+      "Maple": 6
+    },
+    "files": {},
+    "text": "{\"Pine\": 6, \"Cedar\": 3, \"Maple\": 6}"
+  },
+  {
+    "arm": "flat",
+    "id": "gc_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 5,
+      "Birch": 4,
+      "Elm": 4
+    },
+    "files": {},
+    "text": "{\"Aster\": 5, \"Birch\": 4, \"Elm\": 4}"
+  },
+  {
+    "arm": "flat",
+    "id": "gc_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 6,
+      "Aster": 3,
+      "Birch": 6
+    },
+    "files": {},
+    "text": "{\"Elm\": 6, \"Aster\": 3, \"Birch\": 6}"
+  },
+  {
+    "arm": "flat",
+    "id": "gc_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "flat",
+    "id": "gc_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "flat",
+    "id": "fgs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 15,
+      "Pine": 19,
+      "Maple": 1
+    },
+    "files": {},
+    "text": "{\"Cedar\": 15, \"Pine\": 19, \"Maple\": 1}"
+  },
+  {
+    "arm": "flat",
+    "id": "fgs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 34,
+      "Maple": 18,
+      "Cedar": 11
+    },
+    "files": {},
+    "text": "{\"Pine\": 34, \"Maple\": 18, \"Cedar\": 11}"
+  },
+  {
+    "arm": "flat",
+    "id": "fgs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Birch": 3,
+      "Aster": 2,
+      "Elm": 2
+    },
+    "files": {},
+    "text": "{\"Birch\": 3, \"Aster\": 2, \"Elm\": 2}"
+  },
+  {
+    "arm": "flat",
+    "id": "fgs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 2,
+      "Aster": 2,
+      "Birch": 2
+    },
+    "files": {},
+    "text": "{\"Elm\": 2, \"Aster\": 2, \"Birch\": 2}"
+  },
+  {
+    "arm": "flat",
+    "id": "fgs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "flat",
+    "id": "fgs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "flat",
+    "id": "gca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "flat",
+    "id": "gca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "flat",
+    "id": "gca_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "flat",
+    "id": "gca_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "flat",
+    "id": "gca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "gca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "fgca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "fgca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "fgca_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgca_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgsa_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgsa_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Pine",
+    "files": {},
+    "text": "\"Pine\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgsa_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgsa_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgsa_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "North",
+    "files": {},
+    "text": "\"North\""
+  },
+  {
+    "arm": "flat",
+    "id": "fgsa_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "flat",
+    "id": "a_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "flat",
+    "id": "a_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "flat",
+    "id": "a_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "flat",
+    "id": "a_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "flat",
+    "id": "a_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "flat",
+    "id": "a_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "flat",
+    "id": "x_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "x_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "x_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "x_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "x_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "x_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "q_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "q_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "flat",
+    "id": "q_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "flat",
+    "id": "q_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "flat",
+    "id": "q_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "flat",
+    "id": "q_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "learned",
+    "id": "fs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 34,
+    "files": {},
+    "text": "34"
+  },
+  {
+    "arm": "learned",
+    "id": "fs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 68,
+    "files": {},
+    "text": "68"
+  },
+  {
+    "arm": "learned",
+    "id": "fs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 15,
+      "Elm": 19,
+      "Birch": 1
+    },
+    "files": {},
+    "text": "{\"Aster\": 15, \"Elm\": 19, \"Birch\": 1}"
+  },
+  {
+    "arm": "learned",
+    "id": "fs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 34,
+      "Birch": 18,
+      "Aster": 11
+    },
+    "files": {},
+    "text": "{\"Elm\": 34, \"Birch\": 18, \"Aster\": 11}"
+  },
+  {
+    "arm": "learned",
+    "id": "fs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "learned",
+    "id": "fs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 9,
+    "files": {},
+    "text": "9"
+  },
+  {
+    "arm": "learned",
+    "id": "gc_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 5,
+      "Maple": 4,
+      "Pine": 4
+    },
+    "files": {},
+    "text": "{\"Cedar\": 5, \"Maple\": 4, \"Pine\": 4}"
+  },
+  {
+    "arm": "learned",
+    "id": "gc_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 6,
+      "Cedar": 3,
+      "Maple": 6
+    },
+    "files": {},
+    "text": "{\"Pine\": 6, \"Cedar\": 3, \"Maple\": 6}"
+  },
+  {
+    "arm": "learned",
+    "id": "gc_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 5,
+      "Birch": 4,
+      "Elm": 4
+    },
+    "files": {},
+    "text": "{\"Aster\": 5, \"Birch\": 4, \"Elm\": 4}"
+  },
+  {
+    "arm": "learned",
+    "id": "gc_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 6,
+      "Aster": 3,
+      "Birch": 6
+    },
+    "files": {},
+    "text": "{\"Elm\": 6, \"Aster\": 3, \"Birch\": 6}"
+  },
+  {
+    "arm": "learned",
+    "id": "gc_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "learned",
+    "id": "gc_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "learned",
+    "id": "fgs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 15,
+      "Pine": 19,
+      "Maple": 1
+    },
+    "files": {},
+    "text": "{\"Cedar\": 15, \"Pine\": 19, \"Maple\": 1}"
+  },
+  {
+    "arm": "learned",
+    "id": "fgs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 34,
+      "Maple": 18,
+      "Cedar": 11
+    },
+    "files": {},
+    "text": "{\"Pine\": 34, \"Maple\": 18, \"Cedar\": 11}"
+  },
+  {
+    "arm": "learned",
+    "id": "fgs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Birch": 22,
+      "Aster": 7,
+      "Elm": 5
+    },
+    "files": {},
+    "text": "{\"Birch\": 22, \"Aster\": 7, \"Elm\": 5}"
+  },
+  {
+    "arm": "learned",
+    "id": "fgs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 26,
+      "Aster": 23,
+      "Birch": 19
+    },
+    "files": {},
+    "text": "{\"Elm\": 26, \"Aster\": 23, \"Birch\": 19}"
+  },
+  {
+    "arm": "learned",
+    "id": "fgs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "learned",
+    "id": "fgs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "learned",
+    "id": "gca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "learned",
+    "id": "gca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "learned",
+    "id": "gca_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "learned",
+    "id": "gca_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "learned",
+    "id": "gca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "gca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "fgca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "fgca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "fgca_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgca_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgsa_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgsa_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Pine",
+    "files": {},
+    "text": "\"Pine\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgsa_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "learned",
+    "id": "fgsa_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 9,
+    "files": {},
+    "text": "9"
+  },
+  {
+    "arm": "learned",
+    "id": "fgsa_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "learned",
+    "id": "fgsa_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "learned",
+    "id": "a_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "learned",
+    "id": "a_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "learned",
+    "id": "a_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "learned",
+    "id": "a_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "learned",
+    "id": "a_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "learned",
+    "id": "a_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "learned",
+    "id": "x_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "x_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "x_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "x_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "x_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "x_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "q_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "q_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "learned",
+    "id": "q_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "learned",
+    "id": "q_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "learned",
+    "id": "q_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "learned",
+    "id": "q_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "rules",
+    "id": "fs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 34,
+    "files": {},
+    "text": "34"
+  },
+  {
+    "arm": "rules",
+    "id": "fs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 68,
+    "files": {},
+    "text": "68"
+  },
+  {
+    "arm": "rules",
+    "id": "fs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 35,
+    "files": {},
+    "text": "35"
+  },
+  {
+    "arm": "rules",
+    "id": "fs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 63,
+    "files": {},
+    "text": "63"
+  },
+  {
+    "arm": "rules",
+    "id": "fs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "rules",
+    "id": "fs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 9,
+    "files": {},
+    "text": "9"
+  },
+  {
+    "arm": "rules",
+    "id": "gc_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 5,
+      "Maple": 4,
+      "Pine": 4
+    },
+    "files": {},
+    "text": "{\"Cedar\": 5, \"Maple\": 4, \"Pine\": 4}"
+  },
+  {
+    "arm": "rules",
+    "id": "gc_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 6,
+      "Cedar": 3,
+      "Maple": 6
+    },
+    "files": {},
+    "text": "{\"Pine\": 6, \"Cedar\": 3, \"Maple\": 6}"
+  },
+  {
+    "arm": "rules",
+    "id": "gc_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 5,
+      "Birch": 4,
+      "Elm": 4
+    },
+    "files": {},
+    "text": "{\"Aster\": 5, \"Birch\": 4, \"Elm\": 4}"
+  },
+  {
+    "arm": "rules",
+    "id": "gc_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 6,
+      "Aster": 3,
+      "Birch": 6
+    },
+    "files": {},
+    "text": "{\"Elm\": 6, \"Aster\": 3, \"Birch\": 6}"
+  },
+  {
+    "arm": "rules",
+    "id": "gc_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "North": 5,
+      "South": 4,
+      "East": 4
+    },
+    "files": {},
+    "text": "{\"North\": 5, \"South\": 4, \"East\": 4}"
+  },
+  {
+    "arm": "rules",
+    "id": "gc_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "East": 6,
+      "North": 3,
+      "South": 6
+    },
+    "files": {},
+    "text": "{\"East\": 6, \"North\": 3, \"South\": 6}"
+  },
+  {
+    "arm": "rules",
+    "id": "fgs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 15,
+      "Pine": 19,
+      "Maple": 1
+    },
+    "files": {},
+    "text": "{\"Cedar\": 15, \"Pine\": 19, \"Maple\": 1}"
+  },
+  {
+    "arm": "rules",
+    "id": "fgs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 34,
+      "Maple": 18,
+      "Cedar": 11
+    },
+    "files": {},
+    "text": "{\"Pine\": 34, \"Maple\": 18, \"Cedar\": 11}"
+  },
+  {
+    "arm": "rules",
+    "id": "fgs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Birch": 22,
+      "Aster": 7,
+      "Elm": 5
+    },
+    "files": {},
+    "text": "{\"Birch\": 22, \"Aster\": 7, \"Elm\": 5}"
+  },
+  {
+    "arm": "rules",
+    "id": "fgs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 26,
+      "Aster": 23,
+      "Birch": 19
+    },
+    "files": {},
+    "text": "{\"Elm\": 26, \"Aster\": 23, \"Birch\": 19}"
+  },
+  {
+    "arm": "rules",
+    "id": "fgs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "South": 3,
+      "North": 2,
+      "East": 2
+    },
+    "files": {},
+    "text": "{\"South\": 3, \"North\": 2, \"East\": 2}"
+  },
+  {
+    "arm": "rules",
+    "id": "fgs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "East": 2,
+      "North": 2,
+      "South": 2
+    },
+    "files": {},
+    "text": "{\"East\": 2, \"North\": 2, \"South\": 2}"
+  },
+  {
+    "arm": "rules",
+    "id": "gca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "rules",
+    "id": "gca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "rules",
+    "id": "gca_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "rules",
+    "id": "gca_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "rules",
+    "id": "gca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "gca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "fgca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "fgca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "fgca_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgca_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgsa_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgsa_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Pine",
+    "files": {},
+    "text": "\"Pine\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgsa_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgsa_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgsa_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "North",
+    "files": {},
+    "text": "\"North\""
+  },
+  {
+    "arm": "rules",
+    "id": "fgsa_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "rules",
+    "id": "a_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "rules",
+    "id": "a_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "rules",
+    "id": "a_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "rules",
+    "id": "a_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "rules",
+    "id": "a_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "rules",
+    "id": "a_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "rules",
+    "id": "x_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "x_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "x_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "x_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "x_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "x_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "q_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "q_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "rules",
+    "id": "q_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "rules",
+    "id": "q_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "rules",
+    "id": "q_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "rules",
+    "id": "q_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "agree",
+    "id": "fs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 34,
+    "files": {},
+    "text": "34"
+  },
+  {
+    "arm": "agree",
+    "id": "fs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": null
+      }
+    ],
+    "value": 68,
+    "files": {},
+    "text": "68"
+  },
+  {
+    "arm": "agree",
+    "id": "fs_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fs_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "agree",
+    "id": "fs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 9,
+    "files": {},
+    "text": "9"
+  },
+  {
+    "arm": "agree",
+    "id": "gc_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 5,
+      "Maple": 4,
+      "Pine": 4
+    },
+    "files": {},
+    "text": "{\"Cedar\": 5, \"Maple\": 4, \"Pine\": 4}"
+  },
+  {
+    "arm": "agree",
+    "id": "gc_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 6,
+      "Cedar": 3,
+      "Maple": 6
+    },
+    "files": {},
+    "text": "{\"Pine\": 6, \"Cedar\": 3, \"Maple\": 6}"
+  },
+  {
+    "arm": "agree",
+    "id": "gc_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 5,
+      "Birch": 4,
+      "Elm": 4
+    },
+    "files": {},
+    "text": "{\"Aster\": 5, \"Birch\": 4, \"Elm\": 4}"
+  },
+  {
+    "arm": "agree",
+    "id": "gc_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 6,
+      "Aster": 3,
+      "Birch": 6
+    },
+    "files": {},
+    "text": "{\"Elm\": 6, \"Aster\": 3, \"Birch\": 6}"
+  },
+  {
+    "arm": "agree",
+    "id": "gc_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "gc_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 15,
+      "Pine": 19,
+      "Maple": 1
+    },
+    "files": {},
+    "text": "{\"Cedar\": 15, \"Pine\": 19, \"Maple\": 1}"
+  },
+  {
+    "arm": "agree",
+    "id": "fgs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 34,
+      "Maple": 18,
+      "Cedar": 11
+    },
+    "files": {},
+    "text": "{\"Pine\": 34, \"Maple\": 18, \"Cedar\": 11}"
+  },
+  {
+    "arm": "agree",
+    "id": "fgs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Birch": 22,
+      "Aster": 7,
+      "Elm": 5
+    },
+    "files": {},
+    "text": "{\"Birch\": 22, \"Aster\": 7, \"Elm\": 5}"
+  },
+  {
+    "arm": "agree",
+    "id": "fgs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 26,
+      "Aster": 23,
+      "Birch": 19
+    },
+    "files": {},
+    "text": "{\"Elm\": 26, \"Aster\": 23, \"Birch\": 19}"
+  },
+  {
+    "arm": "agree",
+    "id": "fgs_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgs_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "gca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "agree",
+    "id": "gca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "agree",
+    "id": "gca_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "agree",
+    "id": "gca_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "agree",
+    "id": "gca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "gca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "agree",
+    "id": "fgca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "agree",
+    "id": "fgca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgca_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "agree",
+    "id": "fgca_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "agree",
+    "id": "fgsa_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "agree",
+    "id": "fgsa_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "SH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "sum",
+        "field": "crates",
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Pine",
+    "files": {},
+    "text": "\"Pine\""
+  },
+  {
+    "arm": "agree",
+    "id": "fgsa_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgsa_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgsa_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "fgsa_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "a_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "agree",
+    "id": "a_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "agree",
+    "id": "a_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "agree",
+    "id": "a_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "agree",
+    "id": "a_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "agree",
+    "id": "a_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "agree",
+    "id": "x_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "x_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "x_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "x_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "x_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "x_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "q_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "q_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "q_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "q_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "the learned and rule selectors disagree",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "agree",
+    "id": "q_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "agree",
+    "id": "q_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "visits",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "native",
+    "id": "fs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "native",
+    "id": "fs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "native",
+    "id": "fs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Aster": 3,
+      "Elm": 2,
+      "Birch": 1
+    },
+    "files": {},
+    "text": "{\"Aster\": 3, \"Elm\": 2, \"Birch\": 1}"
+  },
+  {
+    "arm": "native",
+    "id": "fs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 4,
+      "Birch": 4,
+      "Aster": 1
+    },
+    "files": {},
+    "text": "{\"Elm\": 4, \"Birch\": 4, \"Aster\": 1}"
+  },
+  {
+    "arm": "native",
+    "id": "fs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "native",
+    "id": "fs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 9,
+    "files": {},
+    "text": "9"
+  },
+  {
+    "arm": "native",
+    "id": "gc_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "native",
+    "id": "gc_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "native",
+    "id": "gc_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "native",
+    "id": "gc_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "native",
+    "id": "gc_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "North": 5,
+      "South": 4,
+      "East": 4
+    },
+    "files": {},
+    "text": "{\"North\": 5, \"South\": 4, \"East\": 4}"
+  },
+  {
+    "arm": "native",
+    "id": "gc_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "East": 6,
+      "North": 3,
+      "South": 6
+    },
+    "files": {},
+    "text": "{\"East\": 6, \"North\": 3, \"South\": 6}"
+  },
+  {
+    "arm": "native",
+    "id": "fgs_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Cedar": 3,
+      "Pine": 2,
+      "Maple": 1
+    },
+    "files": {},
+    "text": "{\"Cedar\": 3, \"Pine\": 2, \"Maple\": 1}"
+  },
+  {
+    "arm": "native",
+    "id": "fgs_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "day"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      }
+    ],
+    "value": {
+      "Pine": 4,
+      "Maple": 4,
+      "Cedar": 1
+    },
+    "files": {},
+    "text": "{\"Pine\": 4, \"Maple\": 4, \"Cedar\": 1}"
+  },
+  {
+    "arm": "native",
+    "id": "fgs_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Birch": 22,
+      "Aster": 7,
+      "Elm": 5
+    },
+    "files": {},
+    "text": "{\"Birch\": 22, \"Aster\": 7, \"Elm\": 5}"
+  },
+  {
+    "arm": "native",
+    "id": "fgs_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "phone"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      }
+    ],
+    "value": {
+      "Elm": 26,
+      "Aster": 23,
+      "Birch": 19
+    },
+    "files": {},
+    "text": "{\"Elm\": 26, \"Aster\": 23, \"Birch\": 19}"
+  },
+  {
+    "arm": "native",
+    "id": "fgs_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "South": 3,
+      "North": 2,
+      "East": 2
+    },
+    "files": {},
+    "text": "{\"South\": 3, \"North\": 2, \"East\": 2}"
+  },
+  {
+    "arm": "native",
+    "id": "fgs_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CG",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      }
+    ],
+    "value": {
+      "East": 2,
+      "North": 2,
+      "South": 2
+    },
+    "files": {},
+    "text": "{\"East\": 2, \"North\": 2, \"South\": 2}"
+  },
+  {
+    "arm": "native",
+    "id": "gca_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "native",
+    "id": "gca_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "native",
+    "id": "gca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "gca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "gca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "gca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgca_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgca_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgca_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgca_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgca_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgca_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "fgsa_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Maple",
+    "files": {},
+    "text": "\"Maple\""
+  },
+  {
+    "arm": "native",
+    "id": "fgsa_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "shift",
+        "equals": "night"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "yard"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Cedar",
+    "files": {},
+    "text": "\"Cedar\""
+  },
+  {
+    "arm": "native",
+    "id": "fgsa_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Birch",
+    "files": {},
+    "text": "\"Birch\""
+  },
+  {
+    "arm": "native",
+    "id": "fgsa_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SL",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "channel",
+        "equals": "web"
+      },
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": "desk"
+      },
+      {
+        "op": "lowest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "Aster",
+    "files": {},
+    "text": "\"Aster\""
+  },
+  {
+    "arm": "native",
+    "id": "fgsa_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "North",
+    "files": {},
+    "text": "\"North\""
+  },
+  {
+    "arm": "native",
+    "id": "fgsa_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CH",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "early"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": "ward"
+      },
+      {
+        "op": "highest",
+        "tie": "first",
+        "empty_null": false
+      }
+    ],
+    "value": "East",
+    "files": {},
+    "text": "\"East\""
+  },
+  {
+    "arm": "native",
+    "id": "a_o",
+    "table": "orchard-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 13,
+    "files": {},
+    "text": "13"
+  },
+  {
+    "arm": "native",
+    "id": "a_o",
+    "table": "orchard-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 15,
+    "files": {},
+    "text": "15"
+  },
+  {
+    "arm": "native",
+    "id": "a_h",
+    "table": "helpdesk-morning",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 69,
+    "files": {},
+    "text": "69"
+  },
+  {
+    "arm": "native",
+    "id": "a_h",
+    "table": "helpdesk-evening",
+    "status": "answered",
+    "code": "SP",
+    "plan": [
+      {
+        "op": "sum",
+        "field": "tickets",
+        "group": null
+      }
+    ],
+    "value": 131,
+    "files": {},
+    "text": "131"
+  },
+  {
+    "arm": "native",
+    "id": "a_c",
+    "table": "clinic-morning",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 7,
+    "files": {},
+    "text": "7"
+  },
+  {
+    "arm": "native",
+    "id": "a_c",
+    "table": "clinic-evening",
+    "status": "answered",
+    "code": "CP",
+    "plan": [
+      {
+        "op": "filter",
+        "field": "period",
+        "equals": "late"
+      },
+      {
+        "op": "count",
+        "field": null,
+        "group": null
+      }
+    ],
+    "value": 6,
+    "files": {},
+    "text": "6"
+  },
+  {
+    "arm": "native",
+    "id": "x_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "x_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "x_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "x_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "x_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "x_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "q_o",
+    "table": "orchard-morning",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "q_o",
+    "table": "orchard-evening",
+    "status": "abstained",
+    "reason": "no supported single aggregation",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "q_h",
+    "table": "helpdesk-morning",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "q_h",
+    "table": "helpdesk-evening",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "q_c",
+    "table": "clinic-morning",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  },
+  {
+    "arm": "native",
+    "id": "q_c",
+    "table": "clinic-evening",
+    "status": "abstained",
+    "reason": "planner did not select a valid typed path",
+    "value": null,
+    "files": {}
+  }
+]

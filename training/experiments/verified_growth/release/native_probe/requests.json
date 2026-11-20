@@ -1,0 +1,42 @@
+[
+  {
+    "id": "0e927d6db3844773",
+    "task": "Here is a text:\nOn file for Aiko: 6462-5872 2634-5688! Jonas gave the number 9091 0062 2840 7841. Omar gave the number 6136637392269252. On file for Sofia: 2531.55! On file for Omar: 0271-5197-7915-6347-4220! On file for Sofia: 5741-7226-6788!\nA card number is exactly four groups of four digits, the groups joined all by '-' or all by single spaces, with no other digit or group right before or after it. Replace every digit of a card number except its last four with '*', keeping the separators, and leave every other number exactly as it is (dates, amounts, phone numbers, numbers of three or five groups, sixteen digits in one run, mixed separators). Save the whole text so changed in redacted.txt and tell me how many card numbers you masked."
+  },
+  {
+    "id": "178cfed6b7416b8e",
+    "task": "Here is a config file:\n; settings for the shop\n[ mail ]\nretries = 7\ntimeout =113s\nport = 8101\nhost  =  10.0.3.125\nhost = 10.0.7.85\n[LOGGING]\nuser =relay\nRETRIES=6\n[ cache ]\n# port = 9892\nport  =  4387\nhost =10.0.4.247\n# user = batch\nuser = relay\nuser = admin\nRead it by these rules: a line that begins with ';' or '#' is a comment; section names and keys do not care about capital letters or about spaces around them; spaces around '=' do not count; a key set twice in one section takes its later value. What is the value of 'retries' in the section 'logging', and how many distinct keys does the section 'cache' have? Answer in two lines: 'value: ', 'keys: '."
+  },
+  {
+    "id": "2ce5dbc5679143de",
+    "task": "Here is the file shops.csv:\nshop,seller,sold\nAvon,Jonas,74\nAvon,Ravi,43\nClyde,Ravi,69\nClyde,Tomas,90\nAvon,Lena,65\nClyde,Lena,55\nClyde,Mira,46\nAvon,Tomas,86\nAvon,Nadia,78\n\nSave a file top.csv with the columns shop,rank,seller,sold: for each shop, sorted by shop, its 3 rows with the highest sold (a shop with fewer rows lists all it has), ranked 1 to 3 from the highest; equal sold values are ranked by seller name. Then tell me which seller has the highest sold of all."
+  },
+  {
+    "id": "4d064b2ac51c5340",
+    "task": "Here is the file payments.csv:\nid,date,amount\nP487,7 Feb 2026,239\nP531,13/03/2026,275\nP938,10/04/2026,286\nP634,02/01/2026,42\nP146,7 Apr 2026,144\nP179,2026-03-08,78\nP807,2026-01-19,208\nP1001,12/02/2026,5\nP231,2026-01-20,443\nP655,10/04/2026,220\nP379,2026-04-06,143\nP961,15 Apr 2026,302\nP253,21/03/2026,238\nP400,10/02/2026,252\nP156,24/01/2026,62\nP252,07/03/2026,272\nP1000,13 Jan 2026,2\nP697,16/04/2026,154\nP763,2026-02-19,402\nP847,2026-04-12,206\n\nIts dates are written in three forms: YYYY-MM-DD, DD/MM/YYYY (the day first) and D Mon YYYY. Save a file window.csv with the columns id,date,amount, keeping in the order of the file only the rows dated from 2026-01-13 to 2026-02-12, both days included, with every date written as YYYY-MM-DD. Then tell me the total amount of the rows kept."
+  },
+  {
+    "id": "7169e748fb11cfb2",
+    "task": "Here is a CSV file:\nname,age,city\nInes,34,Oslo\nKofi,46,Oslo\nRavi,40,Lima\nLena,50,Kyoto\nSofia,55,Kyoto\nOmar,51,Lima\nPavel,62,Lisbon\nAiko,28,Lima\nJonas,27,Oslo\nMira,30,Lisbon\nMake a new file people.csv from it: keep only the people aged 44 or more, sort them by city and then by name, and add a fourth column 'code' holding the first letter of the name followed by the first letter of the city. Keep the heading line. Then tell me how many people are in the new file."
+  },
+  {
+    "id": "8322fe98c22c2f1e",
+    "task": "An account starts with 1052 dollars. These movements happen in order: withdraw 761; withdraw 279; deposit 147; withdraw 208; withdraw 776; deposit 624; withdraw 202; withdraw 576; withdraw 633; deposit 593. A withdrawal larger than the balance is refused and changes nothing. After every fourth movement (refused ones count as movements) 1% interest is added to the balance, rounded to cents. What is the final balance, and how many withdrawals were refused? Answer in two lines: 'balance: ' and 'refused: '."
+  },
+  {
+    "id": "892c67afd80430a4",
+    "task": "Write a Python module and save it as desk.py for one desk that serves customers one at a time. A customer is a list [name, arrival, priority, duration] of whole minutes; the list of customers may be in any order. Whenever the desk is free it takes one of the customers who have arrived and are waiting: the lowest priority number goes first, then the one who arrived first, then the name first in alphabetical order. It serves that customer for the duration without a break. When nobody is waiting it waits for the next arrival. A customer arriving at the very minute the desk becomes free is waiting by then. A customer still waiting when more than 12 minutes have passed since they arrived leaves without being served (one who has waited exactly 12 minutes can still be taken). The module has two functions. 1) serve(customers) returns the list [name, start, end] of every customer served, in the order they are served. 2) left(customers) returns the names of those who left, in alphabetical order. Test both yourself before you finish. Then tell me, on two lines, the names in the order they are served and left(customers) for these customers: [['Kofi', 8, 1, 1], ['Tomas', 19, 3, 4], ['Omar', 13, 1, 6], ['Pavel', 12, 1, 6], ['Jonas', 11, 4, 1], ['Sofia', 2, 1, 6], ['Nadia', 15, 1, 8]]."
+  },
+  {
+    "id": "9dc4de18f6146cc8",
+    "task": "Go through the first 4 pages of quotes.toscrape.com and save a file authors.json: one JSON object that maps each author's name to the number of that author's quotes on those pages. Then tell me which author has the most quotes there."
+  },
+  {
+    "id": "beeeafb1e0aa2f4c",
+    "task": "Write a Python module and save it as wrap.py. It has two functions. 1) wrap(text, width) splits the text into words at white space and returns the list of lines: each line takes as many of the next words as fit in width characters with one space between them. When a word alone is longer than the width, it is cut into pieces of exactly width characters (the last piece may be shorter), each piece then wrapped as a word. 2) justify(text, width) returns the lines of wrap(text, width) with every line but the last made exactly width characters long by widening the gaps between its words as evenly as can be; when the gaps cannot all be the same, the gaps on the left get one more space than those on the right. A line of one word is filled with spaces on its right; a line already longer than the width is left as it is; the last line is left as wrap made it. Test both yourself before you finish. Then tell me, on two lines, the value of wrap(text, width) and of justify(text, width) for text = 'ember the ember unbelievable amber cloud an harbor' and width = 14."
+  },
+  {
+    "id": "fd3dbdca228313b6",
+    "task": "Look at the latest versions of the packages uvicorn and click on PyPI. Which of the two was released more recently, and how many days lie between the two release dates? Answer in two lines: 'later: NAME' and 'days: N'."
+  }
+]

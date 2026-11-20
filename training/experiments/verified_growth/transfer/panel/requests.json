@@ -1,0 +1,245 @@
+[
+  {
+    "id": "fs_o",
+    "pattern": "filtered-sum",
+    "request": "How many crates are there in total on the night shift?",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "fs_h",
+    "pattern": "filtered-sum",
+    "request": "For the web channel, add up the tickets. Give me just the total.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "fs_c",
+    "pattern": "filtered-sum",
+    "request": "What's the total number of visits during the early period?",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "gc_o",
+    "pattern": "grouped-count",
+    "request": "Give me the number of rows for each yard.",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "gc_h",
+    "pattern": "grouped-count",
+    "request": "Count entries by desk, with one count for each desk.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "gc_c",
+    "pattern": "grouped-count",
+    "request": "How many records does each ward have? Count records, including repeat observations.",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "fgs_o",
+    "pattern": "filtered-group-sum",
+    "request": "For the day shift only, total crates by yard.",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "fgs_h",
+    "pattern": "filtered-group-sum",
+    "request": "I need the sum of tickets for each desk, using only the phone channel.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "fgs_c",
+    "pattern": "filtered-group-sum",
+    "request": "During the late period, how many visits in total did each ward record?",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "gca_o",
+    "pattern": "rank-group-count",
+    "request": "Which yard appears in the most rows? Break ties by choosing the alphabetically first yard.",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "gca_h",
+    "pattern": "rank-group-count",
+    "request": "Name the desk with the lowest number of entries. In a tie, choose the alphabetically first desk.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "gca_c",
+    "pattern": "rank-group-count",
+    "request": "Which ward has the most records? Pick the alphabetically earliest name if the counts tie.",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "fgca_o",
+    "pattern": "filtered-rank-count",
+    "request": "On the day shift, which yard has the fewest rows? For equal counts use the alphabetically first yard.",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "fgca_h",
+    "pattern": "filtered-rank-count",
+    "request": "In the phone channel only, name the desk with the most entries. Break a tie alphabetically, earliest first.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "fgca_c",
+    "pattern": "filtered-rank-count",
+    "request": "Among late records, which ward shows up least often? Choose the alphabetically first ward in a tie.",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "fgsa_o",
+    "pattern": "filtered-rank-sum",
+    "request": "For the night shift, which yard has the greatest total crates? Resolve equal totals using the alphabetically first yard.",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "fgsa_h",
+    "pattern": "filtered-rank-sum",
+    "request": "Looking only at web entries, give me the desk with the smallest sum of tickets. Ties go to the alphabetically first desk.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "fgsa_c",
+    "pattern": "filtered-rank-sum",
+    "request": "Which ward recorded the most total visits in the early period? Pick the alphabetically first ward if totals are equal.",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "a_o",
+    "pattern": "anchor",
+    "request": "How many rows are in this table?",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "a_h",
+    "pattern": "anchor",
+    "request": "What is the total of the tickets column?",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "a_c",
+    "pattern": "anchor",
+    "request": "Count the rows for the late period.",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "x_o",
+    "pattern": "adjacent",
+    "request": "How many distinct yards appear in this table?",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "x_h",
+    "pattern": "adjacent",
+    "request": "Across all channels, how many desk entries have more than seven tickets?",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "x_c",
+    "pattern": "adjacent",
+    "request": "What is the median number of visits per record, using all records?",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  },
+  {
+    "id": "q_o",
+    "pattern": "clarify",
+    "request": "Which yard is the best? I haven't chosen whether to use total crates or minutes worked.",
+    "tables": [
+      "orchard-morning",
+      "orchard-evening"
+    ]
+  },
+  {
+    "id": "q_h",
+    "pattern": "clarify",
+    "request": "How many unresolved tickets do we have? The table only lists ticket counts and doesn't give a resolution status.",
+    "tables": [
+      "helpdesk-morning",
+      "helpdesk-evening"
+    ]
+  },
+  {
+    "id": "q_c",
+    "pattern": "clarify",
+    "request": "What is the total revenue from all visits? I don't know the billing rate and it isn't in the table.",
+    "tables": [
+      "clinic-morning",
+      "clinic-evening"
+    ]
+  }
+]

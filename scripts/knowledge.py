@@ -94,7 +94,7 @@ def problems(k, root=ROOT):
     """What does not hold together: ids used twice, links to ids that do not exist, files that are not there,
     owners that are not agents, board pieces that are not on the board of docs/PLAN.md. [] when all is well."""
     bad, ids = [], {}
-    for group in ("parts", "measures", "open", "findings", "rules"):
+    for group in ("parts", "measures", "open", "findings", "rules", "closed_trials"):
         for n in k.get(group, []):
             if n["id"] in ids:
                 bad.append(f"{n['id']} is used twice ({ids[n['id']]} and {group})")
@@ -104,6 +104,9 @@ def problems(k, root=ROOT):
     for n in k.get("parts", []) + k.get("measures", []):
         if n.get("file") and not (Path(root) / n["file"]).exists():
             bad.append(f"{n['id']}: no file {n['file']}")
+    for trial in k.get("closed_trials", []):
+        if not (Path(root) / trial["evidence"]).is_file():
+            bad.append(f"{trial['id']}: no evidence file {trial['evidence']}")
     owners = set(k.get("agents", {})) | {""}
     for n in k.get("parts", []) + k.get("open", []):
         if n.get("owner", "") not in owners:
@@ -335,6 +338,12 @@ def page(k, plan=PLAN):
     files = {p["id"]: p["file"] for p in k["parts"]}
     lines += [f"| {f['title']} | `{files[f['lives_in']]}` | {f.get('piece', '')} | {f['status']} | {f.get('by', '')} | {f['seen']} |" for f in still + fixed]
     lines += ["", "## Rules learned", ""] + [f"- {r['rule']}" for r in k["rules"]]
+    if k.get("closed_trials"):
+        lines += ["", "## Closed experiments", "",
+                  "Skip repeat runs of these measured configurations. Their reports identify the data, controls and hardware.", "",
+                  "| Configuration | Observed outcome |", "|---|---|"]
+        for trial in k["closed_trials"]:
+            lines.append(f"| [{trial['title']}](../{trial['evidence']}) | {trial['observed']} |")
     lines += ["", "## The parts", "", "| Part | File | Owner | What it does |", "|---|---|---|---|"]
     lines += [f"| {p['title']} | `{p['file']}` | {p['owner']} | {p['does']} |" for p in k["parts"]]
     lines += ["", "Agents: " + "; ".join(f"**{a}**: {d}" for a, d in k["agents"].items()) + ".", ""]

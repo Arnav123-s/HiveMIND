@@ -1,0 +1,23 @@
+{
+  "g51": {
+    "original_gate_min": 99.783,
+    "retained_job_parts": 33,
+    "duplicated_fixed_costs_included": true,
+    "runner_capacity": 20,
+    "lower_bound_scheduling_only_min": 61.033,
+    "fixed_order_min": 61.033,
+    "current_length_oracle_order_min": 61.033,
+    "longest_part": "gate (after, 2)/fresh"
+  },
+  "g52": {
+    "original_gate_min": 66.05,
+    "retained_job_parts": 33,
+    "duplicated_fixed_costs_included": true,
+    "runner_capacity": 20,
+    "lower_bound_scheduling_only_min": 39.283,
+    "fixed_order_min": 49.833,
+    "current_length_oracle_order_min": 39.283,
+    "longest_part": "gate (after, 2)/held",
+    "previous_generation_order_min": 40.017
+  }
+}

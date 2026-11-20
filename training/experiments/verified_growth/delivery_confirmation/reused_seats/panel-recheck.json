@@ -1,0 +1,23 @@
+{
+  "collector_commit": "7da36e6",
+  "collector_sha256": "bc84dcc66b6ee7e4e67221a55fbe0b2180c818f5c3b6f4c11c1147b7bcae1bd9",
+  "old_panel_receipt_sha256": "396b94fcd7dbc6034ff24272bc9b9fa43657b15e68f8e442a494049b6d770c61",
+  "rechecked_panel_receipt_sha256": "6076c97ee2c3e3fc7c2555141ebad7a4de609d6b650d2d8cd8fb92157330f56a",
+  "different_fields": [
+    "candidate_sha256"
+  ],
+  "panel_summary": {
+    "stock_grades": {
+      "correct": 4,
+      "withheld": 6,
+      "wrong": 2
+    },
+    "total_seats": 40,
+    "raw_blobs": 18,
+    "archived_named_blobs": 0,
+    "retained": 18,
+    "exact_captures": 12,
+    "updated_archive_named_blobs": 18,
+    "archived_manifests": 11
+  }
+}

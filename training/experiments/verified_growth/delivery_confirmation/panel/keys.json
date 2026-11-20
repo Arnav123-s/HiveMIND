@@ -1,0 +1,116 @@
+{
+  "sign": {
+    "accepted": [
+      {
+        "crossing.svg": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjMiLz48L3N2Zz4K"
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "placard": {
+    "accepted": [
+      {
+        "placard.md": "IyBDb3BwZXIgcGxhdGUKU2hlbGY6IENlZGFyCg=="
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "settings": {
+    "accepted": [
+      {
+        "kettle.toml": "cXVpZXQgPSB0cnVlCmJlZXAgPSBmYWxzZQo="
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": true
+  },
+  "split-bundle": {
+    "accepted": [
+      {
+        "entrance.html": "PGgxPk5vcnRoIEhhbGw8L2gxPgo=",
+        "welcome.txt": "V2VsY29tZSB0ZWFtCg=="
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "catalogue": {
+    "accepted": [
+      {
+        "stock-card.json": "eyJtYXQiOiJyZWVkIiwiY291bnQiOjJ9Cg=="
+      },
+      {
+        "stock-card.json": "ewogImNvdW50IjogMiwgIm1hdCI6ICJyZWVkIgp9Cg=="
+      }
+    ],
+    "grade_mode": "explicit-alternatives",
+    "wrong_consensus_control": false
+  },
+  "one-wrong": {
+    "accepted": [
+      {
+        "stops.txt": "UGluZQpNb3NzCkFzaAo="
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "ordered": {
+    "accepted": [
+      {
+        "bays.tsv": "YmF5CXJhbmsKV2VzdAkxClNvdXRoCTIKRWFzdAk0Cg=="
+      },
+      {
+        "bays.tsv": "YmF5CXJhbmsNCldlc3QJMQ0KU291dGgJMg0KRWFzdAk0DQo="
+      }
+    ],
+    "grade_mode": "explicit-alternatives",
+    "wrong_consensus_control": false
+  },
+  "stale": {
+    "accepted": [
+      {
+        "counter.md": "IyBEaXNwYXRjaCBkZXNrCkN1cnJlbnQK"
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "byproducts": {
+    "accepted": [
+      {
+        "gate.txt": "UmVkIGdhdGUK"
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "packet": {
+    "accepted": [
+      {
+        "herbs.zip": "UEsDBBQAAAAAAMBTBVfn31DhCgAAAAoAAAAKAAAAcmVjaXBlLnR4dERpbGwKTWludApQSwMEFAAAAAAAwFMFV/6EPmoKAAAACgAAAAoAAAByZWFkbWUudHh0SGVyYiBsaXN0ClBLAQIUAxQAAAAAAMBTBVfn31DhCgAAAAoAAAAKAAAAAAAAAAAAAACAAQAAAAByZWNpcGUudHh0UEsBAhQDFAAAAAAAwFMFV/6EPmoKAAAACgAAAAoAAAAAAAAAAAAAAIABMgAAAHJlYWRtZS50eHRQSwUGAAAAAAIAAgBwAAAAZAAAAAAA"
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "complete-bundle": {
+    "accepted": [
+      {
+        "theme.toml": "Y29sb3IgPSAiYXp1cmUiCg==",
+        "edition.md": "IyBTYW1wbGUgYm9vawpFZGl0aW9uIEEK"
+      }
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  },
+  "read-only": {
+    "accepted": [
+      {}
+    ],
+    "grade_mode": "exact",
+    "wrong_consensus_control": false
+  }
+}

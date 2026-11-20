@@ -1,0 +1,923 @@
+{
+  "panel_sha256": "3ac48c1991f1cbd9aef1770cecb5d43afbe841381df54483b7a8ec60ab7c715e",
+  "protocol_sha256": "221d4eed93aec3ea38d2e76dc21340dae52c9fd21a93247925f0bc77a8b19860",
+  "rows": [
+    {
+      "case": "double-a",
+      "function": "scale",
+      "actual_primary_outputs": [
+        0,
+        0
+      ],
+      "sources": [
+        "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae",
+        "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "0",
+            "issues": {},
+            "byte_hashes": {
+              "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+            },
+            "files": [
+              "scale.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "0",
+            "issues": {},
+            "byte_hashes": {
+              "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+            },
+            "files": [
+              "scale.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "scale.py"
+        ],
+        "published": {
+          "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+        },
+        "evidence_in_public_report": "0\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: scale.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          4,
+          -3
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": 0
+            },
+            {
+              "value": 0
+            }
+          ],
+          [
+            {
+              "value": 8
+            },
+            {
+              "value": -6
+            }
+          ]
+        ],
+        "fuel": 2043879542,
+        "status": "contradicted",
+        "witness": {
+          "input": 4,
+          "first": 0,
+          "second": 8
+        }
+      },
+      "pass_veto": false,
+      "has_matching_probes": false
+    },
+    {
+      "case": "double-b",
+      "function": "scale",
+      "actual_primary_outputs": [
+        0,
+        0
+      ],
+      "sources": [
+        "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741",
+        "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "0",
+            "issues": {},
+            "byte_hashes": {
+              "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+            },
+            "files": [
+              "scale.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "0",
+            "issues": {},
+            "byte_hashes": {
+              "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+            },
+            "files": [
+              "scale.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "scale.py"
+        ],
+        "published": {
+          "scale.py": "79f948db403b1e851aea79aa91fa5d719d9d826e3a600a1f9fd6c9247d63c741"
+        },
+        "evidence_in_public_report": "0\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: scale.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          4,
+          -3
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": 8
+            },
+            {
+              "value": -6
+            }
+          ],
+          [
+            {
+              "value": 0
+            },
+            {
+              "value": 0
+            }
+          ]
+        ],
+        "fuel": 2043879514,
+        "status": "contradicted",
+        "witness": {
+          "input": 4,
+          "first": 8,
+          "second": 0
+        }
+      },
+      "pass_veto": false,
+      "has_matching_probes": false
+    },
+    {
+      "case": "tags",
+      "function": "slug",
+      "actual_primary_outputs": [
+        "one",
+        "one"
+      ],
+      "sources": [
+        "90852094e808c0e80fbd772acbdc74a362a9b78f28e8c87a8d3817295617767e",
+        "1efc29dcc12becfce4ed8617440f48bbf3cd8628afd1bcf46eb2b5e6104244ae"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "one",
+            "issues": {},
+            "byte_hashes": {
+              "slug.py": "90852094e808c0e80fbd772acbdc74a362a9b78f28e8c87a8d3817295617767e"
+            },
+            "files": [
+              "slug.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "one",
+            "issues": {},
+            "byte_hashes": {
+              "slug.py": "1efc29dcc12becfce4ed8617440f48bbf3cd8628afd1bcf46eb2b5e6104244ae"
+            },
+            "files": [
+              "slug.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "slug.py"
+        ],
+        "published": {
+          "slug.py": "90852094e808c0e80fbd772acbdc74a362a9b78f28e8c87a8d3817295617767e"
+        },
+        "evidence_in_public_report": "one\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: slug.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          "Big Blue",
+          " red  FOX "
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": "big_blue"
+            },
+            {
+              "value": "red_fox"
+            }
+          ],
+          [
+            {
+              "value": "big-blue"
+            },
+            {
+              "value": "red-fox"
+            }
+          ]
+        ],
+        "fuel": 2044002422,
+        "status": "contradicted",
+        "witness": {
+          "input": "Big Blue",
+          "first": "big_blue",
+          "second": "big-blue"
+        }
+      },
+      "pass_veto": false,
+      "has_matching_probes": false
+    },
+    {
+      "case": "counts",
+      "function": "evens",
+      "actual_primary_outputs": [
+        1,
+        1
+      ],
+      "sources": [
+        "c64f15bb78169cf0cf1bd31406c9780f83cc6b040aeb666e32133e14678704c4",
+        "cff349b9fd81c1b80ca6dc9bf90e27aafb0ccdde578a42226124006f2da0b67e"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "1",
+            "issues": {},
+            "byte_hashes": {
+              "evens.py": "c64f15bb78169cf0cf1bd31406c9780f83cc6b040aeb666e32133e14678704c4"
+            },
+            "files": [
+              "evens.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "1",
+            "issues": {},
+            "byte_hashes": {
+              "evens.py": "cff349b9fd81c1b80ca6dc9bf90e27aafb0ccdde578a42226124006f2da0b67e"
+            },
+            "files": [
+              "evens.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "evens.py"
+        ],
+        "published": {
+          "evens.py": "c64f15bb78169cf0cf1bd31406c9780f83cc6b040aeb666e32133e14678704c4"
+        },
+        "evidence_in_public_report": "1\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: evens.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          [
+            2,
+            2,
+            4
+          ]
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": 3
+            }
+          ],
+          [
+            {
+              "value": 2
+            }
+          ]
+        ],
+        "fuel": 2044332334,
+        "status": "contradicted",
+        "witness": {
+          "input": [
+            2,
+            2,
+            4
+          ],
+          "first": 3,
+          "second": 2
+        }
+      },
+      "pass_veto": false,
+      "has_matching_probes": false
+    },
+    {
+      "case": "orders",
+      "function": "dedup",
+      "actual_primary_outputs": [
+        [
+          1
+        ],
+        [
+          1
+        ]
+      ],
+      "sources": [
+        "ecc9bfd00b1a8b4e45666d7b6cbcbe7a50a4488247481351b5e87187a456e82c",
+        "864e13ef0e82921860958769bc928c411501abc2963844bab82da4374135b8d6"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "[1]",
+            "issues": {},
+            "byte_hashes": {
+              "dedup.py": "ecc9bfd00b1a8b4e45666d7b6cbcbe7a50a4488247481351b5e87187a456e82c"
+            },
+            "files": [
+              "dedup.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "[1]",
+            "issues": {},
+            "byte_hashes": {
+              "dedup.py": "864e13ef0e82921860958769bc928c411501abc2963844bab82da4374135b8d6"
+            },
+            "files": [
+              "dedup.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "dedup.py"
+        ],
+        "published": {
+          "dedup.py": "ecc9bfd00b1a8b4e45666d7b6cbcbe7a50a4488247481351b5e87187a456e82c"
+        },
+        "evidence_in_public_report": "[1]\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: dedup.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          [
+            2,
+            1,
+            2
+          ],
+          [],
+          [
+            3,
+            3,
+            -1
+          ]
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": [
+                2,
+                1
+              ]
+            },
+            {
+              "value": []
+            },
+            {
+              "value": [
+                3,
+                -1
+              ]
+            }
+          ],
+          [
+            {
+              "value": [
+                2,
+                1
+              ]
+            },
+            {
+              "value": []
+            },
+            {
+              "value": [
+                3,
+                -1
+              ]
+            }
+          ]
+        ],
+        "fuel": 2044539558,
+        "status": "matching_observations"
+      },
+      "pass_veto": true,
+      "has_matching_probes": true
+    },
+    {
+      "case": "distance",
+      "function": "absolute",
+      "actual_primary_outputs": [
+        2,
+        2
+      ],
+      "sources": [
+        "f8df6a698d79c08295ea69959486252c7e67a5fb81b661754f7b8a26c6e8398d",
+        "965db882ae578161e42375a51d9c5da8fc828c8620a1aecb5732fba0dcaa8b67"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "absolute.py": "f8df6a698d79c08295ea69959486252c7e67a5fb81b661754f7b8a26c6e8398d"
+            },
+            "files": [
+              "absolute.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "absolute.py": "965db882ae578161e42375a51d9c5da8fc828c8620a1aecb5732fba0dcaa8b67"
+            },
+            "files": [
+              "absolute.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "absolute.py"
+        ],
+        "published": {
+          "absolute.py": "f8df6a698d79c08295ea69959486252c7e67a5fb81b661754f7b8a26c6e8398d"
+        },
+        "evidence_in_public_report": "2\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: absolute.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          -3,
+          0,
+          5
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": 0
+            },
+            {
+              "value": 0
+            },
+            {
+              "value": 5
+            }
+          ],
+          [
+            {
+              "value": 0
+            },
+            {
+              "value": 0
+            },
+            {
+              "value": 5
+            }
+          ]
+        ],
+        "fuel": 2044169084,
+        "status": "matching_observations"
+      },
+      "pass_veto": true,
+      "has_matching_probes": true
+    },
+    {
+      "case": "dial",
+      "function": "next_digit",
+      "actual_primary_outputs": [
+        2,
+        2
+      ],
+      "sources": [
+        "dbef50d746863a3decf2b1c96b10a030190b6c6f60b1a9c2a8d67b6d4a484580",
+        "0b8e5ab1ba4c723a2ff70ac62f4e53b34e6a13de2f734872455bf5de644ebdb8"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "next_digit.py": "dbef50d746863a3decf2b1c96b10a030190b6c6f60b1a9c2a8d67b6d4a484580"
+            },
+            "files": [
+              "next_digit.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "next_digit.py": "0b8e5ab1ba4c723a2ff70ac62f4e53b34e6a13de2f734872455bf5de644ebdb8"
+            },
+            "files": [
+              "next_digit.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "next_digit.py"
+        ],
+        "published": {
+          "next_digit.py": "dbef50d746863a3decf2b1c96b10a030190b6c6f60b1a9c2a8d67b6d4a484580"
+        },
+        "evidence_in_public_report": "2\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: next_digit.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          0,
+          5
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": 1
+            },
+            {
+              "value": 6
+            }
+          ],
+          [
+            {
+              "value": 1
+            },
+            {
+              "value": 6
+            }
+          ]
+        ],
+        "fuel": 2043949575,
+        "status": "matching_observations"
+      },
+      "pass_veto": true,
+      "has_matching_probes": true
+    },
+    {
+      "case": "inventory",
+      "function": "sum_values",
+      "actual_primary_outputs": [
+        2,
+        2
+      ],
+      "sources": [
+        "d7c58bed1080e83f59c32225b73e6557af61caf03412eeaac69b22ba9ddf4e25",
+        "9a52efc41cb47b68c43920b2604d887b4b4fb5e873914b270b12952974e58f1d"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "sum_values.py": "d7c58bed1080e83f59c32225b73e6557af61caf03412eeaac69b22ba9ddf4e25"
+            },
+            "files": [
+              "sum_values.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "sum_values.py": "9a52efc41cb47b68c43920b2604d887b4b4fb5e873914b270b12952974e58f1d"
+            },
+            "files": [
+              "sum_values.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "sum_values.py"
+        ],
+        "published": {
+          "sum_values.py": "d7c58bed1080e83f59c32225b73e6557af61caf03412eeaac69b22ba9ddf4e25"
+        },
+        "evidence_in_public_report": "2\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: sum_values.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [],
+        "rejected": [],
+        "observations": [],
+        "fuel": 0,
+        "status": "unknown",
+        "reason": "no admissible probes"
+      },
+      "pass_veto": true,
+      "has_matching_probes": false
+    },
+    {
+      "case": "paths",
+      "function": "join_words",
+      "actual_primary_outputs": [
+        "a",
+        "a"
+      ],
+      "sources": [
+        "db88f3e6c3894bb3781ffd8cdc56d4f75cf14dba1b25aef61a510611b8b09e09",
+        "8015f59ed950f9a72924287ee87f6a02dfec15874512f0d4181a190c75aa5bd8"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "a",
+            "issues": {},
+            "byte_hashes": {
+              "join_words.py": "db88f3e6c3894bb3781ffd8cdc56d4f75cf14dba1b25aef61a510611b8b09e09"
+            },
+            "files": [
+              "join_words.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "a",
+            "issues": {},
+            "byte_hashes": {
+              "join_words.py": "8015f59ed950f9a72924287ee87f6a02dfec15874512f0d4181a190c75aa5bd8"
+            },
+            "files": [
+              "join_words.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "join_words.py"
+        ],
+        "published": {
+          "join_words.py": "db88f3e6c3894bb3781ffd8cdc56d4f75cf14dba1b25aef61a510611b8b09e09"
+        },
+        "evidence_in_public_report": "a\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: join_words.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [],
+        "rejected": [
+          [
+            ""
+          ],
+          5
+        ],
+        "observations": [],
+        "fuel": 0,
+        "status": "unknown",
+        "reason": "no admissible probes"
+      },
+      "pass_veto": true,
+      "has_matching_probes": false
+    },
+    {
+      "case": "single-a",
+      "function": "scale",
+      "actual_primary_outputs": [
+        0
+      ],
+      "sources": [
+        "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "",
+            "issues": {
+              "scale.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 2,
+            "answer": "",
+            "issues": {
+              "scale.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 3,
+            "answer": "0",
+            "issues": {},
+            "byte_hashes": {
+              "scale.py": "4605e626b53397cd09c10b6708063455ae5ed71b74db9f89172067964ee781ae"
+            },
+            "files": [
+              "scale.py"
+            ]
+          }
+        ],
+        "selected": null,
+        "agreed": false,
+        "returned_files": [],
+        "published": {},
+        "evidence_in_public_report": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: scale.py: the requested file is missing\nMember 2: scale.py: the requested file is missing",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          2,
+          -1
+        ],
+        "rejected": [],
+        "observations": [],
+        "fuel": 0,
+        "status": "unknown",
+        "reason": "single worker"
+      },
+      "pass_veto": false,
+      "has_matching_probes": false
+    },
+    {
+      "case": "single-b",
+      "function": "sum_values",
+      "actual_primary_outputs": [
+        1
+      ],
+      "sources": [
+        "d7c58bed1080e83f59c32225b73e6557af61caf03412eeaac69b22ba9ddf4e25"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "",
+            "issues": {
+              "sum_values.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 2,
+            "answer": "",
+            "issues": {
+              "sum_values.py": "the requested file is missing"
+            },
+            "byte_hashes": {},
+            "files": []
+          },
+          {
+            "seat": 3,
+            "answer": "1",
+            "issues": {},
+            "byte_hashes": {
+              "sum_values.py": "d7c58bed1080e83f59c32225b73e6557af61caf03412eeaac69b22ba9ddf4e25"
+            },
+            "files": [
+              "sum_values.py"
+            ]
+          }
+        ],
+        "selected": null,
+        "agreed": false,
+        "returned_files": [],
+        "published": {},
+        "evidence_in_public_report": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: sum_values.py: the requested file is missing\nMember 2: sum_values.py: the requested file is missing",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          [],
+          [
+            1,
+            2
+          ]
+        ],
+        "rejected": [],
+        "observations": [],
+        "fuel": 0,
+        "status": "unknown",
+        "reason": "single worker"
+      },
+      "pass_veto": false,
+      "has_matching_probes": false
+    },
+    {
+      "case": "exception",
+      "function": "absolute",
+      "actual_primary_outputs": [
+        2,
+        2
+      ],
+      "sources": [
+        "ad846f64a32c604cf8f51dcbec72df5833673375afef2d03c1d5f4af19bf7063",
+        "890ff477b36a5d5bd19531156e155cd8c95f0cba04f9d146d48712de595d87b0"
+      ],
+      "original": {
+        "members": [
+          {
+            "seat": 1,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "absolute.py": "ad846f64a32c604cf8f51dcbec72df5833673375afef2d03c1d5f4af19bf7063"
+            },
+            "files": [
+              "absolute.py"
+            ]
+          },
+          {
+            "seat": 2,
+            "answer": "2",
+            "issues": {},
+            "byte_hashes": {
+              "absolute.py": "890ff477b36a5d5bd19531156e155cd8c95f0cba04f9d146d48712de595d87b0"
+            },
+            "files": [
+              "absolute.py"
+            ]
+          }
+        ],
+        "selected": 1,
+        "agreed": true,
+        "returned_files": [
+          "absolute.py"
+        ],
+        "published": {
+          "absolute.py": "ad846f64a32c604cf8f51dcbec72df5833673375afef2d03c1d5f4af19bf7063"
+        },
+        "evidence_in_public_report": "2\n\n## How it was checked\n- 2 members worked it out independently; two gave the same values.\n- Reopened and checked the requested files: absolute.py.",
+        "report_points_to_third": false
+      },
+      "evidence": {
+        "inputs": [
+          0
+        ],
+        "rejected": [],
+        "observations": [
+          [
+            {
+              "value": 0
+            }
+          ],
+          [
+            {
+              "error": "ValueError: zero"
+            }
+          ]
+        ],
+        "fuel": 2043912595,
+        "status": "unknown",
+        "reason": "incomplete guest observations"
+      },
+      "pass_veto": true,
+      "has_matching_probes": false
+    }
+  ]
+}

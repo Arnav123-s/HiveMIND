@@ -1,0 +1,3965 @@
+{
+  "teacher_sha256": "3d66e49f224779a8634622b1876d887392efda79004e4c72e336b34b34968fac",
+  "summary": {
+    "unlabeled_committee": {
+      "primary": {
+        "missed": 14,
+        "correct": 4
+      },
+      "mastered_patterns": [],
+      "primary_editions": {
+        "missed": 26,
+        "correct": 10
+      },
+      "groups": {
+        "adjacent": {
+          "missed": 3
+        },
+        "anchor": {
+          "correct": 3
+        },
+        "filtered-group-sum": {
+          "missed": 3
+        },
+        "filtered-rank-count": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-rank-sum": {
+          "missed": 3
+        },
+        "filtered-sum": {
+          "missed": 3
+        },
+        "grouped-count": {
+          "missed": 3
+        },
+        "rank-group-count": {
+          "correct": 2,
+          "missed": 1
+        }
+      }
+    },
+    "constant": {
+      "primary": {
+        "wrong": 18
+      },
+      "mastered_patterns": [],
+      "primary_editions": {
+        "wrong": 31,
+        "correct": 5
+      },
+      "groups": {
+        "adjacent": {
+          "correct": 1,
+          "wrong": 2
+        },
+        "anchor": {
+          "wrong": 3
+        },
+        "filtered-group-sum": {
+          "wrong": 3
+        },
+        "filtered-rank-count": {
+          "wrong": 3
+        },
+        "filtered-rank-sum": {
+          "wrong": 3
+        },
+        "filtered-sum": {
+          "wrong": 3
+        },
+        "grouped-count": {
+          "wrong": 3
+        },
+        "rank-group-count": {
+          "wrong": 3
+        }
+      }
+    },
+    "portfolio": {
+      "primary": {
+        "correct": 15,
+        "missed": 3
+      },
+      "mastered_patterns": [
+        "filtered-rank-sum",
+        "filtered-sum",
+        "grouped-count"
+      ],
+      "primary_editions": {
+        "correct": 30,
+        "missed": 6
+      },
+      "groups": {
+        "adjacent": {
+          "missed": 3
+        },
+        "anchor": {
+          "correct": 3
+        },
+        "filtered-group-sum": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-rank-count": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-rank-sum": {
+          "correct": 3
+        },
+        "filtered-sum": {
+          "correct": 3
+        },
+        "grouped-count": {
+          "correct": 3
+        },
+        "rank-group-count": {
+          "correct": 2,
+          "missed": 1
+        }
+      }
+    },
+    "seen_library": {
+      "primary": {
+        "correct": 15,
+        "missed": 3
+      },
+      "mastered_patterns": [
+        "filtered-group-sum",
+        "filtered-sum",
+        "grouped-count"
+      ],
+      "primary_editions": {
+        "correct": 30,
+        "missed": 6
+      },
+      "groups": {
+        "adjacent": {
+          "missed": 3
+        },
+        "anchor": {
+          "correct": 3
+        },
+        "filtered-group-sum": {
+          "correct": 3
+        },
+        "filtered-rank-count": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-rank-sum": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-sum": {
+          "correct": 3
+        },
+        "grouped-count": {
+          "correct": 3
+        },
+        "rank-group-count": {
+          "correct": 2,
+          "missed": 1
+        }
+      }
+    },
+    "all_typed": {
+      "primary": {
+        "correct": 15,
+        "missed": 3
+      },
+      "mastered_patterns": [
+        "filtered-group-sum",
+        "filtered-sum",
+        "grouped-count"
+      ],
+      "primary_editions": {
+        "correct": 30,
+        "missed": 6
+      },
+      "groups": {
+        "adjacent": {
+          "missed": 3
+        },
+        "anchor": {
+          "correct": 3
+        },
+        "filtered-group-sum": {
+          "correct": 3
+        },
+        "filtered-rank-count": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-rank-sum": {
+          "correct": 2,
+          "missed": 1
+        },
+        "filtered-sum": {
+          "correct": 3
+        },
+        "grouped-count": {
+          "correct": 3
+        },
+        "rank-group-count": {
+          "correct": 2,
+          "missed": 1
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": 87,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "constant",
+      "demo_value": 87,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 87,
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 87,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "portfolio",
+      "demo_value": 87,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 34,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 68,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "seen_library",
+      "demo_value": 87,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 34,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 68,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_o",
+      "pattern": "filtered-sum",
+      "arm": "all_typed",
+      "demo_value": 87,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 34,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 68,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": 179,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 3
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 3
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "constant",
+      "demo_value": 179,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 179,
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 179,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "portfolio",
+      "demo_value": 179,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 35,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 63,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "seen_library",
+      "demo_value": 179,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 35,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 63,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_h",
+      "pattern": "filtered-sum",
+      "arm": "all_typed",
+      "demo_value": 179,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 35,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 63,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": 61,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "constant",
+      "demo_value": 61,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 61,
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 61,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "portfolio",
+      "demo_value": 61,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 35,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 63,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "seen_library",
+      "demo_value": 61,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 35,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 63,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fs_c",
+      "pattern": "filtered-sum",
+      "arm": "all_typed",
+      "demo_value": 61,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 35,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 63,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "unlabeled_committee",
+      "demo_value": {
+        "Cedar": 5,
+        "Maple": 6,
+        "Pine": 8
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "constant",
+      "demo_value": {
+        "Cedar": 5,
+        "Maple": 6,
+        "Pine": 8
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 5,
+            "Maple": 6,
+            "Pine": 8
+          },
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Cedar": 5,
+            "Maple": 6,
+            "Pine": 8
+          },
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "portfolio",
+      "demo_value": {
+        "Cedar": 5,
+        "Maple": 6,
+        "Pine": 8
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 5,
+            "Maple": 4,
+            "Pine": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Pine": 6,
+            "Cedar": 3,
+            "Maple": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "seen_library",
+      "demo_value": {
+        "Cedar": 5,
+        "Maple": 6,
+        "Pine": 8
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 5,
+            "Maple": 4,
+            "Pine": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Pine": 6,
+            "Cedar": 3,
+            "Maple": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_o",
+      "pattern": "grouped-count",
+      "arm": "all_typed",
+      "demo_value": {
+        "Cedar": 5,
+        "Maple": 6,
+        "Pine": 8
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 5,
+            "Maple": 4,
+            "Pine": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Pine": 6,
+            "Cedar": 3,
+            "Maple": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "unlabeled_committee",
+      "demo_value": {
+        "Aster": 5,
+        "Birch": 5,
+        "Elm": 9
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "constant",
+      "demo_value": {
+        "Aster": 5,
+        "Birch": 5,
+        "Elm": 9
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Aster": 5,
+            "Birch": 5,
+            "Elm": 9
+          },
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Aster": 5,
+            "Birch": 5,
+            "Elm": 9
+          },
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "portfolio",
+      "demo_value": {
+        "Aster": 5,
+        "Birch": 5,
+        "Elm": 9
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Aster": 5,
+            "Birch": 4,
+            "Elm": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Elm": 6,
+            "Aster": 3,
+            "Birch": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "seen_library",
+      "demo_value": {
+        "Aster": 5,
+        "Birch": 5,
+        "Elm": 9
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Aster": 5,
+            "Birch": 4,
+            "Elm": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Elm": 6,
+            "Aster": 3,
+            "Birch": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_h",
+      "pattern": "grouped-count",
+      "arm": "all_typed",
+      "demo_value": {
+        "Aster": 5,
+        "Birch": 5,
+        "Elm": 9
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Aster": 5,
+            "Birch": 4,
+            "Elm": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Elm": 6,
+            "Aster": 3,
+            "Birch": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "unlabeled_committee",
+      "demo_value": {
+        "East": 8,
+        "North": 4,
+        "South": 7
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "constant",
+      "demo_value": {
+        "East": 8,
+        "North": 4,
+        "South": 7
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "East": 8,
+            "North": 4,
+            "South": 7
+          },
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 8,
+            "North": 4,
+            "South": 7
+          },
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "portfolio",
+      "demo_value": {
+        "East": 8,
+        "North": 4,
+        "South": 7
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "North": 5,
+            "South": 4,
+            "East": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 6,
+            "North": 3,
+            "South": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "seen_library",
+      "demo_value": {
+        "East": 8,
+        "North": 4,
+        "South": 7
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "North": 5,
+            "South": 4,
+            "East": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 6,
+            "North": 3,
+            "South": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gc_c",
+      "pattern": "grouped-count",
+      "arm": "all_typed",
+      "demo_value": {
+        "East": 8,
+        "North": 4,
+        "South": 7
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "North": 5,
+            "South": 4,
+            "East": 4
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 6,
+            "North": 3,
+            "South": 6
+          },
+          "admitted": 1,
+          "codes": [
+            "CG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": {
+        "Cedar": 10,
+        "Maple": 20,
+        "Pine": 47
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "constant",
+      "demo_value": {
+        "Cedar": 10,
+        "Maple": 20,
+        "Pine": 47
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 10,
+            "Maple": 20,
+            "Pine": 47
+          },
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Cedar": 10,
+            "Maple": 20,
+            "Pine": 47
+          },
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "portfolio",
+      "demo_value": {
+        "Cedar": 10,
+        "Maple": 20,
+        "Pine": 47
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 15,
+            "Pine": 19,
+            "Maple": 1
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Pine": 34,
+            "Maple": 18,
+            "Cedar": 11
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "seen_library",
+      "demo_value": {
+        "Cedar": 10,
+        "Maple": 20,
+        "Pine": 47
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 15,
+            "Pine": 19,
+            "Maple": 1
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Pine": 34,
+            "Maple": 18,
+            "Cedar": 11
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_o",
+      "pattern": "filtered-group-sum",
+      "arm": "all_typed",
+      "demo_value": {
+        "Cedar": 10,
+        "Maple": 20,
+        "Pine": 47
+      },
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": {
+            "Cedar": 15,
+            "Pine": 19,
+            "Maple": 1
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": {
+            "Pine": 34,
+            "Maple": 18,
+            "Cedar": 11
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": {
+        "Aster": 11,
+        "Birch": 24,
+        "Elm": 19
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "constant",
+      "demo_value": {
+        "Aster": 11,
+        "Birch": 24,
+        "Elm": 19
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Aster": 11,
+            "Birch": 24,
+            "Elm": 19
+          },
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Aster": 11,
+            "Birch": 24,
+            "Elm": 19
+          },
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "portfolio",
+      "demo_value": {
+        "Aster": 11,
+        "Birch": 24,
+        "Elm": 19
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Birch": 22,
+            "Aster": 7,
+            "Elm": 5
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Elm": 26,
+            "Aster": 23,
+            "Birch": 19
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "seen_library",
+      "demo_value": {
+        "Aster": 11,
+        "Birch": 24,
+        "Elm": 19
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Birch": 22,
+            "Aster": 7,
+            "Elm": 5
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Elm": 26,
+            "Aster": 23,
+            "Birch": 19
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_h",
+      "pattern": "filtered-group-sum",
+      "arm": "all_typed",
+      "demo_value": {
+        "Aster": 11,
+        "Birch": 24,
+        "Elm": 19
+      },
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": {
+            "Birch": 22,
+            "Aster": 7,
+            "Elm": 5
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": {
+            "Elm": 26,
+            "Aster": 23,
+            "Birch": 19
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": {
+        "East": 82,
+        "North": 48,
+        "South": 17
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "constant",
+      "demo_value": {
+        "East": 82,
+        "North": 48,
+        "South": 17
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "East": 82,
+            "North": 48,
+            "South": 17
+          },
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 82,
+            "North": 48,
+            "South": 17
+          },
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "portfolio",
+      "demo_value": {
+        "East": 82,
+        "North": 48,
+        "South": 17
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "seen_library",
+      "demo_value": {
+        "East": 82,
+        "North": 48,
+        "South": 17
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "South": 22,
+            "North": 7,
+            "East": 5
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 26,
+            "North": 23,
+            "South": 19
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgs_c",
+      "pattern": "filtered-group-sum",
+      "arm": "all_typed",
+      "demo_value": {
+        "East": 82,
+        "North": 48,
+        "South": 17
+      },
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": {
+            "South": 22,
+            "North": 7,
+            "East": 5
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": {
+            "East": 26,
+            "North": 23,
+            "South": 19
+          },
+          "admitted": 1,
+          "codes": [
+            "SG"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "unlabeled_committee",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "constant",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "portfolio",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "seen_library",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_o",
+      "pattern": "rank-group-count",
+      "arm": "all_typed",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "unlabeled_committee",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "constant",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "portfolio",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "seen_library",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_h",
+      "pattern": "rank-group-count",
+      "arm": "all_typed",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "unlabeled_committee",
+      "demo_value": "East",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "constant",
+      "demo_value": "East",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "East",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "portfolio",
+      "demo_value": "East",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "seen_library",
+      "demo_value": "East",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "gca_c",
+      "pattern": "rank-group-count",
+      "arm": "all_typed",
+      "demo_value": "East",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "unlabeled_committee",
+      "demo_value": "Maple",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "constant",
+      "demo_value": "Maple",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "portfolio",
+      "demo_value": "Maple",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "seen_library",
+      "demo_value": "Maple",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_o",
+      "pattern": "filtered-rank-count",
+      "arm": "all_typed",
+      "demo_value": "Maple",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Cedar",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "unlabeled_committee",
+      "demo_value": "Elm",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "constant",
+      "demo_value": "Elm",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Elm",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Elm",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "portfolio",
+      "demo_value": "Elm",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "seen_library",
+      "demo_value": "Elm",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgca_h",
+      "pattern": "filtered-rank-count",
+      "arm": "all_typed",
+      "demo_value": "Elm",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "unlabeled_committee",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "constant",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "North",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "North",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "portfolio",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "seen_library",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgca_c",
+      "pattern": "filtered-rank-count",
+      "arm": "all_typed",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 2,
+          "codes": [
+            "CH",
+            "SH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "constant",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "portfolio",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "seen_library",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_o",
+      "pattern": "filtered-rank-sum",
+      "arm": "all_typed",
+      "demo_value": "Pine",
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": "Maple",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": "Pine",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 3
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 3
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "constant",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "correct"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "portfolio",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 2,
+          "codes": [
+            "CL",
+            "SL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 2,
+          "codes": [
+            "CL",
+            "SL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "seen_library",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 1,
+          "codes": [
+            "CL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_h",
+      "pattern": "filtered-rank-sum",
+      "arm": "all_typed",
+      "demo_value": "Aster",
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": "Birch",
+          "admitted": 2,
+          "codes": [
+            "CL",
+            "SL"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": "Aster",
+          "admitted": 2,
+          "codes": [
+            "CL",
+            "SL"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "unlabeled_committee",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 2,
+          "codes": [
+            "CH",
+            "SH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "correct"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "constant",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "North",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "North",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "portfolio",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": "East",
+          "admitted": 1,
+          "codes": [
+            "SH"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "seen_library",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "fgsa_c",
+      "pattern": "filtered-rank-sum",
+      "arm": "all_typed",
+      "demo_value": "North",
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "qualified plans disagree",
+          "admitted": 2
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "unlabeled_committee",
+      "demo_value": 19,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 13,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 15,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "constant",
+      "demo_value": 19,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 19,
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 19,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "portfolio",
+      "demo_value": 19,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 13,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 15,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "seen_library",
+      "demo_value": 19,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 13,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 15,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_o",
+      "pattern": "anchor",
+      "arm": "all_typed",
+      "demo_value": 19,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 13,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 15,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "unlabeled_committee",
+      "demo_value": 233,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 69,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 131,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "constant",
+      "demo_value": 233,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 233,
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 233,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "portfolio",
+      "demo_value": 233,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 69,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 131,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "seen_library",
+      "demo_value": 233,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 69,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 131,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_h",
+      "pattern": "anchor",
+      "arm": "all_typed",
+      "demo_value": 233,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 69,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 131,
+          "admitted": 1,
+          "codes": [
+            "SP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "unlabeled_committee",
+      "demo_value": 13,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 7,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 6,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "constant",
+      "demo_value": 13,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 13,
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 13,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "portfolio",
+      "demo_value": 13,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 7,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 6,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "seen_library",
+      "demo_value": 13,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 7,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 6,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "a_c",
+      "pattern": "anchor",
+      "arm": "all_typed",
+      "demo_value": 13,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 7,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 6,
+          "admitted": 1,
+          "codes": [
+            "CP"
+          ]
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "unlabeled_committee",
+      "demo_value": 3,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "constant",
+      "demo_value": 3,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "answered",
+          "value": 3,
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "answered",
+          "value": 3,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "correct",
+        "correct"
+      ],
+      "paired": "correct"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "portfolio",
+      "demo_value": 3,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "seen_library",
+      "demo_value": 3,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_o",
+      "pattern": "adjacent",
+      "arm": "all_typed",
+      "demo_value": 3,
+      "outputs": [
+        {
+          "table": "orchard-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "orchard-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "unlabeled_committee",
+      "demo_value": 12,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "constant",
+      "demo_value": 12,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "answered",
+          "value": 12,
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "answered",
+          "value": 12,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "portfolio",
+      "demo_value": 12,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "seen_library",
+      "demo_value": 12,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_h",
+      "pattern": "adjacent",
+      "arm": "all_typed",
+      "demo_value": 12,
+      "outputs": [
+        {
+          "table": "helpdesk-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "helpdesk-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "unlabeled_committee",
+      "demo_value": 10,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "constant",
+      "demo_value": 10,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "answered",
+          "value": 10,
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "answered",
+          "value": 10,
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "wrong",
+        "wrong"
+      ],
+      "paired": "wrong"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "portfolio",
+      "demo_value": 10,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "seen_library",
+      "demo_value": 10,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    },
+    {
+      "id": "x_c",
+      "pattern": "adjacent",
+      "arm": "all_typed",
+      "demo_value": 10,
+      "outputs": [
+        {
+          "table": "clinic-morning",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        },
+        {
+          "table": "clinic-evening",
+          "status": "abstained",
+          "value": null,
+          "reason": "no plan qualified",
+          "admitted": 0
+        }
+      ],
+      "edition_verdicts": [
+        "missed",
+        "missed"
+      ],
+      "paired": "missed"
+    }
+  ]
+}

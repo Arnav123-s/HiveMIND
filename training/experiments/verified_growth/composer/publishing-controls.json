@@ -1,0 +1,292 @@
+[
+  {
+    "name": "wide integer",
+    "request": "Sum amount. Save as total.json.",
+    "csv": "amount\n10000000000000000000000000000000000000001\n1\n",
+    "expected": 10000000000000000000000000000000000000002,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "amount",
+          "group": null
+        }
+      ],
+      "value": 10000000000000000000000000000000000000000,
+      "files": {
+        "total.json": "10000000000000000000000000000000000000000\n"
+      },
+      "text": "10000000000000000000000000000000000000000"
+    },
+    "checked": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "amount",
+          "group": null
+        }
+      ],
+      "value": 10000000000000000000000000000000000000002,
+      "files": {
+        "total.json": "10000000000000000000000000000000000000002\n"
+      },
+      "text": "10000000000000000000000000000000000000002"
+    }
+  },
+  {
+    "name": "qualified path",
+    "request": "Sum amount. Save as /tmp/total.json.",
+    "csv": "amount\n1\n2\n",
+    "expected": null,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "amount",
+          "group": null
+        }
+      ],
+      "value": 3,
+      "files": {},
+      "text": "3"
+    },
+    "checked": {
+      "status": "abstained",
+      "value": null,
+      "reason": "name a local result file without directories",
+      "files": {}
+    }
+  },
+  {
+    "name": "quoted spaces",
+    "request": "Sum amount. Save as \"June total.json\".",
+    "csv": "amount\n1\n2\n",
+    "expected": null,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "amount",
+          "group": null
+        }
+      ],
+      "value": 3,
+      "files": {
+        "total.json": "3\n"
+      },
+      "text": "3"
+    },
+    "checked": {
+      "status": "abstained",
+      "value": null,
+      "reason": "use one plain JSON filename for the result",
+      "files": {}
+    }
+  },
+  {
+    "name": "ordinary",
+    "request": "Sum amount. Save as total.json.",
+    "csv": "amount\n1\n2\n",
+    "expected": 3,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "amount",
+          "group": null
+        }
+      ],
+      "value": 3,
+      "files": {
+        "total.json": "3\n"
+      },
+      "text": "3"
+    },
+    "checked": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "amount",
+          "group": null
+        }
+      ],
+      "value": 3,
+      "files": {
+        "total.json": "3\n"
+      },
+      "text": "3"
+    }
+  },
+  {
+    "name": "missing quantity",
+    "request": "Sum toll revenue in dollars. Save as total.json.",
+    "csv": "open_days\n8\n13\n",
+    "expected": null,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "open_days",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    },
+    "checked": {
+      "status": "abstained",
+      "value": null,
+      "reason": "name the numeric column to sum",
+      "files": {}
+    }
+  },
+  {
+    "name": "incompatible unit",
+    "request": "Sum open days in dollars. Save as total.json.",
+    "csv": "open_days\n8\n13\n",
+    "expected": null,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "open_days",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    },
+    "checked": {
+      "status": "abstained",
+      "value": null,
+      "reason": "the requested unit is absent from the numeric column name",
+      "files": {}
+    }
+  },
+  {
+    "name": "asserted currency",
+    "request": "Sum revenue usd in dollars. Save as total.json.",
+    "csv": "revenue_usd\n8\n13\n",
+    "expected": 21,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "revenue_usd",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    },
+    "checked": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "revenue_usd",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    }
+  },
+  {
+    "name": "matching time",
+    "request": "Sum open days in days. Save as total.json.",
+    "csv": "open_days\n8\n13\n",
+    "expected": 21,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "open_days",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    },
+    "checked": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "open_days",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    }
+  },
+  {
+    "name": "wrong conversion",
+    "request": "Sum duration hours in minutes. Save as total.json.",
+    "csv": "duration_hours\n8\n13\n",
+    "expected": null,
+    "frozen": {
+      "status": "answered",
+      "code": "SP",
+      "plan": [
+        {
+          "op": "sum",
+          "field": "duration_hours",
+          "group": null
+        }
+      ],
+      "value": 21,
+      "files": {
+        "total.json": "21\n"
+      },
+      "text": "21"
+    },
+    "checked": {
+      "status": "abstained",
+      "value": null,
+      "reason": "the requested unit is absent from the numeric column name",
+      "files": {}
+    }
+  }
+]

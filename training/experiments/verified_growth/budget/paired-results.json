@@ -1,0 +1,215 @@
+{
+  "threads": 2,
+  "affinity": [
+    3,
+    4
+  ],
+  "arms": {
+    "half": {
+      "result": {
+        "arm": "half",
+        "source_sha256": "bd82d9b74b28ce8e6a6a5eac9b73b3638384268d6514735f57e2c53805bf6272",
+        "script_sha256": "ad6d871562ca60e0422f2e9b07ac0fe62aced59e847de274c56c7fe80e7bb7f2",
+        "corpus_sha256": "0615ee51f984240824899a70402d451f21f667dd508157bff9942247dfbc8e77",
+        "task_hashes": [
+          "085dd14e20d0e9734c2e5c8ac8d218a9f1646c0ffa746c185275134d1a7ded63",
+          "351d809bd89f302ef86da73080e6e5f8ee54d06ea6d676ed5091e0a8425de76a",
+          "e3abc4a207bb9a095cc87a830c6940f089c01cc92b79d2d1daf1ff5f56722824",
+          "268c0d20c97b207d68011e8b143ad5c1e4fcba053ab4c680ca5dda279195bf02",
+          "3823ed773dfa1968d39d41e416a2ab5811379c8294ee70242f6d4fcca9154149",
+          "9aaefab3e1393406831b383212c9b66679fc6a791138e23b6540b601fdbc98b0"
+        ],
+        "measured": "grow.train through GGUF export, imports of its training dependencies included",
+        "elapsed_seconds": 487.528,
+        "adapter_sha256": "835779a74611e5861d67445d6e018490844b60b1b6b41ff992218a46f32e29e7",
+        "meta": {
+          "member": "t80+budgetstudy",
+          "leans": "words",
+          "dtype": "bf16",
+          "checkpoint": false,
+          "seconds_a_row": 60.5,
+          "ternary_edit": false,
+          "foresee": false,
+          "pairs": 0,
+          "int8_base": true,
+          "read": 0,
+          "judged": 0,
+          "parent": "",
+          "parent_cell": "",
+          "trunk": "",
+          "mended": 0,
+          "new_rows": 0,
+          "shard": "",
+          "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+          "rows": 4,
+          "used": 4,
+          "passes": 4,
+          "epochs": 1.0,
+          "rank": 16,
+          "lr": 0.0002,
+          "layers": [
+            22,
+            35
+          ],
+          "steps": 1,
+          "seconds": 242,
+          "loss_first": 0.3113,
+          "loss_last": 0.3113,
+          "when": "2026-11-19 20:15",
+          "memory_gb": 10.2,
+          "gpu": "",
+          "subjects": [
+            {
+              "subject": "days between two dates \u00b7 first",
+              "rows": 2,
+              "passes": 3,
+              "loss_first": 0.2968,
+              "loss_last": 0.3071
+            },
+            {
+              "subject": "follow a form to the letter \u00b7 first",
+              "rows": 2,
+              "passes": 1,
+              "loss_first": 0.3242,
+              "loss_last": 0.3242
+            }
+          ],
+          "kept_back": {
+            "days between two dates": {
+              "lessons": 1,
+              "rows": 1,
+              "before": 0.3184,
+              "after": 0.3138
+            },
+            "follow a form to the letter": {
+              "lessons": 1,
+              "rows": 1,
+              "before": 1.2093,
+              "after": 1.2032
+            }
+          },
+          "rows_by_kind": {},
+          "memory": {
+            "peak_gb": 10.17,
+            "min_available_gb": 5.1,
+            "swap_peak_gb": 0.0,
+            "rows_skipped": 0,
+            "skipped_by_subject": {},
+            "cost_per_piece_mb": 10.062,
+            "formula_per_piece_mb": 10.062,
+            "spare_gb": 1.0
+          },
+          "megabytes": 38.0
+        }
+      },
+      "wall_seconds": 490.779,
+      "cpu_seconds": 772.052,
+      "max_cgroup_nonreclaimable_proxy_gib": 11.67
+    },
+    "full": {
+      "result": {
+        "arm": "full",
+        "source_sha256": "bd82d9b74b28ce8e6a6a5eac9b73b3638384268d6514735f57e2c53805bf6272",
+        "script_sha256": "ad6d871562ca60e0422f2e9b07ac0fe62aced59e847de274c56c7fe80e7bb7f2",
+        "corpus_sha256": "305542a0c5363db0016cb6381988502fd02e543fc0bc68441ea3a37f353b1035",
+        "task_hashes": [
+          "085dd14e20d0e9734c2e5c8ac8d218a9f1646c0ffa746c185275134d1a7ded63",
+          "351d809bd89f302ef86da73080e6e5f8ee54d06ea6d676ed5091e0a8425de76a",
+          "ab278bded8a5b5739a66e7a6e173f60a2b989743e2bea30890ebb467d8f5cfc4",
+          "e3abc4a207bb9a095cc87a830c6940f089c01cc92b79d2d1daf1ff5f56722824",
+          "268c0d20c97b207d68011e8b143ad5c1e4fcba053ab4c680ca5dda279195bf02",
+          "3823ed773dfa1968d39d41e416a2ab5811379c8294ee70242f6d4fcca9154149",
+          "4d9478d9632345a695a7076ff8d6da22d89b873940b8df592845713838ee9c90",
+          "5969c3b2e2f5559c5ed5fa68801c402abe6bd54c9c46a220147a2f3b92c0fdf1",
+          "63b204d2190de0e104f8f43578e54ce2e236e543bfee038b73b88a2e95371726",
+          "9aaefab3e1393406831b383212c9b66679fc6a791138e23b6540b601fdbc98b0"
+        ],
+        "measured": "grow.train through GGUF export, imports of its training dependencies included",
+        "elapsed_seconds": 600.95,
+        "adapter_sha256": "9035185968ffafc30d15c1e349a92b47479083574b58af5209ac9766a39130aa",
+        "meta": {
+          "member": "t80+budgetstudy",
+          "leans": "words",
+          "dtype": "bf16",
+          "checkpoint": false,
+          "seconds_a_row": 46.3,
+          "ternary_edit": false,
+          "foresee": false,
+          "pairs": 0,
+          "int8_base": true,
+          "read": 0,
+          "judged": 0,
+          "parent": "",
+          "parent_cell": "",
+          "trunk": "",
+          "mended": 0,
+          "new_rows": 0,
+          "shard": "",
+          "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+          "rows": 8,
+          "used": 8,
+          "passes": 8,
+          "epochs": 1.0,
+          "rank": 16,
+          "lr": 0.0002,
+          "layers": [
+            22,
+            35
+          ],
+          "steps": 2,
+          "seconds": 370,
+          "loss_first": 0.708,
+          "loss_last": 0.6302,
+          "when": "2026-11-19 20:25",
+          "memory_gb": 10.2,
+          "gpu": "",
+          "subjects": [
+            {
+              "subject": "days between two dates \u00b7 first",
+              "rows": 3,
+              "passes": 4,
+              "loss_first": 0.2968,
+              "loss_last": 0.308
+            },
+            {
+              "subject": "follow a form to the letter \u00b7 first",
+              "rows": 5,
+              "passes": 4,
+              "loss_first": 1.8768,
+              "loss_last": 0.6482
+            }
+          ],
+          "kept_back": {
+            "days between two dates": {
+              "lessons": 1,
+              "rows": 1,
+              "before": 0.3184,
+              "after": 0.2816
+            },
+            "follow a form to the letter": {
+              "lessons": 1,
+              "rows": 1,
+              "before": 1.2093,
+              "after": 1.1076
+            }
+          },
+          "rows_by_kind": {},
+          "memory": {
+            "peak_gb": 10.23,
+            "min_available_gb": 6.27,
+            "swap_peak_gb": 0.0,
+            "rows_skipped": 0,
+            "skipped_by_subject": {},
+            "cost_per_piece_mb": 10.062,
+            "formula_per_piece_mb": 10.062,
+            "spare_gb": 1.0
+          },
+          "megabytes": 38.0
+        }
+      },
+      "wall_seconds": 602.815,
+      "cpu_seconds": 1101.938,
+      "max_cgroup_nonreclaimable_proxy_gib": 10.875
+    }
+  }
+}

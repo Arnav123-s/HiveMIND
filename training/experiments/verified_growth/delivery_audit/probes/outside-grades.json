@@ -1,0 +1,415 @@
+{
+  "scale": [
+    {
+      "input": -13,
+      "expected": -26
+    },
+    {
+      "input": 0,
+      "expected": 0
+    },
+    {
+      "input": 9,
+      "expected": 18
+    },
+    {
+      "input": -4,
+      "expected": -8
+    },
+    {
+      "input": 17,
+      "expected": 34
+    },
+    {
+      "input": 1,
+      "expected": 2
+    },
+    {
+      "input": -19,
+      "expected": -38
+    },
+    {
+      "input": 12,
+      "expected": 24
+    }
+  ],
+  "slug": [
+    {
+      "input": "SILVER KITE",
+      "expected": "silver-kite"
+    },
+    {
+      "input": "Amber   Grove",
+      "expected": "amber-grove"
+    },
+    {
+      "input": "   DAWN   ",
+      "expected": "dawn"
+    },
+    {
+      "input": "Pine Cone Jam",
+      "expected": "pine-cone-jam"
+    },
+    {
+      "input": "Sun Dog",
+      "expected": "sun-dog"
+    },
+    {
+      "input": "",
+      "expected": ""
+    },
+    {
+      "input": "CLEAR Sky Atlas",
+      "expected": "clear-sky-atlas"
+    },
+    {
+      "input": "River Rock",
+      "expected": "river-rock"
+    }
+  ],
+  "evens": [
+    {
+      "input": [
+        6,
+        6,
+        9,
+        -4
+      ],
+      "expected": 3
+    },
+    {
+      "input": [
+        7,
+        1,
+        -3
+      ],
+      "expected": 0
+    },
+    {
+      "input": [],
+      "expected": 0
+    },
+    {
+      "input": [
+        0,
+        5,
+        12
+      ],
+      "expected": 2
+    },
+    {
+      "input": [
+        -8,
+        -8,
+        2,
+        2
+      ],
+      "expected": 4
+    },
+    {
+      "input": [
+        5,
+        5,
+        6,
+        5,
+        8
+      ],
+      "expected": 2
+    },
+    {
+      "input": [
+        -1,
+        0,
+        -11,
+        -12
+      ],
+      "expected": 2
+    },
+    {
+      "input": [
+        2
+      ],
+      "expected": 1
+    }
+  ],
+  "dedup": [
+    {
+      "input": [
+        5,
+        2,
+        5,
+        4,
+        2
+      ],
+      "expected": [
+        5,
+        2,
+        4
+      ]
+    },
+    {
+      "input": [
+        3,
+        1,
+        2
+      ],
+      "expected": [
+        3,
+        1,
+        2
+      ]
+    },
+    {
+      "input": [],
+      "expected": []
+    },
+    {
+      "input": [
+        6,
+        6,
+        6
+      ],
+      "expected": [
+        6
+      ]
+    },
+    {
+      "input": [
+        -3,
+        0,
+        -3,
+        1
+      ],
+      "expected": [
+        -3,
+        0,
+        1
+      ]
+    },
+    {
+      "input": [
+        9,
+        2,
+        1,
+        9,
+        2
+      ],
+      "expected": [
+        9,
+        2,
+        1
+      ]
+    },
+    {
+      "input": [
+        0
+      ],
+      "expected": [
+        0
+      ]
+    },
+    {
+      "input": [
+        4,
+        3,
+        4,
+        3,
+        2,
+        3
+      ],
+      "expected": [
+        4,
+        3,
+        2
+      ]
+    }
+  ],
+  "absolute": [
+    {
+      "input": -13,
+      "expected": 13
+    },
+    {
+      "input": 0,
+      "expected": 0
+    },
+    {
+      "input": 9,
+      "expected": 9
+    },
+    {
+      "input": -4,
+      "expected": 4
+    },
+    {
+      "input": 17,
+      "expected": 17
+    },
+    {
+      "input": 1,
+      "expected": 1
+    },
+    {
+      "input": -19,
+      "expected": 19
+    },
+    {
+      "input": 12,
+      "expected": 12
+    }
+  ],
+  "next_digit": [
+    {
+      "input": 6,
+      "expected": 7
+    },
+    {
+      "input": 9,
+      "expected": 0
+    },
+    {
+      "input": 0,
+      "expected": 1
+    },
+    {
+      "input": 3,
+      "expected": 4
+    },
+    {
+      "input": 8,
+      "expected": 9
+    },
+    {
+      "input": 2,
+      "expected": 3
+    },
+    {
+      "input": 7,
+      "expected": 8
+    },
+    {
+      "input": 5,
+      "expected": 6
+    }
+  ],
+  "sum_values": [
+    {
+      "input": [
+        4,
+        15,
+        4
+      ],
+      "expected": 23
+    },
+    {
+      "input": [],
+      "expected": 0
+    },
+    {
+      "input": [
+        0,
+        0,
+        0
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        7
+      ],
+      "expected": 7
+    },
+    {
+      "input": [
+        0,
+        9,
+        0,
+        2
+      ],
+      "expected": 11
+    },
+    {
+      "input": [
+        12,
+        1,
+        7,
+        3
+      ],
+      "expected": 23
+    },
+    {
+      "input": [
+        5,
+        5
+      ],
+      "expected": 10
+    },
+    {
+      "input": [
+        15,
+        8,
+        3,
+        1
+      ],
+      "expected": 27
+    }
+  ],
+  "join_words": [
+    {
+      "input": [
+        "sky",
+        "tea"
+      ],
+      "expected": "sky/tea"
+    },
+    {
+      "input": [],
+      "expected": ""
+    },
+    {
+      "input": [
+        "reed"
+      ],
+      "expected": "reed"
+    },
+    {
+      "input": [
+        "red",
+        "red",
+        "sun"
+      ],
+      "expected": "red/red/sun"
+    },
+    {
+      "input": [
+        "oak",
+        "new",
+        "fox"
+      ],
+      "expected": "oak/new/fox"
+    },
+    {
+      "input": [
+        "WEST",
+        "Air"
+      ],
+      "expected": "WEST/Air"
+    },
+    {
+      "input": [
+        "a",
+        "b",
+        "c",
+        "a"
+      ],
+      "expected": "a/b/c/a"
+    },
+    {
+      "input": [
+        "sea",
+        "dry"
+      ],
+      "expected": "sea/dry"
+    }
+  ]
+}

@@ -1,0 +1,536 @@
+{
+  "orchard-morning": {
+    "csv": "yard,shift,crates,minutes\nCedar,day,4,9\nMaple,night,13,5\nCedar,night,3,8\nPine,day,15,2\nMaple,day,1,7\nCedar,day,6,14\nPine,night,0,4\nPine,day,4,6\nMaple,night,7,4\nCedar,day,5,12\nMaple,night,2,3\nPine,night,5,4\nCedar,night,4,3\n",
+    "rows": [
+      {
+        "yard": "Cedar",
+        "shift": "day",
+        "crates": 4,
+        "minutes": 9
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 13,
+        "minutes": 5
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 3,
+        "minutes": 8
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 15,
+        "minutes": 2
+      },
+      {
+        "yard": "Maple",
+        "shift": "day",
+        "crates": 1,
+        "minutes": 7
+      },
+      {
+        "yard": "Cedar",
+        "shift": "day",
+        "crates": 6,
+        "minutes": 14
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 0,
+        "minutes": 4
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 4,
+        "minutes": 6
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 7,
+        "minutes": 4
+      },
+      {
+        "yard": "Cedar",
+        "shift": "day",
+        "crates": 5,
+        "minutes": 12
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 2,
+        "minutes": 3
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 5,
+        "minutes": 4
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 4,
+        "minutes": 3
+      }
+    ]
+  },
+  "orchard-evening": {
+    "csv": "minutes,yard,crates,shift\n9,Pine,11,night\n8,Cedar,16,night\n8,Pine,3,day\n2,Maple,9,day\n17,Maple,14,night\n9,Maple,2,day\n4,Cedar,7,night\n14,Pine,8,day\n7,Maple,4,day\n5,Pine,6,day\n6,Maple,5,night\n8,Pine,17,day\n4,Cedar,11,day\n3,Maple,3,day\n12,Pine,15,night\n",
+    "rows": [
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 11,
+        "minutes": 9
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 16,
+        "minutes": 8
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 3,
+        "minutes": 8
+      },
+      {
+        "yard": "Maple",
+        "shift": "day",
+        "crates": 9,
+        "minutes": 2
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 14,
+        "minutes": 17
+      },
+      {
+        "yard": "Maple",
+        "shift": "day",
+        "crates": 2,
+        "minutes": 9
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 7,
+        "minutes": 4
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 8,
+        "minutes": 14
+      },
+      {
+        "yard": "Maple",
+        "shift": "day",
+        "crates": 4,
+        "minutes": 7
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 6,
+        "minutes": 5
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 5,
+        "minutes": 6
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 17,
+        "minutes": 8
+      },
+      {
+        "yard": "Cedar",
+        "shift": "day",
+        "crates": 11,
+        "minutes": 4
+      },
+      {
+        "yard": "Maple",
+        "shift": "day",
+        "crates": 3,
+        "minutes": 3
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 15,
+        "minutes": 12
+      }
+    ]
+  },
+  "helpdesk-morning": {
+    "csv": "desk,channel,tickets,minutes\nAster,web,4,9\nBirch,phone,13,5\nAster,phone,3,8\nElm,web,15,2\nBirch,web,1,7\nAster,web,6,14\nElm,phone,0,4\nElm,web,4,6\nBirch,phone,7,4\nAster,web,5,12\nBirch,phone,2,3\nElm,phone,5,4\nAster,phone,4,3\n",
+    "rows": [
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 4,
+        "minutes": 9
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 13,
+        "minutes": 5
+      },
+      {
+        "desk": "Aster",
+        "channel": "phone",
+        "tickets": 3,
+        "minutes": 8
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 15,
+        "minutes": 2
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 1,
+        "minutes": 7
+      },
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 6,
+        "minutes": 14
+      },
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 0,
+        "minutes": 4
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 4,
+        "minutes": 6
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 7,
+        "minutes": 4
+      },
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 5,
+        "minutes": 12
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 2,
+        "minutes": 3
+      },
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 5,
+        "minutes": 4
+      },
+      {
+        "desk": "Aster",
+        "channel": "phone",
+        "tickets": 4,
+        "minutes": 3
+      }
+    ]
+  },
+  "helpdesk-evening": {
+    "csv": "minutes,desk,tickets,channel\n9,Elm,11,phone\n8,Aster,16,phone\n8,Elm,3,web\n2,Birch,9,web\n17,Birch,14,phone\n9,Birch,2,web\n4,Aster,7,phone\n14,Elm,8,web\n7,Birch,4,web\n5,Elm,6,web\n6,Birch,5,phone\n8,Elm,17,web\n4,Aster,11,web\n3,Birch,3,web\n12,Elm,15,phone\n",
+    "rows": [
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 11,
+        "minutes": 9
+      },
+      {
+        "desk": "Aster",
+        "channel": "phone",
+        "tickets": 16,
+        "minutes": 8
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 3,
+        "minutes": 8
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 9,
+        "minutes": 2
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 14,
+        "minutes": 17
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 2,
+        "minutes": 9
+      },
+      {
+        "desk": "Aster",
+        "channel": "phone",
+        "tickets": 7,
+        "minutes": 4
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 8,
+        "minutes": 14
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 4,
+        "minutes": 7
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 6,
+        "minutes": 5
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 5,
+        "minutes": 6
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 17,
+        "minutes": 8
+      },
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 11,
+        "minutes": 4
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 3,
+        "minutes": 3
+      },
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 15,
+        "minutes": 12
+      }
+    ]
+  },
+  "clinic-morning": {
+    "csv": "ward,period,visits,staff\nNorth,early,4,9\nSouth,late,13,5\nNorth,late,3,8\nEast,early,15,2\nSouth,early,1,7\nNorth,early,6,14\nEast,late,0,4\nEast,early,4,6\nSouth,late,7,4\nNorth,early,5,12\nSouth,late,2,3\nEast,late,5,4\nNorth,late,4,3\n",
+    "rows": [
+      {
+        "ward": "North",
+        "period": "early",
+        "visits": 4,
+        "staff": 9
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 13,
+        "staff": 5
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 3,
+        "staff": 8
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 15,
+        "staff": 2
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 1,
+        "staff": 7
+      },
+      {
+        "ward": "North",
+        "period": "early",
+        "visits": 6,
+        "staff": 14
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 0,
+        "staff": 4
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 4,
+        "staff": 6
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 7,
+        "staff": 4
+      },
+      {
+        "ward": "North",
+        "period": "early",
+        "visits": 5,
+        "staff": 12
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 2,
+        "staff": 3
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 5,
+        "staff": 4
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 4,
+        "staff": 3
+      }
+    ]
+  },
+  "clinic-evening": {
+    "csv": "staff,ward,visits,period\n9,East,11,late\n8,North,16,late\n8,East,3,early\n2,South,9,early\n17,South,14,late\n9,South,2,early\n4,North,7,late\n14,East,8,early\n7,South,4,early\n5,East,6,early\n6,South,5,late\n8,East,17,early\n4,North,11,early\n3,South,3,early\n12,East,15,late\n",
+    "rows": [
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 11,
+        "staff": 9
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 16,
+        "staff": 8
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 3,
+        "staff": 8
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 9,
+        "staff": 2
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 14,
+        "staff": 17
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 2,
+        "staff": 9
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 7,
+        "staff": 4
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 8,
+        "staff": 14
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 4,
+        "staff": 7
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 6,
+        "staff": 5
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 5,
+        "staff": 6
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 17,
+        "staff": 8
+      },
+      {
+        "ward": "North",
+        "period": "early",
+        "visits": 11,
+        "staff": 4
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 3,
+        "staff": 3
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 15,
+        "staff": 12
+      }
+    ]
+  }
+}

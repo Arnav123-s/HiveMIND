@@ -1,0 +1,54 @@
+{
+  "stock_commit": "4cbd41cb2e27d263f102801c0a7a008268d0b1aa",
+  "collector_sha256": "af21aea1144b6c55cb5bb23caa42b05bdb334ba095b07a31fb3458fb64d34546",
+  "first": {
+    "tries": 3,
+    "selected": 2,
+    "who": [
+      "coder",
+      "coder",
+      "coder"
+    ],
+    "output": "Amber\n",
+    "public_report_sha256": "360a2a89c0a4d2341eddc3910bfff7f6ff099b8c5c1d2be19086c1c0e43961a9"
+  },
+  "second": {
+    "tries": 2,
+    "selected": 1,
+    "who": [
+      "coder",
+      "coder"
+    ],
+    "output": "Pearl\n",
+    "public_report_sha256": "45010a828ffb03c5af8bb0a3975e2ae8ca045159f5031962b9bcecd70b3b4977"
+  },
+  "stored_task": "Save shelf.txt containing the single word Pearl. Then print the same word.",
+  "expected_current_seats": [
+    1,
+    2
+  ],
+  "on_disk_worker_receipts": [
+    "member1.json",
+    "member2.json",
+    "member3.json"
+  ],
+  "stale_receipt_bytes_unchanged": true,
+  "old_worker_file": "Amber\n",
+  "archive_seats": [
+    1,
+    2,
+    3
+  ],
+  "archived_contents": {
+    "1": "Pearl\n",
+    "2": "Pearl\n",
+    "3": "Amber\n"
+  },
+  "stale_bytes_attached_to_second": true,
+  "current_seat_coverage": [
+    1,
+    2
+  ],
+  "public_delivery_and_report_unchanged": true,
+  "command_stdout": "Captured ungraded worker evidence for 1 tasks."
+}

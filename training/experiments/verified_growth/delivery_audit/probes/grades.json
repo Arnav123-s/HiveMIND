@@ -1,0 +1,199 @@
+{
+  "outcomes": {
+    "stock": {
+      "wrong": 5,
+      "correct": 5,
+      "withheld": 2
+    },
+    "negative_only": {
+      "withheld": 6,
+      "correct": 3,
+      "wrong": 3
+    },
+    "require_matched": {
+      "withheld": 9,
+      "correct": 1,
+      "wrong": 2
+    }
+  },
+  "grades": [
+    {
+      "case": "double-a",
+      "test_cases": 8,
+      "hidden_passes": [
+        1,
+        8
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        0,
+        7
+      ],
+      "stock_first_passes": false,
+      "observation": "contradicted"
+    },
+    {
+      "case": "double-b",
+      "test_cases": 8,
+      "hidden_passes": [
+        8,
+        1
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        7,
+        0
+      ],
+      "stock_first_passes": true,
+      "observation": "contradicted"
+    },
+    {
+      "case": "tags",
+      "test_cases": 8,
+      "hidden_passes": [
+        2,
+        8
+      ],
+      "additional_unexposed_cases": 8,
+      "additional_unexposed_passes": [
+        2,
+        8
+      ],
+      "stock_first_passes": false,
+      "observation": "contradicted"
+    },
+    {
+      "case": "counts",
+      "test_cases": 8,
+      "hidden_passes": [
+        8,
+        6
+      ],
+      "additional_unexposed_cases": 8,
+      "additional_unexposed_passes": [
+        8,
+        6
+      ],
+      "stock_first_passes": true,
+      "observation": "contradicted"
+    },
+    {
+      "case": "orders",
+      "test_cases": 8,
+      "hidden_passes": [
+        8,
+        8
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        7,
+        7
+      ],
+      "stock_first_passes": true,
+      "observation": "matching_observations"
+    },
+    {
+      "case": "distance",
+      "test_cases": 8,
+      "hidden_passes": [
+        5,
+        5
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        4,
+        4
+      ],
+      "stock_first_passes": false,
+      "observation": "matching_observations"
+    },
+    {
+      "case": "dial",
+      "test_cases": 8,
+      "hidden_passes": [
+        7,
+        8
+      ],
+      "additional_unexposed_cases": 6,
+      "additional_unexposed_passes": [
+        5,
+        6
+      ],
+      "stock_first_passes": false,
+      "observation": "matching_observations"
+    },
+    {
+      "case": "inventory",
+      "test_cases": 8,
+      "hidden_passes": [
+        8,
+        8
+      ],
+      "additional_unexposed_cases": 8,
+      "additional_unexposed_passes": [
+        8,
+        8
+      ],
+      "stock_first_passes": true,
+      "observation": "unknown"
+    },
+    {
+      "case": "paths",
+      "test_cases": 8,
+      "hidden_passes": [
+        2,
+        8
+      ],
+      "additional_unexposed_cases": 8,
+      "additional_unexposed_passes": [
+        2,
+        8
+      ],
+      "stock_first_passes": false,
+      "observation": "unknown"
+    },
+    {
+      "case": "single-a",
+      "test_cases": 8,
+      "hidden_passes": [
+        1
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        0
+      ],
+      "stock_first_passes": false,
+      "observation": "unknown"
+    },
+    {
+      "case": "single-b",
+      "test_cases": 8,
+      "hidden_passes": [
+        8
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        7
+      ],
+      "stock_first_passes": true,
+      "observation": "unknown"
+    },
+    {
+      "case": "exception",
+      "test_cases": 8,
+      "hidden_passes": [
+        8,
+        7
+      ],
+      "additional_unexposed_cases": 7,
+      "additional_unexposed_passes": [
+        7,
+        7
+      ],
+      "stock_first_passes": true,
+      "observation": "unknown"
+    }
+  ],
+  "decisions_sha256": "b09fa708743768617da7e0f97db110eebe8ff4ae192cb75860f0186579ef597b",
+  "keys_sha256": "1731c196a118eeb6134c7a2cf0698a0f2c429e7ca6eb79fb64315fcfa6123c66"
+}

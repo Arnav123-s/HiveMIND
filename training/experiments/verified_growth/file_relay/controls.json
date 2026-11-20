@@ -1,0 +1,54 @@
+[
+  {
+    "case": "driver_removed",
+    "outcome": {
+      "status": "answered",
+      "files": {
+        "stock.py": "def net(incoming, outgoing):\n    return incoming - outgoing\n"
+      },
+      "text": "22",
+      "module_sha256": "bd5dda29495662d2c87d341db1ff48a8cd19e2f9724ffd61fadaf43a16bb17f1",
+      "public_checks": 2
+    }
+  },
+  {
+    "case": "all_wrong",
+    "outcome": {
+      "status": "abstained",
+      "files": {},
+      "text": ""
+    }
+  },
+  {
+    "case": "public_examples_tie",
+    "outcome": {
+      "status": "abstained",
+      "files": {},
+      "text": ""
+    }
+  },
+  {
+    "case": "extra_entry_point",
+    "outcome": {
+      "status": "abstained",
+      "files": {},
+      "text": ""
+    }
+  },
+  {
+    "case": "existing_delivery",
+    "outcome": {
+      "status": "abstained",
+      "files": {},
+      "text": ""
+    }
+  },
+  {
+    "case": "only_one_example",
+    "outcome": {
+      "status": "abstained",
+      "files": {},
+      "text": ""
+    }
+  }
+]

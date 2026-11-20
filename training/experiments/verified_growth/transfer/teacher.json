@@ -1,0 +1,413 @@
+{
+  "orchard": {
+    "seed": "f90aa3db7271c85f7d304865799d5f4e26093403417ed93a0700d3642e3ae723",
+    "rows": [
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 15,
+        "minutes": 4
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 2,
+        "minutes": 6
+      },
+      {
+        "yard": "Cedar",
+        "shift": "day",
+        "crates": 7,
+        "minutes": 8
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 0,
+        "minutes": 6
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 1,
+        "minutes": 2
+      },
+      {
+        "yard": "Maple",
+        "shift": "day",
+        "crates": 20,
+        "minutes": 7
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 7,
+        "minutes": 10
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 23,
+        "minutes": 11
+      },
+      {
+        "yard": "Cedar",
+        "shift": "day",
+        "crates": 3,
+        "minutes": 17
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 4,
+        "minutes": 2
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 18,
+        "minutes": 1
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 10,
+        "minutes": 8
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 4,
+        "minutes": 17
+      },
+      {
+        "yard": "Maple",
+        "shift": "night",
+        "crates": 6,
+        "minutes": 16
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 17,
+        "minutes": 15
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 12,
+        "minutes": 2
+      },
+      {
+        "yard": "Pine",
+        "shift": "night",
+        "crates": 1,
+        "minutes": 6
+      },
+      {
+        "yard": "Cedar",
+        "shift": "night",
+        "crates": 7,
+        "minutes": 10
+      },
+      {
+        "yard": "Pine",
+        "shift": "day",
+        "crates": 7,
+        "minutes": 16
+      }
+    ],
+    "answers": {
+      "fs_o": 87,
+      "gc_o": {
+        "Cedar": 5,
+        "Maple": 6,
+        "Pine": 8
+      },
+      "fgs_o": {
+        "Cedar": 10,
+        "Maple": 20,
+        "Pine": 47
+      },
+      "gca_o": "Pine",
+      "fgca_o": "Maple",
+      "fgsa_o": "Pine",
+      "a_o": 19,
+      "x_o": 3
+    }
+  },
+  "helpdesk": {
+    "seed": "67cbd7ed0a3ac30445ce7e444a852a78f3578bb4e361cf45df004cb7c4e23500",
+    "rows": [
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 16,
+        "minutes": 4
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 2,
+        "minutes": 2
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 21,
+        "minutes": 8
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 4,
+        "minutes": 7
+      },
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 15,
+        "minutes": 7
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 5,
+        "minutes": 7
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 11,
+        "minutes": 8
+      },
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 2,
+        "minutes": 12
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 23,
+        "minutes": 12
+      },
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 19,
+        "minutes": 4
+      },
+      {
+        "desk": "Aster",
+        "channel": "web",
+        "tickets": 22,
+        "minutes": 3
+      },
+      {
+        "desk": "Birch",
+        "channel": "phone",
+        "tickets": 22,
+        "minutes": 6
+      },
+      {
+        "desk": "Elm",
+        "channel": "web",
+        "tickets": 4,
+        "minutes": 9
+      },
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 13,
+        "minutes": 12
+      },
+      {
+        "desk": "Elm",
+        "channel": "phone",
+        "tickets": 4,
+        "minutes": 3
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 23,
+        "minutes": 10
+      },
+      {
+        "desk": "Aster",
+        "channel": "phone",
+        "tickets": 11,
+        "minutes": 8
+      },
+      {
+        "desk": "Aster",
+        "channel": "phone",
+        "tickets": 0,
+        "minutes": 19
+      },
+      {
+        "desk": "Birch",
+        "channel": "web",
+        "tickets": 16,
+        "minutes": 7
+      }
+    ],
+    "answers": {
+      "fs_h": 179,
+      "gc_h": {
+        "Aster": 5,
+        "Birch": 5,
+        "Elm": 9
+      },
+      "fgs_h": {
+        "Aster": 11,
+        "Birch": 24,
+        "Elm": 19
+      },
+      "gca_h": "Aster",
+      "fgca_h": "Elm",
+      "fgsa_h": "Aster",
+      "a_h": 233,
+      "x_h": 12
+    }
+  },
+  "clinic": {
+    "seed": "d25f4bc21711c866e496229aa5fd863e07bb75b2a44c9b9e39662d390267fb29",
+    "rows": [
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 13,
+        "staff": 19
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 22,
+        "staff": 15
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 21,
+        "staff": 13
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 15,
+        "staff": 16
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 3,
+        "staff": 4
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 1,
+        "staff": 12
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 1,
+        "staff": 14
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 4,
+        "staff": 12
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 15,
+        "staff": 1
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 4,
+        "staff": 12
+      },
+      {
+        "ward": "East",
+        "period": "early",
+        "visits": 9,
+        "staff": 6
+      },
+      {
+        "ward": "South",
+        "period": "early",
+        "visits": 7,
+        "staff": 5
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 16,
+        "staff": 18
+      },
+      {
+        "ward": "East",
+        "period": "late",
+        "visits": 14,
+        "staff": 5
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 24,
+        "staff": 13
+      },
+      {
+        "ward": "North",
+        "period": "early",
+        "visits": 25,
+        "staff": 9
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 10,
+        "staff": 7
+      },
+      {
+        "ward": "South",
+        "period": "late",
+        "visits": 2,
+        "staff": 9
+      },
+      {
+        "ward": "North",
+        "period": "late",
+        "visits": 2,
+        "staff": 6
+      }
+    ],
+    "answers": {
+      "fs_c": 61,
+      "gc_c": {
+        "East": 8,
+        "North": 4,
+        "South": 7
+      },
+      "fgs_c": {
+        "East": 82,
+        "North": 48,
+        "South": 17
+      },
+      "gca_c": "East",
+      "fgca_c": "North",
+      "fgsa_c": "North",
+      "a_c": 13,
+      "x_c": 10
+    }
+  }
+}

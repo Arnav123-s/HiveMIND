@@ -1,0 +1,752 @@
+{
+  "module": "training.experiments.verified_growth.delivery_audit.literal_intake.lossless",
+  "guard_sha256": "59f1e006d9864d9c39726d361c0a5075e895b43c8e9bbdac10f2ce19ebff9a8d",
+  "previous_sha256": "a2fbab51f129364ce100db8bbc0c2d761fb8ab2f9369f3abeaad67edb188f05c",
+  "grades_sha256": "f4911772f2b794bffa29eccf4ff4da7abbf254e004613ac9f1fba5b64587985d",
+  "results": {
+    "absent_both": 80,
+    "removed": 4,
+    "identical": 6
+  },
+  "reusable_historical_gains": 3,
+  "by_report": {
+    "absent_both_answered": 41,
+    "removed_declined": 3,
+    "absent_both_declined": 31,
+    "absent_both_missing": 8,
+    "identical_declined": 3,
+    "identical_answered": 3,
+    "removed_answered": 1
+  },
+  "any_pass_per_unique_text": {
+    "distinct_texts": 33,
+    "original": 16,
+    "first_parser": 18,
+    "guard": 17
+  },
+  "wasm_calls": 0,
+  "model_calls": 0,
+  "wall_seconds": 0.15102830700016057,
+  "rows": [
+    {
+      "archive": 14527694242,
+      "task": "h20000501_02",
+      "filename": "grid.py",
+      "prompt_sha256": "341c656cda4288770b85a89f779ff2f9e589f0d0941132595109b98fbd15d535",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527694242,
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527107867,
+      "task": "h20000502_00",
+      "filename": "durations.py",
+      "prompt_sha256": "31a6ba9e19073c3c2d16bfe427a15ae28c74f0b700d170b77f0e15ee77e7b6d0",
+      "result": "removed",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527107867,
+      "task": "h20000502_03",
+      "filename": "desk.py",
+      "prompt_sha256": "19b53e3073b6183f151f1aa6b7523b48a98c7e66def92b1a248c0d8522c47693",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527693537,
+      "task": "h20000504_02",
+      "filename": "bank.py",
+      "prompt_sha256": "a3a68cd5629113794f184e4cc3c0ff263007c7304bab17ae332bed05adb082f1",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527693537,
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526853022,
+      "task": "h20000505_00",
+      "filename": "machine.py",
+      "prompt_sha256": "634da8b10156ec5d41c7a6eee98204bedfa7d00ba645dbc2e10e99e173bd5664",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526853022,
+      "task": "h20000505_01",
+      "filename": "schedule.py",
+      "prompt_sha256": "b95744d06d89aa64dd6868f7031d22943d39f25dc6235a65598fccaa75f4561f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526853022,
+      "task": "h20000505_02",
+      "filename": "bank.py",
+      "prompt_sha256": "368fce09c818705c4af6853bab982a4d260d6b65a1b39a399ed26976a92fa27d",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526853022,
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14529936755,
+      "task": "h20000506_02",
+      "filename": "machine.py",
+      "prompt_sha256": "3b97881c0c1d6d2c44709bfb620d7731892a6110b8df1101efdaac32fa7b8b8d",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14529936755,
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14524604729,
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527600012,
+      "task": "h20000508_00",
+      "filename": "schedule.py",
+      "prompt_sha256": "e1ad007e29b63135760bf6dc6714150ee7c93e4d388ab83bb1b6f54c1cfe6c6d",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527600012,
+      "task": "h20000508_02",
+      "filename": "roman.py",
+      "prompt_sha256": "a48a846c9992ddc8ec0c77b8e935e807ab7fb0684b9f87e09b4f5f12be5beea0",
+      "result": "identical",
+      "preserves_passing_proposal": true
+    },
+    {
+      "archive": 14527600012,
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527389410,
+      "task": "h20000501_02",
+      "filename": "grid.py",
+      "prompt_sha256": "341c656cda4288770b85a89f779ff2f9e589f0d0941132595109b98fbd15d535",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527389410,
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14529355230,
+      "task": "h20000502_00",
+      "filename": "durations.py",
+      "prompt_sha256": "31a6ba9e19073c3c2d16bfe427a15ae28c74f0b700d170b77f0e15ee77e7b6d0",
+      "result": "removed",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14529355230,
+      "task": "h20000502_03",
+      "filename": "desk.py",
+      "prompt_sha256": "19b53e3073b6183f151f1aa6b7523b48a98c7e66def92b1a248c0d8522c47693",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526675409,
+      "task": "h20000504_02",
+      "filename": "bank.py",
+      "prompt_sha256": "a3a68cd5629113794f184e4cc3c0ff263007c7304bab17ae332bed05adb082f1",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526675409,
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527991779,
+      "task": "h20000505_00",
+      "filename": "machine.py",
+      "prompt_sha256": "634da8b10156ec5d41c7a6eee98204bedfa7d00ba645dbc2e10e99e173bd5664",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527991779,
+      "task": "h20000505_01",
+      "filename": "schedule.py",
+      "prompt_sha256": "b95744d06d89aa64dd6868f7031d22943d39f25dc6235a65598fccaa75f4561f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527991779,
+      "task": "h20000505_02",
+      "filename": "bank.py",
+      "prompt_sha256": "368fce09c818705c4af6853bab982a4d260d6b65a1b39a399ed26976a92fa27d",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527991779,
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527655421,
+      "task": "h20000506_02",
+      "filename": "machine.py",
+      "prompt_sha256": "3b97881c0c1d6d2c44709bfb620d7731892a6110b8df1101efdaac32fa7b8b8d",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527655421,
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14527355316,
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526163174,
+      "task": "h20000508_00",
+      "filename": "schedule.py",
+      "prompt_sha256": "e1ad007e29b63135760bf6dc6714150ee7c93e4d388ab83bb1b6f54c1cfe6c6d",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14526163174,
+      "task": "h20000508_02",
+      "filename": "roman.py",
+      "prompt_sha256": "a48a846c9992ddc8ec0c77b8e935e807ab7fb0684b9f87e09b4f5f12be5beea0",
+      "result": "identical",
+      "preserves_passing_proposal": true
+    },
+    {
+      "archive": 14526163174,
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558334576,
+      "task": "h20000511_02",
+      "filename": "machine.py",
+      "prompt_sha256": "83d8bfa3140a05b83d8d000c7489b1ae333b45acef337b12d706ae3be0dd19d7",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558334576,
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14565935073,
+      "task": "h20000512_00",
+      "filename": "desk.py",
+      "prompt_sha256": "2ed89a1b4046faff2d016f2ad355f70b9101aab6fb87d8042269312e24f16149",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14565935073,
+      "task": "h20000512_02",
+      "filename": "machine.py",
+      "prompt_sha256": "fcc82e499ac4817bd8ba7f7560aaae841a4d34f8ce7a5fe9f3fd86d1e9a2b91a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559971065,
+      "task": "h20000514_00",
+      "filename": "wrap.py",
+      "prompt_sha256": "44adc147da880aec5d35e9e48550493f0dcee0db455f5d6576cbd4e1fdcfb5a9",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559971065,
+      "task": "h20000514_01",
+      "filename": "factors.py",
+      "prompt_sha256": "d69831a59dd6b028cfaa61de3a48e11d6714c0cbacdc653e3b7d9f7faefd4869",
+      "result": "identical",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559971065,
+      "task": "h20000514_02",
+      "filename": "bank.py",
+      "prompt_sha256": "92232cf1bb1210e6eac00e436bd1230097d227cb955f1cccb078f05fdab2660f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559971065,
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14562071422,
+      "task": "h20000515_00",
+      "filename": "desk.py",
+      "prompt_sha256": "3e2a46640331796d35588a69dabbe549a4c6319e03cc206b2d703d748cbe48e2",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14562071422,
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558479121,
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14561305990,
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558663276,
+      "task": "h20000518_00",
+      "filename": "bank.py",
+      "prompt_sha256": "c506a181183380b33bf16020907512aca142d881c7f4acfad4a28d19a8f90126",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558663276,
+      "task": "h20000518_02",
+      "filename": "grid.py",
+      "prompt_sha256": "a73d632573cb4ebdc0f1afef851687126783045be634afacb1937c2d9d0da3ff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558663276,
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14560293390,
+      "task": "h20000511_02",
+      "filename": "machine.py",
+      "prompt_sha256": "83d8bfa3140a05b83d8d000c7489b1ae333b45acef337b12d706ae3be0dd19d7",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14560293390,
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14560686430,
+      "task": "h20000512_00",
+      "filename": "desk.py",
+      "prompt_sha256": "2ed89a1b4046faff2d016f2ad355f70b9101aab6fb87d8042269312e24f16149",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14560686430,
+      "task": "h20000512_02",
+      "filename": "machine.py",
+      "prompt_sha256": "fcc82e499ac4817bd8ba7f7560aaae841a4d34f8ce7a5fe9f3fd86d1e9a2b91a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14561393412,
+      "task": "h20000514_00",
+      "filename": "wrap.py",
+      "prompt_sha256": "44adc147da880aec5d35e9e48550493f0dcee0db455f5d6576cbd4e1fdcfb5a9",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14561393412,
+      "task": "h20000514_01",
+      "filename": "factors.py",
+      "prompt_sha256": "d69831a59dd6b028cfaa61de3a48e11d6714c0cbacdc653e3b7d9f7faefd4869",
+      "result": "identical",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14561393412,
+      "task": "h20000514_02",
+      "filename": "bank.py",
+      "prompt_sha256": "92232cf1bb1210e6eac00e436bd1230097d227cb955f1cccb078f05fdab2660f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14561393412,
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14560044557,
+      "task": "h20000515_00",
+      "filename": "desk.py",
+      "prompt_sha256": "3e2a46640331796d35588a69dabbe549a4c6319e03cc206b2d703d748cbe48e2",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14560044557,
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14557918022,
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14558885659,
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559305594,
+      "task": "h20000518_00",
+      "filename": "bank.py",
+      "prompt_sha256": "c506a181183380b33bf16020907512aca142d881c7f4acfad4a28d19a8f90126",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559305594,
+      "task": "h20000518_02",
+      "filename": "grid.py",
+      "prompt_sha256": "a73d632573cb4ebdc0f1afef851687126783045be634afacb1937c2d9d0da3ff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14559305594,
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14586024327,
+      "task": "h20000521_03",
+      "filename": "schedule.py",
+      "prompt_sha256": "393b55756426273c5da9f4e0c0b9b9c4b6bd86eb7d9adb62d48bfe9f5a76f628",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14586024327,
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587903855,
+      "task": "h20000523_03",
+      "filename": "durations.py",
+      "prompt_sha256": "ea52ea811d949ad5fab33c312750d2f2edc2250072f8c11c5ff32abb9cb4a258",
+      "result": "removed",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14588532041,
+      "task": "h20000524_02",
+      "filename": "machine.py",
+      "prompt_sha256": "d86d363b36afbf335333f0342f6682589a0c93742fbdc05fb7ac81e2ae4b59a7",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14588532041,
+      "task": "h20000524_03",
+      "filename": "bank.py",
+      "prompt_sha256": "230655aeea53fb2b2faa435dd54470305050450f97a37faac109c1754951b4a1",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14588532041,
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587969948,
+      "task": "h20000525_02",
+      "filename": "lru.py",
+      "prompt_sha256": "4589738ed3f2f8e7acde96aa4dc70efe52845156833ea33890e332adf5f4d927",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587969948,
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14585664858,
+      "task": "h20000526_00",
+      "filename": "schedule.py",
+      "prompt_sha256": "a430c14e84ebcea8aa4684388d6eabe948acd851798c210143c88b8c275ef14b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14585664858,
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587642648,
+      "task": "h20000527_01",
+      "filename": "wrap.py",
+      "prompt_sha256": "458500861179381c4e7d419036c2af415784483e231ce584bdddc67029c88771",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587642648,
+      "task": "h20000527_03",
+      "filename": "durations.py",
+      "prompt_sha256": "017aa8f85351d6007835666c81ef1cc9b99408cbf7a5e482f3af84361046e712",
+      "result": "identical",
+      "preserves_passing_proposal": true
+    },
+    {
+      "archive": 14587642648,
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587107489,
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587548753,
+      "task": "h20000521_03",
+      "filename": "schedule.py",
+      "prompt_sha256": "393b55756426273c5da9f4e0c0b9b9c4b6bd86eb7d9adb62d48bfe9f5a76f628",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587548753,
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prompt_sha256": "b4e5fd1bd49995f08ace1e3aa8998acca84da27a8f7b85139176807217db6427",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14588058494,
+      "task": "h20000523_03",
+      "filename": "durations.py",
+      "prompt_sha256": "ea52ea811d949ad5fab33c312750d2f2edc2250072f8c11c5ff32abb9cb4a258",
+      "result": "removed",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587441934,
+      "task": "h20000524_02",
+      "filename": "machine.py",
+      "prompt_sha256": "d86d363b36afbf335333f0342f6682589a0c93742fbdc05fb7ac81e2ae4b59a7",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587441934,
+      "task": "h20000524_03",
+      "filename": "bank.py",
+      "prompt_sha256": "230655aeea53fb2b2faa435dd54470305050450f97a37faac109c1754951b4a1",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587441934,
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prompt_sha256": "1174b71d81efc80433a40b7a8e23953945785fad831d592b1556c08276774bff",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14589075651,
+      "task": "h20000525_02",
+      "filename": "lru.py",
+      "prompt_sha256": "4589738ed3f2f8e7acde96aa4dc70efe52845156833ea33890e332adf5f4d927",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14589075651,
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prompt_sha256": "8c5db7e740773110f1740a4bfbc76bdce325528a36a8c97c29db2b342c74573a",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587538096,
+      "task": "h20000526_00",
+      "filename": "schedule.py",
+      "prompt_sha256": "a430c14e84ebcea8aa4684388d6eabe948acd851798c210143c88b8c275ef14b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587538096,
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prompt_sha256": "aeebe41f377d2ebb99387e65c737a30963f72f165e724a3df4033389caf2d81f",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587311849,
+      "task": "h20000527_01",
+      "filename": "wrap.py",
+      "prompt_sha256": "458500861179381c4e7d419036c2af415784483e231ce584bdddc67029c88771",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587311849,
+      "task": "h20000527_03",
+      "filename": "durations.py",
+      "prompt_sha256": "017aa8f85351d6007835666c81ef1cc9b99408cbf7a5e482f3af84361046e712",
+      "result": "identical",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587311849,
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prompt_sha256": "fa3e7c2d6fa19af5e6467493c67d4f7a59990b09672d1cb2020147351fdfbf57",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    },
+    {
+      "archive": 14587332034,
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prompt_sha256": "7f4f6ea8d2ec867921b396fdc4a30a3a804dd399a8e8e14c690209e5f1c04e7b",
+      "result": "absent_both",
+      "preserves_passing_proposal": false
+    }
+  ]
+}

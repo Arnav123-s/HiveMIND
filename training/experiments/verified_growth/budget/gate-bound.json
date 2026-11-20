@@ -1,0 +1,29 @@
+{
+  "g51": {
+    "critical_gate": "gate (after, 2)",
+    "job_id": 135746612635,
+    "after_arm_matches": [
+      {
+        "id": "e20000512_00",
+        "seconds_entire_job": 38,
+        "artifact": 14565935073,
+        "path": "exam_20000512_mixed/e20000512_00/exam.json",
+        "digest": "b410397de555e4621b525488fb114091665d1e6607bb0278022f243e39d61398"
+      },
+      {
+        "id": "e20000512_01",
+        "seconds_entire_job": 27,
+        "artifact": 14565935073,
+        "path": "exam_20000512_mixed/e20000512_01/exam.json",
+        "digest": "b410397de555e4621b525488fb114091665d1e6607bb0278022f243e39d61398"
+      }
+    ],
+    "upper_bound_seconds": 65
+  },
+  "g52": {
+    "critical_gate": "gate (before, 2)",
+    "job_id": 135968946069,
+    "after_arm_matches": [],
+    "upper_bound_seconds": 0
+  }
+}

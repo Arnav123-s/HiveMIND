@@ -1,0 +1,309 @@
+{
+  "counts": {
+    "missed": 7,
+    "mismatch": 1,
+    "correct_withhold": 5
+  },
+  "rows": [
+    {
+      "id": "tea-counter",
+      "expected": {
+        "decision": "extract",
+        "file": "tea.py",
+        "functions": [
+          "cups",
+          "bags"
+        ],
+        "examples": [
+          {
+            "call": "cups(2)",
+            "expected": 4
+          },
+          {
+            "call": "bags(1)",
+            "expected": 3
+          }
+        ],
+        "requested_calls": [
+          "cups(5)",
+          "bags(4)"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "book-stall",
+      "expected": {
+        "decision": "extract",
+        "file": "books.py",
+        "functions": [
+          "cover",
+          "pages"
+        ],
+        "examples": [
+          {
+            "call": "cover(100)",
+            "expected": 125
+          },
+          {
+            "call": "pages(4)",
+            "expected": 8
+          }
+        ],
+        "requested_calls": [
+          "pages(7)",
+          "cover(225)"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "neighborhood",
+      "expected": {
+        "decision": "extract",
+        "file": "sign.py",
+        "functions": [
+          "small",
+          "width"
+        ],
+        "examples": [
+          {
+            "call": "small(\"MAP\")",
+            "expected": "map"
+          },
+          {
+            "call": "width(\"A B\")",
+            "expected": 3
+          }
+        ],
+        "requested_calls": [
+          "small(\"Town Hall\")",
+          "width(\"Elm\")"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "picture-frame",
+      "expected": {
+        "decision": "extract",
+        "file": "frame.py",
+        "functions": [
+          "area",
+          "edge"
+        ],
+        "examples": [
+          {
+            "call": "area(2, 5)",
+            "expected": 10
+          },
+          {
+            "call": "edge(2, 5)",
+            "expected": 14
+          }
+        ],
+        "requested_calls": [
+          "edge(3, 7)",
+          "area(4, 6)"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "shop-list",
+      "expected": {
+        "decision": "extract",
+        "file": "listtools.py",
+        "functions": [
+          "total",
+          "count"
+        ],
+        "examples": [
+          {
+            "call": "total([2, 3])",
+            "expected": 5
+          },
+          {
+            "call": "count([])",
+            "expected": 0
+          }
+        ],
+        "requested_calls": [
+          "total([7, 1, 4])",
+          "count([9, 9])"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "cold-room",
+      "expected": {
+        "decision": "extract",
+        "file": "cold.py",
+        "functions": [
+          "freeze",
+          "warmer"
+        ],
+        "examples": [
+          {
+            "call": "freeze(-1)",
+            "expected": true
+          },
+          {
+            "call": "warmer(-4)",
+            "expected": -3
+          }
+        ],
+        "requested_calls": [
+          "freeze(2)",
+          "warmer(-7)"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "punctuation",
+      "expected": {
+        "decision": "extract",
+        "file": "notes.py",
+        "functions": [
+          "shout",
+          "size"
+        ],
+        "examples": [
+          {
+            "call": "shout(\"hi, Jo!\")",
+            "expected": "HI, JO!"
+          },
+          {
+            "call": "size(\"ok?\")",
+            "expected": 3
+          }
+        ],
+        "requested_calls": [
+          "size(\"a, b!\")",
+          "shout(\"who?\")"
+        ]
+      },
+      "observed": null,
+      "grade": "missed",
+      "differences": []
+    },
+    {
+      "id": "instructions-first",
+      "expected": {
+        "decision": "extract",
+        "file": "seats.py",
+        "functions": [
+          "double",
+          "single"
+        ],
+        "examples": [
+          {
+            "call": "double(4)",
+            "expected": 8
+          },
+          {
+            "call": "single(3)",
+            "expected": 3
+          }
+        ],
+        "requested_calls": [
+          "double(9)",
+          "single(11)"
+        ]
+      },
+      "observed": [
+        "seats.py",
+        [
+          "double",
+          "single"
+        ],
+        [
+          [
+            [
+              "double",
+              [
+                4
+              ]
+            ],
+            8
+          ],
+          [
+            [
+              "single",
+              [
+                3
+              ]
+            ],
+            3
+          ]
+        ],
+        []
+      ],
+      "grade": "mismatch",
+      "differences": [
+        "queries"
+      ]
+    },
+    {
+      "id": "turned-down",
+      "expected": {
+        "decision": "withhold"
+      },
+      "observed": null,
+      "grade": "correct_withhold",
+      "differences": []
+    },
+    {
+      "id": "moving-input",
+      "expected": {
+        "decision": "withhold"
+      },
+      "observed": null,
+      "grade": "correct_withhold",
+      "differences": []
+    },
+    {
+      "id": "two-promises",
+      "expected": {
+        "decision": "withhold"
+      },
+      "observed": null,
+      "grade": "correct_withhold",
+      "differences": []
+    },
+    {
+      "id": "attendance-book",
+      "expected": {
+        "decision": "withhold"
+      },
+      "observed": null,
+      "grade": "correct_withhold",
+      "differences": []
+    },
+    {
+      "id": "choice-left-open",
+      "expected": {
+        "decision": "withhold"
+      },
+      "observed": null,
+      "grade": "correct_withhold",
+      "differences": []
+    }
+  ],
+  "source_sha256": "11aa54578a7af9fed43dbd0014f9791b04770c96fd4904b78d36ff5d6e70ba2c",
+  "decisions_sha256": "e22558932a8f4cad6ac10cb8a4b17bb62f890f1d2cca8ea11c107003f443da43"
+}

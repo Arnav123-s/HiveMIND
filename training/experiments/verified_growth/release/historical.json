@@ -1,0 +1,411 @@
+{
+  "arms": {
+    "g50-after": {
+      "delivery": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 3
+      },
+      "either": {
+        "by_kind": {
+          "h_edit": 3,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 6
+      },
+      "minimum_extra_task_successes_for_five_kinds": 5,
+      "no_member_verdict": [
+        "x_h_prog_queue_1",
+        "x_h_txt_redact_2"
+      ],
+      "original_counts": {
+        "correct": 3,
+        "withheld": 18,
+        "wrong": 9
+      },
+      "recorded_worker": {
+        "by_kind": {
+          "h_edit": 3,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 6
+      },
+      "unselected_correct": [
+        "x_h_edit_0",
+        "x_h_edit_1",
+        "x_h_edit_2"
+      ],
+      "verdict_count": 78
+    },
+    "g50-before": {
+      "delivery": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 3
+      },
+      "either": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 1,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 5
+      },
+      "minimum_extra_task_successes_for_five_kinds": 5,
+      "no_member_verdict": [
+        "x_h_prog_queue_1"
+      ],
+      "original_counts": {
+        "correct": 3,
+        "withheld": 18,
+        "wrong": 9
+      },
+      "recorded_worker": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 1,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 5
+      },
+      "unselected_correct": [
+        "x_h_tab_topn_2",
+        "x_h_txt_ini_1"
+      ],
+      "verdict_count": 77
+    },
+    "g51-after": {
+      "delivery": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 3
+      },
+      "either": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 2,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 2,
+        "tasks": 5
+      },
+      "minimum_extra_task_successes_for_five_kinds": 5,
+      "no_member_verdict": [
+        "x_h_prog_queue_1"
+      ],
+      "original_counts": {
+        "correct": 3,
+        "withheld": 18,
+        "wrong": 9
+      },
+      "recorded_worker": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 2,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 2,
+        "tasks": 5
+      },
+      "unselected_correct": [
+        "x_h_tab_topn_0",
+        "x_h_tab_topn_2"
+      ],
+      "verdict_count": 80
+    },
+    "g51-before": {
+      "delivery": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 1
+      },
+      "either": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 4
+      },
+      "minimum_extra_task_successes_for_five_kinds": 6,
+      "no_member_verdict": [
+        "x_h_prog_queue_1"
+      ],
+      "original_counts": {
+        "correct": 1,
+        "withheld": 21,
+        "wrong": 8
+      },
+      "recorded_worker": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 1,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 4
+      },
+      "unselected_correct": [
+        "x_h_sim_2",
+        "x_h_tab_dates_0",
+        "x_h_txt_ini_1"
+      ],
+      "verdict_count": 79
+    },
+    "g52-after": {
+      "delivery": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 1,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 0,
+        "tasks": 1
+      },
+      "either": {
+        "by_kind": {
+          "h_edit": 1,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 0,
+          "h_tab_topn": 1,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 5
+      },
+      "minimum_extra_task_successes_for_five_kinds": 5,
+      "no_member_verdict": [
+        "x_h_prog_queue_1"
+      ],
+      "original_counts": {
+        "correct": 1,
+        "withheld": 16,
+        "wrong": 13
+      },
+      "recorded_worker": {
+        "by_kind": {
+          "h_edit": 1,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 0,
+          "h_tab_topn": 1,
+          "h_two": 0,
+          "h_txt_ini": 1,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 5
+      },
+      "unselected_correct": [
+        "x_h_edit_1",
+        "x_h_sim_0",
+        "x_h_tab_topn_2",
+        "x_h_txt_ini_0"
+      ],
+      "verdict_count": 81
+    },
+    "g52-before": {
+      "delivery": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 2
+      },
+      "either": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 2
+      },
+      "minimum_extra_task_successes_for_five_kinds": 8,
+      "no_member_verdict": [
+        "x_h_prog_queue_1"
+      ],
+      "original_counts": {
+        "correct": 2,
+        "withheld": 18,
+        "wrong": 10
+      },
+      "recorded_worker": {
+        "by_kind": {
+          "h_edit": 0,
+          "h_prog_queue": 0,
+          "h_prog_wrap": 0,
+          "h_quotes": 0,
+          "h_sim": 2,
+          "h_tab_dates": 0,
+          "h_tab_topn": 0,
+          "h_two": 0,
+          "h_txt_ini": 0,
+          "h_txt_redact": 0
+        },
+        "kinds": 1,
+        "tasks": 2
+      },
+      "unselected_correct": [],
+      "verdict_count": 79
+    }
+  },
+  "g52_wrong_pulse": [
+    "h20000524_00",
+    "h20000525_02"
+  ],
+  "history_oracle": {
+    "by_kind": {
+      "h_edit": 3,
+      "h_prog_queue": 0,
+      "h_prog_wrap": 0,
+      "h_quotes": 0,
+      "h_sim": 2,
+      "h_tab_dates": 1,
+      "h_tab_topn": 2,
+      "h_two": 0,
+      "h_txt_ini": 2,
+      "h_txt_redact": 0
+    },
+    "kinds": 4,
+    "tasks": 10
+  },
+  "minimum_additional_successes_for_target": 1
+}

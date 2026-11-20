@@ -1,0 +1,143 @@
+{
+  "calls_wall_s": 387.249,
+  "cases": [
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "length",
+      "id": "0e927d6db3844773",
+      "maker": "h_txt_redact",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 128,
+      "wall_s": 47.3959
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "stop",
+      "id": "178cfed6b7416b8e",
+      "maker": "h_txt_ini",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 13,
+      "wall_s": 17.7962
+    },
+    {
+      "delivered_ok": true,
+      "files": [
+        "top.csv"
+      ],
+      "finish": "stop",
+      "id": "2ce5dbc5679143de",
+      "maker": "h_tab_topn",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 95,
+      "wall_s": 33.9003
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "length",
+      "id": "4d064b2ac51c5340",
+      "maker": "h_tab_dates",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 128,
+      "wall_s": 91.6842
+    },
+    {
+      "delivered_ok": false,
+      "files": [
+        "people.csv"
+      ],
+      "finish": "length",
+      "id": "7169e748fb11cfb2",
+      "maker": "h_edit",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 128,
+      "wall_s": 37.4569
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "stop",
+      "id": "8322fe98c22c2f1e",
+      "maker": "h_sim",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 17,
+      "wall_s": 13.093
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "length",
+      "id": "892c67afd80430a4",
+      "maker": "h_prog_queue",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 128,
+      "wall_s": 60.7466
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "length",
+      "id": "9dc4de18f6146cc8",
+      "maker": "h_quotes",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 128,
+      "wall_s": 33.8636
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "length",
+      "id": "beeeafb1e0aa2f4c",
+      "maker": "h_prog_wrap",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 128,
+      "wall_s": 44.1651
+    },
+    {
+      "delivered_ok": false,
+      "files": [],
+      "finish": "stop",
+      "id": "fd3dbdca228313b6",
+      "maker": "h_two",
+      "plain_ok": false,
+      "state": "returned",
+      "tokens": 10,
+      "wall_s": 7.1476
+    }
+  ],
+  "grades_sha256": "d89de4b2e6eceba9adf2b472ff6f9d5d71dc08533a53c0961dd387c50d29771d",
+  "jobs_materialized": 2,
+  "jobs_with_requested_files": 7,
+  "native_sha256": "aa2bccaa5dcfad13a8e50d70c389d022dff94ce0e5f481b1415ede23736094f6",
+  "output_tokens": 903,
+  "paired_gains": 1,
+  "paired_losses": 0,
+  "prompt_tokens": 2676,
+  "represented_families": 10,
+  "returned": 10,
+  "score_counts": {
+    "delivered": {
+      "correct": 1,
+      "incorrect": 9
+    },
+    "plain": {
+      "incorrect": 10
+    }
+  },
+  "server_cpu_s": 680.23,
+  "stops": {
+    "length": 6,
+    "stop": 4
+  }
+}

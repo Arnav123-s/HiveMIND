@@ -1,0 +1,6 @@
+[
+  {"id":"boats","request":"Using this CSV, sum the minutes by boat for the morning shift only. Save the answer as hours_used.json.\n\n```csv\nboat,shift,minutes\nHeron,morning,16\nStork,night,55\nHeron,night,9\nStork,morning,12\nHeron,morning,4\n```","file":"hours_used.json","expected":{"Heron":20,"Stork":12},"judgment":"answer"},
+  {"id":"trays","request":"How many records are in this table? Write the answer to count.json.\n\n```tsv\nstation\ttrays\nBlue\t4\nLilac\t10\nBlue\t0\nBlue\t7\n```","file":"count.json","expected":4,"judgment":"answer"},
+  {"id":"positions","request":"Give the mean waiting time by clinic. Publish both a CSV and a plot, wait.csv and wait.png.\n\n```csv\nclinic,minutes\nWalk-in,15\nWalk-in,5\nHarbor,10\n```","file":null,"expected":null,"judgment":"unsupported-output"},
+  {"id":"rent","request":"What is the total rent in dollars for all units? The table gives occupied days and has no prices. Save the result as rent.json.\n\n```csv\nunit,days\nElm,8\nOak,11\nElm,2\n```","file":null,"expected":null,"judgment":"insufficient-information"}
+]
