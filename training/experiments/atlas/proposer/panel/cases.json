@@ -1,0 +1,285 @@
+[
+  {
+    "id": "empty",
+    "site": "home",
+    "label": "none",
+    "events": []
+  },
+  {
+    "id": "one-zero",
+    "site": "x",
+    "label": "red",
+    "events": [
+      {
+        "site": "x",
+        "label": "red",
+        "qty": 0
+      }
+    ]
+  },
+  {
+    "id": "all-debt",
+    "site": "sub",
+    "label": "fee",
+    "events": [
+      {
+        "site": "sub",
+        "label": "fee",
+        "qty": -7
+      },
+      {
+        "site": "sub",
+        "label": "credit",
+        "qty": -3
+      },
+      {
+        "site": "other",
+        "label": "fee",
+        "qty": -1
+      }
+    ]
+  },
+  {
+    "id": "ties",
+    "site": "shop",
+    "label": "b",
+    "events": [
+      {
+        "site": "shop",
+        "label": "a",
+        "qty": 2
+      },
+      {
+        "site": "shop",
+        "label": "b",
+        "qty": 2
+      },
+      {
+        "site": "yard",
+        "label": "c",
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "id": "bucket-order",
+    "site": "A",
+    "label": "R",
+    "events": [
+      {
+        "site": "A",
+        "label": "r",
+        "qty": 9
+      },
+      {
+        "site": "A",
+        "label": "R",
+        "qty": 5
+      },
+      {
+        "site": "B",
+        "label": "R",
+        "qty": 4
+      },
+      {
+        "site": "B",
+        "label": "r",
+        "qty": -2
+      }
+    ]
+  },
+  {
+    "id": "missing-site",
+    "site": "unknown",
+    "label": "tools",
+    "events": [
+      {
+        "site": "shed",
+        "label": "tools",
+        "qty": 11
+      },
+      {
+        "site": "desk",
+        "label": "kits",
+        "qty": 0
+      },
+      {
+        "site": "shed",
+        "label": "kits",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "id": "zero-net",
+    "site": "rack",
+    "label": "loan",
+    "events": [
+      {
+        "site": "rack",
+        "label": "loan",
+        "qty": 13
+      },
+      {
+        "site": "rack",
+        "label": "loan",
+        "qty": -13
+      },
+      {
+        "site": "rack",
+        "label": "loss",
+        "qty": -2
+      },
+      {
+        "site": "desk",
+        "label": "loss",
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "id": "three-places",
+    "site": "crew2",
+    "label": "stamps",
+    "events": [
+      {
+        "site": "crew1",
+        "label": "maps",
+        "qty": 5
+      },
+      {
+        "site": "crew2",
+        "label": "stamps",
+        "qty": 3
+      },
+      {
+        "site": "crew3",
+        "label": "maps",
+        "qty": 3
+      },
+      {
+        "site": "crew2",
+        "label": "maps",
+        "qty": 1
+      },
+      {
+        "site": "crew2",
+        "label": "stamps",
+        "qty": 0
+      }
+    ]
+  },
+  {
+    "id": "repeat",
+    "site": "main",
+    "label": "box",
+    "events": [
+      {
+        "site": "main",
+        "label": "box",
+        "qty": 4
+      },
+      {
+        "site": "main",
+        "label": "box",
+        "qty": 4
+      },
+      {
+        "site": "main",
+        "label": "box",
+        "qty": 4
+      },
+      {
+        "site": "annex",
+        "label": "box",
+        "qty": 20
+      },
+      {
+        "site": "main",
+        "label": "ink",
+        "qty": 13
+      }
+    ]
+  },
+  {
+    "id": "strange-label",
+    "site": "North",
+    "label": "a b",
+    "events": [
+      {
+        "site": "North",
+        "label": "a b",
+        "qty": 3
+      },
+      {
+        "site": "NORTH",
+        "label": "a-b",
+        "qty": 5
+      },
+      {
+        "site": "North",
+        "label": "a-b",
+        "qty": 3
+      },
+      {
+        "site": "North",
+        "label": "a b",
+        "qty": -1
+      }
+    ]
+  },
+  {
+    "id": "non-ascii",
+    "site": "café",
+    "label": "é",
+    "events": [
+      {
+        "site": "café",
+        "label": "é",
+        "qty": 2
+      },
+      {
+        "site": "café",
+        "label": "z",
+        "qty": 2
+      },
+      {
+        "site": "cafe",
+        "label": "É",
+        "qty": 5
+      },
+      {
+        "site": "cafe",
+        "label": "é",
+        "qty": -1
+      }
+    ]
+  },
+  {
+    "id": "big-integer",
+    "site": "bin",
+    "label": "tokens",
+    "events": [
+      {
+        "site": "bin",
+        "label": "tokens",
+        "qty": 9007199254740993
+      },
+      {
+        "site": "bin",
+        "label": "tally",
+        "qty": 9007199254740992
+      },
+      {
+        "site": "desk",
+        "label": "tally",
+        "qty": 7
+      },
+      {
+        "site": "bin",
+        "label": "tokens",
+        "qty": -2
+      }
+    ]
+  }
+]

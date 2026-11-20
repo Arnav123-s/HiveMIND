@@ -1,0 +1,876 @@
+{
+  "source_sha256": "cf99ed891467a7903f6fdb11af0a4366c4605e393994ac29b4ec3ee6f42b39fa",
+  "protocol_sha256": "1fc15c62090f5ec6687b801a07f40368907cbf31217fe27a63de7931e82b07f4",
+  "python_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "runs": [
+    {
+      "candidate": "h20000523_03",
+      "sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+      "fuel": 1029240482,
+      "checks": [
+        {
+          "relation": "number_roundtrip",
+          "value": 2,
+          "observed": {
+            "value": 2
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 14,
+          "observed": {
+            "value": 14
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 55,
+          "observed": {
+            "value": 55
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 83,
+          "observed": {
+            "value": 83
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 152,
+          "observed": {
+            "value": 152
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 591,
+          "observed": {
+            "value": 591
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 2771,
+          "observed": {
+            "value": 2771
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 3613,
+          "observed": {
+            "value": 3613
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 13321,
+          "observed": {
+            "value": 13321
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 198129,
+          "observed": {
+            "value": 198129
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 407811,
+          "observed": {
+            "value": 407811
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8s",
+          "observed": {
+            "value": "8s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16m",
+          "observed": {
+            "value": "16m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h",
+          "observed": {
+            "value": "3h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8h12s",
+          "observed": {
+            "value": "8h12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16h7m",
+          "observed": {
+            "value": "16h7m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "13m5s",
+          "observed": {
+            "value": "13m5s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h15m12s",
+          "observed": {
+            "value": "3h15m12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "78h",
+          "observed": {
+            "value": "78h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "93h18m47s",
+          "observed": {
+            "value": "93h18m47s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "3h",
+            "12s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "4h",
+            "8m"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "13m",
+            "5s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "38h",
+            "19m",
+            "47s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "candidate": "h20000527_03",
+      "sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+      "fuel": 1029232038,
+      "checks": [
+        {
+          "relation": "number_roundtrip",
+          "value": 2,
+          "observed": {
+            "value": 2
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 14,
+          "observed": {
+            "value": 14
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 55,
+          "observed": {
+            "value": 55
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 83,
+          "observed": {
+            "value": 83
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 152,
+          "observed": {
+            "value": 152
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 591,
+          "observed": {
+            "value": 591
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 2771,
+          "observed": {
+            "value": 2771
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 3613,
+          "observed": {
+            "value": 3613
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 13321,
+          "observed": {
+            "value": 13321
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 198129,
+          "observed": {
+            "value": 198129
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 407811,
+          "observed": {
+            "value": 407811
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8s",
+          "observed": {
+            "value": "8s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16m",
+          "observed": {
+            "value": "16m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h",
+          "observed": {
+            "value": "3h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8h12s",
+          "observed": {
+            "value": "8h12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16h7m",
+          "observed": {
+            "value": "16h7m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "13m5s",
+          "observed": {
+            "value": "13m5s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h15m12s",
+          "observed": {
+            "value": "3h15m12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "78h",
+          "observed": {
+            "value": "78h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "93h18m47s",
+          "observed": {
+            "value": "93h18m47s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "3h",
+            "12s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "4h",
+            "8m"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "13m",
+            "5s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "38h",
+            "19m",
+            "47s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "candidate": "base61",
+      "sha256": "839ae84ee27ae8d7a4ab7c08983706c1541c407e3a61e362356162c49bcf7b4d",
+      "fuel": 1029257713,
+      "checks": [
+        {
+          "relation": "number_roundtrip",
+          "value": 2,
+          "observed": {
+            "value": 2
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 14,
+          "observed": {
+            "value": 14
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 55,
+          "observed": {
+            "value": 55
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 83,
+          "observed": {
+            "value": 83
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 152,
+          "observed": {
+            "value": 152
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 591,
+          "observed": {
+            "value": 591
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 2771,
+          "observed": {
+            "value": 2771
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 3613,
+          "observed": {
+            "value": 3613
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 13321,
+          "observed": {
+            "value": 13321
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 198129,
+          "observed": {
+            "value": 198129
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 407811,
+          "observed": {
+            "value": 407811
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8s",
+          "observed": {
+            "value": "8s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16m",
+          "observed": {
+            "value": "16m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h",
+          "observed": {
+            "value": "3h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8h12s",
+          "observed": {
+            "value": "8h12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16h7m",
+          "observed": {
+            "value": "16h7m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "13m5s",
+          "observed": {
+            "value": "13m5s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h15m12s",
+          "observed": {
+            "value": "3h15m12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "78h",
+          "observed": {
+            "value": "78h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "93h18m47s",
+          "observed": {
+            "value": "93h18m47s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "3h",
+            "12s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "4h",
+            "8m"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "13m",
+            "5s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "38h",
+            "19m",
+            "47s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "candidate": "midnight",
+      "sha256": "c0c9a744ca860f55c66ab41abe68fae7e77a1a2beeed66a9a91cad1a492d5c1e",
+      "fuel": 1029304252,
+      "checks": [
+        {
+          "relation": "number_roundtrip",
+          "value": 2,
+          "observed": {
+            "value": 2
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 14,
+          "observed": {
+            "value": 14
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 55,
+          "observed": {
+            "value": 55
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 83,
+          "observed": {
+            "value": 83
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 152,
+          "observed": {
+            "value": 152
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 591,
+          "observed": {
+            "value": 591
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 2771,
+          "observed": {
+            "value": 2771
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 3613,
+          "observed": {
+            "value": 3613
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 13321,
+          "observed": {
+            "value": 13321
+          },
+          "passed": true
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 198129,
+          "observed": {
+            "value": 25329
+          },
+          "passed": false
+        },
+        {
+          "relation": "number_roundtrip",
+          "value": 407811,
+          "observed": {
+            "value": 62211
+          },
+          "passed": false
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8s",
+          "observed": {
+            "value": "8s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16m",
+          "observed": {
+            "value": "16m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h",
+          "observed": {
+            "value": "3h"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "8h12s",
+          "observed": {
+            "value": "8h12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "16h7m",
+          "observed": {
+            "value": "16h7m"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "13m5s",
+          "observed": {
+            "value": "13m5s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "3h15m12s",
+          "observed": {
+            "value": "3h15m12s"
+          },
+          "passed": true
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "78h",
+          "observed": {
+            "value": "6h"
+          },
+          "passed": false
+        },
+        {
+          "relation": "text_roundtrip",
+          "value": "93h18m47s",
+          "observed": {
+            "value": "21h18m47s"
+          },
+          "passed": false
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "3h",
+            "12s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "4h",
+            "8m"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "13m",
+            "5s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        },
+        {
+          "relation": "add_fragments",
+          "value": [
+            "38h",
+            "19m",
+            "47s"
+          ],
+          "observed": {
+            "value": true
+          },
+          "passed": true
+        }
+      ],
+      "pass": false
+    }
+  ],
+  "selection": {
+    "real": {
+      "survivors": [
+        "h20000523_03",
+        "h20000527_03"
+      ],
+      "single": "h20000523_03"
+    },
+    "all": {
+      "survivors": [
+        "base61",
+        "h20000523_03",
+        "h20000527_03"
+      ],
+      "single": "base61"
+    }
+  }
+}

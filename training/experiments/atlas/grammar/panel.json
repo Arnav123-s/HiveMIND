@@ -1,0 +1,124 @@
+[
+  {
+    "id": "edited-cart",
+    "prompt": "A Python cart starts as [8, 3, 5]. It executes cart.pop(1), then cart.append(4). Return one JSON object with integer fields size and last. No explanation.",
+    "format": "object",
+    "schema": {
+      "fields": [
+        {
+          "name": "size",
+          "type": "int"
+        },
+        {
+          "name": "last",
+          "type": "int"
+        }
+      ]
+    }
+  },
+  {
+    "id": "crate-remainder",
+    "prompt": "Pack 263 washers into boxes of 17. Return a single CSV row with two integers: the full box count first, loose washers second. No header or explanation.",
+    "format": "csv",
+    "schema": {
+      "fields": [
+        {
+          "name": "full",
+          "type": "int"
+        },
+        {
+          "name": "loose",
+          "type": "int"
+        }
+      ]
+    }
+  },
+  {
+    "id": "pressed-contact",
+    "prompt": "A switch input normally reads high through a pull-up resistor. Pressing the switch connects it to ground. The switch is pressed now. Return one JSON object with level (high or low) and pressed (a JSON boolean).",
+    "format": "object",
+    "schema": {
+      "fields": [
+        {
+          "name": "level",
+          "type": "enum",
+          "options": [
+            "high",
+            "low"
+          ]
+        },
+        {
+          "name": "pressed",
+          "type": "bool"
+        }
+      ]
+    }
+  },
+  {
+    "id": "missed-labels",
+    "prompt": "An evaluation set contains 12 genuinely positive cases. The classifier flags 15 cases, of which 9 are genuinely positive. Return one JSON object with integer fields tp and fn.",
+    "format": "object",
+    "schema": {
+      "fields": [
+        {
+          "name": "tp",
+          "type": "int"
+        },
+        {
+          "name": "fn",
+          "type": "int"
+        }
+      ]
+    }
+  },
+  {
+    "id": "weekend-hours",
+    "prompt": "A flyer lists the repair shop's hours Monday through Friday. It says nothing about Sunday. Based only on the flyer, is the shop open on Sunday? Reply with exactly one of open, closed, unknown.",
+    "format": "enum",
+    "schema": {
+      "options": [
+        "open",
+        "closed",
+        "unknown"
+      ]
+    }
+  },
+  {
+    "id": "reversed-route",
+    "prompt": "A route log is [17,-1,17,5], in arrival order. Read it backwards and omit negative entries. Return the remaining entries, including duplicates, as a JSON array of integers.",
+    "format": "array",
+    "schema": {
+      "items": "int"
+    }
+  },
+  {
+    "id": "duplex-print",
+    "prompt": "Print a single 37-page handout double-sided, starting on a fresh sheet. The color setting is blue. Return one CSV row listing sheets used and blank sides remaining on those sheets, as two integers. No header.",
+    "format": "csv",
+    "schema": {
+      "fields": [
+        {
+          "name": "sheets",
+          "type": "int"
+        },
+        {
+          "name": "blank",
+          "type": "int"
+        }
+      ]
+    }
+  },
+  {
+    "id": "latest-room",
+    "prompt": "The calendar first said Pine. An explicit correction replaced Pine with Cedar. A later email mentions Oak as a possible room for next year. Where should people go for this meeting? Reply with exactly one of Pine, Cedar, Oak, unknown.",
+    "format": "enum",
+    "schema": {
+      "options": [
+        "Pine",
+        "Cedar",
+        "Oak",
+        "unknown"
+      ]
+    }
+  }
+]

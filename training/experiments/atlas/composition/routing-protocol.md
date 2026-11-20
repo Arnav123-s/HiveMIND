@@ -1,0 +1,7 @@
+# Frozen follow-up on archived hidden states
+
+Use all six original, compatible rank-four output-projection engrams (including the two primary heads that did not qualify for shipping) and all 18 original held-out decision states, three per domain. These cases were public before this analysis. Fit no prototypes or thresholds to their labels. Read the largest right singular vector of each actual FP16 low-rank update. Use the absolute dot product with the frozen 4096-dimensional last-token input to the output layer. Route the two largest scores with their two-way softmax, unit temperature, as in Algorithm 2 of Arrow with k=2. Fixed tie break is alphabetical domain key.
+
+Compare unrestricted first-token argmax for the bare base, equal mean of all six deltas, top-two Arrow and the intended single head (given the correct domain). Count correct tokens and inclusion of the intended head in each top two. Use the archived native base logits and actual GGUF factors. Preserve all changed predictions. This tests routing within the output layer only and needs no new forward pass. The same code-book factor experiment and its HTTP result remain separate.
+
+Inspect the three installed G49 release organs for transformer block coverage. Check whether a compatible learned verification control vector is present and whether the pinned CPU engine supports applying one. Identify tested and untested behavior explicitly.

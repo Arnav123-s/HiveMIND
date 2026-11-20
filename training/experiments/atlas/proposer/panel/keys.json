@@ -1,0 +1,161 @@
+{
+  "empty": {
+    "sum": {},
+    "winner": null,
+    "count": 0,
+    "site_sum": {},
+    "site_winner": null,
+    "site_count": 0
+  },
+  "one-zero": {
+    "sum": {
+      "red": 0
+    },
+    "winner": "red",
+    "count": 1,
+    "site_sum": {
+      "red": 0
+    },
+    "site_winner": "red",
+    "site_count": 1
+  },
+  "all-debt": {
+    "sum": {
+      "credit": -3,
+      "fee": -8
+    },
+    "winner": "credit",
+    "count": 2,
+    "site_sum": {
+      "credit": -3,
+      "fee": -7
+    },
+    "site_winner": "credit",
+    "site_count": 1
+  },
+  "ties": {
+    "sum": {
+      "a": 2,
+      "b": 2,
+      "c": 2
+    },
+    "winner": "a",
+    "count": 1,
+    "site_sum": {
+      "a": 2,
+      "b": 2
+    },
+    "site_winner": "a",
+    "site_count": 1
+  },
+  "bucket-order": {
+    "sum": {
+      "R": 9,
+      "r": 7
+    },
+    "winner": "R",
+    "count": 2,
+    "site_sum": {
+      "R": 5,
+      "r": 9
+    },
+    "site_winner": "r",
+    "site_count": 1
+  },
+  "missing-site": {
+    "sum": {
+      "kits": 1,
+      "tools": 11
+    },
+    "winner": "tools",
+    "count": 1,
+    "site_sum": {},
+    "site_winner": null,
+    "site_count": 0
+  },
+  "zero-net": {
+    "sum": {
+      "loan": 0,
+      "loss": 0
+    },
+    "winner": "loan",
+    "count": 2,
+    "site_sum": {
+      "loan": 0,
+      "loss": -2
+    },
+    "site_winner": "loan",
+    "site_count": 2
+  },
+  "three-places": {
+    "sum": {
+      "maps": 9,
+      "stamps": 3
+    },
+    "winner": "maps",
+    "count": 2,
+    "site_sum": {
+      "maps": 1,
+      "stamps": 3
+    },
+    "site_winner": "stamps",
+    "site_count": 2
+  },
+  "repeat": {
+    "sum": {
+      "box": 32,
+      "ink": 13
+    },
+    "winner": "box",
+    "count": 4,
+    "site_sum": {
+      "box": 12,
+      "ink": 13
+    },
+    "site_winner": "ink",
+    "site_count": 3
+  },
+  "strange-label": {
+    "sum": {
+      "a b": 2,
+      "a-b": 8
+    },
+    "winner": "a-b",
+    "count": 2,
+    "site_sum": {
+      "a b": 2,
+      "a-b": 3
+    },
+    "site_winner": "a-b",
+    "site_count": 2
+  },
+  "non-ascii": {
+    "sum": {
+      "z": 2,
+      "É": 5,
+      "é": 1
+    },
+    "winner": "É",
+    "count": 2,
+    "site_sum": {
+      "z": 2,
+      "é": 2
+    },
+    "site_winner": "z",
+    "site_count": 1
+  },
+  "big-integer": {
+    "sum": {
+      "tally": 9007199254740999,
+      "tokens": 9007199254740991
+    },
+    "winner": "tally",
+    "count": 2,
+    "site_sum": {
+      "tally": 9007199254740992,
+      "tokens": 9007199254740991
+    },
+    "site_winner": "tally",
+    "site_count": 2
+  }
+}

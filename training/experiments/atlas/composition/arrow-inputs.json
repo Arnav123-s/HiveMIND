@@ -1,0 +1,274 @@
+{
+  "names": [
+    "coding",
+    "conversation",
+    "engineering",
+    "math",
+    "ml",
+    "physics"
+  ],
+  "rows": [
+    {
+      "case": "coding-check-0",
+      "domain": "coding",
+      "expected": "map",
+      "target": 2186,
+      "before": 17617,
+      "intended": 17617
+    },
+    {
+      "case": "coding-check-1",
+      "domain": "coding",
+      "expected": "filter",
+      "target": 5315,
+      "before": 5315,
+      "intended": 5315
+    },
+    {
+      "case": "coding-check-2",
+      "domain": "coding",
+      "expected": "sum",
+      "target": 1242,
+      "before": 1242,
+      "intended": 1242
+    },
+    {
+      "case": "conversation-check-0",
+      "domain": "conversation",
+      "expected": "ask",
+      "target": 1073,
+      "before": 26172,
+      "intended": 1073
+    },
+    {
+      "case": "conversation-check-1",
+      "domain": "conversation",
+      "expected": "confirm",
+      "target": 13800,
+      "before": 13060,
+      "intended": 13800
+    },
+    {
+      "case": "conversation-check-2",
+      "domain": "conversation",
+      "expected": "thank",
+      "target": 57417,
+      "before": 13060,
+      "intended": 57417
+    },
+    {
+      "case": "engineering-check-0",
+      "domain": "engineering",
+      "expected": "ns",
+      "target": 4412,
+      "before": 4412,
+      "intended": 4412
+    },
+    {
+      "case": "engineering-check-1",
+      "domain": "engineering",
+      "expected": "us",
+      "target": 355,
+      "before": 4412,
+      "intended": 4412
+    },
+    {
+      "case": "engineering-check-2",
+      "domain": "engineering",
+      "expected": "ms",
+      "target": 1011,
+      "before": 355,
+      "intended": 355
+    },
+    {
+      "case": "math-check-0",
+      "domain": "math",
+      "expected": "length",
+      "target": 4129,
+      "before": 4373,
+      "intended": 4373
+    },
+    {
+      "case": "math-check-1",
+      "domain": "math",
+      "expected": "area",
+      "target": 4798,
+      "before": 8726,
+      "intended": 8726
+    },
+    {
+      "case": "math-check-2",
+      "domain": "math",
+      "expected": "volume",
+      "target": 25060,
+      "before": 18902,
+      "intended": 18902
+    },
+    {
+      "case": "ml-check-0",
+      "domain": "ml",
+      "expected": "train",
+      "target": 10397,
+      "before": 10397,
+      "intended": 10397
+    },
+    {
+      "case": "ml-check-1",
+      "domain": "ml",
+      "expected": "validation",
+      "target": 12284,
+      "before": 13799,
+      "intended": 12284
+    },
+    {
+      "case": "ml-check-2",
+      "domain": "ml",
+      "expected": "test",
+      "target": 1944,
+      "before": 2271,
+      "intended": 2271
+    },
+    {
+      "case": "physics-check-0",
+      "domain": "physics",
+      "expected": "solid",
+      "target": 31027,
+      "before": 96640,
+      "intended": 96640
+    },
+    {
+      "case": "physics-check-1",
+      "domain": "physics",
+      "expected": "liquid",
+      "target": 53637,
+      "before": 96640,
+      "intended": 53637
+    },
+    {
+      "case": "physics-check-2",
+      "domain": "physics",
+      "expected": "gas",
+      "target": 39525,
+      "before": 58728,
+      "intended": 58728
+    }
+  ],
+  "vocab": {
+    "2186": "map",
+    "17617": "MAP",
+    "5315": "filter",
+    "1242": "sum",
+    "1073": "ask",
+    "26172": "Ask",
+    "13800": "confirm",
+    "13060": "Thank",
+    "57417": "thank",
+    "4412": "ns",
+    "355": "us",
+    "1011": "ms",
+    "4129": "length",
+    "4373": "Length",
+    "4798": "area",
+    "8726": "Area",
+    "25060": "volume",
+    "18902": "Volume",
+    "10397": "train",
+    "12284": "validation",
+    "13799": "Validation",
+    "1944": "test",
+    "2271": "Test",
+    "31027": "solid",
+    "96640": "Liquid",
+    "53637": "liquid",
+    "39525": "gas",
+    "58728": "Gas",
+    "5632": "Filter",
+    "9190": "Sum",
+    "2034": "US",
+    "43123": "\u00ce\u00bc",
+    "1690": "ps"
+  },
+  "weights_sha256": {
+    "coding": "a0d4deb515b83cfdee75a6802cba21ce1b4b894628cad36da9a86e91486aa7d3",
+    "conversation": "19b04875930cf71f573cd77408913af0d94a90883cd6416433ae03bff3b99c36",
+    "engineering": "44f95a7ada1eef213cf908a3d55a47369fd6089099eaacc8b0ea19f70a73fe84",
+    "math": "cf709e13407e078649b359ddb5dbf320ef71058d6b3669164653fe12362c259f",
+    "ml": "3a3a7d7127dc149cd8b471c30ee2ed858fb405b3a5a833994721bea2338fe766",
+    "physics": "eff02a182a9d4d551e1ed46ae9d0ef33051c74ab3d06b4dee3225d8f4383786c"
+  },
+  "original_native_inputs_sha256": {
+    "coding-check-0": {
+      "state": "2044670411b1a7d508ede4a7941f614adab867fc094080ecf1ec842e448ffdae",
+      "full_logits": "eb29977cab4c5c7bd2b04bbe6b00dc350ce31658ae9323e57b88130b807bd16d"
+    },
+    "coding-check-1": {
+      "state": "c0d6a57651d41991c81e194d5ba757e52ca5948d516b527f0e6cf7015d787b6e",
+      "full_logits": "5c97c586e4728f6df766a4f8238329178c035c4582db3d097b8df2a3a86c0a19"
+    },
+    "coding-check-2": {
+      "state": "fcfc5b68a8edccac63858e69e67bef5c1ea9e6407972441c76bfc58f587e880b",
+      "full_logits": "86220c3acc4d81df83ac5685e4ee1c1d9a4697d3d2e3ba9cf05fffc64e569531"
+    },
+    "conversation-check-0": {
+      "state": "9e17a8255448e4f66f167d2e6d2b9c3affbe44fb5c3eff0eabaf99022225c412",
+      "full_logits": "798fb08338a732b8bfaaa1045d5735b11b87541818d03c60edac9f6dc8e238e8"
+    },
+    "conversation-check-1": {
+      "state": "887fb151c6049804402d19b134d20657d270b7d70310b0b5e4311c8d6b85f69d",
+      "full_logits": "fedcceb32fe7da020715b47ad947680354a093752cc72b1187287bbef988adf1"
+    },
+    "conversation-check-2": {
+      "state": "e6e2a4e66b96a5206d935adafc54e1a9936a347d37ce6f633657538b1301c94c",
+      "full_logits": "1879f70a69e8f07a34db9f25249a2fa2ad22d125ccc9c3c1c312ea535061db70"
+    },
+    "engineering-check-0": {
+      "state": "30d302f432740af29155764fb404d6b8ed551dc37159a93f07e14f96ab987395",
+      "full_logits": "fc5f8deba8cf95b7eea5c3cfef5a37f71907753b784181f1caa09cbd8357784d"
+    },
+    "engineering-check-1": {
+      "state": "3fa6943b25a86516c9a0ebe75de451ce9835ce596aac944d20f205eb570dc46e",
+      "full_logits": "60fe9bc552c1047641bc2ca71ab9d0cf88f86ae4542808cae66b7d5c70fe88e8"
+    },
+    "engineering-check-2": {
+      "state": "72bffcbc026cbe2bbe49861c222ebbea206c053403b009f54e7c8aae933b8c46",
+      "full_logits": "85102826c5f24093ed12a90cafe7461227d1f2752763a5dce1598720a5ae4cf7"
+    },
+    "math-check-0": {
+      "state": "557afb935e0b832ca13f74556587cc0a2a1939a69d4f0f1099d2d5c71f2c603a",
+      "full_logits": "5456cec523b642fdff814744c2905329347fc874ceb29e42a47c7bba54d2888e"
+    },
+    "math-check-1": {
+      "state": "743d0d7cadab80460c6e6a98aff438bb0f90d17deb895b5a4623d7545edc5cdc",
+      "full_logits": "7607a1dee8d6f7d3c03ab8917af723f13ab9f024c7e6a65937bccad7fb3ec7d7"
+    },
+    "math-check-2": {
+      "state": "1b9e1474e56547f1eef88b1a4f29f90d5a28c53190991f445c824554d13fdad6",
+      "full_logits": "ca6063223924daa3b57bd6b9525dbb3c82d8faf95f2126b4a3ee5cf3d4b0842c"
+    },
+    "ml-check-0": {
+      "state": "a71ca01fae64508b5dec46c084b5da53b3a844ddb235929ce2740ff5362383ea",
+      "full_logits": "d109477c02234e341ac488c9f79891ade35d3aaf662a2b359f035b39753a1e61"
+    },
+    "ml-check-1": {
+      "state": "a99568e27f2612d0024a0731d8ef97fe01649448a9e48bdfd879ec945e680ddb",
+      "full_logits": "f33356470420a8baf3e920795d99b8e29670029c1b9d3ed6e68b0e1ae0e036dc"
+    },
+    "ml-check-2": {
+      "state": "d63495a8a8fe006b1d5b9a95665dc6a4102ee817d5dbdce4366a0fccae618df7",
+      "full_logits": "9405f54b2d311f02f8b540563d0a53c00aabaa46fc953a8753dd32843ea18189"
+    },
+    "physics-check-0": {
+      "state": "4f9f033db325dbc83da387d9100eb496d6e3926efb1a322d24721e4e8e00f266",
+      "full_logits": "d7a7ad4b9aa675ed6dfae37d0b12a3e899624d1ab8683675be9f9d9d5744b341"
+    },
+    "physics-check-1": {
+      "state": "1363a53d245f6c564892b88771323cc366e3f415ed5cb49c8de7bb1c7ec405fc",
+      "full_logits": "2bd3486d686abefe200786d6a66ca0c4de5a6d73ee023cdcf86b2f908db55cf3"
+    },
+    "physics-check-2": {
+      "state": "85dd22bc9926a136af777c60d4aebf37c9b6e826404a32e8eff4c69fe5e697ae",
+      "full_logits": "b0f3a5a19a2240bb4bb651a57163ed1e45065428f3915f4701f036fb8097f423"
+    }
+  },
+  "packed_sha256": "88aebed37ee8e5847726713ae8a0c68d50d95e045013edddcedd82e79ec0020c"
+}

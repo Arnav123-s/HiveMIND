@@ -1,0 +1,848 @@
+{
+  "count": 18,
+  "intended_in_top2": 11,
+  "intended_top1": 7,
+  "correct": {
+    "base": 14,
+    "intended": 15,
+    "all_mean": 14,
+    "arrow_top2": 15
+  },
+  "strict_token": {
+    "base": 4,
+    "intended": 9,
+    "all_mean": 4,
+    "arrow_top2": 6
+  },
+  "native_base_and_intended_argmax_checks": 36,
+  "cases": [
+    {
+      "case": "coding-check-0",
+      "expected": "map",
+      "top": [
+        "coding",
+        "ml"
+      ],
+      "scales": [
+        0.9833977937196196,
+        0.0166022062803805
+      ],
+      "projections": {
+        "coding": 6.053497081899318,
+        "conversation": 1.9040565226918567,
+        "engineering": 0.267748619968613,
+        "math": 0.34568947388856786,
+        "ml": 1.9720189654344633,
+        "physics": 1.945763382166188
+      },
+      "outputs": {
+        "base": {
+          "id": 17617,
+          "piece": "MAP",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 17617,
+          "piece": "MAP",
+          "strict_token": false,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 17617,
+          "piece": "MAP",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 17617,
+          "piece": "MAP",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "coding-check-1",
+      "expected": "filter",
+      "top": [
+        "engineering",
+        "conversation"
+      ],
+      "scales": [
+        0.5854217640458045,
+        0.4145782359541956
+      ],
+      "projections": {
+        "coding": 5.796099371402224,
+        "conversation": 6.004034033230479,
+        "engineering": 6.349104880330125,
+        "math": 0.007034249205128074,
+        "ml": 1.2932576312934683,
+        "physics": 2.1394079081976125
+      },
+      "outputs": {
+        "base": {
+          "id": 5315,
+          "piece": "filter",
+          "strict_token": true,
+          "correct": true
+        },
+        "intended": {
+          "id": 5315,
+          "piece": "filter",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 5315,
+          "piece": "filter",
+          "strict_token": true,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 5315,
+          "piece": "filter",
+          "strict_token": true,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "coding-check-2",
+      "expected": "sum",
+      "top": [
+        "coding",
+        "ml"
+      ],
+      "scales": [
+        0.986482341092813,
+        0.013517658907187055
+      ],
+      "projections": {
+        "coding": 9.577775966687103,
+        "conversation": 2.5476738980978175,
+        "engineering": 4.113965214515905,
+        "math": 2.3272544783304587,
+        "ml": 5.2876274398183085,
+        "physics": 1.7396413010186724
+      },
+      "outputs": {
+        "base": {
+          "id": 1242,
+          "piece": "sum",
+          "strict_token": true,
+          "correct": true
+        },
+        "intended": {
+          "id": 1242,
+          "piece": "sum",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 1242,
+          "piece": "sum",
+          "strict_token": true,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 1242,
+          "piece": "sum",
+          "strict_token": true,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "conversation-check-0",
+      "expected": "ask",
+      "top": [
+        "coding",
+        "conversation"
+      ],
+      "scales": [
+        0.9997780481596442,
+        0.0002219518403558226
+      ],
+      "projections": {
+        "coding": 14.8983482071232,
+        "conversation": 6.485520048638512,
+        "engineering": 2.344158339637172,
+        "math": 1.6044240315621945,
+        "ml": 3.9977773663981733,
+        "physics": 2.581264742419117
+      },
+      "outputs": {
+        "base": {
+          "id": 26172,
+          "piece": "Ask",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 1073,
+          "piece": "ask",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 26172,
+          "piece": "Ask",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 26172,
+          "piece": "Ask",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "conversation-check-1",
+      "expected": "confirm",
+      "top": [
+        "conversation",
+        "coding"
+      ],
+      "scales": [
+        0.915446315194258,
+        0.0845536848057419
+      ],
+      "projections": {
+        "coding": 15.641052594262058,
+        "conversation": 18.02307766100635,
+        "engineering": 4.020382037530733,
+        "math": 2.908926799163124,
+        "ml": 0.30046911699339185,
+        "physics": 2.129190512162105
+      },
+      "outputs": {
+        "base": {
+          "id": 13060,
+          "piece": "Thank",
+          "strict_token": false,
+          "correct": false
+        },
+        "intended": {
+          "id": 13800,
+          "piece": "confirm",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 13060,
+          "piece": "Thank",
+          "strict_token": false,
+          "correct": false
+        },
+        "arrow_top2": {
+          "id": 13800,
+          "piece": "confirm",
+          "strict_token": true,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "conversation-check-2",
+      "expected": "thank",
+      "top": [
+        "conversation",
+        "coding"
+      ],
+      "scales": [
+        0.5647858447399344,
+        0.4352141552600657
+      ],
+      "projections": {
+        "coding": 17.52707375312739,
+        "conversation": 17.78768215567697,
+        "engineering": 2.841313442676004,
+        "math": 3.288737058016676,
+        "ml": 1.7588076354265445,
+        "physics": 1.0360273726623621
+      },
+      "outputs": {
+        "base": {
+          "id": 13060,
+          "piece": "Thank",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 57417,
+          "piece": "thank",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 13060,
+          "piece": "Thank",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 57417,
+          "piece": "thank",
+          "strict_token": true,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "engineering-check-0",
+      "expected": "ns",
+      "top": [
+        "engineering",
+        "coding"
+      ],
+      "scales": [
+        0.7954591674462053,
+        0.20454083255379465
+      ],
+      "projections": {
+        "coding": 6.881373027913984,
+        "conversation": 3.669822883968386,
+        "engineering": 8.239524919213071,
+        "math": 1.1706540916495336,
+        "ml": 0.6402940407896758,
+        "physics": 2.4368546492545686
+      },
+      "outputs": {
+        "base": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": true,
+          "correct": true
+        },
+        "intended": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": true,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": true,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "engineering-check-1",
+      "expected": "us",
+      "top": [
+        "coding",
+        "conversation"
+      ],
+      "scales": [
+        0.9968063593640974,
+        0.003193640635902525
+      ],
+      "projections": {
+        "coding": 7.604690252433228,
+        "conversation": 1.8612952558629288,
+        "engineering": 0.4921171650643392,
+        "math": 0.004942921990308435,
+        "ml": 0.17807988983003342,
+        "physics": 1.1381126855162
+      },
+      "outputs": {
+        "base": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": false,
+          "correct": false
+        },
+        "intended": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": false,
+          "correct": false
+        },
+        "all_mean": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": false,
+          "correct": false
+        },
+        "arrow_top2": {
+          "id": 4412,
+          "piece": "ns",
+          "strict_token": false,
+          "correct": false
+        }
+      }
+    },
+    {
+      "case": "engineering-check-2",
+      "expected": "ms",
+      "top": [
+        "engineering",
+        "coding"
+      ],
+      "scales": [
+        0.999982885463768,
+        1.711453623192434e-05
+      ],
+      "projections": {
+        "coding": 7.048763456731663,
+        "conversation": 3.600461651567817,
+        "engineering": 18.024328725568886,
+        "math": 1.2681013850674783,
+        "ml": 0.3728302832167264,
+        "physics": 0.01030047599167512
+      },
+      "outputs": {
+        "base": {
+          "id": 355,
+          "piece": "us",
+          "strict_token": false,
+          "correct": false
+        },
+        "intended": {
+          "id": 355,
+          "piece": "us",
+          "strict_token": false,
+          "correct": false
+        },
+        "all_mean": {
+          "id": 355,
+          "piece": "us",
+          "strict_token": false,
+          "correct": false
+        },
+        "arrow_top2": {
+          "id": 355,
+          "piece": "us",
+          "strict_token": false,
+          "correct": false
+        }
+      }
+    },
+    {
+      "case": "math-check-0",
+      "expected": "length",
+      "top": [
+        "math",
+        "coding"
+      ],
+      "scales": [
+        0.5727376483746075,
+        0.42726235162539256
+      ],
+      "projections": {
+        "coding": 11.064747384346546,
+        "conversation": 0.5974245508878355,
+        "engineering": 2.57596145043776,
+        "math": 11.357776908798336,
+        "ml": 6.917473397612298,
+        "physics": 2.23353229964201
+      },
+      "outputs": {
+        "base": {
+          "id": 4373,
+          "piece": "Length",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 4373,
+          "piece": "Length",
+          "strict_token": false,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 4373,
+          "piece": "Length",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 4373,
+          "piece": "Length",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "math-check-1",
+      "expected": "area",
+      "top": [
+        "coding",
+        "ml"
+      ],
+      "scales": [
+        0.9282914453805275,
+        0.07170855461947258
+      ],
+      "projections": {
+        "coding": 11.470145769513643,
+        "conversation": 0.9433650536210496,
+        "engineering": 2.0662687312430523,
+        "math": 1.3406009281850084,
+        "ml": 8.909410080289327,
+        "physics": 3.7032222032059496
+      },
+      "outputs": {
+        "base": {
+          "id": 8726,
+          "piece": "Area",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 8726,
+          "piece": "Area",
+          "strict_token": false,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 8726,
+          "piece": "Area",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 8726,
+          "piece": "Area",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "math-check-2",
+      "expected": "volume",
+      "top": [
+        "coding",
+        "math"
+      ],
+      "scales": [
+        0.9964034683670411,
+        0.0035965316329589435
+      ],
+      "projections": {
+        "coding": 12.981359949174173,
+        "conversation": 0.2917796307539098,
+        "engineering": 3.149436473597663,
+        "math": 7.35717763066473,
+        "ml": 7.019982841449294,
+        "physics": 2.3254380863394117
+      },
+      "outputs": {
+        "base": {
+          "id": 18902,
+          "piece": "Volume",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 18902,
+          "piece": "Volume",
+          "strict_token": false,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 18902,
+          "piece": "Volume",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 18902,
+          "piece": "Volume",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "ml-check-0",
+      "expected": "train",
+      "top": [
+        "coding",
+        "ml"
+      ],
+      "scales": [
+        0.9994216828732979,
+        0.0005783171267022052
+      ],
+      "projections": {
+        "coding": 13.42178570901394,
+        "conversation": 4.764587061433212,
+        "engineering": 3.817768963085595,
+        "math": 4.597298559594849,
+        "ml": 5.966976015793112,
+        "physics": 1.9419364220049014
+      },
+      "outputs": {
+        "base": {
+          "id": 10397,
+          "piece": "train",
+          "strict_token": true,
+          "correct": true
+        },
+        "intended": {
+          "id": 10397,
+          "piece": "train",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 10397,
+          "piece": "train",
+          "strict_token": true,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 10397,
+          "piece": "train",
+          "strict_token": true,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "ml-check-1",
+      "expected": "validation",
+      "top": [
+        "coding",
+        "engineering"
+      ],
+      "scales": [
+        0.9992940385937233,
+        0.0007059614062766018
+      ],
+      "projections": {
+        "coding": 11.2389808857217,
+        "conversation": 3.2935296344258336,
+        "engineering": 3.983737109140244,
+        "math": 0.5601798789999478,
+        "ml": 1.1462233755761533,
+        "physics": 3.2511106623571373
+      },
+      "outputs": {
+        "base": {
+          "id": 13799,
+          "piece": "Validation",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 12284,
+          "piece": "validation",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 13799,
+          "piece": "Validation",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 13799,
+          "piece": "Validation",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "ml-check-2",
+      "expected": "test",
+      "top": [
+        "coding",
+        "engineering"
+      ],
+      "scales": [
+        0.9999612319715657,
+        3.876802843423806e-05
+      ],
+      "projections": {
+        "coding": 13.199469896783285,
+        "conversation": 1.6305511793226466,
+        "engineering": 3.041594005118936,
+        "math": 2.2220980915148285,
+        "ml": 1.1022294958236765,
+        "physics": 0.2888662179199223
+      },
+      "outputs": {
+        "base": {
+          "id": 2271,
+          "piece": "Test",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 2271,
+          "piece": "Test",
+          "strict_token": false,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 2271,
+          "piece": "Test",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 2271,
+          "piece": "Test",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "physics-check-0",
+      "expected": "solid",
+      "top": [
+        "coding",
+        "math"
+      ],
+      "scales": [
+        0.9995845130176155,
+        0.0004154869823843424
+      ],
+      "projections": {
+        "coding": 15.538964065031136,
+        "conversation": 3.234968932907794,
+        "engineering": 1.8814472912158746,
+        "math": 7.753320364191004,
+        "ml": 4.6300688823223135,
+        "physics": 0.921958634771383
+      },
+      "outputs": {
+        "base": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": false
+        },
+        "intended": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": false
+        },
+        "all_mean": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": false
+        },
+        "arrow_top2": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": false
+        }
+      }
+    },
+    {
+      "case": "physics-check-1",
+      "expected": "liquid",
+      "top": [
+        "coding",
+        "math"
+      ],
+      "scales": [
+        0.9996181572425773,
+        0.00038184275742277524
+      ],
+      "projections": {
+        "coding": 16.29007839309309,
+        "conversation": 2.134649103033478,
+        "engineering": 1.7549763943369476,
+        "math": 8.419958644887217,
+        "ml": 6.931478867548559,
+        "physics": 7.574590224402857
+      },
+      "outputs": {
+        "base": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 53637,
+          "piece": "liquid",
+          "strict_token": true,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 96640,
+          "piece": "Liquid",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    },
+    {
+      "case": "physics-check-2",
+      "expected": "gas",
+      "top": [
+        "coding",
+        "physics"
+      ],
+      "scales": [
+        0.9986167223797466,
+        0.0013832776202534237
+      ],
+      "projections": {
+        "coding": 15.812914621035839,
+        "conversation": 3.0835146657632326,
+        "engineering": 1.3992762630497715,
+        "math": 6.88394663184393,
+        "ml": 5.6926427429799284,
+        "physics": 9.2309993475335
+      },
+      "outputs": {
+        "base": {
+          "id": 58728,
+          "piece": "Gas",
+          "strict_token": false,
+          "correct": true
+        },
+        "intended": {
+          "id": 58728,
+          "piece": "Gas",
+          "strict_token": false,
+          "correct": true
+        },
+        "all_mean": {
+          "id": 58728,
+          "piece": "Gas",
+          "strict_token": false,
+          "correct": true
+        },
+        "arrow_top2": {
+          "id": 58728,
+          "piece": "Gas",
+          "strict_token": false,
+          "correct": true
+        }
+      }
+    }
+  ]
+}

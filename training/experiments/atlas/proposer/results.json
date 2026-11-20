@@ -1,0 +1,2352 @@
+{
+  "programs": {
+    "count": [
+      "count"
+    ],
+    "sum": [
+      "sum"
+    ],
+    "site_count": [
+      "site",
+      "count"
+    ],
+    "site_sum": [
+      "site",
+      "sum"
+    ],
+    "winner": [
+      "sum",
+      "winner"
+    ],
+    "site_winner": [
+      "site",
+      "sum",
+      "winner"
+    ]
+  },
+  "scenarios": 12,
+  "summary": {
+    "one_operator": {
+      "correct": 24,
+      "unsupported": 48
+    },
+    "same_output_type": {
+      "correct": 33,
+      "unsupported": 24,
+      "wrong": 15
+    },
+    "composed": {
+      "correct": 72
+    },
+    "direct": {
+      "correct": 72
+    }
+  },
+  "scenarios_where_site_changes_answer": {
+    "count": 5,
+    "sum": 10,
+    "winner": 5
+  },
+  "receipts": [
+    {
+      "scenario": "empty",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"none\".",
+      "expected": 0,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 0
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 0
+        },
+        "composed": {
+          "status": "correct",
+          "value": 0
+        },
+        "direct": {
+          "status": "correct",
+          "value": 0
+        }
+      }
+    },
+    {
+      "scenario": "empty",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {},
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {}
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {}
+        },
+        "composed": {
+          "status": "correct",
+          "value": {}
+        },
+        "direct": {
+          "status": "correct",
+          "value": {}
+        }
+      }
+    },
+    {
+      "scenario": "empty",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"home\", then count rows with label \"none\".",
+      "expected": 0,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 0
+        },
+        "composed": {
+          "status": "correct",
+          "value": 0
+        },
+        "direct": {
+          "status": "correct",
+          "value": 0
+        }
+      }
+    },
+    {
+      "scenario": "empty",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"home\", then sum the quantities for each observed label.",
+      "expected": {},
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {}
+        },
+        "composed": {
+          "status": "correct",
+          "value": {}
+        },
+        "direct": {
+          "status": "correct",
+          "value": {}
+        }
+      }
+    },
+    {
+      "scenario": "empty",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": null,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": null
+        },
+        "direct": {
+          "status": "correct",
+          "value": null
+        }
+      }
+    },
+    {
+      "scenario": "empty",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"home\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": null,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": null
+        },
+        "direct": {
+          "status": "correct",
+          "value": null
+        }
+      }
+    },
+    {
+      "scenario": "one-zero",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"red\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 1
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 1
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "one-zero",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "red": 0
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "one-zero",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"x\", then count rows with label \"red\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 1
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "one-zero",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"x\", then sum the quantities for each observed label.",
+      "expected": {
+        "red": 0
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "red": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "one-zero",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "red",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "red"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "red"
+        }
+      }
+    },
+    {
+      "scenario": "one-zero",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"x\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "red",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "red"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "red"
+        }
+      }
+    },
+    {
+      "scenario": "all-debt",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"fee\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "all-debt",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "credit": -3,
+        "fee": -8
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "fee": -8,
+            "credit": -3
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "fee": -8,
+            "credit": -3
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "fee": -8,
+            "credit": -3
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "fee": -8,
+            "credit": -3
+          }
+        }
+      }
+    },
+    {
+      "scenario": "all-debt",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"sub\", then count rows with label \"fee\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "all-debt",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"sub\", then sum the quantities for each observed label.",
+      "expected": {
+        "credit": -3,
+        "fee": -7
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "fee": -8,
+            "credit": -3
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "fee": -7,
+            "credit": -3
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "fee": -7,
+            "credit": -3
+          }
+        }
+      }
+    },
+    {
+      "scenario": "all-debt",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "credit",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "credit"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "credit"
+        }
+      }
+    },
+    {
+      "scenario": "all-debt",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"sub\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "credit",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "credit"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "credit"
+        }
+      }
+    },
+    {
+      "scenario": "ties",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"b\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 1
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 1
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "ties",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "a": 2,
+        "b": 2,
+        "c": 2
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "a": 2,
+            "b": 2,
+            "c": 2
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "a": 2,
+            "b": 2,
+            "c": 2
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "a": 2,
+            "b": 2,
+            "c": 2
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "a": 2,
+            "b": 2,
+            "c": 2
+          }
+        }
+      }
+    },
+    {
+      "scenario": "ties",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"shop\", then count rows with label \"b\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 1
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "ties",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"shop\", then sum the quantities for each observed label.",
+      "expected": {
+        "a": 2,
+        "b": 2
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "a": 2,
+            "b": 2,
+            "c": 2
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "a": 2,
+            "b": 2
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "a": 2,
+            "b": 2
+          }
+        }
+      }
+    },
+    {
+      "scenario": "ties",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "a",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "a"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "a"
+        }
+      }
+    },
+    {
+      "scenario": "ties",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"shop\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "a",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "a"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "a"
+        }
+      }
+    },
+    {
+      "scenario": "bucket-order",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"R\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "bucket-order",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "R": 9,
+        "r": 7
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "r": 7,
+            "R": 9
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "r": 7,
+            "R": 9
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "r": 7,
+            "R": 9
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "r": 7,
+            "R": 9
+          }
+        }
+      }
+    },
+    {
+      "scenario": "bucket-order",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"A\", then count rows with label \"R\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "bucket-order",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"A\", then sum the quantities for each observed label.",
+      "expected": {
+        "R": 5,
+        "r": 9
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "r": 7,
+            "R": 9
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "r": 9,
+            "R": 5
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "r": 9,
+            "R": 5
+          }
+        }
+      }
+    },
+    {
+      "scenario": "bucket-order",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "R",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "R"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "R"
+        }
+      }
+    },
+    {
+      "scenario": "bucket-order",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"A\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "r",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "r"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "r"
+        }
+      }
+    },
+    {
+      "scenario": "missing-site",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"tools\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 1
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 1
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "missing-site",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "kits": 1,
+        "tools": 11
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "tools": 11,
+            "kits": 1
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "tools": 11,
+            "kits": 1
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "tools": 11,
+            "kits": 1
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "tools": 11,
+            "kits": 1
+          }
+        }
+      }
+    },
+    {
+      "scenario": "missing-site",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"unknown\", then count rows with label \"tools\".",
+      "expected": 0,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": 1
+        },
+        "composed": {
+          "status": "correct",
+          "value": 0
+        },
+        "direct": {
+          "status": "correct",
+          "value": 0
+        }
+      }
+    },
+    {
+      "scenario": "missing-site",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"unknown\", then sum the quantities for each observed label.",
+      "expected": {},
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "tools": 11,
+            "kits": 1
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {}
+        },
+        "direct": {
+          "status": "correct",
+          "value": {}
+        }
+      }
+    },
+    {
+      "scenario": "missing-site",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "tools",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "tools"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "tools"
+        }
+      }
+    },
+    {
+      "scenario": "missing-site",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"unknown\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": null,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": null
+        },
+        "direct": {
+          "status": "correct",
+          "value": null
+        }
+      }
+    },
+    {
+      "scenario": "zero-net",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"loan\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "zero-net",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "loan": 0,
+        "loss": 0
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "loan": 0,
+            "loss": 0
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "loan": 0,
+            "loss": 0
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "loan": 0,
+            "loss": 0
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "loan": 0,
+            "loss": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "zero-net",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"rack\", then count rows with label \"loan\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "zero-net",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"rack\", then sum the quantities for each observed label.",
+      "expected": {
+        "loan": 0,
+        "loss": -2
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "loan": 0,
+            "loss": 0
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "loan": 0,
+            "loss": -2
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "loan": 0,
+            "loss": -2
+          }
+        }
+      }
+    },
+    {
+      "scenario": "zero-net",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "loan",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "loan"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "loan"
+        }
+      }
+    },
+    {
+      "scenario": "zero-net",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"rack\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "loan",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "loan"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "loan"
+        }
+      }
+    },
+    {
+      "scenario": "three-places",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"stamps\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "three-places",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "maps": 9,
+        "stamps": 3
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "maps": 9,
+            "stamps": 3
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "maps": 9,
+            "stamps": 3
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "maps": 9,
+            "stamps": 3
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "maps": 9,
+            "stamps": 3
+          }
+        }
+      }
+    },
+    {
+      "scenario": "three-places",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"crew2\", then count rows with label \"stamps\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "three-places",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"crew2\", then sum the quantities for each observed label.",
+      "expected": {
+        "maps": 1,
+        "stamps": 3
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "maps": 9,
+            "stamps": 3
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "stamps": 3,
+            "maps": 1
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "stamps": 3,
+            "maps": 1
+          }
+        }
+      }
+    },
+    {
+      "scenario": "three-places",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "maps",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "maps"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "maps"
+        }
+      }
+    },
+    {
+      "scenario": "three-places",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"crew2\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "stamps",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "stamps"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "stamps"
+        }
+      }
+    },
+    {
+      "scenario": "repeat",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"box\".",
+      "expected": 4,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 4
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 4
+        },
+        "composed": {
+          "status": "correct",
+          "value": 4
+        },
+        "direct": {
+          "status": "correct",
+          "value": 4
+        }
+      }
+    },
+    {
+      "scenario": "repeat",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "box": 32,
+        "ink": 13
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "box": 32,
+            "ink": 13
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "box": 32,
+            "ink": 13
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "box": 32,
+            "ink": 13
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "box": 32,
+            "ink": 13
+          }
+        }
+      }
+    },
+    {
+      "scenario": "repeat",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"main\", then count rows with label \"box\".",
+      "expected": 3,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": 4
+        },
+        "composed": {
+          "status": "correct",
+          "value": 3
+        },
+        "direct": {
+          "status": "correct",
+          "value": 3
+        }
+      }
+    },
+    {
+      "scenario": "repeat",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"main\", then sum the quantities for each observed label.",
+      "expected": {
+        "box": 12,
+        "ink": 13
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "box": 32,
+            "ink": 13
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "box": 12,
+            "ink": 13
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "box": 12,
+            "ink": 13
+          }
+        }
+      }
+    },
+    {
+      "scenario": "repeat",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "box",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "box"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "box"
+        }
+      }
+    },
+    {
+      "scenario": "repeat",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"main\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "ink",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "ink"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "ink"
+        }
+      }
+    },
+    {
+      "scenario": "strange-label",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"a b\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "strange-label",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "a b": 2,
+        "a-b": 8
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "a b": 2,
+            "a-b": 8
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "a b": 2,
+            "a-b": 8
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "a b": 2,
+            "a-b": 8
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "a b": 2,
+            "a-b": 8
+          }
+        }
+      }
+    },
+    {
+      "scenario": "strange-label",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"North\", then count rows with label \"a b\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "strange-label",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"North\", then sum the quantities for each observed label.",
+      "expected": {
+        "a b": 2,
+        "a-b": 3
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "a b": 2,
+            "a-b": 8
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "a b": 2,
+            "a-b": 3
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "a b": 2,
+            "a-b": 3
+          }
+        }
+      }
+    },
+    {
+      "scenario": "strange-label",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "a-b",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "a-b"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "a-b"
+        }
+      }
+    },
+    {
+      "scenario": "strange-label",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"North\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "a-b",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "a-b"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "a-b"
+        }
+      }
+    },
+    {
+      "scenario": "non-ascii",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"é\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "non-ascii",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "z": 2,
+        "É": 5,
+        "é": 1
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "é": 1,
+            "z": 2,
+            "É": 5
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "é": 1,
+            "z": 2,
+            "É": 5
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "é": 1,
+            "z": 2,
+            "É": 5
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "é": 1,
+            "z": 2,
+            "É": 5
+          }
+        }
+      }
+    },
+    {
+      "scenario": "non-ascii",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"café\", then count rows with label \"é\".",
+      "expected": 1,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 1
+        },
+        "direct": {
+          "status": "correct",
+          "value": 1
+        }
+      }
+    },
+    {
+      "scenario": "non-ascii",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"café\", then sum the quantities for each observed label.",
+      "expected": {
+        "z": 2,
+        "é": 2
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "é": 1,
+            "z": 2,
+            "É": 5
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "é": 2,
+            "z": 2
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "é": 2,
+            "z": 2
+          }
+        }
+      }
+    },
+    {
+      "scenario": "non-ascii",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "É",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "É"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "É"
+        }
+      }
+    },
+    {
+      "scenario": "non-ascii",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"café\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "z",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "z"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "z"
+        }
+      }
+    },
+    {
+      "scenario": "big-integer",
+      "id": "count",
+      "ops": [
+        "count"
+      ],
+      "request": "Using the event rows, count rows with label \"tokens\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": 2
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "big-integer",
+      "id": "sum",
+      "ops": [
+        "sum"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label.",
+      "expected": {
+        "tally": 9007199254740999,
+        "tokens": 9007199254740991
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "correct",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740999
+          }
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740999
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740999
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740999
+          }
+        }
+      }
+    },
+    {
+      "scenario": "big-integer",
+      "id": "site_count",
+      "ops": [
+        "site",
+        "count"
+      ],
+      "request": "Using the event rows, keep rows from site \"bin\", then count rows with label \"tokens\".",
+      "expected": 2,
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "correct",
+          "value": 2
+        },
+        "composed": {
+          "status": "correct",
+          "value": 2
+        },
+        "direct": {
+          "status": "correct",
+          "value": 2
+        }
+      }
+    },
+    {
+      "scenario": "big-integer",
+      "id": "site_sum",
+      "ops": [
+        "site",
+        "sum"
+      ],
+      "request": "Using the event rows, keep rows from site \"bin\", then sum the quantities for each observed label.",
+      "expected": {
+        "tally": 9007199254740992,
+        "tokens": 9007199254740991
+      },
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "wrong",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740999
+          }
+        },
+        "composed": {
+          "status": "correct",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740992
+          }
+        },
+        "direct": {
+          "status": "correct",
+          "value": {
+            "tokens": 9007199254740991,
+            "tally": 9007199254740992
+          }
+        }
+      }
+    },
+    {
+      "scenario": "big-integer",
+      "id": "winner",
+      "ops": [
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "tally",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "tally"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "tally"
+        }
+      }
+    },
+    {
+      "scenario": "big-integer",
+      "id": "site_winner",
+      "ops": [
+        "site",
+        "sum",
+        "winner"
+      ],
+      "request": "Using the event rows, keep rows from site \"bin\", then sum the quantities for each observed label, then return the label with the greatest total (lexical tie-break; null when empty).",
+      "expected": "tally",
+      "outputs": {
+        "one_operator": {
+          "status": "unsupported",
+          "value": null
+        },
+        "same_output_type": {
+          "status": "unsupported",
+          "value": null
+        },
+        "composed": {
+          "status": "correct",
+          "value": "tally"
+        },
+        "direct": {
+          "status": "correct",
+          "value": "tally"
+        }
+      }
+    }
+  ],
+  "sha256": {
+    "study.py": "7e37056d1ca11806fd98e55e30f93baaef0e9c1fa5128332da9d32fb2da676fb",
+    "cases.json": "d6ae5ec7e2b3fa1a88a8c73ad432537f897ee1874a0db5f58b3a3049e3413a7d",
+    "keys.json": "78fcfe1baf73daa8219eeda5afa8f2950927ec478f67981106eaf371619b1bc3"
+  }
+}
