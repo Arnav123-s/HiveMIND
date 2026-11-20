@@ -31,6 +31,9 @@ def seconds(text):
 def contract_cases():
     values = (0, 1, 17, 59, 60, 61, 3599, 3600, 3601, 3659, 3660, 3661, 7199,
               7213, 86399, 86400, 86461, 115389, 666666)
+    # The module promises integer durations without a word-size limit. Exercise both sides
+    # of fixed-width boundaries. These probes were added after the first independent grade.
+    values += tuple(2**bits + delta for bits in (8, 16, 32, 64, 128) for delta in (-1, 1))
     return [(name, arg, expected) for n in values for name, arg, expected in
             [('to_seconds', format_duration(n), n), ('to_text', n, format_duration(n))]]
 

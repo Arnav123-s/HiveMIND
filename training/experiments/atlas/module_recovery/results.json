@@ -1,0 +1,1438 @@
+{
+  "summary": {
+    "g50": {
+      "n": 64,
+      "original": 54,
+      "final": 54,
+      "recovered": 0,
+      "regressions": 0
+    },
+    "g51": {
+      "n": 64,
+      "original": 50,
+      "final": 50,
+      "recovered": 0,
+      "regressions": 0
+    },
+    "g52": {
+      "n": 64,
+      "original": 52,
+      "final": 54,
+      "recovered": 2,
+      "regressions": 0
+    }
+  },
+  "independent_cases": 60,
+  "overlap_with_admission": [],
+  "wrong_candidate_controls": {
+    "wraps_elapsed_at_midnight": {
+      "qualified": false,
+      "fresh_correct": 44
+    },
+    "requires_trailing_seconds": {
+      "qualified": false,
+      "fresh_correct": 36
+    },
+    "rounds_through_binary_float": {
+      "qualified": false,
+      "fresh_correct": 56
+    }
+  },
+  "rows": [
+    {
+      "id": "e20000501_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000501_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000501_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000501_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000501_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000501_01",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000501_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000501_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000502_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000502_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000502_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000502_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000502_00",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false,
+      "receipt": null
+    },
+    {
+      "id": "h20000502_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000502_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000502_03",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "e20000503_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000503_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000503_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000503_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000503_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000503_01",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000503_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000503_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000504_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000504_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000504_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000504_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000504_00",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000504_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000504_02",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000504_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000505_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000505_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000505_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000505_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000505_00",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000505_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000505_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000505_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000506_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000506_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000506_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000506_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000506_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000506_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000506_02",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000506_03",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "e20000507_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000507_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000507_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000507_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000507_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000507_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000507_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000507_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000508_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000508_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000508_02",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000508_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000508_00",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000508_01",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000508_02",
+      "generation": "g50",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000508_03",
+      "generation": "g50",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000511_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000511_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000511_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000511_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000511_00",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000511_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000511_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000511_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000512_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000512_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000512_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000512_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000512_00",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000512_01",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000512_02",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000512_03",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "e20000513_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000513_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000513_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000513_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000513_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000513_01",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000513_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000513_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000514_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000514_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000514_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000514_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000514_00",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000514_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000514_02",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000514_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000515_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000515_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000515_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000515_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000515_00",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000515_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000515_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000515_03",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "e20000516_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000516_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000516_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000516_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000516_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000516_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000516_02",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000516_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000517_00",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "e20000517_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000517_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000517_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000517_00",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000517_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000517_02",
+      "generation": "g51",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000517_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000518_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000518_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000518_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000518_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000518_00",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000518_01",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000518_02",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000518_03",
+      "generation": "g51",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000521_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000521_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000521_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000521_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000521_00",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000521_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000521_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000521_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000522_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000522_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000522_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000522_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000522_00",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000522_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000522_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000522_03",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "e20000523_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000523_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000523_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000523_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000523_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000523_01",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000523_02",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000523_03",
+      "generation": "g52",
+      "original": false,
+      "recovered": true,
+      "final": true,
+      "receipt": {
+        "delivered": true,
+        "selected": "member3/member3_2.py",
+        "sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+        "answers": [
+          36228,
+          "1h"
+        ],
+        "trials": [
+          {
+            "program": "member3/member3_2.py",
+            "sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+            "passed": true,
+            "fuel": 1029841044,
+            "seconds": 0.271
+          }
+        ]
+      },
+      "official": {
+        "passed": 50,
+        "total": 50,
+        "visible_answers_match": true,
+        "okay": true
+      },
+      "fresh_correct": 60
+    },
+    {
+      "id": "e20000524_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000524_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000524_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000524_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000524_00",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000524_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000524_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000524_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000525_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000525_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000525_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000525_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000525_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000525_01",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000525_02",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000525_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000526_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000526_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000526_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000526_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000526_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000526_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000526_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000526_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000527_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000527_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000527_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000527_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000527_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000527_01",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000527_02",
+      "generation": "g52",
+      "original": false,
+      "recovered": false,
+      "final": false
+    },
+    {
+      "id": "h20000527_03",
+      "generation": "g52",
+      "original": false,
+      "recovered": true,
+      "final": true,
+      "receipt": {
+        "delivered": true,
+        "selected": "member3/member3_1.py",
+        "sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+        "answers": [
+          72268,
+          "1m"
+        ],
+        "trials": [
+          {
+            "program": "member3/member3_1.py",
+            "sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+            "passed": true,
+            "fuel": 1029842451,
+            "seconds": 0.2663
+          }
+        ]
+      },
+      "official": {
+        "passed": 50,
+        "total": 50,
+        "visible_answers_match": true,
+        "okay": true
+      },
+      "fresh_correct": 60
+    },
+    {
+      "id": "e20000528_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000528_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000528_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "e20000528_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000528_00",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000528_01",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000528_02",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    },
+    {
+      "id": "h20000528_03",
+      "generation": "g52",
+      "original": true,
+      "recovered": false,
+      "final": true
+    }
+  ]
+}

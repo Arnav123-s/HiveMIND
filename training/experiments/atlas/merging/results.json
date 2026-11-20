@@ -1,0 +1,4576 @@
+{
+  "fitting": [
+    "coding-train-0",
+    "coding-train-2",
+    "coding-train-4",
+    "conversation-train-1",
+    "conversation-train-2",
+    "conversation-train-5",
+    "engineering-train-1",
+    "engineering-train-3",
+    "engineering-train-5",
+    "engineering-extra-0",
+    "engineering-extra-2",
+    "engineering-extra-4",
+    "engineering-extra-5",
+    "engineering-extra-9",
+    "engineering-extra-10",
+    "engineering-extra-12",
+    "engineering-extra-13",
+    "engineering-extra-14",
+    "engineering-extra-15",
+    "engineering-extra-16",
+    "engineering-extra-17",
+    "math-train-1",
+    "math-train-2",
+    "math-train-5",
+    "ml-train-0",
+    "ml-train-2",
+    "ml-train-5",
+    "physics-train-0",
+    "physics-train-1",
+    "physics-train-2",
+    "physics-train-4",
+    "physics-extra-0",
+    "physics-extra-1",
+    "physics-extra-2",
+    "physics-extra-3",
+    "physics-extra-4",
+    "physics-extra-8",
+    "physics-extra-13",
+    "physics-extra-14",
+    "physics-extra-15",
+    "physics-extra-16",
+    "physics-extra-17"
+  ],
+  "development": [
+    "coding-train-5",
+    "coding-train-1",
+    "coding-train-3",
+    "conversation-train-0",
+    "conversation-train-3",
+    "conversation-train-4",
+    "engineering-train-2",
+    "engineering-train-4",
+    "engineering-train-0",
+    "math-train-0",
+    "math-train-3",
+    "math-train-4",
+    "ml-train-4",
+    "ml-train-1",
+    "ml-train-3",
+    "physics-extra-9",
+    "physics-train-5",
+    "physics-train-3"
+  ],
+  "test": [
+    "coding-check-0",
+    "coding-check-1",
+    "coding-check-2",
+    "conversation-check-0",
+    "conversation-check-1",
+    "conversation-check-2",
+    "engineering-check-0",
+    "engineering-check-1",
+    "engineering-check-2",
+    "engineering-extra-1",
+    "engineering-extra-3",
+    "engineering-extra-6",
+    "engineering-extra-7",
+    "engineering-extra-8",
+    "engineering-extra-11",
+    "math-check-0",
+    "math-check-1",
+    "math-check-2",
+    "ml-check-0",
+    "ml-check-1",
+    "ml-check-2",
+    "physics-check-0",
+    "physics-check-1",
+    "physics-check-2",
+    "physics-extra-5",
+    "physics-extra-6",
+    "physics-extra-7",
+    "physics-extra-10",
+    "physics-extra-11",
+    "physics-extra-12"
+  ],
+  "pooled": {
+    "anchor": 14,
+    "held": 8,
+    "total": 22,
+    "canonical": 11,
+    "by_domain": {
+      "coding": 3,
+      "conversation": 2,
+      "engineering": 5,
+      "math": 3,
+      "ml": 3,
+      "physics": 6
+    },
+    "cases": [
+      {
+        "key": "coding-check-0",
+        "token": 17617,
+        "word": "map",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "coding"
+      },
+      {
+        "key": "coding-check-1",
+        "token": 5315,
+        "word": "filter",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "coding"
+      },
+      {
+        "key": "coding-check-2",
+        "token": 1242,
+        "word": "sum",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "coding"
+      },
+      {
+        "key": "conversation-check-0",
+        "token": 26172,
+        "word": "ask",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "conversation"
+      },
+      {
+        "key": "conversation-check-1",
+        "token": 13060,
+        "word": "thank",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "conversation"
+      },
+      {
+        "key": "conversation-check-2",
+        "token": 13060,
+        "word": "thank",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "conversation"
+      },
+      {
+        "key": "engineering-check-0",
+        "token": 4412,
+        "word": "ns",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-check-1",
+        "token": 4412,
+        "word": "ns",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-check-2",
+        "token": 355,
+        "word": "us",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-1",
+        "token": 355,
+        "word": "us",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-3",
+        "token": 355,
+        "word": "us",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-6",
+        "token": 4412,
+        "word": "ns",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-7",
+        "token": 355,
+        "word": "us",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-8",
+        "token": 1011,
+        "word": "ms",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-11",
+        "token": 355,
+        "word": "us",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "math-check-0",
+        "token": 4373,
+        "word": "length",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "math"
+      },
+      {
+        "key": "math-check-1",
+        "token": 8726,
+        "word": "area",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "math"
+      },
+      {
+        "key": "math-check-2",
+        "token": 18902,
+        "word": "volume",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "math"
+      },
+      {
+        "key": "ml-check-0",
+        "token": 10397,
+        "word": "train",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "ml"
+      },
+      {
+        "key": "ml-check-1",
+        "token": 13799,
+        "word": "validation",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "ml"
+      },
+      {
+        "key": "ml-check-2",
+        "token": 2271,
+        "word": "test",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "ml"
+      },
+      {
+        "key": "physics-check-0",
+        "token": 96640,
+        "word": "liquid",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-check-1",
+        "token": 96640,
+        "word": "liquid",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-check-2",
+        "token": 39525,
+        "word": "gas",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-5",
+        "token": 39525,
+        "word": "gas",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-6",
+        "token": 96640,
+        "word": "liquid",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-7",
+        "token": 96640,
+        "word": "liquid",
+        "ok": true,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-10",
+        "token": 96640,
+        "word": "liquid",
+        "ok": true,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-11",
+        "token": 96640,
+        "word": "liquid",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-12",
+        "token": 31027,
+        "word": "solid",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "physics"
+      }
+    ]
+  },
+  "oracle_domain": {
+    "anchor": 15,
+    "held": 8,
+    "total": 23,
+    "canonical": 12,
+    "by_domain": {
+      "coding": 3,
+      "conversation": 2,
+      "engineering": 6,
+      "math": 3,
+      "ml": 3,
+      "physics": 6
+    },
+    "cases": [
+      {
+        "key": "coding-check-0",
+        "token": 17617,
+        "word": "map",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "coding"
+      },
+      {
+        "key": "coding-check-1",
+        "token": 5315,
+        "word": "filter",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "coding"
+      },
+      {
+        "key": "coding-check-2",
+        "token": 1242,
+        "word": "sum",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "coding"
+      },
+      {
+        "key": "conversation-check-0",
+        "token": 26172,
+        "word": "ask",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "conversation"
+      },
+      {
+        "key": "conversation-check-1",
+        "token": 13060,
+        "word": "thank",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "conversation"
+      },
+      {
+        "key": "conversation-check-2",
+        "token": 13060,
+        "word": "thank",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "conversation"
+      },
+      {
+        "key": "engineering-check-0",
+        "token": 4412,
+        "word": "ns",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-check-1",
+        "token": 355,
+        "word": "us",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-check-2",
+        "token": 355,
+        "word": "us",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-1",
+        "token": 355,
+        "word": "us",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-3",
+        "token": 355,
+        "word": "us",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-6",
+        "token": 4412,
+        "word": "ns",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-7",
+        "token": 355,
+        "word": "us",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-8",
+        "token": 1011,
+        "word": "ms",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "engineering-extra-11",
+        "token": 355,
+        "word": "us",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "engineering"
+      },
+      {
+        "key": "math-check-0",
+        "token": 4373,
+        "word": "length",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "math"
+      },
+      {
+        "key": "math-check-1",
+        "token": 8726,
+        "word": "area",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "math"
+      },
+      {
+        "key": "math-check-2",
+        "token": 18902,
+        "word": "volume",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "math"
+      },
+      {
+        "key": "ml-check-0",
+        "token": 10397,
+        "word": "train",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "ml"
+      },
+      {
+        "key": "ml-check-1",
+        "token": 13799,
+        "word": "validation",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "ml"
+      },
+      {
+        "key": "ml-check-2",
+        "token": 2271,
+        "word": "test",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "ml"
+      },
+      {
+        "key": "physics-check-0",
+        "token": 96640,
+        "word": "liquid",
+        "ok": false,
+        "exact": false,
+        "split": "anchor",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-check-1",
+        "token": 96640,
+        "word": "liquid",
+        "ok": true,
+        "exact": false,
+        "split": "anchor",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-check-2",
+        "token": 39525,
+        "word": "gas",
+        "ok": true,
+        "exact": true,
+        "split": "anchor",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-5",
+        "token": 39525,
+        "word": "gas",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-6",
+        "token": 96640,
+        "word": "liquid",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-7",
+        "token": 96640,
+        "word": "liquid",
+        "ok": true,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-10",
+        "token": 96640,
+        "word": "liquid",
+        "ok": true,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-11",
+        "token": 96640,
+        "word": "liquid",
+        "ok": false,
+        "exact": false,
+        "split": "held",
+        "domain": "physics"
+      },
+      {
+        "key": "physics-extra-12",
+        "token": 31027,
+        "word": "solid",
+        "ok": true,
+        "exact": true,
+        "split": "held",
+        "domain": "physics"
+      }
+    ]
+  },
+  "arms": {
+    "mean16": {
+      "anchor": 14,
+      "held": 8,
+      "total": 22,
+      "canonical": 11,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 5,
+        "math": 3,
+        "ml": 3,
+        "physics": 6
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 4412,
+          "word": "ns",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "sum4": {
+      "anchor": 16,
+      "held": 8,
+      "total": 24,
+      "canonical": 13,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 6,
+        "math": 3,
+        "ml": 3,
+        "physics": 7
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "sum12": {
+      "anchor": 16,
+      "held": 8,
+      "total": 24,
+      "canonical": 13,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 6,
+        "math": 3,
+        "ml": 3,
+        "physics": 7
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "sum16": {
+      "anchor": 16,
+      "held": 8,
+      "total": 24,
+      "canonical": 13,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 6,
+        "math": 3,
+        "ml": 3,
+        "physics": 7
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "ties16": {
+      "anchor": 15,
+      "held": 8,
+      "total": 23,
+      "canonical": 12,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 6,
+        "math": 3,
+        "ml": 3,
+        "physics": 6
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "polar2_each": {
+      "anchor": 15,
+      "held": 7,
+      "total": 22,
+      "canonical": 13,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 4,
+        "math": 3,
+        "ml": 3,
+        "physics": 7
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 1011,
+          "word": "ms",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 1011,
+          "word": "ms",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 1011,
+          "word": "ms",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 53637,
+          "word": "liquid",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 53637,
+          "word": "liquid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "dare_mean16_11": {
+      "anchor": 14,
+      "held": 8,
+      "total": 22,
+      "canonical": 11,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 5,
+        "math": 3,
+        "ml": 3,
+        "physics": 6
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 4412,
+          "word": "ns",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "dare_mean16_29": {
+      "anchor": 14,
+      "held": 8,
+      "total": 22,
+      "canonical": 11,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 5,
+        "math": 3,
+        "ml": 3,
+        "physics": 6
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 4412,
+          "word": "ns",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    },
+    "dare_mean16_53": {
+      "anchor": 14,
+      "held": 8,
+      "total": 22,
+      "canonical": 11,
+      "by_domain": {
+        "coding": 3,
+        "conversation": 2,
+        "engineering": 5,
+        "math": 3,
+        "ml": 3,
+        "physics": 6
+      },
+      "cases": [
+        {
+          "key": "coding-check-0",
+          "token": 17617,
+          "word": "map",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-1",
+          "token": 5315,
+          "word": "filter",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "coding-check-2",
+          "token": 1242,
+          "word": "sum",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "coding"
+        },
+        {
+          "key": "conversation-check-0",
+          "token": 26172,
+          "word": "ask",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-1",
+          "token": 13060,
+          "word": "thank",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "conversation-check-2",
+          "token": 13060,
+          "word": "thank",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "conversation"
+        },
+        {
+          "key": "engineering-check-0",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-1",
+          "token": 4412,
+          "word": "ns",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-check-2",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-1",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-3",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-6",
+          "token": 4412,
+          "word": "ns",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-7",
+          "token": 355,
+          "word": "us",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-8",
+          "token": 1011,
+          "word": "ms",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "engineering-extra-11",
+          "token": 355,
+          "word": "us",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "engineering"
+        },
+        {
+          "key": "math-check-0",
+          "token": 4373,
+          "word": "length",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-1",
+          "token": 8726,
+          "word": "area",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "math-check-2",
+          "token": 18902,
+          "word": "volume",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "math"
+        },
+        {
+          "key": "ml-check-0",
+          "token": 10397,
+          "word": "train",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-1",
+          "token": 13799,
+          "word": "validation",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "ml-check-2",
+          "token": 2271,
+          "word": "test",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "ml"
+        },
+        {
+          "key": "physics-check-0",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-1",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-check-2",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "anchor",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-5",
+          "token": 39525,
+          "word": "gas",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-6",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-7",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-10",
+          "token": 96640,
+          "word": "liquid",
+          "ok": true,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-11",
+          "token": 96640,
+          "word": "liquid",
+          "ok": false,
+          "exact": false,
+          "split": "held",
+          "domain": "physics"
+        },
+        {
+          "key": "physics-extra-12",
+          "token": 31027,
+          "word": "solid",
+          "ok": true,
+          "exact": true,
+          "split": "held",
+          "domain": "physics"
+        }
+      ]
+    }
+  },
+  "scales": {
+    "sum16": {
+      "grid": [
+        [
+          2.1398256806308336,
+          0.0
+        ],
+        [
+          2.156476914007571,
+          0.2
+        ],
+        [
+          2.1742808001108687,
+          0.4
+        ],
+        [
+          2.193129020540956,
+          0.6000000000000001
+        ],
+        [
+          2.2129120583985733,
+          0.8
+        ],
+        [
+          2.2335188384958062,
+          1.0
+        ],
+        [
+          2.254839019988404,
+          1.2000000000000002
+        ],
+        [
+          2.276766802572311,
+          1.4000000000000001
+        ],
+        [
+          2.2992039965253057,
+          1.6
+        ],
+        [
+          2.322062661366024,
+          1.8
+        ],
+        [
+          2.345265970555216,
+          2.0
+        ]
+      ],
+      "grid_choice": 0.0,
+      "grid_cpu_s": 0.05930454900000004,
+      "grid_test": {
+        "anchor": 14,
+        "held": 8,
+        "total": 22,
+        "canonical": 11,
+        "by_domain": {
+          "coding": 3,
+          "conversation": 2,
+          "engineering": 5,
+          "math": 3,
+          "ml": 3,
+          "physics": 6
+        },
+        "cases": [
+          {
+            "key": "coding-check-0",
+            "token": 17617,
+            "word": "map",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-1",
+            "token": 5315,
+            "word": "filter",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-2",
+            "token": 1242,
+            "word": "sum",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "conversation-check-0",
+            "token": 26172,
+            "word": "ask",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-1",
+            "token": 13060,
+            "word": "thank",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-2",
+            "token": 13060,
+            "word": "thank",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "engineering-check-0",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-1",
+            "token": 4412,
+            "word": "ns",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-2",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-1",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-3",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-6",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-7",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-8",
+            "token": 1011,
+            "word": "ms",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-11",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "math-check-0",
+            "token": 4373,
+            "word": "length",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-1",
+            "token": 8726,
+            "word": "area",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-2",
+            "token": 18902,
+            "word": "volume",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "ml-check-0",
+            "token": 10397,
+            "word": "train",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-1",
+            "token": 13799,
+            "word": "validation",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-2",
+            "token": 2271,
+            "word": "test",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "physics-check-0",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-1",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-2",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-5",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-6",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-7",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-10",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-11",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-12",
+            "token": 31027,
+            "word": "solid",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "alpha": 1.0,
+          "left": 0.95,
+          "right": 1.05,
+          "left_loss": 2.228296008574809,
+          "right_loss": 2.238786250942797
+        },
+        {
+          "alpha": 0.9737743940800305,
+          "left": 0.9237743940800305,
+          "right": 1.0237743940800306,
+          "left_loss": 2.2255749488974463,
+          "right_loss": 2.236017955674777
+        },
+        {
+          "alpha": 0.9476668771367038,
+          "left": 0.8976668771367038,
+          "right": 0.9976668771367039,
+          "left_loss": 2.222879059584717,
+          "right_loss": 2.2332741323544565
+        },
+        {
+          "alpha": 0.9216791952123551,
+          "left": 0.871679195212355,
+          "right": 0.9716791952123551,
+          "left_loss": 2.220208536697271,
+          "right_loss": 2.2305549631595922
+        },
+        {
+          "alpha": 0.8958131290565521,
+          "left": 0.845813129056552,
+          "right": 0.9458131290565521,
+          "left_loss": 2.2175636737055053,
+          "right_loss": 2.227860712960609
+        }
+      ],
+      "final": 0.870070530918793,
+      "final_dev_loss": 2.220043673984483,
+      "finite_difference_cpu_s": 0.06035172799999999,
+      "finite_difference_test": {
+        "anchor": 15,
+        "held": 8,
+        "total": 23,
+        "canonical": 12,
+        "by_domain": {
+          "coding": 3,
+          "conversation": 2,
+          "engineering": 6,
+          "math": 3,
+          "ml": 3,
+          "physics": 6
+        },
+        "cases": [
+          {
+            "key": "coding-check-0",
+            "token": 17617,
+            "word": "map",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-1",
+            "token": 5315,
+            "word": "filter",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-2",
+            "token": 1242,
+            "word": "sum",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "conversation-check-0",
+            "token": 26172,
+            "word": "ask",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-1",
+            "token": 13060,
+            "word": "thank",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-2",
+            "token": 13060,
+            "word": "thank",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "engineering-check-0",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-1",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-2",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-1",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-3",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-6",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-7",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-8",
+            "token": 1011,
+            "word": "ms",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-11",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "math-check-0",
+            "token": 4373,
+            "word": "length",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-1",
+            "token": 8726,
+            "word": "area",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-2",
+            "token": 18902,
+            "word": "volume",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "ml-check-0",
+            "token": 10397,
+            "word": "train",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-1",
+            "token": 13799,
+            "word": "validation",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-2",
+            "token": 2271,
+            "word": "test",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "physics-check-0",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-1",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-2",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-5",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-6",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-7",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-10",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-11",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-12",
+            "token": 31027,
+            "word": "solid",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          }
+        ]
+      }
+    },
+    "ties16": {
+      "grid": [
+        [
+          2.1398256806308336,
+          0.0
+        ],
+        [
+          2.1526977273334813,
+          0.2
+        ],
+        [
+          2.1659552254169503,
+          0.4
+        ],
+        [
+          2.179542046240894,
+          0.6000000000000001
+        ],
+        [
+          2.193414604085384,
+          0.8
+        ],
+        [
+          2.207540442985819,
+          1.0
+        ],
+        [
+          2.221894333361436,
+          1.2000000000000002
+        ],
+        [
+          2.2364561136780017,
+          1.4000000000000001
+        ],
+        [
+          2.25120911960213,
+          1.6
+        ],
+        [
+          2.2661392069572766,
+          1.8
+        ],
+        [
+          2.281233760418494,
+          2.0
+        ]
+      ],
+      "grid_choice": 0.0,
+      "grid_cpu_s": 0.06881107099999995,
+      "grid_test": {
+        "anchor": 14,
+        "held": 8,
+        "total": 22,
+        "canonical": 11,
+        "by_domain": {
+          "coding": 3,
+          "conversation": 2,
+          "engineering": 5,
+          "math": 3,
+          "ml": 3,
+          "physics": 6
+        },
+        "cases": [
+          {
+            "key": "coding-check-0",
+            "token": 17617,
+            "word": "map",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-1",
+            "token": 5315,
+            "word": "filter",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-2",
+            "token": 1242,
+            "word": "sum",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "conversation-check-0",
+            "token": 26172,
+            "word": "ask",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-1",
+            "token": 13060,
+            "word": "thank",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-2",
+            "token": 13060,
+            "word": "thank",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "engineering-check-0",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-1",
+            "token": 4412,
+            "word": "ns",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-2",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-1",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-3",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-6",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-7",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-8",
+            "token": 1011,
+            "word": "ms",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-11",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "math-check-0",
+            "token": 4373,
+            "word": "length",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-1",
+            "token": 8726,
+            "word": "area",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-2",
+            "token": 18902,
+            "word": "volume",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "ml-check-0",
+            "token": 10397,
+            "word": "train",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-1",
+            "token": 13799,
+            "word": "validation",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-2",
+            "token": 2271,
+            "word": "test",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "physics-check-0",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-1",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-2",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-5",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-6",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-7",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-10",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-11",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-12",
+            "token": 31027,
+            "word": "solid",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "alpha": 1.0,
+          "left": 0.95,
+          "right": 1.05,
+          "left_loss": 2.20398671821271,
+          "right_loss": 2.211108386870993
+        },
+        {
+          "alpha": 0.9821958283542933,
+          "left": 0.9321958283542933,
+          "right": 1.0321958283542934,
+          "left_loss": 2.2027248017573022,
+          "right_loss": 2.209836309181996
+        },
+        {
+          "alpha": 0.9644170597925585,
+          "left": 0.9144170597925585,
+          "right": 1.0144170597925586,
+          "left_loss": 2.2014665552913524,
+          "right_loss": 2.208567780131934
+        },
+        {
+          "alpha": 0.9466639976911042,
+          "left": 0.8966639976911042,
+          "right": 0.9966639976911043,
+          "left_loss": 2.200211996067845,
+          "right_loss": 2.2073029056380165
+        },
+        {
+          "alpha": 0.9289367237656756,
+          "left": 0.8789367237656756,
+          "right": 0.9789367237656756,
+          "left_loss": 2.1989611331461543,
+          "right_loss": 2.206041608322767
+        }
+      ],
+      "final": 0.9112355358241433,
+      "final_dev_loss": 2.2012415749342633,
+      "finite_difference_cpu_s": 0.061015952999999956,
+      "finite_difference_test": {
+        "anchor": 15,
+        "held": 8,
+        "total": 23,
+        "canonical": 12,
+        "by_domain": {
+          "coding": 3,
+          "conversation": 2,
+          "engineering": 6,
+          "math": 3,
+          "ml": 3,
+          "physics": 6
+        },
+        "cases": [
+          {
+            "key": "coding-check-0",
+            "token": 17617,
+            "word": "map",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-1",
+            "token": 5315,
+            "word": "filter",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "coding-check-2",
+            "token": 1242,
+            "word": "sum",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "coding"
+          },
+          {
+            "key": "conversation-check-0",
+            "token": 26172,
+            "word": "ask",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-1",
+            "token": 13060,
+            "word": "thank",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "conversation-check-2",
+            "token": 13060,
+            "word": "thank",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "conversation"
+          },
+          {
+            "key": "engineering-check-0",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-1",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-check-2",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-1",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-3",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-6",
+            "token": 4412,
+            "word": "ns",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-7",
+            "token": 355,
+            "word": "us",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-8",
+            "token": 1011,
+            "word": "ms",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "engineering-extra-11",
+            "token": 355,
+            "word": "us",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "engineering"
+          },
+          {
+            "key": "math-check-0",
+            "token": 4373,
+            "word": "length",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-1",
+            "token": 8726,
+            "word": "area",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "math-check-2",
+            "token": 18902,
+            "word": "volume",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "math"
+          },
+          {
+            "key": "ml-check-0",
+            "token": 10397,
+            "word": "train",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-1",
+            "token": 13799,
+            "word": "validation",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "ml-check-2",
+            "token": 2271,
+            "word": "test",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "ml"
+          },
+          {
+            "key": "physics-check-0",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-1",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-check-2",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "anchor",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-5",
+            "token": 39525,
+            "word": "gas",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-6",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-7",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-10",
+            "token": 96640,
+            "word": "liquid",
+            "ok": true,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-11",
+            "token": 96640,
+            "word": "liquid",
+            "ok": false,
+            "exact": false,
+            "split": "held",
+            "domain": "physics"
+          },
+          {
+            "key": "physics-extra-12",
+            "token": 31027,
+            "word": "solid",
+            "ok": true,
+            "exact": true,
+            "split": "held",
+            "domain": "physics"
+          }
+        ]
+      }
+    }
+  },
+  "signs": {
+    "shared": 65536,
+    "opposing": 62432
+  }
+}
