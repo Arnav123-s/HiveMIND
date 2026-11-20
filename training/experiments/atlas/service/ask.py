@@ -9,6 +9,7 @@ import os
 
 from team import config, saved
 from training.experiments.atlas.pulse.one_checked import current as certificate
+from training.experiments.atlas.service.wording import canonical_question
 
 SAMPLE_BANK = config.ROOT / "training/reports/retained-skills/shipping/bank"
 UNSUPPORTED = "I could not match the whole question to a supported calculation."
@@ -73,6 +74,13 @@ def answer(question, *, bank=None, sdk=None, trace_bank=None, guest=None):
     exact = calculation(question)
     if exact is not None:
         return exact
+    canonical = canonical_question(question)
+    if canonical is not None:
+        result = calculation(canonical)
+        if result is not None:
+            result["canonical_question"] = canonical
+            result["proof"] = "matched calendar wording and checked the normalized question"
+            return result
     if not shipping_request(question):
         return withheld()
     bank = str(bank if bank is not None else os.environ.get("HIVE_BANK", SAMPLE_BANK)).strip()

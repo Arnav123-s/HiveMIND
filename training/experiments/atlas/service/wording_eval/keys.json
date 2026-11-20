@@ -1,0 +1,74 @@
+{
+  "poster": {
+    "value": "sunday",
+    "group": "direct"
+  },
+  "appointment": {
+    "value": "sunday",
+    "group": "wording"
+  },
+  "delivery": {
+    "value": "monday",
+    "group": "wording"
+  },
+  "ticket": {
+    "value": "sunday",
+    "group": "wording"
+  },
+  "diary": {
+    "value": "thursday",
+    "group": "wording"
+  },
+  "new-year": {
+    "value": 1,
+    "group": "direct"
+  },
+  "gap": {
+    "value": 21,
+    "group": "wording"
+  },
+  "leap": {
+    "value": 3,
+    "group": "wording"
+  },
+  "hostel": {
+    "value": 3,
+    "group": "wording"
+  },
+  "milestones": {
+    "value": 0,
+    "group": "wording"
+  },
+  "endpoints": {
+    "value": 3,
+    "group": "neighbor"
+  },
+  "workweek": {
+    "value": 3,
+    "group": "neighbor"
+  },
+  "following": {
+    "value": "thursday",
+    "group": "neighbor"
+  },
+  "holiday": {
+    "value": null,
+    "group": "underspecified"
+  },
+  "invalid": {
+    "value": null,
+    "group": "invalid"
+  },
+  "locale": {
+    "value": null,
+    "group": "underspecified"
+  },
+  "midnight": {
+    "value": null,
+    "group": "underspecified"
+  },
+  "tentative": {
+    "value": null,
+    "group": "underspecified"
+  }
+}
