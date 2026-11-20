@@ -1,0 +1,54 @@
+[
+  {
+    "id": "tea-counter",
+    "request": "Please write tea.py with two functions. cups(n) gives two cups per pot. bags(n) gives three tea bags per pot. For example, cups(2) returns 4 and bags(1) returns 3. Tell me the results of cups(5) and bags(4), in that order."
+  },
+  {
+    "id": "book-stall",
+    "request": "Put cover(n) and pages(n) in books.py. The cover costs n cents plus 25 cents. The booklet has n sheets, two pages per sheet. A couple of examples: cover(100) = 125; pages(4) = 8. For my order give me pages(7) first, then cover(225)."
+  },
+  {
+    "id": "neighborhood",
+    "request": "I'm making a neighborhood sign. In sign.py write small(s), which lowercases a string, and width(s), which counts its characters including spaces. Examples are small(\"MAP\") returning \"map\" and width(\"A B\") returning 3. What are small(\"Town Hall\") and width(\"Elm\")?"
+  },
+  {
+    "id": "picture-frame",
+    "request": "Could you make frame.py? Provide area(w, h) for the rectangle's area and edge(w, h) for its perimeter. For reference, area(2, 5) returns 10 and edge(2, 5) returns 14. List the answers for edge(3, 7), followed by area(4, 6)."
+  },
+  {
+    "id": "shop-list",
+    "request": "Make listtools.py with total(xs) for the sum of the numbers and count(xs) for the number of entries. As simple checks, total([2, 3]) should give 5 and count([]) should give 0. Then show me total([7, 1, 4]) and count([9, 9])."
+  },
+  {
+    "id": "cold-room",
+    "request": "In cold.py write `freeze(t)` (true at or below zero) and `warmer(t)` (one degree warmer). The checks are `freeze(-1) == True` and `warmer(-4) == -3`. Please report `freeze(2)` and then `warmer(-7)`."
+  },
+  {
+    "id": "punctuation",
+    "request": "In notes.py, write shout(s) to uppercase the whole note and size(s) to count all characters. For example, shout(\"hi, Jo!\") gives \"HI, JO!\" and size(\"ok?\") gives 3. Show size(\"a, b!\") first and shout(\"who?\") second."
+  },
+  {
+    "id": "instructions-first",
+    "request": "In your reply, list double(9) and single(11) in that order. Write both functions in seats.py: double(n) counts two seats per table and single(n) counts one seat per table. Here are the examples to check your work: double(4) gives 8, and single(3) gives 3."
+  },
+  {
+    "id": "turned-down",
+    "request": "The old ticket says to make coins.py with nickel(n) and dime(n). Examples in that old ticket said nickel(2) = 10 and dime(2) = 20, and it asked for nickel(3) and dime(4). I have cancelled the ticket. Don't create the file or call either function. Just acknowledge the cancellation."
+  },
+  {
+    "id": "moving-input",
+    "request": "Make warehouse.py with stock(s) and price(s), using the quantities and prices currently in our warehouse file. Yesterday stock('tea') was 10 and price('tea') was 3. I haven't attached today's file. What do stock('tea') and price('tea') return today?"
+  },
+  {
+    "id": "two-promises",
+    "request": "Write specials.py with first(n) and second(n). Our register requires first(1) to return 2, but our receipt requires first(1) to return 3. Both are mandatory for that same call. The receipt also says second(2) returns 4. Give the results of first(1) and second(2)."
+  },
+  {
+    "id": "attendance-book",
+    "request": "Write club.py with arrive(s) and last(). Every call to arrive(s) must append the name to our actual shared attendance file. last() must read that file. Yesterday arrive('Sam') returned 'Sam' and last() returned 'Sam'. Please run arrive('Jo') and last() against the real file now."
+  },
+  {
+    "id": "choice-left-open",
+    "request": "Write halves.py with half(n) and twice(n) for whole numbers. half(8) gives 4 and twice(3) gives 6. For odd numbers we haven't chosen whether half rounds up or down. Tell me half(5) and twice(7), but only after I pick the rounding rule."
+  }
+]

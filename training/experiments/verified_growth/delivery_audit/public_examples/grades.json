@@ -1,0 +1,886 @@
+{
+  "decisions_sha256": {
+    "stock": "9b2e0fabb9172050cfe33cb492283e91069457e71d67a6717d3c8ee9505fe5ab",
+    "alternative": "a2fbab51f129364ce100db8bbc0c2d761fb8ab2f9369f3abeaad67edb188f05c"
+  },
+  "rows": [
+    {
+      "archive_id": 14527694242,
+      "gate": "gate-work-after-1",
+      "task": "h20000501_02",
+      "filename": "grid.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527694242,
+      "gate": "gate-work-after-1",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527107867,
+      "gate": "gate-work-after-2",
+      "task": "h20000502_00",
+      "filename": "durations.py",
+      "prior": "declined",
+      "original_ok": false,
+      "lookup_alone": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "14 of 50 hidden tests pass; the values asked for ([69577, '0s']) in the answer: False",
+        "hidden": {
+          "passed": 14,
+          "total": 50,
+          "fuel": 1026904859,
+          "guest_seconds": 0.2657140370001798
+        },
+        "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      },
+      "lookup_with_workers": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "14 of 50 hidden tests pass; the values asked for ([69577, '0s']) in the answer: False",
+        "hidden": {
+          "passed": 14,
+          "total": 50,
+          "fuel": 1026904779,
+          "guest_seconds": 0.24181083999974362
+        },
+        "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      }
+    },
+    {
+      "archive_id": 14527107867,
+      "gate": "gate-work-after-2",
+      "task": "h20000502_03",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527693537,
+      "gate": "gate-work-after-4",
+      "task": "h20000504_02",
+      "filename": "bank.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527693537,
+      "gate": "gate-work-after-4",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14526853022,
+      "gate": "gate-work-after-5",
+      "task": "h20000505_00",
+      "filename": "machine.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14526853022,
+      "gate": "gate-work-after-5",
+      "task": "h20000505_01",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14526853022,
+      "gate": "gate-work-after-5",
+      "task": "h20000505_02",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14526853022,
+      "gate": "gate-work-after-5",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14529936755,
+      "gate": "gate-work-after-6",
+      "task": "h20000506_02",
+      "filename": "machine.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14529936755,
+      "gate": "gate-work-after-6",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14524604729,
+      "gate": "gate-work-after-7",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527600012,
+      "gate": "gate-work-after-8",
+      "task": "h20000508_00",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527600012,
+      "gate": "gate-work-after-8",
+      "task": "h20000508_02",
+      "filename": "roman.py",
+      "prior": "declined",
+      "original_ok": false,
+      "proposal": {
+        "passed": true,
+        "exact_requested_text": true,
+        "explanation": "50 of 50 hidden tests pass; the values asked for (['CMLIV', 3997]) in the answer: True",
+        "hidden": {
+          "passed": 50,
+          "total": 50,
+          "fuel": 1030105280,
+          "guest_seconds": 0.2451227090004977
+        },
+        "module_sha256": "7c3aecf7e5366a55b486341adfe3650055d75ccbf7753cb1583ef20d53cbd12b"
+      },
+      "lookup_alone": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "0 of 50 hidden tests pass; the values asked for (['CMLIV', 3997]) in the answer: False",
+        "hidden": {
+          "passed": 0,
+          "total": 50,
+          "fuel": 1026124016,
+          "guest_seconds": 0.24401749699973152
+        },
+        "module_sha256": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad"
+      }
+    },
+    {
+      "archive_id": 14527600012,
+      "gate": "gate-work-after-8",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527389410,
+      "gate": "gate-work-before-1",
+      "task": "h20000501_02",
+      "filename": "grid.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527389410,
+      "gate": "gate-work-before-1",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14529355230,
+      "gate": "gate-work-before-2",
+      "task": "h20000502_00",
+      "filename": "durations.py",
+      "prior": "declined",
+      "original_ok": false,
+      "proposal": {
+        "passed": true,
+        "exact_requested_text": true,
+        "explanation": "50 of 50 hidden tests pass; the values asked for ([69577, '0s']) in the answer: True",
+        "hidden": {
+          "passed": 50,
+          "total": 50,
+          "fuel": 1029177861,
+          "guest_seconds": 0.2380348540000341
+        },
+        "module_sha256": "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95"
+      },
+      "lookup_alone": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "14 of 50 hidden tests pass; the values asked for ([69577, '0s']) in the answer: False",
+        "hidden": {
+          "passed": 14,
+          "total": 50,
+          "fuel": 1026904779,
+          "guest_seconds": 0.23548940000000584
+        },
+        "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      }
+    },
+    {
+      "archive_id": 14529355230,
+      "gate": "gate-work-before-2",
+      "task": "h20000502_03",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14526675409,
+      "gate": "gate-work-before-4",
+      "task": "h20000504_02",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14526675409,
+      "gate": "gate-work-before-4",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527991779,
+      "gate": "gate-work-before-5",
+      "task": "h20000505_00",
+      "filename": "machine.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527991779,
+      "gate": "gate-work-before-5",
+      "task": "h20000505_01",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527991779,
+      "gate": "gate-work-before-5",
+      "task": "h20000505_02",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527991779,
+      "gate": "gate-work-before-5",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527655421,
+      "gate": "gate-work-before-6",
+      "task": "h20000506_02",
+      "filename": "machine.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14527655421,
+      "gate": "gate-work-before-6",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14527355316,
+      "gate": "gate-work-before-7",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14526163174,
+      "gate": "gate-work-before-8",
+      "task": "h20000508_00",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14526163174,
+      "gate": "gate-work-before-8",
+      "task": "h20000508_02",
+      "filename": "roman.py",
+      "prior": "declined",
+      "original_ok": false,
+      "proposal": {
+        "passed": true,
+        "exact_requested_text": true,
+        "explanation": "50 of 50 hidden tests pass; the values asked for (['CMLIV', 3997]) in the answer: True",
+        "hidden": {
+          "passed": 50,
+          "total": 50,
+          "fuel": 1028859882,
+          "guest_seconds": 0.2524486700003763
+        },
+        "module_sha256": "a79e979ae51d5dbf79bb912202570000910746006aa5241d5578fd4444b2f908"
+      },
+      "lookup_alone": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "0 of 50 hidden tests pass; the values asked for (['CMLIV', 3997]) in the answer: False",
+        "hidden": {
+          "passed": 0,
+          "total": 50,
+          "fuel": 1026124016,
+          "guest_seconds": 0.5084296969998832
+        },
+        "module_sha256": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad"
+      }
+    },
+    {
+      "archive_id": 14526163174,
+      "gate": "gate-work-before-8",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14558334576,
+      "gate": "gate-work-after-1",
+      "task": "h20000511_02",
+      "filename": "machine.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14558334576,
+      "gate": "gate-work-after-1",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14565935073,
+      "gate": "gate-work-after-2",
+      "task": "h20000512_00",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14565935073,
+      "gate": "gate-work-after-2",
+      "task": "h20000512_02",
+      "filename": "machine.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14559971065,
+      "gate": "gate-work-after-4",
+      "task": "h20000514_00",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14559971065,
+      "gate": "gate-work-after-4",
+      "task": "h20000514_01",
+      "filename": "factors.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14559971065,
+      "gate": "gate-work-after-4",
+      "task": "h20000514_02",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14559971065,
+      "gate": "gate-work-after-4",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14562071422,
+      "gate": "gate-work-after-5",
+      "task": "h20000515_00",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14562071422,
+      "gate": "gate-work-after-5",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14558479121,
+      "gate": "gate-work-after-6",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14561305990,
+      "gate": "gate-work-after-7",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14558663276,
+      "gate": "gate-work-after-8",
+      "task": "h20000518_00",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14558663276,
+      "gate": "gate-work-after-8",
+      "task": "h20000518_02",
+      "filename": "grid.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14558663276,
+      "gate": "gate-work-after-8",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14560293390,
+      "gate": "gate-work-before-1",
+      "task": "h20000511_02",
+      "filename": "machine.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14560293390,
+      "gate": "gate-work-before-1",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14560686430,
+      "gate": "gate-work-before-2",
+      "task": "h20000512_00",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14560686430,
+      "gate": "gate-work-before-2",
+      "task": "h20000512_02",
+      "filename": "machine.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14561393412,
+      "gate": "gate-work-before-4",
+      "task": "h20000514_00",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14561393412,
+      "gate": "gate-work-before-4",
+      "task": "h20000514_01",
+      "filename": "factors.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14561393412,
+      "gate": "gate-work-before-4",
+      "task": "h20000514_02",
+      "filename": "bank.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14561393412,
+      "gate": "gate-work-before-4",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14560044557,
+      "gate": "gate-work-before-5",
+      "task": "h20000515_00",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14560044557,
+      "gate": "gate-work-before-5",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14557918022,
+      "gate": "gate-work-before-6",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14558885659,
+      "gate": "gate-work-before-7",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14559305594,
+      "gate": "gate-work-before-8",
+      "task": "h20000518_00",
+      "filename": "bank.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14559305594,
+      "gate": "gate-work-before-8",
+      "task": "h20000518_02",
+      "filename": "grid.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14559305594,
+      "gate": "gate-work-before-8",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14586024327,
+      "gate": "gate-work-after-1",
+      "task": "h20000521_03",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14586024327,
+      "gate": "gate-work-after-1",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587903855,
+      "gate": "gate-work-after-3",
+      "task": "h20000523_03",
+      "filename": "durations.py",
+      "prior": "declined",
+      "original_ok": false,
+      "proposal": {
+        "passed": true,
+        "exact_requested_text": true,
+        "explanation": "50 of 50 hidden tests pass; the values asked for ([36228, '1h']) in the answer: True",
+        "hidden": {
+          "passed": 50,
+          "total": 50,
+          "fuel": 1029046269,
+          "guest_seconds": 0.23691605200019694
+        },
+        "module_sha256": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "lookup_alone": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "10 of 50 hidden tests pass; the values asked for ([36228, '1h']) in the answer: False",
+        "hidden": {
+          "passed": 10,
+          "total": 50,
+          "fuel": 1026899770,
+          "guest_seconds": 0.2396262909996949
+        },
+        "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      }
+    },
+    {
+      "archive_id": 14588532041,
+      "gate": "gate-work-after-4",
+      "task": "h20000524_02",
+      "filename": "machine.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14588532041,
+      "gate": "gate-work-after-4",
+      "task": "h20000524_03",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14588532041,
+      "gate": "gate-work-after-4",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587969948,
+      "gate": "gate-work-after-5",
+      "task": "h20000525_02",
+      "filename": "lru.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587969948,
+      "gate": "gate-work-after-5",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14585664858,
+      "gate": "gate-work-after-6",
+      "task": "h20000526_00",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14585664858,
+      "gate": "gate-work-after-6",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587642648,
+      "gate": "gate-work-after-7",
+      "task": "h20000527_01",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587642648,
+      "gate": "gate-work-after-7",
+      "task": "h20000527_03",
+      "filename": "durations.py",
+      "prior": "declined",
+      "original_ok": false,
+      "proposal": {
+        "passed": true,
+        "exact_requested_text": true,
+        "explanation": "50 of 50 hidden tests pass; the values asked for ([72268, '1m']) in the answer: True",
+        "hidden": {
+          "passed": 50,
+          "total": 50,
+          "fuel": 1029052116,
+          "guest_seconds": 0.2368120529999942
+        },
+        "module_sha256": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "lookup_alone": {
+        "passed": false,
+        "exact_requested_text": false,
+        "explanation": "11 of 50 hidden tests pass; the values asked for ([72268, '1m']) in the answer: False",
+        "hidden": {
+          "passed": 11,
+          "total": 50,
+          "fuel": 1026905343,
+          "guest_seconds": 0.23450041200067062
+        },
+        "module_sha256": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      }
+    },
+    {
+      "archive_id": 14587642648,
+      "gate": "gate-work-after-7",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587107489,
+      "gate": "gate-work-after-8",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587548753,
+      "gate": "gate-work-before-1",
+      "task": "h20000521_03",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14587548753,
+      "gate": "gate-work-before-1",
+      "task": "x_h_prog_wrap_2",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14588058494,
+      "gate": "gate-work-before-3",
+      "task": "h20000523_03",
+      "filename": "durations.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14587441934,
+      "gate": "gate-work-before-4",
+      "task": "h20000524_02",
+      "filename": "machine.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14587441934,
+      "gate": "gate-work-before-4",
+      "task": "h20000524_03",
+      "filename": "bank.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587441934,
+      "gate": "gate-work-before-4",
+      "task": "x_h_prog_queue_0",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14589075651,
+      "gate": "gate-work-before-5",
+      "task": "h20000525_02",
+      "filename": "lru.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14589075651,
+      "gate": "gate-work-before-5",
+      "task": "x_h_prog_queue_1",
+      "filename": "desk.py",
+      "prior": "missing",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587538096,
+      "gate": "gate-work-before-6",
+      "task": "h20000526_00",
+      "filename": "schedule.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14587538096,
+      "gate": "gate-work-before-6",
+      "task": "x_h_prog_queue_2",
+      "filename": "desk.py",
+      "prior": "declined",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587311849,
+      "gate": "gate-work-before-7",
+      "task": "h20000527_01",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587311849,
+      "gate": "gate-work-before-7",
+      "task": "h20000527_03",
+      "filename": "durations.py",
+      "prior": "answered",
+      "original_ok": true
+    },
+    {
+      "archive_id": 14587311849,
+      "gate": "gate-work-before-7",
+      "task": "x_h_prog_wrap_0",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    },
+    {
+      "archive_id": 14587332034,
+      "gate": "gate-work-before-8",
+      "task": "x_h_prog_wrap_1",
+      "filename": "wrap.py",
+      "prior": "answered",
+      "original_ok": false
+    }
+  ],
+  "archived_original_counts": {
+    "True": 26,
+    "False": 64
+  },
+  "estimated_new_correct": 5,
+  "lookup_singletons_passing": 0,
+  "meter": {
+    "calls": 12,
+    "input_rows": 600,
+    "fuel": 12333008970,
+    "guest_seconds": 3.178922,
+    "total_wall_seconds": 13.344842499000151,
+    "process_cpu_seconds": 13.042587577
+  }
+}

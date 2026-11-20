@@ -1,0 +1,5 @@
+# A post-audit accounting check
+
+After observing one incomplete parser decision on the 13-question panel, seal a separate guard. First run the unchanged parser. Count every syntactically visible plain function call with positional JSON-compatible Python literal arguments in the original text. Allow spaces before the parenthesis and nested or quoted parentheses during lexical scanning, and use the frozen relay's literal validator. Separately count the calls claimed by parsed example inputs and requested outputs. Require exact name/typed-argument multiplicities to match, and abstain on any repeated identical literal call even if it appears on both sides. The check can only remove an accepted parse. It does not learn any new phrase or infer an output.
+
+Compare the preexisting 13-case decisions and 90 archive decisions to the guarded result after freeze. Do not claim this guard improves held-out extraction. Reuse physical file grades solely when the exact contract and every later step are identical. A user instruction that contains no explicit literal call can still be unrecognized. A program may pass every public call and remain wrong elsewhere.

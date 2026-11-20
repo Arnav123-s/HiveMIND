@@ -1,0 +1,42 @@
+{
+  "tea-counter": null,
+  "book-stall": null,
+  "neighborhood": null,
+  "picture-frame": null,
+  "shop-list": null,
+  "cold-room": null,
+  "punctuation": null,
+  "instructions-first": [
+    "seats.py",
+    [
+      "double",
+      "single"
+    ],
+    [
+      [
+        [
+          "double",
+          [
+            4
+          ]
+        ],
+        8
+      ],
+      [
+        [
+          "single",
+          [
+            3
+          ]
+        ],
+        3
+      ]
+    ],
+    []
+  ],
+  "turned-down": null,
+  "moving-input": null,
+  "two-promises": null,
+  "attendance-book": null,
+  "choice-left-open": null
+}
