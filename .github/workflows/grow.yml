@@ -825,6 +825,10 @@ jobs:
       - name: The model server's own log beside the work (it says why a server ended; g35's seed 4 lost it)
         if: ${{ !cancelled() }}
         run: mkdir -p runs/exam/server-logs && cp ~/.cache/hive/ternary/*.log runs/exam/server-logs/ 2>/dev/null || true
+      - name: Preserve requested files from each exam worker for review
+        if: ${{ !cancelled() && steps.who.outputs.who && matrix.part != 'talk' }}
+        continue-on-error: true
+        run: python -m training.member_evidence --root runs/exam --out runs/exam/worker-evidence
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() && steps.who.outputs.who }}
         with:
@@ -839,6 +843,7 @@ jobs:
             runs/exam/**/.member*_*.py.out
             runs/exam/**/.member*_*.py.err
             runs/exam/server-logs/*.log
+            runs/exam/worker-evidence/**
           include-hidden-files: true
           retention-days: 14
       # The body sits the talk exam every generation (M1), on one seat only (after, the first seed) and only once the

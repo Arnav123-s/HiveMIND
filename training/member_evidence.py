@@ -4,6 +4,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+import sys
 import tempfile
 
 from team.deliverables import regular, wanted
@@ -19,6 +20,8 @@ def capture(task, members, destination):
     names = wanted(task)
     if not names:
         return None
+    if destination.exists() or destination.is_symlink():
+        raise FileExistsError(f"choose a new evidence directory: {destination}")
     destination.parent.mkdir(parents=True, exist_ok=True)
     manifest = {"purpose": "ungraded worker evidence", "task_sha256": sha256(task.encode()).hexdigest(),
                 "requested": names, "seats": []}
@@ -96,8 +99,8 @@ def recorded_members(home):
 
 def collect(root, out):
     root = Path(root).resolve()
-    out = Path(out).resolve()
-    if out.exists():
+    out = Path(out).absolute()
+    if out.exists() or out.is_symlink():
         raise FileExistsError(f"choose a new evidence directory: {out}")
     tasks = sorted(root.glob("*/*/members/TASK.md"))
     if not tasks:
@@ -111,8 +114,12 @@ def collect(root, out):
             home = path.parent
             if home.resolve() != home:
                 continue
-            with regular(path) as file:
-                task = file.read().decode()
+            try:
+                with regular(path) as file:
+                    task = file.read().decode()
+            except (OSError, ValueError) as error:
+                print(f"Skipping unreadable worker task {path}: {error}", file=sys.stderr)
+                continue
             result = capture(task, recorded_members(home), snapshot / home.parent.relative_to(root))
             if result is not None:
                 count += 1
