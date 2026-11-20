@@ -1,0 +1,16 @@
+this CPU has no quick 16-bit arithmetic (no AVX512-BF16, no AMX): the cell is trained in 32-bit numbers
+the DNA held ternary: one byte a weight and one scale per 128 (the word vectors and the output layer too); the worst group is 0.0000 of its scale off; 8.2 GB held
+this cell leans to words: 0 of its rows are that organ's, weighed 3 times in the pick
+4 rows, 4 within 512 pieces (mean 166); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked
+this machine: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz, 5 threads; trained in 32-bit numbers
+4 rows in 2 subjects; each pass picks a subject by its loss (own organ up to x3 by its share, read and judged 3% each), a row met at most 4 times
+lessons kept back: 2, of 2 kinds, never trained on; 2 of their rows measured in 61 s
+memory guard: 6.5 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 10.06 MB to start, then as measured)
+memory: most 10.17 GB, least available 5.1 GB, most swap 0.0 GB, a piece 10.062 MB (the formula's 10.062)
+subject                             rows passes  first   last
+days between two dates · first         2      3  0.297  0.307
+follow a form to the letter · first    2      1  0.324  0.324
+lessons kept back (never trained on), by kind rows before  after
+days between two dates                 1  0.318  0.314
+follow a form to the letter            1  1.209  1.203
+frozen layers skipped on 1 of 4 passes (their output kept from the first pass of each row, 0.01 GB on disk)

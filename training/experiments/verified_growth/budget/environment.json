@@ -1,0 +1,50 @@
+{
+  "native_base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+  "hf_revision": "ac20f03fc62e872399218b659c8e949dfca05769",
+  "checkpoint_shards": [
+    {
+      "name": "model-00001-of-00004.safetensors",
+      "size": 4932546824,
+      "published_lfs_sha256": "ac1ed21b324ff06ad9438e54957bd5754f4ba88cef7b5da919b90e032053ef1f"
+    },
+    {
+      "name": "model-00002-of-00004.safetensors",
+      "size": 4932507048,
+      "published_lfs_sha256": "4f37b52783c89a78be9dac8e92c31321f64033ed92bed8b5d73f1fb37d0b69db"
+    },
+    {
+      "name": "model-00003-of-00004.safetensors",
+      "size": 4027142760,
+      "published_lfs_sha256": "11e03ddc2d8b4ab1e698a9c8a5dc2e026033b5e58c8ed110d8ec6b666c133aca"
+    },
+    {
+      "name": "model-00004-of-00004.safetensors",
+      "size": 2484945096,
+      "published_lfs_sha256": "0503063ee99d99fb653023a42d14b6bc04c23509e77d221c9166b35bc86d950f"
+    }
+  ],
+  "source_sha256": {
+    "training/grow.py": "89c7805cfbf2c432ce97a530a7195972c52701375cef2b8c6b70dbfd8f8162da",
+    "training/ternary_base.py": "afebf1e736cd35845a4f19ac70e49b50592394ca4f4ca00fa0c29a2e6d2e0d68",
+    "training/data/rows_g11_recovered.jsonl": "bd82d9b74b28ce8e6a6a5eac9b73b3638384268d6514735f57e2c53805bf6272",
+    "training/experiments/verified_growth/budget/protocol.md": "b7a45c2827fc192971a424ecfb0651d268e0280bd795ce46c40a3fb5e2efbcb1",
+    "training/experiments/verified_growth/budget/slice_bench.py": "ad6d871562ca60e0422f2e9b07ac0fe62aced59e847de274c56c7fe80e7bb7f2",
+    "training/experiments/verified_growth/budget/paired.py": "2ed8983b1468dda49eff34757794bb6cc4202111f1e742ad9cf0b1379dc70484"
+  },
+  "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+  "cgroup_memory_bytes": 17179869184,
+  "cpu_quota": "400000 100000",
+  "cgroup_memory_guard_gib": 14.5,
+  "python": "3.12.14",
+  "packages": {
+    "torch": "2.15.0+cpu",
+    "peft": "0.21.2",
+    "safetensors": "0.8.0",
+    "huggingface_hub": "2.4.0",
+    "transformers": "5.22.2",
+    "accelerate": "1.15.0"
+  },
+  "runtime_repo": "ikawrakow/ik_llama.cpp",
+  "runtime_commit": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "gguf_converter": "convert_lora_to_gguf.py and vendored gguf-py from the pinned runtime checkout"
+}

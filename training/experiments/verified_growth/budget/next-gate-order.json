@@ -1,0 +1,167 @@
+[
+  {
+    "arm": "after",
+    "seed": 2,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 2,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 2,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 4,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 2,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 5,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 6,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 5,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 1,
+    "part": "talk"
+  },
+  {
+    "arm": "before",
+    "seed": 1,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 3,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 3,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 8,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 5,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 3,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 5,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 4,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 4,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 3,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 7,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 1,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 8,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 1,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 7,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 7,
+    "part": "held"
+  },
+  {
+    "arm": "before",
+    "seed": 7,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 1,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 4,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 8,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 6,
+    "part": "held"
+  },
+  {
+    "arm": "after",
+    "seed": 8,
+    "part": "fresh"
+  },
+  {
+    "arm": "before",
+    "seed": 6,
+    "part": "fresh"
+  },
+  {
+    "arm": "after",
+    "seed": 6,
+    "part": "fresh"
+  }
+]

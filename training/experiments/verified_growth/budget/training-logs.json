@@ -1,0 +1,391 @@
+{
+  "g51": [
+    {
+      "id": 135600353933,
+      "name": "train (g51sources2, sources2, sources, g48sources2, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T13:43:16.3530076Z slice 2 of 2: 3377 rows, 546 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:21:06.4488157Z 3377 rows, 2754 within 523 pieces (mean 380); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:44:17.0250096Z lessons kept back: 56, of 28 kinds, never trained on; 54 of their rows measured in 1390 s, 7 too long",
+        "2026-11-19T16:10:13.8098405Z time is up after 205 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:08:10.7746604Z step 50 (98% done, 95 subjects left) loss 0.0271 5034s, most memory 12.6 GB, available 4.5 GB, swap used 0.9 GB, a piece 10.06 MB, 5428 rows skipped"
+    },
+    {
+      "id": 135600353934,
+      "name": "train (g51sources, sources, sources, g48sources, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T13:42:32.6881528Z slice 2 of 3: 2386 rows, 548 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:41:16.2141752Z 2386 rows, 1781 within 491 pieces (mean 368); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T15:14:42.1686719Z lessons kept back: 56, of 28 kinds, never trained on; 49 of their rows measured in 2006 s, 12 too long",
+        "2026-11-19T15:59:22.8737096Z time is up after 57 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T15:59:22.9237009Z step 15 (101% done, 83 subjects left) loss 0.0018 2681s, most memory 12.6 GB, available 5.1 GB, swap used 3.0 GB, a piece 10.06 MB, 501 rows skipped"
+    },
+    {
+      "id": 135600353971,
+      "name": "train (g51code, code, code, g48code2, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T13:42:40.4080234Z slice 3 of 3: 2457 rows, 549 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:57:41.0434796Z 2457 rows, 2366 within 828 pieces (mean 449); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:07:36.0967715Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 595 s",
+        "2026-11-19T16:22:47.0554185Z time is up after 643 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:22:15.1981159Z step 160 (100% done, 109 subjects left) loss 0.0137 8079s, most memory 13.4 GB, available 3.9 GB, swap used 3.0 GB, a piece 5.03 MB, 7416 rows skipped"
+    },
+    {
+      "id": 135600353982,
+      "name": "train (g51words2, words2, words, g48words, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T13:43:17.8896918Z slice 1 of 3: 2386 rows, 548 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:20:52.6309505Z 2386 rows, 1755 within 479 pieces (mean 362); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:41:15.2440462Z lessons kept back: 56, of 28 kinds, never trained on; 49 of their rows measured in 1222 s, 12 too long",
+        "2026-11-19T16:12:57.5886423Z time is up after 217 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:12:57.6402978Z step 55 (100% done, 80 subjects left) loss 0.0022 5502s, most memory 12.6 GB, available 4.9 GB, swap used 1.0 GB, a piece 10.06 MB, 4107 rows skipped"
+    },
+    {
+      "id": 135600353989,
+      "name": "train (g51data, data, data, g48data, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T13:43:38.9602396Z slice 2 of 3: 2388 rows, 550 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:55:58.7073672Z 2388 rows, 2263 within 777 pieces (mean 445); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:03:42.5424646Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 464 s",
+        "2026-11-19T16:25:52.8493622Z time is up after 1106 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:25:16.7540421Z step 275 (100% done, 110 subjects left) loss 0.0328 8494s, most memory 13.7 GB, available 3.1 GB, swap used 3.2 GB, a piece 5.33 MB, 28556 rows skipped"
+    },
+    {
+      "id": 135600353991,
+      "name": "train (g51code, code, code, g48code2, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T13:42:40.5401627Z slice 1 of 3: 2387 rows, 549 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:41:43.8627506Z 2387 rows, 1836 within 508 pieces (mean 375); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T15:15:57.4478776Z lessons kept back: 56, of 28 kinds, never trained on; 51 of their rows measured in 2053 s, 10 too long",
+        "2026-11-19T15:58:22.4293629Z time is up after 54 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T15:46:40.3683102Z step 10 (72% done, 88 subjects left) loss 0.0179 1843s, most memory 12.6 GB, available 4.9 GB, swap used 0.8 GB, a piece 10.06 MB, 378 rows skipped"
+    },
+    {
+      "id": 135600354000,
+      "name": "train (g51words2, words2, words, g48words, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T13:43:38.4865037Z slice 2 of 3: 2386 rows, 548 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:55:46.4654257Z 2386 rows, 2202 within 723 pieces (mean 433); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:03:25.5956376Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 459 s, 1 too long",
+        "2026-11-19T16:25:58.3475691Z time is up after 990 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:24:56.2250934Z step 245 (99% done, 103 subjects left) loss 0.0257 8491s, most memory 13.8 GB, available 2.8 GB, swap used 0.8 GB, a piece 5.13 MB, 14146 rows skipped"
+    },
+    {
+      "id": 135600354010,
+      "name": "train (g51code, code, code, g48code2, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T13:42:39.5493939Z slice 2 of 3: 2387 rows, 549 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:56:26.7390845Z 2387 rows, 2195 within 721 pieces (mean 433); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:05:51.7293824Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 565 s, 1 too long",
+        "2026-11-19T16:23:10.1299483Z time is up after 655 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:19:59.4704005Z step 160 (98% done, 103 subjects left) loss 0.0091 8048s, most memory 13.4 GB, available 3.5 GB, swap used 3.0 GB, a piece 5.03 MB, 729 rows skipped"
+    },
+    {
+      "id": 135600354015,
+      "name": "train (g51code2, code2, code, g48code, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T13:45:20.7405402Z slice 2 of 2: 3378 rows, 547 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:45:35.8029125Z 3378 rows, 2568 within 492 pieces (mean 365); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T15:19:24.3633663Z lessons kept back: 56, of 28 kinds, never trained on; 49 of their rows measured in 2028 s, 12 too long",
+        "2026-11-19T16:01:42.1704904Z time is up after 55 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T15:50:34.2629771Z step 10 (74% done, 88 subjects left) loss 0.0123 1870s, most memory 12.7 GB, available 5.2 GB, swap used 2.9 GB, a piece 10.06 MB, 299 rows skipped"
+    },
+    {
+      "id": 135600354024,
+      "name": "train (g51words, words, words, g48words2, 0, 2, cell)",
+      "lines": [
+        "2026-11-19T13:43:13.9824612Z slice 1 of 2: 3302 rows, 549 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:08:23.5954467Z 3302 rows, 3161 within 826 pieces (mean 446); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:26:20.4099600Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 1077 s",
+        "2026-11-19T16:15:15.6646885Z time is up after 269 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:11:44.8001018Z step 65 (97% done, 127 subjects left) loss 0.0167 6324s, most memory 13.2 GB, available 4.2 GB, swap used 3.1 GB, a piece 5.03 MB, 947 rows skipped"
+    },
+    {
+      "id": 135600354026,
+      "name": "train (g51data, data, data, g48data, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T13:43:25.3662568Z slice 1 of 3: 2388 rows, 550 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:08:18.9409611Z 2388 rows, 2272 within 785 pieces (mean 443); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:26:38.5255797Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 1099 s",
+        "2026-11-19T16:15:26.6236523Z time is up after 263 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:14:17.4253873Z step 65 (99% done, 121 subjects left) loss 0.0082 6459s, most memory 13.4 GB, available 3.9 GB, swap used 2.8 GB, a piece 5.03 MB, 1569 rows skipped"
+    },
+    {
+      "id": 135600354063,
+      "name": "train (g51sources, sources, sources, g48sources, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T13:44:12.5136884Z slice 3 of 3: 2456 rows, 548 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:08:52.3381106Z 2456 rows, 2314 within 760 pieces (mean 438); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:26:27.9411577Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 1055 s, 1 too long",
+        "2026-11-19T16:16:35.1132679Z time is up after 264 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:15:12.6926656Z step 65 (99% done, 114 subjects left) loss 0.0265 6525s, most memory 13.2 GB, available 4.1 GB, swap used 3.0 GB, a piece 5.03 MB, 265 rows skipped"
+    },
+    {
+      "id": 135600354066,
+      "name": "train (g51words, words, words, g48words2, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T13:42:45.8580923Z slice 2 of 2: 3380 rows, 549 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:56:43.3576224Z 3380 rows, 3235 within 799 pieces (mean 439); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:06:12.0139756Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 569 s",
+        "2026-11-19T16:23:30.1208374Z time is up after 676 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:20:48.1396484Z step 165 (98% done, 112 subjects left) loss 0.0220 8076s, most memory 13.4 GB, available 3.8 GB, swap used 3.1 GB, a piece 5.03 MB, 6598 rows skipped"
+    },
+    {
+      "id": 135600354074,
+      "name": "train (g51data2, data2, data, g48data2, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T13:42:28.0558369Z slice 2 of 2: 3377 rows, 546 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:56:13.1462708Z 3377 rows, 3199 within 764 pieces (mean 434); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:04:45.5027683Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 512 s, 1 too long",
+        "2026-11-19T16:23:51.5250593Z time is up after 861 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:23:36.7282155Z step 215 (100% done, 111 subjects left) loss 0.0594 8331s, most memory 13.7 GB, available 3.0 GB, swap used 2.9 GB, a piece 5.03 MB, 20900 rows skipped"
+    },
+    {
+      "id": 135600354093,
+      "name": "train (g51sources2, sources2, sources, g48sources2, 0, 2, cell)",
+      "lines": [
+        "2026-11-19T13:43:06.0444432Z slice 1 of 2: 3299 rows, 546 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T13:57:39.3318850Z 3299 rows, 3033 within 715 pieces (mean 427); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:07:07.9341219Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 568 s, 1 too long",
+        "2026-11-19T16:23:48.0225382Z time is up after 633 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:21:01.9346779Z step 155 (98% done, 112 subjects left) loss 0.0290 8034s, most memory 13.2 GB, available 3.8 GB, swap used 3.1 GB, a piece 5.03 MB, 647 rows skipped"
+    },
+    {
+      "id": 135600354144,
+      "name": "train (g51words2, words2, words, g48words, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T13:46:12.9124929Z slice 3 of 3: 2456 rows, 548 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:00:27.4432232Z 2456 rows, 2352 within 805 pieces (mean 446); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T14:10:05.3882762Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 578 s",
+        "2026-11-19T16:26:31.8886839Z time is up after 667 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:25:19.7254244Z step 165 (99% done, 108 subjects left) loss 0.0332 8114s, most memory 13.3 GB, available 3.9 GB, swap used 3.2 GB, a piece 5.03 MB, 4486 rows skipped"
+    },
+    {
+      "id": 135600354242,
+      "name": "train (g51code2, code2, code, g48code, 0, 2, cell)",
+      "lines": [
+        "2026-11-19T13:42:53.6808314Z slice 1 of 2: 3300 rows, 547 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:43:07.6862593Z 3300 rows, 2439 within 482 pieces (mean 361); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T15:15:50.4455495Z lessons kept back: 56, of 28 kinds, never trained on; 49 of their rows measured in 1963 s, 12 too long",
+        "2026-11-19T16:00:36.7470535Z time is up after 58 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T16:00:36.8048339Z step 15 (101% done, 87 subjects left) loss 0.2289 2686s, most memory 12.8 GB, available 5.1 GB, swap used 3.1 GB, a piece 10.06 MB, 631 rows skipped"
+    },
+    {
+      "id": 135600354461,
+      "name": "train (g51sources, sources, sources, g48sources, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T13:42:36.4984918Z slice 1 of 3: 2386 rows, 548 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T14:45:49.7398900Z 2386 rows, 1778 within 485 pieces (mean 365); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T15:22:48.3017252Z lessons kept back: 56, of 28 kinds, never trained on; 49 of their rows measured in 2218 s, 12 too long",
+        "2026-11-19T15:56:11.0073562Z time is up after 35 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T15:42:17.5547054Z step 5 (60% done, 84 subjects left) loss 0.1283 1169s, most memory 12.4 GB, available 5.3 GB, swap used 0.8 GB, a piece 10.06 MB, 49 rows skipped"
+    }
+  ],
+  "g52": [
+    {
+      "id": 135846410961,
+      "name": "train (g52sources, sources, sources, g49sources2, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T20:07:30.4878001Z slice 1 of 3: 2473 rows, 500 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:21:48.6347495Z 2473 rows, 2341 within 771 pieces (mean 440); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:30:47.2839525Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 539 s, 1 too long",
+        "2026-11-19T22:48:34.1267712Z time is up after 665 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:47:24.9442815Z step 165 (99% done, 105 subjects left) loss 0.0275 8198s, most memory 13.4 GB, available 4.1 GB, swap used 3.3 GB, a piece 5.03 MB, 3394 rows skipped"
+    },
+    {
+      "id": 135846411018,
+      "name": "train (g52code, code, code, g49code2, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T20:09:30.0697780Z slice 2 of 3: 2474 rows, 505 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:22:11.2715704Z 2474 rows, 2467 within 1152 pieces (mean 484); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:29:48.7063670Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 457 s",
+        "2026-11-19T22:51:48.5004869Z time is up after 1006 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:51:11.2575832Z step 250 (100% done, 114 subjects left) loss 0.0231 8483s, most memory 13.5 GB, available 3.2 GB, swap used 7.0 GB, a piece 5.03 MB, 29931 rows skipped"
+    },
+    {
+      "id": 135846411066,
+      "name": "train (g52words, words, words, g49words, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T20:08:46.4706760Z slice 1 of 3: 2474 rows, 501 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:09:27.8137820Z 2474 rows, 1887 within 506 pieces (mean 374); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:44:31.2458318Z lessons kept back: 56, of 28 kinds, never trained on; 50 of their rows measured in 2103 s, 11 too long",
+        "2026-11-19T22:23:48.4468310Z time is up after 47 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:18:43.2345490Z step 10 (87% done, 89 subjects left) loss 0.0275 2052s, most memory 12.6 GB, available 5.2 GB, swap used 3.2 GB, a piece 10.06 MB, 180 rows skipped"
+    },
+    {
+      "id": 135846411083,
+      "name": "train (g52data, data, data, g49data2, 0, 3, cell)",
+      "lines": [
+        "2026-11-19T20:08:27.0741685Z slice 1 of 3: 2473 rows, 500 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:07:23.7424820Z 2473 rows, 1878 within 504 pieces (mean 372); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:41:11.7031067Z lessons kept back: 56, of 28 kinds, never trained on; 50 of their rows measured in 2028 s, 11 too long",
+        "2026-11-19T22:24:58.0122479Z time is up after 56 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:12:35.5052161Z step 10 (72% done, 88 subjects left) loss 0.0331 1884s, most memory 12.8 GB, available 5.0 GB, swap used 0.7 GB, a piece 10.06 MB, 388 rows skipped"
+    },
+    {
+      "id": 135846411099,
+      "name": "train (g52sources, sources, sources, g49sources2, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T20:08:29.2793530Z slice 2 of 3: 2469 rows, 500 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:07:21.1259049Z 2469 rows, 1759 within 473 pieces (mean 357); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:40:38.5395171Z lessons kept back: 56, of 28 kinds, never trained on; 48 of their rows measured in 1997 s, 13 too long",
+        "2026-11-19T22:25:09.0663522Z time is up after 54 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:15:22.6159692Z step 10 (78% done, 82 subjects left) loss 0.0690 2084s, most memory 12.7 GB, available 5.1 GB, swap used 3.1 GB, a piece 10.06 MB, 176 rows skipped"
+    },
+    {
+      "id": 135846411118,
+      "name": "train (g52words, words, words, g49words, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T20:07:33.1018892Z slice 2 of 3: 2470 rows, 501 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:21:34.5959524Z 2470 rows, 2350 within 808 pieces (mean 449); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:30:58.1231515Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 563 s",
+        "2026-11-19T22:48:14.5213069Z time is up after 676 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:45:00.2100093Z step 165 (98% done, 108 subjects left) loss 0.0025 8042s, most memory 13.3 GB, available 4.0 GB, swap used 3.2 GB, a piece 5.03 MB, 3892 rows skipped"
+    },
+    {
+      "id": 135846411124,
+      "name": "train (g52words2, words2, words, g49words2, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T20:08:23.8831164Z slice 2 of 2: 3532 rows, 502 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:07:12.7747876Z 3532 rows, 2761 within 512 pieces (mean 374); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:43:08.4185506Z lessons kept back: 56, of 28 kinds, never trained on; 52 of their rows measured in 2155 s, 9 too long",
+        "2026-11-19T22:22:39.7666432Z time is up after 52 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:13:31.6479209Z step 10 (77% done, 95 subjects left) loss 0.0473 1823s, most memory 12.6 GB, available 5.2 GB, swap used 3.3 GB, a piece 10.06 MB, 206 rows skipped"
+    },
+    {
+      "id": 135846411153,
+      "name": "train (g52data2, data2, data, g49data, 0, 2, cell)",
+      "lines": [
+        "2026-11-19T20:07:41.2567634Z slice 1 of 2: 3467 rows, 502 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:13:47.1091549Z 3467 rows, 2667 within 509 pieces (mean 374); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:51:35.4667086Z lessons kept back: 56, of 28 kinds, never trained on; 51 of their rows measured in 2268 s, 10 too long",
+        "2026-11-19T22:19:55.2321569Z time is up after 32 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:11:02.7482832Z step 5 (69% done, 93 subjects left) loss 0.0245 1167s, most memory 12.8 GB, available 4.8 GB, swap used 3.1 GB, a piece 10.06 MB, 161 rows skipped"
+    },
+    {
+      "id": 135846411167,
+      "name": "train (g52data, data, data, g49data2, 1, 3, cell)",
+      "lines": [
+        "2026-11-19T20:07:54.4620804Z slice 2 of 3: 2469 rows, 500 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:07:19.9829726Z 2469 rows, 1823 within 489 pieces (mean 367); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:41:28.0780992Z lessons kept back: 56, of 28 kinds, never trained on; 50 of their rows measured in 2048 s, 11 too long",
+        "2026-11-19T22:24:02.1096317Z time is up after 52 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:14:51.2503396Z step 10 (79% done, 84 subjects left) loss 0.0203 2003s, most memory 12.5 GB, available 5.2 GB, swap used 0.7 GB, a piece 10.06 MB, 82 rows skipped"
+    },
+    {
+      "id": 135846411177,
+      "name": "train (g52sources, sources, sources, g49sources2, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T20:08:37.6800594Z slice 3 of 3: 2553 rows, 500 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T21:08:44.0481410Z 2553 rows, 2018 within 522 pieces (mean 379); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:49:12.0228169Z lessons kept back: 56, of 28 kinds, never trained on; 56 of their rows measured in 2428 s, 5 too long",
+        "2026-11-19T22:18:31.4286148Z time is up after 33 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:08:03.4158809Z step 5 (65% done, 94 subjects left) loss 0.0223 1131s, most memory 12.5 GB, available 5.3 GB, swap used 0.9 GB, a piece 10.06 MB, 68 rows skipped"
+    },
+    {
+      "id": 135846411182,
+      "name": "train (g52words, words, words, g49words, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T20:07:59.9453497Z slice 3 of 3: 2554 rows, 501 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:32:00.9992630Z 2554 rows, 2365 within 730 pieces (mean 433); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:49:07.6616979Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 1027 s, 1 too long",
+        "2026-11-19T22:40:55.2333342Z time is up after 289 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:37:53.0639966Z step 70 (97% done, 112 subjects left) loss 0.0174 6525s, most memory 13.2 GB, available 3.9 GB, swap used 3.1 GB, a piece 5.03 MB, 350 rows skipped"
+    },
+    {
+      "id": 135846411190,
+      "name": "train (g52code, code, code, g49code2, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T20:08:10.2069060Z slice 3 of 3: 2558 rows, 505 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:32:50.2822834Z 2558 rows, 2393 within 754 pieces (mean 438); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:50:23.4053271Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 1053 s, 1 too long",
+        "2026-11-19T22:40:42.9700035Z time is up after 273 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:37:11.4409323Z step 65 (97% done, 116 subjects left) loss 0.0498 6408s, most memory 13.4 GB, available 4.0 GB, swap used 2.8 GB, a piece 5.03 MB, 325 rows skipped"
+    },
+    {
+      "id": 135846411221,
+      "name": "train (g52data2, data2, data, g49data, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T20:08:46.2017495Z slice 2 of 2: 3532 rows, 502 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:23:27.4003945Z 3532 rows, 3376 within 801 pieces (mean 442); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:33:22.6366077Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 595 s",
+        "2026-11-19T22:48:55.8103633Z time is up after 630 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:47:01.0429965Z step 155 (99% done, 117 subjects left) loss 0.0018 8018s, most memory 13.3 GB, available 3.7 GB, swap used 2.9 GB, a piece 5.03 MB, 8738 rows skipped"
+    },
+    {
+      "id": 135846411240,
+      "name": "train (g52code2, code2, code, g49code, 0, 2, cell)",
+      "lines": [
+        "2026-11-19T20:08:07.9951425Z slice 1 of 2: 3469 rows, 504 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:46:34.9155434Z 3469 rows, 2555 within 485 pieces (mean 362); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T21:07:22.6807581Z lessons kept back: 56, of 28 kinds, never trained on; 50 of their rows measured in 1248 s, 11 too long",
+        "2026-11-19T22:37:27.4488967Z time is up after 255 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:33:02.4592939Z step 60 (95% done, 83 subjects left) loss 0.0275 5140s, most memory 12.7 GB, available 4.7 GB, swap used 3.0 GB, a piece 10.06 MB, 6247 rows skipped"
+    },
+    {
+      "id": 135846411250,
+      "name": "train (g52data, data, data, g49data2, 2, 3, cell)",
+      "lines": [
+        "2026-11-19T20:08:13.2296255Z slice 3 of 3: 2553 rows, 500 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:22:39.2353481Z 2553 rows, 2415 within 772 pieces (mean 442); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:31:53.0405358Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 554 s, 1 too long",
+        "2026-11-19T22:48:59.5557114Z time is up after 643 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:48:13.2006345Z step 160 (99% done, 110 subjects left) loss 0.0075 8180s, most memory 13.4 GB, available 3.9 GB, swap used 3.0 GB, a piece 5.03 MB, 2081 rows skipped"
+    },
+    {
+      "id": 135846411254,
+      "name": "train (g52sources2, sources2, sources, g49sources, 0, 2, cell)",
+      "lines": [
+        "2026-11-19T20:09:21.2190795Z slice 1 of 2: 3466 rows, 501 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:21:15.6425919Z 3466 rows, 3437 within 1152 pieces (mean 476); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:28:26.6508067Z lessons kept back: 56, of 28 kinds, never trained on; 61 of their rows measured in 431 s",
+        "2026-11-19T22:52:10.6640358Z time is up after 1161 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:52:03.7261156Z step 290 (100% done, 119 subjects left) loss 0.0244 8617s, most memory 13.4 GB, available 2.9 GB, swap used 5.9 GB, a piece 5.10 MB, 41625 rows skipped"
+    },
+    {
+      "id": 135846411274,
+      "name": "train (g52code2, code2, code, g49code, 1, 2, cell)",
+      "lines": [
+        "2026-11-19T20:08:46.2042861Z slice 2 of 2: 3534 rows, 504 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+        "2026-11-19T20:33:39.5465836Z 3534 rows, 3324 within 751 pieces (mean 434); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+        "2026-11-19T20:50:40.5035807Z lessons kept back: 56, of 28 kinds, never trained on; 60 of their rows measured in 1021 s, 1 too long",
+        "2026-11-19T22:41:42.1240619Z time is up after 302 passes: the cell is saved as it is"
+      ],
+      "last_five_step_log": "2026-11-19T22:40:59.7032737Z step 75 (99% done, 118 subjects left) loss 0.0173 6619s, most memory 13.3 GB, available 3.7 GB, swap used 2.8 GB, a piece 5.30 MB, 1441 rows skipped"
+    }
+  ]
+}

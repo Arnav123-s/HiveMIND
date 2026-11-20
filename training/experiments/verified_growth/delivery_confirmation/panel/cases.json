@@ -1,0 +1,251 @@
+[
+  {
+    "id": "sign",
+    "request": "Create crossing.svg containing a circle of radius 3 centred at (5,5) in a ten-unit view box.",
+    "seats": [
+      {
+        "answer": "Marker ready.",
+        "files": {
+          "crossing.svg": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjMiLz48L3N2Zz4K"
+        }
+      },
+      {
+        "answer": "Marker ready.",
+        "files": {
+          "crossing.svg": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjMiLz48L3N2Zz4K",
+          "scratch.md": "VW5zaWduZWQgaW50ZXJuYWwgZGVzaWduIG5vdGUuCg=="
+        }
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "placard",
+    "request": "Save placard.md with the title Copper plate and the shelf name Cedar.",
+    "seats": [
+      {
+        "answer": "Catalogue label prepared.",
+        "files": {
+          "placard.md": "IyBDb3BwZXIgcGxhdGUKU2hlbGY6IENlZGFyCg=="
+        }
+      },
+      {
+        "answer": "",
+        "files": {}
+      },
+      {
+        "answer": "",
+        "files": {}
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "settings",
+    "request": "Save kettle.toml with quiet enabled and the audible beep disabled.",
+    "seats": [
+      {
+        "answer": "Settings ready.",
+        "files": {
+          "kettle.toml": "cXVpZXQgPSB0cnVlCmJlZXAgPSB0cnVlCg=="
+        }
+      },
+      {
+        "answer": "Settings ready.",
+        "files": {
+          "kettle.toml": "cXVpZXQgPSB0cnVlCmJlZXAgPSB0cnVlCg=="
+        }
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "split-bundle",
+    "request": "Write entrance.html and welcome.txt. The heading names North Hall. The note reads Welcome team.",
+    "seats": [
+      {
+        "answer": "Entrance prepared.",
+        "files": {
+          "entrance.html": "PGgxPk5vcnRoIEhhbGw8L2gxPgo="
+        }
+      },
+      {
+        "answer": "Note prepared.",
+        "files": {
+          "welcome.txt": "V2VsY29tZSB0ZWFtCg=="
+        }
+      },
+      {
+        "answer": "",
+        "files": {}
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "catalogue",
+    "request": "Save stock-card.json giving the material reed under mat and a count of 2.",
+    "seats": [
+      {
+        "answer": "Catalogue ready.",
+        "files": {
+          "stock-card.json": "eyJtYXQiOiJyZWVkIiwiY291bnQiOjJ9Cg=="
+        }
+      },
+      {
+        "answer": "Catalogue ready.",
+        "files": {
+          "stock-card.json": "ewogImNvdW50IjogMiwgIm1hdCI6ICJyZWVkIgp9Cg=="
+        }
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "one-wrong",
+    "request": "Write stops.txt, one stop per line, Pine then Moss then Ash.",
+    "seats": [
+      {
+        "answer": "Stops prepared.",
+        "files": {
+          "stops.txt": "UGluZQpBc2gKTW9zcwo="
+        }
+      },
+      {
+        "answer": "",
+        "files": {}
+      },
+      {
+        "answer": "",
+        "files": {}
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "ordered",
+    "request": "Save bays.tsv with columns bay,rank sorted by rank ascending. East has rank 4, West 1, South 2.",
+    "seats": [
+      {
+        "answer": "Ready.",
+        "files": {
+          "bays.tsv": "YmF5CXJhbmsKRWFzdAk0Cldlc3QJMQpTb3V0aAkyCg=="
+        }
+      },
+      {
+        "answer": "Ready.",
+        "files": {
+          "bays.tsv": "YmF5CXJhbmsKRWFzdAk0Cldlc3QJMQpTb3V0aAkyCg=="
+        }
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "stale",
+    "request": "Write counter.md with the heading Dispatch desk and the word Current.",
+    "seats": [
+      {
+        "answer": "No current file.",
+        "files": {}
+      },
+      {
+        "answer": "No current file.",
+        "files": {}
+      },
+      {
+        "answer": "",
+        "files": {}
+      }
+    ],
+    "stale": {
+      "counter.md": "IyBEaXNwYXRjaCBkZXNrClByZXZpb3VzIHRlbmFudAo="
+    }
+  },
+  {
+    "id": "byproducts",
+    "request": "Save gate.txt with the words Red gate. Do not save notes.md.",
+    "seats": [
+      {
+        "answer": "Gate ready.",
+        "files": {
+          "gate.txt": "UmVkIGdhdGUK",
+          "notes.md": "ZHJ5IHJ1bgo=",
+          "task_data.txt": "aW5wdXQgc2lkZWNhcgo="
+        }
+      },
+      {
+        "answer": "Gate ready.",
+        "files": {
+          "gate.txt": "UmVkIGdhdGUK",
+          "notes.md": "ZHJhZnQgZnJvbSBwZWVyCg=="
+        }
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "packet",
+    "request": "Create herbs.zip containing recipe.txt with Dill then Mint, and readme.txt with Herb list.",
+    "seats": [
+      {
+        "answer": "Packet complete.",
+        "files": {
+          "herbs.zip": "UEsDBBQAAAAAAMBTBVfn31DhCgAAAAoAAAAKAAAAcmVjaXBlLnR4dERpbGwKTWludApQSwMEFAAAAAAAwFMFV/6EPmoKAAAACgAAAAoAAAByZWFkbWUudHh0SGVyYiBsaXN0ClBLAQIUAxQAAAAAAMBTBVfn31DhCgAAAAoAAAAKAAAAAAAAAAAAAACAAQAAAAByZWNpcGUudHh0UEsBAhQDFAAAAAAAwFMFV/6EPmoKAAAACgAAAAoAAAAAAAAAAAAAAIABMgAAAHJlYWRtZS50eHRQSwUGAAAAAAIAAgBwAAAAZAAAAAAA"
+        }
+      },
+      {
+        "answer": "Packet available.",
+        "files": {
+          "herbs.zip": "UEsDBBQAAAAAAMBTBVfn31DhCgAAAAoAAAAKAAAAcmVjaXBlLnR4dERpbGwKTWludApQSwMEFAAAAAAAwFMFV9d59gIHAAAABwAAAAoAAAByZWFkbWUudHh0RXJyYXRhClBLAQIUAxQAAAAAAMBTBVfn31DhCgAAAAoAAAAKAAAAAAAAAAAAAACAAQAAAAByZWNpcGUudHh0UEsBAhQDFAAAAAAAwFMFV9d59gIHAAAABwAAAAoAAAAAAAAAAAAAAIABMgAAAHJlYWRtZS50eHRQSwUGAAAAAAIAAgBwAAAAYQAAAAAA"
+        }
+      },
+      {
+        "answer": "",
+        "files": {}
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "complete-bundle",
+    "request": "Save theme.toml and edition.md. Set color to azure and mark the sample book Edition A.",
+    "seats": [
+      {
+        "answer": "",
+        "files": {
+          "theme.toml": "Y29sb3IgPSAiYXp1cmUiCg==",
+          "edition.md": "IyBTYW1wbGUgYm9vawpFZGl0aW9uIEEK"
+        }
+      },
+      {
+        "answer": "",
+        "files": {}
+      },
+      {
+        "answer": "",
+        "files": {}
+      }
+    ],
+    "stale": {}
+  },
+  {
+    "id": "read-only",
+    "request": "Tell me the single word Cedar. No file delivery is needed.",
+    "seats": [
+      {
+        "answer": "Cedar",
+        "files": {
+          "spare.txt": "V29ya2VyIG5vdGUsIHVucmVxdWVzdGVkLgo="
+        }
+      },
+      {
+        "answer": "Cedar",
+        "files": {
+          "spare.txt": "RGlmZmVyZW50IG5vdGUuCg=="
+        }
+      }
+    ],
+    "stale": {}
+  }
+]

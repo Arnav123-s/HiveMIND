@@ -1,0 +1,23 @@
+{
+  "first_source_sha256": "42635401038b4122dd8553e71c97e70b1ea672e25b4f8d823765d59c8a99b9a4",
+  "first_result_sha256": "396b94fcd7dbc6034ff24272bc9b9fa43657b15e68f8e442a494049b6d770c61",
+  "review_source_sha256": "af21aea1144b6c55cb5bb23caa42b05bdb334ba095b07a31fb3458fb64d34546",
+  "review_result_sha256": "02dfac356a70615d4fc7f0f5b38ef01696454dc397616bcfa2f08a1d4ebc293d",
+  "fields_different": [
+    "candidate_sha256"
+  ],
+  "summary": {
+    "stock_grades": {
+      "correct": 4,
+      "withheld": 6,
+      "wrong": 2
+    },
+    "total_seats": 40,
+    "raw_blobs": 18,
+    "archived_named_blobs": 0,
+    "retained": 18,
+    "exact_captures": 12,
+    "updated_archive_named_blobs": 18,
+    "archived_manifests": 11
+  }
+}

@@ -1,0 +1,1390 @@
+{
+  "stock_commit": "4cbd41cb2e27d263f102801c0a7a008268d0b1aa",
+  "proposed_workflow_sha256": "e6695114b470bda20d72e4937e8ce76de6643c6aa35795e436c58129edc78120",
+  "stock_solo_sha256": "afc881f1750d9ba360348ea8ec5abcbf66704d9b4259656625b8b1cc5c4da0f7",
+  "candidate_sha256": "42635401038b4122dd8553e71c97e70b1ea672e25b4f8d823765d59c8a99b9a4",
+  "archive_patterns": [
+    "runs/exam/**/TASK.md",
+    "runs/exam/**/REPORT.md",
+    "runs/exam/**/exam.json",
+    "runs/exam/**/events.jsonl",
+    "runs/exam/**/member*_*.py",
+    "runs/exam/**/.member*_*.py.out",
+    "runs/exam/**/.member*_*.py.err",
+    "runs/exam/server-logs/*.log"
+  ],
+  "summary": {
+    "stock_grades": {
+      "correct": 4,
+      "withheld": 6,
+      "wrong": 2
+    },
+    "total_seats": 40,
+    "raw_blobs": 18,
+    "archived_named_blobs": 0,
+    "retained": 18,
+    "exact_captures": 12,
+    "updated_archive_named_blobs": 18,
+    "archived_manifests": 11
+  },
+  "cases": [
+    {
+      "id": "sign",
+      "requested": [
+        "crossing.svg"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/sign/members/work",
+          "artifacts": {
+            "crossing.svg": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/sign/members/member2",
+          "artifacts": {
+            "crossing.svg": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040"
+          },
+          "missing": []
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/sign/REPORT.md",
+        "runs/exam/cohort/sign/members/REPORT.md",
+        "runs/exam/cohort/sign/members/TASK.md",
+        "runs/exam/cohort/sign/members/events.jsonl",
+        "runs/exam/cohort/sign/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/sign/members/member2/member2_1.py",
+        "runs/exam/cohort/sign/members/work/.member1_1.py.out",
+        "runs/exam/cohort/sign/members/work/member1_1.py"
+      ],
+      "stock_published": {
+        "crossing.svg": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040"
+      },
+      "stock_grade": "correct",
+      "stock_agreed": true,
+      "stock_selected_seat": 1,
+      "stock_files": [
+        "crossing.svg"
+      ],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [
+        1,
+        2
+      ],
+      "retained": {
+        "seat-1/artifacts/crossing.svg": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040",
+        "seat-2/artifacts/crossing.svg": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/crossing.svg",
+        "seat-2/artifacts/crossing.svg"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "9bb488b66ba82fa8f80617067a80ba77d407f0a4112fa4529beae7070ec2485f",
+        "requested": [
+          "crossing.svg"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "crossing.svg": {
+                "status": "archived",
+                "sha256": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040",
+                "bytes": 96,
+                "path": "seat-1/artifacts/crossing.svg",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "crossing.svg": {
+                "status": "archived",
+                "sha256": "bfc183ad34cf9b8e37122deb762276385f6205fa554f3cd4e3e17ddd56347040",
+                "bytes": 96,
+                "path": "seat-2/artifacts/crossing.svg",
+                "matched_submission_hash": true
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "placard",
+      "requested": [
+        "placard.md"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/placard/members/work",
+          "artifacts": {
+            "placard.md": "e58ffb51bffe7bd88bedb5d31c4ffc84594c33e65662fe01c439d8ac1e38e0fe"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/placard/members/member2",
+          "artifacts": {},
+          "missing": [
+            "placard.md"
+          ]
+        },
+        {
+          "seat": 3,
+          "work": "runs/exam/cohort/placard/members/member3",
+          "artifacts": {},
+          "missing": [
+            "placard.md"
+          ]
+        },
+        {
+          "seat": 4,
+          "work": "runs/exam/cohort/placard/members/member4",
+          "artifacts": {},
+          "missing": [
+            "placard.md"
+          ]
+        },
+        {
+          "seat": 5,
+          "work": "runs/exam/cohort/placard/members/member5",
+          "artifacts": {},
+          "missing": [
+            "placard.md"
+          ]
+        }
+      ],
+      "eligible_raw_blobs": 1,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/placard/members/REPORT.md",
+        "runs/exam/cohort/placard/members/TASK.md",
+        "runs/exam/cohort/placard/members/events.jsonl",
+        "runs/exam/cohort/placard/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/placard/members/member2/member2_1.py",
+        "runs/exam/cohort/placard/members/member3/.member3_1.py.out",
+        "runs/exam/cohort/placard/members/member3/member3_1.py",
+        "runs/exam/cohort/placard/members/member4/.member4_1.py.out",
+        "runs/exam/cohort/placard/members/member4/member4_1.py",
+        "runs/exam/cohort/placard/members/member5/.member5_1.py.out",
+        "runs/exam/cohort/placard/members/member5/member5_1.py",
+        "runs/exam/cohort/placard/members/work/.member1_1.py.out",
+        "runs/exam/cohort/placard/members/work/member1_1.py"
+      ],
+      "stock_published": {},
+      "stock_grade": "withheld",
+      "stock_agreed": false,
+      "stock_selected_seat": null,
+      "stock_files": [],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [
+        1
+      ],
+      "retained": {
+        "seat-1/artifacts/placard.md": "e58ffb51bffe7bd88bedb5d31c4ffc84594c33e65662fe01c439d8ac1e38e0fe"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/placard.md"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "e3a1a1a1ea6331b9b418c7a6b18f1e7ba056eb4627dd764a4ceb7220e239e0e9",
+        "requested": [
+          "placard.md"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "placard.md": {
+                "status": "archived",
+                "sha256": "e58ffb51bffe7bd88bedb5d31c4ffc84594c33e65662fe01c439d8ac1e38e0fe",
+                "bytes": 28,
+                "path": "seat-1/artifacts/placard.md",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "placard.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 3,
+            "files": {
+              "placard.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 4,
+            "files": {
+              "placard.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 5,
+            "files": {
+              "placard.md": {
+                "status": "missing"
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 1,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "settings",
+      "requested": [
+        "kettle.toml"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/settings/members/work",
+          "artifacts": {
+            "kettle.toml": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/settings/members/member2",
+          "artifacts": {
+            "kettle.toml": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d"
+          },
+          "missing": []
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/settings/REPORT.md",
+        "runs/exam/cohort/settings/members/REPORT.md",
+        "runs/exam/cohort/settings/members/TASK.md",
+        "runs/exam/cohort/settings/members/events.jsonl",
+        "runs/exam/cohort/settings/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/settings/members/member2/member2_1.py",
+        "runs/exam/cohort/settings/members/work/.member1_1.py.out",
+        "runs/exam/cohort/settings/members/work/member1_1.py"
+      ],
+      "stock_published": {
+        "kettle.toml": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d"
+      },
+      "stock_grade": "wrong",
+      "stock_agreed": true,
+      "stock_selected_seat": 1,
+      "stock_files": [
+        "kettle.toml"
+      ],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [],
+      "retained": {
+        "seat-1/artifacts/kettle.toml": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d",
+        "seat-2/artifacts/kettle.toml": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/kettle.toml",
+        "seat-2/artifacts/kettle.toml"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "173db9de93ef912dd0a73080b3eb98d8c5166bb45ce2c6cbdc3031b7f52a5d5e",
+        "requested": [
+          "kettle.toml"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "kettle.toml": {
+                "status": "archived",
+                "sha256": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d",
+                "bytes": 25,
+                "path": "seat-1/artifacts/kettle.toml",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "kettle.toml": {
+                "status": "archived",
+                "sha256": "f9cdc40758c4b97befdd6d8a60f972c00c2b411581c3ea306b52cae71a13a89d",
+                "bytes": 25,
+                "path": "seat-2/artifacts/kettle.toml",
+                "matched_submission_hash": true
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "split-bundle",
+      "requested": [
+        "entrance.html",
+        "welcome.txt"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/split-bundle/members/work",
+          "artifacts": {
+            "entrance.html": "0652da2a99302537ec4b1beb9475fd79b593eb96c5a5c42ede4cb74a37b95a1f"
+          },
+          "missing": [
+            "welcome.txt"
+          ]
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/split-bundle/members/member2",
+          "artifacts": {
+            "welcome.txt": "3b560d5629a10272cbf0943db46ce96f714502e38d8e935ee80930d697994dfc"
+          },
+          "missing": [
+            "entrance.html"
+          ]
+        },
+        {
+          "seat": 3,
+          "work": "runs/exam/cohort/split-bundle/members/member3",
+          "artifacts": {},
+          "missing": [
+            "entrance.html",
+            "welcome.txt"
+          ]
+        },
+        {
+          "seat": 4,
+          "work": "runs/exam/cohort/split-bundle/members/member4",
+          "artifacts": {},
+          "missing": [
+            "entrance.html",
+            "welcome.txt"
+          ]
+        },
+        {
+          "seat": 5,
+          "work": "runs/exam/cohort/split-bundle/members/member5",
+          "artifacts": {},
+          "missing": [
+            "entrance.html",
+            "welcome.txt"
+          ]
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/split-bundle/members/REPORT.md",
+        "runs/exam/cohort/split-bundle/members/TASK.md",
+        "runs/exam/cohort/split-bundle/members/events.jsonl",
+        "runs/exam/cohort/split-bundle/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/split-bundle/members/member2/member2_1.py",
+        "runs/exam/cohort/split-bundle/members/member3/.member3_1.py.out",
+        "runs/exam/cohort/split-bundle/members/member3/member3_1.py",
+        "runs/exam/cohort/split-bundle/members/member4/.member4_1.py.out",
+        "runs/exam/cohort/split-bundle/members/member4/member4_1.py",
+        "runs/exam/cohort/split-bundle/members/member5/.member5_1.py.out",
+        "runs/exam/cohort/split-bundle/members/member5/member5_1.py",
+        "runs/exam/cohort/split-bundle/members/work/.member1_1.py.out",
+        "runs/exam/cohort/split-bundle/members/work/member1_1.py"
+      ],
+      "stock_published": {},
+      "stock_grade": "withheld",
+      "stock_agreed": false,
+      "stock_selected_seat": null,
+      "stock_files": [],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [],
+      "retained": {
+        "seat-1/artifacts/entrance.html": "0652da2a99302537ec4b1beb9475fd79b593eb96c5a5c42ede4cb74a37b95a1f",
+        "seat-2/artifacts/welcome.txt": "3b560d5629a10272cbf0943db46ce96f714502e38d8e935ee80930d697994dfc"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/entrance.html",
+        "seat-2/artifacts/welcome.txt"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "139a174a01d1f9508f964593ec8954b1b1cf99c0ac9d4c31bc498dacebb79329",
+        "requested": [
+          "entrance.html",
+          "welcome.txt"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "entrance.html": {
+                "status": "archived",
+                "sha256": "0652da2a99302537ec4b1beb9475fd79b593eb96c5a5c42ede4cb74a37b95a1f",
+                "bytes": 20,
+                "path": "seat-1/artifacts/entrance.html",
+                "matched_submission_hash": true
+              },
+              "welcome.txt": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "entrance.html": {
+                "status": "missing"
+              },
+              "welcome.txt": {
+                "status": "archived",
+                "sha256": "3b560d5629a10272cbf0943db46ce96f714502e38d8e935ee80930d697994dfc",
+                "bytes": 13,
+                "path": "seat-2/artifacts/welcome.txt",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 3,
+            "files": {
+              "entrance.html": {
+                "status": "missing"
+              },
+              "welcome.txt": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 4,
+            "files": {
+              "entrance.html": {
+                "status": "missing"
+              },
+              "welcome.txt": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 5,
+            "files": {
+              "entrance.html": {
+                "status": "missing"
+              },
+              "welcome.txt": {
+                "status": "missing"
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "catalogue",
+      "requested": [
+        "stock-card.json"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/catalogue/members/work",
+          "artifacts": {
+            "stock-card.json": "2768499afd094b2d2bc5ba8f44b14735ebae0ffe483e7605f46de9988e8fd9d7"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/catalogue/members/member2",
+          "artifacts": {
+            "stock-card.json": "1ab7038d63c15bcbbcd81c7fe52ec597e7323ed0a0621b0fb13f3c90c5c6b856"
+          },
+          "missing": []
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/catalogue/REPORT.md",
+        "runs/exam/cohort/catalogue/members/REPORT.md",
+        "runs/exam/cohort/catalogue/members/TASK.md",
+        "runs/exam/cohort/catalogue/members/events.jsonl",
+        "runs/exam/cohort/catalogue/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/catalogue/members/member2/member2_1.py",
+        "runs/exam/cohort/catalogue/members/work/.member1_1.py.out",
+        "runs/exam/cohort/catalogue/members/work/member1_1.py"
+      ],
+      "stock_published": {
+        "stock-card.json": "2768499afd094b2d2bc5ba8f44b14735ebae0ffe483e7605f46de9988e8fd9d7"
+      },
+      "stock_grade": "correct",
+      "stock_agreed": true,
+      "stock_selected_seat": 1,
+      "stock_files": [
+        "stock-card.json"
+      ],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [
+        1,
+        2
+      ],
+      "retained": {
+        "seat-1/artifacts/stock-card.json": "2768499afd094b2d2bc5ba8f44b14735ebae0ffe483e7605f46de9988e8fd9d7",
+        "seat-2/artifacts/stock-card.json": "1ab7038d63c15bcbbcd81c7fe52ec597e7323ed0a0621b0fb13f3c90c5c6b856"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/stock-card.json",
+        "seat-2/artifacts/stock-card.json"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "15b4cfe064ec6a47c172f2dc42d3da6b19422495d0c77534e3ff74d7f0cdcce8",
+        "requested": [
+          "stock-card.json"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "stock-card.json": {
+                "status": "archived",
+                "sha256": "2768499afd094b2d2bc5ba8f44b14735ebae0ffe483e7605f46de9988e8fd9d7",
+                "bytes": 25,
+                "path": "seat-1/artifacts/stock-card.json",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "stock-card.json": {
+                "status": "archived",
+                "sha256": "1ab7038d63c15bcbbcd81c7fe52ec597e7323ed0a0621b0fb13f3c90c5c6b856",
+                "bytes": 31,
+                "path": "seat-2/artifacts/stock-card.json",
+                "matched_submission_hash": true
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "one-wrong",
+      "requested": [
+        "stops.txt"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/one-wrong/members/work",
+          "artifacts": {
+            "stops.txt": "0795bc485a6f49a97c530e0d11bd314abde22bc5ca594369bc179f9383e03133"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/one-wrong/members/member2",
+          "artifacts": {},
+          "missing": [
+            "stops.txt"
+          ]
+        },
+        {
+          "seat": 3,
+          "work": "runs/exam/cohort/one-wrong/members/member3",
+          "artifacts": {},
+          "missing": [
+            "stops.txt"
+          ]
+        },
+        {
+          "seat": 4,
+          "work": "runs/exam/cohort/one-wrong/members/member4",
+          "artifacts": {},
+          "missing": [
+            "stops.txt"
+          ]
+        },
+        {
+          "seat": 5,
+          "work": "runs/exam/cohort/one-wrong/members/member5",
+          "artifacts": {},
+          "missing": [
+            "stops.txt"
+          ]
+        }
+      ],
+      "eligible_raw_blobs": 1,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/one-wrong/members/REPORT.md",
+        "runs/exam/cohort/one-wrong/members/TASK.md",
+        "runs/exam/cohort/one-wrong/members/events.jsonl",
+        "runs/exam/cohort/one-wrong/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/one-wrong/members/member2/member2_1.py",
+        "runs/exam/cohort/one-wrong/members/member3/.member3_1.py.out",
+        "runs/exam/cohort/one-wrong/members/member3/member3_1.py",
+        "runs/exam/cohort/one-wrong/members/member4/.member4_1.py.out",
+        "runs/exam/cohort/one-wrong/members/member4/member4_1.py",
+        "runs/exam/cohort/one-wrong/members/member5/.member5_1.py.out",
+        "runs/exam/cohort/one-wrong/members/member5/member5_1.py",
+        "runs/exam/cohort/one-wrong/members/work/.member1_1.py.out",
+        "runs/exam/cohort/one-wrong/members/work/member1_1.py"
+      ],
+      "stock_published": {},
+      "stock_grade": "withheld",
+      "stock_agreed": false,
+      "stock_selected_seat": null,
+      "stock_files": [],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [],
+      "retained": {
+        "seat-1/artifacts/stops.txt": "0795bc485a6f49a97c530e0d11bd314abde22bc5ca594369bc179f9383e03133"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/stops.txt"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "69e0aa451b98cc57e1fa092bbddab4e3b2907f4c9bc2991cf933e8d3f6cb77f1",
+        "requested": [
+          "stops.txt"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "stops.txt": {
+                "status": "archived",
+                "sha256": "0795bc485a6f49a97c530e0d11bd314abde22bc5ca594369bc179f9383e03133",
+                "bytes": 14,
+                "path": "seat-1/artifacts/stops.txt",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "stops.txt": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 3,
+            "files": {
+              "stops.txt": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 4,
+            "files": {
+              "stops.txt": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 5,
+            "files": {
+              "stops.txt": {
+                "status": "missing"
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 1,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "ordered",
+      "requested": [
+        "bays.tsv"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/ordered/members/work",
+          "artifacts": {
+            "bays.tsv": "33740af5aee0c46423548dfb42e6b98c24868413d5980b64af039bf9d1aef5fd"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/ordered/members/member2",
+          "artifacts": {
+            "bays.tsv": "33740af5aee0c46423548dfb42e6b98c24868413d5980b64af039bf9d1aef5fd"
+          },
+          "missing": []
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/ordered/REPORT.md",
+        "runs/exam/cohort/ordered/members/REPORT.md",
+        "runs/exam/cohort/ordered/members/TASK.md",
+        "runs/exam/cohort/ordered/members/events.jsonl",
+        "runs/exam/cohort/ordered/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/ordered/members/member2/member2_1.py",
+        "runs/exam/cohort/ordered/members/work/.member1_1.py.out",
+        "runs/exam/cohort/ordered/members/work/member1_1.py"
+      ],
+      "stock_published": {
+        "bays.tsv": "72ba151b248e5d04b9f9f4d7708a8783fbe9c0d6b5771e3c7f3b96217c64a1a5"
+      },
+      "stock_grade": "correct",
+      "stock_agreed": true,
+      "stock_selected_seat": 1,
+      "stock_files": [
+        "bays.tsv"
+      ],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [],
+      "retained": {
+        "seat-1/artifacts/bays.tsv": "33740af5aee0c46423548dfb42e6b98c24868413d5980b64af039bf9d1aef5fd",
+        "seat-2/artifacts/bays.tsv": "33740af5aee0c46423548dfb42e6b98c24868413d5980b64af039bf9d1aef5fd"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/bays.tsv",
+        "seat-2/artifacts/bays.tsv"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "c1445bb9dde5985511b36463f25f021425b65143cc8262ae619e0ffb2e534cf8",
+        "requested": [
+          "bays.tsv"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "bays.tsv": {
+                "status": "archived",
+                "sha256": "33740af5aee0c46423548dfb42e6b98c24868413d5980b64af039bf9d1aef5fd",
+                "bytes": 31,
+                "path": "seat-1/artifacts/bays.tsv",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "bays.tsv": {
+                "status": "archived",
+                "sha256": "33740af5aee0c46423548dfb42e6b98c24868413d5980b64af039bf9d1aef5fd",
+                "bytes": 31,
+                "path": "seat-2/artifacts/bays.tsv",
+                "matched_submission_hash": true
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "stale",
+      "requested": [
+        "counter.md"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/stale/members/member1-[isolated]",
+          "artifacts": {},
+          "missing": [
+            "counter.md"
+          ]
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/stale/members/member2",
+          "artifacts": {},
+          "missing": [
+            "counter.md"
+          ]
+        },
+        {
+          "seat": 3,
+          "work": "runs/exam/cohort/stale/members/member3",
+          "artifacts": {},
+          "missing": [
+            "counter.md"
+          ]
+        },
+        {
+          "seat": 4,
+          "work": "runs/exam/cohort/stale/members/member4",
+          "artifacts": {},
+          "missing": [
+            "counter.md"
+          ]
+        },
+        {
+          "seat": 5,
+          "work": "runs/exam/cohort/stale/members/member5",
+          "artifacts": {},
+          "missing": [
+            "counter.md"
+          ]
+        }
+      ],
+      "eligible_raw_blobs": 0,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/stale/members/REPORT.md",
+        "runs/exam/cohort/stale/members/TASK.md",
+        "runs/exam/cohort/stale/members/events.jsonl",
+        "runs/exam/cohort/stale/members/member1-[isolated]/.member1_1.py.out",
+        "runs/exam/cohort/stale/members/member1-[isolated]/member1_1.py",
+        "runs/exam/cohort/stale/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/stale/members/member2/member2_1.py",
+        "runs/exam/cohort/stale/members/member3/.member3_1.py.out",
+        "runs/exam/cohort/stale/members/member3/member3_1.py",
+        "runs/exam/cohort/stale/members/member4/.member4_1.py.out",
+        "runs/exam/cohort/stale/members/member4/member4_1.py",
+        "runs/exam/cohort/stale/members/member5/.member5_1.py.out",
+        "runs/exam/cohort/stale/members/member5/member5_1.py"
+      ],
+      "stock_published": {},
+      "stock_grade": "withheld",
+      "stock_agreed": false,
+      "stock_selected_seat": null,
+      "stock_files": [],
+      "stale_visible_without_claim": [
+        "counter.md"
+      ],
+      "raw_complete_correct_seats": [],
+      "retained": {},
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "e5a2ccbe61c1bec77dcc1caa74220000189a9c9f95c22aa622b7383dfbfd68aa",
+        "requested": [
+          "counter.md"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "counter.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "counter.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 3,
+            "files": {
+              "counter.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 4,
+            "files": {
+              "counter.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 5,
+            "files": {
+              "counter.md": {
+                "status": "missing"
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 0,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "byproducts",
+      "requested": [
+        "gate.txt"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/byproducts/members/work",
+          "artifacts": {
+            "gate.txt": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/byproducts/members/member2",
+          "artifacts": {
+            "gate.txt": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a"
+          },
+          "missing": []
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/byproducts/REPORT.md",
+        "runs/exam/cohort/byproducts/members/REPORT.md",
+        "runs/exam/cohort/byproducts/members/TASK.md",
+        "runs/exam/cohort/byproducts/members/events.jsonl",
+        "runs/exam/cohort/byproducts/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/byproducts/members/member2/member2_1.py",
+        "runs/exam/cohort/byproducts/members/work/.member1_1.py.out",
+        "runs/exam/cohort/byproducts/members/work/member1_1.py"
+      ],
+      "stock_published": {
+        "gate.txt": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a"
+      },
+      "stock_grade": "correct",
+      "stock_agreed": true,
+      "stock_selected_seat": 1,
+      "stock_files": [
+        "gate.txt"
+      ],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [
+        1,
+        2
+      ],
+      "retained": {
+        "seat-1/artifacts/gate.txt": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a",
+        "seat-2/artifacts/gate.txt": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/gate.txt",
+        "seat-2/artifacts/gate.txt"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "07837694932fb66e80985f16969235bb9c68edccc5d3d559396edc4311303dfc",
+        "requested": [
+          "gate.txt"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "gate.txt": {
+                "status": "archived",
+                "sha256": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a",
+                "bytes": 9,
+                "path": "seat-1/artifacts/gate.txt",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "gate.txt": {
+                "status": "archived",
+                "sha256": "c752b5f269d5037ac969dcb7ff1105c52b11facea4077c23b2d77a7a86b3916a",
+                "bytes": 9,
+                "path": "seat-2/artifacts/gate.txt",
+                "matched_submission_hash": true
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "packet",
+      "requested": [
+        "herbs.zip"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/packet/members/work",
+          "artifacts": {
+            "herbs.zip": "127167f993678353256622554dc075f4a82aa367b570b8673b44f126ee9de6d1"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/packet/members/member2",
+          "artifacts": {
+            "herbs.zip": "c30d5a74eb7f8c9e9bd76b29f93a3c5d1c7a11c28d05703bb97cbd9fbbb2620e"
+          },
+          "missing": []
+        },
+        {
+          "seat": 3,
+          "work": "runs/exam/cohort/packet/members/member3",
+          "artifacts": {},
+          "missing": [
+            "herbs.zip"
+          ]
+        },
+        {
+          "seat": 4,
+          "work": "runs/exam/cohort/packet/members/member4",
+          "artifacts": {},
+          "missing": [
+            "herbs.zip"
+          ]
+        },
+        {
+          "seat": 5,
+          "work": "runs/exam/cohort/packet/members/member5",
+          "artifacts": {},
+          "missing": [
+            "herbs.zip"
+          ]
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/packet/members/REPORT.md",
+        "runs/exam/cohort/packet/members/TASK.md",
+        "runs/exam/cohort/packet/members/events.jsonl",
+        "runs/exam/cohort/packet/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/packet/members/member2/member2_1.py",
+        "runs/exam/cohort/packet/members/member3/.member3_1.py.out",
+        "runs/exam/cohort/packet/members/member3/member3_1.py",
+        "runs/exam/cohort/packet/members/member4/.member4_1.py.out",
+        "runs/exam/cohort/packet/members/member4/member4_1.py",
+        "runs/exam/cohort/packet/members/member5/.member5_1.py.out",
+        "runs/exam/cohort/packet/members/member5/member5_1.py",
+        "runs/exam/cohort/packet/members/work/.member1_1.py.out",
+        "runs/exam/cohort/packet/members/work/member1_1.py"
+      ],
+      "stock_published": {},
+      "stock_grade": "withheld",
+      "stock_agreed": false,
+      "stock_selected_seat": null,
+      "stock_files": [],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [
+        1
+      ],
+      "retained": {
+        "seat-1/artifacts/herbs.zip": "127167f993678353256622554dc075f4a82aa367b570b8673b44f126ee9de6d1",
+        "seat-2/artifacts/herbs.zip": "c30d5a74eb7f8c9e9bd76b29f93a3c5d1c7a11c28d05703bb97cbd9fbbb2620e"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/herbs.zip",
+        "seat-2/artifacts/herbs.zip"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "f20dc92c77fe46604d8b369c268f887037b64853edd752291481cd800168dc09",
+        "requested": [
+          "herbs.zip"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "herbs.zip": {
+                "status": "archived",
+                "sha256": "127167f993678353256622554dc075f4a82aa367b570b8673b44f126ee9de6d1",
+                "bytes": 234,
+                "path": "seat-1/artifacts/herbs.zip",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "herbs.zip": {
+                "status": "archived",
+                "sha256": "c30d5a74eb7f8c9e9bd76b29f93a3c5d1c7a11c28d05703bb97cbd9fbbb2620e",
+                "bytes": 231,
+                "path": "seat-2/artifacts/herbs.zip",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 3,
+            "files": {
+              "herbs.zip": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 4,
+            "files": {
+              "herbs.zip": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 5,
+            "files": {
+              "herbs.zip": {
+                "status": "missing"
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "complete-bundle",
+      "requested": [
+        "theme.toml",
+        "edition.md"
+      ],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/complete-bundle/members/work",
+          "artifacts": {
+            "theme.toml": "28a7005a5bc5f77ce90c3c8d85eb6f3e9b5b7a899978dc3a4d313f39acffdf1c",
+            "edition.md": "3611ca38a44a4e8ea2798625904575ed319be6a91845c9f162bcd63d755d99fd"
+          },
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/complete-bundle/members/member2",
+          "artifacts": {},
+          "missing": [
+            "edition.md",
+            "theme.toml"
+          ]
+        },
+        {
+          "seat": 3,
+          "work": "runs/exam/cohort/complete-bundle/members/member3",
+          "artifacts": {},
+          "missing": [
+            "edition.md",
+            "theme.toml"
+          ]
+        }
+      ],
+      "eligible_raw_blobs": 2,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/complete-bundle/members/REPORT.md",
+        "runs/exam/cohort/complete-bundle/members/TASK.md",
+        "runs/exam/cohort/complete-bundle/members/events.jsonl",
+        "runs/exam/cohort/complete-bundle/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/complete-bundle/members/member2/member2_1.py",
+        "runs/exam/cohort/complete-bundle/members/member3/.member3_1.py.out",
+        "runs/exam/cohort/complete-bundle/members/member3/member3_1.py",
+        "runs/exam/cohort/complete-bundle/members/work/.member1_1.py.out",
+        "runs/exam/cohort/complete-bundle/members/work/member1_1.py"
+      ],
+      "stock_published": {},
+      "stock_grade": "withheld",
+      "stock_agreed": false,
+      "stock_selected_seat": null,
+      "stock_files": [],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [
+        1
+      ],
+      "retained": {
+        "seat-1/artifacts/edition.md": "3611ca38a44a4e8ea2798625904575ed319be6a91845c9f162bcd63d755d99fd",
+        "seat-1/artifacts/theme.toml": "28a7005a5bc5f77ce90c3c8d85eb6f3e9b5b7a899978dc3a4d313f39acffdf1c"
+      },
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [
+        "manifest.json",
+        "seat-1/artifacts/edition.md",
+        "seat-1/artifacts/theme.toml"
+      ],
+      "manifest": {
+        "purpose": "ungraded worker evidence",
+        "task_sha256": "ef17ef65e3dac37386ccdaed5b9fda9f8e69c7b94361f8470de4ae71ab209120",
+        "requested": [
+          "theme.toml",
+          "edition.md"
+        ],
+        "seats": [
+          {
+            "seat": 1,
+            "files": {
+              "theme.toml": {
+                "status": "archived",
+                "sha256": "28a7005a5bc5f77ce90c3c8d85eb6f3e9b5b7a899978dc3a4d313f39acffdf1c",
+                "bytes": 16,
+                "path": "seat-1/artifacts/theme.toml",
+                "matched_submission_hash": true
+              },
+              "edition.md": {
+                "status": "archived",
+                "sha256": "3611ca38a44a4e8ea2798625904575ed319be6a91845c9f162bcd63d755d99fd",
+                "bytes": 24,
+                "path": "seat-1/artifacts/edition.md",
+                "matched_submission_hash": true
+              }
+            }
+          },
+          {
+            "seat": 2,
+            "files": {
+              "theme.toml": {
+                "status": "missing"
+              },
+              "edition.md": {
+                "status": "missing"
+              }
+            }
+          },
+          {
+            "seat": 3,
+            "files": {
+              "theme.toml": {
+                "status": "missing"
+              },
+              "edition.md": {
+                "status": "missing"
+              }
+            }
+          }
+        ]
+      },
+      "uploaded_captured_blobs": 2,
+      "uploaded_manifest": true
+    },
+    {
+      "id": "read-only",
+      "requested": [],
+      "seats": [
+        {
+          "seat": 1,
+          "work": "runs/exam/cohort/read-only/members/work",
+          "artifacts": {},
+          "missing": []
+        },
+        {
+          "seat": 2,
+          "work": "runs/exam/cohort/read-only/members/member2",
+          "artifacts": {},
+          "missing": []
+        }
+      ],
+      "eligible_raw_blobs": 0,
+      "original_archived_named_blobs": 0,
+      "original_archive_entries": [
+        "runs/exam/cohort/read-only/REPORT.md",
+        "runs/exam/cohort/read-only/members/REPORT.md",
+        "runs/exam/cohort/read-only/members/TASK.md",
+        "runs/exam/cohort/read-only/members/events.jsonl",
+        "runs/exam/cohort/read-only/members/member2/.member2_1.py.out",
+        "runs/exam/cohort/read-only/members/member2/member2_1.py",
+        "runs/exam/cohort/read-only/members/work/.member1_1.py.out",
+        "runs/exam/cohort/read-only/members/work/member1_1.py"
+      ],
+      "stock_published": {
+        "spare.txt": "7c345f418314f4491834b01054df5420614f43e0654ca091b04550c5f7abc078"
+      },
+      "stock_grade": "wrong",
+      "stock_agreed": true,
+      "stock_selected_seat": null,
+      "stock_files": [
+        "spare.txt"
+      ],
+      "stale_visible_without_claim": [],
+      "raw_complete_correct_seats": [],
+      "retained": {},
+      "verified_retention": true,
+      "no_new_publication": true,
+      "evidence_files": [],
+      "uploaded_captured_blobs": 0,
+      "uploaded_manifest": false
+    }
+  ]
+}

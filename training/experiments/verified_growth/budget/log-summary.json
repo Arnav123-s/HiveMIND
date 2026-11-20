@@ -1,0 +1,36 @@
+{
+  "g51": {
+    "successful_log_count": 18,
+    "ended_at_time_limit": 18,
+    "passes_range": [
+      35,
+      1106
+    ],
+    "eligible_range": [
+      1755,
+      3235
+    ],
+    "median_passes_per_eligible": 0.1197,
+    "fewer_passes_than_half_the_available_rows": 18,
+    "median_initial_reference_check_min": 17.767,
+    "median_setup_initial_check_and_equal_reserve_min": 64.295,
+    "would_have_no_update_window_with_unchanged_setup_and_equal_reserve": 18
+  },
+  "g52": {
+    "successful_log_count": 17,
+    "ended_at_time_limit": 17,
+    "passes_range": [
+      32,
+      1161
+    ],
+    "eligible_range": [
+      1759,
+      3437
+    ],
+    "median_passes_per_eligible": 0.0998,
+    "fewer_passes_than_half_the_available_rows": 17,
+    "median_initial_reference_check_min": 17.55,
+    "median_setup_initial_check_and_equal_reserve_min": 62.373,
+    "would_have_no_update_window_with_unchanged_setup_and_equal_reserve": 11
+  }
+}
