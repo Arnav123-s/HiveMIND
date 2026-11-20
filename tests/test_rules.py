@@ -1804,6 +1804,7 @@ def test_members_that_each_do_the_whole_task_agree_or_no_answer_is_given(tmp_pat
 def test_an_answer_to_a_task_of_several_parts_is_agreed_only_with_every_heading(tmp_path, monkeypatch):
     """g28's practice: members wrote '# PART A' as a comment, two agreed on values printed with no heading, and the
     agreed answer failed every part. Agreement counts only once an agreeing answer carries every heading."""
+    monkeypatch.setenv("HIVE_BY_PART", "0")  # the whole-task path (team/by_part.py is the default for tasks of parts)
     from team import parts, solo
     task = parts.join(["Multiply 13 by 5.", "Write 'garden' backwards."])
     bare = "# PART A\nprint(13 * 5)\n# PART B\nprint('garden'[::-1])"

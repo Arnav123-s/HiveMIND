@@ -27,6 +27,7 @@ import json
 import os
 import re
 import signal
+import sys
 import time
 import tempfile
 import contextlib
@@ -841,11 +842,21 @@ class Capped(BaseException):
     nothing in a member's work may swallow it."""
 
 
-_CAP = {"hit": False, "live": False}
+_CAP = {"hit": False, "live": False, "term": False}
+
+
+def _on_share(sig, frame):
+    """SIGALRM: the time share of one part of a task of several parts (team/by_part.py) is used up. Like the cap, but
+    only for the part in hand."""
+    _CAP["hit"] = True
+    if _CAP["live"]:
+        _CAP["live"] = False
+        raise Capped()
 
 
 def _on_cap(sig, frame):
     _CAP["hit"] = True
+    _CAP["term"] = True
     if _CAP["live"]:
         _CAP["live"] = False
         raise Capped()
@@ -861,7 +872,7 @@ def capping():
     except ValueError:  # not the main thread: no cap to hear
         yield
         return
-    _CAP["hit"] = False
+    _CAP["hit"] = _CAP["term"] = False
     try:
         yield
     finally:
@@ -871,6 +882,9 @@ def capping():
 
 def run(task, run_dir=None, approve="never", members=2):
     with capping():
+        from . import by_part
+        if by_part.split(task):  # several parts: each worked as a task of its own, with its share of the time
+            return by_part.run(task, _home(run_dir), approve, members, sys.modules[__name__])
         return _run(task, run_dir, approve, members)
 
 
@@ -1033,6 +1047,7 @@ def _run(task, run_dir=None, approve="never", members=2):
                         selected_member=next((i for i, t in enumerate(tries, 1) if t is agreed), None))
     (home / "members.json").write_text(json.dumps(decision))
     result = {"dir": str(home), "report": text, "agreed": bool(agreed), "tries": len(tries), "pending_approvals": guard.pending,
+              "answer": agreed["answer"] if agreed else "",
               "work": selected_work if agreed else str(work), "requested_files": names, "file_repairs": file_repairs}
     if names and agreed:
         result["delivery"] = selected_delivery
