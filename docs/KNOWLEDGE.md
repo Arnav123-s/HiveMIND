@@ -259,6 +259,8 @@ flowchart LR
     f_modulestring["Members wrote a module as f.write() strings and broke their own quotes"]:::open
     f_g48practicecauses["New kinds' first try is lost to the time cap, a guard word in data, doubled part headings and retyped data"]:::fixed
     f_heldoutnear["Never-taught kinds fail mostly near a pass: shape, a pasted template, a helper overwritten"]:::open
+    f_archivedceiling["The existing workers supply fewer than five unseen kinds"]:::open
+    f_semanticcolumn["A typed calculation can bind the wrong column"]:::open
   end
   subgraph p_sandbox["sandbox.py (A)"]
     f_given["Data written in the task was opened as a file that does not exist"]:::fixed
@@ -280,6 +282,7 @@ flowchart LR
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
     f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::fixed
     f_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::fixed
+    f_rowclock["Halving the eligible rows leaves the training clock running"]:::open
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
@@ -357,6 +360,9 @@ flowchart LR
   f_g48practicecauses -->|blocked| confirm
   f_k2nolessons -->|blocked| hardkinds
   f_heldoutnear -->|blocks| hardkinds
+  f_archivedceiling -->|blocks| hardkinds
+  f_rowclock -->|blocks| slowgeneration
+  f_semanticcolumn -->|blocks| reasoning
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -378,7 +384,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (7 open, 53 fixed)
+## Causes found (10 open, 53 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -389,6 +395,9 @@ flowchart LR
 | A cell can pass the job while the hive withholds the file | `training/exam.py` |  | open | The recorder now counts both grades on the same jobs and reports coverage. | In four G47 hard jobs exactly one member passed and the hive abstained. In twelve others all members failed. All 16 grade archives were verified in training/reports/checked-delivery/g47-headroom.json. |
 | An unchanged score can hide old skills that a later hive loses | `training/exam.py` |  | open | The generation recorder now compares individual deliveries on identical prompts and exam revisions. | A task-category selector also scored 47 of 64. On specified invoice work orders, checking different saved methods against the current examples improved correct delivery decisions from 3 of 6 to 6 of 6. |
 | Never-taught kinds fail mostly near a pass: shape, a pasted template, a helper overwritten | `team/solo.py` |  | open | h1_causes.py over g51's held-after and gate-work-after artifacts, every failed task's last programs read. | lesson template `key, col = 'name', 'city'` pasted (int('Lima')), a one-value helper called twice with the second overwriting, dict or list dumped for asked lines; 3 tasks each, the same causes as g48's taught kinds. |
+| The existing workers supply fewer than five unseen kinds | `team/solo.py` |  | open | Fixed exam, G50–G52 before/after worker archives (verified_growth/release). | After G52 the body passed 0/10 kinds and its best available workers covered 1/10. Pooling every answer observed over six sittings could cover at most 4/10. |
+| Halving the eligible rows leaves the training clock running | `training/ternary_base.py` |  | open | All 35 successful G51 and G52 training jobs and both timing graphs (verified_growth/budget). | 35/35 successful slices exhausted the time budget. Even halving their growth steps and eliminating the failed-worker tail leaves 261 and 221 minutes on the two archived critical paths. |
+| A typed calculation can bind the wrong column | `team/solo.py` |  | open | Held-back English-to-CSV transfer questions and an inline-table control (verified_growth/transfer). | The frozen selector supplied numbers for two of three underspecified questions. One additional named-table control computed 21 occupied days as rent. An outside worked example helped on answerable tasks. |
 | A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` |  | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
 | Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` |  | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
 | A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` |  | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
@@ -464,6 +473,8 @@ flowchart LR
 - A CPU's name does not say what it can run: key anything built for a CPU by its instruction list.
 - Count the jobs a step makes against the 20 that run at once: one job over makes a second wave and hours more.
 - Judge whether a kind was learned on lessons kept out of training, read beside a kind never taught.
+- Before spending a generation on choosing workers, count how many whole unseen kinds could pass even if every observed correct worker were selected.
+- Estimate wall time from the slowest dependency chain. Count row passes and optimizer steps separately from eligible rows.
 
 ## Closed experiments
 

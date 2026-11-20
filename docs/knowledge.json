@@ -862,6 +862,33 @@
    "by": "h1_causes.py over g51's held-after and gate-work-after artifacts, every failed task's last programs read.",
    "seen": "lesson template `key, col = 'name', 'city'` pasted (int('Lima')), a one-value helper called twice with the second overwriting, dict or list dumped for asked lines; 3 tasks each, the same causes as g48's taught kinds.",
    "fix": "General fixes, never a held-out kind's lesson: a same-error hint for int() on a text column, the asked line labels checked before delivery (a helper on it)."
+  },
+  {
+   "id": "archivedceiling",
+   "title": "The existing workers supply fewer than five unseen kinds",
+   "lives_in": "members",
+   "blocks": "hardkinds",
+   "status": "open",
+   "by": "Fixed exam, G50–G52 before/after worker archives (verified_growth/release).",
+   "seen": "After G52 the body passed 0/10 kinds and its best available workers covered 1/10. Pooling every answer observed over six sittings could cover at most 4/10."
+  },
+  {
+   "id": "rowclock",
+   "title": "Halving the eligible rows leaves the training clock running",
+   "lives_in": "train",
+   "blocks": "slowgeneration",
+   "status": "open",
+   "by": "All 35 successful G51 and G52 training jobs and both timing graphs (verified_growth/budget).",
+   "seen": "35/35 successful slices exhausted the time budget. Even halving their growth steps and eliminating the failed-worker tail leaves 261 and 221 minutes on the two archived critical paths."
+  },
+  {
+   "id": "semanticcolumn",
+   "title": "A typed calculation can bind the wrong column",
+   "lives_in": "members",
+   "blocks": "reasoning",
+   "status": "open",
+   "by": "Held-back English-to-CSV transfer questions and an inline-table control (verified_growth/transfer).",
+   "seen": "The frozen selector supplied numbers for two of three underspecified questions. One additional named-table control computed 21 occupied days as rent. An outside worked example helped on answerable tasks."
   }
  ],
  "rules": [
@@ -959,6 +986,16 @@
    "id": "keepback",
    "rule": "Judge whether a kind was learned on lessons kept out of training, read beside a kind never taught.",
    "from": "keptback"
+  },
+  {
+   "id": "candidateceiling",
+   "rule": "Before spending a generation on choosing workers, count how many whole unseen kinds could pass even if every observed correct worker were selected.",
+   "from": "archivedceiling"
+  },
+  {
+   "id": "clockbudget",
+   "rule": "Estimate wall time from the slowest dependency chain. Count row passes and optimizer steps separately from eligible rows.",
+   "from": "rowclock"
   }
  ],
  "hive_loop": [
