@@ -407,14 +407,37 @@ def give(task, workdir, skip=()):
     return blocks
 
 
+def describe(text):
+    """The format of a block of task data, in words a member can act on: json, csv, tsv, markdown table, ini, or plain
+    text. g53: members were told only "a file", called json.load on an INI config and all stopped on the same
+    JSONDecodeError."""
+    t = (text or "").strip("\n")
+    lines = [x for x in t.splitlines() if x.strip()]
+    try:
+        json.loads(t)
+        return "JSON: read it with json.load(open(...))"
+    except ValueError:
+        pass
+    if len(lines) >= 2 and sum(x.strip().startswith("|") and x.strip().endswith("|") for x in lines) >= 0.8 * len(lines):
+        return "a markdown table: split each line on '|' and strip the cells; it is not JSON"
+    for name, d in (("TSV", "\t"), ("CSV", ",")):
+        counts = [x.count(d) for x in lines]
+        if len(lines) >= 2 and counts[0] >= 1 and sum(c == counts[0] for c in counts) >= 0.8 * len(lines):
+            return f"{name} text: read it with the csv module (delimiter {d!r}), it is not JSON"
+    if any(re.fullmatch(r"\s*\[[^\]]+\]\s*", x) for x in lines) and any("=" in x for x in lines):
+        return "INI-style text ([sections], key = value lines, comments): read it with open(...).read().splitlines(), it is not JSON"
+    return "plain text: read it with open(...).read().splitlines(), it is not JSON"
+
+
 def note(blocks):
     """What to tell a member about the data the TASK carries that is in a file for it: "" when there is none."""
-    files = [(b["file"], b["text"].count("\n") + 1) for b in (blocks or []) if b.get("file") and b["text"].count("\n") + 1 >= MANY_LINES]
+    files = [(b["file"], b["text"].count("\n") + 1, describe(b["text"])) for b in (blocks or [])
+             if b.get("file") and b["text"].count("\n") + 1 >= MANY_LINES]
     if not files:
         return ""
-    what = "; ".join(f"{f} ({n} lines)" for f, n in files)
+    what = "; ".join(f"{f} ({n} lines, {d})" for f, n, d in files)
     return (f"\n\nThe data this TASK gives is saved for you as a file in the current folder: {what}. Read it from there in your "
-            "program (open the file). Do not type the data out again by hand.")
+            "program (open the file) as the kind of text it is. Do not type the data out again by hand.")
 
 
 def http_errors(stderr):

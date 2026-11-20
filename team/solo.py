@@ -353,6 +353,30 @@ def overwrite_hint(code):
             "each call's result under its own name (or in a dict keyed by what it is for), and use all of them in the answer.")
 
 
+def data_file_hint(code, err):
+    """JSONDecodeError from reading the task's own data file (task_data*.txt): that file is text of another kind (g53:
+    INI and plain-text blocks, json.load on them, every member stopped on the same error). Words, or ''."""
+    if "JSONDecodeError" in (err or "") and re.search(r"task_data(?:_\d+)?\.txt", code or ""):
+        return ("That file (task_data.txt) is not JSON. Print its first lines (print(open('task_data.txt').read()[:400])) and parse "
+                "them as what they are: lines of text, sections and key = value lines, or delimited rows.")
+    return ""
+
+
+def syntax_hint(code, err):
+    """The same SyntaxError twice: show the line it points at and say what to do with it, or ''."""
+    m = re.search(r'line (\d+)\b', err or "")
+    if "SyntaxError" not in (err or "") or not m:
+        return ""
+    lines = (code or "").splitlines()
+    k = int(m.group(1))
+    if not 1 <= k <= len(lines):
+        return ""
+    line = lines[k - 1].strip()
+    opens, closes = sum(line.count(c) for c in "([{"), sum(line.count(c) for c in ")]}")
+    return (f"The same SyntaxError came back. It is in line {k}: {line!r}. That line has {opens} opening and {closes} closing "
+            "brackets: count them, and rewrite that one line (split it into two short lines if it is long) so each bracket closes once.")
+
+
 def number_hint(code, err):
     """When int() or float() fails on a word from the data (g51 x_h_edit_*: `int(r['city'])` after a lesson-like
     `key, col = 'name', 'city'`; every member stopped on the same ValueError): words for the member, or ''."""
@@ -522,10 +546,13 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
                 or ("```" not in reply and re.search(r"\bDONE\b", reply) is not None)
                 or (good is not None and code.strip() == good["program"].strip()))
         if said:
-            if good and form(task, good["answer"]) and not insisted:
+            again_form = (form(task, good["answer"]) or overwrite_hint(good["program"])) if good else ""
+            # (g53 h20000538_03: told its program overwrote a value, each member answered DONE and the twice-pasted
+            # template was delivered; the repair gets its one turn before the answer counts)
+            if good and again_form and not insisted:
                 insisted = True  # DONE straight after being told the form is not kept: told once more, then it stands
                 messages += [{"role": "assistant", "content": reply.strip()[:200]},
-                             {"role": "user", "content": form(task, good["answer"]) + " It is not done. Reply with the complete program that prints it that way."}]
+                             {"role": "user", "content": again_form + " It is not done. Reply with the complete program that fixes it."}]
                 continue
             if good:
                 break
@@ -649,6 +676,10 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         words = number_hint(code, err or out) if not stuck else ""
         if words:
             stuck = ("text_as_number", words)
+        for hname, words in (("data_not_json", data_file_hint(code, err or out)),
+                             ("syntax_twice", syntax_hint(code, err or out) if repeats >= 1 else "")):
+            if words and not stuck:
+                stuck = (hname, words)
         if stuck:
             helps(stuck[0])
         looking = not stuck and bool(LOOK.search(err or out)) and (reads or re.search(r"KeyError|NoneType|JSONDecodeError|\bkeys?\b|response|json|\bpage\b|column|field", err or out, re.I) is not None)
