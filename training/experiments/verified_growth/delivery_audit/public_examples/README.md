@@ -46,6 +46,15 @@ The alternative's six real candidate evaluations used ten guest invocations on 6
 
 An independently frozen, stricter parser checks that every written occurrence of a literal call survives normalization. On the same 90 archived attempts it rejected four of the ten supported cases (three with declines, one with an existing answer), retained six exact specifications (three declines, three already answered), and admitted no new specification. The retained specifications had identical file, symbols, ordered public expectations and query calls, so they could reuse the original program execution and private grades. Three of the five earlier gains survive: G50 Roman numerals in both bodies and the second G52 duration prompt in the after body. The stricter parser gives **29/90** passing archive attempts and **17/33** distinct prompt texts with at least one historical success. Only the G50 Roman prompt was newly covered. This comparison made no model or WASI calls. [Exact-specification comparison](guard.json) · [Source](equivalence.py) · [Frozen stricter parser](../literal_intake/lossless.py)
 
+The final control checks that the number of occurrences of each literal call in the original request equals the number represented by examples and final queries. It allows repetitions that are fully accounted for. Across the same 90 archived attempts it retained all ten of the first parser's specifications exactly, including six declined and four answered attempts. All five real recoveries and all six false lookup-only offers therefore carry over. [Multiplicity-only comparison](multiplicity.json) · [Frozen occurrence check](../literal_intake/multiplicity.py)
+
+| Grade across the same archive | Existing deliveries | Initial parser | Reject every repetition | Preserve accounted repetitions |
+| --- | ---: | ---: | ---: | ---: |
+| Passing attempts, including repeated bodies | 26/90 | 31/90 | 29/90 | 31/90 |
+| Unique prompts passing in any archived body | 16/33 | 18/33 | 17/33 | 18/33 |
+| Unique prompts passing in before bodies | 14/33 | 16/33 | 15/33 | 16/33 |
+| Unique prompts passing in after bodies | 12/33 | 15/33 | 14/33 | 15/33 |
+
 ## Reproduce the keyless pass
 
 ```sh
