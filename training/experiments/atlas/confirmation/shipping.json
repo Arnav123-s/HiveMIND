@@ -1,0 +1,226 @@
+[
+  {
+    "id": "light-pair",
+    "message": "Calculate the depot shipping fee for 0.172 kg and 0.196 kg",
+    "group": "kg None",
+    "per_bank": 430,
+    "mixed_bank": null
+  },
+  {
+    "id": "edge-over",
+    "message": "Calculate the depot shipping fee for 0.501 kg",
+    "group": "kg None",
+    "per_bank": 430,
+    "mixed_bank": 430
+  },
+  {
+    "id": "edge-match",
+    "message": "Calculate the depot shipping fee for 0.503 kg and 0.497 kg",
+    "group": "kg None",
+    "per_bank": 520,
+    "mixed_bank": null
+  },
+  {
+    "id": "combining",
+    "message": "Calculate the depot shipping fee for 1.117 kg and 0.071 kg and 2.555 kg using per-parcel rounding",
+    "group": "kg per-parcel",
+    "per_bank": 1150,
+    "mixed_bank": 1150
+  },
+  {
+    "id": "many",
+    "message": "Calculate the depot shipping fee for 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg and 0.037 kg using per-parcel rounding",
+    "group": "kg per-parcel",
+    "per_bank": 1690,
+    "mixed_bank": 1690
+  },
+  {
+    "id": "pooled-other",
+    "message": "Calculate the depot shipping fee for 0.199 kg and 0.202 kg using pooled rounding",
+    "group": "kg pooled",
+    "per_bank": null,
+    "mixed_bank": 340
+  },
+  {
+    "id": "policy-same",
+    "message": "Calculate the depot shipping fee for 1.500 kg and 0.500 kg using pooled rounding",
+    "group": "kg pooled",
+    "per_bank": null,
+    "mixed_bank": 610
+  },
+  {
+    "id": "upper-limit",
+    "message": "CALCULATE THE DEPOT SHIPPING FEE FOR 1000 KG USING PER-PARCEL ROUNDING?",
+    "group": "kg per-parcel",
+    "per_bank": 180250,
+    "mixed_bank": 180250
+  },
+  {
+    "id": "min-mass",
+    "message": "Calculate the depot shipping fee for 0.001 kg using per-parcel rounding.",
+    "group": "kg per-parcel",
+    "per_bank": 340,
+    "mixed_bank": 340
+  },
+  {
+    "id": "policy-over",
+    "message": "CALCULATE THE DEPOT SHIPPING FEE FOR 0.499 KG AND 0.009 KG USING POOLED ROUNDING?",
+    "group": "kg pooled",
+    "per_bank": null,
+    "mixed_bank": 430
+  },
+  {
+    "id": "same-agreement",
+    "message": "Calculate the depot shipping fee for 2.000 kg and 0.431 kg",
+    "group": "kg None",
+    "per_bank": 700,
+    "mixed_bank": 700
+  },
+  {
+    "id": "coarse",
+    "message": "Calculate the depot shipping fee for 0.2 kg and 1.8 kg and 2.5 kg using per-parcel rounding",
+    "group": "kg per-parcel",
+    "per_bank": 1150,
+    "mixed_bank": 1150
+  },
+  {
+    "id": "trail-zero",
+    "message": "Calculate the depot shipping fee for 0.030 kg and 0.7 kg using pooled rounding",
+    "group": "kg pooled",
+    "per_bank": null,
+    "mixed_bank": 430
+  },
+  {
+    "id": "one-each",
+    "message": "Calculate the depot shipping fee for 0.004 kg and 0.350 kg and 0.001 kg",
+    "group": "kg None",
+    "per_bank": 520,
+    "mixed_bank": null
+  },
+  {
+    "id": "zero",
+    "message": "Calculate the depot shipping fee for 0 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "negative",
+    "message": "Calculate the depot shipping fee for -0.645 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "sign",
+    "message": "Calculate the depot shipping fee for +0.511 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "micro",
+    "message": "Calculate the depot shipping fee for 0.0004 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "huge",
+    "message": "Calculate the depot shipping fee for 1000.001 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "leading-zero",
+    "message": "Calculate the depot shipping fee for 01.25 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "exponent",
+    "message": "Calculate the depot shipping fee for 2e-1 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "comma",
+    "message": "Calculate the depot shipping fee for 0,71 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "long",
+    "message": "Calculate the depot shipping fee for 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg and 0.091 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "price-not-action",
+    "message": "Calculate the depot shipping fee for 0.417 kg and tell me how long it takes",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "other-unit",
+    "message": "Calculate the depot shipping fee for 0.664 pounds",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "negation",
+    "message": "Calculate the depot shipping fee for 0.081 kg without using per-parcel rounding",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "mixed-tare",
+    "message": "Calculate the depot shipping fee for 0.701 kg including a box that weighs 0.101 kg, using net weight",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "ambiguous-or",
+    "message": "Calculate the depot shipping fee for 0.499 kg or 0.503 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "period-multiple",
+    "message": "Calculate the depot shipping fee for 0.455 kg. Also refund a past order.",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "estimate",
+    "message": "Calculate the depot shipping fee for approximately 0.386 kg",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "different-desk",
+    "message": "Calculate the airport luggage fee for 0.012 kg.",
+    "group": "unsupported",
+    "per_bank": null,
+    "mixed_bank": null
+  },
+  {
+    "id": "plain-control",
+    "message": "Run the saved method depot_shipping_fee on {\"grams\":[773,527]}",
+    "group": "original",
+    "per_bank": 610,
+    "mixed_bank": null
+  }
+]

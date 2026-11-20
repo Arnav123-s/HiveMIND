@@ -1,0 +1,314 @@
+[
+  {
+    "id": "rack-gcd",
+    "task": "What is the greatest common divisor of 336 and 462? Return just the integer.",
+    "gold": "42",
+    "group": "closed",
+    "replies": {
+      "coder_school": "21",
+      "untouched": "21",
+      "fast": "42",
+      "yicoder15bchat": "21"
+    }
+  },
+  {
+    "id": "digit-inventory",
+    "task": "Find the digit sum of 7906048. Print only the answer.",
+    "gold": "34",
+    "group": "closed",
+    "replies": {
+      "coder_school": "34",
+      "untouched": "33",
+      "fast": "34",
+      "yicoder15bchat": "33"
+    }
+  },
+  {
+    "id": "prime-ledger",
+    "task": "Compute the sum of primes from 61 through 79 inclusive. Return only the number.",
+    "gold": "351",
+    "group": "closed",
+    "replies": {
+      "coder_school": "272",
+      "untouched": "351",
+      "fast": "272",
+      "yicoder15bchat": "272"
+    }
+  },
+  {
+    "id": "prime-gap",
+    "task": "Sum the primes between 114 and 126 inclusive. Return just the integer.",
+    "gold": "0",
+    "group": "closed",
+    "replies": {
+      "coder_school": "127",
+      "untouched": "127",
+      "fast": "127",
+      "yicoder15bchat": "0"
+    }
+  },
+  {
+    "id": "part-factors",
+    "task": "What is the product of the positive divisors of 18? Return only the integer.",
+    "gold": "5832",
+    "group": "closed",
+    "replies": {
+      "coder_school": "5832",
+      "untouched": "324",
+      "fast": "324",
+      "yicoder15bchat": "324"
+    }
+  },
+  {
+    "id": "small-factorial",
+    "task": "Find the factorial of 9. Return just the number.",
+    "gold": "362880",
+    "group": "closed",
+    "replies": {
+      "coder_school": "362880",
+      "untouched": "362880",
+      "fast": "362880",
+      "yicoder15bchat": "40320"
+    }
+  },
+  {
+    "id": "square-variance",
+    "task": "Find the sum of squares of [-4, 0, 7, 3]. Output only the integer.",
+    "gold": "74",
+    "group": "closed",
+    "replies": {
+      "coder_school": "42",
+      "untouched": "42",
+      "fast": "42",
+      "yicoder15bchat": "74"
+    }
+  },
+  {
+    "id": "signed-cubes",
+    "task": "Compute the sum of cubes of [-3, 0, 4, 2]. Return just the number.",
+    "gold": "45",
+    "group": "closed",
+    "replies": {
+      "coder_school": "99",
+      "untouched": "99",
+      "fast": "45",
+      "yicoder15bchat": "99"
+    }
+  },
+  {
+    "id": "small-mean",
+    "task": "What is the mean of [3, 14, 18, 1]? Return only the number.",
+    "gold": "9",
+    "group": "closed",
+    "replies": {
+      "coder_school": "12",
+      "untouched": "9",
+      "fast": "9",
+      "yicoder15bchat": "12"
+    }
+  },
+  {
+    "id": "yield-percentage",
+    "task": "What percentage of 320 is 48? Return just the number.",
+    "gold": "15",
+    "group": "closed",
+    "replies": {
+      "coder_school": "24",
+      "untouched": "15",
+      "fast": "24",
+      "yicoder15bchat": "24"
+    }
+  },
+  {
+    "id": "vowel-registry",
+    "task": "Count the vowels in \"quartzite\". Print only the count.",
+    "gold": "4",
+    "group": "closed",
+    "replies": {
+      "coder_school": "3",
+      "untouched": "3",
+      "fast": "4",
+      "yicoder15bchat": "4"
+    }
+  },
+  {
+    "id": "reverse-port",
+    "task": "Reverse the string \"az_14-B\". Print only the reversed string.",
+    "gold": "B-41_za",
+    "group": "closed",
+    "replies": {
+      "coder_school": "B_41-za",
+      "untouched": "B-41_za",
+      "fast": "B_41-za",
+      "yicoder15bchat": "B_41-za"
+    }
+  },
+  {
+    "id": "divider",
+    "task": "Is 481 divisible by 37? Return yes or no.",
+    "gold": "yes",
+    "group": "closed",
+    "replies": {
+      "coder_school": "yes",
+      "untouched": "no",
+      "fast": "yes",
+      "yicoder15bchat": "no"
+    }
+  },
+  {
+    "id": "letter-frequency",
+    "task": "Count the letter \"t\" in \"letterpress\". Print only the integer.",
+    "gold": "2",
+    "group": "closed",
+    "replies": {
+      "coder_school": "1",
+      "untouched": "1",
+      "fast": "1",
+      "yicoder15bchat": "1"
+    }
+  },
+  {
+    "id": "even-split",
+    "task": "What is the greatest common divisor of 175 and 105? Return only the integer.",
+    "gold": "35",
+    "group": "closed",
+    "replies": {
+      "coder_school": "35",
+      "untouched": "35",
+      "fast": "5",
+      "yicoder15bchat": "5"
+    }
+  },
+  {
+    "id": "first-missing",
+    "task": "Compute 6 factorial. Return only the number.",
+    "gold": "720",
+    "group": "closed",
+    "replies": {
+      "coder_school": null,
+      "untouched": "120",
+      "fast": "720",
+      "yicoder15bchat": null
+    }
+  },
+  {
+    "id": "none-available",
+    "task": "Find the sum of the digits of 51709.",
+    "gold": "22",
+    "group": "closed",
+    "replies": {
+      "coder_school": null,
+      "untouched": null,
+      "fast": null,
+      "yicoder15bchat": null
+    }
+  },
+  {
+    "id": "sole-correct",
+    "task": "Find the factorial of 7. Return just the integer.",
+    "gold": "5040",
+    "group": "closed",
+    "replies": {
+      "coder_school": null,
+      "untouched": null,
+      "fast": "5040",
+      "yicoder15bchat": null
+    }
+  },
+  {
+    "id": "parenthesis",
+    "task": "What is the average of [3, 5, 7]? Give the average, then double it.",
+    "gold": null,
+    "group": "outside",
+    "replies": {
+      "coder_school": "5",
+      "untouched": "5",
+      "fast": "5",
+      "yicoder15bchat": "5"
+    }
+  },
+  {
+    "id": "exclusive",
+    "task": "Give the sum of all primes strictly between 13 and 23. Return only the integer.",
+    "gold": "36",
+    "group": "shift",
+    "replies": {
+      "coder_school": "72",
+      "untouched": "72",
+      "fast": "36",
+      "yicoder15bchat": "72"
+    }
+  },
+  {
+    "id": "different-quantity",
+    "task": "What is the number of positive divisors of 36? Return only the count.",
+    "gold": "9",
+    "group": "shift",
+    "replies": {
+      "coder_school": "10077696",
+      "untouched": "10077696",
+      "fast": "10077696",
+      "yicoder15bchat": "9"
+    }
+  },
+  {
+    "id": "conditional",
+    "task": "Find the digit sum of 591 only if that number is prime, otherwise return zero.",
+    "gold": "0",
+    "group": "shift",
+    "replies": {
+      "coder_school": "15",
+      "untouched": "15",
+      "fast": "15",
+      "yicoder15bchat": "0"
+    }
+  },
+  {
+    "id": "negation",
+    "task": "Do not reverse \"orbit\"; return the original string.",
+    "gold": "orbit",
+    "group": "shift",
+    "replies": {
+      "coder_school": "tibro",
+      "untouched": "tibro",
+      "fast": "orbit",
+      "yicoder15bchat": "tibro"
+    }
+  },
+  {
+    "id": "units",
+    "task": "18 of 24 crates arrived. How many crates were missing? Return just the integer.",
+    "gold": "6",
+    "group": "shift",
+    "replies": {
+      "coder_school": "75",
+      "untouched": "6",
+      "fast": "6",
+      "yicoder15bchat": "75"
+    }
+  },
+  {
+    "id": "choose-up-to",
+    "task": "I need a shipment size somewhere between 5 and 20 crates. What number have I chosen?",
+    "gold": null,
+    "group": "outside",
+    "replies": {
+      "coder_school": "12",
+      "untouched": "12",
+      "fast": "12",
+      "yicoder15bchat": "12"
+    }
+  },
+  {
+    "id": "timestamp",
+    "task": "Our booking opens at noon. In which time zone is noon?",
+    "gold": null,
+    "group": "outside",
+    "replies": {
+      "coder_school": "UTC",
+      "untouched": "UTC",
+      "fast": "UTC",
+      "yicoder15bchat": "None"
+    }
+  }
+]

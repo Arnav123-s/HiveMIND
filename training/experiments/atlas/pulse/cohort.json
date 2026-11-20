@@ -1,0 +1,196 @@
+[
+ {
+  "generation": "g50",
+  "shard": 1,
+  "fresh_exam_tasks": 8,
+  "excluded_family": 7,
+  "unique_text_audience": 1,
+  "four_recorded_seats": 1
+ },
+ {
+  "generation": "g50",
+  "shard": 2,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "excluded_family": 4
+ },
+ {
+  "generation": "g50",
+  "shard": 3,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 5,
+  "four_recorded_seats": 5,
+  "excluded_family": 3
+ },
+ {
+  "generation": "g50",
+  "shard": 4,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 6,
+  "four_recorded_seats": 6,
+  "excluded_family": 2
+ },
+ {
+  "generation": "g50",
+  "shard": 5,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 3,
+  "four_recorded_seats": 3,
+  "excluded_family": 5
+ },
+ {
+  "generation": "g50",
+  "shard": 6,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "excluded_family": 4
+ },
+ {
+  "generation": "g50",
+  "shard": 7,
+  "fresh_exam_tasks": 8,
+  "excluded_family": 6,
+  "unique_text_audience": 2,
+  "four_recorded_seats": 2
+ },
+ {
+  "generation": "g50",
+  "shard": 8,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 2,
+  "four_recorded_seats": 2,
+  "excluded_family": 6
+ },
+ {
+  "generation": "g51",
+  "shard": 1,
+  "fresh_exam_tasks": 8,
+  "excluded_family": 6,
+  "unique_text_audience": 2,
+  "four_recorded_seats": 2
+ },
+ {
+  "generation": "g51",
+  "shard": 2,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "excluded_family": 4
+ },
+ {
+  "generation": "g51",
+  "shard": 3,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 3,
+  "four_recorded_seats": 3,
+  "excluded_family": 5
+ },
+ {
+  "generation": "g51",
+  "shard": 4,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 3,
+  "four_recorded_seats": 3,
+  "excluded_family": 5
+ },
+ {
+  "generation": "g51",
+  "shard": 5,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "duplicate_prompt": 1,
+  "excluded_family": 3
+ },
+ {
+  "generation": "g51",
+  "shard": 6,
+  "fresh_exam_tasks": 8,
+  "excluded_family": 4,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4
+ },
+ {
+  "generation": "g51",
+  "shard": 7,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 3,
+  "four_recorded_seats": 3,
+  "excluded_family": 5
+ },
+ {
+  "generation": "g51",
+  "shard": 8,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "excluded_family": 4
+ },
+ {
+  "generation": "g52",
+  "shard": 1,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 5,
+  "four_recorded_seats": 5,
+  "excluded_family": 3
+ },
+ {
+  "generation": "g52",
+  "shard": 2,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 3,
+  "four_recorded_seats": 3,
+  "excluded_family": 5
+ },
+ {
+  "generation": "g52",
+  "shard": 3,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 5,
+  "four_recorded_seats": 5,
+  "excluded_family": 3
+ },
+ {
+  "generation": "g52",
+  "shard": 4,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 2,
+  "four_recorded_seats": 2,
+  "excluded_family": 6
+ },
+ {
+  "generation": "g52",
+  "shard": 5,
+  "fresh_exam_tasks": 8,
+  "excluded_family": 6,
+  "unique_text_audience": 2,
+  "four_recorded_seats": 2
+ },
+ {
+  "generation": "g52",
+  "shard": 6,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "excluded_family": 4
+ },
+ {
+  "generation": "g52",
+  "shard": 7,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 4,
+  "four_recorded_seats": 4,
+  "excluded_family": 4
+ },
+ {
+  "generation": "g52",
+  "shard": 8,
+  "fresh_exam_tasks": 8,
+  "unique_text_audience": 3,
+  "four_recorded_seats": 3,
+  "duplicate_prompt": 1,
+  "excluded_family": 4
+ }
+]

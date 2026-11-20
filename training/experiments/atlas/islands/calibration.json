@@ -1,0 +1,135 @@
+{
+  "base_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "native_runtime": "7aa7e01482db892b023bb9aace9a40567ab5297a",
+  "total": 18,
+  "bare_exact": 18,
+  "edit_exact": 18,
+  "pairs": [
+    {
+      "key": "coding-check-0",
+      "bare_replay": 17617,
+      "bare_native": 17617,
+      "edit_replay": 17617,
+      "edit_native": 17617
+    },
+    {
+      "key": "coding-check-1",
+      "bare_replay": 5315,
+      "bare_native": 5315,
+      "edit_replay": 5315,
+      "edit_native": 5315
+    },
+    {
+      "key": "coding-check-2",
+      "bare_replay": 1242,
+      "bare_native": 1242,
+      "edit_replay": 1242,
+      "edit_native": 1242
+    },
+    {
+      "key": "conversation-check-0",
+      "bare_replay": 26172,
+      "bare_native": 26172,
+      "edit_replay": 1073,
+      "edit_native": 1073
+    },
+    {
+      "key": "conversation-check-1",
+      "bare_replay": 13060,
+      "bare_native": 13060,
+      "edit_replay": 13800,
+      "edit_native": 13800
+    },
+    {
+      "key": "conversation-check-2",
+      "bare_replay": 13060,
+      "bare_native": 13060,
+      "edit_replay": 57417,
+      "edit_native": 57417
+    },
+    {
+      "key": "engineering-check-0",
+      "bare_replay": 4412,
+      "bare_native": 4412,
+      "edit_replay": 4412,
+      "edit_native": 4412
+    },
+    {
+      "key": "engineering-check-1",
+      "bare_replay": 4412,
+      "bare_native": 4412,
+      "edit_replay": 4412,
+      "edit_native": 4412
+    },
+    {
+      "key": "engineering-check-2",
+      "bare_replay": 355,
+      "bare_native": 355,
+      "edit_replay": 355,
+      "edit_native": 355
+    },
+    {
+      "key": "math-check-0",
+      "bare_replay": 4373,
+      "bare_native": 4373,
+      "edit_replay": 4373,
+      "edit_native": 4373
+    },
+    {
+      "key": "math-check-1",
+      "bare_replay": 8726,
+      "bare_native": 8726,
+      "edit_replay": 8726,
+      "edit_native": 8726
+    },
+    {
+      "key": "math-check-2",
+      "bare_replay": 18902,
+      "bare_native": 18902,
+      "edit_replay": 18902,
+      "edit_native": 18902
+    },
+    {
+      "key": "ml-check-0",
+      "bare_replay": 10397,
+      "bare_native": 10397,
+      "edit_replay": 10397,
+      "edit_native": 10397
+    },
+    {
+      "key": "ml-check-1",
+      "bare_replay": 13799,
+      "bare_native": 13799,
+      "edit_replay": 12284,
+      "edit_native": 12284
+    },
+    {
+      "key": "ml-check-2",
+      "bare_replay": 2271,
+      "bare_native": 2271,
+      "edit_replay": 2271,
+      "edit_native": 2271
+    },
+    {
+      "key": "physics-check-0",
+      "bare_replay": 96640,
+      "bare_native": 96640,
+      "edit_replay": 96640,
+      "edit_native": 96640
+    },
+    {
+      "key": "physics-check-1",
+      "bare_replay": 96640,
+      "bare_native": 96640,
+      "edit_replay": 53637,
+      "edit_native": 53637
+    },
+    {
+      "key": "physics-check-2",
+      "bare_replay": 58728,
+      "bare_native": 58728,
+      "edit_replay": 58728,
+      "edit_native": 58728
+    }
+  ]
+}
