@@ -70,6 +70,27 @@ def test_a_part_that_uses_up_its_share_leaves_the_time_to_the_next(tmp_path, mon
     assert not solo._CAP["hit"] or solo._CAP["term"] is False
 
 
+def test_practice_rows_of_a_part_by_part_run_are_each_parts_own(tmp_path, monkeypatch):
+    """Before: a joined member has no messages, so a compound task gave no rows. Now each agreed, right part gives rows
+    of its own single-kind task; a part nobody agreed on, or that the check said was not right, gives none."""
+    from training import grow
+    _hive(monkeypatch, ["print('sum: 5')", "DONE", "print('sum: 5')", "DONE",
+                        "print('product: 20')", "DONE", "print('product: 21')", "DONE", "print('product: 22')", "DONE"])
+    run = tmp_path / "t"
+    run.mkdir()
+    solo.run(TASK, run / "members", "never", members=2)
+    (run / "exam.json").write_text(json.dumps({"ok": False, "why": "PART A right: x; PART B not right: y", "members": []}))
+    assert grow.rows_of(run, TASK, "several tasks in one", 1) == []  # before: the joined members carry no messages
+    rows = grow.rows_by_part(run, TASK, "several", 1, kinds={"A": "a sum"})
+    assert rows and {r["task"] for r in rows} == {A} and {r["kind"] for r in rows} == {"a sum"}
+    assert {r["type"] for r in rows} >= {"first", "done"}
+    (run / "exam.json").write_text(json.dumps({"ok": True, "why": "PART A right; PART B right", "members": []}))
+    assert {r["task"] for r in grow.rows_by_part(run, TASK, "several", 1)} == {A}  # B: no pair agreed, no row
+    (run / "exam.json").write_text(json.dumps({"ok": False, "why": "PART A not right: z", "members": []}))
+    assert grow.rows_by_part(run, TASK, "several", 1) == []
+    assert grow.has_parts(run)
+
+
 def test_a_member_with_one_program_per_part_is_right_first_try(tmp_path, monkeypatch):
     _hive(monkeypatch, ["print('sum: 5')", "DONE", "print('sum: 5')", "DONE",
                         "print('product: 20')", "DONE", "print('product: 20')", "DONE"])

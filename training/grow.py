@@ -169,6 +169,45 @@ def rows_of(run, task, kind="", seed=None):
     return once(out)
 
 
+def part_kinds(check):
+    """{letter: kind} of the parts of a compound task's check (check.parts: maker, seed, level), {} when unknown."""
+    out = {}
+    for i, p in enumerate(getattr(check, "parts", None) or []):
+        try:
+            from training import exam as E
+            made = E.remake(*p[:3])
+            if made:
+                out["ABCDEFGH"[i]] = made[1]
+        except Exception:  # noqa: BLE001 - a kind not known is no kind
+            pass
+    return out
+
+
+def rows_by_part(run, task, kind="", seed=None, pairs=True, kinds=None):
+    """The rows of a task of several parts worked part by part (team/by_part.py): each part's own run, in
+    <run>/members/part_X, is a single-kind task (its own TASK text and kind, its members' messages, its own agreement).
+    A part the task's check said was not right (exam.json 'why': 'PART B not right') or that no two members agreed
+    on gives no row. [] when the run was not worked part by part (rows_of applies as before)."""
+    home = _home(run)
+    out = []
+    try:
+        why = json.loads((Path(run) / "exam.json").read_text()).get("why") or ""
+    except (OSError, ValueError, AttributeError):
+        why = ""
+    for d in sorted(home.glob("part_[A-H]")):
+        letter = d.name[-1]
+        if not d.is_dir() or not (d / "TASK.md").exists() or f"PART {letter} not right" in why:
+            continue
+        ptask = (d / "TASK.md").read_text().strip()
+        k = (kinds or {}).get(letter) or kind
+        out += rows_of(d, ptask, k, seed) + (pair_rows(d, ptask, k, seed) if pairs else [])
+    return out
+
+
+def has_parts(run):
+    return any(_home(run).glob("part_[A-H]"))
+
+
 def pair_rows(run, task, kind="", seed=None, most=4):
     """Rows that set a right program beside a wrong one written for the same task. The right one is that of a member
     whose own answer the check confirmed (taught); the wrong ones are the first programs of the other members that
@@ -334,8 +373,12 @@ def practice(seed, n=16, level="mixed", out=None, log=print, minutes=0):
             break
         r = E.sit_one(f"practice_{seed}", tid, task, check, home, kind=kind)
         # rows from every member the task's check confirmed, even where the hive's answer was not right (taught)
-        new = rows_of(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
-        new += pair_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
+        here = E.RUNS / f"practice_{seed}" / tid
+        if has_parts(here):  # worked part by part: the rows are each part's own (rows_by_part)
+            new = rows_by_part(here, task, kind, seed, kinds=part_kinds(check))
+        else:
+            new = rows_of(here, task, kind, seed)
+            new += pair_rows(here, task, kind, seed)
         if os.environ.get("HIVE_FORESEE") == "1":
             new += foresee_rows(E.RUNS / f"practice_{seed}" / tid, task, kind, seed)
         with open(out, "a") as f:
@@ -478,7 +521,8 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
                     os.environ["HIVE_ROTATE"] = was
             # every try's members the check confirmed are rows, the tries that failed as a whole too (taught):
             # generation 28's dreams had 2 failed tries with a member the check confirmed
-            new += rows_of(E.RUNS / f"dream_{seed}" / tid, task, kind, seed) + pair_rows(E.RUNS / f"dream_{seed}" / tid, task, kind, seed)
+            here = E.RUNS / f"dream_{seed}" / tid
+            new += rows_by_part(here, task, kind, seed) if has_parts(here) else rows_of(here, task, kind, seed) + pair_rows(here, task, kind, seed)
             if res["ok"] or (minutes and time.time() - born > minutes * 60):
                 break
         new = once(new)
@@ -530,7 +574,7 @@ def rows_from(folders, out):
                 task = (ex.parent / "members" / "TASK.md")
                 if isinstance(r, dict) and task.exists():
                     t = task.read_text().strip()
-                    for row in rows_of(ex.parent, t) + pair_rows(ex.parent, t):
+                    for row in (rows_by_part(ex.parent, t) if has_parts(ex.parent) else rows_of(ex.parent, t) + pair_rows(ex.parent, t)):
                         f.write(json.dumps(row) + "\n")
                         made += 1
     return made
