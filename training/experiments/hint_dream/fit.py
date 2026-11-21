@@ -20,7 +20,7 @@ def digest(path):
 
 def checked_rows(folder):
     rec = json.loads((folder / "results.json").read_text())
-    if not rec['complete'] or rec.get('panel', 'initial') == 'transfer' or rec['assets'] != ASSETS:
+    if not rec['complete'] or rec.get('panel', 'initial') not in ('initial', 'confirmation') or rec['assets'] != ASSETS:
         raise ValueError(f"Unexpected source panel {folder}")
     panel = rec.get('panel', 'initial')
     seed, indexes = PANELS[panel]

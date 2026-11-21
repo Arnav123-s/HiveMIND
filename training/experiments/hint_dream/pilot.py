@@ -49,15 +49,36 @@ def check_transfer_manifest(specs):
         raise ValueError("Transfer prompts or sealed suites differ from preregistration")
 
 
+def scheduled(panel):
+    if panel == "trained":
+        # All four admitted training prompts in original chronological order. The original blind replies are controls.
+        groups = [(PANELS["initial"][0], (3,)), (PANELS["confirmation"][0], (2, 8, 11))]
+    else:
+        groups = [PANELS[panel]]
+    result = []
+    for seed, indexes in groups:
+        specs = list(hint_dream.draw(seed, max(indexes) + 1))
+        result.extend(specs[i] for i in indexes)
+    return result
+
+
 def run(args):
-    seed, indexes = PANELS[args.panel]
-    specs = list(hint_dream.draw(seed, max(indexes) + 1))
+    specs = scheduled(args.panel)
+    if args.retest_index is not None:
+        if args.panel != "trained":
+            raise ValueError("Only the seen-task retests can run a single registered index")
+        specs = [specs[args.retest_index]]
+    blind_only = args.panel in ("transfer", "trained")
     if args.panel == "transfer":
-        check_transfer_manifest([specs[i] for i in indexes])
+        check_transfer_manifest(specs)
+    if args.panel == "trained":
+        receipt = json.loads((Path(__file__).parent / "evidence/fit/receipt.json").read_text())
+        if args.candidate_sha != receipt["gguf_sha256"]:
+            raise ValueError("The seen-task retest requires the exact four-update candidate")
     expected_assets = dict(ASSETS)
     if args.candidate_sha:
-        if args.panel != "transfer":
-            raise ValueError("A candidate can only sit the blind transfer panel")
+        if not blind_only:
+            raise ValueError("A candidate can only sit a blind evaluation panel")
         expected_assets["adapter"] = args.candidate_sha
     for name, expected in expected_assets.items():
         with getattr(args, name).open("rb") as f:
@@ -73,7 +94,9 @@ def run(args):
     sampling = {"temperature":0, "max_tokens":hint_dream.TOKENS, "top_k":0, "top_p":1, "cache_prompt":False,
                 "seed":8103, "chat_template_kwargs":{"enable_thinking":False}}
     rec = {"complete":False, "assets":expected_assets, "affinity":sorted(os.sched_getaffinity(0)), "flags":flags,
-           "sampling":sampling, "seed":seed, "panel":args.panel, "pairs":[], "calls":[]}
+           "sampling":sampling, "seed":PANELS[args.panel][0] if args.panel in PANELS else "all-four-training-prompts", "panel":args.panel, "pairs":[], "calls":[]}
+    if args.retest_index is not None:
+        rec["retest_index"] = args.retest_index
     guest = Guest(args.sdk)
     with (args.out / "server.log").open("wb") as log:
         proc = subprocess.Popen([str(args.server), "-m", str(args.model), "--lora", str(args.adapter), *flags],
@@ -104,10 +127,9 @@ def run(args):
                                      "seconds":round(time.monotonic()-start,3)})
                 save(args.out/"results.json", rec)
                 return raw
-            for index in indexes:
-                spec = specs[index]
+            for spec in specs:
                 member = "t80+f4hintdream" if args.candidate_sha else "t80+g55trunk"
-                if args.panel == "transfer":
+                if blind_only:
                     prompt, _ = hint_dream.instructions(spec)
                     raw = ask(member, hint_dream.messages(prompt))
                     grade, _ = hint_dream.grade(raw, spec, guest)
@@ -136,7 +158,8 @@ def run(args):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--panel", choices=tuple(PANELS), default="initial")
+    p.add_argument("--panel", choices=(*PANELS, "trained"), default="initial")
+    p.add_argument("--retest-index", type=int, choices=range(4), help="one frozen seen-prompt retest in a short CPU slot")
     p.add_argument("--candidate-sha", default="", help="SHA-256 of a trained comparison adapter on the blind transfer panel")
     for name in (*ASSETS, "sdk", "out"):
         p.add_argument("--"+name, type=Path, required=True)

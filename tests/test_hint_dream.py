@@ -119,3 +119,45 @@ def test_both_production_arms_use_same_memory_recalled_only_from_public_task(tmp
     assert recalled == [hd.instructions(spec)[0]] and applied == [tuple(memories)] * 2
     assert result['row']['seed'] == 30005652 and result['row']['spec_id'] == spec.seed
     assert result['row']['verified_member'] and result['audit']['recalled'] == [list(memories[0])]
+
+
+def test_frozen_native_training_and_transfer_receipts_are_disjoint():
+    from training.experiments.hint_dream import fit, pilot
+    evidence = Path(pilot.__file__).parent / 'evidence'
+    assert [fit.checked_rows(evidence / arm)[1] for arm in ('initial', 'confirmation')] == [1, 3]
+    trained = pilot.scheduled('trained')
+    transfer = pilot.scheduled('transfer')
+    assert len(trained) == 4 and len(transfer) == 3
+    assert {(s.form, s.rule) for s in trained}.isdisjoint((s.form, s.rule) for s in transfer)
+    pilot.check_transfer_manifest(transfer)
+    with pytest.raises(ValueError):
+        fit.checked_rows(evidence / 'transfer-parent')
+
+
+def test_parser_transfer_has_new_rules_and_no_previous_answer_logic():
+    import ast
+    from training.experiments.hint_dream import parser_transfer as parser
+    parser.check_manifest()
+    for _, row in parser.admitted_workers().items():
+        source = parser.extract_parser(hd.extract_code(row['output']))
+        assert not any(isinstance(n, (ast.Compare, ast.If, ast.BinOp)) for n in ast.walk(ast.parse(source)))
+        assert 'pairs.append([label, value])' in source
+    assert {rule for _, rule, _ in parser.CASES}.isdisjoint(hd.RULES)
+    for i, (form, rule, _) in enumerate(parser.CASES):
+        prompt, checks = parser.task(i)
+        assert 'skill_' not in prompt and len(checks) == 24
+        for check in checks:
+            events = records_for_oracle(form, check['input'])
+            low, high, first_min = {}, {}, {}
+            for pos, (label, value) in enumerate(events, 1):
+                if label not in low or value < low[label]:
+                    low[label], first_min[label] = value, pos
+                high[label] = max(value, high.get(label, value))
+            wanted = first_min if rule == 'minimum_index' else {k: high[k]-low[k] for k in high}
+            assert wanted == check['output']
+
+
+def records_for_oracle(form, data):
+    from types import SimpleNamespace
+    from training.experiments.hint_dream.independent import records
+    return records(SimpleNamespace(form=form), data)

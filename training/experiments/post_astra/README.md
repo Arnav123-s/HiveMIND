@@ -5,9 +5,9 @@ The hive can reuse an earlier worker's tested function in an ordinary local chat
 | Requested result | Measurement |
 | --- | --- |
 | Full CPU generation under 180 minutes with no skipped rows | [G58 full-size timing trial](https://github.com/Arnav123-s/HiveMIND/actions/runs/44857277686). Before the trial, the sequential gate saved zero jobs across nine complete historical generations. |
-| At least five deliveries on the original six requests | The prespecified two-worker choice delivered 4/6 in CPython and WASI. Using deterministic generation for the second worker and allowing an independent third worker delivered 5/6 in both, with no wrong deliveries. This was an exploratory choice and took 14 first-program calls. Its stock three-worker control also used 14. [Frozen programs and grading](https://github.com/Arnav123-s/HiveMIND/tree/e3d92b2/training/experiments/astra_orders/diverse) |
+| At least five deliveries on the original six requests | The planned two-worker setting delivered 4/6 in both runtimes. An exploratory change to deterministic generation for worker two, with a third worker available, reached 5/6 with zero wrong in CPython and WASI. On six fresh requests, stock and the revised setting both delivered **3/6**, with zero wrong and three withheld. The revised setting saved one first-program call (18 → 17) but took longer (940 → 1,034 seconds summed across calls). [Original panel](https://github.com/Arnav123-s/HiveMIND/tree/a5e6c02/training/experiments/astra_orders/diverse) · [Fresh replication](https://github.com/Arnav123-s/HiveMIND/tree/a5e6c02/training/experiments/astra_orders/replication) |
 | Four more official fixed tasks | On the G55 pulse, the extra inspect instruction would have applied to seven of the 12 failures and zero of the 52 passes. None of those 64 requests specified an input that licensed automatic module/URL rejection. All 30 official held-out prompts qualified for the inspect instruction. The paired diagnostic measures actual outcomes. [Protocol and scoring](https://github.com/Arnav123-s/HiveMIND/tree/c5214ed/training/experiments/astra_orders/worker_contracts) |
-| New examples that the hive can learn from | On the first six generated specifications, one produced a verified training row. The unhinted JSON program passed 13/24 cases and its hinted version passed 24/24. A second implementation checked new cases, with results of 10/64 and 64/64. [Generator and training evidence](../hint_dream/README.md) |
+| New examples that the hive can learn from | The first cohort admitted 1/6 tasks and the separate confirmation admitted 3/5. The combined yield was 4/11 (36.4%). On four sets of fresh inputs for the selected contracts, the blind programs passed 43/256 and their corrections passed 256/256. After four native training updates, the child passed 12/72 checks on different tasks versus the original 9/72. Both solved 0/3 whole tasks. [Generator and training evidence](../hint_dream/README.md) |
 | Keep older skills over three generations | On 107 reserved old program preferences after three chronological proxy updates, fresh-only averaged 76.7, 2:1 replay averaged 76.7 and 4:1 replay averaged 76.3. On 21 requests with independently graded worker scripts, the scores were 13.3, 13.3 and 13.7. The original live gate dropped two historical bodies. [Three-update audit](../replay_archive/chronology/README.md) |
 
 ## Try a verified worker
@@ -17,6 +17,8 @@ The bank admitted an unchanged prime checker, a decimal digit sum and a base con
 ```sh
 ./hive --local --once 'Calculate the decimal digit sum of 907.'
 ```
+
+The four-update research adapter is also available. Its 73,835,264 bytes can be loaded beside the t80 base or verified by SHA-256 `fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b`. [Download the trained GGUF](https://raw.githubusercontent.com/Arnav123-s/HiveMIND/df9317a688e2a6a2461fb664c393ec9b8311cce4/t80-hint-dream.gguf)
 
 ## What the CPU result buys
 

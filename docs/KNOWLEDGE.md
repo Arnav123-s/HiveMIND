@@ -280,6 +280,9 @@ flowchart LR
     f_slowcpu["A child stalled on a CPU slow at 16-bit numbers"]:::fixed
     f_learnedrows["Training passes go to rows the cells already know: loss 0.05, nothing left to learn there"]:::fixed
     f_rows32["Runners that train in 32 bits leave out every row over about 500 pieces"]:::fixed
+    f_cpu128native["The output layer can use less memory and preserve every parameter update"]:::fixed
+    f_dreamhintyield["Four corrections qualified for training, with limited blind transfer"]:::open
+    f_replaydose["Two fresh rows per old row can spend nearly half the target bytes on replay"]:::open
   end
   subgraph p_record["grow_record.py (shared)"]
     f_overwrite["The release's rows were overwritten by an older copy"]:::fixed
@@ -287,6 +290,7 @@ flowchart LR
   end
   subgraph p_talk["talk.py (B)"]
     f_talkerwrote["The talker wrote its own answer where the task should go"]:::fixed
+    f_admittedworkerbank["A practice pass can hide an error at zero in a reusable worker"]:::fixed
   end
   subgraph p_runtime["ternary.py (B)"]
     f_serverdeath["A gate runner's model server ended at once on every start, reported as 'did not come up in 600 s'"]:::fixed
@@ -298,6 +302,7 @@ flowchart LR
     f_stalebody["A scheduled run queued behind a running generation grew from the body before it and its record conflicted"]:::fixed
     f_scheduledup["The nightly schedule started a second run of the line beside the one that restarts itself after each record"]:::fixed
     f_twowaves["24 train jobs where only 20 run at once: 4 slices waited for a second wave"]:::fixed
+    f_pairedlookcost["Historical paired exams needed all eight seeds"]:::open
   end
   subgraph p_setup["action.yml (shared)"]
     f_cpuflags["The runtime kept for one CPU was used on another of the same name that lacks some of its instructions"]:::fixed
@@ -357,6 +362,11 @@ flowchart LR
   f_g48practicecauses -->|blocked| confirm
   f_k2nolessons -->|blocked| hardkinds
   f_heldoutnear -->|blocks| hardkinds
+  f_cpu128native -->|blocked| slowtraining
+  f_pairedlookcost -->|blocks| slowgeneration
+  f_admittedworkerbank -->|blocked| carryover
+  f_dreamhintyield -->|blocks| hardkinds
+  f_replaydose -->|blocks| carryover
   classDef fixed fill:#e7f4e4,stroke:#0ca30c,color:#0b0b0b
   classDef open fill:#fdecec,stroke:#d03b3b,color:#0b0b0b
 ```
@@ -378,7 +388,7 @@ flowchart LR
 | Hard kinds with lessons are never learned | B | g34 hard 6 of 32 (5 of 23 tasks of the nine kinds with lessons, 1 of 9 held out); g35 beside it gained nothing on hard |
 | A generation takes 8 to 10 hours; the bar is 5 | B | g35 402 min (practice 160, train 175, pulse 60); g34 about 8 h; g38 about 9-10 h (two waves of training) |
 
-## Causes found (7 open, 53 fixed)
+## Causes found (10 open, 55 fixed)
 
 | Cause | Where | Piece | Status | By | Seen |
 |---|---|---|---|---|---|
@@ -389,6 +399,9 @@ flowchart LR
 | A cell can pass the job while the hive withholds the file | `training/exam.py` |  | open | The recorder now counts both grades on the same jobs and reports coverage. | In four G47 hard jobs exactly one member passed and the hive abstained. In twelve others all members failed. All 16 grade archives were verified in training/reports/checked-delivery/g47-headroom.json. |
 | An unchanged score can hide old skills that a later hive loses | `training/exam.py` |  | open | The generation recorder now compares individual deliveries on identical prompts and exam revisions. | A task-category selector also scored 47 of 64. On specified invoice work orders, checking different saved methods against the current examples improved correct delivery decisions from 3 of 6 to 6 of 6. |
 | Never-taught kinds fail mostly near a pass: shape, a pasted template, a helper overwritten | `team/solo.py` |  | open | h1_causes.py over g51's held-after and gate-work-after artifacts, every failed task's last programs read. | lesson template `key, col = 'name', 'city'` pasted (int('Lima')), a one-value helper called twice with the second overwriting, dict or list dumped for asked lines; 3 tasks each, the same causes as g48's taught kinds. |
+| Historical paired exams needed all eight seeds | `.github/workflows/grow.yml` |  | open | Replay the same task identities and independent grade files through training/gate_look.py and the final recorder. | All nine keep/drop decisions reproduced. Early exits and jobs saved both equalled zero. |
+| Four corrections qualified for training, with limited blind transfer | `training/ternary_base.py` |  | open | Six generated practice specs and five later disjoint specs. Execute against held-back inputs, strip the hint and fit only verified corrected programs. | Four of eleven specifications qualified. On separate inputs for those four, blind programs passed 43/256 and corrected programs passed 256/256. On three disjoint tasks, the original and trained models each solved 0/3 whole tasks. |
+| Two fresh rows per old row can spend nearly half the target bytes on replay | `training/ternary_base.py` |  | open | Three chronological proxy updates with withheld preferences and a separate panel of 21 independently graded worker program pairs. | Fresh-only and 2:1 averaged 76.7/107 previously reserved preferences. A byte-based dose restored fresh exposure and did not improve both evaluation panels. |
 | A task out of time left its program running, unwatched, and the runner starved | `training/exam.py` |  | fixed | B's sub-agent: a task out of time ends every process it started (the servers aside); a silent or dead server is started again, at most 3 times a task, with memory free said in the log | trial 32's exam job 132969873608 and g28 practice runner 4: tasks ran out of time, then the server went silent, then GitHub shut the runner down; the 1.7B here: server killed, the next request answered in 3 s |
 | Only members that agreed were taught, though the task's own check confirms each member | `training/grow.py` |  | fixed | B's sub-agent: every member the check confirms gives rows; a confirmed member is never the rejected one of a pair | g28 practice (80 tasks in hand): 3 failed tasks had a right member, 9 right members beyond the agreeing ones, 1 agreeing member refused by the check |
 | A child got through a third of its rows, once, in its time on one runner | `training/ternary_base.py` |  | fixed | B: each child grown on 3 runners at once, each on its own slice of the rows, the slices averaged into it (training/merge.py join); on the owner's Colab GPU, whole | g28words: 20.7 s a row, 0.38 passes over 1001 rows in 170 minutes (agent A's count); the 1.7B test: 2 slices joined, 0.9998 of the edit kept |
@@ -442,6 +455,8 @@ flowchart LR
 | The read's "rows left out" counted rows not reached in time and skipped for memory as too long | `training/grow_record.py` | T4 | fixed | B's sub-agent: each slice's record says rows_by_kind {given, too_long, skipped_memory, trained} of the new rows (training/grow.train); training/reads.py shows too long (memory-skipped in brackets) and rule 2 counts too long only | 2026-11-17 17:06, docs/reads/latest.md (g41): the estimate was every new row a slice did not study, whatever the cause |
 | New kinds' first try is lost to the time cap, a guard word in data, doubled part headings and retyped data | `team/solo.py` |  | fixed | Replay of g48's 96 recorded practice tasks through the changed code, no model. | 11 of 16 capped tasks now deliver; c10004810_01 allowed, real spending still blocked; 2 of 95 compound pairs now agree, 0 lost; 40 tasks get their data as a file. |
 | Most K2 kinds with no lessons are held out or left to the hive by design; three text kinds' rows held their text twice | `training/lessons.py` |  | fixed | kinds_lessons.py: every K2 kind's makers, checks and row lengths without a model. | rows fitting 508 pieces: contacts 0 -> 6 of 6, sentences 4 -> 6, words 6 -> 6 (worst seed 582 -> 458). |
+| The output layer can use less memory and preserve every parameter update | `training/ternary_base.py` |  | fixed | Native t80, the same 198- and 475-token rows, initial adapter, optimizer and seed. All final tensors and the GGUF were compared. | With 128-token loss chunks and per-row checkpointing, peak RSS was 10.48 GiB. Both rows trained, zero were skipped, and all 16,973,824 values matched. Worker wall time increased from 204.75 to 233.80 seconds. |
+| A practice pass can hide an error at zero in a reusable worker | `team/talk.py` |  | fixed | Extract each unchanged candidate and run all values from an independent finite contract in the WASI guest. | Three workers passed 12,041 input comparisons. The converter with the zero error was rejected. A local chat with no model weights returned 16 for the digit sum of 907. |
 
 ## Rules learned
 
