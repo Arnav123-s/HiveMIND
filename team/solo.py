@@ -550,10 +550,25 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
             helped.append(h)
             board.log(f"member{n}", "hint", h)
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
-    for turn in range(1, TURNS + 1):
+    recover_cutoff = who != "coder" and os.environ.get("HIVE_CUTOFF_REPAIR") == "1"
+    budget = TURNS * LONG
+    longer = False
+    for attempt in range(1, TURNS + 1):
+        if recover_cutoff and budget <= 0:
+            break
+        turn = attempt
         stop.check()
         if who == "coder":
             reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
+        elif recover_cutoff:
+            cap = min(budget, LONG * (2 if longer else 1))
+            with ternary.observe_completion() as end:
+                reply = ternary.chat(who, messages, max_new_tokens=cap, temperature=temperature, also=also)
+            used = end.get("tokens")
+            measured = type(used) is int and 0 <= used <= cap
+            budget -= used if measured else cap
+            hit_limit = measured and used == cap and end.get("reason") == "length"
+            longer = False
         else:
             reply = ternary.chat(who, messages, max_new_tokens=LONG, temperature=temperature, also=also)
         code = extract_code(reply)
@@ -595,6 +610,19 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
         out, err = res["stdout"].strip(), res["stderr"].strip()
         board.log(f"member{n}", "run", f"turn {turn}: exit {res['returncode']}, printed {len(out)} characters")
         messages.append({"role": "assistant", "content": f"```python\n{code}\n```"})
+        if recover_cutoff and hit_limit and turn < TURNS and budget and res["returncode"] != 0:
+            try:
+                ast.parse(code)
+            except (SyntaxError, ValueError):
+                # The transport reports exhausting the requested cap and this source cannot be parsed.
+                # A longer next reply may spend only the unused part of the original total output budget.
+                longer = True
+                helps("reply_cutoff")
+                messages.append({"role": "user", "content":
+                    "The server stopped your reply at its output limit. Python could not parse the program. "
+                    "Start over with a shorter complete program. Use the supplied input directly, omit commentary "
+                    "and duplicate setup, and keep any checks brief."})
+                continue
         # Seen on seed 9011 (the members' own work, uploaded): three members each made up the address of an inner
         # page (horror_2, horror_26, horror_37), got a 404, saved a CSV with only its heading, printed "CSV file
         # created", and two of them agreed on that sentence.
