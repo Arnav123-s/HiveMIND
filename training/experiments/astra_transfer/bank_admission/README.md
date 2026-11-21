@@ -19,6 +19,19 @@ The result is **16**. In an interactive local session the same shortcut works on
 
 With both directories configured, the regular practice runner automatically checks named functions found in an individually passing member's last successful program. The practice result's `bank_admissions` records what happened. Fixed exam runs do not submit candidates. Other worker wins can qualify once a trusted contract names the function and its supported inputs.
 
+## Carry practice methods into another session
+
+Download the numbered practice artifacts from a generation into one directory, preserving paths such as `practice/rows-1/rows.jsonl`. Use artifacts from a revision that records each worker’s individual verification. Choose trusted contracts independently of the workers and any evaluation set. Build the first snapshot and query it offline with the usual command:
+
+```sh
+./hive bank-promote --practice practice --contracts "$HIVE_BANK_CONTRACTS" --output runs/bank-v1.json
+HIVE_BANK="$PWD/runs/bank-v1.json" ./hive --local --once 'Calculate the decimal digit sum of 907.'
+```
+
+For the next generation, add `--previous runs/bank-v1.json` and choose a new output name. Promotion rechecks every retained version against its original contract and runs every new candidate through the same guest. It refuses to overwrite a different snapshot. A whole-snapshot hash detects damaged or missing entries. Use snapshots from a checkout or source you trust. Chat withholds conflicting results and sends follow-ups or previous open-ended instructions through the conversation.
+
+A repository owner can enable hosted promotion by setting the Actions variable `HIVE_BANK_CONTRACTS_DIR` to a committed directory of independent JSON contracts. An ordinary generation can then publish `cells/method_bank.json` with its body record. The issue chat tests a matching request before fetching model weights. Trial runs and comparison runs skip promotion. Clearing the variable disables both hosted steps. A local checkout can use its published snapshot with `HIVE_USE_METHOD_BANK=1` and the WASI runtime installed. Explicit `HIVE_BANK` still selects a particular local snapshot or a legacy directory.
+
 ## Define a contract
 
 ```json
