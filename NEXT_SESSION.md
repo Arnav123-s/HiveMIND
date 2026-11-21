@@ -5,21 +5,25 @@ Written 2026-11-19 23:05 UTC by D (session `session_014dX1CN76uUHTTTA9X1ZCHA`, b
 handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole story is in `docs/OVERVIEW.md`. Start with
 `python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
 
-## Where the hive stands (2026-11-20 17:15 UTC, D)
+## Where the hive stands (2026-11-21 12:20 UTC, D)
 
-- **Newest record: g57**, kept 49 against 48: first try 0.72 MET (first time), talk 8.0 met, hard 0.68 (0.80 at g55), held out 3 of 29, 6.7 h (a stall behind a trial run).
-  old kinds 0.97, new 0.47). **Far:** held out 1 of 29 on the fixed exam (0 of 10 kinds), hours 5.14 (bar 3).
-- **g56 is running** (started 16:44 UTC), the first with PR 127 (spec lessons: lessons show the detail members agree
-  wrong on; such kinds always taught). Judge it on hard kinds and agreed-wrong deliveries.
-- Merged 19-20 Nov by D: PRs 112-121, 125-127 (see the log). PR 122 (Codex atlas) judged, not merged: its one-kind
-  answer key would raise the score without the hive improving.
+- **Newest record: g59**, kept 49 against 47; no bar met (hard 0.65, held out 2 of 28, first try 0.52, talk 7.5,
+  6.4 h). Best readings so far: hard 0.80 (g55), first try 0.72 (g57), talk 8.8 (g52). First try and talk swing
+  generation to generation (96 practice tasks, 40 talk messages): all five bars on one generation needs margin.
+- **g60 is running** (started 11:48 UTC), the first with PR 138: a train slice spent 92 of its 170 minutes measuring
+  before training (read 57, kept-back 35); now each is capped at 12% of the budget, so training gets 100+ minutes.
+  Judge g60 on hard kinds (more training) and train minutes (no slice past ~195).
+- Merged 19-21 Nov by D: PRs 112-121, 125-130, 137-138; PR 124 taken via 129. PRs 122, 131 judged not worth merging
+  (131 was then merged from the owner's account; checked: inert by default, 1015 tests). PRs 132-134: research only.
+- A trial run on the shared 20 runners stalls the line (run 58, cancelled on the owner's word): start one only
+  between generations.
 
 ## In flight, and who has it
 
 | What | Where | What to do |
 |---|---|---|
-| g56's record | grow.yml run 56 | Read it; causes by a helper (scratchpad g53_causes.py is the model) |
-| D's scheduled wake | about 22:15 UTC 20 Nov | D reads g56; a new loop holder takes it over |
+| g60's record | grow.yml run 60 | Read it; train minutes per slice; hard kinds by cause (worker files now in gate-work) |
+| D's scheduled wake | about 17:45 UTC 21 Nov | D reads g60; a new loop holder takes it over |
 
 ## Open, in order (the board in `docs/PLAN.md` has each row)
 
