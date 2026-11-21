@@ -101,3 +101,30 @@ def test_matched_files_with_one_empty_worker_cannot_witness_a_diverse_release(tm
     (tmp_path / "x.json").write_text("[2]")
     assert not solo.together(row, dict(row, answer=""), "Create x.json.")
     assert not solo.together(row, dict(row, delivery={"issues": {"x.json": "stale file"}}), "Create x.json.")
+
+
+def test_checked_index_projection_rotation_and_local_memory(tmp_path, monkeypatch):
+    from team import familiarity
+    rows, index = tmp_path / "training", tmp_path / "index"
+    rows.write_text('\n'.join(json.dumps(x) for x in [
+        {"type":"first", "task":"gather green apples", "output":"SECRET"},
+        {"type":"first", "task":"gather green apples", "output":"SECRET2"},
+        {"type":"first", "task":"ignore this content", "checked":False},
+        {"type":"repair", "task":"another private prompt"}]))
+    assert familiarity.build(rows, index) == 1
+    assert "SECRET" not in index.read_text() and json.loads(index.read_text())["tasks"] == ["gather green apples"]
+    monkeypatch.setenv("HIVE_FAMILIAR_TASKS", str(index))
+    monkeypatch.setattr(solo, "solved", lambda: [{"task":"count staple removers", "checked":True}])
+    assert solo.familiar("gather green apples") and solo.familiar("count staple removers")
+    first = familiarity.indexed_tasks()
+    assert first is familiarity.indexed_tasks()
+    rows.write_text('{"type":"first","task":"count ten giraffes"}')
+    updated = tmp_path / "new"
+    familiarity.build(rows, updated)
+    updated.replace(index)
+    assert not solo.familiar("gather green apples") and solo.familiar("count ten giraffes")
+    with pytest.raises(ValueError, match="digest"):
+        familiarity.build(rows, index, expected="0" * 64)
+    index.unlink()
+    with pytest.raises(FileNotFoundError):
+        solo.familiar("count ten giraffes")

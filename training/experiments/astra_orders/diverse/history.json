@@ -1,0 +1,37 @@
+{
+  "checked_tasks": 2852,
+  "rows_sha256": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd",
+  "index_sha256": "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6",
+  "panel": [
+    {
+      "id": "m_percent",
+      "nearest_jaccard": 0.75,
+      "familiar": true
+    },
+    {
+      "id": "m_weekday",
+      "nearest_jaccard": 1.0,
+      "familiar": true
+    },
+    {
+      "id": "m_table",
+      "nearest_jaccard": 0.631579,
+      "familiar": true
+    },
+    {
+      "id": "cold-chain",
+      "nearest_jaccard": 0.071429,
+      "familiar": false
+    },
+    {
+      "id": "delayed-release",
+      "nearest_jaccard": 0.112676,
+      "familiar": false
+    },
+    {
+      "id": "careful-meter",
+      "nearest_jaccard": 0.079365,
+      "familiar": false
+    }
+  ]
+}
