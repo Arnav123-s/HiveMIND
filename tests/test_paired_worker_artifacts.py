@@ -10,6 +10,8 @@ from training.experiments.astra_orders.worker_contracts import paired
 
 def write_shards(root):
     fixed = exam.held_exam()
+    manifest = Path(paired.__file__).with_name("g55-contemporaneous.sha256").read_bytes()
+    roster = ",".join(Path(line.split()[1]).stem for line in manifest.decode().splitlines())
     for arm in paired.ARMS:
         flag = "1" if arm == "f3" else "0"
         for seat in range(1, 9):
@@ -20,11 +22,13 @@ def write_shards(root):
                 "assignment.json": json.dumps({"ARM": arm, "SHARD": str(seat), "AGENT_TEAM_SOLO": "2",
                                                "HIVE_ASSERT_FIRST": flag, "HIVE_PAGE_CHECKS": flag,
                                                "HIVE_HTTP_CACHE": flag, "GITHUB_RUN_ID": "fixture",
-                                               "GITHUB_SHA": "local-control", "HIVE_MEMBERS": "same"}),
-                "adapters.sha256": Path(paired.__file__).with_name("g55-contemporaneous.sha256").read_bytes(),
+                                               "GITHUB_SHA": "local-control", "HIVE_MEMBERS": roster}),
+                "adapters.sha256": manifest,
                 "roster.sha256": "same bytes",
                 "familiar-index.sha256": paired.INDEX + "  /tmp/checked-tasks.json",
-                f"held_{seat}.json": json.dumps({"summary": {"exam": "held", "seat": seat}, "tasks": rows})}
+                f"held_{seat}.json": json.dumps({"summary": {"exam": "held", "seat": seat, "seats": 8, "per": 3,
+                                                            "members": roster, "memory": "none", "tasks": len(rows),
+                                                            "passed": sum(r["ok"] for r in rows)}, "tasks": rows})}
             stem = root / f"f3-{arm}-{seat}-attempt-1"
             if arm == "stock":
                 with ZipFile(stem.with_suffix(".zip"), "w") as z:
@@ -56,4 +60,14 @@ def test_rejects_cross_run_artifacts(tmp_path):
     data["GITHUB_RUN_ID"] = "another-run"
     assignment.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="workflow run"):
+        paired.collect(tmp_path, 1)
+
+
+def test_stale_official_score_cannot_claim_the_assignment(tmp_path):
+    write_shards(tmp_path)
+    receipt = tmp_path / "f3-f3-1-attempt-1" / "held_1.json"
+    data = json.loads(receipt.read_bytes())
+    data["summary"]["members"] = "t80+some-other-body"
+    receipt.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="candidate body"):
         paired.collect(tmp_path, 1)

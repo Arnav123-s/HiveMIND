@@ -24,6 +24,8 @@ on this runtime it answers properly, where Microsoft's runtime looped (team/bitn
     python -m team.ternary ask t9 "..."   one question to one model
     python -m team.ternary stop
 """
+from contextlib import contextmanager
+from contextvars import ContextVar
 import argparse
 import http.client
 import json
@@ -412,6 +414,26 @@ def _ask(member, at, cell, path, body, n):
             _restart(member, _why(e, waited))
 
 
+_COMPLETION = ContextVar("hive_ternary_completion", default=None)
+
+
+@contextmanager
+def observe_completion():
+    """Read this caller's actual finish reason and output count without changing chat's string API."""
+    observation = {}
+    token = _COMPLETION.set(observation)
+    try:
+        yield observation
+    finally:
+        _COMPLETION.reset(token)
+
+
+def _completion(reason, tokens):
+    observation = _COMPLETION.get()
+    if observation is not None:
+        observation.update(reason=reason, tokens=tokens)
+
+
 def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
     """The member's reply to a conversation, with its cell on and the engrams in `also` beside it (names, at full
     strength, or (name, scale) pairs). When the conversation no longer fits its window, the oldest program and
@@ -425,11 +447,16 @@ def chat(member, messages, max_new_tokens=700, temperature=0.0, also=()):
                 text = "".join(f"{m['role'].capitalize()}: {m['content']}{END}" for m in messages) + "Assistant: "
                 out = _ask(member, at, cell, "/completion", {"prompt": text, "n_predict": max_new_tokens, "temperature": temperature,
                                                              "stop": [END, "\nUser:", "<|end_of_text|>"], "cache_prompt": fresh}, max_new_tokens)
+                at_limit = out.get("stopped_limit") is True and not (out.get("stopped_eos") or out.get("stopped_word"))
+                _completion("length" if at_limit else None, out.get("tokens_predicted"))
                 return out.get("content", "").split(END)[0].strip()
             out = _ask(member, at, cell, "/v1/chat/completions", {"messages": messages, "max_tokens": max_new_tokens, "temperature": temperature,
                                                                   "top_p": 0.8 if temperature else 1.0, "top_k": 20 if temperature else 0, "cache_prompt": fresh,
                                                                   "chat_template_kwargs": {"enable_thinking": False}}, max_new_tokens)
-            return (out["choices"][0]["message"].get("content") or "").strip()
+            choice = out["choices"][0]
+            usage = out.get("usage")
+            _completion(choice.get("finish_reason"), usage.get("completion_tokens") if isinstance(usage, dict) else None)
+            return (choice["message"].get("content") or "").strip()
         except urllib.error.HTTPError as e:
             fresh = True
             if e.code not in (400, 413, 500) or len(messages) <= 3:
