@@ -507,6 +507,7 @@ def gate(argv):
             print(f"the run's facts could not be read ({type(e).__name__}); the record goes on without them")
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
+    prior_body = dict(body)
     if keep:
         parents = {c: p for c, p in dict(old_parents, **parent_of).items() if c in after}
         body.update({"dna": dna, "generation": int(gen[1:]), "cells": after, "parents": parents})
@@ -520,6 +521,20 @@ def gate(argv):
             body.pop("levels", None)
             body.pop("kinds", None)
         BODY.write_text(json.dumps(body) + "\n")
+    if grow and not trial and os.environ.get("HIVE_ARCHIVE_K") == "3":
+        from training import body_archive
+        folder = Path(argv[argv.index("--archive") + 1]) if "--archive" in argv else None
+        if folder:
+            past = body_archive.collect(folder, "before", prior_body, gen)
+            current = past
+            if keep:
+                path = got / f"{dna}.{trunk}.gguf"
+                current = body_archive.collect(folder, "after", body, gen, body_archive.digest(path)) if trunk and path.is_file() else None
+            archive_path = BODY.parent / "body_archive.json"
+            archive = body_archive.read(archive_path)
+            updated = body_archive.retain(archive, current, past if keep else None)
+            if updated != archive:
+                archive_path.write_text(json.dumps(updated, sort_keys=True) + "\n")
     # who in the body is strong on what, by organ, for trials of seating by it (HIVE_SEATING=strength); a body that
     # multiplies is not seated by it
     src = arms["after"] if keep else arms["before"]

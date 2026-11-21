@@ -597,7 +597,16 @@ def seating(task, kind=None):
         if other:
             order.remove(other)
             order.insert(1, other)
-    return trunk + order
+    order = trunk + order
+    if os.environ.get("HIVE_ARCHIVE_K") == "3" and trunk:
+        from training import body_archive
+        body = body_archive.read(BODY)
+        pinned = set(who)
+        # An explicitly restricted roster is a user choice. Only the full body opts into extra archived seats.
+        full_body = {f"{body.get('dna')}+{c}" for c in body.get("cells", [])}
+        if not os.environ.get("HIVE_MEMBERS") or (full_body and full_body <= pinned):
+            order = body_archive.route(order, o, body_archive.read(os.environ.get("HIVE_ARCHIVE_PATH") or BODY.parent / "body_archive.json"), ADAPTERS)
+    return order
 
 
 if __name__ == "__main__":

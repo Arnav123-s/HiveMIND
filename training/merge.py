@@ -121,7 +121,7 @@ def gguf(folder, base, name, out_dir=None):
 
 def slice_observations(metas):
     """Separate per-run experimental measurements from the legacy first-slice summary."""
-    fields = ("plateau", "loss_chunk_tokens")
+    fields = ("plateau", "loss_chunk_tokens", "self_replay")
     memory_fields = ("row_modes", "mode_changes", "checkpoint_cost_per_piece_mb",
                      "checkpoint_formula_per_piece_mb", "training_max_len", "evaluation_max_len")
     observations = []

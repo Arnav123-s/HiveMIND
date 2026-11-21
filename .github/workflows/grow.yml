@@ -130,6 +130,7 @@ env:
   AGENT_TEAM_SOLO: "2"
   AGENT_TEAM_SOLO_ALONE: "1"
   HIVE_LIGHT: "1"
+  HIVE_ARCHIVE_K: ${{ vars.HIVE_ARCHIVE_K || '0' }}
   GEN: g${{ github.run_number }}
   DNA: ${{ inputs.dna || 't80' }}
   HIVE_SEATING: ${{ inputs.seating == 'strength' && 'strength' || '' }}
@@ -218,7 +219,9 @@ jobs:
         env:
           WHO: ${{ inputs.who || '' }}
       - name: The body's cells, from the release
-        run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+        run: |
+          python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+          python3 -m training.body_archive fetch
       - uses: ./.github/actions/hive
       - name: Practice
         env:
@@ -302,7 +305,9 @@ jobs:
         env:
           WHO: ${{ inputs.who || '' }}
       - name: The body's cells, from the release
-        run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+        run: |
+          python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+          python3 -m training.body_archive fetch
       - uses: ./.github/actions/hive
       - name: Install the guest for generated practice
         continue-on-error: true
@@ -578,6 +583,8 @@ jobs:
           HIVE_TRAIN_MIN: ${{ needs.plan.outputs.train_minutes }}
           HIVE_CHUNK_CE: ${{ needs.plan.outputs.chunk_tokens }}
           TRAIN_PROFILE: ${{ inputs.train_minutes == 'notebook' && 'auto' || needs.plan.outputs.train_minutes }}
+          HIVE_SELF_REPLAY: ${{ vars.HIVE_SELF_REPLAY || '0' }}
+          HIVE_SELF_REPLAY_RATIO: ${{ vars.HIVE_SELF_REPLAY_RATIO || '2' }}
           HIVE_SHARD_POLICY: ${{ inputs.shard_policy || 'hash' }}
           HIVE_TRAIN_PLATEAU: ${{ inputs.train_plateau || 'off' }}
           # The notebook retains its separate memory and clock profile.
@@ -627,7 +634,7 @@ jobs:
           CM=$(( K > 0 ? 70 / K : 60 )); [ "$CM" -gt 60 ] && CM=60; [ "$CM" -lt 15 ] && CM=15
           T0=$(date +%s)
           # Opt-in CPU measurements use the same hardware even when a notebook happens to be online.
-          if [ "$TRAIN_PROFILE/$HIVE_SHARD_POLICY/$HIVE_TRAIN_PLATEAU" = auto/hash/off ] && [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+          if [ "${HIVE_SELF_REPLAY:-0}" = 0 ] && [ "$TRAIN_PROFILE/$HIVE_SHARD_POLICY/$HIVE_TRAIN_PLATEAU" = auto/hash/off ] && [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
             # The owner may start the notebook any time during practice (g42's came up 13 minutes after training began,
             # and each job had looked once, at its start): every slice of the child offered waits up to CW minutes
             # (repository variable HIVE_COLAB_WAIT, 15 unless set), one line a minute; a notebook not seen in 12 hours is
@@ -790,8 +797,49 @@ jobs:
           path: out/
           retention-days: 30
 
+  archive_profiles:
+    # One private development item per runner. Both arms finish before the first gate request.
+    needs: [plan, merge]
+    if: ${{ !cancelled() && vars.HIVE_ARCHIVE_K == '3' && needs.merge.result == 'success' && !inputs.trial && !inputs.versus }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: [before, after]
+        slot: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        if: ${{ matrix.arm == 'after' }}
+        with:
+          name: trunk
+          path: tr
+      - name: Load the exact trunk for this arm
+        env:
+          ARM: ${{ matrix.arm }}
+        run: |
+          mkdir -p cells/members
+          if [ "$ARM" = before ]; then
+            WHO=$(python3 -c 'import json,os; b=json.load(open("cells/body.json")); print(b["dna"]+"+"+b["trunk"] if b.get("dna")==os.environ["DNA"] and b.get("trunk") else "")')
+            python3 training/grow_record.py fetch "$WHO"
+          else
+            WHO="$DNA+${GEN}trunk"
+            cp "tr/$DNA.${GEN}trunk.gguf" "cells/members/$WHO.gguf"
+          fi
+          test -s "cells/members/$WHO.gguf"
+          echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
+      - uses: ./.github/actions/hive
+      - name: Grade the named trunk independently with empty memory
+        run: python3 -m training.body_archive profile ${{ matrix.slot }} profile.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: archive-${{ matrix.arm }}-${{ matrix.slot }}
+          path: profile.json
+          retention-days: 30
+
   gate:
-    needs: [plan, train, join, merge]
+    needs: [plan, train, join, merge, archive_profiles]
     # a body that multiplies goes on with the children that did grow when one runner failed
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
@@ -871,6 +919,17 @@ jobs:
           echo "who=$WHO" >> "$GITHUB_OUTPUT"
       - uses: ./.github/actions/hive
         if: ${{ steps.who.outputs.who }}
+      - uses: actions/download-artifact@v4
+        if: ${{ env.HIVE_ARCHIVE_K == '3' && needs.plan.outputs.grow && !inputs.trial && !inputs.versus }}
+        continue-on-error: true
+        with:
+          pattern: archive-*
+          path: archive
+      - name: Freeze archive seating from development receipts before reading this exam
+        if: ${{ env.HIVE_ARCHIVE_K == '3' && steps.who.outputs.who }}
+        run: |
+          python3 -m training.body_archive freeze archive "$GEN" "$RUNNER_TEMP/seating.json"
+          echo "HIVE_ARCHIVE_PATH=$RUNNER_TEMP/seating.json" >> "$GITHUB_ENV"
       - name: A fresh exam, half of the first exam's kinds and half hard ones
         if: ${{ steps.who.outputs.who && matrix.part == 'fresh' }}
         run: |
@@ -1090,6 +1149,12 @@ jobs:
         with:
           name: talk-${{ env.GEN }}
           path: training/reports/talk
+      - uses: actions/download-artifact@v4
+        if: ${{ env.HIVE_ARCHIVE_K == '3' }}
+        continue-on-error: true
+        with:
+          pattern: archive-*
+          path: archive
       - name: The run's facts (each job's hours, the slices lost and their records, who started it; training/reads.py)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -1108,7 +1173,7 @@ jobs:
           mkdir -p prac
           check=()
           if [ "$STAGED" = 1 ]; then check=(--sequential "$GATE_SEATS" "$GATE_RUN"); fi
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held "${check[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held --archive archive "${check[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}
@@ -1134,7 +1199,7 @@ jobs:
           # it is said: latest.md says the read failed, and the job's last step ends red (g43's read was lost to a warning)
           FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
           : > "$FAILED"
-          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null)
+          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json cells/body_archive.json 2>/dev/null)
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           # the talk exam's sitting (when the gate sat it) is kept aside: a lost race below resets the tree it is drawn into
           if [ -f "training/reports/talk/$GEN.json" ]; then cp "training/reports/talk/$GEN.json" talk.json; fi

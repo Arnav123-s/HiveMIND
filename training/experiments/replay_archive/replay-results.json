@@ -1,0 +1,156 @@
+{
+  "g55_sha256": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd",
+  "g56_sha256": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139",
+  "target_byte_limit": 30000,
+  "old_eval_questions_excluded_from_new": 0,
+  "eligible_live_replay_questions": 17,
+  "arms": {
+    "frozen_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 0,
+        "new_distinct": 0,
+        "new_target_bytes": 0
+      },
+      "scores": {
+        "old": [
+          110,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    },
+    "new_only_0.98": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 65,
+        "new_distinct": 54,
+        "new_target_bytes": 30000
+      },
+      "scores": {
+        "old": [
+          112,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    },
+    "new_only_1.0": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 65,
+        "new_distinct": 54,
+        "new_target_bytes": 30000
+      },
+      "scores": {
+        "old": [
+          115,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    },
+    "replay_2to1_0.98": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 18,
+        "old_distinct": 13,
+        "old_target_bytes": 14875,
+        "new": 36,
+        "new_distinct": 36,
+        "new_target_bytes": 15125
+      },
+      "scores": {
+        "old": [
+          110,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    },
+    "replay_2to1_1.0": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 18,
+        "old_distinct": 13,
+        "old_target_bytes": 14875,
+        "new": 36,
+        "new_distinct": 36,
+        "new_target_bytes": 15125
+      },
+      "scores": {
+        "old": [
+          107,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    },
+    "replay_4to1_0.98": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 11,
+        "old_distinct": 10,
+        "old_target_bytes": 8311,
+        "new": 47,
+        "new_distinct": 44,
+        "new_target_bytes": 21689
+      },
+      "scores": {
+        "old": [
+          106,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    },
+    "replay_4to1_1.0": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 11,
+        "old_distinct": 10,
+        "old_target_bytes": 8311,
+        "new": 47,
+        "new_distinct": 44,
+        "new_target_bytes": 21689
+      },
+      "scores": {
+        "old": [
+          106,
+          169
+        ],
+        "new": [
+          6,
+          7
+        ]
+      }
+    }
+  }
+}

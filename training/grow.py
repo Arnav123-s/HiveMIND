@@ -135,6 +135,7 @@ def saved_key(name):
 def rows_of(run, task, kind="", seed=None):
     """The training rows of one task: from every member whose own answer the task's check confirmed (taught), whether
     or not the whole task was right. run: the task's folder."""
+    from training.self_replay import verified
     from team import solo
     home = _home(run)
     try:
@@ -156,6 +157,7 @@ def rows_of(run, task, kind="", seed=None):
         fenced = f"```python\n{program}\n```"
         # agreed: whether this member was one of those that agreed (False: a right member the old rule left out)
         base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n, "agreed": n in agreeing}
+        base["verified_member"] = verified(Path(run), n, base["who"])
         out.append(base | {"type": "first", "messages": head, "output": fenced})
         out.append(base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
                                                                  {"role": "user", "content": f"OUTPUT:\n{t['answer'][-1800:]}\n\n{solo.MORE}"}], "output": "DONE"})
@@ -908,9 +910,12 @@ class Study:
         """Rows left to meet: up to HARD_MOST meetings a row while the subject is behind, MOST otherwise."""
         return bool(self.queue[s]) and (self.behind(s) or self.passes[s] < self.rows[s] * self.most)
 
-    def pick(self):
+    def pick(self, allowed=None):
         """(subject, row index), or None when every row has been met as often as it may be."""
         alive = [s for s in self.queue if self.open(s)]
+        if allowed is not None:
+            due = [s for s in self.FIXED if s in alive and self.passes[s] < self.SHARE * (self.n + 1)]
+            alive = [s for s in alive if (s in allowed or s in due) and s not in self.waiting]
         if not alive:
             return None
         alive = [s for s in alive if s not in self.waiting] or alive  # a subject just skipped waits its turn
@@ -1256,7 +1261,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # DONE is learned at once in every kind, about 0.001, and says nothing).
     back = {t: k for k, ts in kept_back(rows).items() for t in ts}
     back_rows = [r for r in rows if r.get("who") == "lesson" and r.get("task") in back and r.get("type") != "done"]
-    rows = [r for r in rows if r.get("task") not in back]
+    from training import self_replay
+    replay_ratio = self_replay.ratio()
+    forbidden = {self_replay.question(task) for task in back} if replay_ratio else set()
+    if os.environ.get("HIVE_ARCHIVE_K") == "3":
+        from training import body_archive
+        forbidden.update(self_replay.question(body_archive.panel(i)[0]) for i in range(1, len(body_archive.MAKERS) + 1))
+    rows = [r for r in rows if r.get("task") not in back and
+            (not forbidden or self_replay.question(r.get("task")) not in forbidden)]
+    if replay_ratio:
+        forbidden.update(self_replay.question(r.get("task")) for r in rows
+                         if r.get("gen") == gen or r.get("type") == "mend")
     part = ""
     if shard:
         k, n = (int(x) for x in str(shard).split("/"))
@@ -1428,8 +1443,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # came up, trained on. What is left (given - too_long - skipped_memory - trained) was not reached before the time
     # was up. g41's read put all three together under "left out" and named T4 for kinds with no row too long.
     data, tags, own_rows, mine, new_rows, long = [], [], {}, 0, 0, 0
+    replay_indices, replay_subjects, fresh_subjects = set(), set(), set()
+    if replay_ratio:
+        try:
+            body = json.loads(ternary.BODY.read_text())
+        except (OSError, ValueError):
+            body = {}
+        replay_indices = self_replay.select(rows, body, base, gen, forbidden)
     by_kind, new_kind = {}, {}  # {kind: counts}; {index in data: kind} of the new rows
-    for row in rows:
+    for row_index, row in enumerate(rows):
         new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
         if new:
             counts = by_kind.setdefault(row.get("kind") or "?", {"given": 0, "too_long": 0, "skipped_memory": 0, "trained": 0})
@@ -1444,7 +1466,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if new:
             new_kind[len(data)] = row.get("kind") or "?"
         data.append(d)
-        tags.append(subject(row, new))
+        tag = subject(row, new)
+        if row_index in replay_indices:
+            tag += " · self-replay"
+            replay_subjects.add(tag)
+        elif new and row.get("type") != "done":
+            fresh_subjects.add(tag)
+        tags.append(tag)
         own_rows[tags[-1]] = own_rows.get(tags[-1], 0) + own
         mine += own
         new_rows += new
@@ -1543,6 +1571,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     own_share = {s: min(1.0, own_rows[s] / len(idx)) for s, idx in by.items() if own_rows.get(s)}
     hard, web = new_hard(by)
     study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight, hard=hard, web=web)
+    replay = self_replay.Schedule(replay_ratio, tags, replay_subjects, fresh_subjects) if replay_ratio else None
     passes = study.size if minutes else min(int(len(data) * epochs), study.size)
     log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ up to x{weight:g} by its share, read and judged "
         f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
@@ -1625,7 +1654,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             # cell stops here and is kept.
             log(f"time is up after {i} passes: the cell is saved as it is", flush=True)
             break
-        got = study.pick()
+        got = replay.pick(study) if replay else study.pick()
         if got is None:
             log(f"every row has been met as often as it may be ({study.most} times, up to {study.hard_most} for a new hard subject not learned yet), after {i} passes", flush=True)
             break
@@ -1681,6 +1710,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         running += row_objective
         held += 1
         study.learned(s, plain)
+        if replay:
+            replay.learned(s, idx, k)
         trained_rows.add(idx)
         if plateau:
             plateau.observe(idx, row_objective)
@@ -1765,6 +1796,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "rows_by_kind": dict(sorted(by_kind.items()))}
     if shard and os.environ.get("HIVE_SHARD_POLICY", "hash") != "hash":
         meta["shard_policy"] = os.environ["HIVE_SHARD_POLICY"]
+    if replay:
+        meta["self_replay"] = replay.report()
     if plateau:
         meta["plateau"] = {**plateau.report, "rows_covered": len(trained_rows)}
     if guard:
