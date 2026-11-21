@@ -1,0 +1,380 @@
+{
+  "development_qualified": false,
+  "panels": {
+    "development_after": {
+      "all_splits_including_files": {
+        "both_right": 5,
+        "both_wrong": 3,
+        "correct": 150,
+        "gain_per_switch_95": [
+          0.0,
+          0.23164
+        ],
+        "gains": 0,
+        "losses": 6,
+        "stock_correct": 156,
+        "switches": 14,
+        "ungraded_suggestions": 0
+      },
+      "arms": {
+        "all": {
+          "both_right": 5,
+          "both_wrong": 2,
+          "correct": 152,
+          "gain_per_switch_95": [
+            0.0,
+            0.28491
+          ],
+          "gains": 0,
+          "losses": 4,
+          "stock_correct": 156,
+          "switches": 11,
+          "ungraded_suggestions": 0
+        },
+        "both": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "contract": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "hindsight": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "history": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        }
+      },
+      "jobs": 192,
+      "known_worker_right_delivery_wrong": 11,
+      "missing_minority_grade": 0,
+      "of_those_already_confirmed": 3,
+      "reasons": {
+        "no confirmed delivery": 25,
+        "no report": 1,
+        "not three complete seated answers": 152,
+        "observable split": 14
+      },
+      "split_files": 3,
+      "split_text": 11,
+      "stock_correct": 156,
+      "ungraded_members": 0
+    },
+    "development_before": {
+      "all_splits_including_files": {
+        "both_right": 5,
+        "both_wrong": 1,
+        "correct": 152,
+        "gain_per_switch_95": [
+          0.00211,
+          0.3848
+        ],
+        "gains": 1,
+        "losses": 5,
+        "stock_correct": 156,
+        "switches": 12,
+        "ungraded_suggestions": 0
+      },
+      "arms": {
+        "all": {
+          "both_right": 5,
+          "both_wrong": 1,
+          "correct": 155,
+          "gain_per_switch_95": [
+            0.0,
+            0.40962
+          ],
+          "gains": 0,
+          "losses": 1,
+          "stock_correct": 156,
+          "switches": 7,
+          "ungraded_suggestions": 0
+        },
+        "both": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "contract": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "hindsight": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "history": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 156,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 156,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        }
+      },
+      "jobs": 192,
+      "known_worker_right_delivery_wrong": 13,
+      "missing_minority_grade": 0,
+      "of_those_already_confirmed": 6,
+      "reasons": {
+        "no confirmed delivery": 26,
+        "not three complete seated answers": 154,
+        "observable split": 12
+      },
+      "split_files": 5,
+      "split_text": 7,
+      "stock_correct": 156,
+      "ungraded_members": 0
+    },
+    "evaluation_after": {
+      "all_splits_including_files": {
+        "both_right": 1,
+        "both_wrong": 3,
+        "correct": 196,
+        "gain_per_switch_95": [
+          0.00253,
+          0.44502
+        ],
+        "gains": 1,
+        "losses": 5,
+        "stock_correct": 200,
+        "switches": 10,
+        "ungraded_suggestions": 0
+      },
+      "arms": {
+        "all": {
+          "both_right": 1,
+          "both_wrong": 0,
+          "correct": 197,
+          "gain_per_switch_95": [
+            0.00421,
+            0.64123
+          ],
+          "gains": 1,
+          "losses": 4,
+          "stock_correct": 200,
+          "switches": 6,
+          "ungraded_suggestions": 0
+        },
+        "both": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 200,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 200,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "contract": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 200,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 200,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "hindsight": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 201,
+          "gain_per_switch_95": [
+            0.025,
+            1.0
+          ],
+          "gains": 1,
+          "losses": 0,
+          "stock_correct": 200,
+          "switches": 1,
+          "ungraded_suggestions": 0
+        },
+        "history": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 200,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 200,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        }
+      },
+      "jobs": 256,
+      "known_worker_right_delivery_wrong": 6,
+      "missing_minority_grade": 0,
+      "of_those_already_confirmed": 1,
+      "reasons": {
+        "no confirmed delivery": 36,
+        "no unique two-to-one printed split": 3,
+        "not three complete seated answers": 206,
+        "observable split": 10,
+        "truncated answer or later retry": 1
+      },
+      "split_files": 4,
+      "split_text": 6,
+      "stock_correct": 200,
+      "ungraded_members": 0
+    },
+    "evaluation_before": {
+      "all_splits_including_files": {
+        "both_right": 2,
+        "both_wrong": 4,
+        "correct": 198,
+        "gain_per_switch_95": [
+          0.0,
+          0.3085
+        ],
+        "gains": 0,
+        "losses": 4,
+        "stock_correct": 202,
+        "switches": 10,
+        "ungraded_suggestions": 0
+      },
+      "arms": {
+        "all": {
+          "both_right": 2,
+          "both_wrong": 2,
+          "correct": 201,
+          "gain_per_switch_95": [
+            0.0,
+            0.52182
+          ],
+          "gains": 0,
+          "losses": 1,
+          "stock_correct": 202,
+          "switches": 5,
+          "ungraded_suggestions": 0
+        },
+        "both": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 202,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 202,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "contract": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 202,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 202,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "hindsight": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 202,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 202,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        },
+        "history": {
+          "both_right": 0,
+          "both_wrong": 0,
+          "correct": 202,
+          "gain_per_switch_95": null,
+          "gains": 0,
+          "losses": 0,
+          "stock_correct": 202,
+          "switches": 0,
+          "ungraded_suggestions": 0
+        }
+      },
+      "jobs": 256,
+      "known_worker_right_delivery_wrong": 6,
+      "missing_minority_grade": 0,
+      "of_those_already_confirmed": 0,
+      "reasons": {
+        "no confirmed delivery": 29,
+        "no unique two-to-one printed split": 1,
+        "not three complete seated answers": 215,
+        "observable split": 10,
+        "truncated answer or later retry": 1
+      },
+      "split_files": 5,
+      "split_text": 5,
+      "stock_correct": 202,
+      "ungraded_members": 0
+    }
+  },
+  "raw_development_double_witness": {
+    "both_right": 0,
+    "both_wrong": 0,
+    "correct": 156,
+    "gain_per_switch_95": null,
+    "gains": 0,
+    "losses": 0,
+    "stock_correct": 156,
+    "switches": 0,
+    "ungraded_suggestions": 0
+  }
+}

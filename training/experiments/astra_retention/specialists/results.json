@@ -1,0 +1,226 @@
+{
+  "fits": {
+    "50": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 1
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 3
+    },
+    "51": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 3
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 5
+    },
+    "52": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 3,
+        "t80+g51data": 1,
+        "t80+g51trunk": 2,
+        "t80+g51words2": 1
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 9
+    },
+    "53": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 3,
+        "t80+g51data": 1,
+        "t80+g51trunk": 2,
+        "t80+g51words2": 1
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 9
+    },
+    "54": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 3,
+        "t80+g51data": 1,
+        "t80+g51trunk": 2,
+        "t80+g51words2": 1
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 9
+    },
+    "55": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 3,
+        "t80+g51data": 1,
+        "t80+g51trunk": 2,
+        "t80+g51words2": 1
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 9
+    },
+    "56": {
+      "actors": {
+        "t80+g47sources": 1,
+        "t80+g49data": 1,
+        "t80+g49trunk": 3,
+        "t80+g51data": 1,
+        "t80+g51trunk": 2,
+        "t80+g51words2": 1
+      },
+      "competing_winners_same_prompt": 0,
+      "verified_unique_documents": 9
+    }
+  },
+  "panels": {
+    "development_after": {
+      "coverage": {
+        "eligible": 187,
+        "jobs": 192,
+        "matched": 187,
+        "observed_first": 187,
+        "observed_first_right": 148,
+        "observed_second": 187
+      },
+      "exclusions": {
+        "practice exact overlap": 5
+      },
+      "matched_support": {
+        "unseen both": 187
+      },
+      "scores": {
+        "count": 148,
+        "delivery": 151,
+        "first": 148,
+        "oracle": 159,
+        "second": 154,
+        "second_gained": 11,
+        "second_lost": 5,
+        "second_switched": 187,
+        "word": 148
+      },
+      "support": {
+        "unseen both": 187
+      }
+    },
+    "development_before": {
+      "coverage": {
+        "eligible": 187,
+        "jobs": 192,
+        "matched": 187,
+        "observed_first": 187,
+        "observed_first_right": 147,
+        "observed_second": 187
+      },
+      "exclusions": {
+        "practice exact overlap": 5
+      },
+      "matched_support": {
+        "supported": 23,
+        "unseen second": 164
+      },
+      "scores": {
+        "count": 147,
+        "delivery": 151,
+        "first": 147,
+        "oracle": 163,
+        "second": 156,
+        "second_gained": 16,
+        "second_lost": 7,
+        "second_switched": 187,
+        "word": 147,
+        "word_gained": 0,
+        "word_lost": 0,
+        "word_switched": 11
+      },
+      "support": {
+        "supported": 23,
+        "unseen second": 164
+      }
+    },
+    "evaluation_after": {
+      "coverage": {
+        "eligible": 235,
+        "jobs": 256,
+        "matched": 235,
+        "observed_first": 235,
+        "observed_first_right": 176,
+        "observed_second": 235
+      },
+      "exclusions": {
+        "development gate exact overlap": 9,
+        "practice exact overlap": 12
+      },
+      "matched_support": {
+        "unseen both": 235
+      },
+      "scores": {
+        "count": 176,
+        "delivery": 180,
+        "first": 176,
+        "oracle": 183,
+        "second": 177,
+        "second_gained": 7,
+        "second_lost": 6,
+        "second_switched": 235,
+        "word": 176
+      },
+      "support": {
+        "unseen both": 235
+      }
+    },
+    "evaluation_before": {
+      "coverage": {
+        "eligible": 235,
+        "jobs": 256,
+        "matched": 234,
+        "observed_first": 235,
+        "observed_first_right": 176,
+        "observed_second": 234
+      },
+      "exclusions": {
+        "development gate exact overlap": 9,
+        "missing or unmatched actual first/second receipt": 1,
+        "practice exact overlap": 12
+      },
+      "matched_support": {
+        "supported": 19,
+        "unseen both": 178,
+        "unseen second": 37
+      },
+      "scores": {
+        "count": 176,
+        "delivery": 182,
+        "first": 176,
+        "oracle": 185,
+        "second": 173,
+        "second_gained": 9,
+        "second_lost": 12,
+        "second_switched": 234,
+        "word": 176,
+        "word_gained": 0,
+        "word_lost": 0,
+        "word_switched": 9
+      },
+      "support": {
+        "supported": 20,
+        "unseen both": 178,
+        "unseen second": 37
+      }
+    }
+  },
+  "practice_status": {
+    "compound": 144,
+    "fewer than two complete answers or a blank answer": 28,
+    "multiple winners": 102,
+    "no winner": 5,
+    "sole verified winner": 9
+  }
+}

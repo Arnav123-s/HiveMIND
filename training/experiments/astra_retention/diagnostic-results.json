@@ -1,0 +1,54 @@
+{
+  "g55": {
+    "failure_ledger_sha256": "9ce1d8db64c3810e711805610da9fbf682d8afba7293ef90a41df4d52d6b7ab1",
+    "rows": 881,
+    "distinct_questions": 862,
+    "recorded_delivery": {
+      "unknown": 881
+    },
+    "retrospective_rows": {
+      "diagnostic": 652,
+      "reserve": 229
+    },
+    "retrospective_distinct_questions": {
+      "diagnostic": 637,
+      "reserve": 225
+    },
+    "eligible_with_program_and_checker_feedback": {
+      "unknown": 652
+    }
+  },
+  "g56": {
+    "failure_ledger_sha256": "b64154b9ebabe9bbcf7c7fd14da0c15764625d4e136c8949569fbb93c545fee9",
+    "rows": 900,
+    "distinct_questions": 881,
+    "recorded_delivery": {
+      "unknown": 881,
+      "delivered_wrong": 11,
+      "not_delivered": 8
+    },
+    "retrospective_rows": {
+      "diagnostic": 668,
+      "reserve": 232
+    },
+    "retrospective_distinct_questions": {
+      "diagnostic": 653,
+      "reserve": 228
+    },
+    "eligible_with_program_and_checker_feedback": {
+      "unknown": 652,
+      "delivered_wrong": 10,
+      "not_delivered": 6
+    }
+  },
+  "controls": {
+    "official source even with practice seed": "ineligible source",
+    "official seed even with diagnostic source": "ineligible seed",
+    "official family even with practice seed": "reserved release family",
+    "official family inside compound": "reserved release family",
+    "unknown maker": "unregistered maker",
+    "unknown compound parts": "unresolved compound",
+    "foreign compound seed": "ineligible seed",
+    "reserved diagnostic question": "reserve"
+  }
+}

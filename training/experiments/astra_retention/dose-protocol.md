@@ -1,0 +1,5 @@
+# Matched target-token sensitivity
+
+The primary comparison fixed 120 source-row presentations. Its length audit found 60,887 target bytes in the all-new schedule, 100,693 at 2:1 and 108,693 at 4:1. Those are the actual next-token units of the CPU byte-trigram ranker. This supplemental comparison was specified after seeing the primary scores and these lengths, before computing the secondary scores.
+
+Keep the primary data, fitted base, router, program order and scoring. Cap every adaptive arm at exactly the all-new primary arm's 60,887 target-byte updates. Present each program from its beginning and cut the final program at the byte boundary, retaining all preceding bytes. The final partial row counts once for the common per-row decay rule. Use both primary decay rates, 0.98 and 1.0. Reuse the frozen base as the comparator, report old/new bytes and the number of full/partial programs. Compare changes on each archived test pair without tuning. This matches fitted target tokens for this ranker. Transformer prompt processing, tokenizer and compute differ.

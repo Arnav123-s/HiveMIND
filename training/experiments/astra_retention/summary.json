@@ -1,0 +1,412 @@
+{
+  "results": {
+    "frozen_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 0,
+        "new_distinct": 0,
+        "new_target_bytes": 0
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 110,
+          "ties": 0,
+          "gains_over_new_only": 6,
+          "losses_over_new_only": 6
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "new_only_0.98": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 120,
+        "new_distinct": 120,
+        "new_target_bytes": 60887
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 106,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "new_only_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 120,
+        "new_distinct": 120,
+        "new_target_bytes": 60887
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 110,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_2to1_0.98": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 80,
+        "old_distinct": 19,
+        "old_target_bytes": 81449,
+        "new": 40,
+        "new_distinct": 40,
+        "new_target_bytes": 19244
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 107,
+          "ties": 0,
+          "gains_over_new_only": 15,
+          "losses_over_new_only": 14
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_2to1_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 80,
+        "old_distinct": 19,
+        "old_target_bytes": 81449,
+        "new": 40,
+        "new_distinct": 40,
+        "new_target_bytes": 19244
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 109,
+          "ties": 0,
+          "gains_over_new_only": 12,
+          "losses_over_new_only": 13
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_4to1_0.98": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 96,
+        "old_distinct": 19,
+        "old_target_bytes": 98471,
+        "new": 24,
+        "new_distinct": 24,
+        "new_target_bytes": 10222
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 108,
+          "ties": 0,
+          "gains_over_new_only": 17,
+          "losses_over_new_only": 15
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_4to1_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 96,
+        "old_distinct": 19,
+        "old_target_bytes": 98471,
+        "new": 24,
+        "new_distinct": 24,
+        "new_target_bytes": 10222
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 109,
+          "ties": 0,
+          "gains_over_new_only": 12,
+          "losses_over_new_only": 13
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    }
+  },
+  "dose-results": {
+    "frozen_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 0,
+        "new_distinct": 0,
+        "new_target_bytes": 0
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 110,
+          "ties": 0,
+          "gains_over_new_only": 6,
+          "losses_over_new_only": 6
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "new_only_0.98": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 120,
+        "new_distinct": 120,
+        "new_target_bytes": 60887
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 106,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "new_only_1.0": {
+      "exposure": {
+        "partial_rows": 0,
+        "old": 0,
+        "old_distinct": 0,
+        "old_target_bytes": 0,
+        "new": 120,
+        "new_distinct": 120,
+        "new_target_bytes": 60887
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 110,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_2to1_0.98": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 48,
+        "old_distinct": 19,
+        "old_target_bytes": 50144,
+        "new": 25,
+        "new_distinct": 25,
+        "new_target_bytes": 10743
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 107,
+          "ties": 0,
+          "gains_over_new_only": 14,
+          "losses_over_new_only": 13
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_2to1_1.0": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 48,
+        "old_distinct": 19,
+        "old_target_bytes": 50144,
+        "new": 25,
+        "new_distinct": 25,
+        "new_target_bytes": 10743
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 109,
+          "ties": 0,
+          "gains_over_new_only": 10,
+          "losses_over_new_only": 11
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_4to1_0.98": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 54,
+        "old_distinct": 19,
+        "old_target_bytes": 54834,
+        "new": 14,
+        "new_distinct": 14,
+        "new_target_bytes": 6053
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 107,
+          "ties": 0,
+          "gains_over_new_only": 14,
+          "losses_over_new_only": 13
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    },
+    "replay_4to1_1.0": {
+      "exposure": {
+        "partial_rows": 1,
+        "old": 54,
+        "old_distinct": 19,
+        "old_target_bytes": 54834,
+        "new": 14,
+        "new_distinct": 14,
+        "new_target_bytes": 6053
+      },
+      "scores": {
+        "old": {
+          "pairs": 169,
+          "questions": 111,
+          "correct": 109,
+          "ties": 0,
+          "gains_over_new_only": 10,
+          "losses_over_new_only": 11
+        },
+        "new": {
+          "pairs": 7,
+          "questions": 7,
+          "correct": 6,
+          "ties": 0,
+          "gains_over_new_only": 0,
+          "losses_over_new_only": 0
+        }
+      }
+    }
+  }
+}
