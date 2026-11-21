@@ -721,13 +721,36 @@ def gguf_seconds(now, born, minutes, default=900.0, wall=1200.0):
     return max(180.0, min(default, born + minutes * 60 + wall - now))
 
 
-def kept_loss(model, items, dev, cast, beat=None, until=0.0):
+def precheck_deadline(started, now, minutes, profile):
+    """In a short CPU trial reserve at least half the remaining clock for training, apart from a row in flight."""
+    if profile not in ("85", "110") or minutes <= 0:
+        return 0.0
+    return now + max(0.0, started + minutes * 60 - now) / 4
+
+
+def paired_kept_losses(back, before, after):
+    """The evaluator visits items in order and may stop between rows. Compare only the common prefix per kind."""
+    report = {}
+    for kind in sorted(set(back.values())):
+        left, right = before.get(kind, []), after.get(kind, [])
+        pairs = min(len(left), len(right))
+        report[kind] = {
+            "lessons": sum(k == kind for k in back.values()),
+            "rows": pairs,
+            "before": round(sum(left[:pairs]) / pairs, 4) if pairs else None,
+            "after": round(sum(right[:pairs]) / pairs, 4) if pairs else None,
+        }
+    return report
+
+
+def kept_loss(model, items, dev, cast, beat=None, until=0.0, chunk_tokens=0):
     """{kind: [loss of each row]} of the lessons kept back, with the cell's weights as they are now: the same loss
     as training's (the error on the answer's pieces), one row at a time with no gradient, so nothing is held beyond
     one row's logits (an 8B cell trains in 14.7 of 15.6 GB). items: [(kind, (ids, k))] from train's encode.
     until: a clock time (time.time()) after which no further row is measured: the cell's time is up, and what was
     measured so far stands (a slice must save and upload its record, not run on measuring)."""
     import torch
+    from training.lm_head_loss import answer_nll
     was = model.training
     model.eval()  # no dropout: the same rows measured twice give the same number
     out = {}
@@ -739,20 +762,26 @@ def kept_loss(model, items, dev, cast, beat=None, until=0.0):
                 beat["t"], beat["what"] = time.time(), f"the lessons kept back, row {j + 1} of {len(items)}"
             ids = ids.to(dev)
             with cast():
-                lg = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
-            out.setdefault(kind, []).append(torch.nn.functional.cross_entropy(lg.float().reshape(-1, lg.size(-1)), ids[:, -k:].reshape(-1)).item())
-            del lg
+                loss = answer_nll(model, ids, k, chunk_tokens) / (k * ids.shape[0])
+            out.setdefault(kind, []).append(loss.item())
     if was:
         model.train()
     return out
 
 
-def slice_rows(rows, k, n):
+def slice_rows(rows, k, n, policy=None):
     """Slice k of n of the rows: each row in exactly one slice, chosen by its content (the same row in the same slice on
     every runner, whatever order the rows come in)."""
     import zlib
     if not 0 <= k < n:
         raise ValueError(f"slice {k} of {n}: k must be from 0 to n - 1")
+    policy = os.environ.get("HIVE_SHARD_POLICY", "hash") if policy is None else policy
+    if policy == "cost":
+        from training.shard_budget import cost_assignment
+        rows = list(rows)
+        return [r for r, owner in zip(rows, cost_assignment(rows, n)) if owner == k]
+    if policy != "hash":
+        raise ValueError(f"Unknown training shard policy {policy!r}")
     return [r for r in rows if zlib.crc32(json.dumps([r["messages"][1:], r["output"]], sort_keys=True).encode()) % n == k]
 
 
@@ -870,6 +899,83 @@ class Study:
                 for s in sorted(self.rows, key=lambda x: -self.passes[x])]
 
 
+class _RowCheckpoints:
+    """Toggle non-reentrant checkpointing on the decoder suffix, without installing input-gradient hooks."""
+
+    def __init__(self, model, first):
+        from functools import partial
+        from torch.utils.checkpoint import checkpoint as recompute
+        from transformers.modeling_layers import GradientCheckpointingLayer
+
+        base = model.get_base_model() if hasattr(model, "get_base_model") else model
+        self.layers = tuple(getattr(getattr(base, "model", None), "layers", ()))[first:]
+        if not self.layers or not all(isinstance(layer, GradientCheckpointingLayer) for layer in self.layers):
+            raise ValueError("per-row checkpointing needs checkpointable decoder layers")
+        self.enabled = False
+        for layer in self.layers:
+            # An adapter can receive gradients even if its inputs came from a fully frozen prefix.
+            layer._gradient_checkpointing_func = partial(recompute, use_reentrant=False)
+
+    def set(self, enabled):
+        if enabled != self.enabled:
+            for layer in self.layers:
+                layer.gradient_checkpointing = enabled
+            self.enabled = enabled
+
+
+def _cgroup_limits():
+    """Finite v2 limits for this process and its ancestors in a standard Linux cgroup mount."""
+    root = Path("/sys/fs/cgroup")
+    try:
+        line = next(x for x in Path("/proc/self/cgroup").read_text().splitlines() if x.startswith("0::"))
+        leaf = root / line[3:].lstrip("/")
+        if ".." in leaf.parts or not leaf.is_dir():
+            leaf = root  # A namespace may expose the effective cgroup as the mount root.
+        limits = []
+        for folder in (leaf, *leaf.parents):
+            if root != folder and root not in folder.parents:
+                break
+            try:
+                limit = (folder / "memory.max").read_text().strip()
+                if limit != "max":
+                    limits.append((folder / "memory.current", int(limit)))
+            except (OSError, ValueError):
+                continue  # A root without a memory controller must not erase a known child limit.
+        return limits
+    except (OSError, ValueError, StopIteration):
+        return []
+
+
+def _available(ps, limits):
+    available = ps.virtual_memory().available
+    for current, limit in limits:
+        try:
+            used = int(current.read_text())
+        except (OSError, ValueError):
+            return 0  # A previously observed finite limit can no longer be measured.
+        try:
+            stat = {key: int(value) for key, value in
+                    (line.split() for line in current.with_name("memory.stat").read_text().splitlines())}
+            # Reading model shards fills the file cache within this same cgroup. Credit only clean,
+            # inactive file pages outside mapped, shared or pinned memory. Missing stats give no credit.
+            protected = sum(stat[key] for key in ("file_dirty", "file_writeback", "file_mapped", "shmem", "unevictable"))
+            reclaimable = max(0, stat["inactive_file"] - protected)
+        except (OSError, ValueError, KeyError):
+            reclaimable = 0
+        available = min(available, max(0, limit - used + reclaimable))
+    return available
+
+
+def row_head_bytes(vocab, target, rejected=0, projection=None):
+    """Projected logits, fp32 normalization and gradient, including the transient DPO reference pass."""
+    right = projection(target) if projection else target + 1
+    rows = right
+    if rejected:
+        wrong = projection(rejected) if projection else rejected + 1
+        rows += wrong + max(right, wrong)
+    return rows * vocab * 16
+
+
 class MemoryGuard:
     """Whether a row fits in the memory there is now, measured, not guessed. g38 lost 7 of 24 8B slices and g39 5 of
     20 ("the hosted runner lost communication"); every slice that lived stood at 14.1-14.8 of 15.6 GB, its memory
@@ -884,10 +990,16 @@ class MemoryGuard:
     it does."""
     GB = 2**30
 
-    def __init__(self, floor, spare_gb=None, psutil=None, every=0.1):
+    def __init__(self, floor, spare_gb=None, psutil=None, every=0.1, *, checkpoint_floor=None, limits=()):
         if psutil is None:
             import psutil
         self.ps = psutil
+        self.limits = limits
+        self.checkpoint_floor = self.checkpoint_cost = checkpoint_floor
+        self.checkpoint_longest = 0
+        self.row_modes = {"ordinary": 0, "checkpoint": 0}
+        self.last_mode = None
+        self.mode_changes = 0
         self.floor = self.cost = float(floor)  # bytes a piece
         self.spare = float(os.environ.get("HIVE_MEMORY_SPARE_GB", 1.0) if spare_gb is None else spare_gb) * self.GB
         self.every, self.longest = every, 0
@@ -901,7 +1013,7 @@ class MemoryGuard:
             threading.Thread(target=self._watch, daemon=True).start()
 
     def available(self):
-        return self.ps.virtual_memory().available
+        return _available(self.ps, self.limits)
 
     def swap(self):
         return self.ps.swap_memory().used
@@ -935,18 +1047,42 @@ class MemoryGuard:
         self.skips[s] = self.skips.get(s, 0) + 1
         return False
 
+    def row_mode(self, pieces, subject, head_bytes):
+        """Choose from one memory sample. Both gears retain the same head workspace and safety reserve."""
+        room = self.sample() - self.spare
+        # A sampled peak already includes the head. Only the analytic activation floor needs it added.
+        ordinary = max(pieces * self.floor + head_bytes, pieces * self.cost)
+        recomputed = (max(pieces * self.checkpoint_floor + head_bytes, pieces * self.checkpoint_cost)
+                      if self.checkpoint_floor is not None else math.inf)
+        # Resist small fluctuations after a tight row. Cap the exit margin on large models and scale it to
+        # the ordinary cost for short rows. No margin on first admission, on entry, or if only ordinary fits.
+        margin = min(self.GB / 4, ordinary / 4) if self.last_mode == "checkpoint" and recomputed <= room else 0
+        mode = "ordinary" if ordinary + margin <= room else "checkpoint" if recomputed <= room else None
+        if mode is not None:
+            self.mode_changes += self.last_mode is not None and self.last_mode != mode
+            self.last_mode = mode
+            self.row_modes[mode] += 1
+            return mode
+        self.skips[subject] = self.skips.get(subject, 0) + 1
+        return None
+
     def begin(self):
         self.before = self.low = self.sample()
 
-    def end(self, pieces):
+    def end(self, pieces, mode="ordinary"):
         """After the pass (and the trim): learn the cost of a piece from the fall in available memory during it."""
         after = self.sample()
         if self.before is None or pieces <= 0:
             return
         drop = min(self.before, after) - self.low
-        if pieces >= self.longest / 2:
-            self.cost = max(self.cost, self.floor, drop / pieces)
-        self.longest = max(self.longest, pieces)
+        if mode == "checkpoint":
+            if pieces >= self.checkpoint_longest / 2:
+                self.checkpoint_cost = max(self.checkpoint_cost, drop / pieces)
+            self.checkpoint_longest = max(self.checkpoint_longest, pieces)
+        else:
+            if pieces >= self.longest / 2:
+                self.cost = max(self.cost, self.floor, drop / pieces)
+            self.longest = max(self.longest, pieces)
         self.before = self.low = None
 
     def record(self):
@@ -955,7 +1091,11 @@ class MemoryGuard:
                 "min_available_gb": round(self.min_avail / self.GB, 2), "swap_peak_gb": round(self.swap_peak / self.GB, 2),
                 "rows_skipped": sum(self.skips.values()), "skipped_by_subject": dict(sorted(self.skips.items(), key=lambda x: -x[1])),
                 "cost_per_piece_mb": round(self.cost / 2**20, 3), "formula_per_piece_mb": round(self.floor / 2**20, 3),
-                "spare_gb": round(self.spare / self.GB, 2)}
+                "spare_gb": round(self.spare / self.GB, 2),
+                **({"row_modes": dict(self.row_modes), "mode_changes": self.mode_changes,
+                    "checkpoint_cost_per_piece_mb": round(self.checkpoint_cost / 2**20, 3),
+                    "checkpoint_formula_per_piece_mb": round(self.checkpoint_floor / 2**20, 3)}
+                   if self.checkpoint_floor is not None else {})}
 
 
 def lr_share(p):
@@ -1003,7 +1143,7 @@ def new_hard(subjects):
 
 def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=1152, layers="all", accum=4, seed=0, limit=0, minutes=0, log=print,
           lean="", weight=3, foresee=False, ternary_edit=False, out_dir=None, checkpoint=True, dtype="bf16", pairs=False, beta=0.1, int8_base=False, read=0, judged=0, parent="", parent_cell="",
-          trunk="", pull=0.5, gen="", fresh=2, shard=""):
+          trunk="", pull=0.5, gen="", fresh=2, shard="", loss_chunk_tokens=None):
     """A LoRA weight edit of a ternary member from the hive's rows, on a CPU (or a GPU where there is one, without
     --int8-base: a Colab notebook, training/colab.py); written as a GGUF adapter the
     ternary runtime loads beside the packed base.
@@ -1020,10 +1160,18 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     (training/merge.py join). Generation 28's children got through a third of their rows in their time; n runners
     study n times as many."""
     born = time.time()
+    plateau_mode = os.environ.get("HIVE_TRAIN_PLATEAU", "off")
+    if plateau_mode not in ("off", "observe", "stop"):
+        raise ValueError(f"Unknown training plateau mode {plateau_mode!r}")
     import torch
     from huggingface_hub import snapshot_download
+    from training.lm_head_loss import answer_nll, projection_rows
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForCausalLM, AutoTokenizer
+    if loss_chunk_tokens is None:
+        loss_chunk_tokens = int(os.environ.get("HIVE_CHUNK_CE", 0))
+    if loss_chunk_tokens < 0:
+        raise ValueError("loss chunk size must be nonnegative (0 uses the stock readout)")
 
     from team import ternary
     torch.set_num_threads(int(os.environ.get("AGENT_TEAM_THREADS", os.cpu_count() or 4)))
@@ -1096,6 +1244,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     nl = AutoConfig.from_pretrained(src).num_hidden_layers
     which = (list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else
              list(range(nl - int(layers[4:]), nl)) if layers.startswith("last") else list(range(*map(int, layers.split("-")))))
+    row_checkpoint_requested = not checkpoint and not gpu and os.environ.get("HIVE_ROW_CHECKPOINT", "0") == "1"
+    limits = _cgroup_limits() if row_checkpoint_requested else ()
     cell = None
     if int8_base:
         # the frozen DNA held as what it is, ternary: one byte a weight, so a 4B or 8B DNA trains on a free runner
@@ -1103,7 +1253,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if ternary_edit:
             raise ValueError("--ternary is not made for --int8-base")
         from training import ternary_base
-        model, cell = ternary_base.load(src, rank, 2 * rank, 0.0, which, torch.bfloat16 if half else torch.float32, log=log)
+        model, cell = ternary_base.load(src, rank, 2 * rank, 0.0, which, torch.bfloat16 if half else torch.float32, log=log,
+                                        release_source_cache=bool(limits))
         # how long a row fits beside the DNA on this machine: worked out below, once the optimizer exists
     else:
         model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32).to(dev)
@@ -1159,12 +1310,26 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # memory no longer grows with the length of a row (the first run on a 16 GB runner was killed at step 5).
     if checkpoint:
         model.gradient_checkpointing_enable()
-        model.enable_input_require_grads()
+    row_checkpoints = None
+    if row_checkpoint_requested:
+        try:
+            row_checkpoints = _RowCheckpoints(model, which[0])
+        except ValueError as exc:
+            log(f"row checkpointing unavailable: {exc}; using fixed admission", flush=True)
+            limits = ()
     params = cell.params if cell else [p for p in model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     # Measured on the 8B (2026-11-15): 8.1 GB held, and every piece of a row takes about 5 MB more while it is trained
     # on (46 values of the hidden size for each trained layer). A row that does not fit sends the machine into its swap.
     per_piece = len(which) * model.config.hidden_size * (2 if half else 4) * 46
+    checkpoint_floor = None
+    eval_max_len = max_len
+    if row_checkpoints is not None:
+        suffix = len(row_checkpoints.layers)
+        hidden_bytes = model.config.hidden_size * (2 if half else 4)
+        per_piece = suffix * 46 * hidden_bytes
+        # One active full decoder layer during recomputation, plus an input and residual allowance per suffix layer.
+        checkpoint_floor = min(per_piece, (46 + 2 * suffix) * hidden_bytes)
     if int8_base:
         # How long a row fits beside the DNA on this machine, from the memory available now that the DNA, the edit and
         # its optimizer exist (it was the machine's total less what was held at load, which left out the OS and the
@@ -1172,17 +1337,21 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # memory); a 16-bit slice keeps 1 GB more spare (PR 78). Only a first cut: the memory guard in the loop
         # (MemoryGuard) measures what a row really takes.
         import psutil
-        avail = psutil.virtual_memory().available / 2**30
+        avail = _available(psutil, limits) / 2**30
         spare = 1.7 + (1.0 if half else 0.0)  # from `available`, which already leaves out the OS (about 0.8 GB): fits as before; the measuring guard is the safety
         fits = int((avail - spare) * 2**30 / per_piece)
-        if fits < max_len:
-            log(f"this machine has {avail:.1f} GB available beside the DNA: rows of up to {max(256, fits)} pieces fit (asked for {max_len})", flush=True)
-            max_len = max(256, fits)
+        eval_max_len = min(max_len, max(256, fits))
+        if eval_max_len < max_len:
+            log(f"this machine has {avail:.1f} GB available beside the DNA: fixed cap {eval_max_len} pieces (asked for {max_len})", flush=True)
+            if row_checkpoints is None:
+                max_len = eval_max_len
+            else:
+                log(f"training candidates up to {max_len} pieces receive per-row admission; held-back evaluation keeps the fixed cap", flush=True)
 
-    def encode(row):
+    def encode(row, cap):
         p = tok(tok.apply_chat_template(row["messages"], tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
         t = tok(row["output"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
-        if len(p) + len(t) > max_len and not row.get("rejected"):
+        if len(p) + len(t) > cap and not row.get("rejected"):
             # A row that does not fit loses the middle of an earlier program it shows (its context, not what is taught):
             # g28's rows lost 38 of 767 this way, 23 of the 73 rows of modules, almost all "fix" and "done" rows that
             # carry a whole earlier program before the answer. What is taught (the answer) is never cut.
@@ -1191,15 +1360,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 if short is row["messages"]:
                     break
                 p = tok(tok.apply_chat_template(short, tokenize=False, add_generation_prompt=True, enable_thinking=False), add_special_tokens=False)["input_ids"]
-                if len(p) + len(t) <= max_len:
+                if len(p) + len(t) <= cap:
                     break
-        if len(p) + len(t) > max_len:
+        if len(p) + len(t) > cap:
             return None
         if row.get("rejected"):
             # both are held in memory at once while trained (the right one and the wrong one): together they must fit
             # what one row may take. Counted for one, the first judged pairs on the 8B filled a 16 GB machine (2026-11-15).
             w = tok(row["rejected"] + "<|im_end|>\n", add_special_tokens=False)["input_ids"]
-            return None if 2 * len(p) + len(t) + len(w) > max_len else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
+            return None if 2 * len(p) + len(t) + len(w) > cap else (torch.tensor([p + t]), len(t), torch.tensor([p + w]), len(w))
         return (torch.tensor([p + t]), len(t))
     # Each row once, sorted into its subject (Study): what is trained on next is picked by where the error is, no
     # longer by copies of a row. The cell's own organ weighs `weight` (3) times in that pick: every cell learns all
@@ -1217,7 +1386,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if new:
             counts = by_kind.setdefault(row.get("kind") or "?", {"given": 0, "too_long": 0, "skipped_memory": 0, "trained": 0})
             counts["given"] += 1
-        d = encode(row)
+        d = encode(row, max_len)
         if d is None:
             long += 1
             if new:
@@ -1245,7 +1414,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         # trained as a right-against-wrong pair, the way the hive's own pairs are
         from training import raw
         for row in raw.judged(judged, name + part, lean, log=log):
-            d = encode(row)
+            d = encode(row, max_len)
             if d is not None:
                 data.append(d)
                 tags.append("judged")
@@ -1268,8 +1437,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 continue
             x = torch.tensor([ids])
             with torch.no_grad(), cast():
-                lg = model(input_ids=x.to(dev), logits_to_keep=len(ids)).logits[:, :-1, :]
-                loss_r = torch.nn.functional.cross_entropy(lg.float().reshape(-1, lg.size(-1)), x[:, 1:].reshape(-1).to(dev)).item()
+                loss_r = (answer_nll(model, x.to(dev), len(ids) - 1, loss_chunk_tokens) / (len(ids) - 1)).item()
             scored.append((loss_r, (x, len(ids) - 1)))
         model.train()
         chosen = raw.pick(scored, read)
@@ -1294,11 +1462,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         cpu = "?"
     if int8_base:
         from training import ternary_base
-        log(f"this machine: {cpu}, {os.cpu_count()} threads; trained in {'16' if half else '32'}-bit numbers", flush=True)
+        log(f"this machine: {cpu}, {torch.get_num_threads()} threads; trained in {'16' if half else '32'}-bit numbers", flush=True)
     elif gpu:
         log(f"this machine: {torch.cuda.get_device_name(0)} ({torch.cuda.get_device_properties(0).total_memory / 2**30:.0f} GB), trained on the GPU", flush=True)
     else:
-        log(f"this machine: {cpu}, {os.cpu_count()} threads", flush=True)
+        log(f"this machine: {cpu}, {torch.get_num_threads()} threads", flush=True)
     beat = {"t": time.time(), "what": "its first row", "on": True}
 
     def watch():
@@ -1337,13 +1505,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # the time the first measure took is kept for the second, out of the cell's own time
     kept_items, kept_long = [], 0
     for r in back_rows:
-        d = encode(r)
+        d = encode(r, eval_max_len)
         if d is None:
             kept_long += 1
         else:
             kept_items.append((back[r["task"]], d[:2]))
     t_kept = time.time()
-    kept_before = kept_loss(model, kept_items, dev, cast, beat) if kept_items else {}
+    until = precheck_deadline(born, t_kept, minutes, os.environ.get("TRAIN_PROFILE", "auto"))
+    kept_before = kept_loss(model, kept_items, dev, cast, beat, until=until,
+                            chunk_tokens=loss_chunk_tokens) if kept_items else {}
+    # kept_loss stops between rows, so the sampled items are exactly this prefix in the same order.
+    kept_items = kept_items[:sum(len(values) for values in kept_before.values())]
     spare = time.time() - t_kept
     if back:
         log(f"lessons kept back: {len(back)}, of {len(set(back.values()))} kinds, never trained on; {len(kept_items)} of their rows measured "
@@ -1361,7 +1533,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # the memory guard (MemoryGuard): a row that would leave less than HIVE_MEMORY_SPARE_GB (1) available is skipped
     # for this pass; the cost of a piece is learned from the run
     import gc
-    guard = None if gpu else MemoryGuard(per_piece)
+    guard = None if gpu else MemoryGuard(per_piece, checkpoint_floor=checkpoint_floor, limits=limits)
     if guard:
         log(f"memory guard: {guard.available() / 2**30:.1f} GB available, a row skipped when it would leave less than {guard.spare / 2**30:.1f} GB "
             f"(a piece taken as {per_piece / 2**20:.2f} MB to start, then as measured)", flush=True)
@@ -1391,6 +1563,14 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
                 f"{time.time() - t0:.0f}s, most memory {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**20:.1f} GB{on_gpu}"
                 + (f", available {guard.available() / 2**30:.1f} GB, swap used {guard.swap() / 2**30:.1f} GB, a piece {guard.cost / 2**20:.2f} MB, "
                    f"{sum(guard.skips.values())} rows skipped" if guard else ""), flush=True)
+    plateau = None
+    if plateau_mode != "off":
+        from training.shard_budget import Plateau
+        plateau = Plateau(plateau_mode, len(data))
+    stop_for_plateau = False
+    def projected(target):
+        return projection_rows(model, target, loss_chunk_tokens)
+
     while i < passes:
         if minutes and time.time() - born > minutes * 60 - spare:
             # Two trials were lost on 2026-11-14 because their jobs ran into the time limit with nothing saved: the
@@ -1404,7 +1584,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         s, idx = got
         ids, k = data[idx][:2]
         pieces = ids.shape[1] + (data[idx][2].shape[1] if len(data[idx]) == 4 else 0)
-        if guard and not guard.admit(pieces, s):
+        mode = "ordinary"
+        if row_checkpoints is not None:
+            head = row_head_bytes(model.config.vocab_size, k, data[idx][3] if len(data[idx]) == 4 else 0, projected)
+            mode = guard.row_mode(pieces, s, head)
+        elif guard and not guard.admit(pieces, s):
+            mode = None
+        if mode is None:
             study.skip(s, idx)
             skipped_rows.add(idx)
             in_a_row += 1
@@ -1419,40 +1605,45 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         in_a_row = 0
         if guard:
             guard.begin()
+        if row_checkpoints is not None:
+            row_checkpoints.set(mode == "checkpoint")
+        row_prefix = prefix if mode == "ordinary" else None
         ids = ids.to(dev)
         beat["t"], beat["what"] = time.time(), f"pass {i + 1} ({s}, {ids.shape[1]} pieces)"
-        with cast(), (prefix.use(ids) if prefix else contextlib.nullcontext()):
-            logits = model(input_ids=ids, logits_to_keep=k + 1).logits[:, :-1, :]
-        loss = torch.nn.functional.cross_entropy(logits.float().reshape(-1, logits.size(-1)), ids[:, -k:].reshape(-1))
+        def score(x, n):
+            with cast(), (row_prefix.use(x) if row_prefix else contextlib.nullcontext()):
+                return answer_nll(model, x, n, loss_chunk_tokens)
+
+        right_nll = score(ids, k)
+        loss = right_nll / (k * ids.shape[0])
         plain = loss.item()  # what the subject is measured by: the error on the right answer (a pair's DPO term starts near 0.69 whatever is known)
         if len(data[idx]) == 4:
             # a right and a wrong program for the same task: DPO, with the plain loss on the right one kept beside it
             # (Iterative RPO). The reference is the cell as it started: the DNA with its edit switched off.
             wid, wk = data[idx][2:]
             wid = wid.to(dev)
-            def seq(x, n, lg=None):
-                if lg is None:
-                    with (prefix.use(x) if prefix else contextlib.nullcontext()):
-                        lg = model(input_ids=x, logits_to_keep=n + 1).logits[:, :-1, :]
-                return torch.log_softmax(lg.float(), -1).gather(-1, x[:, -n:].unsqueeze(-1)).sum()
-            with cast():
-                good, bad = seq(ids, k, logits), seq(wid, wk)
-                with torch.no_grad(), (cell.off() if cell else model.disable_adapter()):
-                    ref_good, ref_bad = seq(ids, k), seq(wid, wk)
+            good, bad = -right_nll, -score(wid, wk)
+            with torch.no_grad(), (cell.off() if cell else model.disable_adapter()):
+                ref_good, ref_bad = -score(ids, k), -score(wid, wk)
             margin = beta * ((good - ref_good) - (bad - ref_bad))
             loss = loss - torch.nn.functional.logsigmoid(margin)
             paired += 1
         (loss / accum).backward()
-        running += loss.item()
+        row_objective = loss.item()
+        running += row_objective
         held += 1
         study.learned(s, plain)
         trained_rows.add(idx)
+        if plateau:
+            plateau.observe(idx, row_objective)
         i += 1
         if held == accum:
             update()
+            if plateau:
+                stop_for_plateau = plateau.after_update(len(trained_rows))
         # what the pass made is let go before the next one (the old logits lived through the next forward), and the
         # memory handed back, so that what is available is true when the next row is weighed
-        del logits, loss
+        del right_nll, loss
         if len(data[idx]) == 4:
             del good, bad, ref_good, ref_bad, margin, wid
         if i % 4 == 0:
@@ -1460,17 +1651,29 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if trim:
             trim(0)
         if guard:
-            guard.end(pieces)
+            guard.end(pieces, mode)
+        if stop_for_plateau:
+            log(f"matched training-row losses plateaued after {step} optimizer updates; saving the cell", flush=True)
+            break
     if held:
         update()
+    if row_checkpoints is not None:
+        row_checkpoints.set(False)
     if guard:
         guard.stop()
         mem = guard.record()
+        if row_checkpoints is not None:
+            mem.update(training_max_len=max_len, evaluation_max_len=eval_max_len)
         if mem["rows_skipped"]:
             log(f"memory guard: {mem['rows_skipped']} passes skipped a row that would not fit ("
                 + ", ".join(f"{k} {v}" for k, v in list(mem["skipped_by_subject"].items())[:8]) + ")", flush=True)
         log(f"memory: most {mem['peak_gb']} GB, least available {mem['min_available_gb']} GB, most swap {mem['swap_peak_gb']} GB, "
             f"a piece {mem['cost_per_piece_mb']} MB (the formula's {mem['formula_per_piece_mb']})", flush=True)
+    if minutes and step == 0:
+        beat["on"] = False
+        if prefix:
+            prefix.done()
+        raise RuntimeError("the slice completed zero optimizer updates; no trained adapter was produced")
     for j, k in new_kind.items():
         if j in trained_rows:
             by_kind[k]["trained"] += 1
@@ -1483,10 +1686,9 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         f_, l_ = x["loss_first"], x["loss_last"]
         log(f"{x['subject']:<{width}} {x['rows']:>4} {x['passes']:>6} {'-' if f_ is None else f'{f_:.3f}':>6} {'-' if l_ is None else f'{l_:.3f}':>6}", flush=True)
     # the second measure is held to the time the first took (spare) past the budget, and 5 minutes more at most
-    kept_after = kept_loss(model, kept_items, dev, cast, beat, until=(born + minutes * 60 + 300) if minutes else 0.0) if kept_items else {}
-    mean = lambda v: round(sum(v) / len(v), 4) if v else None  # noqa: E731
-    kept = {k: {"lessons": sum(1 for x in back.values() if x == k), "rows": len(kept_before.get(k, [])),
-                "before": mean(kept_before.get(k, [])), "after": mean(kept_after.get(k, []))} for k in sorted(set(back.values()))}
+    kept_after = kept_loss(model, kept_items, dev, cast, beat, until=(born + minutes * 60 + 300) if minutes else 0.0,
+                           chunk_tokens=loss_chunk_tokens) if kept_items else {}
+    kept = paired_kept_losses(back, kept_before, kept_after)
     if kept:
         log(f"{'lessons kept back (never trained on), by kind':<{width}} rows before  after", flush=True)
         for k, v in kept.items():
@@ -1507,12 +1709,16 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     if prefix:
         log(f"frozen layers skipped on {prefix.hits} of {prefix.hits + prefix.misses} passes (their output kept from the first pass of each row, {prefix.bytes / 2**30:.2f} GB{' on disk' if prefix.folder else ''})", flush=True)
         prefix.done()
-    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, i), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "passes": i, "epochs": round(i / max(1, len(data)), 2), "rank": rank, "lr": lr,
+    meta = {"member": f"{base}+{name}", "leans": lean, "dtype": dtype, "loss_chunk_tokens": loss_chunk_tokens, "checkpoint": bool(checkpoint), "seconds_a_row": round((time.time() - t0) / max(1, i), 1), "ternary_edit": bool(ternary_edit), "foresee": bool(foresee), "pairs": paired, "int8_base": bool(int8_base), "read": read_used, "judged": judged_used, "parent": Path(parent).name if parent and Path(parent).exists() else "", "parent_cell": parent_cell, "trunk": Path(trunk).name if trunk and Path(trunk).exists() else "", "mended": len(mend), "new_rows": new_rows, "shard": str(shard or ""), "base": UNPACKED[base], "rows": len(rows), "used": len(data), "passes": i, "epochs": round(i / max(1, len(data)), 2), "rank": rank, "lr": lr,
             "layers": [which[0], which[-1]], "steps": step, "seconds": round(time.time() - t0), "loss_first": hist[0] if hist else None,
             "loss_last": round(sum(hist[-5:]) / max(1, len(hist[-5:])), 4) if hist else None, "when": time.strftime("%Y-%m-%d %H:%M"),
             "memory_gb": round(__import__("resource").getrusage(__import__("resource").RUSAGE_SELF).ru_maxrss / 2**20, 1),
             "gpu": torch.cuda.get_device_name(0) if gpu else "", "subjects": subjects, "kept_back": kept,
             "rows_by_kind": dict(sorted(by_kind.items()))}
+    if shard and os.environ.get("HIVE_SHARD_POLICY", "hash") != "hash":
+        meta["shard_policy"] = os.environ["HIVE_SHARD_POLICY"]
+    if plateau:
+        meta["plateau"] = {**plateau.report, "rows_covered": len(trained_rows)}
     if guard:
         meta["memory"] = mem
     # the adapter as the runtime reads it
@@ -1578,7 +1784,7 @@ def main(argv):
         print(rows_from([a for a in argv[1:] if not a.startswith("--") and a != out], out), "rows added to", out)
     elif cmd == "train":
         print(json.dumps(train(opt("--rows", str(GROW / "rows.jsonl")), opt("--name", "gen"), opt("--base", "t17"), opt("--epochs", 2.0), opt("--rank", 16),
-                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), shard=opt("--shard", ""), ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
+                               opt("--lr", 2e-4), opt("--max-len", 1152), opt("--layers", "all"), limit=opt("--limit", 0), minutes=opt("--minutes", 0), lean=opt("--lean", ""), weight=opt("--weight", 3), foresee="--foresee" in argv, pairs="--pairs" in argv, int8_base="--int8-base" in argv, read=opt("--read", 0), judged=opt("--judged", 0), parent=opt("--parent", ""), parent_cell=opt("--parent-cell", ""), trunk=opt("--trunk", ""), pull=opt("--pull", 0.5), gen=opt("--gen", ""), fresh=opt("--fresh", 2), shard=opt("--shard", ""), loss_chunk_tokens=opt("--loss-chunk-tokens", 0) if "--loss-chunk-tokens" in argv else None, ternary_edit="--ternary" in argv, checkpoint="--no-checkpoint" not in argv, dtype=opt("--dtype", "bf16")), indent=1))
     elif cmd == "speed":
         # how long one row takes on this machine, each way of training: so that the fastest is used and not guessed
         rows, out = opt("--rows", str(GROW / "rows.jsonl")), []

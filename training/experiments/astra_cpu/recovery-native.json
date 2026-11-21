@@ -1,0 +1,139 @@
+{
+  "arm": "recompute",
+  "elapsed_seconds": 277.417,
+  "process_cpu_seconds": 476.127,
+  "peak_rss_gib": 10.254,
+  "row_spans": [
+    {
+      "initial_rss_gib": 8.470333099365234,
+      "peak_rss_gib": 10.250656127929688,
+      "start_available_gib": 5.975650787353516,
+      "pieces": 847,
+      "elapsed_seconds": 123.92,
+      "cpu_seconds": 239.676
+    }
+  ],
+  "admissions": [
+    {
+      "pieces": 847,
+      "mode": "checkpoint",
+      "available_gib": 5.975650787353516,
+      "head_gib": 0.4678291529417038,
+      "reserve_gib": 1.0,
+      "ordinary_floor_gib": 8.32318115234375,
+      "checkpoint_floor_gib": 0.956390380859375,
+      "cgroup_current": 10763563008,
+      "cgroup_limit": 17179869184,
+      "cgroup": {
+        "anon": 9645920256,
+        "active_file": 836653056,
+        "inactive_file": 69799936,
+        "file_mapped": 79511552,
+        "file_dirty": 69115904,
+        "file_writeback": 0,
+        "kernel": 209985536
+      }
+    }
+  ],
+  "training": {
+    "member": "t80+astrastudy",
+    "leans": "sources",
+    "dtype": "bf16",
+    "loss_chunk_tokens": 0,
+    "checkpoint": false,
+    "seconds_a_row": 124.1,
+    "ternary_edit": false,
+    "foresee": false,
+    "pairs": 0,
+    "int8_base": true,
+    "read": 0,
+    "judged": 0,
+    "parent": "t80.g53sources2.safetensors",
+    "parent_cell": "g53sources2",
+    "trunk": "t80.g55trunk.safetensors",
+    "mended": 0,
+    "new_rows": 1,
+    "shard": "",
+    "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+    "rows": 1,
+    "used": 1,
+    "passes": 1,
+    "epochs": 1.0,
+    "rank": 16,
+    "lr": 0.0002,
+    "layers": [
+      22,
+      35
+    ],
+    "steps": 1,
+    "seconds": 124,
+    "loss_first": 0.0146,
+    "loss_last": 0.0146,
+    "when": "2026-11-20 16:38",
+    "memory_gb": 10.3,
+    "gpu": "",
+    "subjects": [
+      {
+        "subject": "an order of tasks by their dependencies, with hidden tests \u00b7 first \u00b7 new",
+        "rows": 1,
+        "passes": 1,
+        "loss_first": 0.0146,
+        "loss_last": 0.0146,
+        "new_hard": true
+      }
+    ],
+    "kept_back": {},
+    "rows_by_kind": {
+      "an order of tasks by their dependencies, with hidden tests": {
+        "given": 1,
+        "too_long": 0,
+        "skipped_memory": 0,
+        "trained": 1
+      }
+    },
+    "memory": {
+      "peak_gb": 10.25,
+      "min_available_gb": 4.07,
+      "swap_peak_gb": 0.0,
+      "rows_skipped": 0,
+      "skipped_by_subject": {},
+      "cost_per_piece_mb": 10.062,
+      "formula_per_piece_mb": 10.062,
+      "spare_gb": 1.0,
+      "row_modes": {
+        "ordinary": 0,
+        "checkpoint": 1
+      },
+      "checkpoint_cost_per_piece_mb": 1.156,
+      "checkpoint_formula_per_piece_mb": 1.156,
+      "training_max_len": 1152,
+      "evaluation_max_len": 434
+    },
+    "megabytes": 38.0
+  },
+  "adapter_sha256": "074a2c99e34e50b10486d11c272296fa0164d09b9f24bbff41ac0a074371d504",
+  "torch_inputs": {
+    "rows": "6678514ce30e0cb89f2463d8f0d9d1be5c2aa4fa754f0adf45e5c087440fbd5e",
+    "parent": "dbd31660e52ba2f45e5a80d087b4e63da735a5ac71b33e0cb9b73a72fad4ef38",
+    "trunk": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
+  },
+  "tested_sources": {
+    "grow.py": "c0d13a1b344be19d918d051667c41a09bdcd1d205860e18084aaee01221b0895",
+    "ternary_base.py": "74dca9ff4eeafb22e2d51b8d5c6b4b3d39c1f8e9d2681e6f36a74d76fd3c9e9c",
+    "lm_head_loss.py": "7bf842d77084f2b06135fbaca26862188cc2940df31c83482a6beededf3822aa"
+  },
+  "frozen_log": [
+    "this CPU has no quick 16-bit arithmetic (no AVX512-BF16, no AMX): the cell is trained in 32-bit numbers",
+    "released source-cache hint on 4 of 4 converted model shards",
+    "the DNA held ternary: one byte a weight and one scale per 128 (the word vectors and the output layer too); the worst group is 0.0000 of its scale off; 8.2 GB held",
+    "the child starts as its parent pulled 0.5 of the way to the trunk (t80.g55trunk.safetensors); at least 1.000 of every matrix is kept at rank 16",
+    "the child starts as its parent (t80.g53sources2.safetensors): 98 of its matrices inherited",
+    "this machine has 6.0 GB available beside the DNA: fixed cap 434 pieces (asked for 1152)",
+    "1 rows, 1 within 1152 pieces (mean 847); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+    "memory guard: 6.0 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 10.06 MB to start, then as measured)",
+    "ADMISSION {\"pieces\": 847, \"mode\": \"checkpoint\", \"available_gib\": 5.975650787353516, \"head_gib\": 0.4678291529417038, \"reserve_gib\": 1.0, \"ordinary_floor_gib\": 8.32318115234375, \"checkpoint_floor_gib\": 0.956390380859375, \"cgroup_current\": 10763563008, \"cgroup_limit\": 17179869184, \"cgroup\": {\"anon\": 9645920256, \"active_file\": 836653056, \"inactive_file\": 69799936, \"file_mapped\": 79511552, \"file_dirty\": 69115904, \"file_writeback\": 0, \"kernel\": 209985536}}",
+    "MEASURED {\"initial_rss_gib\": 8.470333099365234, \"peak_rss_gib\": 10.250656127929688, \"start_available_gib\": 5.975650787353516, \"pieces\": 847, \"elapsed_seconds\": 123.92, \"cpu_seconds\": 239.676}",
+    "memory: most 10.25 GB, least available 4.07 GB, most swap 0.0 GB, a piece 10.062 MB (the formula's 10.062)"
+  ],
+  "shared_cgroup_peak_nonreclaimable_proxy_gib": 11.028434753417969
+}

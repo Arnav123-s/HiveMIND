@@ -1,0 +1,125 @@
+{
+  "arm": "five",
+  "panel_sha256": "8d3903f5bd41ea2d65973931026069baa297c0009af57471a0cdef8ee9db1945",
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "lora_sha256": "99dc4d80a397ff307a89ecdb177fcca71aa6918c5a0f9f18e5570fde6ec6924f",
+  "flags": [
+    "-ngl",
+    "0",
+    "-c",
+    "2048",
+    "-t",
+    "2",
+    "-tb",
+    "2",
+    "-rtr",
+    "-b",
+    "128",
+    "-ub",
+    "128",
+    "--parallel",
+    "1",
+    "--threads-http",
+    "2",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "47323",
+    "--jinja"
+  ],
+  "sampling": {
+    "temperature": 0.0,
+    "seed": 314159,
+    "top_k": 1,
+    "top_p": 1.0,
+    "max_tokens": 384,
+    "cache_prompt": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "affinity": [
+    3,
+    4
+  ],
+  "started": "2026-11-21T01:05:20.685044+00:00",
+  "complete": true,
+  "calls": [
+    {
+      "name": "bank",
+      "text": "```python\nclass Account:\n    def __init__(s, balance=0):\n        s.b, s.n = balance, 0\n\n    def deposit(s, x):\n        if x <= 0:\n            raise ValueError\n        s.b += x\n        return s.b\n\n    def withdraw(s, x):\n        if x <= 0 or s.n >= 4 or s.b - x - 1 < -0:\n            raise ValueError\n        s.b -= x + 1\n        s.n += 1\n        return s.b\n\n    def balance(s):\n        return s.b\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'bank.py')\n    assert Account(10).deposit(5) == 15\n    a = Account(15)\n    for c in 'withdraw(87), withdraw(45), withdraw(0), withdraw(185), withdraw(115), withdraw(0)'.split(', '):\n        try:\n            eval('a.' + c)\n        except ValueError:\n            pass\n    print(a.balance())\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 235,
+        "prompt_tokens": 299,
+        "total_tokens": 534,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 50.151
+    },
+    {
+      "name": "calc",
+      "text": "```python\nimport re\n\nP = {\"+\": 2, \"-\": 2, \"*\": 4, \"$\": 1}\n\n\ndef tokens(t):\n    return re.findall(r\"\\d+|\\S\", t)\n\n\ndef evaluate(t, m=0):\n    if type(t) == str:\n        t = tokens(t)[::-1]\n    x = t.pop()\n    if x == \"(\":\n        a = evaluate(t)\n        t.pop()\n    else:\n        a = int(x)\n    while t and P.get(t[-1], 0) > m:\n        o = t.pop()\n        b = evaluate(t, P[o])\n        a = {\"+\": a + b, \"-\": a - b, \"*\": a * b}.get(o, max(a - b, 0))\n    return a\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'calc.py')\n    assert evaluate('(2+3)*4') == 20\n    print(evaluate('6$(15$7$17)$12$11'))\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 228,
+        "prompt_tokens": 312,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 48.067
+    },
+    {
+      "name": "lru",
+      "text": "```python\nclass LRUCache:\n    def __init__(s, capacity):\n        s.c, s.d = capacity, {}\n\n    def get(s, k):\n        return s.d.get(k, 'missing')\n\n    def put(s, k, v):\n        s.d[k] = v\n        if len(s.d) > s.c:\n            del s.d[next(iter(s.d))]\n\n    def keys(s):\n        return list(s.d)\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'lru.py')\n    t = LRUCache(1)\n    t.put('x', 1)\n    t.put('y', 2)\n    assert t.keys() == ['y']\n    c = LRUCache(3)\n    c.get('e'); c.put('e', 74); c.put('c', 1); c.put('e', 16); c.put('c', 19)\n    print(c.keys())\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 208,
+        "prompt_tokens": 320,
+        "total_tokens": 528,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 46.482
+    },
+    {
+      "name": "machine",
+      "text": "```python\nimport csv\n\nT = {}\nfor l in csv.DictReader(open('task_data.txt')):\n    T[l['state'], l['event']] = l['state']\n\ndef step(s, e):\n    return T.get((s, e), s)\n\nstates = ['waiting', 'paused', 'stopped']\nevents = ['tick', 'fail', 'start', 'pause']\n\ndef path(E):\n    p = ['waiting']\n    for e in E:\n        p.append(step(p[-1], e))\n    return p\n\ndef run(E):\n    return path(E)[-1]\n\ndef visits(E, s):\n    return path(E).count(s)\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'machine.py')\n    assert visits([], 'waiting') == 1\n    print(run(['start', 'fail', 'pause', 'fail']))\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 183,
+        "prompt_tokens": 382,
+        "total_tokens": 565,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 44.536
+    },
+    {
+      "name": "schedule",
+      "text": "```python\ndef order(tasks):\n    done = []\n    while len(done) < len(tasks):\n        ready = [t for t in tasks if t not in done and all(d in done for d in tasks[t])]\n        if not ready:\n            raise ValueError(\"a cycle\")\n        done.append(min(ready, key=lambda t: (len(t), t)))\n    return done\n\n\ndef levels(tasks):\n    out = {}\n    for t in order(tasks):\n        out[t] = 1 + max([out[d] for d in tasks[t]], default=-1)\n    return out\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'schedule.py')\n    assert levels({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}) == {'fetch': 2, 'pack': 2, 'audit': 0, 'mail': 1, 'test': 2, 'bench': 1, 'build': 2, 'tag': 0}\n    print(order({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}))\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 309,
+        "prompt_tokens": 324,
+        "total_tokens": 633,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 64.632
+    }
+  ],
+  "weight_after_load": {
+    "filename": "t80+astrastudy.gguf",
+    "scale": 1.0
+  },
+  "finished": "2026-11-21T01:09:39.723082+00:00"
+}

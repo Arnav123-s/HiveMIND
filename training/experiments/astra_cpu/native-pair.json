@@ -1,0 +1,256 @@
+{
+  "stock": {
+    "arm": "stock",
+    "elapsed_seconds": 204.747,
+    "process_cpu_seconds": 353.594,
+    "peak_rss_gib": 12.168,
+    "row_spans": [
+      {
+        "initial_rss_gib": 8.429969787597656,
+        "peak_rss_gib": 12.157768249511719,
+        "start_available_gib": 6.882617950439453,
+        "pieces": 475,
+        "elapsed_seconds": 62.811,
+        "cpu_seconds": 117.577
+      },
+      {
+        "initial_rss_gib": 9.258316040039062,
+        "peak_rss_gib": 10.420486450195312,
+        "start_available_gib": 7.0254058837890625,
+        "pieces": 198,
+        "elapsed_seconds": 31.61,
+        "cpu_seconds": 53.219
+      }
+    ],
+    "training": {
+      "member": "t80+astrastudy",
+      "leans": "sources",
+      "dtype": "bf16",
+      "checkpoint": false,
+      "seconds_a_row": 47.2,
+      "ternary_edit": false,
+      "foresee": false,
+      "pairs": 0,
+      "int8_base": true,
+      "read": 0,
+      "judged": 0,
+      "parent": "t80.g53sources2.safetensors",
+      "parent_cell": "g53sources2",
+      "trunk": "t80.g55trunk.safetensors",
+      "mended": 0,
+      "new_rows": 2,
+      "shard": "",
+      "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+      "rows": 2,
+      "used": 2,
+      "passes": 2,
+      "epochs": 1.0,
+      "rank": 16,
+      "lr": 0.0002,
+      "layers": [
+        22,
+        35
+      ],
+      "steps": 2,
+      "seconds": 94,
+      "loss_first": 0.0306,
+      "loss_last": 0.0308,
+      "when": "2026-11-20 16:29",
+      "memory_gb": 12.2,
+      "gpu": "",
+      "subjects": [
+        {
+          "subject": "sum up a text \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.031,
+          "loss_last": 0.031
+        },
+        {
+          "subject": "several tasks in one \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0306,
+          "loss_last": 0.0306
+        }
+      ],
+      "kept_back": {},
+      "rows_by_kind": {
+        "several tasks in one": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        },
+        "sum up a text": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        }
+      },
+      "memory": {
+        "peak_gb": 12.17,
+        "min_available_gb": 3.76,
+        "swap_peak_gb": 0.0,
+        "rows_skipped": 0,
+        "skipped_by_subject": {},
+        "cost_per_piece_mb": 10.062,
+        "formula_per_piece_mb": 10.062,
+        "spare_gb": 1.0
+      },
+      "megabytes": 38.0
+    },
+    "adapter_sha256": "e4ff7f8fa51dbf0baca19d51732dfb1e29b724c7d601ae7cad36d6084c972f28",
+    "torch_inputs": {
+      "rows": "362168ee658d629b549259bbaad6485febf39a71dd59ad642193b1db42bc7e73",
+      "parent": "dbd31660e52ba2f45e5a80d087b4e63da735a5ac71b33e0cb9b73a72fad4ef38",
+      "trunk": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
+    },
+    "tested_sources": {
+      "grow.py": "e4d7ec0143e7e41933daea37a4b7cfa87d5fdfd2d26b46b8a3ba1b1631a71f88",
+      "ternary_base.py": "afebf1e736cd35845a4f19ac70e49b50592394ca4f4ca00fa0c29a2e6d2e0d68"
+    },
+    "frozen_log": [
+      "this CPU has no quick 16-bit arithmetic (no AVX512-BF16, no AMX): the cell is trained in 32-bit numbers",
+      "the DNA held ternary: one byte a weight and one scale per 128 (the word vectors and the output layer too); the worst group is 0.0000 of its scale off; 8.2 GB held",
+      "the child starts as its parent pulled 0.5 of the way to the trunk (t80.g55trunk.safetensors); at least 1.000 of every matrix is kept at rank 16",
+      "the child starts as its parent (t80.g53sources2.safetensors): 98 of its matrices inherited",
+      "this machine has 6.9 GB available beside the DNA: rows of up to 527 pieces fit (asked for 1152)",
+      "2 rows, 2 within 527 pieces (mean 336); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+      "memory guard: 6.9 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 10.06 MB to start, then as measured)",
+      "MEASURED {\"initial_rss_gib\": 8.429969787597656, \"peak_rss_gib\": 12.157768249511719, \"start_available_gib\": 6.882617950439453, \"pieces\": 475, \"elapsed_seconds\": 62.811, \"cpu_seconds\": 117.577}",
+      "MEASURED {\"initial_rss_gib\": 9.258316040039062, \"peak_rss_gib\": 10.420486450195312, \"start_available_gib\": 7.0254058837890625, \"pieces\": 198, \"elapsed_seconds\": 31.61, \"cpu_seconds\": 53.219}",
+      "memory: most 12.17 GB, least available 3.76 GB, most swap 0.0 GB, a piece 10.062 MB (the formula's 10.062)"
+    ],
+    "peak_shared_nonreclaimable_proxy_gib": 12.52011489868164
+  },
+  "chunk": {
+    "arm": "chunk",
+    "elapsed_seconds": 241.451,
+    "process_cpu_seconds": 416.473,
+    "peak_rss_gib": 11.801,
+    "row_spans": [
+      {
+        "initial_rss_gib": 8.47018051147461,
+        "peak_rss_gib": 11.80056381225586,
+        "start_available_gib": 7.202152252197266,
+        "pieces": 475,
+        "elapsed_seconds": 66.747,
+        "cpu_seconds": 128.544
+      },
+      {
+        "initial_rss_gib": 9.261222839355469,
+        "peak_rss_gib": 10.430965423583984,
+        "start_available_gib": 6.6519622802734375,
+        "pieces": 198,
+        "elapsed_seconds": 37.228,
+        "cpu_seconds": 70.079
+      }
+    ],
+    "training": {
+      "member": "t80+astrastudy",
+      "leans": "sources",
+      "dtype": "bf16",
+      "loss_chunk_tokens": 32,
+      "checkpoint": false,
+      "seconds_a_row": 52.0,
+      "ternary_edit": false,
+      "foresee": false,
+      "pairs": 0,
+      "int8_base": true,
+      "read": 0,
+      "judged": 0,
+      "parent": "t80.g53sources2.safetensors",
+      "parent_cell": "g53sources2",
+      "trunk": "t80.g55trunk.safetensors",
+      "mended": 0,
+      "new_rows": 2,
+      "shard": "",
+      "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+      "rows": 2,
+      "used": 2,
+      "passes": 2,
+      "epochs": 1.0,
+      "rank": 16,
+      "lr": 0.0002,
+      "layers": [
+        22,
+        35
+      ],
+      "steps": 2,
+      "seconds": 104,
+      "loss_first": 0.0306,
+      "loss_last": 0.0308,
+      "when": "2026-11-20 16:33",
+      "memory_gb": 11.8,
+      "gpu": "",
+      "subjects": [
+        {
+          "subject": "sum up a text \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.031,
+          "loss_last": 0.031
+        },
+        {
+          "subject": "several tasks in one \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0306,
+          "loss_last": 0.0306
+        }
+      ],
+      "kept_back": {},
+      "rows_by_kind": {
+        "several tasks in one": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        },
+        "sum up a text": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        }
+      },
+      "memory": {
+        "peak_gb": 11.8,
+        "min_available_gb": 3.59,
+        "swap_peak_gb": 0.0,
+        "rows_skipped": 0,
+        "skipped_by_subject": {},
+        "cost_per_piece_mb": 10.062,
+        "formula_per_piece_mb": 10.062,
+        "spare_gb": 1.0
+      },
+      "megabytes": 38.0
+    },
+    "adapter_sha256": "e4ff7f8fa51dbf0baca19d51732dfb1e29b724c7d601ae7cad36d6084c972f28",
+    "torch_inputs": {
+      "rows": "362168ee658d629b549259bbaad6485febf39a71dd59ad642193b1db42bc7e73",
+      "parent": "dbd31660e52ba2f45e5a80d087b4e63da735a5ac71b33e0cb9b73a72fad4ef38",
+      "trunk": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
+    },
+    "tested_sources": {
+      "grow.py": "447c3aa2f7b91d6392e4a16cce29fc1afc952a154d183fdae55a21586a3f6f8b",
+      "ternary_base.py": "afebf1e736cd35845a4f19ac70e49b50592394ca4f4ca00fa0c29a2e6d2e0d68",
+      "lm_head_loss.py": "7bf842d77084f2b06135fbaca26862188cc2940df31c83482a6beededf3822aa"
+    },
+    "frozen_log": [
+      "this CPU has no quick 16-bit arithmetic (no AVX512-BF16, no AMX): the cell is trained in 32-bit numbers",
+      "the DNA held ternary: one byte a weight and one scale per 128 (the word vectors and the output layer too); the worst group is 0.0000 of its scale off; 8.2 GB held",
+      "the child starts as its parent pulled 0.5 of the way to the trunk (t80.g55trunk.safetensors); at least 1.000 of every matrix is kept at rank 16",
+      "the child starts as its parent (t80.g53sources2.safetensors): 98 of its matrices inherited",
+      "this machine has 7.2 GB available beside the DNA: fixed cap 559 pieces (asked for 1152)",
+      "2 rows, 2 within 559 pieces (mean 336); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+      "memory guard: 7.2 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 10.06 MB to start, then as measured)",
+      "MEASURED {\"initial_rss_gib\": 8.47018051147461, \"peak_rss_gib\": 11.80056381225586, \"start_available_gib\": 7.202152252197266, \"pieces\": 475, \"elapsed_seconds\": 66.747, \"cpu_seconds\": 128.544}",
+      "MEASURED {\"initial_rss_gib\": 9.261222839355469, \"peak_rss_gib\": 10.430965423583984, \"start_available_gib\": 6.6519622802734375, \"pieces\": 198, \"elapsed_seconds\": 37.228, \"cpu_seconds\": 70.079}",
+      "memory: most 11.8 GB, least available 3.59 GB, most swap 0.0 GB, a piece 10.062 MB (the formula's 10.062)"
+    ],
+    "peak_shared_nonreclaimable_proxy_gib": 12.678722381591797
+  }
+}

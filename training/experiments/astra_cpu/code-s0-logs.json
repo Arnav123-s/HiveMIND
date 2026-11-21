@@ -1,0 +1,56 @@
+{
+  "g51": {
+    "id": 135600353991,
+    "url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44525337919/job/135600353991",
+    "lines": [
+      "2026-11-19T13:42:40.5401627Z slice 1 of 3: 2387 rows, 549 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+      "2026-11-19T13:45:01.6184440Z this machine has 6.7 GB available beside the DNA: rows of up to 508 pieces fit (asked for 1152)",
+      "2026-11-19T13:45:11.3811445Z judged: 4 pairs of answers people voted on",
+      "2026-11-19T14:41:43.8575373Z read: 120 raw pieces drawn, 120 measured (the DNA's error from 0.87 to 4.81), 40 kept from the middle band",
+      "2026-11-19T14:41:43.8627506Z 2387 rows, 1836 within 508 pieces (mean 375); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+      "2026-11-19T14:41:43.8628229Z this machine: AMD EPYC 7763 64-Core Processor, 4 threads; trained in 32-bit numbers",
+      "2026-11-19T15:15:57.4478776Z lessons kept back: 56, of 28 kinds, never trained on; 51 of their rows measured in 2053 s, 10 too long",
+      "2026-11-19T15:15:57.4511093Z memory guard: 4.7 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 10.06 MB to start, then as measured)",
+      "2026-11-19T15:58:22.4293629Z time is up after 54 passes: the cell is saved as it is",
+      "2026-11-19T15:58:22.4881179Z memory guard: 563 passes skipped a row that would not fit (the regions of a grid, with hidden tests · first · new 46, a parser for a tiny language, with hidden tests · first · new 46, a markdown table turned into CSV · first · new 46, a number with given properties · mend · new 46, the most frequent words of a text · first · new 46, the percent change between two columns, rounded by a rule · first · new 45, an order of tasks by their dependencies, with hidden tests · first · new 45, a long table turned wide · first · new 45)",
+      "2026-11-19T15:58:22.4884951Z memory: most 12.8 GB, least available 2.1 GB, most swap 0.85 GB, a piece 10.062 MB (the formula's 10.062)",
+      "2026-11-19T16:32:48.5005492Z frozen layers skipped on 4 of 60 passes (their output kept from the first pass of each row, 0.24 GB on disk)"
+    ]
+  },
+  "g55": {
+    "id": 136296346002,
+    "url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44728930517/job/136296346002",
+    "lines": [
+      "2026-11-20T12:50:59.1776618Z slice 1 of 2: 4041 rows, 588 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+      "2026-11-20T12:54:03.5763817Z this machine has 6.6 GB available beside the DNA: rows of up to 797 pieces fit (asked for 1152)",
+      "2026-11-20T12:54:21.4157778Z judged: 8 pairs of answers people voted on",
+      "2026-11-20T13:16:16.7169034Z read: 120 raw pieces drawn, 120 measured (the DNA's error from 0.79 to 4.07), 40 kept from the middle band",
+      "2026-11-20T13:16:16.7379328Z 4041 rows, 3797 within 797 pieces (mean 444); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+      "2026-11-20T13:16:16.7381621Z this machine: AMD EPYC 9V74 80-Core Processor, 4 threads; trained in 16-bit numbers",
+      "2026-11-20T13:34:44.8576781Z lessons kept back: 56, of 28 kinds, never trained on; 62 of their rows measured in 1108 s",
+      "2026-11-20T13:34:44.8599469Z memory guard: 4.9 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 5.03 MB to start, then as measured)",
+      "2026-11-20T15:22:36.9882182Z time is up after 260 passes: the cell is saved as it is",
+      "2026-11-20T15:22:37.0011254Z memory guard: 1481 passes skipped a row that would not fit (the blanks of a table filled by a rule · mend · new 215, a class with rules, with hidden tests · fix · new 215, an order of tasks by their dependencies, with hidden tests · mend · new 212, a table grouped, each group's total and mean saved · mend · new 210, a join over two small tables · mend · new 210, emails and phones found in a messy message · fix 128, a join over two small tables · fix 119, a long table turned wide · fix 116)",
+      "2026-11-20T15:22:37.0013672Z memory: most 13.48 GB, least available 1.39 GB, most swap 3.07 GB, a piece 5.031 MB (the formula's 5.031)",
+      "2026-11-20T15:41:30.5597671Z frozen layers skipped on 56 of 284 passes (their output kept from the first pass of each row, 0.67 GB on disk)"
+    ]
+  },
+  "g56": {
+    "id": 136466401009,
+    "url": "https://github.com/Arnav123-s/HiveMIND/actions/runs/44776442973/job/136466401009",
+    "lines": [
+      "2026-11-20T17:56:31.2953699Z slice 1 of 2: 4393 rows, 735 of them new this generation and studied by every slice (the other runners study the rest of the old rows; the slices are averaged into the child)",
+      "2026-11-20T17:59:49.6501580Z this machine has 6.4 GB available beside the DNA: rows of up to 748 pieces fit (asked for 1152)",
+      "2026-11-20T18:00:09.7248157Z judged: 8 pairs of answers people voted on",
+      "2026-11-20T18:21:56.8103167Z read: 120 raw pieces drawn, 120 measured (the DNA's error from 0.67 to 3.39), 40 kept from the middle band",
+      "2026-11-20T18:21:56.8174628Z 4393 rows, 4061 within 748 pieces (mean 434); LoRA rank 16 on layers 22-35 of prism-ml/Ternary-Bonsai-8B-unpacked",
+      "2026-11-20T18:21:56.8176727Z this machine: AMD EPYC 9V74 80-Core Processor, 4 threads; trained in 16-bit numbers",
+      "2026-11-20T18:40:01.5888671Z lessons kept back: 58, of 29 kinds, never trained on; 61 of their rows measured in 1085 s, 5 too long",
+      "2026-11-20T18:40:01.5912605Z memory guard: 4.6 GB available, a row skipped when it would leave less than 1.0 GB (a piece taken as 5.03 MB to start, then as measured)",
+      "2026-11-20T20:28:44.3511271Z time is up after 269 passes: the cell is saved as it is",
+      "2026-11-20T20:28:44.4582613Z memory guard: 647 passes skipped a row that would not fit (several facts fetched and laid out as a file · mend · new 217, a long table turned wide · fix 127, several facts fetched and laid out as a file · fix 126, the weekday of a date · mend · new 123, several tasks in one · fix · new 12, a class with rules, with hidden tests · mend · new 4, emails and phones found in a messy message · first 4, a table grouped, each group's total and mean saved · mend · new 3)",
+      "2026-11-20T20:28:44.4585161Z memory: most 13.28 GB, least available 1.67 GB, most swap 2.68 GB, a piece 5.031 MB (the formula's 5.031)",
+      "2026-11-20T20:46:45.0402647Z frozen layers skipped on 52 of 296 passes (their output kept from the first pass of each row, 0.70 GB on disk)"
+    ]
+  }
+}

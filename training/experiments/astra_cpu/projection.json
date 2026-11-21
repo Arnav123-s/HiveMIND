@@ -1,0 +1,15 @@
+{
+  "model": "Qwen3ForCausalLM",
+  "chunks": [
+    {
+      "answer": 29,
+      "stock_projection_upper": 30,
+      "candidate_projection_upper": 30
+    },
+    {
+      "answer": 188,
+      "stock_projection_upper": 189,
+      "candidate_projection_upper": 32
+    }
+  ]
+}

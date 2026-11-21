@@ -1,0 +1,125 @@
+{
+  "arm": "parent",
+  "panel_sha256": "8d3903f5bd41ea2d65973931026069baa297c0009af57471a0cdef8ee9db1945",
+  "model_sha256": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "runtime_sha256": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "lora_sha256": "b603c9395c82838c28831a491d8fc8b48dd09e8bf26c158573724807bef2b3f4",
+  "flags": [
+    "-ngl",
+    "0",
+    "-c",
+    "2048",
+    "-t",
+    "2",
+    "-tb",
+    "2",
+    "-rtr",
+    "-b",
+    "128",
+    "-ub",
+    "128",
+    "--parallel",
+    "1",
+    "--threads-http",
+    "2",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "57959",
+    "--jinja"
+  ],
+  "sampling": {
+    "temperature": 0.0,
+    "seed": 314159,
+    "top_k": 1,
+    "top_p": 1.0,
+    "max_tokens": 384,
+    "cache_prompt": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "affinity": [
+    3,
+    4
+  ],
+  "started": "2026-11-21T01:00:16.493394+00:00",
+  "complete": true,
+  "calls": [
+    {
+      "name": "bank",
+      "text": "```python\nclass Account:\n    def __init__(s, balance=0):\n        s.b, s.n = balance, 0\n\n    def deposit(s, amount):\n        if amount <= 0:\n            raise ValueError\n        s.b += amount\n        return s.b\n\n    def withdraw(s, amount):\n        if amount <= 0 or s.n >= 4:\n            raise ValueError\n        s.b -= amount + 1\n        s.n += 1\n        return s.b\n\n    def balance(s):\n        return s.b\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'bank.py')\n    assert Account(15).balance() == 15\n    a = Account(15)\n    for c in 'withdraw(87), withdraw(45), withdraw(0), withdraw(185), withdraw(115), withdraw(0)'.split(', '):\n        try:\n            eval('a.' + c)\n        except ValueError:\n            pass\n    print(a.balance())\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 222,
+        "prompt_tokens": 299,
+        "total_tokens": 521,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 50.469
+    },
+    {
+      "name": "calc",
+      "text": "```python\nimport re\n\nP = {\"+\": 2, \"-\": 2, \"*\": 4, \"$\": 1}\n\n\ndef tokens(t):\n    return re.findall(r\"\\d+|\\S\", t)\n\n\ndef evaluate(t, m=0):\n    if type(t) == str:\n        t = tokens(t)[::-1]\n    x = t.pop()\n    if x == \"(\":\n        a = evaluate(t)\n        t.pop()\n    else:\n        a = int(x)\n    while t and P.get(t[-1], 0) > m:\n        o = t.pop()\n        b = evaluate(t, P[o])\n        a = {\"+\": a + b, \"-\": a - b, \"*\": a * b}.get(o, max(a - b, 0))\n    return a\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'calc.py')\n    assert evaluate('(2+3)*4') == 20\n    print(evaluate('6$(15$7$17)$12$11'))\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 228,
+        "prompt_tokens": 312,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 47.865
+    },
+    {
+      "name": "lru",
+      "text": "```python\nclass LRUCache:\n    def __init__(s, capacity):\n        s.c, s.d = capacity, {}\n\n    def get(s, k):\n        return s.d.get(k, 'missing')\n\n    def put(s, k, v):\n        s.d[k] = v\n        if len(s.d) > s.c:\n            del s.d[next(iter(s.d))]\n\n    def keys(s):\n        return list(s.d)\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'lru.py')\n    t = LRUCache(1)\n    t.put('x', 1)\n    t.put('y', 2)\n    t.put('z', 3)\n    assert t.keys() == ['z', 'y', 'x']\n    c = LRUCache(3)\n    c.get('e'); c.put('e', 74); c.put('c', 1); c.put('e', 16); c.put('c', 19)\n    print(c.keys())\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 223,
+        "prompt_tokens": 320,
+        "total_tokens": 543,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 47.253
+    },
+    {
+      "name": "machine",
+      "text": "```python\nimport csv\n\n# Define the machine states and events\nstates = ['waiting', 'paused', 'stopped']\nevents = ['tick', 'fail', 'start', 'pause']\n\n# Transition table: (state, event) -> new state\ntransition = {\n    ('waiting', 'fail'): 'waiting',\n    ('waiting', 'start'): 'stopped',\n    ('paused', 'pause'): 'stopped',\n    ('paused', 'start'): 'waiting',\n    ('stopped', 'pause'): 'waiting'\n}\n\n# Initialize the machine state\nmachine_state = 'waiting'\n\n# Read the data from the file\nwith open('task_data.txt', 'r') as f:\n    reader = csv.reader(f, delimiter=',')\n    for row in reader:\n        # The data is not used in this task, so we can ignore it\n        pass\n\n# Define the module functions\ndef step(state, event):\n    \"\"\"Returns the new state after the event.\"\"\"\n    return transition.get((state, event), state)\n\ndef run(events):\n    \"\"\"Runs the events and returns the final state.\"\"\"\n    global machine_state\n    for event in events:\n        machine_state = step(machine_state, event)\n    return machine_state\n\ndef visits(events, state):\n    \"\"\"Returns how many times the machine is in the given state.\"\"\"\n    count = 0\n    current = 'waiting'\n    for event in events:\n        current = step(current, event)\n        if current == state:\n            count += 1\n    return count\n\n# Test the functions\nprint(\"Step('waiting', 'start') =\", step('waiting', 'start'))\nprint(\"Step('paused', 'pause') =\", step('paused', 'pause'))\nprint(\"Step('stopped', 'start') =\", step('stopped', 'start'))\n\nprint(\"Run(['start', 'fail', 'pause', 'fail']) =\", run",
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 382,
+        "total_tokens": 766,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 81.096
+    },
+    {
+      "name": "schedule",
+      "text": "```python\ndef order(tasks):\n    done = []\n    while len(done) < len(tasks):\n        ready = [t for t in tasks if t not in done and all(d in done for d in tasks[t])]\n        if not ready:\n            raise ValueError(\"a cycle\")\n        ready.sort(key=lambda x: (len(x), x))\n        done.append(ready[0])\n    return done\n\n\ndef levels(tasks):\n    out = {}\n    for t in order(tasks):\n        out[t] = 1 + max([out[d] for d in tasks[t]], default=-1)\n    return out\n\n\nif __name__ == \"__main__\":\n    import shutil\n    shutil.copy(__file__, 'schedule.py')\n    assert levels({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}) == {'fetch': 2, 'pack': 2, 'audit': 0, 'mail': 1, 'test': 2, 'bench': 1, 'build': 2, 'tag': 0}\n    print(order({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}))\n```",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 313,
+        "prompt_tokens": 324,
+        "total_tokens": 637,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "wall_seconds": 65.949
+    }
+  ],
+  "weight_after_load": {
+    "filename": "start.gguf",
+    "scale": 1.0
+  },
+  "finished": "2026-11-21T01:05:17.516599+00:00"
+}

@@ -1,0 +1,157 @@
+{
+  "g51": {
+    "original_encoded": 1792,
+    "external_judged": 4,
+    "external_read": 40,
+    "logged_study_size": 1836,
+    "row_archive_sha256": "c2ec60e62fabbb61c53b044773e257839527bde38c79ccdcd993f55f03eda9f7",
+    "given": 2387,
+    "inputs": {
+      "parent": "g48code2",
+      "date": "2026-11-19 (Thursday)",
+      "shards": 3,
+      "cap": 508,
+      "avail": 4.7,
+      "bytes": 4,
+      "given": 2387
+    },
+    "midpoint": {
+      "counts": {
+        "stock-static-cap": 595,
+        "candidate-checkpoint": 1757,
+        "stock-ordinary": 669,
+        "stock-guard-declined": 1123,
+        "candidate-ordinary": 580,
+        "candidate-requested-cap": 50
+      },
+      "transition": {
+        "static-cap to checkpoint": 545,
+        "ordinary to checkpoint": 89,
+        "guard-declined to checkpoint": 1123,
+        "ordinary to ordinary": 580,
+        "static-cap to requested-cap": 50
+      }
+    },
+    "rounding_sensitivity": [
+      {
+        "stock-static-cap": 595,
+        "candidate-checkpoint": 1771,
+        "stock-guard-declined": 1156,
+        "stock-ordinary": 636,
+        "candidate-ordinary": 566,
+        "candidate-requested-cap": 50
+      },
+      {
+        "stock-static-cap": 595,
+        "candidate-checkpoint": 1750,
+        "stock-ordinary": 702,
+        "stock-guard-declined": 1090,
+        "candidate-ordinary": 587,
+        "candidate-requested-cap": 50
+      }
+    ]
+  },
+  "g55": {
+    "original_encoded": 3749,
+    "external_judged": 8,
+    "external_read": 40,
+    "logged_study_size": 3797,
+    "row_archive_sha256": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd",
+    "given": 4041,
+    "inputs": {
+      "parent": "g51code",
+      "date": "2026-11-20 (Friday)",
+      "shards": 2,
+      "cap": 797,
+      "avail": 4.9,
+      "bytes": 2,
+      "given": 4041
+    },
+    "midpoint": {
+      "counts": {
+        "stock-ordinary": 3741,
+        "candidate-ordinary": 3448,
+        "stock-static-cap": 292,
+        "candidate-checkpoint": 495,
+        "candidate-requested-cap": 98,
+        "stock-guard-declined": 8
+      },
+      "transition": {
+        "ordinary to ordinary": 3448,
+        "static-cap to checkpoint": 194,
+        "ordinary to checkpoint": 293,
+        "static-cap to requested-cap": 98,
+        "guard-declined to checkpoint": 8
+      }
+    },
+    "rounding_sensitivity": [
+      {
+        "stock-ordinary": 3712,
+        "candidate-ordinary": 3423,
+        "stock-static-cap": 292,
+        "candidate-checkpoint": 520,
+        "candidate-requested-cap": 98,
+        "stock-guard-declined": 37
+      },
+      {
+        "stock-ordinary": 3749,
+        "candidate-ordinary": 3468,
+        "stock-static-cap": 292,
+        "candidate-checkpoint": 475,
+        "candidate-requested-cap": 98
+      }
+    ]
+  },
+  "g56": {
+    "original_encoded": 4013,
+    "external_judged": 8,
+    "external_read": 40,
+    "logged_study_size": 4061,
+    "row_archive_sha256": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139",
+    "given": 4393,
+    "inputs": {
+      "parent": "g53code",
+      "date": "2026-11-20 (Friday)",
+      "shards": 2,
+      "cap": 748,
+      "avail": 4.6,
+      "bytes": 2,
+      "given": 4393
+    },
+    "midpoint": {
+      "counts": {
+        "stock-ordinary": 3946,
+        "candidate-ordinary": 3588,
+        "candidate-checkpoint": 707,
+        "stock-static-cap": 380,
+        "stock-guard-declined": 67,
+        "candidate-requested-cap": 98
+      },
+      "transition": {
+        "ordinary to ordinary": 3588,
+        "ordinary to checkpoint": 358,
+        "static-cap to checkpoint": 282,
+        "guard-declined to checkpoint": 67,
+        "static-cap to requested-cap": 98
+      }
+    },
+    "rounding_sensitivity": [
+      {
+        "stock-ordinary": 3902,
+        "candidate-ordinary": 3559,
+        "candidate-checkpoint": 736,
+        "stock-static-cap": 380,
+        "stock-guard-declined": 111,
+        "candidate-requested-cap": 98
+      },
+      {
+        "stock-ordinary": 3987,
+        "candidate-ordinary": 3631,
+        "stock-static-cap": 380,
+        "candidate-checkpoint": 664,
+        "candidate-requested-cap": 98,
+        "stock-guard-declined": 26
+      }
+    ]
+  }
+}

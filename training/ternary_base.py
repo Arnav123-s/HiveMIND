@@ -26,6 +26,7 @@ import contextlib
 import gc
 import json
 import math
+import os
 from pathlib import Path
 
 import torch
@@ -292,7 +293,7 @@ def _trim():
         pass
 
 
-def load(src, rank=16, alpha=32, dropout=0.0, layers=None, dtype=torch.bfloat16, log=print):
+def load(src, rank=16, alpha=32, dropout=0.0, layers=None, dtype=torch.bfloat16, log=print, *, release_source_cache=False):
     """The model with every decoder projection, its table of word vectors and its output layer held ternary, and the
     cell (LoRA on the layers named, all if None). Every matrix is read from the file by itself and turned into codes
     at once, so the most memory used is the codes plus one matrix: an 8B DNA loads inside 9 GB."""
@@ -307,11 +308,13 @@ def load(src, rank=16, alpha=32, dropout=0.0, layers=None, dtype=torch.bfloat16,
     index = src / "model.safetensors.index.json"
     where = json.loads(index.read_text())["weight_map"] if index.exists() else None
     files = {}
+    read_shards = set()
 
     def opened(f):
         if f not in files:
             files.clear()  # one file open at a time: an open file's pages count as this process's memory
             files[f] = safe_open(str(src / f), "pt")
+            read_shards.add(src / f)
         return files[f]
 
     def stored(name):
@@ -363,6 +366,18 @@ def load(src, rank=16, alpha=32, dropout=0.0, layers=None, dtype=torch.bfloat16,
         p.requires_grad_(False)
     files.clear()
     _trim()
+    if release_source_cache and hasattr(os, "posix_fadvise") and hasattr(os, "POSIX_FADV_DONTNEED"):
+        # The optimizer uses the converted tensors. Hint only the read-only source shards this load consumed;
+        # the kernel decides which clean, unpinned pages it can actually release. No system-wide cache flush.
+        advised = 0
+        for shard in sorted(read_shards):
+            try:
+                with shard.open("rb") as stream:
+                    os.posix_fadvise(stream.fileno(), 0, 0, os.POSIX_FADV_DONTNEED)
+                advised += 1
+            except OSError:
+                pass  # Unsupported filesystem or pages still in use: admission still measures what is available.
+        log(f"released source-cache hint on {advised} of {len(read_shards)} converted model shards", flush=True)
     cell = Cell(model, which, rank, alpha, dropout)
     for p in cell.params:
         p.requires_grad_(True)

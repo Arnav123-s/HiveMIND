@@ -1,0 +1,141 @@
+{
+  "positive_controls": [
+    {
+      "name": "bank",
+      "generated": true,
+      "file_sha256": "92006a629b6060a18055684948bb1ce1919cdf579a250d1f4181502fbf04ffda",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 283,
+      "hidden_total": 283,
+      "full_pass": true,
+      "program_sha256": "92006a629b6060a18055684948bb1ce1919cdf579a250d1f4181502fbf04ffda",
+      "execution": {
+        "stdout": "15\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190414312
+      },
+      "hidden_fuel": 1046273116
+    },
+    {
+      "name": "calc",
+      "generated": true,
+      "file_sha256": "7b53ad46ef737e2792a2e3d1f7d5630bb6284483cd06edd32d931eaa7361e8ce",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 52,
+      "hidden_total": 52,
+      "full_pass": true,
+      "program_sha256": "7b53ad46ef737e2792a2e3d1f7d5630bb6284483cd06edd32d931eaa7361e8ce",
+      "execution": {
+        "stdout": "0\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190084251
+      },
+      "hidden_fuel": 1038618490
+    },
+    {
+      "name": "lru",
+      "generated": true,
+      "file_sha256": "736cf3cdc1f754d79067bdaa920eaf2ad04379a3fec4d8342898fe587d3da21d",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 329,
+      "hidden_total": 329,
+      "full_pass": true,
+      "program_sha256": "736cf3cdc1f754d79067bdaa920eaf2ad04379a3fec4d8342898fe587d3da21d",
+      "execution": {
+        "stdout": "['e', 'c']\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190256362
+      },
+      "hidden_fuel": 1051746263
+    },
+    {
+      "name": "machine",
+      "generated": true,
+      "file_sha256": "e187429a3af88fdabbb7c23b57f36192bfe1d23b3bfdc430109f65fc8b413aa4",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 72,
+      "hidden_total": 72,
+      "full_pass": true,
+      "program_sha256": "e187429a3af88fdabbb7c23b57f36192bfe1d23b3bfdc430109f65fc8b413aa4",
+      "execution": {
+        "stdout": "waiting\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1189033469
+      },
+      "hidden_fuel": 1036143147
+    },
+    {
+      "name": "schedule",
+      "generated": true,
+      "file_sha256": "6e0860ece42e857a436e4fad03d56690416e32fa380dd51772d4d9bed2b04409",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 61,
+      "hidden_total": 61,
+      "full_pass": true,
+      "program_sha256": "6e0860ece42e857a436e4fad03d56690416e32fa380dd51772d4d9bed2b04409",
+      "execution": {
+        "stdout": "['tag', 'audit', 'mail', 'bench', 'test', 'build', 'pack', 'fetch']\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190925574
+      },
+      "hidden_fuel": 1053500123
+    }
+  ],
+  "negative_controls": [
+    {
+      "name": "bank",
+      "generated": true,
+      "file_sha256": null,
+      "module_source": null,
+      "program_exit_ok": true,
+      "public_values_ok": false,
+      "hidden_passed": 0,
+      "hidden_total": 283,
+      "full_pass": false,
+      "program_sha256": "58e9ab8ab85fce846f0b646aa9b3a793d696be17e1d156b7c88273ae7a2d238b",
+      "execution": {
+        "stdout": "finished\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1003651314
+      },
+      "reason": "requested module absent or unreadable"
+    },
+    {
+      "name": "calc",
+      "generated": true,
+      "file_sha256": "d44cfc670938ab41bc1da61e9babcca89de8e0e0c90c4d063892dc909be81b8a",
+      "module_source": "stock AST materializer",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 11,
+      "hidden_total": 52,
+      "full_pass": false,
+      "program_sha256": "d3d69926f10e07c8e53674f9c51604705893ff94016e9dea033fef632617d6e9",
+      "execution": {
+        "stdout": "0\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1003825828
+      },
+      "hidden_fuel": 1032023255
+    }
+  ],
+  "python_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "panel_sha256": "8d3903f5bd41ea2d65973931026069baa297c0009af57471a0cdef8ee9db1945"
+}

@@ -1,0 +1,57 @@
+{
+  "vocabulary": 151669,
+  "hidden_width": 128,
+  "layers": 1,
+  "threads": 1,
+  "dtype": "float32",
+  "measurements": [
+    {
+      "answer_tokens": 24,
+      "absolute_gradient_error_max": 0.0,
+      "arms": [
+        {
+          "answer_tokens": 24,
+          "chunk": 0,
+          "mean_loss": 11.964336395263672,
+          "rss_before_mib": 374.9,
+          "process_peak_mib": 448.6,
+          "forward_backward_seconds": 0.117,
+          "torch": "2.15.0+cpu"
+        },
+        {
+          "answer_tokens": 24,
+          "chunk": 64,
+          "mean_loss": 11.964336395263672,
+          "rss_before_mib": 374.8,
+          "process_peak_mib": 448.7,
+          "forward_backward_seconds": 0.081,
+          "torch": "2.15.0+cpu"
+        }
+      ]
+    },
+    {
+      "answer_tokens": 192,
+      "absolute_gradient_error_max": 0.0,
+      "arms": [
+        {
+          "answer_tokens": 192,
+          "chunk": 0,
+          "mean_loss": 11.946895599365234,
+          "rss_before_mib": 374.8,
+          "process_peak_mib": 712.7,
+          "forward_backward_seconds": 0.479,
+          "torch": "2.15.0+cpu"
+        },
+        {
+          "answer_tokens": 192,
+          "chunk": 64,
+          "mean_loss": 11.946895599365234,
+          "rss_before_mib": 374.8,
+          "process_peak_mib": 491.0,
+          "forward_backward_seconds": 0.819,
+          "torch": "2.15.0+cpu"
+        }
+      ]
+    }
+  ]
+}

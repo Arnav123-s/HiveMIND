@@ -1,0 +1,12 @@
+{
+  "squared_delta": 0.0,
+  "squared_old_update": 0.21693569777032873,
+  "squared_new_update": 0.21693569777032873,
+  "dot_updates": 0.21693569777032873,
+  "max_abs_delta": 0.0,
+  "changed_values": 0,
+  "values": 16973824,
+  "tensors": 196,
+  "relative_difference_in_updates": 0.0,
+  "update_cosine": 1.0
+}
