@@ -41,6 +41,8 @@ An earlier alternative chose among already available workers using previously la
 
 The separate G53–G56 replay found six eligible majority/minority text decisions. Always choosing the minority gained one answer and spoiled four, reducing delivery from 200/256 to 197/256. An independent attempt to choose the best specialist before seeing the request's answers had only nine earlier, sole-worker practice wins across six workers. It tied the first worker at 176/235, against 180/235 for stock multi-worker delivery. [Minority outcomes](minority/README.md) · [Specialist choice and coverage](specialists/README.md)
 
+A retrospective parent-history check supplied prior records for six new workers on 60 later requests. The child and the first worker each scored 39/60 there. Following the documented parents recovered information but produced zero additional correct selections under the frozen two-profile rule. [Inherited worker history](specialists/heritage/README.md)
+
 ## Reproduction
 
 The original all-rows ZIPs each contain `rows.jsonl` and `failures.jsonl`. The primary result records both row checksums, and the diagnostic result records both failure-ledger checksums. Use the repository's Python environment, save the two ZIPs under the names below and run from the repository root. [G55 run and artifact](https://github.com/Arnav123-s/HiveMIND/actions/runs/44728930517/artifacts/14630086449) · [G56 run and artifact](https://github.com/Arnav123-s/HiveMIND/actions/runs/44776442973/artifacts/14653659254)

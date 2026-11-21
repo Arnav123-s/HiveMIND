@@ -1,0 +1,518 @@
+{
+  "after": {
+    "actor_paths": {
+      "g53/t80+g53code": {
+        "path": [
+          "t80+g53code",
+          "t80+g49code2",
+          "t80+g47code",
+          "t80+g44code2",
+          "t80+g42code2",
+          "t80+g39code3",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g53/t80+g53data2": {
+        "path": [
+          "t80+g53data2",
+          "t80+g49data"
+        ],
+        "profile": "t80+g49data",
+        "source": "inherited"
+      },
+      "g53/t80+g53sources2": {
+        "path": [
+          "t80+g53sources2",
+          "t80+g49sources",
+          "t80+g47sources2",
+          "t80+g44sources2",
+          "t80+g42sources",
+          "t80+g39sources",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g53/t80+g53trunk": {
+        "path": [
+          "t80+g53trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g53/t80+g53words": {
+        "path": [
+          "t80+g53words",
+          "t80+g49words",
+          "t80+g47words",
+          "t80+g44words",
+          "t80+g42words",
+          "t80+g39words",
+          "t80+g28words",
+          "t80+g24words"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g54/t80+g54code2": {
+        "path": [
+          "t80+g54code2",
+          "t80+g51code2",
+          "t80+g48code",
+          "t80+g45code",
+          "t80+g43code",
+          "t80+g41code",
+          "t80+g34code",
+          "t80+g27code",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g54/t80+g54data": {
+        "path": [
+          "t80+g54data",
+          "t80+g51data"
+        ],
+        "profile": "t80+g51data",
+        "source": "inherited"
+      },
+      "g54/t80+g54sources2": {
+        "path": [
+          "t80+g54sources2",
+          "t80+g51sources",
+          "t80+g48sources",
+          "t80+g45sources2",
+          "t80+g43sources2",
+          "t80+g41sources",
+          "t80+g34sources",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g54/t80+g54trunk": {
+        "path": [
+          "t80+g54trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g54/t80+g54words2": {
+        "path": [
+          "t80+g54words2",
+          "t80+g51words",
+          "t80+g48words2",
+          "t80+g45words2",
+          "t80+g43words",
+          "t80+g41words2",
+          "t80+g34words2",
+          "t80+g24words"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g55/t80+g55code2": {
+        "path": [
+          "t80+g55code2",
+          "t80+g51code2",
+          "t80+g48code",
+          "t80+g45code",
+          "t80+g43code",
+          "t80+g41code",
+          "t80+g34code",
+          "t80+g27code",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g55/t80+g55data": {
+        "path": [
+          "t80+g55data",
+          "t80+g51data"
+        ],
+        "profile": "t80+g51data",
+        "source": "inherited"
+      },
+      "g55/t80+g55sources2": {
+        "path": [
+          "t80+g55sources2",
+          "t80+g51sources",
+          "t80+g48sources",
+          "t80+g45sources2",
+          "t80+g43sources2",
+          "t80+g41sources",
+          "t80+g34sources",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g55/t80+g55trunk": {
+        "path": [
+          "t80+g55trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g55/t80+g55words": {
+        "path": [
+          "t80+g55words",
+          "t80+g51words2"
+        ],
+        "profile": "t80+g51words2",
+        "source": "inherited"
+      },
+      "g56/t80+g56code2": {
+        "path": [
+          "t80+g56code2",
+          "t80+g53code2",
+          "t80+g49code",
+          "t80+g47code2",
+          "t80+g44code",
+          "t80+g42code",
+          "t80+g39code2",
+          "t80+g27code",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g56/t80+g56data": {
+        "path": [
+          "t80+g56data",
+          "t80+g53data2",
+          "t80+g49data"
+        ],
+        "profile": "t80+g49data",
+        "source": "inherited"
+      },
+      "g56/t80+g56sources2": {
+        "path": [
+          "t80+g56sources2",
+          "t80+g53sources",
+          "t80+g49sources2",
+          "t80+g47sources"
+        ],
+        "profile": "t80+g47sources",
+        "source": "inherited"
+      },
+      "g56/t80+g56trunk": {
+        "path": [
+          "t80+g56trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g56/t80+g56words": {
+        "path": [
+          "t80+g56words",
+          "t80+g53words",
+          "t80+g49words",
+          "t80+g47words",
+          "t80+g44words",
+          "t80+g42words",
+          "t80+g39words",
+          "t80+g28words",
+          "t80+g24words"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      }
+    },
+    "counts": {
+      "common": 235,
+      "direct": 176,
+      "eligible": 235,
+      "first": 176,
+      "heritage": 176,
+      "oracle_two": 183,
+      "second": 177,
+      "stock_delivery": 180
+    },
+    "differences": {
+      "direct_changes": 0,
+      "direct_gains": 0,
+      "direct_losses": 0,
+      "first_changes": 0,
+      "first_gains": 0,
+      "first_losses": 0
+    },
+    "only_second_has_inherited_profile": {
+      "first_right": 39,
+      "gains_if_second": 2,
+      "jobs": 60,
+      "losses_if_second": 2,
+      "second_right": 39
+    },
+    "sources": {
+      "mixed trunk without a single parent / documented chain ends without a verified practice profile": 175,
+      "mixed trunk without a single parent / inherited": 60
+    },
+    "stock_mismatches": {
+      "chooser_right_delivery_wrong": 1,
+      "delivery_right_chooser_wrong": 5
+    },
+    "support": {
+      "neither": 175,
+      "second only": 60
+    }
+  },
+  "before": {
+    "actor_paths": {
+      "g53/t80+g51code": {
+        "path": [
+          "t80+g51code",
+          "t80+g48code2",
+          "t80+g45code2",
+          "t80+g43code2",
+          "t80+g41code2",
+          "t80+g34code2",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g53/t80+g51data": {
+        "path": [
+          "t80+g51data"
+        ],
+        "profile": "t80+g51data",
+        "source": "own"
+      },
+      "g53/t80+g51sources2": {
+        "path": [
+          "t80+g51sources2",
+          "t80+g48sources2",
+          "t80+g45sources",
+          "t80+g43sources",
+          "t80+g41sources2",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g53/t80+g51trunk": {
+        "path": [
+          "t80+g51trunk"
+        ],
+        "profile": "t80+g51trunk",
+        "source": "own"
+      },
+      "g53/t80+g51words2": {
+        "path": [
+          "t80+g51words2"
+        ],
+        "profile": "t80+g51words2",
+        "source": "own"
+      },
+      "g54/t80+g53code": {
+        "path": [
+          "t80+g53code",
+          "t80+g49code2",
+          "t80+g47code",
+          "t80+g44code2",
+          "t80+g42code2",
+          "t80+g39code3",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g54/t80+g53data2": {
+        "path": [
+          "t80+g53data2",
+          "t80+g49data"
+        ],
+        "profile": "t80+g49data",
+        "source": "inherited"
+      },
+      "g54/t80+g53sources2": {
+        "path": [
+          "t80+g53sources2",
+          "t80+g49sources",
+          "t80+g47sources2",
+          "t80+g44sources2",
+          "t80+g42sources",
+          "t80+g39sources",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g54/t80+g53trunk": {
+        "path": [
+          "t80+g53trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g54/t80+g53words": {
+        "path": [
+          "t80+g53words",
+          "t80+g49words",
+          "t80+g47words",
+          "t80+g44words",
+          "t80+g42words",
+          "t80+g39words",
+          "t80+g28words",
+          "t80+g24words"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g55/t80+g53code": {
+        "path": [
+          "t80+g53code",
+          "t80+g49code2",
+          "t80+g47code",
+          "t80+g44code2",
+          "t80+g42code2",
+          "t80+g39code3",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g55/t80+g53data2": {
+        "path": [
+          "t80+g53data2",
+          "t80+g49data"
+        ],
+        "profile": "t80+g49data",
+        "source": "inherited"
+      },
+      "g55/t80+g53sources2": {
+        "path": [
+          "t80+g53sources2",
+          "t80+g49sources",
+          "t80+g47sources2",
+          "t80+g44sources2",
+          "t80+g42sources",
+          "t80+g39sources",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g55/t80+g53trunk": {
+        "path": [
+          "t80+g53trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g55/t80+g53words": {
+        "path": [
+          "t80+g53words",
+          "t80+g49words",
+          "t80+g47words",
+          "t80+g44words",
+          "t80+g42words",
+          "t80+g39words",
+          "t80+g28words",
+          "t80+g24words"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g56/t80+g55code2": {
+        "path": [
+          "t80+g55code2",
+          "t80+g51code2",
+          "t80+g48code",
+          "t80+g45code",
+          "t80+g43code",
+          "t80+g41code",
+          "t80+g34code",
+          "t80+g27code",
+          "t80+g24code"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g56/t80+g55data": {
+        "path": [
+          "t80+g55data",
+          "t80+g51data"
+        ],
+        "profile": "t80+g51data",
+        "source": "inherited"
+      },
+      "g56/t80+g55sources2": {
+        "path": [
+          "t80+g55sources2",
+          "t80+g51sources",
+          "t80+g48sources",
+          "t80+g45sources2",
+          "t80+g43sources2",
+          "t80+g41sources",
+          "t80+g34sources",
+          "t80+g27sources"
+        ],
+        "profile": null,
+        "source": "documented chain ends without a verified practice profile"
+      },
+      "g56/t80+g55trunk": {
+        "path": [
+          "t80+g55trunk"
+        ],
+        "profile": null,
+        "source": "mixed trunk without a single parent"
+      },
+      "g56/t80+g55words": {
+        "path": [
+          "t80+g55words",
+          "t80+g51words2"
+        ],
+        "profile": "t80+g51words2",
+        "source": "inherited"
+      }
+    },
+    "counts": {
+      "common": 234,
+      "direct": 176,
+      "eligible": 235,
+      "first": 176,
+      "heritage": 176,
+      "oracle_two": 185,
+      "second": 173,
+      "stock_delivery": 182,
+      "unobserved": 1
+    },
+    "differences": {
+      "direct_changes": 0,
+      "direct_gains": 0,
+      "direct_losses": 0,
+      "first_changes": 9,
+      "first_gains": 0,
+      "first_losses": 0
+    },
+    "only_second_has_inherited_profile": {
+      "first_right": 25,
+      "gains_if_second": 2,
+      "jobs": 40,
+      "losses_if_second": 2,
+      "second_right": 25
+    },
+    "sources": {
+      "mixed trunk without a single parent / documented chain ends without a verified practice profile": 138,
+      "mixed trunk without a single parent / inherited": 40,
+      "own / documented chain ends without a verified practice profile": 37,
+      "own / own": 19
+    },
+    "stock_mismatches": {
+      "chooser_right_delivery_wrong": 3,
+      "delivery_right_chooser_wrong": 9
+    },
+    "support": {
+      "first only": 37,
+      "neither": 138,
+      "second only": 40,
+      "two distinct profiles": 19
+    }
+  }
+}
