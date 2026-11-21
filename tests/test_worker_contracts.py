@@ -168,3 +168,54 @@ def test_missing_freshness_on_new_variant_invalidates_prior_public_variant(origi
             result = run_python(program, tmp_path)
             assert result["returncode"] == 0 and "authors" in result["stdout"]
     assert server.visits["/feed"] == 3
+
+
+def test_prepared_sends_preserve_transport_and_bytes_headers(tmp_path, monkeypatch):
+    from email.utils import formatdate
+    from io import BytesIO
+    from pathlib import Path
+
+    import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3._collections import HTTPHeaderDict
+    from urllib3.response import HTTPResponse
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "team/tools/program_hooks"))
+    from page_cache import install
+
+    calls = []
+    def transport(adapter, request, **settings):
+        route = "proxy" if settings["proxies"] else "verified" if settings["verify"] else "unverified"
+        calls.append(route)
+        raw = HTTPResponse(body=BytesIO(route.encode()), status=200, reason="OK", preload_content=False,
+                           headers=HTTPHeaderDict({"Date": formatdate(usegmt=True), "Cache-Control": "public, max-age=60"}))
+        return adapter.build_response(request, raw)
+
+    monkeypatch.setattr(HTTPAdapter, "send", transport)
+    monkeypatch.setattr(requests.Session, "send", requests.Session.send)  # Restore the installed hook after the test.
+    install(str(tmp_path / "pages.sqlite"))
+    with requests.Session() as session:
+        session.trust_env = False
+        first = "https://origin.invalid/first"
+        prepared = session.prepare_request(requests.Request("GET", first))
+        assert session.get(first).text == session.get(first).text == "verified"
+        assert calls == ["verified"]
+
+        session.proxies = {"https": "http://proxy.invalid"}
+        assert session.send(prepared).text == "proxy"
+        session.proxies.clear()
+        session.stream = True
+        streamed = session.send(prepared)
+        assert streamed.raw.read() == b"verified"
+        session.stream = False
+
+        second = "https://origin.invalid/second"
+        prepared = session.prepare_request(requests.Request("GET", second))
+        session.verify = False
+        assert session.send(prepared).text == "unverified"
+        session.verify = True
+        assert session.get(second).text == "verified"
+
+        for _ in range(2):
+            assert session.get(first, headers={"Accept": b"application/json"}).text == "verified"
+        assert calls == ["verified", "proxy", "verified", "unverified", "verified", "verified", "verified"]

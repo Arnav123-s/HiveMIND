@@ -35,6 +35,11 @@ def install(path):
         headers = {k.lower(): v for k, v in request.headers.items()}
         if "cache-control" in headers or "pragma" in headers:
             _forget(path, url)
+        # Session.request resolves these before send; a direct send may still inherit
+        # a proxy, TLS policy or streaming mode from the session or environment.
+        if (not {"proxies", "stream", "verify"} <= kwargs.keys()
+                or any(not isinstance(value, str) for value in headers.values())):
+            return original(session, request, **kwargs)
         parts = urlsplit(url)
         # Preserve custom transports, streaming, authentication, proxies, redirects and hooks.
         if (type(session) is not requests.Session or type(session.get_adapter(url)) is not HTTPAdapter
