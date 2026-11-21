@@ -145,6 +145,44 @@ def test_disproved_peer_cannot_confirm_a_single_survivor():
     assert solo.agreeing([bad, plausible], EXAMPLES) == []
 
 
+def test_missing_callable_requires_an_independent_module_declaration(tmp_path, monkeypatch):
+    import json
+    import subprocess
+    import sys
+    from training.experiments.fieldwork.guest import BOOT
+    from team import saved
+    from team.public_examples import ModuleChecks
+
+    # Run only these test fixtures with fieldwork's actual error and result framing.
+    class FixtureGuest:
+        def run(self, program, inputs):
+            payload = json.dumps({"program": program, "inputs": inputs})
+            out = subprocess.check_output([sys.executable, "-I", "-c", "least_squares=None\n" + BOOT],
+                                          input=payload, text=True)
+            return json.loads(out), 0, 0
+
+    monkeypatch.setattr(saved, "guest", FixtureGuest)
+    path = tmp_path / "answers.py"
+
+    def issue(task, source):
+        path.write_text(source)
+        return ModuleChecks(path.name, module_examples(task, [path.name]), task).issue(tmp_path)
+
+    for source in ("def other(xs): return len(xs)", "count = 7", "pass", '"A placeholder"'):
+        assert "does not provide that callable" in issue(EXAMPLES, source)
+    for source in ("count = len", "def count(xs): return len(xs)", "from somewhere import count",
+                   "broken = 1/0", "def __getattr__(name): return len"):
+        assert issue(EXAMPLES, source) == ""
+    assert not issue(EXAMPLES.replace("function count(xs)", "function unrelated(xs)"), "pass")
+    assert not issue(EXAMPLES.replace("assert count(", "assert len("), "pass")
+    assert not issue("Here is a previous request:\n" + EXAMPLES, "pass")
+
+    monkeypatch.setenv("HIVE_ASSERT_FIRST", "1")
+    failed, _ = worker(EXAMPLES, ["open('answers.py','w').write('pass')\nprint('ready')"], tmp_path, monkeypatch)
+    assert failed["supplied_test_failed"] and failed["delivery"]["issues"]["answers.py"]
+    assert not solo.agreeing([failed, {"answer": "ready"}], EXAMPLES)
+
+
 def test_reread_directive_forgets_the_previous_representation(origin, tmp_path, monkeypatch):
     base, server = origin
     monkeypatch.setenv("HIVE_HTTP_CACHE", "1")

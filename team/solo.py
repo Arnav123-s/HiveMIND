@@ -538,7 +538,7 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
                 board.log(f"member{n}", "inspect", "inspect input and check the supplied contract")
         examples = module_examples(task, names)
         if examples:
-            module_checks = ModuleChecks(names[0], examples)
+            module_checks = ModuleChecks(names[0], examples, task)
     observed_gets = set()
     complete_observations = True
     messages[-1]["content"] += note(give(task, work, skip=names))
@@ -821,7 +821,7 @@ def headings(task, t, n, board, guard):
             if os.environ.get("HIVE_ASSERT_FIRST") == "1":
                 from .public_examples import ModuleChecks, module_examples
                 examples = module_examples(task, names)
-                if examples and ModuleChecks(names[0], examples).issue(work):
+                if examples and ModuleChecks(names[0], examples, task).issue(work):
                     return
             t.pop("supplied_test_failed", None)
             t.update(work=str(work), delivery=delivery)
