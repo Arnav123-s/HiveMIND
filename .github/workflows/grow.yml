@@ -836,15 +836,26 @@ jobs:
           echo "who=$WHO" >> "$GITHUB_OUTPUT"
       - uses: ./.github/actions/hive
         if: ${{ steps.who.outputs.who }}
+      - name: Reuse the optional CPython guest archive
+        if: ${{ steps.who.outputs.who && matrix.part != 'talk' && vars.HIVE_DIFF_EQUIV == '1' }}
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: ${{ runner.temp }}/hive-module-wasi.zip
+          key: cpython-wasi-f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39
       - name: Install the bounded Python guest for the optional module check
         if: ${{ steps.who.outputs.who && matrix.part != 'talk' && vars.HIVE_DIFF_EQUIV == '1' }}
         run: |
           sdk="$RUNNER_TEMP/hive-module-wasi"
           mkdir -p "$sdk"
-          curl -fsSL --retry 2 -o "$RUNNER_TEMP/hive-module-wasi.zip" "https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip"
-          echo "f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39  $RUNNER_TEMP/hive-module-wasi.zip" | sha256sum -c -
-          unzip -q "$RUNNER_TEMP/hive-module-wasi.zip" -d "$sdk"
-          python -m pip install --quiet wasmtime==36.0.0
+          archive="$RUNNER_TEMP/hive-module-wasi.zip"
+          verify_guest() { echo "f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39  $archive" | sha256sum -c --status; }
+          if ! verify_guest; then
+            curl -fsSL --connect-timeout 10 --max-time 90 --retry 2 -o "$archive" "https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip" || { echo "::error::The selected module check needs its pinned WASI guest; download unavailable."; exit 1; }
+          fi
+          verify_guest || { echo "::error::The CPython WASI archive failed SHA-256 verification."; exit 1; }
+          unzip -q "$archive" -d "$sdk"
+          python -m pip install --quiet --timeout 20 --retries 1 wasmtime==36.0.0 || { echo "::error::The selected module check needs wasmtime 36.0.0."; exit 1; }
           test -s "$sdk/python.wasm"
           echo "HIVE_FIELDWORK_SDK=$sdk" >> "$GITHUB_ENV"
           echo "HIVE_DIFF_EQUIV=1" >> "$GITHUB_ENV"
