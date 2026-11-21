@@ -871,7 +871,7 @@
    "status": "fixed",
    "found": "The two archived 8B rows needed 12.17 GiB at the worker peak under the stock loss.",
    "by": "Native t80, the same 198- and 475-token rows, initial adapter, optimizer and seed. All final tensors and the GGUF were compared.",
-   "seen": "With 128-token loss chunks and per-row checkpointing, peak RSS was 10.48 GiB. Both rows trained, zero were skipped, and all 16,973,824 values matched. Worker wall time increased from 204.75 to 233.80 seconds.",
+   "seen": "With 128-token loss chunks and per-row checkpointing, peak RSS was 10.48 GiB. Both rows trained, zero were skipped, and all 16,973,824 values matched. Worker wall time increased from 204.75 to 233.80 seconds. A separate 16 GiB CPU run also trained two authentic 1,155-token examples with one accumulated update and zero memory skips at 10.83 GiB peak RSS. All 20 archived G58 filters excluded them under the usual 1,152-token limit wherever presented.",
    "fix": "PR 135, training/experiments/astra_cpu/default-profile-native.json. The generation clock is measured separately."
   },
   {
@@ -882,7 +882,7 @@
    "status": "open",
    "found": "On the original G45–G55 gate evidence, nine complete generations provided 576 matched answers. No four- or six-seed prefix crossed the proposed boundary.",
    "by": "Replay the same task identities and independent grade files through training/gate_look.py and the final recorder.",
-   "seen": "All nine keep/drop decisions reproduced. Early exits and jobs saved both equalled zero.",
+   "seen": "All nine keep/drop decisions reproduced. Early exits and jobs saved both equalled zero. The separate G58 timing run ended by owner cancellation before any gate or adapter upload.",
    "fix": "PR 135 retains the full parallel gate as default. Its separate full CPU timing trial is 44857277686."
   },
   {
@@ -893,7 +893,7 @@
    "status": "fixed",
    "found": "An archived worker had passed its practice task yet returned an empty string for zero in a base conversion.",
    "by": "Extract each unchanged candidate and run all values from an independent finite contract in the WASI guest.",
-   "seen": "Three workers passed 12,041 input comparisons. The converter with the zero error was rejected. A local chat with no model weights returned 16 for the digit sum of 907.",
+   "seen": "Three workers passed 12,041 input comparisons. The converter with the zero error was rejected. A local chat with no model weights returned 16 for the digit sum of 907. A subsequent historical replay carried the same three methods through a verified cumulative practice snapshot into offline chat. An independent calculation can still use the bank after unrelated completed conversation turns.",
    "fix": "PR 135, team/bank_admit.py and training/experiments/astra_transfer/bank_admission."
   },
   {
@@ -904,7 +904,7 @@
    "status": "open",
    "found": "G55 struggled to combine a record format and stream rule without an external hint. Hint and blind offers shared the same starting weights.",
    "by": "Six generated practice specs and five later disjoint specs. Execute against held-back inputs, strip the hint and fit only verified corrected programs.",
-   "seen": "Four of eleven specifications qualified. On separate inputs for those four, blind programs passed 43/256 and corrected programs passed 256/256. On three disjoint tasks, the original and trained models each solved 0/3 whole tasks.",
+   "seen": "Four of eleven specifications qualified. On separate inputs for those four, blind programs passed 43/256 and corrected programs passed 256/256. On three disjoint tasks, the original and trained models each solved 0/3 whole tasks. The trained model recovered two of four taught prompts without hints by reproducing their verified programs. Across four different tasks, offering one of two empirically checked record readers changed whole-task solves from one to two. A public-input selector repeated that result in replay and abstained on all five incompatible controls.",
    "fix": "PR 135, training/experiments/hint_dream/README.md. The independent official exam measures ten distinct kinds."
   },
   {
@@ -915,7 +915,7 @@
    "status": "open",
    "found": "Longer replay rows consumed 47.6% of the G56 byte budget under a nominal 2:1 fresh-to-replay row schedule.",
    "by": "Three chronological proxy updates with withheld preferences and a separate panel of 21 independently graded worker program pairs.",
-   "seen": "Fresh-only and 2:1 averaged 76.7/107 previously reserved preferences. A byte-based dose restored fresh exposure and did not improve both evaluation panels.",
+   "seen": "Fresh-only and 2:1 averaged 76.7/107 previously reserved preferences. A byte-based dose restored fresh exposure and did not improve both evaluation panels. On three native proposals, replacing the third example with verified old practice changed zero of 15 whole-task verdicts against three fresh-only controls. Each candidate tied its incumbent at three of five, and the gate rejected all six.",
    "fix": "PR 135, training/experiments/replay_archive/chronology/README.md. Replay remains optional."
   }
  ],
