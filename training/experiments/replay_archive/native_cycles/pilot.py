@@ -8,7 +8,7 @@ import tempfile
 
 from team import solo
 from team.specialists.coder import extract_code
-from team.tools.sandbox import give
+from team.tools.sandbox import GIVEN, give
 from training import exam
 from training.experiments.astra_cpu.five_kinds.transfer import native
 from training.experiments.astra_cpu.five_kinds.transfer.grade import RUN, run_guest
@@ -50,7 +50,10 @@ def score(a):
             work.mkdir()
             give(task, work, skip=solo.wanted(task))
             (work / "member1_1.py").write_text(code)
-            out = run_guest(guest, work, root / "io", RUN, [], True)
+            # The regular local sandbox exposes its prompt-provided file map to the open hook.
+            # The guest sees the same map, inside its own preopened working directory.
+            boot = f"import os\nos.environ['HIVE_GIVEN'] = {GIVEN!r}\n" + RUN
+            out = run_guest(guest, work, root / "io", boot, [], True)
             paths = list(work.rglob("*"))
             regular = len(paths) <= 128 and all(not p.is_symlink() and (p.is_dir() or p.is_file() and p.stat().st_size <= 1_000_000) for p in paths)
             error = out["error"] or ("unexpected output tree" if not regular else None)
