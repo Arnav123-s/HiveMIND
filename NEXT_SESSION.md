@@ -7,7 +7,7 @@ handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole st
 
 ## Where the hive stands (2026-11-20 17:15 UTC, D)
 
-- **Newest record: g55**, kept 52 against 51. **Met:** hard kinds 0.80, talk 8.5. **Close:** first try 0.65 (bar 0.7;
+- **Newest record: g57**, kept 49 against 48: first try 0.72 MET (first time), talk 8.0 met, hard 0.68 (0.80 at g55), held out 3 of 29, 6.7 h (a stall behind a trial run).
   old kinds 0.97, new 0.47). **Far:** held out 1 of 29 on the fixed exam (0 of 10 kinds), hours 5.14 (bar 3).
 - **g56 is running** (started 16:44 UTC), the first with PR 127 (spec lessons: lessons show the detail members agree
   wrong on; such kinds always taught). Judge it on hard kinds and agreed-wrong deliveries.
