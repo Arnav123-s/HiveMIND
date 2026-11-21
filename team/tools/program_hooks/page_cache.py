@@ -35,6 +35,11 @@ def install(path):
         headers = {k.lower(): v for k, v in request.headers.items()}
         if "cache-control" in headers or "pragma" in headers:
             _forget(path, url)
+        # Session.request resolves these before send; a direct send may still inherit
+        # a proxy, TLS policy or streaming mode from the session or environment.
+        if (not {"proxies", "stream", "verify"} <= kwargs.keys()
+                or any(not isinstance(value, str) for value in headers.values())):
+            return original(session, request, **kwargs)
         parts = urlsplit(url)
         # Preserve custom transports, streaming, authentication, proxies, redirects and hooks.
         if (type(session) is not requests.Session or type(session.get_adapter(url)) is not HTTPAdapter
@@ -68,16 +73,21 @@ def install(path):
         response = original(session, request, **kwargs)
         received = time.monotonic()
         lifetime = freshness(response, time.time(), received - started)
-        if epoch is None or not lifetime or response.history or response.url != url:
+        if epoch is None:
             return response
-        if "x-cursor" in headers and "x-cursor" not in {h.strip().lower() for h in response.headers.get("Vary", "").split(",")}:
+        vary = {h.strip().lower() for h in response.headers.get("Vary", "").split(",")}
+        if not lifetime or response.history or response.url != url or ("x-cursor" in headers and "x-cursor" not in vary):
+            _forget(path, url)
             return response
         # Read the body only after Requests has consumed it normally. Unsupported encodings pass through.
         if response.headers.get("Content-Encoding", "identity").lower() != "identity":
             return response
         limit, initial_age = lifetime
         ttl = min(60., limit - initial_age)
-        if ttl <= 0 or len(response.content) > MAX_BYTES:
+        if ttl <= 0:
+            _forget(path, url)
+            return response
+        if len(response.content) > MAX_BYTES:
             return response
         fields = [(k, v) for k, v in response.raw.headers.iteritems() if k.lower() not in HOP]
         encoded_fields = json.dumps(fields)

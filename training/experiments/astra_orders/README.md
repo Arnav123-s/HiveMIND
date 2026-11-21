@@ -2,7 +2,7 @@
 
 **The normal CPU worker passed 4/6 with short instructions, full instructions, the familiarity gate, and the scaffold.** Full instructions solved a counter-wrap task that short instructions missed, and lost a scheduling task that short instructions solved. The familiarity gate made the same trade and took 297 seconds across six first programs, compared with 159 seconds for short instructions. This paired trial gives no net gain to justify making full instructions the default on unfamiliar requests.
 
-The revised paired trial tested the normal chooser, modular instructions and a third independent worker on these six requests. The prespecified variant tied the short control at 4/6. An exploratory greedy variant with a third seat reached 5/6 on both Python runtimes. [Paired results and conditions](diverse/README.md)
+The revised paired trial tested the normal chooser, modular instructions and a third independent worker on these six requests. The prespecified variant tied the short control at 4/6. An exploratory greedy variant with a third seat reached 5/6 on both Python runtimes. A prospective six-case replication across the three novel families tied the stock chooser at 3/6, with one case confirmed a seat earlier. [Original paired results](diverse/README.md) · [Prospective replication](replication/README.md)
 
 ## What the old results measure
 

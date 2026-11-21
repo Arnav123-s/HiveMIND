@@ -22,7 +22,10 @@ def main():
     parser.add_argument("--familiar-index", type=Path, required=True)
     parser.add_argument("--cutoff-repair", action="store_true", help="run the separate post-trial recovery condition")
     parser.add_argument("--resume", action="store_true", help="resume a complete prefix after releasing the CPU")
+    parser.add_argument("--arms-this-session", type=int, help="checkpoint and release the server after this many arms")
     args = parser.parse_args()
+    if args.arms_this_session is not None and args.arms_this_session < 1:
+        parser.error("--arms-this-session must be positive")
     index_sha = generate.file_hash(args.familiar_index)
     if index_sha != "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6":
         raise ValueError("expected the frozen G55 checked task text index")
@@ -82,7 +85,8 @@ def main():
             raise RuntimeError("model startup failed")
         record["adapters"] = generate.call(url + "/lora-adapters")
         assert [a["scale"] for a in record["adapters"]] == [1.]
-        for ident, task, flag in treatments[len(record["arms"]):]:
+        remaining = treatments[len(record["arms"]):]
+        for ident, task, flag in remaining[:args.arms_this_session]:
             calls = []
             def ask(who, endpoint, cell, path, body, cap):
                 assert path == "/v1/chat/completions" and cell == ("g55trunk", ())
@@ -116,7 +120,7 @@ def main():
                                        "affinity": sorted(os.sched_getaffinity(0))})
                 generate.save(args.out, record)
                 print(ident, flag, grade, flush=True)
-        record["complete"] = True
+        record["complete"] = len(record["arms"]) == len(treatments)
         generate.save(args.out, record)
 
 
