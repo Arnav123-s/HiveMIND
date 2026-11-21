@@ -793,6 +793,7 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
                 and all(previous_hashes.get(name) != delivery["byte_hashes"][name]
                         and f"HIVE-GIVEN: {name} was not here" not in err for name in names)):
             helps("cutoff_saved_file")
+            longer = os.environ.get("HIVE_CUTOFF_CONTINUE_BORROW") == "1"
             messages[-1]["content"] = (
                 "Your reply reached the output limit. The program saved the requested files and printed nothing. "
                 "Read the saved files and print the answer the task asks for. Leave the files as they are.")
