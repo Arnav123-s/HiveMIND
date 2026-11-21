@@ -100,15 +100,17 @@ def modular_orders(task, today=None):
     return (text + _MEMBER_END).format(today=today or time.strftime("%Y-%m-%d (%A)"))
 
 
-def member_orders(task, n, who, also):
-    """Reserve the second seat's modular prompt for unfamiliar work in a diverse-orders trial."""
+def member_settings(task, n, who, also, temperature):
+    """Reserve the modular prompt and optional greedy decoding for the second unfamiliar seat."""
     if also or os.environ.get("HIVE_SHORT_ORDERS") == "1":
-        return orders(who + "+")
+        return orders(who + "+"), temperature
     if os.environ.get("HIVE_FULL_ORDERS") == "1":
-        return orders(who.replace("+", "-"))
+        return orders(who.replace("+", "-")), temperature
     if os.environ.get("HIVE_DIVERSE_ORDERS") == "1" and n in (1, 2) and not familiar(task):
-        return orders(who + "+") if n == 1 else modular_orders(task)
-    return orders(who)
+        if n == 1:
+            return orders(who + "+"), temperature
+        return modular_orders(task), 0.0 if os.environ.get("HIVE_DIVERSE_GREEDY") == "1" else temperature
+    return orders(who), temperature
 
 
 # (For one afternoon this asked more: "... every value asked for, said in words ... if it only shows data you were
@@ -533,7 +535,8 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
 
 
 def _member(task, n, board, guard, work, temperature, who, also, required_urls):
-    messages = [{"role": "system", "content": member_orders(task, n, who, also)},
+    system, temperature = member_settings(task, n, who, also, temperature)
+    messages = [{"role": "system", "content": system},
                 {"role": "user", "content": f"TASK: {task}"}]
     if n == 3 and getattr(board, "module_witness", None):
         messages[-1]["content"] += ("\nEarlier modules returned different results on this permitted call: "

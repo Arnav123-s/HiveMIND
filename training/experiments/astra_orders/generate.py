@@ -51,12 +51,14 @@ def original_offers(data):
             yield row['id'], arm, messages, {}
 
 
-def run(args, offers=original_offers):
+def run(args, offers=original_offers, inputs=None, inputs_hash='bf794b51abdbd4206d8df953f84968461435077a0775ba0a6efc385eed4b6062'):
     for k,h in ASSETS.items():
         if file_hash(getattr(args,k)) != h:
             raise ValueError(f'{k} digest mismatch')
-    assert file_hash(HERE/'inputs.json') == 'bf794b51abdbd4206d8df953f84968461435077a0775ba0a6efc385eed4b6062'
-    data = json.loads((HERE/'inputs.json').read_bytes())
+    inputs = inputs or HERE / 'inputs.json'
+    if file_hash(inputs) != inputs_hash:
+        raise ValueError('frozen inputs digest mismatch')
+    data = json.loads(inputs.read_bytes())
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', 0))
         port = probe.getsockname()[1]
@@ -65,7 +67,7 @@ def run(args, offers=original_offers):
              '--threads-http','2','--port',str(port),'--host','127.0.0.1','--jinja']
     settings = {'temperature':0.,'top_k':0,'top_p':1.,'cache_prompt':False,'max_tokens':192,
                 'chat_template_kwargs':{'enable_thinking':False},'seed':8103}
-    record = {'assets_sha256':ASSETS,'inputs_sha256':file_hash(HERE/'inputs.json'),'native_flags':flags,'sampling':settings,
+    record = {'assets_sha256':ASSETS,'inputs_sha256':inputs_hash,'native_flags':flags,'sampling':settings,
               'affinity':sorted(os.sched_getaffinity(0)), 'utc_start':datetime.now(timezone.utc).isoformat(),'calls':[]}
     if args.out.exists():
         raise FileExistsError(args.out)

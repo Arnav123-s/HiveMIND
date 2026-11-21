@@ -24,21 +24,28 @@ def test_prompt_contents_and_seat_overrides(monkeypatch):
                                                  {"checked": True, "task": "store red apples"}])
     assert not solo.familiar("schedule packets") and solo.familiar("store red apples")
     assert solo.orders("t80") == ORDERS["full"] and solo.orders("t80+learned") == ORDERS["short"]
+    def prompt(task, n, who, also):
+        return solo.member_settings(task, n, who, also, .7)[0]
     request = "Schedule packets"
     assert "Today is" not in solo.modular_orders(request) and "Use requests" not in solo.modular_orders(request)
     assert solo.modular_orders("Find today's date on this web page") == ORDERS["full"]
     assert "Today is" in solo.modular_orders("Which tasks fall on Thursdays?")
     assert "Use requests" in solo.modular_orders("Perform an HTTP GET")
     monkeypatch.setenv("HIVE_DIVERSE_ORDERS", "1")
-    assert solo.member_orders(request, 1, "t80", ()) == ORDERS["short"]
-    assert solo.member_orders(request, 2, "t80+trained", ()) == solo.modular_orders(request)
-    assert solo.member_orders(request, 3, "t80", ()) == ORDERS["full"]
-    assert solo.member_orders("store red apples", 2, "t80+trained", ()) == ORDERS["short"]
-    assert solo.member_orders(request, 2, "t80+trained", ("engram",)) == ORDERS["short"]
+    assert prompt(request, 1, "t80", ()) == ORDERS["short"]
+    assert prompt(request, 2, "t80+trained", ()) == solo.modular_orders(request)
+    assert prompt(request, 3, "t80", ()) == ORDERS["full"]
+    assert prompt("store red apples", 2, "t80+trained", ()) == ORDERS["short"]
+    assert prompt(request, 2, "t80+trained", ("engram",)) == ORDERS["short"]
+    monkeypatch.setenv("HIVE_DIVERSE_GREEDY", "1")
+    assert solo.member_settings(request, 2, "t80+trained", (), .7) == (solo.modular_orders(request), 0.)
+    assert solo.member_settings("store red apples", 2, "t80+trained", (), .7)[1] == .7
+    assert solo.member_settings(request, 3, "t80+trained", (), .7)[1] == .7
     monkeypatch.setenv("HIVE_FULL_ORDERS", "1")
-    assert solo.member_orders(request, 2, "t80+trained", ()) == ORDERS["full"]
+    assert solo.member_settings(request, 2, "t80+trained", (), .7)[1] == .7
+    assert prompt(request, 2, "t80+trained", ()) == ORDERS["full"]
     monkeypatch.setenv("HIVE_SHORT_ORDERS", "1")
-    assert solo.member_orders(request, 2, "t80", ()) == ORDERS["short"]
+    assert prompt(request, 2, "t80", ()) == ORDERS["short"]
 
 
 def test_second_member_gets_its_orders_and_the_third_gets_only_the_witness(tmp_path, monkeypatch):
