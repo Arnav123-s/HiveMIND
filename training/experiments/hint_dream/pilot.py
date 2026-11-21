@@ -12,7 +12,11 @@ from urllib.request import Request, urlopen
 from training import hint_dream
 from training.experiments.fieldwork.guest import Guest
 
-SEED = "spade-development-20261120"
+PANELS = {
+    "initial": ("spade-development-20261120", (0, 1, 2, 3, 4, 5)),
+    "confirmation": ("spade-format-confirmation-20261121", (1, 2, 8, 11, 6)),
+    "transfer": ("spade-after-sft-20261121", (0, 9, 10)),
+}
 ASSETS = {"server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
           "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
           "adapter": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036"}
@@ -31,7 +35,14 @@ def save(path, obj):
 
 
 def run(args):
-    for name, expected in ASSETS.items():
+    seed, indexes = PANELS[args.panel]
+    specs = list(hint_dream.draw(seed, max(indexes) + 1))
+    expected_assets = dict(ASSETS)
+    if args.candidate_sha:
+        if args.panel != "transfer":
+            raise ValueError("A candidate can only sit the blind transfer panel")
+        expected_assets["adapter"] = args.candidate_sha
+    for name, expected in expected_assets.items():
         with getattr(args, name).open("rb") as f:
             if hashlib.file_digest(f, "sha256").hexdigest() != expected:
                 raise ValueError(f"Unexpected {name}")
@@ -44,8 +55,8 @@ def run(args):
              "--parallel", "1", "--threads-http", "2", "--host", "127.0.0.1", "--port", str(port), "--jinja"]
     sampling = {"temperature":0, "max_tokens":hint_dream.TOKENS, "top_k":0, "top_p":1, "cache_prompt":False,
                 "seed":8103, "chat_template_kwargs":{"enable_thinking":False}}
-    rec = {"complete":False, "assets":ASSETS, "affinity":sorted(os.sched_getaffinity(0)), "flags":flags,
-           "sampling":sampling, "seed":SEED, "pairs":[], "calls":[]}
+    rec = {"complete":False, "assets":expected_assets, "affinity":sorted(os.sched_getaffinity(0)), "flags":flags,
+           "sampling":sampling, "seed":seed, "panel":args.panel, "pairs":[], "calls":[]}
     guest = Guest(args.sdk)
     with (args.out / "server.log").open("wb") as log:
         proc = subprocess.Popen([str(args.server), "-m", str(args.model), "--lora", str(args.adapter), *flags],
@@ -76,8 +87,18 @@ def run(args):
                                      "seconds":round(time.monotonic()-start,3)})
                 save(args.out/"results.json", rec)
                 return raw
-            for spec in hint_dream.draw(SEED, 6):
-                row, report = hint_dream.trial(spec, "t80+g55trunk", ask, guest, all_pairs=True)
+            for index in indexes:
+                spec = specs[index]
+                member = "t80+f4hintdream" if args.candidate_sha else "t80+g55trunk"
+                if args.panel == "transfer":
+                    prompt, _ = hint_dream.instructions(spec)
+                    raw = ask(member, hint_dream.messages(prompt))
+                    grade, _ = hint_dream.grade(raw, spec, guest)
+                    row = None
+                    report = {"spec":spec.seed, "kind":spec.kind, "member":member, "blind":grade}
+                else:
+                    row, report = hint_dream.trial(spec, member, ask, guest, all_pairs=True,
+                                                  format_hint=args.panel == "confirmation")
                 report["admitted"] = bool(row)
                 rec["pairs"].append(report)
                 if row:
@@ -98,6 +119,8 @@ def run(args):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--panel", choices=tuple(PANELS), default="initial")
+    p.add_argument("--candidate-sha", default="", help="SHA-256 of a trained comparison adapter on the blind transfer panel")
     for name in (*ASSETS, "sdk", "out"):
         p.add_argument("--"+name, type=Path, required=True)
     run(p.parse_args())

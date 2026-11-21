@@ -127,6 +127,16 @@ def instructions(spec):
     return prompt, hint
 
 
+def decoding_hint(form):
+    """An optional teacher-only reminder of the concrete standard library parser."""
+    return {
+        "queue": "Iterate directly as `for label, n in x` without sorting the events.",
+        "csv": "Iterate csv.DictReader(io.StringIO(x)); it consumes the header. Use r['label'] and int(r['value']).",
+        "json": "Iterate json.loads(x), reading each object's r['label'] and r['value'].",
+        "ini": "Use cfg=configparser.ConfigParser(); cfg.read_string(x); iterate s in cfg.sections(), reading cfg[s]['label'] and cfg[s].getint('value').",
+    }[form]
+
+
 def messages(prompt, hint=None):
     content = prompt if hint is None else f"{prompt}\n\nImplementation hint: {hint}"
     return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": content}]
@@ -152,8 +162,10 @@ def grade(reply, spec, guest):
     return {"ok": matched == 24, "matched": matched, "cases": 24}, program
 
 
-def trial(spec, member, ask, guest, all_pairs=False):
+def trial(spec, member, ask, guest, all_pairs=False, format_hint=False):
     prompt, hint = instructions(spec)
+    if format_hint:
+        hint = decoding_hint(spec.form) + " " + hint
     base = messages(prompt)
     blind = ask(member, base, max_new_tokens=TOKENS, temperature=0.0)
     first, _ = grade(blind, spec, guest)
