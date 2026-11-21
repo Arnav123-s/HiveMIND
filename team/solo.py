@@ -534,7 +534,8 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
         from .public_examples import INSPECT, ModuleChecks, module_examples
         if not familiar(task):
             messages[-1]["content"] += "\n\n" + INSPECT
-            board.log(f"member{n}", "inspect", "inspect input and check the supplied contract")
+            if board is not None:
+                board.log(f"member{n}", "inspect", "inspect input and check the supplied contract")
         examples = module_examples(task, names)
         if examples:
             module_checks = ModuleChecks(names[0], examples)

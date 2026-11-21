@@ -19,7 +19,13 @@
   },
   "empty_memory_fixed_exam": {
     "explicit_examples_or_urls": 0,
+    "inspect_instruction": 30,
     "requests": 30
+  },
+  "history_sha256": "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6",
+  "inspect_instruction": {
+    "failed": 7,
+    "passed": 0
   },
   "public_workflow_run": "44728930517"
 }

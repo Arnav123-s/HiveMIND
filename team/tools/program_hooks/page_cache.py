@@ -70,6 +70,8 @@ def install(path):
         lifetime = freshness(response, time.time(), received - started)
         if epoch is None or not lifetime or response.history or response.url != url:
             return response
+        if "x-cursor" in headers and "x-cursor" not in {h.strip().lower() for h in response.headers.get("Vary", "").split(",")}:
+            return response
         # Read the body only after Requests has consumed it normally. Unsupported encodings pass through.
         if response.headers.get("Content-Encoding", "identity").lower() != "identity":
             return response
