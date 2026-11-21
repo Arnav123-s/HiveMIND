@@ -1,0 +1,95 @@
+{
+ "complete": true,
+ "assets": {
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "adapter": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b"
+ },
+ "affinity": [
+  1,
+  2
+ ],
+ "flags": [
+  "-ngl",
+  "0",
+  "-c",
+  "2048",
+  "-t",
+  "2",
+  "-tb",
+  "2",
+  "-rtr",
+  "-b",
+  "128",
+  "-ub",
+  "128",
+  "--parallel",
+  "1",
+  "--threads-http",
+  "2",
+  "--host",
+  "127.0.0.1",
+  "--port",
+  "44579",
+  "--jinja"
+ ],
+ "sampling": {
+  "temperature": 0,
+  "max_tokens": 256,
+  "top_k": 0,
+  "top_p": 1,
+  "cache_prompt": false,
+  "seed": 8103,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ },
+ "seed": "all-four-training-prompts",
+ "panel": "trained",
+ "pairs": [
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/2",
+   "kind": "generated stream ini last",
+   "arm": "B",
+   "blind": {
+    "ok": false,
+    "matched": 2,
+    "cases": 24
+   },
+   "admitted": false
+  }
+ ],
+ "calls": [
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event in arrival order, each with keys label and value. Labels are short words and values are whole numbers from 0 to 12. Return the labels whose final recorded value is at least 8. List them in the order they first appeared, even when the final observation order differs. Empty input is valid. Write solve(x), returning the result. One example is x = '[event0]\\nlabel = oak\\nvalue = 8\\n\\n[event1]\\nlabel = fir\\nvalue = 12\\n\\n[event2]\\nlabel = oak\\nvalue = 1\\n\\n[event3]\\nlabel = rose\\nvalue = 8\\n\\n[event4]\\nlabel = fir\\nvalue = 0\\n\\n[event5]\\nlabel = oak\\nvalue = 9\\n\\n', which gives ['oak', 'rose']."
+    }
+   ],
+   "raw": "```python\ndef solve(x):\n    import configparser\n    \n    config = configparser.ConfigParser()\n    config.read_string(x)\n    \n    last_values = {}\n    for section in config.sections():\n        for key, value in config[section].items():\n            if key == 'value':\n                last_values[section] = int(value)\n    \n    result = []\n    seen = set()\n    for section in config.sections():\n        label = next((k for k in config[section].keys() if k != 'value'), None)\n        if label and label not in seen:\n            seen.add(label)\n            if last_values.get(section, 0) >= 8:\n                result.append(label)\n    \n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 143,
+    "prompt_tokens": 220,
+    "total_tokens": 363,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 56.504
+  }
+ ],
+ "retest_index": 1,
+ "weights": [
+  {
+   "id": 0,
+   "path": "/workspace/scratch/hive-post-f4-fit/exports/t80+f4hintdream.gguf",
+   "scale": 1.0
+  }
+ ]
+}

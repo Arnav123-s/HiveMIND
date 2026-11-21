@@ -1,0 +1,56 @@
+[
+  {
+    "kind": "h_txt_names",
+    "seed": "lesson:g56:h_txt_names:2",
+    "archive_solution_sha256": "1b4e300e3490d6cf70b1e9cd8175b8ffdc00acf66428f85c58009c84dcbfc98e",
+    "ok": true,
+    "level": 0,
+    "detail": "names.txt ['Ines Berg', 'Omar De Luca', 'Jonas Lindqvist', 'Kofi Nakamura', 'Jonas B. Novak', 'Ravi S. Okafor', 'Sofia J. Silva'] against ['Ines Berg', 'Omar De Luca', 'Jonas Lindqvist', 'Kofi Nakamura', 'Jonas B. Novak', 'Ravi S. Okafor', 'Sofia J. Silva']; the count 7 in the answer",
+    "returned": "names: 7"
+  },
+  {
+    "kind": "h_txt_names",
+    "seed": "lesson:g56:h_txt_names:4",
+    "archive_solution_sha256": "1b4e300e3490d6cf70b1e9cd8175b8ffdc00acf66428f85c58009c84dcbfc98e",
+    "ok": true,
+    "level": 0,
+    "detail": "names.txt ['Aiko Ahmed', 'Omar Da Costa', 'Aiko Moreau', 'Kofi Moreau', 'Tomas Moreau', 'Omar Nakamura', 'Tomas Nakamura', 'Kofi Novak', 'Lena Okafor'] against ['Aiko Ahmed', 'Omar Da Costa', 'Aiko Moreau', 'Kofi Moreau', 'Tomas Moreau', 'Omar Nakamura', 'Tomas Nakamura', 'Kofi Novak', 'Lena Okafor']; the count 9 in the answer",
+    "returned": "names: 9"
+  },
+  {
+    "kind": "h_txt_mdcsv",
+    "seed": "10005604:h_txt_mdcsv:38:0",
+    "archive_solution_sha256": "d22218d4f0dcd35ddd5a61c4cd0fb0c6999108ae1b3ed12ebdf357a478f25817",
+    "ok": true,
+    "level": 0,
+    "detail": "table.csv [['Name', 'City', 'Team', 'Score'], ['Ines', 'Porto', 'red', '94.4'], ['Tomas', 'Accra', 'red', '85.9']]... (8 rows) against [['Name', 'City', 'Team', 'Score'], ['Ines', 'Porto', 'red', '94.4'], ['Tomas', 'Accra', 'red', '85.9']]... (8 rows); 7 data rows said",
+    "returned": "table.csv saved\ndata rows: 7"
+  },
+  {
+    "kind": "h_txt_mdcsv",
+    "seed": "lesson:g56:h_txt_mdcsv:9",
+    "archive_solution_sha256": "d22218d4f0dcd35ddd5a61c4cd0fb0c6999108ae1b3ed12ebdf357a478f25817",
+    "ok": true,
+    "level": 0,
+    "detail": "table.csv [['Name', 'City', 'Team', 'Score'], ['Sofia', 'Porto', '', '70.5'], ['Omar', 'Lyon', 'blue', '48.0']]... (10 rows) against [['Name', 'City', 'Team', 'Score'], ['Sofia', 'Porto', '', '70.5'], ['Omar', 'Lyon', 'blue', '48.0']]... (10 rows); 9 data rows said",
+    "returned": "table.csv saved\ndata rows: 9"
+  },
+  {
+    "kind": "h_tab_fill",
+    "seed": "lesson:g56:h_tab_fill:1",
+    "archive_solution_sha256": "6c89d0e3441779b6d18d8a065b901af3a70fe2cff16c62135ce9dea045493753",
+    "ok": true,
+    "level": 0,
+    "detail": "filled.csv: 8 rows against 8, 2 filled in the answer: True",
+    "returned": "filled.csv saved\nfilled: 2"
+  },
+  {
+    "kind": "h_tab_fill",
+    "seed": "10005611:h_tab_fill:31:0",
+    "archive_solution_sha256": "e285dffba7347d93f144df091fb5b94ec341e7aef524e21e192e8e534795c304",
+    "ok": true,
+    "level": 0,
+    "detail": "filled.csv: 12 rows against 12, 3 filled in the answer: True",
+    "returned": "filled.csv saved\nfilled: 3"
+  }
+]

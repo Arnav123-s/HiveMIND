@@ -86,6 +86,10 @@ def test_ordinary_model_and_api_paths_use_independent_bank_requests_only(tmp_pat
     assert saved.direct(TASK+' {"n":2} plus 9') is None
     assert saved.direct(TASK+" 2", [("user", "Write your numbers in binary.")]) is None
     assert saved.direct(TASK+" 2", [("user", TASK+" 3")])["value"] == 4
+    assert saved.direct(TASK+" 2", [("user", "What is an eclipse?")])["value"] == 4
+    assert saved.direct(TASK+" 2", [("user", "Create a poem in result.txt.")])["value"] == 4
+    assert saved.direct(TASK+" 2", [("user", "Can you always format answers as binary?")]) is None
+    assert saved.direct(TASK+" 2", [("user", "My convention is to round after doubling.")]) is None
     from http.server import ThreadingHTTPServer
     import threading
     import urllib.request
@@ -107,6 +111,12 @@ def test_ordinary_model_and_api_paths_use_independent_bank_requests_only(tmp_pat
             server.shutdown()
             thread.join()
 
+
+
+def test_equally_matching_method_names_do_not_win_by_description_length():
+    methods = [{"task":"double_integer", "description":"Double the supplied integer."},
+               {"task":"double_integer_item","description":"Double each supplied integer for the older item convention."}]
+    assert saved.fit("Double the integer 2", methods) is None
 
 
 def test_ordinary_training_rows_match_individual_seat_and_worker(tmp_path):

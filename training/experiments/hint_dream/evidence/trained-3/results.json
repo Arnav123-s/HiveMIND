@@ -1,0 +1,95 @@
+{
+ "complete": true,
+ "assets": {
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "adapter": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b"
+ },
+ "affinity": [
+  1,
+  2
+ ],
+ "flags": [
+  "-ngl",
+  "0",
+  "-c",
+  "2048",
+  "-t",
+  "2",
+  "-tb",
+  "2",
+  "-rtr",
+  "-b",
+  "128",
+  "-ub",
+  "128",
+  "--parallel",
+  "1",
+  "--threads-http",
+  "2",
+  "--host",
+  "127.0.0.1",
+  "--port",
+  "36011",
+  "--jinja"
+ ],
+ "sampling": {
+  "temperature": 0,
+  "max_tokens": 256,
+  "top_k": 0,
+  "top_p": 1,
+  "cache_prompt": false,
+  "seed": 8103,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ },
+ "seed": "all-four-training-prompts",
+ "panel": "trained",
+ "pairs": [
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/11",
+   "kind": "generated stream csv wrap",
+   "arm": "B",
+   "blind": {
+    "ok": false,
+    "matched": 2,
+    "cases": 24
+   },
+   "admitted": false
+  }
+ ],
+ "calls": [
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value and one event per subsequent row, in arrival order. Labels are short words and values are whole numbers from 0 to 8. Return a dictionary mapping every label to its total forward change. Each label has its own cyclic meter with values 0 through 8. Its first reading contributes zero. A decrease means one wrap, equality means no change. Empty input is valid. Write solve(x), returning the result. One example is x = 'label,value\\r\\nblue,2\\r\\nash,8\\r\\nblue,1\\r\\nlime,2\\r\\nash,0\\r\\nblue,3\\r\\n', which gives {'blue': 10, 'ash': 1, 'lime': 0}."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    data = StringIO(x)\n    reader = csv.DictReader(data)\n    result = {}\n    \n    for row in reader:\n        label = row['label']\n        value = int(row['value'])\n        \n        if label not in result:\n            result[label] = 0\n        \n        # The first reading contributes zero\n        if len(result) == 1 and value == 0:\n            continue\n        \n        # Compute forward change\n        prev = result[label]\n        change = (value - prev) % 9\n        result[label] += change\n    \n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 133,
+    "prompt_tokens": 192,
+    "total_tokens": 325,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 92.176
+  }
+ ],
+ "retest_index": 3,
+ "weights": [
+  {
+   "id": 0,
+   "path": "/workspace/scratch/hive-post-f4-fit/exports/t80+f4hintdream.gguf",
+   "scale": 1.0
+  }
+ ]
+}
