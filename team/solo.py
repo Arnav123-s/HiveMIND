@@ -830,11 +830,12 @@ def same_files(x, y, task):
 
 def together(x, y, task):
     """Do two members' tries agree: their printed answers (same()), or the files the TASK asks for (same_files())."""
-    if (x.get("diverse_orders") or y.get("diverse_orders")) and not (x["answer"] and y["answer"]):
-        return False
-    if "module_check" in x or "module_check" in y:
-        if not all(t.get("module_check", {}).get("checked") for t in (x, y)):
+    module_pair = "module_check" in x or "module_check" in y
+    if module_pair or x.get("diverse_orders") or y.get("diverse_orders"):
+        if any(not t["answer"] or t.get("delivery", {}).get("issues") for t in (x, y)):
             return False
+    if module_pair and not all(t.get("module_check", {}).get("checked") for t in (x, y)):
+        return False
     return same(x["answer"], y["answer"], task) or same_files(x, y, task)
 
 

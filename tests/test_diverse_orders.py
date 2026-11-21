@@ -100,3 +100,4 @@ def test_matched_files_with_one_empty_worker_cannot_witness_a_diverse_release(tm
     row = {"answer": "1", "work": str(tmp_path), "diverse_orders": True}
     (tmp_path / "x.json").write_text("[2]")
     assert not solo.together(row, dict(row, answer=""), "Create x.json.")
+    assert not solo.together(row, dict(row, delivery={"issues": {"x.json": "stale file"}}), "Create x.json.")
