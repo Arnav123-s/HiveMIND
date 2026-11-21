@@ -20,11 +20,12 @@ def main():
     for name in ("runtime", "model", "lora", "out", "log"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--familiar-index", type=Path, required=True)
+    parser.add_argument("--resume", action="store_true", help="resume a complete prefix after releasing the CPU")
     args = parser.parse_args()
     index_sha = generate.file_hash(args.familiar_index)
     if index_sha != "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6":
         raise ValueError("expected the frozen G55 checked task text index")
-    if args.out.exists():
+    if args.out.exists() and not args.resume:
         raise FileExistsError(args.out)
     for name, digest in generate.ASSETS.items():
         if generate.file_hash(getattr(args, name)) != digest:
@@ -37,13 +38,26 @@ def main():
                 "seed": 8103, "chat_template_kwargs": {"enable_thinking": False}}
     record = {"familiarity_index_sha256": index_sha, "assets": generate.ASSETS, "sampling": settings, "turn_limit": 3,
               "seat": "t80+g55trunk", "affinity": sorted(os.sched_getaffinity(0)), "arms": []}
+    if args.resume:
+        previous = json.loads(args.out.read_bytes())
+        if any(previous.get(k) != value for k, value in record.items() if k != "arms"):
+            raise ValueError("the saved protocol differs")
+        prefix = [(row["id"], row["inspect"]) for row in previous["arms"]]
+        if prefix != [(ident, flag) for ident, _, flag in treatments][:len(prefix)]:
+            raise ValueError("the saved arms are not a complete prefix")
+        if previous.get("complete"):
+            return
+        record = previous
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", 0))
         port = probe.getsockname()[1]
     url = f"http://127.0.0.1:{port}"
     flags = ["-ngl", "0", "-c", "2048", "-t", "2", "-tb", "2", "-rtr", "-b", "128", "-ub", "128",
              "--parallel", "1", "--threads-http", "2", "--port", str(port), "--host", "127.0.0.1", "--jinja"]
-    record["flags"] = flags
+    if "flags" in record:
+        record.setdefault("resumptions", []).append({"first_index": len(record["arms"]), "flags": flags})
+    else:
+        record["flags"] = flags
     with args.log.open("wb") as log, ExitStack() as cleanup:
         proc = subprocess.Popen([str(args.runtime), "-m", str(args.model), "--lora", str(args.lora), *flags],
                                 stdin=subprocess.DEVNULL, stdout=log, stderr=log)
@@ -60,7 +74,7 @@ def main():
             raise RuntimeError("model startup failed")
         record["adapters"] = generate.call(url + "/lora-adapters")
         assert [a["scale"] for a in record["adapters"]] == [1.]
-        for ident, task, flag in treatments:
+        for ident, task, flag in treatments[len(record["arms"]):]:
             calls = []
             def chat(who, messages, **kwargs):
                 start, prev = time.monotonic(), generate.cpu(proc.pid)

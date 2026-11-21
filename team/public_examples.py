@@ -18,7 +18,7 @@ def _portable(source):
         tree = ast.parse(source)
     except (ValueError, SyntaxError, RecursionError):
         return False
-    builtins = {"abs", "all", "any", "bool", "dict", "enumerate", "float", "int", "len",
+    builtins = {"abs", "all", "any", "bool", "dict", "divmod", "enumerate", "float", "int", "len",
                 "list", "max", "min", "range", "reversed", "round", "sorted", "str", "sum", "tuple", "zip"}
     methods = {"append", "clear", "copy", "count", "extend", "get", "index", "insert", "items",
                "join", "keys", "lower", "pop", "replace", "reverse", "sort", "split", "strip", "upper", "values"}
@@ -31,7 +31,7 @@ def _portable(source):
         if isinstance(node, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.Global, ast.Nonlocal,
                              ast.AsyncFunctionDef, ast.Lambda, ast.Set, ast.SetComp)):
             return False
-        if isinstance(node, ast.Name) and (node.id.startswith("_") or node.id not in local | builtins | functions):
+        if isinstance(node, ast.Name) and (node.id.startswith("__") or node.id not in local | builtins | functions):
             return False
         if isinstance(node, ast.Attribute) and node.attr not in methods:
             return False
