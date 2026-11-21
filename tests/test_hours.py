@@ -118,6 +118,7 @@ def test_the_train_matrix_is_the_plans_slices():
 def _train(tmp_path, name, shard, n, alive=False):
     """The train step's shell, with stand-ins for the notebook and for training: what grow.py train was asked."""
     work = Path(tempfile.mkdtemp(dir=tmp_path))
+    (work / "scripts").symlink_to(ROOT / "scripts")  # the step runs scripts/capped_run.sh
     (work / "cells").mkdir(parents=True)
     (work / "cells" / "body.json").write_text(json.dumps({"dna": "t80", "trunk": ""}))
     shim = work / "bin"
