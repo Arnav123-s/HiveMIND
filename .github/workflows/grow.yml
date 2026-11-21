@@ -52,10 +52,10 @@ on:
         description: "Passes over the rows when training, at the most (the time given cuts them; a child starts from its parent and needs few)"
         default: "2"
       train_minutes:
-        description: "One-run training budget per slice. Auto keeps 170 minutes with the usual notebook option. Select a number for a CPU-only run."
+        description: "Auto uses the CPU slice budget (HIVE_TRAIN_MIN, default 85). Select notebook for the 170-minute profile with Colab enabled."
         type: choice
         default: "auto"
-        options: ["auto", "85", "110", "170"]
+        options: ["auto", "85", "110", "170", "notebook"]
       shard_policy:
         description: "Assign old rows to CPU slices for this run. Hash is the current rule."
         type: choice
@@ -282,12 +282,18 @@ jobs:
     # null, and null != '0' is false in an expression (both turn into the number 0): g39's dreams were skipped so
     if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run && format('{0}', inputs.dreams) != '0' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: ${{ fromJSON(vars.HIVE_DREAM_MIN || '43') }}
     strategy:
       fail-fast: false
       matrix:
         dream: [1, 2, 3, 4, 5, 6, 7, 8]
     steps:
+      - name: Start the dream clock before setup
+        env:
+          MINUTES: ${{ vars.HIVE_DREAM_MIN || '43' }}
+        run: |
+          [[ "$MINUTES" =~ ^[1-9][0-9]?$ ]] || { echo "::error::HIVE_DREAM_MIN must be 1–99"; exit 1; }
+          echo "DREAM_DEADLINE=$(( $(date +%s) + MINUTES * 60 ))" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - name: Who dreams (the trunk and the body's cells, as in practice)
         run: |
@@ -313,7 +319,14 @@ jobs:
           # seeds of their own: practice's are 10000000 + run * 100 + runner, and dreams on the practice runners took
           # 30000000 + run * 100 + runner (1 to 12); the dream runners take 51 to 58 of each run's hundred, so no
           # dream of this run or an earlier one is dreamed again under the same name
-          python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + 50 + ${{ matrix.dream }})) --tasks "$DREAMS" --tries 2 --minutes 50 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
+          # Leave 90 seconds of the job budget for logs and artifacts. Verified rows are appended per completed attempt.
+          FINISH=$(( DREAM_DEADLINE - 90 ))
+          LEFT=$(( FINISH - $(date +%s) ))
+          if [ "$LEFT" -le 0 ]; then echo "setup used the dream budget" >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          status=0
+          timeout -k 3 "$LEFT" python -u training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + 50 + ${{ matrix.dream }})) --tasks "$DREAMS" --tries 2 --deadline "$FINISH" --failures old_failures.jsonl --out rows.jsonl > dream.txt || status=$?
+          cat dream.txt
+          if [ "$status" = 124 ]; then echo "dream deadline reached" >> "$GITHUB_STEP_SUMMARY"; elif [ "$status" != 0 ]; then exit "$status"; fi
           tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ always() }}
@@ -442,6 +455,7 @@ jobs:
       slices: ${{ steps.plan.outputs.slices }}
       train_minutes: ${{ steps.budget.outputs.minutes }}
       chunk_tokens: ${{ steps.budget.outputs.chunk_tokens }}
+      row_checkpoint: ${{ steps.budget.outputs.row_checkpoint }}
       train_step_timeout: ${{ steps.budget.outputs.step_timeout }}
       train_job_timeout: ${{ steps.budget.outputs.job_timeout }}
     steps:
@@ -489,19 +503,25 @@ jobs:
         id: budget
         env:
           PROFILE: ${{ inputs.train_minutes || 'auto' }}
-          CHUNK_TOKENS: ${{ vars.HIVE_CHUNK_CE || '0' }}
+          CPU_MINUTES: ${{ vars.HIVE_TRAIN_MIN || '85' }}
+          CHUNK_TOKENS: ${{ vars.HIVE_CHUNK_CE || '128' }}
+          ROW_CHECKPOINT: ${{ vars.HIVE_ROW_CHECKPOINT || '1' }}
         run: |
           case "$PROFILE" in
-            auto) minutes=170; CHUNK_TOKENS=0 ;;
+            auto) minutes=$CPU_MINUTES ;;
+            notebook) minutes=170; CHUNK_TOKENS=0; ROW_CHECKPOINT=0 ;;
             85|110|170) minutes=$PROFILE ;;
             *) echo "::error::unknown training clock"; exit 1 ;;
           esac
+          [[ "$minutes" =~ ^(85|110|170)$ ]] || { echo "::error::HIVE_TRAIN_MIN must be 85, 110 or 170"; exit 1; }
+          [[ "$ROW_CHECKPOINT" =~ ^[01]$ ]] || { echo "::error::HIVE_ROW_CHECKPOINT must be 0 or 1"; exit 1; }
           [[ "$CHUNK_TOKENS" =~ ^(0|[1-9][0-9]*)$ ]] || { echo "::error::HIVE_CHUNK_CE must be a nonnegative whole number of tokens"; exit 1; }
           echo "minutes=$minutes" >> "$GITHUB_OUTPUT"
+          echo "row_checkpoint=$ROW_CHECKPOINT" >> "$GITHUB_OUTPUT"
           echo "chunk_tokens=$CHUNK_TOKENS" >> "$GITHUB_OUTPUT"
           echo "step_timeout=$(( minutes + 30 ))" >> "$GITHUB_OUTPUT"
           echo "job_timeout=$(( minutes + 55 ))" >> "$GITHUB_OUTPUT"
-          echo "Training clock: $minutes minutes per slice (selection: $PROFILE, loss chunk tokens: $CHUNK_TOKENS)" >> "$GITHUB_STEP_SUMMARY"
+          echo "Training clock: $minutes minutes per slice (selection: $PROFILE, loss chunk tokens: $CHUNK_TOKENS, row checkpoint: $ROW_CHECKPOINT)" >> "$GITHUB_STEP_SUMMARY"
 
   train:
     needs: [gather, plan]
@@ -545,11 +565,11 @@ jobs:
         env:
           HIVE_TRAIN_MIN: ${{ needs.plan.outputs.train_minutes }}
           HIVE_CHUNK_CE: ${{ needs.plan.outputs.chunk_tokens }}
-          TRAIN_PROFILE: ${{ inputs.train_minutes || 'auto' }}
+          TRAIN_PROFILE: ${{ inputs.train_minutes == 'notebook' && 'auto' || needs.plan.outputs.train_minutes }}
           HIVE_SHARD_POLICY: ${{ inputs.shard_policy || 'hash' }}
           HIVE_TRAIN_PLATEAU: ${{ inputs.train_plateau || 'off' }}
-          # Optional row checkpointing is confined to runs with an explicit numeric CPU clock.
-          HIVE_ROW_CHECKPOINT: ${{ inputs.train_minutes && inputs.train_minutes != 'auto' && vars.HIVE_ROW_CHECKPOINT == '1' && '1' || '0' }}
+          # The notebook retains its separate memory and clock profile.
+          HIVE_ROW_CHECKPOINT: ${{ needs.plan.outputs.row_checkpoint }}
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
           SHARD: ${{ matrix.slice.shard }}
@@ -775,7 +795,7 @@ jobs:
         # 64 tasks for a growing body too: on two seeds, one generation differed from the next by several tasks from
         # chance alone, and the hard kinds are what moves (agent C's plan, piece 3). Every arm sits them on 8 runners
         # of 8, half the time of 4 of 16 (a trial's 24 jobs: 20 run at once, the last 4 when the first are done).
-        seed: ${{ fromJSON('[1,2,3,4,5,6,7,8]') }}
+        seed: ${{ fromJSON(needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && '[1,2,3,4]' || '[1,2,3,4,5,6,7,8]') }}
         # What a seat sits is split over jobs so that none runs much past ~50 minutes (g51: one "after" seat sat the fresh
         # exam 55 minutes and the held exam 39 more, 100 in all; the median seat took 40). part "fresh": the gate's own exam
         # (and the talk smoke on seat 2); "held": the fixed held-out exam's share of that seat (before and after only);
@@ -783,7 +803,7 @@ jobs:
         # jobs in the paired gate: 20 run at once and the rest start as soon as a short one ends.
         part: ["fresh"]
         include: ${{ fromJSON('[{"arm":"before","seed":1,"part":"held"},{"arm":"before","seed":2,"part":"held"},{"arm":"before","seed":3,"part":"held"},{"arm":"before","seed":4,"part":"held"},{"arm":"before","seed":5,"part":"held"},{"arm":"before","seed":6,"part":"held"},{"arm":"before","seed":7,"part":"held"},{"arm":"before","seed":8,"part":"held"},{"arm":"after","seed":1,"part":"held"},{"arm":"after","seed":2,"part":"held"},{"arm":"after","seed":3,"part":"held"},{"arm":"after","seed":4,"part":"held"},{"arm":"after","seed":5,"part":"held"},{"arm":"after","seed":6,"part":"held"},{"arm":"after","seed":7,"part":"held"},{"arm":"after","seed":8,"part":"held"},{"arm":"after","seed":1,"part":"talk"}]') }}
-    steps:
+    steps: &gate_steps
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
@@ -937,8 +957,68 @@ jobs:
           grep -E "✅|❌" "$f" | awk -F'|' '{print $4 "|" $3 "|" $5}' | cut -c1-90
           sed -n 3p "$f"
 
+  gate_look4:
+    needs: [plan, gate]
+    if: ${{ !cancelled() && needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && needs.gate.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    outputs:
+      stop: ${{ steps.look.outputs.stop }}
+    env:
+      SEATS: "4"
+    steps: &gate_look_steps
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gate-before-*
+          path: grades
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gate-after-*
+          path: grades
+      - name: Check complete matched pairs for a decisive difference
+        id: look
+        env:
+          GATE_SEEDS: ${{ inputs.gate_seeds || github.run_number }}
+        run: python -m training.gate_look --grades grades --run-number "$GATE_SEEDS" --seats "$SEATS"
+
+  gate_5_6:
+    needs: [plan, gate, gate_look4]
+    if: ${{ !cancelled() && needs.gate_look4.result != 'skipped' && needs.gate_look4.outputs.stop != '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: ["before", "after"]
+        seed: [5, 6]
+        part: ["fresh"]
+    steps: *gate_steps
+
+  gate_look6:
+    needs: gate_5_6
+    if: ${{ !cancelled() && needs.gate_5_6.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    outputs:
+      stop: ${{ steps.look.outputs.stop }}
+    env:
+      SEATS: "6"
+    steps: *gate_look_steps
+
+  gate_7_8:
+    needs: [plan, gate_look6]
+    if: ${{ !cancelled() && needs.gate_look6.result != 'skipped' && needs.gate_look6.outputs.stop != '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: ["before", "after"]
+        seed: [7, 8]
+        part: ["fresh"]
+    steps: *gate_steps
+
   record:
-    needs: [plan, train, join, merge, gate]
+    needs: [plan, train, join, merge, gate, gate_5_6, gate_7_8]
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:

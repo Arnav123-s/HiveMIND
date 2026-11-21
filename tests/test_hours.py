@@ -180,8 +180,11 @@ def test_dreams_have_runners_of_their_own_beside_practice():
     assert len(json.loads(practice["strategy"]["matrix"]["shard"].split("'")[1])) + 8 == 20  # 20 jobs at once
     # the same setup as practice: who sits, the cells, the hive, another cell beside the trunk on each runner
     steps = dream["steps"]
-    assert "training/lineage.py members" in steps[1]["run"] and "grow_record.py fetch" in steps[2]["run"]
-    assert steps[3]["uses"] == "./.github/actions/hive"
+    assert dream["timeout-minutes"] == "${{ fromJSON(vars.HIVE_DREAM_MIN || '43') }}"
+    assert steps[0]["env"]["MINUTES"] == "${{ vars.HIVE_DREAM_MIN || '43' }}"
+    assert "training/lineage.py members" in _step("dream", "Who dreams")["run"]
+    assert "grow_record.py fetch" in _step("dream", "The body's cells")["run"]
+    assert any(s.get("uses") == "./.github/actions/hive" for s in steps)
     run = _step("dream", "Dream")["run"]
     assert _step("dream", "Dream")["env"]["HIVE_ROTATE"] == "${{ matrix.dream }}"
     assert "hive-grown/failures.jsonl" in run and "--failures old_failures.jsonl --out rows.jsonl" in run and "--tries 2" in run
