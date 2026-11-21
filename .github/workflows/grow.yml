@@ -30,7 +30,7 @@ name: The hive teaches its own members
 # each run named by what it is, its generation, the hive's DNA and the branch, so the list of runs reads cleanly
 run-name: >-
   ${{ inputs.bench && 'Bench' || inputs.cells_from_run && format('Trial: re-sit cells of run {0}', inputs.cells_from_run)
-  || inputs.versus && 'Trial: two kinds of cell' || inputs.trial && 'Trial generation' || 'Generation' }}
+  || inputs.trial == 'shadow' && 'Trial full CPU generation (artifacts only)' || inputs.versus && 'Trial: two kinds of cell' || inputs.trial && 'Trial generation' || 'Generation' }}
   g${{ github.run_number }} · ${{ inputs.dna || 't80' }} · ${{ github.ref_name }}
 
 on:
@@ -123,7 +123,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: body-${{ (inputs.trial || inputs.versus) && github.run_number || 'line' }}
+  group: post-astra-full-cpu-trial
   cancel-in-progress: false
 
 env:
@@ -136,6 +136,7 @@ env:
 
 jobs:
   fresh:
+    if: ${{ github.ref_name == 'research/post-astra-trial' && inputs.trial == 'shadow' && inputs.train_minutes == '85' && !inputs.organs && !inputs.versus && !inputs.cells_from_run && inputs.loop == '0' }}
     # A run grows from the body it checked out. Seen 2026-11-16: the nightly schedule started generation 35 while 34
     # ran; it queued behind it, then ran from the commit of 08:01, before 34's record. Its six cells grew from 28's
     # body beside 34's (siblings, not children), and its record could not be joined to 34's (cells/body.json). So a run
@@ -282,7 +283,7 @@ jobs:
     # null, and null != '0' is false in an expression (both turn into the number 0): g39's dreams were skipped so
     if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run && format('{0}', inputs.dreams) != '0' }}
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJSON(vars.HIVE_DREAM_MIN || '43') }}
+    timeout-minutes: ${{ fromJSON('43') }}
     strategy:
       fail-fast: false
       matrix:
@@ -290,7 +291,7 @@ jobs:
     steps:
       - name: Start the dream clock before setup
         env:
-          MINUTES: ${{ vars.HIVE_DREAM_MIN || '43' }}
+          MINUTES: ${{ '43' }}
         run: |
           [[ "$MINUTES" =~ ^[1-9][0-9]?$ ]] || { echo "::error::HIVE_DREAM_MIN must be 1–99"; exit 1; }
           echo "DREAM_DEADLINE=$(( $(date +%s) + MINUTES * 60 ))" >> "$GITHUB_ENV"
@@ -304,6 +305,17 @@ jobs:
       - name: The body's cells, from the release
         run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
       - uses: ./.github/actions/hive
+      - name: Frozen G56 training rows and failures
+        uses: actions/download-artifact@v4
+        with:
+          name: all-rows
+          run-id: 44776442973
+          github-token: ${{ github.token }}
+          path: frozen
+      - name: Check the frozen inputs
+        run: |
+          echo "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139  frozen/rows.jsonl" | sha256sum -c -
+          echo "b64154b9ebabe9bbcf7c7fd14da0c15764625d4e136c8949569fbb93c545fee9  frozen/failures.jsonl" | sha256sum -c -
       - name: Dream
         env:
           # another cell beside the trunk on each runner, and on each try after the first (training/grow.py dream)
@@ -312,7 +324,7 @@ jobs:
           HIVE_TASK_SECONDS: "600"
         run: |
           # the tasks the hive got wrong before (kept in the release)
-          curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
+          cp frozen/failures.jsonl old_failures.jsonl
           DREAMS="${{ inputs.dreams || '3' }}"
           if ! [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] || [ "$DREAMS" -eq 0 ] || ! [ -s old_failures.jsonl ]; then echo "no dreams: $DREAMS a runner, $(wc -l < old_failures.jsonl) old failures"; exit 0; fi
           (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
@@ -376,14 +388,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - name: Frozen G56 training rows and failures
+        uses: actions/download-artifact@v4
+        with:
+          name: all-rows
+          run-id: 44776442973
+          github-token: ${{ github.token }}
+          path: frozen
+      - name: Check the frozen inputs
+        run: |
+          echo "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139  frozen/rows.jsonl" | sha256sum -c -
+          echo "b64154b9ebabe9bbcf7c7fd14da0c15764625d4e136c8949569fbb93c545fee9  frozen/failures.jsonl" | sha256sum -c -
       - name: Every row checked so far (the release holds those of earlier generations), and this generation's lessons
         run: |
           if [ "${{ inputs.fresh_rows }}" = "1" ]; then : > old.jsonl; else
-            curl -sfL -o old.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/rows.jsonl" || : > old.jsonl
+            cp frozen/rows.jsonl old.jsonl
           fi
           mkdir -p new seed out
           # every task got wrong so far (the newest 3000), for the hive to come back to, and for the lessons to show done right
-          curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
+          cp frozen/failures.jsonl old_failures.jsonl
           python3 training/grow_record.py failures out/failures.jsonl old_failures.jsonl $(find new -name failures.jsonl | sort)
           # lessons (training/lessons.py) only start a kind: a right program, checked by the task's own check, for a kind
           # where the hive has fewer than 3 right programs of its own (with none it has nothing to learn from). Once it
@@ -463,7 +486,7 @@ jobs:
       - name: Which cells have children this generation
         id: plan
         env:
-          ORGANS: ${{ inputs.organs || ((inputs.trial || inputs.versus) && '["sources","code","data","words"]' || '') }}
+          ORGANS: ${{ inputs.organs || ((inputs.versus || (inputs.trial && inputs.trial != 'shadow')) && '["sources","code","data","words"]' || '') }}
           VERSUS: ${{ inputs.versus }}
         run: |
           C=$(python3 training/lineage.py plan "$GEN" "$DNA" "$ORGANS")
@@ -504,8 +527,8 @@ jobs:
         env:
           PROFILE: ${{ inputs.train_minutes || 'auto' }}
           CPU_MINUTES: ${{ vars.HIVE_TRAIN_MIN || '85' }}
-          CHUNK_TOKENS: ${{ vars.HIVE_CHUNK_CE || '128' }}
-          ROW_CHECKPOINT: ${{ vars.HIVE_ROW_CHECKPOINT || '1' }}
+          CHUNK_TOKENS: ${{ '128' }}
+          ROW_CHECKPOINT: ${{ '1' }}
         run: |
           case "$PROFILE" in
             auto) minutes=$CPU_MINUTES ;;
@@ -529,7 +552,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: ${{ fromJSON(needs.plan.outputs.train_job_timeout) }}  # another 25 minutes for setup and upload
     permissions:
-      contents: write  # the order to the owner's Colab notebook, and its answer, pass through the release (training/colab.py)
+      contents: read
       actions: read
     strategy:
       fail-fast: false
@@ -795,7 +818,7 @@ jobs:
         # 64 tasks for a growing body too: on two seeds, one generation differed from the next by several tasks from
         # chance alone, and the hard kinds are what moves (agent C's plan, piece 3). Every arm sits them on 8 runners
         # of 8, half the time of 4 of 16 (a trial's 24 jobs: 20 run at once, the last 4 when the first are done).
-        seed: ${{ fromJSON(needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && '[1,2,3,4]' || '[1,2,3,4,5,6,7,8]') }}
+        seed: ${{ fromJSON(needs.plan.outputs.grow && inputs.trial == 'shadow' && '[1,2,3,4]' || '[1,2,3,4,5,6,7,8]') }}
         # What a seat sits is split over jobs so that none runs much past ~50 minutes (g51: one "after" seat sat the fresh
         # exam 55 minutes and the held exam 39 more, 100 in all; the median seat took 40). part "fresh": the gate's own exam
         # (and the talk smoke on seat 2); "held": the fixed held-out exam's share of that seat (before and after only);
@@ -959,7 +982,7 @@ jobs:
 
   gate_look4:
     needs: [plan, gate]
-    if: ${{ !cancelled() && needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && needs.gate.result != 'skipped' }}
+    if: ${{ !cancelled() && needs.plan.outputs.grow && inputs.trial == 'shadow' && needs.gate.result != 'skipped' }}
     runs-on: ubuntu-latest
     outputs:
       stop: ${{ steps.look.outputs.stop }}
@@ -1022,8 +1045,8 @@ jobs:
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      actions: write  # to start the next generation (the line runs until stopped)
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -1091,83 +1114,14 @@ jobs:
         run: |
           if [ -d tr/trunk ]; then cp tr/trunk/* got/; fi
           mkdir -p prac
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Keep the cells and the rows in the release, the numbers and the body in the repository
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive grew" --notes "The cells of the hive's body (weight edits of its ternary model) and the checked rows they were grown from (training/grow.py). Machine-made." --latest=false
-          # What the release holds is added to, never replaced: another run may have recorded since this one read it
-          # (2026-11-14: a trial wrote its older copy back and generation 11's 170 rows were gone from the release).
-          curl -sfL -o now_rows.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/rows.jsonl" || : > now_rows.jsonl
-          curl -sfL -o now_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > now_failures.jsonl
-          [ -f got/failures.jsonl ] || : > got/failures.jsonl
-          python3 training/grow_record.py rows got/rows.jsonl now_rows.jsonl got/rows.jsonl
-          python3 training/grow_record.py failures got/failures.jsonl now_failures.jsonl got/failures.jsonl
-          gh release upload hive-grown $(ls got/$DNA.${GEN}*.gguf got/$DNA.${GEN}*.json got/$DNA.${GEN}*.safetensors 2>/dev/null) got/rows.jsonl $([ -s got/failures.jsonl ] && echo got/failures.jsonl) --clobber
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # the training steps of this generation's cells (cells/studied.json): who sits first and who has children first
-          python3 training/lineage.py studied "$DNA" got || true
-          # The record (the line and the body) is committed alone first, the branch's latest is brought in, and only then
-          # are the drawn files (the read, the graphs, what is known) drawn again on top of it, so a drawn file can never
-          # block a record (2026-11-17: generation 39's record failed its rebase on docs/PROGRESS.md, redrawn on main
-          # meanwhile). If the push loses a race, the drawn files are dropped, the record rebased again and they are redrawn.
-          # a drawn file that failed (the read, the graphs, what is known) does not stop the record nor the next start, but
-          # it is said: latest.md says the read failed, and the job's last step ends red (g43's read was lost to a warning)
-          FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
-          : > "$FAILED"
-          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null)
-          git commit -q -m "The hive's body: generation $GEN" || exit 0
-          # the talk exam's sitting (when the gate sat it) is kept aside: a lost race below resets the tree it is drawn into
-          if [ -f "training/reports/talk/$GEN.json" ]; then cp "training/reports/talk/$GEN.json" talk.json; fi
-          for try in 1 2 3; do
-            if [ -f talk.json ]; then mkdir -p training/reports/talk && cp talk.json "training/reports/talk/$GEN.json"; fi
-            git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || { git rebase --abort; echo "::error::the record could not be merged with the branch; its line is in this log"; exit 1; }
-            rec=$(git rev-parse HEAD)
-            : > "$FAILED"
-            # the read of this generation (docs/reads/GEN.md and latest.md: the numbers, the chain by kind, the hours and
-            # the next piece, by the rules of docs/DECISIONS.md), then the graphs and what is known, drawn again
-            set -o pipefail  # (GitHub's bash has it on already) a failed read is not hidden by tee
-            python3 training/reads.py write "$GEN" --facts facts.json --gate gate --rows all_rows.jsonl --lessons lessons/lessons.json | tee -a "$GITHUB_STEP_SUMMARY" || { echo "::warning::the read could not be written; the record is kept"; echo read >> "$FAILED"; }
-            python3 training/progress.py || { echo "::warning::the progress graphs could not be drawn; the record is kept"; echo progress >> "$FAILED"; }
-            # what the body said to three plain messages (sat in the gate): only shown, so it never fails the record
-            python3 training/talk_smoke.py write "$GEN" smoke --out docs/reads/talk_smoke.md || echo "::warning::docs/reads/talk_smoke.md could not be written; the record is kept"
-            if [ -s "$FAILED" ]; then
-              what=$(paste -sd, "$FAILED")
-              python3 training/grow_record.py failed "$GEN" "${GITHUB_RUN_ID:-0}" "$what" || {
-                mkdir -p docs/reads; printf '# The read of %s failed\n\nThe read failed in run %s; see the record job'"'"'s log.\n' "$GEN" "${GITHUB_RUN_ID:-0}" > docs/reads/latest.md; }
-            fi
-            # one entry a generation in docs/knowledge.json (the verdict and the bars' numbers), then the page drawn from it
-            python3 training/reads.py knowledge "$GEN" || { echo "::warning::the generation's entry could not be added to docs/knowledge.json"; echo knowledge >> "$FAILED"; }
-            python3 scripts/knowledge.py || { echo "::warning::docs/KNOWLEDGE.md could not be drawn; the record is kept"; echo knowledge >> "$FAILED"; }
-            git add docs/PROGRESS.md docs/progress $(ls -d docs/reads 2>/dev/null) docs/KNOWLEDGE.md $(ls docs/knowledge.json 2>/dev/null) $(ls "training/reports/talk/$GEN.json" 2>/dev/null)
-            git diff --cached --quiet || git commit -q --amend --no-edit
-            git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
-            git reset -q --hard "$rec"
-          done
-          echo "::error::the record could not be pushed"; exit 1
-      - name: Grow again at once (the line grows until stopped)
-        # Only the line on main, only after a record that went through, never a trial: a broken run does not start
-        # another, and the nightly schedule starts the line again if it has stopped. To stop it: set the repository
-        # variable HIVE_LOOP to "stop" (Settings, Secrets and variables, Actions, Variables), or disable the workflow.
-        if: ${{ github.ref_name == 'main' && !inputs.trial && !inputs.versus && !inputs.cells_from_run && format('{0}', inputs.loop) != '0' && vars.HIVE_LOOP != 'stop' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          ls got/$DNA.${GEN}*.gguf >/dev/null 2>&1 || { echo "::error::no cell grew this generation: the line stops here (read the train jobs' logs)"; exit 1; }
-          # three generations dropped by the paired gate running: the line stops and says why (training/grow_record.py)
-          if ! WHY=$(python3 training/grow_record.py restart); then echo "$WHY" >> "$GITHUB_STEP_SUMMARY"; echo "::error::$WHY"; exit 1; fi
-          gh workflow run grow.yml --ref main -f practice_level="${{ inputs.practice_level || 'ladder' }}" -f dna="${{ inputs.dna || 't80' }}" -f seating="${{ inputs.seating }}" -f dreams="${{ inputs.dreams }}" -f pairs="${{ inputs.pairs }}"
-          echo "the next generation is started; to stop the line set the repository variable HIVE_LOOP to stop" >> "$GITHUB_STEP_SUMMARY"
-      - name: Say so when a drawn file failed (the record is in and the next generation started; the job ends red)
-        if: ${{ !cancelled() }}
-        run: |
-          FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
-          if [ -s "$FAILED" ]; then
-            what=$(sort -u "$FAILED" | paste -sd, -)
-            echo "::error::the record is kept and the next generation started, but these failed: $what (docs/reads/latest.md says so); read the step 'Keep the cells' above"
-            echo "failed after the record: $what" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
-            exit 1
-          fi
-          echo "the read, the graphs and what is known were all drawn"
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.versus || (inputs.trial && inputs.trial != 'shadow')) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: full-generation-record
+          if-no-files-found: error
+          path: |
+            facts.json
+            cells/body.json
+            cells/strengths.json
+            training/reports/generations.jsonl
+          retention-days: 30
