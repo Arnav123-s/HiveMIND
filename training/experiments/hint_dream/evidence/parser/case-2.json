@@ -1,0 +1,86 @@
+{
+ "complete": true,
+ "case": 2,
+ "format": "csv",
+ "rule": "minimum_index",
+ "assets": {
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "adapter": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b"
+ },
+ "helper_sha256": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+ "affinity": [
+  1,
+  2
+ ],
+ "calls": [
+  {
+   "offered": true,
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to the 1-based position in the complete input sequence of its first minimum reading. Empty input gives an empty dictionary. For example x = 'label,value\\r\\nivy,4\\r\\noak,-1\\r\\nivy,1\\r\\noak,-1\\r\\nivy,1\\r\\n' gives {'ivy': 3, 'oak': 2}.\n\nOptional library, already implemented: skill_parse_records(x) returns the input's [label, integer value] records in their original order."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    records = skill_parse_records(x)\n    result = {}\n    for i, (label, value) in enumerate(records, 1):\n        if label not in result and value == min(records, key=lambda r: r[1])[1]:\n            result[label] = i\n    return result\n```",
+   "seconds": 41.455,
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 78,
+    "prompt_tokens": 185,
+    "total_tokens": 263,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "calls_helper_in_source": true,
+   "checks": 24,
+   "matched": 7,
+   "passed": false,
+   "matched_with_helper_removed": 0
+  },
+  {
+   "offered": false,
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to the 1-based position in the complete input sequence of its first minimum reading. Empty input gives an empty dictionary. For example x = 'label,value\\r\\nivy,4\\r\\noak,-1\\r\\nivy,1\\r\\noak,-1\\r\\nivy,1\\r\\n' gives {'ivy': 3, 'oak': 2}."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    data = {}\n    lines = x.strip().split('\\n')\n    reader = csv.DictReader(StringIO('\\n'.join(lines)))\n    for i, row in enumerate(reader, 1):\n        label = row['label']\n        value = int(row['value'])\n        if label not in data:\n            data[label] = i\n        else:\n            if value < data[label]:\n                data[label] = i\n    return data\n```",
+   "seconds": 37.41,
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 107,
+    "prompt_tokens": 157,
+    "total_tokens": 264,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "calls_helper_in_source": false,
+   "checks": 24,
+   "matched": 7,
+   "passed": false
+  }
+ ],
+ "sampling": {
+  "temperature": 0.0,
+  "max_tokens": 256,
+  "seed": 8103,
+  "top_k": 0,
+  "top_p": 1.0,
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ }
+}

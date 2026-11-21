@@ -17,6 +17,7 @@ from training.experiments.replay_archive.native_cycles.freeze import HERE, FAMIL
 
 PANEL_SHA = "b47c3198485544e736774fac16b7536ff62fef55e26b656d3dba0e453e58d099"
 MANIFEST_SHA = "4e267e24dd57b85a4280a80283fb6178aaa6e14f91c1ec19734a3a5edde553b6"
+CONTROL_SHA = "96926f0e537c9aaabc64daffd19b8a4ba05cb86c36ba1f8bf6aeee2448231f18"
 START_SHA = "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
 START_GGUF = "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036"
 
@@ -78,19 +79,24 @@ def decide(a):
 
 
 def train(a):
-    manifest = load(HERE / "manifest.json", MANIFEST_SHA)
-    stage = manifest["stages"][a.cycle - 1]
     row_path = a.scratch / f"rows-{a.cycle}.jsonl"
-    assert [row_id(json.loads(l)) for l in row_path.read_text().splitlines()] == stage["fresh"] + [stage["replay"]]
+    ids = [row_id(json.loads(l)) for l in row_path.read_text().splitlines()]
+    if a.fresh_only:
+        stage = load(HERE / "fresh_only/manifest.json", CONTROL_SHA)["stages"][a.cycle - 1]
+        assert a.parent == "release" and native.digest(row_path) == stage["input_sha256"]
+        assert ids == stage["layout"]
+    else:
+        stage = load(HERE / "manifest.json", MANIFEST_SHA)["stages"][a.cycle - 1]
+        assert ids == stage["fresh"] + [stage["replay"]]
     parent_sha = START_SHA if a.parent == "release" else json.loads((a.scratch / f"{a.parent}-fit.json").read_text())["trainable_sha256"]
     assert native.digest(a.weights) == parent_sha
     parent_gguf = START_GGUF if a.parent == "release" else json.loads((a.scratch / f"{a.parent}-fit.json").read_text())["gguf_sha256"]
-    if a.cycle > 1:
+    if a.cycle > 1 and not a.fresh_only:
         assert json.loads((a.scratch / f"cycle-{a.cycle-1}-decision.json").read_text())["next"] == a.parent
     run = a.scratch / f"cycle-{a.cycle}"
     run.mkdir()
     name = "retention" + str(a.cycle)
-    os.environ.update(HF_HUB_OFFLINE="1", HIVE_GPU="0", HIVE_ROW_CHECKPOINT="1", HIVE_CHUNK_CE="128", HIVE_SELF_REPLAY="1",
+    os.environ.update(HF_HUB_OFFLINE="1", HIVE_GPU="0", HIVE_ROW_CHECKPOINT="1", HIVE_CHUNK_CE="128", HIVE_SELF_REPLAY="0" if a.fresh_only else "1",
                       HIVE_SELF_REPLAY_RATIO="2", HIVE_KEEP_BACK="0", HIVE_PREFIX_CACHE="0", AGENT_TEAM_THREADS="2")
     from training import grow
     assert grow.KEEP_BACK == 0
@@ -101,6 +107,14 @@ def train(a):
     original_load = ternary_base.load
     original_begin = grow.MemoryGuard.begin
     inherited = {}
+    original_pick = grow.Study.pick
+    picked = []
+
+    def track_pick(study, *args, **kwargs):
+        value = original_pick(study, *args, **kwargs)
+        if value is not None:
+            picked.append(ids[value[1]])
+        return value
 
     def verify_start(guard):
         if inherited:
@@ -123,12 +137,15 @@ def train(a):
 
     ternary_base.load = validate
     grow.MemoryGuard.begin = verify_start
+    if a.fresh_only:
+        grow.Study.pick = track_pick
     begin = time.monotonic()
     try:
         result = grow.train(row_path, name=name, base="t80", epochs=1, rank=32, lr=.0002, max_len=1152, layers="last14",
                             accum=1, seed=56, lean="sources", checkpoint=False, int8_base=True, gen="g56",
                             parent=str(a.weights), out_dir=run / "exports")
     finally:
+        grow.Study.pick = original_pick
         ternary_base.load = original_load
         grow.MemoryGuard.begin = original_begin
     assert not inherited, "no measured optimizer input"
@@ -137,7 +154,14 @@ def train(a):
     out = {"parent": a.parent, "parent_trainable_sha256": parent_sha, "parent_gguf_sha256": parent_gguf, "inherited_tensors": 196,
            "trainable_sha256": native.digest(tensor), "gguf_sha256": native.digest(gguf), "elapsed_seconds": round(time.monotonic()-begin, 2),
            "meta": result}
+    if a.fresh_only:
+        assert picked == stage["optimizer_order"]
+        assert result["new_rows"] == result["used"] == result["steps"] == 3
+        assert result["memory"]["rows_skipped"] == 0 and "self_replay" not in result
+        out["optimizer_order"] = picked
     native.save(a.scratch / f"cycle-{a.cycle}-fit.json", out)
+    if a.fresh_only:
+        return
     expected = {"fresh": 2, "replay": 1, "other": 0}
     assert all(result["self_replay"][k] == expected for k in ("passes", "unique_rows")), result["self_replay"]
 
@@ -149,6 +173,7 @@ if __name__ == "__main__":
     for k in ("scratch", "weights", "lora", "sdk", "model", "runtime"):
         p.add_argument("--" + k, type=Path, required=k == "scratch")
     p.add_argument("--parent", default="release")
+    p.add_argument("--fresh-only", action="store_true", help="use the frozen follow-up control for this proposal")
     p.add_argument("--arm", default="release")
     args = p.parse_args()
     {"evaluate": evaluate, "train": train, "score": score, "decide": decide}[args.mode](args)

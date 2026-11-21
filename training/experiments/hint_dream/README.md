@@ -59,6 +59,34 @@ The three task types were disjoint from both practice cohorts. The candidate mat
 
 An independent hosted diagnostic substitutes the measured GGUF for the single trunk in the ordinary 25-member G55 roster and uses the original fixed held-out examiner. It has a separate control and thirty tasks across ten kinds. [Official evaluation recipe](https://github.com/Arnav123-s/HiveMIND/blob/e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b/training/experiments/astra_orders/worker_contracts/f4-held.md)
 
+## Can a worker reuse just the parser for a different rule?
+
+The earlier verified CSV meter program and INI final-value program each contained a record parser. Each extracted parser reconstructed all 64 independent text inputs in its format. The parser returns only ordered labels and integer readings. We offered it as an optional callable to the four-update child on four new tasks that require different aggregation rules. The public format identified which parser to offer. The worker received the callable signature and wrote the rest of each program without seeing either its source or the answers. [Protocol and extraction method](parser-protocol.md) · [Source identities and 128 parser checks](evidence/parser/bank/qualification.json)
+
+| New task | Ordinary | Parser offered | Same offered program with parser removed |
+|---|---:|---:|---:|
+| CSV range for each label | 24/24 | 24/24 | 0/24 |
+| INI first position of each label’s minimum | 1/24 | 7/24 | 0/24 |
+| CSV first position of each label’s minimum | 7/24 | 7/24 | 0/24 |
+| INI range for each label | 1/24 | 24/24 | 0/24 |
+
+**One additional whole task passed.** The parser from the INI final-value task let the worker solve a new problem, computing the difference between the largest and smallest reading for each label. Removing the parser caused its winning source to fail on every input. Both arms solved CSV ranges. Neither solved the minimum-position rule. Overall, complete tasks rose from 1/4 to 2/4, with one gain and zero losses. Matched outputs rose from 33/96 to 62/96. A second streaming implementation agreed with the frozen answers on all 96 inputs. The 128 parser checks above cover decoding alone. This four-pair test used preselected helpers and generated practice tasks. [CSV range](evidence/parser/case-0.json) · [INI minimum](evidence/parser/case-1.json) · [CSV minimum](evidence/parser/case-2.json) · [INI range](evidence/parser/case-3.json)
+
+All eight calls ended within the same 256-token cap. The helper invitation added 28 prompt tokens per call, raising total prompt tokens from 712 to 824. Completion tokens fell from 480 to 379. Model-call time totaled 160.35 seconds ordinary and 135.47 seconds with the offer, on a host shared with other studies. The receipts show zero cached tokens in both arms. These timings illustrate the measured runs. The study was designed to test whole-task transfer.
+
+## Choosing the parser from a public example
+
+The two stored helpers have identical names and descriptions. Stock Fieldwork text retrieval broke that tie by digest and selected the INI implementation on all four requests. A separate offline selector kept both checked implementations, ran them in WASI on the public example input, and required exactly one to return ordered labels and integers that changed correctly when the sample’s labels and readings were renamed. It received no study format, filename, answer or target grade. The selector chose the matching helper for all four captured requests. It also picked correctly on two new format-neutral descriptions with valid examples and abstained on all five frozen controls with empty, unsupported, incomplete or conflicting input. A separate unit fixture checks abstention when two implementations pass the same probe. [Frozen controls](routing-cases.json) · [Selection protocol](routing-protocol.md)
+
+| How the captured programs were run | Complete tasks | Correct outputs |
+|---|---:|---:|
+| Ordinary programs, no helper | 1/4 | 33/96 |
+| Fieldwork text retrieval | 1/4 | 31/96 |
+| Public example probes | 2/4 | 62/96 |
+| Original manual assignment | 2/4 | 62/96 |
+
+Text retrieval lost the CSV range task and gained the INI range task. Public-example selection preserved the CSV win and gained the INI win. No fallback was needed on the four compatible jobs. This was an offline replay of the same programs on the same 96 inputs, so it adds evidence about routing without adding another model transfer win. Selection currently applies to one declared interface, two empirically qualified helpers, short alphabetic labels, whole-number readings, and at least one informative public example. A passing probe cannot establish correctness for every future input. [All decisions and replay grades](evidence/parser/routing.json) · [Research selector](parser_routing.py)
+
 ## Reproduce
 
 Use the pinned G55 weights and runtime hashes recorded in the receipts. `SDK` is the CPython WASI directory containing `python.wasm` and its standard library. Set `HF_HOME` to the cached unpacked Ternary-Bonsai-8B model and `HIVE_TERNARY_HOME` to a checkout containing the pinned `ik_llama.cpp` converter. The measured unpacked model revision was `ac20f03fc62e872399218b659c8e949dfca05769`. The host used wasmtime 36.0.0 with `python.wasm` SHA-256 `278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e`. [WASI installation](../../reports/rule_lab/fieldwork/reproduce.md)
@@ -78,4 +106,5 @@ python -m training.experiments.hint_dream.parser_transfer --qualify --sdk "$SDK"
 for case_index in 0 1 2 3; do
   python -m training.experiments.hint_dream.parser_transfer "${args[@]}" --adapter "$candidate" --bank runs/parser-bank --case "$case_index" --out "runs/parser-case-$case_index"
 done
+python -m training.experiments.hint_dream.parser_routing --sdk "$SDK" --out runs/parser-routing.json
 ```

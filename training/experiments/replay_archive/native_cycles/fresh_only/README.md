@@ -1,0 +1,15 @@
+# What changed when the third update used fresh data
+
+Replacing one verified G55 member program with one verified fresh G56 teacher example changed **zero of 15 paired whole-task verdicts**. In each of the three comparisons both candidates passed the same three of five requests as the G55 parent. Both retained the price and weekday skills, filled the missing readings, and failed the names and Markdown table requests. The prespecified rule dropped all six candidates. These are five distinct questions repeated across candidates. [Results and adapter evidence](results.json) · [Sampled answers](native-calls.json.gz)
+
+| Training family | Target tokens, mixed / fresh-only | Fit seconds, mixed / fresh-only | First programs changed between siblings | Whole tasks passed, mixed / fresh-only |
+|---|---:|---:|---:|---:|
+| Normalize names | 511 / 396 | 337.12 / 317.71 | 1/5 | 3/5 / 3/5 |
+| Convert Markdown to CSV | 482 / 402 | 313.91 / 292.98 | 0/5 | 3/5 / 3/5 |
+| Fill missing readings | 551 / 537 | 337.02 / 265.65 | 0/5 | 3/5 / 3/5 |
+
+The one changed program still emitted incorrect names. Both versions mishandled initials and surnames. Every fresh-only candidate inherited all 196 G55 trainable tensors and changed all 33,947,648 FP32 values. Its adapter differed from its mixed sibling in at least 33,945,470 values. Those differences were small in magnitude. Their Euclidean norm was 3.66%, 2.43% and 3.53% of the respective fresh-only update's distance from G55. The fifteen new native responses took 11.03 minutes, excluding server start and scoring.
+
+**The schedule limits what this result can say about replay.** Each side used three ordinary optimizer updates with the same seed and the same two shared examples in the same first two positions. The third example was the only planned difference. The trainer had already reduced its learning rate from 0.0001433 on step one and 0.0000767 on step two to **0.0000100** on step three. This equals 5% of the configured rate. A production slice with many interleaved replay updates gives replay a different weight. Two old anchor cases also provide little evidence about uncommon regressions. [Trainer schedule](../../../../../training/grow.py#L1154)
+
+The follow-up was specified after all mixed-arm outcomes were known. All three controls and the exact input bytes were pinned before any control fit or model answer. The three replacements were the closest eligible examples by target length, independently reconstructed and executed against the original task checker. All nine fresh-only rows ran once with zero skips. Fresh-only fits had 209 fewer target tokens in total. In the first two families the archived teacher emitted the same algorithm byte-for-byte on three distinct practice requests. The three fill examples had distinct target programs. Automatic activation checkpointing was used on two rows per side in the first two pairs, and on one mixed row and zero fresh-only rows in the third. All six fits used the same checkpoint policy. [Selection and token counts](manifest.json) · [Preregistered rule](protocol.md) · [Exact input rows](rows.json.gz) · [Reproduction](reproduce.md)

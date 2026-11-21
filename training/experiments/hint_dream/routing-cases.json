@@ -1,0 +1,9 @@
+[
+ {"name":"record-table","request":"Read the ordered label and integer value records from this example.","examples":["label,value\nquill,-3\nreed,2\nquill,0\n"],"expected":"66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0"},
+ {"name":"record-sections","request":"Read the ordered label and integer value records from this example.","examples":["[first]\nlabel=reef\nvalue=-5\n[second]\nlabel=fern\nvalue=4\n"],"expected":"1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23"},
+ {"name":"empty","request":"Read the ordered label and integer value records from this example.","examples":[""],"expected":null},
+ {"name":"header-only","request":"Read the ordered label and integer value records from this example.","examples":["label,value\n"],"expected":null},
+ {"name":"unsupported","request":"Read the ordered label and integer value records from this example.","examples":["[{\"label\": \"larch\", \"value\": -2}]"],"expected":null},
+ {"name":"missing-value","request":"Read the ordered label and integer value records from this example.","examples":["[first]\nlabel=ash\nvalue=0\n[second]\nlabel=elm\n"],"expected":null},
+ {"name":"incompatible-examples","request":"Read the ordered label and integer value records from these examples.","examples":["label,value\nreed,5\n","[event]\nlabel=fern\nvalue=-1\n"],"expected":null}
+]

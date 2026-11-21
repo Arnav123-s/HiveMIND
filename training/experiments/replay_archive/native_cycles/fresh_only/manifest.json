@@ -1,0 +1,148 @@
+{
+  "mixed_manifest_sha256": "4e267e24dd57b85a4280a80283fb6178aaa6e14f91c1ec19734a3a5edde553b6",
+  "panel_sha256": "b47c3198485544e736774fac16b7536ff62fef55e26b656d3dba0e453e58d099",
+  "corpus": {
+    "g55": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd",
+    "g56": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139"
+  },
+  "stages": [
+    {
+      "family": "h_txt_names",
+      "replacement": "b679a059a99c66b4db040acfe00216ef7a081ff7c47a5945e3c0fbbce7188d14",
+      "replay": "6ea1fc9a9bfe3aa3aad8d519d729efee10fb0903f2946da6e62067ddf66f58a1",
+      "eligible_rows": 12,
+      "skipped_verifications": [],
+      "source_verification": {
+        "kind": "h_txt_names",
+        "seed": "lesson:g56:h_txt_names:11",
+        "archive_solution_sha256": "1b4e300e3490d6cf70b1e9cd8175b8ffdc00acf66428f85c58009c84dcbfc98e",
+        "ok": true,
+        "level": 0,
+        "detail": "names.txt ['Jonas Ahmed', 'Mira M. De Luca', 'Pavel De Luca', 'Tomas Moreau', 'Aiko Nakamura', 'Mira Novak', 'Pavel M. Novak'] against ['Jonas Ahmed', 'Mira M. De Luca', 'Pavel De Luca', 'Tomas Moreau', 'Aiko Nakamura', 'Mira Novak', 'Pavel M. Novak']; the count 7 in the answer",
+        "returned": "names: 7"
+      },
+      "old_answer_total": [
+        247,
+        616
+      ],
+      "fresh_answer_total": [
+        132,
+        379
+      ],
+      "shared_answer_total": [
+        [
+          132,
+          370
+        ],
+        [
+          132,
+          384
+        ]
+      ],
+      "archived_distinct_output_texts": 1,
+      "input_sha256": "179aa80ef7ee3237589f134ad161bb0b7951440a55f4d4951626cee02982a7e4",
+      "layout": [
+        "b679a059a99c66b4db040acfe00216ef7a081ff7c47a5945e3c0fbbce7188d14",
+        "2b9ef2d4c6aff3fddbd36740f07f522ea009ed5b48dc03ddcf3f6e93f97f893b",
+        "01989deba829fd70b6d2602c15f4e192ee4be7fb1d8104c7820668267d1de0aa"
+      ],
+      "optimizer_order": [
+        "2b9ef2d4c6aff3fddbd36740f07f522ea009ed5b48dc03ddcf3f6e93f97f893b",
+        "01989deba829fd70b6d2602c15f4e192ee4be7fb1d8104c7820668267d1de0aa",
+        "b679a059a99c66b4db040acfe00216ef7a081ff7c47a5945e3c0fbbce7188d14"
+      ]
+    },
+    {
+      "family": "h_txt_mdcsv",
+      "replacement": "bc2371796e2a9c114411443402b750089aa214f0a712e61c93819be01f8c985d",
+      "replay": "0b458efa2484388f0ee9fa12557eb4e470b6e0ce4b6a106f0bf33d77ff4e45a2",
+      "eligible_rows": 12,
+      "skipped_verifications": [],
+      "source_verification": {
+        "kind": "h_txt_mdcsv",
+        "seed": "lesson:g56:h_txt_mdcsv:3",
+        "archive_solution_sha256": "d22218d4f0dcd35ddd5a61c4cd0fb0c6999108ae1b3ed12ebdf357a478f25817",
+        "ok": true,
+        "level": 0,
+        "detail": "table.csv [['Name', 'City', 'Team', 'Score'], ['Ines', 'Kyoto', 'green', '54.0'], ['Tomas', 'Graz', 'green', '14.8']]... (6 rows) against [['Name', 'City', 'Team', 'Score'], ['Ines', 'Kyoto', 'green', '54.0'], ['Tomas', 'Graz', 'green', '14.8']]... (6 rows); 5 data rows said",
+        "returned": "table.csv saved\ndata rows: 5"
+      },
+      "old_answer_total": [
+        214,
+        527
+      ],
+      "fresh_answer_total": [
+        134,
+        415
+      ],
+      "shared_answer_total": [
+        [
+          134,
+          384
+        ],
+        [
+          134,
+          386
+        ]
+      ],
+      "archived_distinct_output_texts": 1,
+      "input_sha256": "18fdfe91194b094fd54fb4e8fa51043b6ef43e74b88ae87f99eff5a51639d9bd",
+      "layout": [
+        "09cc7edb8418d8710acf12d1e6f4de93d7eb2eb68fe4f521fcb080afff8da4e6",
+        "1b30f68983e391a6078f45f772620b66e55bfed3cb0bf8ec415ebde90bceee53",
+        "bc2371796e2a9c114411443402b750089aa214f0a712e61c93819be01f8c985d"
+      ],
+      "optimizer_order": [
+        "09cc7edb8418d8710acf12d1e6f4de93d7eb2eb68fe4f521fcb080afff8da4e6",
+        "1b30f68983e391a6078f45f772620b66e55bfed3cb0bf8ec415ebde90bceee53",
+        "bc2371796e2a9c114411443402b750089aa214f0a712e61c93819be01f8c985d"
+      ]
+    },
+    {
+      "family": "h_tab_fill",
+      "replacement": "4af2dee495eed2dff5e94d8bbf7dcbb7852165ba4939fdcfa290e6ae52260b02",
+      "replay": "87e48f5ad10388711b256f108fc22d67e66f1dc124e4e74c71b02a685c322af6",
+      "eligible_rows": 11,
+      "skipped_verifications": [],
+      "source_verification": {
+        "kind": "h_tab_fill",
+        "seed": "lesson:g56:h_tab_fill:7",
+        "archive_solution_sha256": "1af445cae130621a5f7cfbe217625a883562129f1fd00f9f7f8400a4b5708998",
+        "ok": true,
+        "level": 0,
+        "detail": "complete.csv: 24 rows against 24, 6 filled in the answer: True",
+        "returned": "complete.csv saved\nfilled: 6"
+      },
+      "old_answer_total": [
+        193,
+        481
+      ],
+      "fresh_answer_total": [
+        179,
+        372
+      ],
+      "shared_answer_total": [
+        [
+          179,
+          372
+        ],
+        [
+          179,
+          367
+        ]
+      ],
+      "archived_distinct_output_texts": 3,
+      "input_sha256": "b6ea3d64c2f334ccf9c4ac107b5a8ef5d14e2cf2f50e332602e96bf7f01b9f49",
+      "layout": [
+        "15e26e446686b466131db7247771baf81e99e5ffd38b0bf96ba80556e8ac0b87",
+        "4af2dee495eed2dff5e94d8bbf7dcbb7852165ba4939fdcfa290e6ae52260b02",
+        "095bd48d9c754d1cb5f099effe27d2b01c2f23c17d0640432f54e5fde875b148"
+      ],
+      "optimizer_order": [
+        "095bd48d9c754d1cb5f099effe27d2b01c2f23c17d0640432f54e5fde875b148",
+        "15e26e446686b466131db7247771baf81e99e5ffd38b0bf96ba80556e8ac0b87",
+        "4af2dee495eed2dff5e94d8bbf7dcbb7852165ba4939fdcfa290e6ae52260b02"
+      ]
+    }
+  ]
+}
