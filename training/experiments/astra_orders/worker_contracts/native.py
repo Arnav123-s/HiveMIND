@@ -66,8 +66,8 @@ def main():
         if (any(previous.get(k) != value for k, value in record.items() if k not in {"arms", "affinity"})
                 or len(previous["affinity"]) != len(record["affinity"])):
             raise ValueError("the saved protocol or reserved CPU count differs")
-        prefix = [(row["id"], row["inspect"]) for row in previous["arms"]]
-        if prefix != [(ident, flag) for ident, _, flag in treatments][:len(prefix)]:
+        completed = [(row["id"], row["inspect"]) for row in previous["arms"]]
+        if completed != [(ident, flag) for ident, _, flag in treatments][:len(completed)]:
             raise ValueError("the saved arms are not a complete prefix")
         if previous.get("complete"):
             return
