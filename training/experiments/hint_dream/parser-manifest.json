@@ -10,7 +10,8 @@
       "input_format": "csv",
       "rule": "span",
       "offer_first": false,
-      "prompt_sha256": "4ea4412d63d4a1bf5255dd51fb151afd643a12a88489a0af38e23ebd1e15c65e",
+      "ordinary_messages_sha256": "9fe5505edb7a3f461ea956d6f55fe19cc996f8f173f527684d96c7cc5aef764e",
+      "offered_messages_sha256": "12f8853ecadf6ae2b746f5c2c5361f2d8c70ea254437d10967118afe23f6420d",
       "checks_sha256": "75fb9a54264ac8ed947627eabcd9930473f0104b2a9e4ef2d2222e965fedf13e"
     },
     {
@@ -18,7 +19,8 @@
       "input_format": "ini",
       "rule": "minimum_index",
       "offer_first": true,
-      "prompt_sha256": "07bce7812d8a5b83a8e35900500a617c4a3551554cd7425393826b4a89dba6e8",
+      "ordinary_messages_sha256": "b5a0cc22a165cece5b48abb095c4f1910a40fd50dd55fb699f4d2a5c8c44de31",
+      "offered_messages_sha256": "154b4161ecd0b49b1eb5a5cf2efd75695dccc239e94fff8b2df50e1c16278078",
       "checks_sha256": "81498caac6be3481d56b61ff21558d0389aeece0ca9ec080f639d1dcfd801edd"
     },
     {
@@ -26,7 +28,8 @@
       "input_format": "csv",
       "rule": "minimum_index",
       "offer_first": true,
-      "prompt_sha256": "e3a75c7ff5b12d65adb634f59bfb483bbc430cc6e3627fd5d34e2d0e6672c7e8",
+      "ordinary_messages_sha256": "8add216147d205d132039440ecd5680a629c078288751c743650c7468de0f66e",
+      "offered_messages_sha256": "12f709b124d9ff63ea2061af3f69641a6a29f77d51611340a026bc622f611def",
       "checks_sha256": "81f6bb04393fa14ca8f9ce35b62c987a3d1b9927683b0ffabeb550f46f40723e"
     },
     {
@@ -34,7 +37,8 @@
       "input_format": "ini",
       "rule": "span",
       "offer_first": false,
-      "prompt_sha256": "dee988e649b2d3268ad93b7c8428d7b2f3a146827de7a86d9d9c18f78ccdd684",
+      "ordinary_messages_sha256": "b66bd60859d25499e1aa6dc78feb7ac18b7f912efbbafa2ff802ee5b8cda8c52",
+      "offered_messages_sha256": "294f5fe180c7682da4a50df70b0198c66d389459e976040ceb59e00f2a8b715a",
       "checks_sha256": "87af2343448213f34d4345ac537b3c20fcfd63751c01194f73921d0e768c5d60"
     }
   ]

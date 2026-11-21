@@ -19,6 +19,8 @@ HERE = Path(__file__).parent
 CASES = (("csv", "span", False), ("ini", "minimum_index", True),
          ("csv", "minimum_index", True), ("ini", "span", False))
 TITLE = 'parse_records'
+SYSTEM = 'Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available.'
+OFFER = f"Optional library, already implemented: skill_{TITLE}(x) returns the input's [label, integer value] records in their original order."
 CHILD = 'fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b'
 
 
@@ -124,11 +126,16 @@ def digest(obj):
     return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
+def messages(prompt, provided):
+    return [{'role':'system', 'content':SYSTEM}, {'role':'user', 'content':prompt + ('\n\n' + OFFER if provided else '')}]
+
+
 def manifest():
     workers = admitted_workers()
     return {'parent':CHILD, 'helpers':{k:campaign.fingerprint(extract_parser(extract_code(r['output']))) for k,r in workers.items()},
             'tasks':[{'case':i, 'input_format':form, 'rule':rule, 'offer_first':first,
-                      'prompt_sha256':digest(task(i)[0]), 'checks_sha256':digest(task(i)[1])}
+                      'ordinary_messages_sha256':digest(messages(task(i)[0], False)),
+                      'offered_messages_sha256':digest(messages(task(i)[0], True)), 'checks_sha256':digest(task(i)[1])}
                      for i, (form, rule, first) in enumerate(CASES)]}
 
 
@@ -149,7 +156,6 @@ def run(args):
     if actual != dict(pilot.ASSETS, adapter=CHILD):
         raise ValueError('Unknown study assets')
     prompt, checks = task(args.case)
-    offered = f"Optional library, already implemented: skill_{TITLE}(x) returns the input's [label, integer value] records in their original order."
     order = [True, False] if helper_first else [False, True]
     record = {'complete':False, 'case':args.case, 'format':form, 'rule':CASES[args.case][1], 'assets':actual,
               'helper_sha256':receipt['helper_sha256'], 'affinity':sorted(os.sched_getaffinity(0)), 'calls':[]}
@@ -162,11 +168,11 @@ def run(args):
         if len(active) != 1 or Path(active[0]['path']).name != args.adapter.name or active[0]['scale'] != 1:
             raise RuntimeError('Unexpected active adapter')
         for provided in order:
-            messages = hint_dream.messages(prompt + ('\n\n' + offered if provided else ''))
+            conversation = messages(prompt, provided)
             began = time.monotonic()
-            data = pilot.call(url+'/v1/chat/completions', dict(settings, messages=messages))
+            data = pilot.call(url+'/v1/chat/completions', dict(settings, messages=conversation))
             choice = data['choices'][0]
-            record['calls'].append({'offered':provided, 'messages':messages, 'raw':choice['message'].get('content') or '',
+            record['calls'].append({'offered':provided, 'messages':conversation, 'raw':choice['message'].get('content') or '',
                                     'seconds':round(time.monotonic()-began,3), 'stop':choice['finish_reason'], 'usage':data['usage']})
             pilot.save(args.out/'result.json', record)
     # Both programs have already been authored. Neither model offer receives grading feedback.
