@@ -112,6 +112,8 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `team/tools/sandbox.py` | Runs members' programs safely | A (C's agents now) | `team/solo.py` |
 | `team/ternary.py` | The ternary runtime: builds it, serves the DNA and cells, seats members | B | every model job |
 | `team/talk.py` | Talk: answer at once or hand the work to the body | B | talk.yml |
+| `team/bank_snapshot.py`, `team/bank_admit.py` | Recheck individually graded practice functions against independent input contracts and retain all qualifying versions | research | optional growth record and local bank commands |
+| `team/saved.py` | Select a callable within its verified input range and check covered versions for disagreement | research | local, web and hosted chat |
 | `team/config.py`, `team/llm.py`, `team/engram.py`, `team/memory.py`, `team/parts.py`, `team/health.py`, `team/stop.py` | Support imported by the line's code | none named | grow, exam, solo |
 | `team/__main__.py`, `team/cli.py` | `python -m team` and `./hive` entry points | none named | ask.yml, people |
 | `team/hive.py`, `team/board.py`, `team/specialists/`, `team/school.py`, `team/recruit.py`, `team/evolve.py`, `team/life.py`, `team/cells/`, `team/evolved/` and the rest | The older team of roles. **Old** (still reached by ask.yml and `./hive`) | none named | ask.yml, people |
