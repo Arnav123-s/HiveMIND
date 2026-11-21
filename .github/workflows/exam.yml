@@ -1,195 +1,77 @@
-# Every day the working hive sits a fresh exam that code makes and code checks: new sums, dates, programs to write
-# and to mend, facts read live from a source, a website to operate, instructions to follow to the letter, things to
-# know, sentences to translate (training/exam.py). Nobody wrote the tasks to suit it and no fix was tried on them,
-# so the line each sitting adds to training/reports/exams.jsonl is an honest record of whether the hive is getting
-# better, field by field, with nobody there.
-# The job that runs the hive has no token that can write anywhere. A second job, which runs no model and no code
-# the hive wrote, reads the sitting's numbers and adds the line.
-name: The hive sits an exam
+name: G55 paired worker contract exam
+run-name: G55 fixed held-out tasks with stock and F3 workers
 
-# Not on a schedule since 2026-11-15: this sat the older hive of roles every day. The body of cells takes its own
-# pulse every generation ("The hive teaches its own members", the gate job). An exam can still be started by hand.
 on:
   workflow_dispatch:
-    inputs:
-      tasks:
-        description: How many tasks
-        default: "16"
-      seed:
-        description: "The sitting's number (empty: today's)"
-        default: ""
-      practice:
-        description: "1: not an exam but practice (the same as The hive practises): what the members solve stays in the library"
-        default: ""
-      alone:
-        description: "1 (with members): the members by themselves, the roles do not take what they leave"
-        default: ""
-      empty_memory:
-        description: "1: sit it with nothing learned (to measure what the learning is worth)"
-        default: ""
-      bitnet:
-        description: "1: not an exam. Builds Microsoft's BitNet runtime, tests the published 2.4B BitNet, converts it again from its original weights and tests that"
-        default: ""
-      level:
-        description: "hard: the kinds of several steps (training/exam_hard.py)"
-        default: ""
-      who:
-        description: "Who the members are (team/ternary.py): t9,t9,t4 seats ternary models; coder is the 7B at 4 bits (empty: coder)"
-        default: ""
-      members:
-        description: "A trial, not for the record: members first, each doing the whole task, two must agree (team/solo.py), the roles where they confirm nothing; how many (empty: the hive as it is)"
-        default: ""
 
 permissions:
   contents: read
 
-concurrency:
-  group: exam-${{ inputs.members || 'as-it-is' }}-${{ inputs.empty_memory || 'learned' }}-${{ inputs.practice || 'sitting' }}-${{ inputs.alone || 'whole' }}-${{ inputs.seed || 'today' }}-${{ inputs.bitnet || 'hive' }}-${{ inputs.level || 'basic' }}-${{ inputs.who || 'coder' }}
-  cancel-in-progress: false
-
 jobs:
-  bitnet:
-    if: ${{ inputs.bitnet }}
+  exam:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
-    steps:
-      - name: Microsoft's runtime, the published model, and the model converted again from its original weights
-        run: |
-          set -x
-          lscpu | grep -iE "model name|avx512f" | head -3 || true
-          sudo apt-get update -q >/dev/null && sudo apt-get install -y -q clang cmake >/dev/null
-          git clone -q --depth 1 --recursive --shallow-submodules https://github.com/microsoft/BitNet.git
-          cd BitNet
-          pip install -q -r requirements.txt "huggingface_hub[cli]"
-          huggingface-cli download microsoft/bitnet-b1.58-2B-4T-gguf --local-dir models/BitNet-b1.58-2B-4T >/dev/null
-          python setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s || { tail -40 logs/*.log; exit 1; }
-          head -c 9000 /usr/share/common-licenses/GPL-3 > text.txt
-          try() {
-            echo "######## $1"
-            timeout 900 build/bin/llama-perplexity -m "$1" -f text.txt -c 256 --chunks 6 -t 4 2>&1 | grep -iE "estimate|pre-token" || true
-            for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."; do
-              timeout 300 build/bin/llama-completion -m "$1" -t 4 -n 160 --temp 0 --special -r "<|eot_id|>" -no-cnv -p "User: $q<|eot_id|>Assistant: " 2>/dev/null </dev/null | tail -30 || true
-              echo
-            done
-          }
-          try models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf 2>&1 | tee -a ../bitnet.txt
-          df -h . | tail -1; free -g | sed -n 2p
-          huggingface-cli download microsoft/bitnet-b1.58-2B-4T-bf16 --local-dir models/bitnet-b1.58-2B-4T-bf16 >/dev/null
-          pip install -q ./3rdparty/llama.cpp/gguf-py || true  # the converter needs the runtime's own gguf (KeyError BITNET_25 with the public one)
-          python utils/convert-helper-bitnet.py models/bitnet-b1.58-2B-4T-bf16 > convert.log 2>&1 || true
-          { echo "######## converting again from the original weights: the end of its log"; tail -25 convert.log; ls -la models/bitnet-b1.58-2B-4T-bf16; } 2>&1 | tee -a ../bitnet.txt
-          if [ -f models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf ]; then try models/bitnet-b1.58-2B-4T-bf16/ggml-model-i2s-bitnet.gguf 2>&1 | tee -a ../bitnet.txt; fi
-          rm -rf models/bitnet-b1.58-2B-4T-bf16
-          # The runtime as it was in May 2025, a month after the model came out (the same published file).
-          cd .. && git clone -q --recursive https://github.com/microsoft/BitNet.git old && cd old
-          git checkout -q "$(git rev-list -1 --before=2025-06-01 HEAD)" && git submodule update -q --init --recursive
-          git log -1 --format='######## the runtime of %ad (%h)' --date=short | tee -a ../bitnet.txt
-          mkdir -p models/BitNet-b1.58-2B-4T && cp ../BitNet/models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf models/BitNet-b1.58-2B-4T/
-          pip install -q ./3rdparty/llama.cpp/gguf-py || true  # its requirements do not build on this Python (sentencepiece); the model file is already made
-          python setup_env.py -md models/BitNet-b1.58-2B-4T -q i2_s > setup_old.log 2>&1 || { tail -15 setup_old.log logs/*.log | cut -c1-300 | tee -a ../bitnet.txt; }
-          ls build/bin | head -20 | tr '\n' ' ' | tee -a ../bitnet.txt
-          cp ../BitNet/text.txt .
-          {
-            timeout 900 build/bin/llama-perplexity -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -f text.txt -c 256 --chunks 6 -t 4 2>&1 | grep -iE "estimate|pre-token" || true
-            for q in "What is the capital of Australia?" "Write a Python program that prints every prime below 30."; do
-              timeout 300 build/bin/llama-cli -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf -t 4 -n 160 --temp 0 -p "User: $q<|eot_id|>Assistant: " 2>/dev/null </dev/null | tail -30 || true
-              echo
-            done
-          } 2>&1 | tee -a ../bitnet.txt
-          cd ../BitNet
-          { echo '```'; cat ../bitnet.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: bitnet
-          path: bitnet.txt
-          retention-days: 30
-  sit:
-    if: ${{ !inputs.bitnet }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 130
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [stock, f3]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
     env:
-      TASKS: ${{ inputs.tasks || '16' }}
-      AGENT_TEAM_SOLO: ${{ inputs.members || '' }}
-      SEED: ${{ inputs.seed || '' }}
-      EMPTY: ${{ inputs.empty_memory || '' }}
-      AGENT_TEAM_SOLO_ALONE: ${{ inputs.alone || '' }}
-      PRACTICE: ${{ inputs.practice || '' }}
-      HIVE_MEMBERS: ${{ inputs.who || '' }}
-      LEVEL: ${{ inputs.level || '' }}
+      HIVE_LIGHT: "1"
+      AGENT_TEAM_SOLO: "2"
+      AGENT_TEAM_SOLO_ALONE: "1"
+      HIVE_ASSERT_FIRST: ${{ matrix.mode == 'f3' && '1' || '0' }}
+      HIVE_PAGE_CHECKS: ${{ matrix.mode == 'f3' && '1' || '0' }}
+      HIVE_HTTP_CACHE: ${{ matrix.mode == 'f3' && '1' || '0' }}
+      SHARD: ${{ matrix.shard }}
+      ARM: ${{ matrix.mode }}
     steps:
       - uses: actions/checkout@v4
-      - name: Only ternary members and no roles - the 4-bit engine, the browser and the cells are not installed
-        if: ${{ inputs.who && inputs.alone && !contains(inputs.who, 'coder') }}
-        run: echo "HIVE_LIGHT=1" >> "$GITHUB_ENV"
+        with:
+          persist-credentials: false
+      - name: Fetch the kept G55 body and verify every packed adapter
+        run: |
+          G55_MANIFEST=training/experiments/astra_orders/worker_contracts/g55-contemporaneous.sha256
+          python3 -c "import json; assert json.load(open('cells/body.json'))['generation'] == 55"
+          WHO=$(python3 training/lineage.py members t80)
+          python3 training/grow_record.py fetch "$WHO"
+          sha256sum --check "$G55_MANIFEST"
+          test "$(wc -l < "$G55_MANIFEST")" -eq 25
+          echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
       - uses: ./.github/actions/hive
-      - name: What the hive has solved so far (kept between runs in the Actions cache, never in git)
-        uses: actions/cache/restore@v4
-        with:
-          path: memory/solved.jsonl
-          key: hive-solved-${{ github.run_id }}
-          restore-keys: hive-solved-
-      - name: The exam
+      - name: Record the body and runtime before the workers start
         run: |
-          if [ -n "$PRACTICE" ]; then
-            python training/exam.py practice --tasks "$TASKS" | tee practice.txt
-            echo "### Practice" >> "$GITHUB_STEP_SUMMARY"; tail -1 practice.txt >> "$GITHUB_STEP_SUMMARY"
-          else
-            python training/exam.py sit --tasks "$TASKS" ${SEED:+--seed "$SEED"} ${EMPTY:+--empty-memory} ${LEVEL:+--level "$LEVEL"}
-          fi
-      - name: Keep what it solved in practice
-        if: ${{ !cancelled() && inputs.practice && hashFiles('memory/solved.jsonl') != '' }}
-        uses: actions/cache/save@v4
-        with:
-          path: memory/solved.jsonl
-          key: hive-solved-${{ github.run_id }}
-      - name: How it went
-        if: ${{ !cancelled() }}
-        run: cat training/reports/exams/*.md >> "$GITHUB_STEP_SUMMARY" || true
+          mkdir -p evidence
+          python -c "from team.ternary import weights; print(weights('t80'))" > evidence/base-path.txt
+          BASE_PATH=$(tail -1 evidence/base-path.txt)
+          echo "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922  $BASE_PATH" | sha256sum --check
+          cp training/experiments/astra_orders/worker_contracts/g55-contemporaneous.sha256 evidence/adapters.sha256
+          sha256sum cells/body.json cells/studied.json > evidence/roster.sha256
+          python -c "import os, json, platform; print(json.dumps({k:os.environ.get(k) for k in ('GITHUB_SHA','GITHUB_RUN_ID','ARM','SHARD','HIVE_MEMBERS','AGENT_TEAM_SOLO','HIVE_ASSERT_FIRST','HIVE_PAGE_CHECKS','HIVE_HTTP_CACHE')} | {'machine':platform.machine()}, indent=2))" > evidence/assignment.json
+      - name: Run this shard of the normal fixed held-out exam
+        timeout-minutes: 70
+        run: python training/exam.py held --seat "$SHARD" --seats 8 --per 3 --seconds 900
+      - name: Preserve the official grade and participant evidence
+        if: always()
+        run: |
+          python - <<'PY'
+          import os, shutil
+          from pathlib import Path
+          root = Path("evidence")
+          root.mkdir(exist_ok=True)
+          path = Path("training/reports/exams") / f"held_{os.environ['SHARD']}.json"
+          if path.exists():
+              shutil.copyfile(path, root / path.name)
+          for file in Path("runs/exam").rglob("events.jsonl"):
+              if file.is_file() and not file.is_symlink():
+                  dest = root / file.relative_to("runs/exam")
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(file, dest)
+          PY
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: always()
         with:
-          name: the-sitting
-          path: training/reports/exams/
-          retention-days: 30
-      - name: What the members wrote and what it printed (to find faults by reading, not by the score)
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && inputs.members }}
-        with:
-          name: the-members-own-work
-          path: |
-            runs/exam/**/TASK.md
-            runs/exam/**/REPORT.md
-            runs/exam/**/events.jsonl
-            runs/exam/**/member*_*.py
-            runs/exam/**/.member*_*.py.out
-            runs/exam/**/.member*_*.py.err
-          include-hidden-files: true
+          name: f3-${{ matrix.mode }}-${{ matrix.shard }}-attempt-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
           retention-days: 14
-      - name: The numbers once more, last in the log (so that they can be read without downloading anything)
-        if: ${{ !cancelled() }}
-        run: |
-          f=$(ls -t training/reports/exams/*.md | head -1)
-          grep -E "✅|❌" "$f" | awk -F'|' '{print $4 "|" $3 "|" $5}' | cut -c1-90
-          sed -n 3p "$f"
-  record:
-    needs: sit
-    if: ${{ !inputs.members && !inputs.empty_memory && !inputs.practice && !inputs.bitnet }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: the-sitting
-          path: sitting
-      - name: One line in the record (only numbers and known names are taken from the sitting)
-        run: |
-          python3 training/exam_record.py sitting
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add training/reports/exams.jsonl
-          git commit -q -m "The hive sat an exam" || exit 0
-          git pull -q --rebase --autostash origin "${GITHUB_REF_NAME}" || true
-          git push -q origin "HEAD:${GITHUB_REF_NAME}" || echo "the record could not be pushed"
