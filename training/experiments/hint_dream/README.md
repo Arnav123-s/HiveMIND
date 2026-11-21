@@ -60,5 +60,11 @@ python -m training.experiments.hint_dream.pilot "${args[@]}" --adapter "$G55_GGU
 python -m training.experiments.hint_dream.audit --sdk "$SDK" --panel runs/hint-initial
 python -m training.experiments.hint_dream.fit --parent "$G55_SAFETENSORS" --panels runs/hint-initial runs/hint-confirmation --out runs/hint-fit
 candidate=runs/hint-fit/exports/t80+f4hintdream.gguf
-python -m training.experiments.hint_dream.pilot "${args[@]}" --adapter "$candidate" --candidate-sha "$(sha256sum "$candidate" | cut -d' ' -f1)" --panel transfer --out runs/hint-after
+child_sha=fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b
+python -m training.experiments.hint_dream.pilot "${args[@]}" --adapter "$candidate" --candidate-sha "$child_sha" --panel transfer --out runs/hint-after
+python -m training.experiments.hint_dream.pilot "${args[@]}" --adapter "$candidate" --candidate-sha "$child_sha" --panel trained --out runs/hint-seen
+python -m training.experiments.hint_dream.parser_transfer --qualify --sdk "$SDK" --bank runs/parser-bank
+for case_index in 0 1 2 3; do
+  python -m training.experiments.hint_dream.parser_transfer "${args[@]}" --adapter "$candidate" --bank runs/parser-bank --case "$case_index" --out "runs/parser-case-$case_index"
+done
 ```
