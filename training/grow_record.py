@@ -442,7 +442,7 @@ def gate(argv):
     same_dna = body.get("dna") == dna
     judged = arms if same_dna else dict(arms, before={"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0})
     keep, why = decide(judged) if cells else (False, "no cell was grown")
-    seeds = []
+    seeds, sequential = [], None
     if grow and cells and not trial:
         # the body multiplies: the paired gate decides it. Before and after sat the same seeds; only the seeds both
         # finished are compared (a seat that died on one side does not count against the other)
@@ -450,6 +450,16 @@ def gate(argv):
         if arms["before"]["seeds"]:
             arms = dict(arms, **pair)
         keep, why = decide(arms, grow=True, held=held)
+        if "--sequential" in argv:
+            from training.gate_look import look
+            # Re-read the artifacts on the recorder. A lost job or a failed download can
+            # produce a short but nondecisive prefix, or no before arm at all.
+            index = argv.index("--sequential")
+            seats, run_number = map(int, argv[index + 1:index + 3])
+            sequential = look(folder, run_number, seats)
+            if "reason" in sequential or (seats < 8 and not sequential["stop"]):
+                keep = False
+                why = "dropped: incomplete sequential gate evidence (" + sequential.get("reason", "boundary not reached") + ")"
     if cells and not same_dna:
         why += f" (a new DNA, {dna}: the body of {body.get('dna')} before it is not the bar)"
     if trial and keep:
@@ -476,6 +486,8 @@ def gate(argv):
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna,
             "held_exam": held}
+    if sequential is not None:
+        line["paired"]["sequential"] = sequential
     if grow or arms["before"]["seeds"]:
         line["paired"]["deliveries"] = delivery_changes(folder)
     # practice by its orders (the split of training/practice_arms.py) and its first try on old kinds and K2's new ones
@@ -495,6 +507,7 @@ def gate(argv):
             print(f"the run's facts could not be read ({type(e).__name__}); the record goes on without them")
     with open(RECORD, "a") as f:
         f.write(json.dumps(line) + "\n")
+    prior_body = dict(body)
     if keep:
         parents = {c: p for c, p in dict(old_parents, **parent_of).items() if c in after}
         body.update({"dna": dna, "generation": int(gen[1:]), "cells": after, "parents": parents})
@@ -508,6 +521,20 @@ def gate(argv):
             body.pop("levels", None)
             body.pop("kinds", None)
         BODY.write_text(json.dumps(body) + "\n")
+    if grow and not trial and os.environ.get("HIVE_ARCHIVE_K") == "3":
+        from training import body_archive
+        folder = Path(argv[argv.index("--archive") + 1]) if "--archive" in argv else None
+        if folder:
+            past = body_archive.collect(folder, "before", prior_body, gen)
+            current = past
+            if keep:
+                path = got / f"{dna}.{trunk}.gguf"
+                current = body_archive.collect(folder, "after", body, gen, body_archive.digest(path)) if trunk and path.is_file() else None
+            archive_path = BODY.parent / "body_archive.json"
+            archive = body_archive.read(archive_path)
+            updated = body_archive.retain(archive, current, past if keep else None)
+            if updated != archive:
+                archive_path.write_text(json.dumps(updated, sort_keys=True) + "\n")
     # who in the body is strong on what, by organ, for trials of seating by it (HIVE_SEATING=strength); a body that
     # multiplies is not seated by it
     src = arms["after"] if keep else arms["before"]

@@ -139,7 +139,7 @@ def test_the_gate_sits_before_and_after_on_the_same_eight_seeds_for_a_growing_bo
     matrix = gate["strategy"]["matrix"]
     grow_arms = re.search(r"needs\.plan\.outputs\.grow && '(\[[^']*\])'", matrix["arm"]).group(1)
     assert json.loads(grow_arms) == ["before", "after"]
-    seeds = json.loads(re.search(r"fromJSON\('(\[[^']*\])'\)", matrix["seed"]).group(1))
+    seeds = json.loads(re.search(r"\|\| '(\[[^']*\])'\)", matrix["seed"]).group(1))
     assert seeds == list(range(1, 9)) and len(json.loads(grow_arms)) * len(seeds) == 16 <= 20
     # every arm sits the same seed for the same matrix.seed: the arm is not in the exam's seed
     sit = next(s["run"] for s in gate["steps"] if "exam.py sit" in s.get("run", ""))

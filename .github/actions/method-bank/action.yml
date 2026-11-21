@@ -1,0 +1,27 @@
+name: Verified method runtime
+description: Install the pinned CPython WASI guest used for finite method contracts.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+    - uses: actions/cache@v4
+      continue-on-error: true
+      with:
+        path: ${{ runner.temp }}/bank-cpython-wasi.zip
+        key: bank-cpython-wasi-f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39
+    - shell: bash
+      run: |
+        archive="$RUNNER_TEMP/bank-cpython-wasi.zip"
+        sdk="$RUNNER_TEMP/bank-cpython-wasi"
+        verify() { echo "f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39  $archive" | sha256sum -c --status; }
+        if ! verify; then
+          curl -fsSL --retry 2 --connect-timeout 10 --max-time 90 -o "$archive" "https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip"
+        fi
+        verify
+        mkdir -p "$sdk"
+        unzip -oq "$archive" -d "$sdk"
+        python -m pip install --quiet --retries 1 --timeout 20 wasmtime==36.0.0
+        test -s "$sdk/python.wasm"
+        echo "HIVE_FIELDWORK_SDK=$sdk" >> "$GITHUB_ENV"

@@ -21,14 +21,19 @@ def main():
     ap.add_argument("--inputs",type=Path,required=True)
     ap.add_argument("--arm",choices=("stock","chunk","recompute","acceptance"),required=True)
     ap.add_argument("--scratch",type=Path,required=True)
+    ap.add_argument("--chunk-tokens", type=int, help="override the acceptance arm loss chunk length")
     ap.add_argument("--row-file",type=Path,help="input for separate single-row admission challenge")
     args=ap.parse_args()
+    if args.chunk_tokens is not None and (args.arm != "acceptance" or args.chunk_tokens < 1):
+        ap.error("--chunk-tokens requires the acceptance arm and a positive integer")
     scratch=args.scratch.resolve()
     scratch.mkdir(exist_ok=False,parents=True)
     sys.path.insert(0,str(args.repo.resolve()))
     os.environ.update(HF_HUB_OFFLINE="1",HIVE_GPU="0",HIVE_KEEP_BACK="0",HIVE_PREFIX_CACHE="0",
                       OMP_NUM_THREADS="2",AGENT_TEAM_THREADS="2",OPENBLAS_NUM_THREADS="1")
     os.environ["HIVE_CHUNK_CE"]="32" if args.arm in ("chunk","acceptance") else "0"
+    if args.chunk_tokens is not None:
+        os.environ["HIVE_CHUNK_CE"] = str(args.chunk_tokens)
     os.environ["HIVE_ROW_CHECKPOINT"]="1" if args.arm in ("recompute","acceptance") else "0"
     from training import grow
     import psutil
@@ -81,6 +86,27 @@ def main():
         state["active"]=None
         print("MEASURED",json.dumps(span),flush=True)
         return ret
+    if args.chunk_tokens is not None:
+        from training import lm_head_loss
+        answer_nll = lm_head_loss.answer_nll
+
+        def measure_projection(model, ids, k, chunk_tokens=0):
+            span = state["active"]
+            if span is None:
+                return answer_nll(model, ids, k, chunk_tokens)
+            span["answer_tokens"] = k
+            positions = span.setdefault("forward_projection_rows", [])
+
+            def record_input(module, inputs):
+                positions.append(int(inputs[0].shape[-2]))
+
+            hook = model.get_output_embeddings().register_forward_pre_hook(record_input)
+            try:
+                return answer_nll(model, ids, k, chunk_tokens)
+            finally:
+                hook.remove()
+
+        lm_head_loss.answer_nll = measure_projection
     if args.arm=="acceptance":
         learned=grow.Study.learned
         def note_loss(study,subject,loss):

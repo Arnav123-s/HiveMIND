@@ -1,0 +1,46 @@
+{
+  "base.py": {
+    "archive_sha256": "550d09b2ad3efbb185e7c3fc6106e2bcc4ee3614bc7015d5eb7ef54cfc36b56e",
+    "artifact": 14507103644,
+    "member": {
+      "member": 2,
+      "ok": true,
+      "who": "t80+g49words"
+    },
+    "source": "practice_10005003/h10005003_02/members/member2/member2_1.py",
+    "source_sha256": "2e1896060722518b82e6ac68cf69ceb8ac288a9ca0bdb95e1d3818393f4e87bc"
+  },
+  "digits.py": {
+    "archive_sha256": "8e5fa119d0a6653483f9235581858bb5a99029453635ebb9065ff92c9e6fa216",
+    "artifact": 14534856013,
+    "member": {
+      "member": 1,
+      "ok": true,
+      "who": "t80+g49trunk"
+    },
+    "source": "practice_10005108/h10005108_02/members/work/member1_1.py",
+    "source_sha256": "1b5df128f8c4c3cea4975297aca71cc152bb5be0f7add3243a83b58c42ea1502"
+  },
+  "prime.py": {
+    "archive_sha256": "e2315cf3a73994dd3cffab4297cbef410438d9c2a6a4e74ddd422c45c6ad096c",
+    "artifact": 14534767525,
+    "member": {
+      "member": 1,
+      "ok": true,
+      "who": "t80+g49trunk"
+    },
+    "source": "practice_10005107/c10005107_02/members/work/member1_2.py",
+    "source_sha256": "99510753b888e6aa070a71f19ab988ec30ddb900105a96f3b1fad023f6cd6d23"
+  },
+  "zero_bug.py": {
+    "archive_sha256": "5e9a5f307b7a83e76195ebf81c86687f31113b115a4722fa7cd2805e271040aa",
+    "artifact": 14507480673,
+    "member": {
+      "member": 1,
+      "ok": true,
+      "who": "t80+g49trunk"
+    },
+    "source": "practice_10005002/c10005002_03/members/work/member1_1.py",
+    "source_sha256": "e0a7fd7eba28a2f7cf2f2f6250ce44d714e1d98a654a176cc30d45e098dba9d2"
+  }
+}

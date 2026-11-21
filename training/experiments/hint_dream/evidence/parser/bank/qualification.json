@@ -1,0 +1,18 @@
+{
+ "csv": {
+  "source_program_sha256": "446db96daefb920f1cddf76525fe16bd1220ffb7e5862be05d65836dbdd4dfc8",
+  "helper_sha256": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+  "admitted": true,
+  "matches": 64,
+  "cases": 64,
+  "source_spec": "stream-v1/spade-format-confirmation-20261121/11"
+ },
+ "ini": {
+  "source_program_sha256": "744c7bf3aa33af57f6beb7a82049090c228dd9d956ec647c2b0d89feb9ed1d20",
+  "helper_sha256": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+  "admitted": true,
+  "matches": 64,
+  "cases": 64,
+  "source_spec": "stream-v1/spade-format-confirmation-20261121/2"
+ }
+}

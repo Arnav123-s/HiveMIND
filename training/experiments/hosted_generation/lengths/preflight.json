@@ -1,0 +1,28 @@
+{
+  "previous_trial": "Independent one-GiB stop 1033965568",
+  "stage": "before weights finished loading or any row admitted",
+  "files": [
+    "model-00001-of-00004.safetensors",
+    "model-00002-of-00004.safetensors",
+    "model-00003-of-00004.safetensors",
+    "model-00004-of-00004.safetensors"
+  ],
+  "before_bytes": {
+    "current_bytes": 8368312320,
+    "active_file": 6618644480,
+    "inactive_file": 1407983616,
+    "file_mapped": 24576,
+    "anon": 86032384,
+    "file_dirty": 163840,
+    "file_writeback": 0
+  },
+  "after_bytes": {
+    "current_bytes": 1534267392,
+    "active_file": 1208594432,
+    "inactive_file": 2625536,
+    "file_mapped": 24576,
+    "anon": 86048768,
+    "file_dirty": 163840,
+    "file_writeback": 0
+  }
+}

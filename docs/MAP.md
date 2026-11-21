@@ -112,6 +112,8 @@ Each step runs one subcommand of `training/grow.py`, `training/lineage.py`, `tra
 | `team/tools/sandbox.py` | Runs members' programs safely | A (C's agents now) | `team/solo.py` |
 | `team/ternary.py` | The ternary runtime: builds it, serves the DNA and cells, seats members | B | every model job |
 | `team/talk.py` | Talk: answer at once or hand the work to the body | B | talk.yml |
+| `team/bank_snapshot.py`, `team/bank_admit.py` | Recheck individually graded practice functions against independent input contracts and retain all qualifying versions | research | optional growth record and local bank commands |
+| `team/saved.py` | Select a callable within its verified input range and check covered versions for disagreement | research | local, web and hosted chat |
 | `team/config.py`, `team/llm.py`, `team/engram.py`, `team/memory.py`, `team/parts.py`, `team/health.py`, `team/stop.py` | Support imported by the line's code | none named | grow, exam, solo |
 | `team/__main__.py`, `team/cli.py` | `python -m team` and `./hive` entry points | none named | ask.yml, people |
 | `team/hive.py`, `team/board.py`, `team/specialists/`, `team/school.py`, `team/recruit.py`, `team/evolve.py`, `team/life.py`, `team/cells/`, `team/evolved/` and the rest | The older team of roles. **Old** (still reached by ask.yml and `./hive`) | none named | ask.yml, people |
@@ -146,14 +148,19 @@ the job's timeout). Edge labels are the artifacts passed.
 graph TD
   fresh["fresh<br/>1 runner: is the body still the branch's?"]
   practice["practice<br/>12 runners x 8 tasks, 210 min (timeout 330)"]
-  dream["dream<br/>8 runners x 3 old failures, 50 min (timeout 150)"]
+  dream["dream<br/>8 runners, 3 practice slots each, 43 min by default"]
   gather["gather<br/>1 runner: rows + lessons (25 min)"]
   bench["bench<br/>1 runner, only with input bench (timeout 120)"]
   plan["plan<br/>1 runner: children and slices"]
-  train["train<br/>at most 20 slices x 170 min (timeout 250)"]
+  train["train<br/>at most 20 slices, 85 CPU training minutes by default"]
   join["join<br/>1 runner a child (timeout 45)"]
   merge["merge<br/>1 runner: the trunk (timeout 45)"]
-  gate["gate<br/>8 seeds x 8 tasks, 1 arm when growing (timeout 300)"]
+  archive_profiles["Optional archive checks on four development tasks per body"]
+  gate["gate<br/>paired fresh exams, fixed held-out exam and chat"]
+  gate_look4["Check the first four paired fresh exam seeds"]
+  gate_5_6["Run fresh seeds 5 and 6 if needed"]
+  gate_look6["Check all six pairs"]
+  gate_7_8["Run fresh seeds 7 and 8 if needed"]
   record["record<br/>1 runner: no model; writes and restarts"]
 
   fresh --> practice
@@ -172,10 +179,25 @@ graph TD
   plan --> merge
   train --> merge
   join -- "cell-*" --> merge
+  plan --> archive_profiles
+  merge --> archive_profiles
+  archive_profiles --> gate
   plan --> gate
   train --> gate
   join -- "cell-*" --> gate
   merge -- "trunk" --> gate
+  plan --> gate_look4
+  gate --> gate_look4
+  plan --> gate_5_6
+  gate --> gate_5_6
+  gate_look4 --> gate_5_6
+  gate_5_6 --> gate_look6
+  plan --> gate_7_8
+  gate_look6 --> gate_7_8
+  gate_look4 --> record
+  gate_5_6 --> record
+  gate_look6 --> record
+  gate_7_8 --> record
   plan --> record
   train --> record
   join -- "cell-*" --> record
@@ -200,6 +222,9 @@ train, join, merge, gate. The record also downloads `rows-*` (practice.json, for
 | train | `training/grow.py train` on one slice, from parent and trunk in the release; Colab may grow a child whole | part-VARIANT-ORGAN-sK |
 | join | `training/merge.py join`: a child's slices into one cell | cell-ORGAN (versus-ORGAN in a versus trial) |
 | merge | `training/merge.py trunk`: newest cell of every line averaged | trunk |
+| archive_profiles | With the archive enabled, measure both bodies on matched development tasks before seating exam workers | Pinned profiles per arm |
+| gate_look4, gate_look6 | With staged fresh exams enabled, inspect complete matched results and decide whether more evidence is needed | Stop or continue |
+| gate_5_6, gate_7_8 | Run additional pairs in order after an inconclusive look | Same fresh grade and work files as the first seats |
 | gate | `training/exam.py sit --level mixed --tasks 8`, seeds 20000000 + (gate_seeds or run) x 10 + seed | gate-ARM-SEED, gate-work-ARM-SEED |
 | record | `training/reads.py facts` (the run's jobs from the API); `training/grow_record.py gate`; uploads to release `hive-grown`; writes the read (`docs/reads/`), redraws progress and `docs/KNOWLEDGE.md`; commits; starts the next run | release assets, a commit |
 

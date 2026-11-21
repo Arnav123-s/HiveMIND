@@ -1,0 +1,236 @@
+{
+  "generations": {
+    "g45": {
+      "pair": [
+        "t80+g45trunk",
+        "t80+g44trunk"
+      ],
+      "useful_organs": [
+        "code"
+      ],
+      "counts": {
+        "development": 32,
+        "reserved": 31,
+        "routed": 14,
+        "primary_correct": 22,
+        "default_pair_any": 23,
+        "routed_pair_any": 24,
+        "gained_union": 1,
+        "lost_union": 0,
+        "actual_delivery": 21
+      },
+      "sha256": {
+        "gate-before-1.zip": "2a31899c4b51387f5a07b54f3f5c12fe90ecfc55f4278f691aef9f979c6363e4",
+        "gate-after-1.zip": "2f2145c492546049e6a2afcf33c78434ed566186504231b278fa2046eec5d9ab",
+        "gate-before-2.zip": "dc771294f1e523c7962e8c5e50830a2fb4f4aa86d15da6abd8830c04f5fdd4e0",
+        "gate-after-2.zip": "e8f41bb197be35829c3cbd48a98d743dcc293e54cd388ca66ebb5c105e18f0f6",
+        "gate-before-3.zip": "3836a507b22c05dd93ab63392a4c4539854322ec8f4a09c4aac3f27550500878",
+        "gate-after-3.zip": "1498700cd81d488cd03d2d8c94ffb9c605706bab1dcaa004e29b84802c4be806",
+        "gate-before-4.zip": "2481b0e70e78dd1880b762ea5f207857e41a0a0698ae3207ebda064c5fc10297",
+        "gate-after-4.zip": "ee2924abb15f4fbf12c7dfebdac3eac1e787282b1cb18b0006a121db76cd56dc",
+        "gate-before-5.zip": "4378ae487fef2f2ae9004977cd50de761bdd469a5f72da0e483e4ec0c3e3c948",
+        "gate-after-5.zip": "2dc7111a8295b500540737c09ac433cd2cfeb4d7c81826c3c2fb4ed5c1ee8b51",
+        "gate-before-6.zip": "ce2cd6e9a50d26eb1a545a3d57682e25252a290668bb0fbfbb975d0dbc97eba0",
+        "gate-after-6.zip": "ea71a7e8e81efe6ed905a3d8fe13c2642e974f4e0f451dba9486aaa00151eb5e",
+        "gate-before-7.zip": "b47894b2332a088c8ff8b5fcf188ffe1ce571502655bbfd35b331c3a6f7aa901",
+        "gate-after-7.zip": "96f3f7566407f36d3bd443b9781addecfafafa04e40107ff5e4bf2778a1a20f8",
+        "gate-before-8.zip": "9d540e133153116a05406b78cc2d07aa87362df0157591789f63b106b165d710",
+        "gate-after-8.zip": "7e9819462fba9719e7eb9555e9674057622b628a7060cae32cef2f83e48feab3"
+      }
+    },
+    "g47": {
+      "pair": [
+        "t80+g47trunk",
+        "t80+g45trunk"
+      ],
+      "useful_organs": [],
+      "counts": {
+        "development": 31,
+        "reserved": 32,
+        "routed": 0,
+        "primary_correct": 23,
+        "default_pair_any": 24,
+        "routed_pair_any": 24,
+        "gained_union": 0,
+        "lost_union": 0,
+        "actual_delivery": 21
+      },
+      "sha256": {
+        "gate-before-1.zip": "8603edfc7ffcf6f9efe8e4498e4854d9d409f0c7659756883aa227fd6227ecde",
+        "gate-after-1.zip": "511f7ac205cfc5a47a3155d1e073fb45c50d577edeb127e8d79dda1899d34df5",
+        "gate-before-2.zip": "c52ad696816299621dfe05b4bdfde533872e70f4f923666900b82ac77b0b1e3a",
+        "gate-after-2.zip": "f09e2d3109276587fadf3fc394e4f70ec5ef08f0cf79182ef587413be5c1ea76",
+        "gate-before-3.zip": "efd941f878f1bf85a7cd8473ec3b0fa1bd34eecd567fb9ef10df5b8ddfe288d5",
+        "gate-after-3.zip": "b28f064230ba0a42e49ea5261f29be854547ead57c73bdfdae65a27dc6091034",
+        "gate-before-4.zip": "516227e13e145e4c06ba2df066b3feb63bb756d1d7f3ddad89245382acac2f91",
+        "gate-after-4.zip": "52074d64127b33288a98bcc0fdc27b92e1a9daff9440400775d925c74c04b9f4",
+        "gate-before-5.zip": "eaa5fc6d34872c0650175ee7a96cd0d1d8ce790950f7124bf75ecf39a5c84c2f",
+        "gate-after-5.zip": "97259e4e70b1737a6879d3d8786f7aedd18075e97c6a9304bef9ab0b7c9e769d",
+        "gate-before-6.zip": "03e71ae46f54a4cb795c92d54a9cc3e66b0f10a1ff9d8d0d58ddba75f3f72918",
+        "gate-after-6.zip": "7520abb69c2de82723f55186719383cca976189d7248d13761dd62cf43f3479b",
+        "gate-before-7.zip": "60431b67a84bda3ef82bc61d57df27a113dbf196cef494aff5bc30ffafc0fdfc",
+        "gate-after-7.zip": "bb5605548130ed3bfb2326a6b6fef53fbab19fa8da216e49db914a042934d34e",
+        "gate-before-8.zip": "5fd7ce035c09e127e3df0530aec2dc6af6e2be3b94b3da4300458ee3f635392f",
+        "gate-after-8.zip": "e094485f52a99f4c281c6fb0cdbe247f715d131e2726785b6b540937ad847372"
+      }
+    },
+    "g48": {
+      "pair": [
+        "t80+g48trunk",
+        "t80+g47trunk"
+      ],
+      "useful_organs": [
+        "data"
+      ],
+      "counts": {
+        "development": 32,
+        "reserved": 31,
+        "routed": 8,
+        "primary_correct": 25,
+        "default_pair_any": 27,
+        "routed_pair_any": 27,
+        "gained_union": 0,
+        "lost_union": 0,
+        "actual_delivery": 26
+      },
+      "sha256": {
+        "gate-before-1.zip": "85bffc80abcf0d7a23df2dfb727f1b3943c9790242a55420e5c5414dbc8d73bd",
+        "gate-after-1.zip": "eb71db5efd4d47fd92c8f3f9fcd638b4e657a5653f5d7a4be2728b7f5d1771d0",
+        "gate-before-2.zip": "749c5ddcb3dfdd077e977648215c4f05aa9f2bb70c18c89db38a477d93621e3a",
+        "gate-after-2.zip": "cd0fb6ff4f0299d8545edb358418d1e1ee9be306774c0fdd9f280fcf23589fb5",
+        "gate-before-3.zip": "90123fa6470115c77219d4e289318f2533724a8365d70584b254e801a8fd1674",
+        "gate-after-3.zip": "8ae6b9d7d6644ba8b83b40dcfb529ea539d553f72391c28e84ad1aa66c1a4042",
+        "gate-before-4.zip": "1540f14274e1497867f2b3f731c81b3f06412019453c026fd2e4b2b343feb5b8",
+        "gate-after-4.zip": "008d039dbf1bef84d336e9aae3d8b95a45d1e205ad45e3ce48f34a9dd560ed56",
+        "gate-before-5.zip": "168ae86c6a3df4a6f7ab71de1775d9e49ee988eedda2e6756d850c49a24ebe70",
+        "gate-after-5.zip": "0390e2dbce8c4b5374b41b600dec8435175069f2bb00822b8c9ac103f117a50c",
+        "gate-before-6.zip": "7d33995b79f516f0ab6a7fd06dd7b64495e523c039e254500ff033ebb7d6f07e",
+        "gate-after-6.zip": "7c587f4a76af6ed8b55f3adf156e9527831798e52518b8a8ff857888e4997286",
+        "gate-before-7.zip": "3a5456652c5b681677391725e6c82c7f49d9c5f5536a034716a2d9c235c7b507",
+        "gate-after-7.zip": "1f49f383256cd53d3ea0496df8155605c989a4c3a04658cf8f186e12f92a377c",
+        "gate-before-8.zip": "bca5316c22fbb38df757a077e504fbdacf140d75f26bbdf5df4e819b1ad3940f",
+        "gate-after-8.zip": "73c4e471371327bff6bb49111da9d85685b44ff98c7c4c9f49fcd9ac113dc244"
+      }
+    },
+    "g49": {
+      "pair": [
+        "t80+g49trunk",
+        "t80+g48trunk"
+      ],
+      "useful_organs": [
+        "code"
+      ],
+      "counts": {
+        "development": 32,
+        "reserved": 32,
+        "routed": 18,
+        "primary_correct": 24,
+        "default_pair_any": 25,
+        "routed_pair_any": 25,
+        "gained_union": 0,
+        "lost_union": 0,
+        "actual_delivery": 24
+      },
+      "sha256": {
+        "gate-before-1.zip": "589087061fa6cc7360eeac14871703eda95a2cb75f3df4f23eade3ce0a33d4fa",
+        "gate-after-1.zip": "626b1cf410b1ac7a4fea2b9fdb014f58726a4aa397e3306a54a709c756aa1bba",
+        "gate-before-2.zip": "d35cc075b70974781b1118c1437bde150060ad0692650987686870d015fdbfb7",
+        "gate-after-2.zip": "59f86d126b5fcf9eafba8da68a17cf0f3eedb693611e0414d82facc36e11f454",
+        "gate-before-3.zip": "b64e4908fc8c6cd94d29de667be32d0d575d2ee39e93b10306643e0ba53fa201",
+        "gate-after-3.zip": "c9b0da22621f0b8f36f9202fa1e9835d369945f09c045046e356e75911265d63",
+        "gate-before-4.zip": "e97c8406e54229f36b68911753b1df511cc3202c9794a4f1572c0a4259ae8833",
+        "gate-after-4.zip": "cf12f9344e89b432412b4330af28d6b16a3aadd722355f7e3eb1926b93b3b855",
+        "gate-before-5.zip": "1b713bfb48c3bf1cb1e053803b78c1cc4169e6f09b5ebfb88df5aab021d8c500",
+        "gate-after-5.zip": "d4d56fcef8816861bcf91325de515957c7ee8835b9805c78e6d6f4bbd47f7c5f",
+        "gate-before-6.zip": "8dc2f2476d1f9392601cda42df4784f3233f86e0545f029f4302ae57ae0758b3",
+        "gate-after-6.zip": "029eb147c13a5ef44374c5aa48a33a1516efe9a969e7135917fdb4f2cf49a78f",
+        "gate-before-7.zip": "31dc96848cb6584203dffad96e156059c8b9b124c1125f72539ee846d8b63426",
+        "gate-after-7.zip": "1076e02f03bb03b60b144caf08f21ac61bbda9203f9239d09aa4e30b27807d5c",
+        "gate-before-8.zip": "633423905934ef219a6365007243a497d3c71f8163ad2821ca4cafcf9be7f425",
+        "gate-after-8.zip": "feb7937c9622d56be1206defcbc65529ef26f955cce6088c0a62df882afacd42"
+      }
+    },
+    "g53": {
+      "pair": [
+        "t80+g53trunk",
+        "t80+g51trunk"
+      ],
+      "useful_organs": [],
+      "counts": {
+        "development": 32,
+        "reserved": 32,
+        "routed": 0,
+        "primary_correct": 25,
+        "default_pair_any": 25,
+        "routed_pair_any": 25,
+        "gained_union": 0,
+        "lost_union": 0,
+        "actual_delivery": 25
+      },
+      "sha256": {
+        "gate-before-1.zip": "0b456e9e54b9a1e159a180cdbdf97c92501cf9263dbb73822ef480b0e2d71ee6",
+        "gate-after-1.zip": "5e7e18bc291804788c8a56bab6e5e72eedf58f7aaa817729d801af1e71a100ef",
+        "gate-before-2.zip": "597682436dc8a39656599496d520c78771fc0afdfddcacbd5b50b3033051ddee",
+        "gate-after-2.zip": "f3784dd4a26a7e48e42bc71f0b0429e557fc3fc1348b1bc3a2c403c8e4ca4b2c",
+        "gate-before-3.zip": "5eb10029e0a2449df8a86d5dd08a0a0cbf37da12ba520366b075825cfbac3118",
+        "gate-after-3.zip": "bef9726e81dcbc2d3a183c40609dd8574c890741752a705ab9cdde9f5009392d",
+        "gate-before-4.zip": "42e82109b7019803b1fe4ef3afb67b9e3af8d257a541cc734d029e04132e2597",
+        "gate-after-4.zip": "8ca2ff0adfa3ec9be99465a2601a0a7e43ed010f957dfc416fc098e25d363fe1",
+        "gate-before-5.zip": "a61dc58d3a15b8a9bb7948bfbc173c15172e49c7883deea2ffa05b53f266a995",
+        "gate-after-5.zip": "4c28dbc83e9e6b68cb175c3b6790dea996a304d1dbac8af30f858f9c35919e9d",
+        "gate-before-6.zip": "8b02df6422c3115f72a12ba4401b061664d314454a33bdd362721c64028e534a",
+        "gate-after-6.zip": "418813e8a0c824f7b0ee4e29f0e205ca71a587e3541da1f2e99b8afd9547def7",
+        "gate-before-7.zip": "ffabfafd745b62f8c26764f4e740a839c7fb13cf1a93a6e41c94218f6d112178",
+        "gate-after-7.zip": "ab8863a6d681ff346204eab3a2cf8f057d3f2def17e40d38d3a8e2b0d6d12b26",
+        "gate-before-8.zip": "b65c9f297912c0fbdf5aa023e54c4eae6d32daaec29fd680603aa82015715a90",
+        "gate-after-8.zip": "3597e57f30bbcb9c566c2cdead33f6c2453a6732f579c100ae80caff2b55a0af"
+      }
+    },
+    "g55": {
+      "pair": [
+        "t80+g55trunk",
+        "t80+g53trunk"
+      ],
+      "useful_organs": [],
+      "counts": {
+        "development": 32,
+        "reserved": 30,
+        "routed": 0,
+        "primary_correct": 23,
+        "default_pair_any": 24,
+        "routed_pair_any": 24,
+        "gained_union": 0,
+        "lost_union": 0,
+        "actual_delivery": 23
+      },
+      "sha256": {
+        "gate-before-1.zip": "036379864f3c1eb1dddd8a77452b0c0ef48f2d19b2e4e61638dfea82a274e223",
+        "gate-after-1.zip": "2594598da560a69521dd5b8ec53d2bf26ac7ece98c42da16d2ea2e77fd49f529",
+        "gate-before-2.zip": "ba1dae1e2e5d776b9f3c64b6ef8308df0cc9f25e71c6f20fc9187f71b1514d42",
+        "gate-after-2.zip": "293e1ca2742cda20e6c0f658a939f4e3aa148aca94009911b355ba0d4f1cdb64",
+        "gate-before-3.zip": "0cae2dded49f2573c683bcf21504ce1652e735af84e20ecfe3c729f9a6c8dd57",
+        "gate-after-3.zip": "9328eb0d854636135d43e6690a276e2d4f1ba3eac188a6dc50eb28baf53a2715",
+        "gate-before-4.zip": "83cf92f70f07b3d0a96ee50bc9ddb817a3d1b84f9483e082ba07840392f69403",
+        "gate-after-4.zip": "5b4a4e24124069d0976084df2c8ab77cee67c4bf32c2da4f19df8fef3c41a15a",
+        "gate-before-5.zip": "22c8581d00b47818d1d3bce1a545bd93a1ab117a71c3681803abd2b1d24ae0a3",
+        "gate-after-5.zip": "902774d868b269a3f875fe5e7d96e4cf217e5ee258bbfb5c793ee3e920797d69",
+        "gate-before-6.zip": "17f59d2bfc016e3a9b329c3adf8fb332f7517def2344e9a0b2c8a9b3c1de9894",
+        "gate-after-6.zip": "fdf02a42769a07cf2799bddc93c900e712f93195774e559573c4b38d821cec25",
+        "gate-before-7.zip": "07ced6fd98ff4a97840f3aa0ac2d2401f9478b10913ec51e5947182dc8a1fd62",
+        "gate-after-7.zip": "8b350b43a44d52a0477c201b33d8b0f07aa3a23d6209f485071ed07897aac623",
+        "gate-before-8.zip": "5889e534d476fec69c7533f6db9848affe765fae1f7703a1e077e0fc00a8b266",
+        "gate-after-8.zip": "080cbfe1c58c0c50a9eb5ef7cacf66bf8e07c365837f10923ec84a26931be27c"
+      }
+    }
+  },
+  "totals": {
+    "development": 191,
+    "reserved": 188,
+    "routed": 40,
+    "primary_correct": 142,
+    "default_pair_any": 148,
+    "routed_pair_any": 149,
+    "gained_union": 1,
+    "actual_delivery": 140
+  }
+}

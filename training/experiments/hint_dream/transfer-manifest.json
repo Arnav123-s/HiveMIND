@@ -1,0 +1,29 @@
+{
+  "dataset": "spade-after-sft-20261121",
+  "case_order": [
+    {
+      "spec": "stream-v1/spade-after-sft-20261121/0",
+      "prompt_sha256": "251c0e3404cf43a8e96bc8a8e67c69ec79155aa97fed2da1e7f7756e6fb3b979",
+      "suite_sha256": "b5429b50c007cf8971f705cedb0e0cae635f979d6c43d267af075aee695733ea"
+    },
+    {
+      "spec": "stream-v1/spade-after-sft-20261121/9",
+      "prompt_sha256": "aaf514cb323d9574beaf7ba825313b9a0c860ab5f05ad69576cd62dc4cb9d080",
+      "suite_sha256": "e97abda61aceab758db75f83c3e14922f445137abbb547dad20ca16397ae1956"
+    },
+    {
+      "spec": "stream-v1/spade-after-sft-20261121/10",
+      "prompt_sha256": "434d25044cf2f1bf6d8065692ec2765adbe141db4ebb2510250061581a534ded",
+      "suite_sha256": "9f28e7abb9f7aa55cef64de0700a461a97df2e6de1579e121aa7884f9a46a3e8"
+    }
+  ],
+  "weight_order": [
+    "A",
+    "B"
+  ],
+  "unblind": {
+    "A": "original G55 trunk",
+    "B": "one-epoch candidate"
+  },
+  "judge_access": "The WASI candidate executes only its own Python and public input. The typed-value judge accepts only returned values and sealed latent-sequence expectations. No weight label or path enters grading or model messages."
+}

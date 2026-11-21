@@ -52,10 +52,10 @@ on:
         description: "Passes over the rows when training, at the most (the time given cuts them; a child starts from its parent and needs few)"
         default: "2"
       train_minutes:
-        description: "One-run training budget per slice. Auto keeps 170 minutes with the usual notebook option. Select a number for a CPU-only run."
+        description: "Auto uses the CPU slice budget (HIVE_TRAIN_MIN, default 85). Select notebook for the 170-minute profile with Colab enabled."
         type: choice
         default: "auto"
-        options: ["auto", "85", "110", "170"]
+        options: ["auto", "85", "110", "170", "notebook"]
       shard_policy:
         description: "Assign old rows to CPU slices for this run. Hash is the current rule."
         type: choice
@@ -130,6 +130,7 @@ env:
   AGENT_TEAM_SOLO: "2"
   AGENT_TEAM_SOLO_ALONE: "1"
   HIVE_LIGHT: "1"
+  HIVE_ARCHIVE_K: ${{ vars.HIVE_ARCHIVE_K || '0' }}
   GEN: g${{ github.run_number }}
   DNA: ${{ inputs.dna || 't80' }}
   HIVE_SEATING: ${{ inputs.seating == 'strength' && 'strength' || '' }}
@@ -218,7 +219,9 @@ jobs:
         env:
           WHO: ${{ inputs.who || '' }}
       - name: The body's cells, from the release
-        run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+        run: |
+          python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+          python3 -m training.body_archive fetch
       - uses: ./.github/actions/hive
       - name: Practice
         env:
@@ -282,12 +285,18 @@ jobs:
     # null, and null != '0' is false in an expression (both turn into the number 0): g39's dreams were skipped so
     if: ${{ needs.fresh.outputs.go == '1' && !inputs.skip_practice && !inputs.cells_from_run && format('{0}', inputs.dreams) != '0' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: ${{ fromJSON(vars.HIVE_DREAM_MIN || '43') }}
     strategy:
       fail-fast: false
       matrix:
         dream: [1, 2, 3, 4, 5, 6, 7, 8]
     steps:
+      - name: Start the dream clock before setup
+        env:
+          MINUTES: ${{ vars.HIVE_DREAM_MIN || '43' }}
+        run: |
+          [[ "$MINUTES" =~ ^[1-9][0-9]?$ ]] || { echo "::error::HIVE_DREAM_MIN must be 1–99"; exit 1; }
+          echo "DREAM_DEADLINE=$(( $(date +%s) + MINUTES * 60 ))" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - name: Who dreams (the trunk and the body's cells, as in practice)
         run: |
@@ -296,11 +305,30 @@ jobs:
         env:
           WHO: ${{ inputs.who || '' }}
       - name: The body's cells, from the release
-        run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+        run: |
+          python3 training/grow_record.py fetch "$HIVE_MEMBERS"
+          python3 -m training.body_archive fetch
       - uses: ./.github/actions/hive
+      - name: Install the guest for generated practice
+        continue-on-error: true
+        timeout-minutes: 3
+        if: ${{ vars.HIVE_SPADE_DREAM == '1' }}
+        run: |
+          # Allow the whole optional install plus the dream job's 90-second upload reserve.
+          if [ -n "${DREAM_DEADLINE:-}" ] && (( DREAM_DEADLINE - $(date +%s) <= 270 )); then
+            echo 'Skipping the optional practice guest as the dream clock is nearly spent.'
+            exit 0
+          fi
+          python -m pip install --quiet wasmtime==36.0.0
+          sdk="$RUNNER_TEMP/dream-wasi"
+          curl -fsSL --retry 2 --max-time 90 'https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip' -o "$sdk.zip"
+          echo "f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39  $sdk.zip" | sha256sum -c -
+          unzip -q "$sdk.zip" -d "$sdk"
+          echo "HIVE_FIELDWORK_SDK=$sdk" >> "$GITHUB_ENV"
       - name: Dream
         env:
           # another cell beside the trunk on each runner, and on each try after the first (training/grow.py dream)
+          HIVE_SPADE_DREAM: ${{ vars.HIVE_SPADE_DREAM || '0' }}
           HIVE_ROTATE: ${{ matrix.dream }}
           # as in practice: the slowest corrected dream of g33, g35 and g38 took 242 s
           HIVE_TASK_SECONDS: "600"
@@ -308,12 +336,19 @@ jobs:
           # the tasks the hive got wrong before (kept in the release)
           curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
           DREAMS="${{ inputs.dreams || '3' }}"
-          if ! [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] || [ "$DREAMS" -eq 0 ] || ! [ -s old_failures.jsonl ]; then echo "no dreams: $DREAMS a runner, $(wc -l < old_failures.jsonl) old failures"; exit 0; fi
+          if ! [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] || [ "$DREAMS" -eq 0 ] || { [ "$HIVE_SPADE_DREAM" != 1 ] && ! [ -s old_failures.jsonl ]; }; then echo "no dreams: $DREAMS a runner, $(wc -l < old_failures.jsonl) old failures"; exit 0; fi
           (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
           # seeds of their own: practice's are 10000000 + run * 100 + runner, and dreams on the practice runners took
           # 30000000 + run * 100 + runner (1 to 12); the dream runners take 51 to 58 of each run's hundred, so no
           # dream of this run or an earlier one is dreamed again under the same name
-          python training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + 50 + ${{ matrix.dream }})) --tasks "$DREAMS" --tries 2 --minutes 50 --failures old_failures.jsonl --out rows.jsonl | tee dream.txt
+          # Leave 90 seconds of the job budget for logs and artifacts. Verified rows are appended per completed attempt.
+          FINISH=$(( DREAM_DEADLINE - 90 ))
+          LEFT=$(( FINISH - $(date +%s) ))
+          if [ "$LEFT" -le 0 ]; then echo "setup used the dream budget" >> "$GITHUB_STEP_SUMMARY"; exit 0; fi
+          status=0
+          timeout -k 3 "$LEFT" python -u training/grow.py dream --seed $((30000000 + ${{ github.run_number }} * 100 + 50 + ${{ matrix.dream }})) --tasks "$DREAMS" --tries 2 --deadline "$FINISH" --failures old_failures.jsonl --out rows.jsonl > dream.txt || status=$?
+          cat dream.txt
+          if [ "$status" = 124 ]; then echo "dream deadline reached" >> "$GITHUB_STEP_SUMMARY"; elif [ "$status" != 0 ]; then exit "$status"; fi
           tail -1 dream.txt >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ always() }}
@@ -334,6 +369,7 @@ jobs:
             runs/exam/**/TASK.md
             runs/exam/**/REPORT.md
             runs/exam/**/exam.json
+            runs/exam/**/hint-regret.json
             runs/exam/**/events.jsonl
             runs/exam/**/member*_*.py
             runs/exam/**/.member*_*.py.out
@@ -442,6 +478,7 @@ jobs:
       slices: ${{ steps.plan.outputs.slices }}
       train_minutes: ${{ steps.budget.outputs.minutes }}
       chunk_tokens: ${{ steps.budget.outputs.chunk_tokens }}
+      row_checkpoint: ${{ steps.budget.outputs.row_checkpoint }}
       train_step_timeout: ${{ steps.budget.outputs.step_timeout }}
       train_job_timeout: ${{ steps.budget.outputs.job_timeout }}
     steps:
@@ -489,19 +526,25 @@ jobs:
         id: budget
         env:
           PROFILE: ${{ inputs.train_minutes || 'auto' }}
-          CHUNK_TOKENS: ${{ vars.HIVE_CHUNK_CE || '0' }}
+          CPU_MINUTES: ${{ vars.HIVE_TRAIN_MIN || '85' }}
+          CHUNK_TOKENS: ${{ vars.HIVE_CHUNK_CE || '128' }}
+          ROW_CHECKPOINT: ${{ vars.HIVE_ROW_CHECKPOINT || '1' }}
         run: |
           case "$PROFILE" in
-            auto) minutes=170; CHUNK_TOKENS=0 ;;
+            auto) minutes=$CPU_MINUTES ;;
+            notebook) minutes=170; CHUNK_TOKENS=0; ROW_CHECKPOINT=0 ;;
             85|110|170) minutes=$PROFILE ;;
             *) echo "::error::unknown training clock"; exit 1 ;;
           esac
+          [[ "$minutes" =~ ^(85|110|170)$ ]] || { echo "::error::HIVE_TRAIN_MIN must be 85, 110 or 170"; exit 1; }
+          [[ "$ROW_CHECKPOINT" =~ ^[01]$ ]] || { echo "::error::HIVE_ROW_CHECKPOINT must be 0 or 1"; exit 1; }
           [[ "$CHUNK_TOKENS" =~ ^(0|[1-9][0-9]*)$ ]] || { echo "::error::HIVE_CHUNK_CE must be a nonnegative whole number of tokens"; exit 1; }
           echo "minutes=$minutes" >> "$GITHUB_OUTPUT"
+          echo "row_checkpoint=$ROW_CHECKPOINT" >> "$GITHUB_OUTPUT"
           echo "chunk_tokens=$CHUNK_TOKENS" >> "$GITHUB_OUTPUT"
           echo "step_timeout=$(( minutes + 30 ))" >> "$GITHUB_OUTPUT"
           echo "job_timeout=$(( minutes + 55 ))" >> "$GITHUB_OUTPUT"
-          echo "Training clock: $minutes minutes per slice (selection: $PROFILE, loss chunk tokens: $CHUNK_TOKENS)" >> "$GITHUB_STEP_SUMMARY"
+          echo "Training clock: $minutes minutes per slice (selection: $PROFILE, loss chunk tokens: $CHUNK_TOKENS, row checkpoint: $ROW_CHECKPOINT)" >> "$GITHUB_STEP_SUMMARY"
 
   train:
     needs: [gather, plan]
@@ -545,11 +588,13 @@ jobs:
         env:
           HIVE_TRAIN_MIN: ${{ needs.plan.outputs.train_minutes }}
           HIVE_CHUNK_CE: ${{ needs.plan.outputs.chunk_tokens }}
-          TRAIN_PROFILE: ${{ inputs.train_minutes || 'auto' }}
+          TRAIN_PROFILE: ${{ inputs.train_minutes == 'notebook' && 'auto' || needs.plan.outputs.train_minutes }}
+          HIVE_SELF_REPLAY: ${{ vars.HIVE_SELF_REPLAY || '0' }}
+          HIVE_SELF_REPLAY_RATIO: ${{ vars.HIVE_SELF_REPLAY_RATIO || '2' }}
           HIVE_SHARD_POLICY: ${{ inputs.shard_policy || 'hash' }}
           HIVE_TRAIN_PLATEAU: ${{ inputs.train_plateau || 'off' }}
-          # Optional row checkpointing is confined to runs with an explicit numeric CPU clock.
-          HIVE_ROW_CHECKPOINT: ${{ inputs.train_minutes && inputs.train_minutes != 'auto' && vars.HIVE_ROW_CHECKPOINT == '1' && '1' || '0' }}
+          # The notebook retains its separate memory and clock profile.
+          HIVE_ROW_CHECKPOINT: ${{ needs.plan.outputs.row_checkpoint }}
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
           SHARD: ${{ matrix.slice.shard }}
@@ -595,7 +640,7 @@ jobs:
           CM=$(( K > 0 ? 70 / K : 60 )); [ "$CM" -gt 60 ] && CM=60; [ "$CM" -lt 15 ] && CM=15
           T0=$(date +%s)
           # Opt-in CPU measurements use the same hardware even when a notebook happens to be online.
-          if [ "$TRAIN_PROFILE/$HIVE_SHARD_POLICY/$HIVE_TRAIN_PLATEAU" = auto/hash/off ] && [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+          if [ "${HIVE_SELF_REPLAY:-0}" = 0 ] && [ "$TRAIN_PROFILE/$HIVE_SHARD_POLICY/$HIVE_TRAIN_PLATEAU" = auto/hash/off ] && [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
             # The owner may start the notebook any time during practice (g42's came up 13 minutes after training began,
             # and each job had looked once, at its start): every slice of the child offered waits up to CW minutes
             # (repository variable HIVE_COLAB_WAIT, 15 unless set), one line a minute; a notebook not seen in 12 hours is
@@ -758,8 +803,49 @@ jobs:
           path: out/
           retention-days: 30
 
+  archive_profiles:
+    # One private development item per runner. Both arms finish before the first gate request.
+    needs: [plan, merge]
+    if: ${{ !cancelled() && vars.HIVE_ARCHIVE_K == '3' && needs.merge.result == 'success' && !inputs.trial && !inputs.versus }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: [before, after]
+        slot: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        if: ${{ matrix.arm == 'after' }}
+        with:
+          name: trunk
+          path: tr
+      - name: Load the exact trunk for this arm
+        env:
+          ARM: ${{ matrix.arm }}
+        run: |
+          mkdir -p cells/members
+          if [ "$ARM" = before ]; then
+            WHO=$(python3 -c 'import json,os; b=json.load(open("cells/body.json")); print(b["dna"]+"+"+b["trunk"] if b.get("dna")==os.environ["DNA"] and b.get("trunk") else "")')
+            python3 training/grow_record.py fetch "$WHO"
+          else
+            WHO="$DNA+${GEN}trunk"
+            cp "tr/$DNA.${GEN}trunk.gguf" "cells/members/$WHO.gguf"
+          fi
+          test -s "cells/members/$WHO.gguf"
+          echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
+      - uses: ./.github/actions/hive
+      - name: Grade the named trunk independently with empty memory
+        run: python3 -m training.body_archive profile ${{ matrix.slot }} profile.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: archive-${{ matrix.arm }}-${{ matrix.slot }}
+          path: profile.json
+          retention-days: 30
+
   gate:
-    needs: [plan, train, join, merge]
+    needs: [plan, train, join, merge, archive_profiles]
     # a body that multiplies goes on with the children that did grow when one runner failed
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
@@ -775,7 +861,7 @@ jobs:
         # 64 tasks for a growing body too: on two seeds, one generation differed from the next by several tasks from
         # chance alone, and the hard kinds are what moves (agent C's plan, piece 3). Every arm sits them on 8 runners
         # of 8, half the time of 4 of 16 (a trial's 24 jobs: 20 run at once, the last 4 when the first are done).
-        seed: ${{ fromJSON('[1,2,3,4,5,6,7,8]') }}
+        seed: ${{ fromJSON(needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && '[1,2,3,4]' || '[1,2,3,4,5,6,7,8]') }}
         # What a seat sits is split over jobs so that none runs much past ~50 minutes (g51: one "after" seat sat the fresh
         # exam 55 minutes and the held exam 39 more, 100 in all; the median seat took 40). part "fresh": the gate's own exam
         # (and the talk smoke on seat 2); "held": the fixed held-out exam's share of that seat (before and after only);
@@ -783,7 +869,7 @@ jobs:
         # jobs in the paired gate: 20 run at once and the rest start as soon as a short one ends.
         part: ["fresh"]
         include: ${{ fromJSON('[{"arm":"before","seed":1,"part":"held"},{"arm":"before","seed":2,"part":"held"},{"arm":"before","seed":3,"part":"held"},{"arm":"before","seed":4,"part":"held"},{"arm":"before","seed":5,"part":"held"},{"arm":"before","seed":6,"part":"held"},{"arm":"before","seed":7,"part":"held"},{"arm":"before","seed":8,"part":"held"},{"arm":"after","seed":1,"part":"held"},{"arm":"after","seed":2,"part":"held"},{"arm":"after","seed":3,"part":"held"},{"arm":"after","seed":4,"part":"held"},{"arm":"after","seed":5,"part":"held"},{"arm":"after","seed":6,"part":"held"},{"arm":"after","seed":7,"part":"held"},{"arm":"after","seed":8,"part":"held"},{"arm":"after","seed":1,"part":"talk"}]') }}
-    steps:
+    steps: &gate_steps
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
@@ -839,6 +925,17 @@ jobs:
           echo "who=$WHO" >> "$GITHUB_OUTPUT"
       - uses: ./.github/actions/hive
         if: ${{ steps.who.outputs.who }}
+      - uses: actions/download-artifact@v4
+        if: ${{ env.HIVE_ARCHIVE_K == '3' && needs.plan.outputs.grow && !inputs.trial && !inputs.versus }}
+        continue-on-error: true
+        with:
+          pattern: archive-*
+          path: archive
+      - name: Freeze archive seating from development receipts before reading this exam
+        if: ${{ env.HIVE_ARCHIVE_K == '3' && steps.who.outputs.who }}
+        run: |
+          python3 -m training.body_archive freeze archive "$GEN" "$RUNNER_TEMP/seating.json"
+          echo "HIVE_ARCHIVE_PATH=$RUNNER_TEMP/seating.json" >> "$GITHUB_ENV"
       - name: A fresh exam, half of the first exam's kinds and half hard ones
         if: ${{ steps.who.outputs.who && matrix.part == 'fresh' }}
         run: |
@@ -937,8 +1034,68 @@ jobs:
           grep -E "✅|❌" "$f" | awk -F'|' '{print $4 "|" $3 "|" $5}' | cut -c1-90
           sed -n 3p "$f"
 
+  gate_look4:
+    needs: [plan, gate]
+    if: ${{ !cancelled() && needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && needs.gate.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    outputs:
+      stop: ${{ steps.look.outputs.stop }}
+    env:
+      SEATS: "4"
+    steps: &gate_look_steps
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gate-before-*
+          path: grades
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gate-after-*
+          path: grades
+      - name: Check complete matched pairs for a decisive difference
+        id: look
+        env:
+          GATE_SEEDS: ${{ inputs.gate_seeds || github.run_number }}
+        run: python -m training.gate_look --grades grades --run-number "$GATE_SEEDS" --seats "$SEATS"
+
+  gate_5_6:
+    needs: [plan, gate, gate_look4]
+    if: ${{ !cancelled() && needs.gate_look4.result != 'skipped' && needs.gate_look4.outputs.stop != '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: ["before", "after"]
+        seed: [5, 6]
+        part: ["fresh"]
+    steps: *gate_steps
+
+  gate_look6:
+    needs: gate_5_6
+    if: ${{ !cancelled() && needs.gate_5_6.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    outputs:
+      stop: ${{ steps.look.outputs.stop }}
+    env:
+      SEATS: "6"
+    steps: *gate_look_steps
+
+  gate_7_8:
+    needs: [plan, gate_look6]
+    if: ${{ !cancelled() && needs.gate_look6.result != 'skipped' && needs.gate_look6.outputs.stop != '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: ["before", "after"]
+        seed: [7, 8]
+        part: ["fresh"]
+    steps: *gate_steps
+
   record:
-    needs: [plan, train, join, merge, gate]
+    needs: [plan, train, join, merge, gate, gate_look4, gate_5_6, gate_look6, gate_7_8]
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:
@@ -998,6 +1155,12 @@ jobs:
         with:
           name: talk-${{ env.GEN }}
           path: training/reports/talk
+      - uses: actions/download-artifact@v4
+        if: ${{ env.HIVE_ARCHIVE_K == '3' }}
+        continue-on-error: true
+        with:
+          pattern: archive-*
+          path: archive
       - name: The run's facts (each job's hours, the slices lost and their records, who started it; training/reads.py)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -1005,15 +1168,50 @@ jobs:
           # this run's rows as the slices had them, before the release's are joined in below (the read counts them)
           cp got/rows.jsonl all_rows.jsonl 2>/dev/null || : > all_rows.jsonl
           python3 training/reads.py facts "${{ github.run_id }}" --gate gate --practice-work pw --out facts.json || { echo "::warning::the run's facts could not be read; the record goes on without them"; echo '{}' > facts.json; }
+      - name: Install the optional method verifier
+        id: method_guest
+        continue-on-error: true
+        if: ${{ vars.HIVE_BANK_CONTRACTS_DIR != '' && needs.plan.outputs.grow && !inputs.trial && !inputs.versus && !inputs.cells_from_run }}
+        uses: ./.github/actions/method-bank
+      - name: Verify methods from checked practice against repository contracts
+        id: method_bank
+        continue-on-error: true
+        if: ${{ steps.method_guest.outcome == 'success' }}
+        env:
+          CONTRACT_DIR: ${{ vars.HIVE_BANK_CONTRACTS_DIR }}
+        run: |
+          [[ "$CONTRACT_DIR" =~ ^[A-Za-z0-9_./-]+$ && "$CONTRACT_DIR" != /* && "$CONTRACT_DIR" != *..* ]]
+          contracts=$(mktemp -d)
+          # Read only ordinary JSON blobs committed at the workflow revision, never files written by a worker.
+          git ls-tree -z "$GITHUB_SHA:$CONTRACT_DIR" > "$RUNNER_TEMP/method-contracts.list"
+          while IFS= read -r -d '' entry; do
+            name=${entry#*$'	'}
+            [[ "$name" == *.json ]] || continue
+            [[ "$entry" == '100644 blob '* || "$entry" == '100755 blob '* ]]
+            git cat-file blob "$GITHUB_SHA:$CONTRACT_DIR/$name" > "$contracts/$name"
+          done < "$RUNNER_TEMP/method-contracts.list"
+          prior=()
+          if [ -f cells/method_bank.json ]; then prior=(--previous cells/method_bank.json); fi
+          python -m team.bank_snapshot "${prior[@]}" --contracts "$contracts" --practice prac --output "$RUNNER_TEMP/new-method-bank.json" | tee -a "$GITHUB_STEP_SUMMARY"
+          mv "$RUNNER_TEMP/new-method-bank.json" cells/method_bank.json
+      - name: Keep the previous bank if this optional promotion could not finish
+        if: ${{ steps.method_guest.outcome == 'failure' || steps.method_bank.outcome == 'failure' }}
+        run: echo "::warning::Method promotion did not finish. The body record continues with the previous bank."
       - name: The record (only numbers and names this repository knows are taken from the other jobs)
         env:
+          STAGED: ${{ needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && '1' || '0' }}
+          GATE_SEATS: ${{ needs.gate_look4.outputs.stop == '1' && '4' || needs.gate_look6.outputs.stop == '1' && '6' || '8' }}
+          GATE_RUN: ${{ inputs.gate_seeds || github.run_number }}
           VERSUS_FLAGS: ${{ inputs.versus }}
         run: |
           if [ -d tr/trunk ]; then cp tr/trunk/* got/; fi
           mkdir -p prac
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held | tee -a "$GITHUB_STEP_SUMMARY"
+          check=()
+          if [ "$STAGED" = 1 ]; then check=(--sequential "$GATE_SEATS" "$GATE_RUN"); fi
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held --archive archive "${check[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
+          BANK_UPDATED: ${{ steps.method_bank.outcome == 'success' && '1' || '0' }}
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive grew" --notes "The cells of the hive's body (weight edits of its ternary model) and the checked rows they were grown from (training/grow.py). Machine-made." --latest=false
@@ -1037,7 +1235,8 @@ jobs:
           # it is said: latest.md says the read failed, and the job's last step ends red (g43's read was lost to a warning)
           FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
           : > "$FAILED"
-          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json 2>/dev/null)
+          git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json cells/body_archive.json 2>/dev/null)
+          if [ "$BANK_UPDATED" = 1 ]; then git add cells/method_bank.json; fi
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           # the talk exam's sitting (when the gate sat it) is kept aside: a lost race below resets the tree it is drawn into
           if [ -f "training/reports/talk/$GEN.json" ]; then cp "training/reports/talk/$GEN.json" talk.json; fi

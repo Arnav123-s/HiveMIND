@@ -1,0 +1,64 @@
+{
+  "stages": [
+    {
+      "family": "h_txt_names",
+      "fresh": [
+        "01989deba829fd70b6d2602c15f4e192ee4be7fb1d8104c7820668267d1de0aa",
+        "2b9ef2d4c6aff3fddbd36740f07f522ea009ed5b48dc03ddcf3f6e93f97f893b"
+      ],
+      "replay": "6ea1fc9a9bfe3aa3aad8d519d729efee10fb0903f2946da6e62067ddf66f58a1"
+    },
+    {
+      "family": "h_txt_mdcsv",
+      "fresh": [
+        "09cc7edb8418d8710acf12d1e6f4de93d7eb2eb68fe4f521fcb080afff8da4e6",
+        "1b30f68983e391a6078f45f772620b66e55bfed3cb0bf8ec415ebde90bceee53"
+      ],
+      "replay": "0b458efa2484388f0ee9fa12557eb4e470b6e0ce4b6a106f0bf33d77ff4e45a2"
+    },
+    {
+      "family": "h_tab_fill",
+      "fresh": [
+        "095bd48d9c754d1cb5f099effe27d2b01c2f23c17d0640432f54e5fde875b148",
+        "15e26e446686b466131db7247771baf81e99e5ffd38b0bf96ba80556e8ac0b87"
+      ],
+      "replay": "87e48f5ad10388711b256f108fc22d67e66f1dc124e4e74c71b02a685c322af6"
+    }
+  ],
+  "proof": [
+    {
+      "artifact": 14626582627,
+      "sha256": "2f6f73f14cc527adcb74af4acbdecbdd5f5205be2c7789bc76159e1505e42b6b",
+      "task_grade": "practice_10005502/h10005502_01/exam.json",
+      "actor": "t80+g39code",
+      "member": 2,
+      "seed": 10005502,
+      "source_sha256": "0f530e41823d440ba29fb843b51b21d295805d21753eb8a034dbd45bc919bc03",
+      "ok": true
+    },
+    {
+      "artifact": 14626203707,
+      "sha256": "9178bfb877caa461ad41994ed8d4c853debb98a397d4faa29551dd43683e585a",
+      "task_grade": "practice_10005503/h10005503_00/exam.json",
+      "actor": "t80+g51data2",
+      "member": 2,
+      "seed": 10005503,
+      "source_sha256": "29ad656b73206c5751103f218076f033b6611deae7e73e2e73c97478143b8f57",
+      "ok": true
+    },
+    {
+      "artifact": 14626639676,
+      "sha256": "e6f9e2dd94fd919125061cf7c971741e2d837b3cd1360ba4b565f45743937041",
+      "task_grade": "practice_10005509/h10005509_03/exam.json",
+      "actor": "t80+g53data2",
+      "member": 3,
+      "seed": 10005509,
+      "source_sha256": "63e04a21b9d98c1c3df6dfed2b9b70a16ef347b541e4ffb94d615429294189a4",
+      "ok": true
+    }
+  ],
+  "sources": {
+    "g55": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd",
+    "g56": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139"
+  }
+}

@@ -13,6 +13,7 @@
 """
 import hashlib
 import json
+import os
 import sqlite3
 import subprocess
 import sys
@@ -167,6 +168,13 @@ def dream(train=True, rehearse_n=2):
     log = {"started": time.strftime("%F %T")}
     distil(log)
     lessons(log)
+    if rehearse_n > 0 and os.environ.get("HIVE_SPADE_DREAM") == "1":
+        from training import grow, hint_dream
+        from training.exam import RUNS
+        seed = f"local-{time.time_ns()}"
+        fresh = hint_dream.run_slot(seed, grow.GROW / "rows.jsonl", RUNS / f"dream_{seed}" / "hint-regret.json", 0)
+        log["generated"] = fresh
+        rehearse_n -= fresh["tasks"]
     if rehearse_n:
         rehearse(log, rehearse_n)
         distil(log)

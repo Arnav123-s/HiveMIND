@@ -229,22 +229,36 @@ def held_share(tasks, seat=1, seats=1):
     return list(tasks)[max(0, seat - 1)::max(1, seats)]
 
 
-def sit_held(seat=1, seats=1, per=HELD_PER, log=print, out=None, seconds=None):
+def sit_held(seat=1, seats=1, per=HELD_PER, log=print, out=None, seconds=None, *, half=None, group=None):
     """A seat's share of the fixed held-out exam, sat as the pulse is (each task through the whole hive, with no
     memory). The json (training/reports/exams/held_<seat>.json) is written after every task, so a seat cut off by its
     time still leaves what it sat; the record compares only the tasks both arms sat."""
     tag, home, rows, t0 = f"exam_held_{seat}", _memory(True), [], time.time()
     path = Path(out or OUT) / f"held_{seat}.json"
+    tasks = held_share(held_exam(per), seat, seats)
+    if half is not None:
+        if half not in (1, 2) or not group or not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", group):
+            raise ValueError("a held half requires 1 or 2 and a run/arm group")
+        if not os.environ.get("HIVE_MEMBERS", "").strip():
+            raise ValueError("a held half requires the frozen worker roster in HIVE_MEMBERS")
+        if os.environ.get("HIVE_LIBRARY") == "1":
+            raise ValueError("the library can carry work between questions; run the original seat")
+        boundary = (len(tasks) + 1) // 2
+        tasks = tasks[:boundary] if half == 1 else tasks[boundary:]
+        tag = f"exam_held_{group}_{seat}_{half}"
+        path = path.with_name(f"part-{half}-seat-{seat}.json")
     path.parent.mkdir(parents=True, exist_ok=True)
 
     def save():
         line = {"exam": "held", "seat": seat, "seats": seats, "per": per, "passed": sum(r["ok"] for r in rows), "tasks": len(rows),
                 "minutes": round((time.time() - t0) / 60), "memory": "none",
                 "members": os.environ.get("HIVE_MEMBERS") or os.environ.get("AGENT_TEAM_SOLO", "")}
+        if half is not None:
+            line.update(group=group, half=half, started=t0, ended=time.time())
         path.write_text(json.dumps({"summary": line, "tasks": rows}, indent=1))
         return line
     line = save()
-    for tid, field, kind, task, check in held_share(held_exam(per), seat, seats):
+    for tid, field, kind, task, check in tasks:
         r = sit_one(tag, tid, task, check, home, timeout=seconds, kind=kind) | {"field": field, "kind": kind, "maker": getattr(check, "maker", ""), "task": task}
         rows.append(r)
         line = save()
@@ -320,6 +334,16 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
         ok, why = False, f"check failed: {type(e).__name__}: {e}"
     res = {"id": tid, "ok": bool(ok), "why": why, "seconds": round(time.time() - t0), "note": note, "answer": B._body(report)[:400]}
     res["members"] = each_member(run, check)
+    # Only practice may grow the method bank. A fixed exam's worker outputs are never candidates.
+    if (re.fullmatch(r"practice_\d+", tag) and os.environ.get("HIVE_BANK")
+            and os.environ.get("HIVE_BANK_CONTRACTS")):
+        from team import bank_admit
+        sdk = Path(os.environ.get("HIVE_FIELDWORK_SDK") or ROOT / "runs/fieldwork-assets/wasi")
+        try:
+            res["bank_admissions"] = bank_admit.practice(run, res["members"], Path(os.environ["HIVE_BANK_CONTRACTS"]),
+                                                        Path(os.environ["HIVE_BANK"]), sdk)
+        except Exception as exc:  # optional WASI admission must not discard the completed practice grade
+            res["bank_admissions"] = [{"unavailable": str(exc)}]
     (run / "exam.json").write_text(json.dumps(res, indent=1))
     return res
 

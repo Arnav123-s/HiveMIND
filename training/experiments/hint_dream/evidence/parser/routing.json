@@ -1,0 +1,172 @@
+{
+ "control": [
+  {
+   "name": "record-table",
+   "chosen": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+   "expected": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+   "correct": true,
+   "status": "selected",
+   "candidates": {
+    "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "no witnessed ordered records",
+    "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "passed public probe"
+   }
+  },
+  {
+   "name": "record-sections",
+   "chosen": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "expected": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "correct": true,
+   "status": "selected",
+   "candidates": {
+    "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "passed public probe",
+    "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+   }
+  },
+  {
+   "name": "empty",
+   "chosen": null,
+   "expected": null,
+   "correct": true,
+   "status": "missing-public-evidence",
+   "candidates": {}
+  },
+  {
+   "name": "header-only",
+   "chosen": null,
+   "expected": null,
+   "correct": true,
+   "status": "unsupported",
+   "candidates": {
+    "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "no witnessed ordered records",
+    "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+   }
+  },
+  {
+   "name": "unsupported",
+   "chosen": null,
+   "expected": null,
+   "correct": true,
+   "status": "unsupported",
+   "candidates": {
+    "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "no witnessed ordered records",
+    "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+   }
+  },
+  {
+   "name": "missing-value",
+   "chosen": null,
+   "expected": null,
+   "correct": true,
+   "status": "unsupported",
+   "candidates": {
+    "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "renaming did not preserve the declared records",
+    "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+   }
+  },
+  {
+   "name": "incompatible-examples",
+   "chosen": null,
+   "expected": null,
+   "correct": true,
+   "status": "unsupported",
+   "candidates": {
+    "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "no witnessed ordered records",
+    "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+   }
+  }
+ ],
+ "jobs": [
+  {
+   "case": 0,
+   "public_request": "x is CSV text with header label,value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to its largest reading minus its smallest reading. Empty input gives an empty dictionary.",
+   "public_inputs": [
+    "label,value\r\nivy,4\r\noak,-1\r\nivy,1\r\noak,-1\r\nivy,1\r\n"
+   ],
+   "decision": {
+    "status": "selected",
+    "candidates": {
+     "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "no witnessed ordered records",
+     "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "passed public probe"
+    }
+   },
+   "chosen": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+   "manual": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+   "stock": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "stock_matched": 0,
+   "ordinary_matched": 24,
+   "selected_matched": 24,
+   "manual_matched": 24,
+   "fallback": false,
+   "checks": 24
+  },
+  {
+   "case": 1,
+   "public_request": "x is INI text with one section per event, each containing label and value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to the 1-based position in the complete input sequence of its first minimum reading. Empty input gives an empty dictionary.",
+   "public_inputs": [
+    "[event0]\nlabel = ivy\nvalue = 4\n\n[event1]\nlabel = oak\nvalue = -1\n\n[event2]\nlabel = ivy\nvalue = 1\n\n[event3]\nlabel = oak\nvalue = -1\n\n[event4]\nlabel = ivy\nvalue = 1\n\n"
+   ],
+   "decision": {
+    "status": "selected",
+    "candidates": {
+     "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "passed public probe",
+     "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+    }
+   },
+   "chosen": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "manual": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "stock": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "stock_matched": 7,
+   "ordinary_matched": 1,
+   "selected_matched": 7,
+   "manual_matched": 7,
+   "fallback": false,
+   "checks": 24
+  },
+  {
+   "case": 2,
+   "public_request": "x is CSV text with header label,value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to the 1-based position in the complete input sequence of its first minimum reading. Empty input gives an empty dictionary.",
+   "public_inputs": [
+    "label,value\r\nivy,4\r\noak,-1\r\nivy,1\r\noak,-1\r\nivy,1\r\n"
+   ],
+   "decision": {
+    "status": "selected",
+    "candidates": {
+     "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "no witnessed ordered records",
+     "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "passed public probe"
+    }
+   },
+   "chosen": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+   "manual": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+   "stock": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "stock_matched": 0,
+   "ordinary_matched": 7,
+   "selected_matched": 7,
+   "manual_matched": 7,
+   "fallback": false,
+   "checks": 24
+  },
+  {
+   "case": 3,
+   "public_request": "x is INI text with one section per event, each containing label and value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to its largest reading minus its smallest reading. Empty input gives an empty dictionary.",
+   "public_inputs": [
+    "[event0]\nlabel = ivy\nvalue = 4\n\n[event1]\nlabel = oak\nvalue = -1\n\n[event2]\nlabel = ivy\nvalue = 1\n\n[event3]\nlabel = oak\nvalue = -1\n\n[event4]\nlabel = ivy\nvalue = 1\n\n"
+   ],
+   "decision": {
+    "status": "selected",
+    "candidates": {
+     "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23": "passed public probe",
+     "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0": "no witnessed ordered records"
+    }
+   },
+   "chosen": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "manual": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "stock": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+   "stock_matched": 24,
+   "ordinary_matched": 1,
+   "selected_matched": 24,
+   "manual_matched": 24,
+   "fallback": false,
+   "checks": 24
+  }
+ ]
+}

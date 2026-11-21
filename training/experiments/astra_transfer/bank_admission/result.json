@@ -1,0 +1,124 @@
+{
+  "bank_entries": 3,
+  "guest_guard_rejections": {
+    "base_conversion": 2,
+    "digit_sum": 2,
+    "prime_integer": 2
+  },
+  "observations": {
+    "base.py": [
+      {
+        "contract_sha256": "e1f205604dd8f1904dc7962414220d9e14f2330cb453505ce493f1d5d6e4bc4f",
+        "digest": "6cd9e3cfa0aa1f6ca70fa2668f698d09e2789d942b068a773362188c90f19547",
+        "program_sha256": "2e1896060722518b82e6ac68cf69ceb8ac288a9ca0bdb95e1d3818393f4e87bc",
+        "task": "base_conversion",
+        "validation": 1024
+      }
+    ],
+    "digits.py": [
+      {
+        "contract_sha256": "4261efdeadf9466777b1286e0ddf79957701961b261bb36f423025018e6b5fe9",
+        "digest": "193c0b256196ebc4fe432e4441c47ba70ad405a16f6e4406eeafa7531bde3d11",
+        "program_sha256": "1b5df128f8c4c3cea4975297aca71cc152bb5be0f7add3243a83b58c42ea1502",
+        "task": "digit_sum",
+        "validation": 1000
+      },
+      {
+        "contract_sha256": "26ecd1e471a6d641629719a0e18a98af9655d633e0ed5f9cbd9d59e6db9bb153",
+        "digest": "1e83178042f0ebb1e29e01a8dc98f16a758b9f3d441b5e27b4754c24e84160a9",
+        "program_sha256": "1b5df128f8c4c3cea4975297aca71cc152bb5be0f7add3243a83b58c42ea1502",
+        "task": "prime_integer",
+        "validation": 10017
+      }
+    ],
+    "prime.py": [
+      {
+        "contract_sha256": "26ecd1e471a6d641629719a0e18a98af9655d633e0ed5f9cbd9d59e6db9bb153",
+        "digest": "1e83178042f0ebb1e29e01a8dc98f16a758b9f3d441b5e27b4754c24e84160a9",
+        "program_sha256": "99510753b888e6aa070a71f19ab988ec30ddb900105a96f3b1fad023f6cd6d23",
+        "task": "prime_integer",
+        "validation": 10017
+      }
+    ],
+    "zero_bug.py": [
+      {
+        "rejected": "function failed independent check 1",
+        "task": "base_conversion"
+      }
+    ]
+  },
+  "saved_calls": {
+    "base_conversion": [
+      [
+        {
+          "b": 16,
+          "n": 255
+        },
+        "answered",
+        "ff"
+      ],
+      [
+        {
+          "b": 10,
+          "n": 255
+        },
+        "missing",
+        null
+      ],
+      [
+        {
+          "b": 4.0,
+          "n": 255
+        },
+        "missing",
+        null
+      ]
+    ],
+    "digit_sum": [
+      [
+        {
+          "n": 907
+        },
+        "answered",
+        16
+      ],
+      [
+        {
+          "n": -1
+        },
+        "missing",
+        null
+      ],
+      [
+        {
+          "n": "907"
+        },
+        "missing",
+        null
+      ]
+    ],
+    "prime_integer": [
+      [
+        {
+          "n": 9973
+        },
+        "answered",
+        true
+      ],
+      [
+        {
+          "n": 10001
+        },
+        "missing",
+        null
+      ],
+      [
+        {
+          "n": true
+        },
+        "missing",
+        null
+      ]
+    ]
+  }
+}

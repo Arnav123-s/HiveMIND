@@ -1,0 +1,16 @@
+{
+  "reference": {
+    "m_percent": true,
+    "m_weekday": true,
+    "h_txt_names": true,
+    "h_txt_mdcsv": true,
+    "h_tab_fill": true
+  },
+  "wrong": {
+    "m_percent": false,
+    "m_weekday": false,
+    "h_txt_names": false,
+    "h_txt_mdcsv": false,
+    "h_tab_fill": false
+  }
+}

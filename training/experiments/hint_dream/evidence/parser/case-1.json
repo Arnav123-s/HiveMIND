@@ -1,0 +1,86 @@
+{
+ "complete": true,
+ "case": 1,
+ "format": "ini",
+ "rule": "minimum_index",
+ "assets": {
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "adapter": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b"
+ },
+ "helper_sha256": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23",
+ "affinity": [
+  1,
+  2
+ ],
+ "calls": [
+  {
+   "offered": true,
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event, each containing label and value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to the 1-based position in the complete input sequence of its first minimum reading. Empty input gives an empty dictionary. For example x = '[event0]\\nlabel = ivy\\nvalue = 4\\n\\n[event1]\\nlabel = oak\\nvalue = -1\\n\\n[event2]\\nlabel = ivy\\nvalue = 1\\n\\n[event3]\\nlabel = oak\\nvalue = -1\\n\\n[event4]\\nlabel = ivy\\nvalue = 1\\n\\n' gives {'ivy': 3, 'oak': 2}.\n\nOptional library, already implemented: skill_parse_records(x) returns the input's [label, integer value] records in their original order."
+    }
+   ],
+   "raw": "```python\nimport re\n\ndef solve(x):\n    records = skill_parse_records(x)\n    label_positions = {}\n    for i, (label, value) in enumerate(records, 1):\n        if label not in label_positions:\n            label_positions[label] = i\n    return label_positions\n```",
+   "seconds": 34.909,
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 62,
+    "prompt_tokens": 235,
+    "total_tokens": 297,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "calls_helper_in_source": true,
+   "checks": 24,
+   "matched": 7,
+   "passed": false,
+   "matched_with_helper_removed": 0
+  },
+  {
+   "offered": false,
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event, each containing label and value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to the 1-based position in the complete input sequence of its first minimum reading. Empty input gives an empty dictionary. For example x = '[event0]\\nlabel = ivy\\nvalue = 4\\n\\n[event1]\\nlabel = oak\\nvalue = -1\\n\\n[event2]\\nlabel = ivy\\nvalue = 1\\n\\n[event3]\\nlabel = oak\\nvalue = -1\\n\\n[event4]\\nlabel = ivy\\nvalue = 1\\n\\n' gives {'ivy': 3, 'oak': 2}."
+    }
+   ],
+   "raw": "```python\nimport configparser\n\ndef solve(x):\n    config = configparser.ConfigParser()\n    config.read_string(x)\n    sections = {}\n    for section in config.sections():\n        sections[section] = []\n        for key, value in config[section].items():\n            sections[section].append((key, value))\n    result = {}\n    for section in sections:\n        for key, value in sections[section]:\n            if key not in result:\n                result[key] = len(sections[section]) + 1\n    return result\n```",
+   "seconds": 50.937,
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 107,
+    "prompt_tokens": 207,
+    "total_tokens": 314,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "calls_helper_in_source": false,
+   "checks": 24,
+   "matched": 1,
+   "passed": false
+  }
+ ],
+ "sampling": {
+  "temperature": 0.0,
+  "max_tokens": 256,
+  "seed": 8103,
+  "top_k": 0,
+  "top_p": 1.0,
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ }
+}

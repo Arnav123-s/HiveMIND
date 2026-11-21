@@ -41,3 +41,37 @@ def test_a_task_got_wrong_is_remembered_made_again_and_corrected(tmp_path, monke
     assert got["right"] == 1 and got["rows"] == 1
     assert "print(10 * 10)" in asked[0] and "answer was wrong" in asked[0] and task in asked[0]
     assert json.loads(out.read_text())["dream"] is True
+
+
+def test_deadline_preserves_verified_rows_when_another_try_no_longer_fits(tmp_path, monkeypatch):
+    failures = tmp_path / "failures.jsonl"
+    failures.write_text(json.dumps({"maker": "m", "kind": "test", "program": "print(1)"}) + "\n")
+    out = tmp_path / "rows.jsonl"
+    monkeypatch.setattr(exam, "remake", lambda *args: ("code", "test", "task", object()))
+    monkeypatch.setattr(exam, "_memory", lambda empty: tmp_path)
+    monkeypatch.setattr(grow, "rows_of", lambda *args: [{"type": "fix", "output": "confirmed member"}])
+    monkeypatch.setattr(grow, "pair_rows", lambda *args: [])
+    clock, calls = [1000], []
+    monkeypatch.setattr(grow.time, "time", lambda: clock[0])
+    monkeypatch.setenv("HIVE_CAP_GRACE", "40")
+    monkeypatch.setenv("HIVE_TASK_SECONDS", "100")
+
+    def fail_once(*args, kind, timeout):
+        calls.append(timeout)
+        clock[0] += timeout + 40
+        return {"ok": False, "seconds": timeout}
+
+    monkeypatch.setattr(exam, "sit_one", fail_once)
+    result = grow.dream(1, 3, failures, out, tries=2, weights={}, deadline=1100)
+    assert calls == [55] and result == {"dream": 1, "tasks": 1, "right": 0, "rows": 1}
+    assert json.loads(out.read_text()) == {"type": "fix", "output": "confirmed member", "dream": True}
+    result = grow.dream(2, 3, failures, out, weights={}, deadline=1100)
+    assert result["tasks"] == 0 and calls == [55]
+
+
+def test_dream_weights_prefer_recent_and_member_only_history():
+    weights = {"test": 1.5}
+    old = {"kind": "test"}
+    assert grow.dream_priority(old, 0, 400, weights) == 1.5
+    assert grow.dream_priority(old, 399, 400, weights) == 3
+    assert grow.dream_priority(old | {"member_only": True}, 399, 400, weights) == 6

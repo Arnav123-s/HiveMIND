@@ -99,6 +99,21 @@ def contract_id(row):
     return fingerprint(json.dumps([row["task"], row["description"]], ensure_ascii=True))
 
 
+FINITE_PREFIX = "# hive finite contract "
+
+
+def finite_stamp(row):
+    """Bind all metadata used to route a finite-domain worker to its immutable source."""
+    scope = {key: row[key] for key in ("task", "description", "arguments", "validation", "contract_sha256")}
+    return FINITE_PREFIX + fingerprint(json.dumps(scope, sort_keys=True, separators=(",", ":"), allow_nan=False))
+
+
+def valid_scope(row):
+    if row["source"].startswith(FINITE_PREFIX):
+        return row["source"].partition("\n")[0] == finite_stamp(row)
+    return "arguments" not in row and "contract_sha256" not in row
+
+
 def admit(directory, row):
     """Publish the complete record once. A different contract can qualify identical code."""
     directory.mkdir(parents=True, exist_ok=True)
@@ -117,7 +132,7 @@ def admit(directory, row):
             existing = json.loads(path.read_text())
             if (existing["source"] == row["source"] and existing.get("digest") == key
                     and type(existing.get("validation")) is int and existing["validation"] > 0
-                    and contract_id(existing) == contract_id(row)):
+                    and contract_id(existing) == contract_id(row) and valid_scope(existing)):
                 return
         except (OSError, ValueError, TypeError, KeyError):
             pass
@@ -137,6 +152,7 @@ def load_bank(directory):
             if (
                 re.fullmatch("[a-z][a-z0-9_]{0,60}", row["task"])
                 and fingerprint(row["source"]) == row["digest"]
+                and valid_scope(row)
                 and p.stem in (row["digest"], row["digest"] + "-" + contract_id(row))
                 and isinstance(row["description"], str)
                 and type(row["validation"]) is int

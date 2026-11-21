@@ -135,6 +135,7 @@ def saved_key(name):
 def rows_of(run, task, kind="", seed=None):
     """The training rows of one task: from every member whose own answer the task's check confirmed (taught), whether
     or not the whole task was right. run: the task's folder."""
+    from training.self_replay import verified
     from team import solo
     home = _home(run)
     try:
@@ -156,6 +157,7 @@ def rows_of(run, task, kind="", seed=None):
         fenced = f"```python\n{program}\n```"
         # agreed: whether this member was one of those that agreed (False: a right member the old rule left out)
         base = {"task": task, "kind": kind, "seed": seed, "who": t.get("who", ""), "member": n, "agreed": n in agreeing}
+        base["verified_member"] = verified(Path(run), n, base["who"])
         out.append(base | {"type": "first", "messages": head, "output": fenced})
         out.append(base | {"type": "done", "messages": head + [{"role": "assistant", "content": fenced},
                                                                  {"role": "user", "content": f"OUTPUT:\n{t['answer'][-1800:]}\n\n{solo.MORE}"}], "output": "DONE"})
@@ -452,9 +454,12 @@ def remember_failure(run, task, kind, check, result, path):
         printed = (t.get("answer") or "")[-600:]
     if not program or len(program) > 5000:
         return
+    from training.grow_record import member_delivery_outcome
+    outcome = member_delivery_outcome(result)
     with open(path, "a") as f:
         f.write(json.dumps({"maker": check.maker, "rseed": check.rseed, "level": getattr(check, "level", 0), "parts": getattr(check, "parts", None),
                             "task": task, "kind": kind, "program": program, "printed": printed, "who": who,
+                            **({"member_only": outcome == "member_only"} if outcome else {}),
                             "delivered": delivered(result),
                             "said": _masked(result.get("why")), "when": time.strftime("%Y-%m-%d %H:%M")}) + "\n")
 
@@ -469,7 +474,37 @@ DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. Th
          "Find the mistake in that program, then write the whole corrected program.")
 
 
-def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None):
+def dream_priority(failure, index, count, weights):
+    """Bias the existing kind weights toward recent failures and verified member-only wins."""
+    recency = 1 + index / max(1, count - 1)
+    return max(0.01, weights.get(failure.get("kind", ""), 0.25)) * recency * (2 if failure.get("member_only") is True else 1)
+
+
+def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None, deadline=0):
+    """Optionally reserve one of the shard's practice slots for a freshly generated task."""
+    if os.environ.get("HIVE_SPADE_DREAM") != "1" or n <= 0:
+        return _past_dreams(seed, n, failures, out, log, minutes, tries, weights, deadline=deadline)
+    from training import hint_dream
+    from training.exam import RUNS
+    out = Path(out or GROW / "rows.jsonl")
+    began = time.time()
+    end = deadline
+    if minutes:
+        end = min(end or float("inf"), began + minutes * 60)
+    fresh = hint_dream.run_slot(seed, out, RUNS / f"dream_{seed}" / "hint-regret.json", end, log)
+    left = n - fresh["tasks"]
+    remaining_minutes = (end - time.time()) / 60 if end else 0
+    if left > 0 and (not end or remaining_minutes > 0):
+        past = _past_dreams(seed, left, failures, out, log, remaining_minutes, tries, weights, deadline=deadline)
+    else:
+        past = {"dream": seed, "tasks": 0, "right": 0, "rows": 0}
+    for field in ("tasks", "right", "rows"):
+        past[field] += fresh[field]
+    past["generated"] = fresh
+    return past
+
+
+def _past_dreams(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None, deadline=0):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
@@ -478,6 +513,9 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
     tries: how many times a task is taken again before it is left for another night, each time with another cell beside
     the trunk (HIVE_ROTATE). Generation 28: one try corrected 5 of 24; a task one cell cannot see through, another may."""
     from training import exam as E
+    if minutes:
+        end = time.time() + minutes * 60
+        deadline = min(deadline, end) if deadline else end
     out = Path(out or GROW / "rows.jsonl")
     src = Path(failures or out.with_name("failures.jsonl"))
     seen = []
@@ -494,17 +532,16 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
     # practice: edge_weights). Generation 33's dreams took mostly kinds never passed (several parts, modules, facts on
     # the open web) and corrected 0 of 10 in two tries each; lessons start those kinds, dreams finish the ones begun.
     w = weights if weights is not None else edge_weights(_dna())
-    pick, pool = [], list(recent)
+    pick, pool = [], [(f, dream_priority(f, i, len(recent), w)) for i, f in enumerate(recent)]
     while pool and len(pick) < n:
-        i = r.choices(range(len(pool)), weights=[max(0.01, w.get(f.get("kind", ""), 0.25)) for f in pool])[0]
-        pick.append(pool.pop(i))
+        i = r.choices(range(len(pool)), weights=[weight for _, weight in pool])[0]
+        pick.append(pool.pop(i)[0])
     os.environ.setdefault("AGENT_TEAM_SOLO", "2")
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
-    right = made = 0
-    born = time.time()
+    right = made = attempted = 0
     for i, f in enumerate(pick):
-        if minutes and time.time() - born > minutes * 60:
+        if deadline and time.time() >= deadline:
             log(f"time is up after {i} of {len(pick)} dreams", flush=True)
             break
         again = E.remake(f.get("maker", ""), f.get("rseed", ""), f.get("level", 0), f.get("parts"))
@@ -515,12 +552,21 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
         was = os.environ.get("HIVE_ROTATE")
         turn = int(was) if (was or "").isdigit() else 0
         new = []
+        attempts = 0
         for k in range(max(1, int(tries))):
+            caps = {}
+            if deadline:
+                # sit_one gives its subprocess a grace period, then grades the work it finished.
+                seconds = int(deadline - time.time()) - int(os.environ.get("HIVE_CAP_GRACE", 40)) - 5
+                if seconds <= 0:
+                    break
+                caps["timeout"] = min(seconds, int(os.environ.get("HIVE_TASK_SECONDS", 2400)))
+            attempts += 1
             tid = f"d{seed}_{i:02d}" + (f"_{k}" if k else "")
             if k:  # another cell beside the trunk on each try after the first
                 os.environ["HIVE_ROTATE"] = str(turn + k)
             try:
-                res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind)
+                res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind, **caps)
             finally:  # the runner's own turn given back exactly, unset if it was
                 if was is None:
                     os.environ.pop("HIVE_ROTATE", None)
@@ -529,19 +575,23 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
             # every try's members the check confirmed are rows, the tries that failed as a whole too (taught):
             # generation 28's dreams had 2 failed tries with a member the check confirmed
             here = E.RUNS / f"dream_{seed}" / tid
-            new += rows_by_part(here, task, kind, seed) if has_parts(here) else rows_of(here, task, kind, seed) + pair_rows(here, task, kind, seed)
-            if res["ok"] or (minutes and time.time() - born > minutes * 60):
+            rows = rows_by_part(here, task, kind, seed) if has_parts(here) else rows_of(here, task, kind, seed) + pair_rows(here, task, kind, seed)
+            written = len(new)
+            new = once(new + rows)
+            # Save verified members before another long retry, even when the whole attempt failed.
+            with open(out, "a") as fo:
+                for row in new[written:]:
+                    fo.write(json.dumps(dict(row, dream=True)) + "\n")
+            if res["ok"]:
                 break
-        new = once(new)
-        for row in new:
-            row["dream"] = True
-        with open(out, "a") as fo:
-            for row in new:
-                fo.write(json.dumps(row) + "\n")
+        if not attempts:
+            log(f"no time left to start dream {i + 1} of {len(pick)}", flush=True)
+            break
+        attempted += 1
         right += res["ok"]
         made += sum(x["type"] != "pair" for x in new)
-        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, try {k + 1}, {len(new)} rows", flush=True)
-    return {"dream": seed, "tasks": len(pick), "right": right, "rows": made}
+        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, try {attempts}, {len(new)} rows", flush=True)
+    return {"dream": seed, "tasks": attempted, "right": right, "rows": made}
 
 
 def gather(out, gen, old=(), new=(), log=print):
@@ -860,9 +910,12 @@ class Study:
         """Rows left to meet: up to HARD_MOST meetings a row while the subject is behind, MOST otherwise."""
         return bool(self.queue[s]) and (self.behind(s) or self.passes[s] < self.rows[s] * self.most)
 
-    def pick(self):
+    def pick(self, allowed=None):
         """(subject, row index), or None when every row has been met as often as it may be."""
         alive = [s for s in self.queue if self.open(s)]
+        if allowed is not None:
+            due = [s for s in self.FIXED if s in alive and self.passes[s] < self.SHARE * (self.n + 1)]
+            alive = [s for s in alive if (s in allowed or s in due) and s not in self.waiting]
         if not alive:
             return None
         alive = [s for s in alive if s not in self.waiting] or alive  # a subject just skipped waits its turn
@@ -1208,7 +1261,17 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # DONE is learned at once in every kind, about 0.001, and says nothing).
     back = {t: k for k, ts in kept_back(rows).items() for t in ts}
     back_rows = [r for r in rows if r.get("who") == "lesson" and r.get("task") in back and r.get("type") != "done"]
-    rows = [r for r in rows if r.get("task") not in back]
+    from training import self_replay
+    replay_ratio = self_replay.ratio()
+    forbidden = {self_replay.question(task) for task in back} if replay_ratio else set()
+    if os.environ.get("HIVE_ARCHIVE_K") == "3":
+        from training import body_archive
+        forbidden.update(self_replay.question(body_archive.panel(i)[0]) for i in range(1, len(body_archive.MAKERS) + 1))
+    rows = [r for r in rows if r.get("task") not in back and
+            (not forbidden or self_replay.question(r.get("task")) not in forbidden)]
+    if replay_ratio:
+        forbidden.update(self_replay.question(r.get("task")) for r in rows
+                         if r.get("gen") == gen or r.get("type") == "mend")
     part = ""
     if shard:
         k, n = (int(x) for x in str(shard).split("/"))
@@ -1380,8 +1443,15 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     # came up, trained on. What is left (given - too_long - skipped_memory - trained) was not reached before the time
     # was up. g41's read put all three together under "left out" and named T4 for kinds with no row too long.
     data, tags, own_rows, mine, new_rows, long = [], [], {}, 0, 0, 0
+    replay_indices, replay_subjects, fresh_subjects = set(), set(), set()
+    if replay_ratio:
+        try:
+            body = json.loads(ternary.BODY.read_text())
+        except (OSError, ValueError):
+            body = {}
+        replay_indices = self_replay.select(rows, body, base, gen, forbidden)
     by_kind, new_kind = {}, {}  # {kind: counts}; {index in data: kind} of the new rows
-    for row in rows:
+    for row_index, row in enumerate(rows):
         new = (bool(gen) and row.get("gen") == gen) or row.get("type") == "mend"
         if new:
             counts = by_kind.setdefault(row.get("kind") or "?", {"given": 0, "too_long": 0, "skipped_memory": 0, "trained": 0})
@@ -1396,7 +1466,13 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         if new:
             new_kind[len(data)] = row.get("kind") or "?"
         data.append(d)
-        tags.append(subject(row, new))
+        tag = subject(row, new)
+        if row_index in replay_indices:
+            tag += " · self-replay"
+            replay_subjects.add(tag)
+        elif new and row.get("type") != "done":
+            fresh_subjects.add(tag)
+        tags.append(tag)
         own_rows[tags[-1]] = own_rows.get(tags[-1], 0) + own
         mine += own
         new_rows += new
@@ -1495,6 +1571,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     own_share = {s: min(1.0, own_rows[s] / len(idx)) for s, idx in by.items() if own_rows.get(s)}
     hard, web = new_hard(by)
     study = Study(by, own_share, rng=random.Random(f"{seed}:{lean}:{name}{part}"), weight=weight, hard=hard, web=web)
+    replay = self_replay.Schedule(replay_ratio, tags, replay_subjects, fresh_subjects) if replay_ratio else None
     passes = study.size if minutes else min(int(len(data) * epochs), study.size)
     log(f"{len(data)} rows in {len(study.rows)} subjects; each pass picks a subject by its loss (own organ up to x{weight:g} by its share, read and judged "
         f"{Study.SHARE:.0%} each), a row met at most {study.most} times", flush=True)
@@ -1577,7 +1654,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             # cell stops here and is kept.
             log(f"time is up after {i} passes: the cell is saved as it is", flush=True)
             break
-        got = study.pick()
+        got = replay.pick(study) if replay else study.pick()
         if got is None:
             log(f"every row has been met as often as it may be ({study.most} times, up to {study.hard_most} for a new hard subject not learned yet), after {i} passes", flush=True)
             break
@@ -1633,6 +1710,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         running += row_objective
         held += 1
         study.learned(s, plain)
+        if replay:
+            replay.learned(s, idx, k)
         trained_rows.add(idx)
         if plateau:
             plateau.observe(idx, row_objective)
@@ -1717,6 +1796,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             "rows_by_kind": dict(sorted(by_kind.items()))}
     if shard and os.environ.get("HIVE_SHARD_POLICY", "hash") != "hash":
         meta["shard_policy"] = os.environ["HIVE_SHARD_POLICY"]
+    if replay:
+        meta["self_replay"] = replay.report()
     if plateau:
         meta["plateau"] = {**plateau.report, "rows_covered": len(trained_rows)}
     if guard:
@@ -1768,7 +1849,7 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
     if cmd == "dream":
-        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0), tries=opt("--tries", 2))))
+        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0), tries=opt("--tries", 2), deadline=opt("--deadline", 0))))
     elif cmd == "practice":
         print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""), minutes=opt("--minutes", 0))))
     elif cmd == "gather":

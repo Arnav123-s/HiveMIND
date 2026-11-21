@@ -1,6 +1,6 @@
 # CPU training budget and generation wall time
 
-The ordinary line uses a 170-minute slice clock. The `grow.yml` dispatch input `train_minutes` accepts `85`, `110`, or `170` for one CPU run. The explicit 170-minute choice is the CPU control. `auto` retains the ordinary clock and notebook behavior. The next automatic generation starts with its usual defaults.
+The proposed CPU profile gives each training slice 85 minutes. The repository variable `HIVE_TRAIN_MIN` and the one-run input `train_minutes` accept 85, 110 or 170. A numeric input overrides the variable. The `notebook` input restores the 170-minute clock and Colab option.
 
 | Slice clock | Trainer process watchdog | Grow step timeout | Entire train job timeout |
 |---|---:|---:|---:|
@@ -10,7 +10,7 @@ The ordinary line uses a 170-minute slice clock. The `grow.yml` dispatch input `
 
 The watchdog allows a further minute after SIGTERM. The outer timeouts leave room for the final row, held-back loss measurement, weight conversion and upload. Reducing the number of available rows cannot reproduce this change to a time-limited trainer.
 
-Two independent one-run inputs are available on the same CPU path. `shard_policy=cost` changes old-row assignment. `train_plateau=observe` records the stop signal without stopping training, and `train_plateau=stop` enables early termination. Defaults are `hash` and `off`. On runs with an explicit numeric clock, the repository variable `HIVE_ROW_CHECKPOINT=1` enables checkpoint fallback, and `HIVE_CHUNK_CE` can set the number of answer tokens per loss chunk (a nonnegative integer, default 0). Leave both unset or at 0 for a budget-only comparison.
+The CPU defaults are `HIVE_ROW_CHECKPOINT=1` and `HIVE_CHUNK_CE=128`. Setting either repository variable to `0` disables that feature. The notebook profile disables both. Independent one-run inputs select cost-based shards (`shard_policy=cost`) or observe or stop on a plateau (`train_plateau=observe|stop`). The defaults remain `hash` and `off`.
 
 ## Observed generation timings
 
@@ -33,6 +33,16 @@ Elapsed times run from each stage's first job start to its last completion. The 
 Practice already reads fresh tasks while dream reads the previous failure archive. Both feed gather. Making them parallel a second time would save zero minutes. G55 delivered all 20 train slices. In G56 two jobs were cancelled, extending the train stage by 29.13 minutes beyond the last successful slice. No shorter-clock generation was run for this study. Clock savings and timely completions in the last three rows are assumptions.
 
 Even if all 16 incumbent exam jobs could run earlier at no cost, the 17 grown-body jobs must wait for the new weights. Their longest measured job took 42.92 minutes in G55 and 41.07 in G56. Running all 17 simultaneously could therefore save at most 14.05 and 12.38 minutes of those historical gate spans. Adding that ideal saving to the estimates above still leaves roughly 29 minutes to find in each generation.
+
+### Dream budget and sequential-gate replay
+
+The workflow reserves 43 minutes per dream job, including setup, and leaves 90 seconds for log and artifact uploads. Set `HIVE_DREAM_MIN=61` to restore the historical wall-time allowance. A dream gives verified member-only failures twice the weight of otherwise identical failures. Recency adds a factor from one to two within the last 400 records. Each selected kind retains a positive weight. The log counts attempts actually started and saves checked rows after each try.
+
+Set `HIVE_GATE_SPRT=1` to try the blocked fresh gate for a growing body. The first four before/after seed pairs run together. At four and six pairs the generalized sequential probability ratio test compares a 60% against a 40% chance that the candidate wins a discordant task. Both hypotheses fit the same discordance rate from the data, so ties cancel from the likelihood ratio. This measures the direction of changed results. An absolute improvement in the overall pass rate would require different hypotheses. A net difference of eight crosses the nominal 5% boundaries. A crossing skips the remaining fresh pairs. All sixteen fixed-exam seats and the talk job still run. The recorder independently checks the requested four, six or eight pairs again before applying its usual guards. Missing evidence or a short prefix below the boundary keeps the incumbent. Trials and the default `HIVE_GATE_SPRT=0` launch all fresh seeds together. [Rule and assumptions](../../../training/gate_look.py)
+
+Replay of the nine complete G45–G55 cohorts reproduced all nine full-length fresh verdicts. Running the recorder with historical fixed-exam results also reproduced all nine actual keep/drop decisions, including the G52 fresh tie that the fixed exam rejected. Every prefix needed all eight seeds. There were **zero early decisions and zero jobs saved** across 576 pairs. G45 had one mismatched prompt and G46 was cancelled. Seven generations' four- and six-seed looks were checked directly from the grade archives. G50–G52 used the archived, digest-checked per-seed ledger. The nominal error rates assume independent outcomes. Shared model and task families can violate this assumption, and a later full gate could reverse an early verdict. Serial blocks add waits on close contests, so the option starts off. [Paired grades and recorded decisions](handoff_audit/README.md)
+
+On G55, an assumed 85-minute train saving and a 43-minute dream stage yield **205.90 minutes**. Practice still takes 43.20 minutes, limiting the dream saving to 17.80. Reaching 180 minutes would require another 25.90 minutes. A replay cannot establish complete hosted wall time, zero skipped rows or the capability of a body trained on the shorter clock.
 
 ## How much of 85 minutes is available for optimizer updates?
 
